@@ -1,0 +1,9 @@
+{
+  "starport_commit": "a5aab81",
+  "starmap_commit": "f1f677e6b",
+  "acceptance_subcases": 7,
+  "final_race_pass_events": 320,
+  "final_race_skips": 2,
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.1</td><td>Precomputed static candidates and exact-model indexes at <code>69a8c5d</code>. Three package race suites pass. Retention work remains open.</td><td><a href=\"proof/starport-production-catalog/csp10.1/indexed-selection.json\">Indexed selection evidence</a></td></tr>",
+  "remaining": "Starport review, compatible published module, native qualification, and actual merges."
+}

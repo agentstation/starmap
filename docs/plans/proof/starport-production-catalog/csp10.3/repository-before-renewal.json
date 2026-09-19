@@ -1,0 +1,205 @@
+{
+  "starport_head": "633968c78a0bb5f93856114ab39c34e464648469",
+  "status": "complete",
+  "checks": [
+    {
+      "command": "bash scripts/verify-starmap-ownership.sh",
+      "exit_code": 0,
+      "seconds": 74.24,
+      "log": "/tmp/csp103-repository-final-gates/verify-starmap-ownership.log"
+    },
+    {
+      "command": "bash scripts/verify-v1-architecture.sh",
+      "exit_code": 1,
+      "seconds": 138.57,
+      "log": "/tmp/csp103-repository-final-gates/verify-v1-architecture.log"
+    },
+    {
+      "command": "bash scripts/test-dependency-direction-verifier.sh",
+      "exit_code": 0,
+      "seconds": 0.67,
+      "log": "/tmp/csp103-repository-final-gates/test-dependency-direction-verifier.log"
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit_code": 0,
+      "seconds": 0.65,
+      "log": "/tmp/csp103-repository-final-gates/verify-dependency-direction.log"
+    },
+    {
+      "command": "bash scripts/verify-catalog-driven-providers.sh",
+      "exit_code": 0,
+      "seconds": 121.42,
+      "log": "/tmp/csp103-repository-final-gates/verify-catalog-driven-providers.log"
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "exit_code": 0,
+      "seconds": 3.1,
+      "log": "/tmp/csp103-repository-final-gates/verify-package-layout.log"
+    },
+    {
+      "command": "bash scripts/verify-readme-quickstart.sh",
+      "exit_code": 0,
+      "seconds": 0.07,
+      "log": "/tmp/csp103-repository-final-gates/verify-readme-quickstart.log"
+    },
+    {
+      "command": "bash scripts/verify-v1-release.sh",
+      "exit_code": 0,
+      "seconds": 0.07,
+      "log": "/tmp/csp103-repository-final-gates/verify-v1-release.log"
+    },
+    {
+      "command": "bash scripts/verify-release-workflow.sh",
+      "exit_code": 0,
+      "seconds": 6.64,
+      "log": "/tmp/csp103-repository-final-gates/verify-release-workflow.log"
+    },
+    {
+      "command": "bash scripts/verify-developer-experience.sh",
+      "exit_code": 0,
+      "seconds": 2.53,
+      "log": "/tmp/csp103-repository-final-gates/verify-developer-experience.log"
+    },
+    {
+      "command": "bash scripts/verify-doc-links.sh",
+      "exit_code": 0,
+      "seconds": 0.34,
+      "log": "/tmp/csp103-repository-final-gates/verify-doc-links.log"
+    },
+    {
+      "command": "bash scripts/test-doc-link-verifier.sh",
+      "exit_code": 0,
+      "seconds": 0.34,
+      "log": "/tmp/csp103-repository-final-gates/test-doc-link-verifier.log"
+    },
+    {
+      "command": "bash scripts/verify-openrouter-parity.sh",
+      "exit_code": 0,
+      "seconds": 0.13,
+      "log": "/tmp/csp103-repository-final-gates/verify-openrouter-parity.log"
+    },
+    {
+      "command": "bash scripts/verify-console-modernization.sh",
+      "exit_code": 0,
+      "seconds": 0.04,
+      "log": "/tmp/csp103-repository-final-gates/verify-console-modernization.log"
+    },
+    {
+      "command": "bash scripts/verify-auth-onboarding.sh",
+      "exit_code": 0,
+      "seconds": 0.08,
+      "log": "/tmp/csp103-repository-final-gates/verify-auth-onboarding.log"
+    },
+    {
+      "command": "bash scripts/verify-console-session-grants.sh",
+      "exit_code": 0,
+      "seconds": 0.34,
+      "log": "/tmp/csp103-repository-final-gates/verify-console-session-grants.log"
+    },
+    {
+      "command": "bash scripts/verify-model-modalities.sh",
+      "exit_code": 0,
+      "seconds": 0.24,
+      "log": "/tmp/csp103-repository-final-gates/verify-model-modalities.log"
+    },
+    {
+      "command": "bash scripts/verify-files-api.sh",
+      "exit_code": 0,
+      "seconds": 0.13,
+      "log": "/tmp/csp103-repository-final-gates/verify-files-api.log"
+    },
+    {
+      "command": "bash scripts/verify-async-media-jobs.sh",
+      "exit_code": 0,
+      "seconds": 0.18,
+      "log": "/tmp/csp103-repository-final-gates/verify-async-media-jobs.log"
+    },
+    {
+      "command": "bash scripts/verify-document-parser.sh",
+      "exit_code": 0,
+      "seconds": 0.18,
+      "log": "/tmp/csp103-repository-final-gates/verify-document-parser.log"
+    },
+    {
+      "command": "bash scripts/verify-reranking.sh",
+      "exit_code": 0,
+      "seconds": 0.18,
+      "log": "/tmp/csp103-repository-final-gates/verify-reranking.log"
+    },
+    {
+      "command": "bash scripts/verify-catalog-performance.sh",
+      "exit_code": 0,
+      "seconds": 0.13,
+      "log": "/tmp/csp103-repository-final-gates/verify-catalog-performance.log"
+    },
+    {
+      "command": "bash scripts/verify-credential-sharing.sh",
+      "exit_code": 0,
+      "seconds": 0.19,
+      "log": "/tmp/csp103-repository-final-gates/verify-credential-sharing.log"
+    },
+    {
+      "command": "bash scripts/verify-enterprise-readiness.sh",
+      "exit_code": 0,
+      "seconds": 0.35,
+      "log": "/tmp/csp103-repository-final-gates/verify-enterprise-readiness.log"
+    },
+    {
+      "command": "bash scripts/verify-console-polish.sh",
+      "exit_code": 0,
+      "seconds": 0.18,
+      "log": "/tmp/csp103-repository-final-gates/verify-console-polish.log"
+    },
+    {
+      "command": "bash scripts/verify-action-pins.sh",
+      "exit_code": 0,
+      "seconds": 5.13,
+      "log": "/tmp/csp103-repository-final-gates/verify-action-pins.log"
+    },
+    {
+      "command": "bash scripts/benchmark-overhead.sh",
+      "exit_code": 0,
+      "seconds": 6.82,
+      "log": "/tmp/csp103-repository-final-gates/benchmark-overhead.log"
+    },
+    {
+      "command": "bash scripts/smoke-first-run.sh",
+      "exit_code": 0,
+      "seconds": 17.0,
+      "log": "/tmp/csp103-repository-final-gates/smoke-first-run.log"
+    },
+    {
+      "command": "go test ./...",
+      "exit_code": 0,
+      "seconds": 28.91,
+      "log": "/tmp/csp103-repository-final-gates/go-test-.log"
+    },
+    {
+      "command": "go vet ./...",
+      "exit_code": 0,
+      "seconds": 2.02,
+      "log": "/tmp/csp103-repository-final-gates/go-vet-.log"
+    },
+    {
+      "command": "make lint",
+      "exit_code": 0,
+      "seconds": 2.96,
+      "log": "/tmp/csp103-repository-final-gates/make-lint.log"
+    },
+    {
+      "command": "make build",
+      "exit_code": 0,
+      "seconds": 14.91,
+      "log": "/tmp/csp103-repository-final-gates/make-build.log"
+    },
+    {
+      "command": "bash scripts/smoke-openrouter-sdks.sh",
+      "exit_code": 0,
+      "seconds": 23.54,
+      "log": "/tmp/csp103-repository-final-gates/smoke-openrouter-sdks.log"
+    }
+  ],
+  "source_note": "Starport 633968c and Starmap de118cdb0, before the peer-renewal repair."
+}

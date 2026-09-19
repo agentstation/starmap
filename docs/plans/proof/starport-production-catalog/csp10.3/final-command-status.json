@@ -1,0 +1,28 @@
+[
+  {
+    "command": [
+      "go",
+      "test",
+      "./..."
+    ],
+    "exit_code": 0,
+    "log": "/tmp/csp103-renewal-status-test.log"
+  },
+  {
+    "command": [
+      "go",
+      "vet",
+      "./..."
+    ],
+    "exit_code": 0,
+    "log": "/tmp/csp103-renewal-status-vet.log"
+  },
+  {
+    "command": [
+      "make",
+      "lint"
+    ],
+    "exit_code": 0,
+    "log": "/tmp/csp103-renewal-status-lint.log"
+  }
+]

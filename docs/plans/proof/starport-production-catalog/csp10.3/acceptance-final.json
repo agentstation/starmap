@@ -1,0 +1,956 @@
+{
+  "cases": [
+    {
+      "id": "A01",
+      "condition": "CSP-V01",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A02",
+      "condition": "CSP-V02",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A03",
+      "condition": "CSP-V03",
+      "status": "UNVERIFIED",
+      "required_subcases": 16
+    },
+    {
+      "id": "A04",
+      "condition": "CSP-V04",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A05",
+      "condition": "CSP-V05",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A06",
+      "condition": "CSP-V06",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A07",
+      "condition": "CSP-V07",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A08",
+      "condition": "CSP-V08",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A09",
+      "condition": "CSP-V09",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A10",
+      "condition": "CSP-V10",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A11",
+      "condition": "CSP-V11",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A12",
+      "condition": "CSP-V12",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A13",
+      "condition": "CSP-V13",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A14",
+      "condition": "CSP-V14",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A15",
+      "condition": "CSP-V15",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A16",
+      "condition": "CSP-V16",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A17",
+      "condition": "CSP-V17",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A18",
+      "condition": "CSP-V18",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A19",
+      "condition": "CSP-V19",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A20",
+      "condition": "CSP-V20",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A21",
+      "condition": "CSP-V21",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A22",
+      "condition": "CSP-V22",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A23",
+      "condition": "CSP-V23",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A24",
+      "condition": "CSP-V24",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A25",
+      "condition": "CSP-V25",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A26",
+      "condition": "CSP-V26",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A27",
+      "condition": "CSP-V27",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A28",
+      "condition": "CSP-V28",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A29",
+      "condition": "CSP-V29",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A30",
+      "condition": "CSP-V30",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A31",
+      "condition": "CSP-V31",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A32",
+      "condition": "CSP-V32",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A33",
+      "condition": "CSP-V33",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A34",
+      "condition": "CSP-V34",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A35",
+      "condition": "CSP-V35",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A36",
+      "condition": "CSP-V36",
+      "status": "UNVERIFIED",
+      "required_subcases": 2
+    },
+    {
+      "id": "A37",
+      "condition": "CSP-V37",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A38",
+      "condition": "CSP-V38",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A39",
+      "condition": "CSP-V39",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A40",
+      "condition": "CSP-V40",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A41",
+      "condition": "CSP-V41",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A42",
+      "condition": "CSP-V42",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A43",
+      "condition": "CSP-V43",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A44",
+      "condition": "CSP-V44",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A45",
+      "condition": "CSP-V45",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A46",
+      "condition": "CSP-V46",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A47",
+      "condition": "CSP-V47",
+      "status": "UNVERIFIED",
+      "required_subcases": 22
+    },
+    {
+      "id": "A48",
+      "condition": "CSP-V48",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A49",
+      "condition": "CSP-V49",
+      "status": "PASS",
+      "required_subcases": 7
+    },
+    {
+      "id": "A50",
+      "condition": "CSP-V50",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    }
+  ],
+  "subcases": {
+    "A49.callback_no_remote_io": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAdvisoryHealthCallbacksAvoidStorage$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:12.697576-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:40:12.91757-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestAdvisoryHealthCallbacksAvoidStorage\"}\n{\"Time\":\"2026-09-19T14:40:12.917656-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestAdvisoryHealthCallbacksAvoidStorage\",\"Output\":\"=== RUN   TestAdvisoryHealthCallbacksAvoidStorage\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:12.917701-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestAdvisoryHealthCallbacksAvoidStorage/refresh\"}\n{\"Time\":\"2026-09-19T14:40:12.917706-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestAdvisoryHealthCallbacksAvoidStorage/refresh\",\"Output\":\"=== RUN   TestAdvisoryHealthCallbacksAvoidStorage/refresh\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:12.91771-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestAdvisoryHealthCallbacksAvoidStorage/refresh\",\"Output\":\"--- PASS: TestAdvisoryHealthCallbacksAvoidStorage/refresh (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:12.917713-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestAdvisoryHealthCallbacksAvoidStorage/refresh\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:12.917724-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestAdvisoryHealthCallbacksAvoidStorage/failure\"}\n{\"Time\":\"2026-09-19T14:40:12.917726-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestAdvisoryHealthCallbacksAvoidStorage/failure\",\"Output\":\"=== RUN   TestAdvisoryHealthCallbacksAvoidStorage/failure\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:12.917728-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestAdvisoryHealthCallbacksAvoidStorage/failure\",\"Output\":\"--- PASS: TestAdvisoryHealthCallbacksAvoidStorage/failure (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:12.91773-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestAdvisoryHealthCallbacksAvoidStorage/failure\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:12.91776-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestAdvisoryHealthCallbacksAvoidStorage\",\"Output\":\"--- PASS: TestAdvisoryHealthCallbacksAvoidStorage (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:12.917808-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestAdvisoryHealthCallbacksAvoidStorage\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:12.917834-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:13.915887-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.218s\\n\"}\n{\"Time\":\"2026-09-19T14:40:13.915919-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.218}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAdvisoryLatencyCallbacksAvoidStorage$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:20.543389-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T14:40:24.007465-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage\"}\n{\"Time\":\"2026-09-19T14:40:24.007553-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage\",\"Output\":\"=== RUN   TestAdvisoryLatencyCallbacksAvoidStorage\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:24.007604-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage/cold_read\"}\n{\"Time\":\"2026-09-19T14:40:24.007613-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage/cold_read\",\"Output\":\"=== RUN   TestAdvisoryLatencyCallbacksAvoidStorage/cold_read\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:24.00762-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage/cold_read\",\"Output\":\"--- PASS: TestAdvisoryLatencyCallbacksAvoidStorage/cold_read (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:24.007623-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage/cold_read\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:24.007635-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage/all_reads\"}\n{\"Time\":\"2026-09-19T14:40:24.007637-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage/all_reads\",\"Output\":\"=== RUN   TestAdvisoryLatencyCallbacksAvoidStorage/all_reads\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:24.007638-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage/all_reads\",\"Output\":\"--- PASS: TestAdvisoryLatencyCallbacksAvoidStorage/all_reads (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:24.00764-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage/all_reads\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:24.007642-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage/record\"}\n{\"Time\":\"2026-09-19T14:40:24.007645-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage/record\",\"Output\":\"=== RUN   TestAdvisoryLatencyCallbacksAvoidStorage/record\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:24.007647-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage/record\",\"Output\":\"--- PASS: TestAdvisoryLatencyCallbacksAvoidStorage/record (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:24.007648-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage/record\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:24.00765-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage\",\"Output\":\"--- PASS: TestAdvisoryLatencyCallbacksAvoidStorage (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:24.007651-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestAdvisoryLatencyCallbacksAvoidStorage\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:24.007652-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:25.015037-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t4.471s\\n\"}\n{\"Time\":\"2026-09-19T14:40:25.015097-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":4.4719999999999995}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A49.bounded_background_exchange": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestHealthExchangeBounds$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:25.583322-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:40:25.778584-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds\"}\n{\"Time\":\"2026-09-19T14:40:25.778694-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds\",\"Output\":\"=== RUN   TestHealthExchangeBounds\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:25.77875-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/scan\"}\n{\"Time\":\"2026-09-19T14:40:25.778761-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/scan\",\"Output\":\"=== RUN   TestHealthExchangeBounds/scan\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:25.786881-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/scan\",\"Output\":\"--- PASS: TestHealthExchangeBounds/scan (0.01s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:25.786911-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/scan\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-19T14:40:25.786942-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/document_bytes\"}\n{\"Time\":\"2026-09-19T14:40:25.786945-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/document_bytes\",\"Output\":\"=== RUN   TestHealthExchangeBounds/document_bytes\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:25.807922-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/document_bytes\",\"Output\":\"--- PASS: TestHealthExchangeBounds/document_bytes (0.02s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:25.807957-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/document_bytes\",\"Elapsed\":0.02}\n{\"Time\":\"2026-09-19T14:40:25.808021-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/refresh_bytes\"}\n{\"Time\":\"2026-09-19T14:40:25.808033-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/refresh_bytes\",\"Output\":\"=== RUN   TestHealthExchangeBounds/refresh_bytes\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:26.065765-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/refresh_bytes\",\"Output\":\"--- PASS: TestHealthExchangeBounds/refresh_bytes (0.26s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:26.065798-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/refresh_bytes\",\"Elapsed\":0.26}\n{\"Time\":\"2026-09-19T14:40:26.065897-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/retained_records_across_refreshes\"}\n{\"Time\":\"2026-09-19T14:40:26.06591-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/retained_records_across_refreshes\",\"Output\":\"=== RUN   TestHealthExchangeBounds/retained_records_across_refreshes\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:26.335593-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/retained_records_across_refreshes\",\"Output\":\"--- PASS: TestHealthExchangeBounds/retained_records_across_refreshes (0.27s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:26.335613-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds/retained_records_across_refreshes\",\"Elapsed\":0.27}\n{\"Time\":\"2026-09-19T14:40:26.335618-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds\",\"Output\":\"--- PASS: TestHealthExchangeBounds (0.56s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:26.335631-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthExchangeBounds\",\"Elapsed\":0.56}\n{\"Time\":\"2026-09-19T14:40:26.335736-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:27.344637-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.761s\\n\"}\n{\"Time\":\"2026-09-19T14:40:27.344787-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.7610000000000001}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestLatencyExchangeBounds$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:29.433794-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T14:40:30.01749-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds\"}\n{\"Time\":\"2026-09-19T14:40:30.017571-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds\",\"Output\":\"=== RUN   TestLatencyExchangeBounds\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:30.017619-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/scan\"}\n{\"Time\":\"2026-09-19T14:40:30.017621-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/scan\",\"Output\":\"=== RUN   TestLatencyExchangeBounds/scan\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:30.022881-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/scan\",\"Output\":\"--- PASS: TestLatencyExchangeBounds/scan (0.01s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:30.022922-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/scan\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-19T14:40:30.022963-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/document_bytes\"}\n{\"Time\":\"2026-09-19T14:40:30.022969-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/document_bytes\",\"Output\":\"=== RUN   TestLatencyExchangeBounds/document_bytes\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:30.04029-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/document_bytes\",\"Output\":\"--- PASS: TestLatencyExchangeBounds/document_bytes (0.02s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:30.040311-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/document_bytes\",\"Elapsed\":0.02}\n{\"Time\":\"2026-09-19T14:40:30.04033-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/refresh_bytes\"}\n{\"Time\":\"2026-09-19T14:40:30.040332-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/refresh_bytes\",\"Output\":\"=== RUN   TestLatencyExchangeBounds/refresh_bytes\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:30.265323-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/refresh_bytes\",\"Output\":\"--- PASS: TestLatencyExchangeBounds/refresh_bytes (0.22s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:30.265378-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/refresh_bytes\",\"Elapsed\":0.22}\n{\"Time\":\"2026-09-19T14:40:30.265395-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/retained_records\"}\n{\"Time\":\"2026-09-19T14:40:30.265398-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/retained_records\",\"Output\":\"=== RUN   TestLatencyExchangeBounds/retained_records\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:30.287391-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/retained_records\",\"Output\":\"--- PASS: TestLatencyExchangeBounds/retained_records (0.02s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:30.287413-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds/retained_records\",\"Elapsed\":0.02}\n{\"Time\":\"2026-09-19T14:40:30.287417-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds\",\"Output\":\"--- PASS: TestLatencyExchangeBounds (0.27s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:30.287422-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyExchangeBounds\",\"Elapsed\":0.27}\n{\"Time\":\"2026-09-19T14:40:30.287491-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:31.291684-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.858s\\n\"}\n{\"Time\":\"2026-09-19T14:40:31.291727-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.858}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestLatencyWorkerDoesNotBlockCallbacks$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:33.486269-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T14:40:34.073152-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerDoesNotBlockCallbacks\"}\n{\"Time\":\"2026-09-19T14:40:34.073222-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerDoesNotBlockCallbacks\",\"Output\":\"=== RUN   TestLatencyWorkerDoesNotBlockCallbacks\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:34.073848-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerDoesNotBlockCallbacks\",\"Output\":\"--- PASS: TestLatencyWorkerDoesNotBlockCallbacks (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:34.073873-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerDoesNotBlockCallbacks\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:34.073932-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:35.078837-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.592s\\n\"}\n{\"Time\":\"2026-09-19T14:40:35.078867-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.593}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAdvisoryWorkersOwnStartAndShutdown$",
+            "./internal/app"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:39.286449-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/app\"}\n{\"Time\":\"2026-09-19T14:40:40.310124-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryWorkersOwnStartAndShutdown\"}\n{\"Time\":\"2026-09-19T14:40:40.310188-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryWorkersOwnStartAndShutdown\",\"Output\":\"=== RUN   TestAdvisoryWorkersOwnStartAndShutdown\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:40.310532-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryWorkersOwnStartAndShutdown\",\"Output\":\"--- PASS: TestAdvisoryWorkersOwnStartAndShutdown (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:40.310553-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryWorkersOwnStartAndShutdown\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:40.310687-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:41.316957-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/app\\t2.030s\\n\"}\n{\"Time\":\"2026-09-19T14:40:41.316985-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Elapsed\":2.031}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAdvisoryFleetFaultIsolation$",
+            "./internal/app"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:45.142298-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/app\"}\n{\"Time\":\"2026-09-19T14:40:46.159608-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryFleetFaultIsolation\"}\n{\"Time\":\"2026-09-19T14:40:46.159727-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryFleetFaultIsolation\",\"Output\":\"=== RUN   TestAdvisoryFleetFaultIsolation\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:46.164516-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryFleetFaultIsolation\",\"Output\":\"--- PASS: TestAdvisoryFleetFaultIsolation (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:46.164545-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryFleetFaultIsolation\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:46.164662-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:47.170304-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/app\\t2.028s\\n\"}\n{\"Time\":\"2026-09-19T14:40:47.170352-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Elapsed\":2.028}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A49.local_breaker_immediacy": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestHealthWorkerCancelsBlockedStorage$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:47.755606-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:40:47.938023-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerCancelsBlockedStorage\"}\n{\"Time\":\"2026-09-19T14:40:47.938079-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerCancelsBlockedStorage\",\"Output\":\"=== RUN   TestHealthWorkerCancelsBlockedStorage\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:47.938719-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerCancelsBlockedStorage\",\"Output\":\"--- PASS: TestHealthWorkerCancelsBlockedStorage (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:47.938745-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerCancelsBlockedStorage\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:47.938758-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:48.943018-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.187s\\n\"}\n{\"Time\":\"2026-09-19T14:40:48.943045-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.187}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAdvisoryFleetFaultIsolation$",
+            "./internal/app"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:45.142298-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/app\"}\n{\"Time\":\"2026-09-19T14:40:46.159608-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryFleetFaultIsolation\"}\n{\"Time\":\"2026-09-19T14:40:46.159727-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryFleetFaultIsolation\",\"Output\":\"=== RUN   TestAdvisoryFleetFaultIsolation\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:46.164516-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryFleetFaultIsolation\",\"Output\":\"--- PASS: TestAdvisoryFleetFaultIsolation (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:46.164545-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryFleetFaultIsolation\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:46.164662-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:47.170304-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/app\\t2.028s\\n\"}\n{\"Time\":\"2026-09-19T14:40:47.170352-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Elapsed\":2.028}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A49.stale_hint_expiry": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestPeerHealthExpiresWithoutRepublishing$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:49.330259-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:40:49.519973-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerHealthExpiresWithoutRepublishing\"}\n{\"Time\":\"2026-09-19T14:40:49.520047-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerHealthExpiresWithoutRepublishing\",\"Output\":\"=== RUN   TestPeerHealthExpiresWithoutRepublishing\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:49.520895-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerHealthExpiresWithoutRepublishing\",\"Output\":\"--- PASS: TestPeerHealthExpiresWithoutRepublishing (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:49.520906-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerHealthExpiresWithoutRepublishing\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:49.520934-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:50.526738-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.196s\\n\"}\n{\"Time\":\"2026-09-19T14:40:50.526791-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.197}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestPeerExpiryRestoresLocalEvidence$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:50.933744-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:40:51.131267-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerExpiryRestoresLocalEvidence\"}\n{\"Time\":\"2026-09-19T14:40:51.131321-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerExpiryRestoresLocalEvidence\",\"Output\":\"=== RUN   TestPeerExpiryRestoresLocalEvidence\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:51.132285-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerExpiryRestoresLocalEvidence\",\"Output\":\"--- PASS: TestPeerExpiryRestoresLocalEvidence (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:51.13232-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerExpiryRestoresLocalEvidence\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:51.132335-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:52.136599-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.203s\\n\"}\n{\"Time\":\"2026-09-19T14:40:52.136628-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.203}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestLocalResetRejectsOlderPeerEvidence$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:52.687685-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:40:52.880415-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestLocalResetRejectsOlderPeerEvidence\"}\n{\"Time\":\"2026-09-19T14:40:52.880497-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestLocalResetRejectsOlderPeerEvidence\",\"Output\":\"=== RUN   TestLocalResetRejectsOlderPeerEvidence\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:52.88054-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestLocalResetRejectsOlderPeerEvidence\",\"Output\":\"--- PASS: TestLocalResetRejectsOlderPeerEvidence (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:52.880544-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestLocalResetRejectsOlderPeerEvidence\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:52.880553-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:53.884648-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.197s\\n\"}\n{\"Time\":\"2026-09-19T14:40:53.884674-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.197}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestPeerExpiryPublishesFromAdmission$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:54.203136-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:40:54.391715-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerExpiryPublishesFromAdmission\"}\n{\"Time\":\"2026-09-19T14:40:54.391801-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerExpiryPublishesFromAdmission\",\"Output\":\"=== RUN   TestPeerExpiryPublishesFromAdmission\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:54.391915-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerExpiryPublishesFromAdmission\",\"Output\":\"--- PASS: TestPeerExpiryPublishesFromAdmission (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:54.391954-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerExpiryPublishesFromAdmission\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:54.391968-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:55.398295-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.195s\\n\"}\n{\"Time\":\"2026-09-19T14:40:55.398324-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.195}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestLatencyPeerValidity$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:57.614252-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T14:40:58.200243-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity\"}\n{\"Time\":\"2026-09-19T14:40:58.200318-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity\",\"Output\":\"=== RUN   TestLatencyPeerValidity\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:58.200375-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/fresh\"}\n{\"Time\":\"2026-09-19T14:40:58.200378-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/fresh\",\"Output\":\"=== RUN   TestLatencyPeerValidity/fresh\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:58.200865-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/fresh\",\"Output\":\"--- PASS: TestLatencyPeerValidity/fresh (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:58.20093-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/fresh\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:58.200968-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/expired\"}\n{\"Time\":\"2026-09-19T14:40:58.201013-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/expired\",\"Output\":\"=== RUN   TestLatencyPeerValidity/expired\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:58.201035-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/expired\",\"Output\":\"--- PASS: TestLatencyPeerValidity/expired (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:58.201052-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/expired\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:58.201061-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/future\"}\n{\"Time\":\"2026-09-19T14:40:58.201063-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/future\",\"Output\":\"=== RUN   TestLatencyPeerValidity/future\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:58.201143-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/future\",\"Output\":\"--- PASS: TestLatencyPeerValidity/future (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:58.201149-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/future\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:58.201152-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/negative\"}\n{\"Time\":\"2026-09-19T14:40:58.201156-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/negative\",\"Output\":\"=== RUN   TestLatencyPeerValidity/negative\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:58.201239-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/negative\",\"Output\":\"--- PASS: TestLatencyPeerValidity/negative (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:58.201246-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/negative\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:58.201255-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/overflow\"}\n{\"Time\":\"2026-09-19T14:40:58.201257-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/overflow\",\"Output\":\"=== RUN   TestLatencyPeerValidity/overflow\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:58.201333-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/overflow\",\"Output\":\"--- PASS: TestLatencyPeerValidity/overflow (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:58.201338-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity/overflow\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:58.201356-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity\",\"Output\":\"--- PASS: TestLatencyPeerValidity (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:58.201364-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyPeerValidity\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:58.20143-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:59.208341-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.594s\\n\"}\n{\"Time\":\"2026-09-19T14:40:59.208394-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.5939999999999999}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestLatencyCachedHintExpiresWithoutStorage$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:41:01.504521-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T14:41:02.077245-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyCachedHintExpiresWithoutStorage\"}\n{\"Time\":\"2026-09-19T14:41:02.077316-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyCachedHintExpiresWithoutStorage\",\"Output\":\"=== RUN   TestLatencyCachedHintExpiresWithoutStorage\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:02.077422-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyCachedHintExpiresWithoutStorage\",\"Output\":\"--- PASS: TestLatencyCachedHintExpiresWithoutStorage (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:02.077428-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyCachedHintExpiresWithoutStorage\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:41:02.077483-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:03.084287-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.579s\\n\"}\n{\"Time\":\"2026-09-19T14:41:03.084334-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.58}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestLatencyEmptyPeerScanClearsOldHints$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:41:05.172478-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T14:41:05.745404-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyEmptyPeerScanClearsOldHints\"}\n{\"Time\":\"2026-09-19T14:41:05.745468-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyEmptyPeerScanClearsOldHints\",\"Output\":\"=== RUN   TestLatencyEmptyPeerScanClearsOldHints\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:05.745612-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyEmptyPeerScanClearsOldHints\",\"Output\":\"--- PASS: TestLatencyEmptyPeerScanClearsOldHints (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:05.745635-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyEmptyPeerScanClearsOldHints\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:41:05.745673-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:06.751959-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.579s\\n\"}\n{\"Time\":\"2026-09-19T14:41:06.752007-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.58}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestPeerPublicationRenewsUnchangedHealthHint$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:41:07.131861-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:41:07.315795-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerPublicationRenewsUnchangedHealthHint\"}\n{\"Time\":\"2026-09-19T14:41:07.31586-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerPublicationRenewsUnchangedHealthHint\",\"Output\":\"=== RUN   TestPeerPublicationRenewsUnchangedHealthHint\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:07.316832-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerPublicationRenewsUnchangedHealthHint\",\"Output\":\"--- PASS: TestPeerPublicationRenewsUnchangedHealthHint (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:07.316845-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestPeerPublicationRenewsUnchangedHealthHint\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:41:07.316885-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:08.322535-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.190s\\n\"}\n{\"Time\":\"2026-09-19T14:41:08.322562-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.191}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A49.cold_peer_refresh": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestSharedStoreConvergesTwoTrackers$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:41:08.66407-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:41:08.847522-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestSharedStoreConvergesTwoTrackers\"}\n{\"Time\":\"2026-09-19T14:41:08.847576-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestSharedStoreConvergesTwoTrackers\",\"Output\":\"=== RUN   TestSharedStoreConvergesTwoTrackers\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:08.848386-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestSharedStoreConvergesTwoTrackers\",\"Output\":\"--- PASS: TestSharedStoreConvergesTwoTrackers (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:08.848405-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestSharedStoreConvergesTwoTrackers\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:41:08.848434-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:09.850714-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.186s\\n\"}\n{\"Time\":\"2026-09-19T14:41:09.850749-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.187}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestHealthWorkerRecoversAfterOutage$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:41:10.206008-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:41:10.3895-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerRecoversAfterOutage\"}\n{\"Time\":\"2026-09-19T14:41:10.389557-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerRecoversAfterOutage\",\"Output\":\"=== RUN   TestHealthWorkerRecoversAfterOutage\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:10.390752-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerRecoversAfterOutage\",\"Output\":\"--- PASS: TestHealthWorkerRecoversAfterOutage (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:10.390766-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerRecoversAfterOutage\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:41:10.390791-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:11.3918-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.186s\\n\"}\n{\"Time\":\"2026-09-19T14:41:11.391821-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.186}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestSharedLatencyTrackerConvergesPeers$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:41:13.494231-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T14:41:14.066567-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestSharedLatencyTrackerConvergesPeers\"}\n{\"Time\":\"2026-09-19T14:41:14.066634-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestSharedLatencyTrackerConvergesPeers\",\"Output\":\"=== RUN   TestSharedLatencyTrackerConvergesPeers\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:14.067134-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestSharedLatencyTrackerConvergesPeers\",\"Output\":\"--- PASS: TestSharedLatencyTrackerConvergesPeers (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:14.067159-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestSharedLatencyTrackerConvergesPeers\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:41:14.067193-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:15.069673-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.575s\\n\"}\n{\"Time\":\"2026-09-19T14:41:15.069698-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.575}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestLatencyWorkerRecoversAfterOutage$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:41:17.856962-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T14:41:18.502371-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerRecoversAfterOutage\"}\n{\"Time\":\"2026-09-19T14:41:18.502479-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerRecoversAfterOutage\",\"Output\":\"=== RUN   TestLatencyWorkerRecoversAfterOutage\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:18.503402-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerRecoversAfterOutage\",\"Output\":\"--- PASS: TestLatencyWorkerRecoversAfterOutage (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:18.503443-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerRecoversAfterOutage\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:41:18.503459-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:19.507215-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.650s\\n\"}\n{\"Time\":\"2026-09-19T14:41:19.507255-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.65}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A49.worker_close_and_reconnect": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestHealthWorkerCancelsBlockedStorage$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:47.755606-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:40:47.938023-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerCancelsBlockedStorage\"}\n{\"Time\":\"2026-09-19T14:40:47.938079-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerCancelsBlockedStorage\",\"Output\":\"=== RUN   TestHealthWorkerCancelsBlockedStorage\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:47.938719-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerCancelsBlockedStorage\",\"Output\":\"--- PASS: TestHealthWorkerCancelsBlockedStorage (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:47.938745-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerCancelsBlockedStorage\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:47.938758-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:48.943018-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.187s\\n\"}\n{\"Time\":\"2026-09-19T14:40:48.943045-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.187}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestHealthWorkerRecoversAfterOutage$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:41:10.206008-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:41:10.3895-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerRecoversAfterOutage\"}\n{\"Time\":\"2026-09-19T14:41:10.389557-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerRecoversAfterOutage\",\"Output\":\"=== RUN   TestHealthWorkerRecoversAfterOutage\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:10.390752-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerRecoversAfterOutage\",\"Output\":\"--- PASS: TestHealthWorkerRecoversAfterOutage (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:10.390766-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerRecoversAfterOutage\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:41:10.390791-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:11.3918-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.186s\\n\"}\n{\"Time\":\"2026-09-19T14:41:11.391821-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.186}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestLatencyWorkerDoesNotBlockCallbacks$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:33.486269-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T14:40:34.073152-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerDoesNotBlockCallbacks\"}\n{\"Time\":\"2026-09-19T14:40:34.073222-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerDoesNotBlockCallbacks\",\"Output\":\"=== RUN   TestLatencyWorkerDoesNotBlockCallbacks\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:34.073848-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerDoesNotBlockCallbacks\",\"Output\":\"--- PASS: TestLatencyWorkerDoesNotBlockCallbacks (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:34.073873-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerDoesNotBlockCallbacks\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:34.073932-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:35.078837-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.592s\\n\"}\n{\"Time\":\"2026-09-19T14:40:35.078867-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.593}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestLatencyWorkerRecoversAfterOutage$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:41:17.856962-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T14:41:18.502371-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerRecoversAfterOutage\"}\n{\"Time\":\"2026-09-19T14:41:18.502479-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerRecoversAfterOutage\",\"Output\":\"=== RUN   TestLatencyWorkerRecoversAfterOutage\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:18.503402-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerRecoversAfterOutage\",\"Output\":\"--- PASS: TestLatencyWorkerRecoversAfterOutage (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:18.503443-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerRecoversAfterOutage\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:41:18.503459-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:19.507215-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.650s\\n\"}\n{\"Time\":\"2026-09-19T14:41:19.507255-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.65}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAdvisoryWorkersOwnStartAndShutdown$",
+            "./internal/app"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:39.286449-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/app\"}\n{\"Time\":\"2026-09-19T14:40:40.310124-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryWorkersOwnStartAndShutdown\"}\n{\"Time\":\"2026-09-19T14:40:40.310188-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryWorkersOwnStartAndShutdown\",\"Output\":\"=== RUN   TestAdvisoryWorkersOwnStartAndShutdown\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:40.310532-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryWorkersOwnStartAndShutdown\",\"Output\":\"--- PASS: TestAdvisoryWorkersOwnStartAndShutdown (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:40.310553-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryWorkersOwnStartAndShutdown\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:40.310687-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:41.316957-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/app\\t2.030s\\n\"}\n{\"Time\":\"2026-09-19T14:40:41.316985-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Elapsed\":2.031}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAdvisoryWorkersCloseBeforeStart$",
+            "./internal/app"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:41:24.013987-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/app\"}\n{\"Time\":\"2026-09-19T14:41:25.03669-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryWorkersCloseBeforeStart\"}\n{\"Time\":\"2026-09-19T14:41:25.036765-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryWorkersCloseBeforeStart\",\"Output\":\"=== RUN   TestAdvisoryWorkersCloseBeforeStart\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:25.036796-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryWorkersCloseBeforeStart\",\"Output\":\"--- PASS: TestAdvisoryWorkersCloseBeforeStart (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:25.036801-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryWorkersCloseBeforeStart\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:41:25.036917-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:41:26.0432-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/app\\t2.029s\\n\"}\n{\"Time\":\"2026-09-19T14:41:26.04323-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Elapsed\":2.029}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A49.fleet_fault_isolation": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAdvisoryFleetFaultIsolation$",
+            "./internal/app"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:45.142298-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/app\"}\n{\"Time\":\"2026-09-19T14:40:46.159608-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryFleetFaultIsolation\"}\n{\"Time\":\"2026-09-19T14:40:46.159727-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryFleetFaultIsolation\",\"Output\":\"=== RUN   TestAdvisoryFleetFaultIsolation\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:46.164516-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryFleetFaultIsolation\",\"Output\":\"--- PASS: TestAdvisoryFleetFaultIsolation (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:46.164545-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestAdvisoryFleetFaultIsolation\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:46.164662-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:47.170304-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/app\\t2.028s\\n\"}\n{\"Time\":\"2026-09-19T14:40:47.170352-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Elapsed\":2.028}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestHealthWorkerCancelsBlockedStorage$",
+            "./internal/availability"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:47.755606-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/availability\"}\n{\"Time\":\"2026-09-19T14:40:47.938023-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerCancelsBlockedStorage\"}\n{\"Time\":\"2026-09-19T14:40:47.938079-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerCancelsBlockedStorage\",\"Output\":\"=== RUN   TestHealthWorkerCancelsBlockedStorage\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:47.938719-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerCancelsBlockedStorage\",\"Output\":\"--- PASS: TestHealthWorkerCancelsBlockedStorage (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:47.938745-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Test\":\"TestHealthWorkerCancelsBlockedStorage\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:47.938758-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:48.943018-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/availability\\t1.187s\\n\"}\n{\"Time\":\"2026-09-19T14:40:48.943045-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/availability\",\"Elapsed\":1.187}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestLatencyWorkerDoesNotBlockCallbacks$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T14:40:33.486269-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T14:40:34.073152-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerDoesNotBlockCallbacks\"}\n{\"Time\":\"2026-09-19T14:40:34.073222-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerDoesNotBlockCallbacks\",\"Output\":\"=== RUN   TestLatencyWorkerDoesNotBlockCallbacks\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:34.073848-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerDoesNotBlockCallbacks\",\"Output\":\"--- PASS: TestLatencyWorkerDoesNotBlockCallbacks (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:34.073873-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestLatencyWorkerDoesNotBlockCallbacks\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T14:40:34.073932-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T14:40:35.078837-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.592s\\n\"}\n{\"Time\":\"2026-09-19T14:40:35.078867-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.593}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    }
+  },
+  "selected_subcases": 7,
+  "summary": "Summary: 1 passed, 49 failed",
+  "unverified_cases": 49,
+  "gate_status": "PASS",
+  "qualification": "component checks only",
+  "roster_sha256": "41e51262863f6a8da36d9b0bd7f3f101029995d61bac21841374addcd7fc4391",
+  "registry_sha256": "08f28df96ff422ced1d698e194a8829fae2077a74ba3187a0aa3adff1813989c",
+  "backend_scope": "primary"
+}

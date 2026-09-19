@@ -1,0 +1,8 @@
+{"Time":"2026-09-19T14:37:11.715235-05:00","Action":"start","Package":"github.com/agentstation/starport/internal/availability"}
+{"Time":"2026-09-19T14:37:11.919111-05:00","Action":"run","Package":"github.com/agentstation/starport/internal/availability","Test":"TestPeerPublicationRenewsUnchangedHealthHint"}
+{"Time":"2026-09-19T14:37:11.921073-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/availability","Test":"TestPeerPublicationRenewsUnchangedHealthHint","Output":"=== RUN   TestPeerPublicationRenewsUnchangedHealthHint\n","OutputType":"frame"}
+{"Time":"2026-09-19T14:37:11.923276-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/availability","Test":"TestPeerPublicationRenewsUnchangedHealthHint","Output":"--- PASS: TestPeerPublicationRenewsUnchangedHealthHint (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-09-19T14:37:11.923344-05:00","Action":"pass","Package":"github.com/agentstation/starport/internal/availability","Test":"TestPeerPublicationRenewsUnchangedHealthHint","Elapsed":0}
+{"Time":"2026-09-19T14:37:11.923401-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/availability","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-09-19T14:37:12.928527-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/availability","Output":"ok  \tgithub.com/agentstation/starport/internal/availability\t1.210s\n"}
+{"Time":"2026-09-19T14:37:12.928576-05:00","Action":"pass","Package":"github.com/agentstation/starport/internal/availability","Elapsed":1.213}
