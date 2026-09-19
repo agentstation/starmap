@@ -5,7 +5,11 @@ All 380 candidate files retain their original bytes. Publisher run `35417887612`
 Qualify CI run `35418166093` through session `87951`, then complete checked publication and retry capture.
 
 CSP8 owns draft Starmap #171 at `4abf007e8b694fbd1fdf5f78a963971d0ea2fa9d` on base `8595d5a0c`.
-Full local checks and both reviews pass. Native CI run `35418281335` uses watch session `93011`.
+Full local checks and both reviews passed before native CI run `35418281335` found a Windows test import cycle.
+CSP8 owns the local test-package repair. Both Windows cross-builds pass. Native execution remains unverified.
+
+Finish checks in session `93516`. Review the repair and push it to #171.
+The [queue capture](queue-windows-cycle.json) records heads, checks, ancestry, and unpublished work.
 Keep #171 unmerged until CSP6 publication and capture finish. Then qualify the published producer before dependent Starport work.
 
 Preserve rejected #165 until replacement qualification. Starport has no open PRs.
