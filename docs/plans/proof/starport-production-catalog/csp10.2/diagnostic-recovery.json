@@ -1,0 +1,269 @@
+{
+  "task": "CSP10.2",
+  "commit": "0b529f7dbf31b25670f46333f72d5e3f60de388a",
+  "status": "Local diagnostic and polling repairs qualified; full task remains UNVERIFIED",
+  "previous_goal_turn": "Progress: committed operation-specific clocks and D38 documentation.",
+  "contracts": [
+    "Admin info reports separate gateway-policy and identity-policy observations, bounded cached-validity counts, and fixed recovery codes. Status reads cannot renew permission.",
+    "Verified local-token and launch-ticket sessions retain only GET admin/info and admin/catalog/status recovery access. Expired/rotated tokens and explicit bearer credentials do not use that exception.",
+    "Inference and key-management requests still refuse policy failure. Diagnostic routes do not consume inference budgets.",
+    "Revision checks follow a fixed cadence. A delayed read no longer adds another full interval before the next check."
+  ],
+  "verification": {
+    "diagnostics-full-race": {
+      "counts": {
+        "pass": 852,
+        "skip": 10,
+        "fail": 1
+      },
+      "packages": [
+        {
+          "Time": "2026-09-19T17:47:41.505975-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Elapsed": 2.993
+        },
+        {
+          "Time": "2026-09-19T17:47:42.056127-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization/revision",
+          "Elapsed": 3.54
+        },
+        {
+          "Time": "2026-09-19T17:48:03.882426-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server/controllers",
+          "Elapsed": 21.051
+        },
+        {
+          "Time": "2026-09-19T17:48:11.543744-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Elapsed": 28.715
+        },
+        {
+          "Time": "2026-09-19T17:50:53.812719-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Elapsed": 190.971
+        }
+      ],
+      "failures": [
+        {
+          "Time": "2026-09-19T17:49:07.071375-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestReadinessTracksAdmissionWithoutBlockingLiveness",
+          "Elapsed": 0.13
+        },
+        {
+          "Time": "2026-09-19T17:50:53.812719-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Elapsed": 190.971
+        }
+      ],
+      "selected_passes": [
+        {
+          "Time": "2026-09-19T17:47:40.159409-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Test": "TestMonitorPropagationIncludesReadLatency",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:47:40.499664-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Test": "TestStatusReadsRetainedPermissionWithoutReload",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:48:06.276903-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticAllowlist",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:48:06.276939-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority/valid",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:48:06.276961-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority/expired",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:48:06.276977-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority/invalid",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:48:06.276995-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority/missing",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:48:06.27702-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority/explicit_bearer",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:48:06.277034-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority",
+          "Elapsed": 0
+        }
+      ]
+    },
+    "diagnostics-final-server": {
+      "counts": {
+        "pass": 709,
+        "skip": 8
+      },
+      "packages": [
+        {
+          "Time": "2026-09-19T17:48:46.743035-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization/revision",
+          "Elapsed": 2.403
+        },
+        {
+          "Time": "2026-09-19T17:48:47.303684-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Elapsed": 2.964
+        },
+        {
+          "Time": "2026-09-19T17:49:00.523595-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server/controllers",
+          "Elapsed": 16.184
+        },
+        {
+          "Time": "2026-09-19T17:49:06.771679-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Elapsed": 22.432
+        }
+      ],
+      "failures": [],
+      "selected_passes": [
+        {
+          "Time": "2026-09-19T17:48:46.165884-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Test": "TestMonitorPropagationIncludesReadLatency",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:48:46.294596-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Test": "TestStatusReadsRetainedPermissionWithoutReload",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:49:01.770652-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticAllowlist",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:49:01.770671-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority/valid",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:49:01.770685-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority/expired",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:49:01.770779-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority/invalid",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:49:01.770851-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority/missing",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:49:01.77091-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority/explicit_bearer",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-19T17:49:01.771052-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority",
+          "Elapsed": 0
+        }
+      ]
+    },
+    "diagnostic-recovery-final": {
+      "counts": {
+        "pass": 1
+      },
+      "packages": [
+        {
+          "Time": "2026-09-19T17:48:34.98046-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Elapsed": 16.054
+        }
+      ],
+      "failures": [],
+      "selected_passes": [
+        {
+          "Time": "2026-09-19T17:48:33.966153-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestReadinessTracksAdmissionWithoutBlockingLiveness",
+          "Elapsed": 14.12
+        }
+      ]
+    },
+    "fail_before_poll_cadence": "--- FAIL: TestMonitorPropagationIncludesReadLatency (0.00s)\n    monitor_cadence_test.go:38: permission after propagation target = <nil>\n",
+    "fail_before_recovery": "TestReadinessTracksAdmissionWithoutBlockingLiveness expected admin/info HTTP 200 but received 503. The initial session exception still crossed budget middleware. Moving only the two diagnostic reads outside inference metering repaired that failure.",
+    "lint": "Linting code...\n0 issues.\nLint complete\n",
+    "writing": "Operator guide and two new source files: 48 existing operator-guide diagnostics; new section corrected. Engineering specification: one file passes with zero diagnostics.",
+    "full_writing": {
+      "result": "FAIL: 1666 files, 67 historical diagnostics; make exit 2",
+      "scoped": "Final engineering specification and plan: two files, zero diagnostics."
+    }
+  },
+  "remaining": [
+    "Full A46 registration and bounded tenant/source-memory qualification",
+    "Real multi-process propagation and confirmed fleet enforcement",
+    "Native suspend/resume and platform qualification",
+    "Required reviews, hosted checks, compatible published Starmap producer, merges, released-pair acceptance"
+  ],
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.2</td><td>Commit atomic KV authorization revisions at <code>2fc8651</code>. Race checks pass 765 events with 12 skips. The unresolved server warm-read test remains excluded. SQL integration remains open.</td><td><a href=\"proof/starport-production-catalog/csp10.2/kv-revision.json\">KV revision evidence</a></td></tr>"
+}

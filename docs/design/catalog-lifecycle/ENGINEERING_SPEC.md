@@ -2705,6 +2705,15 @@ Liveness continues to respond. Readiness does not establish any particular calle
 Operator diagnostics must identify the affected authority and operation, retained permission validity, and the required recovery action.
 Do not report individual caller rejection as a gateway-wide failure.
 
+The admin info response reports gateway-policy and identity-policy observations separately from catalog-authority status.
+Report cached valid and invalid bundle counts without caller identities. Counts describe this replica at observation time.
+Report fixed recovery codes without storage error strings or connection details.
+
+Verified local-token and launch-ticket sessions retain read access to admin info and catalog status during policy failure.
+These two reads require no inference budget. They do not permit inference, mutations, or other administrative reads.
+Expired sessions, rotated tokens, identity grants, and explicit bearer keys cannot use that storage-independent recovery path.
+
+
 A46 qualification covers forward and backward clock changes, suspend/resume, restart, delayed responses, missed notifications, partitions, expiry, and known withdrawals.
 Test these across the actual KV/SQL ownership split. Native suspend behavior remains a required qualification case.
 Warm checks read memory without allocating or querying a time service. Refresh and required admission operations remain bounded.
