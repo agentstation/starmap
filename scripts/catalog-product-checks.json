@@ -1824,6 +1824,51 @@
           "test": "TestConfigFileManifestInspectionPreservesCancellation"
         }
       ]
+    },
+    "A22.inference_separate_egress": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestOfflineCatalogAllowsInferenceEgress"
+        }
+      ]
+    },
+    "A23.restart_watcher_guards": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogConfigurationControlsRuntimeTraffic"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestGenerationPinBlocksAcquisitionAcrossRestart"
+        }
+      ]
+    },
+    "A03.shared_backend_no_local_databases": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestSharedStartupDoesNotCreateLocalDatabases"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestSharedBackendsOmitCredentialsAndLocalSelection"
+        }
+      ]
     }
   }
 }

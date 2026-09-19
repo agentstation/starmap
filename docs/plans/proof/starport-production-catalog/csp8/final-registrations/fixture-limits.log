@@ -1,0 +1,11 @@
+{"level":"info","db":0,"cluster":false,"time":"2026-09-19T01:12:21-05:00","message":"connected to valkey"}
+{"level":"info","time":"2026-09-19T01:12:21-05:00","message":"closed valkey pubsub client"}
+--- FAIL: TestSharedStartupDoesNotCreateLocalDatabases (0.01s)
+    valkey_integration_test.go:100: 
+        	Error Trace:	/Users/jack/src/github.com/agentstation/starport-product-paths/internal/app/valkey_integration_test.go:100
+        	Error:      	Received unexpected error:
+        	            	validate application config: max connections must be positive
+        	Test:       	TestSharedStartupDoesNotCreateLocalDatabases
+FAIL
+FAIL	github.com/agentstation/starport/internal/app	0.916s
+FAIL

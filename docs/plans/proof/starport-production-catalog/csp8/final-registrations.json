@@ -1,0 +1,91 @@
+{
+  "starport_head": "241d74442174d0880c0f14de6691cb16ba9111ba",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "scope": "CSP8 final registration gaps. Local workspace only.",
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/app -run '^TestOfflineCatalogAllowsInferenceEgress$'",
+      "result": "PASS",
+      "tests": 1,
+      "seconds": 16.115
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/app -run '^TestCatalogConfigurationControlsRuntimeTraffic$'",
+      "result": "PASS",
+      "tests": 1,
+      "subtests": 2,
+      "seconds": 36.49
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:55193 TEST_POSTGRES_URL=postgres://postgres@127.0.0.1:55194/starport_test?sslmode=disable GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/app -run '^TestSharedStartupDoesNotCreateLocalDatabases$'",
+      "result": "PASS",
+      "tests": 1,
+      "seconds": 15.813
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/app -run '^TestFullPathMeasurementIncludesAuthentication$'",
+      "result": "PASS",
+      "tests": 1,
+      "seconds": 16.916
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go vet ./internal/app",
+      "result": "PASS"
+    },
+    {
+      "command": "actionlint .github/workflows/ci.yml",
+      "result": "PASS"
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work bash scripts/verify-release-workflow.sh",
+      "result": "PASS",
+      "tests": 11
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts -p test_catalog_product_verify.py",
+      "result": "PASS",
+      "tests": 73,
+      "seconds": 3.938
+    }
+  ],
+  "observations": [
+    "The production gateway routes ordinary and streamed inference while the catalog source receives zero requests in offline mode.",
+    "Offline and manual source controls survive two real Badger sessions. Manual refresh alone reaches the upstream in manual mode.",
+    "Two production application startups use real Valkey and PostgreSQL, retain a KV probe, and create no directory for the unused local database paths."
+  ],
+  "services": {
+    "valkey": "7.2.14",
+    "postgres": "16.15",
+    "images": [
+      "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94"
+    ],
+    "cleanup": "Both task-owned disposable containers stopped and removed."
+  },
+  "fixture_corrections": [
+    "The first shared run used a host:port value that the runtime adapter accepts but configuration validation requires as a URL. Use redis:// in the recipe.",
+    "A failed startup left the seeded fixture key. Seeding now accepts the existing key revision, as the existing Valkey integration fixture does.",
+    "The handwritten fixture lacked required Valkey connection limits. Supply explicit limits before application validation."
+  ],
+  "ci": "A digest-pinned Valkey/PostgreSQL service job runs the shared startup test with race detection. Build depends on this job. Hosted execution remains UNVERIFIED.",
+  "registered_this_change": [
+    "A22.inference_separate_egress",
+    "A23.restart_watcher_guards",
+    "A03.shared_backend_no_local_databases"
+  ],
+  "remaining_unregistered_cases": [],
+  "remaining_unregistered_count": 0,
+  "running_sessions": [
+    {
+      "id": 91124,
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -json -race -count=1 -timeout 5m ./internal/config ./internal/catalog ./internal/app",
+      "output": "/tmp/csp8-full-component-race.jsonl"
+    }
+  ],
+  "remaining": [
+    "Consume the full component race result.",
+    "Qualify the committed published Starmap dependency.",
+    "Complete full repository checks, pre-PR review, hosted native CI, and implementation merge."
+  ],
+  "completion_credit": false
+}
