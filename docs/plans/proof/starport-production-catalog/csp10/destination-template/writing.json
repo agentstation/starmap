@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+    "lint",
+    "internal/credentials/destination.go",
+    "internal/credentials/destination_template.go",
+    "internal/credentials/destination_template_test.go",
+    "--format",
+    "text"
+  ],
+  "exit_code": 0,
+  "stdout": "PASS: 3 file(s), 0 diagnostic(s)\n",
+  "stderr": ""
+}

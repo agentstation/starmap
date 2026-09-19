@@ -1,0 +1,46 @@
+{
+  "recorded_at": "2026-09-19T16:00:23.852059+00:00",
+  "task": "CSP10",
+  "status": "local component evidence; A25 remains UNVERIFIED",
+  "starport_head": "5b2f749dd8543a02a169c2758d796c0b908fc22e",
+  "starmap_head": "9845e6cf9ea3a239c90214e1eb937889ca72b129",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "changes": [
+    "Explicit path templates preserve origin, method, operation, credential identity, and profile approval.",
+    "A named variable matches one path segment. A variable with an ellipsis suffix can match namespace segments.",
+    "Template matches freeze the exact escaped path before credential placement and dispatch.",
+    "Traversal, double encoding, URL delimiters, control characters, and changes to approved job targets are refused."
+  ],
+  "fail_before": {
+    "base": "52b432878c45627e1e45bc881aa6b99f95b509e1",
+    "command": "GOWORK=/tmp/csp10-host-integration.work go test ./internal/credentials -run ^TestDestinationTemplateApprovesModelPaths$ -count=1",
+    "exit_code": 1,
+    "output": "internal/credentials/destination_template_test.go:13:220: unknown field PathTemplate in struct literal of type Destination",
+    "kind": "missing API build failure; not a runtime security regression"
+  },
+  "checks": {
+    "affected-race": 0,
+    "vet": 0,
+    "lint": 0,
+    "writing": 0
+  },
+  "affected_test_events": {
+    "pass": 584,
+    "fail": 0,
+    "skip": 1
+  },
+  "skip": "Optional Valkey integration; no Valkey service was supplied for this run.",
+  "allocation_evidence": "TestDestinationTemplateAuthorizationHasNoAllocations requires zero allocations over 100 repeated authorizations and exact-target checks. This is not full gateway latency evidence.",
+  "limitations": [
+    "Application startup does not supply approvals yet.",
+    "Authentication still permits unbound material.",
+    "Pinned contract compilation, explicit configuration, diagnostics, and end-to-end A25 remain incomplete.",
+    "The producer dependency is unpublished. Review, native qualification, and merge remain required."
+  ],
+  "next_action": "Compile pinned destination contracts and explicitly selected configuration into application approvals. Preserve the configuration authority boundary and remove unbound authentication before A25 qualification.",
+  "automation": "The owner requested removal of the daily PR queue heartbeat. The app confirmed deletion. PR review and merge remain part of active goal execution.",
+  "plan_checks": {
+    "targeted_writing": "PASS: 1 file, 0 diagnostics",
+    "full_writing": "exit 2; 67 historical diagnostics across 1665 files"
+  }
+}
