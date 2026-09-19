@@ -3652,6 +3652,215 @@
       "repository": "starport",
       "package": "./internal/router",
       "test": "TestEmbeddedCatalogSelectionProfile"
+    },
+    "A49.callback_no_remote_io": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestAdvisoryHealthCallbacksAvoidStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestAdvisoryLatencyCallbacksAvoidStorage"
+        }
+      ]
+    },
+    "A49.bounded_background_exchange": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestHealthExchangeBounds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyExchangeBounds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyWorkerDoesNotBlockCallbacks"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestAdvisoryWorkersOwnStartAndShutdown"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestAdvisoryFleetFaultIsolation"
+        }
+      ]
+    },
+    "A49.local_breaker_immediacy": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestHealthWorkerCancelsBlockedStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestAdvisoryFleetFaultIsolation"
+        }
+      ]
+    },
+    "A49.stale_hint_expiry": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestPeerHealthExpiresWithoutRepublishing"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestPeerExpiryRestoresLocalEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestLocalResetRejectsOlderPeerEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestPeerExpiryPublishesFromAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyPeerValidity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyCachedHintExpiresWithoutStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyEmptyPeerScanClearsOldHints"
+        }
+      ]
+    },
+    "A49.cold_peer_refresh": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestSharedStoreConvergesTwoTrackers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestHealthWorkerRecoversAfterOutage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestSharedLatencyTrackerConvergesPeers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyWorkerRecoversAfterOutage"
+        }
+      ]
+    },
+    "A49.worker_close_and_reconnect": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestHealthWorkerCancelsBlockedStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestHealthWorkerRecoversAfterOutage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyWorkerDoesNotBlockCallbacks"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyWorkerRecoversAfterOutage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestAdvisoryWorkersOwnStartAndShutdown"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestAdvisoryWorkersCloseBeforeStart"
+        }
+      ]
+    },
+    "A49.fleet_fault_isolation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestAdvisoryFleetFaultIsolation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestHealthWorkerCancelsBlockedStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyWorkerDoesNotBlockCallbacks"
+        }
+      ]
     }
   },
   "task_component_checks": {
