@@ -1,0 +1,48 @@
+{
+  "task": "CSP10",
+  "recorded_at": "2026-09-19T17:44:50.341236+00:00",
+  "starport_head": "43e7ab09925df09ad1cbd107267aa2ade594a576",
+  "starmap_head": "ac3d25e7e",
+  "status": "Local implementation complete for the two remaining registered A21 contracts; complete task verification running",
+  "changes": [
+    "Operation results record catalog admission and admitted-stream policy at completion, including source failure and rejected replacement.",
+    "Retained operation evidence does not follow later permission changes.",
+    "Candidate-refusal logging reports actual new-attempt permission instead of claiming the retained catalog still routes.",
+    "The batch regression holds all four workers, withdraws permission, and verifies the queued fifth line returns 503 without another provider call.",
+    "Operator documentation explains retries, queued lines, cached delivery, and historical operation permission."
+  ],
+  "checks": {
+    "a18": "All five subcases PASS. This run began at cfe153f and ran during additive A21 changes; the full gate will qualify the final source.",
+    "focused_operation": "PASS before adding the failed-source subcase; the affected suite includes that final subcase.",
+    "focused_batch": "PASS: upload, queue, execution, result file, and provider-call count.",
+    "vet": "PASS: catalog, app, server, and controllers",
+    "lint": "PASS after removing temporary comparison files. The first run raced with prose baseline files inside the repository; no product typecheck failure occurred.",
+    "writing": "99 pre-existing unique diagnostics; no new diagnostics.",
+    "verifier_tests": "89 PASS",
+    "registered_subcases": "29 of 29; registration alone grants no acceptance credit."
+  },
+  "active_checks": [
+    {
+      "session_id": 5732,
+      "output": "/tmp/csp10-a21-affected-race.json",
+      "command": "GOWORK=/tmp/csp10-host-integration.work go test -race -count=1 -timeout=5m -json ./internal/catalog ./internal/app ./internal/server ./internal/server/controllers"
+    },
+    {
+      "session_id": 48397,
+      "output": "/tmp/csp10-provider-execution-race.json",
+      "command": "GOWORK=/tmp/csp10-host-integration.work go test -race -count=1 -timeout=5m -json ./internal/providers/... ./internal/execution"
+    },
+    {
+      "session_id": 21172,
+      "output": "/tmp/csp10-complete-verifier.json",
+      "command": "GOWORK=/tmp/csp10-host-integration.work bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-routing --task CSP10 --json"
+    }
+  ],
+  "limitations": [
+    "Unpublished local workspace pair.",
+    "Batch provider is a controlled connector; production queue, proxy, routing, and result storage paths run.",
+    "Permission source is controlled in the new regressions; existing authority tests verify signed-envelope transitions.",
+    "Full task result, required repository review, published dependency, native qualification, and merge remain outstanding."
+  ],
+  "next_action": "Collect the three active checks and repair any failures. Then run the final repository and required pre-PR review gates."
+}

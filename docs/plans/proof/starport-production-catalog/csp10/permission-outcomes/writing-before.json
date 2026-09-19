@@ -1,0 +1,991 @@
+{
+  "config_sources": [
+    "/Users/jack/.config/agentstation/technical-writing.toml",
+    "/Users/jack/src/github.com/agentstation/starport-catalog-routing/.agents/technical-writing.toml"
+  ],
+  "documents": [
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/catalog/attempt_permission.go",
+      "words": 79
+    },
+    {
+      "diagnostics": [
+        {
+          "column": 46,
+          "excerpt": "OperationKind names the work an operation performs. The set is closed, so an",
+          "line": 19,
+          "message": "express the action with a direct verb",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/catalog/operations.go",
+          "rule": "nominalization",
+          "severity": "error"
+        },
+        {
+          "column": 64,
+          "excerpt": "OperationKind names the work an operation performs. The set is closed, so an",
+          "line": 19,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/catalog/operations.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 61,
+          "excerpt": "OperationState names where one operation stands. The set is closed.",
+          "line": 27,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/catalog/operations.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 61,
+          "excerpt": "OperationReason is the safe cause of a closed operation. The set is closed,",
+          "line": 44,
+          "message": "sentence has 27 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/catalog/operations.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 69,
+          "excerpt": "OperationReason is the safe cause of a closed operation. The set is closed,",
+          "line": 44,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/catalog/operations.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 18,
+          "excerpt": "the operation is canceled or reaches its bound.",
+          "line": 117,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/catalog/operations.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 47,
+          "excerpt": "WithOperationTimeout bounds one operation. The deployment refresh timeout",
+          "line": 154,
+          "message": "sentence has 35 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/catalog/operations.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "A kind that already has an open operation joins that operation: the caller",
+          "line": 183,
+          "message": "sentence has 26 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/catalog/operations.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 8,
+          "excerpt": "run performs one unit of work and closes its operation.",
+          "line": 233,
+          "message": "express the action with a direct verb",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/catalog/operations.go",
+          "rule": "nominalization",
+          "severity": "error"
+        },
+        {
+          "column": 74,
+          "excerpt": "ClassifyOperationFailure maps one failure onto the closed reason set. A",
+          "line": 409,
+          "message": "sentence has 29 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/catalog/operations.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        }
+      ],
+      "passed": false,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/catalog/operations.go",
+      "words": 845
+    },
+    {
+      "diagnostics": [
+        {
+          "column": 21,
+          "excerpt": "runCatalogUpdate performs one catalog update: read the source, observe the",
+          "line": 120,
+          "message": "express the action with a direct verb",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/catalog_operations.go",
+          "rule": "nominalization",
+          "severity": "error"
+        }
+      ],
+      "passed": false,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/catalog_operations.go",
+      "words": 221
+    },
+    {
+      "diagnostics": [
+        {
+          "column": 34,
+          "excerpt": "machine's local admin token. The loader derives the path from the platform",
+          "line": 73,
+          "message": "sentence has 36 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 64,
+          "excerpt": "ErrProviderCatalogChanged reports a credential result that was resolved",
+          "line": 81,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 34,
+          "excerpt": "machine's local admin token. The runtime keeps it so a caller that owns",
+          "line": 118,
+          "message": "sentence has 31 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 17,
+          "excerpt": "the process \u2014 `starport dev` \u2014 can sign a browser in without reading the",
+          "line": 119,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 34,
+          "excerpt": "the process \u2014 `starport dev` \u2014 can sign a browser in without reading the",
+          "line": 119,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 20,
+          "excerpt": "console change. The two travel together because a mode nobody can persist is",
+          "line": 218,
+          "message": "sentence has 33 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 40,
+          "excerpt": "takes its notifier at construction. The dead-letter observer reads the",
+          "line": 271,
+          "message": "sentence has 31 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 62,
+          "excerpt": "The report prints once at startup rather than per upload. An operator needs",
+          "line": 316,
+          "message": "sentence has 35 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "One deployment setting bounds the whole run: the operation registry and",
+          "line": 362,
+          "message": "sentence has 31 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "The four steps run together because each one is unreadable without the ones",
+          "line": 504,
+          "message": "sentence has 39 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 38,
+          "excerpt": "mode decides whether a deployment is allowed to hold no key at all.",
+          "line": 506,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 35,
+          "excerpt": "to exist before the first key is read. The call is idempotent and safe",
+          "line": 514,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 74,
+          "excerpt": "The meter counts every account's stored bytes whether or not a bound is",
+          "line": 540,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "The batch service shares the store and the outstanding-work meter with",
+          "line": 590,
+          "message": "sentence has 34 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "Guardrails wrap inside the preset resolver so the checks read the",
+          "line": 728,
+          "message": "sentence has 35 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 45,
+          "excerpt": "resolved request, and only when a check is configured: an unconfigured",
+          "line": 729,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 18,
+          "excerpt": "admin-guarded; only \"off\" removes it entirely.",
+          "line": 758,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 50,
+          "excerpt": "The tracer builds only when an OTLP endpoint is configured, so an",
+          "line": 762,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 45,
+          "excerpt": "The export sink rides the same observer seam: every finalized record",
+          "line": 777,
+          "message": "replace restricted vocabulary with a precise common term: 'seam'",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "restricted_vocabulary",
+          "severity": "error"
+        },
+        {
+          "column": 11,
+          "excerpt": "target is configured.",
+          "line": 819,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 64,
+          "excerpt": "usageSinkObserver adapts the sink onto the capture observer seam. Receive",
+          "line": 831,
+          "message": "replace restricted vocabulary with a precise common term: 'seam'",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "restricted_vocabulary",
+          "severity": "error"
+        },
+        {
+          "column": 39,
+          "excerpt": "openIdentity turns on the identity seam when the operator configured any",
+          "line": 863,
+          "message": "replace restricted vocabulary with a precise common term: 'seam'",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "restricted_vocabulary",
+          "severity": "error"
+        },
+        {
+          "column": 21,
+          "excerpt": "acquisition path \u2014 OAuth applications, WorkOS SSO, or both. It runs after",
+          "line": 864,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 48,
+          "excerpt": "identityAuthenticator hands the acquisition seam across as the server's",
+          "line": 901,
+          "message": "replace restricted vocabulary with a precise common term: 'seam'",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "restricted_vocabulary",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "eventEmitter hands the dispatcher across as the server's contract, with",
+          "line": 912,
+          "message": "sentence has 26 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 63,
+          "excerpt": "requireAPIKey refuses to start a gateway no one can reach. A deployment",
+          "line": 998,
+          "message": "sentence has 30 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "With authentication disabled the same empty store is the expected state:",
+          "line": 1003,
+          "message": "sentence has 31 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 25,
+          "excerpt": "A stored \"disabled\" is validated against this process's bind address and",
+          "line": 1044,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 20,
+          "excerpt": "not the one it was stored on. An operator who disabled authentication on",
+          "line": 1045,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 35,
+          "excerpt": "not the one it was stored on. An operator who disabled authentication on",
+          "line": 1045,
+          "message": "sentence has 27 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "Minting at startup rather than on first use is what makes the credential",
+          "line": 1063,
+          "message": "sentence has 39 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 12,
+          "excerpt": "gateway is holding. Two gateways starting at once take a file lock and agree",
+          "line": 1066,
+          "message": "prefer a simple verb form",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "ing_main_verb",
+          "severity": "error"
+        },
+        {
+          "column": 24,
+          "excerpt": "gateway is holding. Two gateways starting at once take a file lock and agree",
+          "line": 1066,
+          "message": "sentence has 26 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 56,
+          "excerpt": "A development gateway never writes the token file. It reads the",
+          "line": 1070,
+          "message": "sentence has 49 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 37,
+          "excerpt": "console paste path agree with it; a machine that holds none gets an",
+          "line": 1072,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "The refusal is here rather than in configuration validation because it",
+          "line": 1106,
+          "message": "sentence has 38 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 50,
+          "excerpt": "by the CLI from the same file verifies here. It is the only thing that",
+          "line": 1117,
+          "message": "sentence has 26 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 49,
+          "excerpt": "keeps the secret after this function returns; nothing else in the runtime",
+          "line": 1118,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 49,
+          "excerpt": "which credential the paste path will accept. A token file that exists but",
+          "line": 1133,
+          "message": "sentence has 27 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 4,
+          "excerpt": "A candidate that fails leaves the accepted head where it is, and the refusal",
+          "line": 1381,
+          "message": "sentence has 34 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 4,
+          "excerpt": "is recorded with its safe cause so the admin surface separates a refused",
+          "line": 1382,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 19,
+          "excerpt": "applyCandidate performs the validation and the acceptance of one candidate.",
+          "line": 1401,
+          "message": "express the action with a direct verb",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "nominalization",
+          "severity": "error"
+        },
+        {
+          "column": 51,
+          "excerpt": "applyCandidate performs the validation and the acceptance of one candidate.",
+          "line": 1401,
+          "message": "express the action with a direct verb",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "nominalization",
+          "severity": "error"
+        },
+        {
+          "column": 31,
+          "excerpt": "A quiet pass logs nothing. An operator reading a log for the reason a disk",
+          "line": 1497,
+          "message": "sentence has 29 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+          "rule": "long_sentence",
+          "severity": "error"
+        }
+      ],
+      "passed": false,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/app.go",
+      "words": 2224
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/app/runtime_generation_test.go",
+      "words": 29
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/internal/server/controllers/catalog_test.go",
+      "words": 94
+    },
+    {
+      "diagnostics": [
+        {
+          "column": 35,
+          "excerpt": "to serve without a gateway API key; the banner then reports",
+          "line": 47,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 65,
+          "excerpt": "A flag or a configuration value fixes the mode for the process. The console",
+          "line": 95,
+          "message": "sentence has 28 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 8,
+          "excerpt": "switch is refused while either is set, and the refusal names the value to",
+          "line": 96,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 32,
+          "excerpt": "switch is refused while either is set, and the refusal names the value to",
+          "line": 96,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "A data directory carried from a laptop to a public address does not carry an",
+          "line": 118,
+          "message": "sentence has 30 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 22,
+          "excerpt": "open gateway with it \u2014 the gateway falls back to `required` and warns, naming",
+          "line": 119,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 71,
+          "excerpt": "The console switch enforces the same rule from the other side: it can be used",
+          "line": 122,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 71,
+          "excerpt": "only from the machine running the gateway. An open gateway can always be closed",
+          "line": 123,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 31,
+          "excerpt": "from that machine, and cannot be opened further from anywhere else.",
+          "line": 124,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "`starport ui` reads the token file rather than calling the gateway, so it",
+          "line": 148,
+          "message": "sentence has 26 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 77,
+          "excerpt": "and the browser cannot read. What differs is the grant that mints it. Three are",
+          "line": 155,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 66,
+          "excerpt": "The first two are machine-local by construction. A launch ticket is minted from",
+          "line": 164,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 37,
+          "excerpt": "borrows the vocabulary of identity. A browser that reaches the console with no",
+          "line": 167,
+          "message": "sentence has 37 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 74,
+          "excerpt": "session lands on a first-contact page that states whether the address it was",
+          "line": 168,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 57,
+          "excerpt": "allowed to describe itself in the vocabulary of identity; no machine-local",
+          "line": 181,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 26,
+          "excerpt": "gateway API key instead. That is a different credential with different",
+          "line": 186,
+          "message": "sentence has 28 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 45,
+          "excerpt": "consequences: it authenticates a caller and is metered against an account, where",
+          "line": 187,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 19,
+          "excerpt": "acquisition paths \u2014 per-provider OAuth applications, and enterprise SSO",
+          "line": 194,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 16,
+          "excerpt": "through WorkOS \u2014 and either or both may be configured:",
+          "line": 195,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 41,
+          "excerpt": "through WorkOS \u2014 and either or both may be configured:",
+          "line": 195,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 47,
+          "excerpt": "`<base>/console/identity/<provider>/callback` \u2014 for WorkOS, add",
+          "line": 221,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 12,
+          "excerpt": "dashboard. A configured provider appears",
+          "line": 223,
+          "message": "sentence has 38 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 38,
+          "excerpt": "on the first-contact page as a choice; choosing it runs the provider's",
+          "line": 224,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 49,
+          "excerpt": "mints, recording the provider-issued subject it was minted for. The person's",
+          "line": 226,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 8,
+          "excerpt": "record \u2014 subject, email, display name \u2014 is upserted in the identity store on",
+          "line": 227,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 39,
+          "excerpt": "record \u2014 subject, email, display name \u2014 is upserted in the identity store on",
+          "line": 227,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 41,
+          "excerpt": "record \u2014 subject, email, display name \u2014 is upserted in the identity store on",
+          "line": 227,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 51,
+          "excerpt": "The identity records live in the relational store \u2014 the embedded SQLite by",
+          "line": 230,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 47,
+          "excerpt": "default, or the configured Postgres or MySQL. A half-configured path (an ID",
+          "line": 231,
+          "message": "sentence has 29 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 29,
+          "excerpt": "organization or connection) is refused at start rather than silently",
+          "line": 233,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 5,
+          "excerpt": "does; the paths differ only in who vouches.",
+          "line": 235,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "The identity routes stay mounted on every deployment.",
+          "line": 237,
+          "message": "sentence has 45 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 68,
+          "excerpt": "`GET /console/identity/providers` answers with the configured list \u2014 empty",
+          "line": 238,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 20,
+          "excerpt": "when there is none \u2014 and the other identity routes answer 503 naming these",
+          "line": 239,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 60,
+          "excerpt": "Rotate before you expose a gateway on a reachable address. The token printed",
+          "line": 254,
+          "message": "sentence has 35 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 16,
+          "excerpt": "at first start has been in a terminal, and a terminal is scrollback, a tmux",
+          "line": 255,
+          "message": "use a simple tense when it preserves the timing",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "complex_verb",
+          "severity": "error"
+        },
+        {
+          "column": 31,
+          "excerpt": "this machine's token has ever been rotated.",
+          "line": 257,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "An unreadable token file is refused on every read path rather than replaced,",
+          "line": 259,
+          "message": "sentence has 34 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 26,
+          "excerpt": "An unreadable token file is refused on every read path rather than replaced,",
+          "line": 259,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 18,
+          "excerpt": "can spend it. It is read-only from no route \u2014 an operator applies and rotates",
+          "line": 794,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 45,
+          "excerpt": "can spend it. It is read-only from no route \u2014 an operator applies and rotates",
+          "line": 794,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 33,
+          "excerpt": "it over HTTP without restarting \u2014 and it is not BYOK. An **environment",
+          "line": 795,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 21,
+          "excerpt": "credential** cannot be changed over HTTP at all, because it lives in the",
+          "line": 796,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 68,
+          "excerpt": "`GET /api/v1/providers/status` reports the environment plane only. The console",
+          "line": 799,
+          "message": "sentence has 26 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "The default is `operator_first`. `byok_only` is how an operator withholds the",
+          "line": 812,
+          "message": "sentence has 34 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 6,
+          "excerpt": "not. A key may narrow its account's strategy and is refused if it would widen",
+          "line": 815,
+          "message": "sentence has 28 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 50,
+          "excerpt": "not. A key may narrow its account's strategy and is refused if it would widen",
+          "line": 815,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 59,
+          "excerpt": "it, so stamping a key cannot buy back a plane the account was denied.",
+          "line": 816,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        }
+      ],
+      "passed": false,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/tmp863tv4w9/docs/OPERATOR-GUIDE.md",
+      "words": 10992
+    }
+  ],
+  "mode": "strict",
+  "passed": false,
+  "summary": {
+    "diagnostics": 103,
+    "errors": 103,
+    "files": 7,
+    "max_warnings_per_100_words": 0.0,
+    "warning_rate_per_100_words": 0.0,
+    "warnings": 0
+  }
+}

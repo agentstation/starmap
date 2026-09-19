@@ -1,0 +1,3 @@
+{
+  "html": "<tr><td>2026-09-19</td><td>CSP10</td><td>Scope destination grants to path templates.</td><td><a href=\"proof/starport-production-catalog/csp10/destination-template.json\">Proof</a>: <code>5b2f749</code>. Final checks pass 584 race events with one skip. The <a href=\"proof/starport-production-catalog/csp10/destination-template/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}

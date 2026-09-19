@@ -57,7 +57,7 @@
 
 <p>The committed dependency still lacks the required producer APIs. Published-pair qualification, native checks, and merge remain required. Writing session 59549 ended with 67 historical diagnostics. The current plan passes its targeted prose check.</p>
 
-<p>CSP10 preparation uses <code>starport-catalog-routing</code> at <code>cfe153f</code> and <code>starmap-credential-roles</code> at <code>75afb0fc0</code>. Both worktrees are clean. Use <code>GOWORK=/tmp/csp10-host-integration.work</code> for this unpublished pair.</p>
+<p>CSP10 preparation uses <code>starport-catalog-routing</code> at <code>43e7ab0</code> and <code>starmap-credential-roles</code> at <code>ac3d25e7e</code>. Both worktrees are clean. Use <code>GOWORK=/tmp/csp10-host-integration.work</code> for this unpublished pair.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp10/destination-startup.json">startup approval proof</a> records production integration. Startup applies explicit approval sets or pinned installation defaults. Requests to an unapproved local target receive HTTP 503 without provider egress. Explicit approval permits ordinary and streamed inference.</p>
 
@@ -67,7 +67,9 @@
 
 <p>The <a href="proof/starport-production-catalog/csp10/http-compatibility.json">HTTP compatibility proof</a> passes all five A17 subcases, including the SDK roster. Affected checks pass 683 race events with two opt-in skips. The <a href="proof/starport-production-catalog/csp10/view-consistency.json">view consistency repair</a> aligns provider facets, summary counts, and author membership with visible models.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp10/pricing-qualification.json">pricing proof</a> records four passing A18 subcases. The fifth exposed a console verifier defect. The repaired adapter passes 18 console tests and 89 verifier tests. Final A18 session <code>54261</code> writes <code>/tmp/csp10-a18-verifier-final.json</code>. Collect that result, then complete A21 batch admission and stream-policy diagnostics.</p>
+<p>The <a href="proof/starport-production-catalog/csp10/permission-outcomes.json">permission outcome proof</a> records all five passing A18 subcases and the A21 changes. Operation results report permission after success or failure. Queued batch lines recheck permission. The registry now covers all 29 CSP10 subcases.</p>
+
+<p>Collect affected race session <code>5732</code>, provider race session <code>48397</code>, and complete verifier session <code>21172</code>. The proof names their exact commands and output files. No complete CSP10 result exists yet. Vet and lint pass. Prose adds no diagnostics. Run final repository checks and required review after qualification.</p>
 
 <p>Applied-policy diagnostics and selected-authority persistence remain open. The configuration field is an internal applied-policy hook. Persistent configuration and operator mutation remain open.</p>
 
@@ -700,7 +702,7 @@
 
 
 
-<tr><td>2026-09-19</td><td>CSP10</td><td>Scope destination grants to path templates.</td><td><a href="proof/starport-production-catalog/csp10/destination-template.json">Proof</a>: <code>5b2f749</code>. Final checks pass 584 race events with one skip. The <a href="proof/starport-production-catalog/csp10/destination-template/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
+
 <tr><td>2026-09-19</td><td>CSP10</td><td>Compile approved inference destination contracts.</td><td><a href="proof/starport-production-catalog/csp10/destination-compiler.json">Proof</a>: <code>e50b1bd</code>. Final checks pass 622 race events with one skip. The <a href="proof/starport-production-catalog/csp10/destination-compiler/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Apply destination approvals at startup.</td><td><a href="proof/starport-production-catalog/csp10/destination-startup.json">Proof</a>: <code>a6db250</code>. Final checks pass 1,434 race events with five skips. The <a href="proof/starport-production-catalog/csp10/destination-startup/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Require approval before provider authentication.</td><td><a href="proof/starport-production-catalog/csp10/destination-required.json">Proof</a>: <code>5004cd2</code>. Checks pass 1,216 race events with six skips. The <a href="proof/starport-production-catalog/csp10/destination-required/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
@@ -710,4 +712,5 @@
 <tr><td>2026-09-19</td><td>CSP10</td><td>Qualify HTTP compatibility across catalog refresh.</td><td><a href="proof/starport-production-catalog/csp10/http-compatibility.json">Proof</a>: <code>763eef9</code> and <code>c382baf83</code>. All five A17 subcases pass for the local pair. The <a href="proof/starport-production-catalog/csp10/http-compatibility/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Align catalog counts and provider facets.</td><td><a href="proof/starport-production-catalog/csp10/view-consistency.json">Proof</a>: <code>35c493d</code>. Checks pass 545 race events and 460 console tests. A18 remains unverified. The <a href="proof/starport-production-catalog/csp10/view-consistency/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Qualify pricing and repair the console verifier.</td><td><a href="proof/starport-production-catalog/csp10/pricing-qualification.json">Proof</a>: <code>cfe153f</code>, <code>7ec99d200</code>, and <code>75afb0fc0</code>. Four A18 subcases pass. The final run remains active. The <a href="proof/starport-production-catalog/csp10/pricing-qualification/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
+<tr><td>2026-09-19</td><td>CSP10</td><td>Report permission outcomes and verify queued batch refusal.</td><td><a href="proof/starport-production-catalog/csp10/permission-outcomes.json">Proof</a>: <code>43e7ab0</code> and <code>ac3d25e7e</code>. All five A18 subcases pass. The complete CSP10 gate is active. The <a href="proof/starport-production-catalog/csp10/permission-outcomes/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 </tbody></table></section></main></body></html>
