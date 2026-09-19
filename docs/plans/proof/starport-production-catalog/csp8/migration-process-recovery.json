@@ -1,0 +1,48 @@
+{
+  "starport_head": "952b5d3424932bded705c193db145464baf95878",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "platform": "go1.27.1 darwin/arm64",
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/catalog -run '^Test(MigrationJournalProcessRecovery|RuntimeDirectoryMigrationPreservesAcceptedCatalog)$'",
+      "result": "PASS",
+      "top_level_tests": 2,
+      "subtests": 2,
+      "seconds": 16.666
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 ./internal/cli -run '^TestRuntimeMigration'",
+      "result": "PASS",
+      "top_level_tests": 2,
+      "subtests": 8,
+      "seconds": 1.635
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go vet ./internal/catalog ./internal/cli",
+      "result": "PASS"
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go test -c -o /tmp/csp8-migration-windows.test ./internal/catalog",
+      "result": "PASS: compile only"
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go test -c -o /tmp/csp8-migration-linux.test ./internal/catalog",
+      "result": "PASS: compile only"
+    }
+  ],
+  "coverage": [
+    "Child process exits without cleanup immediately before or after the KV operation checkpoint write.",
+    "Parent reopens durable Badger and verifies the expected missing or present checkpoint before recovery.",
+    "Host journal restores the exact checkpoint and retains the accepted catalog.",
+    "Another store cannot claim the interrupted operation.",
+    "All phase results report the host-journal directory alongside the Starmap journal.",
+    "Engineering file manifest names the host binding and KV checkpoint records."
+  ],
+  "limits": [
+    "The test does not simulate power loss.",
+    "Hosted Linux and Windows execution remains unverified. Existing CI runs the package on all three native OS families.",
+    "Interruption inside stage, publication, and completion still needs Starport operator evidence.",
+    "Temporary workspace does not qualify the published dependency."
+  ],
+  "completion_credit": false
+}
