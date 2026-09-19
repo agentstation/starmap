@@ -2516,6 +2516,24 @@
           "repository": "starport",
           "package": "./internal/credentials",
           "test": "TestCredentialResolverRefreshesExpiredAndLeasedMaterial"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestTerminalRefreshFailureInvalidatesRequestCache"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestExpiredRefreshMaterialInvalidatesPriorRequestCache"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers",
+          "test": "TestReconcilerTerminalFailureRemovesPriorProvider"
         }
       ]
     },
