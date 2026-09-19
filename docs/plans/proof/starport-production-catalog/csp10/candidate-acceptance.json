@@ -1,0 +1,50 @@
+{
+  "task": "CSP10",
+  "recorded_at": "2026-09-19T17:59:53.812717+00:00",
+  "starport_head": "79978cd",
+  "starmap_head": "ac3d25e7e",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "acceptance": {
+    "gate_status": "PASS",
+    "passed_required_subcases": 29,
+    "failed": 0,
+    "unverified": 0,
+    "scope": "Local component checks only.",
+    "source_note": "Run started at 43e7ab0. Commit 646778f changes only the separate architecture fixture. Runtime production source remained unchanged throughout."
+  },
+  "repository_checks": "32 of 33 pass after the ownership rerun. The published compatible module requirement remains blocked.",
+  "review": {
+    "status": "running",
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "starport": {
+      "status": "running",
+      "session_id": 46654,
+      "report": "/tmp/csp10-starport-review-qualified.json",
+      "process_log": "/tmp/csp10-starport-review-qualified-process.log"
+    },
+    "starmap": {
+      "status": "PASS",
+      "exit_code": 0,
+      "findings": 0,
+      "report": "candidate-acceptance/starmap-review.json"
+    },
+    "secret_scan_repairs": {
+      "commits": [
+        "dff41f7",
+        "79978cd"
+      ],
+      "cause": "The URI detector reported verification errors for two synthetic user:pass destination rejection fixtures. Neither finding was verified.",
+      "change": "Construct credential-bearing fixture URLs with url.URL and url.UserPassword. Preserve all rejection assertions.",
+      "qualification": "Focused race tests, lint, prose checks, and diff checks pass. Runtime production code is unchanged."
+    }
+  },
+  "limitations": [
+    "Published dependency and exact released pair remain unqualified.",
+    "Native CI, required clean review, publication, and merge remain outstanding.",
+    "CSP10 remains a local preparation and receives no terminal task credit."
+  ],
+  "next_action": "Collect both reviews. Verify any findings against the runtime contracts. Finish producer publication before exact-pair native qualification and merge."
+}
