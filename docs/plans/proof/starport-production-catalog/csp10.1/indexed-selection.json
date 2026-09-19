@@ -1,0 +1,38 @@
+{
+  "task": "CSP10.1",
+  "recorded_at": "2026-09-19T18:21:43.721719+00:00",
+  "work_commit": "69a8c5d",
+  "status": "partial local implementation; not qualified or merged",
+  "toolchain": "Go 1.27.1",
+  "workspace": "/tmp/csp101-host-integration.work",
+  "changes": [
+    "Static route candidates and exact canonical/offering indexes are built before snapshot publication.",
+    "Requests copy only selected candidates and apply current provider latency and connector availability.",
+    "Mutable candidate members remain caller-owned.",
+    "Projection tests moved with their catalog owner."
+  ],
+  "checks": {
+    "race": "PASS: internal/catalog, internal/router, internal/routing; 235.753s, 15.200s, 1.229s",
+    "selection_semantics": "PASS: final expanded differential test under race detection",
+    "vet": "PASS: internal/catalog, internal/router, internal/routing",
+    "dependency_direction": "6 PASS, 0 FAIL",
+    "writing": "3 new source/test files PASS, 0 diagnostics"
+  },
+  "measurement_scope": "Synthetic catalog SelectModel path on darwin/arm64 Apple M2 Max. No provider network calls. Does not qualify full HTTP overhead or CSP22.",
+  "remaining": [
+    "Capture retention failure and reserve generation capacity before durable catalog acceptance.",
+    "Preserve admitted streams and refuse new inference if required permission cannot activate.",
+    "Complete embedded-catalog profile and discovery indexes.",
+    "Run all eight A44 subcases, task benchmarks, repository checks, required review, published-pair native qualification and merge."
+  ],
+  "logs": {
+    "fail_before": "=== RUN   TestCatalogExactModelAllocationScaling\n    catalog_scaling_test.go:74: exact-model allocations: 10 routes=166, 1000 routes=14028\n    catalog_scaling_test.go:75: \n        \tError Trace:\t/Users/jack/src/github.com/agentstation/starport-catalog-indexes/internal/router/catalog_scaling_test.go:75\n        \tError:      \t\"14028\" is not less than or equal to \"176\"\n        \tTest:       \tTestCatalogExactModelAllocationScaling\n        \tMessages:   \tunrelated catalog routes must not add per-request allocations\n--- FAIL: TestCatalogExactModelAllocationScaling (0.07s)\nFAIL\nFAIL\tgithub.com/agentstation/starport/internal/router\t0.531s\nFAIL\n",
+    "benchmark_before": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/router\ncpu: Apple M2 Max\nBenchmarkCatalogExactModel/routes-10-12         \t   10000\t     10816 ns/op\t   21784 B/op\t     166 allocs/op\nBenchmarkCatalogExactModel/routes-1000-12       \t     135\t    881225 ns/op\t 2020390 B/op\t   14028 allocs/op\nBenchmarkCatalogExactModel/routes-10000-12      \t      12\t   9767962 ns/op\t19977518 B/op\t  140056 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/router\t1.196s\n",
+    "benchmark_after": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/router\ncpu: Apple M2 Max\nBenchmarkCatalogExactModel/routes-10-12         \t   65930\t      1778 ns/op\t    2688 B/op\t      28 allocs/op\nBenchmarkCatalogExactModel/routes-1000-12       \t   70720\t      1686 ns/op\t    2688 B/op\t      28 allocs/op\nBenchmarkCatalogExactModel/routes-10000-12      \t   66949\t      1788 ns/op\t    2688 B/op\t      28 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/router\t1.234s\n",
+    "race": "ok  \tgithub.com/agentstation/starport/internal/catalog\t235.753s\nok  \tgithub.com/agentstation/starport/internal/router\t15.200s\nok  \tgithub.com/agentstation/starport/internal/routing\t1.229s\n",
+    "ownership_and_scaling": "=== RUN   TestPlanningCandidatesOwnMutableValues\n--- PASS: TestPlanningCandidatesOwnMutableValues (0.00s)\nPASS\nok  \tgithub.com/agentstation/starport/internal/catalog\t0.474s\n=== RUN   TestCatalogExactModelAllocationScaling\n    catalog_scaling_test.go:74: exact-model allocations: 10 routes=28, 1000 routes=28\n--- PASS: TestCatalogExactModelAllocationScaling (0.04s)\nPASS\nok  \tgithub.com/agentstation/starport/internal/router\t0.833s\n",
+    "selection_semantics": "ok  \tgithub.com/agentstation/starport/internal/router\t1.584s\n",
+    "dependency_direction": "SP-D01 PASS: proxy does not import the concrete cache adapter\nSP-D02 PASS: proxy does not import the concrete provider registry\nSP-D03 PASS: proxy exposes the cache behavior contract\nSP-D04 PASS: proxy exposes the provider leasing contract\nSP-D05 PASS: app does not import Starmap source selection\nSP-D06 PASS: app does not import Starmap sync options\nSummary: 6 passed, 0 failed\n"
+  },
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10</td><td>Require approval before provider authentication.</td><td><a href=\"proof/starport-production-catalog/csp10/destination-required.json\">Proof</a>: <code>5004cd2</code>. Checks pass 1,216 race events with six skips. The <a href=\"proof/starport-production-catalog/csp10/destination-required/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}
