@@ -58,7 +58,7 @@ func TestImportReleaseVerifiesReconcilesPublishesAndRollsBack(t *testing.T) {
 		context.Context,
 		*catalogs.Catalog,
 	) (*starmap.Candidate, error) {
-		return starmap.NewCandidate(baseline, starmap.CandidateEvidence{})
+		return starmap.NewCandidate(baseline, fixtureCatalogEvidence(t, baseline))
 	})
 	if err != nil {
 		t.Fatalf("publish baseline: %v", err)
@@ -297,22 +297,17 @@ func importReleaseFixture(
 	links ...catalogs.SourceObservationLink,
 ) artifact.Release {
 	t.Helper()
-	producerStore := storage.NewMemory()
-	producer, err := starmap.New(starmap.WithCatalogStore(producerStore))
+	producer, err := starmap.New()
 	if err != nil {
 		t.Fatalf("New producer: %v", err)
 	}
-	if _, err := producer.Update(context.Background(), func(
-		context.Context,
-		*catalogs.Catalog,
-	) (*starmap.Candidate, error) {
-		return starmap.NewCandidate(catalog, starmap.CandidateEvidence{SourceObservations: links})
-	}); err != nil {
-		t.Fatalf("producer Update: %v", err)
-	}
-	generation, err := producer.CurrentGeneration(context.Background())
+	candidate, err := starmap.NewCandidate(catalog, starmap.CandidateEvidence{SourceObservations: links})
 	if err != nil {
-		t.Fatalf("producer CurrentGeneration: %v", err)
+		t.Fatalf("release candidate: %v", err)
+	}
+	generation, err := producer.PrepareGeneration(t.Context(), candidate)
+	if err != nil {
+		t.Fatalf("prepare release generation: %v", err)
 	}
 	bundle, err := artifact.Build(generation)
 	if err != nil {

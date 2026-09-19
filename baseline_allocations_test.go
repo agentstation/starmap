@@ -42,7 +42,10 @@ func TestEmbeddedCatalogStateAllocations(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	builder := catalogs.NewEmpty()
+	builder, err := catalogs.NewBuilderFrom(updated.Catalog())
+	if err != nil {
+		t.Fatal(err)
+	}
 	if err := builder.SetProvider(catalogs.Provider{ID: "stored-only-provider", Name: "Stored Provider"}); err != nil {
 		t.Fatal(err)
 	}

@@ -7,6 +7,9 @@ EXPECTED_RUNS="${STARMAP_CATALOG_BENCH_RUNS:-3}"
 
 cd "$ROOT"
 
+# Race instrumentation changes JSON encoder pool reuse and allocation counts.
+go test ./pkg/provenance -run '^TestCanonicalDynamicJSON(Scalar|Container)AllocationBound$' -count=1
+
 output="$(go test . -run '^$' -bench '^BenchmarkClientCatalog$' -benchmem -count="$EXPECTED_RUNS" 2>&1)"
 printf '%s\n' "$output"
 

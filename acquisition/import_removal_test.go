@@ -1,7 +1,6 @@
 package acquisition
 
 import (
-	"context"
 	"testing"
 
 	"github.com/agentstation/starmap"
@@ -23,11 +22,7 @@ func TestImportReleaseCannotReplaceOperatorPolicy(t *testing.T) {
 	if err := baseline.SetRemovalPolicies([]catalogs.CatalogRemovalPolicy{{PublisherID: "local-operator", Targets: []catalogs.CatalogRemovalTarget{target}}}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := client.Update(t.Context(), func(context.Context, *catalogs.Catalog) (*starmap.Candidate, error) {
-		return starmap.NewCandidate(buildImportCatalog(t, baseline), starmap.CandidateEvidence{})
-	}); err != nil {
-		t.Fatal(err)
-	}
+	activateFixtureBaseline(t, client, buildImportCatalog(t, baseline))
 	syncer, err := New(client)
 	if err != nil {
 		t.Fatal(err)
