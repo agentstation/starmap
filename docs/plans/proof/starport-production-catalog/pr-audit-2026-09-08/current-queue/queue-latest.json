@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-19T11:05:02.506720+00:00",
+  "checked_at": "2026-09-19T11:44:17.546174+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -322,16 +322,7 @@
         }
       ],
       "title": "feat: expose checked file operations for catalog hosts",
-      "updatedAt": "2026-09-19T03:33:36Z",
-      "url": "https://github.com/agentstation/starmap/pull/171",
-      "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
-      "ancestry": {
-        "status": "diverged",
-        "ahead_by": 8,
-        "behind_by": 2
-      },
-      "current_main_is_ancestor": false,
-      "unsigned_commits": []
+      "updatedAt": "2026-09-19T03:33:36Z"
     },
     {
       "baseRefName": "main",
@@ -654,20 +645,7 @@
         }
       ],
       "title": "catalog: embed bindings-de02ef4fcfb68a86b119f3fa139715c1f77d4e2ee8d8af3d4eb4efab3d31ef07.local.ac6ad0483752",
-      "updatedAt": "2026-09-19T03:18:13Z",
-      "url": "https://github.com/agentstation/starmap/pull/168",
-      "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
-      "ancestry": {
-        "status": "diverged",
-        "ahead_by": 3,
-        "behind_by": 2
-      },
-      "current_main_is_ancestor": false,
-      "unsigned_commits": [
-        "8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
-        "f91908cede32e052a5dc36da12d3ec26c0e126ef",
-        "e1d72d5d7e5f2921616b89b91b6460fefaffb62d"
-      ]
+      "updatedAt": "2026-09-19T03:18:13Z"
     },
     {
       "baseRefName": "main",
@@ -880,18 +858,7 @@
         }
       ],
       "title": "catalog: embed bindings-d0cc72f614a783e732d89376c73f46da0db4b851f2627d3f266fb74e4c6964d4.local.b015f73478ee",
-      "updatedAt": "2026-09-17T15:09:19Z",
-      "url": "https://github.com/agentstation/starmap/pull/165",
-      "baseRefOid": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
-      "ancestry": {
-        "status": "diverged",
-        "ahead_by": 1,
-        "behind_by": 38
-      },
-      "current_main_is_ancestor": false,
-      "unsigned_commits": [
-        "e228e694ac5e66f75639721c438a261015a8026f"
-      ]
+      "updatedAt": "2026-09-17T15:09:19Z"
     }
   ],
   "starport": [],
@@ -931,12 +898,12 @@
     },
     {
       "worktree": "starmap-catalog-requirements",
-      "head": "475da593d3d874633cf3a49b11b92f6d5f0e9e86",
+      "head": "48eb8df75d9f67313c5ce703c6ef394d68c1209c",
       "status": "M AGENTS.md\n M Makefile\n M go.mod\n M go.sum\n M scripts/verify.sh"
     },
     {
       "worktree": "starmap-credential-roles",
-      "head": "6aff4690d7db29c820e39c5a03fbaece5f64d71e",
+      "head": "008ddc8e6276855d0581688582adb206417f384f",
       "status": "",
       "owner": "CSP9",
       "disposition": "unpublished preparation",
@@ -969,7 +936,7 @@
     {
       "worktree": "starport-catalog-routing",
       "owner": "CSP10",
-      "head": "fddeafcef28d05c40d67c2968d143983f2dd17d8",
+      "head": "346040d71d8907beab17746cbc2db864c4e4e6b0",
       "status": "",
       "disposition": "unpublished preparation",
       "next_action": "Complete HTTP transition and in-flight request qualification, then run the task gate and review before publication."
@@ -1033,5 +1000,26 @@
     "nodes": []
   },
   "starmap_rules": [],
-  "starport_rules": []
+  "starport_rules": [],
+  "starmap_ancestry": {
+    "171": {
+      "ahead_by": 8,
+      "behind_by": 2,
+      "merge_base_commit": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
+      "status": "diverged"
+    },
+    "168": {
+      "ahead_by": 3,
+      "behind_by": 2,
+      "merge_base_commit": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
+      "status": "diverged"
+    },
+    "165": {
+      "ahead_by": 1,
+      "behind_by": 38,
+      "merge_base_commit": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
+      "status": "diverged"
+    }
+  },
+  "starport_ancestry": {}
 }
