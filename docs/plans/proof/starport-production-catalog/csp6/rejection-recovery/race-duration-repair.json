@@ -168,6 +168,15 @@
       ],
       "proof": "repair-170-final-runtime-race.json",
       "events_and_inventories": "repair-170-final-runtime-race.tar.gz"
+    },
+    "final_contracts_race": {
+      "run": 35415804632,
+      "passed": 4906,
+      "failed": 0,
+      "skipped": 22,
+      "proof": "repair-170-final-contracts.json",
+      "events": "repair-170-final-contracts.tar.gz",
+      "skip_scope": "Native administrator and Windows cases, real coordination services, manual live-provider fixture work, child-process entrypoint, and existing nil-provider case. These skipped events are not claimed as passing."
     }
   },
   "live_sessions": {

@@ -1,0 +1,120 @@
+{
+  "head": "67dba0ea554719c2329b637a1eb812c1a440e141",
+  "run": 35415804632,
+  "counts": {
+    "pass": 4906,
+    "skip": 22
+  },
+  "nonpassing": [
+    {
+      "package": "github.com/agentstation/starmap/internal/privatefiles",
+      "test": "TestServiceConfigurationAdministratorOwnedRead",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/internal/providers/anthropic",
+      "test": "TestRefreshAnthropicProviderFixture",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/internal/providers/anthropic",
+      "test": "TestAnthropicProviderFixtureCurrency",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/internal/providers/openai",
+      "test": "TestClientErrors/missing_provider_configuration",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/internal/providers/openai",
+      "test": "TestRefreshOpenAICompatibleProviderFixture",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/internal/providers/openai",
+      "test": "TestOpenAICompatibleProviderFixtureCurrency",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+      "test": "TestWindowsMonitorFactoryRequiresSourceBounds",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinationBackendConditionalRecords",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinationBackendConcurrentCAS",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinationBackendRefusesInvalidAndExpiredRecords/type",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinationBackendRefusesInvalidAndExpiredRecords/shape",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinationBackendRefusesInvalidAndExpiredRecords/version",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinationBackendRefusesInvalidAndExpiredRecords/schema",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinationBackendRefusesInvalidAndExpiredRecords/size",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinationBackendRefusesInvalidAndExpiredRecords/expiration",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinationBackendRefusesCancellationAndUnconditionalWrites",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinationBackendRefusesReplicaReadsAndWrites",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinationBackendConfigurationIsInert",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinationBackendRetainsStateAcrossServerRestart",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinatedCatalogSurvivesProcessAndServiceRestart",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinatedCatalogProcess",
+      "action": "skip"
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+      "test": "TestCoordinatedCatalogUsesNativeObjectAndCoordinationServices",
+      "action": "skip"
+    }
+  ]
+}
