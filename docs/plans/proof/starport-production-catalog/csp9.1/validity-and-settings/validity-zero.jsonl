@@ -1,0 +1,12 @@
+{"Time":"2026-09-19T03:27:39.981608-05:00","Action":"start","Package":"github.com/agentstation/starport/internal/credentials"}
+{"Time":"2026-09-19T03:27:40.441156-05:00","Action":"run","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestMaterialRenewalDoesNotExtendExistingHandle"}
+{"Time":"2026-09-19T03:27:40.441268-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestMaterialRenewalDoesNotExtendExistingHandle","Output":"=== RUN   TestMaterialRenewalDoesNotExtendExistingHandle\n","OutputType":"frame"}
+{"Time":"2026-09-19T03:27:40.44135-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestMaterialRenewalDoesNotExtendExistingHandle","Output":"--- PASS: TestMaterialRenewalDoesNotExtendExistingHandle (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-09-19T03:27:40.441358-05:00","Action":"pass","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestMaterialRenewalDoesNotExtendExistingHandle","Elapsed":0}
+{"Time":"2026-09-19T03:27:40.441376-05:00","Action":"run","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestZeroMaterialValidityRefusesUse"}
+{"Time":"2026-09-19T03:27:40.441383-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestZeroMaterialValidityRefusesUse","Output":"=== RUN   TestZeroMaterialValidityRefusesUse\n","OutputType":"frame"}
+{"Time":"2026-09-19T03:27:40.44139-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestZeroMaterialValidityRefusesUse","Output":"--- PASS: TestZeroMaterialValidityRefusesUse (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-09-19T03:27:40.441395-05:00","Action":"pass","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestZeroMaterialValidityRefusesUse","Elapsed":0}
+{"Time":"2026-09-19T03:27:40.442983-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/credentials","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-09-19T03:27:41.449881-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/credentials","Output":"ok  \tgithub.com/agentstation/starport/internal/credentials\t1.468s\n"}
+{"Time":"2026-09-19T03:27:41.449986-05:00","Action":"pass","Package":"github.com/agentstation/starport/internal/credentials","Elapsed":1.468}

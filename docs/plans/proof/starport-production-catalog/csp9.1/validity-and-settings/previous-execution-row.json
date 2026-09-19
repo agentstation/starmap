@@ -1,0 +1,3 @@
+{
+  "html": "<tr><td>2026-09-19 UTC</td><td>CSP8</td><td>Qualified all three component packages and repaired lint findings.</td><td>The <a href=\"proof/starport-production-catalog/csp8/component-qualification.json\">proof</a> records 616 passing race events and two service-dependent skips. Commit <code>8878232</code> reuses configuration constants. Its configuration rerun, lint, and repository-wide vet pass. The <a href=\"proof/starport-production-catalog/csp8/component-qualification/previous-execution.html\">archive</a> preserves the oldest entry. Publication, review, hosted CI, and merge remain required.</td></tr>"
+}

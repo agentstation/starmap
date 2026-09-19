@@ -2619,6 +2619,18 @@ Bound resident entries, secret bytes, refresh concurrency, and validity time.
 Never serialize plaintext material into catalog state, diagnostics, profiles, or response-cache records.
 CSP9.1 owns this lifecycle and its warm, cold, expiry, and rotation benchmarks.
 
+The initial managed-material defaults permit 1,024 resident selections and 16 MiB of credential field bytes.
+They permit four concurrent loads, with two per account scope.
+Validity defaults to five seconds and cannot exceed five minutes.
+Load timeout and refresh interval default to one second. Idle retention defaults to one minute.
+`STARPORT_CREDENTIAL_SOURCES_MANAGED_` variables configure these limits.
+
+Each request handle retains its original deadline after refresh.
+A shared revocation fence invalidates outstanding handles after a known mutation or withdrawal.
+Authentication and HTTP dispatch must check handle validity without external reads.
+Validity failures must not count as provider outages or select another credential role implicitly.
+
+
 #### 8.9.3 Validated configuration and authorization memory
 
 The applied configuration revision resides in process memory and follows section 7.5.
