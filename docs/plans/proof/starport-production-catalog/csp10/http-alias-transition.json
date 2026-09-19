@@ -67,6 +67,9 @@
   "planning_writing": {
     "targeted_plan_exit": 0,
     "full_gate_exit": 2,
-    "historical_diagnostics": 67
+    "historical_diagnostics": 67,
+    "diagnostics": 113,
+    "diagnostics_from_rechecking_prior_raw_log": 46,
+    "raw_log_storage": "Preserved exact output in structured JSON to avoid linting diagnostic text as authored prose."
   }
 }
