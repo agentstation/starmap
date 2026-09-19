@@ -1,0 +1,113 @@
+{
+  "starport_commit": "d3689cd42bbfe05eee45428941477635835efb69",
+  "starmap_commit": "008ddc8e6276855d0581688582adb206417f384f",
+  "toolchain": "go1.27.1",
+  "sdk_versions": {
+    "openai_python": "3.6.0",
+    "openrouter_python": "1.1.38",
+    "openrouter_typescript": "1.2.18",
+    "openrouter_go": "v0.7.32"
+  },
+  "transition_requests": 60,
+  "states": [
+    "canonical and alias active",
+    "alias removed; canonical still active",
+    "canonical removed"
+  ],
+  "coverage": "Each SDK requests canonical and alias names with both chat and streaming. OpenAI Python uses both API families; the OpenRouter SDKs use /api/v1. Accepted streams are consumed. Removed names must produce SDK 404 errors.",
+  "fail_before": "TypeScript streaming rejected null system_fingerprint. The raw SDK failure is retained.",
+  "repair": "Omit an absent streaming fingerprint; preserve an actual fingerprint. The non-streaming nullable field remains unchanged.",
+  "checks": [
+    {
+      "command": "bash scripts/smoke-openrouter-sdks.sh",
+      "exit": 0
+    },
+    {
+      "command": "go test -race -json -count=1 -timeout 5m ./internal/protocol/openrouter ./internal/server ./internal/server/controllers",
+      "exit": 0,
+      "pass": 586,
+      "skip": 2,
+      "fail": 0
+    },
+    {
+      "command": "go vet ./internal/protocol/openrouter ./internal/server ./internal/server/controllers",
+      "exit": 0
+    },
+    {
+      "command": "golangci-lint run ./internal/protocol/openrouter/... ./internal/server/...",
+      "exit": 0
+    },
+    {
+      "command": "GOWORK=off go vet ./... && GOWORK=off go test ./...",
+      "repository": "scripts/smoke_openrouter_go",
+      "exit": 0,
+      "note": "Both packages compile; neither declares unit tests."
+    },
+    {
+      "command": "go test -race -json -count=1 -timeout 5m ./internal/catalog ./internal/providers/... ./internal/execution ./internal/server",
+      "exit": 0,
+      "pass": 999,
+      "fail": 0,
+      "skip": 3
+    },
+    {
+      "command": "TEST_VALKEY_URL=<temporary-loopback-container> go test -race -json -count=1 -timeout 2m ./internal/providers/keyring -run ^(TestManagedMaterialValkeyOutageAndRecovery|TestManagedMaterialStorageRotationRevocationAndRecreation)$",
+      "exit": 0,
+      "pass": 5,
+      "skip": 0,
+      "fail": 0,
+      "cleanup": "Temporary Valkey container stopped and removed."
+    }
+  ],
+  "limitations": [
+    "The provider connector is a deterministic mock.",
+    "Active-stream withdrawal, retries and queued work require separate evidence.",
+    "The complete CSP10 gate, review, published pair, native CI, and merge remain required."
+  ],
+  "task_complete": false,
+  "planning_writing": {
+    "targeted_plan_exit": 0,
+    "full_gate_exit": 2,
+    "historical_diagnostics": 67
+  },
+  "task_acceptance": {
+    "exit": 1,
+    "selected": 29,
+    "pass": 6,
+    "unverified": 23,
+    "gate": "FAIL",
+    "qualification": "component checks only",
+    "subcases": {
+      "A25.source_token_replacement": "PASS",
+      "A25.product_path_isolation": "UNVERIFIED",
+      "A25.inference_origin_changes": "UNVERIFIED",
+      "A25.credential_placement_changes": "UNVERIFIED",
+      "A25.byok_shared_stream_override": "UNVERIFIED",
+      "A25.approved_local_exception": "UNVERIFIED",
+      "A09.excluded_membership": "PASS",
+      "A09.revoked_scope_restart": "UNVERIFIED",
+      "A09.authority_change": "UNVERIFIED",
+      "A09.alias_cannot_restore_permission": "UNVERIFIED",
+      "A10.cold_owner_refusal": "PASS",
+      "A10.cold_follower_refusal": "UNVERIFIED",
+      "A10.warm_retained_authority": "PASS",
+      "A10.wrong_authority_refusal": "UNVERIFIED",
+      "A18.consistent_counts_prices": "UNVERIFIED",
+      "A18.rename_alias_overlap": "UNVERIFIED",
+      "A18.removed_id_error": "UNVERIFIED",
+      "A18.unauthorized_membership_redaction": "PASS",
+      "A18.inflight_and_new_attempts": "UNVERIFIED",
+      "A21.mixed_schema_permission_envelope": "PASS",
+      "A21.known_withdrawal_refusal": "UNVERIFIED",
+      "A21.partition_validity_expiry": "UNVERIFIED",
+      "A21.cache_retry_batch_admission": "UNVERIFIED",
+      "A21.stream_policy_diagnostic": "UNVERIFIED",
+      "A17.raw_http_both_api_families": "UNVERIFIED",
+      "A17.official_sdk_roster": "UNVERIFIED",
+      "A17.unsupported_field_contract": "UNVERIFIED",
+      "A17.identity_error_mapping": "UNVERIFIED",
+      "A17.stream_refresh": "UNVERIFIED"
+    },
+    "unverified_reason": "No behavior check is registered for these subcases. Assess existing coverage before registering a claim."
+  }
+}
