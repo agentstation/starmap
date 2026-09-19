@@ -3256,6 +3256,111 @@
           "test": "TestStartupKeepsStarmapFilesAndServerSettingsIsolated"
         }
       ]
+    },
+    "A17.raw_http_both_api_families": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPCanonicalRemovalAfterSuccessfulInference"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPAliasRemovalWithSerializedDiscoveryCache"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestChatControllerOpenAIContract"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestChatControllerOpenRouterRoutingContract"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestEmbeddingsControllerOpenAIContract"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestEmbeddingsControllerOpenRouterContract"
+        }
+      ]
+    },
+    "A17.unsupported_field_contract": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestChatControllerRejectsUnknownOpenAIField"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestUnenforcedProviderFieldsHeader"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/protocol/openrouter",
+          "test": "TestAnUnknownEngineIsRefusedRatherThanIgnored"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/protocol/openrouter",
+          "test": "TestAnUnenforcedPluginIsRefusedRatherThanReported"
+        }
+      ]
+    },
+    "A17.identity_error_mapping": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPAliasRemovalWithSerializedDiscoveryCache"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestMissingModelReturnsNotFoundInBothInferenceProtocols"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestChatControllerOpenRouterStreamErrorContract"
+        }
+      ]
+    },
+    "A17.stream_refresh": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/server",
+      "test": "TestHTTPStreamRetainsCatalogDuringRefresh"
     }
   },
   "task_component_checks": {
