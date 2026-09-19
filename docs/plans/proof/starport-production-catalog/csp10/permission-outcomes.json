@@ -19,19 +19,33 @@
     "lint": "PASS after removing temporary comparison files. The first run raced with prose baseline files inside the repository; no product typecheck failure occurred.",
     "writing": "99 pre-existing unique diagnostics; no new diagnostics.",
     "verifier_tests": "89 PASS",
-    "registered_subcases": "29 of 29; registration alone grants no acceptance credit."
+    "registered_subcases": "29 of 29; registration alone grants no acceptance credit.",
+    "final_race": [
+      {
+        "output": "affected-race.json",
+        "passed_events": 896,
+        "failed_events": 0,
+        "skips": [
+          "TestSDKCanonicalRemovalAfterSuccessfulInference",
+          "TestGatewayOverheadBenchmark",
+          "TestAppWithValkey",
+          "TestSharedStartupDoesNotCreateLocalDatabases"
+        ],
+        "exit_code": 0
+      },
+      {
+        "output": "provider-execution-race.json",
+        "passed_events": 512,
+        "failed_events": 0,
+        "skips": [
+          "TestManagedMaterialValkeyOutageAndRecovery",
+          "TestManagedMaterialStorageRotationRevocationAndRecreation/valkey"
+        ],
+        "exit_code": 0
+      }
+    ]
   },
   "active_checks": [
-    {
-      "session_id": 5732,
-      "output": "/tmp/csp10-a21-affected-race.json",
-      "command": "GOWORK=/tmp/csp10-host-integration.work go test -race -count=1 -timeout=5m -json ./internal/catalog ./internal/app ./internal/server ./internal/server/controllers"
-    },
-    {
-      "session_id": 48397,
-      "output": "/tmp/csp10-provider-execution-race.json",
-      "command": "GOWORK=/tmp/csp10-host-integration.work go test -race -count=1 -timeout=5m -json ./internal/providers/... ./internal/execution"
-    },
     {
       "session_id": 21172,
       "output": "/tmp/csp10-complete-verifier.json",
