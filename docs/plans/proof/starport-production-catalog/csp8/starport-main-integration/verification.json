@@ -177,7 +177,36 @@
         "test": "TestMetadataCollectorConstructionIsPassiveAndChecksPaths",
         "action": "pass"
       }
-    ]
+    ],
+    "path_suites": {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -p 2 -json ./internal/config ./internal/setup ./internal/cli ./cmd/starport",
+      "test_events": {
+        "pass": 463
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "result": "pass",
+          "seconds": 34.931
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "seconds": 1.9020000000000001
+        },
+        {
+          "package": "github.com/agentstation/starport/cmd/starport",
+          "result": "pass",
+          "seconds": 13.06
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/setup",
+          "result": "pass",
+          "seconds": 75.033
+        }
+      ],
+      "proof": "path-suites.jsonl.gz"
+    }
   },
   "qualification": "Diagnostic local-pair integration only. Published dependencies, full acquisition/startup/restart/projection qualification, full checks, review, native CI, and merge remain required."
 }

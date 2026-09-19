@@ -130,7 +130,15 @@
       "proof": "ciworkflow-focused-repair.jsonl.gz",
       "changes": "Require native publication results in executable fail-closed gate tests. Verify six-platform parity and exact runtime shard coverage. Retain native Git fixture assertions. Run ciworkflow once in an early race group, with retained artifacts and no later duplicate execution.",
       "python_runner_tests": 9,
-      "workflow_syntax": "pass"
+      "workflow_syntax": "pass",
+      "hosted": {
+        "head": "67dba0ea554719c2329b637a1eb812c1a440e141",
+        "run": 35415804632,
+        "passed": 55,
+        "failed": 0,
+        "skipped": 0,
+        "proof": "ciworkflow-final-hosted.jsonl.gz"
+      }
     }
   },
   "live_sessions": {
