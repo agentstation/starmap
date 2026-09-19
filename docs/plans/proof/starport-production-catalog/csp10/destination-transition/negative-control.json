@@ -1,0 +1,15 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-count=1",
+    "-timeout=2m",
+    "./internal/router",
+    "-run",
+    "^TestLiveCatalogDestinationTransition/environment/stream=false/host$"
+  ],
+  "exit_code": 1,
+  "stdout": "--- FAIL: TestLiveCatalogDestinationTransition (0.01s)\n    --- FAIL: TestLiveCatalogDestinationTransition/environment/stream=false/host (0.01s)\n        destination_transition_test.go:138: \n            \tError Trace:\t/Users/jack/src/github.com/agentstation/starport-catalog-routing/internal/router/destination_transition_test.go:138\n            \tError:      \tAn error is expected but got nil.\n            \tTest:       \tTestLiveCatalogDestinationTransition/environment/stream=false/host\nFAIL\nFAIL\tgithub.com/agentstation/starport/internal/router\t0.515s\nFAIL\n",
+  "stderr": "",
+  "mutation": "Automatically approve the exact current request before authentication; restore source afterward."
+}

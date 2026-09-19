@@ -1,0 +1,41 @@
+{
+  "task": "CSP10",
+  "recorded_at": "2026-09-19T16:56:57.672429+00:00",
+  "starport_head": "c1a4edac443cf57a11ebcbf5cb4c1bfbe6472d91",
+  "starmap_head": "9845e6cf9ea3a239c90214e1eb937889ca72b129",
+  "status": "24 live transition cases pass locally; A25 remains UNVERIFIED",
+  "scope": {
+    "roles": [
+      "environment",
+      "shared",
+      "byok"
+    ],
+    "modes": [
+      "ordinary",
+      "streamed"
+    ],
+    "mutations": [
+      "host",
+      "port",
+      "path",
+      "header placement"
+    ]
+  },
+  "behavior": "A real connector first sends an approved request. A replacement catalog and runtime publish while the router remains live. The next request fails without another upstream call. Explicit approval of the replacement permits a successful request.",
+  "counts": {
+    "pass": 131
+  },
+  "checks": {
+    "race": 0,
+    "vet": 0,
+    "lint": 0,
+    "targeted_writing": 0
+  },
+  "negative_control": "Automatically trusting the current request target makes the host-refusal assertion fail. The baseline request succeeds and the changed target receives credentials. Production source was restored before final verification.",
+  "limitations": [
+    "Scheme changes, operator overrides, and connection tests still need qualification.",
+    "Selected-authority persistence and effective approval diagnostics remain open.",
+    "No complete A25, native, released-pair, review, or merge credit."
+  ],
+  "next_action": "Complete scheme and operator-override transitions and connection-test coverage, then register only the acceptance subcases fully proved."
+}
