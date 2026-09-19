@@ -3192,6 +3192,47 @@
       "repository": "starport",
       "package": "./internal/catalog",
       "test": "TestAuthorityColdFollowerCannotServeBaseline"
+    },
+    "A25.inference_origin_changes": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestLiveCatalogDestinationTransition"
+    },
+    "A25.credential_placement_changes": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestLiveCatalogDestinationTransition"
+    },
+    "A25.byok_shared_stream_override": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestLiveCatalogDestinationTransition"
+    },
+    "A25.approved_local_exception": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLiveCatalogDestinationTransition"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestApplicationRefusesUnapprovedCredentialDestination"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestApplicationUsesExplicitCredentialDestinationApproval"
+        }
+      ]
     }
   },
   "task_component_checks": {
