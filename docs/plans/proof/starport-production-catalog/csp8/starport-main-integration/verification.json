@@ -1,0 +1,183 @@
+{
+  "head": "3977f481f25b2e38c87d94353f91f4b9b8885b90",
+  "previous_head": "7b59be6ece0768871cd9b60ca556e9530941e05d",
+  "merged_main": "d5d891eefc32d221406f059dc025a3a1e3ab4070",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+  "branch": "codex/starport-product-paths",
+  "conflict_resolution": "Retained current main go.mod and go.sum. The saved branch changed only the Starmap pin and its checksums. No replacement was committed.",
+  "published_module": "v0.16.6-0.20260917204518-b09931c66d7d",
+  "published_check": "FAIL: current published module lacks ExportEmbeddedBaseline, WorkspaceFiles, ReadConfiguration, ConfigurationInput, and ReadDotenv.",
+  "local_pair": {
+    "starmap": "34e34529281a0f7ea9671a69b583b6ab554acb3f",
+    "workspace": "/tmp/csp8-host-integration.work",
+    "toolchain": "Go 1.27.1",
+    "test_events": {
+      "pass": 37
+    },
+    "packages": [
+      {
+        "package": "github.com/agentstation/starport/internal/config",
+        "action": "pass"
+      },
+      {
+        "package": "github.com/agentstation/starport/internal/setup",
+        "action": "pass"
+      },
+      {
+        "package": "github.com/agentstation/starport/internal/catalog",
+        "action": "pass"
+      }
+    ],
+    "tests": [
+      {
+        "test": "TestFileManifestIncludesWorkspaceRecoveryArtifacts",
+        "action": "pass"
+      },
+      {
+        "test": "TestRuntimeAcquisitionProjectsProviders",
+        "action": "pass"
+      },
+      {
+        "test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges/badger",
+        "action": "pass"
+      },
+      {
+        "test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges/sqlite/starport.db",
+        "action": "pass"
+      },
+      {
+        "test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges/sqlite/starport.db-wal",
+        "action": "pass"
+      },
+      {
+        "test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges/files",
+        "action": "pass"
+      },
+      {
+        "test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges/local-admin-token.json",
+        "action": "pass"
+      },
+      {
+        "test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges/welcomed",
+        "action": "pass"
+      },
+      {
+        "test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges",
+        "action": "pass"
+      },
+      {
+        "test": "TestLegacyPathsPreserveExplicitRootsAndLeaves",
+        "action": "pass"
+      },
+      {
+        "test": "TestLoaderResolvesRelativePathsFromConfigDirectory",
+        "action": "pass"
+      },
+      {
+        "test": "TestPlatformPathsUseUserConfigDirectory",
+        "action": "pass"
+      },
+      {
+        "test": "TestPlatformPathsUseExplicitDirectory",
+        "action": "pass"
+      },
+      {
+        "test": "TestPlatformPathsRejectRelativeExplicitDirectory",
+        "action": "pass"
+      },
+      {
+        "test": "TestPathsForConfigDirDerivesManagedPaths",
+        "action": "pass"
+      },
+      {
+        "test": "TestRuntimeStorageProjectsAdapterSettings/Badger",
+        "action": "pass"
+      },
+      {
+        "test": "TestRuntimeStorageProjectsAdapterSettings/Valkey",
+        "action": "pass"
+      },
+      {
+        "test": "TestRuntimeStorageProjectsAdapterSettings",
+        "action": "pass"
+      },
+      {
+        "test": "TestRuntimeSQLProjectsStoreSettings",
+        "action": "pass"
+      },
+      {
+        "test": "TestRecoveryPreservesChangedOrUnknownState/unknown-file",
+        "action": "pass"
+      },
+      {
+        "test": "TestRecoveryPreservesChangedOrUnknownState/replaced-stage",
+        "action": "pass"
+      },
+      {
+        "test": "TestRecoveryPreservesChangedOrUnknownState/invalid-journal",
+        "action": "pass"
+      },
+      {
+        "test": "TestRecoveryPreservesChangedOrUnknownState/unexpected-configuration",
+        "action": "pass"
+      },
+      {
+        "test": "TestRecoveryPreservesChangedOrUnknownState",
+        "action": "pass"
+      },
+      {
+        "test": "TestRuntimeGuardExcludesSetupAndOtherRuntimes",
+        "action": "pass"
+      },
+      {
+        "test": "TestRuntimeGuardRefusesPendingSetup",
+        "action": "pass"
+      },
+      {
+        "test": "TestRuntimeSnapshotPermissionStopsAfterClose",
+        "action": "pass"
+      },
+      {
+        "test": "TestConfiguredPermissionClockLifecycle/close",
+        "action": "pass"
+      },
+      {
+        "test": "TestConfiguredPermissionClockLifecycle/canceled_construction_context",
+        "action": "pass"
+      },
+      {
+        "test": "TestConfiguredPermissionClockLifecycle",
+        "action": "pass"
+      },
+      {
+        "test": "TestConfiguredPermissionClockDisabledStartsNoMonitor",
+        "action": "pass"
+      },
+      {
+        "test": "TestConfiguredPermissionClockRefusesBeforeStoreConstruction",
+        "action": "pass"
+      },
+      {
+        "test": "TestRuntimeIdentityFollowsPrivateStateDirectory",
+        "action": "pass"
+      },
+      {
+        "test": "TestStateDirectoryIsNeverTheWorkspacePath",
+        "action": "pass"
+      },
+      {
+        "test": "TestRuntimeRejectsConcurrentStateDirectoryUse",
+        "action": "pass"
+      },
+      {
+        "test": "TestRuntimeAcquiresSelectedMetadataSource",
+        "action": "pass"
+      },
+      {
+        "test": "TestMetadataCollectorConstructionIsPassiveAndChecksPaths",
+        "action": "pass"
+      }
+    ]
+  },
+  "qualification": "Diagnostic local-pair integration only. Published dependencies, full acquisition/startup/restart/projection qualification, full checks, review, native CI, and merge remain required."
+}

@@ -1,0 +1,10 @@
+# github.com/agentstation/starport/internal/catalog [github.com/agentstation/starport/internal/catalog.test]
+internal/catalog/runtime.go:113:24: undefined: starmap.ExportEmbeddedBaseline
+# github.com/agentstation/starport/internal/config [github.com/agentstation/starport/internal/config.test]
+internal/config/file_manifest.go:107:38: undefined: productpaths.WorkspaceFiles
+internal/config/loader.go:303:29: undefined: productpaths.ReadConfiguration
+internal/config/loader.go:303:65: undefined: productpaths.ConfigurationInput
+internal/config/loader.go:305:29: undefined: productpaths.ReadDotenv
+FAIL	github.com/agentstation/starport/internal/config [build failed]
+FAIL	github.com/agentstation/starport/internal/catalog [build failed]
+FAIL
