@@ -4143,6 +4143,101 @@
           "test": "TestApplicationOwnsAuthorizationFencesAndCatchup"
         }
       ]
+    },
+    "A46.dependency_revision_coherence": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestAuthorityVectorCannotCompensateForStaleSQL"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestAuthorityVectorRequiresExactOwners"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheRejectsMissingDependenciesAndOversizedBundles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheRetainsEveryAuthorityRequirement"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestRepositorySourceRejectsForeignDependencies"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestIdentityAdmissionTracksMembershipAndDeduplicatesGrants"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryRouteWithoutProviderCredentials"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialInvalidationFencesInflightLoad"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialRefreshRejectsExternalGrantWithdrawal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialMutationRevokesPreviouslyReturnedHandles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestUserOnlySkipsOperatorResolution"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestBYOKWinsOverASharedCredentialUnderBYOKFirst"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestBYOKOnlyNeverReachesASharedCredential"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback"
+        }
+      ]
     }
   },
   "task_component_checks": {
