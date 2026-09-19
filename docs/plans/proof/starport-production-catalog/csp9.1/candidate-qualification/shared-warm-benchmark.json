@@ -1,0 +1,3 @@
+{
+  "output": "{\"level\":\"info\",\"scope\":\"account:benchmark\",\"provider\":\"acme\",\"time\":\"2026-09-19T04:25:30-05:00\",\"message\":\"Provider key added\"}\n{\"level\":\"info\",\"provider\":\"acme\",\"access\":\"open\",\"time\":\"2026-09-19T04:25:30-05:00\",\"message\":\"Shared provider credential added\"}\ngoos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/providers/keyring\ncpu: Apple M2 Max\nBenchmarkManagedMaterialWarmShared-12    \t   10000\t       772.7 ns/op\t       0 B/op\t       0 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/providers/keyring\t0.559s\n"
+}

@@ -1,0 +1,63 @@
+{
+  "starport_commit": "9c13a4e",
+  "starmap_registry_commit": "50f071ef2",
+  "status": "final local qualification running; not reviewed or merged",
+  "checks": {
+    "transport_case_pass_events": 4,
+    "transport_skips": 0,
+    "lint": "pass",
+    "changed_prose": "pass",
+    "full_path_run": "pass"
+  },
+  "measurements": {
+    "lifecycle_iterations": 5,
+    "cold_ns": 12358967,
+    "expired_revalidation_ns": 22158,
+    "rotation_ns": 23491992,
+    "revoked_ns": 7342,
+    "rotation_scope": "Includes credential replacement and resolution.",
+    "shared_warm_iterations": 10000,
+    "shared_warm_ns": 772.7,
+    "shared_warm_bytes": 0,
+    "shared_warm_allocations": 0,
+    "full_path_pairs": 200,
+    "nonstream_p50_added_ns": 1246125,
+    "stream_p50_added_ns": 1272790.5,
+    "qualification": "Local loopback baseline only. Does not establish production percentiles or a gateway-only CPU/latency result."
+  },
+  "active_sessions": [
+    {
+      "id": 36094,
+      "command": "python3 /tmp/csp91-run-gates.py",
+      "state": "/tmp/csp91-pre-pr-gates/state.json"
+    },
+    {
+      "id": 19215,
+      "command": "verify-catalog-product.sh --task CSP9.1 --json",
+      "output": "/tmp/csp91-candidate-a45.json"
+    },
+    {
+      "id": 28858,
+      "command": "verify-starmap-ownership.sh with STARMAP_OWNERSHIP_STARMAP_ROOT set to starmap-credential-roles",
+      "output": "/tmp/csp91-pre-pr-gates/verify-starmap-ownership-paired.log"
+    },
+    {
+      "id": 35600,
+      "command": "make technical-writing-check",
+      "output": "/tmp/csp91-candidate-planning-writing.txt"
+    }
+  ],
+  "active_container": {
+    "name": "csp91-final-valkey",
+    "url": "redis://127.0.0.1:65117",
+    "cleanup": "Stop after acceptance verification ends."
+  },
+  "next_action": "Poll both existing sessions. Inspect every gate result, repair new failures, and run structured review after final checks. Preserve published-pair and native qualification requirements.",
+  "gate_findings": [
+    {
+      "gate": "verify-starmap-ownership",
+      "result": "O11 failed against the default checkout, which is outside the selected source pair.",
+      "action": "Paired-root rerun active; retain original result."
+    }
+  ]
+}

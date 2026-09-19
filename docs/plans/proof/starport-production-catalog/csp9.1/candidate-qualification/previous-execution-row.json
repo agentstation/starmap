@@ -1,0 +1,3 @@
+{
+  "html": "<tr><td>2026-09-19 UTC</td><td>CSP9</td><td>Qualified repository gates and repaired terminal credential failures.</td><td>Starport <code>c7e1b9a</code> preserves denial diagnostics after a failed publication. Starmap <code>7961c8281</code> registers its regression. The <a href=\"proof/starport-production-catalog/csp9/repository-review.json\">proof</a> records final affected checks and producer review. The <a href=\"proof/starport-production-catalog/csp9/repository-review/previous-execution-row.json\">archive</a> preserves the oldest entry. Consumer review now passes in three chunks with zero findings. Published qualification and merge remain required.</td></tr>"
+}
