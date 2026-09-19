@@ -1,0 +1,36 @@
+{
+  "scope": "Internal Starport adapter preparation, not a complete operator migration command.",
+  "starport_head": "f04bc47aae0e29907ed7611d4e71c73c56c04081",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "tests": [
+    "TestRuntimeDirectoryMigrationPreservesAcceptedCatalog",
+    "TestRuntimeMigrationRefusesUnpublishedTargetBeforeStorage",
+    "TestProductionAcquisitionLifecycle"
+  ],
+  "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/catalog -run '^Test(ProductionAcquisitionLifecycle|RuntimeDirectoryMigrationPreservesAcceptedCatalog|RuntimeMigrationRefusesUnpublishedTargetBeforeStorage)$'",
+  "result": "PASS",
+  "tests_passed": 3,
+  "duration_seconds": 21.112,
+  "vet": "GOWORK=/tmp/csp8-host-integration.work go vet ./internal/catalog: PASS",
+  "regression": {
+    "before": "An empty replacement catalog store opened successfully. TestRuntimeDirectoryMigrationPreservesAcceptedCatalog failed with: migration must not bootstrap an empty replacement catalog store.",
+    "repair": "Require an existing accepted generation before opening the replacement."
+  },
+  "verified": [
+    "Active source lock prevents preparation.",
+    "Stage leaves target absent and verifies inventory.",
+    "Publication retains source files and retires source startup.",
+    "Replacement requires selected target and retained scheduler identity.",
+    "Replacement uses offline mode without provider or metadata collectors.",
+    "Accepted catalog survives migration and Badger reopen.",
+    "Unpublished target refusal creates no target or baseline."
+  ],
+  "remaining": [
+    "CLI commands and operator documentation",
+    "Saved configuration digest and selection checks before and after completion",
+    "Bind the operation to the original catalog KV selection and accepted generation, including a different nonempty store",
+    "Interrupted migration qualification on native Linux, macOS, and Windows",
+    "Published-module qualification, full review, CI, and merge"
+  ],
+  "completion_credit": false
+}
