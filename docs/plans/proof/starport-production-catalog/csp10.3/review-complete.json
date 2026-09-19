@@ -1,0 +1,7 @@
+{
+  "starport_commit": "a5aab8195011db63ef81e0317b942c0c645dd35d",
+  "report": "starport-final-review.json",
+  "findings": 0,
+  "chunks": 6,
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.1</td><td>Reserved runtime capacity before acceptance at <code>51c635a</code>. Registry and application race suites pass. Seven A44 checks pass. Embedded profiling remains unverified.</td><td><a href=\"proof/starport-production-catalog/csp10.1/generation-capacity.json\">Capacity evidence</a></td></tr>"
+}

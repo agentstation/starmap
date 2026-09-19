@@ -11,7 +11,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated September 19, 2026. <a href="#CSP6">CSP6</a> remains the only task in progress. Fifteen of 40 tasks are complete. Preparation does not count as completion.</p>
 
-<p id="next-action">Resolve the pending signed-history decision for PR #168 before publication. Meanwhile, finish the <a href="#task-CSP10.3">CSP10.3 worker contract</a> qualification and required review.</p>
+<p id="next-action">Resolve the pending signed-history decision for PR #168 before publication. Meanwhile, prepare the <a href="#task-CSP10.2">CSP10.2 authorization contract</a> and capture fail-before evidence.</p>
 
 <p>PR #168 still points to <code>e1d72d5d7e5f2921616b89b91b6460fefaffb62d</code>. Signed candidate <code>45afaed5d2ea6fb3993a4abeb120657d252e9a41</code> preserves all 380 catalog files. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/signed-recovery-after-172.json">recovery proof</a> owns its signatures and publication procedure. The owner question requests explicit permission to replace published history. Do not force-push before that answer.</p>
 
@@ -23,7 +23,7 @@
 
 <p>Set both Starport verifier roots to <code>starport-advisory-exchange</code>. Set both Starmap verifier roots to <code>starmap-advisory-exchange</code>. All five callback regressions now pass. Health and latency use lifecycle-owned workers. Expiry, local resets, cancellation, and outage recovery pass focused tests.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp10.3/qualification.json">qualification state</a> records all seven expanded A49 subcases passing. Final race checks pass 320 events with two service-dependent skips. Full tests, vet, and lint pass. Final Starmap review is clean. Poll Starport review session <code>10702</code>.</p>
+<p>The <a href="proof/starport-production-catalog/csp10.3/qualification.json">qualification state</a> records all seven expanded A49 subcases passing. Final race checks pass 320 events with two service-dependent skips. Full tests, vet, and lint pass. Both final reviews pass with zero findings. No verification sessions remain active.</p>
 
 <p>A compatible published Starmap module must precede dependent Starport qualification and merges. The current pin lacks <code>pkg/productfiles</code>. Never commit local replacements. Native checks, actual merge commits, and released-pair acceptance remain required.</p>
 
@@ -660,7 +660,7 @@
 
 
 
-<tr><td>2026-09-19</td><td>CSP10.1</td><td>Reserved runtime capacity before acceptance at <code>51c635a</code>. Registry and application race suites pass. Seven A44 checks pass. Embedded profiling remains unverified.</td><td><a href="proof/starport-production-catalog/csp10.1/generation-capacity.json">Capacity evidence</a></td></tr>
+
 <tr><td>2026-09-19</td><td>CSP10.1</td><td>Indexed discovery and embedded profiling use <code>69f2164</code>. All eight A44 subcases pass locally. Race checks report 430 passing test events. Repository checks run.</td><td><a href="proof/starport-production-catalog/csp10.1/discovery-and-profile.json">Discovery and profile evidence</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.1</td><td>Indexed remaining billing, usage, and endpoint lookups at <code>05a1ae1</code>. Four consumer race suites pass. Expanded acceptance and repository checks run.</td><td><a href="proof/starport-production-catalog/csp10.1/exact-route-audit.json">Exact-route audit</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.1</td><td>All eight expanded A44 checks pass. Catalog race reports 244 passing events. Eleven benchmarks pass. Starmap review is clean. Repository qualification continues.</td><td><a href="proof/starport-production-catalog/csp10.1/route-final-local.json">Final local route evidence</a></td></tr>
@@ -670,4 +670,5 @@
 <tr><td>2026-09-19</td><td>CSP10.3</td><td>Background advisory exchange at <code>a67c691</code> removes callback storage calls. Race, recovery, and lifecycle checks pass. Resource and fleet qualification remain open.</td><td><a href="proof/starport-production-catalog/csp10.3/worker-implementation.json">Worker implementation</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.3</td><td>Resource and fleet contracts pass at <code>633968c</code>. Starmap <code>de118cdb0</code> registers all seven A49 subcases. Final qualification runs.</td><td><a href="proof/starport-production-catalog/csp10.3/qualification.json">Qualification state</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.3</td><td>Repair unchanged-peer renewal at <code>1b0fc39</code>. All seven expanded A49 cases pass. Final race checks pass 320 events with two service-dependent skips. Starport review runs.</td><td><a href="proof/starport-production-catalog/csp10.3/renewal-completion.json">Renewal qualification</a></td></tr>
+<tr><td>2026-09-19</td><td>CSP10.3</td><td>Final Starport review passes across six sections with zero findings. Both source reviews are clean. Native qualification and merges remain open.</td><td><a href="proof/starport-production-catalog/csp10.3/review-complete.json">Review completion</a></td></tr>
 </tbody></table></section></main></body></html>
