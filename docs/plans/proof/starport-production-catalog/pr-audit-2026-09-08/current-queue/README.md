@@ -1,3 +1,14 @@
+## Updated catalog qualification
+
+Publisher run `35409372662` completed with `awaiting_updated_checks`.
+PR #168 now uses head `f91908cede32e052a5dc36da12d3ec26c0e126ef` and includes merged repair `b6ce2243c`.
+All 380 changes remain catalog files. Their bytes match the original candidate.
+
+CSP6 owns CI run `35409735768` and watch session `44725`.
+Qualify required checks and all six native platforms before checked promotion.
+Then capture both channels and retry original preparation run `35395944704`.
+Preserve #165 until replacement verification. Starport has no open PRs.
+
 ## Repair merge and catalog promotion
 
 Starmap #169 merged at `b6ce2243cc606b72175a53d9af5ea79f950ba416` after all 23 checks passed.
