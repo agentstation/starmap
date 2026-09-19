@@ -1,0 +1,44 @@
+{
+  "task": "CSP10.1",
+  "recorded_at": "2026-09-19T18:34:00.117850+00:00",
+  "starport_commit": "51c635a",
+  "starmap_commit": "bafbce8bf",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "workspace": "/tmp/csp101-host-integration.work",
+  "status": "partial local implementation; not merged",
+  "changes": [
+    "Reserve capacity before durable catalog acceptance. Count current, draining, and prepared runtime generations against the limit of four.",
+    "Keep admitted leases and connectors alive. Release capacity after close or completion. Refuse foreign candidate publication.",
+    "Report runtime_generation_capacity to operators. Preserve current permission outcomes on refusal."
+  ],
+  "checks": {
+    "registry_race": "PASS: entire package, 12.289 seconds",
+    "app_race": "PASS: entire package, 177.458 seconds",
+    "focused_race": "PASS: final capacity and operation classification tests",
+    "vet": "PASS: internal/registry, internal/app, internal/catalog",
+    "verifier_tests": "89 PASS",
+    "a44_selected": {
+      "A44.canonical_alias_lookup": "PASS",
+      "A44.caller_owned_values": "PASS",
+      "A44.exact_model_scaling": "PASS",
+      "A44.embedded_catalog_profile": "UNVERIFIED",
+      "A44.precomputed_static_candidates": "PASS",
+      "A44.auto_fallback_semantics": "PASS",
+      "A44.generation_lease_consistency": "PASS",
+      "A44.retained_generation_bounds": "PASS"
+    },
+    "a44_gate": "exit 1: seven PASS, one UNVERIFIED (embedded_catalog_profile lacks a behavior check). The report includes unselected primary cases as unverified. No released-pair qualification.",
+    "writing": "Four new Go files PASS. Operator guide retains the same 48 diagnostics as its parent, with identical diagnostic records."
+  },
+  "next_action": "Complete the embedded catalog profile and precomputed definition/offering discovery indexes. Then run the complete A44 task, remaining repository checks, required review, published-pair native qualification, and merge.",
+  "logs": {
+    "fail_before": "=== RUN   TestRuntimeGenerationCapacityPreservesLeases\n    generation_capacity_test.go:45: \n        \tError Trace:\t/Users/jack/src/github.com/agentstation/starport-catalog-indexes/internal/registry/generation_capacity_test.go:45\n        \tError:      \tAn error is expected but got nil.\n        \tTest:       \tTestRuntimeGenerationCapacityPreservesLeases\n        \tMessages:   \tfour live generations must refuse a fifth before catalog acceptance\n--- FAIL: TestRuntimeGenerationCapacityPreservesLeases (1.22s)\nFAIL\nFAIL\tgithub.com/agentstation/starport/internal/registry\t1.608s\nFAIL\n",
+    "registry_race": "ok  \tgithub.com/agentstation/starport/internal/registry\t12.289s\n",
+    "app_capacity": "=== RUN   TestCatalogCapacityRefusesBeforeAcceptance\n=== RUN   TestCatalogCapacityRefusesBeforeAcceptance/withdraw-false\n{\"level\":\"warn\",\"reason\":\"runtime_generation_capacity\",\"candidate_generation_id\":\"refused-capacity\",\"new_attempts_allowed\":true,\"time\":\"2026-09-19T13:26:36-05:00\",\"message\":\"catalog candidate refused; accepted metadata retained\"}\n=== RUN   TestCatalogCapacityRefusesBeforeAcceptance/withdraw-true\n{\"level\":\"warn\",\"reason\":\"runtime_generation_capacity\",\"candidate_generation_id\":\"refused-capacity\",\"new_attempts_allowed\":false,\"time\":\"2026-09-19T13:26:37-05:00\",\"message\":\"catalog candidate refused; accepted metadata retained\"}\n--- PASS: TestCatalogCapacityRefusesBeforeAcceptance (11.38s)\n    --- PASS: TestCatalogCapacityRefusesBeforeAcceptance/withdraw-false (10.94s)\n    --- PASS: TestCatalogCapacityRefusesBeforeAcceptance/withdraw-true (0.43s)\nPASS\nok  \tgithub.com/agentstation/starport/internal/app\t13.294s\n",
+    "app_race": "ok  \tgithub.com/agentstation/starport/internal/app\t177.458s\n",
+    "focused_race": "ok  \tgithub.com/agentstation/starport/internal/catalog\t1.966s\nok  \tgithub.com/agentstation/starport/internal/registry\t12.032s\n",
+    "runtime_final": "ok  \tgithub.com/agentstation/starport/internal/registry\t12.071s\n",
+    "verifier_tests": "----------------------------------------------------------------------\nRan 89 tests in 3.284s\n\nOK\n"
+  },
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10</td><td>Verify approvals across live catalog changes.</td><td><a href=\"proof/starport-production-catalog/csp10/destination-transition.json\">Proof</a>: <code>c1a4eda</code>. All 24 transition cases and 131 router race events pass. The <a href=\"proof/starport-production-catalog/csp10/destination-transition/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}

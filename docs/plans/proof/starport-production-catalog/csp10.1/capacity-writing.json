@@ -1,0 +1,922 @@
+{
+  "before": {
+    "exit_code": 1,
+    "report": {
+      "config_sources": [
+        "/Users/jack/.config/agentstation/technical-writing.toml",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-indexes/.agents/technical-writing.toml"
+      ],
+      "documents": [
+        {
+          "diagnostics": [
+            {
+              "column": 35,
+              "excerpt": "to serve without a gateway API key; the banner then reports",
+              "line": 47,
+              "message": "replace the semicolon with a period",
+              "path": "<stdin>",
+              "rule": "semicolon",
+              "severity": "error"
+            },
+            {
+              "column": 65,
+              "excerpt": "A flag or a configuration value fixes the mode for the process. The console",
+              "line": 95,
+              "message": "sentence has 28 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 8,
+              "excerpt": "switch is refused while either is set, and the refusal names the value to",
+              "line": 96,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 32,
+              "excerpt": "switch is refused while either is set, and the refusal names the value to",
+              "line": 96,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 1,
+              "excerpt": "A data directory carried from a laptop to a public address does not carry an",
+              "line": 118,
+              "message": "sentence has 30 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 22,
+              "excerpt": "open gateway with it \u2014 the gateway falls back to `required` and warns, naming",
+              "line": 119,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 71,
+              "excerpt": "The console switch enforces the same rule from the other side: it can be used",
+              "line": 122,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 71,
+              "excerpt": "only from the machine running the gateway. An open gateway can always be closed",
+              "line": 123,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 31,
+              "excerpt": "from that machine, and cannot be opened further from anywhere else.",
+              "line": 124,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 1,
+              "excerpt": "`starport ui` reads the token file rather than calling the gateway, so it",
+              "line": 148,
+              "message": "sentence has 26 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 77,
+              "excerpt": "and the browser cannot read. What differs is the grant that mints it. Three are",
+              "line": 155,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 66,
+              "excerpt": "The first two are machine-local by construction. A launch ticket is minted from",
+              "line": 164,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 37,
+              "excerpt": "borrows the vocabulary of identity. A browser that reaches the console with no",
+              "line": 167,
+              "message": "sentence has 37 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 74,
+              "excerpt": "session lands on a first-contact page that states whether the address it was",
+              "line": 168,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 57,
+              "excerpt": "allowed to describe itself in the vocabulary of identity; no machine-local",
+              "line": 181,
+              "message": "replace the semicolon with a period",
+              "path": "<stdin>",
+              "rule": "semicolon",
+              "severity": "error"
+            },
+            {
+              "column": 26,
+              "excerpt": "gateway API key instead. That is a different credential with different",
+              "line": 186,
+              "message": "sentence has 28 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 45,
+              "excerpt": "consequences: it authenticates a caller and is metered against an account, where",
+              "line": 187,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 19,
+              "excerpt": "acquisition paths \u2014 per-provider OAuth applications, and enterprise SSO",
+              "line": 194,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 16,
+              "excerpt": "through WorkOS \u2014 and either or both may be configured:",
+              "line": 195,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 41,
+              "excerpt": "through WorkOS \u2014 and either or both may be configured:",
+              "line": 195,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 47,
+              "excerpt": "`<base>/console/identity/<provider>/callback` \u2014 for WorkOS, add",
+              "line": 221,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 12,
+              "excerpt": "dashboard. A configured provider appears",
+              "line": 223,
+              "message": "sentence has 38 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 38,
+              "excerpt": "on the first-contact page as a choice; choosing it runs the provider's",
+              "line": 224,
+              "message": "replace the semicolon with a period",
+              "path": "<stdin>",
+              "rule": "semicolon",
+              "severity": "error"
+            },
+            {
+              "column": 49,
+              "excerpt": "mints, recording the provider-issued subject it was minted for. The person's",
+              "line": 226,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 8,
+              "excerpt": "record \u2014 subject, email, display name \u2014 is upserted in the identity store on",
+              "line": 227,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 39,
+              "excerpt": "record \u2014 subject, email, display name \u2014 is upserted in the identity store on",
+              "line": 227,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 41,
+              "excerpt": "record \u2014 subject, email, display name \u2014 is upserted in the identity store on",
+              "line": 227,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 51,
+              "excerpt": "The identity records live in the relational store \u2014 the embedded SQLite by",
+              "line": 230,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 47,
+              "excerpt": "default, or the configured Postgres or MySQL. A half-configured path (an ID",
+              "line": 231,
+              "message": "sentence has 29 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 29,
+              "excerpt": "organization or connection) is refused at start rather than silently",
+              "line": 233,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 5,
+              "excerpt": "does; the paths differ only in who vouches.",
+              "line": 235,
+              "message": "replace the semicolon with a period",
+              "path": "<stdin>",
+              "rule": "semicolon",
+              "severity": "error"
+            },
+            {
+              "column": 1,
+              "excerpt": "The identity routes stay mounted on every deployment.",
+              "line": 237,
+              "message": "sentence has 45 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 68,
+              "excerpt": "`GET /console/identity/providers` answers with the configured list \u2014 empty",
+              "line": 238,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 20,
+              "excerpt": "when there is none \u2014 and the other identity routes answer 503 naming these",
+              "line": 239,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 60,
+              "excerpt": "Rotate before you expose a gateway on a reachable address. The token printed",
+              "line": 254,
+              "message": "sentence has 35 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 16,
+              "excerpt": "at first start has been in a terminal, and a terminal is scrollback, a tmux",
+              "line": 255,
+              "message": "use a simple tense when it preserves the timing",
+              "path": "<stdin>",
+              "rule": "complex_verb",
+              "severity": "error"
+            },
+            {
+              "column": 31,
+              "excerpt": "this machine's token has ever been rotated.",
+              "line": 257,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 1,
+              "excerpt": "An unreadable token file is refused on every read path rather than replaced,",
+              "line": 259,
+              "message": "sentence has 34 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 26,
+              "excerpt": "An unreadable token file is refused on every read path rather than replaced,",
+              "line": 259,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 18,
+              "excerpt": "can spend it. It is read-only from no route \u2014 an operator applies and rotates",
+              "line": 794,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 45,
+              "excerpt": "can spend it. It is read-only from no route \u2014 an operator applies and rotates",
+              "line": 794,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 33,
+              "excerpt": "it over HTTP without restarting \u2014 and it is not BYOK. An **environment",
+              "line": 795,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 21,
+              "excerpt": "credential** cannot be changed over HTTP at all, because it lives in the",
+              "line": 796,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 68,
+              "excerpt": "`GET /api/v1/providers/status` reports the environment plane only. The console",
+              "line": 799,
+              "message": "sentence has 26 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 1,
+              "excerpt": "The default is `operator_first`. `byok_only` is how an operator withholds the",
+              "line": 812,
+              "message": "sentence has 34 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 6,
+              "excerpt": "not. A key may narrow its account's strategy and is refused if it would widen",
+              "line": 815,
+              "message": "sentence has 28 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 50,
+              "excerpt": "not. A key may narrow its account's strategy and is refused if it would widen",
+              "line": 815,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 59,
+              "excerpt": "it, so stamping a key cannot buy back a plane the account was denied.",
+              "line": 816,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            }
+          ],
+          "passed": false,
+          "path": "<stdin>",
+          "words": 11066
+        }
+      ],
+      "mode": "strict",
+      "passed": false,
+      "summary": {
+        "diagnostics": 48,
+        "errors": 48,
+        "files": 1,
+        "max_warnings_per_100_words": 0.0,
+        "warning_rate_per_100_words": 0.0,
+        "warnings": 0
+      }
+    }
+  },
+  "after": {
+    "exit_code": 1,
+    "report": {
+      "config_sources": [
+        "/Users/jack/.config/agentstation/technical-writing.toml",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-indexes/.agents/technical-writing.toml"
+      ],
+      "documents": [
+        {
+          "diagnostics": [
+            {
+              "column": 35,
+              "excerpt": "to serve without a gateway API key; the banner then reports",
+              "line": 47,
+              "message": "replace the semicolon with a period",
+              "path": "<stdin>",
+              "rule": "semicolon",
+              "severity": "error"
+            },
+            {
+              "column": 65,
+              "excerpt": "A flag or a configuration value fixes the mode for the process. The console",
+              "line": 95,
+              "message": "sentence has 28 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 8,
+              "excerpt": "switch is refused while either is set, and the refusal names the value to",
+              "line": 96,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 32,
+              "excerpt": "switch is refused while either is set, and the refusal names the value to",
+              "line": 96,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 1,
+              "excerpt": "A data directory carried from a laptop to a public address does not carry an",
+              "line": 118,
+              "message": "sentence has 30 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 22,
+              "excerpt": "open gateway with it \u2014 the gateway falls back to `required` and warns, naming",
+              "line": 119,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 71,
+              "excerpt": "The console switch enforces the same rule from the other side: it can be used",
+              "line": 122,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 71,
+              "excerpt": "only from the machine running the gateway. An open gateway can always be closed",
+              "line": 123,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 31,
+              "excerpt": "from that machine, and cannot be opened further from anywhere else.",
+              "line": 124,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 1,
+              "excerpt": "`starport ui` reads the token file rather than calling the gateway, so it",
+              "line": 148,
+              "message": "sentence has 26 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 77,
+              "excerpt": "and the browser cannot read. What differs is the grant that mints it. Three are",
+              "line": 155,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 66,
+              "excerpt": "The first two are machine-local by construction. A launch ticket is minted from",
+              "line": 164,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 37,
+              "excerpt": "borrows the vocabulary of identity. A browser that reaches the console with no",
+              "line": 167,
+              "message": "sentence has 37 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 74,
+              "excerpt": "session lands on a first-contact page that states whether the address it was",
+              "line": 168,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 57,
+              "excerpt": "allowed to describe itself in the vocabulary of identity; no machine-local",
+              "line": 181,
+              "message": "replace the semicolon with a period",
+              "path": "<stdin>",
+              "rule": "semicolon",
+              "severity": "error"
+            },
+            {
+              "column": 26,
+              "excerpt": "gateway API key instead. That is a different credential with different",
+              "line": 186,
+              "message": "sentence has 28 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 45,
+              "excerpt": "consequences: it authenticates a caller and is metered against an account, where",
+              "line": 187,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 19,
+              "excerpt": "acquisition paths \u2014 per-provider OAuth applications, and enterprise SSO",
+              "line": 194,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 16,
+              "excerpt": "through WorkOS \u2014 and either or both may be configured:",
+              "line": 195,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 41,
+              "excerpt": "through WorkOS \u2014 and either or both may be configured:",
+              "line": 195,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 47,
+              "excerpt": "`<base>/console/identity/<provider>/callback` \u2014 for WorkOS, add",
+              "line": 221,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 12,
+              "excerpt": "dashboard. A configured provider appears",
+              "line": 223,
+              "message": "sentence has 38 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 38,
+              "excerpt": "on the first-contact page as a choice; choosing it runs the provider's",
+              "line": 224,
+              "message": "replace the semicolon with a period",
+              "path": "<stdin>",
+              "rule": "semicolon",
+              "severity": "error"
+            },
+            {
+              "column": 49,
+              "excerpt": "mints, recording the provider-issued subject it was minted for. The person's",
+              "line": 226,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 8,
+              "excerpt": "record \u2014 subject, email, display name \u2014 is upserted in the identity store on",
+              "line": 227,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 39,
+              "excerpt": "record \u2014 subject, email, display name \u2014 is upserted in the identity store on",
+              "line": 227,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 41,
+              "excerpt": "record \u2014 subject, email, display name \u2014 is upserted in the identity store on",
+              "line": 227,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 51,
+              "excerpt": "The identity records live in the relational store \u2014 the embedded SQLite by",
+              "line": 230,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 47,
+              "excerpt": "default, or the configured Postgres or MySQL. A half-configured path (an ID",
+              "line": 231,
+              "message": "sentence has 29 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 29,
+              "excerpt": "organization or connection) is refused at start rather than silently",
+              "line": 233,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 5,
+              "excerpt": "does; the paths differ only in who vouches.",
+              "line": 235,
+              "message": "replace the semicolon with a period",
+              "path": "<stdin>",
+              "rule": "semicolon",
+              "severity": "error"
+            },
+            {
+              "column": 1,
+              "excerpt": "The identity routes stay mounted on every deployment.",
+              "line": 237,
+              "message": "sentence has 45 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 68,
+              "excerpt": "`GET /console/identity/providers` answers with the configured list \u2014 empty",
+              "line": 238,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 20,
+              "excerpt": "when there is none \u2014 and the other identity routes answer 503 naming these",
+              "line": 239,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 60,
+              "excerpt": "Rotate before you expose a gateway on a reachable address. The token printed",
+              "line": 254,
+              "message": "sentence has 35 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 16,
+              "excerpt": "at first start has been in a terminal, and a terminal is scrollback, a tmux",
+              "line": 255,
+              "message": "use a simple tense when it preserves the timing",
+              "path": "<stdin>",
+              "rule": "complex_verb",
+              "severity": "error"
+            },
+            {
+              "column": 31,
+              "excerpt": "this machine's token has ever been rotated.",
+              "line": 257,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 1,
+              "excerpt": "An unreadable token file is refused on every read path rather than replaced,",
+              "line": 259,
+              "message": "sentence has 34 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 26,
+              "excerpt": "An unreadable token file is refused on every read path rather than replaced,",
+              "line": 259,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 18,
+              "excerpt": "can spend it. It is read-only from no route \u2014 an operator applies and rotates",
+              "line": 794,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 45,
+              "excerpt": "can spend it. It is read-only from no route \u2014 an operator applies and rotates",
+              "line": 794,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 33,
+              "excerpt": "it over HTTP without restarting \u2014 and it is not BYOK. An **environment",
+              "line": 795,
+              "message": "replace the em dash with explicit structure",
+              "path": "<stdin>",
+              "rule": "em_dash",
+              "severity": "error"
+            },
+            {
+              "column": 21,
+              "excerpt": "credential** cannot be changed over HTTP at all, because it lives in the",
+              "line": 796,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 68,
+              "excerpt": "`GET /api/v1/providers/status` reports the environment plane only. The console",
+              "line": 799,
+              "message": "sentence has 26 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 1,
+              "excerpt": "The default is `operator_first`. `byok_only` is how an operator withholds the",
+              "line": 812,
+              "message": "sentence has 34 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 6,
+              "excerpt": "not. A key may narrow its account's strategy and is refused if it would widen",
+              "line": 815,
+              "message": "sentence has 28 words; limit is 25",
+              "path": "<stdin>",
+              "rule": "long_sentence",
+              "severity": "error"
+            },
+            {
+              "column": 50,
+              "excerpt": "not. A key may narrow its account's strategy and is refused if it would widen",
+              "line": 815,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            },
+            {
+              "column": 59,
+              "excerpt": "it, so stamping a key cannot buy back a plane the account was denied.",
+              "line": 816,
+              "message": "use active voice when the actor is known",
+              "path": "<stdin>",
+              "rule": "passive_voice",
+              "severity": "error"
+            }
+          ],
+          "passed": false,
+          "path": "<stdin>",
+          "words": 11114
+        }
+      ],
+      "mode": "strict",
+      "passed": false,
+      "summary": {
+        "diagnostics": 48,
+        "errors": 48,
+        "files": 1,
+        "max_warnings_per_100_words": 0.0,
+        "warning_rate_per_100_words": 0.0,
+        "warnings": 0
+      }
+    }
+  }
+}
