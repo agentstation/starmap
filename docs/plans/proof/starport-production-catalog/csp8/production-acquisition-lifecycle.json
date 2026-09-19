@@ -1,0 +1,38 @@
+{
+  "scope": "CSP8 local combined acquisition evidence. Published dependency qualification remains open.",
+  "starport_head": "43a029b9d218be6aa84ca0e6ce080353a4fb7d88",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "go_version": "1.27.1",
+  "test": "TestProductionAcquisitionLifecycle",
+  "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/catalog -run '^TestProductionAcquisitionLifecycle$'",
+  "result": "PASS",
+  "tests": 1,
+  "duration_seconds": 22.313,
+  "production_paths": [
+    "OpenRuntime credential resolver and provider HTTP collector",
+    "Selected models.dev metadata collector",
+    "Automatic startup acquisition and explicit refresh",
+    "Accepted generation persistence and control-plane activation",
+    "Provider offering projection",
+    "Offline restart after disk-backed Badger closes and reopens"
+  ],
+  "controlled_inputs": [
+    "Loopback provider HTTP endpoint and fixture acquisition credential",
+    "Metadata HTTP transport response",
+    "Configured catalog file",
+    "Test adapter availability for routing projection"
+  ],
+  "assertions": [
+    "Provider name changes on refresh and changes generation identity.",
+    "Provider context window and metadata output limit coexist in routing projection.",
+    "Both source observations survive persistence and restart.",
+    "Accepted catalog payload and generation remain identical after restart.",
+    "Offline restart makes no provider or metadata request."
+  ],
+  "remaining": [
+    "Committed published Starmap dependency qualification",
+    "Full paired review and native qualification",
+    "Merge before task completion"
+  ],
+  "completion_credit": false
+}
