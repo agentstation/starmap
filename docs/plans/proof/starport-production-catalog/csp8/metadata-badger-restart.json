@@ -1,0 +1,22 @@
+{
+  "scope": "Local preparation for CSP8. This does not complete A20.starport_provider_nonprovider.",
+  "starport_head": "d37a074bfe80843de3e78f020d7d86963fac2feb",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "go_version": "1.27.1",
+  "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/catalog -run '^TestRuntimeAcquiresSelectedMetadataSource$'",
+  "result": "PASS",
+  "tests": 1,
+  "duration_seconds": 99.869,
+  "evidence": [
+    "Production metadata collector reads controlled models.dev response.",
+    "Disk-backed Badger closes and reopens before offline runtime restart.",
+    "Accepted generation, source observations, and catalog payload survive restart.",
+    "Offline restart makes no additional metadata request."
+  ],
+  "remaining": [
+    "Combined production provider and metadata acquisition through startup, refresh, restart, and projections.",
+    "Qualification against the committed published Starmap module.",
+    "Full review, native qualification, and merge."
+  ],
+  "completion_credit": false
+}
