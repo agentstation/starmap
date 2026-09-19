@@ -14,16 +14,19 @@
   },
   "repository_checks": "32 of 33 pass after the ownership rerun. The published compatible module requirement remains blocked.",
   "review": {
-    "status": "running",
+    "status": "PASS",
     "reviewers": [
       "codex:gpt-5.6-sol:xhigh",
       "claude:opus:high"
     ],
     "starport": {
-      "status": "running",
-      "session_id": 46654,
-      "report": "/tmp/csp10-starport-review-qualified.json",
-      "process_log": "/tmp/csp10-starport-review-qualified-process.log"
+      "status": "PASS",
+      "exit_code": 0,
+      "findings": 0,
+      "passes": 5,
+      "bundle_bytes": 1021652,
+      "report": "candidate-acceptance/starport-review.json",
+      "secret_scan": "clean"
     },
     "starmap": {
       "status": "PASS",
@@ -46,5 +49,5 @@
     "Native CI, required clean review, publication, and merge remain outstanding.",
     "CSP10 remains a local preparation and receives no terminal task credit."
   ],
-  "next_action": "Collect both reviews. Verify any findings against the runtime contracts. Finish producer publication before exact-pair native qualification and merge."
+  "next_action": "Preserve reviewed branches. Await producer publication before exact-pair native qualification and merge. Prepare CSP10.1 in isolated worktrees."
 }

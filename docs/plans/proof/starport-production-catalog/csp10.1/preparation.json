@@ -1,0 +1,24 @@
+{
+  "task": "CSP10.1",
+  "recorded_at": "2026-09-19T18:08:24.039805+00:00",
+  "status": "read-only audit and isolated worktrees ready; implementation not started",
+  "starport": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-indexes",
+    "branch": "codex/starport-catalog-indexes",
+    "parent": "79978cd"
+  },
+  "starmap": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-indexes",
+    "branch": "codex/starmap-catalog-indexes",
+    "parent": "ac3d25e7e"
+  },
+  "workspace": "/tmp/csp101-host-integration.work",
+  "observations": [
+    "planOperation builds candidates from every route before exact-model filtering.",
+    "toPlanningCandidates calls Routes, Definition, and Offering for each route and allocates endpoint maps and capability slices.",
+    "BenchmarkSelectModel uses the legacy registry path without a catalog snapshot. It cannot qualify production catalog lookup.",
+    "The accepted numeric profile limits retained runtime generations to four and requires delayed nonrestrictive activation without terminating valid streams."
+  ],
+  "next_action": "Add a failing allocation/scaling regression through the catalog runtime. Verify current retention behavior. Implement static candidate indexes and bounded publication while preserving caller-owned values, aliases, overrides, automatic fallback, and permission checks.",
+  "completion_requirements": "All eight A44 subcases, the task race and benchmark checks, review, published pair, native qualification, and merge remain required."
+}
