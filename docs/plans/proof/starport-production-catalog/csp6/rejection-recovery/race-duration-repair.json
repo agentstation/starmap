@@ -1,6 +1,6 @@
 {
   "captured_at": "2026-09-19T01:29:32.278653+00:00",
-  "status": "migration process guard repair under verification",
+  "status": "focused migration repair passed; final review and runtime group three active",
   "owner": "CSP6",
   "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
   "branch": "codex/acquisition-coalescing-fixture",
@@ -66,15 +66,36 @@
       "failure": "Three TestPublishDirectoryMigrationRecoversProcessExit children reached the one-minute process guard.",
       "proof": "race-duration-shard-2-failure.jsonl.gz",
       "repair": "Run all five independent crash scenarios serially. Preserve crash points and the one-minute guard."
+    },
+    "migration_crash_repair": {
+      "main": {
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 111.169
+      },
+      "candidate": {
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 252.009
+      },
+      "scope": "All five crash points plus parent test. One-minute child guard unchanged.",
+      "proofs": [
+        "migration-crash-main.jsonl.gz",
+        "migration-crash-candidate.jsonl.gz"
+      ],
+      "lint": "0 issues",
+      "goago": "no findings or errors",
+      "prose": "1836 files, no diagnostics"
     }
   },
   "live_sessions": {
     "9821": "runtime shard 3, /tmp/csp6-runtime-shard-3.log and .jsonl",
-    "22762": "focused migration crash race tests against main, /tmp/csp6-migration-crash-main.jsonl",
-    "40989": "focused migration crash race tests against candidate, /tmp/csp6-migration-crash-candidate.jsonl"
+    "26992": "final Sol xhigh and Opus high autoreview; /tmp/csp6-race-repair-final-review.log and .json"
   },
-  "next_action": "Verify all five migration crash scenarios against both catalogs and finish shard 3. Run applicable checks for runtime/migration_publish_test.go, commit it, and repeat required autoreview. Do not rerun unchanged groups solely to replace recorded fail-before evidence; hosted CI must qualify every group at the final head. Then publish the consolidated repair PR.",
-  "source_commit": "20145bb6d110765464cbeabe42ba5dde1ff00063",
+  "next_action": "Finish shard 3 and final review through the live sessions. Record exact test counts and inventory coverage, then publish consolidated repair head 336df28b6. The full runtime group 2 failure remains fail-before evidence; its only failed test now passes all crash points under race on both catalogs. Hosted final-head CI must pass every group before merge and publisher #168 resume.",
+  "source_commit": "336df28b611e62d058ff17029ffd274bc520fe84",
   "native_intel_failure": {
     "run": 35409735768,
     "job": 105806772484,
