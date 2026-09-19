@@ -1,0 +1,15 @@
+{
+  "packages": [
+    "github.com/agentstation/starmap/runtime",
+    "github.com/agentstation/starmap/runtime/source",
+    "github.com/agentstation/starmap/runtime/status"
+  ],
+  "shard_counts": [
+    139,
+    130,
+    168
+  ],
+  "unique_top_level_cases": 437,
+  "exact_current_inventory_match": true,
+  "overlap": 0
+}

@@ -88,6 +88,18 @@
       "lint": "0 issues",
       "goago": "no findings or errors",
       "prose": "1836 files, no diagnostics"
+    },
+    "runtime_partition": {
+      "proof": "runtime-inventory-verification.json",
+      "command": "go test -race -json -list . ./runtime/...",
+      "unique_cases": 437,
+      "shard_counts": [
+        139,
+        130,
+        168
+      ],
+      "overlap": 0,
+      "exact_current_inventory_match": true
     }
   },
   "live_sessions": {
