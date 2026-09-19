@@ -1,0 +1,55 @@
+{
+  "commit": "fbe3c9663ddb8230db29e0aeef72738ac894d728",
+  "status": "local concurrency and storage checkpoint; A45 incomplete",
+  "fixed_regressions": [
+    "Concurrent failed cold loads now share one source attempt.",
+    "Canceling the first caller no longer cancels another caller's shared source work."
+  ],
+  "implemented": [
+    "Cache lifetime owns source cancellation; each load retains its configured timeout.",
+    "Each caller can stop waiting independently.",
+    "Shutdown cancels and joins active source work."
+  ],
+  "tests": {
+    "keyring_router_pass_events": 185,
+    "keyring_router_skips": 0,
+    "final_managed_pass_events": 24,
+    "final_managed_skips": 0,
+    "coverage": [
+      "success and failure coalescing",
+      "unrelated tenant progress",
+      "entry capacity and expiry eviction",
+      "secret-byte capacity and reclamation",
+      "idle eviction",
+      "independent-manager rotation, deletion, recreation and shared-grant withdrawal"
+    ]
+  },
+  "storage": {
+    "backends": [
+      "memory",
+      "Badger",
+      "Valkey"
+    ],
+    "valkey_image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "container": "csp91-valkey",
+    "container_status": "stopped and removed"
+  },
+  "checks": {
+    "lint": "pass",
+    "new_test_prose": "pass"
+  },
+  "remaining": [
+    "Qualify actual storage outage and recovery, load deadlines and shutdown during active work.",
+    "Prove refresh fairness and retained-byte behavior under churn.",
+    "Audit queued and retried transport paths.",
+    "Register all nine A45 subcases and complete benchmark profiles.",
+    "Complete repository gates, structured review, published-pair and native qualification, then merge."
+  ],
+  "active_sessions": [
+    {
+      "id": 97314,
+      "command": "make technical-writing-check",
+      "output": "/tmp/csp91-concurrency-planning-writing.txt"
+    }
+  ]
+}
