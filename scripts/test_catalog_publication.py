@@ -111,6 +111,39 @@ class PromotionFixture(ReleaseFixture):
         self.emitted.update(values)
 
     def api(self, endpoint, **options):
+        if endpoint == "git/trees":
+            body = options["body"]
+            remote = self.git("remote", "get-url", "origin").stdout.strip()
+            index = self.root / "server-index"
+            environment = dict(os.environ, GIT_INDEX_FILE=str(index))
+            def server(*args, **kwargs):
+                return publication.command(["git", "--git-dir", remote, *args], env=environment, **kwargs).stdout.strip()
+            server("read-tree", body["base_tree"])
+            for entry in body["tree"]:
+                if "sha" in entry:
+                    if entry["sha"] is not None:
+                        raise AssertionError("unexpected blob identity")
+                    server("update-index", "--index-info", input="0 " + "0" * 40 + "\t" + entry["path"] + "\n")
+                else:
+                    blob = server("hash-object", "-w", "--stdin", input=entry["content"])
+                    server("update-index", "--add", "--cacheinfo", entry["mode"], blob, entry["path"])
+            return {"sha": server("write-tree")}
+        if endpoint == "git/commits":
+            body = options["body"]
+            if set(body) != {"message", "tree", "parents"}:
+                raise AssertionError("App signing must omit custom authors, committers, and signatures")
+            remote = self.git("remote", "get-url", "origin").stdout.strip()
+            args = ["git", "--git-dir", remote, "-c", "user.name=fixture", "-c", "user.email=fixture@example.invalid",
+                    "commit-tree", body["tree"]]
+            for parent in body["parents"]:
+                args.extend(("-p", parent))
+            head = publication.command(args, input=body["message"]).stdout.strip()
+            self.platform.setdefault("signed_commits", []).append(head)
+            return {"sha": head, "tree": {"sha": body["tree"]}, "parents": [{"sha": parent} for parent in body["parents"]],
+                    "verification": {"verified": True, "reason": "valid"}}
+        if endpoint.startswith("git/commits/"):
+            verified = endpoint.rsplit("/", 1)[1] in self.platform.get("signed_commits", [])
+            return {"verification": {"verified": verified, "reason": "valid" if verified else "unsigned"}}
         if endpoint == "branches/main/protection":
             return {"required_status_checks": {"strict": True, "checks": [
                 {"context": name, "app_id": 15368} for name in publication.REQUIRED_CHECKS[:2]]}}
@@ -147,6 +180,87 @@ class PromotionFixture(ReleaseFixture):
         if args[:2] == ("pr", "view"):
             return subprocess.CompletedProcess(args, 0, json.dumps(self.platform["pulls"][0]), "")
         return super().gh(*args, **options)
+
+
+class SignedPromotionTests(unittest.TestCase):
+    """Check signed-commit admission with real trees and simulated GitHub signatures."""
+
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory(prefix="starmap-signed-promotion-")
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.checkout = self.root / "source"
+        self.remote = self.root / "origin.git"
+        publication.command(["git", "init", "-b", "main", self.checkout])
+        self.git("config", "user.name", "fixture")
+        self.git("config", "user.email", "fixture@example.invalid")
+        self.git("config", "commit.gpgsign", "false")
+        self.catalog = self.checkout / "internal/embedded/catalog"
+        self.catalog.mkdir(parents=True)
+        (self.catalog / "old.yaml").write_text("old: true\n")
+        self.git("add", ".")
+        self.git("commit", "-m", "baseline")
+        self.base = self.git("rev-parse", "HEAD")
+        publication.command(["git", "clone", "--bare", self.checkout, self.remote])
+        self.git("remote", "add", "origin", str(self.remote))
+        self.platform = {"releases": {}}
+        self.publisher = PromotionFixture(self.root / "publication", {"publish_tool": "unused", "release_tool": "unused"},
+                                          self.checkout, self.platform)
+        (self.catalog / "old.yaml").unlink()
+        (self.catalog / "new.yaml").write_text("name: catalog\n")
+        self.git("add", ".")
+
+    def git(self, *args):
+        return publication.command(["git", *args], cwd=self.checkout).stdout.strip()
+
+    def test_initial_commit_and_base_update_preserve_exact_trees(self):
+        expected = self.git("write-tree")
+        first = self.publisher.signed_promotion_commit(self.checkout, [self.base], "catalog update")
+        self.assertEqual(expected, self.git("rev-parse", first + "^{tree}"))
+        self.publisher.require_signed_promotion_history(self.base, first)
+        self.git("reset", "--hard", self.base)
+        (self.checkout / "main.txt").write_text("new main input\n")
+        self.git("add", ".")
+        self.git("commit", "-m", "advance main")
+        main = self.git("rev-parse", "HEAD")
+        self.git("push", "origin", "main")
+        self.git("merge", "--no-ff", "--no-edit", first)
+        expected = self.git("write-tree")
+        updated = self.publisher.signed_promotion_commit(self.checkout, [first, main], "update base")
+        self.assertEqual(expected, self.git("rev-parse", updated + "^{tree}"))
+        self.assertEqual(first + " " + main, self.git("show", "-s", "--format=%P", updated))
+        self.publisher.require_signed_promotion_history(main, updated)
+
+    def test_refuses_wrong_tree_signature_or_parents(self):
+        actual_api = self.publisher.api
+        for failure in ("tree", "signature", "parents"):
+            with self.subTest(failure=failure):
+                def altered(endpoint, **options):
+                    value = actual_api(endpoint, **options)
+                    if endpoint == "git/trees" and failure == "tree":
+                        value["sha"] = "0" * 40
+                    if endpoint == "git/commits" and failure == "signature":
+                        value["verification"] = {"verified": False, "reason": "unsigned"}
+                    if endpoint == "git/commits" and failure == "parents":
+                        value["parents"] = []
+                    return value
+                with patch.object(self.publisher, "api", side_effect=altered):
+                    with self.assertRaises(publication.PublicationError):
+                        self.publisher.signed_promotion_commit(self.checkout, [self.base], "refused")
+                self.assertEqual(self.base, self.git("ls-remote", "origin", "refs/heads/main").split()[0])
+
+    def test_refuses_non_catalog_changes_before_remote_write(self):
+        (self.checkout / "outside.txt").write_text("not a catalog file\n")
+        self.git("add", ".")
+        with patch.object(self.publisher, "api") as api:
+            with self.assertRaisesRegex(publication.PublicationError, "outside the embedded catalog"):
+                self.publisher.signed_promotion_commit(self.checkout, [self.base], "refused")
+            api.assert_not_called()
+
+    def test_retained_unsigned_history_requires_operator_recovery(self):
+        self.git("commit", "-m", "unsigned promotion")
+        with self.assertRaisesRegex(publication.PublicationError, "operator recovery is required"):
+            self.publisher.require_signed_promotion_history(self.base, self.git("rev-parse", "HEAD"))
 
 
 class ReleaseLookupTransportTests(unittest.TestCase):
