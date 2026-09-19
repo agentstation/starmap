@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-19T09:42:42.932366+00:00",
+  "checked_at": "2026-09-19T10:23:39.070346+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -323,6 +323,7 @@
       ],
       "title": "feat: expose checked file operations for catalog hosts",
       "updatedAt": "2026-09-19T03:33:36Z",
+      "url": "https://github.com/agentstation/starmap/pull/171",
       "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
       "ancestry": {
         "status": "diverged",
@@ -654,6 +655,7 @@
       ],
       "title": "catalog: embed bindings-de02ef4fcfb68a86b119f3fa139715c1f77d4e2ee8d8af3d4eb4efab3d31ef07.local.ac6ad0483752",
       "updatedAt": "2026-09-19T03:18:13Z",
+      "url": "https://github.com/agentstation/starmap/pull/168",
       "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
       "ancestry": {
         "status": "diverged",
@@ -879,6 +881,7 @@
       ],
       "title": "catalog: embed bindings-d0cc72f614a783e732d89376c73f46da0db4b851f2627d3f266fb74e4c6964d4.local.b015f73478ee",
       "updatedAt": "2026-09-17T15:09:19Z",
+      "url": "https://github.com/agentstation/starmap/pull/165",
       "baseRefOid": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
       "ancestry": {
         "status": "diverged",
@@ -928,8 +931,8 @@
     },
     {
       "worktree": "starmap-catalog-requirements",
-      "head": "c33292b22581b2532af619fe9b222a8c5fa578f8",
-      "status": "M AGENTS.md\n M Makefile\n M docs/plans/starport-production-catalog-plan.html\n M go.mod\n M go.sum\n M scripts/verify.sh\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/benchmark-overhead.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/build.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/candidate-a45.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/final-writing.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/gates.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/go-test.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/go-vet.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/lint.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/planning-writing.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/previous-execution-row.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/queue-order-after.jsonl\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/queue-order-before.jsonl\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/review-dry.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/review-process.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/review.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/sdk-smoke.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/smoke-first-run.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/test-dependency-direction-verifier.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/test-doc-link-verifier.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-action-pins.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-async-media-jobs.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-auth-onboarding.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-catalog-driven-providers.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-catalog-performance.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-console-modernization.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-console-polish.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-console-session-grants.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-credential-sharing.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-dependency-direction.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-developer-experience.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-doc-links.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-document-parser.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-enterprise-readiness.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-files-api.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-model-modalities.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-openrouter-parity.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-package-layout.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-readme-quickstart.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-release-workflow.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-reranking.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-starmap-ownership-paired.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-starmap-ownership.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-v1-architecture.json\n?? docs/plans/proof/starport-production-catalog/csp9.1/repository-review/verify-v1-release.json"
+      "head": "cabb450cf9f335cd1c73834c21719f27045b7452",
+      "status": "M AGENTS.md\n M Makefile\n M go.mod\n M go.sum\n M scripts/verify.sh"
     },
     {
       "worktree": "starmap-credential-roles",
@@ -962,6 +965,22 @@
       "next_action": "Preserve reviewed candidate; qualify the published pair and native CI after CSP6 and CSP8 prerequisites.",
       "head": "c651009c4209b423b4c96702be171892d031ecbe",
       "status": ""
+    },
+    {
+      "worktree": "starport-catalog-routing",
+      "owner": "CSP10",
+      "head": "d768e7b6d524c1792b9c67b4fb34604c1048af04",
+      "status": "",
+      "disposition": "unpublished preparation",
+      "next_action": "Complete caller disclosure filtering and task qualification before review and publication."
+    },
+    {
+      "worktree": "/tmp/csp6-signed-recovery-candidate",
+      "owner": "CSP6",
+      "head": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+      "status": "",
+      "disposition": "unpublished preparation",
+      "next_action": "After explicit authorization, recheck head, publish signed candidate with expected-head lease, and requalify CI."
     }
   ],
   "seven_day_disposition_review_required": false,
