@@ -3034,6 +3034,143 @@
           "test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership"
         }
       ]
+    },
+    "A09.revoked_scope_restart": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAuthorityWithdrawalPersistsAcrossOfflineRestart"
+        }
+      ]
+    },
+    "A09.alias_cannot_restore_permission": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestInferenceAliasUsesTargetPermissionAndExactProviderID"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRouterRechecksCatalogPermissionBeforeAttempts"
+        }
+      ]
+    },
+    "A10.wrong_authority_refusal": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner"
+        }
+      ]
+    },
+    "A18.rename_alias_overlap": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestCanonicalAliasResolutionAndRemovalRetainGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestActivationRefusesAliasOfferingNameCollision"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestInferenceAliasUsesTargetPermissionAndExactProviderID"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPAliasRemovalWithSerializedDiscoveryCache"
+        }
+      ]
+    },
+    "A18.removed_id_error": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPCanonicalRemovalAfterSuccessfulInference"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestMissingModelReturnsNotFoundInBothInferenceProtocols"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestInferenceAliasUsesTargetPermissionAndExactProviderID"
+        }
+      ]
+    },
+    "A21.known_withdrawal_refusal": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestSnapshotPermissionTracksWithdrawalWithoutReplacingMetadata"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAuthorityFutureSchemaPermissionEnvelope"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRouterRechecksCatalogPermissionBeforeAttempts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestEmbeddingAndGenericAttemptsRecheckPermission"
+        }
+      ]
+    },
+    "A21.partition_validity_expiry": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAuthorityPartitionRefusesAtPermissionExpiry"
+        }
+      ]
     }
   },
   "task_component_checks": {
