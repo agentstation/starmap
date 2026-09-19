@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-19",
+  "starport_commit": "eeb7d41",
+  "starmap_registry_commit": "fb9b03690",
+  "case": "A46.dependency_revision_coherence",
+  "status": "PASS",
+  "test_events": {
+    "pass": 28,
+    "fail": 0,
+    "skip": 0
+  },
+  "toolchain": "go1.27.1 darwin/arm64",
+  "workspace": "/tmp/csp102-host-integration.work",
+  "regression": {
+    "test": "TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy",
+    "behavior": "Warm authorization must observe account disclosure restriction and restoration through the HTTP discovery route.",
+    "negative_control": "Temporarily remove the mutation fence from the test writer. The test fails because 596 models remain visible after withdrawal. Restore the original test setup.",
+    "negative_control_exit": 1,
+    "qualified_exit": 0
+  },
+  "checks": {
+    "make lint": "PASS: 0 issues",
+    "technical-writing changed file": "PASS: 0 diagnostics",
+    "git diff --check": "PASS"
+  },
+  "limitations": [
+    "Prior request-acceptance.json owns six other passing subcases. This invocation runs the dependency case only.",
+    "Fleet enforcement, native timing, and capacity remain unverified.",
+    "This change adds regression coverage. It changes no production behavior and claims no task completion, review, publication, or merge."
+  ],
+  "result": {
+    "status": "PASS",
+    "checks": [
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestAuthorityVectorCannotCompensateForStaleSQL$",
+          "./internal/authorization"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:26:34.577228-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/authorization\"}\n{\"Time\":\"2026-09-19T18:26:34.921453-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorCannotCompensateForStaleSQL\"}\n{\"Time\":\"2026-09-19T18:26:34.921496-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorCannotCompensateForStaleSQL\",\"Output\":\"=== RUN   TestAuthorityVectorCannotCompensateForStaleSQL\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:34.921581-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorCannotCompensateForStaleSQL\",\"Output\":\"--- PASS: TestAuthorityVectorCannotCompensateForStaleSQL (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:34.921589-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorCannotCompensateForStaleSQL\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:34.921681-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:35.922614-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/authorization\\t1.345s\\n\"}\n{\"Time\":\"2026-09-19T18:26:35.922653-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Elapsed\":1.345}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestAuthorityVectorRequiresExactOwners$",
+          "./internal/authorization"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:26:36.981607-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/authorization\"}\n{\"Time\":\"2026-09-19T18:26:37.379884-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners\"}\n{\"Time\":\"2026-09-19T18:26:37.379978-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners\",\"Output\":\"=== RUN   TestAuthorityVectorRequiresExactOwners\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.38003-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/valid\"}\n{\"Time\":\"2026-09-19T18:26:37.380034-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/valid\",\"Output\":\"=== RUN   TestAuthorityVectorRequiresExactOwners/valid\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.380246-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/valid\",\"Output\":\"--- PASS: TestAuthorityVectorRequiresExactOwners/valid (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.38027-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/valid\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:37.380289-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/reordered\"}\n{\"Time\":\"2026-09-19T18:26:37.380291-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/reordered\",\"Output\":\"=== RUN   TestAuthorityVectorRequiresExactOwners/reordered\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.38047-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/reordered\",\"Output\":\"--- PASS: TestAuthorityVectorRequiresExactOwners/reordered (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.38048-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/reordered\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:37.380499-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/missing\"}\n{\"Time\":\"2026-09-19T18:26:37.380504-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/missing\",\"Output\":\"=== RUN   TestAuthorityVectorRequiresExactOwners/missing\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.380561-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/missing\",\"Output\":\"--- PASS: TestAuthorityVectorRequiresExactOwners/missing (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.38058-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/missing\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:37.380583-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/duplicate\"}\n{\"Time\":\"2026-09-19T18:26:37.380593-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/duplicate\",\"Output\":\"=== RUN   TestAuthorityVectorRequiresExactOwners/duplicate\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.380676-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/duplicate\",\"Output\":\"--- PASS: TestAuthorityVectorRequiresExactOwners/duplicate (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.380689-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/duplicate\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:37.380693-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/foreign\"}\n{\"Time\":\"2026-09-19T18:26:37.380695-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/foreign\",\"Output\":\"=== RUN   TestAuthorityVectorRequiresExactOwners/foreign\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.380757-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/foreign\",\"Output\":\"--- PASS: TestAuthorityVectorRequiresExactOwners/foreign (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.380872-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/foreign\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:37.380898-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/wrong_epoch\"}\n{\"Time\":\"2026-09-19T18:26:37.380905-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/wrong_epoch\",\"Output\":\"=== RUN   TestAuthorityVectorRequiresExactOwners/wrong_epoch\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.380971-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/wrong_epoch\",\"Output\":\"--- PASS: TestAuthorityVectorRequiresExactOwners/wrong_epoch (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.380981-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners/wrong_epoch\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:37.380987-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners\",\"Output\":\"--- PASS: TestAuthorityVectorRequiresExactOwners (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:37.380991-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestAuthorityVectorRequiresExactOwners\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:37.381155-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:38.388152-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/authorization\\t1.406s\\n\"}\n{\"Time\":\"2026-09-19T18:26:38.388312-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Elapsed\":1.407}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestCacheRejectsMissingDependenciesAndOversizedBundles$",
+          "./internal/authorization"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:26:39.171312-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/authorization\"}\n{\"Time\":\"2026-09-19T18:26:39.52677-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles\"}\n{\"Time\":\"2026-09-19T18:26:39.526837-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles\",\"Output\":\"=== RUN   TestCacheRejectsMissingDependenciesAndOversizedBundles\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:39.526905-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/account\"}\n{\"Time\":\"2026-09-19T18:26:39.526926-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/account\",\"Output\":\"=== RUN   TestCacheRejectsMissingDependenciesAndOversizedBundles/account\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:39.527147-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/account\",\"Output\":\"--- PASS: TestCacheRejectsMissingDependenciesAndOversizedBundles/account (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:39.527155-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/account\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:39.527169-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/team\"}\n{\"Time\":\"2026-09-19T18:26:39.527178-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/team\",\"Output\":\"=== RUN   TestCacheRejectsMissingDependenciesAndOversizedBundles/team\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:39.527224-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/team\",\"Output\":\"--- PASS: TestCacheRejectsMissingDependenciesAndOversizedBundles/team (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:39.527227-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/team\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:39.527236-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/foreign_account\"}\n{\"Time\":\"2026-09-19T18:26:39.527238-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/foreign_account\",\"Output\":\"=== RUN   TestCacheRejectsMissingDependenciesAndOversizedBundles/foreign_account\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:39.527311-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/foreign_account\",\"Output\":\"--- PASS: TestCacheRejectsMissingDependenciesAndOversizedBundles/foreign_account (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:39.527315-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/foreign_account\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:39.527322-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/oversized\"}\n{\"Time\":\"2026-09-19T18:26:39.527324-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/oversized\",\"Output\":\"=== RUN   TestCacheRejectsMissingDependenciesAndOversizedBundles/oversized\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:39.528333-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/oversized\",\"Output\":\"--- PASS: TestCacheRejectsMissingDependenciesAndOversizedBundles/oversized (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:39.528341-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles/oversized\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:39.528346-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles\",\"Output\":\"--- PASS: TestCacheRejectsMissingDependenciesAndOversizedBundles (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:39.528365-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRejectsMissingDependenciesAndOversizedBundles\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:39.528444-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:40.535306-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/authorization\\t1.364s\\n\"}\n{\"Time\":\"2026-09-19T18:26:40.53534-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Elapsed\":1.3639999999999999}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestCacheRetainsEveryAuthorityRequirement$",
+          "./internal/authorization"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:26:41.309192-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/authorization\"}\n{\"Time\":\"2026-09-19T18:26:41.660269-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRetainsEveryAuthorityRequirement\"}\n{\"Time\":\"2026-09-19T18:26:41.660323-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRetainsEveryAuthorityRequirement\",\"Output\":\"=== RUN   TestCacheRetainsEveryAuthorityRequirement\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:41.661706-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRetainsEveryAuthorityRequirement\",\"Output\":\"--- PASS: TestCacheRetainsEveryAuthorityRequirement (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:41.661714-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestCacheRetainsEveryAuthorityRequirement\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:41.661778-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:42.668653-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/authorization\\t1.359s\\n\"}\n{\"Time\":\"2026-09-19T18:26:42.668738-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Elapsed\":1.3599999999999999}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestRepositorySourceRejectsForeignDependencies$",
+          "./internal/authorization"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:26:43.454654-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/authorization\"}\n{\"Time\":\"2026-09-19T18:26:43.809036-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies\"}\n{\"Time\":\"2026-09-19T18:26:43.809108-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies\",\"Output\":\"=== RUN   TestRepositorySourceRejectsForeignDependencies\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:43.809155-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies/key\"}\n{\"Time\":\"2026-09-19T18:26:43.809157-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies/key\",\"Output\":\"=== RUN   TestRepositorySourceRejectsForeignDependencies/key\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:43.809256-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies/key\",\"Output\":\"--- PASS: TestRepositorySourceRejectsForeignDependencies/key (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:43.809266-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies/key\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:43.809278-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies/account\"}\n{\"Time\":\"2026-09-19T18:26:43.809279-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies/account\",\"Output\":\"=== RUN   TestRepositorySourceRejectsForeignDependencies/account\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:43.809314-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies/account\",\"Output\":\"--- PASS: TestRepositorySourceRejectsForeignDependencies/account (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:43.809318-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies/account\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:43.809321-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies/team\"}\n{\"Time\":\"2026-09-19T18:26:43.809328-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies/team\",\"Output\":\"=== RUN   TestRepositorySourceRejectsForeignDependencies/team\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:43.809365-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies/team\",\"Output\":\"--- PASS: TestRepositorySourceRejectsForeignDependencies/team (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:43.809375-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies/team\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:43.809437-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies\",\"Output\":\"--- PASS: TestRepositorySourceRejectsForeignDependencies (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:43.809444-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestRepositorySourceRejectsForeignDependencies\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:26:43.80949-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:44.816393-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/authorization\\t1.361s\\n\"}\n{\"Time\":\"2026-09-19T18:26:44.816469-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Elapsed\":1.362}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy$",
+          "./internal/server"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:26:47.723975-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T18:26:48.422435-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy\"}\n{\"Time\":\"2026-09-19T18:26:48.422507-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy\",\"Output\":\"=== RUN   TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:58.964876-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-09-19T18:26:58-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:26:59.041501-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/catalog/discovery\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/aTh2KmLOeW-000001\\\",\\\"status\\\":200,\\\"bytes\\\":226125,\\\"duration\\\":16.777708,\\\"time\\\":\\\"2026-09-19T18:26:59-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:26:59.073268-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/catalog/discovery\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/aTh2KmLOeW-000002\\\",\\\"status\\\":200,\\\"bytes\\\":226125,\\\"duration\\\":15.021209,\\\"time\\\":\\\"2026-09-19T18:26:59-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:26:59.095248-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/catalog/discovery\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/aTh2KmLOeW-000003\\\",\\\"status\\\":200,\\\"bytes\\\":69,\\\"duration\\\":5.471625,\\\"time\\\":\\\"2026-09-19T18:26:59-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:26:59.110737-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/catalog/discovery\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/aTh2KmLOeW-000004\\\",\\\"status\\\":200,\\\"bytes\\\":226125,\\\"duration\\\":15.278292,\\\"time\\\":\\\"2026-09-19T18:26:59-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:26:59.129825-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy\",\"Output\":\"--- PASS: TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy (10.71s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:26:59.129847-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy\",\"Elapsed\":10.71}\n{\"Time\":\"2026-09-19T18:26:59.129968-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:00.1511-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t12.427s\\n\"}\n{\"Time\":\"2026-09-19T18:27:00.151122-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":12.427}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestIdentityAdmissionTracksMembershipAndDeduplicatesGrants$",
+          "./internal/server"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:27:02.844082-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T18:27:03.541912-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestIdentityAdmissionTracksMembershipAndDeduplicatesGrants\"}\n{\"Time\":\"2026-09-19T18:27:03.541977-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestIdentityAdmissionTracksMembershipAndDeduplicatesGrants\",\"Output\":\"=== RUN   TestIdentityAdmissionTracksMembershipAndDeduplicatesGrants\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:03.598624-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestIdentityAdmissionTracksMembershipAndDeduplicatesGrants\",\"Output\":\"--- PASS: TestIdentityAdmissionTracksMembershipAndDeduplicatesGrants (0.06s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:03.598656-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestIdentityAdmissionTracksMembershipAndDeduplicatesGrants\",\"Elapsed\":0.06}\n{\"Time\":\"2026-09-19T18:27:03.598731-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:04.607276-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t1.763s\\n\"}\n{\"Time\":\"2026-09-19T18:27:04.607318-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":1.763}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestDiscoveryRouteWithoutProviderCredentials$",
+          "./internal/server"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:27:07.398848-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T18:27:08.088281-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteWithoutProviderCredentials\"}\n{\"Time\":\"2026-09-19T18:27:08.088341-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteWithoutProviderCredentials\",\"Output\":\"=== RUN   TestDiscoveryRouteWithoutProviderCredentials\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:18.911114-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteWithoutProviderCredentials\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-09-19T18:27:18-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:27:18.955746-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteWithoutProviderCredentials\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/catalog/discovery\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/ESkF4Cn5Wa-000001\\\",\\\"status\\\":200,\\\"bytes\\\":226125,\\\"duration\\\":14.872167,\\\"time\\\":\\\"2026-09-19T18:27:18-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:27:18.974533-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteWithoutProviderCredentials\",\"Output\":\"--- PASS: TestDiscoveryRouteWithoutProviderCredentials (10.89s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:18.974556-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteWithoutProviderCredentials\",\"Elapsed\":10.89}\n{\"Time\":\"2026-09-19T18:27:18.974665-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:19.98823-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t12.589s\\n\"}\n{\"Time\":\"2026-09-19T18:27:19.988283-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":12.589}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestManagedMaterialInvalidationFencesInflightLoad$",
+          "./internal/providers/keyring"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:27:22.034188-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T18:27:22.634857-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialInvalidationFencesInflightLoad\"}\n{\"Time\":\"2026-09-19T18:27:22.634931-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialInvalidationFencesInflightLoad\",\"Output\":\"=== RUN   TestManagedMaterialInvalidationFencesInflightLoad\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:22.635228-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialInvalidationFencesInflightLoad\",\"Output\":\"--- PASS: TestManagedMaterialInvalidationFencesInflightLoad (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:22.635252-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialInvalidationFencesInflightLoad\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:27:22.635301-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:23.64308-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.609s\\n\"}\n{\"Time\":\"2026-09-19T18:27:23.643164-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.609}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestManagedMaterialRefreshRejectsExternalGrantWithdrawal$",
+          "./internal/providers/keyring"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:27:25.095929-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T18:27:25.792401-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshRejectsExternalGrantWithdrawal\"}\n{\"Time\":\"2026-09-19T18:27:25.792458-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshRejectsExternalGrantWithdrawal\",\"Output\":\"=== RUN   TestManagedMaterialRefreshRejectsExternalGrantWithdrawal\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:25.908095-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshRejectsExternalGrantWithdrawal\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"access\\\":\\\"granted\\\",\\\"time\\\":\\\"2026-09-19T18:27:25-05:00\\\",\\\"message\\\":\\\"Shared provider credential added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:27:26.129235-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshRejectsExternalGrantWithdrawal\",\"Output\":\"--- PASS: TestManagedMaterialRefreshRejectsExternalGrantWithdrawal (0.34s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:26.129274-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshRejectsExternalGrantWithdrawal\",\"Elapsed\":0.34}\n{\"Time\":\"2026-09-19T18:27:26.129329-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:27.15107-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t2.055s\\n\"}\n{\"Time\":\"2026-09-19T18:27:27.151125-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":2.055}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestManagedMaterialMutationRevokesPreviouslyReturnedHandles$",
+          "./internal/providers/keyring"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:27:28.609688-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T18:27:29.220372-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\"}\n{\"Time\":\"2026-09-19T18:27:29.220464-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\",\"Output\":\"=== RUN   TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:29.329207-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T18:27:29-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:27:29.546874-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T18:27:29-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:27:29.656204-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\",\"Output\":\"--- PASS: TestManagedMaterialMutationRevokesPreviouslyReturnedHandles (0.44s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:29.656228-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\",\"Elapsed\":0.44}\n{\"Time\":\"2026-09-19T18:27:29.656257-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:30.678457-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t2.068s\\n\"}\n{\"Time\":\"2026-09-19T18:27:30.678488-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":2.069}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestUserOnlySkipsOperatorResolution$",
+          "./internal/router"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:27:34.066085-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T18:27:34.645795-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestUserOnlySkipsOperatorResolution\"}\n{\"Time\":\"2026-09-19T18:27:34.645909-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestUserOnlySkipsOperatorResolution\",\"Output\":\"=== RUN   TestUserOnlySkipsOperatorResolution\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:34.64601-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestUserOnlySkipsOperatorResolution\",\"Output\":\"--- PASS: TestUserOnlySkipsOperatorResolution (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:34.646024-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestUserOnlySkipsOperatorResolution\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:27:34.646091-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:35.653686-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.587s\\n\"}\n{\"Time\":\"2026-09-19T18:27:35.65379-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.588}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestBYOKWinsOverASharedCredentialUnderBYOKFirst$",
+          "./internal/router"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:27:37.932045-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T18:27:38.509665-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestBYOKWinsOverASharedCredentialUnderBYOKFirst\"}\n{\"Time\":\"2026-09-19T18:27:38.509739-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestBYOKWinsOverASharedCredentialUnderBYOKFirst\",\"Output\":\"=== RUN   TestBYOKWinsOverASharedCredentialUnderBYOKFirst\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:38.511028-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestBYOKWinsOverASharedCredentialUnderBYOKFirst\",\"Output\":\"--- PASS: TestBYOKWinsOverASharedCredentialUnderBYOKFirst (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:38.511035-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestBYOKWinsOverASharedCredentialUnderBYOKFirst\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:27:38.511061-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:39.518684-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.586s\\n\"}\n{\"Time\":\"2026-09-19T18:27:39.518731-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.587}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestBYOKOnlyNeverReachesASharedCredential$",
+          "./internal/router"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:27:41.67502-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T18:27:42.245475-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestBYOKOnlyNeverReachesASharedCredential\"}\n{\"Time\":\"2026-09-19T18:27:42.245528-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestBYOKOnlyNeverReachesASharedCredential\",\"Output\":\"=== RUN   TestBYOKOnlyNeverReachesASharedCredential\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:42.246989-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestBYOKOnlyNeverReachesASharedCredential\",\"Output\":\"--- PASS: TestBYOKOnlyNeverReachesASharedCredential (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:42.246998-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestBYOKOnlyNeverReachesASharedCredential\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:27:42.247027-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:43.254446-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.579s\\n\"}\n{\"Time\":\"2026-09-19T18:27:43.254529-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.58}\n",
+        "stderr": ""
+      },
+      {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback$",
+          "./internal/router"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-19T18:27:45.533692-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T18:27:46.110722-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback\"}\n{\"Time\":\"2026-09-19T18:27:46.110796-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback\",\"Output\":\"=== RUN   TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:46.110866-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback\",\"Output\":\"--- PASS: TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:46.110878-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T18:27:46.110943-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:27:47.118602-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.585s\\n\"}\n{\"Time\":\"2026-09-19T18:27:47.118661-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.585}\n",
+        "stderr": ""
+      }
+    ]
+  }
+}
