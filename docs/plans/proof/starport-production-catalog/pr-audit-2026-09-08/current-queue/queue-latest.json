@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-19T07:59:34.282487+00:00",
+  "checked_at": "2026-09-19T08:49:43.138933+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -324,12 +324,12 @@
       "title": "feat: expose checked file operations for catalog hosts",
       "updatedAt": "2026-09-19T03:33:36Z",
       "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
-      "current_main_is_ancestor": false,
       "ancestry": {
         "status": "diverged",
         "ahead_by": 8,
         "behind_by": 2
       },
+      "current_main_is_ancestor": false,
       "unsigned_commits": []
     },
     {
@@ -655,12 +655,12 @@
       "title": "catalog: embed bindings-de02ef4fcfb68a86b119f3fa139715c1f77d4e2ee8d8af3d4eb4efab3d31ef07.local.ac6ad0483752",
       "updatedAt": "2026-09-19T03:18:13Z",
       "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
-      "current_main_is_ancestor": false,
       "ancestry": {
         "status": "diverged",
         "ahead_by": 3,
         "behind_by": 2
       },
+      "current_main_is_ancestor": false,
       "unsigned_commits": [
         "8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
         "f91908cede32e052a5dc36da12d3ec26c0e126ef",
@@ -880,12 +880,12 @@
       "title": "catalog: embed bindings-d0cc72f614a783e732d89376c73f46da0db4b851f2627d3f266fb74e4c6964d4.local.b015f73478ee",
       "updatedAt": "2026-09-17T15:09:19Z",
       "baseRefOid": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
-      "current_main_is_ancestor": false,
       "ancestry": {
         "status": "diverged",
         "ahead_by": 1,
         "behind_by": 38
       },
+      "current_main_is_ancestor": false,
       "unsigned_commits": [
         "e228e694ac5e66f75639721c438a261015a8026f"
       ]
@@ -928,8 +928,8 @@
     },
     {
       "worktree": "starmap-catalog-requirements",
-      "head": "c9598f69fa1e4e283e0432b440331f795c67a663",
-      "status": "M AGENTS.md\n M Makefile\n M go.mod\n M go.sum\n M scripts/verify.sh\n?? docs/plans/proof/starport-production-catalog/csp9/repository-review/final-go-suite.jsonl\n?? docs/plans/proof/starport-production-catalog/csp9/repository-review/pre-pr-gates.json\n?? docs/plans/proof/starport-production-catalog/csp9/repository-review/retention-after.jsonl\n?? docs/plans/proof/starport-production-catalog/csp9/repository-review/retention-before.jsonl\n?? docs/plans/proof/starport-production-catalog/csp9/repository-review/retention-lint.json\n?? docs/plans/proof/starport-production-catalog/csp9/repository-review/retention-vet.json\n?? docs/plans/proof/starport-production-catalog/csp9/repository-review/starmap-review-dry.json\n?? docs/plans/proof/starport-production-catalog/csp9/repository-review/starmap-review-process.json\n?? docs/plans/proof/starport-production-catalog/csp9/repository-review/starmap-review.json\n?? docs/plans/proof/starport-production-catalog/csp9/repository-review/terminal-status-after.jsonl\n?? docs/plans/proof/starport-production-catalog/csp9/repository-review/terminal-status-before.jsonl\n?? docs/plans/proof/starport-production-catalog/csp9/repository-review/terminal-status-lint.json"
+      "head": "888d5f40832ad9f87db5eaf1cceed74c9bba5888",
+      "status": " M AGENTS.md\n M Makefile\n M go.mod\n M go.sum\n M scripts/verify.sh"
     },
     {
       "worktree": "starmap-credential-roles",
@@ -954,6 +954,14 @@
       "owner": "CSP9",
       "disposition": "integrated in reviewed consumer branch",
       "next_action": "Preserve the branch until authorized cleanup."
+    },
+    {
+      "worktree": "starport-managed-material",
+      "owner": "CSP9.1",
+      "disposition": "unpublished preparation",
+      "next_action": "Complete outage, recovery, dispatch, and A45 qualification before review and publication.",
+      "head": "fbe3c9663ddb8230db29e0aeef72738ac894d728",
+      "status": ""
     }
   ],
   "seven_day_disposition_review_required": false,
