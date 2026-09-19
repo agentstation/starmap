@@ -57,13 +57,15 @@
 
 <p>The committed dependency still lacks the required producer APIs. Published-pair qualification, native checks, and merge remain required. Writing session 59549 ended with 67 historical diagnostics. The current plan passes its targeted prose check.</p>
 
-<p>CSP10 preparation uses <code>starport-catalog-routing</code>, branch <code>codex/starport-catalog-routing</code>, at <code>346040d</code>. Starmap registry commit <code>008ddc8e6</code> adds two required HTTP checks. Both worktrees are clean. Use <code>GOWORK=/tmp/csp10-host-integration.work</code> for this unpublished pair.</p>
+<p>CSP10 preparation uses <code>starport-catalog-routing</code>, branch <code>codex/starport-catalog-routing</code>, at <code>7034eb2</code>. Starmap registry commit <code>008ddc8e6</code> adds two required HTTP checks. Both worktrees are clean. Use <code>GOWORK=/tmp/csp10-host-integration.work</code> for this unpublished pair.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp10/inference-policy.json">inference policy proof</a> records the current repair. Missing or denied models return 404. Known but unavailable chat models return 503. Unsupported chat, streaming, and embedding operations return 400 for permitted callers. Account policy prevents capability errors from revealing private offerings.</p>
 
 <p>Final affected checks pass 873 race events with one optional skip. Vet, lint, and new-source prose checks pass. The verifier unit suite passes 81 tests. Source verification is terminal. These results do not qualify the complete task.</p>
 
-<p>The disclosure registry now requires 27 checks. Its last complete subcase run covered 24 earlier checks, so repeat acceptance against the final pair. Next, qualify canonical removal through publication, SDK transitions, and remaining queued-work and withdrawal cases. Then run the complete CSP10 gate and required review.</p>
+<p>The disclosure registry now requires 27 checks. Its last complete subcase run covered 24 earlier checks, so repeat acceptance against the final pair.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp10/canonical-removal.json">removal proof</a> records live HTTP and Python SDK transitions at <code>7034eb2</code>. Final server checks pass 529 events with one optional skip. Vet, lint, and the full SDK smoke script pass. Next, qualify Go and TypeScript transitions, SDK aliases and streams, and remaining queued-work and withdrawal cases. Then run the complete CSP10 gate and required review.</p>
 
 <p>CSP6 remains the only task in progress. Preserve the pending PR #168 history decision and the published-dependency boundary. Native qualification and merge remain required. The <a href="proof/starport-production-catalog/csp10/inference-policy/prior-csp10-resume.json">prior resume record</a> retains earlier discovery, alias, cache, and request-transition evidence.</p>
 </section>
@@ -151,6 +153,7 @@
 <tr id="CSP23" data-status="todo"><td><a href="#task-CSP23">CSP23</a></td><td>Publish compatible releases and versioned docs (SM + SP)</td><td><code>todo</code></td><td>UNVERIFIED. Planned proof: <code>csp23.md</code></td></tr>
 <tr id="CSP24" data-status="todo"><td><a href="#task-CSP24">CSP24</a></td><td>Verify upgrade and recovery from shipped assets (SM + SP)</td><td><code>todo</code></td><td>UNVERIFIED. Planned proof: <code>csp24.md</code></td></tr>
 <tr id="CSP99" data-status="todo"><td><a href="#task-CSP99">CSP99</a></td><td>Archive the completed plan (SM + SP)</td><td><code>todo</code></td><td>UNVERIFIED. Planned proof: <code>csp99.md</code></td></tr>
+
 </tbody></table></div></section>
 <section id="csp4-deliveries"><h2>CSP4 delivery checklist</h2>
 <p>All six CSP4 deliveries merged. The <a href="proof/starport-production-catalog/csp4/merged-qualification-2026-09-11/verification.json">completion proof</a> owns source identities and acceptance evidence.</p>
@@ -663,7 +666,7 @@
 <p><a href="proof/starport-production-catalog/execution-history-2026-09-12-verification-cache.html">Read the latest archived entries</a>. Their original text and evidence remain unchanged.</p>
 
 <p><a href="proof/starport-production-catalog/execution-history-2026-09-11-1143.html">Read earlier execution entries</a> for historical evidence. The current resume state owns the next action.</p><table><thead><tr><th>Date</th><th>Item</th><th>Action</th><th>Evidence</th></tr></thead><tbody>
-<tr><td>2026-09-19</td><td>CSP10</td><td>Add the internal discovery contract.</td><td><a href="proof/starport-production-catalog/csp10/discovery-implementation.json">Proof</a>: <code>b2e74ae</code>. Five discovery tests, 42 affected events, and one withdrawal test pass. HTTP integration remains incomplete.</td></tr>
+
 <tr><td>2026-09-19</td><td>CSP10</td><td>Add authenticated discovery delivery.</td><td><a href="proof/starport-production-catalog/csp10/http-discovery.json">Proof</a>: <code>7e3b3d0</code>. Broad checks pass 812 events with three skips. Final focused checks pass 13 events.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Enforce current authority on compatibility discovery.</td><td><a href="proof/starport-production-catalog/csp10/compatibility-authority.json">Proof</a>: <code>d768e7b</code>. Final proxy checks pass 189 events. Server checks pass 467 events with one skip.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Filter compatibility metadata by caller policy.</td><td><a href="proof/starport-production-catalog/csp10/compatibility-disclosure.json">Proof</a>: <code>460358a</code>. Final checks pass 696 race events with one skip. The <a href="proof/starport-production-catalog/csp10/compatibility-disclosure/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
@@ -673,4 +676,5 @@
 <tr><td>2026-09-19</td><td>CSP10</td><td>Qualify HTTP aliases with the serialized cache.</td><td><a href="proof/starport-production-catalog/csp10/http-alias-transition.json">Proof</a>: <code>9cc73fa</code>. Final checks pass 495 race events with one optional skip. The <a href="proof/starport-production-catalog/csp10/http-alias-transition/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Repair missing-model errors in both protocol families.</td><td><a href="proof/starport-production-catalog/csp10/missing-model-errors.json">Proof</a>: <code>c99fd0d</code>. Six HTTP regressions now pass. Final checks pass 796 race events with one optional skip. The <a href="proof/starport-production-catalog/csp10/missing-model-errors/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Enforce permission before inference error disclosure.</td><td><a href="proof/starport-production-catalog/csp10/inference-policy.json">Proof</a>: Starport <code>346040d</code> and Starmap <code>008ddc8e6</code>. Final checks pass 873 race events with one optional skip. The <a href="proof/starport-production-catalog/csp10/inference-policy/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
+<tr><td>2026-09-19</td><td>CSP10</td><td>Qualify live canonical removal with Python SDKs.</td><td><a href="proof/starport-production-catalog/csp10/canonical-removal.json">Proof</a>: <code>7034eb2</code>. Final server checks pass 529 events with one optional skip. The SDK smoke passes. The <a href="proof/starport-production-catalog/csp10/canonical-removal/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 </tbody></table></section></main></body></html>

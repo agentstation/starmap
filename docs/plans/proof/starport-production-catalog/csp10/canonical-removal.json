@@ -1,0 +1,50 @@
+{
+  "starport_commit": "7034eb2af1d69e4612b6211758069014b698d8ad",
+  "starmap_commit": "008ddc8e6276855d0581688582adb206417f384f",
+  "toolchain": "go1.27.1",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "coverage": [
+    "Real HTTP listener, authentication, catalog control plane, runtime registry leases, route planning, and protocol handlers. Provider connector is a deterministic mock.",
+    "Both API families serve chat and streams before canonical removal, then refuse new inference and detail requests with 404 after publication. Model lists omit the removed definition.",
+    "OpenAI Python 3.6.0 checks both API families; OpenRouter Python 1.1.38 checks /api/v1. Both accept chat before removal and expose 404 after removal.",
+    "Required SDK smoke installs the pinned packages and runs the named SDK transition test. Ordinary test runs without the Python environment report a skip."
+  ],
+  "fixture_correction": "Initial success fixture had no context limit and correctly failed route admission. The corrected offering declares 4096 tokens. No production repair was required.",
+  "checks": [
+    {
+      "command": "STARPORT_CATALOG_SDK_PYTHON=/tmp/csp10-sdk-python/bin/python go test -race -json -count=1 -timeout 5m ./internal/server ./internal/server/controllers",
+      "pass": 529,
+      "skip": 1,
+      "fail": 0,
+      "exit": 0
+    },
+    {
+      "command": "go vet ./internal/server ./internal/server/controllers",
+      "exit": 0
+    },
+    {
+      "command": "golangci-lint run ./internal/server/...",
+      "exit": 0
+    },
+    {
+      "command": "bash scripts/smoke-openrouter-sdks.sh",
+      "exit": 0
+    },
+    {
+      "command": "technical-writing lint internal/server/catalog_model_removal_test.go scripts/smoke_catalog_transition.py --format text",
+      "exit": 0
+    }
+  ],
+  "remaining": [
+    "Go and TypeScript SDK catalog transitions",
+    "SDK alias and streaming transitions",
+    "Queued work and permission withdrawal qualification",
+    "Complete task gate, review, published pair, native CI, merge"
+  ],
+  "task_complete": false,
+  "planning_writing": {
+    "targeted_plan_exit": 0,
+    "full_gate_exit": 2,
+    "log": "canonical-removal/planning-writing.json"
+  }
+}
