@@ -1,0 +1,9 @@
+{"Time":"2026-09-19T02:01:52.588642-05:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-09-19T02:01:52.762718-05:00","Action":"run","Package":"command-line-arguments","Test":"TestCatalogFileReferenceContract"}
+{"Time":"2026-09-19T02:01:52.762784-05:00","Action":"output","Package":"command-line-arguments","Test":"TestCatalogFileReferenceContract","Output":"=== RUN   TestCatalogFileReferenceContract\n","OutputType":"frame"}
+{"Time":"2026-09-19T02:01:52.763432-05:00","Action":"output","Package":"command-line-arguments","Test":"TestCatalogFileReferenceContract","Output":"    acquisition_reference_test.go:9: catalog acquisition credential with ID testprovider not found\n","OutputType":"error"}
+{"Time":"2026-09-19T02:01:52.763762-05:00","Action":"output","Package":"command-line-arguments","Test":"TestCatalogFileReferenceContract","Output":"--- FAIL: TestCatalogFileReferenceContract (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-09-19T02:01:52.763771-05:00","Action":"fail","Package":"command-line-arguments","Test":"TestCatalogFileReferenceContract","Elapsed":0}
+{"Time":"2026-09-19T02:01:52.76378-05:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-09-19T02:01:52.764-05:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t0.175s\n","OutputType":"frame"}
+{"Time":"2026-09-19T02:01:52.764015-05:00","Action":"fail","Package":"command-line-arguments","Elapsed":0.175}

@@ -1,0 +1,91 @@
+{
+  "status": "acquisition integration implemented locally; CSP9 incomplete",
+  "starmap_head": "bbf5284629a632a17a6380615fd0672aa76372cf",
+  "starport_head": "cc3701f23efb4a21387325b53fa2a6ad7014e29b",
+  "workspace": "/tmp/csp9-host-integration.work",
+  "published_dependency_qualified": false,
+  "fail_before": {
+    "source": "Starport e479a07:internal/catalog/acquisition_resolver.go",
+    "command": "GOWORK=/tmp/csp9-host-integration.work go test -json -count=1 /tmp/csp9-reference-before/acquisition_resolver.go /tmp/csp9-reference-before/acquisition_reference_test.go",
+    "exit": 1,
+    "failure": "TestCatalogFileReferenceContract; old resolver cannot resolve a role-specific file reference"
+  },
+  "checks": [
+    {
+      "name": "initial host component race",
+      "command": "GOWORK=/tmp/csp9-host-integration.work go test -json -race -count=1 -timeout 5m ./internal/config ./internal/catalog",
+      "exit": 1,
+      "config_pass_events": 292,
+      "catalog_pass_events": 215,
+      "failure": "TestConfiguredPermissionClockRefusesBeforeStoreConstruction; validation order regression repaired without weakening the test."
+    },
+    {
+      "name": "full catalog race after repair",
+      "command": "GOWORK=/tmp/csp9-host-integration.work go test -json -race -count=1 -timeout 5m ./internal/catalog",
+      "exit": 0,
+      "pass_events": 216,
+      "seconds": 223.733
+    },
+    {
+      "name": "final acquisition and validation-order checks",
+      "exit": 0,
+      "pass_events": 21,
+      "note": "Includes the private-file reference test added after the full catalog run began."
+    },
+    {
+      "name": "final configuration checks",
+      "exit": 0,
+      "pass_events": 15
+    },
+    {
+      "name": "offline restart and development application checks",
+      "exit": 0,
+      "pass_events": 30
+    },
+    {
+      "name": "Starmap full authentication and private-file race suites",
+      "exit": 0,
+      "pass_events": 126
+    },
+    {
+      "name": "Starmap public credential composition race checks",
+      "exit": 0,
+      "pass_events": 21
+    },
+    {
+      "name": "Starport affected-package vet and lint",
+      "exit": 0
+    },
+    {
+      "name": "Starmap affected-package lint and full goago",
+      "exit": 0
+    },
+    {
+      "name": "Starmap full technical writing",
+      "exit": 0,
+      "files": 1838
+    },
+    {
+      "name": "new Starport guide section writing",
+      "exit": 0,
+      "note": "Full existing guide and provider_environment.go have 49 pre-existing prose diagnostics, reproduced from the branch base."
+    }
+  ],
+  "skips": 0,
+  "changes": [
+    "Catalog acquisition uses the checked loader lookup, including dotenv values and explicit empties.",
+    "Role-specific secret references precede ambient credentials, with terminal errors except explicit not-configured fallback.",
+    "Persistent policy initializes before baseline export and runtime markers. Retained catalog pointers also classify legacy state.",
+    "Policy records have product, deployment and instance ownership and appear in the canonical file inventory.",
+    "Nil lookup continues to refuse resolution, including default cloud identity chains.",
+    "Development sessions omit persistent policy history."
+  ],
+  "remaining": [
+    "Inference still checks conventional names before STARPORT names. Add current and legacy inference policies and complete-handle migration before changing that order.",
+    "Add the approved opt-in STARMAP inference fallback and validate account/BYOK isolation.",
+    "Finish shared configuration authority integration and A11/A12 registrations and qualification.",
+    "Review, publish compatible dependency, run required native CI, merge and record actual merge commits."
+  ],
+  "active_processes": [],
+  "completion_credit": false
+}

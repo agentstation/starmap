@@ -900,6 +900,22 @@
       "worktree": "starmap-catalog-requirements",
       "head": "c752674411478e7f92f9b80b7322d1cc89d07569",
       "status": "M AGENTS.md\n M Makefile\n M go.mod\n M go.sum\n M scripts/verify.sh"
+    },
+    {
+      "worktree": "starmap-credential-roles",
+      "head": "bbf5284629a632a17a6380615fd0672aa76372cf",
+      "status": "",
+      "owner": "CSP9",
+      "disposition": "unpublished preparation",
+      "next_action": "Complete inference migration and fallback, then review and qualify the published dependency."
+    },
+    {
+      "worktree": "starport-credential-roles",
+      "head": "cc3701f23efb4a21387325b53fa2a6ad7014e29b",
+      "status": "",
+      "owner": "CSP9",
+      "disposition": "unpublished preparation",
+      "next_action": "Complete inference migration and fallback, then review and qualify the published dependency."
     }
   ],
   "seven_day_disposition_review_required": false,

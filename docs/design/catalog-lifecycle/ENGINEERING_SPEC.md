@@ -1632,7 +1632,17 @@ The host can select policy storage with product, deployment, and instance owners
 It must classify an installation without a policy record from its own retained deployment state.
 An omitted state selection creates an ephemeral resolver. Construction reads no credential source.
 
-The Starmap ambient order still applies. Starport namespace integration and shared authority remain CSP9 requirements.
+The public resolver selects a product policy explicitly and defaults to standalone Starmap.
+Starport supplies the loader's checked environment lookup for ambient values and explicit environment references.
+Its catalog-role reference names use `STARPORT_CATALOG_<PROVIDER>_<FIELD>_REFERENCE`.
+The `_FALLBACK_AMBIENT` suffix permits fallback only for a not-configured source.
+
+Starport keeps acquisition policy history under `<state root>/credentials/catalog/<instance ID>`.
+The file inventory reports this directory with owner-only access and the selected state-root origin.
+Initialize that history before catalog startup creates baseline or runtime markers.
+Existing accepted or candidate catalog pointers also select the legacy migration path.
+Development sessions omit persistent policy history.
+Inference policy migration, opt-in Starmap fallback, and shared configuration authority remain separate qualification requirements.
 
 ### 7.3 Secret managers and rotation
 

@@ -1,0 +1,11 @@
+package catalog
+import("os";"path/filepath";"testing";"github.com/agentstation/starmap/pkg/catalogs")
+func TestCatalogFileReferenceContract(t *testing.T){
+ path:=filepath.Join(t.TempDir(),"key")
+ if err:=os.WriteFile(path,[]byte("fixture-file-key"),0600);err!=nil{t.Fatal(err)}
+ r:=NewAcquisitionResolver(func(name string)(string,bool){if name=="STARPORT_CATALOG_TESTPROVIDER_API_KEY_REFERENCE"{return "file:"+path,true};return "",false})
+ p:=&catalogs.Provider{ID:"testprovider",Credentials:&catalogs.ProviderCredentials{Fields:[]catalogs.ProviderCredentialField{{ID:"api-key",Required:true}},Profiles:[]catalogs.ProviderCredentialProfile{{ID:"api-key",Primitive:catalogs.ProviderAuthenticationAPIKey,Fields:[]catalogs.ProviderCredentialFieldID{"api-key"}}},CatalogAcquisition:catalogs.ProviderCredentialPlane{Required:true,Alternatives:[]catalogs.ProviderCredentialProfileID{"api-key"}}}}
+ material,err:=r.ResolveCatalog(t.Context(),p)
+ if err!=nil{t.Fatal(err)}
+ if v,_:=material.Value("api-key");v!="fixture-file-key"{t.Fatal("file reference was not resolved")}
+}
