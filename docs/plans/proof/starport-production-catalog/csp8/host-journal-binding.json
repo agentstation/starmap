@@ -1,0 +1,27 @@
+{
+  "starport_head": "99a908f430417501942dc23ba4326f086ab4194e",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "scope": "Local runtime migration journal and catalog KV binding. No task completion credit.",
+  "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/catalog -run '^Test(MigrationStoreBinding|MigrationBindingCancellationIsPassive|MigrationBindingPreservesWriteFailure|RuntimeDirectoryMigrationPreservesAcceptedCatalog|RuntimeMigrationRefusesUnpublishedTargetBeforeStorage)$'",
+  "result": "PASS",
+  "top_level_tests": 5,
+  "subtests": 2,
+  "duration_seconds": 18.286,
+  "vet": "PASS: GOWORK=/tmp/csp8-host-integration.work go vet ./internal/catalog",
+  "fail_before": "TestMigrationBindingPreservesWriteFailure failed: expected storage write durability error but got nil.",
+  "coverage": [
+    "Private host journal binds one logical KV store identity to the operation.",
+    "Foreign store preparation is refused without creating its identity.",
+    "Retry restores an interrupted KV checkpoint from the host journal.",
+    "Cancelled binding creates no journal or KV identity.",
+    "Only explicit CAS conflicts permit retained-value recovery. Other write errors propagate.",
+    "Real Badger migration preserves the accepted catalog and scheduler identity."
+  ],
+  "remaining": [
+    "Operator CLI and saved KV selection verification.",
+    "Generation retention for active migration checkpoints.",
+    "Native interrupted-process qualification.",
+    "Published dependency qualification and full pre-PR checks and review."
+  ],
+  "completion_credit": false
+}
