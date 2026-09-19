@@ -1,0 +1,38 @@
+{
+  "label": "recovery",
+  "source_log": "/tmp/csp103-recovery.jsonl",
+  "sha256": "8b2d5bf722b50849c31b0d99917f01f88d8bf5538cdaeac5de53cce31e14a7db",
+  "counts": {
+    "pass": 4,
+    "fail": 0,
+    "skip": 0
+  },
+  "events": [
+    {
+      "Time": "2026-09-19T14:26:01.535809-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/availability",
+      "Test": "TestHealthWorkerRecoversAfterOutage",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-19T14:26:02.537394-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/availability",
+      "Elapsed": 1.187
+    },
+    {
+      "Time": "2026-09-19T14:26:04.216639-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/router",
+      "Test": "TestLatencyWorkerRecoversAfterOutage",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-19T14:26:05.224202-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/router",
+      "Elapsed": 1.591
+    }
+  ]
+}

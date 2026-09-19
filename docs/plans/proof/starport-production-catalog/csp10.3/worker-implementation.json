@@ -1,0 +1,67 @@
+{
+  "task": "CSP10.3",
+  "recorded_at": "2026-09-19T19:28:01.661324+00:00",
+  "commit": "a67c691875438e72dcc2bd15476b10f4b5281dd3",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+  "starmap_commit": "c70627094",
+  "status": "implemented locally; qualification incomplete",
+  "behavior": [
+    "Inference callbacks perform no advisory shared-storage operations.",
+    "App.Run starts one health worker and one latency worker. App.Close cancels and joins them before storage closure.",
+    "Workers publish current local state periodically without a per-request queue.",
+    "Peer health expiry restores local evidence. Local reset rejects older peer evidence. Adopted evidence is not republished as local evidence.",
+    "Remote document and retained-peer bounds apply separately from catalog and credential authority."
+  ],
+  "runs": [
+    {
+      "label": "initial_task_race",
+      "source_log": "/tmp/csp103-task-race.jsonl",
+      "sha256": "847b88c42903e4730da78847615382fba7ae8b90ad66c6fb17d871ad44a39e5f",
+      "counts": {
+        "pass": 304,
+        "fail": 0,
+        "skip": 2
+      }
+    },
+    {
+      "label": "final_components",
+      "source_log": "/tmp/csp103-components-qualified.jsonl",
+      "sha256": "59450a9fca8f9e04d143a19dada0594be3dcb335c059425b3a2cb819b6114f52",
+      "counts": {
+        "pass": 171,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "label": "recovery",
+      "source_log": "/tmp/csp103-recovery.jsonl",
+      "sha256": "8b2d5bf722b50849c31b0d99917f01f88d8bf5538cdaeac5de53cce31e14a7db",
+      "counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  ],
+  "source_limitations": [
+    "The initial task race command preceded the final local-reset, retained-peer, and admission-expiry repairs.",
+    "The final component run covers those production repairs. Recovery tests followed that run.",
+    "The final focused command after cleanup-defer edits passed availability, router, and app packages.",
+    "The two skips in the initial task run need service-dependent qualification. No native or released-pair qualification is claimed."
+  ],
+  "final_focused_command": "GOWORK=/tmp/csp103-host-integration.work go test -race -count=1 -timeout=1m -run 'Test(AdvisoryWorkers|HealthWorker|LatencyWorker|Peer|LocalReset)' ./internal/availability ./internal/router ./internal/app",
+  "final_focused_output": "ok  \tgithub.com/agentstation/starport/internal/availability\t1.193s\nok  \tgithub.com/agentstation/starport/internal/router\t1.590s\nok  \tgithub.com/agentstation/starport/internal/app\t1.905s\n",
+  "lint_output": "Linting code...\n0 issues.\nLint complete\n",
+  "vet": "passed affected availability, router, and app packages before final admission-expiry repair",
+  "writing": "six files passed with zero diagnostics",
+  "running_processes": [],
+  "next_action": [
+    "Test retained-peer, document, scan, and concurrency bounds through observable behavior.",
+    "Prove fleet fault isolation and cold worker exchange without request I/O.",
+    "Register all seven A49 subcases against their actual evidence.",
+    "Run final task and repository qualification, then required pre-PR review.",
+    "Preserve the PR168 history approval boundary and published-module requirement. Native qualification and actual merges remain required."
+  ],
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10</td><td>Start repository qualification and repair primitive dispatch coverage.</td><td><a href=\"proof/starport-production-catalog/csp10/repository-qualification.json\">Proof</a>: <code>646778f</code>. Ownership passes twelve conditions. Both qualification processes remain active. The <a href=\"proof/starport-production-catalog/csp10/repository-qualification/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}
