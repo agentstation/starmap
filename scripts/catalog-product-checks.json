@@ -4244,6 +4244,83 @@
       "repository": "starport",
       "package": "./internal/authorization",
       "test": "TestFleetDurableReceiptPrecedesReplicaEnforcement"
+    },
+    "A46.bounded_tenant_working_set": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestAuthorizationTenantChurnCapacity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheBoundsTenantLoadsWithoutBlockingOtherTenants"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheGlobalLoadLimitProtectsInFlightEntries"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheEvictsWorkingSetAndCloseRevokesReceipts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheBoundsTotalBytes"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestBoundedStorageRead"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/policyrecord",
+          "test": "TestEncodedRecordBound"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/account",
+          "test": "TestAccountRepositoryRecordBounds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/apikey",
+          "test": "TestAPIKeyRepositoryRecordBounds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/identity",
+          "test": "TestIdentityRecordBoundsBeforeDecode"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/identity",
+          "test": "TestAuthorizationScalarReadsNeverTruncate"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestOversizedKeyPolicyReturnsActionableRefusal"
+        }
+      ]
     }
   },
   "task_component_checks": {
