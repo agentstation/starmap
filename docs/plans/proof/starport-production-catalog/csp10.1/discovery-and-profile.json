@@ -1,0 +1,77 @@
+{
+  "task": "CSP10.1",
+  "recorded_at": "2026-09-19T18:46:47.943236+00:00",
+  "starport_commit": "69f2164",
+  "starmap_commit": "56cbbb3ef",
+  "status": "eight A44 subcases pass locally; repository qualification running; no merge",
+  "workspace": "/tmp/csp101-host-integration.work",
+  "changes": [
+    "Precompute ordered definition and offering-key indexes before publication. Apply disclosure before copying facts. Preserve authority checks before and after discovery.",
+    "Add the embedded-catalog selection test and benchmark. Compare the same 510-route fixture against reviewed parent 79978cd in a detached temporary worktree.",
+    "Retain 4,000 concurrent activations in the atomic-publication test. Replace full embedded input with small distinct catalogs and verify model facts against generation identity."
+  ],
+  "checks": {
+    "race_test_events": {
+      "pass": 430
+    },
+    "race_packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/routing",
+        "Action": "pass",
+        "Elapsed": 1.222
+      },
+      {
+        "Package": "github.com/agentstation/starport/internal/router",
+        "Action": "pass",
+        "Elapsed": 15.297
+      },
+      {
+        "Package": "github.com/agentstation/starport/internal/catalog",
+        "Action": "pass",
+        "Elapsed": 208.855
+      }
+    ],
+    "router_benchmarks": "11 PASS with the required default benchmark duration",
+    "a44": "8 PASS, 0 FAIL, 0 UNVERIFIED locally",
+    "vet": "PASS: catalog, router, routing",
+    "lint": "make lint PASS before the atomic test fixture change. Full roster reruns lint against the final commit.",
+    "writing": "Performance guide PASS. Architecture retains the same 23 diagnostics, with no new diagnostics. Three affected/new Go files PASS."
+  },
+  "measurements": {
+    "denied_discovery_allocations_before": 3238,
+    "denied_discovery_allocations_after": 0,
+    "embedded_selection_allocations_before": 10597,
+    "embedded_selection_allocations_after": 34,
+    "embedded_selection_bytes_before": 1186475,
+    "embedded_selection_bytes_after": 3008,
+    "scope": "Local component measurements on Go 1.27.1 darwin/arm64. They do not qualify full HTTP overhead or CSP22."
+  },
+  "temporary_baseline": {
+    "head": "79978cd",
+    "test_source": "69f2164:internal/router/embedded_catalog_benchmark_test.go",
+    "cleanup": "Removed the copied untracked benchmark and detached worktree after both processes completed. No branch was deleted."
+  },
+  "running_repository_checks": {
+    "runner": "/tmp/csp101-repository-run.py",
+    "state": "/tmp/csp101-repository-gates/state.json",
+    "session_id": 61441,
+    "command_count": 33,
+    "next_action": "Poll this confirmed running session. Do not restart from state alone. Inspect each failure. Then commit any fixes and run required Sol/Opus autoreview on both branches."
+  },
+  "remaining": [
+    "Complete the repository check roster and required review.",
+    "Publish a compatible Starmap module, obtain native paired qualification, and merge in dependency order.",
+    "CSP6 remains the sole in-progress task. Preserve the pending PR168 rewrite decision and release boundary."
+  ],
+  "logs": {
+    "discovery_before": "=== RUN   TestDiscoveryDoesNotCopyUndisclosedDefinitions\n    discovery_test.go:143: denied embedded discovery allocations: 3238\n    discovery_test.go:144: \n        \tError Trace:\t/Users/jack/src/github.com/agentstation/starport-catalog-indexes/internal/catalog/discovery_test.go:144\n        \tError:      \t\"3238\" is not less than or equal to \"8\"\n        \tTest:       \tTestDiscoveryDoesNotCopyUndisclosedDefinitions\n        \tMessages:   \tundisclosed definitions must not be copied per request\n--- FAIL: TestDiscoveryDoesNotCopyUndisclosedDefinitions (1.23s)\nFAIL\nFAIL\tgithub.com/agentstation/starport/internal/catalog\t1.707s\nFAIL\n",
+    "discovery_after": "=== RUN   TestDiscoveryPreservesMembershipWithoutAdapter\n--- PASS: TestDiscoveryPreservesMembershipWithoutAdapter (10.53s)\n=== RUN   TestDiscoveryRequiresExplicitDisclosurePolicy\n--- PASS: TestDiscoveryRequiresExplicitDisclosurePolicy (0.01s)\n=== RUN   TestDiscoveryRefusesColdInternalAuthority\nbadger 2026/09/19 13:37:03 INFO: All 0 tables opened in 0s\nbadger 2026/09/19 13:37:03 INFO: Discard stats nextEmptySlot: 0\nbadger 2026/09/19 13:37:03 INFO: Set nextTxnTs to 0\nbadger 2026/09/19 13:37:06 INFO: Lifetime L0 stalled for: 0s\nbadger 2026/09/19 13:37:06 INFO: \nLevel 0 [ ]: NumTables: 01. Size: 383 B of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB\nLevel 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel Done\n--- PASS: TestDiscoveryRefusesColdInternalAuthority (3.17s)\n=== RUN   TestDiscoveryRechecksAuthorityBeforeReturningFacts\nbadger 2026/09/19 13:37:06 INFO: All 0 tables opened in 0s\nbadger 2026/09/19 13:37:06 INFO: Discard stats nextEmptySlot: 0\nbadger 2026/09/19 13:37:06 INFO: Set nextTxnTs to 0\nbadger 2026/09/19 13:37:07 INFO: Lifetime L0 stalled for: 0s\nbadger 2026/09/19 13:37:07 INFO: \nLevel 0 [ ]: NumTables: 01. Size: 3.7 KiB of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB\nLevel 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel Done\n--- PASS: TestDiscoveryRechecksAuthorityBeforeReturningFacts (0.75s)\n=== RUN   TestDiscoveryRejectsMissingSnapshot\n--- PASS: TestDiscoveryRejectsMissingSnapshot (0.00s)\n=== RUN   TestDiscoveryRejectsKnownAuthorityWithdrawal\nbadger 2026/09/19 13:37:07 INFO: All 0 tables opened in 0s\nbadger 2026/09/19 13:37:07 INFO: Discard stats nextEmptySlot: 0\nbadger 2026/09/19 13:37:07 INFO: Set nextTxnTs to 0\nbadger 2026/09/19 13:37:07 INFO: Lifetime L0 stalled for: 0s\nbadger 2026/09/19 13:37:07 INFO: \nLevel 0 [ ]: NumTables: 01. Size: 3.7 KiB of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB\nLevel 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB\nLevel Done\n--- PASS: TestDiscoveryRejectsKnownAuthorityWithdrawal (0.87s)\n=== RUN   TestDiscoveryDoesNotCopyUndisclosedDefinitions\n    discovery_test.go:143: denied embedded discovery allocations: 0\n--- PASS: TestDiscoveryDoesNotCopyUndisclosedDefinitions (0.01s)\nPASS\nok  \tgithub.com/agentstation/starport/internal/catalog\t16.955s\n",
+    "embedded_before_test": "=== RUN   TestEmbeddedCatalogSelectionProfile\n    embedded_catalog_benchmark_test.go:52: embedded exact offering: routes=510, model=google-vertex/jamba-1-5-large@001, allocations=10597\n    embedded_catalog_benchmark_test.go:53: \n        \tError Trace:\t/private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp101-embedded-baseline-uj01k1b7/internal/router/embedded_catalog_benchmark_test.go:53\n        \tError:      \t\"10597\" is not less than or equal to \"1500\"\n        \tTest:       \tTestEmbeddedCatalogSelectionProfile\n        \tMessages:   \tcatalog selection alone must fit the complete request allocation budget\n--- FAIL: TestEmbeddedCatalogSelectionProfile (1.21s)\nFAIL\nFAIL\tgithub.com/agentstation/starport/internal/router\t1.666s\nFAIL\n",
+    "embedded_before_benchmark": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/router\ncpu: Apple M2 Max\nBenchmarkEmbeddedCatalogSelection-12    \t     224\t    540167 ns/op\t       510.0 catalog-routes\t 1186475 B/op\t   10597 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/router\t1.796s\n",
+    "embedded_after": "=== RUN   TestEmbeddedCatalogSelectionProfile\n    embedded_catalog_benchmark_test.go:52: embedded exact offering: routes=510, model=google-vertex/jamba-1-5-large@001, allocations=34\n--- PASS: TestEmbeddedCatalogSelectionProfile (1.22s)\ngoos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/router\ncpu: Apple M2 Max\nBenchmarkEmbeddedCatalogSelection\nBenchmarkEmbeddedCatalogSelection-12    \t   64682\t      1773 ns/op\t       510.0 catalog-routes\t    3008 B/op\t      34 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/router\t1.808s\n",
+    "router_benchmarks": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/router\ncpu: Apple M2 Max\nBenchmarkCatalogExactModel/routes-10-12 \t  664171\t      1820 ns/op\t    2688 B/op\t      28 allocs/op\nBenchmarkCatalogExactModel/routes-1000-12         \t  698245\t      1698 ns/op\t    2688 B/op\t      28 allocs/op\nBenchmarkCatalogExactModel/routes-10000-12        \t  680804\t      1614 ns/op\t    2688 B/op\t      28 allocs/op\nBenchmarkEmbeddedCatalogSelection-12              \t  730486\t      1766 ns/op\t       510.0 catalog-routes\t    3008 B/op\t      34 allocs/op\nBenchmarkSelectModel/SimpleModelSelection-12      \t 2154675\t       552.3 ns/op\t     904 B/op\t      12 allocs/op\nBenchmarkSelectModel/WithProviderPreferences-12   \t  721952\t      1617 ns/op\t    3024 B/op\t      27 allocs/op\nBenchmarkRouteWithFallback/SingleModel-12         \t  307046\t      3772 ns/op\t    7888 B/op\t      57 allocs/op\nBenchmarkRouteWithFallback/ModelArray-12          \t  293382\t      4035 ns/op\t    8640 B/op\t      60 allocs/op\nBenchmarkLatencyTracking/RecordLatency-12         \t46904925\t        25.58 ns/op\t       0 B/op\t       0 allocs/op\nBenchmarkLatencyTracking/GetLatency-12            \t79825713\t        15.45 ns/op\t       0 B/op\t       0 allocs/op\nBenchmarkConcurrentRouting-12                     \t 2175942\t       516.4 ns/op\t     904 B/op\t      12 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/router\t16.556s\n",
+    "atomic_fixture": "=== RUN   TestCatalogActivationIsAtomic\n--- PASS: TestCatalogActivationIsAtomic (0.03s)\nPASS\nok  \tgithub.com/agentstation/starport/internal/catalog\t1.603s\n",
+    "lint": "Linting code...\n0 issues.\nLint complete\n"
+  },
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10</td><td>Qualify scheme and operator destination changes.</td><td><a href=\"proof/starport-production-catalog/csp10/destination-transition-final.json\">Proof</a>: <code>0ca721d</code> and <code>2bb17323e</code>. Five A25 subcases pass. Product-path isolation remains unverified. The <a href=\"proof/starport-production-catalog/csp10/destination-transition-final/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}

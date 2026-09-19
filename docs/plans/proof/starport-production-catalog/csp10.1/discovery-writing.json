@@ -1,0 +1,532 @@
+{
+  "docs/PERFORMANCE.md": {
+    "before": {
+      "exit_code": 0,
+      "report": {
+        "config_sources": [
+          "/Users/jack/.config/agentstation/technical-writing.toml",
+          "/Users/jack/src/github.com/agentstation/starport-catalog-indexes/.agents/technical-writing.toml"
+        ],
+        "documents": [
+          {
+            "diagnostics": [],
+            "passed": true,
+            "path": "<stdin>",
+            "words": 913
+          }
+        ],
+        "mode": "strict",
+        "passed": true,
+        "summary": {
+          "diagnostics": 0,
+          "errors": 0,
+          "files": 1,
+          "max_warnings_per_100_words": 0.0,
+          "warning_rate_per_100_words": 0.0,
+          "warnings": 0
+        }
+      }
+    },
+    "after": {
+      "exit_code": 0,
+      "report": {
+        "config_sources": [
+          "/Users/jack/.config/agentstation/technical-writing.toml",
+          "/Users/jack/src/github.com/agentstation/starport-catalog-indexes/.agents/technical-writing.toml"
+        ],
+        "documents": [
+          {
+            "diagnostics": [],
+            "passed": true,
+            "path": "<stdin>",
+            "words": 1020
+          }
+        ],
+        "mode": "strict",
+        "passed": true,
+        "summary": {
+          "diagnostics": 0,
+          "errors": 0,
+          "files": 1,
+          "max_warnings_per_100_words": 0.0,
+          "warning_rate_per_100_words": 0.0,
+          "warnings": 0
+        }
+      }
+    },
+    "new_diagnostics": []
+  },
+  "docs/ARCHITECTURE.md": {
+    "before": {
+      "exit_code": 1,
+      "report": {
+        "config_sources": [
+          "/Users/jack/.config/agentstation/technical-writing.toml",
+          "/Users/jack/src/github.com/agentstation/starport-catalog-indexes/.agents/technical-writing.toml"
+        ],
+        "documents": [
+          {
+            "diagnostics": [
+              {
+                "column": 1,
+                "excerpt": "- An embedded, cgo-free SQLite relational store with a PostgreSQL or MySQL",
+                "line": 15,
+                "message": "sentence has 21 words; limit is 20",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "- Provider inference credentials in three sources: the process environment, a",
+                "line": 28,
+                "message": "sentence has 27 words; limit is 20",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 73,
+                "excerpt": "default credential strategy. A gateway API key authenticates a request; the",
+                "line": 34,
+                "message": "replace the semicolon with a period",
+                "path": "<stdin>",
+                "rule": "semicolon",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "- A gateway authentication mode the operator sets by flag, configuration, or",
+                "line": 36,
+                "message": "sentence has 22 words; limit is 20",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "- Usage accounting in `internal/usage`: the proxy writes one request record",
+                "line": 40,
+                "message": "sentence has 22 words; limit is 20",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 192,
+                "excerpt": "The repository has no public Go package. Starport v1 is a binary-first product. `TestPublicPackageBoundary` rejects a repository `pkg` directory and protocol imports outside approved adapter seams. A ",
+                "line": 195,
+                "message": "replace restricted vocabulary with a precise common term: 'seams'",
+                "path": "<stdin>",
+                "rule": "restricted_vocabulary",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "seam. Replaced generations drain their connectors after active users release",
+                "line": 268,
+                "message": "replace restricted vocabulary with a precise common term: 'seam'",
+                "path": "<stdin>",
+                "rule": "restricted_vocabulary",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "Relational state lives apart from the KV plane. `internal/sqlstore` owns the",
+                "line": 309,
+                "message": "sentence has 44 words; limit is 25",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 275,
+                "excerpt": "`internal/response/cache` owns response-cache eligibility, semantic identity, versioned records, and canonical stream reconstruction. `internal/cache` owns only byte storage, TTL, and local/distribute",
+                "line": 361,
+                "message": "replace restricted vocabulary with a precise common term: 'seam'",
+                "path": "<stdin>",
+                "rule": "restricted_vocabulary",
+                "severity": "error"
+              },
+              {
+                "column": 63,
+                "excerpt": "Provider constructors use one shared HTTP-client construction seam. It maps",
+                "line": 385,
+                "message": "replace restricted vocabulary with a precise common term: 'seam'",
+                "path": "<stdin>",
+                "rule": "restricted_vocabulary",
+                "severity": "error"
+              },
+              {
+                "column": 27,
+                "excerpt": "itself, and nothing else. A credential the operator applies for the whole",
+                "line": 470,
+                "message": "sentence has 31 words; limit is 25",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 51,
+                "excerpt": "deployment is a gateway credential even though it is stored the same way,",
+                "line": 471,
+                "message": "use active voice when the actor is known",
+                "path": "<stdin>",
+                "rule": "passive_voice",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "A per-account strategy chooses the order. `operator_first` offers the",
+                "line": 474,
+                "message": "sentence has 56 words; limit is 25",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 56,
+                "excerpt": "A gateway API key may name a strategy in its metadata. It can only narrow the",
+                "line": 481,
+                "message": "sentence has 32 words; limit is 25",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 68,
+                "excerpt": "credentials, and a request that would widen the account's strategy is refused",
+                "line": 483,
+                "message": "use active voice when the actor is known",
+                "path": "<stdin>",
+                "rule": "passive_voice",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "`internal/account` owns the account behind a gateway API key: the account-wide",
+                "line": 491,
+                "message": "sentence has 40 words; limit is 25",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 35,
+                "excerpt": "meters. A key limit bounds one key; it never raises or lowers what the account",
+                "line": 495,
+                "message": "replace the semicolon with a period",
+                "path": "<stdin>",
+                "rule": "semicolon",
+                "severity": "error"
+              },
+              {
+                "column": 38,
+                "excerpt": "Account outcomes stay account-local. A provider that refuses an account's BYOK marks",
+                "line": 498,
+                "message": "sentence has 26 words; limit is 25",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 76,
+                "excerpt": "- The credential repository isolates stored provider credentials by scope. The",
+                "line": 558,
+                "message": "sentence has 22 words; limit is 20",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 33,
+                "excerpt": "operator's gateway credential is stored at `*`; an account's BYOK is stored at",
+                "line": 559,
+                "message": "use active voice when the actor is known",
+                "path": "<stdin>",
+                "rule": "passive_voice",
+                "severity": "error"
+              },
+              {
+                "column": 49,
+                "excerpt": "operator's gateway credential is stored at `*`; an account's BYOK is stored at",
+                "line": 559,
+                "message": "replace the semicolon with a period",
+                "path": "<stdin>",
+                "rule": "semicolon",
+                "severity": "error"
+              },
+              {
+                "column": 69,
+                "excerpt": "operator's gateway credential is stored at `*`; an account's BYOK is stored at",
+                "line": 559,
+                "message": "use active voice when the actor is known",
+                "path": "<stdin>",
+                "rule": "passive_voice",
+                "severity": "error"
+              },
+              {
+                "column": 11,
+                "excerpt": "deployment; an account brings its own. The two never share a path, because they",
+                "line": 679,
+                "message": "replace the semicolon with a period",
+                "path": "<stdin>",
+                "rule": "semicolon",
+                "severity": "error"
+              }
+            ],
+            "passed": false,
+            "path": "<stdin>",
+            "words": 3961
+          }
+        ],
+        "mode": "strict",
+        "passed": false,
+        "summary": {
+          "diagnostics": 23,
+          "errors": 23,
+          "files": 1,
+          "max_warnings_per_100_words": 0.0,
+          "warning_rate_per_100_words": 0.0,
+          "warnings": 0
+        }
+      }
+    },
+    "after": {
+      "exit_code": 1,
+      "report": {
+        "config_sources": [
+          "/Users/jack/.config/agentstation/technical-writing.toml",
+          "/Users/jack/src/github.com/agentstation/starport-catalog-indexes/.agents/technical-writing.toml"
+        ],
+        "documents": [
+          {
+            "diagnostics": [
+              {
+                "column": 1,
+                "excerpt": "- An embedded, cgo-free SQLite relational store with a PostgreSQL or MySQL",
+                "line": 15,
+                "message": "sentence has 21 words; limit is 20",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "- Provider inference credentials in three sources: the process environment, a",
+                "line": 28,
+                "message": "sentence has 27 words; limit is 20",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 73,
+                "excerpt": "default credential strategy. A gateway API key authenticates a request; the",
+                "line": 34,
+                "message": "replace the semicolon with a period",
+                "path": "<stdin>",
+                "rule": "semicolon",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "- A gateway authentication mode the operator sets by flag, configuration, or",
+                "line": 36,
+                "message": "sentence has 22 words; limit is 20",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "- Usage accounting in `internal/usage`: the proxy writes one request record",
+                "line": 40,
+                "message": "sentence has 22 words; limit is 20",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 192,
+                "excerpt": "The repository has no public Go package. Starport v1 is a binary-first product. `TestPublicPackageBoundary` rejects a repository `pkg` directory and protocol imports outside approved adapter seams. A ",
+                "line": 195,
+                "message": "replace restricted vocabulary with a precise common term: 'seams'",
+                "path": "<stdin>",
+                "rule": "restricted_vocabulary",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "seam. Replaced generations drain their connectors after active users release",
+                "line": 268,
+                "message": "replace restricted vocabulary with a precise common term: 'seam'",
+                "path": "<stdin>",
+                "rule": "restricted_vocabulary",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "Relational state lives apart from the KV plane. `internal/sqlstore` owns the",
+                "line": 315,
+                "message": "sentence has 44 words; limit is 25",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 275,
+                "excerpt": "`internal/response/cache` owns response-cache eligibility, semantic identity, versioned records, and canonical stream reconstruction. `internal/cache` owns only byte storage, TTL, and local/distribute",
+                "line": 367,
+                "message": "replace restricted vocabulary with a precise common term: 'seam'",
+                "path": "<stdin>",
+                "rule": "restricted_vocabulary",
+                "severity": "error"
+              },
+              {
+                "column": 63,
+                "excerpt": "Provider constructors use one shared HTTP-client construction seam. It maps",
+                "line": 391,
+                "message": "replace restricted vocabulary with a precise common term: 'seam'",
+                "path": "<stdin>",
+                "rule": "restricted_vocabulary",
+                "severity": "error"
+              },
+              {
+                "column": 27,
+                "excerpt": "itself, and nothing else. A credential the operator applies for the whole",
+                "line": 476,
+                "message": "sentence has 31 words; limit is 25",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 51,
+                "excerpt": "deployment is a gateway credential even though it is stored the same way,",
+                "line": 477,
+                "message": "use active voice when the actor is known",
+                "path": "<stdin>",
+                "rule": "passive_voice",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "A per-account strategy chooses the order. `operator_first` offers the",
+                "line": 480,
+                "message": "sentence has 56 words; limit is 25",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 56,
+                "excerpt": "A gateway API key may name a strategy in its metadata. It can only narrow the",
+                "line": 487,
+                "message": "sentence has 32 words; limit is 25",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 68,
+                "excerpt": "credentials, and a request that would widen the account's strategy is refused",
+                "line": 489,
+                "message": "use active voice when the actor is known",
+                "path": "<stdin>",
+                "rule": "passive_voice",
+                "severity": "error"
+              },
+              {
+                "column": 1,
+                "excerpt": "`internal/account` owns the account behind a gateway API key: the account-wide",
+                "line": 497,
+                "message": "sentence has 40 words; limit is 25",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 35,
+                "excerpt": "meters. A key limit bounds one key; it never raises or lowers what the account",
+                "line": 501,
+                "message": "replace the semicolon with a period",
+                "path": "<stdin>",
+                "rule": "semicolon",
+                "severity": "error"
+              },
+              {
+                "column": 38,
+                "excerpt": "Account outcomes stay account-local. A provider that refuses an account's BYOK marks",
+                "line": 504,
+                "message": "sentence has 26 words; limit is 25",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 76,
+                "excerpt": "- The credential repository isolates stored provider credentials by scope. The",
+                "line": 564,
+                "message": "sentence has 22 words; limit is 20",
+                "path": "<stdin>",
+                "rule": "long_sentence",
+                "severity": "error"
+              },
+              {
+                "column": 33,
+                "excerpt": "operator's gateway credential is stored at `*`; an account's BYOK is stored at",
+                "line": 565,
+                "message": "use active voice when the actor is known",
+                "path": "<stdin>",
+                "rule": "passive_voice",
+                "severity": "error"
+              },
+              {
+                "column": 49,
+                "excerpt": "operator's gateway credential is stored at `*`; an account's BYOK is stored at",
+                "line": 565,
+                "message": "replace the semicolon with a period",
+                "path": "<stdin>",
+                "rule": "semicolon",
+                "severity": "error"
+              },
+              {
+                "column": 69,
+                "excerpt": "operator's gateway credential is stored at `*`; an account's BYOK is stored at",
+                "line": 565,
+                "message": "use active voice when the actor is known",
+                "path": "<stdin>",
+                "rule": "passive_voice",
+                "severity": "error"
+              },
+              {
+                "column": 11,
+                "excerpt": "deployment; an account brings its own. The two never share a path, because they",
+                "line": 685,
+                "message": "replace the semicolon with a period",
+                "path": "<stdin>",
+                "rule": "semicolon",
+                "severity": "error"
+              }
+            ],
+            "passed": false,
+            "path": "<stdin>",
+            "words": 4008
+          }
+        ],
+        "mode": "strict",
+        "passed": false,
+        "summary": {
+          "diagnostics": 23,
+          "errors": 23,
+          "files": 1,
+          "max_warnings_per_100_words": 0.0,
+          "warning_rate_per_100_words": 0.0,
+          "warnings": 0
+        }
+      }
+    },
+    "new_diagnostics": []
+  }
+}
