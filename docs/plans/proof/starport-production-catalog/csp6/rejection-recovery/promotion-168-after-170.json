@@ -254,5 +254,14 @@
     "capacity": "one passing full-catalog capacity test",
     "coordinated_storage": "15 passing events and one child-process fixture skip on each of Redis and Valkey",
     "remaining": "Runtime and race jobs remain in progress in run 35418166093. No reported failures. Check current GitHub state before promotion."
+  },
+  "race_qualification": {
+    "proof": "promotion-168-final-race.json",
+    "artifacts": "promotion-168-final-race.tar.gz",
+    "pass": 7368,
+    "skip": 22,
+    "fail": 0,
+    "skip_scope": "Conditional and manual contract tests; no skips in runtime, application, or client groups.",
+    "remaining": "Windows AMD64 native runtime job remains live; no merge qualification yet."
   }
 }

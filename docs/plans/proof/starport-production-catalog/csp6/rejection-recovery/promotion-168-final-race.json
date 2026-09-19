@@ -1,0 +1,528 @@
+{
+  "head": "e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+  "run": 35418166093,
+  "groups": {
+    "go-tests-race-application": {
+      "events": {
+        "pass": 871
+      },
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest",
+          "action": "pass",
+          "elapsed": 329.635
+        },
+        {
+          "package": "github.com/agentstation/starmap/cmd/starmap-catalog-publish",
+          "action": "pass",
+          "elapsed": 360.527
+        },
+        {
+          "package": "github.com/agentstation/starmap/cmd/starmap-catalog-release",
+          "action": "pass",
+          "elapsed": 148.361
+        },
+        {
+          "package": "github.com/agentstation/starmap/cmd/starmap-embedded-budget",
+          "action": "pass",
+          "elapsed": 57.774
+        },
+        {
+          "package": "github.com/agentstation/starmap/cmd/starmap-modelsdev-promote",
+          "action": "pass",
+          "elapsed": 3.87
+        },
+        {
+          "package": "github.com/agentstation/starmap/cmd/starmap-openapi-presence",
+          "action": "pass",
+          "elapsed": 1.087
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "action": "pass",
+          "elapsed": 494.153
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/commands/config",
+          "action": "pass",
+          "elapsed": 1.032
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/commands/deps",
+          "action": "pass",
+          "elapsed": 32.434
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/commands/embed",
+          "action": "pass",
+          "elapsed": 1.015
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/commands/migrate",
+          "action": "pass",
+          "elapsed": 1.032
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/commands/models",
+          "action": "pass",
+          "elapsed": 1.022
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/commands/providers",
+          "action": "pass",
+          "elapsed": 1.037
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/commands/serve",
+          "action": "pass",
+          "elapsed": 1.031
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/commands/update",
+          "action": "pass",
+          "elapsed": 1.039
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/commands/validate",
+          "action": "pass",
+          "elapsed": 1.025
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/convert",
+          "action": "pass",
+          "elapsed": 1.011
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/embed",
+          "action": "pass",
+          "elapsed": 1.006
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/hints",
+          "action": "pass",
+          "elapsed": 1.02
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/table",
+          "action": "pass",
+          "elapsed": 1.02
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/server",
+          "action": "pass",
+          "elapsed": 268.796
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/server/cache",
+          "action": "pass",
+          "elapsed": 1.295
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/server/handlers",
+          "action": "pass",
+          "elapsed": 61.906
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/server/middleware",
+          "action": "pass",
+          "elapsed": 1.33
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/server/openrouter",
+          "action": "pass",
+          "elapsed": 34.032
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/server/operations",
+          "action": "pass",
+          "elapsed": 1.008
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/server/params",
+          "action": "pass",
+          "elapsed": 1.01
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/server/response",
+          "action": "pass",
+          "elapsed": 1.013
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/server/sse",
+          "action": "pass",
+          "elapsed": 1.076
+        }
+      ]
+    },
+    "go-tests-race-client": {
+      "events": {
+        "pass": 380
+      },
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap",
+          "action": "pass",
+          "elapsed": 805.044
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "action": "pass",
+          "elapsed": 265.712
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "action": "pass",
+          "elapsed": 553.807
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap/budget",
+          "action": "pass",
+          "elapsed": 129.471
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap/manifest",
+          "action": "pass",
+          "elapsed": 1.018
+        }
+      ]
+    },
+    "go-tests-race-contracts": {
+      "events": {
+        "pass": 4906,
+        "skip": 22
+      },
+      "skips": [
+        "TestServiceConfigurationAdministratorOwnedRead",
+        "TestRefreshAnthropicProviderFixture",
+        "TestAnthropicProviderFixtureCurrency",
+        "TestClientErrors/missing_provider_configuration",
+        "TestRefreshOpenAICompatibleProviderFixture",
+        "TestOpenAICompatibleProviderFixtureCurrency",
+        "TestWindowsMonitorFactoryRequiresSourceBounds",
+        "TestCoordinationBackendConditionalRecords",
+        "TestCoordinationBackendConcurrentCAS",
+        "TestCoordinationBackendRefusesInvalidAndExpiredRecords/type",
+        "TestCoordinationBackendRefusesInvalidAndExpiredRecords/shape",
+        "TestCoordinationBackendRefusesInvalidAndExpiredRecords/version",
+        "TestCoordinationBackendRefusesInvalidAndExpiredRecords/schema",
+        "TestCoordinationBackendRefusesInvalidAndExpiredRecords/size",
+        "TestCoordinationBackendRefusesInvalidAndExpiredRecords/expiration",
+        "TestCoordinationBackendRefusesCancellationAndUnconditionalWrites",
+        "TestCoordinationBackendRefusesReplicaReadsAndWrites",
+        "TestCoordinationBackendConfigurationIsInert",
+        "TestCoordinationBackendRetainsStateAcrossServerRestart",
+        "TestCoordinatedCatalogSurvivesProcessAndServiceRestart",
+        "TestCoordinatedCatalogProcess",
+        "TestCoordinatedCatalogUsesNativeObjectAndCoordinationServices"
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/architecture",
+          "action": "pass",
+          "elapsed": 1.042
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/attestation",
+          "action": "pass",
+          "elapsed": 1.087
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "action": "pass",
+          "elapsed": 2.774
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/pipeline",
+          "action": "pass",
+          "elapsed": 30.015
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "action": "pass",
+          "elapsed": 55.917
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/query",
+          "action": "pass",
+          "elapsed": 1.013
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "action": "pass",
+          "elapsed": 27.384
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "action": "pass",
+          "elapsed": 122.956
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "action": "pass",
+          "elapsed": 87.054
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/deploymentdocs",
+          "action": "pass",
+          "elapsed": 1.015
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/embedded",
+          "action": "pass",
+          "elapsed": 38.493
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/filepublish",
+          "action": "pass",
+          "elapsed": 1.017
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/fleet",
+          "action": "pass",
+          "elapsed": 1.007
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/privatefiles",
+          "action": "pass",
+          "elapsed": 2.287
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/providers/anthropic",
+          "action": "pass",
+          "elapsed": 24.236
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/providers/clients",
+          "action": "pass",
+          "elapsed": 1.422
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/providers/google",
+          "action": "pass",
+          "elapsed": 1.027
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/providers/openai",
+          "action": "pass",
+          "elapsed": 24.361
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+          "action": "pass",
+          "elapsed": 1.01
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/embedded",
+          "action": "pass",
+          "elapsed": 1.01
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/github",
+          "action": "pass",
+          "elapsed": 2.5949999999999998
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/local",
+          "action": "pass",
+          "elapsed": 1.023
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/modelsdev",
+          "action": "pass",
+          "elapsed": 57.524
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/providers",
+          "action": "pass",
+          "elapsed": 1.112
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/test/gitfixture",
+          "action": "pass",
+          "elapsed": 1.069
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/test/providerfixture",
+          "action": "pass",
+          "elapsed": 1.028
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/transport",
+          "action": "pass",
+          "elapsed": 1.295
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs",
+          "action": "pass",
+          "elapsed": 157.229
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "action": "pass",
+          "elapsed": 3.883
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/authority",
+          "action": "pass",
+          "elapsed": 1.013
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "action": "pass",
+          "elapsed": 132.483
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/evidence",
+          "action": "pass",
+          "elapsed": 1.007
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+          "action": "pass",
+          "elapsed": 1.166
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+          "action": "pass",
+          "elapsed": 1.011
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+          "action": "pass",
+          "elapsed": 1.034
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile",
+          "action": "pass",
+          "elapsed": 1.008
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/projection",
+          "action": "pass",
+          "elapsed": 1.006
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/remote",
+          "action": "pass",
+          "elapsed": 1.471
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "action": "pass",
+          "elapsed": 6.771
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/storage/s3",
+          "action": "pass",
+          "elapsed": 3.387
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "action": "pass",
+          "elapsed": 1.011
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/differ",
+          "action": "pass",
+          "elapsed": 1.009
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/errors",
+          "action": "pass",
+          "elapsed": 1.014
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/logging",
+          "action": "pass",
+          "elapsed": 1.009
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths",
+          "action": "pass",
+          "elapsed": 1.018
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+          "action": "pass",
+          "elapsed": 1.008
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/provenance",
+          "action": "pass",
+          "elapsed": 2.146
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/sources",
+          "action": "pass",
+          "elapsed": 1.068
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/sources/payload",
+          "action": "pass",
+          "elapsed": 1.171
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/sync",
+          "action": "pass",
+          "elapsed": 1.015
+        },
+        {
+          "package": "github.com/agentstation/starmap/remote",
+          "action": "pass",
+          "elapsed": 54.631
+        },
+        {
+          "package": "github.com/agentstation/starmap/server",
+          "action": "pass",
+          "elapsed": 41.412
+        },
+        {
+          "package": "github.com/agentstation/starmap/server/administration",
+          "action": "pass",
+          "elapsed": 3.427
+        }
+      ]
+    },
+    "go-tests-race-runtime-1": {
+      "events": {
+        "pass": 302
+      },
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "action": "pass",
+          "elapsed": 539.786
+        }
+      ]
+    },
+    "go-tests-race-runtime-2": {
+      "events": {
+        "pass": 480
+      },
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "action": "pass",
+          "elapsed": 1382.253
+        }
+      ]
+    },
+    "go-tests-race-runtime-3": {
+      "events": {
+        "pass": 429
+      },
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "action": "pass",
+          "elapsed": 1204.768
+        }
+      ]
+    }
+  }
+}
