@@ -1,0 +1,3 @@
+{
+  "output": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/providers/connectors\ncpu: Apple M2 Max\nBenchmarkProviderDispatchTransport/standard-12         \t   10000\t     39679 ns/op\t    4688 B/op\t      54 allocs/op\nBenchmarkProviderDispatchTransport/reserved-12         \t   10000\t     39255 ns/op\t    4184 B/op\t      49 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/providers/connectors\t1.185s\n"
+}

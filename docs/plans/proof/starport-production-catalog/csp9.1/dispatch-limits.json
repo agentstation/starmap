@@ -1,0 +1,46 @@
+{
+  "commit": "be6d48b",
+  "status": "local transport limits qualified; A45 incomplete",
+  "changes": [
+    "Broadcast capacity changes to all waiting origins without losing a change before subscription.",
+    "Enforce idle limits across origins and remove closed connection entries.",
+    "Preserve active streams when retiring idle connections."
+  ],
+  "checks": {
+    "connector_auth_pass_events": 277,
+    "connector_auth_skips": 0,
+    "repeated_lifecycle_pass_events": 51,
+    "repeated_lifecycle_failures": 0,
+    "lint": "pass",
+    "new_source_prose": "pass",
+    "planning_writing_exit": 2,
+    "planning_historical_diagnostics": 67
+  },
+  "behavior": [
+    "HTTP forward proxy preserves the absolute request target.",
+    "An upstream connection failure does not trigger an implicit retry.",
+    "The next caller can replace the closed connection."
+  ],
+  "benchmark": {
+    "iterations": 10000,
+    "standard_ns_per_op": 39679,
+    "standard_bytes_per_op": 4688,
+    "standard_allocations_per_op": 54,
+    "reserved_ns_per_op": 39255,
+    "reserved_bytes_per_op": 4184,
+    "reserved_allocations_per_op": 49,
+    "scope": "Local HTTP/1 component round trips; not a full gateway latency qualification."
+  },
+  "remaining": [
+    "Finish credential refresh fairness, churn, disclosure, and all nine A45 registrations.",
+    "Qualify HTTPS proxy tunnels, HTTP/2 protocol failures, shutdown during dial, and full request performance.",
+    "Run complete task and repository gates, review, published pair and native CI, then merge."
+  ],
+  "active_sessions": [
+    {
+      "id": 34993,
+      "command": "make technical-writing-check",
+      "output": "/tmp/csp91-limits-planning-writing.txt"
+    }
+  ]
+}
