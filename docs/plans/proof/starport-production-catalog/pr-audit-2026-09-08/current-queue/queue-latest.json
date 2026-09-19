@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-19T10:23:39.070346+00:00",
+  "checked_at": "2026-09-19T11:05:02.506720+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -931,12 +931,12 @@
     },
     {
       "worktree": "starmap-catalog-requirements",
-      "head": "cabb450cf9f335cd1c73834c21719f27045b7452",
+      "head": "475da593d3d874633cf3a49b11b92f6d5f0e9e86",
       "status": "M AGENTS.md\n M Makefile\n M go.mod\n M go.sum\n M scripts/verify.sh"
     },
     {
       "worktree": "starmap-credential-roles",
-      "head": "50f071ef2a68604c29f97563e11b8632f1e9d607",
+      "head": "6aff4690d7db29c820e39c5a03fbaece5f64d71e",
       "status": "",
       "owner": "CSP9",
       "disposition": "unpublished preparation",
@@ -969,10 +969,10 @@
     {
       "worktree": "starport-catalog-routing",
       "owner": "CSP10",
-      "head": "d768e7b6d524c1792b9c67b4fb34604c1048af04",
+      "head": "fddeafcef28d05c40d67c2968d143983f2dd17d8",
       "status": "",
       "disposition": "unpublished preparation",
-      "next_action": "Complete caller disclosure filtering and task qualification before review and publication."
+      "next_action": "Complete HTTP transition and in-flight request qualification, then run the task gate and review before publication."
     },
     {
       "worktree": "/tmp/csp6-signed-recovery-candidate",
