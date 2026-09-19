@@ -1,0 +1,34 @@
+{
+  "task": "CSP10",
+  "recorded_at": "2026-09-19T17:21:51.452273+00:00",
+  "starport_head": "35c493dca86765487492a36548ac40581bb61e82",
+  "starmap_head": "c382baf83",
+  "status": "Catalog view consistency defects corrected locally; A18 remains UNVERIFIED",
+  "fail_before": [
+    "The console accepted the model author as a serving provider.",
+    "The compatibility summary reported 14 providers while the provider list contained one."
+  ],
+  "changes": [
+    "Provider facet choices and counts use distinct offering providers per model. Model authors remain a separate facet.",
+    "Compatibility summary counts and author membership use the permitted routable view used by compatibility model and provider lists.",
+    "The accepted catalog and separate discovery surface retain their membership. This change does not remove catalog records."
+  ],
+  "checks": {
+    "race_command": "GOWORK=/tmp/csp10-host-integration.work go test -race -count=1 -timeout=5m -json ./internal/catalog/view ./internal/server ./internal/proxy",
+    "race_pass_events": 545,
+    "race_skips": [
+      "TestSDKCanonicalRemovalAfterSuccessfulInference"
+    ],
+    "console": "pnpm --dir console check: build, typecheck, 74 test files and 460 tests passed",
+    "vet": 0,
+    "lint": 0,
+    "writing": "14 historical diagnostics, down from 16; none added"
+  },
+  "initial_failure": "The server allowlist test expected the former mixed summary: one provider and zero models with no matching adapter. Its expectation now reflects the shared compatibility view.",
+  "limitations": [
+    "A18 pricing-record consistency and complete UI/API consistency still need qualification.",
+    "A18 in-flight/new-attempt behavior and A21 cache/retry/batch admission and stream-policy diagnostics remain open.",
+    "Native checks, released-pair qualification, required review, publication, and merge remain open."
+  ],
+  "next_action": "Qualify complete pricing records across list, detail, endpoint, and page projections. Then finish the remaining A18 and A21 contracts."
+}

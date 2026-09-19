@@ -1,0 +1,3 @@
+{
+  "stdout": "--- FAIL: TestReaderSummaryMatchesVisibleModelAndProviderLists (1.21s)\n    reader_test.go:59: \n        \tError Trace:\t/Users/jack/src/github.com/agentstation/starport-catalog-routing/internal/catalog/view/reader_test.go:59\n        \tError:      \tNot equal: \n        \t            \texpected: 1\n        \t            \tactual  : 14\n        \tTest:       \tTestReaderSummaryMatchesVisibleModelAndProviderLists\nFAIL\nFAIL\tgithub.com/agentstation/starport/internal/catalog/view\t1.662s\nFAIL\n"
+}
