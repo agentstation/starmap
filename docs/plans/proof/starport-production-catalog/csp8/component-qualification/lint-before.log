@@ -1,0 +1,17 @@
+Linting code...
+internal/config/file_manifest.go:79:85: string `configuration` has 3 occurrences, make it a constant (goconst)
+		{"setup-transaction", siblingPath(p.ConfigFile, ".starport-setup"), fileKindTree, "configuration", "Local setup retains its transaction and stable lock."},
+		                                                                                  ^
+internal/config/legacy_paths.go:154:8: string `configuration` has 3 occurrences, make it a constant (goconst)
+		case "configuration":
+		     ^
+internal/config/migration_storage.go:24:63: string `valkey` has 3 occurrences, make it a constant (goconst)
+		if err != nil || endpoint.Host == "" || (endpoint.Scheme != "valkey" && endpoint.Scheme != "redis") {
+		                                                            ^
+internal/config/validation.go:76:7: string `valkey` has 3 occurrences, make it a constant (goconst)
+	case "valkey":
+	     ^
+4 issues:
+* goconst: 4
+exit status 1
+make: *** [lint] Error 1

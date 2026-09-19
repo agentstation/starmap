@@ -1,0 +1,79 @@
+{
+  "starport_head": "8878232ec77d290a4dccdc5c9ee9624b97dec214",
+  "full_suite_head": "241d74442174d0880c0f14de6691cb16ba9111ba",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "scope": "CSP8 full component race suite and local static gates. Local workspace only.",
+  "full_suite": {
+    "command": "GOWORK=/tmp/csp8-host-integration.work go test -json -race -count=1 -timeout 5m ./internal/config ./internal/catalog ./internal/app",
+    "result": "PASS",
+    "test_events": {
+      "github.com/agentstation/starport/internal/config": {
+        "pass": 291
+      },
+      "github.com/agentstation/starport/internal/catalog": {
+        "pass": 206
+      },
+      "github.com/agentstation/starport/internal/app": {
+        "pass": 119,
+        "skip": 2
+      }
+    },
+    "packages": [
+      {
+        "package": "github.com/agentstation/starport/internal/config",
+        "result": "pass",
+        "seconds": 36.498
+      },
+      {
+        "package": "github.com/agentstation/starport/internal/app",
+        "result": "pass",
+        "seconds": 184.148
+      },
+      {
+        "package": "github.com/agentstation/starport/internal/catalog",
+        "result": "pass",
+        "seconds": 241.243
+      }
+    ],
+    "skipped": [
+      "TestAppWithValkey",
+      "TestSharedStartupDoesNotCreateLocalDatabases"
+    ],
+    "log": "component-qualification/race.jsonl"
+  },
+  "changes_after_suite_start": "Replace repeated configuration-role strings with one constant and repeated Valkey mode strings with the existing constant. No literal values changed. The complete configuration package passes again after this change.",
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/config",
+      "result": "PASS",
+      "seconds": 36.75
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work make lint",
+      "result": "PASS",
+      "issues": 0
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work bash scripts/verify-dependency-direction.sh",
+      "result": "PASS",
+      "conditions": 6
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work bash scripts/verify-package-layout.sh",
+      "result": "PASS"
+    }
+  ],
+  "lint_fail_before": "Four goconst findings in configuration file-role and Valkey mode strings. The final code reuses constants without policy changes.",
+  "shared_evidence": "final-registrations.json separately records a passing TestSharedStartupDoesNotCreateLocalDatabases run with real Valkey 7.2.14 and PostgreSQL 16.15. TestAppWithValkey remains unqualified by this full-suite run.",
+  "remaining": [
+    "Published producer dependency and committed consumer pin.",
+    "Remaining repository gates, structured pre-PR review, hosted CI, and implementation merge.",
+    "CSP6 still needs the owner answer for the pending PR168 history rewrite, then publication and retry evidence."
+  ],
+  "running_sessions": [],
+  "completion_credit": false
+}
