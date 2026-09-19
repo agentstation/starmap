@@ -1,0 +1,35 @@
+{
+  "task": "CSP10.2",
+  "commit": "f2dffc2947abb1cd9627bd9baad388ed5f470095",
+  "status": "validity primitives pass local tests; cache and repository integration remain open",
+  "contracts": [
+    "Authority and epoch binding rejects foreign evidence.",
+    "Verified sequence requirements reject rollback and revoke older receipts.",
+    "Overlapping local mutations block new loads until every mutation ends.",
+    "Mutation start revokes copied receipts and loads that began before the mutation.",
+    "Clock uncertainty shortens the maximum receipt lifetime. Unknown clock health and large backward movement refuse use.",
+    "Receipt checks allocate zero bytes in TestReceiptCheckDoesNotAllocate."
+  ],
+  "verification": {
+    "command": "GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=1m -json ./internal/authorization",
+    "exit_code": 0,
+    "pass_events": 23,
+    "failed_events": 0,
+    "skipped_events": 0,
+    "source_note": "Only exported error comments changed after the race run.",
+    "lint_command": "GOWORK=/tmp/csp102-host-integration.work make lint",
+    "lint_exit_code": 0,
+    "lint_output": "Linting code...\n0 issues.\nLint complete\n",
+    "writing": "Both new files pass with zero diagnostics."
+  },
+  "limitations": [
+    "These primitives are not wired into production admission yet.",
+    "The source adapter must verify authority epochs and sequences from durable storage. The primitive does not establish storage coherence itself.",
+    "The deployment-wide fence conservatively revokes all associated receipts. It stores no per-tenant records.",
+    "Bounded cache loads, immutable bundles, repository mutation hooks, durable catch-up, fleet diagnostics, and retry/cache/batch admission remain open.",
+    "No full A46 acceptance or task completion claim."
+  ],
+  "next_action": "Build the bounded authorization bundle cache around these receipts. Implement durable repository sequence evidence and mutation hooks before enabling warm admission.",
+  "active_sessions": [],
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.1</td><td>All eight expanded A44 checks pass. Catalog race reports 244 passing events. Eleven benchmarks pass. Starmap review is clean. Repository qualification continues.</td><td><a href=\"proof/starport-production-catalog/csp10.1/route-final-local.json\">Final local route evidence</a></td></tr>"
+}

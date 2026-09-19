@@ -25,9 +25,11 @@
 
 <p>The <a href="proof/starport-production-catalog/csp10.3/qualification.json">qualification state</a> records all seven expanded A49 subcases passing. Final race checks pass 320 events with two service-dependent skips. Full tests, vet, and lint pass. Both final reviews pass with zero findings. No verification sessions remain active.</p>
 
-<p>CSP10.2 preparation uses <code>starport-authorization-memory</code>, branch <code>codex/starport-authorization-memory</code>, at <code>eee55ef</code>, from reviewed <code>a5aab81</code>. Use <code>GOWORK=/tmp/csp102-host-integration.work</code>. Set both Starport verifier roots to this worktree. Both Starmap roots remain <code>starmap-advisory-exchange</code>.</p>
+<p>CSP10.2 preparation uses <code>starport-authorization-memory</code>, branch <code>codex/starport-authorization-memory</code>, at <code>f2dffc2</code>, from reviewed <code>a5aab81</code>. Use <code>GOWORK=/tmp/csp102-host-integration.work</code>. Set both Starport verifier roots to this worktree. Both Starmap roots remain <code>starmap-advisory-exchange</code>.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp10.2/preparation.json">preparation proof</a> records six failing leaf cases. Ten warm requests make 30 storage reads. The <a href="proof/starport-production-catalog/csp10.2/account-admission.json">account admission repair</a> now refuses those requests across all three caller modes. Server race checks pass 354 events with two Valkey skips. Warm storage reads remain unresolved. Implement validated authorization memory next.</p>
+<p>The <a href="proof/starport-production-catalog/csp10.2/preparation.json">preparation proof</a> records six failing leaf cases. Ten warm requests make 30 storage reads. The <a href="proof/starport-production-catalog/csp10.2/account-admission.json">account admission repair</a> now refuses those requests across all three caller modes. Server race checks pass 354 events with two Valkey skips. Warm storage reads remain unresolved.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp10.2/validity-primitives.json">validity primitives</a> pass 23 race-test events. Cache and repository integration remain open.</p>
 
 <p>A compatible published Starmap module must precede dependent Starport qualification and merges. The current pin lacks <code>pkg/productfiles</code>. Never commit local replacements. Native checks, actual merge commits, and released-pair acceptance remain required.</p>
 
@@ -667,7 +669,7 @@
 
 
 
-<tr><td>2026-09-19</td><td>CSP10.1</td><td>All eight expanded A44 checks pass. Catalog race reports 244 passing events. Eleven benchmarks pass. Starmap review is clean. Repository qualification continues.</td><td><a href="proof/starport-production-catalog/csp10.1/route-final-local.json">Final local route evidence</a></td></tr>
+
 <tr><td>2026-09-19</td><td>CSP10.1</td><td>Repository checks finish with 32 PASS and the known published-module failure. Build and SDK smoke pass. Final Starport Sol/Opus review runs.</td><td><a href="proof/starport-production-catalog/csp10.1/repository-qualification.json">Repository qualification</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.1</td><td>Final Starport review passes across five sections with zero findings. Native qualification and merge remain open.</td><td><a href="proof/starport-production-catalog/csp10.1/review-complete.json">Review completion</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.3</td><td>Five regression subtests reproduce synchronous advisory storage calls at <code>b23e8f9</code>. Preserve prior resume evidence and replace stale process instructions.</td><td><a href="proof/starport-production-catalog/csp10.3/preparation.json">Preparation proof</a></td></tr>
@@ -677,4 +679,5 @@
 <tr><td>2026-09-19</td><td>CSP10.3</td><td>Final Starport review passes across six sections with zero findings. Both source reviews are clean. Native qualification and merges remain open.</td><td><a href="proof/starport-production-catalog/csp10.3/review-complete.json">Review completion</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.2</td><td>Capture warm storage reads and unsafe account admission at <code>9b62812</code>. Six leaf cases fail on memory and real Badger. Two Valkey cases remain unverified.</td><td><a href="proof/starport-production-catalog/csp10.2/preparation.json">Preparation proof</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.2</td><td>Repair account admission at <code>eee55ef</code>. Eighteen caller-mode regressions fail before repair. Server race checks pass 354 events with two skips. Vet and lint pass.</td><td><a href="proof/starport-production-catalog/csp10.2/account-admission.json">Account admission evidence</a></td></tr>
+<tr><td>2026-09-19</td><td>CSP10.2</td><td>Add authority-bound validity receipts and mutation fences at <code>f2dffc2</code>. All 23 race-test events pass. Receipt checks allocate zero. Repository integration remains open.</td><td><a href="proof/starport-production-catalog/csp10.2/validity-primitives.json">Validity evidence</a></td></tr>
 </tbody></table></section></main></body></html>
