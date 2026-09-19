@@ -1161,6 +1161,288 @@
           ]
         }
       ]
+    },
+    "A01.starport_cold_offline": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogPersistsProductBaselineAndOwnershipOffline"
+        }
+      ]
+    },
+    "A01.restart_same_baseline": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogPersistsProductBaselineAndOwnershipOffline"
+        }
+      ]
+    },
+    "A20.starport_provider_nonprovider": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestProductionAcquisitionLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestRuntimeAcquiresSelectedMetadataSource"
+        }
+      ]
+    },
+    "A25.product_path_isolation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderOwnsIndependentProductRoots"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogOwnerConflictRefusesBeforeGatewayStores"
+        }
+      ]
+    },
+    "A24.primary_config_file_selection": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderUsesPlatformConfigFile"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderRejectsMissingExplicitConfiguration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderPrimaryFileCannotAuthorizeItsOwnRelativeSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigPathsUsesEffectivePrimaryFileWithoutCreatingState"
+        }
+      ]
+    },
+    "A24.bootstrap_file_location": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderRootSpecificityAndBootstrapSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderPrimaryFileCannotAuthorizeItsOwnRelativeSelection"
+        }
+      ]
+    },
+    "A03.effective_path_report": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestPathOriginsDistinguishFilesEnvironmentAndGoOverrides"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogFileOriginIdentifiesStarmapFallback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigPathsUsesEffectivePrimaryFileWithoutCreatingState"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigPathsTextIncludesRuntimeAndStorageLocations"
+        }
+      ]
+    },
+    "A43.persistent_selectors_rejected": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestDevelopmentRejectsPersistentEnvironmentSelections"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestDevelopmentRejectsPersistentGoOverrides"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentRefusesPersistentConfigurationBeforeStores"
+        }
+      ]
+    },
+    "A43.migration_diagnostic": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestDevelopmentRejectsPersistentEnvironmentSelections"
+        }
+      ]
+    },
+    "A03.starport_linux": {
+      "kind": "native_ci",
+      "repository": "starport",
+      "platform": "linux",
+      "tests": [
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestPlatformPathsUseUserConfigDirectory"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestPlatformPathsUseExplicitDirectory"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestLoaderOwnsIndependentProductRoots"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestLoaderRejectsInvalidRootAndInstanceSelections"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestFileManifestUsesConfigurationReadPolicy"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "test": "TestConfigPathsUsesEffectivePrimaryFileWithoutCreatingState"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "test": "TestConfigFileManifestReportsPrivateStateAccessConflict"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestCatalogPersistsProductBaselineAndOwnershipOffline"
+        }
+      ]
+    },
+    "A03.starport_macos": {
+      "kind": "native_ci",
+      "repository": "starport",
+      "platform": "darwin",
+      "tests": [
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestPlatformPathsUseUserConfigDirectory"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestPlatformPathsUseExplicitDirectory"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestLoaderOwnsIndependentProductRoots"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestLoaderRejectsInvalidRootAndInstanceSelections"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestFileManifestUsesConfigurationReadPolicy"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "test": "TestConfigPathsUsesEffectivePrimaryFileWithoutCreatingState"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "test": "TestConfigFileManifestReportsPrivateStateAccessConflict"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestCatalogPersistsProductBaselineAndOwnershipOffline"
+        }
+      ]
+    },
+    "A03.starport_windows": {
+      "kind": "native_ci",
+      "repository": "starport",
+      "platform": "windows",
+      "tests": [
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestPlatformPathsUseUserConfigDirectory"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestPlatformPathsUseExplicitDirectory"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestLoaderOwnsIndependentProductRoots"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestLoaderRejectsInvalidRootAndInstanceSelections"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestFileManifestUsesConfigurationReadPolicy"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "test": "TestConfigPathsUsesEffectivePrimaryFileWithoutCreatingState"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "test": "TestConfigFileManifestReportsPrivateStateAccessConflict"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestCatalogPersistsProductBaselineAndOwnershipOffline"
+        }
+      ]
     }
   }
 }

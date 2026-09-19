@@ -1,0 +1,74 @@
+{
+  "starport_head": "c25063f98f88ace5f514976f05362279ba634e01",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "scope": "CSP8 registration audit and real-storage offline restart. No completion credit.",
+  "remaining_unregistered_cases": [
+    "A22.startup_poll_stream_manual",
+    "A22.lazy_secret_resolution",
+    "A22.local_import_allowed",
+    "A22.inference_separate_egress",
+    "A23.manual_source_with_acquisition",
+    "A23.pin_blocks_all_activation",
+    "A23.explicit_refresh",
+    "A23.restart_watcher_guards",
+    "A24.local_fallback",
+    "A24.scope_authority_origins",
+    "A24.generated_file_inventory",
+    "A03.starport_file_manifest",
+    "A03.shared_backend_no_local_databases",
+    "A43.memory_databases",
+    "A43.scratch_blobs_runtime",
+    "A43.persistent_installation_untouched",
+    "A43.normal_shutdown_cleanup",
+    "A43.crash_cleanup_ownership"
+  ],
+  "remaining_unregistered_count": 18,
+  "registered_this_change": 12,
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/app -run '^TestCatalogPersistsProductBaselineAndOwnershipOffline$'",
+      "result": "PASS",
+      "top_level_tests": 1,
+      "seconds": 16.496
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/config ./internal/cli",
+      "result": "PASS",
+      "packages": 2,
+      "package_seconds": {
+        "config": 35.043,
+        "cli": 1.852
+      }
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/app -run '^Test(CatalogOwnerConflictRefusesBeforeGatewayStores|DevelopmentRefusesPersistentConfigurationBeforeStores)$'",
+      "result": "PASS",
+      "top_level_tests": 2,
+      "subtests": 8,
+      "seconds": 15.493
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go vet ./internal/app",
+      "result": "PASS"
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts -p test_catalog_product_verify.py",
+      "result": "PASS",
+      "tests": 73,
+      "seconds": 3.593
+    }
+  ],
+  "corrected_test_assumption": "Explicitly accepting the embedded fallback failed because it is not a stored acquisition candidate. AcceptedGeneration documents that distinction. The revised test checks the absent accepted-update record on both boots, while preserving the embedded generation, export bytes, and scheduler identity. Production acceptance behavior remains unchanged.",
+  "coverage": [
+    "Offline startup and restart use real closed and reopened Badger storage.",
+    "Configuration registrations reference inspected loading, selection, origin, and passive path-report tests.",
+    "Development registrations require persistent-selector refusal and a safe operator diagnostic.",
+    "Native platform registrations require OS-specific CI artifacts rather than host-independent path assertions."
+  ],
+  "remaining": [
+    "Complete the 18 unregistered cases through contract inspection and missing behavior tests.",
+    "Qualification against the committed published dependency.",
+    "Hosted native CI, full repository checks, pre-PR review, and implementation merge."
+  ],
+  "completion_credit": false
+}
