@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/bootstrap/manifest"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
@@ -131,59 +131,16 @@ func TestScheduledGenerationManifestReplacesPriorSchemaManifest(t *testing.T) {
 
 func TestScheduledGenerationManifestUsesExactCommittedIdentity(t *testing.T) {
 	catalogDir := filepath.Join("..", "..", "internal", "embedded", "catalog")
-	builder, err := catalogs.NewFromPath(catalogDir)
+	generation, err := bootstrap.Generation()
 	if err != nil {
-		t.Fatalf("NewFromPath: %v", err)
+		t.Fatal(err)
 	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
-	}
-	payload, err := catalogs.EncodeCatalogPayload(catalog)
-	if err != nil {
-		t.Fatalf("EncodeCatalogPayload: %v", err)
-	}
-	descriptor := catalogs.DescribeCatalogPayload(payload)
-	generatedAt := time.Date(2026, time.July, 29, 21, 0, 0, 0, time.UTC)
-	generation := catalogs.Generation{
-		Manifest: catalogs.GenerationManifest{
-			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
-			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,
-			GenerationID:    "exact-committed-generation",
-			GeneratedAt:     generatedAt,
-			Payload:         descriptor,
-			Validation: catalogs.GenerationValidationReport{
-				ValidatorVersion: "test/v1",
-				ValidatedAt:      generatedAt,
-				Status:           catalogs.GenerationValidationPassed,
-				Checks: []catalogs.GenerationValidationCheck{{
-					Name: "catalog", Status: catalogs.GenerationValidationCheckPassed,
-				}},
-			},
-			SyncRunID: "sync-exact",
-			SourceObservations: []catalogs.SourceObservationLink{
-				{
-					Source:        evidence.ProvidersID,
-					ObservationID: "providers-exact",
-					ObservedAt:    generatedAt,
-					Revision: evidence.ObservationRevision{
-						Kind:  evidence.ObservationRevisionKindContentDigest,
-						Value: descriptor.Checksum,
-					},
-					Completeness:     evidence.ObservationCompletenessComplete,
-					Status:           evidence.ObservationStatusSucceeded,
-					EvidenceChecksum: descriptor.Checksum,
-				},
-			},
-			ReviewCandidates: []evidence.ReviewCandidate{},
-			Completeness:     catalogs.GenerationCompletenessComplete,
-			ConsumerCompatibility: catalogs.ConsumerCompatibility{
-				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
-				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
-			},
-		},
-		Payload: payload,
-	}
+	generatedAt := generation.Manifest.GeneratedAt.Add(time.Hour)
+	generation.Manifest.GenerationID = "exact-committed-generation"
+	generation.Manifest.GeneratedAt = generatedAt
+	generation.Manifest.Validation.ValidatedAt = generatedAt
+	generation.Manifest.SyncRunID = "sync-exact"
+	payload := generation.Payload
 	storePath := filepath.Join(t.TempDir(), "store")
 	store, err := storage.NewFilesystem(storePath)
 	if err != nil {
@@ -213,6 +170,14 @@ func TestScheduledGenerationManifestUsesExactCommittedIdentity(t *testing.T) {
 		manifest.GeneratedAt != generation.Manifest.GeneratedAt ||
 		manifest.Payload != generation.Manifest.Payload {
 		t.Fatalf("manifest = %#v, generation = %#v", manifest, generation.Manifest)
+	}
+	retained, err := os.ReadFile(filepath.Join(filepath.Dir(manifestPath), catalogs.BootstrapGenerationManifestFilename))
+	if err != nil {
+		t.Fatal(err)
+	}
+	actual, err := catalogs.DecodeBootstrapGeneration(manifest, payload, retained)
+	if err != nil || actual.Manifest.SyncRunID != generation.Manifest.SyncRunID {
+		t.Fatalf("committed source evidence was not retained: %v", err)
 	}
 }
 

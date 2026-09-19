@@ -5,12 +5,15 @@ import (
 	"io/fs"
 	"net/http"
 	"net/http/httptest"
+	"slices"
 	"testing"
 	"time"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/server"
 )
 
@@ -91,20 +94,55 @@ func TestStartupExplicitEmptyBindingsDropsStoredScopeWithoutInputs(t *testing.T)
 	if next.State().PayloadChecksum != next.Client().CurrentCatalogState().PayloadChecksum {
 		t.Fatal("client differs from runtime")
 	}
+	accepted, err := store.Current(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	baseline := next.Client().EmbeddedCatalogState()
+	compiled, err := starmap.EmbeddedGeneration()
+	if err != nil {
+		t.Fatal(err)
+	}
+	links := accepted.Manifest.SourceObservations
+	if len(baseline.Catalog.MembershipScopes()) > 0 {
+		if err := catalogs.ValidateMembershipEvidence(baseline.Catalog.MembershipScopes(), links); err != nil {
+			t.Fatal(err)
+		}
+		for _, link := range links {
+			if !slices.Contains(compiled.Manifest.SourceObservations, link) {
+				t.Fatalf("withdrawal invented or changed a baseline receipt: %+v", link)
+			}
+		}
+		return
+	}
+	if len(links) != 1 || links[0].Source != sources.EmbeddedCatalogID || links[0].EvidenceChecksum != baseline.PayloadChecksum || !links[0].ObservedAt.Equal(baseline.GeneratedAt) {
+		t.Fatalf("withdrawal lost the selected baseline receipt: %+v", links)
+	}
 }
 
 func TestStartupUnscopedStoreOnlyCatalogRemainsAvailable(t *testing.T) {
 	store := storage.NewMemory()
 	options := []Option{WithStateDirectory(privateRuntimeDirectory(t)), WithCatalogSource("embedded"), WithClientOptions(starmap.WithCatalogStore(store))}
-	first := openTestRuntime(t, options...)
-	layer := testProviderLayer(t, "provider", "model", "Model", time.Date(2026, 9, 8, 0, 0, 0, 0, time.UTC))
-	if _, err := first.publishProviders(t.Context(), []ProviderLayer{layer}, first.lease.epoch()); err != nil {
+	client, err := starmap.New(starmap.WithCatalogStore(store))
+	if err != nil {
 		t.Fatal(err)
 	}
-	accepted := first.State()
-	if err := first.Close(); err != nil {
+	catalog, err := catalogs.DecodeCatalogPayload(testCatalogPayload(t, "provider", "model", "Model"))
+	if err != nil {
 		t.Fatal(err)
 	}
+	candidate, err := starmap.NewCandidate(catalog, starmap.CandidateEvidence{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	generation, err := client.PrepareGeneration(t.Context(), candidate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := client.Activate(t.Context(), generation); err != nil {
+		t.Fatal(err)
+	}
+	accepted := client.CurrentCatalogState()
 	next := openTestRuntime(t, append(options, WithStateDirectory(privateRuntimeDirectory(t)))...)
 	if _, err := next.State().Catalog.Provider("provider"); err != nil {
 		t.Fatal("permitted unscoped catalog disappeared")
@@ -155,5 +193,36 @@ func TestStartupRemovedBindingRefusesFailedPublication(t *testing.T) {
 	recovered := openTestRuntime(t, WithStateDirectory(directory), WithCatalogSource("embedded"), WithClientOptions(starmap.WithCatalogStore(store)))
 	if _, err := recovered.Client().CurrentCatalogState().Catalog.Provider("provider"); err == nil {
 		t.Fatal("recovered publication retains withdrawn provider")
+	}
+}
+
+func TestStoredOriginRequiresMatchingBaselineAndAuthority(t *testing.T) {
+	connected := openTestRuntime(t, WithCatalogSource("embedded"), WithAuthorityOrigin(storage.NewMemory(), originTestConfig()))
+	baseline := connected.Client().EmbeddedCatalogState()
+	for _, test := range []struct {
+		name   string
+		change func(*Runtime, *starmap.CatalogState)
+		want   bool
+	}{
+		{"compiled baseline", func(*Runtime, *starmap.CatalogState) {}, true},
+		{"other identity", func(_ *Runtime, state *starmap.CatalogState) { state.GenerationID += "-other" }, false},
+		{"other payload", func(_ *Runtime, state *starmap.CatalogState) { state.PayloadChecksum = "other" }, false},
+		{"unknown baseline", func(_ *Runtime, state *starmap.CatalogState) { *state = starmap.CatalogState{} }, false},
+		{"no origin", func(r *Runtime, _ *starmap.CatalogState) { r.config.origin = nil }, false},
+		{"other authority", func(r *Runtime, _ *starmap.CatalogState) { r.config.origin.config.AuthorityID = "other" }, false},
+		{"other policy", func(r *Runtime, _ *starmap.CatalogState) { r.config.origin.config.PolicyID = "other" }, false},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			origin := *connected.config.origin
+			config := connected.config
+			config.origin = &origin
+			r := &Runtime{client: connected.client, config: config}
+			state := baseline
+			test.change(r, &state)
+			matched, err := r.storedOriginMatchesBaseline(t.Context(), state)
+			if matched != test.want || (test.want && err != nil) {
+				t.Fatalf("matched=%v error=%v, want matched=%v", matched, err, test.want)
+			}
+		})
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/internal/bootstrap"
 )
 
 func validateMigrationCatalog(ctx context.Context, directory, publisherID string) error {
@@ -37,7 +38,11 @@ func validateMigrationCatalog(ctx context.Context, directory, publisherID string
 	if err != nil {
 		return err
 	}
-	layers := layerSet{publisherID: publisherID, source: source, providers: providers, manual: manual, removals: removals}
+	manifest, err := bootstrap.GenerationManifest()
+	if err != nil {
+		return err
+	}
+	layers := layerSet{publisherID: publisherID, embeddedManifest: &manifest, source: source, providers: providers, manual: manual, removals: removals}
 	if _, err := layers.build(ctx, client.EmbeddedCatalogState()); err != nil {
 		return err
 	}

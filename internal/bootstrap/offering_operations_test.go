@@ -31,13 +31,9 @@ var nonChatTags = []catalogs.ModelTag{
 // the provider rejects. This drift enters the catalog when provider facts omit
 // the model's classification tag.
 func TestOfferedChatCompletionsAgreeWithCanonicalModelFacts(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Embedded: %v", err)
 	}
 
 	checked := 0

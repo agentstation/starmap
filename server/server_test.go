@@ -89,8 +89,8 @@ func TestReadOnlyServerDoesNotExposeUpdateRoute(t *testing.T) {
 	request := httptest.NewRequest(http.MethodPost, "/api/v1/update", nil)
 	recorder := httptest.NewRecorder()
 	srv.Handler().ServeHTTP(recorder, request)
-	if recorder.Code != http.StatusNotFound {
-		t.Fatalf("POST /api/v1/update status = %d, want %d", recorder.Code, http.StatusNotFound)
+	if recorder.Code != http.StatusForbidden {
+		t.Fatalf("POST /api/v1/update status = %d, want %d", recorder.Code, http.StatusForbidden)
 	}
 }
 

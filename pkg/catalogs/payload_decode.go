@@ -243,6 +243,9 @@ func decodePayloadProviders(
 		}
 		mergeRecordReport(&report, recordReport)
 		for _, model := range models {
+			if payload.SchemaVersion < RecognitionBillingSchemaVersion && model.RecordPresence(ModelRecordBilling) != ValueMissing {
+				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing", Message: "requires catalog schema version 10"}
+			}
 			if err := builder.SetProviderModel(ProviderID(providerID), model); err != nil {
 				report.Accepted--
 				report.Rejected++

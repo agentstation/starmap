@@ -12,12 +12,15 @@ Package middleware provides HTTP middleware for the Starmap API server. It inclu
 
 ## Index
 
+- [func AdministrationAccess\(manager \*administration.Manager, audience, header, prefix string, publicPaths \[\]string, unauthorized func\(http.ResponseWriter, \*http.Request\)\) func\(http.Handler\) http.Handler](<#AdministrationAccess>)
+- [func AdministrativePrincipal\(ctx context.Context\) \(administration.Principal, bool\)](<#AdministrativePrincipal>)
 - [func Auth\(config AuthConfig, logger \*zerolog.Logger\) func\(http.Handler\) http.Handler](<#Auth>)
 - [func CORS\(config CORSConfig\) func\(http.Handler\) http.Handler](<#CORS>)
 - [func Chain\(middlewares ...func\(http.Handler\) http.Handler\) func\(http.Handler\) http.Handler](<#Chain>)
 - [func Logger\(logger \*zerolog.Logger\) func\(http.Handler\) http.Handler](<#Logger>)
 - [func RateLimit\(rl \*RateLimiter\) func\(http.Handler\) http.Handler](<#RateLimit>)
 - [func Recovery\(logger \*zerolog.Logger\) func\(http.Handler\) http.Handler](<#Recovery>)
+- [func RequiresAdministrator\(request \*http.Request, prefix string\) bool](<#RequiresAdministrator>)
 - [func RouteTimeouts\(routes \[\]RouteTimeout, logger \*zerolog.Logger\) func\(http.Handler\) http.Handler](<#RouteTimeouts>)
 - [type AuthConfig](<#AuthConfig>)
   - [func DefaultAuthConfig\(\) AuthConfig](<#DefaultAuthConfig>)
@@ -27,6 +30,24 @@ Package middleware provides HTTP middleware for the Starmap API server. It inclu
   - [func NewRateLimiter\(limit int, logger \*zerolog.Logger\) \*RateLimiter](<#NewRateLimiter>)
 - [type RouteTimeout](<#RouteTimeout>)
 
+
+<a name="AdministrationAccess"></a>
+## func [AdministrationAccess](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/administration.go#L30>)
+
+```go
+func AdministrationAccess(manager *administration.Manager, audience, header, prefix string, publicPaths []string, unauthorized func(http.ResponseWriter, *http.Request)) func(http.Handler) http.Handler
+```
+
+AdministrationAccess requires separate administrator authorization before administrative route dispatch. With no administration manager, all administrative routes remain disabled.
+
+<a name="AdministrativePrincipal"></a>
+## func [AdministrativePrincipal](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/administration.go#L15>)
+
+```go
+func AdministrativePrincipal(ctx context.Context) (administration.Principal, bool)
+```
+
+AdministrativePrincipal returns the credential identity authenticated for this request.
 
 <a name="Auth"></a>
 ## func [Auth](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L36>)
@@ -81,6 +102,15 @@ func Recovery(logger *zerolog.Logger) func(http.Handler) http.Handler
 ```
 
 Recovery recovers from panics and returns 500 error.
+
+<a name="RequiresAdministrator"></a>
+## func [RequiresAdministrator](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/administration.go#L21>)
+
+```go
+func RequiresAdministrator(request *http.Request, prefix string) bool
+```
+
+RequiresAdministrator classifies server diagnostics and registered mutation routes before route dispatch.
 
 <a name="RouteTimeouts"></a>
 ## func [RouteTimeouts](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/timeout.go#L41>)

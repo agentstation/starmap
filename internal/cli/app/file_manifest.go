@@ -57,15 +57,16 @@ func (a *App) FileManifest() (productpaths.FileManifest, error) {
 		return productpaths.FileManifest{}, err
 	}
 	add("migration-journal", child(paths.Roots[productpaths.State], "migrations"), "tree", "available", "An explicit runtime migration, unless its journal root is overridden.", "Preserve until the deployment recovery procedure permits removal.", "*/manifest.json", "*/stage-initialization.json", "*/journal.ndjson", "*/journal.partial-*", "*/.owner.lock", "*/.owner-*")
+	add("admin-identities", child(paths.Roots[productpaths.State], "admin", "identities.json"), "file", "available", "Explicit local administrator initialization.", "Preserve identities, authority audience, and revision in an offline backup.")
+	add("admin-audit", child(paths.Roots[productpaths.State], "admin", "audit"), "tree", "available", "Administrative intent and outcome writes.", "Preserve the complete audit history. Invalid or full history blocks new mutations.", "events.ndjson", ".audit-*", ".record-publications/**")
+	add("admin-operations", child(paths.Roots[productpaths.State], "admin", "operations"), "tree", "available", "Durable administrative receipts.", "Preserve with audit history. Recovery never repeats an unknown effect.", "*.json", ".operation-*", ".record-publications/**")
+	add("admin-owner", child(paths.Roots[productpaths.State], "admin"), "patterns", "available", "Exclusive administration writer and private publication recovery.", "Preserve ownership and publication receipts while state is in use.", ".owner.lock", ".identities-*", ".record-publications/**")
 	for _, item := range []struct {
 		id       string
 		root     productpaths.Root
 		parts    []string
 		creation string
 	}{
-		{"admin-identities", productpaths.State, []string{"admin", "identities.json"}, "Planned standalone administration setup."},
-		{"admin-audit", productpaths.State, []string{"admin", "audit", "events.ndjson"}, "Planned standalone administrative mutations."},
-		{"admin-operations", productpaths.State, []string{"admin", "operations"}, "Planned standalone administrative receipts."},
 		{"download-staging", productpaths.Cache, []string{"catalog", "downloads"}, "Planned catalog download staging."},
 		{"file-logs", productpaths.State, []string{"logs", "starmap.log"}, "Planned optional file logging. Current logging uses streams."},
 		{"managed-trust", productpaths.Config, []string{"trust"}, "Planned explicit managed trust import."},

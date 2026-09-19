@@ -58,6 +58,7 @@ type layerSet struct {
 	publisherID        string
 	publisherAliases   []string
 	embedded           starmap.CatalogState
+	embeddedManifest   *catalogs.GenerationManifest
 	source             *sourceLayer
 	providers          map[providerEvidenceKey]ProviderLayer
 	manual             *manualBatch
@@ -146,6 +147,9 @@ func (l *layerSet) buildOnBaseline(ctx context.Context, selected starmap.Catalog
 		}
 	}
 
+	if err := l.appendPayloadSourceEvidence(base); err != nil {
+		return starmap.CatalogState{}, err
+	}
 	catalog := base
 	if builder != nil {
 		catalog, err = builder.Build()
@@ -161,6 +165,7 @@ func (l *layerSet) buildOnBaseline(ctx context.Context, selected starmap.Catalog
 	if err := l.appendScopeSourceEvidence(catalog); err != nil {
 		return starmap.CatalogState{}, err
 	}
+	baselineUnchanged := l.retainBaselineEvidence()
 	if err := catalogs.ValidateMembershipEvidence(catalog.MembershipScopes(), l.buildEvidence.SourceObservations); err != nil {
 		return starmap.CatalogState{}, err
 	}
@@ -172,6 +177,7 @@ func (l *layerSet) buildOnBaseline(ctx context.Context, selected starmap.Catalog
 	l.sequence++
 	state.Catalog = catalog
 	state.PayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum
+	baselineUnchanged = baselineUnchanged && state.PayloadChecksum == selected.PayloadChecksum
 	state.Sequence = sequence + l.sequence
 	// Receipts and review evidence are immutable generation content even when
 	// another source supplies every selected catalog field.
@@ -192,7 +198,7 @@ func (l *layerSet) buildOnBaseline(ctx context.Context, selected starmap.Catalog
 		if err != nil {
 			return starmap.CatalogState{}, err
 		}
-	} else if (len(l.buildEvidence.SourceObservations) > 0 || l.removals != nil) && state.GenerationID != "" {
+	} else if !baselineUnchanged && (len(l.buildEvidence.SourceObservations) > 0 || l.removals != nil) && state.GenerationID != "" {
 		state.GenerationID = deriveEffectiveGenerationID(state.GenerationID, identityChecksum)
 	}
 	if l.acquisitionSources != nil {

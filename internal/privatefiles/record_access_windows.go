@@ -17,7 +17,7 @@ func nativePublicationAccess(file *os.File) ([]byte, error) {
 	sd, err := windows.GetSecurityInfo(windows.Handle(file.Fd()), windows.SE_FILE_OBJECT,
 		publicationWindowsSecurity)
 	if err != nil {
-		return nil, err
+		return nil, &os.PathError{Op: "query publication access", Path: file.Name(), Err: err}
 	}
 	if sd == nil || !sd.IsValid() {
 		return nil, invalidPublicationDescriptor()

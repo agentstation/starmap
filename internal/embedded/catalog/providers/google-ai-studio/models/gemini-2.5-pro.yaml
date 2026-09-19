@@ -96,14 +96,16 @@ reasoning_tokens:
   default: 0
 
 # Model pricing
+billing:
+  recognition:
+    basis: tokens
+
 pricing:
   tokens:
     input:
       per_1m: 1.25
     output:
       per_1m: 10.00
-  operations:
-    page_input: 0.0003225
   currency: USD
 
 # Model limits

@@ -35,7 +35,7 @@ Current flags:
 | `--host` | `localhost` | Bind address |
 | `--port` | `8080` | TCP port |
 | `--prefix` | `/api/v1` | Versioned API path prefix |
-| `--auth` | `false` | Require the `API_KEY` value on protected routes |
+| `--auth` | `false` | Require the legacy `API_KEY` reader credential when managed identities are absent |
 | `--auth-header` | `X-API-Key` | Primary API-key header |
 | `--cors` | `false` | Enable CORS |
 | `--cors-origins` | empty | Explicit origin allowlist; empty with CORS enabled permits all |
@@ -48,9 +48,14 @@ Current flags:
 | `--sse-write-timeout` | `10s` | Per-frame SSE write and flush deadline |
 | `--metrics` | `true` | Expose `/metrics` |
 
-`HTTP_HOST` and `HTTP_PORT` override the corresponding CLI flags. `API_KEY`
-provides the expected authentication value. Provider API credentials are
-separate acquisition inputs and are never server API keys.
+Explicit listener flags take precedence over environment settings.
+Use `STARMAP_SERVER_HOST` and `STARMAP_SERVER_PORT`. Legacy `HTTP_HOST` and
+`HTTP_PORT` produce migration diagnostics. Conflicting values fail unless an
+explicit flag selects the listener value.
+
+`API_KEY` authenticates legacy catalog readers. Managed identities require their
+own subscriber or administrator credential. Provider API credentials are separate
+acquisition inputs. See [standalone administration](SERVER_ADMINISTRATION.md).
 
 ## Routes
 
@@ -83,17 +88,26 @@ The configured prefix replaces `/api/v1` in every versioned route.
 | `GET /api/v1/openapi.yaml` | Generated OpenAPI YAML; always public under the configured prefix |
 | `GET /metrics` | Process metrics when enabled |
 
-`POST /api/v1/update` starts one asynchronous acquisition. It answers 202 with
+`POST /api/v1/update` requires an administrator and starts one audited asynchronous acquisition. It answers 202 with
 the operation status and a `Location` header that names the status route. The
 caller then polls `GET /api/v1/updates/{id}` and can stop the run with
 `DELETE /api/v1/updates/{id}`. The status detail carries bounded counts and
 identities only, never provider message text.
+
+After restart or memory eviction, the same status response carries the retained
+operation ID, kind, acceptance time, and completion time. Its
+`detail.retained_receipt` carries the durable audit outcome. An interrupted receipt
+reports terminal `failed` status and retains `interrupted` in that receipt.
+Live execution details, including cancellation classification, remain process-local.
 
 Model/list responses carry `X-Starmap-Generation-ID`, so a caller can associate
 derived results with the immutable catalog generation used to produce them.
 The OpenRouter routes are server-local projections over the same catalog. They
 do not read generated `endpoints.yaml`, persist another representation, or
 invent runtime provider telemetry.
+
+The [administration guide](SERVER_ADMINISTRATION.md) describes routes under `/admin`. Their successful responses are
+plain JSON objects. Credential responses prohibit caching.
 
 ## Native response envelope
 
@@ -113,7 +127,10 @@ numeric error dialect instead of the native envelope.
 
 ## Authentication and CORS
 
-With `--auth`, send either the configured header or an Authorization value:
+With managed identities, use a subscriber credential for catalog reads and an
+administrator credential for mutations, statistics, metrics, and configuration
+reports. Without managed identities, `--auth` enables the legacy reader key.
+Administrative routes remain disabled. Send the configured header or a bearer credential:
 
 ```bash
 curl -H 'X-API-Key: ...' http://localhost:8080/api/v1/models
@@ -123,8 +140,9 @@ curl -H 'Authorization: Bearer ...' \
 
 The health/readiness probes and both OpenAPI routes under the configured prefix
 remain public. Superseded prefixes are not exempt from authentication.
-Authentication comparison is constant-time. Logs record key presence, never
-the key. OpenRouter routes return the OpenRouter 401 error
+Managed identities authenticate through an immutable memory snapshot. Legacy key
+checks use constant-time comparison. Logs record key presence, never the key.
+OpenRouter routes return the OpenRouter 401 error
 dialect, while native routes return Starmap's native 401 envelope.
 
 Enable CORS only with a deployment-owned origin policy. An explicit

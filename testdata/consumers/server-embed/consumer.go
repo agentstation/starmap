@@ -109,11 +109,11 @@ func ServeAndShutdown(ctx context.Context) error {
 	if closeErr != nil {
 		return closeErr
 	}
-	if updateResponse.StatusCode != http.StatusNotFound {
+	if updateResponse.StatusCode != http.StatusForbidden {
 		return fmt.Errorf(
 			"unconfigured update status = %d, want %d",
 			updateResponse.StatusCode,
-			http.StatusNotFound,
+			http.StatusForbidden,
 		)
 	}
 

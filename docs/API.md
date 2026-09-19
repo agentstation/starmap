@@ -169,16 +169,16 @@ type Candidate struct {
 ```
 
 <a name="NewCandidate"></a>
-### func [NewCandidate](<https://github.com/agentstation/starmap/blob/main/update.go#L59-L63>)
+### func [NewCandidate](<https://github.com/agentstation/starmap/blob/main/update.go#L61-L65>)
 
 ```go
 func NewCandidate(catalog *catalogs.Catalog, evidence CandidateEvidence, opts ...CandidateOption) (*Candidate, error)
 ```
 
-NewCandidate validates and returns a publication candidate. Custom acquisition can omit evidence. Client.Update records a deterministic custom\-update observation in that case.
+NewCandidate validates and returns a publication candidate. Custom acquisition can omit evidence. Client.Update records a deterministic custom\-update observation in that case. Update also retains the receipts required by unchanged provider membership. Membership changes require explicit source observations.
 
 <a name="Candidate.Generation"></a>
-### func \(\*Candidate\) [Generation](<https://github.com/agentstation/starmap/blob/main/generation.go#L247>)
+### func \(\*Candidate\) [Generation](<https://github.com/agentstation/starmap/blob/main/generation.go#L262>)
 
 ```go
 func (c *Candidate) Generation(runID string, generatedAt time.Time) (catalogs.Generation, error)
@@ -311,7 +311,7 @@ func (c *Client) AcquireGeneration(ctx context.Context, id string) (catalogs.Gen
 AcquireGeneration reads and protects a stored generation until release. The selected store must support read leases. A missing embedded generation returns the verified compiled artifact. Compiled bytes need no storage lease. The caller must release every successful acquisition, even after cancellation.
 
 <a name="Client.Activate"></a>
-### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L170>)
+### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L172>)
 
 ```go
 func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (Publication, error)
@@ -419,7 +419,7 @@ func (c *Client) HookStats() HookDeliveryStats
 HookStats returns a lock\-free snapshot of callback delivery health.
 
 <a name="Client.NextID"></a>
-### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L339>)
+### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L354>)
 
 ```go
 func (c *Client) NextID() (string, error)
@@ -536,7 +536,7 @@ func (c *Client) SaveTo(path string) error
 SaveTo atomically materializes the current committed generation into path. It never publishes a new generation.
 
 <a name="Client.Update"></a>
-### func \(\*Client\) [Update](<https://github.com/agentstation/starmap/blob/main/update.go#L127>)
+### func \(\*Client\) [Update](<https://github.com/agentstation/starmap/blob/main/update.go#L129>)
 
 ```go
 func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, error)
@@ -678,7 +678,7 @@ func WithPublicationGuard(guard PublicationGuard) Option
 WithPublicationGuard adds a guard to Update, Activate, Reload, and Rollback. Every configured guard must permit the operation. Construction and catalog lookups do not call guards. A guard must not call a mutation on the same client.
 
 <a name="Publication"></a>
-## type [Publication](<https://github.com/agentstation/starmap/blob/main/update.go#L117-L122>)
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/update.go#L119-L124>)
 
 Publication identifies the committed generation that an operation selects. Published is false when the update returns no candidate or selects the active generation again.
 
@@ -733,7 +733,7 @@ type RollbackResult struct {
 ```
 
 <a name="UpdateFunc"></a>
-## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/update.go#L113>)
+## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/update.go#L115>)
 
 UpdateFunc builds and validates a complete candidate while Client.Update holds the client's mutation transaction. A nil result does not publish. The current catalog is immutable and safe to retain.
 

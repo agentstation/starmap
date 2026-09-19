@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/cobra/doc"
 
+	"github.com/agentstation/starmap/internal/cli/commands/admin"
 	"github.com/agentstation/starmap/internal/cli/commands/auth"
 	"github.com/agentstation/starmap/internal/cli/commands/authors"
 	"github.com/agentstation/starmap/internal/cli/commands/completion"
@@ -131,3 +132,6 @@ func (a *App) NewManCommand() *cobra.Command {
 
 // NewConfigCommand returns passive configuration inspection commands.
 func (a *App) NewConfigCommand() *cobra.Command { return configcmd.NewCommand(a) }
+
+// NewAdminCommand returns explicit local standalone administration commands.
+func (a *App) NewAdminCommand() *cobra.Command { return admin.NewCommand(a) }

@@ -25,7 +25,7 @@ func ForRole(role string) (string, error) {
 	case "configuration", "dotenv", "catalog-store", "catalog-migration-lock", "baseline-recovery", "credential-policy",
 		"runtime-owner", "runtime-lock", "runtime-seed", "runtime-evidence", "runtime-record-staging",
 		"migration-pending", "migration-receipt", "migration-completed", "migration-retired", "migration-journal", "runtime-migration",
-		"github-discovery", "workspace-preparing", "admin-identities", "admin-audit", "admin-operations",
+		"github-discovery", "workspace-preparing", "admin-identities", "admin-audit", "admin-operations", "admin-owner",
 		"download-staging", "file-logs", "managed-trust":
 		return OwnerOnly, nil
 	case "workspace", "workspace-receipt", "workspace-lock", "workspace-journal", "workspace-backup", "workspace-staging",

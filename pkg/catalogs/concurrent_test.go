@@ -1,7 +1,6 @@
 package catalogs_test
 
 import (
-	"context"
 	"fmt"
 	"sync"
 	"sync/atomic"
@@ -58,79 +57,50 @@ func allBuilderProviderModels(catalog *catalogs.Builder) []catalogs.Model {
 func TestConcurrentCatalogAccess(t *testing.T) {
 	t.Run("concurrent_reads_and_writes", func(t *testing.T) {
 		catalog := catalogs.NewEmpty()
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		defer cancel()
-
-		var wg sync.WaitGroup
-		errors := make(chan error, 1000)
-
-		// Track operations
+		require.NoError(t, catalog.SetProvider(catalogs.Provider{ID: "test-provider", Name: "Test"}))
+		start := make(chan struct{})
+		var workers sync.WaitGroup
 		var reads, writes atomic.Int64
 
-		// 50 concurrent readers
-		for i := range 50 {
-			wg.Add(1)
-			go func(id int) {
-				defer wg.Done()
-				for {
-					select {
-					case <-ctx.Done():
-						return
-					default:
-						// Random read operations
-						switch id % 4 {
-						case 0:
-							_ = catalog.Providers().List()
-						case 1:
-							_ = catalog.Authors().List()
-						case 2:
-							_ = catalog.AuthoredModels()
-						}
-						reads.Add(1)
-						time.Sleep(time.Millisecond) // Small delay
+		for id := range 50 {
+			workers.Go(func() {
+				<-start
+				for range 100 {
+					switch id % 3 {
+					case 0:
+						_ = catalog.Providers().List()
+					case 1:
+						_ = catalog.Authors().List()
+					case 2:
+						_ = catalog.AuthoredModels()
 					}
+					reads.Add(1)
 				}
-			}(i)
+			})
 		}
-
-		// 10 concurrent writers
-		for i := range 10 {
-			wg.Add(1)
-			go func(id int) {
-				defer wg.Done()
-				for j := range 100 {
-					select {
-					case <-ctx.Done():
-						return
-					default:
-						// Create unique models
-						model := catalogs.Model{
-							ID:   fmt.Sprintf("model-%d-%d", id, j),
-							Name: fmt.Sprintf("Model %d-%d", id, j),
-						}
-						if err := addModelToProvider(catalog, "test-provider", model); err != nil {
-							errors <- err
-						}
-						writes.Add(1)
-						time.Sleep(5 * time.Millisecond) // Writers are slower
+		for id := range 10 {
+			workers.Go(func() {
+				<-start
+				for iteration := range 100 {
+					model := catalogs.Model{
+						ID:   fmt.Sprintf("model-%d-%d", id, iteration),
+						Name: fmt.Sprintf("Model %d-%d", id, iteration),
 					}
+					if err := catalog.SetProviderModel("test-provider", model); err != nil {
+						t.Errorf("SetProviderModel: %v", err)
+						return
+					}
+					writes.Add(1)
 				}
-			}(i)
+			})
 		}
-
-		// Wait for completion
-		wg.Wait()
-		close(errors)
-
-		// Check for errors
-		for err := range errors {
-			t.Errorf("Concurrent access error: %v", err)
-		}
-
-		// Verify operations completed
-		t.Logf("Completed %d reads and %d writes", reads.Load(), writes.Load())
-		assert.Greater(t, reads.Load(), int64(100))
-		assert.Greater(t, writes.Load(), int64(100))
+		close(start)
+		workers.Wait()
+		assert.Equal(t, int64(5000), reads.Load())
+		assert.Equal(t, int64(1000), writes.Load())
+		models, err := catalog.ProviderModels("test-provider")
+		require.NoError(t, err)
+		assert.Len(t, models.List(), 1000)
 	})
 
 	t.Run("concurrent_merge_operations", func(t *testing.T) {
@@ -225,55 +195,45 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 
 	t.Run("readers_during_bulk_write", func(t *testing.T) {
 		catalog := catalogs.NewEmpty()
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
-
-		var wg sync.WaitGroup
-		readErrors := make(chan error, 100)
-
-		// Start continuous readers
+		require.NoError(t, catalog.SetProvider(catalogs.Provider{ID: "test-provider", Name: "Test"}))
+		var ready, readers sync.WaitGroup
+		ready.Add(10)
+		done := make(chan struct{})
+		stop := sync.OnceFunc(func() { close(done) })
+		defer func() { stop(); readers.Wait() }()
 		for range 10 {
-			wg.Go(func() {
+			readers.Go(func() {
+				first := true
 				for {
+					models, err := catalog.ProviderModels("test-provider")
+					if err != nil {
+						t.Errorf("ProviderModels: %v", err)
+					} else if models == nil {
+						t.Error("ProviderModels returned nil")
+					}
+					if first {
+						ready.Done()
+						first = false
+					}
 					select {
-					case <-ctx.Done():
+					case <-done:
 						return
 					default:
-						// Should never panic or error
-						models := builderProviderModels(catalog, "test-provider")
-						if models == nil {
-							readErrors <- fmt.Errorf("got nil models list")
-						}
 					}
 				}
 			})
 		}
-
-		wg.Go(func() {
-			for i := range 1000 {
-				model := catalogs.Model{
-					ID:   fmt.Sprintf("bulk-model-%d", i),
-					Name: fmt.Sprintf("Bulk Model %d", i),
-				}
-				err := addModelToProvider(catalog, "test-provider", model)
-				assert.NoError(t, err)
-			}
-		})
-
-		// Let it run for a bit
-		time.Sleep(2 * time.Second)
-		cancel()
-		wg.Wait()
-		close(readErrors)
-
-		// Check for read errors
-		for err := range readErrors {
-			t.Errorf("Read error during bulk write: %v", err)
+		ready.Wait()
+		for i := range 1000 {
+			require.NoError(t, catalog.SetProviderModel("test-provider", catalogs.Model{
+				ID: fmt.Sprintf("bulk-model-%d", i), Name: fmt.Sprintf("Bulk Model %d", i),
+			}))
 		}
-
-		// Verify bulk write succeeded
-		models := builderProviderModels(catalog, "test-provider")
-		assert.GreaterOrEqual(t, len(models), 1000)
+		stop()
+		readers.Wait()
+		models, err := catalog.ProviderModels("test-provider")
+		require.NoError(t, err)
+		assert.Len(t, models.List(), 1000)
 	})
 
 	t.Run("concurrent_copy_operations", func(t *testing.T) {
@@ -332,11 +292,8 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 	})
 
 	t.Run("race_condition_detection", func(t *testing.T) {
-		if testing.Short() {
-			t.Skip("Skipping race detection in short mode")
-		}
-
 		catalog := catalogs.NewEmpty()
+		require.NoError(t, catalog.SetProvider(catalogs.Provider{ID: "test-provider", Name: "Test"}))
 		modelID := "race-model"
 
 		var wg sync.WaitGroup
@@ -351,9 +308,12 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 					model := catalogs.Model{
 						ID:          modelID,
 						Name:        fmt.Sprintf("Model by writer %d iteration %d", writer, j),
-						Description: fmt.Sprintf("Updated at %v by writer %d", time.Now(), writer),
+						Description: fmt.Sprintf("Writer %d iteration %d", writer, j),
 					}
-					_ = addModelToProvider(catalog, "test-provider", model)
+					if err := catalog.SetProviderModel("test-provider", model); err != nil {
+						t.Errorf("SetProviderModel: %v", err)
+						return
+					}
 				}
 			}(i)
 		}
@@ -362,9 +322,14 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 
 		// The model should exist with data from one of the writers
 		model, err := catalog.ProviderModel("test-provider", modelID)
-		assert.NoError(t, err)
-		assert.NotEmpty(t, model.Name)
-		assert.NotNil(t, model.Description)
+		require.NoError(t, err)
+		for writer := range 2 {
+			if model.Name == fmt.Sprintf("Model by writer %d iteration %d", writer, updates-1) {
+				assert.Equal(t, fmt.Sprintf("Writer %d iteration %d", writer, updates-1), model.Description)
+				return
+			}
+		}
+		t.Fatalf("concurrent writers left an incomplete or mixed model: %+v", model)
 	})
 
 	t.Run("deadlock_prevention", func(t *testing.T) {

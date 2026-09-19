@@ -123,8 +123,10 @@ values or fingerprints.
 
 ## HTTP security
 
-Enable server authentication with `--auth` and supply the expected `API_KEY`
-environment variable. The default request header is `X-API-Key`. Clients may
+For legacy reader access, enable `--auth` and supply `API_KEY`.
+This credential cannot administer the server. For internal catalogs and online
+administration, persist initialized private identity state and follow the
+[administration guide](SERVER_ADMINISTRATION.md). The default request header is `X-API-Key`. Clients may
 also use `Authorization: Bearer`.
 
 ```bash

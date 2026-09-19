@@ -165,13 +165,9 @@ func TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine(t *testing.T) {
 }
 
 func TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Embedded: %v", err)
 	}
 
 	definitions := catalog.Definitions()
@@ -242,13 +238,9 @@ func TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete(t *testing
 }
 
 func TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Embedded: %v", err)
 	}
 
 	for _, test := range []struct {
@@ -383,13 +375,9 @@ func TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship(t *testing.T) 
 }
 
 func TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Embedded: %v", err)
 	}
 
 	// Each model below serves something other than chat, and each publishes the

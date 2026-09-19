@@ -9,19 +9,21 @@ on:
 permissions:
   contents: read
 
+env:
+  GOTOOLCHAIN: go1.27.1
+
 concurrency:
   group: pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   coordinated-storage:
-    name: Coordinated Storage ${{ matrix.server }} Go ${{ matrix.go }}
+    name: Coordinated Storage ${{ matrix.server }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
-        go: ['1.25.12', '1.26.6']
         server: [valkey, redis]
         include:
           - server: valkey
@@ -47,7 +49,7 @@ jobs:
       - name: Set up qualification Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: ${{ matrix.go }}
+          go-version: "1.27.1"
           cache: true
       - name: Start isolated storage services
         run: |
@@ -73,7 +75,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: coordinated-storage-${{ matrix.server }}-go-${{ matrix.go }}
+          name: coordinated-storage-${{ matrix.server }}
           path: ${{ runner.temp }}/coordinated-storage.jsonl
           if-no-files-found: warn
       - name: Remove isolated storage services
@@ -89,10 +91,10 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up minimum supported Go toolchain
+      - name: Set up qualification Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: '1.25.12'
+          go-version: '1.27.1'
           cache: true
       - name: Verify passive constructors and the socket control
         run: python3 scripts/constructor_network.py > "$RUNNER_TEMP/constructor-network.json"
@@ -113,10 +115,10 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up minimum supported Go toolchain
+      - name: Set up qualification Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: '1.25.12'
+          go-version: '1.27.1'
           cache: true
       - name: Verify cold offline startup and restart
         run: python3 scripts/cold_server.py > "$RUNNER_TEMP/cold-server.json"
@@ -130,55 +132,38 @@ jobs:
 
   verification:
     name: Verification Gate
+    needs: [verification-checks, verification-tests, verification-capacity]
+    if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 150
-    env:
-      CATALOG_GIT_FIXTURE_REQUIRED: '1'
-      STARMAP_PUBLIC_FIXTURE_REQUIRED: '1'
+    timeout-minutes: 2
+    steps:
+      - name: Require every verification result
+        env:
+          CHECKS: ${{ needs.verification-checks.result }}
+          TESTS: ${{ needs.verification-tests.result }}
+          CAPACITY: ${{ needs.verification-capacity.result }}
+        run: |
+          test "$CHECKS" = success && test "$TESTS" = success && test "$CAPACITY" = success
+
+  verification-checks:
+    name: Verification Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 2
-
-      - name: Set up minimum supported Go toolchain
-        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
-        with:
-          go-version: "1.25.12"
-          cache: true
-
-      - name: Set up pinned Bun for Git acquisition fixtures
-        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
-        with:
-          bun-version: '1.3.12'
-          no-cache: true
-
-      - name: Prepare verified public catalog fixture
-        timeout-minutes: 2
-        run: python3 scripts/prepare_public_catalog_fixture.py
-
-      - name: Test minimum supported Go version
-        env:
-          GOTOOLCHAIN: local
-        run: go test ./... -timeout=30m -p=1 -count=1
-
-      - name: Test minimum supported external consumer
-        env:
-          CGO_ENABLED: 0
-          GOTOOLCHAIN: local
-        run: make test-consumer-deps
-
+          persist-credentials: false
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.26.6"
-          cache: false
-
+          go-version: "1.27.1"
+          cache: true
       - name: Install pinned verification tools
         run: |
-          go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.12.2
+          go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2
           go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0
-
       - name: Checkout pinned technical-writing skill
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -186,11 +171,83 @@ jobs:
           ref: dc9948f59089426c7dd077e41469104ec788cf7f
           path: .ci/agentstation-skills
           persist-credentials: false
-
-      - name: Run verification gate
+      - name: Run verification checks before suites
         env:
           TECHNICAL_WRITING: ${{ github.workspace }}/.ci/agentstation-skills/technical-writing/scripts/technical-writing
-        run: make verify
+        run: make verify-checks
+
+  verification-tests:
+    name: Go 1.27.1 race ${{ matrix.group }}
+    needs: verification-checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [runtime, client, application, contracts]
+    env:
+      GOTOOLCHAIN: local
+      CATALOG_GIT_FIXTURE_REQUIRED: '1'
+      STARMAP_PUBLIC_FIXTURE_REQUIRED: '1'
+      TEST_SUITE: 'race'
+      TEST_GROUP: ${{ matrix.group }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up selected Go toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.27.1"
+          cache: true
+      - name: Set up pinned Bun for Git acquisition fixtures
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: '1.3.12'
+          no-cache: true
+      - name: Prepare verified public catalog fixture
+        timeout-minutes: 2
+        run: python3 scripts/prepare_public_catalog_fixture.py
+      - name: Run complete selected test group
+        run: python3 scripts/verification_tests.py "$TEST_SUITE" --group "$TEST_GROUP" --output "$RUNNER_TEMP/go-test-events.jsonl"
+      - name: Test pure-Go external consumer
+        if: matrix.group == 'client'
+        env:
+          CGO_ENABLED: 0
+        run: make test-consumer-deps
+      - name: Retain test timings and failures
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: go-tests-race-${{ matrix.group }}
+          path: ${{ runner.temp }}/go-test-events.jsonl
+          if-no-files-found: error
+
+  verification-capacity:
+    name: Full Catalog Capacity
+    needs: verification-checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up release Go toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.27.1"
+          cache: true
+      - name: Run full public catalog capacity
+        run: python3 scripts/verification_tests.py capacity --output "$RUNNER_TEMP/go-capacity-events.jsonl"
+      - name: Retain capacity evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: go-full-catalog-capacity
+          path: ${{ runner.temp }}/go-capacity-events.jsonl
+          if-no-files-found: error
 
   security-reliability:
     name: Security & Reliability
@@ -203,7 +260,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.26.6"
+          go-version: "1.27.1"
           cache: true
 
       - name: Install pinned vulnerability scanner
@@ -262,10 +319,10 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up minimum supported Go toolchain
+      - name: Set up qualification Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: '1.25.12'
+          go-version: '1.27.1'
           cache: true
       - name: Set up pinned Bun for Git acquisition fixtures
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
@@ -317,6 +374,13 @@ jobs:
         run: |
           mkdir -p native-evidence
           go test -json -count=1 -timeout=5m -run '^Test(WorkspaceEmptyLockedRecords|PrivateEmptyRecordReadWhileExclusivelyLocked|PrivatePublicationPreservesChangedRecords|PreparationCleanupPreservesOperatorChanges|WorkspaceWriterReplacementStopsPublication|WorkspaceWriterReplacementStopsJournalPhases|LegacyStoreLockCancellationPreservesStore|MigrateLegacyLayoutRelocatesStoreAndProjectsCurrent|LegacyRollbackPreservesOperatorSidecars|RelocationPreparationClosesHandlesAfterCleanupConflict|RequiredBaselineWriteFailurePreventsRuntimeStartup|CredentialPolicyRejectsInvalidInstallationMarkersBeforeWrites)$' ./internal/privatefiles ./internal/catalog/workspace ./internal/cli/app > native-evidence/filesystem-preflight.jsonl
+      - name: Test Windows file publication with race instrumentation
+        if: matrix.os == 'windows' && matrix.arch == 'amd64'
+        timeout-minutes: 10
+        shell: bash
+        env:
+          CGO_ENABLED: '1'
+        run: go test -race -json -count=1 -timeout=5m ./internal/filepublish ./internal/privatefiles > native-evidence/filesystem-race.jsonl
       - name: Test native runtime, configuration, and paths
         shell: bash
         env:
@@ -330,7 +394,7 @@ jobs:
           test "$(go env GOHOSTOS)" = "$EXPECTED_OS"
           test "$(go env GOARCH)" = "$EXPECTED_ARCH"
           test "$(go env GOHOSTARCH)" = "$EXPECTED_ARCH"
-          native_packages=(. ./runtime ./internal/auth ./internal/bootstrap ./internal/filepublish ./internal/privatefiles ./internal/runtimeacl/windows ./internal/sources/github ./internal/cli/app ./pkg/productpaths ./pkg/productpaths/policy ./pkg/catalogs/storage ./pkg/catalogs/permission/... ./internal/catalog/workspace ./internal/test/gitfixture)
+          native_packages=(. ./runtime ./server ./server/administration ./internal/server/middleware ./internal/cli/commands/serve ./internal/auth ./internal/bootstrap ./internal/filepublish ./internal/privatefiles ./internal/runtimeacl/windows ./internal/sources/github ./internal/cli/app ./pkg/productpaths ./pkg/productpaths/policy ./pkg/catalogs/storage ./pkg/catalogs/permission/... ./internal/catalog/workspace ./internal/test/gitfixture)
           if [ "$EXPECTED_OS" = windows ]; then
             native_packages+=(./internal/test/windowstoken)
           fi

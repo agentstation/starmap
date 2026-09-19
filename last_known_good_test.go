@@ -45,6 +45,10 @@ func TestLastKnownGoodSurvivesFailedUpdateAndPublishesRetry(t *testing.T) {
 	store := &lastKnownGoodFaultStore{
 		Memory: storage.NewMemory(), entered: make(chan struct{}), release: make(chan struct{}),
 	}
+	// This test owns commit failure and retry. Full embedded seeding has its own test.
+	if err := store.Commit(t.Context(), rootRemoteGeneration(t), ""); err != nil {
+		t.Fatalf("seed stored generation: %v", err)
+	}
 	var updateCalls atomic.Int32
 	update := catalogUpdate(func(candidate *catalogs.Builder) error {
 		if updateCalls.Add(1) == 1 {

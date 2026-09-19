@@ -136,7 +136,13 @@ func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application) 
 		} else {
 			// For non-table formats, output the raw results
 			formatter := format.New(detectedFormat)
-			return formatter.Format(cmd.OutOrStdout(), results)
+			if err := formatter.Format(cmd.OutOrStdout(), results); err != nil {
+				return err
+			}
+			if failed > 0 {
+				return fmt.Errorf("%d provider(s) failed testing", failed)
+			}
+			return nil
 		}
 	}
 

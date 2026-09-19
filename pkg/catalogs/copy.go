@@ -58,6 +58,7 @@ func DeepCopyModel(model Model) Model {
 	modelCopy.Tools = deepCopyModelTools(model.Tools)
 	modelCopy.Delivery = deepCopyModelDelivery(model.Delivery)
 	modelCopy.Modes = deepCopyModelModes(model.Modes)
+	modelCopy.Billing = deepCopyModelBilling(model.Billing)
 	modelCopy.Pricing = deepCopyModelPricing(model.Pricing)
 	modelCopy.Limits = deepCopyModelLimits(model.Limits)
 	modelCopy.Extensions = model.Extensions.Copy()

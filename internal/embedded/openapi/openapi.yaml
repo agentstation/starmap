@@ -1,5 +1,11 @@
 components:
   schemas:
+    administration.Role:
+      description: Role selects subscriber or administrator permission.
+      type: string
+      x-enum-varnames:
+      - Subscriber
+      - Administrator
     catalogs.ArchitectureType:
       description: Type of architecture
       type: string
@@ -1826,6 +1832,46 @@ components:
         error:
           $ref: '#/components/schemas/response.Error'
       type: object
+    server.AdministrativeCredential:
+      properties:
+        credential:
+          description: Credential is secret and must not enter logs or shared caches.
+          type: string
+        id:
+          description: ID names the credential's identity.
+          type: string
+      type: object
+    server.AdministrativeIdentityInput:
+      properties:
+        id:
+          description: ID names the identity within one catalog audience.
+          type: string
+        role:
+          $ref: '#/components/schemas/administration.Role'
+      type: object
+    server.AdministrativeRotationInput:
+      properties:
+        overlap:
+          description: Overlap is a duration between zero and 24 hours.
+          type: string
+      type: object
+    server.AdministrativeStatus:
+      properties:
+        audit_byte_limit:
+          type: integer
+        audit_bytes:
+          type: integer
+        mutation_ready:
+          type: boolean
+        operation_limit:
+          type: integer
+        reason:
+          type: string
+        retained_operations:
+          type: integer
+        revision:
+          type: integer
+      type: object
     sources.ProviderReason:
       description: |-
         Reason holds the bounded failure cause. A successful operation and a
@@ -1880,6 +1926,186 @@ info:
   version: "1.0"
 openapi: 3.1.0
 paths:
+  /admin/config/effective:
+    get:
+      description: Requires administrator permission. Works before internal catalog
+        readiness and matches the CLI report.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Read effective configuration
+      tags:
+      - administration
+  /admin/config/schema:
+    get:
+      description: Requires administrator permission. Uses the same versioned descriptors
+        as starmap config schema.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Read the configuration schema
+      tags:
+      - administration
+  /admin/identities:
+    post:
+      description: Requires an administrator credential. Returns the new credential
+        once after durable audit completion.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/server.AdministrativeIdentityInput'
+        description: Identity and role
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server.AdministrativeCredential'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Invalid identity request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Administrator permission required
+        "409":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Identity exists
+        "503":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Administrative writes unavailable
+      security:
+      - ApiKeyAuth: []
+      summary: Create a server identity
+      tags:
+      - administration
+  /admin/identities/{id}:
+    delete:
+      description: Requires administrator permission. One administrator must remain
+        active.
+      parameters:
+      - description: Identity name
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Identity revoked
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Administrator permission required
+        "409":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Last administrator cannot be revoked
+        "503":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Administrative writes unavailable
+      security:
+      - ApiKeyAuth: []
+      summary: Revoke a server identity
+      tags:
+      - administration
+  /admin/identities/{id}/rotate:
+    post:
+      description: Requires administrator permission and an explicit overlap between
+        zero and 24 hours.
+      parameters:
+      - description: Identity name
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/server.AdministrativeRotationInput'
+        description: Credential overlap
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server.AdministrativeCredential'
+          description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Administrator permission required
+        "409":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Prior overlap remains active
+        "503":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Administrative writes unavailable
+      security:
+      - ApiKeyAuth: []
+      summary: Rotate a server credential
+      tags:
+      - administration
+  /admin/status:
+    get:
+      description: Requires administrator permission. Remains available during an
+        audit-write failure.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server.AdministrativeStatus'
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Read administration readiness
+      tags:
+      - administration
   /api/v1/catalog/permission:
     get:
       description: Returns the confirmed upstream receipt with its original expiry.

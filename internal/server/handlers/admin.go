@@ -2,17 +2,22 @@ package handlers
 
 import (
 	"context"
+	stderrors "errors"
 	"net/http"
 	"runtime"
 	"strings"
 	"time"
 
+	"github.com/agentstation/starmap/internal/server/middleware"
 	"github.com/agentstation/starmap/internal/server/operations"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/pkg/sync"
+	"github.com/agentstation/starmap/server/administration"
 )
+
+const administrativeOutcomeTimeout = 10 * time.Second
 
 // HandleUpdate handles POST /api/v1/update.
 // @Summary Trigger catalog update
@@ -28,7 +33,7 @@ import (
 // @Security ApiKeyAuth
 // @Router /api/v1/update [post].
 func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
-	if h.operations == nil {
+	if h.operations == nil || h.administration == nil {
 		response.ServiceUnavailable(w, "asynchronous operations are unavailable")
 		return
 	}
@@ -51,16 +56,32 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 		opts = append(opts, sync.WithFresh(fresh == "true"))
 	}
 
-	status, err := h.operations.Start(
+	actor, authenticated := middleware.AdministrativePrincipal(r.Context())
+	if !authenticated || actor.Role() != administration.Administrator {
+		http.Error(w, "Administrator permission required", http.StatusForbidden)
+		return
+	}
+	receipt, err := h.administration.StartOperation(r.Context(), actor, administration.RefreshCatalog, "catalog")
+	if err != nil {
+		response.ServiceUnavailable(w, "administrative intent could not be persisted")
+		return
+	}
+	status, err := h.operations.StartIdentified(receipt.ID,
 		operations.KindCatalogUpdate,
 		func(ctx context.Context) (map[string]any, error) {
-			return h.runCatalogUpdate(ctx, opts)
+			detail, runErr := h.runCatalogUpdate(ctx, opts)
+			outcomeCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), administrativeOutcomeTimeout)
+			defer cancel()
+			_, auditErr := h.administration.Complete(outcomeCtx, receipt.ID, runErr == nil)
+			return detail, stderrors.Join(runErr, auditErr)
 		},
 	)
 	if err != nil {
+		_, _ = h.administration.Complete(r.Context(), receipt.ID, false)
 		response.ErrorFromType(w, h.logger, err)
 		return
 	}
+
 	h.log().Info().
 		Str("operation_id", status.ID).
 		Str("operation_kind", status.Kind.String()).
@@ -109,14 +130,52 @@ func (h *Handlers) runCatalogUpdate(
 // @Router /api/v1/updates/{id} [get].
 func (h *Handlers) HandleOperationStatus(
 	w http.ResponseWriter,
-	_ *http.Request,
+	r *http.Request,
 	id string,
 ) {
+	if h.administration != nil && h.operations != nil {
+		if _, found := h.operations.Status(id); !found {
+			actor, authenticated := middleware.AdministrativePrincipal(r.Context())
+			if authenticated {
+				receipt, err := h.administration.Operation(actor, id)
+				if err == nil {
+					if status, accepted := retainedOperationStatus(receipt); accepted {
+						response.OK(w, status)
+						return
+					}
+				}
+			}
+		}
+	}
 	status, found := h.lookupOperation(w, id)
 	if !found {
 		return
 	}
 	response.OK(w, status)
+}
+
+// retainedOperationStatus preserves the acquisition response contract after restart or eviction.
+// An interrupted receipt reports terminal failure without inventing a provider result.
+func retainedOperationStatus(receipt administration.Receipt) (operations.Status, bool) {
+	if receipt.Action != administration.RefreshCatalog {
+		return operations.Status{}, false
+	}
+	var state operations.State
+	switch receipt.State {
+	case administration.Accepted:
+		state = operations.StateAccepted
+	case administration.Succeeded:
+		state = operations.StateSucceeded
+	case administration.Failed, administration.Interrupted:
+		state = operations.StateFailed
+	default:
+		return operations.Status{}, false
+	}
+	return operations.Status{
+		ID: receipt.ID, Kind: operations.KindCatalogUpdate, State: state,
+		AcceptedAt: receipt.AcceptedAt, CompletedAt: receipt.CompletedAt,
+		Detail: map[string]any{"retained_receipt": receipt},
+	}, true
 }
 
 // HandleOperationCancel handles DELETE /api/v1/updates/{id}.
@@ -131,14 +190,34 @@ func (h *Handlers) HandleOperationStatus(
 // @Router /api/v1/updates/{id} [delete].
 func (h *Handlers) HandleOperationCancel(
 	w http.ResponseWriter,
-	_ *http.Request,
+	r *http.Request,
 	id string,
 ) {
-	if h.operations == nil {
+	if h.operations == nil || h.administration == nil {
 		response.ServiceUnavailable(w, "asynchronous operations are unavailable")
 		return
 	}
+	actor, authenticated := middleware.AdministrativePrincipal(r.Context())
+	if !authenticated || actor.Role() != administration.Administrator {
+		http.Error(w, "Administrator permission required", http.StatusForbidden)
+		return
+	}
+	if _, found := h.operations.Status(id); !found {
+		response.NotFound(w, "Operation not found", id)
+		return
+	}
+	receipt, err := h.administration.StartOperation(r.Context(), actor, administration.CancelOperation, id)
+	if err != nil {
+		response.ServiceUnavailable(w, "administrative intent could not be persisted")
+		return
+	}
 	status, found := h.operations.Cancel(id)
+	outcomeCtx, cancel := context.WithTimeout(context.WithoutCancel(r.Context()), administrativeOutcomeTimeout)
+	defer cancel()
+	if _, err := h.administration.Complete(outcomeCtx, receipt.ID, found); err != nil {
+		response.ServiceUnavailable(w, "administrative outcome could not be persisted")
+		return
+	}
 	if !found {
 		response.NotFound(w, "Operation not found", id)
 		return

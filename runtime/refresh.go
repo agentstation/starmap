@@ -414,6 +414,10 @@ func (r *Runtime) readSource(ctx context.Context, report *RefreshReport, epoch u
 		return chainErr
 	}
 
+	if read.Changed && r.sameRetainedFilePayload(source.Identity(), read) {
+		read.Changed = false
+	}
+
 	// A completed read grades the transfer healthy. The upstream report stays
 	// separate, so a degraded upstream never hides a working transfer, and a
 	// working transfer never hides a degraded upstream.
@@ -790,4 +794,18 @@ func hasDegradedProviderReceipt(layers []ProviderLayer) bool {
 		}
 	}
 	return false
+}
+
+// sameRetainedFilePayload preserves the receipt of an unchanged file after restart.
+// A new file reader has no checksum history, but the retained layer does.
+func (r *Runtime) sameRetainedFilePayload(identity string, read SourceRead) bool {
+	if identity != string(SourceFile) || read.Generation.Manifest.ManifestVersion != 0 {
+		return false
+	}
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	previous := r.layers.source
+	return previous != nil && previous.Identity == identity && previous.Manifest == nil &&
+		previous.GenerationID == read.Generation.Manifest.GenerationID &&
+		previous.Checksum == read.Generation.Manifest.Payload.Checksum
 }

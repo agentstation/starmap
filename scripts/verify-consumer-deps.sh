@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-GOTOOLCHAIN="${GOTOOLCHAIN:-go1.26.6}"
+GOTOOLCHAIN="${GOTOOLCHAIN:-go1.27.1}"
 export GOTOOLCHAIN
 printf 'External consumer toolchain: %s\n' "$(go env GOVERSION)"
 READ_ONLY_MODULE="$ROOT/testdata/consumers/read-only"
@@ -13,6 +13,9 @@ REMOTE_SUBSCRIBER_MODULE="$ROOT/testdata/consumers/remote-subscriber"
 SERVER_STORAGE_MODULE="$ROOT/testdata/consumers/server-storage"
 MAX_NON_STANDARD_PACKAGES=32
 PINNED_MAX_NON_STANDARD_PACKAGES=32
+SERVER_MAX_NON_STANDARD_PACKAGES=57
+REMOTE_MAX_NON_STANDARD_PACKAGES=41
+SERVER_STORAGE_MAX_NON_STANDARD_PACKAGES=130
 # Native file-access checks use the approved platform budgets.
 # Pinned activation also imports the existing artifact reader.
 case "$(go env GOOS)" in
@@ -23,29 +26,32 @@ linux)
 darwin)
 	MAX_NON_STANDARD_PACKAGES=37
 	PINNED_MAX_NON_STANDARD_PACKAGES=38
+	SERVER_MAX_NON_STANDARD_PACKAGES=60
+	REMOTE_MAX_NON_STANDARD_PACKAGES=44
+	SERVER_STORAGE_MAX_NON_STANDARD_PACKAGES=133
 	;;
 windows)
 	MAX_NON_STANDARD_PACKAGES=35
 	PINNED_MAX_NON_STANDARD_PACKAGES=36
+	SERVER_MAX_NON_STANDARD_PACKAGES=58
+	REMOTE_MAX_NON_STANDARD_PACKAGES=42
+	SERVER_STORAGE_MAX_NON_STANDARD_PACKAGES=131
 	;;
 esac
-SERVER_MAX_PACKAGES=260
-REMOTE_MAX_PACKAGES=240
-SERVER_STORAGE_MAX_PACKAGES=350
-# macOS native ACL support imports purego, including its platform-specific loader.
-# The baseline consumer already uses 351-353 packages across architecture and cgo choices.
-if [ "$(go env GOOS)" = "darwin" ]; then
-	SERVER_STORAGE_MAX_PACKAGES=353
-fi
+# Budgets count product and third-party packages. Compiler-owned standard
+# library packages change with the jointly qualified Go toolchain.
 DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-consumer-deps.XXXXXX")"
 NON_STANDARD_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-consumer-non-standard-deps.XXXXXX")"
 STORE_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-store-consumer-deps.XXXXXX")"
 PINNED_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-pinned-consumer-deps.XXXXXX")"
 PINNED_NON_STANDARD_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-pinned-consumer-non-standard-deps.XXXXXX")"
 SERVER_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-server-consumer-deps.XXXXXX")"
+SERVER_NON_STANDARD_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-server-non-standard.XXXXXX")"
 REMOTE_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-remote-consumer-deps.XXXXXX")"
+REMOTE_NON_STANDARD_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-remote-non-standard.XXXXXX")"
 SERVER_STORAGE_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-server-storage-deps.XXXXXX")"
-trap 'rm -f "$DEPS" "$NON_STANDARD_DEPS" "$STORE_DEPS" "$PINNED_DEPS" "$PINNED_NON_STANDARD_DEPS" "$SERVER_DEPS" "$REMOTE_DEPS" "$SERVER_STORAGE_DEPS"' EXIT
+SERVER_STORAGE_NON_STANDARD_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-server_storage-non-standard.XXXXXX")"
+trap 'rm -f "$DEPS" "$NON_STANDARD_DEPS" "$STORE_DEPS" "$PINNED_DEPS" "$PINNED_NON_STANDARD_DEPS" "$SERVER_DEPS" "$SERVER_NON_STANDARD_DEPS" "$REMOTE_DEPS" "$REMOTE_NON_STANDARD_DEPS" "$SERVER_STORAGE_DEPS" "$SERVER_STORAGE_NON_STANDARD_DEPS"' EXIT
 
 find_banned_dependencies() {
 	local pattern="$1"
@@ -82,12 +88,16 @@ find_banned_dependencies() {
 	cd "$SERVER_EMBED_MODULE"
 	GOWORK=off go test ./...
 	GOWORK=off go list -deps -f '{{.ImportPath}}' . | LC_ALL=C sort -u >"$SERVER_DEPS"
+	GOWORK=off go list -deps -f '{{if not .Standard}}{{.ImportPath}}{{end}}' . |
+		sed '/^$/d' | LC_ALL=C sort -u >"$SERVER_NON_STANDARD_DEPS"
 )
 
 (
 	cd "$REMOTE_SUBSCRIBER_MODULE"
 	GOWORK=off go test ./...
 	GOWORK=off go list -deps -f '{{.ImportPath}}' . | LC_ALL=C sort -u >"$REMOTE_DEPS"
+	GOWORK=off go list -deps -f '{{if not .Standard}}{{.ImportPath}}{{end}}' . |
+		sed '/^$/d' | LC_ALL=C sort -u >"$REMOTE_NON_STANDARD_DEPS"
 )
 
 (
@@ -95,6 +105,8 @@ find_banned_dependencies() {
 	GOWORK=off go test ./...
 	GOWORK=off go list -deps -test -f '{{.ImportPath}}' . |
 		LC_ALL=C sort -u >"$SERVER_STORAGE_DEPS"
+	GOWORK=off go list -deps -test -f '{{if not .Standard}}{{.ImportPath}}{{end}}' . |
+		sed '/^$/d' | LC_ALL=C sort -u >"$SERVER_STORAGE_NON_STANDARD_DEPS"
 )
 
 total_package_count="$(wc -l <"$DEPS" | tr -d '[:space:]')"
@@ -149,10 +161,10 @@ for required in \
 	fi
 done
 
-server_package_count="$(wc -l <"$SERVER_DEPS" | tr -d '[:space:]')"
-if [ "$server_package_count" -gt "$SERVER_MAX_PACKAGES" ]; then
-	printf 'server-embed consumer dependency closure is %s packages; budget is %s\n' \
-		"$server_package_count" "$SERVER_MAX_PACKAGES" >&2
+server_package_count="$(wc -l <"$SERVER_NON_STANDARD_DEPS" | tr -d '[:space:]')"
+if [ "$server_package_count" -gt "$SERVER_MAX_NON_STANDARD_PACKAGES" ]; then
+	printf 'server-embed consumer non-standard dependency closure is %s packages; budget is %s\n' \
+		"$server_package_count" "$SERVER_MAX_NON_STANDARD_PACKAGES" >&2
 	exit 1
 fi
 server_banned_pattern='^(github\.com/agentstation/starmap/(acquisition|internal/(catalog/pipeline|providers|sources)(/|$))|github\.com/aws/(aws-sdk-go-v2|smithy-go)(/|$)|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$))'
@@ -163,10 +175,10 @@ if [ -n "$server_banned" ]; then
 	exit 1
 fi
 
-remote_package_count="$(wc -l <"$REMOTE_DEPS" | tr -d '[:space:]')"
-if [ "$remote_package_count" -gt "$REMOTE_MAX_PACKAGES" ]; then
-	printf 'remote-subscriber consumer dependency closure is %s packages; budget is %s\n' \
-		"$remote_package_count" "$REMOTE_MAX_PACKAGES" >&2
+remote_package_count="$(wc -l <"$REMOTE_NON_STANDARD_DEPS" | tr -d '[:space:]')"
+if [ "$remote_package_count" -gt "$REMOTE_MAX_NON_STANDARD_PACKAGES" ]; then
+	printf 'remote-subscriber consumer non-standard dependency closure is %s packages; budget is %s\n' \
+		"$remote_package_count" "$REMOTE_MAX_NON_STANDARD_PACKAGES" >&2
 	exit 1
 fi
 remote_banned_pattern='^(github\.com/agentstation/starmap/(acquisition|internal/(catalog/pipeline|providers|server|sources)(/|$)|server(/|$))|github\.com/aws/(aws-sdk-go-v2|smithy-go)(/|$)|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/gorilla/websocket(/|$)|github\.com/spf13/cobra(/|$)|modernc\.org/sqlite(/|$)|github\.com/(mattn|ncruces)/go-sqlite3(/|$))'
@@ -178,11 +190,11 @@ if [ -n "$remote_banned" ]; then
 fi
 
 server_storage_package_count="$(
-	wc -l <"$SERVER_STORAGE_DEPS" | tr -d '[:space:]'
+	wc -l <"$SERVER_STORAGE_NON_STANDARD_DEPS" | tr -d '[:space:]'
 )"
-if [ "$server_storage_package_count" -gt "$SERVER_STORAGE_MAX_PACKAGES" ]; then
-	printf 'server-storage consumer dependency closure is %s packages; budget is %s\n' \
-		"$server_storage_package_count" "$SERVER_STORAGE_MAX_PACKAGES" >&2
+if [ "$server_storage_package_count" -gt "$SERVER_STORAGE_MAX_NON_STANDARD_PACKAGES" ]; then
+	printf 'server-storage consumer non-standard dependency closure is %s packages; budget is %s\n' \
+		"$server_storage_package_count" "$SERVER_STORAGE_MAX_NON_STANDARD_PACKAGES" >&2
 	exit 1
 fi
 server_storage_banned_pattern='^(database/sql$|github\.com/agentstation/starmap/(acquisition|cmd|internal/(providers|sources)(/|$))|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/(mattn/go-sqlite3|ncruces/go-sqlite3|go-sql-driver/mysql|lib/pq|jackc/pgx)(/|$)|modernc\.org/sqlite(/|$))'
@@ -211,11 +223,11 @@ printf 'read-only consumer dependency closure: %s/%s non-standard packages (%s t
 printf 'store-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent\n'
 printf 'pinned-artifact consumer: %s/%s non-standard packages; offline verified activation passed; online/acquisition families absent\n' \
 	"$pinned_non_standard_package_count" "$PINNED_MAX_NON_STANDARD_PACKAGES"
-printf 'server-embed consumer dependency closure: %s/%s packages; acquisition families absent\n' \
-	"$server_package_count" "$SERVER_MAX_PACKAGES"
+printf 'server-embed consumer non-standard dependency closure: %s/%s packages; acquisition families absent\n' \
+	"$server_package_count" "$SERVER_MAX_NON_STANDARD_PACKAGES"
 printf 'server-embed consumer: external compile and lifecycle test passed\n'
-printf 'remote-subscriber consumer dependency closure: %s/%s packages; forbidden families absent\n' \
-	"$remote_package_count" "$REMOTE_MAX_PACKAGES"
+printf 'remote-subscriber consumer non-standard dependency closure: %s/%s packages; forbidden families absent\n' \
+	"$remote_package_count" "$REMOTE_MAX_NON_STANDARD_PACKAGES"
 printf 'remote-subscriber consumer: external compile and reactive lifecycle test passed\n'
-printf 'server-storage consumer dependency closure: %s/%s packages; filesystem/S3 server and reactive restart matrix passed\n' \
-	"$server_storage_package_count" "$SERVER_STORAGE_MAX_PACKAGES"
+printf 'server-storage consumer non-standard dependency closure: %s/%s packages; filesystem/S3 server and reactive restart matrix passed\n' \
+	"$server_storage_package_count" "$SERVER_STORAGE_MAX_NON_STANDARD_PACKAGES"

@@ -12,6 +12,23 @@ import (
 	catalogruntime "github.com/agentstation/starmap/runtime"
 )
 
+func TestReplayAcquisitionNamesExplicitBaseline(t *testing.T) {
+	baseline, _ := producerPipelineFixture(t)
+	generation := publicationBaselineFixture(t, baseline)
+	candidate, err := catalogruntime.ReplayAcquisition(t.Context(), generation, "publisher", nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	replayed, err := candidate.Generation("replay", generation.Manifest.GeneratedAt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	links := replayed.Manifest.SourceObservations
+	if len(links) != 1 || links[0].Source != sources.LocalCatalogID || links[0].EvidenceChecksum != generation.Manifest.Payload.Checksum {
+		t.Fatalf("explicit baseline receipt: %+v", links)
+	}
+}
+
 func TestPreparePublicationCanResumeFromItsPromotedBaseline(t *testing.T) {
 	profile, run := admissionFixture(t)
 	empty, err := catalogs.NewEmpty().Build()

@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 	"time"
 
@@ -39,7 +40,7 @@ func TestArtifactReleaseCommandVerifiesExactPromotion(t *testing.T) {
 }
 
 func TestArtifactReleaseCommandRejectsPromotionMismatch(t *testing.T) {
-	for _, kind := range []string{"generation", "timestamp", "semantic", "payload", "schema", "manifest_missing", "facts", "endpoints", "endpoints_missing", "release"} {
+	for _, kind := range []string{"generation", "timestamp", "semantic", "payload", "schema", "manifest_missing", "evidence_missing", "evidence_changed", "facts", "endpoints", "endpoints_missing", "release"} {
 		t.Run(kind, func(t *testing.T) {
 			catalogPath, releasePath, _ := promotionFixture(t)
 			manifestPath := filepath.Join(catalogPath, "generation.json")
@@ -66,6 +67,26 @@ func TestArtifactReleaseCommandRejectsPromotionMismatch(t *testing.T) {
 				if err := os.Remove(manifestPath); err != nil {
 					t.Fatal(err)
 				}
+			case "evidence_missing":
+				if err := os.Remove(filepath.Join(catalogPath, catalogs.BootstrapGenerationManifestFilename)); err != nil {
+					t.Fatal(err)
+				}
+			case "evidence_changed":
+				name := filepath.Join(catalogPath, catalogs.BootstrapGenerationManifestFilename)
+				retained, err := os.ReadFile(name)
+				if err != nil {
+					t.Fatal(err)
+				}
+				committed, err := catalogs.ParseGenerationManifestJSON(retained)
+				if err != nil {
+					t.Fatal(err)
+				}
+				committed.SyncRunID = "changed-run"
+				retained, err = json.Marshal(committed)
+				if err != nil {
+					t.Fatal(err)
+				}
+				writePromotionFile(t, name, retained)
 			case "facts":
 				path := filepath.Join(catalogPath, "authors", "fixture", "models", "one.yaml")
 				before, err := os.ReadFile(path)
@@ -139,6 +160,15 @@ func promotionFixture(t *testing.T) (string, string, catalogs.Generation) {
 	}}); err != nil {
 		t.Fatal(err)
 	}
+	observation := generation.Manifest.SourceObservations[0]
+	if err := builder.SetMembershipScopes([]catalogs.ProviderMembershipScope{{
+		PublisherID: "public-catalog", BindingID: "public-provider", BindingRevision: "1",
+		ProviderID: "provider", Region: "default-endpoint", APISurface: "models", Public: true,
+		Authority: catalogs.MembershipScopeAuthority,
+		Inventory: &catalogs.MembershipInventory{ObservationID: observation.ObservationID, ObservedAt: observation.ObservedAt, ModelIDs: []string{"exact/ID"}},
+	}}); err != nil {
+		t.Fatal(err)
+	}
 	catalog, err := builder.Build()
 	if err != nil {
 		t.Fatal(err)
@@ -164,6 +194,9 @@ func promotionFixture(t *testing.T) (string, string, catalogs.Generation) {
 	catalog, err = projected.Build()
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(catalog.MembershipScopes(), builder.MembershipScopes()) {
+		t.Fatal("workspace changed published membership records")
 	}
 	generation.Payload, err = catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
@@ -199,6 +232,11 @@ func promotionFixture(t *testing.T) (string, string, catalogs.Generation) {
 		t.Fatal(err)
 	}
 	writePromotionFile(t, filepath.Join(catalogPath, "generation.json"), data)
+	data, err = json.Marshal(generation.Manifest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writePromotionFile(t, filepath.Join(catalogPath, catalogs.BootstrapGenerationManifestFilename), data)
 	return catalogPath, assets.Directory, generation
 }
 

@@ -16,6 +16,7 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 	"github.com/agentstation/starmap/runtime/status"
+	"github.com/agentstation/starmap/server/administration"
 )
 
 // Syncer is the optional acquisition capability used by the update endpoint.
@@ -44,9 +45,12 @@ type ConnectedRuntime interface {
 type Option func(*options) error
 
 type options struct {
-	logger  *zerolog.Logger
-	runtime ConnectedRuntime
-	syncer  Syncer
+	logger         *zerolog.Logger
+	runtime        ConnectedRuntime
+	syncer         Syncer
+	administration *administration.Manager
+	audience       string
+	reports        *administration.Reports
 }
 
 // WithLogger configures server diagnostics. The default logger discards output.
@@ -81,6 +85,18 @@ func WithSyncer(syncer Syncer) Option {
 			return &errors.ValidationError{Field: "server.syncer", Message: "is required"}
 		}
 		options.syncer = syncer
+		return nil
+	}
+}
+
+// WithAdministration enables audience-bound subscriber and administrator identities.
+// The caller owns the manager and closes it after server shutdown.
+func WithAdministration(manager *administration.Manager, audience string) Option {
+	return func(options *options) error {
+		if manager == nil || audience == "" || manager.Audience() != audience {
+			return &errors.ValidationError{Field: "server.administration", Message: "requires a manager and its audience"}
+		}
+		options.administration, options.audience = manager, audience
 		return nil
 	}
 }
@@ -130,6 +146,9 @@ func New(client *starmap.Client, config Config, serverOptions ...Option) (*Serve
 	if err := config.validate(); err != nil {
 		return nil, err
 	}
+	if err := validateAdministration(client, options); err != nil {
+		return nil, err
+	}
 	implementation, err := internalserver.New(
 		&clientApplication{
 			client:  client,
@@ -138,6 +157,8 @@ func New(client *starmap.Client, config Config, serverOptions ...Option) (*Serve
 			syncer:  options.syncer,
 		},
 		config.internal(),
+		internalserver.WithAdministration(options.administration, options.audience),
+		internalserver.WithConfigurationReports(options.reports),
 	)
 	if err != nil {
 		return nil, errors.WrapResource("construct", "starmap server", "", err)
@@ -214,4 +235,15 @@ func (s *Server) Shutdown(ctx context.Context) error {
 		runtimeErr = s.runtime.Close()
 	}
 	return stderrors.Join(httpErr, serviceErr, runtimeErr)
+}
+
+// WithConfigurationReports serves host-prepared, redacted configuration diagnostics to administrators.
+func WithConfigurationReports(reports *administration.Reports) Option {
+	return func(options *options) error {
+		if reports == nil {
+			return &errors.ValidationError{Field: "server.configuration_reports", Message: "are required"}
+		}
+		options.reports = reports
+		return nil
+	}
 }

@@ -292,6 +292,46 @@ class Publisher:
                 raise PublicationError("workflow recovery selected a different pending publication")
         self.verify_stage(record)
 
+    def rejected(self, record, channels):
+        path = self.source / ".github/catalog-rejections.json"
+        if not path.exists():
+            return False
+        entries = read_json(path)
+        if not isinstance(entries, list):
+            raise PublicationError("catalog rejection registry must be a list")
+        selected = None
+        seen = set()
+        for entry in entries:
+            if not isinstance(entry, dict) or set(entry) != {"pending", "pull_request", "reason"}:
+                raise PublicationError("catalog rejection has an unsupported schema")
+            pending = validate_pending(entry["pending"])
+            if type(entry["pull_request"]) is not int or entry["pull_request"] < 1:
+                raise PublicationError("catalog rejection requires a pull request")
+            if not isinstance(entry["reason"], str) or not entry["reason"].strip() or len(entry["reason"]) > 4096:
+                raise PublicationError("catalog rejection requires a bounded reason")
+            digest = pending["receipt_checksum"]
+            if digest in seen:
+                raise PublicationError("duplicate catalog rejection")
+            seen.add(digest)
+            if digest == record["receipt_checksum"]:
+                selected = entry
+        if selected is None:
+            return False
+        if selected["pending"] != record:
+            raise PublicationError("rejected candidate differs from its reviewed record")
+        if any((state["document"] or {}).get("tag") == record["artifact_tag"] for state in channels.values()):
+            raise PublicationError("cannot reject a candidate already accepted by a channel")
+        retained = self.root / "rejected"
+        self.download(record["artifact_tag"], (ARCHIVE,), retained)
+        self.download(record["receipt_tag"], (RECEIPT, CHECKPOINT), retained)
+        for filename, key in ((ARCHIVE, "archive_checksum"), (RECEIPT, "receipt_checksum"), (CHECKPOINT, "checkpoint_checksum")):
+            path = retained / filename
+            if checksum(path) != record[key]:
+                raise PublicationError("rejected evidence has the wrong digest")
+            self.attest(path)
+        self.outputs(rejected_receipt=record["receipt_checksum"], rejected_pull_request=selected["pull_request"])
+        return True
+
     def inspect(self):
         self.build()
         channels = {name: self.read_branch(name, "channel.json") for name in ("catalog/v1", "catalog/v2")}
@@ -301,6 +341,8 @@ class Publisher:
         pending = self.read_branch(PENDING_BRANCH, "pending.json")
         record = validate_pending(pending["document"]) if pending["document"] else None
         active = record is not None and not completed(record, channels)
+        if active and self.rejected(record, channels):
+            active = False
         event = os.environ.get("GITHUB_EVENT_NAME", "workflow_dispatch")
         acquire = not active and event != "workflow_run"
         if not active and acquire:
@@ -428,6 +470,21 @@ class Publisher:
                              f"Omitted events: {count - len(corrections)}. Invalid events: {invalid}.\n\n"
                              "The catalog-validation artifact contains `acquisition-corrections.log`.\n\n")
 
+    def stage_promotion(self, staged):
+        args = [self.release_tool, "--stage-promotion-dir", staged, "--promotion-release-dir", self.assets]
+        log = self.root / "promotion-staging.log"
+        try:
+            result = command(args, check=False)
+        except subprocess.TimeoutExpired as error:
+            output = []
+            for value in (error.stdout, error.stderr):
+                output.append(value.decode("utf-8", errors="replace") if isinstance(value, bytes) else value or "")
+            log.write_text("".join(output), encoding="utf-8")
+            raise PublicationError("promotion staging exceeded its time limit; inspect its retained validation log") from error
+        log.write_text(result.stdout + result.stderr, encoding="utf-8")
+        if result.returncode:
+            raise PublicationError(f"promotion staging failed with exit status {result.returncode}; inspect its retained validation log")
+
     def validate(self):
         record = validate_pending(read_json(self.control)["pending"])
         if record["preparation_commit"] != self.git("rev-parse", "HEAD").stdout.strip():
@@ -435,7 +492,7 @@ class Publisher:
         self.restore_stage(record)
         checkout = self.promotion_checkout(record["preparation_commit"], "candidate-validation")
         staged = self.root / "validation-catalog"
-        command([self.release_tool, "--stage-promotion-dir", staged, "--promotion-release-dir", self.assets])
+        self.stage_promotion(staged)
         target = checkout / "internal/embedded/catalog"
         shutil.rmtree(target)
         shutil.copytree(staged, target)
@@ -595,7 +652,7 @@ class Publisher:
                 self.verify_promotion_head(head, main, "retained-promotion")
             elif probe.returncode == 2:
                 staged = self.root / "promotion-catalog"
-                command([self.release_tool, "--stage-promotion-dir", staged, "--promotion-release-dir", self.assets])
+                self.stage_promotion(staged)
                 target = checkout / "internal/embedded/catalog"
                 shutil.rmtree(target)
                 shutil.copytree(staged, target)

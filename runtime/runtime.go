@@ -16,6 +16,7 @@ import (
 	"github.com/gofrs/flock"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
@@ -361,8 +362,8 @@ func (r *Runtime) Close() error {
 
 // initializeEffective selects startup state and retains the separate compiled baseline.
 // An explicit binding set always rebuilds, including when no retained evidence is active.
-// Without that set, an empty layer set keeps only unscoped accepted state.
-// It reaches no external system.
+// Without that set, an empty layer set keeps the compiled baseline or unscoped accepted state.
+// It does not fetch from sources or providers.
 func (r *Runtime) initializeEffective(ctx context.Context) error {
 	current := r.client.CurrentCatalogState()
 	baseline := r.client.EmbeddedCatalogState()
@@ -371,7 +372,12 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	if r.config.generationPin != "" {
 		return r.initializeGenerationPin(ctx)
 	}
+	manifest, err := bootstrap.GenerationManifest()
+	if err != nil {
+		return err
+	}
 	r.layers.embedded = baseline
+	r.layers.embeddedManifest = &manifest
 	r.layers.requireAuthority = r.requiresAuthority()
 	r.layers.providerBindings = r.config.providerBindings
 	r.layers.acquisitionSources = r.config.acquisitionSources
@@ -386,8 +392,25 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 		return err
 	}
 	if !r.requiresAuthority() && r.layers.empty() && r.config.providerBindings == nil && r.config.acquisitionSources == nil {
-		if storedProviderPolicyRequired(current) {
-			return &errors.ConflictError{Resource: "catalog startup policy", Message: "stored scoped evidence requires explicit provider bindings or retained input recovery"}
+		if storedProviderPolicyRequired(current, baseline) {
+			matches, err := r.storedOriginMatchesBaseline(ctx, baseline)
+			if err != nil {
+				return err
+			}
+			if !matches {
+				return &errors.ConflictError{Resource: "catalog startup policy", Message: "stored scoped evidence requires explicit provider bindings or retained input recovery"}
+			}
+		}
+		if r.config.origin != nil {
+			generation, err := r.client.CurrentGeneration(ctx)
+			if err != nil {
+				return err
+			}
+			manifest := generation.Manifest.Copy()
+			r.layers.buildEvidence = starmap.CandidateEvidence{
+				SourceObservations: manifest.SourceObservations,
+				ReviewCandidates:   manifest.ReviewCandidates,
+			}
 		}
 		r.effective = current
 		r.report.startedAt = r.config.now()

@@ -1,7 +1,6 @@
 package bootstrap
 
 import (
-	"math"
 	"slices"
 	"testing"
 
@@ -9,13 +8,9 @@ import (
 )
 
 func TestEveryPublishedMediaOperationMatchesItsDefinition(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Embedded: %v", err)
 	}
 
 	counts := map[catalogs.ProviderOperation]int{}
@@ -105,22 +100,13 @@ func servedThroughChat(operation catalogs.ProviderOperation) bool {
 	return operation == catalogs.ProviderOperationDocumentsRecognition
 }
 
-// TestTheResidualOfferingsAreRealtimeAlone names every offering the shipped
-// catalog still leaves without an operation. MOD0 counted 63 of them, and MOD12
-// left 16: 13 that generate video and 3 that serve a realtime session. AMJ3
-// gave the video ones an operation, so only the realtime shape remains, and
-// holding the number here is what makes a new residual visible.
+// TestTheResidualOfferingsAreRealtimeAlone requires explicit WebSocket delivery
+// for each offering without a supported request operation.
 func TestTheResidualOfferingsAreRealtimeAlone(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
+		t.Fatalf("Embedded: %v", err)
 	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
-	}
-
-	video, realtime, other := 0, 0, 0
 	for _, provider := range catalog.Providers().List() {
 		offerings, err := catalog.ProviderOfferings(provider.ID)
 		if err != nil {
@@ -131,112 +117,60 @@ func TestTheResidualOfferingsAreRealtimeAlone(t *testing.T) {
 				continue
 			}
 			model := provider.Models[string(offering.ProviderModelID)]
-			if model == nil || model.Features == nil {
-				other++
-				continue
-			}
-			output := model.Features.Modalities.Output
-			switch {
-			case slices.Contains(output, catalogs.ModelModalityVideo):
-				video++
-			case slices.Contains(output, catalogs.ModelModalityAudio) &&
-				slices.Contains(output, catalogs.ModelModalityText):
-				realtime++
-			default:
-				t.Fatalf(
-					"%s/%s has no operation and no recorded reason: input %v output %v",
-					provider.ID,
-					offering.ProviderModelID,
-					model.Features.Modalities.Input,
-					output,
-				)
+			if model == nil || model.Delivery == nil ||
+				!slices.Equal(model.Delivery.Protocols, []catalogs.ModelResponseProtocol{catalogs.ModelResponseProtocolWebSocket}) {
+				t.Fatalf("%s/%s has no operation and lacks exclusive WebSocket delivery", provider.ID, offering.ProviderModelID)
 			}
 		}
 	}
-
-	if video != 0 || realtime != 3 || other != 0 {
-		t.Fatalf(
-			"residual offerings: video = %d want 0, realtime = %d want 3, unexplained = %d want 0",
-			video,
-			realtime,
-			other,
-		)
-	}
 }
 
-// geminiTokensPerPage is the number of input tokens Google bills for one page
-// of a document. Google publishes it at
-// https://ai.google.dev/gemini-api/docs/document-processing.
-const geminiTokensPerPage = 258
-
-// TestEveryRecognitionOfferingCanBeBilledByThePage names the failure a refresh
-// would otherwise ship silently.
-//
-// Starport cannot route a recognition request to an offering without a page
-// price. Google publishes a fixed input-token count for each page instead of a
-// page price. The catalog derives the page price from the model's input-token
-// price. A refresh can change that token price while leaving the derived page
-// price stale. This test detects that drift.
-func TestEveryRecognitionOfferingCanBeBilledByThePage(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+// TestEveryRecognitionOfferingDeclaresActualBillingUnits checks usable prices
+// in the declared unit. Token billing includes input and output. A display
+// estimate cannot substitute for either rate.
+func TestEveryRecognitionOfferingDeclaresActualBillingUnits(t *testing.T) {
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
+		t.Fatal(err)
 	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
-	}
-
 	checked := 0
 	for _, provider := range catalog.Providers().List() {
 		offerings, err := catalog.ProviderOfferings(provider.ID)
 		if err != nil {
-			t.Fatalf("ProviderOfferings(%s): %v", provider.ID, err)
+			t.Fatal(err)
 		}
 		for _, offering := range offerings {
-			if !slices.Contains(offering.Service.Operations, catalogs.ProviderOperationDocumentsRecognition) {
+			if !offering.Supports(catalogs.ProviderOperationDocumentsRecognition) {
 				continue
 			}
 			checked++
 			name := string(provider.ID) + "/" + string(offering.ProviderModelID)
-
-			if offering.Pricing == nil || offering.Pricing.Operations == nil ||
-				offering.Pricing.Operations.PageInput == nil {
-				t.Fatalf("%s serves recognition with no page price", name)
+			if offering.Billing == nil || offering.Billing.Recognition == nil || offering.Pricing == nil {
+				t.Fatalf("%s lacks billing units or prices", name)
 			}
-			page := *offering.Pricing.Operations.PageInput
-			if page <= 0 {
-				t.Fatalf("%s prices a page at %v", name, page)
+			switch offering.Billing.Recognition.Basis {
+			case catalogs.RecognitionBillingPages:
+				if offering.Pricing.Operations == nil || offering.Pricing.Operations.PageInput == nil {
+					t.Fatalf("%s lacks a page rate", name)
+				}
+			case catalogs.RecognitionBillingTokens:
+				if offering.Pricing.Tokens == nil || offering.Pricing.Tokens.Input == nil || offering.Pricing.Tokens.Output == nil {
+					t.Fatalf("%s lacks input or output token rates", name)
+				}
+				if offering.Pricing.Operations != nil && offering.Pricing.Operations.PageInput != nil {
+					t.Fatalf("%s presents an estimate as a fixed page charge", name)
+				}
+			default:
+				t.Fatalf("%s has unknown billing units", name)
 			}
 			if offering.Limits == nil || offering.Limits.DocumentPages <= 0 {
-				t.Fatalf("%s serves recognition and states no page limit", name)
+				t.Fatalf("%s has no page limit", name)
 			}
 			if _, found := offering.Endpoint(catalogs.ProviderOperationDocumentsRecognition); !found {
-				t.Fatalf("%s serves recognition and resolves to no endpoint", name)
-			}
-
-			if provider.ID != "google-ai-studio" {
-				continue
-			}
-			if offering.Pricing.Tokens == nil || offering.Pricing.Tokens.Input == nil {
-				t.Fatalf("%s derives a page price from an input price it does not carry", name)
-			}
-			want := geminiTokensPerPage * offering.Pricing.Tokens.Input.Per1M / 1_000_000
-			if math.Abs(page-want) > 1e-12 {
-				t.Fatalf(
-					"%s prices a page at %v; %d tokens at %v per million is %v",
-					name,
-					page,
-					geminiTokensPerPage,
-					offering.Pricing.Tokens.Input.Per1M,
-					want,
-				)
+				t.Fatalf("%s has no recognition endpoint", name)
 			}
 		}
 	}
-
-	// The census PLG3 records. Three Gemini models read a document and carry no
-	// input price at all, so the catalog does not offer what it cannot bill.
 	if checked != 11 {
 		t.Fatalf("recognition offerings = %d, want 11", checked)
 	}

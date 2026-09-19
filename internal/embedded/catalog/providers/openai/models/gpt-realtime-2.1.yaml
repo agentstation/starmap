@@ -87,6 +87,10 @@ reasoning:
   default: null
 
 # Model pricing
+response:
+  protocols:
+    - websocket
+
 pricing:
   tokens:
     cache_read:

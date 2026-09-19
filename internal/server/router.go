@@ -9,6 +9,7 @@ import (
 	"github.com/agentstation/starmap/internal/server/handlers"
 	"github.com/agentstation/starmap/internal/server/middleware"
 	"github.com/agentstation/starmap/internal/server/openrouter"
+	"github.com/agentstation/starmap/internal/server/response"
 )
 
 // setupRouter creates the HTTP handler with routes and middleware.
@@ -23,6 +24,7 @@ func (s *Server) setupRouter() http.Handler {
 		s.operations,
 		s.logger,
 		s.startTime,
+		handlers.WithAdministration(s.administration),
 	)
 
 	// Register routes
@@ -48,6 +50,8 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 	mux.HandleFunc(prefix+"/health", h.HandleHealth)
 	mux.HandleFunc(prefix+"/ready", h.HandleReady)
 
+	s.registerAdministrationReports(mux)
+	s.registerIdentityRoutes(mux)
 	s.registerModelRoutes(mux, h)
 
 	// Providers endpoints
@@ -217,7 +221,7 @@ func (s *Server) applyMiddleware(handler http.Handler) http.Handler {
 	}
 
 	// Authentication (if enabled)
-	if cfg.AuthEnabled {
+	if cfg.AuthEnabled && s.administration == nil {
 		authConfig := middleware.DefaultAuthConfig()
 		authConfig.Enabled = true
 		authConfig.HeaderName = cfg.AuthHeader
@@ -244,6 +248,16 @@ func (s *Server) applyMiddleware(handler http.Handler) http.Handler {
 		}
 		handler = middleware.Auth(authConfig, s.logger)(handler)
 	}
+
+	handler = middleware.AdministrationAccess(s.administration, s.audience, cfg.AuthHeader, cfg.PathPrefix,
+		[]string{"/health", cfg.PathPrefix + "/health", cfg.PathPrefix + "/ready", cfg.PathPrefix + "/openapi.json", cfg.PathPrefix + "/openapi.yaml"},
+		func(w http.ResponseWriter, r *http.Request) {
+			if openrouter.IsCompatibilityPath(r.URL.EscapedPath(), cfg.PathPrefix) {
+				openrouter.WriteError(w, http.StatusUnauthorized, "No auth credentials found")
+				return
+			}
+			response.Unauthorized(w, "Authentication required", "Provide an active credential for this catalog audience")
+		})(handler)
 
 	// CORS (if enabled)
 	if cfg.CORSEnabled {

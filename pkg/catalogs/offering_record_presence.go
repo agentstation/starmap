@@ -6,13 +6,15 @@ import (
 	"github.com/goccy/go-yaml"
 )
 
-var offeringRecords = []ModelRecord{ModelRecordPricing, ModelRecordLimits, ModelRecordDeprecatedAt, ModelRecordRetiresAt}
+var offeringRecords = []ModelRecord{ModelRecordBilling, ModelRecordPricing, ModelRecordLimits, ModelRecordDeprecatedAt, ModelRecordRetiresAt}
 
 // RecordPresence reports an optional provider service record's observed presence.
 // Intrinsic capability records return ValueMissing.
 func (o ProviderOffering) RecordPresence(record ModelRecord) ValuePresence {
 	var known bool
 	switch record {
+	case ModelRecordBilling:
+		known = o.Billing != nil
 	case ModelRecordPricing:
 		known = o.Pricing != nil
 	case ModelRecordLimits:

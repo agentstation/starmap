@@ -144,8 +144,8 @@ func (embeddedSource) Read(context.Context) (SourceRead, error) {
 type fileSource struct {
 	path string
 
-	mu       sync.Mutex
-	checksum string
+	mu                sync.Mutex
+	validatedChecksum string
 }
 
 // newFileSource builds the local file source.
@@ -162,7 +162,8 @@ func newFileSource(policy SourcePolicy) (Source, error) {
 // Identity returns the safe identity of the file source. It names no path.
 func (f *fileSource) Identity() string { return string(SourceFile) }
 
-// Read decodes the payload and reports a change when its digest moved.
+// Read returns a validated payload candidate. The runtime compares it with
+// retained state so a rejected publication cannot consume a file change.
 func (f *fileSource) Read(_ context.Context) (SourceRead, error) {
 	if err := filepolicy.Require("source-file", filepolicy.DeploymentControlled); err != nil {
 		return SourceRead{}, err
@@ -188,18 +189,16 @@ func (f *fileSource) Read(_ context.Context) (SourceRead, error) {
 	descriptor := catalogs.DescribeCatalogPayload(payload)
 
 	f.mu.Lock()
-	unchanged := descriptor.Checksum == f.checksum
+	validated := descriptor.Checksum == f.validatedChecksum
 	f.mu.Unlock()
-	if unchanged {
-		return SourceRead{Health: HealthOK}, nil
+	if !validated {
+		if _, err := catalogs.DecodeCatalogPayload(payload); err != nil {
+			return SourceRead{}, errors.WrapResource("decode", "file catalog source", f.path, err)
+		}
+		f.mu.Lock()
+		f.validatedChecksum = descriptor.Checksum
+		f.mu.Unlock()
 	}
-	if _, err := catalogs.DecodeCatalogPayload(payload); err != nil {
-		return SourceRead{}, errors.WrapResource("decode", "file catalog source", f.path, err)
-	}
-
-	f.mu.Lock()
-	f.checksum = descriptor.Checksum
-	f.mu.Unlock()
 	return SourceRead{
 		Changed: true,
 		Generation: catalogs.Generation{

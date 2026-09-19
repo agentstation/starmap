@@ -108,7 +108,7 @@ def verify(root):
         report["server"] = server
         with tempfile.TemporaryDirectory(prefix="starmap-cold-server-") as temporary:
             directory = Path(temporary)
-            environment = dict(os.environ, GOOS="linux", GOARCH=arch, CGO_ENABLED="0", GOTOOLCHAIN="go1.25.12", GOWORK="off", GOFLAGS="")
+            environment = dict(os.environ, GOOS="linux", GOARCH=arch, CGO_ENABLED="0", GOTOOLCHAIN="go1.27.1", GOWORK="off", GOFLAGS="")
             for binary, package in [("starmap", "./cmd/starmap"), ("observe", "./scripts/testdata/cold-server-probe")]:
                 target = directory / binary
                 required(["go", "build", "-mod=readonly", "-trimpath", "-o", str(target), package], env=environment, timeout=300)

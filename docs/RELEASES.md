@@ -2,33 +2,20 @@
 
 ## Go versions
 
-Starmap deliberately separates its library compatibility floor from its build
-toolchain:
+Starmap and Starport use Go 1.27.1 for development, CI, and releases.
+Both modules declare `go 1.27.1`. Build commands select `GOTOOLCHAIN=go1.27.1`.
+Go removes an equivalent `toolchain` directive during `go mod tidy`.
+CI and release jobs use explicit three-component pins.
 
-- `go 1.25.0` is the module language and library compatibility floor.
-- Go 1.25.12 is the patched 1.25 release exercised by required PR checks.
-- `toolchain go1.26.6` is the preferred development toolchain.
-- Go 1.26.6 is the exact toolchain used by verification, catalog generation,
-  and application releases.
+Devbox selects Go 1.27.1 from an exact Nixpkgs commit because its package index lacks this patch release.
+The lockfile records the resolved package. Docker builders use a version and image digest.
+On macOS, Devbox selects Apple SDK 15.5 from the same Nixpkgs commit.
+This SDK supplies the system symbols that Go 1.27 needs when it builds development tools.
 
-Devbox pins `go@1.26.5` because its package index does not yet publish 1.26.6.
-That pin only bootstraps the `go` command. The `toolchain go1.26.6` directive
-selects Go 1.26.6, so a Devbox shell compiles with the release toolchain. Raise
-the Devbox pin when the index publishes it.
-
-Security-sensitive runtime dependencies require Go 1.25, so the floor cannot
-currently be lower. When Go stops supporting the 1.25 family, Starmap will
-raise the floor to the oldest upstream-supported family.
-
-After a toolchain upgrade, use Go 1.26.6 to run this command:
-
-```bash
-go fix ./...
-```
-
-The module language version remains 1.25. Fixes may use APIs available in Go 1.25 but must
-not introduce Go 1.26-only syntax. Accept the migration only after
-both version lanes pass.
+Qualify future Go upgrades across both repositories before updating their pins together.
+Keep race, native platform, real-storage, recovery, pure-Go, capacity, and performance checks.
+Add another supported Go family only when an actual product requirement justifies its cost.
+Older-toolchain reports remain historical evidence and cannot qualify a new toolchain.
 
 ## Application releases
 
@@ -36,7 +23,7 @@ Application releases use GoReleaser v2.17.0 and a tag of the form `vX.Y.Z` or
 `vX.Y.Z-rc.N`. The tag commit must already be reachable from `main`. The release
 workflow:
 
-1. runs repository and release verification with Go 1.26.6.
+1. runs repository and release verification with Go 1.27.1.
 2. builds Linux, macOS, and Windows archives for amd64 and arm64 with
    `CGO_ENABLED=0`.
 3. verifies cgo-disabled build metadata for all six binaries. It also verifies
@@ -129,7 +116,7 @@ catalog formats.
 Prepare a local, non-publishing release snapshot:
 
 ```bash
-GOTOOLCHAIN=go1.26.6 make release-snapshot
+GOTOOLCHAIN=go1.27.1 make release-snapshot
 ./scripts/verify-release-binaries.sh dist
 ```
 

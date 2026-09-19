@@ -4,6 +4,7 @@ import "github.com/agentstation/starmap/pkg/errors"
 
 const (
 	windowsInstallerSID                   = "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464"
+	windowsOwnerRightsSID                 = "S-1-3-4"
 	ancestorListDirectory          uint32 = 0x1
 	ancestorAddSubdirectory        uint32 = 0x4
 	ancestorReadEA                 uint32 = 0x8
@@ -38,7 +39,12 @@ func ValidateAncestor(account, owner string, present, null bool, entries []Entry
 			if entry.Flags&ancestorInheritOnly != 0 {
 				continue
 			}
-			if entry.Rights & ^ancestorReadAndCreateDirectory != 0 && !trustedAncestorPrincipal(account, entry.Principal) {
+			principal := entry.Principal
+			if principal == windowsOwnerRightsSID {
+				// OWNER RIGHTS refers to the current owner, validated above.
+				principal = owner
+			}
+			if entry.Rights & ^ancestorReadAndCreateDirectory != 0 && !trustedAncestorPrincipal(account, principal) {
 				return &errors.ValidationError{Field: field, Message: "ancestor DACL permits another account to change directory entries or security. Review native ancestor grants before retrying"}
 			}
 		default:

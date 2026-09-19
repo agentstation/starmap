@@ -68,15 +68,18 @@ func testConfiguredBackgroundControls(t *testing.T, mode string) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		selected.Manifest.GenerationID = "scheduled-pin-selected"
-		if err := store.Commit(t.Context(), selected, ""); err != nil {
-			t.Fatal(err)
+		if mode == "pinned" {
+			selected.Manifest.GenerationID = "scheduled-pin-selected"
+			if err := store.Commit(t.Context(), selected, ""); err != nil {
+				t.Fatal(err)
+			}
+			newer := selected.Copy()
+			newer.Manifest.GenerationID = "scheduled-pin-newer"
+			if err := store.Commit(t.Context(), newer, selected.Manifest.GenerationID); err != nil {
+				t.Fatal(err)
+			}
 		}
-		newer := selected.Copy()
-		newer.Manifest.GenerationID = "scheduled-pin-newer"
-		if err := store.Commit(t.Context(), newer, selected.Manifest.GenerationID); err != nil {
-			t.Fatal(err)
-		}
+
 		values := map[string]string{
 			config.Source: "public", config.SourceRefreshMode: "automatic",
 			config.SourcePollInterval: "10ms", config.AcquisitionInterval: "10ms",

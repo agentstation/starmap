@@ -21,7 +21,7 @@ Apple defines the time error fields in [XNU's NTP interface](https://github.com/
 Its elapsed counter uses [mach_continuous_time](https://developer.apple.com/documentation/kernel/1646199-mach_continuous_time), which includes system sleep.
 
 Windows uses the Go runtime's interrupt-time counter through `time.Since`.
-The Go 1.25.12 and 1.26.6 runtimes read Windows interrupt time on AMD64 and ARM64.
+The Go 1.27.1 runtime reads Windows interrupt time on AMD64 and ARM64.
 Microsoft describes sleep and hibernation accounting in [Interrupt Time](https://learn.microsoft.com/en-us/windows/win32/sysinfo/interrupt-time).
 Native tests compare elapsed intervals with `QueryInterruptTime` and check allocations.
 The comparison uses the [documented API set](https://learn.microsoft.com/en-us/uwp/win32-and-com/win32-apis#apis-from-api-ms-win-core-realtime-l1-1-1dll), `api-ms-win-core-realtime-l1-1-1.dll`.

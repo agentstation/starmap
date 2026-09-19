@@ -9,6 +9,9 @@ import (
 )
 
 func validateModelFactConsistency(model Model) error {
+	if err := model.Billing.Validate(); err != nil {
+		return err
+	}
 	if !model.CreatedAt.IsZero() && !model.UpdatedAt.IsZero() &&
 		model.CreatedAt.After(model.UpdatedAt) {
 		return modelFactError(

@@ -16,13 +16,8 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 	if len(minimumVersion) != 2 {
 		t.Fatal("go.mod does not declare an exact three-component Go version")
 	}
-	preferredVersion := regexp.MustCompile(`(?m)^toolchain go([0-9]+\.[0-9]+\.[0-9]+)$`).FindStringSubmatch(module)
-	if len(preferredVersion) != 2 {
-		t.Fatal("go.mod does not declare an exact preferred Go toolchain")
-	}
-	minimumPatchVersion := "1.25.12"
-	if minimumVersion[1] != "1.25.0" {
-		t.Fatalf("minimum Go language version = %q, want 1.25.0", minimumVersion[1])
+	if minimumVersion[1] != "1.27.1" {
+		t.Fatalf("Go version = %q, want 1.27.1", minimumVersion[1])
 	}
 	checks := []string{
 		"name: Pull Request",
@@ -37,22 +32,21 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 		"ref: dc9948f59089426c7dd077e41469104ec788cf7f",
 		"path: .ci/agentstation-skills",
 		"persist-credentials: false",
-		"name: Run verification gate",
+		"name: Run verification checks before suites",
 		"TECHNICAL_WRITING: ${{ github.workspace }}/.ci/agentstation-skills/technical-writing/scripts/technical-writing",
 		"  security-reliability:",
 		"name: Security & Reliability",
 		"  action-pins:",
 		"name: Action Pin Provenance",
 		"run: make verify-action-pins",
-		"name: Test minimum supported Go version",
-		"name: Test minimum supported external consumer",
+		"name: Run complete selected test group",
+		"name: Test pure-Go external consumer",
 		"CGO_ENABLED: 0",
-		`go-version: "` + minimumPatchVersion + `"`,
 		"GOTOOLCHAIN: local",
 		"run: make test-consumer-deps",
-		`go-version: "` + preferredVersion[1] + `"`,
-		"run: make verify",
-		"golangci-lint@v2.12.2",
+		`go-version: "` + minimumVersion[1] + `"`,
+		"run: make verify-checks",
+		"golangci-lint@v2.13.2",
 		"gomarkdoc@v1.1.0",
 		"govulncheck@v1.6.0",
 		"govulncheck ./...",
@@ -112,10 +106,10 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 		`VERIFY_HOME="$TMPDIR/home"`,
 		`GOLANGCI_LINT_CACHE="$TMPDIR/golangci-lint-cache"`,
 		`export GOLANGCI_LINT_CACHE`,
-		`GOLANGCI_LINT_VERSION="2.12.2"`,
+		`GOLANGCI_LINT_VERSION="2.13.2"`,
 		`run make test-pure-go`,
 		`run make test-file-sizes`,
-		`run env CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1`,
+		`run python3 ./scripts/verification_tests.py race`,
 		`cd "$TMPDIR"`,
 		`STARMAP_HOME="$TMPDIR/product"`,
 		`STARMAP_CATALOG_SOURCE=embedded`,
@@ -296,7 +290,7 @@ func TestPinnedArtifactConsumerIsOfflineAndDependencyBounded(t *testing.T) {
 	}
 	for _, check := range []string{
 		`PINNED_ARTIFACT_MODULE=`,
-		`GOTOOLCHAIN="${GOTOOLCHAIN:-go1.26.6}"`,
+		`GOTOOLCHAIN="${GOTOOLCHAIN:-go1.27.1}"`,
 		`export GOTOOLCHAIN`,
 		`PINNED_MAX_NON_STANDARD_PACKAGES=32`,
 		`pinned_banned_pattern=`,
@@ -325,7 +319,7 @@ func TestExternalServerStorageMatrixStaysOptional(t *testing.T) {
 	}
 	for _, check := range []string{
 		`SERVER_STORAGE_MODULE=`,
-		`SERVER_STORAGE_MAX_PACKAGES=350`,
+		`SERVER_STORAGE_MAX_NON_STANDARD_PACKAGES=130`,
 		`go list -deps -test`,
 		`starmap/pkg/catalogs/storage/s3`,
 		`starmap/remote`,
@@ -363,13 +357,14 @@ func TestPureGoAndRaceVerificationHaveSeparateCgoModes(t *testing.T) {
 	if !strings.Contains(verifyScript, "run make test-pure-go") {
 		t.Fatal("repository verification does not run the pure-Go composition gate")
 	}
-	if !strings.Contains(verifyScript, "run env CGO_ENABLED=1 go test ./... -race") {
+	if !strings.Contains(verifyScript, "run python3 ./scripts/verification_tests.py race") ||
+		!strings.Contains(readFixture(t, "../../scripts/verification_tests.py"), `environment["CGO_ENABLED"] = "1"`) {
 		t.Fatal("repository race verification must remain explicitly cgo-enabled")
 	}
 }
 
 func TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces(t *testing.T) {
-	const version = "2.12.2"
+	const version = "2.13.2"
 	fixtures := map[string]string{
 		"Devbox":           "../../devbox.json",
 		"Makefile":         "../../Makefile",

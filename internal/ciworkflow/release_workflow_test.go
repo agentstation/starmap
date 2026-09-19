@@ -1,6 +1,7 @@
 package ciworkflow
 
 import (
+	"encoding/json"
 	"strings"
 	"testing"
 )
@@ -16,9 +17,9 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"group: release-${{ inputs.tag || github.ref_name }}",
 		"permissions:\n  contents: read",
 		"    permissions:\n      attestations: write\n      contents: write\n      discussions: write\n      id-token: write\n      packages: write",
-		`go-version: "1.26.6"`,
+		`go-version: "1.27.1"`,
 		"git merge-base --is-ancestor",
-		"golangci-lint@v2.12.2",
+		"golangci-lint@v2.13.2",
 		"name: Checkout pinned technical-writing skill",
 		"repository: agentstation/skills",
 		"ref: dc9948f59089426c7dd077e41469104ec788cf7f",
@@ -131,7 +132,13 @@ func TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets(t *testing.T) {
 	if got := strings.Count(config, "CGO_ENABLED=0"); got != 2 {
 		t.Errorf("GoReleaser cgo-disabled build declarations = %d, want 2", got)
 	}
-	if !strings.Contains(devbox, `"goreleaser@2.17.0"`) {
+	var environment struct {
+		Packages map[string]json.RawMessage `json:"packages"`
+	}
+	if err := json.Unmarshal([]byte(devbox), &environment); err != nil {
+		t.Fatal(err)
+	}
+	if string(environment.Packages["goreleaser"]) != `"2.17.0"` {
 		t.Error("developer environment does not pin the hosted GoReleaser version")
 	}
 }

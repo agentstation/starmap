@@ -1,27 +1,32 @@
 {
-  "packages": [
-    "go@1.26.5",
-    "gomarkdoc@1.1.0",
-    "golangci-lint@2.12.2",
-    "goreleaser@2.17.0",
-    "path:./devbox/swag#swag"
-  ],
+  "packages": {
+    "github:NixOS/nixpkgs/c7def046b9a883d46974757852106483d741586f#go_1_27": "",
+    "gomarkdoc":                                                             "1.1.0",
+    "goreleaser":                                                            "2.17.0",
+    "path:./devbox/swag#swag":                                               "",
+    "github:NixOS/nixpkgs/c7def046b9a883d46974757852106483d741586f#apple-sdk_15": {
+      "platforms": ["aarch64-darwin", "x86_64-darwin"]
+    }
+  },
   "shell": {
     "init_hook": [
       "PS1=\"$(echo -e \"\\033[1;34m%~\\033[0m \\n\\033[0;32m%n@devbox\\033[0m ➜ \")\"",
       "echo '📦 Starmap development environment loaded'",
-      "echo 'Tools available: go, gomarkdoc, swag (v2 via flake), golangci-lint'"
+      "echo 'Tools available: go, gomarkdoc, swag (v2 via flake). Use make lint for the pinned linter.'"
     ],
     "scripts": {
-      "vet": "go vet ./...",
-      "lint": "golangci-lint run",
-      "lint-fix": "golangci-lint run --fix",
-      "check": "go vet ./... && golangci-lint run && go test ./...",
-      "fix": "gofmt -w . && goimports -w -local github.com/agentstation/starmap . && golangci-lint run --fix && go mod tidy",
-      "docs": "make generate",
-      "test": "go test ./...",
+      "vet":       "go vet ./...",
+      "lint":      "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run",
+      "lint-fix":  "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run --fix",
+      "check":     "go vet ./... && go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run && go test ./...",
+      "fix":       "gofmt -w . && goimports -w -local github.com/agentstation/starmap . && go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run --fix && go mod tidy",
+      "docs":      "make generate",
+      "test":      "go test ./...",
       "test-race": "go test -race ./...",
-      "build": "make build"
+      "build":     "make build"
     }
+  },
+  "env": {
+    "GOTOOLCHAIN": "go1.27.1"
   }
 }

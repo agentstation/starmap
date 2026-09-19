@@ -24,7 +24,7 @@ func TestArtifactImportRetainsOriginalMembershipEvidence(t *testing.T) {
 				t.Fatal(err)
 			}
 			if _, err := client.Update(t.Context(), func(context.Context, *catalogs.Catalog) (*starmap.Candidate, error) {
-				return starmap.NewCandidate(baseline, starmap.CandidateEvidence{})
+				return starmap.NewCandidate(baseline, fixtureCatalogEvidence(t, baseline))
 			}); err != nil {
 				t.Fatal(err)
 			}

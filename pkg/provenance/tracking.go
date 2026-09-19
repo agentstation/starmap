@@ -520,10 +520,10 @@ func Load(path string) (*File, error) {
 		return nil, errors.WrapIO("read", path, err)
 	}
 
-	var pf File
-	if err := yaml.Unmarshal(data, &pf); err != nil {
+	pf, err := DecodeYAML(data)
+	if err != nil {
 		return nil, errors.WrapParse("yaml", path, err)
 	}
 
-	return &pf, nil
+	return pf, nil
 }

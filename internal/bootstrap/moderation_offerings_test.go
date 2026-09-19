@@ -17,13 +17,9 @@ import (
 // An operation the type system names and the data never carries is an
 // operation no consumer can exercise.
 func TestShippedModerationOfferingsServeModerationsAlone(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Embedded: %v", err)
 	}
 
 	shipped := 0

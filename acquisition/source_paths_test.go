@@ -2,16 +2,18 @@ package acquisition
 
 import (
 	"bytes"
+	"encoding/json"
 	stderrors "errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/internal/embedded"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
@@ -37,10 +39,8 @@ func (transport *sourcePathTransport) RoundTrip(request *http.Request) (*http.Re
 func TestSyncUsesHostSourceDirectoriesAndExplicitOverride(t *testing.T) {
 	home := t.TempDir()
 	t.Setenv("HOME", home)
-	payload, err := embedded.FS.ReadFile("sources/models.dev/api.json")
-	if err != nil {
-		t.Fatal(err)
-	}
+	// Keep the source's promotion floors: five providers, 100 models, and 100KB.
+	payload := sourcePathAPIFixture(t)
 	transport := &sourcePathTransport{testing: t, payload: payload}
 	previous := http.DefaultTransport
 	http.DefaultTransport = transport
@@ -78,6 +78,10 @@ func TestSyncUsesHostSourceDirectoriesAndExplicitOverride(t *testing.T) {
 					t.Fatal("source wrote outside selected directory", err)
 				}
 			}
+			cached, err := os.ReadFile(filepath.Join(selected, "models.dev", "api.json"))
+			if err != nil || !bytes.Equal(cached, payload) {
+				t.Fatalf("selected cache did not retain the observed payload: %v", err)
+			}
 			if explicit {
 				if _, err := os.Stat(directories.Cache); !os.IsNotExist(err) {
 					t.Fatal("explicit source selection also created default cache")
@@ -91,6 +95,24 @@ func TestSyncUsesHostSourceDirectoriesAndExplicitOverride(t *testing.T) {
 	if _, err := os.Stat(filepath.Join(home, ".starmap")); !os.IsNotExist(err) {
 		t.Fatal("source touched legacy product root")
 	}
+}
+
+func sourcePathAPIFixture(t *testing.T) []byte {
+	t.Helper()
+	api := make(map[string]any)
+	for _, provider := range []string{"openai", "anthropic", "google", "deepseek", "cerebras"} {
+		models := make(map[string]any)
+		for index := range 20 {
+			id := fmt.Sprintf("source-path-%d", index)
+			models[id] = map[string]any{"id": id, "name": id, "description": strings.Repeat("source path fixture ", 60)}
+		}
+		api[provider] = map[string]any{"id": provider, "name": provider, "models": models}
+	}
+	data, err := json.Marshal(api)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return data
 }
 
 func TestWorkspaceProjectionUsesSelectedCheckoutLogos(t *testing.T) {

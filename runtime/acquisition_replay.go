@@ -46,7 +46,7 @@ func replayAcquisition(ctx context.Context, baseline catalogs.Generation, publis
 	}
 	layers := layerSet{publisherID: publisherID, providerBindings: config.providerBindings,
 		embedded: starmap.CatalogState{Catalog: catalog, GenerationID: baseline.Manifest.GenerationID, PayloadChecksum: baseline.Manifest.Payload.Checksum, GeneratedAt: baseline.Manifest.GeneratedAt},
-		source:   &sourceLayer{Manifest: &baseline.Manifest, GenerationID: baseline.Manifest.GenerationID, Checksum: baseline.Manifest.Payload.Checksum, Payload: baseline.Payload, PublishedAt: baseline.Manifest.GeneratedAt},
+		source:   &sourceLayer{Identity: string(sources.LocalCatalogID), Manifest: &baseline.Manifest, GenerationID: baseline.Manifest.GenerationID, Checksum: baseline.Manifest.Payload.Checksum, Payload: baseline.Payload, PublishedAt: baseline.Manifest.GeneratedAt},
 	}
 	bytes := 0
 	seen := make(map[string]bool, len(observations))

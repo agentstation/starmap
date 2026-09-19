@@ -198,6 +198,7 @@ func (a *App) registerCommands(rootCmd *cobra.Command) {
 	rootCmd.AddCommand(a.NewAuthCommand())
 	rootCmd.AddCommand(a.NewMigrateCommand())
 	rootCmd.AddCommand(a.NewConfigCommand())
+	rootCmd.AddCommand(a.NewAdminCommand())
 
 	// Catalog commands (working with models/providers)
 	rootCmd.AddCommand(a.NewProvidersCommand())

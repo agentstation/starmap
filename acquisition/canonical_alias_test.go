@@ -77,11 +77,7 @@ func testCanonicalAliasProviderAcquisition(t *testing.T, useWorkspace bool) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := publisher.Update(t.Context(), func(context.Context, *catalogs.Catalog) (*starmap.Candidate, error) {
-		return starmap.NewCandidate(catalog, starmap.CandidateEvidence{})
-	}); err != nil {
-		t.Fatal(err)
-	}
+	activateFixtureBaseline(t, publisher, catalog)
 	generation, err := publisher.CurrentGeneration(t.Context())
 	if err != nil {
 		t.Fatal(err)

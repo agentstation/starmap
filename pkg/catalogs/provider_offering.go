@@ -132,6 +132,7 @@ type ProviderOffering struct {
 	ProviderID      ProviderID                          `json:"provider_id" yaml:"provider_id"`
 	ProviderModelID ProviderModelID                     `json:"provider_model_id" yaml:"provider_model_id"`
 	DefinitionID    ModelDefinitionID                   `json:"definition_id" yaml:"definition_id"`
+	Billing         *ModelBilling                       `json:"billing,omitempty" yaml:"billing,omitempty"`
 	Pricing         *ModelPricing                       `json:"pricing,omitempty" yaml:"pricing,omitempty"`
 	Limits          *ModelLimits                        `json:"limits,omitempty" yaml:"limits,omitempty"`
 	Availability    OfferingAvailability                `json:"availability" yaml:"availability"`
@@ -166,6 +167,9 @@ func (o ProviderOffering) Endpoint(operation ProviderOperation) (ProviderOfferin
 
 // Validate verifies required identity and provider-specific fields.
 func (o ProviderOffering) Validate() error {
+	if err := o.Billing.Validate(); err != nil {
+		return err
+	}
 	for _, required := range []struct {
 		field string
 		value string
@@ -302,6 +306,7 @@ func offeringValidationError(field string, value any, message string) error {
 
 func copyProviderOffering(offering ProviderOffering) ProviderOffering {
 	copyOffering := offering
+	copyOffering.Billing = deepCopyModelBilling(offering.Billing)
 	copyOffering.Pricing = deepCopyModelPricing(offering.Pricing)
 	if offering.Limits != nil {
 		limits := *offering.Limits
