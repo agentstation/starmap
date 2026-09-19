@@ -1,6 +1,6 @@
 {
-  "captured_at": "2026-09-19T01:29:32.278653+00:00",
-  "status": "workflow contract tests repaired locally; full checks active",
+  "captured_at": "2026-09-19T02:30:31.474075+00:00",
+  "status": "reviewed and published; final-head CI pending",
   "owner": "CSP6",
   "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
   "branch": "codex/acquisition-coalescing-fixture",
@@ -59,7 +59,7 @@
       "files": 1836,
       "diagnostics": 0
     },
-    "repository_checks_proof": "race-duration-checks.log.gz",
+    "repository_checks_proof": "ciworkflow-final-checks.log.gz",
     "runtime_shard_2": {
       "status": "failed",
       "package_seconds": 1191.402,
@@ -134,11 +134,10 @@
     }
   },
   "live_sessions": {
-    "71664": "gh run watch 35414164079 --interval 60 --exit-status; /tmp/csp6-170-watch.log",
-    "65621": "full make verify-checks after workflow contract repair, /tmp/csp6-ciworkflow-final-checks.log"
+    "87833": "gh run watch 35415804632; /tmp/csp6-170-final-watch.log"
   },
-  "next_action": "Observe full local checks in session 65621 and existing CI in session 71664. Seven source files hold the uncommitted workflow contract repair. Verify, commit, and repeat required autoreview before updating existing PR #170. Qualify its replacement head and merge before resuming #168.",
-  "source_commit": "336df28b611e62d058ff17029ffd274bc520fe84",
+  "next_action": "Qualify PR #170 head 67dba0ea5 in run 35415804632. Merge exact reviewed head after required and native checks pass. Record merge before resuming checked publisher #168.",
+  "source_commit": "67dba0ea554719c2329b637a1eb812c1a440e141",
   "native_intel_failure": {
     "run": 35409735768,
     "job": 105806772484,
@@ -150,21 +149,21 @@
   },
   "review": {
     "status": "pass",
-    "head": "336df28b611e62d058ff17029ffd274bc520fe84",
+    "head": "67dba0ea554719c2329b637a1eb812c1a440e141",
     "reviewers": [
       "codex:gpt-5.6-sol:xhigh",
       "claude:opus:high"
     ],
     "findings": 0,
-    "proof": "race-duration-final-review.json"
+    "proof": "ciworkflow-final-review.json"
   },
   "pull_request": {
     "number": 170,
     "url": "https://github.com/agentstation/starmap/pull/170",
-    "head": "336df28b611e62d058ff17029ffd274bc520fe84",
+    "head": "67dba0ea554719c2329b637a1eb812c1a440e141",
     "base": "b6ce2243cc606b72175a53d9af5ea79f950ba416",
     "draft": true,
-    "run": 35414164079,
+    "run": 35415804632,
     "review_threads": 0
   }
 }

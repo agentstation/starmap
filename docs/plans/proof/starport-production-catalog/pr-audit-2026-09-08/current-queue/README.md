@@ -1,14 +1,19 @@
 ## Current disposition: verification repair #170
 
-PR #170 contains reviewed head `336df28b611e62d058ff17029ffd274bc520fe84` on base `b6ce2243c`.
-Sol and Opus report zero findings. Required local checks pass.
-CSP6 owns final-head CI run `35414164079`. Local candidate groups one and three pass.
+PR #170 contains reviewed head `67dba0ea554719c2329b637a1eb812c1a440e141` on base `b6ce2243c`.
+Sol and Opus report zero findings. Full local checks and all 55 workflow contract tests pass.
+The repair updates obsolete CI assertions and runs workflow contracts once in the early checks job.
 
-Watch session `71664` follows CI. Group two retains fail-before evidence for the repaired migration guard.
-
+CSP6 owns final-head CI run `35415804632`, watched by session `87833`.
 Qualify all required and native checks, mark the draft ready, and merge the exact reviewed head.
-Then resume the checked publisher for existing catalog PR #168. Preserve rejected candidate #165 until replacement qualification.
-The [repair capture](repair-170.json) records the PR head and checks. PR #170 has no review threads.
+Then resume the checked publisher for catalog PR #168.
+
+PR #165 has a merge conflict. Preserve this rejected candidate until replacement qualification proves that no required work is lost.
+PR #168 retains failed qualification. The checked publisher must incorporate #170 before its next qualification.
+All three PRs have zero review threads. Starport has no open PRs.
+
+The [queue capture](queue-latest.json) records current heads, bases, and checks.
+No PR qualifies for merge at this checkpoint. Earlier sections preserve historical dispositions.
 
 ## Current disposition: September 19 race failures
 
