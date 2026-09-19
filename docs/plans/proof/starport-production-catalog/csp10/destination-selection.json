@@ -1,0 +1,85 @@
+{
+  "task": "CSP10",
+  "status": "partial; application approval composition remains incomplete",
+  "starport_commit": "52b432878c45627e1e45bc881aa6b99f95b509e1",
+  "starmap_commit": "9845e6cf9ea3a239c90214e1eb937889ca72b129",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "changes": [
+    "DestinationApprovals selects an immutable grant by provider, keyring role, actual source handle, profile, and operation. Duplicate credential/profile grants fail construction.",
+    "Router credential selection uses an explicitly supplied approval set. Missing or revoked approval prevents connector invocation. The declared source strategy can fall back to another approved credential role.",
+    "An explicit nil approval option means deny all. Material carries its grant binding by value. Approval selection has a zero-allocation guard."
+  ],
+  "checks": [
+    {
+      "command": "go test -race -count=1 -timeout 3m -json ./internal/router ./internal/credentials ./internal/providers/auth ./internal/providers/connectors",
+      "exit_code": 0,
+      "pass_events": 561,
+      "skip_events": 1,
+      "skip": "TestProviderCredentialRepositoryContract/valkey",
+      "output": "destination-selection/affected.jsonl.gz"
+    },
+    {
+      "command": "go test -race -count=3 -timeout 2m -json ./internal/router -run 'TestRouter.*Approvals|TestRouterFallsBackToApprovedCredentialRole'",
+      "exit_code": 0,
+      "pass_events": 9,
+      "output": "destination-selection/repeated.jsonl.gz"
+    },
+    {
+      "command": "go vet ./internal/router ./internal/credentials ./internal/providers/auth ./internal/providers/connectors",
+      "exit_code": 0
+    },
+    {
+      "command": "make lint",
+      "exit_code": 0,
+      "output": "destination-selection/lint.log.gz"
+    },
+    {
+      "command": "technical-writing lint internal/credentials/destination_approvals.go --format text",
+      "exit_code": 0
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "diagnostics": 67,
+      "output": "destination-selection/writing-check.json",
+      "limitation": "Historical diagnostics remain. The initial run had one additional paragraph diagnostic, now fixed. Targeted plan and new source checks pass."
+    }
+  ],
+  "ownership_correction": {
+    "decision": "Approval configuration must use the selected deployment configuration authority, not a new independent KV or filesystem authority.",
+    "evidence": [
+      "ENGINEERING_SPEC.md section 7.5",
+      "plan tasks CSP16, CSP16.1, CSP17"
+    ],
+    "CSP10": "Implement approval representation, pinned-installation compilation, route and dispatch enforcement, and local configuration composition. Do not generate permission from refreshed catalog facts.",
+    "CSP16": "Place approval settings in the selected local or shared configuration revision.",
+    "CSP16.1": "Apply revision checks, audit, authorization, and activation to approval changes.",
+    "CSP17": "Preview destinations and explain pending approval in operator setup."
+  },
+  "pending_owner_question": "Should deployment administrators approve destination and placement changes, while account owners use approved destinations for BYOK? Recommended boundary; no owner answer yet.",
+  "limitations": [
+    "Application composition does not supply an approval set yet. Omitting the router option and passing unbound material retain prior behavior.",
+    "Pinned installation compilation, local configuration loading, and removal of unbound authentication remain incomplete.",
+    "Router tests prove role selection and connector admission with a deterministic connector. Prior dispatch proof separately covers real HTTP/1 and HTTP/2 egress. No whole-product A25 claim.",
+    "No A25 registration, full task acceptance, structured review, native qualification, publication, or merge."
+  ],
+  "next_action": "Add configuration-owned approval representation and a pinned-installation compiler. Supply the resulting set at application startup. Cover dynamic model and asynchronous job targets without approving arbitrary destinations. Remove unbound authentication once every caller supplies an explicit grant.",
+  "compiler_review_notes": [
+    {
+      "source": "starmap/pkg/catalogs/provider.go:221",
+      "finding": "ProviderInferenceEndpoint owns Path, StreamPath, and author-specific variants. Derive permission from the pinned contracts rather than authoring a second provider roster."
+    },
+    {
+      "source": "starmap/pkg/catalogs/offering_views.go:109",
+      "finding": "Offering projection substitutes provider_model_id into endpoint URLs. Approval compilation must handle dynamic model paths while refusing origin, query, fragment, and traversal changes."
+    },
+    {
+      "source": "starport/internal/providers/connectors/openai_jobs.go",
+      "finding": "Job submission uses the collection endpoint. Poll, cancellation, and asset fetch derive job-specific targets. Include their methods and path rules in approval coverage."
+    },
+    {
+      "source": "starport/internal/config/provider_environment.go:112",
+      "finding": "Current provider resolution receives the current catalog provider. Do not use that refreshed contract as the source of approval. Keep pinned contract and explicit parameter selection separate."
+    }
+  ]
+}

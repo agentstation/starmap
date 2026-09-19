@@ -1,0 +1,3 @@
+{
+  "html": "<tr><td>2026-09-19</td><td>CSP10</td><td>Qualify HTTP aliases with the serialized cache.</td><td><a href=\"proof/starport-production-catalog/csp10/http-alias-transition.json\">Proof</a>: <code>9cc73fa</code>. Final checks pass 495 race events with one optional skip. The <a href=\"proof/starport-production-catalog/csp10/http-alias-transition/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}
