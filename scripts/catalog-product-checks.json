@@ -2648,6 +2648,225 @@
           "test": "TestInferenceCredentialsNeverEnterCatalogState"
         }
       ]
+    },
+    "A45.warm_no_derivation_or_io": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialWarmRequestsDoNotReadRepository"
+        }
+      ]
+    },
+    "A45.revision_owner_identity": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialOwnerAndEncryptionManagerIsolation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialStorageRotationRevocationAndRecreation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialExpiryAndContractChangeRequireReload"
+        }
+      ]
+    },
+    "A45.shared_grant_recheck": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialRefreshRejectsExternalGrantWithdrawal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialStorageRotationRevocationAndRecreation"
+        }
+      ]
+    },
+    "A45.rotation_expiry_revocation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialStorageRotationRevocationAndRecreation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialMutationRevokesPreviouslyReturnedHandles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchRejectsMaterialRevokedWhileWaitingForConnection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchRejectsMaterialExpiredWhileWaitingForConnection"
+        }
+      ]
+    },
+    "A45.revoked_refresh_fencing": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialInvalidationFencesInflightLoad"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialRefreshCannotRestoreInvalidatedEntry"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialLateSuccessCannotEscapeDeadline"
+        }
+      ]
+    },
+    "A45.cold_load_coalescing": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialColdLoadCoalescesSuccessAndFailure"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialCallerCancellationDoesNotCancelSharedLoad"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialTenantLoadLimitDoesNotBlockAnotherTenant"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialLoadDeadlineReleasesCapacity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialShutdownJoinsActiveLoad"
+        }
+      ]
+    },
+    "A45.outage_validity": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialOutageCannotExtendValidity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialValkeyOutageAndRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback"
+        }
+      ]
+    },
+    "A45.resident_secret_bounds": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialEntryLimitAndExpiryEviction"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialSecretByteLimitAndReclamation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialIdleEvictionRevokesOldHandles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialRefreshServesOldestScopesWithoutStarvation"
+        }
+      ]
+    },
+    "A45.encryption_and_disclosure": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialCachePreservesCiphertextAndRedaction"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestEncryptionServiceSecurityProperties"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestEncryptionService_InvalidDecryption"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestEncryptionService_DifferentKeys"
+        }
+      ]
     }
   },
   "task_component_checks": {
