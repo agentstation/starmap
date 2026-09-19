@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-19",
+  "starport_commit": "e0d17c9",
+  "registry_commit": "cf96ae788",
+  "case": "A46.fleet_receipt_vs_enforcement",
+  "status": "PASS",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "workspace": "/tmp/csp102-host-integration.work",
+  "test_events": {
+    "pass": 3,
+    "fail": 0,
+    "skip": 0
+  },
+  "behavior": "A separate reader process retains permission after a durable KV or SQL mutation while its monitor is stopped. Revision polling then withdraws the retained permit.",
+  "negative_control": {
+    "change": "Disable Monitor.Start in the child test process. Restore after the control run.",
+    "exit_code": 1,
+    "result": "Both KV and SQL cases exceed the two-second enforcement bound and fail."
+  },
+  "initial_fixture_failures": [
+    "API key fixture omitted its required name.",
+    "API key name contained an unsupported space.",
+    "API key fixture omitted required scopes."
+  ],
+  "checks": {
+    "lint": "PASS: 0 issues",
+    "technical_writing": "PASS: 2 files, 0 diagnostics",
+    "registry_validation": "PASS",
+    "diff_check": "PASS"
+  },
+  "cleanup": "Disposable Valkey and PostgreSQL services stopped and removed. Test scopes and schemas clean themselves up.",
+  "limitations": [
+    "This is real storage with separate processes on one macOS host. It does not qualify all native platforms.",
+    "The timing measurement starts when a paused monitor resumes. It does not qualify loaded-fleet steady-state propagation or an actual network partition.",
+    "Native timing and capacity remain unverified. No full A46 aggregate, review, publication, or merge is claimed."
+  ],
+  "result": {
+    "status": "PASS",
+    "reason": "The named behavior test passed in this invocation.",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout",
+      "5m",
+      "-json",
+      "-run",
+      "^TestFleetDurableReceiptPrecedesReplicaEnforcement$",
+      "./internal/authorization"
+    ],
+    "cwd": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+    "exit_code": 0,
+    "stdout": "{\"Time\":\"2026-09-19T18:46:29.125732-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/authorization\"}\n{\"Time\":\"2026-09-19T18:46:29.473884-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement\"}\n{\"Time\":\"2026-09-19T18:46:29.473944-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement\",\"Output\":\"=== RUN   TestFleetDurableReceiptPrecedesReplicaEnforcement\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:46:29.473984-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/kv\"}\n{\"Time\":\"2026-09-19T18:46:29.473986-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/kv\",\"Output\":\"=== RUN   TestFleetDurableReceiptPrecedesReplicaEnforcement/kv\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:46:29.497634-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/kv\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"db\\\":0,\\\"cluster\\\":false,\\\"time\\\":\\\"2026-09-19T18:46:29-05:00\\\",\\\"message\\\":\\\"connected to valkey\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:46:29.614057-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/kv\",\"Output\":\"    fleet_test.go:94: kv withdrawal observed by separate process after 11.224542ms\\n\"}\n{\"Time\":\"2026-09-19T18:46:30.62004-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/kv\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"time\\\":\\\"2026-09-19T18:46:30-05:00\\\",\\\"message\\\":\\\"closed valkey pubsub client\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:46:30.629616-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/kv\",\"Output\":\"--- PASS: TestFleetDurableReceiptPrecedesReplicaEnforcement/kv (1.16s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:46:30.62965-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/kv\",\"Elapsed\":1.16}\n{\"Time\":\"2026-09-19T18:46:30.629682-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/sql\"}\n{\"Time\":\"2026-09-19T18:46:30.629702-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/sql\",\"Output\":\"=== RUN   TestFleetDurableReceiptPrecedesReplicaEnforcement/sql\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:46:30.647185-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/sql\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"db\\\":0,\\\"cluster\\\":false,\\\"time\\\":\\\"2026-09-19T18:46:30-05:00\\\",\\\"message\\\":\\\"connected to valkey\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:46:30.788393-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/sql\",\"Output\":\"    fleet_test.go:94: sql withdrawal observed by separate process after 12.956584ms\\n\"}\n{\"Time\":\"2026-09-19T18:46:31.796882-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/sql\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"time\\\":\\\"2026-09-19T18:46:31-05:00\\\",\\\"message\\\":\\\"closed valkey pubsub client\\\"}\\n\"}\n{\"Time\":\"2026-09-19T18:46:31.806272-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/sql\",\"Output\":\"--- PASS: TestFleetDurableReceiptPrecedesReplicaEnforcement/sql (1.18s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:46:31.806292-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement/sql\",\"Elapsed\":1.18}\n{\"Time\":\"2026-09-19T18:46:31.806305-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement\",\"Output\":\"--- PASS: TestFleetDurableReceiptPrecedesReplicaEnforcement (2.33s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:46:31.806307-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Test\":\"TestFleetDurableReceiptPrecedesReplicaEnforcement\",\"Elapsed\":2.33}\n{\"Time\":\"2026-09-19T18:46:31.806311-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T18:46:32.81505-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/authorization\\t3.689s\\n\"}\n{\"Time\":\"2026-09-19T18:46:32.815104-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/authorization\",\"Elapsed\":3.689}\n",
+    "stderr": ""
+  },
+  "events": [
+    {
+      "Time": "2026-09-19T18:46:29.614057-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starport/internal/authorization",
+      "Test": "TestFleetDurableReceiptPrecedesReplicaEnforcement/kv",
+      "Output": "    fleet_test.go:94: kv withdrawal observed by separate process after 11.224542ms\n"
+    },
+    {
+      "Time": "2026-09-19T18:46:30.62965-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/authorization",
+      "Test": "TestFleetDurableReceiptPrecedesReplicaEnforcement/kv",
+      "Elapsed": 1.16
+    },
+    {
+      "Time": "2026-09-19T18:46:30.788393-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starport/internal/authorization",
+      "Test": "TestFleetDurableReceiptPrecedesReplicaEnforcement/sql",
+      "Output": "    fleet_test.go:94: sql withdrawal observed by separate process after 12.956584ms\n"
+    },
+    {
+      "Time": "2026-09-19T18:46:31.806292-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/authorization",
+      "Test": "TestFleetDurableReceiptPrecedesReplicaEnforcement/sql",
+      "Elapsed": 1.18
+    },
+    {
+      "Time": "2026-09-19T18:46:31.806307-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/authorization",
+      "Test": "TestFleetDurableReceiptPrecedesReplicaEnforcement",
+      "Elapsed": 2.33
+    },
+    {
+      "Time": "2026-09-19T18:46:32.815104-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/authorization",
+      "Elapsed": 3.689
+    }
+  ],
+  "prior_resume_html": "<p>CSP10.2 preparation uses <code>starport-authorization-memory</code>, branch <code>codex/starport-authorization-memory</code>, at <code>0ece649</code>. Use <code>GOWORK=/tmp/csp102-host-integration.work</code>. Both Starmap verifier roots remain <code>starmap-advisory-exchange</code> at <code>fb9b03690</code>. Set both Starport verifier roots to the authorization worktree.</p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/record-bounds.json\">record-bound proof</a> records 64 KiB policy limits and source-read bounds. The affected package race run passes 884 events. Final controller and SQL checks pass. Real Valkey/PostgreSQL checks pass. All implementation changes remain local and unmerged.</p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/operation-clocks.json\">clock proof</a> records D38: gateway authorization has a 60-second maximum and a two-second normal propagation target. The <a href=\"proof/starport-production-catalog/csp10.2/diagnostic-recovery.json\">recovery proof</a> covers verified local-operator diagnostics and fixed polling cadence. Catalog authority retains its independent clock contract.</p>\n\n<p>Acceptance maps now assign budget-window time to the admission authority. Starmap commit <code>7b04f6591</code> updates D38 and source-bound criteria. Both rosters validate with 50 primary cases and 329 check identities. Native and fleet timing evidence remains open.</p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/request-acceptance.json\">request acceptance proof</a> records Starmap commit <code>a6b29948b</code>. Six A46 subcases pass with 81 test events and no skips. The verifier suite passes 89 tests. Four subcases lacked registered checks in that invocation, so its aggregate gate failed.</p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/dependency-acceptance.json\">dependency proof</a> adds 28 passing test events. Starport commit <code>eeb7d41</code> tests warm authorization through HTTP discovery restriction and restoration. Its negative control exposes 596 withdrawn models when the test omits the mutation fence. Registry commit <code>fb9b03690</code> records the seventh passing A46 case.</p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/elapsed-permission.json\">elapsed permission proof</a> records <code>11113c4</code>. Cached permits now expire against a native counter that includes sleep. Integration checks pass 483 test events with four skips. Application checks pass seven events. Final authorization checks pass 91 events with one service-dependent skip. Native suspend qualification remains open.</p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/elapsed-real-storage.json\">paired-storage proof</a> records <code>0ece649</code>. Authorization sources now exercise PostgreSQL when configured. The paired run passes 20 test events without skips. The separate SQLite source run passes four events. Both disposable services stopped.</p>\n\n<p>Request caching, queued reauthorization, identity account selection, and CORS integration have local evidence in the archived resume record. CSP17 owns the console account picker. Native timing, fleet enforcement, and capacity measurements remain open. No verification sessions remain active.</p>\n\n"
+}
