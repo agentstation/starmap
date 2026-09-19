@@ -3014,6 +3014,12 @@
           "repository": "starport",
           "package": "./internal/server/controllers",
           "test": "TestDiscoveryPolicyIntersectsAccountAndKey"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestEndpointLookupDoesNotRevealDeniedMembership"
         }
       ]
     }
