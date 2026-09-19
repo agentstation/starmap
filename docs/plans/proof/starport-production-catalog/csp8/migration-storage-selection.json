@@ -1,0 +1,51 @@
+{
+  "starport_head": "35faefae44a4ad44d1cdb5202d791f858b1c8c5e",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "scope": "Migration backend binding, saved selection, and generation retention across history truncation.",
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/catalog ./internal/config -run '^Test(MigrationStoreBinding|SavedRuntimeMigrationSelection)$'",
+      "result": "PASS",
+      "top_level_tests": 2,
+      "subtests": 9,
+      "package_seconds": {
+        "catalog": 1.935,
+        "config": 2.107
+      }
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/config ./internal/app -run '^Test(MigrationStorageSelection|SavedMigrationStorageSelection|SavedRuntimeMigrationSelection|RuntimeMigrationOperatorLifecycle)$'",
+      "result": "PASS",
+      "top_level_tests": 4,
+      "subtests": 17,
+      "package_seconds": {
+        "config": 1.66,
+        "app": 79.681
+      }
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/catalog -run '^TestMigrationBindingRetainsGenerationBeyondHistoryWindow$'",
+      "result": "PASS",
+      "top_level_tests": 1,
+      "seconds": 1.782
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go vet ./internal/config ./internal/catalog ./internal/app",
+      "result": "PASS"
+    }
+  ],
+  "coverage": [
+    "Operation receipt binds a credential-free digest of the selected KV backend.",
+    "Changed path or endpoint refuses retry even with original logical KV identity.",
+    "Password rotation and redis/valkey scheme aliases preserve selection.",
+    "Completion requires the saved KV selection to match effective configuration.",
+    "Real Badger lifecycle retains accepted generation and scheduler identity.",
+    "Original generation survives 33 later commits, truncation of the 32-entry index, and a database restart."
+  ],
+  "limits": [
+    "Temporary workspace qualification does not qualify the published dependency.",
+    "Current generation storage has no generation-deletion path. This test does not qualify a future garbage collector.",
+    "Native interrupted-process tests and explicit journal inventory remain open."
+  ],
+  "completion_credit": false
+}
