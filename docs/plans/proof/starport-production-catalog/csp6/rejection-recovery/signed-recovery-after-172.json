@@ -1,0 +1,15 @@
+{
+  "commit": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+  "parents": [
+    "1762607ef3e4e3ec44e9205c536362cf686aef4c",
+    "9ff84a481c3693a22f27004316e4340a49689afd"
+  ],
+  "catalog_tree": "35912dad42dbc6b6a7e028b7617e5831adf48163",
+  "catalog_bytes_unchanged": true,
+  "verified_signature": true,
+  "retained_history_verified": true,
+  "branch_updated": false,
+  "replaces_head": "e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+  "pr": 168,
+  "authorization": "Pending owner authorization for published-history rewrite."
+}

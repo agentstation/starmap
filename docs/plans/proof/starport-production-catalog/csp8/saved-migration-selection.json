@@ -1,0 +1,26 @@
+{
+  "starport_head": "dcd0b50a906450c67fca73513bb753c2ea3305ab",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/config -run '^Test(Loader|PathOrigins|CatalogFileOrigin|FileManifest|SavedRuntimeMigrationSelection)'",
+  "result": "PASS",
+  "top_level_tests": 33,
+  "duration_seconds": 18.977,
+  "new_subtests": 7,
+  "vet": "PASS: GOWORK=/tmp/csp8-host-integration.work go vet ./internal/config",
+  "scope": "Saved runtime selection guard, not the complete operator migration workflow.",
+  "coverage": [
+    "Primary configuration file bytes match those read by the loader.",
+    "The primary file saves the absolute runtime target and STARPORT_SCHEDULER_IDENTITY.",
+    "Saved deployment and instance match effective ownership.",
+    "Changed or deleted files fail.",
+    "Environment-only and dotenv-only selectors fail.",
+    "Selection checks create no runtime directory."
+  ],
+  "remaining": [
+    "Wire verification before and after migration completion.",
+    "Host journal binds operation and original KV selector.",
+    "Native interrupted-process qualification.",
+    "Published dependency qualification, review, CI, and merge."
+  ],
+  "completion_credit": false
+}

@@ -1,33 +1,20 @@
-## Current disposition: catalog qualification and host API review
+## Current disposition: signed publisher repair merged
 
-CSP6 owns Starmap #168 at `e1d72d5d7e5f2921616b89b91b6460fefaffb62d`, based on merged repair `8595d5a0c`.
-All 380 candidate files retain their original bytes. All 31 checks now pass.
-Publisher run `35420322946` failed at protected merge. All three bot commits lack verified signatures.
+CSP6 owns Starmap #172, merged at `9ff84a481c3693a22f27004316e4340a49689afd`.
+All 31 checks passed. The protected merge retains the reviewed tree and verified signature.
+The [merge proof](../../csp6/rejection-recovery/repair-172-merged.json) records the exact head and checks.
 
-CSP6 owns reviewed repair PR #172 at `077c6e389`, branch `codex/catalog-signed-promotion`.
-All 26 publisher tests and full checks pass. Both reviewers report zero findings.
+Starmap #168 remains at `e1d72d5d7e5f2921616b89b91b6460fefaffb62d` with unsigned bot history.
+Signed candidate `45afaed5d2ea6fb3993a4abeb120657d252e9a41` includes the actual #172 merge.
+All catalog bytes remain unchanged. The owner answer for published-history rewrite remains pending.
+After authorization, update its existing branch with an expected-head lease and requalify CI.
 
-Native CI run `35421087212` remains unqualified. The API rate limit ended watch session `5656`.
-Observation resumed at `2026-09-19T04:57:00Z`. Both Windows runtime jobs remain active.
-All completed jobs passed. Do not restart the CI run.
+CSP8 owns reviewed Starmap #171 at `11366a55629f21300b79bd15a4fa62c3fc00eba1`.
+Its prior 31 checks passed. Hold it until CSP6 publication and capture finish, then update and qualify against main.
+Starport has no open PRs. Local preparation is at `dcd0b50` in `starport-product-paths`.
 
-The [repair proof](../../csp6/rejection-recovery/signed-promotion-repair.json) records the verified live App signing probe.
-
-Merge #172 after native qualification. Signed candidate `1762607ef` preserves the exact #168 catalog tree.
-Await owner authorization before rewriting published history. Incorporate the actual #172 merge before an authorized update.
-
-Preserve signature protection. Qualify the repaired publisher before both catalog channels and the original preparation retry.
-The [qualification proof](../../csp6/rejection-recovery/promotion-168-qualified.json) records all native platforms and protected checks.
-
-CSP8 owns draft Starmap #171 at `11366a55629f21300b79bd15a4fa62c3fc00eba1` on base `8595d5a0c`.
-The Windows import-cycle repair passes full local checks and both reviews. Both Windows cross-builds pass.
-All 31 checks pass in native CI run `35418891869`, including both Windows jobs.
-
-Keep #171 unmerged until CSP6 publication and capture finish. Then qualify the published producer before dependent Starport work.
-The [host proof](../../csp8/host-main-integration/verification.json) records the published repair.
-The [prior queue capture](queue-windows-cycle.json) preserves the failed head and local repair state.
-
-Preserve rejected #165 until replacement qualification. Starport has no open PRs.
+Preserve rejected #165 until replacement qualification proves that no required work is lost.
+Both catalog channels and the original preparation retry remain unverified.
 Earlier sections preserve historical dispositions.
 
 ## Current disposition: repair merged, catalog promotion resumed
