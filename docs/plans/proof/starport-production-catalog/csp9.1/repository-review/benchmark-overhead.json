@@ -1,0 +1,3 @@
+{
+  "output": "    overhead_benchmark_test.go:93: gateway overhead over 200 requests (mock upstream 20ms): p50=0ms p99=0ms\n--- PASS: TestGatewayOverheadBenchmark (4.25s)\nPASS\nok  \tgithub.com/agentstation/starport/internal/server/controllers\t4.708s\n"
+}

@@ -1,0 +1,4 @@
+{
+  "exit_code": 0,
+  "output": "autoreview target: branch\nbranch: codex/starport-managed-material\ngate: pre-pr (configured cadence: pre-pr)\nprofile: auto\nconfig: /Users/jack/.config/autoreview/config.toml\nselection: sol=7.83, opus5=7.52\nreviewers: codex model=gpt-5.6-sol thinking=xhigh, claude model=opus thinking=high\ntools: on\nweb_search: on\nref: origin/main\nbundle: constructible\ninputs: OK\nprompt: OK\ntrufflehog: OK\ntemporary root: OK\nengine check: codex model=gpt-5.6-sol thinking=xhigh OK\nengine check: claude model=opus thinking=high OK\n"
+}

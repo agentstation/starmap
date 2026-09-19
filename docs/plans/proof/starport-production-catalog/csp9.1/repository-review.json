@@ -1,0 +1,55 @@
+{
+  "candidate_before_test_repair": "9c13a4e",
+  "current_starport_commit": "c651009",
+  "starmap_registry_commit": "50f071ef2",
+  "status": "local preparation reviewed; publication and native qualification pending",
+  "gates": {
+    "original_passed": 31,
+    "original_failed": 2,
+    "paired_ownership_rerun": "12 of 12 conditions pass",
+    "full_go_later_result": "pass after HTTP/2 test synchronization repair",
+    "effective_passing_commands": 32,
+    "remaining_gate": "verify-v1-architecture V01 requires a published compatible Starmap module",
+    "scope_note": "The run started at 9c13a4e. The test-only three-line repair preceded its later full Go test, vet, lint, build and SDK checks."
+  },
+  "test_repair": {
+    "issue": "HTTP/2 tests started a second request before the client processed the first response headers and server stream limit.",
+    "change": "Wait for the first response headers before testing queued credential revocation or expiry.",
+    "repeated_pass_events": 121,
+    "repeated_failures": 0,
+    "repetitions": 20
+  },
+  "acceptance": {
+    "passed": 9,
+    "qualification_commit": "9c13a4e",
+    "note": "The later change only synchronizes tests. Production code remains identical; the stronger protocol tests pass 20 repetitions."
+  },
+  "review": {
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "output": "/tmp/csp91-review.json",
+    "process_log": "/tmp/csp91-review-process.txt",
+    "status": "complete",
+    "exit_code": 0,
+    "findings": 0,
+    "chunks": 3,
+    "bundle_bytes": 625779
+  },
+  "container": "csp91-final-valkey stopped and removed",
+  "next_action": "Await the explicit PR168 published-history replacement decision. Recheck its exact head before any authorized update. While pending, inspect CSP10 discovery criteria without changing the reviewed branches.",
+  "publication_recheck": {
+    "pr": 168,
+    "head": "e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+    "candidate": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+    "catalog_diff_exit": 0,
+    "owner_question": "Signed published-history replacement requested again; answer pending."
+  },
+  "writing": {
+    "targeted_plan": "pass, zero diagnostics",
+    "repository_scan": "67 historical diagnostics; no new diagnostics",
+    "session": 59549,
+    "exit_code": 2
+  }
+}

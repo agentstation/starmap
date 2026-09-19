@@ -1,0 +1,305 @@
+{
+  "commit": "9c13a4e4581170e349c8c014bf3e583b21121fec",
+  "status": "complete",
+  "results": [
+    {
+      "name": "verify-starmap-ownership",
+      "command": [
+        "bash",
+        "scripts/verify-starmap-ownership.sh"
+      ],
+      "exit_code": 1,
+      "seconds": 55.557
+    },
+    {
+      "name": "verify-v1-architecture",
+      "command": [
+        "bash",
+        "scripts/verify-v1-architecture.sh"
+      ],
+      "exit_code": 1,
+      "seconds": 139.666
+    },
+    {
+      "name": "test-dependency-direction-verifier",
+      "command": [
+        "bash",
+        "scripts/test-dependency-direction-verifier.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.72
+    },
+    {
+      "name": "verify-dependency-direction",
+      "command": [
+        "bash",
+        "scripts/verify-dependency-direction.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.651
+    },
+    {
+      "name": "verify-catalog-driven-providers",
+      "command": [
+        "bash",
+        "scripts/verify-catalog-driven-providers.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 115.977
+    },
+    {
+      "name": "verify-package-layout",
+      "command": [
+        "bash",
+        "scripts/verify-package-layout.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 2.965
+    },
+    {
+      "name": "verify-readme-quickstart",
+      "command": [
+        "bash",
+        "scripts/verify-readme-quickstart.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.079
+    },
+    {
+      "name": "verify-v1-release",
+      "command": [
+        "bash",
+        "scripts/verify-v1-release.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.077
+    },
+    {
+      "name": "verify-release-workflow",
+      "command": [
+        "bash",
+        "scripts/verify-release-workflow.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 6.615
+    },
+    {
+      "name": "verify-developer-experience",
+      "command": [
+        "bash",
+        "scripts/verify-developer-experience.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 2.398
+    },
+    {
+      "name": "verify-doc-links",
+      "command": [
+        "bash",
+        "scripts/verify-doc-links.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.347
+    },
+    {
+      "name": "test-doc-link-verifier",
+      "command": [
+        "bash",
+        "scripts/test-doc-link-verifier.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.339
+    },
+    {
+      "name": "verify-openrouter-parity",
+      "command": [
+        "bash",
+        "scripts/verify-openrouter-parity.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.126
+    },
+    {
+      "name": "verify-console-modernization",
+      "command": [
+        "bash",
+        "scripts/verify-console-modernization.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.039
+    },
+    {
+      "name": "verify-auth-onboarding",
+      "command": [
+        "bash",
+        "scripts/verify-auth-onboarding.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.075
+    },
+    {
+      "name": "verify-console-session-grants",
+      "command": [
+        "bash",
+        "scripts/verify-console-session-grants.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.341
+    },
+    {
+      "name": "verify-model-modalities",
+      "command": [
+        "bash",
+        "scripts/verify-model-modalities.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.333
+    },
+    {
+      "name": "verify-files-api",
+      "command": [
+        "bash",
+        "scripts/verify-files-api.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.132
+    },
+    {
+      "name": "verify-async-media-jobs",
+      "command": [
+        "bash",
+        "scripts/verify-async-media-jobs.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.131
+    },
+    {
+      "name": "verify-document-parser",
+      "command": [
+        "bash",
+        "scripts/verify-document-parser.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.178
+    },
+    {
+      "name": "verify-reranking",
+      "command": [
+        "bash",
+        "scripts/verify-reranking.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.184
+    },
+    {
+      "name": "verify-catalog-performance",
+      "command": [
+        "bash",
+        "scripts/verify-catalog-performance.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.124
+    },
+    {
+      "name": "verify-credential-sharing",
+      "command": [
+        "bash",
+        "scripts/verify-credential-sharing.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.181
+    },
+    {
+      "name": "verify-enterprise-readiness",
+      "command": [
+        "bash",
+        "scripts/verify-enterprise-readiness.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.347
+    },
+    {
+      "name": "verify-console-polish",
+      "command": [
+        "bash",
+        "scripts/verify-console-polish.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.187
+    },
+    {
+      "name": "verify-action-pins",
+      "command": [
+        "bash",
+        "scripts/verify-action-pins.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 4.808
+    },
+    {
+      "name": "benchmark-overhead",
+      "command": [
+        "bash",
+        "scripts/benchmark-overhead.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 6.621
+    },
+    {
+      "name": "smoke-first-run",
+      "command": [
+        "bash",
+        "scripts/smoke-first-run.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 21.426
+    },
+    {
+      "name": "go-test",
+      "command": [
+        "go",
+        "test",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 38.627
+    },
+    {
+      "name": "go-vet",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 1.597
+    },
+    {
+      "name": "lint",
+      "command": [
+        "make",
+        "lint"
+      ],
+      "exit_code": 0,
+      "seconds": 2.755
+    },
+    {
+      "name": "build",
+      "command": [
+        "make",
+        "build"
+      ],
+      "exit_code": 0,
+      "seconds": 16.569
+    },
+    {
+      "name": "sdk-smoke",
+      "command": [
+        "bash",
+        "scripts/smoke-openrouter-sdks.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 16.209
+    }
+  ]
+}
