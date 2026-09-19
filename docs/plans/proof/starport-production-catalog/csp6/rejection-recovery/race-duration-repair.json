@@ -1,0 +1,44 @@
+{
+  "captured_at": "2026-09-19T01:29:32.278653+00:00",
+  "status": "implementation under verification",
+  "owner": "CSP6",
+  "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
+  "branch": "codex/acquisition-coalescing-fixture",
+  "base": "b6ce2243cc606b72175a53d9af5ea79f950ba416",
+  "candidate_worktree": "/Users/jack/src/github.com/agentstation/starmap-coalescing-candidate",
+  "candidate_head": "f91908cede32e052a5dc36da12d3ec26c0e126ef",
+  "changes": [
+    "Minimal acquisition source fixture retains provider configuration and mapped authors.",
+    "Three runtime race shards with discovered Test, Example, and Fuzz names.",
+    "Exact selected test completion validation rejects omitted, duplicate, and unexpected tests.",
+    "Six hosted race jobs retain native suites, capacity test, and 30-minute timeout."
+  ],
+  "verification": {
+    "runner_unit_tests": {
+      "pass": 9,
+      "fail": 0
+    },
+    "runner_old_source_regression": {
+      "tests": 9,
+      "errors": 6,
+      "result": "expected failure"
+    },
+    "focused_acquisition": {
+      "main_pass": 3,
+      "candidate_pass": 3
+    },
+    "goago": "pass, no findings or errors",
+    "prose_changed_files": "pass, five files",
+    "runtime_inventory_counts": [
+      139,
+      130,
+      168
+    ]
+  },
+  "live_sessions": {
+    "72305": "candidate runtime shard 1, /tmp/csp6-runtime-shard-1.log and .jsonl",
+    "39454": "candidate runtime shards 2 then 3 sequentially, /tmp/csp6-runtime-shard-{2,3}.log and .jsonl",
+    "94828": "make verify-checks, /tmp/csp6-race-repair-checks.log; currently docs-check through devbox"
+  },
+  "next_action": "Observe existing sessions. Finish required verification, commit the repair, run Sol xhigh and Opus high pre-PR autoreview, publish the repair PR, qualify native CI and merge. Then resume the existing catalog publisher for #168. Do not restart live tests."
+}
