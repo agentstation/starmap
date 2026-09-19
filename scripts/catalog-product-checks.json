@@ -3177,6 +3177,21 @@
           "test": "TestAuthorityPartitionRefusesAtPermissionExpiry"
         }
       ]
+    },
+    "A17.official_sdk_roster": {
+      "kind": "catalog_sdk"
+    },
+    "A09.authority_change": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestAuthorityChangeRequiresMatchingAcceptance"
+    },
+    "A10.cold_follower_refusal": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestAuthorityColdFollowerCannotServeBaseline"
     }
   },
   "task_component_checks": {

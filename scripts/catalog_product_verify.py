@@ -112,6 +112,14 @@ def run_check(identity, entry, roots, go_evidence=None):
         states = [result["status"] for result in results]
         status = "FAIL" if "FAIL" in states else "UNVERIFIED" if "UNVERIFIED" in states else "PASS"
         return {"status": status, "checks": results}
+    if entry.get("kind") == "catalog_sdk":
+        root = roots.get("starport")
+        if root is None:
+            return {"status": "UNVERIFIED", "reason": "The Starport repository is unavailable."}
+        spec = importlib.util.spec_from_file_location("catalog_sdk", ROOT / "scripts/catalog_sdk.py")
+        adapter = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(adapter)
+        return adapter.verify(root)
     if entry.get("kind") == "native_ci":
         root = roots.get(entry.get("repository"))
         if root is None:

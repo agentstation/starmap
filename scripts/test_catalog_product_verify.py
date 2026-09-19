@@ -16,6 +16,7 @@ import constructor_network
 import cold_server
 import native_catalog
 from test_catalog_component_checks import ComponentCheckBoundaryTests
+from test_catalog_sdk import CatalogSDKTests
 
 
 class CatalogVerifierTests(unittest.TestCase):
