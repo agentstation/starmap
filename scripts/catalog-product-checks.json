@@ -4238,6 +4238,12 @@
           "test": "TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback"
         }
       ]
+    },
+    "A46.fleet_receipt_vs_enforcement": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/authorization",
+      "test": "TestFleetDurableReceiptPrecedesReplicaEnforcement"
     }
   },
   "task_component_checks": {
