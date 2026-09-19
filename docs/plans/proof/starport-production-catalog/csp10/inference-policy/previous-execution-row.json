@@ -1,0 +1,3 @@
+{
+  "html": "<tr><td>2026-09-19</td><td>CSP10</td><td>Audit discovery before implementation.</td><td><a href=\"proof/starport-production-catalog/csp10/discovery-audit.json\">Evidence</a>: two race tests pass. Five acceptance subcases pass and 24 remain unverified. Reviewed code remains unchanged.</td></tr>"
+}

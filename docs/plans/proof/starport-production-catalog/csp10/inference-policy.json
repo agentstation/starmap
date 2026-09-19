@@ -1,0 +1,76 @@
+{
+  "starport_commit": "346040d71d8907beab17746cbc2db864c4e4e6b0",
+  "starmap_commit": "008ddc8e6276855d0581688582adb206417f384f",
+  "toolchain": "go1.27.1",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "changes": [
+    "Share account model/provider grant checks between planning and failed-plan catalog classification.",
+    "Check account permission before operation, capability, or runtime rejection details.",
+    "Return model-not-found for denied names without exposing private provider membership.",
+    "Preserve service-unavailable for a known but unavailable chat model.",
+    "Preserve invalid-request errors for unsupported embeddings, chat, and streaming operations."
+  ],
+  "fail_before": {
+    "corrected_fixture_against_prior_production": {
+      "http_cases": 10,
+      "fail_events": 16
+    },
+    "chat_followup_against_c94b6bd": "Unsupported chat and streaming cases fail before the follow-up repair."
+  },
+  "checks": [
+    {
+      "command": "go test -race -json -count=1 -timeout 5m ./internal/routing ./internal/router ./internal/proxy ./internal/server ./internal/server/controllers",
+      "exit": 0,
+      "pass": 873,
+      "fail": 0,
+      "skip": 1
+    },
+    {
+      "command": "go vet ./internal/routing ./internal/router ./internal/proxy ./internal/server ./internal/server/controllers",
+      "exit": 0
+    },
+    {
+      "command": "golangci-lint run ./internal/routing/... ./internal/router/... ./internal/proxy/... ./internal/server/...",
+      "exit": 0,
+      "issues": 0
+    },
+    {
+      "command": "python3 scripts/test_catalog_product_verify.py",
+      "repository": "starmap",
+      "exit": 0,
+      "tests": 81
+    }
+  ],
+  "acceptance_registration": {
+    "subcase": "A18.unauthorized_membership_redaction",
+    "required_checks": 27,
+    "new_checks": [
+      "TestHTTPAliasRemovalWithSerializedDiscoveryCache",
+      "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership"
+    ],
+    "full_subcase_rerun": "UNVERIFIED for the final pair"
+  },
+  "fixture_corrections": [
+    "The initial HTTP fixture omitted text modalities and had no routable model. The corrected fixture asserts a route before testing unsupported operations.",
+    "The planner policy fixture initially declared an operation without its required endpoint. Adding the endpoint made the snapshot valid. Rejected logs are preserved."
+  ],
+  "performance_scope": "Additional accepted-catalog membership reads occur only after a failed plan. Successful planning reuses the existing account maps. No new latency claim is made.",
+  "task_complete": false,
+  "remaining": [
+    "Canonical model removal through live publication",
+    "SDK transitions",
+    "Queued work and remaining permission-withdrawal cases",
+    "Task gate, review, published pair, native CI, and merge"
+  ],
+  "alias_error_parity": {
+    "fail_before": 1,
+    "final_pass": true,
+    "contract": "Removed aliases and unknown names return identical inference error text.",
+    "work_commit": "346040d71d8907beab17746cbc2db864c4e4e6b0"
+  },
+  "planning_writing": {
+    "targeted_plan_exit": 0,
+    "full_gate_exit": 2,
+    "historical_diagnostics": 67
+  }
+}
