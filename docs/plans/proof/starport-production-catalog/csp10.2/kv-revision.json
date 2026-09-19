@@ -1,0 +1,54 @@
+{
+  "task": "CSP10.2",
+  "commit": "2fc86511cd587f58fa45898b387d3041761084df",
+  "status": "atomic KV revision markers implemented; SQL and admission integration remain open",
+  "contracts": [
+    "Account create/update/delete and every gateway key mutation commit their revision marker in the same CompareAndSwapBatch.",
+    "A failed conditional mutation leaves policy and marker unchanged.",
+    "A persistent random epoch separates authority histories. Initialization performs an explicit conditional write and never replaces corrupt evidence.",
+    "The mutation helper bounds marker-contention retries to 32. Corrupt and exhausted counters refuse writes.",
+    "Optional repository-owned local fences begin before durable mutation and end after success or failure. Production composition must install them before enabling cached admission."
+  ],
+  "verification": {
+    "command": "GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=5m -json ./internal/authorization/... ./internal/account ./internal/apikey ./internal/identity ./internal/server/... -skip '^TestAuthorizationWarmRequestsAvoidStableReads$'",
+    "exit_code": 0,
+    "pass_events": 765,
+    "failed_events": 0,
+    "skipped_events": 12,
+    "skipped_tests": [
+      "github.com/agentstation/starport/internal/account:TestAccountRepositoryContract/valkey",
+      "github.com/agentstation/starport/internal/account:TestEnsureDefaultIsIdempotent/valkey",
+      "github.com/agentstation/starport/internal/account:TestEnsureDefaultUnderConcurrentBoot/valkey",
+      "github.com/agentstation/starport/internal/account:TestDefaultAccountCannotBeDeleted/valkey",
+      "github.com/agentstation/starport/internal/account:TestRepositoryRejectsInvalidAccounts/valkey",
+      "github.com/agentstation/starport/internal/apikey:TestAPIKeyRepositoryContract/valkey",
+      "github.com/agentstation/starport/internal/authorization/revision:TestKVRevisionCommitsWithMutation/valkey",
+      "github.com/agentstation/starport/internal/authorization/revision:TestKVRevisionConcurrentIndependentMutations/valkey",
+      "github.com/agentstation/starport/internal/authorization/revision:TestRepositoriesPublishEveryAuthorizationMutation/valkey",
+      "github.com/agentstation/starport/internal/server:TestAuthorizationUnknownAccountRefusesAdmission/valkey",
+      "github.com/agentstation/starport/internal/server:TestSDKCanonicalRemovalAfterSuccessfulInference",
+      "github.com/agentstation/starport/internal/server/controllers:TestGatewayOverheadBenchmark"
+    ],
+    "excluded": "The server warm-read regression remains red until safe cache integration.",
+    "fail_before": "Overlay restores both repositories from 7f66169. The mutation-marker test fails on memory and Badger because account creation does not advance the marker.",
+    "lint_command": "GOWORK=/tmp/csp102-host-integration.work make lint",
+    "lint_exit_code": 0,
+    "lint_output": "Linting code...\n0 issues.\nLint complete\n",
+    "writing": "All three new revision files pass with zero diagnostics."
+  },
+  "next_design": [
+    "SQL identity changes need a separate durable epoch and revision, committed with all mutation effects.",
+    "Do not combine KV and SQL sequences by summing counters. A larger KV sequence must never satisfy a missing SQL requirement.",
+    "Extend bundles to validate a vector of per-authority receipts. Each required authority must meet its own epoch, sequence, and deadline.",
+    "Load records between stable before/after revision reads. Retry or refuse if either authority changes during the read.",
+    "Preserve one receipt per authority through admission, cache delivery, retries, and batch work."
+  ],
+  "limitations": [
+    "No production warm-cache claim. The cache remains disconnected.",
+    "SQL revision migration and atomic user/team/grant changes remain open.",
+    "Remote-store, native, full A46, pre-PR review, and merge qualification remain open."
+  ],
+  "next_action": "Implement SQL mutation revisions and per-authority receipt vectors. Then connect coherent loaders and local mutation fences to production admission.",
+  "active_sessions": [],
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.1</td><td>Final Starport review passes across five sections with zero findings. Native qualification and merge remain open.</td><td><a href=\"proof/starport-production-catalog/csp10.1/review-complete.json\">Review completion</a></td></tr>"
+}
