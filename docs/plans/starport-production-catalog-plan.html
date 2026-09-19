@@ -30,6 +30,7 @@
 <p>The <a href="proof/starport-production-catalog/csp10.2/record-bounds.json">record-bound proof</a> records 64 KiB policy limits and source-read bounds. The affected package race run passes 884 events. Final controller and SQL checks pass. Real Valkey/PostgreSQL checks pass. All implementation changes remain local and unmerged.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp10.2/operation-clocks.json">clock proof</a> records D38: gateway authorization has a 60-second maximum and a two-second normal propagation target. The <a href="proof/starport-production-catalog/csp10.2/diagnostic-recovery.json">recovery proof</a> covers verified local-operator diagnostics and fixed polling cadence. Catalog authority retains its independent clock contract.</p>
+
 <p>Acceptance maps now assign budget-window time to the admission authority. Starmap commit <code>7b04f6591</code> updates D38 and source-bound criteria. Both rosters validate with 50 primary cases and 329 check identities. Native and fleet timing evidence remains open.</p>
 
 <p>Request caching, queued reauthorization, identity account selection, and CORS integration have local evidence in the archived resume record. CSP17 owns the console account picker. Native timing, fleet enforcement, capacity measurements, and A46 registration remain open. No verification sessions remain active.</p>
