@@ -1,0 +1,17 @@
+{
+  "commit": "128d4a3",
+  "status": "local lifecycle qualification; queued dispatch regression unresolved",
+  "checks": {
+    "lifecycle_pass_events": 5,
+    "managed_pass_events": 27,
+    "managed_skips": 1,
+    "skip_reason": "Valkey endpoint not configured; earlier real-storage evidence retained",
+    "queued_dispatch_fail_events": 2,
+    "new_prose_diagnostics": 0,
+    "planning_writing_exit": 2,
+    "planning_writing_historical_diagnostics": 67
+  },
+  "finding": "A request revoked while waiting for an HTTP connection reaches the provider. The check before client.Do does not enforce dispatch validity.",
+  "next_action": "Repair queued dispatch and retry enforcement without canceling accepted streams. Prove HTTP/1 and HTTP/2 behavior, then finish real outage, fairness, and all A45 subcases.",
+  "active_sessions": []
+}

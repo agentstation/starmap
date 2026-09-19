@@ -1,0 +1,3 @@
+{
+  "html": "<tr><td>2026-09-19 UTC</td><td>CSP8</td><td>Qualified SDK smoke, action pins, and pre-PR review.</td><td>The <a href=\"proof/starport-production-catalog/csp8/sdk-and-review.json\">record</a> reports 12 smoke checks and 14 verified action references. Sol and Opus report zero findings against <code>1a6607b</code> in two chunks. The <a href=\"proof/starport-production-catalog/csp8/sdk-and-review/previous-execution.html\">archive</a> preserves the oldest entry. The resume record now has a bounded current-state read path. Published-pair qualification remains incomplete.</td></tr>"
+}
