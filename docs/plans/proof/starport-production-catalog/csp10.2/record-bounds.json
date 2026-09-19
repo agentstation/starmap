@@ -1,0 +1,256 @@
+{
+  "task": "CSP10.2",
+  "commit": "e56f49f911a34c3eb73159c6ea850246d4a7a8ed",
+  "status": "Local source-record bounds qualified; full A46 remains UNVERIFIED",
+  "previous_goal_turn": "Progress: committed recovery diagnostics, polling repair, and plan evidence.",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "contracts": [
+    "KV GetBounded checks size atomically before copying Badger values or returning Valkey payloads. It preserves missing, empty, cancellation, and oversized distinctions.",
+    "Key/account/user/team writes and reads enforce 64 KiB per encoded record. SQL CASE byte-length checks suppress oversized payloads before driver transfer and decoding.",
+    "Revision and account-selector reads return complete bounded values or errors. They never accept a truncated identifier.",
+    "Policy write size failures return HTTP 413 from administrative key/account/team routes. Refused writes do not persist.",
+    "Warm-read counters include GetBounded; the zero-stable-read regression still passes."
+  ],
+  "verification": {
+    "record-bounds-qualified-race": {
+      "counts": {
+        "pass": 884,
+        "skip": 1
+      },
+      "packages": [
+        {
+          "Time": "2026-09-19T17:59:33.255018-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/policyrecord",
+          "Elapsed": 1.197
+        },
+        {
+          "Time": "2026-09-19T17:59:34.409091-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/apikey",
+          "Elapsed": 1.526
+        },
+        {
+          "Time": "2026-09-19T17:59:35.030167-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/account",
+          "Elapsed": 2.147
+        },
+        {
+          "Time": "2026-09-19T17:59:35.430793-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Elapsed": 2.022
+        },
+        {
+          "Time": "2026-09-19T17:59:35.64872-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Elapsed": 2.282
+        },
+        {
+          "Time": "2026-09-19T17:59:36.340411-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization/revision",
+          "Elapsed": 2.931
+        },
+        {
+          "Time": "2026-09-19T17:59:50.11587-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Elapsed": 18.058
+        },
+        {
+          "Time": "2026-09-19T17:59:58.855092-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Elapsed": 21.363
+        }
+      ],
+      "failures": []
+    },
+    "record-bounds-real-stores": {
+      "counts": {
+        "pass": 22
+      },
+      "packages": [
+        {
+          "Time": "2026-09-19T17:58:38.530817-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Elapsed": 1.351
+        },
+        {
+          "Time": "2026-09-19T17:58:38.833632-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/account",
+          "Elapsed": 1.576
+        },
+        {
+          "Time": "2026-09-19T17:58:39.101415-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/apikey",
+          "Elapsed": 1.8439999999999999
+        },
+        {
+          "Time": "2026-09-19T17:58:39.439015-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization/revision",
+          "Elapsed": 2.181
+        },
+        {
+          "Time": "2026-09-19T17:58:39.853285-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Elapsed": 2.596
+        },
+        {
+          "Time": "2026-09-19T17:58:40.031451-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Elapsed": 2.774
+        },
+        {
+          "Time": "2026-09-19T17:58:42.025442-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Elapsed": 1.921
+        }
+      ],
+      "failures": []
+    },
+    "record-bounds-controller-race": {
+      "counts": {
+        "pass": 213,
+        "skip": 1
+      },
+      "packages": [
+        {
+          "Time": "2026-09-19T18:02:51.577986-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/server/controllers",
+          "Elapsed": 18.453
+        }
+      ],
+      "failures": []
+    },
+    "record-bounds-final-sql": {
+      "counts": {
+        "pass": 160,
+        "skip": 4
+      },
+      "packages": [
+        {
+          "Time": "2026-09-19T18:05:01.790866-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Elapsed": 1.788
+        },
+        {
+          "Time": "2026-09-19T18:05:01.980743-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Elapsed": 2.002
+        },
+        {
+          "Time": "2026-09-19T18:05:02.301001-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization/revision",
+          "Elapsed": 2.298
+        }
+      ],
+      "failures": []
+    },
+    "record-bounds-final-postgres": {
+      "counts": {
+        "pass": 160,
+        "skip": 4,
+        "fail": 1
+      },
+      "packages": [
+        {
+          "Time": "2026-09-19T18:06:07.634327-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Elapsed": 1.087
+        },
+        {
+          "Time": "2026-09-19T18:06:08.660315-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Elapsed": 2.113
+        },
+        {
+          "Time": "2026-09-19T18:06:08.910511-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization/revision",
+          "Elapsed": 2.363
+        }
+      ],
+      "failures": [
+        {
+          "Time": "2026-09-19T18:06:07.511966-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Test": "TestAuthorizationScalarReadsNeverTruncate",
+          "Elapsed": 0.03
+        },
+        {
+          "Time": "2026-09-19T18:06:07.634327-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Elapsed": 1.087
+        }
+      ]
+    },
+    "record-bounds-final-postgres-qualified": {
+      "counts": {
+        "pass": 161,
+        "skip": 4
+      },
+      "packages": [
+        {
+          "Time": "2026-09-19T18:06:53.762409-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Elapsed": 1.933
+        },
+        {
+          "Time": "2026-09-19T18:06:54.264445-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/authorization/revision",
+          "Elapsed": 2.435
+        },
+        {
+          "Time": "2026-09-19T18:06:54.856886-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Elapsed": 3.028
+        }
+      ],
+      "failures": []
+    },
+    "rejected_fixture": "Initial scalar regression fixture lacked the granted user. Added that user before the grant. Final SQL run passes. PostgreSQL test records now use unique identifiers for repeated qualification.",
+    "substring_reproduction": {
+      "engine": "SQLite",
+      "input_bytes": 1032,
+      "substring_bytes": 7,
+      "substring": "account",
+      "finding": "A NUL-containing oversized identifier passes a length-only check after SUBSTR truncation. Final code uses byte-length CASE and preserves complete valid-size strings."
+    },
+    "lint": "Linting code...\n0 issues.\nLint complete\n",
+    "compile": "GOWORK=/tmp/csp102-host-integration.work go test -run ^$ ./... completed with exit 0 before the final SQL projection repair. Final SQL packages compiled and passed afterward.",
+    "architecture": "Dependency direction: six passed, zero failed. Package-layout verification passed.",
+    "writing": "Final new source files: three passed with zero diagnostics. Specification: one passed. Full planning gate retains 67 historical diagnostics across 1666 files. Operator guide retains 48 historical diagnostics."
+  },
+  "limitations": [
+    "Encoded byte bounds do not measure total heap or database-engine memory. Full capacity qualification remains open.",
+    "MySQL and native Linux/Windows qualification were not run. PostgreSQL, SQLite, Badger, and Valkey are covered by the recorded commands.",
+    "The SQL bound deliberately uses byte lengths, not character counts or substring truncation.",
+    "No hosted review, CI, merge, or released-pair claim. Local tests use the recorded Starmap workspace."
+  ],
+  "cleanup": "All temporary csp102-bounds Valkey and PostgreSQL containers were stopped and removed.",
+  "next_action": "Register covered A46 cases, qualify native timing and fleet enforcement, and measure bounded working-set capacity. Recheck the pending CSP6 publication path before more independent preparation.",
+  "archived_resume": "<p>CSP10.2 preparation uses <code>starport-authorization-memory</code>, branch <code>codex/starport-authorization-memory</code>, at <code>0b529f7d</code>, from reviewed <code>a5aab81</code>. Use <code>GOWORK=/tmp/csp102-host-integration.work</code>. Set both Starport verifier roots to this worktree. Both Starmap roots remain <code>starmap-advisory-exchange</code>.</p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/preparation.json\">preparation proof</a> records six failing leaf cases. Ten warm requests make 30 storage reads. The <a href=\"proof/starport-production-catalog/csp10.2/account-admission.json\">account admission repair</a> now refuses those requests across all three caller modes. Server race checks pass 354 events with two Valkey skips. Warm storage reads remain unresolved.</p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/sql-revision.json\">SQL revision proof</a> records atomic identity mutations and failed-delete recovery. Final task race checks pass 796 events with two optional skips. PostgreSQL and Valkey revision checks pass 20 events without skips. The warm-read test remains excluded because production admission does not use the cache yet. </p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/authority-vector.json\">authority-vector proof</a> records 52 passing component race-test events. The <a href=\"proof/starport-production-catalog/csp10.2/coherent-source.json\">coherent source proof</a> records 92 passing race-test events without skips. </p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/revision-monitor.json\">revision monitor proof</a> records application-owned workers and mutation hooks. Final focused race checks pass 47 events. The <a href=\"proof/starport-production-catalog/csp10.2/request-integration.json\">request integration proof</a> records the next preparation commit.</p>\n\n<p>Current Starmap HEAD is <code>d3cf1bd49</code>. Both implementation worktrees are clean. Request and budget checks pass locally.</p>\n\n<p>SSO API admission now enforces account grants. The <a href=\"proof/starport-production-catalog/csp10.2/cors-admission.json\">CORS proof</a> covers browser selection and disabled-origin refusal. </p>\n\n<p>Gateway authorization now uses host monotonic expiry on local and shared storage. CSP17 still owns the console account picker.</p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/operation-clocks.json\">operation-clock proof</a> records D38 and local checks at <code>81aa42a7</code>. Corrected authorization race checks pass 103 events. Real Valkey/PostgreSQL checks pass ten events. Full A46 and native clock qualification remain open.</p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/diagnostic-recovery.json\">diagnostic recovery proof</a> records <code>0b529f7d</code>. Final server and authorization race checks pass 709 events with eight optional skips. The corrected application recovery test passes. Native and fleet qualification remain open.</p>\n\n<p>No verification sessions remain active.</p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/queued-authorization.json\">queued authorization proof</a> records 654 passing race events and one routing projection test. Four optional checks remain skipped. The owner confirmed automatic selection only for one granted account. Multiple grants require explicit selection.</p>\n\n<p>The <a href=\"proof/starport-production-catalog/csp10.2/identity-admission.json\">identity admission proof</a> records granted-account selection and withdrawal checks. Broad race checks pass 790 events with nine optional skips. Real PostgreSQL selection passes. Final local checks and lint pass. CSP17 owns the console picker.</p>\n\n",
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.2</td><td>Commit transactional SQL authorization revisions at <code>e4c72c2</code>. Final race checks pass 796 events with two optional skips. PostgreSQL/Valkey checks pass 20 events. Temporary services are removed.</td><td><a href=\"proof/starport-production-catalog/csp10.2/sql-revision.json\">SQL revision evidence</a></td></tr>"
+}

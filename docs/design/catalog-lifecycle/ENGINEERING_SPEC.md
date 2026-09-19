@@ -2718,6 +2718,17 @@ A46 qualification covers forward and backward clock changes, suspend/resume, res
 Test these across the actual KV/SQL ownership split. Native suspend behavior remains a required qualification case.
 Warm checks read memory without allocating or querying a time service. Refresh and required admission operations remain bounded.
 
+The initial authorization profile permits 64 KiB per encoded key, account, user, or team record.
+Repository writes enforce this bound. Administrative policy writes return HTTP 413 when they exceed it.
+KV reads check size before copying or returning payloads. SQL reads suppress oversized records before driver transfer and JSON decoding.
+
+Oversized data remains an error, never confirmed absence. Reads of revision markers and selected account IDs are also bounded.
+
+A combined authorization bundle contains at most 64 KiB of encoded data.
+The cache holds at most 1,024 bundles and 16 MiB of encoded policy.
+Cold loads remain limited to 16 globally and four per lookup tenant, with a one-second deadline.
+Encoded byte limits are not total heap measurements. Capacity qualification must include decoded records and transient copies.
+
 CSP10.2 owns authorization memory. CSP16 owns applied configuration memory and authority revisions.
 
 #### 8.9.4 Atomic limits and recoverable reservations

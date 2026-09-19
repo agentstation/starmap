@@ -25,31 +25,13 @@
 
 <p>The <a href="proof/starport-production-catalog/csp10.3/qualification.json">qualification state</a> records all seven expanded A49 subcases passing. Final race checks pass 320 events with two service-dependent skips. Full tests, vet, and lint pass. Both final reviews pass with zero findings. No verification sessions remain active.</p>
 
-<p>CSP10.2 preparation uses <code>starport-authorization-memory</code>, branch <code>codex/starport-authorization-memory</code>, at <code>0b529f7d</code>, from reviewed <code>a5aab81</code>. Use <code>GOWORK=/tmp/csp102-host-integration.work</code>. Set both Starport verifier roots to this worktree. Both Starmap roots remain <code>starmap-advisory-exchange</code>.</p>
+<p>CSP10.2 preparation uses <code>starport-authorization-memory</code>, branch <code>codex/starport-authorization-memory</code>, at <code>e56f49f9</code>. Use <code>GOWORK=/tmp/csp102-host-integration.work</code>. Both Starmap verifier roots remain <code>starmap-advisory-exchange</code> at <code>d3cf1bd49</code>. Set both Starport verifier roots to the authorization worktree.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp10.2/preparation.json">preparation proof</a> records six failing leaf cases. Ten warm requests make 30 storage reads. The <a href="proof/starport-production-catalog/csp10.2/account-admission.json">account admission repair</a> now refuses those requests across all three caller modes. Server race checks pass 354 events with two Valkey skips. Warm storage reads remain unresolved.</p>
+<p>The <a href="proof/starport-production-catalog/csp10.2/record-bounds.json">record-bound proof</a> records 64 KiB policy limits and source-read bounds. The affected package race run passes 884 events. Final controller and SQL checks pass. Real Valkey/PostgreSQL checks pass. All implementation changes remain local and unmerged.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp10.2/sql-revision.json">SQL revision proof</a> records atomic identity mutations and failed-delete recovery. Final task race checks pass 796 events with two optional skips. PostgreSQL and Valkey revision checks pass 20 events without skips. The warm-read test remains excluded because production admission does not use the cache yet. </p>
+<p>The <a href="proof/starport-production-catalog/csp10.2/operation-clocks.json">clock proof</a> records D38: gateway authorization has a 60-second maximum and a two-second normal propagation target. The <a href="proof/starport-production-catalog/csp10.2/diagnostic-recovery.json">recovery proof</a> covers verified local-operator diagnostics and fixed polling cadence. Catalog authority retains its independent clock contract.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp10.2/authority-vector.json">authority-vector proof</a> records 52 passing component race-test events. The <a href="proof/starport-production-catalog/csp10.2/coherent-source.json">coherent source proof</a> records 92 passing race-test events without skips. </p>
-
-<p>The <a href="proof/starport-production-catalog/csp10.2/revision-monitor.json">revision monitor proof</a> records application-owned workers and mutation hooks. Final focused race checks pass 47 events. The <a href="proof/starport-production-catalog/csp10.2/request-integration.json">request integration proof</a> records the next preparation commit.</p>
-
-<p>Current Starmap HEAD is <code>d3cf1bd49</code>. Both implementation worktrees are clean. Request and budget checks pass locally.</p>
-
-<p>SSO API admission now enforces account grants. The <a href="proof/starport-production-catalog/csp10.2/cors-admission.json">CORS proof</a> covers browser selection and disabled-origin refusal. </p>
-
-<p>Gateway authorization now uses host monotonic expiry on local and shared storage. CSP17 still owns the console account picker.</p>
-
-<p>The <a href="proof/starport-production-catalog/csp10.2/operation-clocks.json">operation-clock proof</a> records D38 and local checks at <code>81aa42a7</code>. Corrected authorization race checks pass 103 events. Real Valkey/PostgreSQL checks pass ten events. Full A46 and native clock qualification remain open.</p>
-
-<p>The <a href="proof/starport-production-catalog/csp10.2/diagnostic-recovery.json">diagnostic recovery proof</a> records <code>0b529f7d</code>. Final server and authorization race checks pass 709 events with eight optional skips. The corrected application recovery test passes. Native and fleet qualification remain open.</p>
-
-<p>No verification sessions remain active.</p>
-
-<p>The <a href="proof/starport-production-catalog/csp10.2/queued-authorization.json">queued authorization proof</a> records 654 passing race events and one routing projection test. Four optional checks remain skipped. The owner confirmed automatic selection only for one granted account. Multiple grants require explicit selection.</p>
-
-<p>The <a href="proof/starport-production-catalog/csp10.2/identity-admission.json">identity admission proof</a> records granted-account selection and withdrawal checks. Broad race checks pass 790 events with nine optional skips. Real PostgreSQL selection passes. Final local checks and lint pass. CSP17 owns the console picker.</p>
+<p>Request caching, queued reauthorization, identity account selection, and CORS integration have local evidence in the archived resume record. CSP17 owns the console account picker. Native timing, fleet enforcement, capacity measurements, and A46 registration remain open. No verification sessions remain active.</p>
 
 <p>A compatible published Starmap module must precede dependent Starport qualification and merges. The current pin lacks <code>pkg/productfiles</code>. Never commit local replacements. Native checks, actual merge commits, and released-pair acceptance remain required.</p>
 
@@ -660,7 +642,7 @@
 <p><a href="proof/starport-production-catalog/execution-history-2026-09-11-1143.html">Read earlier execution entries</a> for historical evidence. The current resume state owns the next action.</p><table><thead><tr><th>Date</th><th>Item</th><th>Action</th><th>Evidence</th></tr></thead><tbody>
 
 
-<tr><td>2026-09-19</td><td>CSP10.2</td><td>Commit transactional SQL authorization revisions at <code>e4c72c2</code>. Final race checks pass 796 events with two optional skips. PostgreSQL/Valkey checks pass 20 events. Temporary services are removed.</td><td><a href="proof/starport-production-catalog/csp10.2/sql-revision.json">SQL revision evidence</a></td></tr>
+
 <tr><td>2026-09-19</td><td>CSP10.2</td><td>Require independent authority receipts at <code>e70e96f</code>. All 52 component race-test events pass. Invalid lookups no longer evict valid policy. Repository lint is clean.</td><td><a href="proof/starport-production-catalog/csp10.2/authority-vector.json">Authority-vector evidence</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.2</td><td>Load coherent policy with bounded retries at <code>bfa5945</code>. All 92 race-test events pass across authorization and revision packages. Real Valkey, Badger, and SQLite checks pass. Request integration remains open.</td><td><a href="proof/starport-production-catalog/csp10.2/coherent-source.json">Coherent source evidence</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.2</td><td>Connect durable revision workers and local mutation fences at <code>f045352</code>. Final focused race checks pass 47 events. Shared startup checks pass. Late successful reads retain known withdrawals. Request-cache integration remains open.</td><td><a href="proof/starport-production-catalog/csp10.2/revision-monitor.json">Revision monitor evidence</a></td></tr>
@@ -670,4 +652,5 @@
 <tr><td>2026-09-19</td><td>CSP10.2</td><td>Repair browser account selection at <code>5623a252</code>. Disabled CORS now refuses cross-origin access. Focused race checks pass 12 events. Server race checks pass 597 events.</td><td><a href="proof/starport-production-catalog/csp10.2/cors-admission.json">CORS admission proof</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.2</td><td>Apply D38 operation-specific clocks at <code>81aa42a7</code>. Gateway receipts expire within 60 seconds and cannot revive after invalidation. Corrected component and real-store checks pass. Fleet and native qualification remain open.</td><td><a href="proof/starport-production-catalog/csp10.2/operation-clocks.json">Operation-clock proof</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.2</td><td>Retain operator diagnostic reads and fix polling cadence at <code>0b529f7d</code>. Final server and authorization checks pass 709 events. Recovery refuses inference and mutations. Native and fleet qualification remain open.</td><td><a href="proof/starport-production-catalog/csp10.2/diagnostic-recovery.json">Diagnostic recovery proof</a></td></tr>
+<tr><td>2026-09-19</td><td>CSP10.2</td><td>Bound source policy records at <code>e56f49f9</code>. Affected race checks pass 884 events. Final controller and SQL checks pass. Capacity, native timing, and full A46 remain open.</td><td><a href="proof/starport-production-catalog/csp10.2/record-bounds.json">Record-bound proof</a></td></tr>
 </tbody></table></section></main></body></html>

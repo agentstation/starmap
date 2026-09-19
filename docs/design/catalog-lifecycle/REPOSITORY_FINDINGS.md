@@ -3382,3 +3382,15 @@ Revision polling now includes read latency within its fixed cadence. The two-sec
 
 Final server and authorization race checks pass 709 events with eight optional skips. The corrected application recovery test passes.
 Native suspend/resume, real fleet propagation, full A46, review, and merge remain open.
+
+
+## September 19 authorization source-record bounds
+
+Starport commit `e56f49f9` bounds policy records before storage transfer and decoding.
+KV adapters check size before copying or returning payloads. SQL projections suppress oversized records with byte-length checks.
+Writes enforce the same 64 KiB record limit. Administrative policy writes report HTTP 413 when they exceed it.
+
+The review rejected substring-based scalar bounds because SQLite truncates text at an embedded NUL.
+Complete-value checks now preserve identifiers or refuse them. The scalar regression covers both outcomes.
+Affected package race checks pass 884 events. Final controller checks pass 213 events, and final SQL checks pass 161 events.
+Capacity, native timing, fleet enforcement, review, and merge remain open.
