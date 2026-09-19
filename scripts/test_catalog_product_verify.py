@@ -121,6 +121,21 @@ class CatalogVerifierTests(unittest.TestCase):
             result = verifier.run_check('runner-fixture', entry, {'starmap': verifier.ROOT})
         self.assertEqual(result['status'], 'FAIL')
 
+    def test_go_evidence_reuse_is_limited_to_one_invocation(self):
+        entry = {'kind': 'go_test', 'repository': 'starmap', 'package': './pkg/errors', 'test': 'TestBudget'}
+        roots = {'starmap': verifier.ROOT}
+        for action, expected in [('pass', 'PASS'), ('skip', 'UNVERIFIED')]:
+            output = subprocess.CompletedProcess([], 0, json.dumps({'Test': 'TestBudget', 'Action': action}), '')
+            evidence = {}
+            with patch.object(verifier.subprocess, 'run', return_value=output) as run:
+                first = verifier.run_check('first', entry, roots, evidence)
+                second = verifier.run_check('second', entry, roots, evidence)
+                self.assertEqual(first['status'], expected)
+                self.assertEqual(second['status'], expected)
+                self.assertEqual(run.call_count, 1)
+                verifier.run_check('next-invocation', entry, roots, {})
+                self.assertEqual(run.call_count, 2)
+
     def test_combined_check_needs_every_result(self):
         self.assertEqual(verifier.run_check('E01', {'kind': 'all', 'checks': []}, {})['status'], 'FAIL')
         self.assertEqual(verifier.run_check('E01', {'kind': 'all', 'checks': [None]}, {})['status'], 'UNVERIFIED')

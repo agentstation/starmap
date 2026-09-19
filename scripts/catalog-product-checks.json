@@ -2072,6 +2072,558 @@
     "A05.each_publication_failure": {
       "kind": "publication_recovery",
       "repository": "starmap"
+    },
+    "A11.acquisition_role_matrix": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialRolePrecedence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialEmptyOrInvalidSelectionIsTerminal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialAliasCollisionPrecedesLookup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionResolverReadsOnlyDeploymentLookup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionResolverRefusesWithoutDeploymentLookup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogLookupUsesCheckedFilesAndPreservesEmptyValues"
+        }
+      ]
+    },
+    "A11.inference_role_matrix": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceProductPrecedence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceStarmapFallbackRequiresOptIn"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceExplicitEmptyStopsFallback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestInferenceStarmapFallbackConfiguration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCredentialAliasCollisionsFailBeforeConnectorConstruction"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCredentialReferenceAliasCollisionsFailBeforeReads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestInferenceCredentialsNeverEnterCatalogState"
+        }
+      ]
+    },
+    "A11.upgrade_changed_selection": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialPolicyMigration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyUpgradeComparisonAndRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyStoreRefusesCorruptionAndOwnerMismatch"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyConcurrentAcceptance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionPolicyClassifiesBeforeStartupAndRetainsAcceptance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionPolicyRejectsInvalidMarkerBeforeCreatingState"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestInferencePolicyUsesCheckedConfigurationAndPersists"
+        }
+      ]
+    },
+    "A11.fresh_install_override": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialPolicyMigration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyUpgradeComparisonAndRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestInferencePolicyIsRecordedBeforeCatalogStartup"
+        }
+      ]
+    },
+    "A11.identical_values": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialPolicyMigration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyUpgradeComparisonAndRestart"
+        }
+      ]
+    },
+    "A11.explicit_reference": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportEnvironmentReferenceUsesHostLookup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportReferenceAliasCollisionPrecedesLookup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionRoleReferenceReadsPrivateFile"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionReferenceFailureDoesNotUseAmbientKey"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestExplicitCredentialReferencesPrecedeAmbientSources"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyUpgradeComparisonAndRestart"
+        }
+      ]
+    },
+    "A11.mixed_field_handle": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialPolicyMigration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyUpgradeComparisonAndRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceRejectsConflictingSecretVersionsBeforeReads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceSecretRotationPublishesCompleteProfiles"
+        }
+      ]
+    },
+    "A12.each_supported_backend": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestSecretSnapshotRotatesCompleteProfilesAcrossBackends"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCredentialSourceConformance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestGoogleDefaultChainProjectsTokenAndProjectLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestAzureDefaultChainProjectsTokenLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestAWSDefaultChainProjectsCredentialLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestPublicCredentialCompositionDefersSecretReads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestDirectSecretSourceBackendsAreRegistered"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestGCPSecretManagerSourceResolvesVersionedJSONFieldAndCloses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestAzureKeyVaultSourceResolvesVersionedJSONFieldAndCloses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestAWSSecretsManagerSourceResolvesVersionedJSONFieldAndCloses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestVaultSourceResolvesVersionedFieldAndCloses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestOpenBaoSourceResolvesVersionedFieldAndCloses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCredentialSourceConformance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionRoleReferenceReadsPrivateFile"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials/cloudchain",
+          "test": "TestGoogleDefaultChainUsesCatalogScopeAndBearerField"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials/cloudchain",
+          "test": "TestGoogleDefaultProjectsCatalogProjectField"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials/cloudchain",
+          "test": "TestAzureDefaultChainUsesCatalogScopesAndBearerField"
+        }
+      ]
+    },
+    "A12.rotation_complete_version": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestSecretSnapshotRotatesCompleteProfilesAcrossBackends"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestSecretSnapshotRejectsVersionScopeConflictBeforeReads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogPolicyMigrationSharesExplicitSecretSnapshot"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceSecretRotationPublishesCompleteProfiles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceRejectsConflictingSecretVersionsBeforeReads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestDirectSecretSourcesUseRefreshAndWarmCacheLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceCachedMaterialDoesNotReadPolicyOrEnvironment"
+        }
+      ]
+    },
+    "A12.expired_revoked": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogRoleRefusesExpiredSourceMaterial"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogPolicyMigrationRefusesExpiryDuringAcceptance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogRoleBackendFailureRefusesStaleMaterialAndRecovers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogCredentialStatusReportsExpiryAsInvalid"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCredentialLifecycleRefreshFailureRevocationAndLeaderCancellation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCredentialRefreshRevokesDisappearedMaterial"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCredentialResolverRefreshesExpiredAndLeasedMaterial"
+        }
+      ]
+    },
+    "A12.backend_outage": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogRoleBackendFailureRefusesStaleMaterialAndRecovers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogRoleRequiresBoundedSourceRead"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestDirectSecretSourcesPropagateCancellationWithinBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogPolicyMigrationNeverFallsBackAfterReferenceError"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestDirectSecretSourcesPropagateCancellationWithinBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCredentialLifecycleRefreshFailureRevocationAndLeaderCancellation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCachedProviderSourceNeverReadsBackend"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionReferenceFailureDoesNotUseAmbientKey"
+        }
+      ]
+    },
+    "A12.no_secret_disclosure": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCredentialOriginsDoNotExposeOrShareMaterial"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestDirectSecretSourceErrorsDoNotExposeReferences"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestPublicCredentialCompositionMigratesAndRetainsPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/table",
+          "test": "TestProviderTableDoesNotExposeCredentialFingerprint"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestDirectSecretSourceErrorsDoNotExposeReferences"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCredentialSourceConformance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyUpgradeComparisonAndRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestInferenceCredentialsNeverEnterCatalogState"
+        }
+      ]
     }
   },
   "task_component_checks": {

@@ -101,14 +101,14 @@ def registered_check(args, registry, identity):
     return registry["checks"].get(identity), "product"
 
 
-def run_check(identity, entry, roots):
+def run_check(identity, entry, roots, go_evidence=None):
     if entry is None:
         return {"status": "UNVERIFIED", "reason": "No behavior check is registered."}
     if entry.get("kind") == "all":
         children = entry.get("checks", [])
         if not children:
             return {"status": "FAIL", "reason": "A combined check needs evidence."}
-        results = [run_check(identity, child, roots) for child in children]
+        results = [run_check(identity, child, roots, go_evidence) for child in children]
         states = [result["status"] for result in results]
         status = "FAIL" if "FAIL" in states else "UNVERIFIED" if "UNVERIFIED" in states else "PASS"
         return {"status": status, "checks": results}
@@ -191,6 +191,9 @@ def run_check(identity, entry, roots):
     if not re.fullmatch(r"Test[A-Za-z0-9_]+", test) or not package.startswith("./") or ".." in package.split("/")[1:]:
         return {"status": "FAIL", "reason": "Invalid named Go behavior check."}
     command = ["go", "test", "-race", "-count=1", "-timeout", "5m", "-json", "-run", f"^{test}$", package]
+    evidence_key = (str(root.resolve()), tuple(command))
+    if go_evidence is not None and evidence_key in go_evidence:
+        return dict(go_evidence[evidence_key])
     try:
         result = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=330)
     except (OSError, subprocess.TimeoutExpired) as error:
@@ -212,8 +215,11 @@ def run_check(identity, entry, roots):
         status, reason = "UNVERIFIED", "The named behavior test has no passing result."
     else:
         status, reason = "PASS", "The named behavior test passed in this invocation."
-    return {"status": status, "reason": reason, "command": command, "cwd": str(root),
-            "exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr}
+    evidence = {"status": status, "reason": reason, "command": command, "cwd": str(root),
+                "exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr}
+    if go_evidence is not None:
+        go_evidence[evidence_key] = evidence
+    return dict(evidence)
 
 
 def run_vitest(entry, roots):
@@ -647,9 +653,10 @@ def main():
         selected = select_checks(args, roster)
         roots = {"starmap": ROOT, "starport": args.starport_root.resolve()}
         results = {}
+        go_evidence = {}
         for item in selected:
             entry, scope = registered_check(args, registry, item)
-            results[item] = run_check(item, entry, roots)
+            results[item] = run_check(item, entry, roots, go_evidence)
             results[item]["evidence_scope"] = scope
         publication_cases = set(roster["qualification"]["requires_published_assets"])
         qualification_required = bool(
