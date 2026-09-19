@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-19T06:35:50.424527+00:00",
+  "checked_at": "2026-09-19T07:19:20.150952+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -320,8 +320,8 @@
           "workflowName": ""
         }
       ],
-      "title": "feat: expose checked file operations for catalog hosts",
       "updatedAt": "2026-09-19T03:33:36Z",
+      "title": "feat: expose checked file operations for catalog hosts",
       "current_main_is_ancestor": false
     },
     {
@@ -643,8 +643,8 @@
           "workflowName": ""
         }
       ],
-      "title": "catalog: embed bindings-de02ef4fcfb68a86b119f3fa139715c1f77d4e2ee8d8af3d4eb4efab3d31ef07.local.ac6ad0483752",
       "updatedAt": "2026-09-19T03:18:13Z",
+      "title": "catalog: embed bindings-de02ef4fcfb68a86b119f3fa139715c1f77d4e2ee8d8af3d4eb4efab3d31ef07.local.ac6ad0483752",
       "current_main_is_ancestor": false
     },
     {
@@ -856,8 +856,8 @@
           "workflowName": ""
         }
       ],
-      "title": "catalog: embed bindings-d0cc72f614a783e732d89376c73f46da0db4b851f2627d3f266fb74e4c6964d4.local.b015f73478ee",
       "updatedAt": "2026-09-17T15:09:19Z",
+      "title": "catalog: embed bindings-d0cc72f614a783e732d89376c73f46da0db4b851f2627d3f266fb74e4c6964d4.local.b015f73478ee",
       "current_main_is_ancestor": false
     }
   ],
@@ -898,7 +898,7 @@
     },
     {
       "worktree": "starmap-catalog-requirements",
-      "head": "c752674411478e7f92f9b80b7322d1cc89d07569",
+      "head": "7687f308adc341238e7068adaa7921930d8741d6",
       "status": "M AGENTS.md\n M Makefile\n M go.mod\n M go.sum\n M scripts/verify.sh"
     },
     {
@@ -912,7 +912,7 @@
     {
       "worktree": "starport-credential-roles",
       "head": "cc3701f23efb4a21387325b53fa2a6ad7014e29b",
-      "status": "",
+      "status": "M internal/app/app.go\n M internal/app/catalog_storage.go\n M internal/catalog/credential_policy.go\n M internal/config/config.go\n M internal/config/credential_sources.go\n M internal/config/file_manifest.go\n M internal/config/loader.go\n M internal/config/paths.go\n M internal/config/provider_environment.go\n M internal/config/provider_environment_test.go\n M internal/credentials/resolver.go\n?? internal/config/inference_policy.go\n?? internal/credentials/environment_policy.go\n?? internal/credentials/environment_policy_test.go\n?? internal/credentials/policy_migration.go\n?? internal/credentials/policy_migration_test.go\n?? internal/credentials/policy_store.go",
       "owner": "CSP9",
       "disposition": "unpublished preparation",
       "next_action": "Complete inference migration and fallback, then review and qualify the published dependency."
@@ -920,5 +920,36 @@
   ],
   "seven_day_disposition_review_required": false,
   "merges_performed": [],
-  "starmap_main": "9ff84a481c3693a22f27004316e4340a49689afd"
+  "starmap_main": "9ff84a481c3693a22f27004316e4340a49689afd",
+  "starmap_review_threads": {
+    "totalCount": 3,
+    "nodes": [
+      {
+        "number": 165,
+        "reviewThreads": {
+          "totalCount": 0,
+          "nodes": []
+        }
+      },
+      {
+        "number": 168,
+        "reviewThreads": {
+          "totalCount": 0,
+          "nodes": []
+        }
+      },
+      {
+        "number": 171,
+        "reviewThreads": {
+          "totalCount": 0,
+          "nodes": []
+        }
+      }
+    ]
+  },
+  "starport_main": "d5d891eefc32d221406f059dc025a3a1e3ab4070",
+  "starport_review_threads": {
+    "totalCount": 0,
+    "nodes": []
+  }
 }
