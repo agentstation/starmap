@@ -1,0 +1,36 @@
+{
+  "task": "CSP10.2",
+  "recorded_at": "2026-09-19T19:54:06.635138+00:00",
+  "status": "fail-before preparation; production implementation remains open",
+  "commit": "9b62812a6a80fee15916a07efb3d24e1ca4a2aae",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+  "workspace": "/tmp/csp102-host-integration.work",
+  "command": "GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=2m -json ./internal/server -run 'TestAuthorization(WarmRequestsAvoidStableReads|UnknownAccountRefusesAdmission)$'",
+  "exit_code": 1,
+  "observations": [
+    "Ten warm authenticated requests perform 30 Get calls on memory and real Badger backends. Expected zero stable reads.",
+    "Missing account: HTTP 200 instead of 403 on both backends.",
+    "Unavailable account authority: HTTP 200 instead of 503 on both backends."
+  ],
+  "test_events": {
+    "failed_leaf_cases": 6,
+    "failed_parent_events": 4,
+    "skipped_service_cases": 2
+  },
+  "limitations": [
+    "Valkey cases skipped because TEST_VALKEY_URL is absent.",
+    "The counter measures Get calls in the current repository implementation. Future adapter changes require expanding instrumentation.",
+    "Team reads, missed-event recovery, expiry, and mutation fencing still need fail-before qualification.",
+    "The initial fixture used an invalid key name. fixture-rejected.jsonl preserves that rejected run and does not prove a product defect."
+  ],
+  "design_constraints": [
+    "Account and API key records belong to KV repositories. Team, membership, and grant records belong to SQL repositories.",
+    "Membership and grant removal currently has no durable revision cursor. A memory cache needs a recovery contract before it can trust notifications.",
+    "Replace account read failure with explicit refusal. Never synthesize default credential policy from an authority error.",
+    "Audit bearer, anonymous, and console-session admission together. Preserve diagnostics and explicit local operator grants.",
+    "CSP12 owns atomic budget reservation. CSP10.2 must distinguish unknown team budget from confirmed absence without caching counters."
+  ],
+  "next_action": "Implement the authorization-owned validated bundle and mutation/recovery contract. First repair account admission across caller modes with explicit error states. Retain all A46 subcases.",
+  "active_sessions": [],
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.1</td><td>Indexed discovery and embedded profiling use <code>69f2164</code>. All eight A44 subcases pass locally. Race checks report 430 passing test events. Repository checks run.</td><td><a href=\"proof/starport-production-catalog/csp10.1/discovery-and-profile.json\">Discovery and profile evidence</a></td></tr>"
+}
