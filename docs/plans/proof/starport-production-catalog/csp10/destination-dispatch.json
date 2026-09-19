@@ -1,0 +1,74 @@
+{
+  "task": "CSP10",
+  "status": "partial; production selection does not bind grants yet",
+  "starport_commit": "3e212bd05dcf5f3c82e414583b558f10b1d7378f",
+  "starmap_commit": "9845e6cf9ea3a239c90214e1eb937889ca72b129",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "changes": [
+    "Material can carry a grant bound to identity and operation. Explicit nil grants refuse authentication.",
+    "Authentication checks bound grants before placement and preserves approved query placement in the final request target.",
+    "Existing dispatch checks revalidate the target and grant before connection acquisition and transmission.",
+    "Destination refusals map to gateway_unavailable with no provider availability scope."
+  ],
+  "checks": [
+    {
+      "command": "go test -race -count=1 -timeout 3m -json ./internal/credentials ./internal/providers/auth ./internal/providers/connectors",
+      "pass_events": 447,
+      "skip_events": 1,
+      "skipped": "TestProviderCredentialRepositoryContract/valkey",
+      "exit_code": 0,
+      "output": "destination-dispatch/affected.jsonl.gz"
+    },
+    {
+      "command": "go test -race -count=10 -timeout 2m -json ./internal/providers/connectors -run 'TestGranted|TestDispatchRejectsDestination|TestDestinationRefusal'",
+      "pass_events": 130,
+      "exit_code": 0,
+      "output": "destination-dispatch/repeated.jsonl.gz"
+    },
+    {
+      "command": "go test -race -count=3 -timeout 2m -json ./internal/providers/connectors -run 'TestGranted|TestDispatchRejectsDestination|TestDestinationRefusal'",
+      "pass_events": 63,
+      "exit_code": 0,
+      "output": "destination-dispatch/final.jsonl.gz"
+    },
+    {
+      "command": "go vet ./internal/credentials ./internal/providers/auth ./internal/providers/connectors",
+      "exit_code": 0
+    },
+    {
+      "command": "make lint",
+      "exit_code": 0,
+      "output": "destination-dispatch/lint.log.gz"
+    },
+    {
+      "command": "technical-writing lint internal/credentials/destination.go internal/providers/auth/request.go --format text",
+      "exit_code": 0
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "diagnostics": 67,
+      "limitation": "Historical diagnostics remain. Targeted plan and new source checks pass.",
+      "output": "destination-dispatch/writing-check.json"
+    }
+  ],
+  "fail_before": {
+    "output": "destination-dispatch/fail-before.jsonl.gz",
+    "test": "TestDestinationRefusalDoesNotChangeProviderAvailability",
+    "expected": "gateway_unavailable",
+    "actual": "unreachable"
+  },
+  "evidence": [
+    "Loopback HTTPS approved requests carry the fixture credential. Unapproved host, scheme, port, path, query, placement, and absent bound grant fail before placement.",
+    "Post-placement target mutations stop before the transport callback.",
+    "Query credentials work on approved targets. Subsequent query changes and revocation refuse dispatch.",
+    "HTTP/1 and HTTP/2 queued requests refuse revoked grants. Admitted streams complete.",
+    "A real redirect to a second HTTPS server receives no request, even with a client that permits redirects."
+  ],
+  "limitations": [
+    "Unbound material retains its previous authentication behavior. Production credential selection does not bind grants yet. The earlier missing-grant regression remains unresolved for unbound material.",
+    "No A25 completion or registration credit. No complete task rerun, structured review, native CI, published pair, or merge.",
+    "Pinned baseline grants, durable explicit approval, diagnostics, stable source handle binding, and production refusal of unbound material remain required."
+  ],
+  "next_action": "Connect credential setup and runtime selection to approved grants. Remove the unbound-material bypass after all production callers and fixtures supply explicit grants. Qualify the actual role selection, overrides, retries, restart, and no-probe contracts."
+}

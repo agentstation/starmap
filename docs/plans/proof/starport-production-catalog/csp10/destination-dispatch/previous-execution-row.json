@@ -1,0 +1,3 @@
+{
+  "html": "<tr><td>2026-09-19</td><td>CSP10</td><td>Resolve aliases and hide denied endpoint membership.</td><td><a href=\"proof/starport-production-catalog/csp10/alias-resolution.json\">Proof</a>: <code>dee76d9</code> and <code>fddeafc</code>. Final endpoint checks pass 404 events with one skip. The <a href=\"proof/starport-production-catalog/csp10/alias-resolution/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}
