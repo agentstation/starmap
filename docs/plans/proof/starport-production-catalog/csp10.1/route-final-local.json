@@ -1,0 +1,37 @@
+{
+  "task": "CSP10.1",
+  "recorded_at": "2026-09-19T19:01:41.117262+00:00",
+  "starport_commit": "05a1ae1",
+  "starmap_commit": "c70627094",
+  "status": "all expanded A44 cases pass locally; repository roster running; Starport review pending",
+  "checks": {
+    "a44": "8 PASS, 0 FAIL, 0 UNVERIFIED; component scope only",
+    "catalog_race": "244 PASS events, 0 FAIL, 0 SKIP; 222.46 seconds",
+    "consumer_race": "catalog/view, router, routing, proxy passed",
+    "focused_route_race": "Six scaling subcases plus order and caller ownership passed after final test expansion.",
+    "router_benchmarks": "11 PASS on final source, required default duration",
+    "starmap_review": "Final Sol xhigh and Opus high review clean, zero findings",
+    "published_module": "GOWORK=off go test -run ^$ ./internal/catalog fails: pinned published module lacks github.com/agentstation/starmap/pkg/productfiles. V01 also rejects the local workspace module version. No publication qualification claimed."
+  },
+  "live_repository_run": {
+    "session_id": 7334,
+    "runner": "/tmp/csp101-repository-final-run.py",
+    "state": "/tmp/csp101-repository-final-gates/state.json",
+    "confirmed_progress": "Four commands finished: three PASS and expected V01 failure. Catalog-driven provider verification running."
+  },
+  "terminal_sessions": [
+    85321,
+    18921,
+    80912,
+    82307,
+    61441,
+    6205
+  ],
+  "next_action": "Poll repository session 7334. Inspect all 33 outcomes, fix newly introduced failures, and run final Starport Sol/Opus autoreview after checks and commits. Preserve the published-module boundary, PR168 rewrite decision, and native/merge requirements.",
+  "logs": {
+    "router_benchmarks": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/router\ncpu: Apple M2 Max\nBenchmarkCatalogExactModel/routes-10-12 \t  654802\t      1881 ns/op\t    2688 B/op\t      28 allocs/op\nBenchmarkCatalogExactModel/routes-1000-12         \t  645730\t      1720 ns/op\t    2688 B/op\t      28 allocs/op\nBenchmarkCatalogExactModel/routes-10000-12        \t  806661\t      1963 ns/op\t    2688 B/op\t      28 allocs/op\nBenchmarkEmbeddedCatalogSelection-12              \t  674988\t      1781 ns/op\t       510.0 catalog-routes\t    3008 B/op\t      34 allocs/op\nBenchmarkSelectModel/SimpleModelSelection-12      \t 2145219\t       562.5 ns/op\t     904 B/op\t      12 allocs/op\nBenchmarkSelectModel/WithProviderPreferences-12   \t  669020\t      1719 ns/op\t    3024 B/op\t      27 allocs/op\nBenchmarkRouteWithFallback/SingleModel-12         \t  249842\t      4045 ns/op\t    7888 B/op\t      57 allocs/op\nBenchmarkRouteWithFallback/ModelArray-12          \t  284464\t      4526 ns/op\t    8640 B/op\t      60 allocs/op\nBenchmarkLatencyTracking/RecordLatency-12         \t46337860\t        26.98 ns/op\t       0 B/op\t       0 allocs/op\nBenchmarkLatencyTracking/GetLatency-12            \t81953452\t        16.40 ns/op\t       0 B/op\t       0 allocs/op\nBenchmarkConcurrentRouting-12                     \t 2273162\t       508.6 ns/op\t     904 B/op\t      12 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/router\t17.092s\n",
+    "published_module": "# github.com/agentstation/starport/internal/catalog\ninternal/catalog/credential_policy.go:11:2: no required module provides package github.com/agentstation/starmap/pkg/productfiles; to add it:\n\tgo get github.com/agentstation/starmap/pkg/productfiles\nFAIL\tgithub.com/agentstation/starport/internal/catalog [setup failed]\nFAIL\n",
+    "starmap_review_process": "autoreview target: branch\nbranch: codex/starmap-catalog-indexes\ngate: pre-pr (configured cadence: pre-pr)\nprofile: auto\nconfig: /Users/jack/.config/autoreview/config.toml\nselection: sol=7.83, opus5=7.52\nreviewers: codex model=gpt-5.6-sol thinking=xhigh, claude model=opus thinking=high\ntools: on\nweb_search: on\nref: origin/main\ntrufflehog: clean (4.0s)\nbundle: 145246 bytes; review passes: 1\nautoreview panel clean: no accepted/actionable findings reported\noverall: patch is correct (0.98)\nPanel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=xhigh: 0 finding(s).\n"
+  },
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10</td><td>Qualify HTTP compatibility across catalog refresh.</td><td><a href=\"proof/starport-production-catalog/csp10/http-compatibility.json\">Proof</a>: <code>763eef9</code> and <code>c382baf83</code>. All five A17 subcases pass for the local pair. The <a href=\"proof/starport-production-catalog/csp10/http-compatibility/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}
