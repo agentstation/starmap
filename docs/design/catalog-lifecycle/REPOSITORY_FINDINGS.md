@@ -3379,5 +3379,6 @@ Native suspend/resume, authority-specific diagnostics, full A46, review, and mer
 Starport commit `0b529f7` adds policy-authority status to admin info and preserves verified local-operator diagnostic reads during policy failure.
 Inference and mutations still refuse. The two diagnostic reads no longer require inference budgets.
 Revision polling now includes read latency within its fixed cadence. The two-second delayed-read component test passes.
+
 Final server and authorization race checks pass 709 events with eight optional skips. The corrected application recovery test passes.
 Native suspend/resume, real fleet propagation, full A46, review, and merge remain open.
