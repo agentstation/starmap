@@ -3443,6 +3443,76 @@
           "test": "TestSnapshotPermissionTracksWithdrawalWithoutReplacingMetadata"
         }
       ]
+    },
+    "A21.cache_retry_batch_admission": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCacheDeliveryRechecksCatalogPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestEmbeddingAndSemanticCachePermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRouterRechecksCatalogPermissionBeforeAttempts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestEmbeddingAndGenericAttemptsRecheckPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestQueuedBatchLineRechecksCatalogPermission"
+        }
+      ]
+    },
+    "A21.stream_policy_diagnostic": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogOperationReportsPermissionAndAdmittedStreamPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCacheDeliveryRechecksCatalogPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPStreamRetainsCatalogDuringRefresh"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestAdminRefreshReturnsAcceptedOperation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchRejectsCatalogWithdrawalWhileWaitingForConnection"
+        }
+      ]
     }
   },
   "task_component_checks": {
