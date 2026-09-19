@@ -1,0 +1,57 @@
+{
+  "starport_head": "6a1b698f0c43add00c3062e042a91ec5bde2fe62",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "scope": "Operator runtime migration commands using a local Go workspace. Published-module and native qualification remain open.",
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/cli ./internal/app -run '^TestRuntimeMigration'",
+      "result": "PASS",
+      "top_level_tests": 3,
+      "subtests": 13,
+      "package_seconds": {
+        "cli": 1.651,
+        "app": 1.922
+      }
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/app -run '^TestRuntimeMigrationOperatorLifecycle$'",
+      "result": "PASS",
+      "top_level_tests": 1,
+      "seconds": 81.932
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/cli ./cmd/starport",
+      "result": "PASS",
+      "package_seconds": {
+        "cli": 1.971,
+        "cmd/starport": 13.485
+      }
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go vet ./internal/cli ./internal/app ./cmd/starport",
+      "result": "PASS"
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "result": "PASS"
+    }
+  ],
+  "coverage": [
+    "Four phase commands pass exact operation inputs to application composition.",
+    "Usage failures do not call migration storage.",
+    "Missing Badger storage fails without creating the database, target, or journal.",
+    "Real Badger lifecycle uses separate opens for each phase.",
+    "Completion refuses the original configuration and accepts the saved replacement selection.",
+    "Completion retains scheduler identity and accepted generation, without creating SQLite.",
+    "Replacement closes before catalog storage, with a bounded cleanup context."
+  ],
+  "prose": "New source and added guide section pass lint. Whole operator guide retains 48 existing prose findings outside this change.",
+  "remaining": [
+    "Bind the saved KV selector and configuration selection to the operation.",
+    "Inventory the explicitly selected journal alongside canonical path reports.",
+    "Retain checkpoint generations through garbage collection.",
+    "Native interrupted-process qualification.",
+    "Published dependency, full repository checks, pre-PR review, PR and merge."
+  ],
+  "completion_credit": false
+}
