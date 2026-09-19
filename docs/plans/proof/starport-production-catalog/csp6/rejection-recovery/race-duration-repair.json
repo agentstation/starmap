@@ -1,6 +1,6 @@
 {
   "captured_at": "2026-09-19T01:29:32.278653+00:00",
-  "status": "final review passed; runtime group three active",
+  "status": "reviewed repair PR under native qualification; candidate runtime group three active",
   "owner": "CSP6",
   "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
   "branch": "codex/acquisition-coalescing-fixture",
@@ -91,9 +91,10 @@
     }
   },
   "live_sessions": {
-    "9821": "runtime shard 3, /tmp/csp6-runtime-shard-3.log and .jsonl"
+    "9821": "runtime shard 3, /tmp/csp6-runtime-shard-3.log and .jsonl",
+    "71664": "gh run watch 35414164079 --interval 60 --exit-status; /tmp/csp6-170-watch.log"
   },
-  "next_action": "Finish shard 3 through live session 9821. Final review passed with zero findings. Record exact test counts and inventory coverage, then publish consolidated repair head 336df28b6. The full runtime group 2 failure remains fail-before evidence; its only failed test now passes all crash points under race on both catalogs. Hosted final-head CI must pass every group before merge and publisher #168 resume.",
+  "next_action": "Observe local candidate group three through session 9821 and PR #170 CI run 35414164079 through session 71664. Capture candidate counts and exact inventory coverage. Resolve any actual failures, reuse #170, then mark ready and merge the reviewed exact head after all required and native checks pass. Record the merge before resuming the checked publisher for existing catalog #168. Preserve #165 until replacement qualification.",
   "source_commit": "336df28b611e62d058ff17029ffd274bc520fe84",
   "native_intel_failure": {
     "run": 35409735768,
@@ -113,5 +114,14 @@
     ],
     "findings": 0,
     "proof": "race-duration-final-review.json"
+  },
+  "pull_request": {
+    "number": 170,
+    "url": "https://github.com/agentstation/starmap/pull/170",
+    "head": "336df28b611e62d058ff17029ffd274bc520fe84",
+    "base": "b6ce2243cc606b72175a53d9af5ea79f950ba416",
+    "draft": true,
+    "run": 35414164079,
+    "review_threads": 0
   }
 }

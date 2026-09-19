@@ -1,3 +1,14 @@
+## Current disposition: verification repair #170
+
+PR #170 contains reviewed head `336df28b611e62d058ff17029ffd274bc520fe84` on base `b6ce2243c`.
+Sol and Opus report zero findings. Required local checks pass.
+CSP6 owns final-head CI run `35414164079` and the remaining local candidate runtime group.
+Watch session `71664` follows CI. Session `9821` runs the candidate group.
+
+Qualify all required and native checks, mark the draft ready, and merge the exact reviewed head.
+Then resume the checked publisher for existing catalog PR #168. Preserve rejected candidate #165 until replacement qualification.
+The [repair capture](repair-170.json) records the PR head and checks. PR #170 has no review threads.
+
 ## Current disposition: September 19 race failures
 
 PR #168 remains at `f91908cede32e052a5dc36da12d3ec26c0e126ef` with base `b6ce2243c` in its ancestry.
