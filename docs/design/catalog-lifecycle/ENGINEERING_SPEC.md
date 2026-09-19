@@ -1642,7 +1642,21 @@ The file inventory reports this directory with owner-only access and the selecte
 Initialize that history before catalog startup creates baseline or runtime markers.
 Existing accepted or candidate catalog pointers also select the legacy migration path.
 Development sessions omit persistent policy history.
-Inference policy migration, opt-in Starmap fallback, and shared configuration authority remain separate qualification requirements.
+
+Starport stores inference policy under `<state root>/credentials/inference/<instance ID>`.
+Initialize inference policy after storage opens and before catalog startup or provider activation.
+The current policy selects Starport names before conventional names.
+`STARPORT_CREDENTIAL_SOURCES_ALLOW_STARMAP_FALLBACK=true` permits Starmap names as the final fallback.
+The default is false. Explicit empty selections stop fallback.
+
+Compare complete profiles against the previous conventional-first policy before accepting migration.
+Each comparison captures source inputs once and rejects mixed versions of one secret resource.
+Persist accepted decisions without credential material. Owner mismatch and corrupt records refuse initialization.
+Concurrent writers retry within a five-second bound and honor cancellation.
+
+An uncertain publication remains an error. Request-time credential reads use cached material without policy-file access.
+
+Shared configuration authority and qualification against published dependencies remain separate requirements.
 
 ### 7.3 Secret managers and rotation
 

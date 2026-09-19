@@ -1,0 +1,9 @@
+{"Time":"2026-09-19T02:07:35.017216-05:00","Action":"start","Package":"github.com/agentstation/starport/internal/credentials"}
+{"Time":"2026-09-19T02:07:35.399661-05:00","Action":"run","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestInferenceProductPrecedence"}
+{"Time":"2026-09-19T02:07:35.399947-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestInferenceProductPrecedence","Output":"=== RUN   TestInferenceProductPrecedence\n","OutputType":"frame"}
+{"Time":"2026-09-19T02:07:35.399997-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestInferenceProductPrecedence","Output":"    environment_policy_test.go:16: inference did not select the product credential first\n","OutputType":"error"}
+{"Time":"2026-09-19T02:07:35.400121-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestInferenceProductPrecedence","Output":"--- FAIL: TestInferenceProductPrecedence (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-09-19T02:07:35.400153-05:00","Action":"fail","Package":"github.com/agentstation/starport/internal/credentials","Test":"TestInferenceProductPrecedence","Elapsed":0}
+{"Time":"2026-09-19T02:07:35.400206-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/credentials","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-09-19T02:07:35.400365-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/credentials","Output":"FAIL\tgithub.com/agentstation/starport/internal/credentials\t0.383s\n","OutputType":"frame"}
+{"Time":"2026-09-19T02:07:35.400391-05:00","Action":"fail","Package":"github.com/agentstation/starport/internal/credentials","Elapsed":0.383}

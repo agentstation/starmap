@@ -1,0 +1,86 @@
+{
+  "status": "local preparation; not merged",
+  "time": "2026-09-19T07:27:52.763169+00:00",
+  "starport_commit": "aa346d9cde5790ff636fdf56f6beaa7493582336",
+  "starmap_commit": "bbf5284629a632a17a6380615fd0672aa76372cf",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "workspace": "/tmp/csp9-host-integration.work",
+  "checks": {
+    "integrated-tests": {
+      "pass_events": 528,
+      "fail_events": 0,
+      "skips": [
+        "TestProviderCredentialRepositoryContract/valkey",
+        "TestAppWithValkey",
+        "TestSharedStartupDoesNotCreateLocalDatabases"
+      ],
+      "packages": [
+        "github.com/agentstation/starport/internal/credentials/cloudchain",
+        "github.com/agentstation/starport/internal/credentials",
+        "github.com/agentstation/starport/internal/config",
+        "github.com/agentstation/starport/internal/app"
+      ]
+    },
+    "host-tests": {
+      "pass_events": 5,
+      "fail_events": 0,
+      "skips": [],
+      "packages": [
+        "github.com/agentstation/starport/internal/config"
+      ]
+    },
+    "final-focused": {
+      "pass_events": 13,
+      "fail_events": 0,
+      "skips": [],
+      "packages": [
+        "github.com/agentstation/starport/internal/credentials"
+      ]
+    },
+    "startup-tests": {
+      "pass_events": 4,
+      "fail_events": 0,
+      "skips": [],
+      "packages": [
+        "github.com/agentstation/starport/internal/app"
+      ]
+    }
+  },
+  "concurrency": {
+    "command": "go test -race -count=10 -timeout 2m ./internal/credentials -run ^TestInferencePolicyConcurrentAcceptance$",
+    "exit_code": 0
+  },
+  "vet_exit_code": 0,
+  "lint_exit_code": 0,
+  "writing": "New policy source, changed guide section, and engineering specification pass. Existing guide diagnostics remain recorded in acquisition proof.",
+  "product_verifier": {
+    "exit_code": 1,
+    "unregistered_selected_subcases": 12
+  },
+  "remaining": [
+    "Register and qualify all twelve CSP9 A11/A12 subcases against their full contracts.",
+    "Qualify real storage where current runs skip service-dependent cases.",
+    "Review final changes, publish producer dependency, update Starport module pin, run native CI, and merge."
+  ],
+  "catalog_keyring_check": {
+    "state": "passed",
+    "exit_code": 0,
+    "pass_events": 285,
+    "fail_events": 0,
+    "skip_events": 0,
+    "log": "inference-policy/catalog-keyring.jsonl"
+  },
+  "commands": {
+    "integrated-tests": "GOWORK=/tmp/csp9-host-integration.work go test -json -race -count=1 -timeout 5m ./internal/credentials/... ./internal/config ./internal/app",
+    "catalog-keyring": "GOWORK=/tmp/csp9-host-integration.work go test -json -race -count=1 -timeout 5m ./internal/catalog ./internal/providers/keyring",
+    "host-tests": "GOWORK=/tmp/csp9-host-integration.work go test -json -race -count=1 -timeout 2m ./internal/config -run ^TestInference",
+    "startup-tests": "GOWORK=/tmp/csp9-host-integration.work go test -json -race -count=1 -timeout 2m ./internal/app -run ^TestInferencePolicyIsRecordedBeforeCatalogStartup$",
+    "product-verifier": "GOWORK=/tmp/csp9-host-integration.work bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-credential-roles --task CSP9 --json"
+  },
+  "full_plan_writing": {
+    "command": "make technical-writing-check",
+    "exit_code": 2,
+    "diagnostics": 68,
+    "note": "The check scans historical proof text, including captured lint output. The archived execution row is now JSON. Maintained plan and engineering specification pass targeted strict lint. Existing proof diagnostics remain unresolved."
+  }
+}

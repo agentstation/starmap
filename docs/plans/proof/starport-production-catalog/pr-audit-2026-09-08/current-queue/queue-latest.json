@@ -911,11 +911,11 @@
     },
     {
       "worktree": "starport-credential-roles",
-      "head": "cc3701f23efb4a21387325b53fa2a6ad7014e29b",
-      "status": "M internal/app/app.go\n M internal/app/catalog_storage.go\n M internal/catalog/credential_policy.go\n M internal/config/config.go\n M internal/config/credential_sources.go\n M internal/config/file_manifest.go\n M internal/config/loader.go\n M internal/config/paths.go\n M internal/config/provider_environment.go\n M internal/config/provider_environment_test.go\n M internal/credentials/resolver.go\n?? internal/config/inference_policy.go\n?? internal/credentials/environment_policy.go\n?? internal/credentials/environment_policy_test.go\n?? internal/credentials/policy_migration.go\n?? internal/credentials/policy_migration_test.go\n?? internal/credentials/policy_store.go",
+      "head": "aa346d9cde5790ff636fdf56f6beaa7493582336",
+      "status": "",
       "owner": "CSP9",
       "disposition": "unpublished preparation",
-      "next_action": "Complete inference migration and fallback, then review and qualify the published dependency."
+      "next_action": "Register and qualify CSP9 acceptance cases, then review and qualify the published dependency."
     }
   ],
   "seven_day_disposition_review_required": false,

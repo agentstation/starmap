@@ -1,0 +1,3 @@
+{
+  "historical_html": "<tr><td>2026-09-19 UTC</td><td>CSP6</td><td>Merged the signed publisher repair.</td><td>PR #172 merged at <code>9ff84a481</code> after all 31 checks passed. Its tree matches reviewed <code>077c6e389</code>. The <a href=\"proof/starport-production-catalog/csp6/rejection-recovery/repair-172-merged.json\">merge proof</a> records protected qualification. Signed candidate <code>45afaed5d</code> retains all catalog bytes and awaits history-rewrite authorization. Starport preparation reaches <code>dcd0b50</code> with migration and acquisition checks. The <a href=\"proof/starport-production-catalog/csp6/rejection-recovery/pre-repair-172-merge-execution.html\">archive</a> preserves the moved entry. CSP6 remains in progress.</td></tr>\n"
+}
