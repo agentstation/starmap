@@ -2675,6 +2675,13 @@ Local and replicated gateway authorization use process-local monotonic deadlines
 The maximum disconnected permission lifetime is 60 seconds from the start of successful evidence verification.
 A delayed response consumes that lifetime. Cache access, refresh failure, and retries cannot extend it.
 
+Each cached permit also carries a native elapsed deadline that includes system sleep.
+Anchor that deadline before source reads. Unknown counter evidence or a reading before the starting sample invalidates the permit.
+Counter recovery cannot revive invalidated copies. Readiness refuses an unavailable counter.
+
+The counter requires platform qualification but does not require qualified UTC.
+Keep absolute key expiry and external catalog deadlines under their existing clock contracts.
+
 The normal revocation-propagation target is two seconds while the owning authority is reachable.
 This target requires fleet qualification. It is not a partition guarantee.
 
