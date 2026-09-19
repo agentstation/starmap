@@ -3867,6 +3867,88 @@
           "test": "TestLatencyWorkerDoesNotBlockCallbacks"
         }
       ]
+    },
+    "A46.cold_load_deadline_coalescing": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheCoalescesAndSeparatesCallerCancellation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheBoundsTenantLoadsWithoutBlockingOtherTenants"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheDeadlineAndCloseCancelWorkers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheGlobalLoadLimitProtectsInFlightEntries"
+        }
+      ]
+    },
+    "A46.local_mutation_fencing": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMutationRevokesCopiesAndInFlightLoads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestOverlappingMutationsKeepAdmissionClosed"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestConcurrentMutationCompletion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheMutationRejectsInFlightPublication"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestRepositorySourceRealStoresAndLocalMutation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization/revision",
+          "test": "TestKVRevisionFenceCoversSuccessAndFailure"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization/revision",
+          "test": "TestRepositoriesPublishEveryAuthorizationMutation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization/revision",
+          "test": "TestIdentityMutationsPublishSQLRevisions"
+        }
+      ]
     }
   },
   "task_component_checks": {
