@@ -5,7 +5,7 @@ Sol and Opus report zero findings. Full local checks and all 55 workflow contrac
 The repair updates obsolete CI assertions and runs workflow contracts once in the early checks job.
 
 CSP6 owns final-head CI run `35415804632`, watched by session `87833`.
-Qualify all required and native checks, mark the draft ready, and merge the exact reviewed head.
+The PR is ready for review. All race groups pass. Qualify the remaining native checks, then merge the exact reviewed head.
 Then resume the checked publisher for catalog PR #168.
 
 PR #165 has a merge conflict. Preserve this rejected candidate until replacement qualification proves that no required work is lost.
