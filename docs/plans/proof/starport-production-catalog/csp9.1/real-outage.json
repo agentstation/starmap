@@ -1,0 +1,41 @@
+{
+  "commit": "eeed472",
+  "status": "real-storage outage qualified locally; A45 incomplete",
+  "checks": {
+    "managed_pass_events": 29,
+    "skips": 0,
+    "failures": 0,
+    "repository_lint": "pass",
+    "new_test_prose": "pass"
+  },
+  "outage": {
+    "method": "Test-owned TCP proxy closes active client connections and refuses new connections; the real Valkey server retains its data.",
+    "observations": [
+      "Warm valid material remains usable without a repository read.",
+      "Expired material refuses during the outage.",
+      "Recovery loads valid material without restoring old handles."
+    ],
+    "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "container": "csp91-valkey-outage",
+    "container_status": "stopped and removed"
+  },
+  "dispatch_analysis": {
+    "finding": "The Go 1.27.1 HTTP/1 transport calls GotConn and can then enqueue a write without another context check. A cancellation-only trace callback does not prove refusal before transmission.",
+    "source": "net/http/transport.go getConn, persistConn.roundTrip, persistConn.writeLoop in the pinned local Go 1.27.1 source",
+    "candidate_boundary": "Inspect the Go 1.27.1 ClientConn reservation API for explicit connection and stream admission. Preserve protocol concurrency, proxy policy, timeouts, pooling, and accepted streams.",
+    "status": "design and implementation pending; existing failing regression retained"
+  },
+  "remaining": [
+    "Repair queued dispatch and retries on HTTP/1 and HTTP/2.",
+    "Qualify refresh fairness, churn, and disclosure.",
+    "Register all nine A45 subcases and run the full task gates and benchmarks.",
+    "Review, publish the required pair, qualify native CI, and merge."
+  ],
+  "active_sessions": [
+    {
+      "id": 27939,
+      "command": "make technical-writing-check",
+      "output": "/tmp/csp91-outage-planning-writing.txt"
+    }
+  ]
+}
