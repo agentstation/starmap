@@ -175,3 +175,9 @@ func (d *Directory) checkContext(ctx context.Context) error {
 	}
 	return ctx.Err()
 }
+
+// ValidateAncestors checks an existing path route without creating files or directories.
+// The final entry requires its own type and access checks.
+func ValidateAncestors(path string) error {
+	return privatefiles.ValidateAncestors(path)
+}

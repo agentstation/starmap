@@ -71,3 +71,8 @@ Construction reads no credential source. Only explicitly selected policy storage
 Pass the resolver to `acquisition.WithCredentialResolver` or the provider fetcher's resolver option.
 The API does not inspect inference credentials or account repositories.
 Starport must connect this API to its configuration authority and classify existing installations before selecting persistent state.
+
+The Starport policy also reads `STARPORT_CATALOG_<PROVIDER>_<FIELD>_REFERENCE`.
+Its `_FALLBACK_AMBIENT` suffix permits fallback only for a not-configured source.
+Explicit references in `CredentialResolverConfig.References` take precedence over these environment references.
+Reference aliases must not collide with credential value aliases.

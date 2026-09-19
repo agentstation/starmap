@@ -167,3 +167,35 @@ func TestCredentialProductValidationPrecedesStorage(t *testing.T) {
 		t.Fatal("invalid product created state")
 	}
 }
+
+func TestStarportEnvironmentReferenceUsesHostLookup(t *testing.T) {
+	values := map[string]string{"STARPORT_CATALOG_AUDIT_API_KEY_REFERENCE": "env:SELECTED", "SELECTED": "selected", "AUDIT_API_KEY": "ambient"}
+	resolver, err := acquisition.OpenCredentialResolver(t.Context(), acquisition.CredentialResolverConfig{Product: acquisition.CredentialProductStarport, Lookup: func(name string) (string, bool) { v, ok := values[name]; return v, ok }})
+	if err != nil {
+		t.Fatal(err)
+	}
+	provider := publicCredentialProvider()
+	material, err := resolver.ResolveCatalog(t.Context(), &provider)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if value, _ := material.Value("api-key"); value != "selected" {
+		t.Fatal("role reference did not use host lookup")
+	}
+	values["STARPORT_CATALOG_AUDIT_API_KEY_REFERENCE"] = ""
+	if _, err = resolver.ResolveCatalog(t.Context(), &provider); err == nil {
+		t.Fatal("empty explicit reference used ambient key")
+	}
+}
+
+func TestStarportReferenceAliasCollisionPrecedesLookup(t *testing.T) {
+	provider := publicCredentialProvider()
+	provider.Credentials.Fields[0].Environment = []string{"STARPORT_CATALOG_AUDIT_API_KEY_REFERENCE"}
+	resolver, err := acquisition.OpenCredentialResolver(t.Context(), acquisition.CredentialResolverConfig{Product: acquisition.CredentialProductStarport, Lookup: func(string) (string, bool) { t.Fatal("ambiguous reference read environment"); return "", false }})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = resolver.ResolveCatalog(t.Context(), &provider); err == nil {
+		t.Fatal("reference alias collision accepted")
+	}
+}

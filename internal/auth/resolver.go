@@ -287,7 +287,11 @@ func (r *Resolver) resolveField(
 	references *referenceResolution,
 ) (resolvedField, bool, error) {
 	key := CredentialFieldKey{ProviderID: providerID, FieldID: field.ID}
-	if policy, exists := r.references[key]; exists {
+	policy, exists, err := r.fieldReference(key)
+	if err != nil {
+		return resolvedField{}, false, err
+	}
+	if exists {
 		material, err := references.resolve(ctx, key, policy.Reference)
 		if err == nil {
 			value, selectErr := referenceValue(material, policy.Reference)

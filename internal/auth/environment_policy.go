@@ -94,6 +94,20 @@ func (r *Resolver) validateEnvironmentAliases(provider *catalogs.Provider) error
 			owners[name] = field.ID
 		}
 	}
+	if r.environmentPolicy.current() == EnvironmentPolicyStarportCurrent {
+		for _, field := range provider.Credentials.Fields {
+			name, err := starportReferenceName(provider.ID, field.ID)
+			if err != nil {
+				return err
+			}
+			for _, alias := range []string{name, name + "_FALLBACK_AMBIENT"} {
+				if _, exists := owners[alias]; exists {
+					return &errors.ValidationError{Field: "provider.credentials.environment", Value: alias, Message: "reference name conflicts with a credential field"}
+				}
+				owners[alias] = field.ID
+			}
+		}
+	}
 	return nil
 }
 
