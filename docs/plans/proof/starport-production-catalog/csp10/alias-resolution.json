@@ -1,0 +1,179 @@
+{
+  "status": "local preparation; CSP10 incomplete",
+  "alias_commit": "dee76d9",
+  "final_commit": "fddeafcef28d05c40d67c2968d143983f2dd17d8",
+  "registry_commit": "6aff4690d7db29c820e39c5a03fbaece5f64d71e",
+  "results": {
+    "alias-before": {
+      "counts": {
+        "fail": 2
+      },
+      "failures": [
+        "TestCanonicalAliasResolutionAndRemovalRetainGeneration",
+        "TestActivationRefusesAliasOfferingNameCollision",
+        "github.com/agentstation/starport/internal/catalog"
+      ],
+      "skips": []
+    },
+    "alias-after": {
+      "counts": {
+        "pass": 2
+      },
+      "failures": [],
+      "skips": []
+    },
+    "alias-router": {
+      "counts": {},
+      "failures": [
+        "github.com/agentstation/starport/internal/router"
+      ],
+      "skips": []
+    },
+    "alias-integration": {
+      "counts": {
+        "pass": 1,
+        "fail": 3
+      },
+      "failures": [
+        "TestModelDetailsResolveRetainedAliasInBothProtocols/active",
+        "TestModelDetailsResolveRetainedAliasInBothProtocols/removed",
+        "TestModelDetailsResolveRetainedAliasInBothProtocols",
+        "github.com/agentstation/starport/internal/server/controllers"
+      ],
+      "skips": []
+    },
+    "alias-broad": {
+      "counts": {
+        "pass": 850,
+        "fail": 3,
+        "skip": 1
+      },
+      "failures": [
+        "TestModelDetailsResolveRetainedAliasInBothProtocols/active",
+        "TestModelDetailsResolveRetainedAliasInBothProtocols/removed",
+        "TestModelDetailsResolveRetainedAliasInBothProtocols",
+        "github.com/agentstation/starport/internal/server/controllers"
+      ],
+      "skips": [
+        "TestGatewayOverheadBenchmark"
+      ]
+    },
+    "alias-final": {
+      "counts": {
+        "pass": 857,
+        "skip": 1
+      },
+      "failures": [],
+      "skips": [
+        "TestGatewayOverheadBenchmark"
+      ]
+    },
+    "alias-catalog-final": {
+      "counts": {
+        "pass": 8
+      },
+      "failures": [],
+      "skips": []
+    },
+    "alias-http-final": {
+      "counts": {
+        "fail": 3
+      },
+      "failures": [
+        "TestModelDetailsResolveRetainedAliasInBothProtocols/active",
+        "TestModelDetailsResolveRetainedAliasInBothProtocols/removed",
+        "TestModelDetailsResolveRetainedAliasInBothProtocols",
+        "github.com/agentstation/starport/internal/server/controllers"
+      ],
+      "skips": []
+    },
+    "alias-http-fixed": {
+      "counts": {
+        "pass": 7
+      },
+      "failures": [],
+      "skips": []
+    },
+    "alias-http-qualified": {
+      "counts": {
+        "pass": 9,
+        "fail": 3
+      },
+      "failures": [
+        "TestModelDetailsResolveRetainedAliasInBothProtocols/removed/openrouter",
+        "TestModelDetailsResolveRetainedAliasInBothProtocols/removed",
+        "TestModelDetailsResolveRetainedAliasInBothProtocols",
+        "github.com/agentstation/starport/internal/server/controllers"
+      ],
+      "skips": []
+    },
+    "alias-http-complete": {
+      "counts": {
+        "pass": 12
+      },
+      "failures": [],
+      "skips": []
+    },
+    "model-path-before": {
+      "counts": {
+        "fail": 1
+      },
+      "failures": [
+        "TestModelDetailsPreserveLiteralPlusInPath",
+        "github.com/agentstation/starport/internal/server/controllers"
+      ],
+      "skips": []
+    },
+    "endpoint-redaction-before": {
+      "counts": {
+        "fail": 1
+      },
+      "failures": [
+        "TestEndpointLookupDoesNotRevealDeniedMembership",
+        "github.com/agentstation/starport/internal/proxy"
+      ],
+      "skips": []
+    },
+    "endpoint-redaction-final": {
+      "counts": {
+        "pass": 404,
+        "skip": 1
+      },
+      "failures": [],
+      "skips": [
+        "TestGatewayOverheadBenchmark"
+      ]
+    }
+  },
+  "behavior": [
+    "Snapshot name, route, and operation lookup use the accepted Starmap alias index. Removed aliases refuse convenience resolution.",
+    "Planning resolves requested and zero-price variant names without granting permission for their target. Ordinary names add zero allocations in the named guard.",
+    "Catalog activation refuses collisions between aliases and exact provider routes, preserving the earlier accepted snapshot.",
+    "Model details return the canonical target in both protocol families. Removed aliases return 404 with protocol-specific not_found_error fields.",
+    "Literal plus characters survive path decoding for model details and endpoints.",
+    "Denied and unknown endpoint names share the same not-found response. Checks run before both direct projection and cached delivery."
+  ],
+  "scope": {
+    "broad": "857 race events passed with one optional benchmark skip before the later path-decoding fix.",
+    "catalog": "8 focused race events passed, including atomic activation, names, aliases, removal, and zero-allocation lookup.",
+    "http": "12 focused events passed after path decoding and exact protocol assertions.",
+    "endpoint_follow_up": "404 race events passed with one optional benchmark skip after final endpoint disclosure changes.",
+    "lint_vet": "passed",
+    "writing": "new source and added documentation passed; full historical prose is not claimed clean",
+    "registry": "81 verifier tests passed; 25 disclosure checks now registered. The earlier 24-check acceptance result remains bound to dde50a7. Repeat final task acceptance before completion."
+  },
+  "iterations": [
+    "Initial canonical alias and collision tests failed as intended.",
+    "The new inference fixture initially used a nonexistent strategy constant. It now uses OperatorFirst.",
+    "The HTTP fixture initially omitted its primary author and then used an unpublished registry. It now uses valid authored facts and registry.Open.",
+    "Exact error-field assertions exposed the established OpenRouter metadata key error_type. Tests and documentation now match that protocol codec.",
+    "A literal-plus path test failed before switching path parameters to PathUnescape.",
+    "The endpoint audit exposed denied membership through differing status codes. The fail-before regression and final repair are retained."
+  ],
+  "limitations": [
+    "No native, published-pair, structured-review, or merge qualification.",
+    "A18 identity and transition subcases remain open until their complete HTTP, routing, and concurrent-request contracts are qualified.",
+    "The final task acceptance command has not been rerun for this source and registry pair."
+  ],
+  "next_action": "Qualify alias and removal behavior through complete HTTP and cache paths, then test in-flight versus new-attempt transitions and register the remaining A18 evidence."
+}
