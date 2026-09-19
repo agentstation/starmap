@@ -1,0 +1,25 @@
+{
+  "status": "local implementation, incomplete task",
+  "commit": "b2e74ae60ea32c490d7092f5a1b1a3d8a4765dd5",
+  "branch": "codex/starport-catalog-routing",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+  "parent": "c651009c4209b423b4c96702be171892d031ecbe",
+  "contract": "Explicit immutable viewer policy filters accepted definitions and offerings, independent of adapter readiness. Authority is checked before and after projection. Returned records belong to the caller.",
+  "fail_before": "The new regression failed to compile because the dedicated discovery contract was absent. Existing compatibility tests separately confirm routable membership; those contracts remain unchanged.",
+  "verification": {
+    "targeted_discovery_pass_events": 5,
+    "affected_seam_pass_events": 42,
+    "additional_withdrawal_pass_events": 1,
+    "skips": 0,
+    "vet": "pass",
+    "lint": "0 issues",
+    "targeted_writing": "pass, zero diagnostics"
+  },
+  "limitations": [
+    "No HTTP or console integration yet.",
+    "No current account policy projection or caller readiness delivery yet.",
+    "No released-pair, native or PR qualification.",
+    "Current projection copies accepted definitions; indexed projection belongs to CSP10.1."
+  ],
+  "next_action": "Integrate dedicated discovery with authenticated caller disclosure policy and current authority checks. Keep compatibility list membership unchanged. Add controller tests for denied models, missing credentials, and withdrawal."
+}
