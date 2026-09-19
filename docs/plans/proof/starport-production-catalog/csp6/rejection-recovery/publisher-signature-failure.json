@@ -1,0 +1,283 @@
+{
+  "run": 35420322946,
+  "conclusion": "failure",
+  "step": "Promote exact input through checked pull request",
+  "pull": 168,
+  "head": "e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+  "checks": "31 successful checks; no review threads",
+  "merge": "not merged; protected merge rejected",
+  "signature_requirement": true,
+  "head_verification": {
+    "verified": false,
+    "reason": "unsigned",
+    "signature": null,
+    "payload": null,
+    "verified_at": null
+  },
+  "pull_commits": [
+    {
+      "sha": "8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
+      "node_id": "C_kwDOPa1FXNoAKDhiYmQzMDIzNTQ0ZjVmZDIzZjI1ZTRkY2NlNDAzYjVkM2Q1Y2UzOTI",
+      "commit": {
+        "author": {
+          "name": "starmap-catalog-publisher[bot]",
+          "email": "329307247+starmap-catalog-publisher[bot]@users.noreply.github.com",
+          "date": "2026-09-18T21:32:07Z"
+        },
+        "committer": {
+          "name": "starmap-catalog-publisher[bot]",
+          "email": "329307247+starmap-catalog-publisher[bot]@users.noreply.github.com",
+          "date": "2026-09-18T21:32:07Z"
+        },
+        "message": "catalog: embed bindings-de02ef4fcfb68a86b119f3fa139715c1f77d4e2ee8d8af3d4eb4efab3d31ef07.local.ac6ad0483752",
+        "tree": {
+          "sha": "3ac1ba3e67c5759fa00f8c37cb7512e65f206f7f",
+          "url": "https://api.github.com/repos/agentstation/starmap/git/trees/3ac1ba3e67c5759fa00f8c37cb7512e65f206f7f"
+        },
+        "url": "https://api.github.com/repos/agentstation/starmap/git/commits/8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://api.github.com/repos/agentstation/starmap/commits/8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
+      "html_url": "https://github.com/agentstation/starmap/commit/8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
+      "comments_url": "https://api.github.com/repos/agentstation/starmap/commits/8bbd3023544f5fd23f25e4dcce403b5d3d5ce392/comments",
+      "author": {
+        "login": "starmap-catalog-publisher[bot]",
+        "id": 329307247,
+        "node_id": "BOT_kgDOE6DUbw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/165715156?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D",
+        "html_url": "https://github.com/apps/starmap-catalog-publisher",
+        "followers_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "starmap-catalog-publisher[bot]",
+        "id": 329307247,
+        "node_id": "BOT_kgDOE6DUbw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/165715156?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D",
+        "html_url": "https://github.com/apps/starmap-catalog-publisher",
+        "followers_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
+          "url": "https://api.github.com/repos/agentstation/starmap/commits/096a82b6d3ea227bdd64393cfd12663ed8b6d890",
+          "html_url": "https://github.com/agentstation/starmap/commit/096a82b6d3ea227bdd64393cfd12663ed8b6d890"
+        }
+      ]
+    },
+    {
+      "sha": "f91908cede32e052a5dc36da12d3ec26c0e126ef",
+      "node_id": "C_kwDOPa1FXNoAKGY5MTkwOGNlZGUzMmUwNTJhNWRjMzZkYTEyZDNlYzI2YzBlMTI2ZWY",
+      "commit": {
+        "author": {
+          "name": "starmap-catalog-publisher[bot]",
+          "email": "329307247+starmap-catalog-publisher[bot]@users.noreply.github.com",
+          "date": "2026-09-19T00:32:44Z"
+        },
+        "committer": {
+          "name": "starmap-catalog-publisher[bot]",
+          "email": "329307247+starmap-catalog-publisher[bot]@users.noreply.github.com",
+          "date": "2026-09-19T00:32:44Z"
+        },
+        "message": "Merge commit 'b6ce2243cc606b72175a53d9af5ea79f950ba416' into HEAD",
+        "tree": {
+          "sha": "843bdac413351c5ba416d50fcda5499430962bad",
+          "url": "https://api.github.com/repos/agentstation/starmap/git/trees/843bdac413351c5ba416d50fcda5499430962bad"
+        },
+        "url": "https://api.github.com/repos/agentstation/starmap/git/commits/f91908cede32e052a5dc36da12d3ec26c0e126ef",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://api.github.com/repos/agentstation/starmap/commits/f91908cede32e052a5dc36da12d3ec26c0e126ef",
+      "html_url": "https://github.com/agentstation/starmap/commit/f91908cede32e052a5dc36da12d3ec26c0e126ef",
+      "comments_url": "https://api.github.com/repos/agentstation/starmap/commits/f91908cede32e052a5dc36da12d3ec26c0e126ef/comments",
+      "author": {
+        "login": "starmap-catalog-publisher[bot]",
+        "id": 329307247,
+        "node_id": "BOT_kgDOE6DUbw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/165715156?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D",
+        "html_url": "https://github.com/apps/starmap-catalog-publisher",
+        "followers_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "starmap-catalog-publisher[bot]",
+        "id": 329307247,
+        "node_id": "BOT_kgDOE6DUbw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/165715156?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D",
+        "html_url": "https://github.com/apps/starmap-catalog-publisher",
+        "followers_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
+          "url": "https://api.github.com/repos/agentstation/starmap/commits/8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
+          "html_url": "https://github.com/agentstation/starmap/commit/8bbd3023544f5fd23f25e4dcce403b5d3d5ce392"
+        },
+        {
+          "sha": "b6ce2243cc606b72175a53d9af5ea79f950ba416",
+          "url": "https://api.github.com/repos/agentstation/starmap/commits/b6ce2243cc606b72175a53d9af5ea79f950ba416",
+          "html_url": "https://github.com/agentstation/starmap/commit/b6ce2243cc606b72175a53d9af5ea79f950ba416"
+        }
+      ]
+    },
+    {
+      "sha": "e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+      "node_id": "C_kwDOPa1FXNoAKGUxZDcyZDVkN2U1ZjI5MjE2MTZiODliOTFiNjQ2MGZlZmFmZmI2MmQ",
+      "commit": {
+        "author": {
+          "name": "starmap-catalog-publisher[bot]",
+          "email": "329307247+starmap-catalog-publisher[bot]@users.noreply.github.com",
+          "date": "2026-09-19T03:18:02Z"
+        },
+        "committer": {
+          "name": "starmap-catalog-publisher[bot]",
+          "email": "329307247+starmap-catalog-publisher[bot]@users.noreply.github.com",
+          "date": "2026-09-19T03:18:02Z"
+        },
+        "message": "Merge commit '8595d5a0cf9e6515a6e1ef4abbbaec205c142520' into HEAD",
+        "tree": {
+          "sha": "85aa8b6532dbbd96faf7d36c9f266248ea3ce16b",
+          "url": "https://api.github.com/repos/agentstation/starmap/git/trees/85aa8b6532dbbd96faf7d36c9f266248ea3ce16b"
+        },
+        "url": "https://api.github.com/repos/agentstation/starmap/git/commits/e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://api.github.com/repos/agentstation/starmap/commits/e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+      "html_url": "https://github.com/agentstation/starmap/commit/e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+      "comments_url": "https://api.github.com/repos/agentstation/starmap/commits/e1d72d5d7e5f2921616b89b91b6460fefaffb62d/comments",
+      "author": {
+        "login": "starmap-catalog-publisher[bot]",
+        "id": 329307247,
+        "node_id": "BOT_kgDOE6DUbw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/165715156?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D",
+        "html_url": "https://github.com/apps/starmap-catalog-publisher",
+        "followers_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "starmap-catalog-publisher[bot]",
+        "id": 329307247,
+        "node_id": "BOT_kgDOE6DUbw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/165715156?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D",
+        "html_url": "https://github.com/apps/starmap-catalog-publisher",
+        "followers_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "f91908cede32e052a5dc36da12d3ec26c0e126ef",
+          "url": "https://api.github.com/repos/agentstation/starmap/commits/f91908cede32e052a5dc36da12d3ec26c0e126ef",
+          "html_url": "https://github.com/agentstation/starmap/commit/f91908cede32e052a5dc36da12d3ec26c0e126ef"
+        },
+        {
+          "sha": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
+          "url": "https://api.github.com/repos/agentstation/starmap/commits/8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
+          "html_url": "https://github.com/agentstation/starmap/commit/8595d5a0cf9e6515a6e1ef4abbbaec205c142520"
+        }
+      ]
+    }
+  ],
+  "repair_worktree": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
+  "repair_branch": "codex/catalog-signed-promotion",
+  "repair_base": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
+  "next_action": "Implement verified GitHub App commit creation for initial promotion and base updates. Keep signature protection and exact-head checks. Prepare reviewed recovery of existing unsigned bot history before requesting any required rewrite authorization.",
+  "references": [
+    "https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification",
+    "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches"
+  ]
+}
