@@ -1,0 +1,46 @@
+{
+  "task": "CSP10.2",
+  "commit": "eee55efae59a381287c51203560978244cebd80a",
+  "status": "account refusal implemented; authorization memory remains open",
+  "behavior": [
+    "Missing and inactive accounts refuse with HTTP 403.",
+    "Missing authority, read errors, foreign account identity, and zero revision refuse with HTTP 503 and Retry-After: 1.",
+    "Bearer, anonymous, and console-session callers share the account admission rule.",
+    "Liveness remains available when account authority fails."
+  ],
+  "verification": {
+    "race": {
+      "command": "GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=3m -json ./internal/server -skip '^TestAuthorizationWarmRequestsAvoidStableReads$'",
+      "exit_code": 0,
+      "pass_events": 354,
+      "skip_events": 2,
+      "failed_events": 0,
+      "excluded": "Warm storage read regression remains unresolved."
+    },
+    "vet": {
+      "command": "GOWORK=/tmp/csp102-host-integration.work go vet ./internal/server/...",
+      "exit_code": 0
+    },
+    "lint": {
+      "command": "GOWORK=/tmp/csp102-host-integration.work make lint",
+      "exit_code": 0,
+      "issues": 0
+    },
+    "before": {
+      "source": "9b62812:internal/server/middleware.go via Go overlay",
+      "command": "GOWORK=/tmp/csp102-host-integration.work go test -overlay /tmp/csp102-account-before-overlay.json -race -count=1 -timeout=2m -json ./internal/server -run '^TestAccount(AdmissionAcrossCallerModes|AuthorityFailureKeepsLivenessAvailable)$'",
+      "failed_leaf_cases": 18,
+      "passing_events": 4,
+      "failed_parent_events": 4
+    },
+    "writing": "Two new test files and extracted added comments pass. Whole legacy files retain 46 pre-existing prose diagnostics."
+  },
+  "limitations": [
+    "No authorization cache exists yet. Warm stable reads still reach storage.",
+    "Full task race, all A46 subcases, required reviews, native CI, published dependency, and merges remain open.",
+    "Valkey cases skipped because TEST_VALKEY_URL is absent."
+  ],
+  "next_action": "Implement bounded authorization bundles with dependency coherence, local mutation fencing, and durable missed-update recovery. Keep required account refusal on every caller mode.",
+  "active_sessions": [],
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.1</td><td>Indexed remaining billing, usage, and endpoint lookups at <code>05a1ae1</code>. Four consumer race suites pass. Expanded acceptance and repository checks run.</td><td><a href=\"proof/starport-production-catalog/csp10.1/exact-route-audit.json\">Exact-route audit</a></td></tr>"
+}
