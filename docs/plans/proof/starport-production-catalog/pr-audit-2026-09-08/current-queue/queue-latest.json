@@ -937,7 +937,7 @@
       "status": "",
       "owner": "CSP9",
       "disposition": "unpublished preparation",
-      "next_action": "Complete consumer review, then qualify the published pair and native CI after CSP6 and CSP8 prerequisites."
+      "next_action": "Preserve reviewed local work; qualify the published pair and native CI after CSP6 and CSP8 prerequisites."
     },
     {
       "worktree": "starport-credential-roles",
@@ -945,15 +945,15 @@
       "status": "",
       "owner": "CSP9",
       "disposition": "unpublished preparation",
-      "next_action": "Complete consumer review, then qualify the published pair and native CI after CSP6 and CSP8 prerequisites."
+      "next_action": "Preserve reviewed local work; qualify the published pair and native CI after CSP6 and CSP8 prerequisites."
     },
     {
       "worktree": "/private/tmp/csp9-credential-revocation",
       "head": "973c4d9d2ea5a399866824af0a243eba0983414c",
       "status": "",
       "owner": "CSP9",
-      "disposition": "unpublished diagnostic fix",
-      "next_action": "Integrate after the running canonical acceptance check, then complete consumer review."
+      "disposition": "integrated in reviewed consumer branch",
+      "next_action": "Preserve the branch until authorized cleanup."
     }
   ],
   "seven_day_disposition_review_required": false,

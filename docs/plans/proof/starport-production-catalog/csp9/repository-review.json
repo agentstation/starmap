@@ -1,7 +1,7 @@
 {
   "starmap_commit": "7961c82818771f3892a742324cf0c09cae8042eb",
   "starport_commit": "c7e1b9a578c5da56af97a02a58b8146afaa2faa0",
-  "status": "local qualification in progress",
+  "status": "local qualification and review complete",
   "changes": [
     "Terminal source failures invalidate cached inference material.",
     "Transient source outages may retain valid prior material.",
@@ -34,15 +34,22 @@
       "claude:opus:high"
     ]
   },
-  "consumer_review": "running Sol xhigh and Opus high",
+  "consumer_review": {
+    "status": "pass",
+    "findings": 0,
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "chunks": 3,
+    "bundle_bytes": 518734
+  },
   "qualification_limits": [
     "Local workspace uses unpublished producer code.",
     "Native CI and published-pair qualification remain unverified.",
     "No implementation task completion or merge credit applies."
   ],
-  "active_sessions": {
-    "consumer_review": 56829
-  },
+  "active_sessions": {},
   "affected_race_tests": {
     "pass_events": 161,
     "skip_events": 2,
@@ -57,5 +64,6 @@
     "gate_status": "PASS",
     "selected_subcases": 12,
     "pass_subcases": 12
-  }
+  },
+  "next_action": "Prepare CSP9.1 managed account and shared material while CSP6 publication remains blocked by the pending history-rewrite decision."
 }
