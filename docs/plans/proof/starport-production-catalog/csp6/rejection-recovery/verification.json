@@ -95,7 +95,7 @@
     "reproduction_worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair"
   },
   "promotion_repair": {
-    "status": "complete scalar and container allocation repair published; replacement CI pending",
+    "status": "merged after all 23 checks and six native platforms passed",
     "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
     "branch": "codex/catalog-baseline-origin-recovery",
     "base": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
@@ -170,7 +170,7 @@
         "source_head": "5dbfe7faf83e2795114d0685995025b37e25158a"
       }
     },
-    "next_action": "Qualify exact head 9932e9a26 in run 35406133578. Inspect superseded run 35404369968 for additional reported failures. Merge PR169 only after required and native checks pass, then resume publisher for PR168.",
+    "next_action": "Resume publisher run 35409372662. Qualify the updated PR168 head, both channels, and the original preparation retry.",
     "commit": "9932e9a26b3e42c5b5fe3e0aa3c0a5929c964adf",
     "review_session": 80028,
     "pr": 169,
@@ -180,7 +180,7 @@
       "Opus": "zero findings",
       "file": "promotion-169-complete-allocation-review.json"
     },
-    "watch_session": 24992,
+    "watch_session": null,
     "watch_log": "/tmp/csp6-169-complete-allocation-watch.log",
     "local_commit": "9932e9a26b3e42c5b5fe3e0aa3c0a5929c964adf",
     "published_commit": "9932e9a26b3e42c5b5fe3e0aa3c0a5929c964adf",
@@ -2429,6 +2429,16 @@
         "prose_diagnostics": 0,
         "commit": "9932e9a26b3e42c5b5fe3e0aa3c0a5929c964adf"
       }
-    }
+    },
+    "merge_commit": "b6ce2243cc606b72175a53d9af5ea79f950ba416",
+    "merge_tree_matches_reviewed_head": true,
+    "final_ci_evidence": "promotion-169-merged.json"
+  },
+  "publisher_after_repair": {
+    "run": 35409372662,
+    "source": "b6ce2243cc606b72175a53d9af5ea79f950ba416",
+    "status": "in_progress",
+    "watch_session": 79017,
+    "watch_log": "/tmp/csp6-publisher-after-169-watch.log"
   }
 }

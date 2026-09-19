@@ -1,0 +1,377 @@
+{
+  "source": "9932e9a26b3e42c5b5fe3e0aa3c0a5929c964adf",
+  "merge_commit": "b6ce2243cc606b72175a53d9af5ea79f950ba416",
+  "merge_tree_matches_reviewed_head": true,
+  "ci_run": 35406133578,
+  "checks": {
+    "baseRefOid": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
+    "headRefOid": "9932e9a26b3e42c5b5fe3e0aa3c0a5929c964adf",
+    "mergeStateStatus": "CLEAN",
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:33:55Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406131011/job/105796152964",
+        "name": "Analyze (actions)",
+        "startedAt": "2026-09-18T23:33:05Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:36:07Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796473080",
+        "name": "Coordinated Storage valkey",
+        "startedAt": "2026-09-18T23:34:43Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:34:41Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406131011/job/105796152758",
+        "name": "Analyze (go)",
+        "startedAt": "2026-09-18T23:33:04Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:36:04Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796473132",
+        "name": "Coordinated Storage redis",
+        "startedAt": "2026-09-18T23:34:42Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:34:05Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406131011/job/105796153046",
+        "name": "Analyze (python)",
+        "startedAt": "2026-09-18T23:33:05Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:35:32Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796473111",
+        "name": "Constructor Network Passivity",
+        "startedAt": "2026-09-18T23:34:43Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:36:12Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796473077",
+        "name": "Offline Server Persistence",
+        "startedAt": "2026-09-18T23:34:43Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:42:30Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796473089",
+        "name": "Verification Checks",
+        "startedAt": "2026-09-18T23:34:43Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:36:57Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796473002",
+        "name": "Security & Reliability",
+        "startedAt": "2026-09-18T23:34:43Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:34:54Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796472905",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-18T23:34:43Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-19T00:23:30Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796473145",
+        "name": "Runtime windows-2025",
+        "startedAt": "2026-09-18T23:34:44Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-19T00:12:09Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796473166",
+        "name": "Runtime windows-11-arm",
+        "startedAt": "2026-09-18T23:34:42Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:51:39Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796473078",
+        "name": "Runtime ubuntu-24.04",
+        "startedAt": "2026-09-18T23:34:43Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:49:03Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796473179",
+        "name": "Runtime ubuntu-24.04-arm",
+        "startedAt": "2026-09-18T23:34:45Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-19T00:25:21Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796473185",
+        "name": "Runtime macos-15-intel",
+        "startedAt": "2026-09-18T23:34:48Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:53:58Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105796473225",
+        "name": "Runtime macos-15",
+        "startedAt": "2026-09-18T23:34:48Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-19T00:08:10Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105797926303",
+        "name": "Go 1.27.1 race runtime",
+        "startedAt": "2026-09-18T23:42:32Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-19T00:04:53Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105797926239",
+        "name": "Go 1.27.1 race client",
+        "startedAt": "2026-09-18T23:42:33Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-19T00:04:09Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105797926248",
+        "name": "Go 1.27.1 race application",
+        "startedAt": "2026-09-18T23:42:32Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:57:08Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105797926291",
+        "name": "Go 1.27.1 race contracts",
+        "startedAt": "2026-09-18T23:42:35Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:48:10Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105797926180",
+        "name": "Full Catalog Capacity",
+        "startedAt": "2026-09-18T23:42:32Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-19T00:08:16Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35406133578/job/105802515114",
+        "name": "Verification Gate",
+        "startedAt": "2026-09-19T00:08:13Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-18T23:33:50Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/runs/105796299705",
+        "name": "CodeQL",
+        "startedAt": "2026-09-18T23:33:47Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ]
+  },
+  "counts": {
+    "native-runtime-ubuntu-24.04-arm": {
+      "events": {
+        "pass": 3455,
+        "skip": 2
+      },
+      "failed_or_skipped": [
+        "TestServiceConfigurationAdministratorOwnedRead",
+        "TestWindowsMonitorFactoryRequiresSourceBounds"
+      ]
+    },
+    "go-tests-race-runtime": {
+      "events": {
+        "pass": 1211
+      },
+      "failed_or_skipped": []
+    },
+    "native-runtime-macos-15-intel": {
+      "events": {
+        "pass": 3501,
+        "skip": 1
+      },
+      "failed_or_skipped": [
+        "TestWindowsMonitorFactoryRequiresSourceBounds"
+      ]
+    },
+    "native-runtime-ubuntu-24.04": {
+      "events": {
+        "pass": 3455,
+        "skip": 2
+      },
+      "failed_or_skipped": [
+        "TestServiceConfigurationAdministratorOwnedRead",
+        "TestWindowsMonitorFactoryRequiresSourceBounds"
+      ]
+    },
+    "native-runtime-macos-15": {
+      "events": {
+        "pass": 3501,
+        "skip": 1
+      },
+      "failed_or_skipped": [
+        "TestWindowsMonitorFactoryRequiresSourceBounds"
+      ]
+    },
+    "go-tests-race-client": {
+      "events": {
+        "pass": 380
+      },
+      "failed_or_skipped": []
+    },
+    "go-full-catalog-capacity": {
+      "events": {
+        "pass": 1
+      },
+      "failed_or_skipped": []
+    },
+    "native-runtime-windows-11-arm": {
+      "events": {
+        "pass": 3482,
+        "skip": 7
+      },
+      "failed_or_skipped": [
+        "TestCredentialSourceConformance/rotation_symlink_swap",
+        "TestCredentialSourceConformance/rotation_mounted_replace",
+        "TestWindowsTimeServicePreparedPrivilege",
+        "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/unknown-file",
+        "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/changed-file",
+        "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-file",
+        "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-root"
+      ]
+    },
+    "go-tests-race-contracts": {
+      "events": {
+        "pass": 4955,
+        "skip": 22
+      },
+      "failed_or_skipped": [
+        "TestServiceConfigurationAdministratorOwnedRead",
+        "TestRefreshAnthropicProviderFixture",
+        "TestAnthropicProviderFixtureCurrency",
+        "TestClientErrors/missing_provider_configuration",
+        "TestRefreshOpenAICompatibleProviderFixture",
+        "TestOpenAICompatibleProviderFixtureCurrency",
+        "TestWindowsMonitorFactoryRequiresSourceBounds",
+        "TestCoordinationBackendConditionalRecords",
+        "TestCoordinationBackendConcurrentCAS",
+        "TestCoordinationBackendRefusesInvalidAndExpiredRecords/type",
+        "TestCoordinationBackendRefusesInvalidAndExpiredRecords/shape",
+        "TestCoordinationBackendRefusesInvalidAndExpiredRecords/version",
+        "TestCoordinationBackendRefusesInvalidAndExpiredRecords/schema",
+        "TestCoordinationBackendRefusesInvalidAndExpiredRecords/size",
+        "TestCoordinationBackendRefusesInvalidAndExpiredRecords/expiration",
+        "TestCoordinationBackendRefusesCancellationAndUnconditionalWrites",
+        "TestCoordinationBackendRefusesReplicaReadsAndWrites",
+        "TestCoordinationBackendConfigurationIsInert",
+        "TestCoordinationBackendRetainsStateAcrossServerRestart",
+        "TestCoordinatedCatalogSurvivesProcessAndServiceRestart",
+        "TestCoordinatedCatalogProcess",
+        "TestCoordinatedCatalogUsesNativeObjectAndCoordinationServices"
+      ]
+    },
+    "native-runtime-windows-2025": {
+      "events": {
+        "pass": 3629,
+        "skip": 7
+      },
+      "failed_or_skipped": [
+        "TestCredentialSourceConformance/rotation_symlink_swap",
+        "TestCredentialSourceConformance/rotation_mounted_replace",
+        "TestWindowsTimeServicePreparedPrivilege",
+        "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/unknown-file",
+        "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/changed-file",
+        "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-file",
+        "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-root"
+      ]
+    },
+    "go-tests-race-application": {
+      "events": {
+        "pass": 871
+      },
+      "failed_or_skipped": []
+    }
+  },
+  "raw": "promotion-169-final-ci.tar.gz",
+  "merge": {
+    "headRefOid": "9932e9a26b3e42c5b5fe3e0aa3c0a5929c964adf",
+    "mergeCommit": {
+      "oid": "b6ce2243cc606b72175a53d9af5ea79f950ba416"
+    },
+    "mergedAt": "2026-09-19T00:26:12Z",
+    "state": "MERGED"
+  }
+}

@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Resume before repair merge</title><pre><code>&lt;p id=&quot;next-action&quot;&gt;Next action: qualify PR #169 at &lt;code&gt;9932e9a26&lt;/code&gt; through CI run &lt;code&gt;35406133578&lt;/code&gt;. Watch session &lt;code&gt;24992&lt;/code&gt; follows that run. Sol and Opus report zero findings. The &lt;a href=&quot;proof/starport-production-catalog/csp6/rejection-recovery/verification.json&quot;&gt;proof&lt;/a&gt; records both allocation-test repairs. The performance gate enforces unchanged scalar and container limits without race instrumentation. All encoding cases retain race coverage.&lt;/p&gt;
+
+&lt;p&gt;Run &lt;code&gt;35404369968&lt;/code&gt; exposed the same allocation variance in the scalar test. Both allocation measurements now run without race instrumentation. They pass 1,000 native repetitions each. All 68 native and 59 race provenance events pass. Only the new head can qualify for merge.&lt;/p&gt;
+
+&lt;p&gt;Merge only after the final head passes required and native checks. Then update catalog PR #168.&lt;/p&gt;
+
+&lt;p&gt;Use branch &lt;code&gt;codex/catalog-baseline-origin-recovery&lt;/code&gt; in &lt;code&gt;starmap-baseline-origin-recovery&lt;/code&gt;. The repair contains eighteen source, test, and verification files. The 380 catalog files remain in PR #168. Then complete checked promotion, channel publication, and same-bytes qualification. Preserve failed candidate #165 until replacement verification. Both hosted A05 cases remain unverified.&lt;/p&gt;
+
+&lt;p&gt;Starmap worktree &lt;code&gt;starmap-publisher-validation&lt;/code&gt; now uses branch &lt;code&gt;codex/catalog-rejection-recovery&lt;/code&gt; at merged source &lt;code&gt;096a82b6d3ea227bdd64393cfd12663ed8b6d890&lt;/code&gt;. Starport remains at its qualified head. Both worktrees are clean. Use the &lt;a href=&quot;proof/starport-production-catalog/csp6.2/verification.json&quot;&gt;paired proof&lt;/a&gt; for exact counts and limitations. The &lt;a href=&quot;proof/starport-production-catalog/csp6.2/paired-merge-prior-resume.html&quot;&gt;prior resume&lt;/a&gt; preserves history.&lt;/p&gt;
+
+</code></pre></html>

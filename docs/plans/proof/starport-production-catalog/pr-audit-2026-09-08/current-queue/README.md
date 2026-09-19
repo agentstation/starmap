@@ -1,3 +1,12 @@
+## Repair merge and catalog promotion
+
+Starmap #169 merged at `b6ce2243cc606b72175a53d9af5ea79f950ba416` after all 23 checks passed.
+All six native platforms and four race groups pass. The merged tree matches reviewed source `9932e9a26`.
+
+CSP6 owns publisher run `35409372662` and watch session `79017`.
+Resume existing catalog PR #168. Qualify its updated head, both channels, and the original preparation retry.
+Preserve #165 until replacement verification. Starport has no open PRs.
+
 ## Consolidated baseline repair
 
 Starmap #169 contains the reviewed repair at `9932e9a26`. Sol and Opus report zero findings.
