@@ -1,0 +1,40 @@
+{
+  "status": "local implementation; full CSP10 qualification remains incomplete",
+  "commit": "7e3b3d03f4bbf696ef2d8be0fe0d7c4d12e90636",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+  "branch": "codex/starport-catalog-routing",
+  "route": "GET /api/v1/catalog/discovery",
+  "behavior": [
+    "One retained catalog generation supplies permitted definitions and offerings.",
+    "Current key and account policy intersect at the catalog disclosure seam.",
+    "The server reloads identity state before projection and before delivery.",
+    "Policy changes, identity read failures, and authority withdrawals refuse disclosure.",
+    "The route returns unknown credential readiness without provider or secret-manager probes.",
+    "Session revalidation rejects rotated console credentials."
+  ],
+  "verification": {
+    "route_fail_before": "The regression returns 404 with the parent routes.go supplied through a Go overlay. The original source and test output are retained.",
+    "focused_final_pass_events": 13,
+    "broad_pass_events": 812,
+    "broad_skips": [
+      "TestGatewayOverheadBenchmark",
+      "TestAppWithValkey",
+      "TestSharedStartupDoesNotCreateLocalDatabases"
+    ],
+    "broad_exit_code": 0,
+    "broad_scope_note": "The broad run began before the mechanical move of disclosure selection from the controller into internal/catalog/disclosure. The final 13-event run, lint and vet cover the moved code.",
+    "lint": "0 issues",
+    "vet": "pass",
+    "new_source_prose": "pass",
+    "new_operator_prose": "pass",
+    "whole_operator_guide": "48 pre-existing diagnostics outside changed text"
+  },
+  "limitations": [
+    "No released-pair or native qualification.",
+    "Console adoption remains with CSP17.",
+    "The response labels routable operations separately from unknown credential readiness; complete structural and caller-readiness projections remain incomplete.",
+    "Compatibility discovery disclosure and cache admission still need qualification.",
+    "CSP10 still has 24 unregistered acceptance subcases."
+  ],
+  "next_action": "Add regression coverage for current authority on compatibility discovery and cache hits. Verify caller membership filtering across both API families before registering A18 or A21 as complete."
+}

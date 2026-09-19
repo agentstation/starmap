@@ -1,0 +1,3 @@
+{
+  "output": "Linting code...\ninternal/server/discovery.go:23:2: QF1002: could use tagged switch on original.ID (staticcheck)\n\tswitch {\n\t^\n1 issues:\n* staticcheck: 1\nexit status 1\nmake: *** [lint] Error 1\n"
+}
