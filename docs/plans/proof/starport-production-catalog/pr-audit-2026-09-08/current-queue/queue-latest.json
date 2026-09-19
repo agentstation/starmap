@@ -933,19 +933,19 @@
     },
     {
       "worktree": "starmap-credential-roles",
-      "head": "817374ad0a2fdb1c40ae6a371ce37357b59f5a3f",
+      "head": "7961c82818771f3892a742324cf0c09cae8042eb",
       "status": "",
       "owner": "CSP9",
       "disposition": "unpublished preparation",
-      "next_action": "Preserve completed producer review; complete final acceptance registration, then qualify the published dependency and native CI before merge."
+      "next_action": "Complete consumer review, then qualify the published pair and native CI after CSP6 and CSP8 prerequisites."
     },
     {
       "worktree": "starport-credential-roles",
-      "head": "66738fc2b42729908c855eb73c02b2ae046ff794",
+      "head": "c7e1b9a578c5da56af97a02a58b8146afaa2faa0",
       "status": "",
       "owner": "CSP9",
       "disposition": "unpublished preparation",
-      "next_action": "Finish current acceptance check, integrate the isolated diagnostic fix, and complete consumer review before published-pair and native qualification."
+      "next_action": "Complete consumer review, then qualify the published pair and native CI after CSP6 and CSP8 prerequisites."
     },
     {
       "worktree": "/private/tmp/csp9-credential-revocation",

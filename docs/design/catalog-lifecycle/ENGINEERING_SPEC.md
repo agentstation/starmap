@@ -1674,6 +1674,11 @@ still-valid material within its configured policy. Expired or revoked material
 must not serve new requests. Rotation must publish complete credential handles
 without mixing fields from different secret versions.
 
+Denied, invalid, or removed source credentials invalidate cached inference material.
+The resolver may retain still-valid prior material only after a transient source failure.
+If runtime publication fails after a terminal credential failure, diagnostics must continue to report the credential failure.
+A failed publication must not restore a ready status for denied credentials.
+
 Catalog artifacts, source reports, status responses, and logs must contain no
 secret values. Secret references require redaction when their resource paths
 reveal sensitive deployment details. Catalog data may name credential fields

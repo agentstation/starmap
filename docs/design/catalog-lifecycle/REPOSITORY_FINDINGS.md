@@ -3333,3 +3333,22 @@ The [CSP9 qualification proof](../../plans/proof/starport-production-catalog/csp
 
 These results do not qualify a published pair. Pre-PR gates, structured review, native CI, and merge remain required.
 Complete CSP6 and CSP8 before publishing this pair.
+
+
+## 2026-09-19: CSP9 terminal credential failures
+
+Starport commit `66738fc` clears cached inference material after denied, invalid, or removed source credentials.
+Only temporary source failures retain valid prior material.
+Commit `c7e1b9a` preserves denial diagnostics when runtime publication fails.
+The regressions failed before both changes.
+
+The full Go suite after `66738fc` passes 3,451 events with 48 optional skips.
+The final provider, state, and application race run passes 161 events with two optional service skips.
+The repository gates pass 32 of 33 checks against the preceding snapshot.
+The remaining check requires the unpublished Starmap API in the committed module dependency.
+
+Starmap commit `7961c8281` registers the additional diagnostic regression.
+Its verifier suites pass 93 tests. Sol and Opus report zero findings for the producer branch.
+The [repository review proof](../../plans/proof/starport-production-catalog/csp9/repository-review.json) records the exact source revisions and qualification limits.
+Final acceptance passes all twelve CSP9 subcases.
+Consumer review, published-pair checks, native CI, and merge remain required.

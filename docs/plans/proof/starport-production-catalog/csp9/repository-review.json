@@ -1,0 +1,61 @@
+{
+  "starmap_commit": "7961c82818771f3892a742324cf0c09cae8042eb",
+  "starport_commit": "c7e1b9a578c5da56af97a02a58b8146afaa2faa0",
+  "status": "local qualification in progress",
+  "changes": [
+    "Terminal source failures invalidate cached inference material.",
+    "Transient source outages may retain valid prior material.",
+    "Credential diagnostics preserve a denial when runtime publication fails."
+  ],
+  "pre_pr_gates": {
+    "starport_commit": "9baa216bf3e58bf8f1303a9356b69bdd823ebaaa",
+    "passed": 32,
+    "failed": 1,
+    "failure": "V01 requires the unpublished Starmap API in the committed module dependency."
+  },
+  "full_go_suite": {
+    "starport_commit": "66738fc2b42729908c855eb73c02b2ae046ff794",
+    "pass_events": 3451,
+    "skip_events": 48,
+    "failed_events": 0,
+    "passed_test_events": 3396,
+    "skipped_test_events": 41
+  },
+  "verifier_unit_tests": {
+    "product": 81,
+    "component": 12,
+    "failures": 0
+  },
+  "producer_review": {
+    "status": "pass",
+    "findings": 0,
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ]
+  },
+  "consumer_review": "running Sol xhigh and Opus high",
+  "qualification_limits": [
+    "Local workspace uses unpublished producer code.",
+    "Native CI and published-pair qualification remain unverified.",
+    "No implementation task completion or merge credit applies."
+  ],
+  "active_sessions": {
+    "consumer_review": 56829
+  },
+  "affected_race_tests": {
+    "pass_events": 161,
+    "skip_events": 2,
+    "failed_events": 0
+  },
+  "writing": {
+    "targeted": "pass",
+    "repository": "67 historical evidence diagnostics"
+  },
+  "final_acceptance": {
+    "exit_code": 0,
+    "gate_status": "PASS",
+    "selected_subcases": 12,
+    "pass_subcases": 12
+  }
+}
