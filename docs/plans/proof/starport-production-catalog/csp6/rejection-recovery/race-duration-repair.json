@@ -54,14 +54,18 @@
       ],
       "limitation": "Local public fixture unavailable. CI requires the fixture and cannot skip these cases."
     },
-    "workflow": "actionlint syntax passes; two unchanged baseline ShellCheck warnings remain. Three moved commands match HEAD exactly and preserve the six-platform matrix."
+    "workflow": "actionlint syntax passes; two unchanged baseline ShellCheck warnings remain. Three moved commands match HEAD exactly and preserve the six-platform matrix.",
+    "final_full_prose": {
+      "files": 1836,
+      "diagnostics": 0
+    },
+    "repository_checks_proof": "race-duration-checks.log.gz"
   },
   "live_sessions": {
-    "39454": "candidate runtime shards 2 then 3 sequentially, /tmp/csp6-runtime-shard-{2,3}.log and .jsonl",
-    "1403": "final make technical-writing-check after native workflow documentation update"
+    "39454": "candidate runtime shards 2 then 3 sequentially, /tmp/csp6-runtime-shard-{2,3}.log and .jsonl"
   },
-  "next_action": "Finish live runtime shards in session 39454 and prose check 1403. Commit the native workflow split. Run required Sol xhigh and Opus high autoreview. Publish one consolidated repair PR, qualify native CI and merge. Then resume existing catalog publisher for #168.",
-  "source_commit": "f1e2507b76650566b6b0f734b4e1868ccd5e2dd6",
+  "next_action": "Observe session 39454 until runtime groups 2 and 3 finish. Verify all shard inventories form an exact partition, record counts and skips, then push reviewed head 20145bb6d and open the consolidated repair PR. Qualify native CI and merge before resuming publisher #168.",
+  "source_commit": "20145bb6d110765464cbeabe42ba5dde1ff00063",
   "native_intel_failure": {
     "run": 35409735768,
     "job": 105806772484,
@@ -70,5 +74,14 @@
     "publication_result": "job cancelled at its 60-minute bound before package completion",
     "repair": "Move the three unchanged publication/Git acquisition commands to a separate six-platform job matrix, required by Verification Gate. Preserve all limits.",
     "evidence": "promotion-168-intel-timeout.log.gz"
+  },
+  "review": {
+    "status": "pass",
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "findings": 0,
+    "proof": "race-duration-review.json"
   }
 }
