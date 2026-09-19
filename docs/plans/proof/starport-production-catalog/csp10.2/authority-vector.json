@@ -1,0 +1,39 @@
+{
+  "task": "CSP10.2",
+  "commit": "e70e96feaf797c0e3a29d1953ceb0c7df9d85564",
+  "status": "independent authority permits implemented; coherent loader and admission integration remain open",
+  "contracts": [
+    "Candidates must supply exactly one receipt for each configured authority. Configuration owns the required set.",
+    "A higher KV sequence cannot satisfy a missing SQL sequence. Each authority must satisfy its own epoch and sequence.",
+    "Verified epoch change revokes retained permits and blocks new loads until explicit recovery replaces the fence. Finishing an overlapping mutation cannot reopen it.",
+    "The earliest authority deadline bounds use. Evidence access returns detached values. Warm permit checks still allocate zero.",
+    "Failed or invalid cold lookups cannot evict valid warm entries. Entry eviction occurs only after replacement validation.",
+    "Resident entries remain bounded independently of pending loads. Pending entries remain bounded by the global load limit."
+  ],
+  "verification": {
+    "command": "GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=2m -json ./internal/authorization",
+    "exit_code": 0,
+    "pass_events": 52,
+    "failed_events": 0,
+    "skipped_events": 0,
+    "lint_command": "GOWORK=/tmp/csp102-host-integration.work make lint",
+    "lint_exit_code": 0,
+    "lint_output": "Linting code...\n0 issues.\nLint complete\n",
+    "writing": "Five affected files pass with zero diagnostics.",
+    "eviction_regression": "An overlay restores the exact pre-load eviction block from e4c72c2 into the vector-capable cache. TestInvalidColdLookupPreservesWarmWorkingSet fails because an invalid lookup evicts valid policy. This is a focused behavior reproduction, not a full historical-tree test."
+  },
+  "loader_constraints": [
+    "Read each durable authority revision before the records and again after them. Only unchanged epochs and sequences establish a coherent source read.",
+    "Record verified permission requirements even if replacement records cannot load or validate. A known withdrawal must revoke retained access.",
+    "If observation changes a captured local fence, restart the bounded load or refuse. Never adopt an old load under a fresh ticket after a mutation.",
+    "Keep source errors distinct from confirmed absence and preserve each authority deadline through retries and cached delivery."
+  ],
+  "limitations": [
+    "Production admission still does not use this cache. The original warm-read regression remains unresolved.",
+    "Real-storage proof from the prior SQL/KV work remains historical. This change qualifies the permit and cache components.",
+    "Full task acceptance, native checks, required review, and merges remain open."
+  ],
+  "next_action": "Implement coherent repository loading and verified-requirement observation. Connect the cache only after local mutation hooks and durable recovery cover every authorization owner.",
+  "active_sessions": [],
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.3</td><td>Background advisory exchange at <code>a67c691</code> removes callback storage calls. Race, recovery, and lifecycle checks pass. Resource and fleet qualification remain open.</td><td><a href=\"proof/starport-production-catalog/csp10.3/worker-implementation.json\">Worker implementation</a></td></tr>"
+}

@@ -1,0 +1,9 @@
+{"Time":"2026-09-19T15:38:16.020285-05:00","Action":"start","Package":"github.com/agentstation/starport/internal/authorization"}
+{"Time":"2026-09-19T15:38:16.318519-05:00","Action":"run","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestInvalidColdLookupPreservesWarmWorkingSet"}
+{"Time":"2026-09-19T15:38:16.31859-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestInvalidColdLookupPreservesWarmWorkingSet","Output":"=== RUN   TestInvalidColdLookupPreservesWarmWorkingSet\n","OutputType":"frame"}
+{"Time":"2026-09-19T15:38:16.320049-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestInvalidColdLookupPreservesWarmWorkingSet","Output":"    cache_test.go:423: invalid lookup evicted valid policy\n","OutputType":"error"}
+{"Time":"2026-09-19T15:38:16.320088-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestInvalidColdLookupPreservesWarmWorkingSet","Output":"--- FAIL: TestInvalidColdLookupPreservesWarmWorkingSet (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-09-19T15:38:16.320097-05:00","Action":"fail","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestInvalidColdLookupPreservesWarmWorkingSet","Elapsed":0}
+{"Time":"2026-09-19T15:38:16.320127-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-09-19T15:38:16.320933-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Output":"FAIL\tgithub.com/agentstation/starport/internal/authorization\t0.300s\n","OutputType":"frame"}
+{"Time":"2026-09-19T15:38:16.320949-05:00","Action":"fail","Package":"github.com/agentstation/starport/internal/authorization","Elapsed":0.301}
