@@ -1,0 +1,75 @@
+{
+  "head": "67dba0ea554719c2329b637a1eb812c1a440e141",
+  "run": 35415804632,
+  "shards": {
+    "go-tests-race-runtime-1": {
+      "test_events": {
+        "pass": 302
+      },
+      "nonpassing": [],
+      "packages": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 385.408
+        },
+        {
+          "Action": "skip",
+          "Package": "github.com/agentstation/starmap/runtime/source",
+          "Elapsed": 0
+        },
+        {
+          "Action": "skip",
+          "Package": "github.com/agentstation/starmap/runtime/status",
+          "Elapsed": 0
+        }
+      ]
+    },
+    "go-tests-race-runtime-3": {
+      "test_events": {
+        "pass": 429
+      },
+      "nonpassing": [],
+      "packages": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 724.642
+        },
+        {
+          "Action": "skip",
+          "Package": "github.com/agentstation/starmap/runtime/source",
+          "Elapsed": 0
+        },
+        {
+          "Action": "skip",
+          "Package": "github.com/agentstation/starmap/runtime/status",
+          "Elapsed": 0
+        }
+      ]
+    },
+    "go-tests-race-runtime-2": {
+      "test_events": {
+        "pass": 480
+      },
+      "nonpassing": [],
+      "packages": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 730.197
+        },
+        {
+          "Action": "skip",
+          "Package": "github.com/agentstation/starmap/runtime/source",
+          "Elapsed": 0
+        },
+        {
+          "Action": "skip",
+          "Package": "github.com/agentstation/starmap/runtime/status",
+          "Elapsed": 0
+        }
+      ]
+    }
+  }
+}

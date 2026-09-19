@@ -147,6 +147,27 @@
       "skipped": 0,
       "proof": "repair-170-final-native-publication.json",
       "events": "repair-170-final-native-publication.tar.gz"
+    },
+    "final_runtime_race": {
+      "run": 35415804632,
+      "passed": [
+        302,
+        480,
+        429
+      ],
+      "failed": 0,
+      "skipped_tests": 0,
+      "no_test_packages": [
+        "runtime/source",
+        "runtime/status"
+      ],
+      "package_seconds": [
+        385.408,
+        730.197,
+        724.642
+      ],
+      "proof": "repair-170-final-runtime-race.json",
+      "events_and_inventories": "repair-170-final-runtime-race.tar.gz"
     }
   },
   "live_sessions": {
