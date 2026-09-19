@@ -2534,6 +2534,12 @@
           "repository": "starport",
           "package": "./internal/providers",
           "test": "TestReconcilerTerminalFailureRemovesPriorProvider"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers",
+          "test": "TestTerminalRefreshFailureRemainsVisibleWhenPublicationFails"
         }
       ]
     },
