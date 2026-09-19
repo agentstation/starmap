@@ -1,0 +1,36 @@
+{
+  "starport_head": "2af1c0016ac84cb2938ac9b299b820f965f2d4ef",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "platform": "go1.27.1 darwin/arm64",
+  "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/catalog -run '^TestMigrationPhaseProcessRecovery$'",
+  "result": "PASS",
+  "top_level_tests": 1,
+  "subtests": 3,
+  "seconds": 59.516,
+  "vet": "PASS: GOWORK=/tmp/csp8-host-integration.work go vet ./internal/catalog",
+  "verifier_tests": {
+    "command": "python3 -m unittest discover -s scripts -p test_catalog_product_verify.py",
+    "result": "PASS",
+    "tests": 73,
+    "seconds": 4.973
+  },
+  "coverage": [
+    "Child exits without deferred cleanup after stage, publish, or complete.",
+    "Parent reopens real durable Badger and resumes the same operation.",
+    "Checksums verify that every original source file remains unchanged.",
+    "Accepted generation bytes and scheduler identity remain unchanged after completion.",
+    "Retry of an already completed operation succeeds with the original binding."
+  ],
+  "acceptance_registry": [
+    "A04.starport_linux_interruption",
+    "A04.starport_macos_interruption",
+    "A04.starport_windows_interruption"
+  ],
+  "acceptance_contract": "Each new entry requires both Starmap internal filesystem interruption evidence and Starport native integration evidence. Registration does not grant a pass.",
+  "remaining": [
+    "Hosted native Linux, macOS, and Windows evidence against the qualified published dependency.",
+    "Remaining CSP8 acceptance registry mapping and behavioral gaps.",
+    "Full repository qualification, pre-PR review, PR, and merge."
+  ],
+  "completion_credit": false
+}

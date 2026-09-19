@@ -944,6 +944,223 @@
           "test": "TestWindowsJournalReplacementRecoversAfterEditorHandleCloses"
         }
       ]
+    },
+    "A04.starport_linux_interruption": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "native_ci",
+          "repository": "starmap",
+          "platform": "linux",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestStageDirectoryMigrationRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestDirectoryMigrationCompletionRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestMigrationJournalRecoversAfterProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/cli/app",
+              "test": "TestRuntimeRestartCompletesProjectionAfterMigrationMove"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestWorkspaceReplacementPreservesAccessPolicy"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestJournalReplacementRecoversAfterProcessExit"
+            }
+          ]
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "linux",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationJournalProcessRecovery"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationPhaseProcessRecovery"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestRuntimeDirectoryMigrationPreservesAcceptedCatalog"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationBindingRetainsGenerationBeyondHistoryWindow"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/app",
+              "test": "TestRuntimeMigrationOperatorLifecycle"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/config",
+              "test": "TestSavedRuntimeMigrationSelection"
+            }
+          ]
+        }
+      ]
+    },
+    "A04.starport_macos_interruption": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "native_ci",
+          "repository": "starmap",
+          "platform": "darwin",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestStageDirectoryMigrationRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestDirectoryMigrationCompletionRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestMigrationJournalRecoversAfterProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/cli/app",
+              "test": "TestRuntimeRestartCompletesProjectionAfterMigrationMove"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestWorkspaceReplacementPreservesAccessPolicy"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestJournalReplacementRecoversAfterProcessExit"
+            }
+          ]
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "darwin",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationJournalProcessRecovery"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationPhaseProcessRecovery"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestRuntimeDirectoryMigrationPreservesAcceptedCatalog"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationBindingRetainsGenerationBeyondHistoryWindow"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/app",
+              "test": "TestRuntimeMigrationOperatorLifecycle"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/config",
+              "test": "TestSavedRuntimeMigrationSelection"
+            }
+          ]
+        }
+      ]
+    },
+    "A04.starport_windows_interruption": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "native_ci",
+          "repository": "starmap",
+          "platform": "windows",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestStageDirectoryMigrationRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestDirectoryMigrationCompletionRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestMigrationJournalRecoversAfterProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/cli/app",
+              "test": "TestRuntimeRestartCompletesProjectionAfterMigrationMove"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestWorkspaceReplacementPreservesAccessPolicy"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestJournalReplacementRecoversAfterProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestWindowsJournalReplacementRecoversAfterEditorHandleCloses"
+            }
+          ]
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "windows",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationJournalProcessRecovery"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationPhaseProcessRecovery"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestRuntimeDirectoryMigrationPreservesAcceptedCatalog"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationBindingRetainsGenerationBeyondHistoryWindow"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/app",
+              "test": "TestRuntimeMigrationOperatorLifecycle"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/config",
+              "test": "TestSavedRuntimeMigrationSelection"
+            }
+          ]
+        }
+      ]
     }
   }
 }
