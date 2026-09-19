@@ -1,0 +1,46 @@
+{
+  "status": "local preparation; CSP10 remains incomplete",
+  "commit": "d768e7b6d524c1792b9c67b4fb34604c1048af04",
+  "fail_before": {
+    "failed_events": 11,
+    "direct_operations": [
+      "models",
+      "providers",
+      "endpoints",
+      "authors",
+      "author",
+      "logo"
+    ],
+    "cache_operations": [
+      "models",
+      "providers",
+      "endpoints"
+    ],
+    "note": "Parent test events are included in the count. The first attempt used parent test assertions inside subtests; the final fail-before run fixes test scoping."
+  },
+  "behavior": [
+    "Direct discovery checks authority before projection and before return.",
+    "Model and provider cache lookups share one lease-bound permission guard.",
+    "Endpoint cache lookup and fallback also check permission before return.",
+    "A withdrawal discards returned metadata and produces a retryable gateway refusal with no provider-health effect.",
+    "Existing compatibility membership remains unchanged."
+  ],
+  "verification": {
+    "regression_pass_events": 11,
+    "final_proxy_pass_events": 189,
+    "final_proxy_skips": 0,
+    "server_controller_pass_events": 467,
+    "server_controller_skips": [
+      "TestGatewayOverheadBenchmark"
+    ],
+    "lint": "0 issues",
+    "new_test_prose": "pass",
+    "scope_note": "Server and controller suites passed before the shared cache-helper extraction. The final full proxy suite and lint passed after that extraction."
+  },
+  "limitations": [
+    "Endpoint lookup tests prove withdrawal enforcement, not a useful endpoint cache hit after production serialization. CSP12.1 retains that requirement.",
+    "Caller-specific disclosure filtering on compatibility routes still needs work.",
+    "No new acceptance subcase completion or released-pair qualification."
+  ],
+  "next_action": "Apply current caller disclosure policy across compatibility model, provider, endpoint, and author projections. Preserve each route membership contract, cached-delivery checks, and generation consistency."
+}
