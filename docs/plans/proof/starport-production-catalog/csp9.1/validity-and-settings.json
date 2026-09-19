@@ -39,7 +39,8 @@
     },
     "lint": "pass",
     "new_prose": "pass",
-    "full_operator_guide": "Preexisting prose diagnostics remain; added section passes after paragraph repair."
+    "full_operator_guide": "Preexisting prose diagnostics remain; added section passes after paragraph repair.",
+    "planning_repository_writing": "Failed on existing historical evidence diagnostics; targeted plan and specification pass."
   },
   "remaining": [
     "Prove coalescing, unrelated tenant progress, memory and byte caps, cancellation, idle eviction and refresh fairness under churn.",
@@ -48,5 +49,12 @@
     "Register all nine required A45 subcases and qualify full benchmarks.",
     "Complete full repository gates, structured review, published-pair and native checks, and merge."
   ],
-  "active_sessions": []
+  "active_sessions": [],
+  "current_warm_benchmark": {
+    "commit": "67e90bf",
+    "iterations": 10000,
+    "ns_per_op": 743.5,
+    "bytes_per_op": 0,
+    "allocations_per_op": 0
+  }
 }
