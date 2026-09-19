@@ -236,7 +236,7 @@ def run_vitest(entry, roots):
     if root is None or not (root / "console/package.json").is_file():
         return {"status": "UNVERIFIED", "reason": "The required console is unavailable."}
     if not files or not tests or len(tests) != len(set(tests)) or any(
-        not file.startswith("src/") or not file.endswith(".test.tsx") or ".." in file.split("/") for file in files
+        not file.startswith("src/") or not file.endswith((".test.ts", ".test.tsx")) or ".." in file.split("/") for file in files
     ):
         return {"status": "FAIL", "reason": "Invalid named console behavior checks."}
     with tempfile.TemporaryDirectory(prefix="catalog-console-check-") as directory:

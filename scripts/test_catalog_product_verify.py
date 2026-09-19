@@ -32,6 +32,26 @@ class CatalogVerifierTests(unittest.TestCase):
                                 capture_output=True, text=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_console_checks_accept_typescript_and_reject_unsafe_paths(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "console").mkdir()
+            (root / "console/package.json").write_text("{}")
+            report = {"success": True, "testResults": [{"assertionResults": [
+                {"fullName": "catalog contract", "status": "passed"}]}]}
+
+            def run(command, **kwargs):
+                output = next(value.split("=", 1)[1] for value in command if value.startswith("--outputFile="))
+                Path(output).write_text(json.dumps(report))
+                return subprocess.CompletedProcess(command, 0, "", "")
+
+            for file in ("src/catalog.test.ts", "src/catalog.test.tsx", "src/../catalog.test.ts", "catalog.test.ts", "src/catalog.ts"):
+                with self.subTest(file=file), patch.object(verifier.subprocess, "run", side_effect=run) as execute:
+                    result = verifier.run_vitest({"repository": "starport", "files": [file], "tests": ["catalog contract"]}, {"starport": root})
+                    valid = file in ("src/catalog.test.ts", "src/catalog.test.tsx")
+                    self.assertEqual(result["status"], "PASS" if valid else "FAIL")
+                    self.assertEqual(execute.call_count, int(valid))
+
     def test_complete_red_report(self):
         read_json = verifier.read_json
         def without_registered_evidence(path):
