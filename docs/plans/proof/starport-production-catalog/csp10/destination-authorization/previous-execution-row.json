@@ -1,0 +1,3 @@
+{
+  "html": "<tr><td>2026-09-19</td><td>CSP10</td><td>Filter reader summaries and generation changes.</td><td><a href=\"proof/starport-production-catalog/csp10/reader-disclosure.json\">Proof</a>: <code>dde50a7</code>. Final checks pass 512 race events with one skip. The <a href=\"proof/starport-production-catalog/csp10/reader-disclosure/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}

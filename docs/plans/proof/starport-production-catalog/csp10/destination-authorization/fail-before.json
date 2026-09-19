@@ -1,0 +1,18 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "1m",
+    "./internal/providers/auth",
+    "-run",
+    "^TestRequestAuthenticationRequiresDestinationApproval$"
+  ],
+  "exit_code": 1,
+  "output": "--- FAIL: TestRequestAuthenticationRequiresDestinationApproval (0.00s)\n    pending_destination_test.go:18: authentication accepted material without a destination grant\nFAIL\nFAIL\tgithub.com/agentstation/starport/internal/providers/auth\t0.311s\nFAIL\n",
+  "fixture": "package auth\nimport (\n \"net/http\"\n \"testing\"\n \"github.com/agentstation/starmap/pkg/catalogs\"\n \"github.com/agentstation/starport/internal/credentials\"\n)\nfunc TestRequestAuthenticationRequiresDestinationApproval(t *testing.T) {\n registry, err := ProductionRegistry()\n if err != nil { t.Fatal(err) }\n material := credentials.NewMaterial(catalogs.ProviderCredentialProfile{\n ID: \"api-key\", Primitive: catalogs.ProviderAuthenticationAPIKey,\n Placements: []catalogs.ProviderCredentialPlacement{{Field: \"api-key\", Kind: catalogs.ProviderCredentialPlacementHeader, Name: \"Authorization\", Scheme: catalogs.ProviderCredentialSchemeBearer}},\n }, map[catalogs.ProviderCredentialFieldID]string{\"api-key\":\"fixture-secret\"}, credentials.MaterialMetadata{})\n request, err := http.NewRequestWithContext(t.Context(), http.MethodPost, \"https://unapproved.example/inference\", nil)\n if err != nil { t.Fatal(err) }\n if err := registry.Apply(material, request); err == nil {\n t.Fatal(\"authentication accepted material without a destination grant\")\n }\n if request.Header.Get(\"Authorization\") != \"\" { t.Fatal(\"authentication placed material before destination approval\") }\n}\n",
+  "network_calls": 0,
+  "note": "Temporary regression fixture. Production authentication does not consume the destination-grant contract yet."
+}

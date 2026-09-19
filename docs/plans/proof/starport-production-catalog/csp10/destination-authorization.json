@@ -1,0 +1,58 @@
+{
+  "task": "CSP10",
+  "status": "partial; not acceptance evidence for A25",
+  "starport_commit": "148cec893793dfab5fa7d7854cc6c4195f4f393b",
+  "starmap_commit": "9845e6cf9ea3a239c90214e1eb937889ca72b129",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "finding": "Production authentication accepts material without destination authorization. Endpoint binding tests do not prove destination approval.",
+  "fail_before": "destination-authorization/fail-before.json",
+  "implementation": "Immutable destination grant contract in internal/credentials. Exact provider, role, handle, operation, method, origin, path, query, and complete profile checks. Explicit replacement approvals and independent revocation. No production caller yet.",
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/csp10-host-integration.work go test -race -count=1 -timeout 3m -json ./internal/credentials",
+      "exit_code": 0,
+      "pass_events": 146,
+      "skip_events": 1,
+      "skip": "TestProviderCredentialRepositoryContract/valkey",
+      "output": "destination-authorization/credentials.jsonl.gz"
+    },
+    {
+      "command": "GOWORK=/tmp/csp10-host-integration.work go vet ./internal/credentials",
+      "exit_code": 0
+    },
+    {
+      "command": "GOWORK=/tmp/csp10-host-integration.work make lint",
+      "exit_code": 0,
+      "output": "destination-authorization/lint.log.gz"
+    },
+    {
+      "command": "technical-writing lint internal/credentials/destination.go --format text",
+      "exit_code": 0
+    },
+    {
+      "test": "TestDestinationAuthorizationCheckHasNoAllocations",
+      "result": "Authorization and target check together report zero allocations per run."
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "diagnostics": 67,
+      "limitation": "Historical diagnostics remain. Targeted plan and new source checks pass.",
+      "output": "destination-authorization/writing-check.json"
+    }
+  ],
+  "limitations": [
+    "No production enforcement yet. The captured authentication regression remains unresolved.",
+    "No network or secret egress test yet. The regression stops at authentication.",
+    "Checks concern targets before credential placement. Dispatch integration must preserve approved query credential placement while checking the final target.",
+    "No durable approval store, setup preview, pinned-baseline policy, or effective diagnostics yet.",
+    "No A25 registration or completion credit. No structured review, native CI, publication, or merge."
+  ],
+  "next_actions": [
+    "Bind selected environment, shared, and account material to stable credential identities and approved destination contracts.",
+    "Compile quickstart permission from the pinned bundled catalog, separately from refreshed catalog facts. Persist explicit approvals for custom and changed destinations.",
+    "Enforce authorization before credential placement and before inference connection tests. Bind final request targets for dispatch rechecks, including query credentials and queued revocation.",
+    "Expose unavailable-pending-approval status and approval provenance. Keep local/private exceptions scoped.",
+    "Test zero egress for host, scheme, port, placement, streaming, retries, BYOK, shared credentials, overrides, restart, and approved transitions. Then run the full CSP10 gate."
+  ]
+}
