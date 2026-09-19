@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-19T11:44:17.546174+00:00",
+  "checked_at": "2026-09-19T12:29:54.737181+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -898,12 +898,12 @@
     },
     {
       "worktree": "starmap-catalog-requirements",
-      "head": "48eb8df75d9f67313c5ce703c6ef394d68c1209c",
+      "head": "a61cf8ed3d05c1860ffeccc5fc67dd6593e05353",
       "status": "M AGENTS.md\n M Makefile\n M go.mod\n M go.sum\n M scripts/verify.sh"
     },
     {
       "worktree": "starmap-credential-roles",
-      "head": "008ddc8e6276855d0581688582adb206417f384f",
+      "head": "9845e6cf9ea3a239c90214e1eb937889ca72b129",
       "status": "",
       "owner": "CSP9",
       "disposition": "unpublished preparation",
@@ -936,10 +936,10 @@
     {
       "worktree": "starport-catalog-routing",
       "owner": "CSP10",
-      "head": "346040d71d8907beab17746cbc2db864c4e4e6b0",
+      "head": "be35b8825ddd7a7402523405735c3cc5840a09ed",
       "status": "",
       "disposition": "unpublished preparation",
-      "next_action": "Complete HTTP transition and in-flight request qualification, then run the task gate and review before publication."
+      "next_action": "Complete remaining CSP10 acceptance cases, including destination authorization; run the full task gate and required review before publication."
     },
     {
       "worktree": "/tmp/csp6-signed-recovery-candidate",
@@ -1005,21 +1005,23 @@
     "171": {
       "ahead_by": 8,
       "behind_by": 2,
-      "merge_base_commit": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
-      "status": "diverged"
+      "status": "diverged",
+      "merge_base_commit": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520"
     },
     "168": {
       "ahead_by": 3,
       "behind_by": 2,
-      "merge_base_commit": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
-      "status": "diverged"
+      "status": "diverged",
+      "merge_base_commit": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520"
     },
     "165": {
       "ahead_by": 1,
       "behind_by": 38,
-      "merge_base_commit": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
-      "status": "diverged"
+      "status": "diverged",
+      "merge_base_commit": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934"
     }
   },
-  "starport_ancestry": {}
+  "starport_ancestry": {},
+  "starmap_protected": true,
+  "starport_protected": true
 }
