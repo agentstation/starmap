@@ -73,14 +73,29 @@ without race instrumentation. Smaller publication and ownership tests still
 exercise those contracts under the race detector.
 
 `scripts/verification_tests.py` assigns each package from `go list ./...` to
-exactly one group. New packages enter a group automatically. Go 1.27.1 uses four independent hosted runners:
+exactly one group. New packages enter a group automatically. The race suite uses six hosted runners after the verification checks job:
 
 | Group | Packages |
 | --- | --- |
-| `runtime` | Connected runtime and its children |
+| `checks` | CI workflow contracts, executed early inside the verification checks job |
+| `runtime-1`, `runtime-2`, `runtime-3` | Disjoint runtime test groups, including child packages |
 | `client` | Root library, acquisition, and embedded bootstrap |
 | `application` | Commands, CLI composition, and HTTP server |
 | `contracts` | All remaining packages |
+
+Runtime runners discover top-level tests, examples, and fuzz seeds with `go test -race -json -list .`.
+A stable hash of each name selects one of three groups. New tests enter a group automatically.
+Each runner verifies that its completed tests exactly match its selected inventory.
+Missing, unexpected, and duplicate results fail verification. CI retains the selected inventory beside the test events.
+
+The package timeout remains 30 minutes. Native jobs retain their complete runtime suites.
+
+Publication recovery, ingestion, and real Git acquisition run in separate native jobs on all six platforms.
+The required verification gate also requires every native publication job to pass.
+This separates sequential job costs without changing test selection or timeout limits.
+
+The early `checks` group runs once with race instrumentation. Later race groups exclude those packages.
+Use `make verify` for complete local qualification. It runs the early checks once, then the runtime groups and remaining suites.
 
 Each runner uses `-p=1` to bound concurrent catalog memory. The release race suite covers the complete package inventory.
 It also proves ordinary behavior, so CI does not repeat that suite without instrumentation. Coverage and pure-Go checks remain separate because
@@ -90,6 +105,7 @@ Run one fresh group with retained JSON evidence:
 
 ```bash
 make verify-tests TEST_SUITE=race TEST_GROUP=runtime
+python3 scripts/verification_tests.py race --group runtime --shard 1
 make verify-tests TEST_SUITE=race TEST_GROUP=contracts
 make verify-tests TEST_SUITE=capacity
 ```
