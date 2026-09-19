@@ -1,0 +1,51 @@
+{
+  "recorded_at": "2026-09-19T16:10:26.969521+00:00",
+  "task": "CSP10",
+  "status": "local compiler evidence; A25 remains UNVERIFIED",
+  "starport_head": "e50b1bd52671703f8c5c07b9be266cea6f74b261",
+  "starmap_head": "9845e6cf9ea3a239c90214e1eb937889ca72b129",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "changes": [
+    "CompileDestinationGrant derives profiles, endpoints, stream paths, and author paths from one approved provider record.",
+    "Only profiles in the inference plane qualify. Acquisition-only profiles do not qualify.",
+    "Explicit endpoint parameters must belong to the selected profile. Unknown variables and template injection are refused.",
+    "Model and publisher path variables remain scoped to the approved origin and fixed tenant parameters.",
+    "OpenAI job target rules preserve operation, method, path, and query."
+  ],
+  "fail_before": {
+    "base": "5b2f749dd8543a02a169c2758d796c0b908fc22e",
+    "command": "GOWORK=/tmp/csp10-host-integration.work go test ./internal/providers -run ^TestApprovedCatalogContractDoesNotFollowProviderRefresh$ -count=1",
+    "exit_code": 1,
+    "output": "undefined: CompileDestinationGrant",
+    "kind": "missing API build failure"
+  },
+  "checks": {
+    "affected-race": 0,
+    "vet": 0,
+    "lint": 0,
+    "writing": 0
+  },
+  "affected_test_events": {
+    "pass": 622,
+    "fail": 0,
+    "skip": 1
+  },
+  "embedded_profiles_without_endpoint_parameters": 13,
+  "fixture_repair": "The local override fixture incorrectly included /v1 in the base. The pinned OpenAI contract owns /v1 in its endpoint paths. The fixture now supplies the origin.",
+  "test_cost": "One immutable embedded catalog is shared across compiler tests with sync.OnceValues. Each provider read returns independent values.",
+  "limitations": [
+    "The compiler requires an approved provider argument. It does not establish configuration authority by itself.",
+    "Application startup still does not supply approvals. Authentication still permits unbound material.",
+    "Account and shared credential handles require policy-derived grants without request-path compilation or allocations.",
+    "Effective diagnostics, connection tests, policy updates, native qualification, review, publication, and merge remain open."
+  ],
+  "review_notes": [
+    "The OpenAI job transport currently appends path segments to the URL string. A collection query would therefore precede the appended segment. The compiler preserves queries in their proper location. Qualify and repair the actual transport before claiming job integration.",
+    "Production integration must load pinned contracts separately from accepted refreshed catalog state. Never call this compiler automatically on refreshed provider facts."
+  ],
+  "next_action": "Bind pinned contracts and selected explicit configuration to credential handles, supply approvals at startup and connection tests, then remove unbound authentication.",
+  "plan_checks": {
+    "targeted_writing": "PASS: 1 file, 0 diagnostics",
+    "full_writing": "exit 2; 67 historical diagnostics across 1665 files"
+  }
+}
