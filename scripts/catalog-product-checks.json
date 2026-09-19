@@ -419,6 +419,12 @@
           "repository": "starport",
           "package": "./internal/catalog",
           "test": "TestPlanningCandidatesOwnMutableValues"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestIndexedRoutesRetainOrderAndCallerOwnership"
         }
       ]
     },
@@ -3527,10 +3533,21 @@
       ]
     },
     "A44.exact_model_scaling": {
-      "kind": "go_test",
-      "repository": "starport",
-      "package": "./internal/router",
-      "test": "TestCatalogExactModelAllocationScaling"
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestCatalogExactModelAllocationScaling"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestExactRouteLookupAllocationsDoNotScale"
+        }
+      ]
     },
     "A44.precomputed_static_candidates": {
       "kind": "all",
