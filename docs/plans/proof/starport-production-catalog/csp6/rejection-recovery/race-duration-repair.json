@@ -1,6 +1,6 @@
 {
   "captured_at": "2026-09-19T01:29:32.278653+00:00",
-  "status": "local candidate tests complete; final-head native CI active",
+  "status": "workflow contract tests repaired locally; full checks active",
   "owner": "CSP6",
   "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
   "branch": "codex/acquisition-coalescing-fixture",
@@ -111,12 +111,33 @@
       ],
       "proof": "race-duration-shard-3.jsonl.gz"
     },
-    "runtime_candidate_results": "runtime-candidate-results.json"
+    "runtime_candidate_results": "runtime-candidate-results.json",
+    "ciworkflow_failure": {
+      "head": "336df28b611e62d058ff17029ffd274bc520fe84",
+      "run": 35414164079,
+      "failed_tests": [
+        "TestGitAcquisitionQualificationRequiresNativeTools",
+        "TestVerificationGateRequiresEverySuiteEvenAfterFailure",
+        "TestVerificationMatrixPreservesPackageGroupsWithoutCompilerDuplicates"
+      ],
+      "cause": "Tests still required the previous native job ownership, three gate dependencies, and unsharded matrix.",
+      "proof": "repair-170-contracts-failure.jsonl.gz"
+    },
+    "ciworkflow_repair": {
+      "passed": 55,
+      "failed": 0,
+      "skipped": 0,
+      "proof": "ciworkflow-focused-repair.jsonl.gz",
+      "changes": "Require native publication results in executable fail-closed gate tests. Verify six-platform parity and exact runtime shard coverage. Retain native Git fixture assertions. Run ciworkflow once in an early race group, with retained artifacts and no later duplicate execution.",
+      "python_runner_tests": 9,
+      "workflow_syntax": "pass"
+    }
   },
   "live_sessions": {
-    "71664": "gh run watch 35414164079 --interval 60 --exit-status; /tmp/csp6-170-watch.log"
+    "71664": "gh run watch 35414164079 --interval 60 --exit-status; /tmp/csp6-170-watch.log",
+    "65621": "full make verify-checks after workflow contract repair, /tmp/csp6-ciworkflow-final-checks.log"
   },
-  "next_action": "Observe PR #170 final-head CI run 35414164079 through watch session 71664. Local groups one and three passed. Group two failure is preserved and all five affected crash points passed focused verification on both catalogs. Resolve actual CI failures in #170. After all required and native checks pass, mark ready and merge exact reviewed head 336df28b6. Record the merge, then resume checked publisher for #168. Preserve #165 until replacement qualification.",
+  "next_action": "Observe full local checks in session 65621 and existing CI in session 71664. Seven source files hold the uncommitted workflow contract repair. Verify, commit, and repeat required autoreview before updating existing PR #170. Qualify its replacement head and merge before resuming #168.",
   "source_commit": "336df28b611e62d058ff17029ffd274bc520fe84",
   "native_intel_failure": {
     "run": 35409735768,
