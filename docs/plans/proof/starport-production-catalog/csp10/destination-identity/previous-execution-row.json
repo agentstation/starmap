@@ -1,0 +1,3 @@
+{
+  "html": "<tr><td>2026-09-19</td><td>CSP10</td><td>Qualify alias removal during admitted inference.</td><td><a href=\"proof/starport-production-catalog/csp10/inflight-alias.json\">Proof</a>: <code>7cb87bb</code>. Ten repeated race runs and 97 router test events pass. The <a href=\"proof/starport-production-catalog/csp10/inflight-alias/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}

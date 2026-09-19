@@ -57,9 +57,11 @@
 
 <p>The committed dependency still lacks the required producer APIs. Published-pair qualification, native checks, and merge remain required. Writing session 59549 ended with 67 historical diagnostics. The current plan passes its targeted prose check.</p>
 
-<p>CSP10 preparation uses <code>starport-catalog-routing</code> at <code>3e212bd</code> and <code>starmap-credential-roles</code> at <code>9845e6cf9</code>. Both worktrees are clean. Use <code>GOWORK=/tmp/csp10-host-integration.work</code> for this unpublished pair.</p>
+<p>CSP10 preparation uses <code>starport-catalog-routing</code> at <code>5f6c744</code> and <code>starmap-credential-roles</code> at <code>9845e6cf9</code>. Both worktrees are clean. Use <code>GOWORK=/tmp/csp10-host-integration.work</code> for this unpublished pair.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp10/destination-dispatch.json">destination dispatch proof</a> records checks for bound grants. Authentication and dispatch reject unapproved destinations and revoked grants. HTTP/1 and HTTP/2 queued requests stop while admitted streams complete. The affected run passes 447 events with one Valkey skip. Final repeated checks pass 63 events.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp10/destination-identity.json">credential identity proof</a> binds grants to source-owned material handles. Account and shared selections remain distinct. Rotation preserves the logical handle and changes its material version. The affected run passes 546 events with three Valkey skips. Nine repeated identity checks pass.</p>
 
 <p>Production selection does not bind grants yet. Unbound material retains its previous behavior. Next, connect pinned baseline permission and explicit approvals to credential setup and selection. Then remove the unbound-material bypass and qualify each credential role. A25 remains unverified.</p>
 
@@ -676,7 +678,7 @@
 
 
 
-<tr><td>2026-09-19</td><td>CSP10</td><td>Qualify alias removal during admitted inference.</td><td><a href="proof/starport-production-catalog/csp10/inflight-alias.json">Proof</a>: <code>7cb87bb</code>. Ten repeated race runs and 97 router test events pass. The <a href="proof/starport-production-catalog/csp10/inflight-alias/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
+
 <tr><td>2026-09-19</td><td>CSP10</td><td>Qualify HTTP aliases with the serialized cache.</td><td><a href="proof/starport-production-catalog/csp10/http-alias-transition.json">Proof</a>: <code>9cc73fa</code>. Final checks pass 495 race events with one optional skip. The <a href="proof/starport-production-catalog/csp10/http-alias-transition/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Repair missing-model errors in both protocol families.</td><td><a href="proof/starport-production-catalog/csp10/missing-model-errors.json">Proof</a>: <code>c99fd0d</code>. Six HTTP regressions now pass. Final checks pass 796 race events with one optional skip. The <a href="proof/starport-production-catalog/csp10/missing-model-errors/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Enforce permission before inference error disclosure.</td><td><a href="proof/starport-production-catalog/csp10/inference-policy.json">Proof</a>: Starport <code>346040d</code> and Starmap <code>008ddc8e6</code>. Final checks pass 873 race events with one optional skip. The <a href="proof/starport-production-catalog/csp10/inference-policy/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
@@ -686,4 +688,5 @@
 <tr><td>2026-09-19</td><td>CSP10</td><td>Qualify configured authority changes and the SDK roster.</td><td><a href="proof/starport-production-catalog/csp10/authority-transition.json">Proof</a>: <code>be35b88</code> and <code>9845e6cf9</code>. Forty-six authority events and 88 verifier tests pass. The <a href="proof/starport-production-catalog/csp10/authority-transition/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Define inference destination grants.</td><td><a href="proof/starport-production-catalog/csp10/destination-authorization.json">Proof</a>: <code>148cec8</code>. Credential checks pass 146 events with one skip. Production enforcement remains incomplete. The <a href="proof/starport-production-catalog/csp10/destination-authorization/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Check bound grants before credential dispatch.</td><td><a href="proof/starport-production-catalog/csp10/destination-dispatch.json">Proof</a>: <code>3e212bd</code>. Final repeated checks pass 63 events. Production selection remains incomplete. The <a href="proof/starport-production-catalog/csp10/destination-dispatch/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
+<tr><td>2026-09-19</td><td>CSP10</td><td>Bind approvals to resolved credential handles.</td><td><a href="proof/starport-production-catalog/csp10/destination-identity.json">Proof</a>: <code>5f6c744</code>. Nine repeated identity checks pass. The <a href="proof/starport-production-catalog/csp10/destination-identity/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 </tbody></table></section></main></body></html>

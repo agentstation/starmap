@@ -1,0 +1,5 @@
+{
+  "description": "Negative control restores the previous grant identity condition while retaining the new material-handle accessor and regression test.",
+  "exit_code": 1,
+  "output": "--- FAIL: TestDestinationGrantRefusesAnotherMaterialHandle (0.00s)\n    destination_test.go:164: \n        \tError Trace:\t/Users/jack/src/github.com/agentstation/starport-catalog-routing/internal/credentials/destination_test.go:164\n        \tError:      \tExpected error with \"inference credential destination is not approved\" in chain but got nil.\n        \tTest:       \tTestDestinationGrantRefusesAnotherMaterialHandle\nFAIL\nFAIL\tgithub.com/agentstation/starport/internal/credentials\t0.467s\nFAIL\n"
+}

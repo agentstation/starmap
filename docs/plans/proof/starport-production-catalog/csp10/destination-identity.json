@@ -1,0 +1,61 @@
+{
+  "task": "CSP10",
+  "status": "partial; destination approval selection remains incomplete",
+  "starport_commit": "5f6c74491863cc4189079cf86960ab22abc32709",
+  "starmap_commit": "9845e6cf9ea3a239c90214e1eb937889ca72b129",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "changes": [
+    "Production resolver material now identifies its provider handle independently of the material version.",
+    "Stored account material identifies its logical account/provider slot. Shared material identifies the exact selected shared credential. Handles contain no credential value.",
+    "Secret rotation changes the material version without changing the selected logical credential handle. Shared credential revocation remains enforced by the existing material fence.",
+    "Grant authorization now requires the resolved material handle to equal the approved handle. A caller-supplied identity alone cannot attach another credential grant."
+  ],
+  "handle_contract": "Account handles identify logical account/provider slots, not secret revisions. Shared handles include the shared credential ID. Provider-source handles identify their provider. Grant roles remain separate and keyring-owned.",
+  "checks": [
+    {
+      "command": "go test -race -count=1 -timeout 3m -json ./internal/credentials ./internal/providers/keyring ./internal/providers/auth ./internal/providers/connectors",
+      "exit_code": 0,
+      "pass_events": 546,
+      "skip_events": 3,
+      "skips": [
+        "TestManagedMaterialValkeyOutageAndRecovery",
+        "TestProviderCredentialRepositoryContract/valkey",
+        "TestManagedMaterialStorageRotationRevocationAndRecreation/valkey"
+      ],
+      "output": "destination-identity/affected.jsonl.gz"
+    },
+    {
+      "command": "go test -race -count=3 -timeout 2m -json ./internal/credentials ./internal/providers/keyring -run 'TestDestinationGrantRefusesAnotherMaterialHandle|TestResolvedDestinationHandle|TestStoredDestinationIdentity'",
+      "exit_code": 0,
+      "pass_events": 9,
+      "output": "destination-identity/final.jsonl.gz"
+    },
+    {
+      "command": "go vet ./internal/credentials ./internal/providers/keyring ./internal/providers/auth ./internal/providers/connectors",
+      "exit_code": 0
+    },
+    {
+      "command": "make lint",
+      "exit_code": 0,
+      "output": "destination-identity/lint.log.gz"
+    },
+    {
+      "command": "technical-writing lint internal/credentials/material.go internal/credentials/destination.go --format text",
+      "exit_code": 0
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "diagnostics": 67,
+      "limitation": "Historical diagnostics remain. Targeted plan and changed source checks pass.",
+      "output": "destination-identity/writing-check.json"
+    }
+  ],
+  "negative_control": "destination-identity/negative-control.json",
+  "limitations": [
+    "Production source handles are available, but production approval selection does not bind grants yet. Unbound authentication still follows the old behavior.",
+    "No durable approval repository or operator approval API exists yet. No pinned installation approval compiler exists yet.",
+    "No A25 registration, full CSP10 acceptance, native qualification, review, publication, or merge credit."
+  ],
+  "next_action": "Implement the approved-contract selection service from pinned installation facts and explicit approvals. Bind its grants to material at route preparation and connection tests. Cover dynamic model and job paths without approving arbitrary prefixes, then remove unbound authentication."
+}
