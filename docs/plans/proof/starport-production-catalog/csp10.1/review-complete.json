@@ -1,0 +1,11 @@
+{
+  "recorded_at": "2026-09-19T19:08:57.137868+00:00",
+  "starport_commit": "05a1ae10e2d46f59443b37bc8cb9cec2749906d6",
+  "review_exit_code": 0,
+  "review_chunks": 5,
+  "findings": 0,
+  "review_result": "starport-final-review.json",
+  "status": "reviewed locally; not merged",
+  "running_processes": [],
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10</td><td>Qualify pricing and repair the console verifier.</td><td><a href=\"proof/starport-production-catalog/csp10/pricing-qualification.json\">Proof</a>: <code>cfe153f</code>, <code>7ec99d200</code>, and <code>75afb0fc0</code>. Four A18 subcases pass. The final run remains active. The <a href=\"proof/starport-production-catalog/csp10/pricing-qualification/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}

@@ -3,7 +3,7 @@
   "recorded_at": "2026-09-19T19:04:27.162685+00:00",
   "starport_commit": "05a1ae1",
   "starmap_commit": "c70627094",
-  "status": "local qualification complete except published dependency; Starport review running",
+  "status": "local qualification and review complete; published dependency and native qualification remain open",
   "repository_qualification": {
     "starport_head": "05a1ae10e2d46f59443b37bc8cb9cec2749906d6",
     "status": "complete",
@@ -253,17 +253,7 @@
     "Full Go suite, vet, lint, build, first-run, and official SDK smoke checks pass.",
     "Starmap final Sol/Opus review is clean at c70627094."
   ],
-  "active_review": {
-    "session_id": 82461,
-    "reviewers": [
-      "codex:gpt-5.6-sol:xhigh",
-      "claude:opus:high"
-    ],
-    "report": "/tmp/csp101-starport-final-review.json",
-    "log": "/tmp/csp101-starport-final-review-process.log",
-    "command": "autoreview --gate pre-pr --mode auto --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high"
-  },
-  "next_action": "Poll Starport review session 82461. Verify actionable findings against the source. Fix and rerun only affected checks plus required review. Preserve the PR168 history decision and compatible published Starmap dependency requirement. Do not mark CSP10.1 complete before native qualification and actual merge.",
+  "next_action": "Resolve the pending PR168 signed-history decision and publish the compatible producer before native qualification and merges. Independent preparation may continue without completion credit.",
   "terminal_sessions": [
     7334,
     61441,
@@ -271,7 +261,22 @@
     18921,
     80912,
     82307,
-    6205
+    6205,
+    82461
   ],
-  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10</td><td>Align catalog counts and provider facets.</td><td><a href=\"proof/starport-production-catalog/csp10/view-consistency.json\">Proof</a>: <code>35c493d</code>. Checks pass 545 race events and 460 console tests. A18 remains unverified. The <a href=\"proof/starport-production-catalog/csp10/view-consistency/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10</td><td>Align catalog counts and provider facets.</td><td><a href=\"proof/starport-production-catalog/csp10/view-consistency.json\">Proof</a>: <code>35c493d</code>. Checks pass 545 race events and 460 console tests. A18 remains unverified. The <a href=\"proof/starport-production-catalog/csp10/view-consistency/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>",
+  "completed_review": {
+    "session_id": 82461,
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "report": "/tmp/csp101-starport-final-review.json",
+    "log": "/tmp/csp101-starport-final-review-process.log",
+    "command": "autoreview --gate pre-pr --mode auto --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high",
+    "exit_code": 0,
+    "proof": "proof/starport-production-catalog/csp10.1/starport-final-review.json",
+    "chunks": 5,
+    "findings": 0
+  }
 }
