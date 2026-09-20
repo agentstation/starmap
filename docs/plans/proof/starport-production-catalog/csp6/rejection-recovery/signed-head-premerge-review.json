@@ -1,0 +1,58 @@
+{
+  "head": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+  "review": {
+    "data": {
+      "repository": {
+        "pullRequest": {
+          "headRefOid": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+          "isDraft": false,
+          "reviewDecision": null,
+          "reviewThreads": {
+            "pageInfo": {
+              "hasNextPage": false,
+              "endCursor": null
+            },
+            "nodes": []
+          }
+        }
+      }
+    }
+  },
+  "required_checks": {
+    "url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_status_checks",
+    "strict": true,
+    "contexts": [
+      "Security & Reliability",
+      "Verification Gate"
+    ],
+    "contexts_url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_status_checks/contexts",
+    "checks": [
+      {
+        "context": "Security & Reliability",
+        "app_id": 15368
+      },
+      {
+        "context": "Verification Gate",
+        "app_id": 15368
+      }
+    ]
+  },
+  "required_signatures": {
+    "url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_signatures",
+    "enabled": true
+  },
+  "ci_run": 35488652576,
+  "ci_status": "in_progress",
+  "job_counts": {
+    "success": 18,
+    "in_progress": 8
+  },
+  "merge_attempted": false,
+  "publisher_failure_checked": {
+    "run": 35472978652,
+    "reason": "retained promotion history has an unverified commit; operator recovery is required",
+    "relationship": "This failure predates the authorized signed-history replacement."
+  },
+  "next_action": "Keep watch session 77184. Do not restart the run. Read exact-head final checks and publisher follow-up before publication capture.",
+  "outstanding_review_requests": 0
+}
