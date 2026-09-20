@@ -1,0 +1,29 @@
+{
+  "commit": "d85025282",
+  "base": "bcfcebc25",
+  "failure": "Merged verifier rejects public immutable catalog prereleases. It also fails to require release immutability.",
+  "regression_before": {
+    "test_cases": 9,
+    "failures": 4,
+    "errors": 1
+  },
+  "after": {
+    "test_cases": 89,
+    "failures": 0,
+    "errors": 0,
+    "command": "PYTHONPATH=scripts python3 -m unittest scripts.test_catalog_publication_hosted scripts.test_catalog_product_verify"
+  },
+  "review": {
+    "exit": 0,
+    "threshold": "P0",
+    "findings": 0,
+    "report": "prerelease-review.json.gz"
+  },
+  "capture": "../hosted-publication/capture-tool.json",
+  "retry": {
+    "run": 35395944704,
+    "attempt": 2,
+    "status": "in_progress"
+  },
+  "remaining": "Integrate reviewed verifier fix and fixture reuse into existing PR171 after capture. The original merged verifier remains unable to qualify public prereleases. Do not mark CSP6 complete yet."
+}

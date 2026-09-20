@@ -1,0 +1,8 @@
+{
+  "tool_commit": "d85025282",
+  "tool_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-mode-fixture",
+  "source_commit": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+  "qualified_merge": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+  "method": "catalog_publication_capture.capture_before with explicit unchanged source root",
+  "reason": "The merged capture verifier rejects public prereleases. The corrected verifier requires non-draft immutable releases and retains all asset checks. Tool fix still needs merge."
+}
