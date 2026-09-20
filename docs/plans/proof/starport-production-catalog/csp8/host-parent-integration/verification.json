@@ -1,0 +1,49 @@
+{
+  "checked_at": "2026-09-20T05:48:34.622853+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+  "branch": "codex/starmap-host-files",
+  "head": "1cd77e8a82008bfaf72419c4bb2515688cb65232",
+  "parents": [
+    "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+    "aafdaf3abb6a862559c55ec3d4e8600baab4d526"
+  ],
+  "status": "local integration qualified; not pushed",
+  "checks": [
+    {
+      "command": "GOWORK=off go test -race -count=1 -json ./pkg/productfiles ./pkg/productpaths ./internal/privatefiles",
+      "exit": 0,
+      "counts": {
+        "pass": 181,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "parent.jsonl.gz"
+    },
+    {
+      "command": "GOWORK=off go test -race -count=1 -json . -run '^TestExportEmbeddedBaseline'",
+      "exit": 0,
+      "counts": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "baseline.jsonl.gz"
+    },
+    {
+      "command": "GOWORK=off go test -race -count=1 -timeout 5m -json ./internal/cli/app -run '^(TestConfiguration|TestServiceConfiguration|TestDotenvAccessFailure|TestFileManifest|TestConfigPaths|TestAncestorRefusal)'",
+      "exit": 0,
+      "counts": {
+        "pass": 44,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "composition.jsonl.gz"
+    }
+  ],
+  "vet": {
+    "command": "GOWORK=off go vet ./pkg/productfiles ./pkg/productpaths ./internal/privatefiles",
+    "exit": 0
+  },
+  "preservation": "Host API source and tests are unchanged from PR171 head. The merge adds the reviewed publisher repair and accepted embedded catalog.",
+  "remaining": "Wait for PR173 protected merge. Incorporate its main ancestry, complete required publication review and checks, then update existing PR171. Hold the host API merge until CSP6 retry capture completes. Native qualification and published-module consumer checks remain required."
+}

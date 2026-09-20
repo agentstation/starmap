@@ -800,8 +800,10 @@
   "local_work": [
     {
       "worktree": "starmap-host-files",
-      "head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
-      "status": ""
+      "head": "1cd77e8a82008bfaf72419c4bb2515688cb65232",
+      "status": "",
+      "disposition": "unpublished integration",
+      "next_action": "Local head 1cd77e8a8 passes 227 race events and vet. After PR173 merges, incorporate main ancestry and complete review before updating PR171. Hold merge until publication retry qualification."
     },
     {
       "worktree": "starmap-publisher-validation",
@@ -950,7 +952,7 @@
     "171": {
       "owner": "CSP8 host integration",
       "disposition": "retained dependent work",
-      "next": "After publication retry qualification, merge current main and requalify the existing PR."
+      "next": "Local head 1cd77e8a8 passes 227 race events and vet. After PR173 merges, incorporate main ancestry and complete review before updating PR171. Hold merge until publication retry qualification."
     },
     "165": {
       "owner": "CSP6",
