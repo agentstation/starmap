@@ -35,7 +35,7 @@
 
 <p>Local code remains unmerged. CSP17 owns the console account picker. The <a href="proof/starport-production-catalog/csp10.2/repository-qualification-progress.json">qualification record</a> owns integration repairs and the remaining published-module failure. Opus 5 completed two review passes against parent <code>a5aab81</code> with zero findings at the configured P0 threshold. Linux and Windows pure-Go cross-builds pass. They do not qualify native execution.</p>
 
-<p>CSP12.1 preparation uses <code>starport-cache-storage</code>, branch <code>codex/starport-cache-storage</code>, at <code>9dda506</code>, from reviewed parent <code>31feeca</code>. Use <code>GOWORK=/tmp/csp121-host-integration.work</code> with Starmap <code>152148130</code>. Set both Starport verifier roots to this worktree. The reviewed authorization worktree remains unchanged.</p>
+<p>CSP12.1 preparation uses <code>starport-cache-storage</code>, branch <code>codex/starport-cache-storage</code>, at <code>bd2499b</code>, from reviewed parent <code>31feeca</code>. Use <code>GOWORK=/tmp/csp121-host-integration.work</code> with Starmap <code>152148130</code>. Set both Starport verifier roots to this worktree. The reviewed authorization worktree remains unchanged.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/model-encoding.md">model encoding proof</a> records direct discovery decoding, bounded encoding, and buffer ownership. Component checks pass 507 race events with four skips. Integration checks pass ten with two skips. Seven final boundary cases pass. Lint and vet pass. Earlier <a href="proof/starport-production-catalog/csp12.1/resume-before-model-encoding.html.gz">resume evidence</a> remains historical.</p>
 
@@ -43,7 +43,9 @@
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/capacity.md">capacity proof</a> records retained-buffer accounting at <code>9dda506</code>. Three concurrent runs pass with bounded queues and store costs. Retained heap measures 8.0–8.2 MiB for three two-MiB caches. These are component measurements.</p>
 
-<p>Next, qualify stream reconstruction, unavailable shared-cache latency, and the remaining discovery matrix. Component benchmark gains do not prove full-request latency. CSP12.1 remains incomplete.</p>
+<p>The <a href="proof/starport-production-catalog/csp12.1/stream-completion.md">stream completion proof</a> records reconstruction at <code>bd2499b</code>. Component checks pass 347 race events. The final contract suite passes 127 events. Builders reduce repeated prefix copies. Encoding and EOF completion remain on the caller.</p>
+
+<p>Next, qualify unavailable shared-cache latency, full completion cost, and the remaining discovery matrix. Component benchmark gains do not prove full-request latency. CSP12.1 remains incomplete.</p>
 
 <p>No review processes, verification sessions, or disposable services remain active.</p>
 
@@ -695,4 +697,5 @@
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Bound model encoding and decode discovery responses directly at <code>7aae8da</code>. Preserve failed intermediate controls. Final boundary tests pass. Component measurements show lower warm-decode cost.</td><td><a href="proof/starport-production-catalog/csp12.1/model-encoding.md">Model encoding proof</a>. Aggregate and full-request qualification remain open.</td></tr>
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Repair discovery cache views at <code>b2bcd80</code>. All 480 race events pass without skips. Lint passes.</td><td><a href="proof/starport-production-catalog/csp12.1/discovery-views.md">Discovery proof</a>. Local preparation remains unmerged.</td></tr>
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Charge retained buffer capacity at <code>9dda506</code>. All six final race events pass across three repetitions. Lint passes.</td><td><a href="proof/starport-production-catalog/csp12.1/capacity.md">Capacity proof</a>. No full gateway resource claim.</td></tr>
+<tr><td>2026-09-19</td><td>CSP12.1</td><td>Reduce stream reconstruction copies at <code>bd2499b</code>. Component race checks and the final interleaving contract pass. Lint passes.</td><td><a href="proof/starport-production-catalog/csp12.1/stream-completion.md">Stream completion proof</a>. No complete HTTP latency claim.</td></tr>
 </tbody></table></section></main></body></html>
