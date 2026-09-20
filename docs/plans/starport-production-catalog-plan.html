@@ -12,7 +12,7 @@
 
 <p>Updated September 19, 2026. <a href="#CSP6">CSP6</a> is the only task in progress. Fifteen of 40 tasks are complete.</p>
 
-<p id="next-action">Follow CI run <code>35488652576</code> on PR #168 head <code>45afaed5d2ea6fb3993a4abeb120657d252e9a41</code>. Watch session <code>77184</code> remains active. CodeQL run <code>35488651647</code> passed. The publisher merges the branch after successful checks under branch protection.</p>
+<p id="next-action">CI run <code>35488652576</code> passed for PR #168 head <code>45afaed5d2ea6fb3993a4abeb120657d252e9a41</code>. Follow publisher run <code>35490650276</code>. It must merge under branch protection and complete publication before channel capture. CodeQL run <code>35488651647</code> also passed.</p>
 
 <p>Use <code>/private/tmp/csp6-signed-recovery-candidate</code> at that head. Its worktree is clean. The owner authorized the signed history, and the lease-protected push completed. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/authorized-signed-recovery.json">recovery proof</a> verifies signatures, all 380 catalog files, and main ancestry.</p>
 
@@ -22,7 +22,7 @@
 
 <p>CSP15 fixture preparation is clean at <code>starport-sql-contract-isolation</code>, branch <code>codex/sql-contract-isolation</code>, head <code>9328f07</code>. The <a href="proof/starport-production-catalog/csp15/sql-fixture-isolation.md">fixture proof</a> records 63 passing real-store race events. Review and merge remain open. This does not qualify the complete storage recipe.</p>
 
-<p>Verification fixture preparation uses <code>/Users/jack/src/github.com/agentstation/starmap-catalog-mode-fixture</code> on <code>codex/catalog-mode-fixture-reuse</code>, based on <code>45afaed5d</code>. Measure <code>TestCatalogModes</code> before and after reducing repeated full-catalog loads. Preserve all assertions and both catalog constructors. Keep the active publication candidate unchanged.</p>
+<p>Verification fixture preparation uses <code>/Users/jack/src/github.com/agentstation/starmap-catalog-mode-fixture</code> on <code>codex/catalog-mode-fixture-reuse</code>, based on <code>45afaed5d</code>. Commit <code>bcfcebc25</code> reduces six loads to two. Race duration falls from 148.85 to 49.79 seconds. All 1,318 package test events and static checks pass. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/catalog-mode-fixture-reuse.json">review</a> passes with no P0 findings. Keep the publication candidate unchanged.</p>
 
 <p>CSP12.2 has <a href="proof/starport-production-catalog/csp12.2/concurrent-budget-before.md">concurrent-admission failure evidence</a>. The overlay test changes no implementation files. Atomic reservations and the separate accounting discrepancy remain open.</p>
 
@@ -693,4 +693,5 @@
 <tr><td>2026-09-19</td><td>CSP6</td><td>Verify PR #168 has no review threads or outstanding review request. Strict checks and signed-commit protection remain enabled. Eighteen CI jobs pass and eight remain active. The last publisher failure predates signed recovery.</td><td><a href="proof/starport-production-catalog/csp6/rejection-recovery/signed-head-premerge-review.json">Pre-merge review</a>. Follow the existing CI watch.</td></tr>
 <tr><td>2026-09-19</td><td>CSP12.2</td><td>Preserve three failed concurrent-admission probes against real Badger. Two requests pass a one-token limit. One run also undercounts completed usage without a write error.</td><td><a href="proof/starport-production-catalog/csp12.2/concurrent-budget-before.md">Failure proof</a>. No production files changed. No completion claim.</td></tr>
 <tr><td>2026-09-19</td><td>CSP6 verification</td><td>Capture completed CI timing artifacts. Runtime race shard 2 takes 1,144.976 seconds. Native macOS file inspection takes 127.89 seconds. Four jobs remain active.</td><td><a href="proof/starport-production-catalog/csp6/rejection-recovery/signed-ci-timing-sample.json">Timing sample</a>. Preserve distinct coverage when reducing fixture costs. Publication evidence still requires the protected merge.</td></tr>
+<tr><td>2026-09-20</td><td>CSP6 preparation</td><td>Commit <code>bcfcebc25</code> reuses read-only catalog fixtures. All assertions remain. Catalog-mode race time falls by 67%. The scheduled publisher now accepts signed recovery and reports <code>awaiting_checks</code>.</td><td><a href="proof/starport-production-catalog/csp6/rejection-recovery/catalog-mode-fixture-reuse.json">Fixture proof</a>. Publisher run <code>35490180686</code>. Review and merge remain open.</td></tr>
 </tbody></table></section></main></body></html>

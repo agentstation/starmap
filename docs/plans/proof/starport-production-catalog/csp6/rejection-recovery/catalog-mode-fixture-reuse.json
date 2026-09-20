@@ -1,0 +1,27 @@
+{
+  "head": "bcfcebc254c9b3fb227ef1160fa37e787956a785",
+  "base": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-mode-fixture",
+  "branch": "codex/catalog-mode-fixture-reuse",
+  "before_command": "GOWORK=off go test -race -count=1 -json -run '^TestCatalogModes$' ./pkg/catalogs",
+  "after_command": "GOWORK=off go test -race -count=1 -json ./pkg/catalogs",
+  "before_seconds": 148.85,
+  "after_seconds": 49.79,
+  "pass_events": 1318,
+  "fail_events": 0,
+  "skip_events": 0,
+  "static_checks": [
+    "go vet ./pkg/catalogs",
+    "go tool goago -stale-ignores -format json ./...",
+    "golangci-lint run ./pkg/catalogs",
+    "technical-writing lint pkg/catalogs/catalog_test.go"
+  ],
+  "review": {
+    "status": "PASS",
+    "exit": 0,
+    "findings": 0,
+    "threshold": "P0",
+    "report": "fixture-review.json.gz"
+  },
+  "scope": "Test-only fixture reuse. Six catalog constructor calls become two per parent test. Every existing assertion remains. Native qualification and merge remain open. Hold producer merges until CSP6 captures both channels."
+}
