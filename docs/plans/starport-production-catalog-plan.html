@@ -18,7 +18,11 @@
 
 <p>Use <code>/private/tmp/csp6-signed-recovery-candidate</code> at qualified head <code>45afaed5d</code>. Its worktree is clean. The owner authorized the signed history, and the lease-protected push completed. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/authorized-signed-recovery.json">recovery proof</a> verifies signatures, all 380 catalog files, and main ancestry.</p>
 
-<p>Read the <a href="#task-CSP6">CSP6 contract</a> and <a href="proof/starport-production-catalog/csp6/rejection-recovery/signed-head-qualification-progress.json">qualification record</a>. Local generation and all 68 paired distribution checks passed. No local verification processes remain active. After successful publication, capture both channels before retrying preparation run <code>35395944704</code>, then capture the retry. Hold other producer merges during capture. Preserve PR #165 until replacement qualification, then requalify host-API PR #171.</p>
+<p>Read the <a href="#task-CSP6">CSP6 contract</a> and <a href="proof/starport-production-catalog/csp6/rejection-recovery/signed-head-qualification-progress.json">qualification record</a>. Local generation and all 68 paired distribution checks passed. No local verification processes remain active. After successful publication, use the saved before-capture and dispatch the completed receipt on current main after PR #173 merges. Capture that retry.</p>
+
+<p>Hold other producer merges during capture. Preserve PR #165 until replacement qualification, then requalify host-API PR #171.</p>
+
+<p>Prepare PR #171 locally in <code>starmap-host-files</code> on <code>codex/starmap-host-files</code>. Merge reviewed parent <code>aafdaf3ab</code> into head <code>11366a556</code>, then verify the host contracts. Hold its push until PR #173 merges. Hold its merge until publication retry qualification.</p>
 
 <p>Reviewed cache preparation is clean at <code>starport-cache-storage</code>, branch <code>codex/starport-cache-storage</code>, head <code>c1c272b</code>. Use <code>GOWORK=/tmp/csp121-host-integration.work</code> with <code>starmap-advisory-exchange</code> at <code>706654ead</code>. Both trees are under <code>/Users/jack/src/github.com/agentstation</code>. The <a href="proof/starport-production-catalog/csp12.1/discovery-and-qualification.md">repository and review proof</a> records remaining qualification. No review processes or disposable services remain active.</p>
 
@@ -28,7 +32,7 @@
 
 <p> Race duration falls from 148.85 to 49.79 seconds. All 1,318 package test events and static checks pass. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/prerelease-verifier-repair.json">combined review</a> passes with no P0 findings. Publish the expanded publisher repair separately. PR #171 follows after retry qualification. Keep the publication candidate unchanged.</p>
 
-<p>CSP12.2 has <a href="proof/starport-production-catalog/csp12.2/concurrent-budget-before.md">concurrent-admission failure evidence</a>. The overlay test changes no implementation files. Atomic reservations and the separate accounting discrepancy remain open.</p>
+<p>CSP12.2 has <a href="proof/starport-production-catalog/csp12.2/concurrent-budget-before.md">concurrent-admission failure evidence</a>. The overlay test changes no implementation files. Atomic reservations remain open. The Badger repair resolves the separate lost-update defect. Admission still exceeds the tested allowance.</p>
 
 <p>A compatible published Starmap module must precede dependent Starport qualification and merges. The current pin lacks <code>pkg/productfiles</code>. Never commit local replacements. Native checks, actual merge commits, and released-pair acceptance remain required.</p>
 
