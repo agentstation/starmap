@@ -2108,9 +2108,11 @@
       "log": "/tmp/csp6-signed-generation-check.log"
     },
     "distribution": {
-      "id": 69430,
-      "command": "GOWORK=off bash scripts/verify-catalog-distribution.sh",
-      "log": "/tmp/csp6-signed-distribution.log"
+      "id": 21098,
+      "command": "GOWORK=/tmp/csp6-signed-pair.work CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-billing bash scripts/verify-catalog-distribution.sh",
+      "log": "/tmp/csp6-signed-distribution-pair.log",
+      "starport_head": "9f80f176",
+      "scope": "Source-pair qualification; no module pin changed."
     },
     "ci_watch": {
       "id": 77184,
@@ -2123,5 +2125,13 @@
     "pull": 168,
     "retry_original_run": 35395944704,
     "next": "After checked merge and successful publisher completion, use catalog_publication_capture.py before. Its before phase captures completed publication before the same-bytes retry, not before the merge. Preserve both channel documents. Then retry original preparation run, capture after, and run the registered CSP6 acceptance."
+  },
+  "prior_distribution": {
+    "exit": 1,
+    "passed": 49,
+    "failed": 0,
+    "unverified": 19,
+    "reason": "Temporary Starmap checkout had no Starport sibling. Rerun explicitly selects the recorded CSP6 billing worktree.",
+    "log": "distribution-missing-consumer.log.gz"
   }
 }
