@@ -1,0 +1,158 @@
+[
+  {
+    "command": "bash scripts/verify-starmap-ownership.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 90.48,
+    "log": "/tmp/csp121-repository-gates/verify-starmap-ownership.log"
+  },
+  {
+    "command": "bash scripts/verify-v1-architecture.sh",
+    "exit_code": 1,
+    "elapsed_seconds": 164.71,
+    "log": "/tmp/csp121-repository-gates/verify-v1-architecture.log"
+  },
+  {
+    "command": "bash scripts/test-dependency-direction-verifier.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.66,
+    "log": "/tmp/csp121-repository-gates/test-dependency-direction-verifier.log"
+  },
+  {
+    "command": "bash scripts/verify-dependency-direction.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.65,
+    "log": "/tmp/csp121-repository-gates/verify-dependency-direction.log"
+  },
+  {
+    "command": "bash scripts/verify-catalog-driven-providers.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 141.48,
+    "log": "/tmp/csp121-repository-gates/verify-catalog-driven-providers.log"
+  },
+  {
+    "command": "bash scripts/verify-package-layout.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 6.5,
+    "log": "/tmp/csp121-repository-gates/verify-package-layout.log"
+  },
+  {
+    "command": "bash scripts/verify-readme-quickstart.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.08,
+    "log": "/tmp/csp121-repository-gates/verify-readme-quickstart.log"
+  },
+  {
+    "command": "bash scripts/verify-v1-release.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.08,
+    "log": "/tmp/csp121-repository-gates/verify-v1-release.log"
+  },
+  {
+    "command": "bash scripts/verify-release-workflow.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 6.52,
+    "log": "/tmp/csp121-repository-gates/verify-release-workflow.log"
+  },
+  {
+    "command": "bash scripts/verify-developer-experience.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 2.46,
+    "log": "/tmp/csp121-repository-gates/verify-developer-experience.log"
+  },
+  {
+    "command": "bash scripts/verify-doc-links.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.34,
+    "log": "/tmp/csp121-repository-gates/verify-doc-links.log"
+  },
+  {
+    "command": "bash scripts/test-doc-link-verifier.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.33,
+    "log": "/tmp/csp121-repository-gates/test-doc-link-verifier.log"
+  },
+  {
+    "command": "bash scripts/verify-openrouter-parity.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.13,
+    "log": "/tmp/csp121-repository-gates/verify-openrouter-parity.log"
+  },
+  {
+    "command": "bash scripts/verify-console-modernization.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.04,
+    "log": "/tmp/csp121-repository-gates/verify-console-modernization.log"
+  },
+  {
+    "command": "bash scripts/verify-auth-onboarding.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.08,
+    "log": "/tmp/csp121-repository-gates/verify-auth-onboarding.log"
+  },
+  {
+    "command": "bash scripts/verify-console-session-grants.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.39,
+    "log": "/tmp/csp121-repository-gates/verify-console-session-grants.log"
+  },
+  {
+    "command": "bash scripts/verify-model-modalities.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.24,
+    "log": "/tmp/csp121-repository-gates/verify-model-modalities.log"
+  },
+  {
+    "command": "bash scripts/verify-files-api.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.13,
+    "log": "/tmp/csp121-repository-gates/verify-files-api.log"
+  },
+  {
+    "command": "bash scripts/verify-async-media-jobs.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.13,
+    "log": "/tmp/csp121-repository-gates/verify-async-media-jobs.log"
+  },
+  {
+    "command": "bash scripts/verify-document-parser.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.18,
+    "log": "/tmp/csp121-repository-gates/verify-document-parser.log"
+  },
+  {
+    "command": "bash scripts/verify-reranking.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.35,
+    "log": "/tmp/csp121-repository-gates/verify-reranking.log"
+  },
+  {
+    "command": "bash scripts/verify-catalog-performance.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.23,
+    "log": "/tmp/csp121-repository-gates/verify-catalog-performance.log"
+  },
+  {
+    "command": "bash scripts/verify-credential-sharing.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.18,
+    "log": "/tmp/csp121-repository-gates/verify-credential-sharing.log"
+  },
+  {
+    "command": "bash scripts/verify-enterprise-readiness.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.78,
+    "log": "/tmp/csp121-repository-gates/verify-enterprise-readiness.log"
+  },
+  {
+    "command": "bash scripts/verify-console-polish.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 0.17,
+    "log": "/tmp/csp121-repository-gates/verify-console-polish.log"
+  },
+  {
+    "command": "bash scripts/verify-action-pins.sh",
+    "exit_code": 0,
+    "elapsed_seconds": 5.02,
+    "log": "/tmp/csp121-repository-gates/verify-action-pins.log"
+  }
+]
