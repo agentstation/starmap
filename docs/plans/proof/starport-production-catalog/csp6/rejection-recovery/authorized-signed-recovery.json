@@ -1,0 +1,24 @@
+{
+  "candidate": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+  "main": "9ff84a481c3693a22f27004316e4340a49689afd",
+  "expected_head": "e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+  "branch": "catalog/promotion/4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613",
+  "catalog_tree": "35912dad42dbc6b6a7e028b7617e5831adf48163",
+  "catalog_files": 380,
+  "all_non_catalog_files_equal_main": true,
+  "signatures": [
+    {
+      "sha": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+      "verified": true
+    },
+    {
+      "sha": "1762607ef3e4e3ec44e9205c536362cf686aef4c",
+      "verified": true
+    }
+  ],
+  "authorization": "Owner authorized signed-history replacement in this turn.",
+  "published_head": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+  "branch_updated": true,
+  "pr_head": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+  "immediate_pr_readback": "stale; initial assertion failed after successful push"
+}
