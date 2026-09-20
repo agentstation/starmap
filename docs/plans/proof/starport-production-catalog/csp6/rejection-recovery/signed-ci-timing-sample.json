@@ -1,0 +1,284 @@
+{
+  "run": 35488652576,
+  "head": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+  "scope": "Completed artifact sample only. Four jobs remain active. Not a complete run qualification.",
+  "observations": [
+    {
+      "artifact": "native-runtime-macos-15",
+      "file": "native-runtime-macos-15-tests.jsonl.gz",
+      "sha256": "a3e90653c423feef44e04be38e1cb3e904b351b461ad08f632ddb7a86fab71af",
+      "packages": [
+        {
+          "seconds": 561.27,
+          "package": "github.com/agentstation/starmap/runtime"
+        },
+        {
+          "seconds": 203.853,
+          "package": "github.com/agentstation/starmap/internal/cli/app"
+        },
+        {
+          "seconds": 194.577,
+          "package": "github.com/agentstation/starmap"
+        },
+        {
+          "seconds": 89.956,
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace"
+        },
+        {
+          "seconds": 80.03,
+          "package": "github.com/agentstation/starmap/internal/bootstrap"
+        },
+        {
+          "seconds": 11.684,
+          "package": "github.com/agentstation/starmap/server"
+        },
+        {
+          "seconds": 5.554,
+          "package": "github.com/agentstation/starmap/pkg/catalogs/storage"
+        },
+        {
+          "seconds": 4.725,
+          "package": "github.com/agentstation/starmap/server/administration"
+        }
+      ],
+      "tests": [
+        {
+          "seconds": 127.89,
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestFileInspectionCoversRetainedRemovalAndPin"
+        },
+        {
+          "seconds": 84.83,
+          "package": "github.com/agentstation/starmap",
+          "test": "TestFirstExplicitUpdateAtomicallySeedsAbsentWorkspaceFromEmbedded"
+        },
+        {
+          "seconds": 73.09,
+          "package": "github.com/agentstation/starmap",
+          "test": "TestWritableStoreAllowsConfiguredMutationTriggers"
+        },
+        {
+          "seconds": 46.84,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestProviderCompositeRecoveryPreservesContributions"
+        },
+        {
+          "seconds": 38.43,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+        },
+        {
+          "seconds": 35.82,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
+        },
+        {
+          "seconds": 33.94,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestRuntimeRecoversRecordPublicationAfterProcessExit"
+        },
+        {
+          "seconds": 32.52,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh"
+        }
+      ]
+    },
+    {
+      "artifact": "native-runtime-macos-15",
+      "file": "native-runtime-macos-15-filesystem-preflight.jsonl.gz",
+      "sha256": "a442481da88462e42e90b54c2a548a9faccf0eae6b5f7b2bd66e60f396f560d3",
+      "packages": [
+        {
+          "seconds": 6.569,
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace"
+        },
+        {
+          "seconds": 0.46,
+          "package": "github.com/agentstation/starmap/internal/privatefiles"
+        },
+        {
+          "seconds": 0.063,
+          "package": "github.com/agentstation/starmap/internal/cli/app"
+        }
+      ],
+      "tests": [
+        {
+          "seconds": 3.33,
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestWorkspaceWriterReplacementStopsJournalPhases"
+        },
+        {
+          "seconds": 1.65,
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestWorkspaceWriterReplacementStopsPublication"
+        },
+        {
+          "seconds": 0.79,
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestPreparationCleanupPreservesOperatorChanges"
+        },
+        {
+          "seconds": 0.51,
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent"
+        },
+        {
+          "seconds": 0.43,
+          "package": "github.com/agentstation/starmap/internal/privatefiles",
+          "test": "TestPrivatePublicationPreservesChangedRecords"
+        },
+        {
+          "seconds": 0.19,
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestLegacyRollbackPreservesOperatorSidecars"
+        },
+        {
+          "seconds": 0.04,
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestRelocationPreparationClosesHandlesAfterCleanupConflict"
+        },
+        {
+          "seconds": 0.02,
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestLegacyStoreLockCancellationPreservesStore"
+        }
+      ]
+    },
+    {
+      "artifact": "go-tests-race-runtime-2",
+      "file": "go-tests-race-runtime-2-go-test-events.jsonl.gz",
+      "sha256": "b9117fb29a76687943d41907210ab98839b3b5734cf3dedff022053789f4d662",
+      "packages": [
+        {
+          "seconds": 1144.976,
+          "package": "github.com/agentstation/starmap/runtime"
+        }
+      ],
+      "tests": [
+        {
+          "seconds": 196.51,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+        },
+        {
+          "seconds": 88.74,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOriginFollowerAdoptsSharedCatalogWithoutAcquisition"
+        },
+        {
+          "seconds": 87.6,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOriginReplicaStartupRetainsCatalogWithoutInputs"
+        },
+        {
+          "seconds": 74.03,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOriginPublicationRejectsInputsAfterFailedCommit"
+        },
+        {
+          "seconds": 68.04,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOriginFollowerRefusesMissingOrWrongAuthority"
+        },
+        {
+          "seconds": 60.39,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestAcquisitionSourceSelectionRefusesFailedStartupPublication"
+        },
+        {
+          "seconds": 55.8,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOriginPublicationReopensFilesystemWithExactIdentity"
+        },
+        {
+          "seconds": 53.83,
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeByteLimit"
+        }
+      ]
+    },
+    {
+      "artifact": "go-tests-race-contracts",
+      "file": "go-tests-race-contracts-go-test-events.jsonl.gz",
+      "sha256": "068e0ee778bd78d2766ae9424105c107b50abde23305c39d29478caccfb12805",
+      "packages": [
+        {
+          "seconds": 173.147,
+          "package": "github.com/agentstation/starmap/pkg/catalogs"
+        },
+        {
+          "seconds": 151.647,
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config"
+        },
+        {
+          "seconds": 141.423,
+          "package": "github.com/agentstation/starmap/internal/catalog/settings"
+        },
+        {
+          "seconds": 83.053,
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace"
+        },
+        {
+          "seconds": 69.921,
+          "package": "github.com/agentstation/starmap/internal/sources/modelsdev"
+        },
+        {
+          "seconds": 65.344,
+          "package": "github.com/agentstation/starmap/internal/catalog/publication"
+        },
+        {
+          "seconds": 58.057,
+          "package": "github.com/agentstation/starmap/remote"
+        },
+        {
+          "seconds": 45.589,
+          "package": "github.com/agentstation/starmap/server"
+        }
+      ],
+      "tests": [
+        {
+          "seconds": 156.4,
+          "package": "github.com/agentstation/starmap/pkg/catalogs",
+          "test": "TestCatalogModes"
+        },
+        {
+          "seconds": 68.07,
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "test": "TestGenerationPinConfigurationSelectsRetainedCatalog"
+        },
+        {
+          "seconds": 56.92,
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "test": "TestCompositionClosesBuiltCascade"
+        },
+        {
+          "seconds": 42.39,
+          "package": "github.com/agentstation/starmap/remote",
+          "test": "TestManualRuntimeRefreshNeverOpensStream"
+        },
+        {
+          "seconds": 41.88,
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "test": "TestApplicationPullsSyntheticChannelAndRetainsState"
+        },
+        {
+          "seconds": 41.55,
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "test": "TestRetentionSettingsReachRuntime"
+        },
+        {
+          "seconds": 39.64,
+          "package": "github.com/agentstation/starmap/internal/embedded",
+          "test": "TestEmbeddedProviderContracts"
+        },
+        {
+          "seconds": 39.56,
+          "package": "github.com/agentstation/starmap/internal/embedded",
+          "test": "TestEmbeddedHetznerProviderContract"
+        }
+      ]
+    }
+  ],
+  "follow_up": "Measure fixture size costs in contract tests. Preserve full embedded-catalog, capacity, recovery, and native coverage. Do not change or restart the active candidate."
+}
