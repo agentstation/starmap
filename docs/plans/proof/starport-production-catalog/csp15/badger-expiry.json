@@ -1,0 +1,55 @@
+{
+  "head": "c18b22f686f56e9eb70df3461bbcbe00deddc47a",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-sql-contract-isolation",
+  "branch": "codex/sql-contract-isolation",
+  "before": {
+    "command": "GOWORK=off go test -race -count=3 -json ./internal/storage -run '^TestBadgerExpiryPreservesConcurrentIncrements$'",
+    "expected": 1000,
+    "actual": [
+      427,
+      424,
+      435
+    ],
+    "failures": 3
+  },
+  "after": {
+    "command": "GOWORK=off go test -race -count=10 -json ./internal/storage -run '^TestBadgerExpiryPreservesConcurrentIncrements$'",
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0
+  },
+  "packages": {
+    "command": "GOWORK=off go test -race -count=1 -json ./internal/storage ./internal/usage",
+    "passed": 266,
+    "failed": 0,
+    "skipped": 26,
+    "skip_scope": "Optional Valkey service tests. This change qualifies Badger only."
+  },
+  "cancellation": {
+    "passed": 1,
+    "failed": 0
+  },
+  "checks": [
+    "go vet ./internal/storage ./internal/usage",
+    "golangci-lint run ./internal/storage ./internal/usage",
+    "technical-writing lint internal/storage/badger.go internal/storage/badger_expiry_test.go"
+  ],
+  "goago": "Not declared as a module tool in Starport. No tool installed or policy changed.",
+  "budget_probe": {
+    "admitted": [
+      2,
+      2,
+      2
+    ],
+    "consumed": [
+      2,
+      2,
+      2
+    ],
+    "admission_assertion_failures": 3,
+    "workspace": "/tmp/csp15-badger.work",
+    "overlay": "/tmp/csp15-budget-overlay.json",
+    "scope": "Accounting retains both completed writes. Atomic budget reservation remains unimplemented."
+  },
+  "remaining": "CSP15 full storage recipe, review, native checks, published dependency qualification, and merge remain open."
+}
