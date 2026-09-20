@@ -1,4 +1,4 @@
-# rerank-v4.0-pro - Highest quality lane of the Rerank 4 family, billed by the search unit
+# rerank-v4.0-pro - Highest quality lane of the Rerank 4 family, billed by the s...
 id: rerank-v4.0-pro
 name: rerank-v4.0-pro
 authors:
@@ -8,6 +8,7 @@ description: Highest quality lane of the Rerank 4 family, billed by the search u
 
 # Model metadata
 metadata:
+  release_date: null
   open_weights: false
   tags:
   - rerank

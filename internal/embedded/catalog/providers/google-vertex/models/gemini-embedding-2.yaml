@@ -10,6 +10,7 @@ description: |-
 
 # Model metadata
 metadata:
+  release_date: null
   tags:
   - embed
 
