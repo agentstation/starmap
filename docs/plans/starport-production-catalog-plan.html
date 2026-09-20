@@ -35,7 +35,7 @@
 
 <p>Local code remains unmerged. CSP17 owns the console account picker. The <a href="proof/starport-production-catalog/csp10.2/repository-qualification-progress.json">qualification record</a> owns integration repairs and the remaining published-module failure. Opus 5 completed two review passes against parent <code>a5aab81</code> with zero findings at the configured P0 threshold. Linux and Windows pure-Go cross-builds pass. They do not qualify native execution.</p>
 
-<p>CSP12.1 preparation uses <code>starport-cache-storage</code>, branch <code>codex/starport-cache-storage</code>, at <code>df91956</code>, from reviewed parent <code>31feeca</code>. Use <code>GOWORK=/tmp/csp121-host-integration.work</code> with Starmap <code>152148130</code>. Set both Starport verifier roots to this worktree. The reviewed authorization worktree remains unchanged.</p>
+<p>CSP12.1 preparation uses <code>starport-cache-storage</code>, branch <code>codex/starport-cache-storage</code>, at <code>7dd4b3c</code>, from reviewed parent <code>31feeca</code>. Use <code>GOWORK=/tmp/csp121-host-integration.work</code> with Starmap <code>445e2d130</code>. Set both Starport verifier roots to this worktree. The reviewed authorization worktree remains unchanged.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/model-encoding.md">model encoding proof</a> records direct discovery decoding, bounded encoding, and buffer ownership. Component checks pass 507 race events with four skips. Integration checks pass ten with two skips. Seven final boundary cases pass. Lint and vet pass. Earlier <a href="proof/starport-production-catalog/csp12.1/resume-before-model-encoding.html.gz">resume evidence</a> remains historical.</p>
 
@@ -47,7 +47,9 @@
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/shared-outage.md">shared-cache outage proof</a> records real Valkey pause and recovery at <code>df91956</code>. All 36 race events pass without skips. Thirty-two concurrent read-plus-fill samples complete within 2.73 ms. This is component evidence only. The disposable service stopped.</p>
 
-<p>Next, map the nine A42 and eight A48 subcases to current tests, fill missing behavioral evidence, and register the checks. Qualify full completion cost and the remaining discovery matrix. Component benchmark gains do not prove full-request latency. CSP12.1 remains incomplete.</p>
+<p>The <a href="proof/starport-production-catalog/csp12.1/acceptance-registration.md">acceptance audit</a> records twelve passing subcases and five unverified subcases. Starmap <code>445e2d130</code> registers current checks. All 36 behavior commands pass with 81 race events and no skips. The CSP12.1 gate still fails.</p>
+
+<p>Next, implement per-kind cache controls and ensure the master switch disables extraction caching. Then close outage admission, default memory-budget measurement, semantic-mode, combined admission/expiry, and production discovery gaps. Component benchmark gains do not prove full-request latency. CSP12.1 remains incomplete.</p>
 
 <p>No review processes, verification sessions, or disposable services remain active.</p>
 
@@ -701,4 +703,5 @@
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Charge retained buffer capacity at <code>9dda506</code>. All six final race events pass across three repetitions. Lint passes.</td><td><a href="proof/starport-production-catalog/csp12.1/capacity.md">Capacity proof</a>. No full gateway resource claim.</td></tr>
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Reduce stream reconstruction copies at <code>bd2499b</code>. Component race checks and the final interleaving contract pass. Lint passes.</td><td><a href="proof/starport-production-catalog/csp12.1/stream-completion.md">Stream completion proof</a>. No complete HTTP latency claim.</td></tr>
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Verify real Valkey pause, bounded reads, fills, and recovery at <code>df91956</code>. All 36 race events pass without skips.</td><td><a href="proof/starport-production-catalog/csp12.1/shared-outage.md">Shared outage proof</a>. Registration and complete admission coverage remain open.</td></tr>
+<tr><td>2026-09-19</td><td>CSP12.1</td><td>Register twelve subcases at Starmap <code>445e2d130</code> with Starport <code>7dd4b3c</code>. All 36 commands pass. Five subcases remain unverified.</td><td><a href="proof/starport-production-catalog/csp12.1/acceptance-registration.md">Acceptance audit</a>. The task gate remains failed.</td></tr>
 </tbody></table></section></main></body></html>
