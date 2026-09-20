@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-20T06:32:53.574762+00:00",
+  "checked_at": "2026-09-20T06:57:19.072023+00:00",
   "prior_snapshot": "queue-before-current-state-2026-09-20.json.gz",
   "starmap": [
     {
@@ -7,11 +7,11 @@
       "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
       "headRefName": "codex/catalog-mode-fixture-reuse",
       "headRefOid": "cc49e50378156a185ffb480ff55b4f4e88de90d6",
-      "isDraft": true,
+      "isDraft": false,
       "mergeStateStatus": "BLOCKED",
       "number": 173,
       "title": "fix: replay completed catalog publication without acquisition",
-      "updatedAt": "2026-09-20T06:17:47Z"
+      "updatedAt": "2026-09-20T06:55:44Z"
     },
     {
       "baseRefName": "main",
@@ -40,7 +40,7 @@
   "current_dispositions": {
     "173": {
       "owner": "CSP6",
-      "disposition": "reviewed repair awaiting native CI",
+      "disposition": "Reviewed and ready; required native CI pending",
       "next": "Qualify replacement CI35493820776 at cc49e5037, merge the reviewed exact head, then replay the completed receipt."
     },
     "171": {

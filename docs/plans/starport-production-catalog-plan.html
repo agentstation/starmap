@@ -16,7 +16,7 @@
 
 <p>Finish the <a href="proof/starport-production-catalog/csp6/rejection-recovery/completed-retry-repair.json">publisher recovery repair</a> in <code>starmap-catalog-mode-fixture</code>. Head <code>aafdaf3ab</code> includes current main and passes generation qualification. All 68 paired distribution checks and review pass.</p>
 
-<p>CI run <code>35491884354</code> failed completion-recovery subprocess deadlines. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/completion-recovery-repair.json">serial recovery repair</a> preserves the timeout and assertions. Commit <code>cc49e5037</code> passes all nine events across three race repetitions. Review passes. PR #173 now uses head <code>cc49e5037</code>. Follow replacement CI run <code>35493820776</code>.</p>
+<p>CI run <code>35491884354</code> failed completion-recovery subprocess deadlines. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/completion-recovery-repair.json">serial recovery repair</a> preserves the timeout and assertions. Commit <code>cc49e5037</code> passes all nine events across three race repetitions. Review passes. PR #173 is ready at head <code>cc49e5037</code>. Follow replacement CI run <code>35493820776</code>.</p>
 
 <p>Use <code>/private/tmp/csp6-signed-recovery-candidate</code> at qualified head <code>45afaed5d</code>. Its worktree is clean. The owner authorized the signed history, and the lease-protected push completed. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/authorized-signed-recovery.json">recovery proof</a> verifies signatures, all 380 catalog files, and main ancestry.</p>
 
@@ -38,7 +38,9 @@
 
 <p>The <a href="proof/starport-production-catalog/csp8/current-catalog-integration/registry-reconciliation.json">registry reconciliation</a> combines producer and consumer registrations. It preserves all distinct product-isolation checks and validates against the unchanged acceptance roster. Retain valid producer results from session <code>2656</code>. Qualify the added consumer registrations before claiming CSP8 acceptance.</p>
 
-<p>The supplemental run stopped when the local disk filled. The <a href="proof/starport-production-catalog/csp8/current-catalog-integration/disk-recovery.json">disk recovery proof</a> records cleanup of old Go cache entries and retained failures. Session <code>37169</code> resumes the consumer checks with two prior passes retained. Producer session <code>2656</code> remains active. Inspect its final evidence for disk-related failures before reuse.</p>
+<p>The supplemental run stopped when the local disk filled. The <a href="proof/starport-production-catalog/csp8/current-catalog-integration/disk-recovery.json">disk recovery proof</a> records cleanup of old Go cache entries and retained failures. Session <code>37169</code> resumes the consumer checks with two prior passes retained. Both disk-related test failures now pass. Producer session <code>2656</code> remains active. Inspect its final evidence for disk-related failures before reuse.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp8/current-catalog-integration/native-evidence-gap.json">native evidence gap</a> remains under CSP8. Starport needs a native capture adapter and retained CI test events. Prepare these in an isolated successor tree while acceptance runs use the current source. Native consumer qualification remains unverified.</p>
 
 <p>CSP15 fixture preparation is clean at <code>starport-sql-contract-isolation</code>, branch <code>codex/sql-contract-isolation</code>, head <code>c18b22f</code>. The <a href="proof/starport-production-catalog/csp15/sql-fixture-isolation.md">SQL fixture proof</a> records 63 passing real-store race events. The <a href="proof/starport-production-catalog/csp15/badger-expiry.md">Badger repair</a> preserves concurrent writes during expiry changes. Review and merge remain open. This does not qualify the complete storage recipe.</p>
 

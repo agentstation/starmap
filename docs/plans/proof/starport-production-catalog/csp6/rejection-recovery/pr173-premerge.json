@@ -1,0 +1,15 @@
+{
+  "head": "cc49e50378156a185ffb480ff55b4f4e88de90d6",
+  "base": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+  "signature": "GitHub verified valid",
+  "unresolved_review_threads": 0,
+  "protection": {
+    "strict": true,
+    "enforce_admins": true,
+    "required": [
+      "Security & Reliability",
+      "Verification Gate"
+    ]
+  },
+  "state": "Ready for review; required Verification Gate still pending. No merge attempted."
+}

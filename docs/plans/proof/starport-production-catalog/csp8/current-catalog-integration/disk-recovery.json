@@ -22,5 +22,10 @@
   "checkpoint": "/tmp/csp8-current-consumer-supplement.json",
   "log": "/tmp/csp8-current-consumer-supplement-resumed.log",
   "producer_session": 2656,
-  "producer_policy": "Allow the live run to finish. Inspect and retain all failures; retry only checks invalidated by disk exhaustion."
+  "producer_policy": "Allow the live run to finish. Inspect and retain all failures; retry only checks invalidated by disk exhaustion.",
+  "recovered_tests": {
+    "status": "PASS",
+    "count": 2,
+    "evidence": "disk-recovery-tests.json.gz"
+  }
 }

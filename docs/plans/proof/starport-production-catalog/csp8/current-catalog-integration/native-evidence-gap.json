@@ -1,0 +1,14 @@
+{
+  "owner": "CSP8",
+  "source_commit": "c22a5579",
+  "finding": "The six registered native Starport cases cannot load scripts/native_catalog.py. The adapter does not exist in the consumer tree.",
+  "workflow": ".github/workflows/ci.yml",
+  "observed_workflow": "Full Go tests use ubuntu-latest, macos-latest, windows-latest. They do not retain toolchain identity and JSON test events for native catalog qualification.",
+  "required_work": [
+    "Add a consumer-owned capture and verification adapter that checks repository, exact source, native runner architecture, Go 1.27.1, and named passing tests.",
+    "Retain JSON test evidence and toolchain identity in the native CI jobs across the declared supported architectures. Preserve distinct existing race and platform coverage.",
+    "Capture passing hosted evidence after the compatible producer pin and consumer PR qualify."
+  ],
+  "constraint": "Do not mutate source trees while the current acceptance processes use them. Prepare this work in an isolated successor tree.",
+  "status": "UNVERIFIED"
+}
