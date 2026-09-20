@@ -183,7 +183,7 @@ class CatalogVerifierTests(unittest.TestCase):
 
 
     def performance_profile(self):
-        return verifier.read_json(verifier.ROOT / 'docs/plans/proof/starport-production-catalog/csp0.4/numeric-profile.json')
+        return verifier.read_json(verifier.ROOT / 'docs/plans/proof/starport-production-catalog/csp12.1/performance-profile.json')
 
     def performance_baseline(self):
         return verifier.read_json(verifier.ROOT / 'docs/plans/proof/starport-production-catalog/csp0.4/baseline-run-1.json')
@@ -248,7 +248,10 @@ class CatalogVerifierTests(unittest.TestCase):
                 verifier.validate_performance_profile(profile)
 
     def test_numeric_profile_cannot_relax_correctness_for_latency(self):
-        for field, value in [('permission_validity_seconds', 600), ('maximum_clock_uncertainty_seconds', 60),
+        for field, value in [('gateway_authorization_lifetime_seconds', 300), ('revocation_propagation_target_seconds', 60),
+                             ('gateway_authorization_clock', 'wall-clock'), ('unknown_clock', 'allow'),
+                             ('authority_receipt_maximum_clock_uncertainty_seconds', 60),
+                             ('authority_receipt_clock_contract', 'local-ttl'),
                              ('unknown_required_budget', 'allow'), ('admission_mode', 'unbounded-local'),
                              ('authority_activation_failure', 'use-old-policy'), ('controlled_backend_recovery', False)]:
             profile = self.performance_profile()

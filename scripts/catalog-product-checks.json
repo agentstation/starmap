@@ -4737,6 +4737,23 @@
           "test": "TestExpiredQueuedFillDoesNotAcquireNewLifetime"
         }
       ]
+    },
+    "A42.memory_budget_measurement": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestDefaultCacheMemoryBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestConcurrentOptionalCacheCapacity"
+        }
+      ]
     }
   },
   "task_component_checks": {

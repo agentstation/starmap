@@ -537,9 +537,12 @@ def validate_performance_profile(profile):
         if not limits["p50"] <= limits["p95"] <= limits["p99"] <= limits["p999"]:
             raise ValueError("Latency percentile targets must be ordered.")
     correctness = profile["correctness"]
-    if (correctness["permission_validity_seconds"] != 300 or correctness["maximum_clock_uncertainty_seconds"] != 30
+    if (correctness["gateway_authorization_lifetime_seconds"] != 60 or correctness["revocation_propagation_target_seconds"] != 2
+            or correctness["authority_receipt_maximum_clock_uncertainty_seconds"] != 30
+            or correctness["gateway_authorization_clock"] != "suspend-aware-elapsed"
+            or correctness["authority_receipt_clock_contract"] != "qualified-utc-unless-receipt-allows-conservative-elapsed-deadline"
             or correctness["admission_mode"] != "atomic-per-attempt" or correctness["unknown_required_budget"] != "refuse-retryable"
-            or correctness["authority_activation_failure"] != "block-new-inference" or correctness["unknown_clock"] != "refuse"):
+            or correctness["authority_activation_failure"] != "block-new-inference" or correctness["unknown_clock"] != "refuse-affected-operation"):
         raise ValueError("Performance cannot weaken the accepted correctness contract.")
     evidence = profile["evidence"]
     if (evidence["runs"] < 3 or evidence["minimum_samples_per_variant"] < 100_000 or evidence["minimum_seconds_per_run"] < 600
