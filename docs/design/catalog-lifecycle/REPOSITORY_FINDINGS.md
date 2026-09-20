@@ -3429,3 +3429,15 @@ The test overlay leaves the reviewed implementation unchanged. The run has eight
 CSP12.1 owns the repair. Its cache interface must return a value with lifetime evidence for that same record version.
 A separate GetTTL call cannot establish this under concurrent replacement. Transfer delay must consume the local deadline.
 Cache-only service configuration, bounded fills, stream bounds, and discovery checks remain part of the task.
+
+
+## September 19 default cache isolation
+
+Starport `ba68306` separates the cache manager from the durable KV interface.
+Default response and extraction caches now use process memory in application composition.
+Extraction has separate cleanup and remains independent of the response-cache switch.
+The [local isolation proof](../../plans/proof/starport-production-catalog/csp12.1/local-isolation.json) records 910 passing race-test events and seven explicit skips.
+Vet, lint, the document-parser guard, and a pure-Go binary build pass.
+
+Dedicated shared caching and original refill expiry remain open. CSP12.1 also owns bounded fills, stream limits, and discovery qualification.
+The legacy layered and hybrid constructors remain outside application composition. Their recorded refill failures still require repair or replacement.
