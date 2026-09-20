@@ -238,6 +238,10 @@
     {
       "session": 2656,
       "purpose": "CSP8 current-pair registered acceptance"
+    },
+    {
+      "session": 49529,
+      "purpose": "Additional CSP8 consumer leaf checks from reconciled registry"
     }
   ],
   "active_ci": {

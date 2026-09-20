@@ -1,0 +1,31 @@
+{
+  "scope": "Combine producer and consumer verification registrations without changing acceptance requirements.",
+  "base": "420c0d77ebeb5a64d36c57512b19db5ad3b5ec2d",
+  "consumer_plan_head": "cb5066c314469910130368df734efa0f77906705",
+  "producer_head": "ffecd9eb890adfd424d21b92638dc5d702c92553",
+  "registered_checks": 187,
+  "registry_sha256": "d9c56ad36bbadfa515c17e2fe772de5bd50758dae9efb5f659a1b5c3530982a9",
+  "conflict": {
+    "identity": "A25.product_path_isolation",
+    "resolution": "Retain all four distinct checks for independent roots, duplicate ownership, inheritance boundaries, and startup isolation."
+  },
+  "roster_validation": "PASS",
+  "running_prior_registry": {
+    "session": 2656,
+    "output": "/tmp/csp8-current-catalog-acceptance.json",
+    "scope": "Producer registrations only. Retain valid results; do not claim consumer or full task qualification."
+  },
+  "next": "Run newly registered consumer checks and any changed combined checks against the same pair. Native qualification remains separate.",
+  "verifier_tests": {
+    "command": "python3 -m unittest discover -s scripts -p test_catalog_product_verify.py",
+    "tests": 73,
+    "exit_code": 0,
+    "log": "registry-tests.log"
+  },
+  "supplement": {
+    "session": 49529,
+    "script": "consumer-supplement.py",
+    "output": "/tmp/csp8-current-consumer-supplement.json",
+    "log": "/tmp/csp8-current-consumer-supplement.log"
+  }
+}

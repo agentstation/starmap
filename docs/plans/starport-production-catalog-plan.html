@@ -34,7 +34,9 @@
 
 <p>CSP8 integration preparation uses <code>starport-catalog-integration</code> on <code>codex/starport-catalog-integration</code>. The <a href="proof/starport-production-catalog/csp8/current-catalog-integration/verification.json">catalog integration proof</a> records four failing tests and their fixture repairs. Three application tests now pass with race detection. Metadata and projection checks pass with race detection. Vet and pinned lint pass for the three affected packages.</p>
 
-<p>The full suite passes with 4,199 pass events and no failures. Its 69 skips remain explicit in the proof. Combined SQL, Badger, and catalog integration review passes with no P0 findings. CSP8 registered acceptance runs in session <code>2656</code>.</p>
+<p>The full suite passes with 4,199 pass events and no failures. Its 69 skips remain explicit in the proof. Combined SQL, Badger, and catalog integration review passes with no P0 findings. The producer acceptance run remains active in session <code>2656</code>.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp8/current-catalog-integration/registry-reconciliation.json">registry reconciliation</a> combines producer and consumer registrations. It preserves all distinct product-isolation checks and validates against the unchanged acceptance roster. Retain valid producer results from session <code>2656</code>. Qualify the added consumer registrations before claiming CSP8 acceptance.</p>
 
 <p>CSP15 fixture preparation is clean at <code>starport-sql-contract-isolation</code>, branch <code>codex/sql-contract-isolation</code>, head <code>c18b22f</code>. The <a href="proof/starport-production-catalog/csp15/sql-fixture-isolation.md">SQL fixture proof</a> records 63 passing real-store race events. The <a href="proof/starport-production-catalog/csp15/badger-expiry.md">Badger repair</a> preserves concurrent writes during expiry changes. Review and merge remain open. This does not qualify the complete storage recipe.</p>
 
