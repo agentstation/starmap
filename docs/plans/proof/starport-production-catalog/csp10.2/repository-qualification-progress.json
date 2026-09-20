@@ -253,5 +253,22 @@
     "markdown": "/tmp/csp102-autoreview.md",
     "json": "/tmp/csp102-autoreview.json",
     "command": "autoreview --gate pre-pr --mode auto --base a5aab8195011db63ef81e0317b942c0c645dd35d"
+  },
+  "pure_go_first_run": {
+    "commit": "31feeca",
+    "command": "GOWORK=/tmp/csp102-host-integration.work CGO_ENABLED=0 bash scripts/smoke-first-run.sh",
+    "exit_code": 0,
+    "stdout": "PASS ephemeral dev, isolated init, validation, diagnosis, readiness, and authenticated model discovery\n",
+    "scope": "macOS arm64 first-run binary. This does not qualify Linux, Windows, actual suspend, or a released pair."
+  },
+  "queue_recheck": {
+    "date": "2026-09-19",
+    "starmap_heads": {
+      "165": "e228e694ac5e66f75639721c438a261015a8026f",
+      "168": "e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+      "171": "11366a55629f21300b79bd15a4fa62c3fc00eba1"
+    },
+    "starport_open_prs": 0,
+    "disposition": "Unchanged. Signed-history decision and paired publication remain pending."
   }
 }
