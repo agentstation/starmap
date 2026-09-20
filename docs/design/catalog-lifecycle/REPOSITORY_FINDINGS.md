@@ -3479,3 +3479,12 @@ Two coherence repairs remain in CSP12.1. The independent cache namespace must de
 The layered, hybrid, and durable-KV cache adapters have no production callers and should leave the runtime source.
 Preserve their historical evidence and verify the actual application paths before full cache acceptance.
 Model and extraction fills and full performance, discovery, and production qualification remain open.
+
+
+### Shared cache deployment identity repair
+
+Starport `4e277db` removes the independent cache namespace setting.
+A real Valkey regression proved that different canonical deployment IDs could previously share a cached response.
+The cache now derives its encoded prefix from the canonical deployment ID and reports that prefix for ACL provisioning.
+The [deployment identity proof](../../plans/proof/starport-production-catalog/csp12.1/deployment-identity.md) records 117 passing race events and the original failure.
+Other shared stores and full cache qualification remain open.

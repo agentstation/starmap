@@ -37,9 +37,9 @@
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/cache-contract.md">cache contract proof</a> records seven failing behavior checks at Starport <code>31feeca</code>. Real Badger tests prove expiry extension across both cache implementations and default response writes into durable KV. The overlay leaves the reviewed branch unchanged. The cache handle now has a separate interface. Original expiry now passes local backend qualification.</p>
 
-<p>Next, bind cache prefixes to canonical deployment identity and remove unused internal KV cache adapters. Then bound model and extraction fills. Keep capacity, latency, and discovery checks in the same task scope.</p>
+<p>Next, remove unused internal KV cache adapters. Then bound model and extraction fills. Keep capacity, latency, and discovery checks in the same task scope.</p>
 
-<p>CSP12.1 implementation preparation uses <code>starport-cache-storage</code>, branch <code>codex/starport-cache-storage</code>, at <code>51767ba</code>, from reviewed parent <code>31feeca</code>. Use <code>GOWORK=/tmp/csp121-host-integration.work</code> with Starmap <code>152148130</code>. Set both Starport verifier roots to the new worktree. The reviewed authorization worktree remains unchanged.</p>
+<p>CSP12.1 implementation preparation uses <code>starport-cache-storage</code>, branch <code>codex/starport-cache-storage</code>, at <code>4e277db</code>, from reviewed parent <code>31feeca</code>. Use <code>GOWORK=/tmp/csp121-host-integration.work</code> with Starmap <code>152148130</code>. Set both Starport verifier roots to the new worktree. The reviewed authorization worktree remains unchanged.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/implementation.md">local cache implementation</a> removes durable KV from default response and extraction caching. Component race checks pass 910 events with seven explicit skips. Vet, lint, the document-parser guard, and the pure-Go build pass. Shared-service configuration, bounded fills, stream limits, and discovery checks remain open.</p>
 
@@ -52,6 +52,8 @@
 <p>The <a href="proof/starport-production-catalog/csp12.1/shared-service.md">dedicated shared-cache implementation</a> at <code>6fc0a2c</code> adds explicit settings and a separate connection owner. Configuration passes 321 race events. Cache and connection checks pass 57 events with three skips. Four final shared-service cases pass without skips. Custom trust and ACL checks now have separate evidence. Canonical deployment binding and remaining local fills stay open.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/trust-and-access.md">trust and access repair</a> at <code>51767ba</code> adds custom CA roots, file inventory, scoped ACL tests, and diagnostic codes. Final cache checks pass 70 race events with one manual restart skip. Nine targeted service events pass. Next, bind the prefix to canonical deployment identity and remove unused internal KV cache adapters.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp12.1/deployment-identity.md">deployment identity repair</a> at <code>4e277db</code> fixes a reproduced cross-deployment cache read. All 117 targeted race events pass without skips. Lint and vet pass. Cache prefixes now use canonical deployment identity. Unused adapters and remaining local fills stay open.</p>
 
 <p>No review processes, verification sessions, or disposable services remain active.</p>
 
@@ -696,4 +698,5 @@
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Bound canonical stream input at Starport <code>a53776d</code>. Corrected controls fail on both oversized cache writes. All 327 final race events pass without skips. Lint, vet, and prose pass. Concurrent close releases cache input safely.</td><td><a href="proof/starport-production-catalog/csp12.1/stream-bounds.json">Stream-bound proof</a>. Full capacity and latency remain unverified.</td></tr>
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Add dedicated shared-cache settings at Starport <code>6fc0a2c</code>. Configuration passes 321 race events. Cache and connection checks pass 57 events with three skips. Four final service cases pass without skips. Preserve the earlier fixture failure.</td><td><a href="proof/starport-production-catalog/csp12.1/shared-service.json">Shared-service proof</a>. Custom CA, namespace ownership, fills, and full performance qualification remain open.</td></tr>
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Add custom cache trust and namespace probes at Starport <code>51767ba</code>. Final cache checks pass 70 race events with one manual restart skip. Nine targeted events pass. Correct caller-cancellation diagnostics after a failing regression. Record canonical identity drift and unused KV adapters.</td><td><a href="proof/starport-production-catalog/csp12.1/trust-and-access.json">Trust and access proof</a>. No task completion or publication.</td></tr>
+<tr><td>2026-09-19</td><td>CSP12.1</td><td>Bind shared cache entries to canonical deployment identity at <code>4e277db</code>. One real-service regression fails before repair. All 117 final targeted race events pass.</td><td><a href="proof/starport-production-catalog/csp12.1/deployment-identity.md">Deployment identity proof</a>. Remaining cache qualification stays open.</td></tr>
 </tbody></table></section></main></body></html>
