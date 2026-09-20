@@ -91,8 +91,11 @@ def release_assets(releases, record):
     assets = {}
     identifiers = set()
     for release in releases:
-        if release["draft"] is not False or release["prerelease"] is not False:
+        # Catalog artifacts use prereleases so they do not replace binary releases.
+        if release["draft"] is not False:
             raise ValueError("A catalog release is not publicly published.")
+        if release.get("immutable") is not True:
+            raise ValueError("A catalog release lacks verified immutability.")
         tag = release["tag_name"]
         if len(release["assets"]) != len(expected[tag]) or {item["name"] for item in release["assets"]} != expected[tag]:
             raise ValueError("A catalog release omits or duplicates a required asset.")

@@ -82,7 +82,7 @@ class RetryEvidenceFixture:
                 assets.append({"id": identifier, "name": name, "state": "uploaded", "size": 100,
                                "digest": digest, "created_at": "2026-09-17T10:00:00Z"})
                 identifier += 1
-            self.releases.append({"tag_name": tag, "draft": False, "prerelease": False, "assets": assets})
+            self.releases.append({"tag_name": tag, "draft": False, "prerelease": False, "immutable": True, "assets": assets})
         names = ("Restore accepted or pending publication", "Publish and verify immutable public inputs",
                  "Promote exact input through checked pull request", "Stage channels after verified merge",
                  "Attest both discovery channels", "Publish and verify both discovery channels")
@@ -100,6 +100,19 @@ class RetryEvidenceFixture:
         self.retry["jobs"][0]["run_attempt"] = 2
 
 class RetryEvidenceTests(RetryEvidenceFixture, unittest.TestCase):
+    def test_public_immutable_prereleases_are_published_catalog_inputs(self):
+        for release in self.releases:
+            release.update(prerelease=True, immutable=True)
+        self.assertEqual(5, len(hosted.release_assets(self.releases, self.record)))
+
+    def test_mutable_or_unproven_releases_cannot_qualify(self):
+        for immutable in (False, None, "true", 1):
+            with self.subTest(immutable=immutable):
+                releases = copy.deepcopy(self.releases)
+                releases[0]["immutable"] = immutable
+                with self.assertRaises(ValueError):
+                    hosted.release_assets(releases, self.record)
+
     def test_same_run_new_attempt_can_prove_unchanged_assets(self):
         result = hosted.validate_same_bytes_retry(self.record, self.releases, self.releases, self.completion, self.retry)
         self.assertEqual([10, 2], result["retry_run"])
