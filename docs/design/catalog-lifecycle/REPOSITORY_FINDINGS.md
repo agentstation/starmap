@@ -3452,3 +3452,18 @@ Each local entry checks that deadline independently of cache queue timing. Succe
 The [lifetime proof](../../plans/proof/starport-production-catalog/csp12.1/lifetime.json) records 254 passing race-test events and one manual restart skip.
 All expiry and lifetime tests execute. Lint and vet pass.
 Dedicated service configuration, optional workers, stream limits, and full cache qualification remain open.
+
+## September 19 optional cache execution and shared service
+
+Starport `eee04f9` moves response byte writes into bounded workers and exposes pressure counters.
+Starport `a53776d` bounds stream retention while preserving delivery and cleanup.
+The [stream proof](../../plans/proof/starport-production-catalog/csp12.1/stream-bounds.json) records 327 passing race-test events without skips.
+Response encoding remains synchronous. These component checks do not establish full gateway latency or retained heap.
+
+Starport `6fc0a2c` adds an explicit shared-cache endpoint, namespace, and separate connection owner.
+The [shared-service proof](../../plans/proof/starport-production-catalog/csp12.1/shared-service.json) records real credentials, database selection, reconnect, expiry, and composition checks.
+Scratch development rejects shared-cache settings. The admin response exposes connection availability without URI values.
+The durable Valkey adapter remains unchanged and still requires the CSP12 URI and effective-option repair.
+
+Custom-CA support, namespace ownership, model and extraction fills, capacity, latency, and discovery acceptance remain open.
+No cache task completion or publication follows from these local commits.

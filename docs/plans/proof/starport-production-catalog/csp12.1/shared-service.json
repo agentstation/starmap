@@ -1,0 +1,2827 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-19",
+  "starport_commit": "6fc0a2cd54ed66ce232002b1ffa518dfa4712e78",
+  "starmap_commit": "152148130",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "scope": "Dedicated optional shared response-cache connection, configuration, and local service evidence; CSP12.1 remains incomplete",
+  "runs": [
+    {
+      "name": "final",
+      "counts": {
+        "pass": 377,
+        "skip": 3,
+        "fail": 1
+      },
+      "results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkey://[::1]",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkey://localhost",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example/3",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkey://::1",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example/-1",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example/65536",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example:0",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example:99999",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example/3/4",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example?addr=another",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example#fragment",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/unix:///tmp/cache.sock",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/basic_get/set_operations",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/TTL_expiration",
+          "Elapsed": 0.15
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/delete_operation",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/batch_operations",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/invalidation_with_pattern",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/cache_stats",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/cache_warming",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache",
+          "Elapsed": 0.16
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestResponseFillDoesNotWaitForStorage",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestResponseFillQueueBoundsAndShutdown",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestResponseFillOwnsBytes",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestResponseCacheReadUsesDeadline",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestExpiredQueuedFillDoesNotAcquireNewLifetime",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestResponseFillFailureReportsStatus",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestAuthModeDefaultsToRequired",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSecurityConfigRejectsAnUnknownAuthMode",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestAuthenticationExposureTripwire/required_on_a_reachable_address",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestAuthenticationExposureTripwire/disabled_on_loopback_IPv4",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestAuthenticationExposureTripwire/disabled_on_loopback_by_name",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestAuthenticationExposureTripwire/disabled_on_loopback_IPv6",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestAuthenticationExposureTripwire/disabled_on_every_interface",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestAuthenticationExposureTripwire/disabled_on_a_routable_address",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestAuthenticationExposureTripwire/disabled_on_an_empty_host",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestAuthenticationExposureTripwire/disabled_on_every_interface_with_the_acknowledgment",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestAuthenticationExposureTripwire",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDisableAuthenticationOverrideMeetsValidation",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration/default",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration/local",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration/dedicated",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration/loopback",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration/same_service_other_database",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration/same_service_other_credentials",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration/plaintext",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration/explicit_plaintext",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration/query_bypass",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration/empty_namespace",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration/namespace_glob",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration/local_endpoint",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheServiceConfiguration",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCacheSettingsLoadAndRedact",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsSharedCache",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogAuthoritySettingsLoadAndValidate/valid",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogAuthoritySettingsLoadAndValidate/missing_authority",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogAuthoritySettingsLoadAndValidate/missing_policy",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogAuthoritySettingsLoadAndValidate/authority_whitespace",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogAuthoritySettingsLoadAndValidate/policy_control_character",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogAuthoritySettingsLoadAndValidate/authority_too_long",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogAuthoritySettingsLoadAndValidate/wrong_source",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogAuthoritySettingsLoadAndValidate/pins_with_ordinary_startup",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogAuthoritySettingsLoadAndValidate/pins_with_strict_online_startup",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogAuthoritySettingsLoadAndValidate/local_acquisition",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogAuthoritySettingsLoadAndValidate",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockRejectsInvalidConfiguration/unknown_source",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockRejectsInvalidConfiguration/empty_source",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockRejectsInvalidConfiguration/missing_uncertainty",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockRejectsInvalidConfiguration/invalid_duration",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockRejectsInvalidConfiguration/unbounded_age",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockRejectsInvalidConfiguration/unsafe_interval",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockRejectsInvalidConfiguration/zero_drift",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockRejectsInvalidConfiguration/overflow_drift",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockRejectsInvalidConfiguration/partial_Windows_bounds",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockRejectsInvalidConfiguration",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockNamesAndPrecedence/STARPORT_CATALOG_PERMISSION_CLOCK_",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockNamesAndPrecedence/STARMAP_CATALOG_PERMISSION_CLOCK_",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockNamesAndPrecedence/same_source_product_name_wins",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockNamesAndPrecedence/environment_alias_beats_file_product_name",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockNamesAndPrecedence/file_alias",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockNamesAndPrecedence",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockIncompleteProfileFails/embedded",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockIncompleteProfileFails/public",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockIncompleteProfileFails/starmap",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogPermissionClockIncompleteProfileFails",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogInheritancePreservesExplicitSelections/inherit_complete_source_and_zero_interval",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogInheritancePreservesExplicitSelections/product_file_precedes_inherited_environment",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogInheritancePreservesExplicitSelections/product_false_precedes_inherited_true",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogInheritancePreservesExplicitSelections/replacement_source_clears_inherited_credential",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogInheritancePreservesExplicitSelections/empty_product_credential_disables_fallback",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogInheritancePreservesExplicitSelections/inherited_file_setting",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogInheritancePreservesExplicitSelections",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogInheritanceExcludesNodeAndServerAuthority",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestResolveStateDirectoryIsProcessLocal/an_operator_value_wins",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestResolveStateDirectoryIsProcessLocal/the_user_state_root_supplies_the_default",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestResolveStateDirectoryIsProcessLocal/the_home_directory_supplies_the_default",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestResolveStateDirectoryIsProcessLocal",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestResolveStateDirectoryWithoutHomeNamesTheSettings",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestConfig_Validate/valid_config",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestConfig_Validate/invalid_port",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestConfig_Validate/invalid_storage_mode",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestConfig_Validate/invalid_log_level",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestConfig_Validate",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentEnvironmentSelections/STARPORT_STORAGE_MODE",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentEnvironmentSelections/STARPORT_STORAGE_BADGER_PATH",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentEnvironmentSelections/STARPORT_STORAGE_VALKEY_URL",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentEnvironmentSelections/STARPORT_STORAGE_SQL_MODE",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentEnvironmentSelections/STARPORT_STORAGE_SQL_SQLITE_PATH",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentEnvironmentSelections/STARPORT_STORAGE_SQL_POSTGRES_URL",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentEnvironmentSelections/STARPORT_STORAGE_SQL_MYSQL_DSN",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentEnvironmentSelections/STARPORT_FILES_BACKEND",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentEnvironmentSelections/STARPORT_FILES_PATH",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentEnvironmentSelections/STARPORT_FILES_OBJECT_STORE_BUCKET",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentEnvironmentSelections/STARPORT_CATALOG_STATE_DIR",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentEnvironmentSelections",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentGoOverrides/badger",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentGoOverrides/valkey",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentGoOverrides/sqlite",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentGoOverrides/postgres",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentGoOverrides/mysql",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentGoOverrides/blobs",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentGoOverrides/objectstore",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentGoOverrides/catalog",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRejectsPersistentGoOverrides",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentDoesNotReadSelectedConfigurationFiles",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestIncludesWorkspaceRecoveryArtifacts",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestUsesConfigurationReadPolicy/owner-only",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestUsesConfigurationReadPolicy/service-managed",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestUsesConfigurationReadPolicy",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestReportsOnlySelectedConfigurationFiles",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestSharedBackendsOmitCredentialsAndLocalSelection/postgres",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestSharedBackendsOmitCredentialsAndLocalSelection/mysql",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestSharedBackendsOmitCredentialsAndLocalSelection",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestDevelopmentDisablesPersistentStores",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestSourceCachesFollowCanonicalSelection/default",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestSourceCachesFollowCanonicalSelection/disabled",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestSourceCachesFollowCanonicalSelection/git",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestSourceCachesFollowCanonicalSelection",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileManifestIncludesSetupArtifactsAtSelectedLeaves",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestGuardrailsConfigNames",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestGuardrailsConfigCategoryThresholds",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestIdentityEnabled",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRuntimeAcquisitionProjectsProviders",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry/layered/get",
+          "Elapsed": 1.61
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestInferencePolicyUsesCheckedConfigurationAndPersists",
+          "Elapsed": 0.22
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestInferenceStarmapFallbackConfiguration/false",
+          "Elapsed": 0.08
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestInferenceStarmapFallbackConfiguration/true",
+          "Elapsed": 0.08
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestInferenceStarmapFallbackConfiguration",
+          "Elapsed": 0.17
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRedactedNeverReturnsSecrets",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestConfigurationSecretFieldsDeclareRedaction",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRedactedUsesReadableDurationAndAcronymKeys",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges/badger",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges/sqlite/starport.db",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges/sqlite/starport.db-wal",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges/files",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges/local-admin-token.json",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges/welcomed",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLegacyPathsRefuseOldAndConflictingDataWithoutChanges",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLegacyPathsPreserveExplicitRootsAndLeaves",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLegacyRuntimeUsesMarkersAndHonorsExplicitSelection",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLegacyConfigurationUsesPreviousNativeLocation",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLegacyInspectionSkipsUnselectedStoresAndDevelopment",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLegacyInspectionPreservesCancellationAndLinks",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry/layered/multi",
+          "Elapsed": 1.99
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry/layered/warm",
+          "Elapsed": 2
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry/hybrid/get",
+          "Elapsed": 2
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry/hybrid/multi",
+          "Elapsed": 2
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderDefersProviderEnvironmentUntilCatalogResolution",
+          "Elapsed": 8.48
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry/hybrid/warm",
+          "Elapsed": 2
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry",
+          "Elapsed": 11.6
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestUnknownLifetimeDoesNotRefill/layered",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestUnknownLifetimeDoesNotRefill/hybrid",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestUnknownLifetimeDoesNotRefill",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestTransferDelayConsumesLifetime/layered",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestTransferDelayConsumesLifetime/hybrid",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestTransferDelayConsumesLifetime",
+          "Elapsed": 0.06
+        },
+        {
+          "Action": "skip",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestValkeyRefillPreservesExpiry",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRetainedEntryCannotOutliveSourceDeadline/layered",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRetainedEntryCannotOutliveSourceDeadline/hybrid",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRetainedEntryCannotOutliveSourceDeadline",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerExplicitSharedStoreSharesResponses",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerSingleNodeCachesResponses",
+          "Elapsed": 0.06
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerModelMetadata",
+          "Elapsed": 0.06
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerConfig",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerDefaultIsLocalAndIsolated",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerRequiresExplicitSharedStrategy/#00",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerRequiresExplicitSharedStrategy/auto",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerRequiresExplicitSharedStrategy/local",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerRequiresExplicitSharedStrategy/invalid",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerRequiresExplicitSharedStrategy",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestSharedCacheUnavailableLifecycle",
+          "Elapsed": 0.51
+        },
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestSharedCacheRealService",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestSharedCacheURIAuthenticationAndDatabase",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "skip",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestValkeyIntegration",
+          "Elapsed": 0
+        },
+        {
+          "Action": "skip",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestValkeyPubSubReconnection",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderIgnoresRemovedProviderEnvironmentNamespaces",
+          "Elapsed": 8.27
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderSecurePlatformDefaults",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestBodyLimitDefaultMatchesItsConstant",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderEnvironmentOverridesFiles",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderUsesFirstEnvironmentFileValue",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderUsesPlatformConfigFile",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsInvalidEnvironmentValue",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsNegativeDirectSecretRefreshInterval",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderAppliesDirectSecretRefreshInterval",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderAppliesProviderReconcileLifecycle",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderErrorsDoNotExposeConfigurationValues",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestOperatorErrorDoesNotTrustExternalErrors",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderResolvesRelativePathsFromConfigDirectory",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderDoesNotMutateEnvironment",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentLoaderUsesProcessSettingsAndGuardedRuntime",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentLoaderNeedsNoHomeDirectory",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentLoaderRefusesAnOperatorStateDirectory",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderReadsStandardOTLPEndpoint",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogLookupUsesCheckedFilesAndPreservesEmptyValues",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestManagedMaterialEnvironmentBounds",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestManagedMaterialEnvironmentRejectsUnsafeBounds/REFRESH_INTERVAL",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestManagedMaterialEnvironmentRejectsUnsafeBounds/IDLE",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestManagedMaterialEnvironmentRejectsUnsafeBounds/ENTRIES",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestManagedMaterialEnvironmentRejectsUnsafeBounds/SECRET_BYTES",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestManagedMaterialEnvironmentRejectsUnsafeBounds/TENANT_CONCURRENT_LOADS",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestManagedMaterialEnvironmentRejectsUnsafeBounds/VALIDITY",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestManagedMaterialEnvironmentRejectsUnsafeBounds/LOAD_TIMEOUT",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestManagedMaterialEnvironmentRejectsUnsafeBounds",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestManagedMaterialExplicitZeroProfileDoesNotRestoreDefaults",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSavedRuntimeMigrationSelection/saved",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSavedRuntimeMigrationSelection/changed",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSavedRuntimeMigrationSelection/environment-only",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSavedRuntimeMigrationSelection/owner-override",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSavedRuntimeMigrationSelection/identity-override",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSavedRuntimeMigrationSelection/dotenv-only",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSavedRuntimeMigrationSelection/deleted",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSavedRuntimeMigrationSelection",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestMigrationStorageSelection/password",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestMigrationStorageSelection/alias",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestMigrationStorageSelection/address",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestMigrationStorageSelection/cluster",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestMigrationStorageSelection/badger",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestMigrationStorageSelection/relative",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestMigrationStorageSelection/memory",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestMigrationStorageSelection/invalid",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestMigrationStorageSelection",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSavedMigrationStorageSelection/badger",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSavedMigrationStorageSelection/valkey",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSavedMigrationStorageSelection",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestPathOriginsDistinguishFilesEnvironmentAndGoOverrides",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogFileOriginIdentifiesStarmapFallback",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestPlatformPathsUseUserConfigDirectory",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestPlatformPathsUseExplicitDirectory",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestPlatformPathsRejectRelativeExplicitDirectory",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestPathsForConfigDirDerivesManagedPaths",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderChecksPrimaryAndDotenvAccess",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderOwnsIndependentProductRoots/grouped_home",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderOwnsIndependentProductRoots/specific_data_root",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderOwnsIndependentProductRoots",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsInvalidRootAndInstanceSelections/relative_root",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsInvalidRootAndInstanceSelections/empty_root",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsInvalidRootAndInstanceSelections/unsafe_instance",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsInvalidRootAndInstanceSelections/reserved_instance",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsInvalidRootAndInstanceSelections",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRootSpecificityAndBootstrapSelection",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRequiresExplicitRelativePathBase/STARPORT_STORAGE_BADGER_PATH",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRequiresExplicitRelativePathBase/STARPORT_STORAGE_SQL_SQLITE_PATH",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRequiresExplicitRelativePathBase/STARPORT_CATALOG_STATE_DIR",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRequiresExplicitRelativePathBase/STARPORT_CATALOG_WORKSPACE_PATH",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRequiresExplicitRelativePathBase",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsOversizedConfiguration",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsMissingExplicitConfiguration",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderPrimaryFileCannotAuthorizeItsOwnRelativeSelection",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsEmptyPersistentLeaves/STARPORT_STORAGE_BADGER_PATH",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsEmptyPersistentLeaves/STARPORT_STORAGE_SQL_SQLITE_PATH",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsEmptyPersistentLeaves/STARPORT_CATALOG_STATE_DIR",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsEmptyPersistentLeaves/STARPORT_FILES_PATH",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderRejectsEmptyPersistentLeaves",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoaderDerivesCloudAuthenticationFromCatalogProfiles",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestProviderConfigRejectsInvalidOperationalValues",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestProvidersConfigDoesNotOwnProviderAuthenticationRoster",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogCredentialEnvironmentPrecedence/product_precedes_conventional_name",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogCredentialEnvironmentPrecedence/product_alias_resolves_without_conventional_name",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogCredentialEnvironmentPrecedence/invalid_selected_value_is_terminal",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogCredentialEnvironmentPrecedence",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogDerivedCredentialReferenceEnvironment/reference_precedes_ambient_value",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogDerivedCredentialReferenceEnvironment/programmatic_reference_precedes_environment_reference",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogDerivedCredentialReferenceEnvironment/typed_not-configured_result_permits_declared_fallback",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogDerivedCredentialReferenceEnvironment",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogOnlyProviderEnvironmentResolvesWithoutSourceRoster",
+          "Elapsed": 8.39
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestHetznerInferenceEnvironmentComesFromCatalog",
+          "Elapsed": 8.7
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCredentialAliasCollisionsFailBeforeConnectorConstruction",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCredentialReferenceAliasCollisionsFailBeforeReads",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSemanticCacheConfigValidate/off_and_empty",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSemanticCacheConfigValidate/enabled_with_model",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSemanticCacheConfigValidate/enabled_with_bounds",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSemanticCacheConfigValidate/enabled_without_model",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSemanticCacheConfigValidate/threshold_above_one",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSemanticCacheConfigValidate/negative_threshold",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSemanticCacheConfigValidate/negative_bound",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSemanticCacheConfigValidate",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFileCatalogSourceRequiresExplicitRelativeAnchor",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestNetworkCatalogSourceRetainsURL",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRuntimeStorageProjectsAdapterSettings/Badger",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRuntimeStorageProjectsAdapterSettings/Valkey",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRuntimeStorageProjectsAdapterSettings",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRuntimeSQLProjectsStoreSettings",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSQLConfigValidatesConnectModes/sqlite",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSQLConfigValidatesConnectModes/postgres_with_url",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSQLConfigValidatesConnectModes/postgres_without_url",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSQLConfigValidatesConnectModes/mysql_with_dsn",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSQLConfigValidatesConnectModes/mysql_without_dsn",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSQLConfigValidatesConnectModes/unknown",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSQLConfigValidatesConnectModes",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestConfigureDevelopmentRuntimeSelectsInMemorySQL",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestConfigureDevelopmentRuntimeMarksTheLocalTokenReadOnly",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestServerConfig_Validate/valid_config",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestServerConfig_Validate/invalid_port_-_too_low",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestServerConfig_Validate/invalid_port_-_too_high",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestServerConfig_Validate/localhost_is_valid",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestServerConfig_Validate/invalid_timeout",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestServerConfig_Validate",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestBadgerConfig_Validate/valid_config",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestBadgerConfig_Validate/empty_path",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestBadgerConfig_Validate/invalid_compression",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestBadgerConfig_Validate/valid_compression_-_none",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestBadgerConfig_Validate/valid_compression_-_zstd",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestBadgerConfig_Validate/invalid_GC_discard_ratio",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestBadgerConfig_Validate",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestValkeyConfig_Validate/valid_config",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestValkeyConfig_Validate/valid_config_-_redis_scheme",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestValkeyConfig_Validate/valid_config_-_rediss_scheme",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestValkeyConfig_Validate/empty_URL",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestValkeyConfig_Validate/invalid_URL_scheme",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestValkeyConfig_Validate/invalid_max_connections",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestValkeyConfig_Validate/min_idle_exceeds_max",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestValkeyConfig_Validate",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSecurityConfig_Validate/valid_config_without_TLS",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSecurityConfig_Validate/master_key_is_too_short",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSecurityConfig_Validate/valid_config_with_TLS",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSecurityConfig_Validate/TLS_enabled_without_cert",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSecurityConfig_Validate/TLS_enabled_without_key",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSecurityConfig_Validate/TLS_enabled_with_non-existent_files",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSecurityConfig_Validate/valid_specific_origins",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSecurityConfig_Validate/invalid_origin_format",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestSecurityConfig_Validate",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoggingConfig_Validate/valid_config",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoggingConfig_Validate/valid_log_levels",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoggingConfig_Validate/invalid_log_level",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoggingConfig_Validate/invalid_format",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoggingConfig_Validate/file_output_without_path",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoggingConfig_Validate/file_output_with_path",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestLoggingConfig_Validate",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestAbsentFilesConfigSelectsTheFilesystem",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestFilesConfigRefusesAnUnknownBackend",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCompleteObjectStoreConfigValidates/aws_with_a_region_and_the_ambient_chain",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCompleteObjectStoreConfigValidates/another_implementation_with_an_endpoint",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCompleteObjectStoreConfigValidates",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestIncompleteObjectStoreConfigRefusesStartup/half_a_credential_pair",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestIncompleteObjectStoreConfigRefusesStartup/nothing_at_all",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestIncompleteObjectStoreConfigRefusesStartup/no_region_and_no_endpoint",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestIncompleteObjectStoreConfigRefusesStartup/no_bucket",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestIncompleteObjectStoreConfigRefusesStartup",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCanonicalCatalogSettingsLoad",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings/defaults",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings/the_state_directory_is_the_workspace_path",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings/zero_acquisition_interval_means_startup_only",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings/zero_refresh_timeout_adds_no_cap",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings/zero_source_max_hops",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings/the_state_directory_stands_beside_the_workspace_path",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings/zero_transfer_idle_timeout",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings/negative_acquisition_interval",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings/zero_transfer_max_duration",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings/starmap_source_without_a_URL",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings/unknown_source",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings/unknown_startup_policy",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestCatalogConfigRefusesUnusableSettings",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRemovedCatalogVariableFailsStartup/remote_API_key",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRemovedCatalogVariableFailsStartup/remote_activation_interval",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRemovedCatalogVariableFailsStartup/refresh_interval",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRemovedCatalogVariableFailsStartup/remote_URL",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRemovedCatalogVariableFailsStartup/refresh_on_start",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestRemovedCatalogVariableFailsStartup",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestDevelopmentRuntimeKeepsCatalogAcquisitionEnabled",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Test": "TestObjectStoreCredentialsAreRedacted",
+          "Elapsed": 0.01
+        }
+      ],
+      "note": "Configuration passes 321 events. Cache failure occurred in fixture cleanup after CLIENT KILL also killed another control-client connection. Subsequent tests use one control connection and disconnect only the target cache connection by ID."
+    },
+    {
+      "name": "cache-final",
+      "counts": {
+        "pass": 57,
+        "skip": 3
+      },
+      "results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/basic_get/set_operations",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/TTL_expiration",
+          "Elapsed": 0.15
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkey://[::1]",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkey://localhost",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example/3",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkey://::1",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example/-1",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example/65536",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example:0",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example:99999",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example/3/4",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example?addr=another",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://cache.example#fragment",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/valkeys://",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation/unix:///tmp/cache.sock",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache/connection",
+          "Test": "TestEndpointValidation",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/delete_operation",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/batch_operations",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/invalidation_with_pattern",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/cache_stats",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache/cache_warming",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestLayeredCache",
+          "Elapsed": 0.16
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestResponseFillDoesNotWaitForStorage",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestResponseFillQueueBoundsAndShutdown",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestResponseFillOwnsBytes",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestResponseCacheReadUsesDeadline",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestExpiredQueuedFillDoesNotAcquireNewLifetime",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestResponseFillFailureReportsStatus",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry/layered/get",
+          "Elapsed": 1.93
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry/layered/multi",
+          "Elapsed": 2
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry/layered/warm",
+          "Elapsed": 2
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry/hybrid/get",
+          "Elapsed": 2
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry/hybrid/multi",
+          "Elapsed": 2
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry/hybrid/warm",
+          "Elapsed": 1.99
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRefillPreservesBackingExpiry",
+          "Elapsed": 11.93
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestUnknownLifetimeDoesNotRefill/layered",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestUnknownLifetimeDoesNotRefill/hybrid",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestUnknownLifetimeDoesNotRefill",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestTransferDelayConsumesLifetime/layered",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestTransferDelayConsumesLifetime/hybrid",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestTransferDelayConsumesLifetime",
+          "Elapsed": 0.06
+        },
+        {
+          "Action": "skip",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestValkeyRefillPreservesExpiry",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRetainedEntryCannotOutliveSourceDeadline/layered",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRetainedEntryCannotOutliveSourceDeadline/hybrid",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestRetainedEntryCannotOutliveSourceDeadline",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerExplicitSharedStoreSharesResponses",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerSingleNodeCachesResponses",
+          "Elapsed": 0.05
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerModelMetadata",
+          "Elapsed": 0.05
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerConfig",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerDefaultIsLocalAndIsolated",
+          "Elapsed": 0.1
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerRequiresExplicitSharedStrategy/#00",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerRequiresExplicitSharedStrategy/auto",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerRequiresExplicitSharedStrategy/local",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerRequiresExplicitSharedStrategy/invalid",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestCacheManagerRequiresExplicitSharedStrategy",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestSharedCacheUnavailableLifecycle",
+          "Elapsed": 0.51
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestSharedCacheRealService",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestSharedCacheURIAuthenticationAndDatabase",
+          "Elapsed": 0
+        },
+        {
+          "Action": "skip",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestValkeyIntegration",
+          "Elapsed": 0
+        },
+        {
+          "Action": "skip",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestValkeyPubSubReconnection",
+          "Elapsed": 0
+        }
+      ],
+      "note": "Full cache and connection packages pass before the fixture switched to a targeted connection ID and the key prefix gained its explicit schema version."
+    },
+    {
+      "name": "final-targeted",
+      "counts": {
+        "pass": 4
+      },
+      "results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestSharedCacheUnavailableLifecycle",
+          "Elapsed": 0.51
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestSharedCacheRealService",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestSharedCacheURIAuthenticationAndDatabase",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestSharedCacheCompositionUsesSeparateService",
+          "Elapsed": 0.04
+        }
+      ],
+      "command": "TEST_SHARED_CACHE_URL=<disposable-valkey> GOWORK=/tmp/csp121-host-integration.work go test -race -count=1 -timeout 2m -json ./internal/cache ./internal/app -run ^TestSharedCache"
+    },
+    {
+      "name": "architecture",
+      "counts": {
+        "pass": 8
+      },
+      "results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Test": "TestStarportProductionHasNoProviderRoster",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Test": "TestTransportAuthenticationRegistriesUsePrimitives",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Test": "TestImportGraphArchitecture",
+          "Elapsed": 0.76
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Test": "TestProviderAuthenticationPackageHasNoCloudSDKImports",
+          "Elapsed": 0.32
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Test": "TestCloudChainPackageDoesNotMutateHTTPRequests",
+          "Elapsed": 0.31
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Test": "TestProductionConnectorCallsUseExecutionDeadline",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Test": "TestPublicPackageBoundary",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Test": "TestApprovedInternalPackageLayout",
+          "Elapsed": 0.15
+        }
+      ]
+    },
+    {
+      "name": "app",
+      "counts": {
+        "pass": 3
+      },
+      "results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestDefaultResponseCacheDoesNotWriteDurableKV",
+          "Elapsed": 13.75
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestExtractionCacheHasIndependentLocalLifecycle",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestSharedCacheCompositionUsesSeparateService",
+          "Elapsed": 0.01
+        }
+      ]
+    },
+    {
+      "name": "silent",
+      "counts": {
+        "pass": 1
+      },
+      "results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/cache",
+          "Test": "TestSharedCacheUnavailableLifecycle",
+          "Elapsed": 0.51
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "lint": "Linting code...\n0 issues.\nLint complete\n",
+    "vet": "./internal/cache/... ./internal/config ./internal/app; no diagnostics",
+    "prose": "7 files, 0 diagnostics",
+    "dependencies": "SP-D01 PASS: proxy does not import the concrete cache adapter\nSP-D02 PASS: proxy does not import the concrete provider registry\nSP-D03 PASS: proxy exposes the cache behavior contract\nSP-D04 PASS: proxy exposes the provider leasing contract\nSP-D05 PASS: app does not import Starmap source selection\nSP-D06 PASS: app does not import Starmap sync options\nSummary: 6 passed, 0 failed\n",
+    "action_pins": "Homebrew/actions/setup-homebrew 2026.09.07.1 matches f8d4222eb633e65c2a0157383cf80861fc7fae7f\nactions/attest-build-provenance v4.2.2 matches 4d101475d8b20a2381f78447822ac1eab6504dd8\nactions/checkout v7.0.1 matches 3d3c42e5aac5ba805825da76410c181273ba90b1\nactions/setup-go v7.0.0 matches b7ad1dad31e06c5925ef5d2fc7ad053ef454303e\nactions/setup-node v7.0.0 matches 820762786026740c76f36085b0efc47a31fe5020\nactions/setup-python v7.0.0 matches 5fda3b95a4ea91299a34e894583c3862153e4b97\nactions/upload-artifact v7.0.1 matches 043fb46d1a93c77aae656e7c1c64a875d1fc6a0a\nanchore/sbom-action/download-syft v0.24.2 matches 3ad7283483fc7af8ff2b4ea19663c2d5ca935e26\ncodecov/codecov-action v7.0.0 matches fb8b3582c8e4def4969c97caa2f19720cb33a72f\ndocker/build-push-action v7.3.0 matches 53b7df96c91f9c12dcc8a07bcb9ccacbed38856a\ndocker/login-action v4.6.0 matches dbcb813823bdd20940b903addbd779551569679f\ndocker/setup-buildx-action v4.3.0 matches 37fe631027851001ddb9b187196cc803df7f5f0e\ngoreleaser/goreleaser-action v7.2.3 matches f06c13b6b1a9625abc9e6e439d9c05a8f2190e94\npeter-evans/create-pull-request v8.1.1 matches 5f6978faf089d4d20b00c7766989d076bb2fc7f1\naction pins: 14 reference(s) match their release tags\n"
+  },
+  "service": {
+    "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "disposition": "Stopped and removed after verification",
+    "scope": "Isolated disposable local service, not a multi-host production recipe"
+  },
+  "unverified": [
+    "Configured custom CA and real TLS service qualification",
+    "Deployment namespace ownership and DNS alias isolation",
+    "Model and extraction bounded fills",
+    "Complete gateway cache outage and latency profile",
+    "Transport and aggregate heap capacity",
+    "Full discovery acceptance",
+    "Published Starmap module, pre-PR review, native CI, merge"
+  ]
+}
