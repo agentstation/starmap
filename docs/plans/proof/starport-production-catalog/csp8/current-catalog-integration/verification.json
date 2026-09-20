@@ -121,18 +121,34 @@
   },
   "vet": "PASS: go vet ./internal/app ./internal/catalog ./internal/proxy",
   "pending": [
-    "Combined SQL, Badger, and catalog integration review",
-    "Published module qualification and native CI"
+    "CSP8 registered acceptance session2656",
+    "Published module qualification and native CI",
+    "Required pre-PR review after final repository qualification"
   ],
   "complete": false,
   "lint": "PASS: repository-pinned golangci-lint v2.13.2 on affected packages",
   "work_commit": "c22a5579304387b49b54352c520a11c2a85e9621",
   "review": {
-    "status": "in_progress",
+    "status": "PASS",
     "session": 62428,
     "base": "c1c272b642e717ed4554c8aa3f5027e23b255793",
     "head": "c22a5579",
     "threshold": "P0",
-    "reports": "/tmp/csp8-csp15-integration-review"
+    "reports": "review.{json,md,log}.gz",
+    "exit_code": 0,
+    "model": "claude-opus-5",
+    "thinking": "high",
+    "findings": 0,
+    "manual_assessment": [
+      "ExpireAt retains its existing closed-state preflight.",
+      "Increment retains the expiry in its transaction; the concurrency regression verifies a positive retained TTL.",
+      "Acquisition observation equality still checks the complete expected set, including retained unrelated sources."
+    ]
+  },
+  "registered_acceptance": {
+    "status": "in_progress",
+    "session": 2656,
+    "command": "GOWORK=/tmp/csp8-current-catalog.work bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-integration --task CSP8 --json",
+    "output": "/tmp/csp8-current-catalog-acceptance.json"
   }
 }

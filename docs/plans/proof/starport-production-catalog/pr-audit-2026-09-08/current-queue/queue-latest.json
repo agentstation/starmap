@@ -236,8 +236,8 @@
   "seven_day_disposition_review_required": false,
   "local_verification_processes": [
     {
-      "session": 62428,
-      "purpose": "Combined SQL, Badger, and catalog integration review"
+      "session": 2656,
+      "purpose": "CSP8 current-pair registered acceptance"
     }
   ],
   "active_ci": {
