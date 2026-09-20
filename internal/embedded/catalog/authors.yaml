@@ -1,4 +1,7 @@
+# Known model authors and organizations with their metadata and social links
 # This file contains the complete author information that can be loaded at runtime
+
+# 01.AI
 - id: 01.ai
   name: 01.AI
   description: AI company founded by Kai-Fu Lee, known for Yi series of open-source language models

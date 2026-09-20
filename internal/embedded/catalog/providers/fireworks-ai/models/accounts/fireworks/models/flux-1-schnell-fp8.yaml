@@ -5,6 +5,7 @@ name: accounts/fireworks/models/flux-1-schnell-fp8
 
 # Model metadata
 metadata:
+  release_date: null
   tags:
   - image-gen
 

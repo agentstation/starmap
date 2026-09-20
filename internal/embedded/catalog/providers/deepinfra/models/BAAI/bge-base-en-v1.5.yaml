@@ -81,6 +81,7 @@ features:
 pricing:
   tokens:
     input:
+      per_token: 0.0
       per_1m: 0.005
   currency: USD
 
@@ -92,4 +93,4 @@ limits:
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.090396Z
-updated_at: 2026-07-11T20:15:13.090396Z
+updated_at: 2026-09-18T21:17:47.882119486Z

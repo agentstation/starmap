@@ -1,20 +1,21 @@
-# deepseek-ai/DeepSeek-V3-0324 - DeepSeek-V3-0324, a strong Mixture-of-Experts (MoE) language...
+# deepseek-ai/DeepSeek-V3-0324 - March 2025 checkpoint of DeepSeek-V3 with improved reasoning...
 id: deepseek-ai/DeepSeek-V3-0324
 model: deepseek/deepseek-v3-0324
 name: deepseek-ai/DeepSeek-V3-0324
 authors:
 - id: deepseek
   name: deepseek
-description: DeepSeek-V3-0324, a strong Mixture-of-Experts (MoE) language model with 671B total parameters with 37B activated for each token, an improved iteration over DeepSeek-V3.
+description: March 2025 checkpoint of DeepSeek-V3 with improved reasoning and coding
 
 # Model metadata
 metadata:
-  release_date: null
-  open_weights: false
+  release_date: 2025-03-24
+  open_weights: true
   tags:
   - chat
   - prompt_cache
 lineage:
+  family: deepseek
   root: deepseek-ai/DeepSeek-V3-0324
 
 # Model features
@@ -26,9 +27,9 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
   attachments: false
 
@@ -75,17 +76,20 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 
 # Model pricing
 pricing:
   tokens:
     cache_read:
+      per_token: 0.0
       per_1m: 0.135
     input:
+      per_token: 0.0
       per_1m: 0.24
     output:
+      per_token: 0.0
       per_1m: 0.9
   currency: USD
 
@@ -97,4 +101,4 @@ limits:
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.087117Z
-updated_at: 2026-07-11T20:15:13.087117Z
+updated_at: 2026-09-18T21:17:47.882119486Z

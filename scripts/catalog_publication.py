@@ -37,10 +37,10 @@ class PublicationError(Exception):
     """Report a publication operation that did not complete."""
 
 
-def command(args, *, cwd=None, env=None, input=None, check=True, timeout=3600):
+def command(args, *, cwd=None, env=None, input=None, check=True, timeout=3600, text=True):
     result = subprocess.run(
         [str(arg) for arg in args], cwd=cwd, env=env, input=input,
-        text=True, capture_output=True, timeout=timeout, check=False,
+        text=text, capture_output=True, timeout=timeout, check=False,
     )
     if check and result.returncode:
         raise PublicationError(f"{args[0]} {args[1]} failed with exit status {result.returncode}")
@@ -151,8 +151,11 @@ class Publisher:
     def gh(self, *args, **options):
         return command(["gh", *args, "--repo", self.repository], **options)
 
-    def api(self, endpoint, *, missing=False, method="GET"):
-        result = command(["gh", "api", "--method", method, f"repos/{self.repository}/{endpoint}"], check=False, timeout=120)
+    def api(self, endpoint, *, missing=False, method="GET", body=None):
+        args = ["gh", "api", "--method", method, f"repos/{self.repository}/{endpoint}"]
+        if body is not None:
+            args.extend(("--input", "-"))
+        result = command(args, input=None if body is None else json.dumps(body), check=False, timeout=120)
         if missing and result.returncode and "(HTTP 404)" in result.stderr:
             return None
         if result.returncode:
@@ -340,10 +343,17 @@ class Publisher:
                 raise PublicationError("channel branch contains a different channel")
         pending = self.read_branch(PENDING_BRANCH, "pending.json")
         record = validate_pending(pending["document"]) if pending["document"] else None
-        active = record is not None and not completed(record, channels)
+        event = os.environ.get("GITHUB_EVENT_NAME", "workflow_dispatch")
+        retry_receipt = os.environ.get("CATALOG_RETRY_RECEIPT", "")
+        if retry_receipt:
+            digest_hex(retry_receipt)
+            if (event != "workflow_dispatch" or record is None
+                    or record["receipt_checksum"] != retry_receipt or not completed(record, channels)):
+                raise PublicationError("retry requires the exact completed publication receipt and a manual run")
+        active = record is not None and (
+            not completed(record, channels) or record["workflow_run_id"] == self.run_id or bool(retry_receipt))
         if active and self.rejected(record, channels):
             active = False
-        event = os.environ.get("GITHUB_EVENT_NAME", "workflow_dispatch")
         acquire = not active and event != "workflow_run"
         if not active and acquire:
             artifacts = self.api(f"actions/runs/{self.run_id}/artifacts?per_page=100")
@@ -625,6 +635,50 @@ class Publisher:
         if not required.get("strict") or not {(name, 15368) for name in REQUIRED_CHECKS[:2]}.issubset(checks):
             raise PublicationError("promotion requires strict checks from the GitHub Actions app on main")
 
+    def signed_promotion_commit(self, checkout, parents, message):
+        """Create an App-signed commit with the exact locally checked catalog tree."""
+        if not parents or any(not COMMIT.fullmatch(parent) for parent in parents):
+            raise PublicationError("promotion commit parents are invalid")
+        tree = command(["git", "write-tree"], cwd=checkout).stdout.strip()
+        base = parents[-1]
+        base_tree = self.git("rev-parse", base + "^{tree}").stdout.strip()
+        paths = command(["git", "diff", "--name-only", "--no-renames", "-z", base, tree], cwd=checkout).stdout.split("\0")
+        entries = []
+        for path in filter(None, paths):
+            if not path.startswith("internal/embedded/catalog/"):
+                raise PublicationError("signed promotion changes files outside the embedded catalog")
+            entry = command(["git", "ls-tree", "-z", tree, "--", path], cwd=checkout).stdout
+            if not entry:
+                entries.append({"path": path, "mode": "100644", "type": "blob", "sha": None})
+                continue
+            mode, kind, _ = entry.split("\t", 1)[0].split()
+            if mode != "100644" or kind != "blob":
+                raise PublicationError("signed promotion requires regular catalog files")
+            content = command(["git", "show", tree + ":" + path], cwd=checkout, text=False).stdout.decode("utf-8")
+            entries.append({"path": path, "mode": mode, "type": kind, "content": content})
+        created_tree = self.api("git/trees", method="POST", body={"base_tree": base_tree, "tree": entries})
+        if created_tree.get("sha") != tree:
+            raise PublicationError("GitHub promotion tree differs from the checked local tree")
+        # GitHub signs App commits only when the request omits custom identity and signature fields.
+        created = self.api("git/commits", method="POST", body={"message": message, "tree": tree, "parents": parents})
+        head = created.get("sha", "")
+        verification = created.get("verification") or {}
+        if (not COMMIT.fullmatch(head) or verification.get("verified") is not True
+                or verification.get("reason") != "valid" or created.get("tree", {}).get("sha") != tree
+                or [parent.get("sha") for parent in created.get("parents", [])] != parents):
+            raise PublicationError("GitHub did not return a verified promotion commit with the checked tree and parents")
+        self.git("fetch", "--no-tags", "origin", head)
+        if self.git("rev-parse", head + "^{tree}").stdout.strip() != tree:
+            raise PublicationError("fetched promotion commit differs from the checked tree")
+        return head
+
+    def require_signed_promotion_history(self, main, head):
+        """Refuse unsigned retained history before trying a protected merge."""
+        for commit in self.git("rev-list", head, "^" + main).stdout.splitlines():
+            verification = self.api("git/commits/" + commit).get("verification") or {}
+            if verification.get("verified") is not True or verification.get("reason") != "valid":
+                raise PublicationError("retained promotion history has an unverified commit; operator recovery is required")
+
     def promote(self):
         control = read_json(self.control)
         record = validate_pending(control["pending"])
@@ -657,9 +711,7 @@ class Publisher:
                 shutil.rmtree(target)
                 shutil.copytree(staged, target)
                 command(["git", "add", "--", "internal/embedded/catalog"], cwd=checkout)
-                command(["git", "-c", f"user.name={os.environ['CATALOG_BOT_NAME']}", "-c", f"user.email={os.environ['CATALOG_BOT_EMAIL']}",
-                         "commit", "-m", f"catalog: embed {record['generation_id']}"], cwd=checkout)
-                head = command(["git", "rev-parse", "HEAD"], cwd=checkout).stdout.strip()
+                head = self.signed_promotion_commit(checkout, [main], f"catalog: embed {record['generation_id']}")
                 self.git("-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential", "push", "origin", f"{head}:refs/heads/{branch}")
             else:
                 raise PublicationError("cannot inspect the retained promotion branch")
@@ -689,12 +741,13 @@ class Publisher:
         if head != pull["headRefOid"]:
             raise PublicationError("promotion branch changed during inspection")
         proposed = self.verify_promotion_head(head, main, "proposed-promotion")
+        self.require_signed_promotion_history(main, head)
         if self.git("merge-base", "--is-ancestor", main, head, check=False).returncode:
             command(["git", "-c", f"user.name={os.environ['CATALOG_BOT_NAME']}", "-c", f"user.email={os.environ['CATALOG_BOT_EMAIL']}",
                      "merge", "--no-edit", main], cwd=proposed)
             if not self.verify_embedding(proposed):
                 raise PublicationError("updated base changes the selected catalog")
-            updated = command(["git", "rev-parse", "HEAD"], cwd=proposed).stdout.strip()
+            updated = self.signed_promotion_commit(proposed, [head, main], "catalog: update checked promotion base")
             self.git("-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential", "push", "origin", f"{updated}:refs/heads/{branch}")
             self.outputs(ready=False, status="awaiting_updated_checks", pull_request=pull["url"])
             return
