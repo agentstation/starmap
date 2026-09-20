@@ -1,0 +1,68 @@
+package server
+
+import (
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"sync"
+	"sync/atomic"
+	"testing"
+	"time"
+
+	"github.com/agentstation/starport/internal/limits"
+	"github.com/agentstation/starport/internal/storage"
+	"github.com/agentstation/starport/internal/usage"
+	"github.com/stretchr/testify/require"
+)
+
+func TestCSP122RemainingAllowanceIsExclusive(t *testing.T) {
+	store, err := storage.OpenBadger(storage.BadgerConfig{Path: t.TempDir(), NumVersions: 1, NumLevelZero: 5, MemTableSize: 64 << 20})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, store.Close()) })
+	repository, err := usage.Open(store, usage.Options{})
+	require.NoError(t, err)
+	server := &Server{cfg: &Config{}, usage: repository}
+	key := budgetTestKey(&limits.Limits{Tokens: &limits.Budget{Limit: 1, Interval: limits.IntervalDay}})
+	decisions := make(chan bool, 2)
+	release := make(chan struct{})
+	var entered atomic.Int64
+	var wg sync.WaitGroup
+	handler := server.enforceBudgets(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		attempt := entered.Add(1)
+		decisions <- true
+		<-release
+		err := repository.Put(r.Context(), usage.Record{RequestID: fmt.Sprintf("attempt-%d", attempt), KeyID: key.ID, Timestamp: time.Now().UTC(), Protocol: "openai", Operation: "chat", ModelRequested: "probe", ModelUsed: "probe", Provider: "probe", Status: usage.StatusOK, StatusCode: 200, Tokens: usage.Tokens{Output: 1, Total: 1}, Attempts: 1, Cost: &usage.Cost{NanoUSD: 1, Currency: "USD"}})
+		if err != nil {
+			t.Error(err)
+		}
+		w.WriteHeader(http.StatusOK)
+	}))
+	for range 2 {
+		wg.Go(func() {
+			response := httptest.NewRecorder()
+			handler.ServeHTTP(response, budgetTestRequest(key))
+			if response.Code != http.StatusOK {
+				decisions <- false
+			}
+		})
+	}
+	observed := 0
+	deadline := time.NewTimer(5 * time.Second)
+	defer deadline.Stop()
+	for observed < 2 {
+		select {
+		case <-decisions:
+			observed++
+		case <-deadline.C:
+			close(release)
+			wg.Wait()
+			t.Fatal("admission decisions did not finish")
+		}
+	}
+	close(release)
+	wg.Wait()
+	totals, err := repository.Totals(t.Context(), usage.KeyScope(key.ID), limits.IntervalDay, time.Now().UTC())
+	require.NoError(t, err)
+	t.Logf("one-token budget: admitted=%d consumed=%d", entered.Load(), totals.Tokens)
+	require.LessOrEqual(t, entered.Load(), int64(1), "concurrent requests must not spend the same remaining capacity")
+}

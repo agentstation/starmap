@@ -1,0 +1,27 @@
+{
+  "status": "fail-before",
+  "starport_head": "c1c272b642e717ed4554c8aa3f5027e23b255793",
+  "starmap_head": "706654ead4eb657b7c60f10368696515fce5771a",
+  "command": "GOWORK=/tmp/csp121-host-integration.work go test -race -count=3 -json -overlay /tmp/csp122-budget-overlay.json ./internal/server -run ^TestCSP122RemainingAllowanceIsExclusive$",
+  "exit_code": 1,
+  "repetitions": 3,
+  "failed": 3,
+  "admitted": [
+    2,
+    2,
+    2
+  ],
+  "consumed": [
+    1,
+    2,
+    2
+  ],
+  "repository_write_errors": 0,
+  "probe_sha256": "bb0f878f99e0d4460ac0ea56f26fe9abe800966252fa1df3d1648f99b2e15ebc",
+  "scope": "Single-process middleware admission with real on-disk Badger. No provider calls. No multi-process, retry, recovery, or atomic-reservation qualification.",
+  "overlay": {
+    "Replace": {
+      "/Users/jack/src/github.com/agentstation/starport-cache-storage/internal/server/csp122_budget_probe_test.go": "/tmp/csp122-budget-probe_test.go"
+    }
+  }
+}
