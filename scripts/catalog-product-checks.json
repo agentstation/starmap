@@ -4615,6 +4615,35 @@
           "test": "TestStreamCompletionKeepsInterleavedChoices"
         }
       ]
+    },
+    "A42.enablement_by_cache_kind": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCacheKindSettingsLoadIndependently"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestMasterCacheSwitchDisablesExtraction"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCacheKindComposition"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCacheDisabledKindsBypassLookups"
+        }
+      ]
     }
   },
   "task_component_checks": {
