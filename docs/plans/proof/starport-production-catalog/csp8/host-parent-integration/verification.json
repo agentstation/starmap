@@ -45,5 +45,11 @@
     "exit": 0
   },
   "preservation": "Host API source and tests are unchanged from PR171 head. The merge adds the reviewed publisher repair and accepted embedded catalog.",
-  "remaining": "Wait for PR173 protected merge. Incorporate its main ancestry, complete required publication review and checks, then update existing PR171. Hold the host API merge until CSP6 retry capture completes. Native qualification and published-module consumer checks remain required."
+  "remaining": "Wait for PR173 protected merge. Incorporate its main ancestry, complete required publication review and checks, then update existing PR171. Hold the host API merge until CSP6 retry capture completes. Native qualification and published-module consumer checks remain required.",
+  "repository_checks": {
+    "command": "GOWORK=off make verify-checks",
+    "exit": 0,
+    "log": "checks.log.gz",
+    "status": "PASS"
+  }
 }
