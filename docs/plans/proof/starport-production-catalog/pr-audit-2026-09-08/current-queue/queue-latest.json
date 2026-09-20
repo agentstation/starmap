@@ -139,6 +139,38 @@
       "disposition": "merged catalog qualification subject",
       "next_action": "Preserve source unchanged for the controlled publication retry capture.",
       "branch": ""
+    },
+    {
+      "worktree": "starmap-catalog-mode-fixture",
+      "owner": "CSP6",
+      "head": "aafdaf3abb6a862559c55ec3d4e8600baab4d526",
+      "branch": "codex/catalog-mode-fixture-reuse",
+      "status": "",
+      "disposition": "published PR173; CI pending"
+    },
+    {
+      "worktree": "starport-cache-storage",
+      "owner": "CSP12.1",
+      "head": "c1c272b642e717ed4554c8aa3f5027e23b255793",
+      "branch": "codex/starport-cache-storage",
+      "status": "",
+      "disposition": "local preparation; task acceptance incomplete"
+    },
+    {
+      "worktree": "starmap-advisory-exchange",
+      "owner": "CSP12.1",
+      "head": "706654ead4eb657b7c60f10368696515fce5771a",
+      "branch": "codex/starmap-advisory-exchange",
+      "status": "",
+      "disposition": "local preparation; task acceptance incomplete"
+    },
+    {
+      "worktree": "starport-sql-contract-isolation",
+      "owner": "CSP15",
+      "head": "c18b22f686f56e9eb70df3461bbcbe00deddc47a",
+      "branch": "codex/sql-contract-isolation",
+      "status": "",
+      "disposition": "local preparation; task acceptance incomplete"
     }
   ],
   "starmap_main": {
@@ -194,7 +226,16 @@
     ]
   },
   "seven_day_disposition_review_required": false,
-  "local_verification_processes": [],
+  "local_verification_processes": [
+    {
+      "session": 29310,
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+      "head": "1cd77e8a82008bfaf72419c4bb2515688cb65232",
+      "command": "GOWORK=off make verify-checks",
+      "log": "/tmp/csp8-host-integrated-checks.log",
+      "status": "running"
+    }
+  ],
   "active_ci": {
     "repository": "agentstation/starmap",
     "pull": 173,
