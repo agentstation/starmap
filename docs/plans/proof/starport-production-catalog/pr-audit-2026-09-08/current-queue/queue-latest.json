@@ -46,7 +46,7 @@
     "171": {
       "owner": "CSP8 host integration",
       "disposition": "retained dependent work",
-      "next": "Local integration head 1cd77e8a8 passes 227 race events, vet, and make verify-checks. After PR173 merges, incorporate main ancestry, complete required review, and update PR171. Hold merge until publication retry qualification."
+      "next": "Local integration head 1cd77e8a8 passes 227 race events, vet, complete checks, and P0 review. After PR173 merges, incorporate main ancestry and update PR171. Hold merge until publication retry qualification."
     },
     "165": {
       "owner": "CSP6",

@@ -45,11 +45,22 @@
     "exit": 0
   },
   "preservation": "Host API source and tests are unchanged from PR171 head. The merge adds the reviewed publisher repair and accepted embedded catalog.",
-  "remaining": "Wait for PR173 protected merge. Incorporate its main ancestry, complete required publication review and checks, then update existing PR171. Hold the host API merge until CSP6 retry capture completes. Native qualification and published-module consumer checks remain required.",
+  "remaining": "After PR173 merges, incorporate its main ancestry without changing reviewed source and update existing PR171. Hold its merge until CSP6 publication retry capture completes. Native CI and published-module consumer qualification remain required.",
   "repository_checks": {
     "command": "GOWORK=off make verify-checks",
     "exit": 0,
     "log": "checks.log.gz",
     "status": "PASS"
+  },
+  "review": {
+    "command": "autoreview --gate pre-pr --mode auto --base aafdaf3abb6a862559c55ec3d4e8600baab4d526",
+    "head": "1cd77e8a82008bfaf72419c4bb2515688cb65232",
+    "exit": 0,
+    "reviewer": "claude-opus-5",
+    "effort": "high",
+    "threshold": "P0",
+    "findings": 0,
+    "report": "review.json.gz",
+    "assessment": "No accepted findings. Local compilation and checks already cover the reviewer uncertainty about imports. Policy boundary tests passed. Historical native evidence is retained but does not qualify this new head."
   }
 }
