@@ -329,3 +329,30 @@ The replay and capacity tests do not measure request overhead or establish a pro
 
 The [retirement proof](../../plans/proof/starport-production-catalog/csp5/provider-retirement-2026-09-12/verification.json) records source identities, commands, failures, and final results.
 Full CSP5 verification, review, native CI, and merge remain open.
+
+## Authorization capacity and propagation: 2026-09-19
+
+The [capacity profile](../../plans/proof/starport-production-catalog/csp10.2/capacity.json) runs four sweeps of 1,024 new tenants with sixteen concurrent cold loads.
+It uses two nested-metadata sizes and Go 1.27.1 race instrumentation on macOS arm64.
+Both profiles respect the 1,024-entry and 16 MiB encoded-byte limits. The larger records leave 666 bundles resident.
+
+| Larger-record observation | Bytes |
+|---|---:|
+| Encoded resident policy after the fourth sweep | 16,762,554 |
+| Live heap after collection after the fourth sweep | 227,643,096 |
+| Highest heap sample between load waves | 469,380,544 |
+| Live heap after shutdown and collection | 3,139,840 |
+| Cumulative allocation across all four sweeps | 3,282,186,488 |
+
+Encoded bytes do not measure decoded memory. A heap sample does not establish a true peak or process RSS.
+Cumulative allocation measures churn across thousands of cold loads. It is not a retained-memory figure or a warm-request allocation count.
+The isolated cache profile does not qualify the complete gateway's latency, CPU, heap, or RSS targets.
+
+CI runs this profile in a dedicated job. Fast boundary tests remain in the regular native suite.
+
+The [live-monitor proof](../../plans/proof/starport-production-catalog/csp10.2/live-fleet-timing.json) observes KV and SQL withdrawals in about one second during concurrent permission checks.
+This measurement uses separate processes and real stores on one host. It does not qualify multi-host propagation or complete request overhead.
+
+The [disconnected-expiry proof](../../plans/proof/starport-production-catalog/csp10.2/disconnected-expiry.json) verifies expiry without an observed withdrawal for both authority owners.
+Its reported intervals start after mutation completion. About two seconds of the original permission lifetime elapsed before that measurement.
+Native suspend and clock discontinuity qualification remain open.

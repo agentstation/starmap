@@ -3394,3 +3394,26 @@ The review rejected substring-based scalar bounds because SQLite truncates text 
 Complete-value checks now preserve identifiers or refuse them. The scalar regression covers both outcomes.
 Affected package race checks pass 884 events. Final controller checks pass 213 events, and final SQL checks pass 161 events.
 Capacity, native timing, fleet enforcement, review, and merge remain open.
+
+## September 19 authorization integration qualification
+
+The local Starport candidate is `31feeca`, on `codex/starport-authorization-memory`.
+Its paired workspace uses Starmap `152148130`. Neither this candidate nor the pair has release qualification.
+
+The [capacity proof](../../plans/proof/starport-production-catalog/csp10.2/capacity.json) covers entry limits, encoded byte limits, concurrent loads, decoded heap, and shutdown.
+The [fleet proof](../../plans/proof/starport-production-catalog/csp10.2/live-fleet-timing.json) covers separate-process observation and restart refusal with real Valkey and PostgreSQL.
+The [partition proof](../../plans/proof/starport-production-catalog/csp10.2/network-partition.json) covers connection loss and withdrawal enforcement by the reachable authority.
+The [expiry proof](../../plans/proof/starport-production-catalog/csp10.2/disconnected-expiry.json) covers the original 60-second lifetime when the proxy discards authority payloads.
+
+Repository qualification found three integration defects. Architecture rules omitted the new revision and record-bound packages.
+Setup rollback expected four records and refused the initial authorization marker. Usage fixtures expired after their fixed date exceeded retention.
+
+The corrected architecture rules preserve dependency direction. Rollback now requires the initial valid marker and refuses missing, corrupt, or advanced revision state.
+Usage fixtures use a current date without changing expected totals.
+
+The [qualification record](../../plans/proof/starport-production-catalog/csp10.2/repository-qualification-progress.json) preserves failures and reruns.
+Local checks pass: full Go tests, vet, lint, build, SDK smoke, and CGO-disabled first-run startup.
+Focused repair checks pass 163 race-test events with 25 explicit skips. Nine A46 subcases have local evidence.
+
+Autoreview remains active. The published-module check still fails because the committed Starmap pin lacks required APIs.
+Native suspend, clock discontinuities, multi-host qualification, full A46, and merge remain open.
