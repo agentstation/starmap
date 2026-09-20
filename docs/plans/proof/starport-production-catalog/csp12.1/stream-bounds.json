@@ -1,0 +1,2059 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-19",
+  "starport_commit": "a53776dc66a32bc53d0511e79bd6397ed2aafe53",
+  "starmap_commit": "152148130",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "scope": "Bounded canonical stream retention; full A48 qualification remains open",
+  "command": "GOWORK=/tmp/csp121-host-integration.work go test -race -count=1 -timeout 2m -json ./internal/proxy ./internal/response/cache",
+  "runs": [
+    {
+      "name": "before",
+      "counts": {
+        "fail": 3
+      },
+      "results": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheLimitPreservesDelivery/bytes",
+          "Elapsed": 0
+        },
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheLimitPreservesDelivery/events",
+          "Elapsed": 0
+        },
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheLimitPreservesDelivery",
+          "Elapsed": 0
+        }
+      ],
+      "verdict": "INVALID CONTROL: fixture cloned nil slices into empty slices; comparison failed before the intended assertion."
+    },
+    {
+      "name": "before-corrected",
+      "counts": {
+        "fail": 3
+      },
+      "results": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheLimitPreservesDelivery/bytes",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheLimitPreservesDelivery/events",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheLimitPreservesDelivery",
+          "Elapsed": 0.04
+        }
+      ],
+      "verdict": "EXPECTED FAILURE: both oversized streams reached SetResponse against original proxy source at eee04f9. Test now compares the actual source clone contract.",
+      "command": "GOWORK=/tmp/csp121-host-integration.work go test -race -count=1 -timeout 2m -overlay /tmp/csp121-stream-before-overlay.json -json ./internal/proxy -run ^TestStreamCacheLimitPreservesDelivery$",
+      "failure_output": [
+        "        \tError:      \tShould be zero, but was 1\n",
+        "        \tMessages:   \toversized streams must bypass caching\n",
+        "        \tError:      \tShould be zero, but was 1\n",
+        "        \tMessages:   \toversized streams must bypass caching\n"
+      ]
+    },
+    {
+      "name": "final-concurrency",
+      "counts": {
+        "pass": 327
+      },
+      "results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestPutChatRefusesResponseWithoutChoices",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestPutChatRefusesContentFreeCompletion",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestPutChatAdmitsToolCallCompletion",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/seed",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/output_strictness",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/provider_order",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/account_tier",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/model_chain",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/reasoning_budget",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/provider_ignore",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/allowed_models",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/message_tool_call_name",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/temperature",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/frequency_penalty",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/tool_name",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/output_description",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/reasoning_visibility",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/route_mode",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/message_name",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/top_p",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/stop_sequence",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/presence_penalty",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/tool_choice_mode",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/parallel_tool_calls",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/tool_choice_name",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/fallback_policy",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/message_role",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/message_text",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/message_tool_call_ID",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/message_tool_arguments",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/candidate_count",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/output_format",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/model_override",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/allowed_providers",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/catalog_generation",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/model",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/tool_description",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/output_schema",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/provider_only",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/credential_strategy",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/account",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/max_tokens",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/logit_bias",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/tool_schema",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/user",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/message_cache_policy",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/message_reasoning",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/message_tool_result_ID",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/output_name",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/reasoning_effort",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/embedding_identity",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract/canonical_stream_reconstruction",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticKeyAndAccountIsolationContract",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestCacheEligibilityRejectsUnsafeShapes/missing_account",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestCacheEligibilityRejectsUnsafeShapes/missing_generation",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestCacheEligibilityRejectsUnsafeShapes/mutable_image",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestCacheEligibilityRejectsUnsafeShapes/provider_extension",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestCacheEligibilityRejectsUnsafeShapes/invalid_tool_schema",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestCacheEligibilityRejectsUnsafeShapes",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestCanonicalRecordAndStreamReconstruction",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestRepositoryRejectsInvalidRecords/invalid_JSON",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestRepositoryRejectsInvalidRecords/stale_schema",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestRepositoryRejectsInvalidRecords/wrong_key",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestRepositoryRejectsInvalidRecords/missing_timestamp",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestRepositoryRejectsInvalidRecords/wrong_kind",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestRepositoryRejectsInvalidRecords/ambiguous_payload",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestRepositoryRejectsInvalidRecords",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestEveryRequestFieldIsKeyedOrExempt",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/Model",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/FallbackModels",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/Messages",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/Sampling",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/Tools",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/ToolChoice",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/ParallelToolCalls",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/Output",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/Reasoning",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/OutputModalities",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/AudioOutput",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/DocumentParser",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey/User",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestChangingAKeyedFieldChangesTheKey",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestExemptFieldsDoNotChangeTheKey",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestAskingForTextAloneKeysAsAPlainTextRequest",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestModalityOrderDoesNotChangeTheKey",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestRemoteMediaOfEveryKindIsIneligible/image",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestRemoteMediaOfEveryKindIsIneligible/audio",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestRemoteMediaOfEveryKindIsIneligible/document",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestRemoteMediaOfEveryKindIsIneligible/video",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestRemoteMediaOfEveryKindIsIneligible",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestInlineMediaKeysOnItsBytes/image",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestInlineMediaKeysOnItsBytes/audio",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestInlineMediaKeysOnItsBytes/document",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestInlineMediaKeysOnItsBytes/video",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestInlineMediaKeysOnItsBytes",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestFoldingLeavesNoBytesInTheKeyedRequest",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestTextOnlyKeyIsPinnedToItsVersion",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticScopeSharedByParaphrasesAlone",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticScopeNeedsPromptText",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestCosineSimilarity",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticIndexAnswersOnlyAboveThreshold",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticIndexAnswersTheNearestEntry",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticIndexBoundsEntriesPerScope",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticIndexDropEvictsAVector",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestSemanticIndexRefusesBadInputs",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestTwoStoredFilesKeyApart",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestAStoredFileStaysCacheEligible",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestAStoredFileAndItsBytesKeyApart",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestStreamBufferLimitsNestedPayloads/text",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestStreamBufferLimitsNestedPayloads/reasoning",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestStreamBufferLimitsNestedPayloads/tool",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestStreamBufferLimitsNestedPayloads/audio",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestStreamBufferLimitsNestedPayloads/logprobs",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestStreamBufferLimitsNestedPayloads/image",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestStreamBufferLimitsNestedPayloads/document",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestStreamBufferLimitsNestedPayloads/video",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestStreamBufferLimitsNestedPayloads",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestStreamBufferOwnsRetainedData",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestStreamBufferStopsEmptyEventRetention",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestReplayCarriesAGeneratedImage",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestReplayRoundTripsBackToTheStoredAnswer",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestReplayRefusesAMalformedPart",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "TestTextArrivesInItsOwnPartAfterMedia",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "FuzzSemanticKey/seed#0",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/response/cache",
+          "Test": "FuzzSemanticKey",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheLimitPreservesDelivery/bytes",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheLimitPreservesDelivery/events",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheLimitPreservesDelivery",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheReleasesInputOnTermination/eof",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheReleasesInputOnTermination/failure",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheReleasesInputOnTermination/close",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheReleasesInputOnTermination",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamCacheConcurrentClose",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCachedServiceProcessChatCompletion",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCachedService_AccountAndGenerationIsolation",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCachedServicePreservesCanonicalResponse",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCachedServiceCachesCompleteStream",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCachingStreamWrapper_DoesNotCachePartialStream",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCachedServiceListModelsConvertsCachedJSONMap",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCachedServiceRetainsOneRuntimeGeneration/chat",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCachedServiceRetainsOneRuntimeGeneration/stream",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCachedServiceRetainsOneRuntimeGeneration/discovery",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCachedServiceRetainsOneRuntimeGeneration",
+          "Elapsed": 10.49
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestOfferingCacheCapability",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestOfferingPriceHasNoFallback",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestSnapshotOnlyDiscovery",
+          "Elapsed": 0.24
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestModelDiscoveryRetainsOneCatalogGeneration",
+          "Elapsed": 0.45
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCacheDeliveryRechecksCatalogPermission/chat_lookup",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCacheDeliveryRechecksCatalogPermission/stream_lookup",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCacheDeliveryRechecksCatalogPermission/stream_first_read",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCacheDeliveryRechecksCatalogPermission/admitted_stream",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCacheDeliveryRechecksCatalogPermission",
+          "Elapsed": 0.06
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestEmbeddingAndSemanticCachePermission/embedding",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestEmbeddingAndSemanticCachePermission/semantic_chat",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestEmbeddingAndSemanticCachePermission/semantic_stream",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestEmbeddingAndSemanticCachePermission",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCompatibilityDiscoveryRejectsWithdrawnAuthority/models",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCompatibilityDiscoveryRejectsWithdrawnAuthority/providers",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCompatibilityDiscoveryRejectsWithdrawnAuthority/endpoints",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCompatibilityDiscoveryRejectsWithdrawnAuthority/authors",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCompatibilityDiscoveryRejectsWithdrawnAuthority/author",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCompatibilityDiscoveryRejectsWithdrawnAuthority/logo",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCompatibilityDiscoveryRejectsWithdrawnAuthority",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestDiscoveryCacheLookupRechecksAuthority/models",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestDiscoveryCacheLookupRechecksAuthority/providers",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestDiscoveryCacheLookupRechecksAuthority/endpoints",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestDiscoveryCacheLookupRechecksAuthority",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCompatibilityProjectionRechecksAuthorityAtDelivery",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestDiscoveryCacheSeparatesDisclosureMembership/models",
+          "Elapsed": 0.24
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestDiscoveryCacheSeparatesDisclosureMembership/providers",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestDiscoveryCacheSeparatesDisclosureMembership",
+          "Elapsed": 0.28
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestEndpointLookupDoesNotRevealDeniedMembership",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestExtractionCaptureSurvivesFailureAndStreaming/short_recognition",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestExtractionCaptureSurvivesFailureAndStreaming/chat_failure",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestExtractionCaptureSurvivesFailureAndStreaming/stream_complete",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestExtractionCaptureSurvivesFailureAndStreaming/stream_setup_failure",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestExtractionCaptureSurvivesFailureAndStreaming/stream_cancellation",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestExtractionCaptureSurvivesFailureAndStreaming",
+          "Elapsed": 0.07
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestModerationGuardrailRidesTheAccountIdentity",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestModerationGuardrailAllowsBelowThreshold",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGatewayModeratorNeedsTheGatewayIdentity",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGuardrailsRedactTheRequestBeforeTheCore",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGuardrailsRefuseTheRequestBeforePlanning",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGuardrailsInspectTheAnswer",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGuardrailsRefuseTheAnswer",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGuardrailsFailClosedOnAnErroringCheck",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGuardrailsSkipAnEmptyPipeline",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGuardrailStreamAllowsCleanEvents",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGuardrailStreamRefusesAndWithholdsTheWindow",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGuardrailStreamRedactsTheWindow",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGuardrailStreamBoundsTheWindow",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestApplyOutcomeRecordsARefusal",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestModalityRefusalAnswersTheCaller",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRequestMetadataCarriesTheModalities",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestImageRequestStillAsksForVision",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestOneEstimatorServesRoutingAndUsage",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAModerationTurnRecordsItsOperationWithoutInventingACost",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestModerationValidationNamesTheEmptyInputByPosition",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRouteFailureSeparatesCallerErrorsFromGatewayReports",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestChatReferenceMergesPresetConfig",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestPresetRequestFieldsWin",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUnknownPresetRejected",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestPinnedPresetReferenceUsesTheRevision",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestPinnedPresetReferenceRejectsBadPins",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestModelsProjectionGolden",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestProvidersProjectionGolden",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestEndpointsProjectionGolden",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestProcessChatCompletionPassesProviderPreferences",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestProcessEmbeddingsDelegatesAccountCredentialAndRoutingPolicy",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestProcessChatCompletionStripsCacheControlBeforeSingleUnsupportedProviderAttempt",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestProcessChatCompletionStreamDelegatesOneRouteRequest",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestProcessChatCompletionStreamPreparesUnsupportedProviderAttempt",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionCostUsesActualUnits/missing",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionCostUsesActualUnits/estimated",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionCostUsesActualUnits/negative",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionCostUsesActualUnits/inconsistent_total",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionCostUsesActualUnits/inconsistent_cache",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionCostUsesActualUnits",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionCostUsesContextTierAndKnownZero",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionMeasurementsReachUsageRecord",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionReasoningRateReclassifiesOutput",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionPriceValidityUsesCallStart",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionIncludesSelectedRequestFee",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionPageTierRequiresContextMeasurement",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestCachedDeliveryRetainsRequestPermission",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestARerankTurnRecordsItsSearchUnitsAndItsCost",
+          "Elapsed": 0.06
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestASearchUnitOnAnUnpricedOfferingIsNeverBilledAtZero",
+          "Elapsed": 0.06
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAAccountAtItsSpendBoundIsRefusedBeforeTheProviderCall",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnUnboundedAccountAndATokenBilledModelRefuseNothing",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestSemanticCacheAnswersAParaphrase",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestSemanticCacheRefusesBelowThreshold",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestSemanticCacheNeedsDeploymentOptIn",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestSemanticCacheNeedsRequestOptIn",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestSemanticCacheFailsOpenOnEmbedError",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestSemanticCacheDropsAVectorWhoseEntryLeft",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestSemanticCacheStreamAnswersAParaphrase",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGatewayEmbedderRidesTheGatewayEmbeddingsPath",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestGatewayEmbedderRefusesAWrongVectorCount",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageNormalizingStreamSynthesizesEstimatedUsage",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageNormalizingStreamCountsReasoning",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageNormalizingStreamPassesProviderUsageThrough",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageNormalizingStreamQueuesSynthesisAfterFinalEventWithEOF",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageNormalizingStreamForwardsCloseAndUnwrap",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestNewUsageNormalizingStreamWithoutEstimatorReturnsStream",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestProcessChatCompletionStreamForcesProviderUsage",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestTransformChatRequestUsesCanonicalInference",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestTransformChatResponseReturnsCanonicalInference",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestTransformEmbeddingsRequestUsesCanonicalInference",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestChatCompletionWritesUsageRecord",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestChatUsageRecordCarriesTeamAttribution",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestBatchLineUsageRecordCarriesTheBatchID",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageRecordCostFromSnapshotPricing",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageRecordCostUnavailableReason/no_route_without_snapshot",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageRecordCostUnavailableReason/no_usage_from_provider",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageRecordCostUnavailableReason/failed_request_records_error",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageRecordCostUnavailableReason",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageCaptureFailureDoesNotFailRequest",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamingChatWritesUsageRecordWithProvider",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamingChatRecordsTimeToFirstToken",
+          "Elapsed": 0.06
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestNonStreamingChatRecordsNoTimeToFirstToken",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamingCancellationRecordsCancelledStatus",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageRecordCarriesTheServedCredentialSource/buffered",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageRecordCarriesTheServedCredentialSource/streaming",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageRecordCarriesTheServedCredentialSource",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageCaptureNotifiesObservers",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageRecordCarriesSemanticCacheSimilarity/semantic_hit",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageRecordCarriesSemanticCacheSimilarity/exact_hit",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestUsageRecordCarriesSemanticCacheSimilarity",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestStreamingUsageRecordCarriesSemanticCacheSimilarity",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAGeneratedImageAgainstATextPriceHasNoCost",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAGeneratedImagePricesAtTheImageRate",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnImageOnlyAnswerNeedsNoTokenPrice",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnAudioTurnAgainstAPricedOfferingCosts",
+          "Elapsed": 8.89
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnAudioTurnAgainstATextPriceHasNoCost",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestATextTurnCarriesNoMediaOnItsRecord",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAStreamedPictureReachesTheRecord",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestValidateChatCompletionRequest/valid_canonical_request",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestValidateChatCompletionRequest/nil_request",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestValidateChatCompletionRequest/missing_model",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestValidateChatCompletionRequest/missing_messages",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestValidateChatCompletionRequest/invalid_cache_control",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestValidateChatCompletionRequest/unsupported_route",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestValidateChatCompletionRequest",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestValidateEmbeddingsRequest",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestExtractProviderFromModelUsesExactProviderPrefix",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAFinishedJobDrawsOneValidRecord",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAStoredFileReachesTheProviderAsInlineBytesDo",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnAccountThatCanAffordThePagesReadsThem",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestParsingLeavesTheCallersRequestAlone",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnAccountWithNoSpendBudgetIsRefusedNothing",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestARecognizedDocumentRecordsItsPagesAndItsCost",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestACancelledJobIsNotAFailure",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestThePluginDoesNotMoveTheChatRoute",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestTheNativeEngineNeverReachesAProvider",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestARecognitionRouteFailureNamesTheStep",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestTheRecordReportsHowLongTheDocumentTook",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestANativelyReadDocumentIsRecordedAndNotCharged",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnOfferingThatPricesNoVideoWithdrawsTheWholeCost",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestResolutionLeavesTheCallersRequestAlone",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnUnpricedRecognitionSaysSoRatherThanReadingAsFree",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAFailedJobRecordsNoCostAndNoMediaUnit",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestTheStoredNameDecidesTheMediaType",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestARequestNamingTwoDocumentSourcesIsRefused",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAGatewayWithoutFileStorageRefusesAFileReference",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestARoutableDocumentIsReadNatively",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnUnreachableFileStoreFailsTheRequest",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestARecognizedDocumentIsAddedToTheTurnsOwnCost",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestRecognitionIsAServedOperation",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnAccountAtItsSpendBoundIsRefusedBeforeTheRecognitionCall",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAMalformedDocumentIsTheCallersMistake",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestATurnWithoutACatalogGenerationStillReadsItsDocument",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnUnknownEngineIsRefusedRatherThanIgnored",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAJobWithNoRecorderStillSettles",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnotherAccountsFileIsNotFoundBeforeAnyProviderCall",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnInlineRequestNeverReachesTheResolver",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAVideoPricesPerVideo",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestARetryReadsTheStoredBytesOnce",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAnUnnamedEngineLeavesTheDocumentAlone",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestOneRequestNamingAFileTwiceReadsItOnce",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAScannedDocumentReachesRecognitionThenTheChatModel",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAVideoAloneIsUsage",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestAShortRecognitionFailsTheWholeTurn",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestOneEngineNeverServesAnother",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestACachedDocumentIsRecordedAsCachedAndNotChargedAgain",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestANativeReadIsCachedWithoutCallingARecognizer",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestACachedReadCrossesNoAccount",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/proxy",
+          "Test": "TestTheSameDocumentIsRecognizedOnceAcrossTurns",
+          "Elapsed": 0.02
+        }
+      ],
+      "exit_code": 0
+    }
+  ],
+  "checks": {
+    "lint": "Linting code...\n0 issues.\nLint complete\n",
+    "vet_exit_code": 0,
+    "prose": "4 files, 0 diagnostics",
+    "diff_check_exit_code": 0
+  },
+  "benchmark": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/response/cache\ncpu: Apple M2 Max\nBenchmarkStreamBufferEvent-12    \t 8138252\t       146.6 ns/op\t     589 B/op\t       3 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/response/cache\t1.371s\n",
+  "unverified": [
+    "Complete request and stream latency",
+    "Concurrent stream retained heap and process capacity",
+    "Optional encoding latency at EOF",
+    "Dedicated shared service configuration",
+    "Model and extraction optional work",
+    "Discovery readiness acceptance",
+    "Full task review, native CI and merge"
+  ]
+}
