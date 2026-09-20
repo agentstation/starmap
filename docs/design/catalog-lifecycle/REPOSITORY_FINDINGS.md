@@ -3415,5 +3415,6 @@ The [qualification record](../../plans/proof/starport-production-catalog/csp10.2
 Local checks pass: full Go tests, vet, lint, build, SDK smoke, and CGO-disabled first-run startup.
 Focused repair checks pass 163 race-test events with 25 explicit skips. Nine A46 subcases have local evidence.
 
-Autoreview remains active. The published-module check still fails because the committed Starmap pin lacks required APIs.
+Opus 5 completed two review passes with zero findings at the configured P0 threshold. Linux and Windows pure-Go cross-builds also pass.
+The published-module check still fails because the committed Starmap pin lacks required APIs.
 Native suspend, clock discontinuities, multi-host qualification, full A46, and merge remain open.
