@@ -1643,12 +1643,12 @@
         "url": "https://github.com/agentstation/starmap/actions/runs/35488652576/job/106019556224"
       },
       {
-        "completedAt": "0001-01-01T00:00:00Z",
-        "conclusion": "",
+        "completedAt": "2026-09-20T04:25:45Z",
+        "conclusion": "success",
         "databaseId": 106019556228,
         "name": "Publication windows-2025",
         "startedAt": "2026-09-20T04:14:51Z",
-        "status": "in_progress",
+        "status": "completed",
         "steps": [
           {
             "completedAt": "2026-09-20T04:14:52Z",
@@ -1715,55 +1715,63 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:25:39Z",
+            "conclusion": "success",
             "name": "Test catalog publication preparation and recovery",
             "number": 9,
             "startedAt": "2026-09-20T04:18:02Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:25:40Z",
+            "conclusion": "success",
             "name": "Retain native publication evidence",
             "number": 10,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:25:39Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:25:40Z",
+            "conclusion": "success",
             "name": "Post Set up pinned Bun for Git acquisition fixtures",
             "number": 18,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:25:40Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:25:41Z",
+            "conclusion": "success",
             "name": "Post Set up qualification Go toolchain",
             "number": 19,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:25:40Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:25:43Z",
+            "conclusion": "success",
             "name": "Post Checkout",
             "number": 20,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:25:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-20T04:25:43Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 21,
+            "startedAt": "2026-09-20T04:25:43Z",
+            "status": "completed"
           }
         ],
         "url": "https://github.com/agentstation/starmap/actions/runs/35488652576/job/106019556228"
       },
       {
-        "completedAt": "0001-01-01T00:00:00Z",
-        "conclusion": "",
+        "completedAt": "2026-09-20T04:24:59Z",
+        "conclusion": "success",
         "databaseId": 106019556242,
         "name": "Publication windows-11-arm",
         "startedAt": "2026-09-20T04:14:51Z",
-        "status": "in_progress",
+        "status": "completed",
         "steps": [
           {
             "completedAt": "2026-09-20T04:14:54Z",
@@ -1830,44 +1838,52 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:49Z",
+            "conclusion": "success",
             "name": "Test catalog publication preparation and recovery",
             "number": 9,
             "startedAt": "2026-09-20T04:18:39Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:50Z",
+            "conclusion": "success",
             "name": "Retain native publication evidence",
             "number": 10,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:49Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:51Z",
+            "conclusion": "success",
             "name": "Post Set up pinned Bun for Git acquisition fixtures",
             "number": 18,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:50Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:51Z",
+            "conclusion": "success",
             "name": "Post Set up qualification Go toolchain",
             "number": 19,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:51Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:55Z",
+            "conclusion": "success",
             "name": "Post Checkout",
             "number": 20,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-20T04:24:55Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 21,
+            "startedAt": "2026-09-20T04:24:55Z",
+            "status": "completed"
           }
         ],
         "url": "https://github.com/agentstation/starmap/actions/runs/35488652576/job/106019556242"
@@ -2151,20 +2167,20 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:57Z",
+            "conclusion": "success",
             "name": "Set up release Go toolchain",
             "number": 3,
             "startedAt": "2026-09-20T04:24:43Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
             "conclusion": "",
             "name": "Run full public catalog capacity",
             "number": 4,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:57Z",
+            "status": "in_progress"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
@@ -2218,36 +2234,36 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:54Z",
+            "conclusion": "success",
             "name": "Set up selected Go toolchain",
             "number": 3,
             "startedAt": "2026-09-20T04:24:42Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:56Z",
+            "conclusion": "success",
             "name": "Set up pinned Bun for Git acquisition fixtures",
             "number": 4,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:54Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:56Z",
+            "conclusion": "success",
             "name": "Prepare verified public catalog fixture",
             "number": 5,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:56Z",
+            "status": "completed"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
             "conclusion": "",
             "name": "Run complete selected test group",
             "number": 6,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:56Z",
+            "status": "in_progress"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
@@ -2262,6 +2278,14 @@
             "conclusion": "",
             "name": "Retain test timings and failures",
             "number": 8,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 14,
             "startedAt": "0001-01-01T00:00:00Z",
             "status": "pending"
           },
@@ -2309,36 +2333,36 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:57Z",
+            "conclusion": "success",
             "name": "Set up selected Go toolchain",
             "number": 3,
             "startedAt": "2026-09-20T04:24:41Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:58Z",
+            "conclusion": "success",
             "name": "Set up pinned Bun for Git acquisition fixtures",
             "number": 4,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:57Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:58Z",
+            "conclusion": "success",
             "name": "Prepare verified public catalog fixture",
             "number": 5,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:58Z",
+            "status": "completed"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
             "conclusion": "",
             "name": "Run complete selected test group",
             "number": 6,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:58Z",
+            "status": "in_progress"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
@@ -2353,6 +2377,14 @@
             "conclusion": "",
             "name": "Retain test timings and failures",
             "number": 8,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 14,
             "startedAt": "0001-01-01T00:00:00Z",
             "status": "pending"
           },
@@ -2400,36 +2432,36 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:55Z",
+            "conclusion": "success",
             "name": "Set up selected Go toolchain",
             "number": 3,
             "startedAt": "2026-09-20T04:24:42Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:56Z",
+            "conclusion": "success",
             "name": "Set up pinned Bun for Git acquisition fixtures",
             "number": 4,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:55Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:56Z",
+            "conclusion": "success",
             "name": "Prepare verified public catalog fixture",
             "number": 5,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:56Z",
+            "status": "completed"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
             "conclusion": "",
             "name": "Run complete selected test group",
             "number": 6,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:56Z",
+            "status": "in_progress"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
@@ -2444,6 +2476,14 @@
             "conclusion": "",
             "name": "Retain test timings and failures",
             "number": 8,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 14,
             "startedAt": "0001-01-01T00:00:00Z",
             "status": "pending"
           },
@@ -2491,36 +2531,36 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:54Z",
+            "conclusion": "success",
             "name": "Set up selected Go toolchain",
             "number": 3,
             "startedAt": "2026-09-20T04:24:43Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:55Z",
+            "conclusion": "success",
             "name": "Set up pinned Bun for Git acquisition fixtures",
             "number": 4,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:54Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:56Z",
+            "conclusion": "success",
             "name": "Prepare verified public catalog fixture",
             "number": 5,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:55Z",
+            "status": "completed"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
             "conclusion": "",
             "name": "Run complete selected test group",
             "number": 6,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:56Z",
+            "status": "in_progress"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
@@ -2535,6 +2575,14 @@
             "conclusion": "",
             "name": "Retain test timings and failures",
             "number": 8,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 14,
             "startedAt": "0001-01-01T00:00:00Z",
             "status": "pending"
           },
@@ -2582,36 +2630,36 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:57Z",
+            "conclusion": "success",
             "name": "Set up selected Go toolchain",
             "number": 3,
             "startedAt": "2026-09-20T04:24:42Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:58Z",
+            "conclusion": "success",
             "name": "Set up pinned Bun for Git acquisition fixtures",
             "number": 4,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:57Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:59Z",
+            "conclusion": "success",
             "name": "Prepare verified public catalog fixture",
             "number": 5,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:58Z",
+            "status": "completed"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
             "conclusion": "",
             "name": "Run complete selected test group",
             "number": 6,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:59Z",
+            "status": "in_progress"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
@@ -2626,6 +2674,14 @@
             "conclusion": "",
             "name": "Retain test timings and failures",
             "number": 8,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 14,
             "startedAt": "0001-01-01T00:00:00Z",
             "status": "pending"
           },
@@ -2673,36 +2729,36 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:57Z",
+            "conclusion": "success",
             "name": "Set up selected Go toolchain",
             "number": 3,
             "startedAt": "2026-09-20T04:24:43Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:59Z",
+            "conclusion": "success",
             "name": "Set up pinned Bun for Git acquisition fixtures",
             "number": 4,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:57Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-20T04:24:59Z",
+            "conclusion": "success",
             "name": "Prepare verified public catalog fixture",
             "number": 5,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:59Z",
+            "status": "completed"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
             "conclusion": "",
             "name": "Run complete selected test group",
             "number": 6,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-20T04:24:59Z",
+            "status": "in_progress"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
@@ -2717,6 +2773,14 @@
             "conclusion": "",
             "name": "Retain test timings and failures",
             "number": 8,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 14,
             "startedAt": "0001-01-01T00:00:00Z",
             "status": "pending"
           },
@@ -2747,13 +2811,6 @@
     "status": "completed"
   },
   "sessions": {
-    "distribution": {
-      "id": 21098,
-      "command": "GOWORK=/tmp/csp6-signed-pair.work CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-billing bash scripts/verify-catalog-distribution.sh",
-      "log": "/tmp/csp6-signed-distribution-pair.log",
-      "starport_head": "9f80f176",
-      "scope": "Source-pair qualification; no module pin changed."
-    },
     "ci_watch": {
       "id": 77184,
       "run": 35488652576,
@@ -2783,5 +2840,17 @@
     "fixture_refresh_contract": "PASS",
     "publication_package_seconds": 223.361,
     "log": "signed-generation-check.log.gz"
+  },
+  "distribution": {
+    "id": 21098,
+    "command": "GOWORK=/tmp/csp6-signed-pair.work CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-billing bash scripts/verify-catalog-distribution.sh",
+    "log": "signed-distribution-pair.log.gz",
+    "starport_head": "9f80f176",
+    "scope": "Source-pair qualification; no module pin changed.",
+    "status": "PASS",
+    "exit": 0,
+    "passed": 68,
+    "failed": 0,
+    "unverified": 0
   }
 }
