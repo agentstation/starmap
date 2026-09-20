@@ -34,14 +34,105 @@
       "events": {
         "pass": 6
       }
+    },
+    "full-suite-after": {
+      "command": "GOWORK=/tmp/csp8-current-catalog.work go test -count=1 -json ./...",
+      "exit_code": 0,
+      "events": {
+        "skip": 69,
+        "pass": 4199
+      },
+      "test_events": {
+        "pass": 4139,
+        "skip": 61
+      },
+      "skips": [
+        "github.com/agentstation/starport/examples",
+        "TestAccountRepositoryRecordBounds/valkey",
+        "TestAccountRepositoryContract/valkey",
+        "TestEnsureDefaultIsIdempotent/valkey",
+        "TestEnsureDefaultUnderConcurrentBoot/valkey",
+        "TestDefaultAccountCannotBeDeleted/valkey",
+        "TestRepositoryRejectsInvalidAccounts/valkey",
+        "TestAPIKeyRepositoryRecordBounds/valkey",
+        "TestAPIKeyRepositoryContract/valkey",
+        "TestRepositoryContract/valkey",
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "TestRepositorySourceRealStoresAndLocalMutation/valkey",
+        "TestKVRevisionCommitsWithMutation/valkey",
+        "TestKVRevisionConcurrentIndependentMutations/valkey",
+        "TestRepositoriesPublishEveryAuthorizationMutation/valkey",
+        "github.com/agentstation/starport/internal/catalog/disclosure",
+        "TestDefaultCacheMemoryBudget",
+        "TestSharedCachePausedServiceDeadlineAndRecovery",
+        "TestSharedCacheRealService",
+        "TestSharedCacheURIAuthenticationAndDatabase",
+        "TestSharedCacheTLSWithRealService",
+        "TestSharedCacheCompositionUsesSeparateService",
+        "TestSharedCacheCanonicalDeploymentIsolation",
+        "github.com/agentstation/starport/internal/protocol/mediaform",
+        "TestProviderCredentialRepositoryContract/valkey",
+        "TestPresetRepositoryContract/valkey",
+        "TestPresetRevisionHistoryAndRollback/valkey",
+        "TestPresetRollbackNeedsATarget/valkey",
+        "TestManagedMaterialValkeyOutageAndRecovery",
+        "TestRateLimitRepositoryContract/valkey",
+        "TestManagedMaterialStorageRotationRevocationAndRecreation/valkey",
+        "github.com/agentstation/starport/internal/server/dto",
+        "github.com/agentstation/starport/internal/server/requestctx",
+        "TestAuthorizationWarmRequestsAvoidStableReads/valkey",
+        "TestAuthorizationUnknownAccountRefusesAdmission/valkey",
+        "TestSDKCanonicalRemovalAfterSuccessfulInference",
+        "TestGatewayOverheadBenchmark",
+        "TestValueLifetimeSnapshot/valkey",
+        "github.com/agentstation/starport/scripts/doclinks",
+        "github.com/agentstation/starport/scripts/sdk-smoke-server",
+        "github.com/agentstation/starport/skills/starport",
+        "TestARecognizedDocumentCountsAgainstTheSpendBudget/valkey",
+        "TestARecognizedDocumentReportsItsPagesAndItsCost/valkey",
+        "TestANativelyReadDocumentCostsNothing/valkey",
+        "TestValkeyStore",
+        "TestValkeyPubSub",
+        "TestACachedReadIsRecordedAsCachedRatherThanFree/valkey",
+        "TestBoundedStorageRead/valkey",
+        "TestTheExtractionDurationSurvivesTheRoundTrip/valkey",
+        "TestATurnThatAttachedNoDocumentReportsNoExtraction/valkey",
+        "TestRecognitionMeasurementsPersistWithUnknownTotal/valkey",
+        "TestAPricedMediaTurnCountsAgainstTheSpendBudget/valkey",
+        "TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/valkey",
+        "TestMediaUnitsSurviveTheRoundTrip/valkey",
+        "TestATextRecordReadsBackWithoutMedia/valkey",
+        "TestRepositoryPutAndListByKey/valkey",
+        "TestListByKeyOrdersNewestFirstAcrossBackends/valkey",
+        "TestListFiltersAndCursorPagination/valkey",
+        "TestAdminListSpansKeys/valkey",
+        "TestAggregateCountersAccumulate/valkey",
+        "TestCostlessRecordCarriesReasonNotZero/valkey",
+        "TestRetentionTTLApplied/valkey",
+        "TestAccountCounterSumsEveryKeyItHolds/valkey",
+        "TestTeamCounterSumsEveryAttributedKey/valkey",
+        "TestListByAccountSpansEveryKey/valkey",
+        "TestListFiltersByGuardrailVerdictAndKeepsCacheFields/valkey",
+        "TestAppWithValkey",
+        "TestSharedStartupDoesNotCreateLocalDatabases"
+      ]
     }
   },
   "vet": "PASS: go vet ./internal/app ./internal/catalog ./internal/proxy",
   "pending": [
-    "Full suite after repair session55234",
-    "Review and published module qualification"
+    "Combined SQL, Badger, and catalog integration review",
+    "Published module qualification and native CI"
   ],
   "complete": false,
   "lint": "PASS: repository-pinned golangci-lint v2.13.2 on affected packages",
-  "work_commit": "c22a5579304387b49b54352c520a11c2a85e9621"
+  "work_commit": "c22a5579304387b49b54352c520a11c2a85e9621",
+  "review": {
+    "status": "in_progress",
+    "session": 62428,
+    "base": "c1c272b642e717ed4554c8aa3f5027e23b255793",
+    "head": "c22a5579",
+    "threshold": "P0",
+    "reports": "/tmp/csp8-csp15-integration-review"
+  }
 }

@@ -236,8 +236,8 @@
   "seven_day_disposition_review_required": false,
   "local_verification_processes": [
     {
-      "session": 55234,
-      "purpose": "Starport full suite after catalog fixture repairs"
+      "session": 62428,
+      "purpose": "Combined SQL, Badger, and catalog integration review"
     }
   ],
   "active_ci": {
