@@ -1,0 +1,26 @@
+{
+  "failure": "Supplemental acceptance stopped with ENOSPC while writing its checkpoint. Two app test builds also failed with linker errno 28.",
+  "original_session": 49529,
+  "exit_code": 1,
+  "retained_passes": [
+    "TestProductionAcquisitionLifecycle",
+    "TestRuntimeAcquiresSelectedMetadataSource"
+  ],
+  "retry_tests": [
+    "TestCatalogPersistsProductBaselineAndOwnershipOffline",
+    "TestCatalogConfigurationControlsRuntimeTraffic"
+  ],
+  "cleanup": {
+    "scope": "Regenerable Go build cache entries older than 48 hours, oldest first.",
+    "files_removed": 79070,
+    "bytes_removed": 8591833519,
+    "free_space_after": "9.9 GiB",
+    "user_files_removed": false
+  },
+  "resume_session": 37169,
+  "script": "consumer-supplement.py",
+  "checkpoint": "/tmp/csp8-current-consumer-supplement.json",
+  "log": "/tmp/csp8-current-consumer-supplement-resumed.log",
+  "producer_session": 2656,
+  "producer_policy": "Allow the live run to finish. Inspect and retain all failures; retry only checks invalidated by disk exhaustion."
+}

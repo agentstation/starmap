@@ -38,6 +38,8 @@
 
 <p>The <a href="proof/starport-production-catalog/csp8/current-catalog-integration/registry-reconciliation.json">registry reconciliation</a> combines producer and consumer registrations. It preserves all distinct product-isolation checks and validates against the unchanged acceptance roster. Retain valid producer results from session <code>2656</code>. Qualify the added consumer registrations before claiming CSP8 acceptance.</p>
 
+<p>The supplemental run stopped when the local disk filled. The <a href="proof/starport-production-catalog/csp8/current-catalog-integration/disk-recovery.json">disk recovery proof</a> records cleanup of old Go cache entries and retained failures. Session <code>37169</code> resumes the consumer checks with two prior passes retained. Producer session <code>2656</code> remains active. Inspect its final evidence for disk-related failures before reuse.</p>
+
 <p>CSP15 fixture preparation is clean at <code>starport-sql-contract-isolation</code>, branch <code>codex/sql-contract-isolation</code>, head <code>c18b22f</code>. The <a href="proof/starport-production-catalog/csp15/sql-fixture-isolation.md">SQL fixture proof</a> records 63 passing real-store race events. The <a href="proof/starport-production-catalog/csp15/badger-expiry.md">Badger repair</a> preserves concurrent writes during expiry changes. Review and merge remain open. This does not qualify the complete storage recipe.</p>
 
 <p>Verification fixture preparation uses <code>/Users/jack/src/github.com/agentstation/starmap-catalog-mode-fixture</code> on <code>codex/catalog-mode-fixture-reuse</code>, based on <code>45afaed5d</code>. Commit <code>bcfcebc25</code> reduces six loads to two. Commit <code>d85025282</code> fixes prerelease verification.</p>

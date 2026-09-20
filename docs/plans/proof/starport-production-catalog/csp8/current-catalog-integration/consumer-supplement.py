@@ -17,9 +17,17 @@ prior={key(leaf) for identity in selected for leaf in leaves(old['checks'].get(i
 additional={key(leaf):leaf for identity in selected for leaf in leaves(new['checks'].get(identity)) if key(leaf) not in prior}
 report={'registry_sha256':hashlib.sha256((plan/'scripts/catalog-product-checks.json').read_bytes()).hexdigest(),'scope':'Additional CSP8 leaf checks only; combine with unchanged producer evidence before task assessment.','total':len(additional),'results':{}}
 output=Path('/tmp/csp8-current-consumer-supplement.json');cache={}
+if output.exists():
+ previous=json.loads(output.read_text())
+ if previous['registry_sha256']!=report['registry_sha256']:raise ValueError('Registry changed before resume')
+ report['results']={k:v for k,v in previous['results'].items() if v['status']=='PASS'}
+ report['resumed_passes']=len(report['results'])
 for index,(identity,entry) in enumerate(additional.items()):
+ if identity in report['results']:continue
  result=v.run_check('CSP8.supplement',entry,roots,cache)
  report['results'][identity]=result
- output.write_text(json.dumps(report,indent=2)+'\n')
+ temporary=output.with_suffix('.partial')
+ temporary.write_text(json.dumps(report,indent=2)+'\n')
+ temporary.replace(output)
  print(str(index+1)+'/'+str(len(additional))+' '+result['status']+' '+entry.get('test',entry['kind']),flush=True)
 sys.exit(1 if any(x['status']=='FAIL' for x in report['results'].values()) else 0)

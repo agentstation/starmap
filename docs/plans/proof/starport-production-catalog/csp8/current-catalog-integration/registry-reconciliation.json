@@ -23,9 +23,10 @@
     "log": "registry-tests.log"
   },
   "supplement": {
-    "session": 49529,
+    "session": 37169,
     "script": "consumer-supplement.py",
     "output": "/tmp/csp8-current-consumer-supplement.json",
-    "log": "/tmp/csp8-current-consumer-supplement.log"
-  }
+    "log": "/tmp/csp8-current-consumer-supplement-resumed.log"
+  },
+  "disk_recovery": "disk-recovery.json"
 }

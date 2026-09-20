@@ -240,8 +240,8 @@
       "purpose": "CSP8 current-pair registered acceptance"
     },
     {
-      "session": 49529,
-      "purpose": "Additional CSP8 consumer leaf checks from reconciled registry"
+      "session": 37169,
+      "purpose": "Resumed CSP8 consumer acceptance after disk recovery; retain two prior passes"
     }
   ],
   "active_ci": {
