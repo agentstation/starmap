@@ -1,0 +1,16 @@
+{
+  "old_resume_sha256": "473110727b78887b80af72a71f0201482050187d83c087a47bfd1ba79383b0ed",
+  "new_resume_words": 307,
+  "old_resume_words": 1099,
+  "archived_bytes_match": true,
+  "protected_remainder_unchanged": true,
+  "scope": "Resume section only; task contracts, statuses, goal, and execution history remain unchanged.",
+  "cold_resume": "PASS: active task, exact head, live CI handle, worktrees, capture order, authority, and remaining acceptance are explicit.",
+  "resume_links_checked": 6,
+  "read_path": [
+    "plan#current-resume",
+    "plan#task-CSP6",
+    "signed-head-qualification-progress.json: sessions and capture"
+  ],
+  "whole_plan_size_exception": "This maintenance changes only the resume section. The 40 task contracts and completion requirements remain in the plan; moving them requires a separate preservation audit."
+}
