@@ -1,0 +1,34 @@
+{
+  "checked_at": "2026-09-20T05:53:50.138857+00:00",
+  "subject_root": "/private/tmp/csp6-signed-recovery-candidate",
+  "subject_commit": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+  "actual_merge": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+  "tool_root": "/Users/jack/src/github.com/agentstation/starmap-catalog-mode-fixture",
+  "tool_commit": "aafdaf3abb6a862559c55ec3d4e8600baab4d526",
+  "unchanged_source_checks": "PASS for qualified head and actual merge",
+  "identical_control_files": {
+    "scripts/catalog_product_verify.py": {
+      "subject_sha256": "3994f914e0aa9791a445dec3d4b1bec10bde115b5f3ed94ef21a238def8b1662",
+      "tool_sha256": "3994f914e0aa9791a445dec3d4b1bec10bde115b5f3ed94ef21a238def8b1662"
+    },
+    "scripts/catalog_publication_capture.py": {
+      "subject_sha256": "94d7dd17b747f03811e58fdf555b7122cc2d240f86f7dd60a8e8abdba1731282",
+      "tool_sha256": "94d7dd17b747f03811e58fdf555b7122cc2d240f86f7dd60a8e8abdba1731282"
+    },
+    "scripts/native_catalog.py": {
+      "subject_sha256": "5736d3cd6b81aa80a1c4e6066271e060412b30fffc170798c03359044e1ce3b7",
+      "tool_sha256": "5736d3cd6b81aa80a1c4e6066271e060412b30fffc170798c03359044e1ce3b7"
+    },
+    "scripts/catalog-product-checks.json": {
+      "subject_sha256": "c2af9bd952cf9a11e36871bb7e050b2e0fe51e943ab8c35ccfd4cde644299cb7",
+      "tool_sha256": "c2af9bd952cf9a11e36871bb7e050b2e0fe51e943ab8c35ccfd4cde644299cb7"
+    },
+    "docs/plans/proof/starport-production-catalog/acceptance-map.json": {
+      "subject_sha256": "41e51262863f6a8da36d9b0bd7f3f101029995d61bac21841374addcd7fc4391",
+      "tool_sha256": "41e51262863f6a8da36d9b0bd7f3f101029995d61bac21841374addcd7fc4391"
+    }
+  },
+  "corrected_dependency": "scripts/catalog_publication_hosted.py",
+  "reason": "The original verifier rejects public immutable prereleases. PR173 repairs that check. Use the corrected verifier with the unchanged publication subject.",
+  "remaining": "After current-main retry succeeds, capture after and verify the complete registered CSP6 task. Record both tool and subject commits. No publication task completion is claimed."
+}
