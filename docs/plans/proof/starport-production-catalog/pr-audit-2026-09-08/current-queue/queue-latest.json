@@ -1,17 +1,17 @@
 {
-  "checked_at": "2026-09-20T05:50:34.597875+00:00",
+  "checked_at": "2026-09-20T06:32:53.574762+00:00",
   "prior_snapshot": "queue-before-current-state-2026-09-20.json.gz",
   "starmap": [
     {
       "baseRefName": "main",
       "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
       "headRefName": "codex/catalog-mode-fixture-reuse",
-      "headRefOid": "aafdaf3abb6a862559c55ec3d4e8600baab4d526",
+      "headRefOid": "cc49e50378156a185ffb480ff55b4f4e88de90d6",
       "isDraft": true,
       "mergeStateStatus": "BLOCKED",
       "number": 173,
       "title": "fix: replay completed catalog publication without acquisition",
-      "updatedAt": "2026-09-20T05:31:11Z"
+      "updatedAt": "2026-09-20T06:17:47Z"
     },
     {
       "baseRefName": "main",
@@ -46,7 +46,7 @@
     "171": {
       "owner": "CSP8 host integration",
       "disposition": "retained dependent work",
-      "next": "Local integration head 1cd77e8a8 passes 227 race events, vet, complete checks, and P0 review. After PR173 merges, incorporate main ancestry and update PR171. Hold merge until publication retry qualification."
+      "next": "Host integration at 87bed00f3 includes the reviewed recovery-test scheduling repair. Incorporate actual main ancestry after PR173 merges; update existing PR171 and hold merge until publication retry qualification."
     },
     "165": {
       "owner": "CSP6",
@@ -62,10 +62,10 @@
   "local_work": [
     {
       "worktree": "starmap-host-files",
-      "head": "1cd77e8a82008bfaf72419c4bb2515688cb65232",
+      "head": "87bed00f3bf06228a8b4daec346b059ad75bc6ac",
       "status": "",
       "disposition": "unpublished integration",
-      "next_action": "Local head 1cd77e8a8 passes 227 race events and vet. After PR173 merges, incorporate main ancestry and complete review before updating PR171. Hold merge until publication retry qualification.",
+      "next_action": "Incorporate actual main ancestry after PR173 merges; update existing PR171 and hold merge until publication retry qualification.",
       "branch": "codex/starmap-host-files"
     },
     {
@@ -82,8 +82,8 @@
     },
     {
       "worktree": "starmap-catalog-requirements",
-      "head": "cb54ce65c85e2a59fa0739190b2b3de6005eceab",
-      "status": "M AGENTS.md\n M Makefile\n M go.mod\n M go.sum\n M scripts/verify.sh",
+      "head": "d57182d64e72c0bd26e25a9c6041f2f5d97d743f",
+      "status": "M AGENTS.md\n M Makefile\n M docs/plans/starport-production-catalog-plan.html\n M go.mod\n M go.sum\n M scripts/verify.sh\n?? docs/plans/proof/starport-production-catalog/csp8/current-catalog-integration/verification.json",
       "branch": "codex/catalog-qualification"
     },
     {
@@ -159,7 +159,7 @@
     {
       "worktree": "starmap-advisory-exchange",
       "owner": "CSP12.1",
-      "head": "0b9e652aba0bbbc7a1e1b9209fb8e50094c35450",
+      "head": "ffecd9eb890adfd424d21b92638dc5d702c92553",
       "branch": "codex/starmap-advisory-exchange",
       "status": "",
       "disposition": "local preparation; task acceptance incomplete"
@@ -171,6 +171,14 @@
       "branch": "codex/sql-contract-isolation",
       "status": "",
       "disposition": "local preparation; task acceptance incomplete"
+    },
+    {
+      "worktree": "starport-catalog-integration",
+      "head": "c22a5579304387b49b54352c520a11c2a85e9621",
+      "owner": "CSP8 consumer integration",
+      "branch": "codex/starport-catalog-integration",
+      "disposition": "committed fixture repair; full suite in progress",
+      "status": ""
     }
   ],
   "starmap_main": {
@@ -226,13 +234,18 @@
     ]
   },
   "seven_day_disposition_review_required": false,
-  "local_verification_processes": [],
+  "local_verification_processes": [
+    {
+      "session": 55234,
+      "purpose": "Starport full suite after catalog fixture repairs"
+    }
+  ],
   "active_ci": {
     "repository": "agentstation/starmap",
     "pull": 173,
     "run": 35493820776,
     "head": "cc49e50378156a185ffb480ff55b4f4e88de90d6",
-    "status": "pending",
+    "status": "in_progress",
     "next_action": "Verify terminal required checks and exact head before protected merge."
   }
 }

@@ -1,0 +1,47 @@
+{
+  "owner": "CSP8 consumer integration",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-integration",
+  "branch": "codex/starport-catalog-integration",
+  "base": "c18b22f686f56e9eb70df3461bbcbe00deddc47a",
+  "producer_head": "ffecd9eb890adfd424d21b92638dc5d702c92553",
+  "workspace": "/tmp/csp8-current-catalog.work",
+  "changes": [
+    "Synthetic provider fixture owns only its two model definitions and does not copy embedded publication history.",
+    "Metadata refresh checks retained source observations against the actual initial generation.",
+    "Projection golden records the accepted catalog prices."
+  ],
+  "evidence": {
+    "full-suite-before": {
+      "events": {
+        "skip": 69,
+        "pass": 4192,
+        "fail": 7
+      },
+      "failed_tests": [
+        "TestModelsProjectionGolden",
+        "TestVerifiedRemoteCatalogActivatesProvider",
+        "TestRuntimeMigrationOperatorLifecycle",
+        "TestRuntimeAcquiresSelectedMetadataSource"
+      ]
+    },
+    "app-after": {
+      "events": {
+        "pass": 4
+      },
+      "failed_tests": []
+    },
+    "remaining-after": {
+      "events": {
+        "pass": 6
+      }
+    }
+  },
+  "vet": "PASS: go vet ./internal/app ./internal/catalog ./internal/proxy",
+  "pending": [
+    "Full suite after repair session55234",
+    "Review and published module qualification"
+  ],
+  "complete": false,
+  "lint": "PASS: repository-pinned golangci-lint v2.13.2 on affected packages",
+  "work_commit": "c22a5579304387b49b54352c520a11c2a85e9621"
+}
