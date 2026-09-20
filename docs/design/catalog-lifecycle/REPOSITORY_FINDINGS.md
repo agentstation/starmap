@@ -3498,3 +3498,12 @@ The caller still receives the document result. The cache reports the skipped fil
 The [encoding proof](../../plans/proof/starport-production-catalog/csp12.1/encoding-and-endpoints.md) preserves regressions and component measurements.
 
 Oversized model serialization still costs about 2.6 ms before the queue drops the record. This remains an unresolved performance finding.
+
+
+### Model encoding and typed discovery repair
+
+Starport `7aae8da` bounds model encoding and removes the generic map round trip on discovery cache hits.
+The earlier oversized model finding now has a passing allocation control and a lower-cost component measurement.
+Typed decoding preserves large integer values. Named scalar types, JSON compatibility, pointer cycles, and queue capacity have regression coverage.
+The [model encoding proof](../../plans/proof/starport-production-catalog/csp12.1/model-encoding.md) owns the results and their limits.
+Aggregate heap, supported custom serialization methods, and full-request latency still need qualification.
