@@ -41,7 +41,7 @@
     "173": {
       "owner": "CSP6",
       "disposition": "reviewed repair awaiting native CI",
-      "next": "Verify exact head and required checks, mark ready, merge, then replay completed receipt on current main."
+      "next": "Qualify replacement CI35493820776 at cc49e5037, merge the reviewed exact head, then replay the completed receipt."
     },
     "171": {
       "owner": "CSP8 host integration",
@@ -143,10 +143,10 @@
     {
       "worktree": "starmap-catalog-mode-fixture",
       "owner": "CSP6",
-      "head": "aafdaf3abb6a862559c55ec3d4e8600baab4d526",
+      "head": "cc49e50378156a185ffb480ff55b4f4e88de90d6",
       "branch": "codex/catalog-mode-fixture-reuse",
       "status": "",
-      "disposition": "published PR173; CI pending"
+      "disposition": "published PR173; replacement CI pending"
     },
     {
       "worktree": "starport-cache-storage",
@@ -159,7 +159,7 @@
     {
       "worktree": "starmap-advisory-exchange",
       "owner": "CSP12.1",
-      "head": "706654ead4eb657b7c60f10368696515fce5771a",
+      "head": "0b9e652aba0bbbc7a1e1b9209fb8e50094c35450",
       "branch": "codex/starmap-advisory-exchange",
       "status": "",
       "disposition": "local preparation; task acceptance incomplete"
@@ -230,9 +230,9 @@
   "active_ci": {
     "repository": "agentstation/starmap",
     "pull": 173,
-    "run": 35491884354,
-    "head": "aafdaf3abb6a862559c55ec3d4e8600baab4d526",
-    "status": "in_progress",
+    "run": 35493820776,
+    "head": "cc49e50378156a185ffb480ff55b4f4e88de90d6",
+    "status": "pending",
     "next_action": "Verify terminal required checks and exact head before protected merge."
   }
 }

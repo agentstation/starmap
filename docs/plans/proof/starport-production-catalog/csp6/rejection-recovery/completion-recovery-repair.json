@@ -1,0 +1,37 @@
+{
+  "ci_run": 35491884354,
+  "job": 106029186774,
+  "head": "aafdaf3abb6a862559c55ec3d4e8600baab4d526",
+  "failure": "TestDirectoryMigrationCompletionRecoversProcessExit: both crash children killed at the one-minute subprocess timeout.",
+  "elapsed_seconds": [
+    60.33,
+    60.27
+  ],
+  "before_log": "completion-recovery-ci-failure.jsonl.gz",
+  "repair": "Remove parallel scheduling from this parent and its crash-point subtests, matching TestPublishDirectoryMigrationRecoversProcessExit. Preserve both crash points, timeout, and all recovery assertions.",
+  "local_session": null,
+  "command": "GOMAXPROCS=2 GOWORK=off go test -race -count=3 -parallel=2 -json ./runtime -run '^TestDirectoryMigrationCompletionRecoversProcessExit$'",
+  "log": "completion-recovery-serial.jsonl.gz",
+  "status": "reviewed and published; replacement CI pending",
+  "commit": "cc49e50378156a185ffb480ff55b4f4e88de90d6",
+  "counts": {
+    "pass": 9,
+    "fail": 0,
+    "skip": 0
+  },
+  "review_session": null,
+  "static_checks": {
+    "go_vet": "PASS",
+    "goago": "PASS",
+    "technical_writing": "PASS",
+    "golangci_lint": "PASS"
+  },
+  "review": {
+    "status": "PASS",
+    "exit": 0,
+    "threshold": "P0",
+    "report": "completion-recovery-review.json.gz",
+    "assessment": "No accepted findings. The extra retry concern is unreachable: explicit retry requires completed channels, and rejected() refuses an accepted channel tag."
+  },
+  "replacement_ci": 35493820776
+}

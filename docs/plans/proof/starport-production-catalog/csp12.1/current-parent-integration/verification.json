@@ -1,0 +1,40 @@
+{
+  "starmap_head": "0b9e652aba0bbbc7a1e1b9209fb8e50094c35450",
+  "starport_head": "c1c272b642e717ed4554c8aa3f5027e23b255793",
+  "workspace": "/tmp/csp121-host-integration.work",
+  "initial": {
+    "command": "GOWORK=/tmp/csp121-host-integration.work bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-cache-storage --task CSP12.1 --json",
+    "passed": 10,
+    "unverified": 7,
+    "report": "initial.json.gz"
+  },
+  "supplement": {
+    "method": "Run the same registered checks for the seven unverified subcases with TEST_SHARED_CACHE_URL, TEST_SHARED_CACHE_FAULT_URL, and TEST_DEFAULT_CACHE_CAPACITY=1. Use the same worktrees and registry.",
+    "passed": 7,
+    "failed": 0,
+    "unverified": 0,
+    "report": "real-cache.json.gz",
+    "services": "Two separate disposable Valkey containers. Both stopped after qualification.",
+    "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f"
+  },
+  "combined_subcases": {
+    "A42.memory_and_shared_cache_selection": "PASS",
+    "A42.expiry_preserving_refill": "PASS",
+    "A42.unknown_remaining_ttl": "PASS",
+    "A42.capacity_and_entry_limits": "PASS",
+    "A42.cache_only_cleanup": "PASS",
+    "A42.cache_outage_admission": "PASS",
+    "A42.generation_account_scope": "PASS",
+    "A42.enablement_by_cache_kind": "PASS",
+    "A42.memory_budget_measurement": "PASS",
+    "A48.bounded_cache_read_deadline": "PASS",
+    "A48.nonblocking_fill_visibility": "PASS",
+    "A48.fill_queue_byte_entry_bounds": "PASS",
+    "A48.worker_shutdown_ownership": "PASS",
+    "A48.stream_accumulation_bound": "PASS",
+    "A48.stream_forwarding_errors": "PASS",
+    "A48.cache_semantic_mode_matrix": "PASS",
+    "A48.admission_and_expiry_preserved": "PASS"
+  },
+  "scope": "Paired local component qualification across two invocations. Native checks, published module adoption, and merges remain required. CSP12.1 is not complete."
+}
