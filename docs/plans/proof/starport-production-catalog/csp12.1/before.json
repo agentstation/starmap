@@ -1,0 +1,34 @@
+{
+  "status": "FAIL",
+  "exit_code": 1,
+  "source": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
+  "commit": "31feeca89b9716b9d1bb162c38db72787818ed82",
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "workspace": "/tmp/csp102-host-integration.work",
+  "command": [
+    "go",
+    "test",
+    "-overlay",
+    "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp121-before-4xl28kk8/overlay.json",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "1m",
+    "-json",
+    "-run",
+    "^TestCSP121",
+    "./internal/cache"
+  ],
+  "failed_tests": [
+    "TestCSP121RefillPreservesBackingExpiry/layered/get",
+    "TestCSP121RefillPreservesBackingExpiry/layered/multi",
+    "TestCSP121RefillPreservesBackingExpiry/layered/warm",
+    "TestCSP121RefillPreservesBackingExpiry/hybrid/get",
+    "TestCSP121RefillPreservesBackingExpiry/hybrid/multi",
+    "TestCSP121RefillPreservesBackingExpiry/hybrid/warm",
+    "TestCSP121RefillPreservesBackingExpiry",
+    "TestCSP121DefaultCacheDoesNotWriteDurableKV"
+  ],
+  "passed_tests": [],
+  "skipped_tests": []
+}

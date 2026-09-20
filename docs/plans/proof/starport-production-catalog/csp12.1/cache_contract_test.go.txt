@@ -1,0 +1,74 @@
+package cache
+
+import (
+ "errors"
+ "testing"
+ "time"
+
+ "github.com/agentstation/starport/internal/storage"
+ "github.com/stretchr/testify/require"
+)
+
+func csp121Store(t *testing.T) *storage.BadgerStore {
+ t.Helper()
+ store, err := storage.OpenBadger(storage.BadgerConfig{Path: t.TempDir(), NumVersions: 1, NumLevelZero: 5, MemTableSize: 64 << 20})
+ require.NoError(t, err)
+ t.Cleanup(func() { require.NoError(t, store.Close()) })
+ return store
+}
+
+func TestCSP121RefillPreservesBackingExpiry(t *testing.T) {
+ for _, kind := range []string{"layered", "hybrid"} {
+  for _, operation := range []string{"get", "multi", "warm"} {
+   t.Run(kind+"/"+operation, func(t *testing.T) {
+    store := csp121Store(t)
+    var subject Cache
+    var settle func()
+    if kind == "hybrid" {
+     hybrid, err := NewHybridCache(HybridCacheConfig{LocalSizeMB: 1, LocalTTL: time.Minute}, store, nil)
+     require.NoError(t, err)
+     subject, settle = hybrid, hybrid.local.Wait
+    } else {
+     layered, err := New(Config{MaxSize: 100, MaxSizeInMB: 1, DefaultTTL: time.Minute}, store)
+     require.NoError(t, err)
+     subject, settle = layered, layered.(*layeredCache).local.Wait
+    }
+    t.Cleanup(func() { require.NoError(t, subject.Close()) })
+    ctx := t.Context()
+    require.NoError(t, store.SetWithTTL(ctx, "entry", []byte("answer"), 2*time.Second))
+    switch operation {
+    case "get":
+     value, found, err := subject.Get(ctx, "entry")
+     require.NoError(t, err)
+     require.True(t, found)
+     require.Equal(t, "answer", string(value))
+    case "multi":
+     values, err := subject.GetMulti(ctx, []string{"entry"})
+     require.NoError(t, err)
+     require.Equal(t, "answer", string(values["entry"]))
+    case "warm":
+     require.NoError(t, subject.Warm(ctx, []string{"entry"}))
+    }
+    settle()
+    require.Eventually(t, func() bool {
+     _, err := store.Get(ctx, "entry")
+     return errors.Is(err, storage.ErrNotFound)
+    }, 4*time.Second, 10*time.Millisecond)
+    value, found, err := subject.Get(ctx, "entry")
+    require.NoError(t, err)
+    require.False(t, found, "local refill extended the expired backing value: %q", value)
+   })
+  }
+ }
+}
+
+func TestCSP121DefaultCacheDoesNotWriteDurableKV(t *testing.T) {
+ store := csp121Store(t)
+ manager, err := NewCacheManager(ManagerConfig{}, store)
+ require.NoError(t, err)
+ t.Cleanup(func() { require.NoError(t, manager.Close()) })
+ require.NoError(t, manager.SetResponse(t.Context(), "answer", []byte("response")))
+ keys, err := store.ScanWithPrefix(t.Context(), storage.KeyPrefixResponse, 10)
+ require.NoError(t, err)
+ require.Empty(t, keys, "default response cache wrote into the authoritative KV store")
+}

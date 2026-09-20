@@ -2530,7 +2530,12 @@ Optional semantic caches follow the same isolation and retention rules and retai
 A cache refill must retain the original expiry. Its local TTL cannot exceed the backing entry's remaining lifetime.
 Expired records never receive a new lifetime merely because a local cache missed.
 If the backing cache cannot prove remaining lifetime, skip the local refill.
-Tests cover expiry boundaries, repeated refill, invalidation, disabled caches, and account isolation.
+
+The value and remaining lifetime must describe the same record version. Separate value and TTL reads cannot prove this during replacement.
+Anchor the local deadline before the backing read. Transfer delay consumes the lifetime rather than extending it.
+Apply this contract to single reads, batch reads, and warming.
+
+Tests cover expiry boundaries, repeated refill, concurrent replacement, delayed reads, invalidation, disabled caches, and account isolation.
 Capacity tests must prove that cache pressure cannot evict durable records or bypass admission.
 
 The storage screen reports backend roles, persistence mode, namespace, connection trust, effective settings, and capacity evidence.

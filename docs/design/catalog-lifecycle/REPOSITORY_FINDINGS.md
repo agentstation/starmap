@@ -3418,3 +3418,14 @@ Focused repair checks pass 163 race-test events with 25 explicit skips. Nine A46
 Opus 5 completed two review passes with zero findings at the configured P0 threshold. Linux and Windows pure-Go cross-builds also pass.
 The published-module check still fails because the committed Starmap pin lacks required APIs.
 Native suspend, clock discontinuities, multi-host qualification, full A46, and merge remain open.
+
+
+## September 19 cache storage contract failures
+
+The [cache proof](../../plans/proof/starport-production-catalog/csp12.1/cache-contract.md) records seven failing checks against Starport `31feeca` with real Badger.
+Both cache implementations extend expiry after Get, GetMulti, and Warm refills. The default response cache also writes through the authoritative KV handle.
+The test overlay leaves the reviewed implementation unchanged. The run has eight failed test events, including one parent, and no skips.
+
+CSP12.1 owns the repair. Its cache interface must return a value with lifetime evidence for that same record version.
+A separate GetTTL call cannot establish this under concurrent replacement. Transfer delay must consume the local deadline.
+Cache-only service configuration, bounded fills, stream bounds, and discovery checks remain part of the task.
