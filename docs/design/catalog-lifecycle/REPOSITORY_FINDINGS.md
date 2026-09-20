@@ -3467,3 +3467,15 @@ The durable Valkey adapter remains unchanged and still requires the CSP12 URI an
 
 Custom-CA support, namespace ownership, model and extraction fills, capacity, latency, and discovery acceptance remain open.
 No cache task completion or publication follows from these local commits.
+
+
+## September 19 shared cache trust and coherence
+
+Starport `51767ba` adds explicit CA roots, canonical file reporting, namespace probes, and diagnostic codes.
+The [trust proof](../../plans/proof/starport-production-catalog/csp12.1/trust-and-access.json) records 70 final cache race events and one manual restart skip.
+Nine targeted service events pass. Tests cover real Valkey behind TLS and preserve another namespace's record after denied reads and writes.
+
+Two coherence repairs remain in CSP12.1. The independent cache namespace must derive from canonical deployment identity.
+The layered, hybrid, and durable-KV cache adapters have no production callers and should leave the runtime source.
+Preserve their historical evidence and verify the actual application paths before full cache acceptance.
+Model and extraction fills and full performance, discovery, and production qualification remain open.

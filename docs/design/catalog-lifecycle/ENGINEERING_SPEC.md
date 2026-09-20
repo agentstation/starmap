@@ -2519,6 +2519,16 @@ Cache writes must not consume its capacity or change catalog, credential, accoun
 The proposed default application caches use bounded process memory in local and replicated recipes.
 Optional shared response or extraction caching uses a separately configured cache-only service.
 The cache manager receives a cache-owned interface, separate from the durable KV handle.
+
+Shared-cache credentials must restrict access to the versioned prefix derived from the canonical deployment identity.
+The service administrator owns these ACL grants. The gateway cannot grant or widen namespace access.
+Report the shared cache available only after its namespace read and write probe succeeds.
+
+`STARPORT_CACHE_CA_FILE` selects an explicit trust bundle for the optional cache connection.
+Its path follows the canonical relative-path policy. The file inventory reports the `cache-ca` role under deployment-controlled access.
+Invalid trust files fail application startup. Server certificate failures leave the optional cache unavailable without changing admission policy.
+Trust changes require restart.
+
 Existing KV cache entries can expire or undergo a cache-prefix-only cleanup during migration.
 Losing a cache entry cannot become an authentication, budget, or catalog-state deletion.
 
