@@ -1,0 +1,59 @@
+{
+  "reason": "Original preparation run no longer exposes its Actions artifact. Attempt 2 started acquisition instead of recovering immutable completed inputs.",
+  "run": 35395944704,
+  "attempt": 2,
+  "conclusion": "cancelled",
+  "public_writes": "Record pending publication and Publish and verify immutable public inputs were skipped.",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-mode-fixture",
+  "base": "d85025282",
+  "status": "reviewed and published; native CI running",
+  "changes": [
+    "Restore completed pending record when original run identity matches.",
+    "Allow exact completed retry_receipt on manual dispatch with current publisher code.",
+    "Require both channels completed and exact receipt match.",
+    "Preserve ordinary scheduled acquisition."
+  ],
+  "focused_tests": {
+    "count": 94,
+    "status": "PASS"
+  },
+  "workflow_contract": {
+    "command": "GOWORK=off go test -count=1 ./internal/ciworkflow",
+    "status": "PASS"
+  },
+  "generation": {
+    "status": "PASS",
+    "exit": 0,
+    "go_package_checks": 8,
+    "python_tests": 59,
+    "provider_fixture_refresh_contract": "PASS",
+    "log": "completed-retry-generation.log.gz"
+  },
+  "remaining": "Follow CI35491884354. Verify exact head and reviews, mark ready, then merge under branch protection. Dispatch current main with retry_receipt sha256:4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613. Capture after with corrected verifier against original qualified source. Preserve first capture and verify all five attestations and unchanged assets. Requalify PR171 next.",
+  "implementation_commit": "0723a79e6",
+  "head": "aafdaf3abb6a862559c55ec3d4e8600baab4d526",
+  "distribution": {
+    "status": "PASS",
+    "exit": 0,
+    "passed": 68,
+    "failed": 0,
+    "unverified": 0,
+    "workspace": "/tmp/csp6-retry-pair.work",
+    "log": "completed-retry-distribution.log.gz"
+  },
+  "review": {
+    "status": "PASS",
+    "exit": 0,
+    "threshold": "P0",
+    "findings": 0,
+    "report": "completed-retry-review.json.gz",
+    "assessment": "Run IDs are integers in both validated receipts and Publisher construction. digest_hex raises PublicationError for malformed values."
+  },
+  "pull_request": "https://github.com/agentstation/starmap/pull/173",
+  "ci_run": 35491884354,
+  "signature": {
+    "head": "aafdaf3abb6a862559c55ec3d4e8600baab4d526",
+    "verified": true,
+    "reason": "valid"
+  }
+}

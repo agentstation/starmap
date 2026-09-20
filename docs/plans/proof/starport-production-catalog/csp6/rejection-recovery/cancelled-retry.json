@@ -1,0 +1,1 @@
+{"conclusion":"cancelled","status":"completed","steps":[{"conclusion":"success","name":"Refresh candidate catalog"},{"conclusion":"skipped","name":"Record pending publication"},{"conclusion":"skipped","name":"Publish and verify immutable public inputs"}]}
