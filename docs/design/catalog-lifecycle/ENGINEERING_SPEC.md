@@ -2533,6 +2533,7 @@ If the backing cache cannot prove remaining lifetime, skip the local refill.
 
 The value and remaining lifetime must describe the same record version. Separate value and TTL reads cannot prove this during replacement.
 Anchor the local deadline before the backing read. Transfer delay consumes the lifetime rather than extending it.
+Each retained entry checks that source deadline on hits, independently of delayed cache insertion or eviction.
 Apply this contract to single reads, batch reads, and warming.
 
 Tests cover expiry boundaries, repeated refill, concurrent replacement, delayed reads, invalidation, disabled caches, and account isolation.

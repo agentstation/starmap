@@ -3441,3 +3441,14 @@ Vet, lint, the document-parser guard, and a pure-Go binary build pass.
 
 Dedicated shared caching and original refill expiry remain open. CSP12.1 also owns bounded fills, stream limits, and discovery qualification.
 The legacy layered and hybrid constructors remain outside application composition. Their recorded refill failures still require repair or replacement.
+
+
+## September 19 refill lifetime repair
+
+Starport `d651147` repairs the six recorded layered-cache and hybrid-cache expiry failures.
+Badger and Valkey now return bounded payloads with atomic lifetime evidence. Refills retain a deadline anchored before the read.
+Each local entry checks that deadline independently of cache queue timing. Successful backing writes invalidate local entries.
+
+The [lifetime proof](../../plans/proof/starport-production-catalog/csp12.1/lifetime.json) records 254 passing race-test events and one manual restart skip.
+All expiry and lifetime tests execute. Lint and vet pass.
+Dedicated service configuration, optional workers, stream limits, and full cache qualification remain open.

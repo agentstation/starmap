@@ -1,0 +1,1590 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-19",
+  "status": "PASS",
+  "scope": "Local refill lifetime and bounded atomic backend reads, not complete CSP12.1 qualification",
+  "starport_commit": "d651147e2b665a6d13603439720c889861552f2d",
+  "starmap_commit": "152148130",
+  "workspace": "/tmp/csp121-host-integration.work",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "command": "GOWORK=/tmp/csp121-host-integration.work TEST_VALKEY_URL=<disposable-valkey> go test -race -count=1 -p 1 -timeout 2m -json ./internal/cache ./internal/storage",
+  "exit_code": 0,
+  "test_events": {
+    "pass": 254,
+    "skip": 1
+  },
+  "results": [
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestLayeredCache/basic_get/set_operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestLayeredCache/TTL_expiration",
+      "Elapsed": 0.15
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestLayeredCache/delete_operation",
+      "Elapsed": 0.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestLayeredCache/batch_operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestLayeredCache/invalidation_with_pattern",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestLayeredCache/cache_stats",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestLayeredCache/cache_warming",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestLayeredCache",
+      "Elapsed": 0.16
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestRefillPreservesBackingExpiry/layered/get",
+      "Elapsed": 2.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestRefillPreservesBackingExpiry/layered/multi",
+      "Elapsed": 2
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestRefillPreservesBackingExpiry/layered/warm",
+      "Elapsed": 2
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestRefillPreservesBackingExpiry/hybrid/get",
+      "Elapsed": 2
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestRefillPreservesBackingExpiry/hybrid/multi",
+      "Elapsed": 2.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestRefillPreservesBackingExpiry/hybrid/warm",
+      "Elapsed": 1.99
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestRefillPreservesBackingExpiry",
+      "Elapsed": 12.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestUnknownLifetimeDoesNotRefill/layered",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestUnknownLifetimeDoesNotRefill/hybrid",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestUnknownLifetimeDoesNotRefill",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestTransferDelayConsumesLifetime/layered",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestTransferDelayConsumesLifetime/hybrid",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestTransferDelayConsumesLifetime",
+      "Elapsed": 0.06
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestValkeyRefillPreservesExpiry",
+      "Elapsed": 1.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestRetainedEntryCannotOutliveSourceDeadline/layered",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestRetainedEntryCannotOutliveSourceDeadline/hybrid",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestRetainedEntryCannotOutliveSourceDeadline",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestCacheManagerExplicitSharedStoreSharesResponses",
+      "Elapsed": 0.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestCacheManagerSingleNodeCachesResponses",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestCacheManagerModelMetadata",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestCacheManagerConfig",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestCacheManagerDefaultIsLocalAndIsolated",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestCacheManagerRequiresExplicitSharedStrategy/#00",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestCacheManagerRequiresExplicitSharedStrategy/auto",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestCacheManagerRequiresExplicitSharedStrategy/local",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestCacheManagerRequiresExplicitSharedStrategy/invalid",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestCacheManagerRequiresExplicitSharedStrategy",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestValkeyIntegration/shared_response",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestValkeyIntegration/local_model_metadata",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestValkeyIntegration",
+      "Elapsed": 0.02
+    },
+    {
+      "Action": "skip",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Test": "TestValkeyPubSubReconnection",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Elapsed": 14.781
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerInMemoryModeCreatesNoPersistentWorkers",
+      "Elapsed": 0.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStoreOpenError",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestErrorConstants/ErrTransactionClosed",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestErrorConstants/ErrTransactionCommitted",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestErrorConstants/ErrTransactionRolledBack",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestErrorConstants/ErrPubSubClosed",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestErrorConstants",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestErrorIs/Same_error",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestErrorIs/Different_error",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestErrorIs/Nil_error",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestErrorIs",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreInterface",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestStorageErrors/ErrNotFound",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestStorageErrors/ErrConflict",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestStorageErrors/ErrInvalidKey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestStorageErrors/ErrStorageClosed",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestStorageErrors/ErrTimeout",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestStorageErrors",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestConfig_Validate/valid_badger_config",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestConfig_Validate/valid_valkey_config",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestConfig_Validate/invalid_storage_type",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestConfig_Validate/badger_with_empty_path",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestConfig_Validate/badger_with_invalid_num_versions",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestConfig_Validate/badger_with_small_mem_table_size",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestConfig_Validate/valkey_with_empty_URL",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestConfig_Validate/valkey_with_negative_max_retries",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestConfig_Validate/valkey_with_negative_DB",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestConfig_Validate",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerConfig_Defaults",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyConfig_Defaults",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestTransactionInterface",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/mock/basic_operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/mock/ttl_operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/mock/atomic_operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/mock/batch_operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/mock/transactions",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/mock",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/badger/basic_operations",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/badger/ttl_operations",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/badger/atomic_operations",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/badger/batch_operations",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/badger/transactions",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/badger",
+      "Elapsed": 0.21
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/valkey/basic_operations",
+      "Elapsed": 0.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/valkey/ttl_operations",
+      "Elapsed": 0.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/valkey/atomic_operations",
+      "Elapsed": 0.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/valkey/batch_operations",
+      "Elapsed": 0.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/valkey/transactions",
+      "Elapsed": 0.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract/valkey",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestKVStoreContract",
+      "Elapsed": 0.25
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValueLifetimeSnapshot/badger",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValueLifetimeSnapshot/valkey",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValueLifetimeSnapshot",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_BasicOperations/Set_and_Get",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_BasicOperations/Get_non-existent_key",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_BasicOperations/Delete",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_BasicOperations/Exists",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_BasicOperations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_TTLOperations/SetWithTTL",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_TTLOperations/GetTTL",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_TTLOperations/ExpireAt",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_TTLOperations",
+      "Elapsed": 0.2
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_AtomicOperations/Increment",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_AtomicOperations/Decrement",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_AtomicOperations/CompareAndSwap",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_AtomicOperations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_BatchOperations/BatchSet_and_BatchGet",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_BatchOperations/BatchDelete",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_BatchOperations/BatchSetWithTTL",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_BatchOperations",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_Transaction/Basic_transaction_operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_Transaction/Transaction_rollback",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_Transaction/Transaction_with_TTL",
+      "Elapsed": 0.11
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_Transaction/Transaction_increment",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_Transaction",
+      "Elapsed": 0.11
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_ScanOperations/ScanWithPrefix",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_ScanOperations/Scan_with_pattern",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_ScanOperations/Scan_with_expired_keys",
+      "Elapsed": 0.06
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_ScanOperations",
+      "Elapsed": 0.06
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_EdgeCases/Operations_on_closed_store",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_EdgeCases/Invalid_key_operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_EdgeCases/Context_cancellation",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_EdgeCases/Data_isolation",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_EdgeCases",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestMockStore_ConcurrentOperations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestOpen/valid_badger_config",
+      "Elapsed": 0.02
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestOpen/valid_valkey_config",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestOpen/invalid_storage_type",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestOpen/empty_storage_type",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestOpen/invalid_config",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestOpen",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestNewMockStore",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestReadOnlyStoreRejectsEveryWriteContract",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestOpenBadgerReadOnlyDoesNotChangeStoredValues",
+      "Elapsed": 0.07
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerReadOnlyRecoveryErrorIsClassified",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerUnsupportedReadOnlyErrorIsClassified",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerUnsupportedPlatformPrecedesFilesystemCheck",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerialize/string",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerialize/int",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerialize/struct",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerialize/map",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerialize/slice",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerialize/nil",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerialize/channel",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerialize",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserialize/string",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserialize/int",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserialize/struct",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserialize/invalid_json",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserialize/type_mismatch",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserialize/nil_data",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserialize/empty_data",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserialize",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerializeDeserializeRoundTrip",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerializeString/empty_string",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerializeString/simple_string",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerializeString/unicode_string",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerializeString/special_characters",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerializeString",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeString/empty_bytes",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeString/simple_string",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeString/unicode_string",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeString/nil_bytes",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeString",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerializeInt64/zero",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerializeInt64/positive",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerializeInt64/negative",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerializeInt64/max_int64",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerializeInt64/min_int64",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestSerializeInt64",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeInt64/zero_as_string",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeInt64/zero_as_json_number",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeInt64/positive",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeInt64/negative",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeInt64/invalid_format",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeInt64/empty",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeInt64/nil",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeInt64/float",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestDeserializeInt64",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestInt64RoundTrip",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStoreWithMock/Basic_Operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStoreWithMock/TTL_Operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStoreWithMock/Atomic_Operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStoreWithMock/Batch_Operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStoreWithMock/Scan_Operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStoreWithMock/Health_Check",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStoreWithMock/CompareAndSwap",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStoreWithMock",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBatchSetWithMock",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBatchSetWithTTLMock",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyTransactionWithMock/Transaction_Structure",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyTransactionWithMock/Transaction_Rollback",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyTransactionWithMock",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestPubSubWithMock/Publish",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestPubSubWithMock",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStore/Basic_Operations",
+      "Elapsed": 0.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStore/TTL_Operations",
+      "Elapsed": 3
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStore/ExpireAt",
+      "Elapsed": 2
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStore/Atomic_Operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStore/CompareAndSwap",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStore/Batch_Operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStore/BatchSetWithTTL",
+      "Elapsed": 2
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStore/Transactions",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStore/Transaction_Rollback",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStore/Scan_Operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStore/Health_Check",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyStore",
+      "Elapsed": 7.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyPubSub/Subscribe_and_Publish",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyPubSub/Multiple_Subscriptions",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestValkeyPubSub",
+      "Elapsed": 0.11
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBoundedStorageRead/memory",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBoundedStorageRead/badger",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBoundedStorageRead/valkey",
+      "Elapsed": 0.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBoundedStorageRead",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/BasicOperations/SetAndGet",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/BasicOperations/Exists",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/BasicOperations/Delete",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/BasicOperations/InvalidKey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/BasicOperations/NotFound",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/BasicOperations",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/TTLOperations/SetWithTTL",
+      "Elapsed": 1.87
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/TTLOperations/GetTTL",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/TTLOperations/ExpireAt",
+      "Elapsed": 2
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/TTLOperations",
+      "Elapsed": 3.92
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/AtomicOperations/Increment",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/AtomicOperations/Decrement",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/AtomicOperations/IncrementWithTTL",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/AtomicOperations/CompareAndSwap",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/AtomicOperations",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/BatchOperations/BatchSetAndGet",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/BatchOperations/BatchDelete",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/BatchOperations/BatchSetWithTTL",
+      "Elapsed": 2.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/BatchOperations",
+      "Elapsed": 2.09
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/Transactions/BasicTransaction",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/Transactions/TransactionRollback",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/Transactions/TransactionWithTTL",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/Transactions/TransactionIncrement",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/Transactions",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/ScanOperations/ScanWithPrefix",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/ScanOperations/ScanWithPattern",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/ScanOperations/ScanIgnoresExpiredKeys",
+      "Elapsed": 1.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/ScanOperations",
+      "Elapsed": 1.15
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/BackupRestore",
+      "Elapsed": 0.08
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/Concurrency/ConcurrentReadWrite",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/Concurrency/ConcurrentIncrement",
+      "Elapsed": 0.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/Concurrency",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/EdgeCases/OperationsAfterClose",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/EdgeCases/LargeValues",
+      "Elapsed": 0.02
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/EdgeCases/EmptyValues",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/EdgeCases/SpecialCharacterKeys",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/EdgeCases",
+      "Elapsed": 0.09
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/Performance/WritePerformance",
+      "Elapsed": 0.45
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/Performance/ReadPerformance",
+      "Elapsed": 0.64
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/Performance/BatchPerformance",
+      "Elapsed": 0.12
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore/Performance",
+      "Elapsed": 1.42
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Test": "TestBadgerStore",
+      "Elapsed": 8.97
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Elapsed": 18.383
+    }
+  ],
+  "raw_output_sha256": "4e792c2c04d3f8e54003c77badcc530e03513690936d53ce34d8a3db0776c7e7",
+  "backends": {
+    "badger": "Real files in isolated temporary directories",
+    "valkey": "Disposable local container using valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f"
+  },
+  "contract": [
+    "Badger snapshot and Valkey Lua operation bind payload and remaining lifetime to one version. Both refuse oversized payloads before copying or transfer.",
+    "Single reads, batches, and warming use that lifetime evidence. Unknown finite lifetime skips local refill.",
+    "The caller anchors its deadline before the backing read. Transfer delay consumes lifetime.",
+    "Each retained entry checks its own source deadline independently of the Ristretto expiration queue. Exists uses the same checked read.",
+    "Successful backing writes invalidate local entries. A later read proves the stored version expiry, including backend TTL rounding."
+  ],
+  "regressions": [
+    "The six original Badger refill assertions now live in internal/cache/lifetime_test.go and pass unchanged in scope.",
+    "Unknown-lifetime and delayed-read tests cover both cache implementations. The delayed-read test uses a controlled 30 ms delay.",
+    "A retained entry with an expired source deadline and an extra Ristretto TTL cannot satisfy Get or Exists. This simulates delayed eviction.",
+    "Real Badger and Valkey tests cover cancellation, byte bounds, absence, non-expiring values, and concurrent value/TTL replacement.",
+    "Real Valkey refill expires with its backing record."
+  ],
+  "checks": {
+    "lint": "Linting code...\n0 issues.\nLint complete",
+    "vet": "PASS: go vet ./internal/cache ./internal/storage",
+    "technical_writing": "PASS: nine affected source and README files, zero diagnostics",
+    "diff_check": "PASS"
+  },
+  "limitations": [
+    "The manual Valkey restart test skips. All expiry and lifetime tests execute.",
+    "Batch refill currently uses per-entry lifetime reads. Remote batch performance remains unqualified.",
+    "Dedicated cache-service configuration, bounded fill workers, optional read budgets, stream limits, capacity, and discovery qualification remain open.",
+    "No pre-PR review, native hosted qualification, publication, or merge."
+  ],
+  "cleanup": "Disposable Valkey stopped and removed. No test sessions remain active."
+}
