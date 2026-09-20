@@ -39,7 +39,7 @@ features:
   verbosity: false
 
   # Generation control support flags
-  temperature: true
+  temperature: false
   top_p: true
   top_k: false
   top_a: false
@@ -82,7 +82,13 @@ limits:
   context_window: 0
   input_tokens: 0
   output_tokens: 0
+extensions:
+  openai:
+    fields:
+      unknown_fields:
+      - checksum: sha256:6acf9310c02192cab48cdfeae19ab82af37f5c20d585b2916003e16d89ec701d
+        path: data[].shutdown_date
 
 # Timestamps
 created_at: 2025-11-25T00:00:00Z
-updated_at: 2026-07-30T16:49:33.817728Z
+updated_at: 2026-09-18T21:17:47.66134312Z

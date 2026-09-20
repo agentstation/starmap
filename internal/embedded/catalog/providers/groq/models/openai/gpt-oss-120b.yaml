@@ -3,6 +3,8 @@ id: openai/gpt-oss-120b
 model: openai/gpt-oss-120b
 name: GPT OSS 120B
 authors:
+- id: openai
+  name: openai
 - id: alibaba
   name: alibaba
 - id: deepseek
@@ -17,8 +19,6 @@ authors:
   name: meta
 - id: moonshot-ai
   name: moonshot-ai
-- id: openai
-  name: openai
 - id: playai
   name: playai
 - id: sdaia
@@ -104,10 +104,13 @@ reasoning:
 pricing:
   tokens:
     cache_read:
+      per_token: 0.0
       per_1m: 0.075
     input:
+      per_token: 0.0
       per_1m: 0.15
     output:
+      per_token: 0.0
       per_1m: 0.6
   operations:
     request: 0.0
@@ -126,4 +129,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-30T17:11:22.642834Z
+updated_at: 2026-09-18T21:17:46.863361535Z

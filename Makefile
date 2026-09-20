@@ -498,6 +498,7 @@ catalog-generation-check: ## Verify safe catalog download, promotion, CLI, and r
 	@python3 scripts/test_catalog_rejection.py
 	@python3 scripts/test_catalog_publication.py
 	@python3 scripts/test_catalog_publication_qualification.py
+	@python3 scripts/test_catalog_publication_retry.py
 	@python3 scripts/test_catalog_publication_hosted.py
 	@python3 scripts/test_catalog_publication_capture.py
 	@bash scripts/test-provider-testdata-refresh.sh

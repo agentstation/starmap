@@ -1,10 +1,16 @@
 package catalogs
 
 import (
+	"sync"
 	"testing"
 )
 
 func TestCatalogModes(t *testing.T) {
+	// Subtests only read these fixtures. The merge test mutates a copy.
+	embeddedCatalog := sync.OnceValues(newEmbeddedTestBuilder)
+	filesCatalog := sync.OnceValues(func() (*Builder, error) {
+		return New(WithPath("../../internal/embedded/catalog"))
+	})
 	t.Run("MemoryCatalog", func(t *testing.T) {
 		// Create memory catalog (no filesystem)
 		cat := NewEmpty()
@@ -36,7 +42,7 @@ func TestCatalogModes(t *testing.T) {
 
 	t.Run("EmbeddedCatalog", func(t *testing.T) {
 		// Create embedded catalog
-		cat, err := newEmbeddedTestBuilder()
+		cat, err := embeddedCatalog()
 		if err != nil {
 			t.Fatalf("Failed to create embedded catalog: %v", err)
 		}
@@ -56,7 +62,7 @@ func TestCatalogModes(t *testing.T) {
 
 	t.Run("FilesCatalog", func(t *testing.T) {
 		// Create files catalog
-		cat, err := New(WithPath("../../internal/embedded/catalog"))
+		cat, err := filesCatalog()
 		if err != nil {
 			t.Fatalf("Failed to create files catalog: %v", err)
 		}
@@ -76,12 +82,12 @@ func TestCatalogModes(t *testing.T) {
 
 	t.Run("CatalogComparison", func(t *testing.T) {
 		// Create both catalogs
-		embCat, err := newEmbeddedTestBuilder()
+		embCat, err := embeddedCatalog()
 		if err != nil {
 			t.Fatalf("Failed to create embedded catalog: %v", err)
 		}
 
-		filesCat, err := New(WithPath("../../internal/embedded/catalog"))
+		filesCat, err := filesCatalog()
 		if err != nil {
 			t.Fatalf("Failed to create files catalog: %v", err)
 		}
@@ -105,7 +111,7 @@ func TestCatalogModes(t *testing.T) {
 
 	t.Run("ProvenanceMerge", func(t *testing.T) {
 		// Create embedded catalog (should include provenance.yaml)
-		embCat, err := newEmbeddedTestBuilder()
+		embCat, err := embeddedCatalog()
 		if err != nil {
 			t.Fatalf("Failed to create embedded catalog: %v", err)
 		}
@@ -117,7 +123,7 @@ func TestCatalogModes(t *testing.T) {
 		}
 
 		// Create file catalog (same files, should have same provenance)
-		filesCat, err := New(WithPath("../../internal/embedded/catalog"))
+		filesCat, err := filesCatalog()
 		if err != nil {
 			t.Fatalf("Failed to create files catalog: %v", err)
 		}

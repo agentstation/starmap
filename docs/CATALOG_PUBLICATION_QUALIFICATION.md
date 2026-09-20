@@ -21,8 +21,21 @@ Use a completion run that published both channels. A successful run that only aw
 The capture records required check identities and their completion before the bot merge.
 It preserves release metadata and original channel bytes.
 
-Rerun the original preparation workflow through GitHub Actions. That retry restores the run's retained publication inputs.
-A new manual dispatch can build a new catalog and does not prove an identical-publication retry.
+To replay with the current publisher, dispatch the workflow with the exact completed receipt checksum:
+
+```sh
+gh workflow run catalog-generation.yaml --repo agentstation/starmap --ref main \
+  -f retry_receipt="$RECEIPT_CHECKSUM"
+```
+
+The receipt must match the latest pending record and both completed channels.
+The publisher restores verified public inputs without new acquisition.
+A missing record, different checksum, or incomplete channel pair stops the retry.
+An empty input permits ordinary acquisition.
+
+Rerunning the original preparation run also restores its completed record when that workflow revision supports this recovery path.
+Older workflow revisions can attempt fresh acquisition if their Actions artifact is absent.
+Use the current publisher with an explicit receipt to avoid that behavior.
 Wait for the retry to complete, then capture its exact run attempt:
 
 ```sh

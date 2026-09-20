@@ -78,6 +78,8 @@
     models.dev:
       fields:
         api: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
+        env:
+        - DASHSCOPE_API_KEY
         npm: "@ai-sdk/openai-compatible"
 
 # Anthropic
@@ -149,13 +151,15 @@
   extensions:
     models.dev:
       fields:
+        env:
+        - ANTHROPIC_API_KEY
         npm: "@ai-sdk/anthropic"
 
-# Azure OpenAI
+# azure
 - id: azure-openai
   aliases:
   - azure
-  name: Azure OpenAI
+  name: azure
   description: Microsoft Azure hosts OpenAI models with enterprise controls, regional deployments, and Azure identity.
   website: https://azure.microsoft.com
   docs_url: https://learn.microsoft.com/azure/ai-services/openai/
@@ -238,6 +242,13 @@
       path: /openai/v1/embeddings
     health_api_url: https://azure.status.microsoft/en-us/status/feed/
     health_api_kind: rss
+  extensions:
+    models.dev:
+      fields:
+        env:
+        - AZURE_RESOURCE_NAME
+        - AZURE_API_KEY
+        npm: "@ai-sdk/azure"
 
 # Cerebras
 - id: cerebras
@@ -246,7 +257,7 @@
   website: https://www.cerebras.ai
   docs_url: https://inference-docs.cerebras.ai/
   headquarters: Sunnyvale, CA, USA
-  icon_url: "https://cdn.sanity.io/images/e4qjo92p/production/e7a55ae5ab7e2c4fdfd4e66a51f628d1f2f44207-967x967.png?w=512&h=512&fit=max&auto=format"
+  icon_url: https://cdn.sanity.io/images/e4qjo92p/production/e7a55ae5ab7e2c4fdfd4e66a51f628d1f2f44207-967x967.png?w=512&h=512&fit=max&auto=format
   credentials:
     fields:
     - id: api-key
@@ -333,6 +344,8 @@
   extensions:
     models.dev:
       fields:
+        env:
+        - CEREBRAS_API_KEY
         npm: "@ai-sdk/cerebras"
 
 # Cohere
@@ -360,6 +373,9 @@
         kind: header
         name: Authorization
         scheme: bearer
+    catalog_acquisition:
+      required: false
+      alternatives: []
     inference:
       required: true
       alternatives:
@@ -378,6 +394,12 @@
     terms_of_service_url: https://cohere.com/terms-of-use
     retains_data: false
     trains_on_data: false
+  extensions:
+    models.dev:
+      fields:
+        env:
+        - COHERE_API_KEY
+        npm: "@ai-sdk/cohere"
 
 # DeepInfra
 - id: deepinfra
@@ -485,6 +507,8 @@
   extensions:
     models.dev:
       fields:
+        env:
+        - DEEPINFRA_API_KEY
         npm: "@ai-sdk/deepinfra"
 
 # DeepSeek
@@ -555,6 +579,8 @@
     models.dev:
       fields:
         api: https://api.deepseek.com
+        env:
+        - DEEPSEEK_API_KEY
         npm: "@ai-sdk/openai-compatible"
 
 # Fireworks AI
@@ -639,6 +665,8 @@
     models.dev:
       fields:
         api: https://api.fireworks.ai/inference/v1/
+        env:
+        - FIREWORKS_API_KEY
         npm: "@ai-sdk/openai-compatible"
 
 # Google AI Studio
@@ -718,11 +746,15 @@
   extensions:
     models.dev:
       fields:
+        env:
+        - GOOGLE_API_KEY
+        - GOOGLE_GENERATIVE_AI_API_KEY
+        - GEMINI_API_KEY
         npm: "@ai-sdk/google"
 
-# Google Vertex AI
+# Vertex
 - id: google-vertex
-  name: Google Vertex AI
+  name: Vertex
   description: Google Vertex AI hosts Gemini and partner models with enterprise controls on Google Cloud.
   website: https://cloud.google.com/vertex-ai
   docs_url: https://cloud.google.com/vertex-ai/docs
@@ -762,9 +794,6 @@
         scheme: bearer
       scopes:
       - https://www.googleapis.com/auth/cloud-platform
-      protocol_options:
-        google_default:
-          project_field: project
       endpoint_bindings:
       - field: project
         variable: project
@@ -772,6 +801,9 @@
       - field: location
         variable: location
         format: path-segment
+      protocol_options:
+        google_default:
+          project_field: project
     catalog_acquisition:
       required: true
       alternatives:
@@ -836,6 +868,10 @@
   extensions:
     models.dev:
       fields:
+        env:
+        - GOOGLE_VERTEX_PROJECT
+        - GOOGLE_VERTEX_LOCATION
+        - GOOGLE_APPLICATION_CREDENTIALS
         npm: "@ai-sdk/google-vertex"
 
 # Groq
@@ -933,6 +969,8 @@
   extensions:
     models.dev:
       fields:
+        env:
+        - GROQ_API_KEY
         npm: "@ai-sdk/groq"
 
 # Hetzner
@@ -989,6 +1027,13 @@
     - operation: chat-completions
       type: openai
       path: /chat/completions
+  extensions:
+    models.dev:
+      fields:
+        api: https://inference.hetzner.com/api/v1
+        env:
+        - HETZNER_API_KEY
+        npm: "@ai-sdk/openai-compatible"
 
 # Mistral AI
 - id: mistral
@@ -1024,7 +1069,7 @@
       alternatives:
       - api-key
   catalog:
-    docs: https://docs.mistral.ai/api/#tag/models
+    docs: "https://docs.mistral.ai/api/#tag/models"
     endpoint:
       type: openai
       url: https://api.mistral.ai/v1/models
@@ -1047,6 +1092,12 @@
       path: /v1/embeddings
     health_api_url: https://status.mistral.ai/feed.rss
     health_api_kind: rss
+  extensions:
+    models.dev:
+      fields:
+        env:
+        - MISTRAL_API_KEY
+        npm: "@ai-sdk/mistral"
 
 # Moonshot AI
 - id: moonshot-ai
@@ -1127,7 +1178,51 @@
     models.dev:
       fields:
         api: https://api.moonshot.ai/v1
+        env:
+        - MOONSHOT_API_KEY
         npm: "@ai-sdk/openai-compatible"
+
+# Ollama
+- id: ollama
+  name: Ollama
+  description: Ollama runs open-weight models locally and exposes an OpenAI-compatible API.
+  website: https://ollama.com
+  docs_url: https://docs.ollama.com/
+  icon_url: https://ollama.com/public/ollama.png
+  credentials:
+    fields:
+    - id: base-url
+      kind: parameter
+      required: true
+      environment:
+      - OLLAMA_BASE_URL
+      default: http://localhost:11434
+      description: Local or remote Ollama server base URL
+    profiles:
+    - id: unauthenticated
+      primitive: none
+      fields:
+      - base-url
+      endpoint_bindings:
+      - field: base-url
+        variable: base_url
+        format: url
+    catalog_acquisition:
+      required: false
+      alternatives: []
+    inference:
+      required: false
+      alternatives:
+      - unauthenticated
+  inference:
+    base_url: "{base_url}"
+    endpoints:
+    - operation: chat-completions
+      type: ollama
+      path: /api/chat
+    - operation: embeddings
+      type: ollama
+      path: /api/embed
 
 # OpenAI
 - id: openai
@@ -1240,46 +1335,9 @@
   extensions:
     models.dev:
       fields:
+        env:
+        - OPENAI_API_KEY
         npm: "@ai-sdk/openai"
-
-# Ollama
-- id: ollama
-  name: Ollama
-  description: Ollama runs open-weight models locally and exposes an OpenAI-compatible API.
-  website: https://ollama.com
-  docs_url: https://docs.ollama.com/
-  icon_url: https://ollama.com/public/ollama.png
-  credentials:
-    fields:
-    - id: base-url
-      kind: parameter
-      required: true
-      environment:
-      - OLLAMA_BASE_URL
-      default: http://localhost:11434
-      description: Local or remote Ollama server base URL
-    profiles:
-    - id: unauthenticated
-      primitive: none
-      fields:
-      - base-url
-      endpoint_bindings:
-      - field: base-url
-        variable: base_url
-        format: url
-    inference:
-      required: false
-      alternatives:
-      - unauthenticated
-  inference:
-    base_url: "{base_url}"
-    endpoints:
-    - operation: chat-completions
-      type: ollama
-      path: /api/chat
-    - operation: embeddings
-      type: ollama
-      path: /api/embed
 
 # Voyage AI
 - id: voyage
@@ -1309,6 +1367,9 @@
         kind: header
         name: Authorization
         scheme: bearer
+    catalog_acquisition:
+      required: false
+      alternatives: []
     inference:
       required: true
       alternatives:
