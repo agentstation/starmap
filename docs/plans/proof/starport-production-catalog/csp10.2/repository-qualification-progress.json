@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "date": "2026-09-19",
-  "starport_commit": "0428bf0",
-  "status": "IN_PROGRESS",
-  "runner_session_id": 29092,
+  "starport_commit": "31feeca",
+  "status": "INCOMPLETE",
+  "runner_session_id": null,
   "runner": "/tmp/csp102-qualify.py",
   "results": "/tmp/csp102-qualification/results.json",
   "completed_commands": [
@@ -192,6 +192,18 @@
       "exit_code": 0,
       "seconds": 2.9,
       "log": "/tmp/csp102-qualification/30.log"
+    },
+    {
+      "command": "make build",
+      "exit_code": 0,
+      "seconds": 17.52,
+      "log": "/tmp/csp102-qualification/31.log"
+    },
+    {
+      "command": "bash scripts/smoke-openrouter-sdks.sh",
+      "exit_code": 0,
+      "seconds": 35.82,
+      "log": "/tmp/csp102-qualification/32.log"
     }
   ],
   "architecture_repair": {
@@ -202,10 +214,44 @@
     "contract": "Account, API key, and identity repositories may publish revisions and enforce record bounds. Revision storage cannot import policy orchestration. The record-size package remains a leaf. Authorization can compose policy repositories without HTTP, routing, or provider imports."
   },
   "known_blocker": "The published Starmap pin lacks required APIs. V01 remains failing. Do not replace this with workspace evidence or mark publication ready.",
-  "next_action": "Poll exec session 29092. It is live, not a stale lock. Read its final results and logs, repair actual integration failures, then rerun affected checks. Complete required checks before pre-PR autoreview.",
+  "next_action": "Poll autoreview exec session 50947. Do not restart it after an observation timeout. Verify findings against source. Published-module and native qualification remain required.",
   "limitations": [
-    "Native suspend and clock discontinuity qualification remain open.",
-    "No second-model review or PR publication occurred.",
-    "The runner started at cfef991. Only the import-graph test changed during this run. Its focused rerun passed at the final source."
-  ]
+    "The published-module check remains failing. Native suspend, discontinuities, and multi-host qualification remain unverified.",
+    "Repository checks used the paired local workspace. They do not qualify a published module or released pair.",
+    "No PR publication or merge occurred. Full Go tests omit environment-dependent storage and native cases; their separate evidence retains exact skips."
+  ],
+  "required_runner_exit": "Completed all 33 commands. Original architecture and full-test failures are preserved.",
+  "integration_repairs": {
+    "setup": "Rollback permits only the initial, valid authorization marker and the four initial key records. Missing, corrupt, or advanced revision evidence refuses rollback.",
+    "usage": "Replace the expired August 20 fixture date with a date inside the current real-store retention window. Expected accounting totals stay unchanged.",
+    "focused_race": {
+      "pass": 159,
+      "fail": 0,
+      "skip": 25
+    },
+    "rollback_marker_race": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0
+    },
+    "full_test_rerun": {
+      "exit_code": 0,
+      "command": "GOWORK=/tmp/csp102-host-integration.work go test ./...",
+      "passing_package_lines": 58,
+      "stdout": "ok  \tgithub.com/agentstation/starport/cmd/starport\t2.408s\n?   \tgithub.com/agentstation/starport/examples\t[no test files]\nok  \tgithub.com/agentstation/starport/internal/account\t0.717s\nok  \tgithub.com/agentstation/starport/internal/apikey\t0.398s\nok  \tgithub.com/agentstation/starport/internal/app\t50.416s\nok  \tgithub.com/agentstation/starport/internal/architecture\t5.758s\nok  \tgithub.com/agentstation/starport/internal/audit\t(cached)\nok  \tgithub.com/agentstation/starport/internal/authmode\t(cached)\nok  \tgithub.com/agentstation/starport/internal/authorization\t2.042s\nok  \tgithub.com/agentstation/starport/internal/authorization/revision\t0.898s\nok  \tgithub.com/agentstation/starport/internal/availability\t(cached)\nok  \tgithub.com/agentstation/starport/internal/blob\t(cached)\nok  \tgithub.com/agentstation/starport/internal/cache\t(cached)\nok  \tgithub.com/agentstation/starport/internal/catalog\t(cached)\n?   \tgithub.com/agentstation/starport/internal/catalog/disclosure\t[no test files]\nok  \tgithub.com/agentstation/starport/internal/catalog/logos\t(cached)\nok  \tgithub.com/agentstation/starport/internal/catalog/view\t(cached)\nok  \tgithub.com/agentstation/starport/internal/cli\t(cached)\nok  \tgithub.com/agentstation/starport/internal/config\t(cached)\nok  \tgithub.com/agentstation/starport/internal/console\t0.802s\nok  \tgithub.com/agentstation/starport/internal/credentials\t(cached)\nok  \tgithub.com/agentstation/starport/internal/credentials/cloudchain\t(cached)\nok  \tgithub.com/agentstation/starport/internal/diagnosis\t5.117s\nok  \tgithub.com/agentstation/starport/internal/doclinks\t(cached)\nok  \tgithub.com/agentstation/starport/internal/document\t(cached)\nok  \tgithub.com/agentstation/starport/internal/events\t(cached)\nok  \tgithub.com/agentstation/starport/internal/execution\t(cached)\nok  \tgithub.com/agentstation/starport/internal/failure\t(cached)\nok  \tgithub.com/agentstation/starport/internal/files\t(cached)\nok  \tgithub.com/agentstation/starport/internal/guardrails\t(cached)\nok  \tgithub.com/agentstation/starport/internal/identity\t(cached)\nok  \tgithub.com/agentstation/starport/internal/inference\t(cached)\nok  \tgithub.com/agentstation/starport/internal/jobs\t(cached)\nok  \tgithub.com/agentstation/starport/internal/limits\t(cached)\nok  \tgithub.com/agentstation/starport/internal/localauth\t(cached)\nok  \tgithub.com/agentstation/starport/internal/policyrecord\t(cached)\nok  \tgithub.com/agentstation/starport/internal/presets\t(cached)\n?   \tgithub.com/agentstation/starport/internal/protocol/mediaform\t[no test files]\nok  \tgithub.com/agentstation/starport/internal/protocol/openai\t(cached)\nok  \tgithub.com/agentstation/starport/internal/protocol/openrouter\t(cached)\nok  \tgithub.com/agentstation/starport/internal/providers\t(cached)\nok  \tgithub.com/agentstation/starport/internal/providers/auth\t(cached)\nok  \tgithub.com/agentstation/starport/internal/providers/connectors\t(cached)\nok  \tgithub.com/agentstation/starport/internal/providers/keyring\t(cached)\nok  \tgithub.com/agentstation/starport/internal/providers/state\t(cached)\nok  \tgithub.com/agentstation/starport/internal/providers/statuspage\t(cached)\nok  \tgithub.com/agentstation/starport/internal/proxy\t(cached)\nok  \tgithub.com/agentstation/starport/internal/ratelimit\t(cached)\nok  \tgithub.com/agentstation/starport/internal/registry\t(cached)\nok  \tgithub.com/agentstation/starport/internal/repotest\t(cached)\nok  \tgithub.com/agentstation/starport/internal/response/cache\t(cached)\nok  \tgithub.com/agentstation/starport/internal/router\t(cached)\nok  \tgithub.com/agentstation/starport/internal/routing\t(cached)\nok  \tgithub.com/agentstation/starport/internal/server\t5.975s\nok  \tgithub.com/agentstation/starport/internal/server/controllers\t5.098s\n?   \tgithub.com/agentstation/starport/internal/server/dto\t[no test files]\n?   \tgithub.com/agentstation/starport/internal/server/requestctx\t[no test files]\nok  \tgithub.com/agentstation/starport/internal/setup\t42.056s\nok  \tgithub.com/agentstation/starport/internal/sqlstore\t(cached)\nok  \tgithub.com/agentstation/starport/internal/storage\t(cached)\nok  \tgithub.com/agentstation/starport/internal/telemetry\t(cached)\nok  \tgithub.com/agentstation/starport/internal/tokenize\t(cached)\nok  \tgithub.com/agentstation/starport/internal/usage\t5.115s\n?   \tgithub.com/agentstation/starport/scripts/doclinks\t[no test files]\n?   \tgithub.com/agentstation/starport/scripts/sdk-smoke-server\t[no test files]\n?   \tgithub.com/agentstation/starport/skills/starport\t[no test files]\n"
+    },
+    "final_vet": "PASS",
+    "final_lint": "PASS: zero issues",
+    "final_build": "PASS",
+    "technical_writing": "PASS: four files, zero diagnostics"
+  },
+  "review": {
+    "status": "IN_PROGRESS",
+    "session_id": 50947,
+    "base": "a5aab8195011db63ef81e0317b942c0c645dd35d",
+    "head": "31feeca",
+    "markdown": "/tmp/csp102-autoreview.md",
+    "json": "/tmp/csp102-autoreview.json",
+    "command": "autoreview --gate pre-pr --mode auto --base a5aab8195011db63ef81e0317b942c0c645dd35d"
+  }
 }
