@@ -4321,6 +4321,300 @@
           "test": "TestOversizedKeyPolicyReturnsActionableRefusal"
         }
       ]
+    },
+    "A42.memory_and_shared_cache_selection": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestCacheManagerDefaultIsLocalAndIsolated"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestCacheManagerRequiresExplicitSharedStrategy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestSharedCacheCompositionUsesSeparateService"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCacheServiceConfiguration"
+        }
+      ]
+    },
+    "A42.expiry_preserving_refill": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestSharedCacheRealService"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestExpiredQueuedFillDoesNotAcquireNewLifetime"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestLocalCacheExpiryAndClear"
+        }
+      ]
+    },
+    "A42.unknown_remaining_ttl": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestSharedCacheRealService"
+        }
+      ]
+    },
+    "A42.capacity_and_entry_limits": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestConcurrentOptionalCacheCapacity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestLocalCacheChargesRetainedBuffer"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestModelFillOversizeHasBoundedEncoding"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/document",
+          "test": "TestCacheSkipsOversizedReadingBeforeStorage"
+        }
+      ]
+    },
+    "A42.cache_only_cleanup": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDefaultResponseCacheDoesNotWriteDurableKV"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestExtractionCacheHasIndependentLocalLifecycle"
+        }
+      ]
+    },
+    "A42.generation_account_scope": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCachedService_AccountAndGenerationIsolation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestDiscoveryCacheTracksAdapterRevision"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestSharedCacheCanonicalDeploymentIsolation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/document",
+          "test": "TestAnotherAccountGetsItsOwnEntry"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/document",
+          "test": "TestANewCatalogGenerationMissesTheCache"
+        }
+      ]
+    },
+    "A48.bounded_cache_read_deadline": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestResponseCacheReadUsesDeadline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestSharedCachePausedServiceDeadlineAndRecovery"
+        }
+      ]
+    },
+    "A48.nonblocking_fill_visibility": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestResponseFillDoesNotWaitForStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestResponseFillOwnsBytes"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestCacheManagerSingleNodeCachesResponses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestModelFillCannotCrossInvalidation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestBufferedLocalFillBoundsOwnershipAndShutdown"
+        }
+      ]
+    },
+    "A48.fill_queue_byte_entry_bounds": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestResponseFillQueueBoundsAndShutdown"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestModelFillSharesResponseBounds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestConcurrentOptionalCacheCapacity"
+        }
+      ]
+    },
+    "A48.worker_shutdown_ownership": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestResponseFillQueueBoundsAndShutdown"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestBufferedLocalCancelsBlockedFillOnClose"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestSharedCacheUnavailableLifecycle"
+        }
+      ]
+    },
+    "A48.stream_accumulation_bound": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/response/cache",
+          "test": "TestStreamBufferLimitsNestedPayloads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/response/cache",
+          "test": "TestStreamBufferStopsEmptyEventRetention"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestStreamCacheLimitPreservesDelivery"
+        }
+      ]
+    },
+    "A48.stream_forwarding_errors": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestStreamCacheReleasesInputOnTermination"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCachingStreamWrapper_DoesNotCachePartialStream"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestStreamCacheConcurrentClose"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/response/cache",
+          "test": "TestStreamCompletionKeepsInterleavedChoices"
+        }
+      ]
     }
   },
   "task_component_checks": {
