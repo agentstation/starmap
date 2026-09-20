@@ -4644,6 +4644,99 @@
           "test": "TestCacheDisabledKindsBypassLookups"
         }
       ]
+    },
+    "A42.cache_outage_admission": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPCachePreservesBudgetAndKeyAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestSharedCachePausedServiceDeadlineAndRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestConcurrentOptionalCacheCapacity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDefaultResponseCacheDoesNotWriteDurableKV"
+        }
+      ]
+    },
+    "A48.cache_semantic_mode_matrix": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestProductionCacheSemanticModeMatrix"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestSemanticCacheNeedsDeploymentOptIn"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestSemanticCacheFailsOpenOnEmbedError"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestSemanticCacheRefusesBelowThreshold"
+        }
+      ]
+    },
+    "A48.admission_and_expiry_preserved": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPCachePreservesBudgetAndKeyAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCachedPermissionKeepsOriginalDeadline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCacheDeliveryRechecksCatalogPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestEmbeddingAndSemanticCachePermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestExpiredQueuedFillDoesNotAcquireNewLifetime"
+        }
+      ]
     }
   },
   "task_component_checks": {
