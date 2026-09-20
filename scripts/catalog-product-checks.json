@@ -4463,6 +4463,18 @@
           "repository": "starport",
           "package": "./internal/document",
           "test": "TestANewCatalogGenerationMissesTheCache"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestDiscoveryCacheSeparatesDisclosureMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestEndpointLookupDoesNotRevealDeniedMembership"
         }
       ]
     },
@@ -4735,6 +4747,12 @@
           "repository": "starport",
           "package": "./internal/cache",
           "test": "TestExpiredQueuedFillDoesNotAcquireNewLifetime"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestDiscoveryCacheLookupRechecksAuthority"
         }
       ]
     },
