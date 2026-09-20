@@ -10,5 +10,30 @@
     "Capture passing hosted evidence after the compatible producer pin and consumer PR qualify."
   ],
   "constraint": "Do not mutate source trees while the current acceptance processes use them. Prepare this work in an isolated successor tree.",
-  "status": "UNVERIFIED"
+  "status": "UNVERIFIED",
+  "preparation": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
+    "branch": "codex/starport-native-catalog",
+    "head": "6b3d236186fe6442eb716b2aef6da0a2f86a332e",
+    "base": "c22a5579",
+    "checks": {
+      "native_verifier_tests": {
+        "tests": 10,
+        "exit_code": 0
+      },
+      "actionlint": {
+        "exit_code": 0
+      },
+      "technical_writing": {
+        "files": 3,
+        "diagnostics": 0,
+        "exit_code": 0
+      },
+      "diff_check": {
+        "exit_code": 0
+      }
+    },
+    "coverage": "Six native runner architectures. Race detection on Linux, macOS, and Windows amd64. Windows arm64 uses pure Go. Build still requires the complete test matrix.",
+    "qualification": "Local adapter tests only. Hosted evidence, published producer pin, complete pre-PR checks, review, and merge remain required."
+  }
 }

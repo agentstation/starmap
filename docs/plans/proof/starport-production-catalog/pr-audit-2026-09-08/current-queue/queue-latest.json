@@ -179,6 +179,15 @@
       "branch": "codex/starport-catalog-integration",
       "disposition": "committed fixture repair; full suite in progress",
       "status": ""
+    },
+    {
+      "worktree": "starport-native-catalog",
+      "branch": "codex/starport-native-catalog",
+      "head": "6b3d236186fe6442eb716b2aef6da0a2f86a332e",
+      "status": "",
+      "owner": "CSP8",
+      "disposition": "Local native evidence adapter and CI preparation; unpublished",
+      "next_action": "Complete producer dependency publication, pre-PR qualification, review, and native capture. Current acceptance continues against unchanged c22a5579."
     }
   ],
   "starmap_main": {
