@@ -2533,6 +2533,14 @@ Existing KV cache entries can expire or undergo a cache-prefix-only cleanup duri
 Losing a cache entry cannot become an authentication, budget, or catalog-state deletion.
 
 Each cache descriptor defines scope, key isolation, byte limit, maximum entry size, TTL, enablement, and outage behavior.
+
+`STARPORT_CACHE_ENABLED=false` disables optional response, discovery, extraction, and semantic caching.
+Independent flags `STARPORT_CACHE_CHAT_ENABLED`, `STARPORT_CACHE_EMBEDDINGS_ENABLED`, `STARPORT_CACHE_MODELS_ENABLED`, `STARPORT_CACHE_PROVIDERS_ENABLED`, and `STARPORT_CACHE_EXTRACTIONS_ENABLED` default to true.
+
+Semantic caching also requires chat caching and its existing deployment and request opt-ins.
+When operators disable both response kinds, discovery and extraction do not open a shared response-cache connection.
+Cache controls do not disable authorization caches, catalog snapshots, or required budget admission. Settings take effect at restart.
+
 Ristretto eviction and cache service failure produce a miss after ordinary permission and budget admission.
 Projection keys bind the catalog generation. Response and extraction keys retain account and applicable credential/policy scope.
 Optional semantic caches follow the same isolation and retention rules and retain their separate embedding-cost controls.
