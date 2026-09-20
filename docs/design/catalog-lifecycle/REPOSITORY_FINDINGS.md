@@ -3488,3 +3488,13 @@ A real Valkey regression proved that different canonical deployment IDs could pr
 The cache now derives its encoded prefix from the canonical deployment ID and reports that prefix for ACL provisioning.
 The [deployment identity proof](../../plans/proof/starport-production-catalog/csp12.1/deployment-identity.md) records 117 passing race events and the original failure.
 Other shared stores and full cache qualification remain open.
+
+
+### Cache serialization cost and endpoint reuse
+
+Starport `d289fe3` repairs warm endpoint requests that rebuilt results after reading serialized cache records.
+It also skips extraction inputs above 512 KiB before encoding, including all identity, text, and offering strings in the bound.
+The caller still receives the document result. The cache reports the skipped fill.
+The [encoding proof](../../plans/proof/starport-production-catalog/csp12.1/encoding-and-endpoints.md) preserves regressions and component measurements.
+
+Oversized model serialization still costs about 2.6 ms before the queue drops the record. This remains an unresolved performance finding.

@@ -37,9 +37,9 @@
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/cache-contract.md">cache contract proof</a> records seven failing behavior checks at Starport <code>31feeca</code>. Real Badger tests prove expiry extension across both cache implementations and default response writes into durable KV. The overlay leaves the reviewed branch unchanged. The cache handle now has a separate interface. Original expiry now passes local backend qualification.</p>
 
-<p>Next, qualify serialization and stream reconstruction costs, aggregate retained memory, cache failure latency, and discovery behavior. Queue limits do not establish total heap bounds.</p>
+<p>Next, bound model serialization and remove redundant discovery decoding. Qualify stream reconstruction, aggregate memory, cache failure latency, and the full discovery matrix. Queue limits do not establish total heap bounds.</p>
 
-<p>CSP12.1 implementation preparation uses <code>starport-cache-storage</code>, branch <code>codex/starport-cache-storage</code>, at <code>68a2fbe</code>, from reviewed parent <code>31feeca</code>. Use <code>GOWORK=/tmp/csp121-host-integration.work</code> with Starmap <code>152148130</code>. Set both Starport verifier roots to the new worktree. The reviewed authorization worktree remains unchanged.</p>
+<p>CSP12.1 implementation preparation uses <code>starport-cache-storage</code>, branch <code>codex/starport-cache-storage</code>, at <code>d289fe3</code>, from reviewed parent <code>31feeca</code>. Use <code>GOWORK=/tmp/csp121-host-integration.work</code> with Starmap <code>152148130</code>. Set both Starport verifier roots to the new worktree. The reviewed authorization worktree remains unchanged.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/implementation.md">local cache implementation</a> removes durable KV from default response and extraction caching. Component race checks pass 910 events with seven explicit skips. Vet, lint, the document-parser guard, and the pure-Go build pass. Shared-service configuration, bounded fills, stream limits, and discovery checks remain open.</p>
 
@@ -58,6 +58,8 @@
 <p>The <a href="proof/starport-production-catalog/csp12.1/adapter-cleanup.md">adapter cleanup</a> at <code>96860c6</code> removes unused durable cache paths. Component race checks pass 776 events with 10 explicit skips. Ten real-service events pass separately without skips. Lint and vet pass. Model and extraction fills remain synchronous.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/local-fills.md">local-fill repair</a> at <code>68a2fbe</code> queues model and extraction writes. Both original model regressions now pass. Contract checks pass 70 race events. Component checks pass 500 with four skips. Ten real-service events pass separately. Serialization remains synchronous and needs qualification.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp12.1/encoding-and-endpoints.md">encoding and endpoint proof</a> at <code>d289fe3</code> records real endpoint cache hits and extraction preflight bounds. Endpoint checks pass 69 race events. Extraction checks pass 23 with five skips, plus two boundary cases. Oversized model serialization still costs about 2.6 ms in the component benchmark.</p>
 
 <p>No review processes, verification sessions, or disposable services remain active.</p>
 
@@ -705,4 +707,5 @@
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Bind shared cache entries to canonical deployment identity at <code>4e277db</code>. One real-service regression fails before repair. All 117 final targeted race events pass.</td><td><a href="proof/starport-production-catalog/csp12.1/deployment-identity.md">Deployment identity proof</a>. Remaining cache qualification stays open.</td></tr>
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Remove unused cache adapters at <code>96860c6</code>. Preserve historical expiry evidence. Component race checks pass 776 events with 10 skips; ten real-service events pass separately.</td><td><a href="proof/starport-production-catalog/csp12.1/adapter-cleanup.md">Adapter cleanup proof</a>. Model and extraction fills remain open.</td></tr>
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Bound model and extraction fills at <code>68a2fbe</code>. Preserve invalidation across queued writes. Seventy contract events and 500 component events pass, with four component skips. Ten real-service events pass separately.</td><td><a href="proof/starport-production-catalog/csp12.1/local-fills.md">Local-fill proof</a>. Capacity and latency remain open.</td></tr>
+<tr><td>2026-09-19</td><td>CSP12.1</td><td>Repair endpoint cache reuse and skip oversized extraction encoding at <code>d289fe3</code>. Preserve failing controls and before/after measurements. Model encoding remains open.</td><td><a href="proof/starport-production-catalog/csp12.1/encoding-and-endpoints.md">Encoding and endpoint proof</a>. No full latency claim.</td></tr>
 </tbody></table></section></main></body></html>
