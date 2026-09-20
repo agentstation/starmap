@@ -67,6 +67,17 @@ This component measurement does not establish full gateway overhead.
 
 ## Remaining work
 
-Autoreview continues against reviewed parent `31feeca`.
-Native qualification, published-module qualification, review completion,
+Autoreview completed one pass against reviewed parent `31feeca`.
+The reviewer was Claude Opus 5 at high effort, with a P0 threshold.
+It reported zero findings at that threshold. The
+[structured result](autoreview.json.gz) and [report](autoreview.md.gz) retain
+the review scope.
+
+The reviewer also noted a possible nil document-cache call.
+`WithDocumentCache` takes a pointer, and both `Get` and `Put` handle nil.
+That observation does not establish a defect.
+The 2 ms read limit remains the accepted optional-cache latency bound.
+The unused lifetime-reader contract remains outside this repair.
+
+Native qualification, published-module qualification,
 and merge evidence remain required. CSP12.1 is not complete.

@@ -57,9 +57,9 @@
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/discovery-and-qualification.md">repository proof</a> records production-cache discovery tests and architecture repairs at <code>c1c272b</code>. Component tests pass 578 race events with two skips. The default suite passes 4,134 events with 61 skips. Twenty-five script gates pass. Final architecture checks pass 11 of 12 conditions, with only the published-module failure remaining.</p>
 
-<p>Next, consume autoreview session <code>91613</code> and resolve verified findings. Its logs are <code>/tmp/csp121-autoreview.log</code> and <code>/tmp/csp121-autoreview.json</code>. Native and published-dependency qualification and merge remain required. CSP12.1 remains incomplete.</p>
+<p>Autoreview at <code>c1c272b</code> completed one pass with Claude Opus 5 at high effort. It reported zero findings at the configured P0 threshold. The repository proof records the review and assessment. Native and published-dependency qualification and merge remain required. CSP12.1 remains incomplete.</p>
 
-<p>Autoreview session <code>91613</code> is active. No verification sessions or disposable services remain active.</p>
+<p>No local review processes, verification sessions, or disposable services remain active. PR #168 checks run on exact head <code>45afaed5d</code>: Actions runs <code>35488652576</code> and <code>35488651647</code>. Read those runs before merge.</p>
 
 <p>A compatible published Starmap module must precede dependent Starport qualification and merges. The current pin lacks <code>pkg/productfiles</code>. Never commit local replacements. Native checks, actual merge commits, and released-pair acceptance remain required.</p>
 
@@ -717,4 +717,5 @@
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Qualify default budgets at Starport <code>5e2d06e</code>, Starmap <code>bf8af19fe</code>. All seventeen subcases pass: 49 commands and 131 race events without skips.</td><td><a href="proof/starport-production-catalog/csp12.1/default-memory.md">Default memory and full acceptance proof</a>. Discovery audit and task qualification remain open.</td></tr>
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Verify real discovery caching at <code>8f73619</code> and repair status ownership at <code>c1c272b</code>. Starmap <code>706654ead</code> registers the additional checks. Final focused tests, vet, lint, and build pass.</td><td><a href="proof/starport-production-catalog/csp12.1/discovery-and-qualification.md">Discovery and repository proof</a>. Published dependency qualification and review remain open.</td></tr>
 <tr><td>2026-09-19</td><td>CSP6</td><td>The owner authorized signed-history replacement. Publish <code>45afaed5d</code> to PR #168 with an exact-head lease. Verify signatures, current-main ancestry, and unchanged catalog bytes. Remote and API reads agree.</td><td><a href="proof/starport-production-catalog/csp6/rejection-recovery/authorized-signed-recovery.json">Authorized recovery proof</a>. Exact-head CI and publication remain required.</td></tr>
+<tr><td>2026-09-19</td><td>CSP12.1</td><td>Autoreview at <code>c1c272b</code> passes one Opus 5 high-effort review with zero P0 findings. Source inspection rejects the nil-cache concern. Record the complete review.</td><td><a href="proof/starport-production-catalog/csp12.1/discovery-and-qualification.md">Review proof</a>. Native and published-pair qualification remain open.</td></tr>
 </tbody></table></section></main></body></html>
