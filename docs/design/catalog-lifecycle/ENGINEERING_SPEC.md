@@ -2841,6 +2841,13 @@ Adapters must honor cancellation or provide a bounded operation that can safely 
 After a miss, successful inference must not wait for optional cache persistence or cache population barriers.
 Use lifecycle-owned workers with entry, byte, concurrency, and shutdown bounds.
 
+Response and model byte fills share one queue. Extraction byte fills use an independent queue, including when response caching is off.
+Each queue permits at most 1,024 queued or active jobs, 4 MiB of charged data, and two workers.
+The combined defaults permit 2,048 jobs, 8 MiB, and four workers. These limits do not bound total process heap or serialization allocations.
+
+Model invalidation prevents an older queued fill from restoring visible metadata.
+The admin status reports limits, retained work, completions, failures, and drops for both queues.
+
 Drop optional fills under pressure and report counts. Preserve the answer and required accounting evidence.
 Do not create an unbounded goroutine for each cache write.
 
