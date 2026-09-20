@@ -35,6 +35,7 @@ The final [registered check](enablement-registration.json.gz) runs all four
 named commands through the catalog verifier. All 22 race events pass without
 skips. These commands use the final file contents before commits.
 Final lint, new-document prose lint, and diff whitespace checks pass.
+
 The existing operator guide reports unrelated prose diagnostics. Its contents
 remain unchanged. The new operator page links its semantic-cache section.
 
