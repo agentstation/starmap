@@ -35,7 +35,7 @@
 
 <p>Local code remains unmerged. CSP17 owns the console account picker. The <a href="proof/starport-production-catalog/csp10.2/repository-qualification-progress.json">qualification record</a> owns integration repairs and the remaining published-module failure. Opus 5 completed two review passes against parent <code>a5aab81</code> with zero findings at the configured P0 threshold. Linux and Windows pure-Go cross-builds pass. They do not qualify native execution.</p>
 
-<p>CSP12.1 preparation uses <code>starport-cache-storage</code>, branch <code>codex/starport-cache-storage</code>, at <code>2eb4169</code>, from reviewed parent <code>31feeca</code>. Use <code>GOWORK=/tmp/csp121-host-integration.work</code> with Starmap <code>78b351c87</code>. Set both Starport verifier roots to this worktree. The reviewed authorization worktree remains unchanged.</p>
+<p>CSP12.1 preparation uses <code>starport-cache-storage</code>, branch <code>codex/starport-cache-storage</code>, at <code>5e2d06e</code>, from reviewed parent <code>31feeca</code>. Use <code>GOWORK=/tmp/csp121-host-integration.work</code> with Starmap <code>bf8af19fe</code>. Set both Starport verifier roots to this worktree. The reviewed authorization worktree remains unchanged.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/model-encoding.md">model encoding proof</a> records direct discovery decoding, bounded encoding, and buffer ownership. Component checks pass 507 race events with four skips. Integration checks pass ten with two skips. Seven final boundary cases pass. Lint and vet pass. Earlier <a href="proof/starport-production-catalog/csp12.1/resume-before-model-encoding.html.gz">resume evidence</a> remains historical.</p>
 
@@ -53,7 +53,9 @@
 
 <p>The <a href="proof/starport-production-catalog/csp12.1/modes-and-admission.md">mode and admission proof</a> records Starport <code>2eb4169</code> and Starmap <code>78b351c87</code>. Three more subcases pass through twelve commands and 31 race events without skips. Sixteen of seventeen subcases have local evidence.</p>
 
-<p>Next, measure default cache memory budgets and finish production-cache discovery isolation and withdrawal checks. Then run repository qualification and review. Component benchmark gains do not prove full-request latency. CSP12.1 remains incomplete.</p>
+<p>The <a href="proof/starport-production-catalog/csp12.1/default-memory.md">default-memory proof</a> records Starport <code>5e2d06e</code> and Starmap <code>bf8af19fe</code>. All seventeen subcases pass in one invocation: 49 commands, 131 race events, no skips. The clock profile follows D38 and preserves historical evidence. All 89 verifier tests pass.</p>
+
+<p>Next, finish production-cache discovery isolation and withdrawal checks. Then run repository qualification and review. Local acceptance does not complete the task before native and published-dependency qualification and merge. Component benchmark gains do not prove full-request latency. CSP12.1 remains incomplete.</p>
 
 <p>No review processes, verification sessions, or disposable services remain active.</p>
 
@@ -710,4 +712,5 @@
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Register twelve subcases at Starmap <code>445e2d130</code> with Starport <code>7dd4b3c</code>. All 36 commands pass. Five subcases remain unverified.</td><td><a href="proof/starport-production-catalog/csp12.1/acceptance-registration.md">Acceptance audit</a>. The task gate remains failed.</td></tr>
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Add per-kind controls at Starport <code>51fb7d7</code>. Starmap <code>7043f61f6</code> registers enablement. All 22 final race events pass.</td><td><a href="proof/starport-production-catalog/csp12.1/enablement.md">Enablement proof</a>. Four acceptance subcases remain unverified.</td></tr>
 <tr><td>2026-09-19</td><td>CSP12.1</td><td>Verify modes and HTTP admission at Starport <code>2eb4169</code>. Starmap <code>78b351c87</code> registers three cases. All 31 race events pass.</td><td><a href="proof/starport-production-catalog/csp12.1/modes-and-admission.md">Mode and admission proof</a>. Memory qualification remains unverified.</td></tr>
+<tr><td>2026-09-19</td><td>CSP12.1</td><td>Qualify default budgets at Starport <code>5e2d06e</code>, Starmap <code>bf8af19fe</code>. All seventeen subcases pass: 49 commands and 131 race events without skips.</td><td><a href="proof/starport-production-catalog/csp12.1/default-memory.md">Default memory and full acceptance proof</a>. Discovery audit and task qualification remain open.</td></tr>
 </tbody></table></section></main></body></html>
