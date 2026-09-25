@@ -1,264 +1,1333 @@
 {
-  "checked_at": "2026-09-20T06:57:19.072023+00:00",
-  "prior_snapshot": "queue-before-current-state-2026-09-20.json.gz",
+  "checked_at": "2026-09-25T23:56:53.817418+00:00",
   "starmap": [
     {
-      "baseRefName": "main",
-      "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
-      "headRefName": "codex/catalog-mode-fixture-reuse",
-      "headRefOid": "cc49e50378156a185ffb480ff55b4f4e88de90d6",
-      "isDraft": false,
-      "mergeStateStatus": "BLOCKED",
-      "number": 173,
-      "title": "fix: replay completed catalog publication without acquisition",
-      "updatedAt": "2026-09-20T06:55:44Z"
-    },
-    {
-      "baseRefName": "main",
-      "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
-      "headRefName": "codex/starmap-host-files",
-      "headRefOid": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
-      "isDraft": true,
-      "mergeStateStatus": "BEHIND",
-      "number": 171,
-      "title": "feat: expose checked file operations for catalog hosts",
-      "updatedAt": "2026-09-19T03:33:36Z"
-    },
-    {
-      "baseRefName": "main",
       "baseRefOid": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
-      "headRefName": "catalog/promotion/9d8a02596c354c6924fd2d170192bd9d92303cb8412e58c151a3943fda0241e2",
       "headRefOid": "e228e694ac5e66f75639721c438a261015a8026f",
       "isDraft": false,
       "mergeStateStatus": "DIRTY",
       "number": 165,
       "title": "catalog: embed bindings-d0cc72f614a783e732d89376c73f46da0db4b851f2627d3f266fb74e4c6964d4.local.b015f73478ee",
-      "updatedAt": "2026-09-17T15:09:19Z"
-    }
-  ],
-  "starport": [],
-  "current_dispositions": {
-    "173": {
+      "updatedAt": "2026-09-17T15:09:19Z",
       "owner": "CSP6",
-      "disposition": "Reviewed and ready; required native CI pending",
-      "next": "Qualify replacement CI35493820776 at cc49e5037, merge the reviewed exact head, then replay the completed receipt."
-    },
-    "171": {
-      "owner": "CSP8 host integration",
-      "disposition": "retained dependent work",
-      "next": "Host integration at 87bed00f3 includes the reviewed recovery-test scheduling repair. Incorporate actual main ancestry after PR173 merges; update existing PR171 and hold merge until publication retry qualification."
-    },
-    "165": {
-      "owner": "CSP6",
-      "disposition": "superseded candidate retained for evidence",
-      "next": "Verify successor preservation and completed retry before closing. No branch deletion."
-    }
-  },
-  "latest_catalog_merge": {
-    "pull": 168,
-    "commit": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
-    "publication_run": 35490650276
-  },
-  "local_work": [
-    {
-      "worktree": "starmap-host-files",
-      "head": "87bed00f3bf06228a8b4daec346b059ad75bc6ac",
-      "status": "",
-      "disposition": "unpublished integration",
-      "next_action": "Incorporate actual main ancestry after PR173 merges; update existing PR171 and hold merge until publication retry qualification.",
-      "branch": "codex/starmap-host-files"
-    },
-    {
-      "worktree": "starmap-publisher-validation",
-      "head": "9ff84a481c3693a22f27004316e4340a49689afd",
-      "status": "",
-      "branch": "codex/catalog-signed-promotion"
-    },
-    {
-      "worktree": "starport-product-paths",
-      "head": "1a6607bc32909cf8ebea3beb6ca7d8e63a9ebf5b",
-      "status": "",
-      "branch": "codex/starport-product-paths"
-    },
-    {
-      "worktree": "starmap-catalog-requirements",
-      "head": "d57182d64e72c0bd26e25a9c6041f2f5d97d743f",
-      "status": "M AGENTS.md\n M Makefile\n M docs/plans/starport-production-catalog-plan.html\n M go.mod\n M go.sum\n M scripts/verify.sh\n?? docs/plans/proof/starport-production-catalog/csp8/current-catalog-integration/verification.json",
-      "branch": "codex/catalog-qualification"
-    },
-    {
-      "worktree": "starmap-credential-roles",
-      "head": "ac3d25e7e650135609936f1c7eaed4b1efc7a9b4",
-      "status": "",
-      "owner": "CSP9",
-      "disposition": "unpublished preparation",
-      "next_action": "Preserve reviewed local work; qualify the published pair and native CI after CSP6 and CSP8 prerequisites.",
-      "branch": "codex/starmap-credential-roles"
-    },
-    {
-      "worktree": "starport-credential-roles",
-      "head": "c7e1b9a578c5da56af97a02a58b8146afaa2faa0",
-      "status": "",
-      "owner": "CSP9",
-      "disposition": "unpublished preparation",
-      "next_action": "Preserve reviewed local work; qualify the published pair and native CI after CSP6 and CSP8 prerequisites.",
-      "branch": "codex/starport-credential-roles"
-    },
-    {
-      "worktree": "/private/tmp/csp9-credential-revocation",
-      "head": "973c4d9d2ea5a399866824af0a243eba0983414c",
-      "status": "",
-      "owner": "CSP9",
-      "disposition": "integrated in reviewed consumer branch",
-      "next_action": "Preserve the branch until authorized cleanup.",
-      "branch": "codex/csp9-credential-revocation"
-    },
-    {
-      "worktree": "starport-managed-material",
-      "owner": "CSP9.1",
-      "disposition": "locally reviewed; unpublished preparation",
-      "next_action": "Preserve reviewed candidate; qualify the published pair and native CI after CSP6 and CSP8 prerequisites.",
-      "head": "c651009c4209b423b4c96702be171892d031ecbe",
-      "status": "",
-      "branch": "codex/starport-managed-material"
-    },
-    {
-      "worktree": "starport-catalog-routing",
-      "owner": "CSP10",
-      "head": "79978cdf2557825ce5c1aa99fcf07f7611741f24",
-      "status": "",
-      "disposition": "unpublished preparation",
-      "next_action": "Complete remaining CSP10 acceptance cases, including destination authorization; run the full task gate and required review before publication.",
-      "branch": "codex/starport-catalog-routing"
-    },
-    {
-      "worktree": "/tmp/csp6-signed-recovery-candidate",
-      "owner": "CSP6",
-      "head": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
-      "status": "?? docs/plans/proof/starport-production-catalog/csp6/hosted-publication/capture.json\n?? docs/plans/proof/starport-production-catalog/csp6/hosted-publication/channels-before.json\n?? docs/plans/proof/starport-production-catalog/csp6/hosted-publication/checks.json\n?? docs/plans/proof/starport-production-catalog/csp6/hosted-publication/completion.json\n?? docs/plans/proof/starport-production-catalog/csp6/hosted-publication/pending.json\n?? docs/plans/proof/starport-production-catalog/csp6/hosted-publication/protection.json\n?? docs/plans/proof/starport-production-catalog/csp6/hosted-publication/pull.json\n?? docs/plans/proof/starport-production-catalog/csp6/hosted-publication/releases-before.json",
-      "disposition": "merged catalog qualification subject",
-      "next_action": "Preserve source unchanged for the controlled publication retry capture.",
-      "branch": ""
-    },
-    {
-      "worktree": "starmap-catalog-mode-fixture",
-      "owner": "CSP6",
-      "head": "cc49e50378156a185ffb480ff55b4f4e88de90d6",
-      "branch": "codex/catalog-mode-fixture-reuse",
-      "status": "",
-      "disposition": "published PR173; replacement CI pending"
+      "disposition": "hold",
+      "next_action": "Older catalog proposal; verify every required record and artifact is preserved in the accepted successor before close.",
+      "checks": [
+        {
+          "name": "Analyze (actions)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Analyze (go)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Analyze (python)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Verification Checks",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Go 1.27.1 race ${{ matrix.group }}",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED"
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED"
+        },
+        {
+          "name": "Verification Gate",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        }
+      ]
     },
     {
-      "worktree": "starport-cache-storage",
-      "owner": "CSP12.1",
-      "head": "c1c272b642e717ed4554c8aa3f5027e23b255793",
-      "branch": "codex/starport-cache-storage",
-      "status": "",
-      "disposition": "local preparation; task acceptance incomplete"
-    },
-    {
-      "worktree": "starmap-advisory-exchange",
-      "owner": "CSP12.1",
-      "head": "ffecd9eb890adfd424d21b92638dc5d702c92553",
-      "branch": "codex/starmap-advisory-exchange",
-      "status": "",
-      "disposition": "local preparation; task acceptance incomplete"
-    },
-    {
-      "worktree": "starport-sql-contract-isolation",
-      "owner": "CSP15",
-      "head": "c18b22f686f56e9eb70df3461bbcbe00deddc47a",
-      "branch": "codex/sql-contract-isolation",
-      "status": "",
-      "disposition": "local preparation; task acceptance incomplete"
-    },
-    {
-      "worktree": "starport-catalog-integration",
-      "head": "c22a5579304387b49b54352c520a11c2a85e9621",
-      "owner": "CSP8 consumer integration",
-      "branch": "codex/starport-catalog-integration",
-      "disposition": "committed fixture repair; full suite in progress",
-      "status": ""
-    },
-    {
-      "worktree": "starport-native-catalog",
-      "branch": "codex/starport-native-catalog",
-      "head": "6b3d236186fe6442eb716b2aef6da0a2f86a332e",
-      "status": "",
+      "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
+      "headRefOid": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+      "isDraft": true,
+      "mergeStateStatus": "BEHIND",
+      "number": 171,
+      "title": "feat: expose checked file operations for catalog hosts",
+      "updatedAt": "2026-09-19T03:33:36Z",
       "owner": "CSP8",
-      "disposition": "Local native evidence adapter and CI preparation; unpublished",
-      "next_action": "Complete producer dependency publication, pre-PR qualification, review, and native capture. Current acceptance continues against unchanged c22a5579."
+      "disposition": "draft local integration",
+      "next_action": "Rebase reviewed local host work onto merge 19c85ad, publish to existing PR, run native gates; merge after CSP6 publication proof.",
+      "checks": [
+        {
+          "name": "Analyze (actions)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Analyze (go)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Analyze (python)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Checks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-1",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race client",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race application",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Gate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    {
+      "baseRefOid": "19c85ad84293acba4ae9514fa5f68276e92d2461",
+      "headRefOid": "208783174f950d1591ecec0dcb4df1a440411eb5",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 174,
+      "title": "catalog: embed bindings-4e61b06110e35f6ba62a8237ec26408272ee815efedefb351e5f7f4e528b0213.local.1682a8241ee7",
+      "updatedAt": "2026-09-25T23:56:08Z",
+      "owner": "CSP6",
+      "disposition": "CI rerun",
+      "next_action": "Updated branch onto PR173 merge; qualify exact new head and current pending receipt before merge.",
+      "checks": [
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Analyze (actions)",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Analyze (go)",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Analyze (python)",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Verification Checks",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "QUEUED",
+          "conclusion": ""
+        }
+      ]
+    },
+    {
+      "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+      "headRefOid": "1709f8a334d69e643f715b29c352a2cc80a0682d",
+      "isDraft": false,
+      "mergeStateStatus": "BEHIND",
+      "number": 175,
+      "title": "build(deps): bump cloud.google.com/go/auth in /",
+      "updatedAt": "2026-09-21T14:36:01Z",
+      "owner": "dependency maintenance",
+      "disposition": "failing CI",
+      "next_action": "Triage root failure and update on current main only after catalog publication is settled.",
+      "checks": [
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Checks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-1",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Go 1.27.1 race client",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race application",
+          "status": "COMPLETED",
+          "conclusion": "CANCELLED"
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Gate",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "NEUTRAL"
+        }
+      ]
+    },
+    {
+      "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+      "headRefOid": "e1d4e93628a31d327bb1186472b19973d698eca4",
+      "isDraft": false,
+      "mergeStateStatus": "BEHIND",
+      "number": 176,
+      "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
+      "updatedAt": "2026-09-21T14:37:28Z",
+      "owner": "dependency maintenance",
+      "disposition": "failing CI",
+      "next_action": "Triage root failure and update on current main only after catalog publication is settled.",
+      "checks": [
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Checks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-1",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Go 1.27.1 race client",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race application",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Gate",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "NEUTRAL"
+        }
+      ]
+    },
+    {
+      "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+      "headRefOid": "da3dcafa7670d6e1248c2a52ba1d589823844cc3",
+      "isDraft": false,
+      "mergeStateStatus": "BEHIND",
+      "number": 177,
+      "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/credentials in /",
+      "updatedAt": "2026-09-21T14:38:50Z",
+      "owner": "dependency maintenance",
+      "disposition": "failing CI",
+      "next_action": "Triage root failure and update on current main only after catalog publication is settled.",
+      "checks": [
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Checks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-1",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Go 1.27.1 race client",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race application",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Gate",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "NEUTRAL"
+        }
+      ]
+    },
+    {
+      "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+      "headRefOid": "917acfeff1371b994f7a0cb79fdd5b6d9327743a",
+      "isDraft": false,
+      "mergeStateStatus": "BEHIND",
+      "number": 178,
+      "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/s3 in /",
+      "updatedAt": "2026-09-21T14:41:27Z",
+      "owner": "dependency maintenance",
+      "disposition": "failing CI",
+      "next_action": "Triage root failure and update on current main only after catalog publication is settled.",
+      "checks": [
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Checks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-1",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Go 1.27.1 race client",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race application",
+          "status": "COMPLETED",
+          "conclusion": "CANCELLED"
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Gate",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "NEUTRAL"
+        }
+      ]
+    },
+    {
+      "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+      "headRefOid": "9b70391b08a208bd85dbc82198f35c14a883741a",
+      "isDraft": false,
+      "mergeStateStatus": "BEHIND",
+      "number": 179,
+      "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/secretsmanager in /",
+      "updatedAt": "2026-09-21T14:42:55Z",
+      "owner": "dependency maintenance",
+      "disposition": "failing CI",
+      "next_action": "Triage root failure and update on current main only after catalog publication is settled.",
+      "checks": [
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Checks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-1",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Go 1.27.1 race client",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race application",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Gate",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "NEUTRAL"
+        }
+      ]
     }
   ],
-  "starmap_main": {
-    "protected": true,
-    "sha": "4d031cbf773b5819f78a9590aa29aeaf938d84b5"
-  },
-  "starport_main": {
-    "protected": true,
-    "sha": "d5d891eefc32d221406f059dc025a3a1e3ab4070"
-  },
-  "starmap_review_threads": {
-    "totalCount": 3,
-    "pageInfo": {
-      "hasNextPage": false
-    },
-    "nodes": [
-      {
-        "number": 165,
-        "headRefOid": "e228e694ac5e66f75639721c438a261015a8026f",
-        "baseRefOid": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
-        "reviewThreads": {
-          "totalCount": 0,
-          "pageInfo": {
-            "hasNextPage": false
-          },
-          "nodes": []
-        }
-      },
-      {
-        "number": 171,
-        "headRefOid": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
-        "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
-        "reviewThreads": {
-          "totalCount": 0,
-          "pageInfo": {
-            "hasNextPage": false
-          },
-          "nodes": []
-        }
-      },
-      {
-        "number": 173,
-        "headRefOid": "aafdaf3abb6a862559c55ec3d4e8600baab4d526",
-        "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
-        "reviewThreads": {
-          "totalCount": 0,
-          "pageInfo": {
-            "hasNextPage": false
-          },
-          "nodes": []
-        }
-      }
-    ]
-  },
-  "seven_day_disposition_review_required": false,
-  "local_verification_processes": [
+  "starport": [
     {
-      "session": 2656,
-      "purpose": "CSP8 current-pair registered acceptance"
+      "baseRefOid": "a9a8f6f845523473b89fca8ac0f8c94148ca730b",
+      "headRefOid": "df16154a1ae7f8ab0ec141a1a762e2b98369bde9",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 382,
+      "title": "chore(deps): bump the console-packages group in /console with 16 updates",
+      "updatedAt": "2026-09-25T23:53:01Z",
+      "owner": "dependency maintenance",
+      "disposition": "CI rerun",
+      "next_action": "Updated onto merge a9a8f6f; merge exact head after refreshed required checks pass.",
+      "checks": [
+        {
+          "name": "Lint",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Test (ubuntu-latest)",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Test (macos-latest)",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Test (windows-latest)",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Security Scan",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Release Contract",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "OpenRouter SDK Compatibility",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Release Snapshot",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        }
+      ]
     },
     {
-      "session": 37169,
-      "purpose": "Resumed CSP8 consumer acceptance after disk recovery; retain two prior passes"
+      "baseRefOid": "46ec32a37e6d8f9f0f93df8fe0bdab8d29cb177d",
+      "headRefOid": "b3593cfc352897b91c3293904fd80b3a33fd58c8",
+      "isDraft": false,
+      "mergeStateStatus": "UNKNOWN",
+      "number": 383,
+      "title": "chore(deps): bump the go-modules group across 1 directory with 13 updates",
+      "updatedAt": "2026-09-22T04:56:52Z",
+      "owner": "dependency maintenance",
+      "disposition": "compile failure",
+      "next_action": "WorkOS dependency changed Code to *string; repair API use and requalify before merge.",
+      "checks": [
+        {
+          "name": "Lint",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Test (ubuntu-latest)",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Test (macos-latest)",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Test (windows-latest)",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Security Scan",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Release Contract",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "OpenRouter SDK Compatibility",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Release Snapshot",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Build",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED"
+        }
+      ]
     }
   ],
-  "active_ci": {
-    "repository": "agentstation/starmap",
-    "pull": 173,
-    "run": 35493820776,
-    "head": "cc49e50378156a185ffb480ff55b4f4e88de90d6",
-    "status": "in_progress",
-    "next_action": "Verify terminal required checks and exact head before protected merge."
+  "completed_merges": [
+    {
+      "repo": "starmap",
+      "pr": 173,
+      "head": "cc49e50378156a185ffb480ff55b4f4e88de90d6",
+      "merge_commit": "19c85ad84293acba4ae9514fa5f68276e92d2461"
+    },
+    {
+      "repo": "starport",
+      "pr": 378,
+      "head": "b44ba8f431ad1d8e30a5a05ad5b9f33acd38eece",
+      "merge_commit": "a9a8f6f845523473b89fca8ac0f8c94148ca730b"
+    }
+  ],
+  "publication_replay": {
+    "run": 36202535171,
+    "result": "failed",
+    "reason": "Current catalog/publication receipt 587827... replaced completed receipt 4fdfe...; exact replay input was rejected before publication."
+  },
+  "cleanup": {
+    "stale_worktree_registrations_pruned": 31,
+    "clean_merged_worktrees_removed": 6,
+    "local_exact_ancestor_branches_removed": 30,
+    "live_remote_branches_deleted": 0,
+    "note": "Full remote prune showed stale tracking refs; the remote branches were already absent. Dirty and unmerged worktrees remain."
   }
 }
