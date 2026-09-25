@@ -343,10 +343,17 @@ class Publisher:
                 raise PublicationError("channel branch contains a different channel")
         pending = self.read_branch(PENDING_BRANCH, "pending.json")
         record = validate_pending(pending["document"]) if pending["document"] else None
-        active = record is not None and not completed(record, channels)
+        event = os.environ.get("GITHUB_EVENT_NAME", "workflow_dispatch")
+        retry_receipt = os.environ.get("CATALOG_RETRY_RECEIPT", "")
+        if retry_receipt:
+            digest_hex(retry_receipt)
+            if (event != "workflow_dispatch" or record is None
+                    or record["receipt_checksum"] != retry_receipt or not completed(record, channels)):
+                raise PublicationError("retry requires the exact completed publication receipt and a manual run")
+        active = record is not None and (
+            not completed(record, channels) or record["workflow_run_id"] == self.run_id or bool(retry_receipt))
         if active and self.rejected(record, channels):
             active = False
-        event = os.environ.get("GITHUB_EVENT_NAME", "workflow_dispatch")
         acquire = not active and event != "workflow_run"
         if not active and acquire:
             artifacts = self.api(f"actions/runs/{self.run_id}/artifacts?per_page=100")

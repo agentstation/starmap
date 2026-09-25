@@ -168,10 +168,10 @@ func TestDirectoryMigrationCompletionSupportsSuccessiveMoves(t *testing.T) {
 }
 
 func TestDirectoryMigrationCompletionRecoversProcessExit(t *testing.T) {
-	t.Parallel()
+	// Each child loads the compiled catalog under race instrumentation.
+	// Serialize crash points to keep that work within the existing timeout.
 	for _, stop := range []string{"journal-completed", "completion-recorded"} {
 		t.Run(stop, func(t *testing.T) {
-			t.Parallel()
 			request := migrationPublicationFixture(t)
 			published, err := PublishDirectoryMigration(t.Context(), request)
 			if err != nil {
