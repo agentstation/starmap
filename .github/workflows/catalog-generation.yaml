@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "17 */4 * * *"
   workflow_dispatch:
+    inputs:
+      retry_receipt:
+        description: 'Replay this completed receipt checksum without new acquisition'
+        required: false
+        type: string
+        default: ''
   workflow_run:
     workflows: [Pull Request]
     types: [completed]
@@ -64,6 +70,8 @@ jobs:
 
       - name: Restore accepted or pending publication
         id: publication
+        env:
+          CATALOG_RETRY_RECEIPT: ${{ inputs.retry_receipt }}
         run: python3 scripts/catalog_publication.py inspect --directory "$CATALOG_PUBLICATION_DIRECTORY"
 
       - name: Refresh candidate catalog

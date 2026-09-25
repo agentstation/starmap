@@ -123,6 +123,12 @@ A later job can reconstruct the exact archive without provider credentials.
 
 An interrupted release upload can leave an unfinished draft asset. The publisher can remove that unfinished asset and upload its expected bytes again.
 It never overwrites an uploaded asset. A byte mismatch stops recovery.
+
+For a completed publication, use the manual `retry_receipt` input with its exact receipt checksum.
+The checksum must identify the pending record already accepted by both channels.
+This operation restores the published receipt and checkpoint without acquisition.
+Normal scheduled runs continue to get new catalog observations.
+See [publication qualification](CATALOG_PUBLICATION_QUALIFICATION.md) for the command and required evidence.
 A lost response after successful publication reuses the verified release.
 
 An interruption between the promotion branch push and PR creation reuses the existing branch after checking its catalog and changed paths.
