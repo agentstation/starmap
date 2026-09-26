@@ -25,10 +25,13 @@
       "owner": "CSP8",
       "checks_run": 36234492082,
       "disposition": "Keep. Native CI failed on both macOS jobs and Windows ARM64.",
-      "next_action": "Qualify and merge producer PR #183, then pin its module. Complete final consumer qualification and full branch review before updating this PR.",
+      "next_action": "Complete producer native CI and the 34 consumer pre-PR checks in parallel. Merge the producer before the dependent consumer merge.",
       "local_head": "24feb55198d3a8aaa585fed874adbb172313ad8f",
       "native_failure_proof": "../../csp8/native-schedule-384/native-failure-current.json",
-      "local_changes": [],
+      "local_changes": [
+        "go.mod",
+        "go.sum"
+      ],
       "local_qualification": "All 68 packages: 4227 passing named tests, six optional skips, zero failures. All 733 CSP8 tests pass without skips.",
       "local_qualification_proof": "../../csp8/native-schedule-384/verification.json",
       "prepr": "PASS: all 34 required commands",
@@ -39,7 +42,8 @@
       "terminal_native_proof": "../../csp8/native-schedule-384/terminal-run.json",
       "unpublished_commits": [
         "24feb55198d3a8aaa585fed874adbb172313ad8f"
-      ]
+      ],
+      "candidate_module": "v0.16.6-0.20260926123426-0e53e6f9cbda"
     }
   ],
   "completed_merges": [

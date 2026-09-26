@@ -12,7 +12,7 @@
 
 <p>Updated September 26, 2026 UTC. <a href="#CSP8">CSP8</a> is the sole active task. Sixteen of 40 tasks are complete. Read its <a href="#task-CSP8">contract</a>, <a href="#invariants">invariants</a>, and <a href="#goal">goal</a>.</p>
 
-<p id="next-action">Qualify native CI for <a href="https://github.com/agentstation/starmap/pull/183">Starmap PR #183</a> at <code>0e53e6f9c</code>. The owner approved complete source review plus independent generated-file verification. Fresh generation matches the committed payload byte for byte. Source review and secret scanning pass. Then update consumer PR #384 to the accepted producer module.</p>
+<p id="next-action">Qualify native CI for <a href="https://github.com/agentstation/starmap/pull/183">Starmap PR #183</a> at <code>0e53e6f9c</code>. Starport now tests that exact published module in parallel. Its 34-command runner uses session <code>62421</code>. Complete consumer checks and review, then publish the existing PR. Merge the producer before the consumer.</p>
 
 <p>Starmap <a href="https://github.com/agentstation/starmap/pull/182">PR #182</a> merged at <code>71c5c8c723334bdfc4e1b04dc85e748211fe5071</code>. The <a href="proof/starport-production-catalog/csp8/native-182/merged/verification.json">merge proof</a> records exact tree equality, 34 passing PR checks, and 30 passing CI jobs. All 104 required native test occurrences pass across six platforms without required skips. Full CI still exceeds the 30-minute target.</p>
 
@@ -28,7 +28,7 @@
 
 <p>Historical publication retries now accept a missing compiled payload only for an accepted receipt and source commit. New publications still require the payload. Separate checks pass 74 release-command race tests and 27 publisher tests. Vet, lint, goago, and writing checks pass. Required public-fixture checks pass all 8 tests and subtests without skips. The preparation evidence records the source changes after the original application group completed.</p>
 
-<p>Active consumer checkout: <code>starport-native-catalog</code> on <code>codex/starport-native-catalog</code> at <code>24feb551</code>. This unpublished commit contains five files for deterministic document deadlines and credential retention during transient refresh failures. Focused checks pass 50 document tests and 20 credential tests and subtests. Candidate migration recovery passes all four test events with a temporary external module replacement. The committed module pin remains unchanged. PR #384 remains at <code>1e8fe2da09</code>.</p>
+<p>Active consumer checkout: <code>starport-native-catalog</code> on <code>codex/starport-native-catalog</code> at <code>24feb551</code>. This unpublished commit contains five files for deterministic document deadlines and credential retention during transient refresh failures. Focused checks pass 50 document tests and 20 credential tests and subtests. Candidate migration recovery passes all four test events with a temporary external module replacement. The local module pin now selects published producer <code>0e53e6f9c</code> without a replacement. PR #384 remains at <code>1e8fe2da09</code>.</p>
 
 <p>The committed consumer files match the qualified source hashes. Focused lint reports zero issues.</p>
 
