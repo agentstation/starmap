@@ -12,9 +12,21 @@
     }
   },
   "remaining": [
-    "complete task gate rerun",
     "pre-PR review rerun",
     "publication and CI",
     "ordered merges"
-  ]
+  ],
+  "task_gate": {
+    "status": "PASS",
+    "selected_subcases": 11,
+    "passed": 11,
+    "failed": 0,
+    "unverified": 0,
+    "raw": "task-gate/task-report.json"
+  },
+  "contract_gates": {
+    "status": "PASS",
+    "raw": "contract-gates.log",
+    "command": "GOWORK=off make HAS_DEVBOX= GOCMD=go docs-check test-pure-go test-consumer-deps"
+  }
 }

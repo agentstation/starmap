@@ -11,7 +11,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated September 26, 2026 UTC. CSP11 is in progress under D41. 23 of 40 tasks are complete.</p>
 
-<p id="next-action">Qualify the pinned-follower review repair, then repeat producer review and review the final consumer module pair. Publish Starmap, update the Starport module pin, qualify native CI, and merge in order.</p>
+<p id="next-action">Repeat producer review after both pin repairs, then review the final consumer module pair. Publish Starmap, update the Starport module pin, qualify native CI, and merge in order.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/verification.json">retained baseline proof</a> records 94 producer and 46 paired native race results. All pass with no skips. The verifier regression suite passes 99 tests. All eleven required CSP11 subcases pass with the complete native fixture.</p>
 
@@ -19,7 +19,7 @@
 
 <p>CSP16 owns coordinated policy apply through shared configuration authority. CSP16.1 owns explicit baseline promotion. Incompatible acquisition policy still refuses refresh ownership until those operations ship.</p>
 
-<p>Producer checkout: <code>starmap-object-ci-repair</code>, branch <code>codex/catalog-fleet-contract</code>, local head <code>95320e13b5667c060df82f9960dfd5a24b3d766e</code>. Consumer checkout: <code>starport-native-catalog</code>, branch <code>codex/catalog-fleet-adapter</code>, local head <code>509044a005323d75ce46830cf46494b04c0c0fc9</code>. Preserve unrelated native evidence in both checkouts.</p>
+<p>Producer checkout: <code>starmap-object-ci-repair</code>, branch <code>codex/catalog-fleet-contract</code>, local head <code>6fefd6d422c214520342485b9da2141e441d8911</code>. Consumer checkout: <code>starport-native-catalog</code>, branch <code>codex/catalog-fleet-adapter</code>, local head <code>509044a005323d75ce46830cf46494b04c0c0fc9</code>. Preserve unrelated native evidence in both checkouts.</p>
 
 <p>Starmap <a href="https://github.com/agentstation/starmap/pull/185">#185</a> remains published at <code>1135eb46f</code>. Starport <a href="https://github.com/agentstation/starport/pull/385">#385</a> remains at <code>7068380bd</code>. The consumer uses <code>v0.16.6-0.20260926185237-a2d66bd259a1</code>. Starmap must merge first.</p>
 
@@ -635,6 +635,7 @@
 <p><a href="proof/starport-production-catalog/execution-history-2026-09-12-verification-cache.html">Read the latest archived entries</a>. Their original text and evidence remain unchanged.</p>
 
 <p><a href="proof/starport-production-catalog/execution-history-2026-09-11-1143.html">Read earlier execution entries</a> for historical evidence. The current resume state owns the next action.</p><p><a href="proof/starport-production-catalog/execution-history-2026-09-26-qualification.html">Read the preserved qualification history</a> for prior resume state, CSP8 progress, and older execution entries.</p><p><a href="proof/starport-production-catalog/execution-history-2026-09-26-consumer-merge.html">Read earlier execution entries</a> for preserved qualification and merge history.</p><table><thead><tr><th>Date</th><th>Item</th><th>Action</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>2026-09-26</td><td>CSP11 acquisition metadata review repair</td><td>Commit <code>6fefd6d42</code> separates acquisition metadata from serving pins.</td><td>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/capability-review-repair/verification.json">repair proof</a> records 95 runtime and four acquisition race passes, 99 verifier tests, and eleven passing task subcases. The second review finding does not apply to the full function. Repeat review before publication.</td></tr>
 <tr><td>2026-09-26</td><td>CSP11 pinned follower review repair</td><td>Commit <code>95320e13b</code> retains valid pin receipts independently of replay readiness.</td><td>Sol found the startup refusal. Opus reported no findings. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/pin-review-repair/verification.json">repair proof</a> records two failing scenarios before repair and 94 passing fleet race results afterward. Ownership refusal remains mandatory.</td></tr>
 <tr><td>2026-09-26</td><td>D41 retained baseline implemented</td><td>Commit producer <code>41ee1ef29</code> and consumer <code>0921b39ec</code>.</td><td>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/verification.json">local proof</a> records 140 passing race results and 99 verifier tests. Review and merges remain open.</td></tr>
 <tr><td>2026-09-26</td><td>D41 operation ownership clarified</td><td>Keep retained baseline recovery in CSP11. Assign policy apply to CSP16 and baseline promotion to CSP16.1.</td><td>The transition contract retains all seventeen conditions. SQL owns approved configuration and audit. Native catalog fencing must pass before policy writes become available.</td></tr>

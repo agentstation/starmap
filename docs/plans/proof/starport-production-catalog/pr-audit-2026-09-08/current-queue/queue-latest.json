@@ -12,8 +12,8 @@
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Fresh initialization and canonical retention verified locally; upgrade transition and final qualification remain open",
-      "next_action": "Implement D41 retained baseline recovery, coordinated policy apply, and explicit embedded-only promotion. Qualify native fencing and retries, review, publish producer, update consumer pin, and merge in order."
+      "disposition": "D41 retained baseline and pin repairs pass local qualification; final review, published pair CI, and merges remain open",
+      "next_action": "Review producer, publish it, update consumer module pin, qualify final pair, review consumer, and merge in dependency order. CSP16 owns policy apply; CSP16.1 owns baseline promotion."
     }
   ],
   "starport": [
@@ -28,8 +28,8 @@
       "title": "catalog: fence fleet publication and recover shared acquisition state",
       "url": "https://github.com/agentstation/starport/pull/385",
       "owner": "CSP11",
-      "disposition": "Fresh initialization and canonical retention verified locally; upgrade transition and final qualification remain open",
-      "next_action": "Implement D41 retained baseline recovery, coordinated policy apply, and explicit embedded-only promotion. Qualify native fencing and retries, review, publish producer, update consumer pin, and merge in order."
+      "disposition": "D41 retained baseline and pin repairs pass local qualification; final review, published pair CI, and merges remain open",
+      "next_action": "Review producer, publish it, update consumer module pin, qualify final pair, review consumer, and merge in dependency order. CSP16 owns policy apply; CSP16.1 owns baseline promotion."
     }
   ],
   "completed_merges": [
@@ -837,7 +837,7 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Qualify and review D41 retained baseline recovery, publish the producer, update the consumer module pin, and merge in order. CSP16 owns coordinated policy apply. CSP16.1 owns explicit baseline promotion.",
+    "next_action": "Repeat producer review after pin metadata repair, then publish producer and qualify the pinned consumer pair.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
     "contract_audit": "../../csp11/contract-audit-2026-09-26.md",
@@ -885,7 +885,7 @@
       "consumer_status": "failure on 7068380bd; Intel managed-credential test depended on wall time; local deterministic repair passes."
     },
     "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json",
-    "review_status": "One Sol P2 finding accepted and repaired. Native task gate and pre-PR review reruns remain pending.",
+    "review_status": "Pinned follower repair passes all eleven CSP11 subcases. Second complete producer review runs on 95320e13b.",
     "running_sessions": [],
     "repair_proof": "../../csp11/review-repairs-2026-09-26/verification.json",
     "initialization_proof": "../../csp11/fresh-initialization-2026-09-26/verification.json",
@@ -904,7 +904,7 @@
     "acceptance": {
       "status": "PASS",
       "subcases": 11,
-      "proof": "../../csp11/retained-baseline-2026-09-26/task-gate-final/task-report.json"
+      "proof": "../../csp11/retained-baseline-2026-09-26/pin-review-repair/task-gate/task-report.json"
     },
     "pin_review_repair": "../../csp11/retained-baseline-2026-09-26/pin-review-repair/verification.json"
   },
@@ -929,5 +929,5 @@
       "scope": "kvconnection, config, storage, cache with race detection and real Valkey. Full CSP12 is incomplete."
     }
   },
-  "local_updated_at": "2026-09-26T22:44:00.353555+00:00"
+  "local_updated_at": "2026-09-26T22:54:07.247662+00:00"
 }

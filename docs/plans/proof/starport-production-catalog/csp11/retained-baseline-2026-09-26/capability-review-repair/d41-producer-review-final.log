@@ -1,0 +1,33 @@
+review still running: codex elapsed=60s pid=5312 cpu=0.4s/60s(1%) rss=160M state=S
+review still running: claude elapsed=60s pid=5400 cpu=0.9s/60s(2%) rss=248M state=S
+review still running: codex elapsed=120s pid=5312 cpu=0.0s/60s(0%) rss=150M state=S
+review still running: claude elapsed=120s pid=5400 cpu=0.4s/60s(1%) rss=245M state=S
+review still running: codex elapsed=180s pid=5312 cpu=0.0s/60s(0%) rss=154M state=S
+review still running: claude elapsed=180s pid=5400 cpu=0.4s/60s(1%) rss=247M state=S
+autoreview target: branch
+branch: detached
+gate: pre-pr (configured cadence: pre-pr)
+profile: auto
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=6.85, opus5=8.43
+reviewers: codex model=gpt-6-sol thinking=high, claude model=claude-opus-5-5 thinking=high
+tools: on
+web_search: on
+ref: 8122081e0494648fb1e356647053dd870a05fb1c
+trufflehog: clean (4.0s)
+bundle: 245689 bytes; review passes: 1
+autoreview panel findings: 2
+[P2] Fleet capability check fails for retained provider scopes absent from the served catalog (e.g. after a pin), blocking ownership and unpin
+acquisition/fleet_capability.go:31
+Reviewer: claude model=claude-opus-5-5 thinking=high
+
+`checkFleetAcquisition` builds `request.Catalog` from `r.client.CurrentCatalogState().Catalog` but adds every retained provider scope from `layers.providers`. `providerSourceObserver.CheckFleetAcquisition` then calls `request.Catalog.Provider(id)` for each ID and returns that error. The retained layers and the served catalog are not guaranteed to agree. A fleet pin keeps the latest retained provider observations in recovery while the served catalog is the older pinned generation. If that generation lacks a provider that was observed later, the lookup fails. Every renewal then fails and releases the grant, and no replica can take the lease while serving that catalog. That includes the replica that must publish the explicit unpin, which leaves the fleet stuck without refresh ownership. Removal policies that drop a provider from the effective catalog cause the same failure. Resolve provider metadata from the retained layer or effective build instead of the served catalog, or skip scopes the current catalog does not contain. Add a test with a retained provider observation missing from a pinned catalog.
+
+[P2] execute can overwrite runCtx with nil when grant capture fails
+runtime/refresh.go:359
+Reviewer: claude model=claude-opus-5-5 thinking=high
+
+`runCtx, workErr = r.captureFleetGrant(runCtx, run.epoch)` assigns to the outer `runCtx`. On error, `captureFleetGrant` returns `(nil, err)`. That happens when the lease expires, is lost, or the keeper stops between `ensureHeld` and the capture. The code after this block in `execute` was not in the bundle, so it is unconfirmed whether it reads `runCtx` again. If it does (for example for status recording, lease release or cancellation), it will dereference a nil context and panic. Capture into a temporary and assign only on success.
+
+overall: patch is incorrect (0.72)
+Panel review complete. claude model=claude-opus-5-5 thinking=high: 2 finding(s), codex model=gpt-6-sol thinking=high: 0 finding(s).
