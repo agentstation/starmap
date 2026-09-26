@@ -1,0 +1,42 @@
+{
+  "checked_at": "2026-09-26T09:22:16.732119+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+  "branch": "codex/catalog-lifecycle",
+  "head": "69b5affb3b75ab911e167e92b4418f141212921d",
+  "retained_worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-starmap-main",
+  "retained_head": "d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
+  "comparison": {
+    "all_other_tracked_files": "identical",
+    "changed_files": [
+      ".github/workflows/ci.yml",
+      ".github/workflows/release.yaml",
+      "docs/TASKS.md",
+      "go.mod",
+      "go.sum"
+    ],
+    "assessment": "The successor updates dependency and action pins and records the completed PR merge. It preserves all application code, tests, documentation assets, and other tracked files."
+  },
+  "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-lifecycle-successor/history.bundle",
+  "bundle_sha256": "76ce50ef9a7aaf87b5a8a9ef40a3e299c1acc5632df3af526b259f9e29a01899",
+  "bundle_verified": true,
+  "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-lifecycle-successor/local-evidence.tar.gz",
+  "archive_sha256": "1c0e5b6ec7e8ebf9d34a1bcddf4f436dc46ca2991037c73ea36a5cfd22bd5d24",
+  "preserved_file_sha256": {
+    "docs/assets/first-use-v1.2.0/__pycache__/capture.cpython-314.pyc": "ba9dc00574a3a716c5fe9c540c6a4542b3045d1fd745894d60c781d9e4ea64ed",
+    "internal/storage/data/badger/000004.vlog": "dbb7121610025c3fff8616e8c09bea6b5a871e8e20059c3b9df600ff885e77b1",
+    "internal/storage/data/badger/000005.vlog": "c2de00bd42e9d52e9e8ba6918d9d3b673c8c9e5f27e1909691a62ec7816400d2",
+    "internal/storage/data/badger/DISCARD": "30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58",
+    "internal/storage/data/badger/KEYREGISTRY": "ee9a69651e1a0ca42e507f3d633c9a5e28f530ce3ece4d6916adbd777fe66547",
+    "internal/storage/data/badger/MANIFEST": "344f12bfe88a4007e78a87f94b16d9bb383a24180a647f368f8d1662b3783060"
+  },
+  "preserved_ignored_files": 6,
+  "generated_files_removed": 46729,
+  "open_files": 0,
+  "referencing_processes": 0,
+  "restoration": [
+    "git fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-lifecycle-successor/history.bundle refs/heads/codex/catalog-lifecycle:refs/heads/codex/catalog-lifecycle",
+    "git worktree add /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle codex/catalog-lifecycle",
+    "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-lifecycle-successor/local-evidence.tar.gz -C /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle"
+  ],
+  "status": "REMOVED_WITH_VERIFIED_RECOVERY"
+}

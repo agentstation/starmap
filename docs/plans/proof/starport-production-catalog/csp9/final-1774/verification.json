@@ -1,0 +1,86 @@
+{
+  "checked_at": "2026-09-26T09:24:56.357986+00:00",
+  "status": "PREPARED_PENDING_CSP8_MERGE",
+  "producer": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+  "consumer": "1774cea4527429a672cd78608ca42304b96a5aa6",
+  "module": "github.com/agentstation/starmap v0.16.6-0.20260926085409-71c5c8c72333",
+  "task_subcases": {
+    "A11.acquisition_role_matrix": "PASS",
+    "A11.inference_role_matrix": "PASS",
+    "A11.upgrade_changed_selection": "PASS",
+    "A11.fresh_install_override": "PASS",
+    "A11.identical_values": "PASS",
+    "A11.explicit_reference": "PASS",
+    "A11.mixed_field_handle": "PASS",
+    "A12.each_supported_backend": "PASS",
+    "A12.rotation_complete_version": "PASS",
+    "A12.expired_revoked": "PASS",
+    "A12.backend_outage": "PASS",
+    "A12.no_secret_disclosure": "PASS"
+  },
+  "race": {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout",
+      "5m",
+      "-json",
+      "./internal/catalog",
+      "./internal/credentials/...",
+      "./internal/providers/keyring"
+    ],
+    "seconds": 245.19468000001507,
+    "named_passes": 535,
+    "named_failures": 0,
+    "named_skips": 0,
+    "exit_code": 0
+  },
+  "services": [
+    {
+      "role": "durable",
+      "id": "84e7535b6ed093772e435015d68a87960ecd9e614d13720211464038f999dee2",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:58713"
+    },
+    {
+      "role": "cache",
+      "id": "e0e80024a90e460de93f4715fc572f1f021cd38731deb5ca0aa24cd5e0372b38",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:58714"
+    },
+    {
+      "role": "sql",
+      "id": "effe7b965aa0815a8590f4a96157df68cf380d396ee360682e022cc0e405ba2f",
+      "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+      "address": "127.0.0.1:58715"
+    }
+  ],
+  "service_cleanup": [
+    {
+      "id": "84e7535b6ed093772e435015d68a87960ecd9e614d13720211464038f999dee2",
+      "exit_code": 0
+    },
+    {
+      "id": "e0e80024a90e460de93f4715fc572f1f021cd38731deb5ca0aa24cd5e0372b38",
+      "exit_code": 0
+    },
+    {
+      "id": "effe7b965aa0815a8590f4a96157df68cf380d396ee360682e022cc0e405ba2f",
+      "exit_code": 0
+    }
+  ],
+  "secret_scan": {
+    "finding_count": 0,
+    "external_verification": false
+  },
+  "files_sha256": {
+    "acceptance.json.gz": "bd49862e9ac862a5068a946a5fcbeba56cb59d7c4339d92c9a16e7de54122036",
+    "race.jsonl.gz": "efd7beb39ae615931b8092d4fb9e0593e408f31abd29ecfc1de6c850e36541bb",
+    "runner.json.gz": "32e8ff90f9872ee168f227f94543ad4ebb472b1c2eacf819e8fbf21595b5dd1d",
+    "race-scan.log.gz": "9c1b8145840cce9eb7d42fa640e8077fc03958bea1b5a081434ee800157aee12",
+    "acceptance-scan.log.gz": "3b001c49a345ed14deb06c3b49efedab56d3f0b2974359dbf583ee5e6f0d6882"
+  },
+  "remaining": "Native consumer qualification, CSP8 acceptance and merge remain required. CSP9 task closure still requires its dependency and merged-source evidence."
+}
