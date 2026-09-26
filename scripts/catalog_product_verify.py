@@ -107,7 +107,7 @@ def go_check_input(entry, roots):
     package, test = entry.get("package", ""), entry.get("test", "")
     if root is None or not (root / "go.mod").is_file():
         return None, {"status": "UNVERIFIED", "reason": "The required repository is unavailable."}
-    if (not isinstance(test, str) or not isinstance(package, str)
+    if (not isinstance(test, str) or not isinstance(package, str) or type(entry.get("batch", True)) is not bool
             or not re.fullmatch(r"Test[A-Za-z0-9_]+", test) or not package.startswith("./")
             or any(part in ("..", "...") for part in package.split("/")[1:])):
         return None, {"status": "FAIL", "reason": "Invalid named Go behavior check."}
@@ -125,11 +125,12 @@ def leaf_checks(entry):
 
 
 class GoEvidence:
-    """Run each selected package once and retain named results for this invocation."""
+    """Batch selected tests and preserve separate process budgets where required."""
 
     def __init__(self, entries, roots):
         self.groups = {}
         self.results = {}
+        self.isolated = set()
         for entry in entries:
             for check in leaf_checks(entry):
                 if check.get("kind") != "go_test":
@@ -138,11 +139,15 @@ class GoEvidence:
                 if error is None:
                     root, package, test = inputs
                     self.groups.setdefault((root, package), set()).add(test)
+                    if not check.get("batch", True):
+                        self.isolated.add(inputs)
+        for root, package, test in self.isolated:
+            self.groups[(root, package)].discard(test)
 
     def check(self, root, package, test):
         key = (root, package, test)
         if key not in self.results:
-            names = sorted(self.groups.get((root, package), {test}))
+            names = [test] if key in self.isolated else sorted(self.groups.get((root, package), {test}))
             for name, result in run_go_tests(root, package, names).items():
                 self.results[(root, package, name)] = result
         return dict(self.results[key])

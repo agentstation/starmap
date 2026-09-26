@@ -133,6 +133,9 @@ between independent tests. Never cache a success receipt across changed inputs.
 The catalog acceptance runner groups selected Go tests by repository and package.
 Each group runs once per invocation with race detection, `-count=1`, and a
 five-minute timeout. This reuses immutable bootstrap data within that process.
+Long recovery tests use `"batch": false` in the acceptance registry for separate
+five-minute process budgets. Their assertions and required crash points remain
+part of the gate.
 
 Each selected test must run and pass exactly once in a complete package result.
 A skipped required subtest leaves its named parent unverified. A failed command

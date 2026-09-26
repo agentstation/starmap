@@ -870,6 +870,14 @@ class CatalogGoBatchTests(unittest.TestCase):
                     self.assertEqual(verifier.run_check('alpha', entry, roots, evidence)['status'], 'PASS')
                 self.assertEqual(run.call_count, 2)
 
+    def test_batch_policy_requires_a_boolean(self):
+        for value in [None, 0, 1, 'false', [], {}]:
+            with self.subTest(value=value), patch.object(verifier.subprocess, 'run') as run:
+                entry = dict(self.entry('TestAlpha'), batch=value)
+                result = verifier.run_check('alpha', entry, {'starmap': verifier.ROOT})
+                self.assertEqual(result['status'], 'FAIL')
+                run.assert_not_called()
+
     def test_real_go_selection_skip_and_invocation_lifetime(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -899,6 +907,13 @@ func TestSkipped(t *testing.T) { t.Skip("fixture skip") }
             evidence = verifier.GoEvidence([entries[0], skipped], roots)
             self.assertEqual(verifier.run_check('alpha', entries[0], roots, evidence)['status'], 'PASS')
             self.assertEqual(verifier.run_check('skipped', skipped, roots, evidence)['status'], 'UNVERIFIED')
+            self.assertEqual((root / 'processes').read_text().splitlines(), ['run'] * 3)
+            isolated = dict(entries[1], batch=False)
+            evidence = verifier.GoEvidence([entries[0], isolated, entries[1]], roots)
+            for entry in [entries[0], isolated, entries[1]]:
+                result = verifier.run_check(entry['test'], entry, roots, evidence)
+                self.assertEqual(result['status'], 'PASS', result)
+            self.assertEqual((root / 'processes').read_text().splitlines(), ['run'] * 5)
 
 
 if __name__ == '__main__':

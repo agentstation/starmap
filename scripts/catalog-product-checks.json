@@ -721,13 +721,15 @@
           "kind": "go_test",
           "repository": "starmap",
           "package": "./runtime",
-          "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+          "test": "TestPublishDirectoryMigrationRecoversProcessExit",
+          "batch": false
         },
         {
           "kind": "go_test",
           "repository": "starmap",
           "package": "./runtime",
-          "test": "TestDirectoryMigrationCompletionRecoversProcessExit"
+          "test": "TestDirectoryMigrationCompletionRecoversProcessExit",
+          "batch": false
         },
         {
           "kind": "go_test",
