@@ -1,5 +1,5 @@
 {
-  "state": "COMMITTED_REVIEW_RUNNING",
+  "state": "PUBLISHED_NATIVE_CI_RUNNING",
   "consumer_head": "beb1a8d697e614a5c4501bfc76e1aa3a3a11d1a3",
   "ci_run": 36245287434,
   "ci_conclusion": "success",
@@ -45,7 +45,6 @@
     "scope": "Pure-Go compilation only; native ACL behavior remains unverified."
   },
   "remaining": [
-    "Complete full branch review and update existing PR #384.",
     "Qualify native tests without required skips.",
     "Merge producer first and pass all 63 CSP8 subcases before consumer merge."
   ],
@@ -62,15 +61,31 @@
     "writing_exit_code": 2,
     "historical_diagnostics": 69,
     "new_diagnostics": 0,
-    "log": "review-plan-writing.log.gz",
+    "log": "publication-plan-writing.log.gz",
     "unchanged_diagnostics": true
   },
   "repair_commit": "0a110339856b5cef3fac11da012e43b41482dab7",
   "review": {
-    "status": "RUNNING",
+    "status": "PASS",
     "session": 81710,
-    "log": "/tmp/starport-384-access-review.log",
+    "log": "full-branch-review.log.gz",
     "max_passes": 32,
-    "scope": "Complete integration branch diff. Preserve all changes across review chunks."
+    "scope": "Complete integration branch diff. Preserve all changes across review chunks.",
+    "exit_code": 0,
+    "passes": 9,
+    "threshold": "P0",
+    "findings": 0,
+    "reviewer": "Claude Opus 5.5 high",
+    "bundle_bytes": 1848799,
+    "secret_scan": "PASS"
+  },
+  "published_head": "0a110339856b5cef3fac11da012e43b41482dab7",
+  "signature_verified": true,
+  "current_native": {
+    "run": 36247789871,
+    "session": 24040,
+    "status": "in_progress",
+    "url": "https://github.com/agentstation/starport/actions/runs/36247789871",
+    "watch_log": "/tmp/starport-384-access-native-watch.log"
   }
 }

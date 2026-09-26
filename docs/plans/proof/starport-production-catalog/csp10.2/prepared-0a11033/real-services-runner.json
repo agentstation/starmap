@@ -1,0 +1,58 @@
+{
+  "started_at": "2026-09-26T14:17:02.351059+00:00",
+  "status": "NOT_PASS",
+  "services": [
+    {
+      "role": "durable",
+      "id": "998faae3c7d6d98ec21f0d1fae2814a5e6980067e22ba2cedb3e1d8e3a0f802d",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:49211"
+    },
+    {
+      "role": "cache",
+      "id": "6faf24ea0b3aa3312b3d218e149c0284178d6334fa2cdfb1a90ee98f334a1f35",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:49213"
+    },
+    {
+      "role": "sql",
+      "id": "34c1ff1b26076c576615d604ed100792df2d40b27d6131e78e75715d0f960f01",
+      "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+      "address": "127.0.0.1:49214"
+    }
+  ],
+  "producer": "e042cf6e5017194d78c442c43dbe07031eaae8cd",
+  "consumer": "0a110339856b5cef3fac11da012e43b41482dab7",
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "module_files": {
+    "go.mod": "6df61da43f69a6f01a49f7ba44f7b04b3ca60235f8d1b8a783127c4fd2064a85",
+    "go.sum": "3349f61d0d2dab3755fd22308c560055f5a1a88bba557232481ee15b73deb5af"
+  },
+  "consumer_module": "github.com/agentstation/starmap v0.16.6-0.20260926123426-0e53e6f9cbda",
+  "command": [
+    "bash",
+    "scripts/verify-catalog-product.sh",
+    "--starport-root",
+    "/Users/jack/src/github.com/agentstation/starport-native-catalog",
+    "--task",
+    "CSP10.2",
+    "--json"
+  ],
+  "exit_code": 1,
+  "seconds": 246.48106208298123,
+  "cleanup": [
+    {
+      "id": "998faae3c7d6d98ec21f0d1fae2814a5e6980067e22ba2cedb3e1d8e3a0f802d",
+      "exit_code": 0
+    },
+    {
+      "id": "6faf24ea0b3aa3312b3d218e149c0284178d6334fa2cdfb1a90ee98f334a1f35",
+      "exit_code": 0
+    },
+    {
+      "id": "34c1ff1b26076c576615d604ed100792df2d40b27d6131e78e75715d0f960f01",
+      "exit_code": 0
+    }
+  ],
+  "finished_at": "2026-09-26T14:21:10.981301+00:00"
+}

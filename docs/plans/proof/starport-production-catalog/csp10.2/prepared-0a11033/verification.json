@@ -1,0 +1,55 @@
+{
+  "state": "PREPARATION_INCOMPLETE",
+  "producer": "e042cf6e5017194d78c442c43dbe07031eaae8cd",
+  "consumer": "0a110339856b5cef3fac11da012e43b41482dab7",
+  "selected_subcases": 10,
+  "passed": 9,
+  "unverified": 1,
+  "results": {
+    "A46.warm_no_stable_store_reads": "PASS",
+    "A46.dependency_revision_coherence": "PASS",
+    "A46.confirmed_absence_vs_unknown": "PASS",
+    "A46.local_mutation_fencing": "PASS",
+    "A46.fleet_receipt_vs_enforcement": "PASS",
+    "A46.missed_event_catchup": "PASS",
+    "A46.validity_skew_withdrawal": "UNVERIFIED",
+    "A46.cache_retry_batch_admission": "PASS",
+    "A46.cold_load_deadline_coalescing": "PASS",
+    "A46.bounded_tenant_working_set": "PASS"
+  },
+  "remaining": "A46.validity_skew_withdrawal has no registered behavior check. Complete its operation-specific clock contract at CSP10.2.",
+  "initial_attempt": {
+    "passed": 7,
+    "unverified": 3,
+    "reason": "Fleet SQL and capacity checks required dedicated environment settings."
+  },
+  "real_services": [
+    "durable Valkey",
+    "cache Valkey",
+    "PostgreSQL"
+  ],
+  "settings": [
+    "TEST_AUTHORIZATION_POSTGRES_URL",
+    "TEST_AUTHORIZATION_CAPACITY=1"
+  ],
+  "cleanup": [
+    {
+      "id": "998faae3c7d6d98ec21f0d1fae2814a5e6980067e22ba2cedb3e1d8e3a0f802d",
+      "exit_code": 0
+    },
+    {
+      "id": "6faf24ea0b3aa3312b3d218e149c0284178d6334fa2cdfb1a90ee98f334a1f35",
+      "exit_code": 0
+    },
+    {
+      "id": "34c1ff1b26076c576615d604ed100792df2d40b27d6131e78e75715d0f960f01",
+      "exit_code": 0
+    }
+  ],
+  "seconds": 246.48106208298123,
+  "secret_scan": {
+    "exit_code": 0,
+    "findings": 0
+  },
+  "scope": "Preparation only. CSP8 remains the sole active task. Source implementation, required review, and merges govern completion."
+}

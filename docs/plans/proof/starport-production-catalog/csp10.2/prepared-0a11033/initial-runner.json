@@ -1,0 +1,58 @@
+{
+  "started_at": "2026-09-26T14:14:36.306904+00:00",
+  "status": "NOT_PASS",
+  "services": [
+    {
+      "role": "durable",
+      "id": "6c1a635f70608bb82c7d3128c4ececf69a5f7eafff503f9ccf451b4d56c291cc",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:65438"
+    },
+    {
+      "role": "cache",
+      "id": "5b5af480beb36197f062ea0aa340a22c032549998a8e42d32d9135a3e18d055d",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:65439"
+    },
+    {
+      "role": "sql",
+      "id": "24ddd8d6f2b239202bf04c634304ff2797fccbf93f87e33a7ffd33a7d0a2f4ea",
+      "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+      "address": "127.0.0.1:65440"
+    }
+  ],
+  "producer": "e042cf6e5017194d78c442c43dbe07031eaae8cd",
+  "consumer": "0a110339856b5cef3fac11da012e43b41482dab7",
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "module_files": {
+    "go.mod": "6df61da43f69a6f01a49f7ba44f7b04b3ca60235f8d1b8a783127c4fd2064a85",
+    "go.sum": "3349f61d0d2dab3755fd22308c560055f5a1a88bba557232481ee15b73deb5af"
+  },
+  "consumer_module": "github.com/agentstation/starmap v0.16.6-0.20260926123426-0e53e6f9cbda",
+  "command": [
+    "bash",
+    "scripts/verify-catalog-product.sh",
+    "--starport-root",
+    "/Users/jack/src/github.com/agentstation/starport-native-catalog",
+    "--task",
+    "CSP10.2",
+    "--json"
+  ],
+  "exit_code": 1,
+  "seconds": 93.28906420900603,
+  "cleanup": [
+    {
+      "id": "6c1a635f70608bb82c7d3128c4ececf69a5f7eafff503f9ccf451b4d56c291cc",
+      "exit_code": 0
+    },
+    {
+      "id": "5b5af480beb36197f062ea0aa340a22c032549998a8e42d32d9135a3e18d055d",
+      "exit_code": 0
+    },
+    {
+      "id": "24ddd8d6f2b239202bf04c634304ff2797fccbf93f87e33a7ffd33a7d0a2f4ea",
+      "exit_code": 0
+    }
+  ],
+  "finished_at": "2026-09-26T14:16:14.208147+00:00"
+}
