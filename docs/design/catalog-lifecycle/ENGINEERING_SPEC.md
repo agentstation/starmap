@@ -2310,8 +2310,23 @@ These operations remain outside inference requests.
 The [fleet review resolution](../../plans/proof/starport-production-catalog/csp11/review-repairs-2026-09-26/REVIEW_RESOLUTION.md) adds three requirements before CSP11 merge.
 Fresh fleet approval needs an explicit operation that refuses existing, replaced, or uncertain state.
 Fleet retention must bound staged and committed bytes while protecting selected, accepted, rollback, and pinned generations.
-Baseline and acquisition-policy upgrades need a transition that fences incompatible writers and preserves permitted retained inputs.
-The recommendation for an explicit deployment-wide transition remains pending with the owner.
+
+D41 separates binary upgrades, catalog updates, and acquisition-policy changes.
+An established fleet retains its baseline, manifest, and reconstruction inputs independently of each binary.
+A compatible new or rollback binary uses that retained baseline, regardless of its packaged baseline.
+Missing or uncertain shared state requires recovery. It cannot authorize fresh initialization.
+An independently approved fresh deployment may start from its permitted baseline.
+
+Configured GitHub and Starmap updates remain automatic under existing source settings, pins, and authority rules.
+An embedded-only fleet promotes a packaged baseline through an explicit operation.
+An acquisition-policy change requires one coordinated configuration apply that fences the previous policy.
+Credential rotation within the same declared identity and scope does not change that policy.
+Unsupported retained formats refuse acquisition without inventing catalog permissions.
+Software rollback and catalog rollback remain separate operations.
+
+The [approved transition contract](../../plans/proof/starport-production-catalog/csp11/upgrade-contract-2026-09-26/CONTRACT.md) defines required validation, native fencing, and retry evidence.
+CSP11 owns implementation and qualification. Configuration UI integration remains with its existing task.
+These operations must not add storage calls to inference requests.
 
 Redis or Valkey Cluster requires every key in one atomic operation to share a
 hash slot. The implementation must prove this layout before advertising
@@ -2421,7 +2436,7 @@ Cleanup must preserve current, accepted, pinned, and recovery-required payloads.
 
 ### 8.6 Recipe format, migration, and disaster recovery
 
-CSP13 must define upgrade recovery when a new baseline cannot replay retained acquisition inputs.
+CSP11 retains the fleet baseline across binary upgrades under D41. CSP13 owns recovery from missing or unsupported retained state.
 An incompatible replica can read a supported accepted catalog but cannot own acquisition.
 Do not bypass replay checks to complete a rolling upgrade.
 Qualify the migration and rollback path before declaring that upgrade supported.

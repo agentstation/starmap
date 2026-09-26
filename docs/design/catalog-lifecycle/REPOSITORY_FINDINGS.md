@@ -3728,3 +3728,13 @@ These clock results do not establish complete gateway latency or multi-host prop
 
 The [proof](../../plans/proof/starport-production-catalog/csp10.2/merged-qualification-2026-09-26/verification.json) passes all ten A46 subcases. The toolchain is Go 1.27.1.
 It records 192 named passing test events, with no failures or skips. CSP10.2 is complete at Starport merge `f5f066ddb`.
+
+## September 26 fleet upgrade decision
+
+D41 retains the fleet baseline independently of binary releases.
+The existing replay digest includes the packaged baseline, but recovery records omit its complete bytes.
+That combination can prevent every upgraded replica from owning refresh.
+The [transition contract](../../plans/proof/starport-production-catalog/csp11/upgrade-contract-2026-09-26/CONTRACT.md) assigns the repair and seventeen acceptance conditions to CSP11.
+
+Configured catalog updates remain automatic. Acquisition-policy apply and embedded-only promotion remain explicit.
+The owner decision is complete. Implementation, native qualification, review, and both merges remain open.

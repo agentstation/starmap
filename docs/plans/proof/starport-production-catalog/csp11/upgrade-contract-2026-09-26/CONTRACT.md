@@ -1,6 +1,6 @@
 # Fleet upgrade transition contract
 
-Status: proposed transition design. The owner decision about automatic baseline adoption remains pending.
+Status: approved third option under D41 on September 26, 2026. Implementation and qualification remain open.
 Owner: CSP11. Current producer: `75e84878d8520a9c5f456643f929bc776d52fa3e`.
 Current consumer: `ac679bf6464e448b63576deed54dbdbd0f7696e6`.
 
@@ -20,7 +20,7 @@ The current lease and head contracts do not select a deployment-wide acquisition
 Removing the replay check would let replicas with different policies alternate publication ownership.
 A transition must repair the deadlock and preserve the refusal of ordinary incompatible publication.
 
-## Shared requirements for either adoption policy
+## Coordinated transition requirements
 
 | Boundary | Required behavior |
 | --- | --- |
@@ -52,8 +52,8 @@ Do not silently discard incompatible retained inputs. Report the conflicting sco
 A source or authority change must use the existing source-transition and permission rules.
 Starmap owns this validation. The storage adapter must preserve recovery bytes as opaque data.
 
-The recovery record contains a compatibility digest, not a complete previous baseline.
-Target reconstruction must therefore have an explicit validation contract. It must not claim to replay an unavailable old baseline.
+The current recovery record lacks the previous baseline. The replacement format must retain its complete validated manifest and payload.
+Replay must use that retained baseline. A corrupt or unavailable baseline must refuse acquisition.
 The target candidate and its retained input selection must remain stable across a retried transition.
 
 ## Required acceptance evidence
@@ -72,11 +72,27 @@ The target candidate and its retained input selection must remain stable across 
 Qualification must use real Valkey and PostgreSQL, with separate publisher processes for stale-owner and recovery cases.
 An in-process adapter can test runtime composition, but cannot prove native fencing.
 
-## Pending product decision
+## Approved upgrade policy
 
-The recommendation requires one explicit deployment-wide transition for either a baseline change or an acquisition-policy change.
-Ordinary source refresh remains automatic. Operators can include the transition in their deployment procedure.
+Binary upgrades retain the active baseline and reconstruction inputs independently of the packaged baseline.
+A compatible software rollback uses the same retained state. Catalog rollback is a separate explicit operation.
+A fresh deployment can initialize from a permitted baseline only after independent fresh-deployment approval.
+Missing or uncertain state in an established deployment requires recovery.
 
-The alternative automatically adopts a newer baseline and requires an explicit acquisition-policy transition.
-That alternative also needs a trusted baseline ordering rule and protection against automatic downgrade.
-Neither choice permits replicas to alternate incompatible publication policies.
+Configured GitHub and Starmap catalog updates remain automatic under existing controls, pins, and authority constraints.
+An acquisition-policy change requires one coordinated configuration apply.
+An embedded-only fleet promotes a packaged baseline through an explicit operation.
+Credential rotation within the same identity and declared scope does not require a policy transition.
+
+Internal authority remains binding. A binary upgrade cannot enable public fallback or expand permission.
+Request admission continues to use the accepted catalog in memory.
+
+## Additional D41 acceptance evidence
+
+11. Different binary baselines replay the same retained fleet inputs, including after every old replica stops.
+12. A configured upstream update advances normally across mixed binary baselines.
+13. Embedded-only deployments retain their baseline until explicit promotion, including during software rollback.
+14. Fresh initialization remains explicit. Missing, corrupt, or unsupported retained baseline data refuses acquisition.
+15. Same-scope credential rotation preserves policy identity. Different scope selection requires coordinated apply.
+16. Promotion preserves pins, source authority, valid permission deadlines, and explicit removal rules.
+17. Transition and upgrade operations add no request-path storage calls.
