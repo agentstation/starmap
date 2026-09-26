@@ -16,6 +16,7 @@ import constructor_network
 import cold_server
 import native_catalog
 from test_catalog_component_checks import ComponentCheckBoundaryTests
+from test_catalog_sdk import CatalogSDKTests
 
 
 class CatalogVerifierTests(unittest.TestCase):
@@ -30,6 +31,26 @@ class CatalogVerifierTests(unittest.TestCase):
         result = subprocess.run([sys.executable, "-I", "-c", script, str(Path(verifier.__file__).resolve())],
                                 capture_output=True, text=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_console_checks_accept_typescript_and_reject_unsafe_paths(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "console").mkdir()
+            (root / "console/package.json").write_text("{}")
+            report = {"success": True, "testResults": [{"assertionResults": [
+                {"fullName": "catalog contract", "status": "passed"}]}]}
+
+            def run(command, **kwargs):
+                output = next(value.split("=", 1)[1] for value in command if value.startswith("--outputFile="))
+                Path(output).write_text(json.dumps(report))
+                return subprocess.CompletedProcess(command, 0, "", "")
+
+            for file in ("src/catalog.test.ts", "src/catalog.test.tsx", "src/../catalog.test.ts", "catalog.test.ts", "src/catalog.ts"):
+                with self.subTest(file=file), patch.object(verifier.subprocess, "run", side_effect=run) as execute:
+                    result = verifier.run_vitest({"repository": "starport", "files": [file], "tests": ["catalog contract"]}, {"starport": root})
+                    valid = file in ("src/catalog.test.ts", "src/catalog.test.tsx")
+                    self.assertEqual(result["status"], "PASS" if valid else "FAIL")
+                    self.assertEqual(execute.call_count, int(valid))
 
     def test_complete_red_report(self):
         read_json = verifier.read_json
@@ -121,6 +142,21 @@ class CatalogVerifierTests(unittest.TestCase):
             result = verifier.run_check('runner-fixture', entry, {'starmap': verifier.ROOT})
         self.assertEqual(result['status'], 'FAIL')
 
+    def test_go_evidence_reuse_is_limited_to_one_invocation(self):
+        entry = {'kind': 'go_test', 'repository': 'starmap', 'package': './pkg/errors', 'test': 'TestBudget'}
+        roots = {'starmap': verifier.ROOT}
+        for action, expected in [('pass', 'PASS'), ('skip', 'UNVERIFIED')]:
+            output = subprocess.CompletedProcess([], 0, json.dumps({'Test': 'TestBudget', 'Action': action}), '')
+            evidence = {}
+            with patch.object(verifier.subprocess, 'run', return_value=output) as run:
+                first = verifier.run_check('first', entry, roots, evidence)
+                second = verifier.run_check('second', entry, roots, evidence)
+                self.assertEqual(first['status'], expected)
+                self.assertEqual(second['status'], expected)
+                self.assertEqual(run.call_count, 1)
+                verifier.run_check('next-invocation', entry, roots, {})
+                self.assertEqual(run.call_count, 2)
+
     def test_combined_check_needs_every_result(self):
         self.assertEqual(verifier.run_check('E01', {'kind': 'all', 'checks': []}, {})['status'], 'FAIL')
         self.assertEqual(verifier.run_check('E01', {'kind': 'all', 'checks': [None]}, {})['status'], 'UNVERIFIED')
@@ -147,7 +183,7 @@ class CatalogVerifierTests(unittest.TestCase):
 
 
     def performance_profile(self):
-        return verifier.read_json(verifier.ROOT / 'docs/plans/proof/starport-production-catalog/csp0.4/numeric-profile.json')
+        return verifier.read_json(verifier.ROOT / 'docs/plans/proof/starport-production-catalog/csp12.1/performance-profile.json')
 
     def performance_baseline(self):
         return verifier.read_json(verifier.ROOT / 'docs/plans/proof/starport-production-catalog/csp0.4/baseline-run-1.json')
@@ -212,7 +248,10 @@ class CatalogVerifierTests(unittest.TestCase):
                 verifier.validate_performance_profile(profile)
 
     def test_numeric_profile_cannot_relax_correctness_for_latency(self):
-        for field, value in [('permission_validity_seconds', 600), ('maximum_clock_uncertainty_seconds', 60),
+        for field, value in [('gateway_authorization_lifetime_seconds', 300), ('revocation_propagation_target_seconds', 60),
+                             ('gateway_authorization_clock', 'wall-clock'), ('unknown_clock', 'allow'),
+                             ('authority_receipt_maximum_clock_uncertainty_seconds', 60),
+                             ('authority_receipt_clock_contract', 'local-ttl'),
                              ('unknown_required_budget', 'allow'), ('admission_mode', 'unbounded-local'),
                              ('authority_activation_failure', 'use-old-policy'), ('controlled_backend_recovery', False)]:
             profile = self.performance_profile()

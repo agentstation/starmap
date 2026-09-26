@@ -47,3 +47,13 @@ func (r *Runtime) readPermissionClock() permission.ClockReading {
 	uncertainty, known := r.config.permissionClockUncertainty()
 	return permission.ClockReading{Time: r.config.now(), Uncertainty: uncertainty, Known: known}
 }
+
+// PermissionClock returns the current permission time and its uncertainty from cached evidence.
+// It starts no observation or I/O. An absent runtime or clock returns unknown time.
+// Hosts must reject unknown time and uncertainty outside their admission bounds.
+func (r *Runtime) PermissionClock() permission.ClockReading {
+	if r == nil {
+		return permission.ClockReading{}
+	}
+	return r.readPermissionClock()
+}

@@ -795,16 +795,17 @@ scopes:
             publish_channel = checked.push_document
 
             def interrupt_second_channel(branch, *args):
-                if branch == "catalog/v1":
-                    raise publication.PublicationError("fixture interrupted before legacy channel")
+                if branch == "catalog/v2":
+                    raise publication.PublicationError("fixture interrupted before receipt channel")
                 return publish_channel(branch, *args)
 
             with patch.object(checked, "push_document", side_effect=interrupt_second_channel):
-                with self.assertRaisesRegex(publication.PublicationError, "before legacy channel"):
+                with self.assertRaisesRegex(publication.PublicationError, "before receipt channel"):
                     checked.finish()
             partial = {name: checked.read_branch(name, "channel.json") for name in channel_state}
-            self.assertEqual(record["artifact_tag"], partial["catalog/v2"]["document"]["tag"])
-            self.assertIsNone(partial["catalog/v1"]["document"])
+            self.assertIsNotNone(partial["catalog/v1"]["document"], "publish legacy freshness before the completion receipt")
+            self.assertEqual(record["artifact_tag"], partial["catalog/v1"]["document"]["tag"])
+            self.assertIsNone(partial["catalog/v2"]["document"])
             self.assertFalse(publication.completed(record, partial))
             self.assertNotEqual("published", checked.emitted.get("status"))
             retained_releases = copy.deepcopy(platform["releases"])
@@ -839,6 +840,30 @@ scopes:
             self.assertEqual({record["artifact_tag"]}, {value["document"]["tag"] for value in final.values()})
             self.assertEqual({record["artifact_tag"], record["receipt_tag"]}, set(platform["releases"]))
             self.assertEqual("published", checked.emitted["status"])
+            self.assertEqual(1, platform["creates"])
+            self.assertEqual(1, platform["merges"])
+
+            retry = resume("completed-retry")
+            retry.fixture["accepted_digests"].update(checked.fixture["accepted_digests"])
+            publication.write_json(retry.control, {"pending": record, "pending_head": "", "channels": final})
+            before = {name: Path(state["path"]).read_bytes() for name, state in final.items()}
+            retry.publish()
+            retry.promote()
+            with patch.dict(os.environ, {
+                "CATALOG_PROMOTED_COMMIT": retry.emitted["source_commit"],
+                "CATALOG_PROMOTED_CHECKOUT": str(retry.emitted["checkout"]),
+            }):
+                retry.channels()
+            for name, raw in before.items():
+                output = retry.root / "channels" / (name.replace("/", "-") + ".json")
+                self.assertEqual(raw, output.read_bytes(), name + " changed on completed retry")
+                retry.fixture["accepted_digests"].add(publication.checksum(output))
+            retry.finish()
+            for name, prior in final.items():
+                current = retry.read_branch(name, "channel.json")
+                self.assertEqual(prior["commit"], current["commit"], name + " created a retry commit")
+                self.assertEqual(before[name], Path(current["path"]).read_bytes())
+            self.assertEqual(retained_releases, platform["releases"])
             self.assertEqual(1, platform["creates"])
             self.assertEqual(1, platform["merges"])
 

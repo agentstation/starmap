@@ -287,7 +287,11 @@ func (r *Resolver) resolveField(
 	references *referenceResolution,
 ) (resolvedField, bool, error) {
 	key := CredentialFieldKey{ProviderID: providerID, FieldID: field.ID}
-	if policy, exists := r.references[key]; exists {
+	policy, exists, err := r.fieldReference(key)
+	if err != nil {
+		return resolvedField{}, false, err
+	}
+	if exists {
 		material, err := references.resolve(ctx, key, policy.Reference)
 		if err == nil {
 			value, selectErr := referenceValue(material, policy.Reference)
@@ -324,10 +328,10 @@ func (r *Resolver) resolveAmbientField(
 	}
 	for _, name := range candidates {
 		value, exists := r.lookup(name)
-		if !exists || (value == "" && r.environmentPolicy == EnvironmentPolicyLegacy) {
+		if !exists || r.environmentPolicy.skipsEmpty(value) {
 			continue
 		}
-		if value == "" {
+		if r.environmentPolicy.empty(value) {
 			return resolvedField{}, false, &errors.ValidationError{
 				Field: "provider.credentials.environment", Value: name,
 				Message: "explicit empty selection disables credential fallback",

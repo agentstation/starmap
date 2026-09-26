@@ -101,17 +101,25 @@ def registered_check(args, registry, identity):
     return registry["checks"].get(identity), "product"
 
 
-def run_check(identity, entry, roots):
+def run_check(identity, entry, roots, go_evidence=None):
     if entry is None:
         return {"status": "UNVERIFIED", "reason": "No behavior check is registered."}
     if entry.get("kind") == "all":
         children = entry.get("checks", [])
         if not children:
             return {"status": "FAIL", "reason": "A combined check needs evidence."}
-        results = [run_check(identity, child, roots) for child in children]
+        results = [run_check(identity, child, roots, go_evidence) for child in children]
         states = [result["status"] for result in results]
         status = "FAIL" if "FAIL" in states else "UNVERIFIED" if "UNVERIFIED" in states else "PASS"
         return {"status": status, "checks": results}
+    if entry.get("kind") == "catalog_sdk":
+        root = roots.get("starport")
+        if root is None:
+            return {"status": "UNVERIFIED", "reason": "The Starport repository is unavailable."}
+        spec = importlib.util.spec_from_file_location("catalog_sdk", ROOT / "scripts/catalog_sdk.py")
+        adapter = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(adapter)
+        return adapter.verify(root)
     if entry.get("kind") == "native_ci":
         root = roots.get(entry.get("repository"))
         if root is None:
@@ -191,6 +199,9 @@ def run_check(identity, entry, roots):
     if not re.fullmatch(r"Test[A-Za-z0-9_]+", test) or not package.startswith("./") or ".." in package.split("/")[1:]:
         return {"status": "FAIL", "reason": "Invalid named Go behavior check."}
     command = ["go", "test", "-race", "-count=1", "-timeout", "5m", "-json", "-run", f"^{test}$", package]
+    evidence_key = (str(root.resolve()), tuple(command))
+    if go_evidence is not None and evidence_key in go_evidence:
+        return dict(go_evidence[evidence_key])
     try:
         result = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=330)
     except (OSError, subprocess.TimeoutExpired) as error:
@@ -212,8 +223,11 @@ def run_check(identity, entry, roots):
         status, reason = "UNVERIFIED", "The named behavior test has no passing result."
     else:
         status, reason = "PASS", "The named behavior test passed in this invocation."
-    return {"status": status, "reason": reason, "command": command, "cwd": str(root),
-            "exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr}
+    evidence = {"status": status, "reason": reason, "command": command, "cwd": str(root),
+                "exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr}
+    if go_evidence is not None:
+        go_evidence[evidence_key] = evidence
+    return dict(evidence)
 
 
 def run_vitest(entry, roots):
@@ -222,7 +236,7 @@ def run_vitest(entry, roots):
     if root is None or not (root / "console/package.json").is_file():
         return {"status": "UNVERIFIED", "reason": "The required console is unavailable."}
     if not files or not tests or len(tests) != len(set(tests)) or any(
-        not file.startswith("src/") or not file.endswith(".test.tsx") or ".." in file.split("/") for file in files
+        not file.startswith("src/") or not file.endswith((".test.ts", ".test.tsx")) or ".." in file.split("/") for file in files
     ):
         return {"status": "FAIL", "reason": "Invalid named console behavior checks."}
     with tempfile.TemporaryDirectory(prefix="catalog-console-check-") as directory:
@@ -523,9 +537,12 @@ def validate_performance_profile(profile):
         if not limits["p50"] <= limits["p95"] <= limits["p99"] <= limits["p999"]:
             raise ValueError("Latency percentile targets must be ordered.")
     correctness = profile["correctness"]
-    if (correctness["permission_validity_seconds"] != 300 or correctness["maximum_clock_uncertainty_seconds"] != 30
+    if (correctness["gateway_authorization_lifetime_seconds"] != 60 or correctness["revocation_propagation_target_seconds"] != 2
+            or correctness["authority_receipt_maximum_clock_uncertainty_seconds"] != 30
+            or correctness["gateway_authorization_clock"] != "suspend-aware-elapsed"
+            or correctness["authority_receipt_clock_contract"] != "qualified-utc-unless-receipt-allows-conservative-elapsed-deadline"
             or correctness["admission_mode"] != "atomic-per-attempt" or correctness["unknown_required_budget"] != "refuse-retryable"
-            or correctness["authority_activation_failure"] != "block-new-inference" or correctness["unknown_clock"] != "refuse"):
+            or correctness["authority_activation_failure"] != "block-new-inference" or correctness["unknown_clock"] != "refuse-affected-operation"):
         raise ValueError("Performance cannot weaken the accepted correctness contract.")
     evidence = profile["evidence"]
     if (evidence["runs"] < 3 or evidence["minimum_samples_per_variant"] < 100_000 or evidence["minimum_seconds_per_run"] < 600
@@ -647,9 +664,10 @@ def main():
         selected = select_checks(args, roster)
         roots = {"starmap": ROOT, "starport": args.starport_root.resolve()}
         results = {}
+        go_evidence = {}
         for item in selected:
             entry, scope = registered_check(args, registry, item)
-            results[item] = run_check(item, entry, roots)
+            results[item] = run_check(item, entry, roots, go_evidence)
             results[item]["evidence_scope"] = scope
         publication_cases = set(roster["qualification"]["requires_published_assets"])
         qualification_required = bool(

@@ -43,6 +43,7 @@ type policyRecord struct {
 type FilePolicyStore struct {
 	directory *privatefiles.Directory
 	owner     PolicyOwner
+	current   EnvironmentPolicy
 }
 
 // OpenFilePolicyStore initializes explicit private storage without reading provider credentials.
@@ -61,7 +62,7 @@ func OpenFilePolicyStore(ctx context.Context, path string, owner PolicyOwner, in
 	if err != nil {
 		return nil, err
 	}
-	store := &FilePolicyStore{directory: directory, owner: owner}
+	store := &FilePolicyStore{directory: directory, owner: owner, current: initial.current()}
 	if _, err := store.read(policyRecordName, ""); err == nil {
 		return store, nil
 	} else if !os.IsNotExist(err) {
@@ -89,7 +90,7 @@ func (s *FilePolicyStore) Policy(ctx context.Context, provider catalogs.Provider
 	if err != nil {
 		return "", err
 	}
-	if base.Policy == EnvironmentPolicyCurrent {
+	if base.Policy == s.current {
 		return base.Policy, nil
 	}
 	record, err := s.read(providerPolicyName(provider), provider)
@@ -99,7 +100,7 @@ func (s *FilePolicyStore) Policy(ctx context.Context, provider catalogs.Provider
 	if err != nil {
 		return "", err
 	}
-	if record.Policy != EnvironmentPolicyCurrent {
+	if record.Policy != s.current {
 		return "", policyStoreError("provider migration requires the current policy")
 	}
 	return record.Policy, nil
@@ -108,10 +109,10 @@ func (s *FilePolicyStore) Policy(ctx context.Context, provider catalogs.Provider
 // Accept records a provider migration after complete material comparison succeeds.
 func (s *FilePolicyStore) Accept(ctx context.Context, provider catalogs.ProviderID) error {
 	policy, err := s.Policy(ctx, provider)
-	if err != nil || policy == EnvironmentPolicyCurrent {
+	if err != nil || policy == s.current {
 		return err
 	}
-	record := policyRecord{SchemaVersion: 1, Owner: s.owner, Provider: provider, Policy: EnvironmentPolicyCurrent}
+	record := policyRecord{SchemaVersion: 1, Owner: s.owner, Provider: provider, Policy: s.current}
 	if err := s.create(ctx, providerPolicyName(provider), record); err != nil && !errors.IsConflict(err) {
 		return err
 	}
@@ -119,7 +120,7 @@ func (s *FilePolicyStore) Accept(ctx context.Context, provider catalogs.Provider
 	if err != nil {
 		return err
 	}
-	if accepted != EnvironmentPolicyCurrent {
+	if accepted != s.current {
 		return policyStoreError("provider policy did not advance")
 	}
 	return nil
@@ -137,7 +138,7 @@ func (s *FilePolicyStore) read(name string, provider catalogs.ProviderID) (polic
 		return policyRecord{}, policyStoreError("policy record is invalid")
 	}
 	if err := rejectTrailingJSON(decoder); err != nil || record.SchemaVersion != 1 || record.Owner != s.owner ||
-		record.Provider != provider || !validEnvironmentPolicy(record.Policy) {
+		record.Provider != provider || record.Policy.current() != s.current {
 		return policyRecord{}, policyStoreError("policy record does not match its owner, provider, or supported schema")
 	}
 	canonical, err := json.Marshal(record)
@@ -164,7 +165,7 @@ func providerPolicyName(provider catalogs.ProviderID) string {
 }
 
 func validEnvironmentPolicy(policy EnvironmentPolicy) bool {
-	return policy == EnvironmentPolicyLegacy || policy == EnvironmentPolicyCurrent
+	return policy.current() != ""
 }
 
 func policyStoreError(message string) error {

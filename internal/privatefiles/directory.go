@@ -103,15 +103,20 @@ func (d *Directory) Open() (*os.Root, error) {
 
 // Child validates or privately creates one child under the bound directory handle.
 func (d *Directory) Child(name string) (*Directory, error) {
-	return d.child(name, true)
+	return d.child(name, true, false)
+}
+
+// CreateChild exclusively creates one private child directory.
+func (d *Directory) CreateChild(name string) (*Directory, error) {
+	return d.child(name, true, true)
 }
 
 // ExistingChild binds an existing child without creating any paths.
 func (d *Directory) ExistingChild(name string) (*Directory, error) {
-	return d.child(name, false)
+	return d.child(name, false, false)
 }
 
-func (d *Directory) child(name string, create bool) (*Directory, error) {
+func (d *Directory) child(name string, create, exclusive bool) (*Directory, error) {
 	if err := childName(name); err != nil {
 		return nil, err
 	}
@@ -121,8 +126,8 @@ func (d *Directory) child(name string, create bool) (*Directory, error) {
 	}
 	defer func() { _ = root.Close() }()
 	info, err := root.Lstat(name)
-	if os.IsNotExist(err) && create {
-		if err := CreateChild(root, name); err != nil && !os.IsExist(err) {
+	if create && (os.IsNotExist(err) || exclusive) {
+		if err := CreateChild(root, name); err != nil && (exclusive || !os.IsExist(err)) {
 			return nil, err
 		}
 		info, err = root.Lstat(name)

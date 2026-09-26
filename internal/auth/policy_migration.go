@@ -20,7 +20,7 @@ type MigrationResolver struct {
 
 // NewMigrationResolver adds persistent selection policy to catalog credential resolution.
 func NewMigrationResolver(resolver *Resolver, store PolicyStore) (*MigrationResolver, error) {
-	if resolver == nil || store == nil || resolver.environmentPolicy != EnvironmentPolicyCurrent {
+	if resolver == nil || store == nil || resolver.environmentPolicy == "" || resolver.environmentPolicy != resolver.environmentPolicy.current() {
 		return nil, policyStoreError("migration requires a current resolver and policy store")
 	}
 	return &MigrationResolver{resolver: resolver, store: store}, nil
@@ -43,18 +43,18 @@ func (m *MigrationResolver) ResolveCatalog(ctx context.Context, provider *catalo
 	if err != nil {
 		return sources.ProviderCredentialMaterial{}, err
 	}
-	if policy == EnvironmentPolicyCurrent {
+	if policy == m.resolver.environmentPolicy {
 		return m.resolver.ResolveCatalog(ctx, provider)
 	}
-	if policy != EnvironmentPolicyLegacy {
+	if policy != m.resolver.environmentPolicy.legacy() {
 		return sources.ProviderCredentialMaterial{}, policyStoreError("stored selection policy is not supported")
 	}
 	inputs := newPolicyInputs(m.resolver, provider.ID)
-	current, err := inputs.resolver(EnvironmentPolicyCurrent).ResolveCatalog(ctx, provider)
+	current, err := inputs.resolver(m.resolver.environmentPolicy).ResolveCatalog(ctx, provider)
 	if err != nil {
 		return sources.ProviderCredentialMaterial{}, err
 	}
-	legacy, err := inputs.resolver(EnvironmentPolicyLegacy).ResolveCatalog(ctx, provider)
+	legacy, err := inputs.resolver(m.resolver.environmentPolicy.legacy()).ResolveCatalog(ctx, provider)
 	if err != nil && !missingCatalogCredentials(err) {
 		return sources.ProviderCredentialMaterial{}, err
 	}

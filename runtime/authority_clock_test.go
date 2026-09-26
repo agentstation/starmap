@@ -134,3 +134,26 @@ func authorityClockRuntime(t *testing.T, p authorityPermissions, clock func() pe
 		lease:     newLeaseKeeper(nil, "clock-test", config.now),
 	}
 }
+
+func TestPublicPermissionClockPreservesQualifiedSample(t *testing.T) {
+	sample := permission.ClockReading{Time: time.Unix(1000, 0), Uncertainty: time.Second, Known: true}
+	var calls int
+	config := defaults()
+	config.permissionClockReading = func() permission.ClockReading { calls++; return sample }
+	r := &Runtime{config: *config}
+	if got := r.PermissionClock(); got != sample || calls != 1 {
+		t.Fatalf("clock = %+v, calls = %d", got, calls)
+	}
+	if allocations := testing.AllocsPerRun(100, func() { _ = r.PermissionClock() }); allocations != 0 {
+		t.Fatalf("clock allocations = %v", allocations)
+	}
+	sample.Known = false
+	if r.PermissionClock().Known {
+		t.Fatal("unknown source became qualified")
+	}
+	for _, empty := range []*Runtime{nil, {}, {config: *defaults()}} {
+		if empty.PermissionClock().Known {
+			t.Fatal("absent clock became qualified")
+		}
+	}
+}

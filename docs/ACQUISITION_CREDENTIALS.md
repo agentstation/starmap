@@ -53,8 +53,26 @@ Pass `CredentialResolverConfig.References` to select provider fields explicitly.
 The host must set `LegacyInstallation` from its existing deployment state when no policy record exists.
 Existing records take precedence over this initialization hint.
 
-Omitting `State` creates an ephemeral resolver with the current Starmap precedence.
+`Product` defaults to `CredentialProductStarmap`.
+Select `CredentialProductStarport` for embedded gateway acquisition.
+Its current order is `STARPORT_CATALOG_`, `STARMAP_`, `STARPORT_`, then catalog-declared conventional names.
+Each prefix uses the canonical provider and field IDs.
+Its legacy policy checks `STARPORT_` before conventional names.
+Migration compares the complete credential profile before it records the new policy.
+
+`Lookup` supplies the host environment, including values that the host loads from checked configuration.
+A nil lookup uses the process environment.
+The resolver uses this lookup for ambient names and explicit `env:` references.
+Explicit empty selections disable fallback under the current policy.
+Policy storage rejects records from another product policy family.
+
+Omitting `State` creates an ephemeral resolver with the selected product's current precedence.
 Construction reads no credential source. Only explicitly selected policy storage causes filesystem access during construction.
 Pass the resolver to `acquisition.WithCredentialResolver` or the provider fetcher's resolver option.
 The API does not inspect inference credentials or account repositories.
-Starport's ambient namespace and configuration authority require separate host integration.
+Starport must connect this API to its configuration authority and classify existing installations before selecting persistent state.
+
+The Starport policy also reads `STARPORT_CATALOG_<PROVIDER>_<FIELD>_REFERENCE`.
+Its `_FALLBACK_AMBIENT` suffix permits fallback only for a not-configured source.
+Explicit references in `CredentialResolverConfig.References` take precedence over these environment references.
+Reference aliases must not collide with credential value aliases.

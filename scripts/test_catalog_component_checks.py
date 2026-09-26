@@ -23,7 +23,7 @@ class ComponentCheckBoundaryTests(unittest.TestCase):
         def load(path):
             return self.registry if path == verifier.REGISTRY else self.roster
 
-        def run(identity, entry, roots):
+        def run(identity, entry, roots, go_evidence=None):
             if entry is None:
                 return {'status': 'UNVERIFIED'}
             return {'status': 'PASS', 'repository': entry['repository']}

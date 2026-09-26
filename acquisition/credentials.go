@@ -28,23 +28,46 @@ type CredentialPolicyState struct {
 	LegacyInstallation bool
 }
 
+// CredentialProduct selects the catalog acquisition policy family.
+type CredentialProduct string
+
+const (
+	// CredentialProductStarmap selects standalone Starmap acquisition.
+	CredentialProductStarmap CredentialProduct = "starmap"
+	// CredentialProductStarport selects embedded Starport acquisition.
+	CredentialProductStarport CredentialProduct = "starport"
+)
+
 // CredentialResolverConfig configures Starmap catalog acquisition without inference or account storage.
 type CredentialResolverConfig struct {
 	References []CredentialReference
+	// Product defaults to Starmap. It selects both current and legacy policy ordering.
+	Product CredentialProduct
+	// Lookup reads the host environment. Nil uses the process environment.
+	Lookup func(string) (string, bool)
 	// State selects explicit persistence. Nil uses the current policy without migration history.
 	State *CredentialPolicyState
 }
 
 // OpenCredentialResolver composes the built-in acquisition secret sources and selection policy.
 // It opens only explicitly selected policy storage and never reads credential sources during construction.
-// Ambient lookup uses STARMAP names before catalog-declared conventional names.
-// Hosts can select role-specific environment names through explicit references.
+// Product selects ambient precedence. Explicit references override ambient selection.
 func OpenCredentialResolver(ctx context.Context, config CredentialResolverConfig) (sources.ProviderCredentialResolver, error) {
 	if ctx == nil {
 		return nil, &errors.ValidationError{Field: "acquisition.credentials.context", Message: "is required"}
 	}
 	if err := ctx.Err(); err != nil {
 		return nil, err
+	}
+	current := auth.EnvironmentPolicyCurrent
+	legacy := auth.EnvironmentPolicyLegacy
+	switch config.Product {
+	case "", CredentialProductStarmap:
+	case CredentialProductStarport:
+		current = auth.EnvironmentPolicyStarportCurrent
+		legacy = auth.EnvironmentPolicyStarportLegacy
+	default:
+		return nil, &errors.ValidationError{Field: "acquisition.credentials.product", Message: "is not supported"}
 	}
 	policies := make(map[auth.CredentialFieldKey]auth.ReferencePolicy, len(config.References))
 	for _, selected := range config.References {
@@ -61,14 +84,14 @@ func OpenCredentialResolver(ctx context.Context, config CredentialResolverConfig
 		}
 		policies[key] = auth.ReferencePolicy{Reference: reference, FallbackAmbient: selected.FallbackAmbient}
 	}
-	resolver := auth.NewResolver(auth.WithReferencePolicies(policies))
+	resolver := auth.NewResolver(auth.WithReferencePolicies(policies), auth.WithEnvironmentPolicy(current), auth.WithEnvironmentLookup(config.Lookup))
 	if config.State == nil {
 		return resolver, nil
 	}
 	state := *config.State
-	initial := auth.EnvironmentPolicyCurrent
+	initial := current
 	if state.LegacyInstallation {
-		initial = auth.EnvironmentPolicyLegacy
+		initial = legacy
 	}
 	store, err := auth.OpenFilePolicyStore(ctx, state.Directory, auth.PolicyOwner{
 		Product: state.Product, Deployment: state.DeploymentID, Instance: state.InstanceID,

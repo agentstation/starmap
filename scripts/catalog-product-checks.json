@@ -390,6 +390,12 @@
           "repository": "starmap",
           "package": "./pkg/catalogs",
           "test": "TestBuildRejectsAmbiguousAliases"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestInferenceAliasUsesTargetPermissionAndExactProviderID"
         }
       ]
     },
@@ -407,6 +413,18 @@
           "repository": "starmap",
           "package": "./pkg/catalogs",
           "test": "TestProviderOfferingsPreserveProviderSpecificFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestPlanningCandidatesOwnMutableValues"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestIndexedRoutesRetainOrderAndCallerOwnership"
         }
       ]
     },
@@ -2072,6 +2090,2688 @@
     "A05.each_publication_failure": {
       "kind": "publication_recovery",
       "repository": "starmap"
+    },
+    "A11.acquisition_role_matrix": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialRolePrecedence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialEmptyOrInvalidSelectionIsTerminal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialAliasCollisionPrecedesLookup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionResolverReadsOnlyDeploymentLookup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionResolverRefusesWithoutDeploymentLookup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogLookupUsesCheckedFilesAndPreservesEmptyValues"
+        }
+      ]
+    },
+    "A11.inference_role_matrix": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceProductPrecedence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceStarmapFallbackRequiresOptIn"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceExplicitEmptyStopsFallback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestInferenceStarmapFallbackConfiguration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCredentialAliasCollisionsFailBeforeConnectorConstruction"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCredentialReferenceAliasCollisionsFailBeforeReads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestInferenceCredentialsNeverEnterCatalogState"
+        }
+      ]
+    },
+    "A11.upgrade_changed_selection": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialPolicyMigration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyUpgradeComparisonAndRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyStoreRefusesCorruptionAndOwnerMismatch"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyConcurrentAcceptance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionPolicyClassifiesBeforeStartupAndRetainsAcceptance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionPolicyRejectsInvalidMarkerBeforeCreatingState"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestInferencePolicyUsesCheckedConfigurationAndPersists"
+        }
+      ]
+    },
+    "A11.fresh_install_override": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialPolicyMigration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyUpgradeComparisonAndRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestInferencePolicyIsRecordedBeforeCatalogStartup"
+        }
+      ]
+    },
+    "A11.identical_values": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialPolicyMigration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyUpgradeComparisonAndRestart"
+        }
+      ]
+    },
+    "A11.explicit_reference": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportEnvironmentReferenceUsesHostLookup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportReferenceAliasCollisionPrecedesLookup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionRoleReferenceReadsPrivateFile"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionReferenceFailureDoesNotUseAmbientKey"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestExplicitCredentialReferencesPrecedeAmbientSources"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyUpgradeComparisonAndRestart"
+        }
+      ]
+    },
+    "A11.mixed_field_handle": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestStarportCredentialPolicyMigration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyUpgradeComparisonAndRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceRejectsConflictingSecretVersionsBeforeReads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceSecretRotationPublishesCompleteProfiles"
+        }
+      ]
+    },
+    "A12.each_supported_backend": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestSecretSnapshotRotatesCompleteProfilesAcrossBackends"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCredentialSourceConformance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestGoogleDefaultChainProjectsTokenAndProjectLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestAzureDefaultChainProjectsTokenLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestAWSDefaultChainProjectsCredentialLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestPublicCredentialCompositionDefersSecretReads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestDirectSecretSourceBackendsAreRegistered"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestGCPSecretManagerSourceResolvesVersionedJSONFieldAndCloses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestAzureKeyVaultSourceResolvesVersionedJSONFieldAndCloses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestAWSSecretsManagerSourceResolvesVersionedJSONFieldAndCloses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestVaultSourceResolvesVersionedFieldAndCloses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestOpenBaoSourceResolvesVersionedFieldAndCloses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCredentialSourceConformance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionRoleReferenceReadsPrivateFile"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials/cloudchain",
+          "test": "TestGoogleDefaultChainUsesCatalogScopeAndBearerField"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials/cloudchain",
+          "test": "TestGoogleDefaultProjectsCatalogProjectField"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials/cloudchain",
+          "test": "TestAzureDefaultChainUsesCatalogScopesAndBearerField"
+        }
+      ]
+    },
+    "A12.rotation_complete_version": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestSecretSnapshotRotatesCompleteProfilesAcrossBackends"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestSecretSnapshotRejectsVersionScopeConflictBeforeReads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogPolicyMigrationSharesExplicitSecretSnapshot"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceSecretRotationPublishesCompleteProfiles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceRejectsConflictingSecretVersionsBeforeReads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestDirectSecretSourcesUseRefreshAndWarmCacheLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferenceCachedMaterialDoesNotReadPolicyOrEnvironment"
+        }
+      ]
+    },
+    "A12.expired_revoked": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogRoleRefusesExpiredSourceMaterial"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogPolicyMigrationRefusesExpiryDuringAcceptance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogRoleBackendFailureRefusesStaleMaterialAndRecovers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogCredentialStatusReportsExpiryAsInvalid"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCredentialLifecycleRefreshFailureRevocationAndLeaderCancellation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCredentialRefreshRevokesDisappearedMaterial"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCredentialResolverRefreshesExpiredAndLeasedMaterial"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestTerminalRefreshFailureInvalidatesRequestCache"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestExpiredRefreshMaterialInvalidatesPriorRequestCache"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers",
+          "test": "TestReconcilerTerminalFailureRemovesPriorProvider"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers",
+          "test": "TestTerminalRefreshFailureRemainsVisibleWhenPublicationFails"
+        }
+      ]
+    },
+    "A12.backend_outage": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogRoleBackendFailureRefusesStaleMaterialAndRecovers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogRoleRequiresBoundedSourceRead"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestDirectSecretSourcesPropagateCancellationWithinBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCatalogPolicyMigrationNeverFallsBackAfterReferenceError"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestDirectSecretSourcesPropagateCancellationWithinBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCredentialLifecycleRefreshFailureRevocationAndLeaderCancellation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCachedProviderSourceNeverReadsBackend"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcquisitionReferenceFailureDoesNotUseAmbientKey"
+        }
+      ]
+    },
+    "A12.no_secret_disclosure": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestCredentialOriginsDoNotExposeOrShareMaterial"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/auth",
+          "test": "TestDirectSecretSourceErrorsDoNotExposeReferences"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestPublicCredentialCompositionMigratesAndRetainsPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/table",
+          "test": "TestProviderTableDoesNotExposeCredentialFingerprint"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestDirectSecretSourceErrorsDoNotExposeReferences"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestCredentialSourceConformance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestInferencePolicyUpgradeComparisonAndRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestInferenceCredentialsNeverEnterCatalogState"
+        }
+      ]
+    },
+    "A45.warm_no_derivation_or_io": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialWarmRequestsDoNotReadRepository"
+        }
+      ]
+    },
+    "A45.revision_owner_identity": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialOwnerAndEncryptionManagerIsolation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialStorageRotationRevocationAndRecreation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialExpiryAndContractChangeRequireReload"
+        }
+      ]
+    },
+    "A45.shared_grant_recheck": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialRefreshRejectsExternalGrantWithdrawal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialStorageRotationRevocationAndRecreation"
+        }
+      ]
+    },
+    "A45.rotation_expiry_revocation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialStorageRotationRevocationAndRecreation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialMutationRevokesPreviouslyReturnedHandles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchRejectsMaterialRevokedWhileWaitingForConnection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchRejectsMaterialExpiredWhileWaitingForConnection"
+        }
+      ]
+    },
+    "A45.revoked_refresh_fencing": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialInvalidationFencesInflightLoad"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialRefreshCannotRestoreInvalidatedEntry"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialLateSuccessCannotEscapeDeadline"
+        }
+      ]
+    },
+    "A45.cold_load_coalescing": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialColdLoadCoalescesSuccessAndFailure"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialCallerCancellationDoesNotCancelSharedLoad"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialTenantLoadLimitDoesNotBlockAnotherTenant"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialLoadDeadlineReleasesCapacity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialShutdownJoinsActiveLoad"
+        }
+      ]
+    },
+    "A45.outage_validity": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialOutageCannotExtendValidity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialValkeyOutageAndRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback"
+        }
+      ]
+    },
+    "A45.resident_secret_bounds": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialEntryLimitAndExpiryEviction"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialSecretByteLimitAndReclamation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialIdleEvictionRevokesOldHandles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialRefreshServesOldestScopesWithoutStarvation"
+        }
+      ]
+    },
+    "A45.encryption_and_disclosure": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialCachePreservesCiphertextAndRedaction"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestEncryptionServiceSecurityProperties"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestEncryptionService_InvalidDecryption"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/credentials",
+          "test": "TestEncryptionService_DifferentKeys"
+        }
+      ]
+    },
+    "A18.unauthorized_membership_redaction": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryPreservesMembershipWithoutAdapter"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryRequiresExplicitDisclosurePolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryRefusesColdInternalAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryRechecksAuthorityBeforeReturningFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryRejectsKnownAuthorityWithdrawal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/view",
+          "test": "TestViewerProjectionsFilterOfferingFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/view",
+          "test": "TestReaderProjectionPreservesPermittedFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/view",
+          "test": "TestReaderProjectionRejectsDifferentGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestDiscoveryCacheSeparatesDisclosureMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestDiscoveryCacheLookupRechecksAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCompatibilityDiscoveryRejectsWithdrawnAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCompatibilityProjectionRechecksAuthorityAtDelivery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryRouteWithoutProviderCredentials"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryRouteAppliesCurrentAccountDisclosure"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryRouteRequiresReadScope"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryViewerRejectsLostAccount"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryViewerRevalidatesConsoleSession"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCompatibilityAuthorsApplyCurrentDisclosure"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCompatibilityDisclosureRefusesPolicyChangeBeforeDelivery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCompatibilityRoutesRequireCurrentCatalog"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCatalogReaderRoutesExcludeDeniedMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCatalogReaderRoutesRefuseDifferentGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestDiscoveryDeliveryRechecksViewerAndAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestDiscoveryPolicyIntersectsAccountAndKey"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestEndpointLookupDoesNotRevealDeniedMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPAliasRemovalWithSerializedDiscoveryCache"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership"
+        }
+      ]
+    },
+    "A09.revoked_scope_restart": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAuthorityWithdrawalPersistsAcrossOfflineRestart"
+        }
+      ]
+    },
+    "A09.alias_cannot_restore_permission": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestInferenceAliasUsesTargetPermissionAndExactProviderID"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRouterRechecksCatalogPermissionBeforeAttempts"
+        }
+      ]
+    },
+    "A10.wrong_authority_refusal": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner"
+        }
+      ]
+    },
+    "A18.rename_alias_overlap": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestCanonicalAliasResolutionAndRemovalRetainGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestActivationRefusesAliasOfferingNameCollision"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestInferenceAliasUsesTargetPermissionAndExactProviderID"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPAliasRemovalWithSerializedDiscoveryCache"
+        }
+      ]
+    },
+    "A18.removed_id_error": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPCanonicalRemovalAfterSuccessfulInference"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestMissingModelReturnsNotFoundInBothInferenceProtocols"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestInferenceAliasUsesTargetPermissionAndExactProviderID"
+        }
+      ]
+    },
+    "A21.known_withdrawal_refusal": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestSnapshotPermissionTracksWithdrawalWithoutReplacingMetadata"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAuthorityFutureSchemaPermissionEnvelope"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRouterRechecksCatalogPermissionBeforeAttempts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestEmbeddingAndGenericAttemptsRecheckPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchRejectsCatalogWithdrawalWhileWaitingForConnection"
+        }
+      ]
+    },
+    "A21.partition_validity_expiry": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAuthorityPartitionRefusesAtPermissionExpiry"
+        }
+      ]
+    },
+    "A17.official_sdk_roster": {
+      "kind": "catalog_sdk"
+    },
+    "A09.authority_change": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestAuthorityChangeRequiresMatchingAcceptance"
+    },
+    "A10.cold_follower_refusal": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestAuthorityColdFollowerCannotServeBaseline"
+    },
+    "A25.inference_origin_changes": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestLiveCatalogDestinationTransition"
+    },
+    "A25.credential_placement_changes": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestLiveCatalogDestinationTransition"
+    },
+    "A25.byok_shared_stream_override": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestLiveCatalogDestinationTransition"
+    },
+    "A25.approved_local_exception": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLiveCatalogDestinationTransition"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestApplicationRefusesUnapprovedCredentialDestination"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestApplicationUsesExplicitCredentialDestinationApproval"
+        }
+      ]
+    },
+    "A25.product_path_isolation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderOwnsIndependentProductRoots"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogInheritanceExcludesNodeAndServerAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestStartupKeepsStarmapFilesAndServerSettingsIsolated"
+        }
+      ]
+    },
+    "A17.raw_http_both_api_families": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPCanonicalRemovalAfterSuccessfulInference"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPAliasRemovalWithSerializedDiscoveryCache"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestChatControllerOpenAIContract"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestChatControllerOpenRouterRoutingContract"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestEmbeddingsControllerOpenAIContract"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestEmbeddingsControllerOpenRouterContract"
+        }
+      ]
+    },
+    "A17.unsupported_field_contract": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestChatControllerRejectsUnknownOpenAIField"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestUnenforcedProviderFieldsHeader"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/protocol/openrouter",
+          "test": "TestAnUnknownEngineIsRefusedRatherThanIgnored"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/protocol/openrouter",
+          "test": "TestAnUnenforcedPluginIsRefusedRatherThanReported"
+        }
+      ]
+    },
+    "A17.identity_error_mapping": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPAliasRemovalWithSerializedDiscoveryCache"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestMissingModelReturnsNotFoundInBothInferenceProtocols"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestChatControllerOpenRouterStreamErrorContract"
+        }
+      ]
+    },
+    "A17.stream_refresh": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/server",
+      "test": "TestHTTPStreamRetainsCatalogDuringRefresh"
+    },
+    "A18.consistent_counts_prices": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/view",
+          "test": "TestCatalogViewsKeepOneOfferingPriceRecordAcrossRefresh"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/view",
+          "test": "TestReaderSummaryMatchesVisibleModelAndProviderLists"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/view",
+          "test": "TestViewerProjectionsFilterOfferingFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCatalogReaderRoutesExcludeDeniedMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCatalogReaderRoutesRefuseDifferentGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestOpenRouterPricingMirrorsTheCatalogProjection"
+        },
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/lib/modelFilter.test.ts"
+          ],
+          "tests": [
+            "provider filter uses offering providers",
+            "provider counts use distinct offering providers per model",
+            "author facet matches declared authors"
+          ]
+        }
+      ]
+    },
+    "A18.inflight_and_new_attempts": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPStreamRetainsCatalogDuringRefresh"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/registry",
+          "test": "TestRuntimeGenerationDrainsConnectors"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRouterRechecksCatalogPermissionBeforeAttempts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestSnapshotPermissionTracksWithdrawalWithoutReplacingMetadata"
+        }
+      ]
+    },
+    "A21.cache_retry_batch_admission": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCacheDeliveryRechecksCatalogPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestEmbeddingAndSemanticCachePermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRouterRechecksCatalogPermissionBeforeAttempts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestEmbeddingAndGenericAttemptsRecheckPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestQueuedBatchLineRechecksCatalogPermission"
+        }
+      ]
+    },
+    "A21.stream_policy_diagnostic": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogOperationReportsPermissionAndAdmittedStreamPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCacheDeliveryRechecksCatalogPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPStreamRetainsCatalogDuringRefresh"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestAdminRefreshReturnsAcceptedOperation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchRejectsCatalogWithdrawalWhileWaitingForConnection"
+        }
+      ]
+    },
+    "A44.exact_model_scaling": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestCatalogExactModelAllocationScaling"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestExactRouteLookupAllocationsDoNotScale"
+        }
+      ]
+    },
+    "A44.precomputed_static_candidates": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestCatalogExactModelAllocationScaling"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestCatalogIndexedSelectionMatchesFullCatalog"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryDoesNotCopyUndisclosedDefinitions"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryPreservesMembershipWithoutAdapter"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryRechecksAuthorityBeforeReturningFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryRejectsKnownAuthorityWithdrawal"
+        }
+      ]
+    },
+    "A44.auto_fallback_semantics": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestCatalogIndexedSelectionMatchesFullCatalog"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRouterUsesRoutableSnapshot"
+        }
+      ]
+    },
+    "A44.generation_lease_consistency": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/registry",
+          "test": "TestRuntimeGenerationDrainsConnectors"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestAliasRemovalKeepsAdmittedRequestAndRejectsNewAttempts"
+        }
+      ]
+    },
+    "A44.retained_generation_bounds": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/registry",
+          "test": "TestRuntimeGenerationCapacityPreservesLeases"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/registry",
+          "test": "TestRuntimeGenerationCapacityReservesConcurrentPreparations"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogCapacityRefusesBeforeAcceptance"
+        }
+      ]
+    },
+    "A44.embedded_catalog_profile": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestEmbeddedCatalogSelectionProfile"
+    },
+    "A49.callback_no_remote_io": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestAdvisoryHealthCallbacksAvoidStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestAdvisoryLatencyCallbacksAvoidStorage"
+        }
+      ]
+    },
+    "A49.bounded_background_exchange": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestHealthExchangeBounds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyExchangeBounds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyWorkerDoesNotBlockCallbacks"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestAdvisoryWorkersOwnStartAndShutdown"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestAdvisoryFleetFaultIsolation"
+        }
+      ]
+    },
+    "A49.local_breaker_immediacy": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestHealthWorkerCancelsBlockedStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestAdvisoryFleetFaultIsolation"
+        }
+      ]
+    },
+    "A49.stale_hint_expiry": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestPeerHealthExpiresWithoutRepublishing"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestPeerExpiryRestoresLocalEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestLocalResetRejectsOlderPeerEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestPeerExpiryPublishesFromAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyPeerValidity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyCachedHintExpiresWithoutStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyEmptyPeerScanClearsOldHints"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestPeerPublicationRenewsUnchangedHealthHint"
+        }
+      ]
+    },
+    "A49.cold_peer_refresh": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestSharedStoreConvergesTwoTrackers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestHealthWorkerRecoversAfterOutage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestSharedLatencyTrackerConvergesPeers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyWorkerRecoversAfterOutage"
+        }
+      ]
+    },
+    "A49.worker_close_and_reconnect": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestHealthWorkerCancelsBlockedStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestHealthWorkerRecoversAfterOutage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyWorkerDoesNotBlockCallbacks"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyWorkerRecoversAfterOutage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestAdvisoryWorkersOwnStartAndShutdown"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestAdvisoryWorkersCloseBeforeStart"
+        }
+      ]
+    },
+    "A49.fleet_fault_isolation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestAdvisoryFleetFaultIsolation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestHealthWorkerCancelsBlockedStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestLatencyWorkerDoesNotBlockCallbacks"
+        }
+      ]
+    },
+    "A46.cold_load_deadline_coalescing": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheCoalescesAndSeparatesCallerCancellation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheBoundsTenantLoadsWithoutBlockingOtherTenants"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheDeadlineAndCloseCancelWorkers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheGlobalLoadLimitProtectsInFlightEntries"
+        }
+      ]
+    },
+    "A46.local_mutation_fencing": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMutationRevokesCopiesAndInFlightLoads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestOverlappingMutationsKeepAdmissionClosed"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestConcurrentMutationCompletion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheMutationRejectsInFlightPublication"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestRepositorySourceRealStoresAndLocalMutation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization/revision",
+          "test": "TestKVRevisionFenceCoversSuccessAndFailure"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization/revision",
+          "test": "TestRepositoriesPublishEveryAuthorizationMutation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization/revision",
+          "test": "TestIdentityMutationsPublishSQLRevisions"
+        }
+      ]
+    },
+    "A46.warm_no_stable_store_reads": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheWarmReadsAndCallerOwnership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestSessionProjectionWarmReadsAvoidPolicyStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAuthorizationWarmRequestsAvoidStableReads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCachedTeamBudgetUsesAdmittedPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCachedAuthorizationRetainsRevocationThroughDiscoveryAndAttempts"
+        }
+      ]
+    },
+    "A46.confirmed_absence_vs_unknown": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestRepositorySourceDoesNotTreatFailureAsAbsence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheExpiryDoesNotConvertFailureToAbsence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestSessionProjectionRefusesUnknownGrantState"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAuthorizationUnknownAccountRefusesAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestBatchBudgetUnknownRequiredStateRefuses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestBatchBudgetConfirmedAbsenceNeedsNoUsageReader"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestBudgetMiddlewarePassesKeysWithoutBudgets"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestTeamBudgetReadErrorRefuses"
+        }
+      ]
+    },
+    "A46.cache_retry_batch_admission": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/execution",
+          "test": "TestRequestPermissionStopsRetryAndFallback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCachedDeliveryRetainsRequestPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCacheDeliveryRechecksCatalogPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestEmbeddingAndSemanticCachePermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCachedAuthorizationRetainsRevocationThroughDiscoveryAndAttempts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestQueuedAdmissionUsesCurrentPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestQueuedAdmissionRejectsChangedOwnershipOrScope"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestQueuedAdmissionRechecksAfterRateAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestQueuedBatchLineRechecksCatalogPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestQueuedBatchLineRechecksKeyPermission"
+        }
+      ]
+    },
+    "A46.missed_event_catchup": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorCatchesMissedChangeDuringOtherAuthorityOutage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorObservationsDoNotRenewPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorEpochChangeCannotRecoverUnderOldEpoch"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorRejectsRevisionRollback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorRetainsKnownWithdrawalAfterReadDeadline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestApplicationOwnsAuthorizationFencesAndCatchup"
+        }
+      ]
+    },
+    "A46.dependency_revision_coherence": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestAuthorityVectorCannotCompensateForStaleSQL"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestAuthorityVectorRequiresExactOwners"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheRejectsMissingDependenciesAndOversizedBundles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheRetainsEveryAuthorityRequirement"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestRepositorySourceRejectsForeignDependencies"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestWarmAuthorizationDiscoveryUsesCurrentAccountPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestIdentityAdmissionTracksMembershipAndDeduplicatesGrants"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryRouteWithoutProviderCredentials"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialInvalidationFencesInflightLoad"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialRefreshRejectsExternalGrantWithdrawal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/keyring",
+          "test": "TestManagedMaterialMutationRevokesPreviouslyReturnedHandles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestUserOnlySkipsOperatorResolution"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestBYOKWinsOverASharedCredentialUnderBYOKFirst"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestBYOKOnlyNeverReachesASharedCredential"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback"
+        }
+      ]
+    },
+    "A46.fleet_receipt_vs_enforcement": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/authorization",
+      "test": "TestFleetDurableReceiptPrecedesReplicaEnforcement"
+    },
+    "A46.bounded_tenant_working_set": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestAuthorizationTenantChurnCapacity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheBoundsTenantLoadsWithoutBlockingOtherTenants"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheGlobalLoadLimitProtectsInFlightEntries"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheEvictsWorkingSetAndCloseRevokesReceipts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheBoundsTotalBytes"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestBoundedStorageRead"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/policyrecord",
+          "test": "TestEncodedRecordBound"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/account",
+          "test": "TestAccountRepositoryRecordBounds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/apikey",
+          "test": "TestAPIKeyRepositoryRecordBounds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/identity",
+          "test": "TestIdentityRecordBoundsBeforeDecode"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/identity",
+          "test": "TestAuthorizationScalarReadsNeverTruncate"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestOversizedKeyPolicyReturnsActionableRefusal"
+        }
+      ]
+    },
+    "A42.memory_and_shared_cache_selection": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestCacheManagerDefaultIsLocalAndIsolated"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestCacheManagerRequiresExplicitSharedStrategy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestSharedCacheCompositionUsesSeparateService"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCacheServiceConfiguration"
+        }
+      ]
+    },
+    "A42.expiry_preserving_refill": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestSharedCacheRealService"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestExpiredQueuedFillDoesNotAcquireNewLifetime"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestLocalCacheExpiryAndClear"
+        }
+      ]
+    },
+    "A42.unknown_remaining_ttl": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestSharedCacheRealService"
+        }
+      ]
+    },
+    "A42.capacity_and_entry_limits": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestConcurrentOptionalCacheCapacity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestLocalCacheChargesRetainedBuffer"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestModelFillOversizeHasBoundedEncoding"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/document",
+          "test": "TestCacheSkipsOversizedReadingBeforeStorage"
+        }
+      ]
+    },
+    "A42.cache_only_cleanup": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDefaultResponseCacheDoesNotWriteDurableKV"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestExtractionCacheHasIndependentLocalLifecycle"
+        }
+      ]
+    },
+    "A42.generation_account_scope": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCachedService_AccountAndGenerationIsolation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestDiscoveryCacheTracksAdapterRevision"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestSharedCacheCanonicalDeploymentIsolation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/document",
+          "test": "TestAnotherAccountGetsItsOwnEntry"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/document",
+          "test": "TestANewCatalogGenerationMissesTheCache"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestDiscoveryCacheSeparatesDisclosureMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestEndpointLookupDoesNotRevealDeniedMembership"
+        }
+      ]
+    },
+    "A48.bounded_cache_read_deadline": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestResponseCacheReadUsesDeadline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestSharedCachePausedServiceDeadlineAndRecovery"
+        }
+      ]
+    },
+    "A48.nonblocking_fill_visibility": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestResponseFillDoesNotWaitForStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestResponseFillOwnsBytes"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestCacheManagerSingleNodeCachesResponses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestModelFillCannotCrossInvalidation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestBufferedLocalFillBoundsOwnershipAndShutdown"
+        }
+      ]
+    },
+    "A48.fill_queue_byte_entry_bounds": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestResponseFillQueueBoundsAndShutdown"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestModelFillSharesResponseBounds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestConcurrentOptionalCacheCapacity"
+        }
+      ]
+    },
+    "A48.worker_shutdown_ownership": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestResponseFillQueueBoundsAndShutdown"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestBufferedLocalCancelsBlockedFillOnClose"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestSharedCacheUnavailableLifecycle"
+        }
+      ]
+    },
+    "A48.stream_accumulation_bound": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/response/cache",
+          "test": "TestStreamBufferLimitsNestedPayloads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/response/cache",
+          "test": "TestStreamBufferStopsEmptyEventRetention"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestStreamCacheLimitPreservesDelivery"
+        }
+      ]
+    },
+    "A48.stream_forwarding_errors": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestStreamCacheReleasesInputOnTermination"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCachingStreamWrapper_DoesNotCachePartialStream"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestStreamCacheConcurrentClose"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/response/cache",
+          "test": "TestStreamCompletionKeepsInterleavedChoices"
+        }
+      ]
+    },
+    "A42.enablement_by_cache_kind": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCacheKindSettingsLoadIndependently"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestMasterCacheSwitchDisablesExtraction"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCacheKindComposition"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCacheDisabledKindsBypassLookups"
+        }
+      ]
+    },
+    "A42.cache_outage_admission": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPCachePreservesBudgetAndKeyAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestSharedCachePausedServiceDeadlineAndRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestConcurrentOptionalCacheCapacity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDefaultResponseCacheDoesNotWriteDurableKV"
+        }
+      ]
+    },
+    "A48.cache_semantic_mode_matrix": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestProductionCacheSemanticModeMatrix"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestSemanticCacheNeedsDeploymentOptIn"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestSemanticCacheFailsOpenOnEmbedError"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestSemanticCacheRefusesBelowThreshold"
+        }
+      ]
+    },
+    "A48.admission_and_expiry_preserved": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPCachePreservesBudgetAndKeyAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCachedPermissionKeepsOriginalDeadline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCacheDeliveryRechecksCatalogPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestEmbeddingAndSemanticCachePermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestExpiredQueuedFillDoesNotAcquireNewLifetime"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestDiscoveryCacheLookupRechecksAuthority"
+        }
+      ]
+    },
+    "A42.memory_budget_measurement": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestDefaultCacheMemoryBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cache",
+          "test": "TestConcurrentOptionalCacheCapacity"
+        }
+      ]
     }
   },
   "task_component_checks": {
