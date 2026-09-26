@@ -62,7 +62,21 @@ class CatalogVerifierTests(unittest.TestCase):
         report = json.loads(output.getvalue())
         self.assertEqual(report['summary'], 'Summary: 0 passed, 50 failed')
         self.assertEqual(report['unverified_cases'], 50)
-        self.assertEqual(report['selected_subcases'], 324)
+        self.assertEqual(report['selected_subcases'], 326)
+
+    def test_catalog_isolation_does_not_qualify_all_gateway_records(self):
+        catalog = {"A41.catalog_fleet_deployment_isolation", "A41.catalog_fleet_atomic_layout"}
+        deployment = {"A41.deployment_key_channel_isolation", "A41.namespace_atomic_layout"}
+        self.assertTrue(catalog | deployment <= set(self.roster["required_subcases"]["A41"]))
+        self.assertTrue(catalog <= set(self.roster["task_checks"]["CSP11"]))
+        for task in ("CSP12", "CSP15", "CSP22", "CSP24"):
+            self.assertTrue(deployment <= set(self.roster["task_checks"][task]))
+        for task in ("CSP15", "CSP22", "CSP24"):
+            self.assertTrue(catalog <= set(self.roster["task_checks"][task]))
+        results = {identity: {"status": "PASS"} for identity in catalog}
+        report = verifier.aggregate(self.roster, sorted(catalog), results, False)
+        case = next(case for case in report["cases"] if case["id"] == "A41")
+        self.assertEqual(case["status"], "UNVERIFIED")
 
     def test_unknown_case_refuses(self):
         args = argparse.Namespace(task=None, gate=None, case=['A99'])

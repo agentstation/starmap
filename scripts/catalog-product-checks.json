@@ -5806,13 +5806,13 @@
         }
       ]
     },
-    "A41.deployment_key_channel_isolation": {
+    "A41.catalog_fleet_deployment_isolation": {
       "kind": "go_test",
       "repository": "starport",
       "package": "./internal/catalog",
       "test": "TestFleetStoreNamespaceAndMalformedDescriptor"
     },
-    "A41.namespace_atomic_layout": {
+    "A41.catalog_fleet_atomic_layout": {
       "kind": "all",
       "checks": [
         {
