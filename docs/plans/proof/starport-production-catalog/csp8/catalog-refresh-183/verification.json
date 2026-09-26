@@ -1,8 +1,8 @@
 {
-  "state": "PUBLISHED_NATIVE_RUNNING",
+  "state": "MERGED",
   "head": "a6559d533ee2632378ece7b3ea6bc57826ea625e",
   "native_run": 36249777661,
-  "native_status": "RUNNING",
+  "native_status": "PASS",
   "unresolved_review_threads": 0,
   "merge_attempt": "Protected merge refused because the head was behind current main. No protection bypass.",
   "former_base": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
@@ -11,10 +11,7 @@
   "incoming_merge_time": "2026-09-26T14:29:24Z",
   "incoming_scope": "Five catalog metadata and provenance files. No production source change.",
   "payload_preparation": "regeneration.json",
-  "remaining": [
-    "Qualify current-head native CI.",
-    "Merge PR #183 through protected checks, preserving the pinned module ancestor."
-  ],
+  "remaining": [],
   "secret_scan": {
     "exit_code": 0,
     "findings": 0
@@ -48,5 +45,6 @@
     "findings": 0,
     "secret_scan": "PASS",
     "log": "autoreview.log.gz"
-  }
+  },
+  "merge_commit": "8122081e0494648fb1e356647053dd870a05fb1c"
 }

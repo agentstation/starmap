@@ -1,34 +1,17 @@
 {
-  "checked_at": "2026-09-26T14:49:32.997067+00:00",
-  "starmap": [
-    {
-      "pr": 183,
-      "head": "a6559d533ee2632378ece7b3ea6bc57826ea625e",
-      "branch": "codex/catalog-bootstrap-payload",
-      "base": "7d1a6d0c1e136150e70c2e6052c2e36b708757b9",
-      "state": "OPEN",
-      "draft": false,
-      "owner": "CSP8",
-      "checks_run": 36249777661,
-      "watch_session": 83812,
-      "disposition": "Keep. Current main and regenerated payload are reviewed and published.",
-      "next_action": "Qualify native CI, then merge the exact protected head.",
-      "failure_proof": "../../csp8/follower-schedule-183/verification.json",
-      "current_proof": "../../csp8/catalog-refresh-183/verification.json",
-      "local_head": "a6559d533ee2632378ece7b3ea6bc57826ea625e"
-    }
-  ],
+  "checked_at": "2026-09-26T15:56:03.010009+00:00",
+  "starmap": [],
   "starport": [
     {
       "pr": 384,
       "head": "8170d65c3904279d4d219e57e3af95eced371d5a",
       "branch": "codex/starport-native-catalog",
       "state": "OPEN",
-      "draft": true,
+      "draft": false,
       "owner": "CSP8",
       "checks_run": 36249589317,
-      "disposition": "Keep. Test scheduling repairs are reviewed and published.",
-      "next_action": "Qualify six native platforms and all 63 CSP8 subcases. Merge after the producer.",
+      "disposition": "Keep. Final CSP8 acceptance runs after the qualified producer merge.",
+      "next_action": "Finish session 77686. Merge exact head after all 63 CSP8 subcases pass.",
       "local_head": "8170d65c3904279d4d219e57e3af95eced371d5a",
       "native_failure_proof": "../../csp8/access-manifest-384/verification.json",
       "local_changes": [],
@@ -36,10 +19,10 @@
       "local_qualification_proof": "../../csp8/native-timing-384/verification.json",
       "prepr": "PASS: all 34 required commands",
       "review": "PASS: nine chunks, no findings at P0",
-      "native_watch_session": 89378,
-      "native_watch_status": "RUNNING",
+      "native_watch_session": null,
+      "native_watch_status": "PASS: all 15 jobs, 84 required native occurrences, six allocation checks.",
       "local_preparation_proof": "../../csp8/native-timing-384/verification.json",
-      "terminal_native_proof": null,
+      "terminal_native_proof": "../../csp8/native-timing-384/final-native/verification.json",
       "unpublished_commits": [],
       "candidate_module": "v0.16.6-0.20260926123426-0e53e6f9cbda",
       "current_proof": "../../csp8/native-timing-384/verification.json"
@@ -126,6 +109,15 @@
       "merge_commit": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
       "proof": "../../csp8/native-182/merged/verification.json",
       "checks_run": 36228899978,
+      "passing_jobs": 30
+    },
+    {
+      "repo": "starmap",
+      "pr": 183,
+      "head": "a6559d533ee2632378ece7b3ea6bc57826ea625e",
+      "merge_commit": "8122081e0494648fb1e356647053dd870a05fb1c",
+      "proof": "../../csp8/catalog-refresh-183/merge.json",
+      "checks_run": 36249777661,
       "passing_jobs": 30
     }
   ],
@@ -370,14 +362,13 @@
     "merged_proof": "../../csp8/native-182/merged/verification.json"
   },
   "csp8_acceptance": {
-    "status": "awaiting consumer native qualification",
-    "required_subcases": 63,
-    "producer_merge": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
-    "consumer_head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
-    "producer_native": "PASS",
-    "consumer_native_run": 36234492082,
-    "next_action": "After native capture, run the complete CSP8 task verifier with separate real durable and cache Valkey services and PostgreSQL.",
-    "consumer_native_status": "in_progress"
+    "status": "RUNNING",
+    "session": 77686,
+    "runner": "/tmp/csp8-final-native-qualification.py",
+    "report": "/tmp/csp8-final-native-qualification/acceptance.json",
+    "producer": "a6559d533ee2632378ece7b3ea6bc57826ea625e",
+    "producer_merge": "8122081e0494648fb1e356647053dd870a05fb1c",
+    "consumer": "8170d65c3904279d4d219e57e3af95eced371d5a"
   },
   "workspace_cleanup": {
     "local_branches_removed_total": 84,

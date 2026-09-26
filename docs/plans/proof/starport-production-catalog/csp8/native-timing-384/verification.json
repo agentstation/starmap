@@ -1,8 +1,8 @@
 {
-  "state": "PUBLISHED_NATIVE_RUNNING",
+  "state": "NATIVE_PASS_TASK_RUNNING",
   "head": "8170d65c3904279d4d219e57e3af95eced371d5a",
   "native_run": 36249589317,
-  "native_conclusion": null,
+  "native_conclusion": "success",
   "native_failure": {
     "platform": "darwin/arm64",
     "package": "internal/providers/keyring",
@@ -35,8 +35,8 @@
     "commands": 34
   },
   "remaining": [
-    "Qualify six native platforms, including the separate production allocation check.",
-    "Pass all 63 CSP8 subcases, then merge the consumer after its producer."
+    "Finish all 63 CSP8 subcases in session 77686.",
+    "Merge exact reviewed consumer head through protected checks."
   ],
   "secret_scan": {
     "exit_code": 0,

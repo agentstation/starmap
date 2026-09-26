@@ -1,0 +1,84 @@
+{
+  "checked_at": "2026-09-26T15:54:54.800779+00:00",
+  "status": "PASS",
+  "source": "8170d65c3904279d4d219e57e3af95eced371d5a",
+  "run": "https://github.com/agentstation/starport/actions/runs/36249589317",
+  "production_allocation_checks": [
+    {
+      "platform": "linux",
+      "architecture": "amd64",
+      "status": "PASS",
+      "sha256": "98825522d8fc4522771e601e7f4fe32cac2315524692d23dfe414371c010b5a6"
+    },
+    {
+      "platform": "linux",
+      "architecture": "arm64",
+      "status": "PASS",
+      "sha256": "4b04c771806431c7bd193c52b9550f9aee0f68d8568c5b540b34d03517cec3c6"
+    },
+    {
+      "platform": "darwin",
+      "architecture": "amd64",
+      "status": "PASS",
+      "sha256": "79c03bc1587bd109d3a84af2ae8a9fd5653e07d4aa3891a033236c924c80d632"
+    },
+    {
+      "platform": "darwin",
+      "architecture": "arm64",
+      "status": "PASS",
+      "sha256": "eff7ef0d11bf25aa413deaef7d54608baf6bd728f7035a0ea6c0f89617abe3ec"
+    },
+    {
+      "platform": "windows",
+      "architecture": "amd64",
+      "status": "PASS",
+      "sha256": "ca5fb4d6146b535977049045b15997ac8c686db1d2a4ec5eaf2bd1df171be31c"
+    },
+    {
+      "platform": "windows",
+      "architecture": "arm64",
+      "status": "PASS",
+      "sha256": "a34c8ee124842835021b9bc0a2c747172776c4697bdf10bf53f9f175bdf529d8"
+    }
+  ],
+  "scope": "CSP8 consumer native contracts on six platforms. Complete CSP8 acceptance remains required.",
+  "observations": [
+    {
+      "platform": "linux",
+      "architecture": "amd64",
+      "job_id": 108425000424,
+      "required_tests": 14
+    },
+    {
+      "platform": "linux",
+      "architecture": "arm64",
+      "job_id": 108425000451,
+      "required_tests": 14
+    },
+    {
+      "platform": "darwin",
+      "architecture": "amd64",
+      "job_id": 108425000541,
+      "required_tests": 14
+    },
+    {
+      "platform": "darwin",
+      "architecture": "arm64",
+      "job_id": 108425000389,
+      "required_tests": 14
+    },
+    {
+      "platform": "windows",
+      "architecture": "amd64",
+      "job_id": 108425000465,
+      "required_tests": 14
+    },
+    {
+      "platform": "windows",
+      "architecture": "arm64",
+      "job_id": 108425000489,
+      "required_tests": 14
+    }
+  ],
+  "required_test_occurrences": 84
+}

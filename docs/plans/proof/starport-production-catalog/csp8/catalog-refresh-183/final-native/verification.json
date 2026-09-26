@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "head": "a6559d533ee2632378ece7b3ea6bc57826ea625e",
+  "run": 36249777661,
+  "jobs": 30,
+  "all_jobs_pass": true,
+  "required_test_occurrences": 104,
+  "required_skips": 0,
+  "wall_seconds": 2704.0,
+  "thirty_minute_target_met": false,
+  "archive_sha256": "308cd38197c29f57b939f7902d163f1f442990d6fb13084347c5d4c70fb98f0c",
+  "secret_findings": 0
+}
