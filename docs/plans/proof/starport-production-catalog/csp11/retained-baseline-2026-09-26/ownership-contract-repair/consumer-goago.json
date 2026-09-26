@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "version": "v0.3.0",
+  "rules": [
+    "no-dot-import",
+    "no-generic-methods",
+    "no-goto",
+    "no-invalid-ignore",
+    "no-naked-return",
+    "no-new-expr",
+    "no-self-referential-constraints"
+  ],
+  "findings": [
+    {
+      "rule": "no-new-expr",
+      "severity": "error",
+      "message": "new() applied to an expression; declare a variable and take its address",
+      "file": "internal/catalog/planning_candidates.go",
+      "line": 102,
+      "column": 20,
+      "endLine": 102,
+      "endColumn": 40,
+      "docURL": "https://github.com/agentstation/goago/blob/main/docs/rules.md#no-new-expr"
+    },
+    {
+      "rule": "no-new-expr",
+      "severity": "error",
+      "message": "new() applied to an expression; declare a variable and take its address",
+      "file": "internal/catalog/runtime_migration.go",
+      "line": 55,
+      "column": 272,
+      "endLine": 55,
+      "endColumn": 300,
+      "docURL": "https://github.com/agentstation/goago/blob/main/docs/rules.md#no-new-expr"
+    },
+    {
+      "rule": "no-new-expr",
+      "severity": "error",
+      "message": "new() applied to an expression; declare a variable and take its address",
+      "file": "internal/catalog/runtime_migration.go",
+      "line": 64,
+      "column": 272,
+      "endLine": 64,
+      "endColumn": 300,
+      "docURL": "https://github.com/agentstation/goago/blob/main/docs/rules.md#no-new-expr"
+    },
+    {
+      "rule": "no-naked-return",
+      "severity": "error",
+      "message": "naked return in extractThoughtSummary; name the values you are returning",
+      "file": "internal/providers/connectors/google_base.go",
+      "line": 606,
+      "column": 4,
+      "endLine": 606,
+      "endColumn": 10,
+      "docURL": "https://github.com/agentstation/goago/blob/main/docs/rules.md#no-naked-return"
+    },
+    {
+      "rule": "no-naked-return",
+      "severity": "error",
+      "message": "naked return in extractThoughtSummary; name the values you are returning",
+      "file": "internal/providers/connectors/google_base.go",
+      "line": 618,
+      "column": 5,
+      "endLine": 618,
+      "endColumn": 11,
+      "docURL": "https://github.com/agentstation/goago/blob/main/docs/rules.md#no-naked-return"
+    },
+    {
+      "rule": "no-naked-return",
+      "severity": "error",
+      "message": "naked return in extractThoughtSummary; name the values you are returning",
+      "file": "internal/providers/connectors/google_base.go",
+      "line": 636,
+      "column": 4,
+      "endLine": 636,
+      "endColumn": 10,
+      "docURL": "https://github.com/agentstation/goago/blob/main/docs/rules.md#no-naked-return"
+    }
+  ],
+  "staleIgnores": [],
+  "errors": []
+}

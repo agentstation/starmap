@@ -2423,6 +2423,18 @@ Every replica eligible for acquisition ownership needs equivalent source policy
 and access to the required acquisition credentials. A follower-only role must
 not hold the lease until its capability checks pass.
 
+Required acquisition credentials belong to retained provider scopes and explicit
+bindings. Catalog membership alone does not make a provider a required scope.
+An unobserved provider with no configured credentials remains optional. Invalid
+selected credentials and lost required credentials refuse ownership.
+Capability checks retain provider metadata and its referenced authors independently
+of serving pins. They retain no model payloads and make no provider inventory requests.
+
+A successful refresh under a new ownership grant must publish retained content
+under that grant, even when the source reports no changes. Native acceptance
+continues to check the original grant and exact predecessor. This publication
+cannot extend permission or restore a withdrawal.
+
 Check required acquisition profiles before taking and renewing ownership.
 Loss of required access releases the grant and preserves follower reads.
 These checks use acquisition credential resolution without provider inventory requests.

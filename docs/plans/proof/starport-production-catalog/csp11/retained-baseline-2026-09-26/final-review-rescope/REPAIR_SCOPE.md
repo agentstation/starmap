@@ -64,3 +64,28 @@ then merge Starmap PR185 before Starport PR385.
 
 The autoreview skill requires this pause when two repair cycles do not converge.
 This checkpoint does not request new implementation or merge permission.
+
+## Resumed operation contracts
+
+The September 26 continuation resumes implementation within these boundaries.
+
+1. `FleetAcquisitionRequirements.Providers` names required retained providers.
+   A separate `Candidates` list names optional, unobserved providers.
+   Explicit bindings remain required. Runtime constructs these disjoint lists.
+   Acquisition resolves their catalog profiles. Only the resolver's typed
+   not-configured result permits an optional candidate to lack credentials.
+
+   Invalid selected credentials, unknown metadata, cancellation, and required
+   credential loss still refuse ownership. Public profiles remain eligible.
+2. A successful mutating runtime operation must finish with a publication under
+   the original grant captured for that operation. Runtime completes this
+   condition after the operation callback, including unchanged source reads.
+   Reuse the retained catalog and recovery inputs through the existing guarded
+   activation and native transaction. Do not mint permission or rebuild inputs.
+   Failed operations and follower-only refreshes do not publish.
+
+Required tests: `TestFleetCapabilityOptionalCandidates`,
+`TestFleetRuntimeUnchangedSourceTakeover`, and
+`TestFleetRuntimeLiveTakeoverAcceptance`. Extend the existing unobserved-provider
+check to verify that runtime marks discovery candidates as optional.
+Keep the required-provider loss and explicit-binding checks.

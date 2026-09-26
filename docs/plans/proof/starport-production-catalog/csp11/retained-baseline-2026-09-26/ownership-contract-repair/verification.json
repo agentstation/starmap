@@ -1,0 +1,26 @@
+{
+  "producer_commit": "dff93d12ec9310a024d1f31a965e3b1c7434ecdb",
+  "consumer_commit": "658c8993042b9f35d5019c835bcdcb19151962fc",
+  "before": {
+    "named_failures": 2,
+    "log": "before.jsonl"
+  },
+  "race_results": {
+    "pass": 108,
+    "fail": 0,
+    "skip": 0,
+    "log": "final.jsonl"
+  },
+  "verifier_tests": 99,
+  "task_gate": {
+    "status": "PASS",
+    "passed": 11,
+    "failed": 0,
+    "unverified": 0,
+    "log": "task-gate/task-report.json"
+  },
+  "native_test": "TestFleetRuntimeLiveTakeoverAcceptance",
+  "consumer_test_sha256": "cd2fa2644d80843a0616b215e354615e0883c7d654020506e3def906f733e5cb",
+  "review": "running",
+  "publication": "not started"
+}

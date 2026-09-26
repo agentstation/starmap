@@ -1,0 +1,8 @@
+{"Time":"2026-09-26T18:49:26.472063-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-26T18:49:27.085014-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetCapabilityPreservesAuthorMappingTargets"}
+{"Time":"2026-09-26T18:49:27.085105-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetCapabilityPreservesAuthorMappingTargets","Output":"=== RUN   TestFleetCapabilityPreservesAuthorMappingTargets\n","OutputType":"frame"}
+{"Time":"2026-09-26T18:49:27.085732-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetCapabilityPreservesAuthorMappingTargets","Output":"--- PASS: TestFleetCapabilityPreservesAuthorMappingTargets (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-09-26T18:49:27.085747-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetCapabilityPreservesAuthorMappingTargets","Elapsed":0}
+{"Time":"2026-09-26T18:49:27.086168-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-09-26T18:49:28.090687-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"ok  \tgithub.com/agentstation/starmap/runtime\t1.618s\n"}
+{"Time":"2026-09-26T18:49:28.090753-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Elapsed":1.619}
