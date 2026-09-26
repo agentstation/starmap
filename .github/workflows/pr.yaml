@@ -53,21 +53,25 @@ jobs:
           cache: true
       - name: Start isolated storage services
         run: |
+          mkdir -p "$RUNNER_TEMP/starmap-object-data"
           docker run -d --name "$STARMAP_TEST_COORDINATION_CONTAINER" \
             -p 127.0.0.1:6379:6379 "$COORDINATION_IMAGE" \
             --save '' --appendonly yes --appendfsync always --maxmemory-policy noeviction
           docker run -d --name "$STARMAP_TEST_OBJECT_CONTAINER" \
             -p 127.0.0.1:9000:9000 \
-            -e MINIO_ROOT_USER=starmap-test -e MINIO_ROOT_PASSWORD=starmap-test-secret-only \
-            quay.io/minio/minio@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e \
-            server /data --address :9000
+            -v "$RUNNER_TEMP/starmap-object-data:/data/s3" \
+            -e ROOT_ACCESS_KEY=starmap-test -e ROOT_SECRET_KEY=starmap-test-secret-only \
+            -e VGW_PORT=:9000 -e VGW_HEALTH=/_/health \
+            -e VGW_BACKEND=posix -e VGW_BACKEND_ARGS=/data/s3 \
+            ghcr.io/versity/versitygw@sha256:30292fc2eeacc67a36993b01f7a7a5e3361a19cced0e80c1d71cfa2a4b0a2499
           for attempt in {1..60}; do
             if docker exec "$STARMAP_TEST_COORDINATION_CONTAINER" "$COORDINATION_CLI" ping && \
-               curl --fail --silent "$STARMAP_TEST_S3_ENDPOINT/minio/health/ready"; then
+               curl --fail --silent "$STARMAP_TEST_S3_ENDPOINT/_/health"; then
               exit 0
             fi
             sleep 1
           done
+          echo "storage services did not become ready after $attempt attempts" >&2
           exit 1
       - name: Qualify native storage and process recovery
         run: go test -race -json -count=1 -timeout=5m ./pkg/catalogs/storage/valkey > "$RUNNER_TEMP/coordinated-storage.jsonl"
