@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T01:28:13.811773+00:00",
+  "checked_at": "2026-09-26T01:36:51.538749+00:00",
   "starmap": [
     {
       "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
@@ -11,7 +11,7 @@
       "updatedAt": "2026-09-19T03:33:36Z",
       "owner": "CSP8",
       "disposition": "draft local integration",
-      "next_action": "Merge current main into the prepared producer branch without rewriting published history. Include the complete qualified consumer API prerequisites, then review, publish to the existing PR, and run native gates after CSP6 publication.",
+      "next_action": "After CSP6 publication, refresh the complete prepared host API bundle onto current main, review, and publish to existing PR #171. See host-api-consolidation-prepared.json.",
       "checks": [
         {
           "name": "Analyze (actions)",
@@ -168,7 +168,8 @@
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
         }
-      ]
+      ],
+      "local_head": "caec09095bbba5082b7ca6bb6b3aa12c91319067"
     },
     {
       "baseRefOid": "19c85ad84293acba4ae9514fa5f68276e92d2461",
@@ -503,7 +504,7 @@
       "updatedAt": "2026-09-21T14:37:28Z",
       "owner": "dependency maintenance",
       "disposition": "selected for compatible dependency consolidation",
-      "next_action": "After fixture repair and catalog publication, include compatible changes from #175 and #177\u2013179, including the nested consumer module. Qualify one combined exact head with all existing coverage. See dependency-consolidation.json.",
+      "next_action": "After catalog publication, refresh and qualify prepared dependency consolidation 104c81de8 on current main, review, and publish to this PR. Preserve #175 and #177\u2013179 until successor qualification. See dependency-consolidation-prepared.json.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -645,7 +646,8 @@
           "status": "COMPLETED",
           "conclusion": "NEUTRAL"
         }
-      ]
+      ],
+      "local_head": "104c81de820a61f8a63f29d556ff0da1e27fb15c"
     },
     {
       "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
@@ -1115,7 +1117,7 @@
       "isDraft": false,
       "mergeStateStatus": "BLOCKED",
       "number": 180,
-      "title": "ci: restore coordinated storage checks with durable S3 fixture",
+      "title": "ci: restore storage checks and bound application race jobs",
       "updatedAt": "2026-09-26T00:35:00Z",
       "owner": "CSP6",
       "disposition": "reviewed repair in native qualification",
@@ -1262,7 +1264,108 @@
           "conclusion": "FAILURE"
         }
       ],
-      "checks": [],
+      "checks": [
+        {
+          "name": "Verification Checks",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Build pinned object fixture",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        }
+      ],
       "run_id": 36208494218
     }
   ],

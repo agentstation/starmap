@@ -1,0 +1,27 @@
+{
+  "checked_at": "2026-09-26T01:33:12.484554+00:00",
+  "branch": "codex/starmap-host-files",
+  "integration_source": "ffecd9eb890adfd424d21b92638dc5d702c92553",
+  "base": "19c85ad84293acba4ae9514fa5f68276e92d2461",
+  "ancestry": "Fast-forwarded the prepared API bundle, then merged current main. No published history was rewritten. The resulting source tree is identical to the qualified integration source.",
+  "python_checks": {
+    "command": "python3 -m unittest discover -s scripts -p 'test_catalog*py'",
+    "passed": 167,
+    "exit_code": 0
+  },
+  "inherited_source_evidence": "../../csp8/current-catalog-integration/main-refresh-2026-09-25.json",
+  "publication_status": "Not pushed. Reuse #171 after catalog publication, with review and native qualification of the complete consumer API bundle.",
+  "integration_merge": "dd00d91d0eb090705797a1e973c78270497ff974",
+  "prepared_head": "caec09095bbba5082b7ca6bb6b3aa12c91319067",
+  "integration_tree": "5e4faca8b27c9ad7113f524ea326fab1ca341346",
+  "native_coverage_repair": {
+    "failure_before": "TestNativeRuntimeExercisesPublicHostFiles failed: native runtime qualification omits the public host file contract",
+    "change": "Add pkg/productfiles to the existing six native runtime jobs. A workflow contract test rejects omission. No timeout or existing selection changed.",
+    "local_command": "GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout=5m ./internal/ciworkflow ./pkg/productfiles",
+    "passed_named_results": 62,
+    "raw_sha256": "ba5f3a522520c7bff2b6bd7c0c1dd4097a11de698c189c1ef5d347cf6a75c85c",
+    "goago": "No findings, stale ignores, or errors.",
+    "technical_writing": "1853 files; zero diagnostics.",
+    "scope": "Only pr.yaml and its workflow contract test differ from the integration merge. Hosted native execution remains unverified."
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "checked_at": "2026-09-26T01:33:12.484554+00:00",
+  "prepared_head": "104c81de820a61f8a63f29d556ff0da1e27fb15c",
+  "branch": "codex/dependency-consolidation",
+  "publication_target": "Existing Starmap PR #176, after catalog publication and refresh onto current main. Do not create another PR.",
+  "diff_scope": [
+    "go.mod",
+    "go.sum",
+    "testdata/consumers/server-storage/go.mod",
+    "testdata/consumers/server-storage/go.sum"
+  ],
+  "required_lines": [
+    {
+      "pr": 175,
+      "file": "go.mod",
+      "required_added_lines": 1
+    },
+    {
+      "pr": 175,
+      "file": "go.sum",
+      "required_added_lines": 2
+    },
+    {
+      "pr": 176,
+      "file": "go.mod",
+      "required_added_lines": 3
+    },
+    {
+      "pr": 176,
+      "file": "go.sum",
+      "required_added_lines": 6
+    },
+    {
+      "pr": 177,
+      "file": "go.mod",
+      "required_added_lines": 2
+    },
+    {
+      "pr": 177,
+      "file": "go.sum",
+      "required_added_lines": 4
+    },
+    {
+      "pr": 178,
+      "file": "go.mod",
+      "required_added_lines": 1
+    },
+    {
+      "pr": 178,
+      "file": "go.sum",
+      "required_added_lines": 2
+    },
+    {
+      "pr": 178,
+      "file": "testdata/consumers/server-storage/go.mod",
+      "required_added_lines": 1
+    },
+    {
+      "pr": 178,
+      "file": "testdata/consumers/server-storage/go.sum",
+      "required_added_lines": 2
+    },
+    {
+      "pr": 179,
+      "file": "go.mod",
+      "required_added_lines": 1
+    },
+    {
+      "pr": 179,
+      "file": "go.sum",
+      "required_added_lines": 2
+    }
+  ],
+  "race_tests": {
+    "toolchain": "go1.27.1",
+    "command": "go test -race -json -count=1 -timeout=5m ./internal/auth ./internal/providers/google ./internal/cli/commands/auth ./pkg/catalogs/storage/s3",
+    "passed_named_results": 185,
+    "skipped_named_results": 0,
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starmap/internal/cli/commands/auth",
+        "Action": "skip",
+        "Elapsed": 0
+      },
+      {
+        "Package": "github.com/agentstation/starmap/internal/providers/google",
+        "Action": "pass",
+        "Elapsed": 1.655
+      },
+      {
+        "Package": "github.com/agentstation/starmap/internal/auth",
+        "Action": "pass",
+        "Elapsed": 3.433
+      },
+      {
+        "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/s3",
+        "Action": "pass",
+        "Elapsed": 3.727
+      }
+    ],
+    "raw_sha256": "cc42337b62c0dd79b0a2bbf5aa8e5ee0e4386fa9ca5cf3ed20786d70ff95eb66"
+  },
+  "consumer_check": {
+    "command": "GOTOOLCHAIN=go1.27.1 bash scripts/verify-consumer-deps.sh",
+    "exit_code": 0,
+    "log_sha256": "10503c849d1fba2d74b3caf1b3132795ec210c757ec440c63631eb58878b26f7",
+    "output": "External consumer toolchain: go1.27.1\nok  \tgithub.com/agentstation/starmap-test/read-only-consumer\t4.163s\nok  \tgithub.com/agentstation/starmap-test/store-only-consumer\t4.697s\nok  \tgithub.com/agentstation/starmap-test/pinned-artifact-consumer\t3.732s\nok  \tgithub.com/agentstation/starmap-test/server-embed-consumer\t3.997s\nok  \tgithub.com/agentstation/starmap-test/remote-subscriber-consumer\t5.894s\nok  \tgithub.com/agentstation/starmap-test/server-storage-consumer\t11.939s\nread-only consumer dependency closure: 37/37 non-standard packages (171 total on this platform); forbidden families absent\nstore-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent\npinned-artifact consumer: 38/38 non-standard packages; offline verified activation passed; online/acquisition families absent\nserver-embed consumer non-standard dependency closure: 60/60 packages; acquisition families absent\nserver-embed consumer: external compile and lifecycle test passed\nremote-subscriber consumer non-standard dependency closure: 44/44 packages; forbidden families absent\nremote-subscriber consumer: external compile and reactive lifecycle test passed\nserver-storage consumer non-standard dependency closure: 133/133 packages; filesystem/S3 server and reactive restart matrix passed\n"
+  },
+  "module_verification": "go mod verify passed",
+  "publication_status": "Not pushed. Full hosted qualification remains required. Preserve all original PRs until the successor passes."
+}
