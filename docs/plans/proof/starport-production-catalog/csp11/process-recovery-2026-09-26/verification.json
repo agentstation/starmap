@@ -1,0 +1,108 @@
+{
+  "recorded_at": "2026-09-26T18:47:57.993191+00:00",
+  "producer": "80604e2975a4dbdf3f81161efa06269b85942261",
+  "consumer": "26d67ccf7ede97f962badb56a8820f5f1cc9e0b3",
+  "go": "1.27.1",
+  "suites": [
+    {
+      "name": "process",
+      "runner": {
+        "started": "2026-09-26T18:38:58.731562+00:00",
+        "images": [
+          "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+          "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94"
+        ],
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout=7m",
+          "-json",
+          "-run",
+          "^TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss$",
+          "./internal/catalog",
+          "./internal/catalog/recovery"
+        ],
+        "exit_code": 0,
+        "cleanup": [
+          0,
+          0
+        ],
+        "finished": "2026-09-26T18:40:30.937823+00:00"
+      },
+      "named_passes": 1,
+      "leaf_passes": 1,
+      "tests": [
+        "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+      ],
+      "failures": [],
+      "skips": []
+    },
+    {
+      "name": "selection-and-startup",
+      "runner": {
+        "started": "2026-09-26T18:45:01.437474+00:00",
+        "images": [
+          "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+          "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+          "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94"
+        ],
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout=7m",
+          "-json",
+          "-run",
+          "^(TestAppWithValkey|TestSharedStartupDoesNotCreateLocalDatabases|TestFleetStoreLeaseExpiresDuringSelection|TestValkeyIncarnation)",
+          "./internal/catalog",
+          "./internal/app",
+          "./internal/storage"
+        ],
+        "exit_code": 0,
+        "cleanup": [
+          0,
+          0,
+          0
+        ],
+        "finished": "2026-09-26T18:46:21.723568+00:00"
+      },
+      "named_passes": 15,
+      "leaf_passes": 13,
+      "tests": [
+        "TestFleetStoreLeaseExpiresDuringSelection/publication",
+        "TestFleetStoreLeaseExpiresDuringSelection/acceptance",
+        "TestFleetStoreLeaseExpiresDuringSelection",
+        "TestValkeyIncarnationAtomicContract/live_lease_and_atomic_head",
+        "TestValkeyIncarnationAtomicContract/expired_native_lease",
+        "TestValkeyIncarnationAtomicContract/released_native_lease",
+        "TestValkeyIncarnationAtomicContract/matching_value_without_native_expiry",
+        "TestValkeyIncarnationAtomicContract/mismatch_changes_no_key",
+        "TestValkeyIncarnationAtomicContract/bounded_reads_and_invalid_mutations",
+        "TestValkeyIncarnationAtomicContract/one_concurrent_winner",
+        "TestValkeyIncarnationAtomicContract/unapproved_identity",
+        "TestValkeyIncarnationAtomicContract",
+        "TestValkeyIncarnationRejectsReplacementBackend",
+        "TestAppWithValkey",
+        "TestSharedStartupDoesNotCreateLocalDatabases"
+      ],
+      "failures": [],
+      "skips": []
+    }
+  ],
+  "checks": {
+    "golangci_lint": "PASS: v2.13.2, zero findings",
+    "writing": "PASS: three files, zero diagnostics",
+    "vet": "PASS",
+    "goago": "Six pre-existing findings, retained in goago.json; not a clean result"
+  },
+  "limitations": [
+    "Uses a local Go workspace; published-module qualification and required pre-PR review remain open.",
+    "The process scenario expires the dead leader native lease explicitly after killing the process; it does not wait the production 90-second TTL.",
+    "The concurrent-process fixture covers catalog runtime and acceptance, not HTTP serving or latency.",
+    "CSP11 acceptance registration, exact-head native CI, and both merges remain required.",
+    "Shared directory migration has identity-binding evidence but no complete native move rehearsal."
+  ]
+}

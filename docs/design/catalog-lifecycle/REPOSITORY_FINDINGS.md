@@ -3640,3 +3640,22 @@ The warm credential lookup reports zero allocations in three runs. This does not
 
 The nine-pass review claimed that the standard `uuid` package does not exist. Go 1.27.1 and the compiled tests disprove that finding.
 Final checks and the pre-PR gate remain required after the published Starmap module update.
+
+
+### CSP11 native process checkpoint: September 26, 2026
+
+Consumer `26d67ccf7` passes one concurrent-process recovery scenario.
+It preserves partial acquisition inputs after leader termination and directory loss.
+It also restores a restarted follower through durable polling without notifications.
+The test explicitly expires the dead leader lease to avoid a 90-second wait.
+This proves catalog recovery, not HTTP serving or request latency.
+
+Fifteen additional native test events pass across thirteen leaf cases.
+They cover expiry at the final publication and acceptance write, backend replacement,
+and shared application startup with explicit recovery approval.
+Startup refuses missing approval. The previous accepted head remains after expiry.
+The existing shared-storage CI job now includes these contracts and process recovery.
+
+The [process checkpoint](../../plans/proof/starport-production-catalog/csp11/process-recovery-2026-09-26/verification.json) records exact commands and limits.
+Published-module qualification, acceptance registration, consumer review, and merges remain open.
+Six existing goago findings remain in the recorded lint output.

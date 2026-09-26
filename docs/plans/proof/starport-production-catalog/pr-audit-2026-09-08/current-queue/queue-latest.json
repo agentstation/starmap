@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T18:33:25.995519+00:00",
+  "checked_at": "2026-09-26T18:47:57.993191+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -12,7 +12,7 @@
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
       "disposition": "Reviewed capability and pin repair published; exact-head CI running",
-      "next_action": "Qualify concurrent runtime processes, finish consumer gates and published dependency adoption, then merge in order."
+      "next_action": "Complete exact-head CI and merge reviewed producer; adopt published module and qualify consumer 26d67ccf7."
     }
   ],
   "starport": [],
