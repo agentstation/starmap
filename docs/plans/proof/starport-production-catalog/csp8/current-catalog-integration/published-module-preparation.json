@@ -20,7 +20,7 @@
   "tested_package_dependency_graph_matches": true,
   "tested_dependency_differences": [],
   "tested_dependency_modules": 183,
-  "checked_at": "2026-09-26T04:46:54.521699+00:00",
+  "checked_at": "2026-09-26T04:50:14.340732+00:00",
   "starport_base": "ca2d2057d60c07ad0bd6668023af8ae8647534c1",
   "status": "local_tests_and_lint_pass",
   "changes": [
@@ -637,11 +637,33 @@
   "pending_checks": {
     "repository_guards": {
       "session": 72611,
-      "result_file": "/tmp/starport-published-module-gates/results.json"
+      "result_file": "/tmp/starport-published-module-gates/results.json",
+      "completed": [
+        {
+          "command": "bash scripts/verify-starmap-ownership.sh",
+          "exit_code": 0,
+          "seconds": 91.04,
+          "log": "/tmp/starport-published-module-gates/verify-starmap-ownership.sh.log"
+        }
+      ]
     },
     "build_and_smoke": {
       "result_file": "/tmp/starport-published-module-build/results.json",
-      "session": 84416
+      "session": 84416,
+      "completed": [
+        {
+          "command": "pnpm -C console check",
+          "exit_code": 0,
+          "seconds": 36.94,
+          "log": "/tmp/starport-published-module-build/0.log"
+        },
+        {
+          "command": "make build",
+          "exit_code": 0,
+          "seconds": 45.81,
+          "log": "/tmp/starport-published-module-build/1.log"
+        }
+      ]
     }
   }
 }
