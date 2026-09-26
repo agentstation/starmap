@@ -1,33 +1,7 @@
 {
-  "checked_at": "2026-09-26T15:56:03.010009+00:00",
+  "checked_at": "2026-09-26T16:11:56.675169+00:00",
   "starmap": [],
-  "starport": [
-    {
-      "pr": 384,
-      "head": "8170d65c3904279d4d219e57e3af95eced371d5a",
-      "branch": "codex/starport-native-catalog",
-      "state": "OPEN",
-      "draft": false,
-      "owner": "CSP8",
-      "checks_run": 36249589317,
-      "disposition": "Keep. Final CSP8 acceptance runs after the qualified producer merge.",
-      "next_action": "Finish session 77686. Merge exact head after all 63 CSP8 subcases pass.",
-      "local_head": "8170d65c3904279d4d219e57e3af95eced371d5a",
-      "native_failure_proof": "../../csp8/access-manifest-384/verification.json",
-      "local_changes": [],
-      "local_qualification": "All 34 commands, 518 package race events, nine deadline events, 30 allocation checks, and 22 destination race events pass.",
-      "local_qualification_proof": "../../csp8/native-timing-384/verification.json",
-      "prepr": "PASS: all 34 required commands",
-      "review": "PASS: nine chunks, no findings at P0",
-      "native_watch_session": null,
-      "native_watch_status": "PASS: all 15 jobs, 84 required native occurrences, six allocation checks.",
-      "local_preparation_proof": "../../csp8/native-timing-384/verification.json",
-      "terminal_native_proof": "../../csp8/native-timing-384/final-native/verification.json",
-      "unpublished_commits": [],
-      "candidate_module": "v0.16.6-0.20260926123426-0e53e6f9cbda",
-      "current_proof": "../../csp8/native-timing-384/verification.json"
-    }
-  ],
+  "starport": [],
   "completed_merges": [
     {
       "repo": "starmap",
@@ -119,6 +93,15 @@
       "proof": "../../csp8/catalog-refresh-183/merge.json",
       "checks_run": 36249777661,
       "passing_jobs": 30
+    },
+    {
+      "repo": "starport",
+      "pr": 384,
+      "head": "8170d65c3904279d4d219e57e3af95eced371d5a",
+      "merge_commit": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
+      "proof": "../../csp8/merged-qualification-2026-09-26/consumer-merge.json",
+      "checks_run": 36249589317,
+      "passing_jobs": 15
     }
   ],
   "publication_replay": {
@@ -362,13 +345,15 @@
     "merged_proof": "../../csp8/native-182/merged/verification.json"
   },
   "csp8_acceptance": {
-    "status": "RUNNING",
-    "session": 77686,
+    "status": "PASS",
+    "session": null,
     "runner": "/tmp/csp8-final-native-qualification.py",
     "report": "/tmp/csp8-final-native-qualification/acceptance.json",
     "producer": "a6559d533ee2632378ece7b3ea6bc57826ea625e",
     "producer_merge": "8122081e0494648fb1e356647053dd870a05fb1c",
-    "consumer": "8170d65c3904279d4d219e57e3af95eced371d5a"
+    "consumer": "8170d65c3904279d4d219e57e3af95eced371d5a",
+    "proof": "../../csp8/merged-qualification-2026-09-26/verification.json",
+    "consumer_merge": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda"
   },
   "workspace_cleanup": {
     "local_branches_removed_total": 84,
@@ -816,5 +801,11 @@
     "test_events": 139,
     "proof": "../../csp12.1/prepared-8170d65/verification.json",
     "task_completed": false
+  },
+  "next_task": {
+    "task": "CSP9",
+    "session": 42734,
+    "runner": "/tmp/csp-merged-followups-384.py",
+    "output": "/tmp/csp-merged-followups-384"
   }
 }

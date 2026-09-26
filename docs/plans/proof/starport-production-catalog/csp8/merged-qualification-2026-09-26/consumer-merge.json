@@ -1,0 +1,91 @@
+{
+  "status": "MERGED",
+  "head": "8170d65c3904279d4d219e57e3af95eced371d5a",
+  "base": "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e",
+  "merge_commit": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
+  "tree_equality": true,
+  "passing_pr_checks": 15,
+  "native_occurrences": 84,
+  "production_allocation_checks": 6,
+  "csp8_subcases": 63,
+  "protected_merge": true,
+  "review_threads": {
+    "mergeable": "MERGEABLE",
+    "reviewDecision": null,
+    "reviewThreads": {
+      "pageInfo": {
+        "hasNextPage": false
+      },
+      "nodes": []
+    }
+  },
+  "protection": {
+    "url": "https://api.github.com/repos/agentstation/starport/branches/main/protection",
+    "required_status_checks": {
+      "url": "https://api.github.com/repos/agentstation/starport/branches/main/protection/required_status_checks",
+      "strict": true,
+      "contexts": [
+        "Build",
+        "Security Scan",
+        "Release Snapshot",
+        "Action Pin Provenance"
+      ],
+      "contexts_url": "https://api.github.com/repos/agentstation/starport/branches/main/protection/required_status_checks/contexts",
+      "checks": [
+        {
+          "context": "Build",
+          "app_id": null
+        },
+        {
+          "context": "Security Scan",
+          "app_id": null
+        },
+        {
+          "context": "Release Snapshot",
+          "app_id": null
+        },
+        {
+          "context": "Action Pin Provenance",
+          "app_id": null
+        }
+      ]
+    },
+    "required_pull_request_reviews": {
+      "url": "https://api.github.com/repos/agentstation/starport/branches/main/protection/required_pull_request_reviews",
+      "dismiss_stale_reviews": true,
+      "require_code_owner_reviews": false,
+      "require_last_push_approval": false,
+      "required_approving_review_count": 0
+    },
+    "required_signatures": {
+      "url": "https://api.github.com/repos/agentstation/starport/branches/main/protection/required_signatures",
+      "enabled": false
+    },
+    "enforce_admins": {
+      "url": "https://api.github.com/repos/agentstation/starport/branches/main/protection/enforce_admins",
+      "enabled": true
+    },
+    "required_linear_history": {
+      "enabled": true
+    },
+    "allow_force_pushes": {
+      "enabled": false
+    },
+    "allow_deletions": {
+      "enabled": false
+    },
+    "block_creations": {
+      "enabled": false
+    },
+    "required_conversation_resolution": {
+      "enabled": true
+    },
+    "lock_branch": {
+      "enabled": false
+    },
+    "allow_fork_syncing": {
+      "enabled": false
+    }
+  },
+  "observed_at": "2026-09-26T16:10:33.123667+00:00"
+}

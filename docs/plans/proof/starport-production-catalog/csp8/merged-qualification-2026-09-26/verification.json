@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "task": "CSP8",
+  "producer_head": "a6559d533ee2632378ece7b3ea6bc57826ea625e",
+  "producer_merge": "8122081e0494648fb1e356647053dd870a05fb1c",
+  "consumer_head": "8170d65c3904279d4d219e57e3af95eced371d5a",
+  "consumer_merge": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
+  "tree_equality": true,
+  "selected_subcases": 63,
+  "counts": {
+    "leaf_results": {
+      "PASS": 198
+    },
+    "distinct_go_commands": 14,
+    "named_go_events": {
+      "pass": 381
+    }
+  },
+  "acceptance_seconds": 877.4130219169892,
+  "services_cleaned": true,
+  "native_occurrences": 188,
+  "production_allocation_checks": 6,
+  "required_native_skips": 0,
+  "producer_ci_jobs": 30,
+  "consumer_ci_jobs": 15,
+  "consumer_module": "github.com/agentstation/starmap v0.16.6-0.20260926123426-0e53e6f9cbda",
+  "local_module_replacement": false,
+  "source_review": "Producer full textual source plus separately approved exact generated-payload verification. Consumer complete branch review in nine chunks. Both clean at P0.",
+  "secret_scan_findings": 0,
+  "artifacts": [
+    {
+      "path": "acceptance.json.gz",
+      "sha256": "a91bc824cfaa9c37dc4bb63553c96ba161cd4db3c53c529a6382861df64d4e54"
+    },
+    {
+      "path": "runner.json.gz",
+      "sha256": "6e937677d66030f0fc9c6c36f290bb168b300ff0eb2a60602d92df182bd25bfa"
+    },
+    {
+      "path": "runner.py.gz",
+      "sha256": "a7a9281a32fc58ed443574c5c8c3b68613161806f2b7159b42180108b525d1b1"
+    }
+  ],
+  "time": "2026-09-26T16:11:56.675169+00:00",
+  "limitations": "Released-pair acceptance, subsequent task criteria, and Starmap verification-speed target remain open."
+}
