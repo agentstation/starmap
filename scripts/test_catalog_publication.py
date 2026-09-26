@@ -842,6 +842,30 @@ scopes:
             self.assertEqual(1, platform["creates"])
             self.assertEqual(1, platform["merges"])
 
+            retry = resume("completed-retry")
+            retry.fixture["accepted_digests"].update(checked.fixture["accepted_digests"])
+            publication.write_json(retry.control, {"pending": record, "pending_head": "", "channels": final})
+            before = {name: Path(state["path"]).read_bytes() for name, state in final.items()}
+            retry.publish()
+            retry.promote()
+            with patch.dict(os.environ, {
+                "CATALOG_PROMOTED_COMMIT": retry.emitted["source_commit"],
+                "CATALOG_PROMOTED_CHECKOUT": str(retry.emitted["checkout"]),
+            }):
+                retry.channels()
+            for name, raw in before.items():
+                output = retry.root / "channels" / (name.replace("/", "-") + ".json")
+                self.assertEqual(raw, output.read_bytes(), name + " changed on completed retry")
+                retry.fixture["accepted_digests"].add(publication.checksum(output))
+            retry.finish()
+            for name, prior in final.items():
+                current = retry.read_branch(name, "channel.json")
+                self.assertEqual(prior["commit"], current["commit"], name + " created a retry commit")
+                self.assertEqual(before[name], Path(current["path"]).read_bytes())
+            self.assertEqual(retained_releases, platform["releases"])
+            self.assertEqual(1, platform["creates"])
+            self.assertEqual(1, platform["merges"])
+
     def test_pending_schema_and_duplicate_fields_refuse_ambiguous_inputs(self):
         for field, value in (("workflow_run_id", True), ("schema_version", True), ("receipt_tag", "../wrong"), ("preparation_commit", "main")):
             with self.subTest(field=field):

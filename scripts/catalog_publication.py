@@ -777,10 +777,20 @@ class Publisher:
         directory = self.root / "channels"
         directory.mkdir(exist_ok=True, mode=0o700)
         release = self.api(f"releases/tags/{record['artifact_tag']}")
+        replay = completed(record, control["channels"])
         for name in ("catalog/v2", "catalog/v1"):
             previous = control["channels"][name]
+            output = directory / (name.replace("/", "-") + ".json")
+            if name == "catalog/v1" and replay:
+                # The verified modern receipt identifies a retry. Legacy channels have no receipt identity.
+                retained = Path(previous["path"])
+                self.attest(retained)
+                if read_json(retained) != previous["document"]:
+                    raise PublicationError("retained legacy channel changed after inspection")
+                shutil.copyfile(retained, output)
+                continue
             args = [self.release_tool, "--channel-release-dir", self.assets, "--channel-tag", record["artifact_tag"],
-                    "--channel-published-at", release["published_at"], "--channel-out", directory / (name.replace("/", "-") + ".json"),
+                    "--channel-published-at", release["published_at"], "--channel-out", output,
                     "--channel-attestation-verified"]
             if previous["document"]:
                 old_tag = previous["document"]["tag"]
@@ -803,7 +813,9 @@ class Publisher:
         control = read_json(self.control)
         for name in ("catalog/v2", "catalog/v1"):
             document = self.root / "channels" / (name.replace("/", "-") + ".json")
-            self.push_document(name, "channel.json", document, control["channels"][name]["commit"])
+            previous = control["channels"][name]
+            if not previous["path"] or checksum(Path(previous["path"])) != checksum(document):
+                self.push_document(name, "channel.json", document, previous["commit"])
             confirmed = self.read_branch(name, "channel.json")
             if checksum(Path(confirmed["path"])) != checksum(document):
                 raise PublicationError("public channel does not match its staged document")
