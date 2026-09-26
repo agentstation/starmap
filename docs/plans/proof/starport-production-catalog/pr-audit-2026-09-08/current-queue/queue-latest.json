@@ -1,18 +1,18 @@
 {
-  "checked_at": "2026-09-26T18:23:08.962581+00:00",
+  "checked_at": "2026-09-26T18:33:25.995519+00:00",
   "starmap": [
     {
       "baseRefName": "main",
       "headRefName": "codex/catalog-fleet-contract",
-      "headRefOid": "4cd0db603db55dfb310d671a9fc5126e2426046d",
+      "headRefOid": "80604e2975a4dbdf3f81161efa06269b85942261",
       "isDraft": true,
       "number": 185,
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "updatedAt": "2026-09-26T17:39:48Z",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Reviewed startup repair pushed; exact-head CI pending",
-      "next_action": "Complete consumer capability and migration integration, then qualify both runtime processes. Preserve exact-head CI and dependency-ordered merges."
+      "disposition": "Capability and pinned catch-up refinements reviewed; push and exact-head CI must be verified",
+      "next_action": "Qualify concurrent runtime processes, finish consumer gates and published dependency adoption, then merge in order."
     }
   ],
   "starport": [],
@@ -863,7 +863,7 @@
     "consumer": "01ca416dc935412b52660b156bce4c0eb5f511e8"
   },
   "local_consumer_checkpoint": {
-    "head": "ee563ce610c3d1d4272e413018510ba96230e7f2",
+    "head": "16d176ba3b528aa7b99cc1c99a9adb0609128d97",
     "branch": "codex/catalog-fleet-adapter",
     "published": false
   }

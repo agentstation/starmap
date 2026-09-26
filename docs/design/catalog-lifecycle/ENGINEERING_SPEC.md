@@ -2371,6 +2371,10 @@ exist in deployment-owned durable storage under the refresh contract.
 Every replica eligible for acquisition ownership needs equivalent source policy
 and access to the required acquisition credentials. A follower-only role must
 not hold the lease until its capability checks pass.
+Check required acquisition profiles before taking and renewing ownership.
+Loss of required access releases the grant and preserves follower reads.
+These checks use acquisition credential resolution without provider inventory requests.
+Declared scope equivalence does not prove upstream account ownership or require matching secret bytes.
 
 ### 8.6 Recipe format, migration, and disaster recovery
 
