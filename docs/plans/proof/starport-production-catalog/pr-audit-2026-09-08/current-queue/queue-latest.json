@@ -236,7 +236,10 @@
       "log": "/tmp/starport-issued-material-review.log",
       "status": "COMPLETE_FINDING_REJECTED",
       "exit_code": 1
-    }
+    },
+    "sdk_pre_pin_proof": "../../csp8/sdk-pre-pin/verification.json",
+    "required_command_count": 34,
+    "required_command_note": "The current AGENTS.md roster includes SDK smoke checks. Use all 34 commands for the final pre-PR evidence."
   },
   "starmap_preparation": {
     "owner": "CSP8",
@@ -268,7 +271,7 @@
       "run": 36228899978,
       "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
       "status": "in_progress",
-      "passing_jobs": 20,
+      "passing_jobs": 26,
       "failed_jobs": 0
     },
     "native_timing_proof": "../../csp8/native-182/current-timing/verification.json",
