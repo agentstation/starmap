@@ -1,0 +1,18 @@
+{
+  "go_version": "go version go1.27.1 darwin/arm64",
+  "standard_uuid_package": {
+    "ImportPath": "uuid",
+    "Standard": true,
+    "Goroot": true
+  },
+  "source_commit": "beb1a8d697e614a5c4501bfc76e1aa3a3a11d1a3",
+  "pre_pr_commands": 34,
+  "pre_pr_commands_passed": 34,
+  "task_race_tests_passed": 733,
+  "task_race_tests_skipped": 0,
+  "task_race_services": [
+    "Valkey durable state",
+    "Valkey cache",
+    "PostgreSQL"
+  ]
+}

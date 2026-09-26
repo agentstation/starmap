@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T13:25:11.997812+00:00",
+  "checked_at": "2026-09-26T13:29:14.584223+00:00",
   "starmap": [
     {
       "pr": 183,
@@ -18,29 +18,26 @@
   "starport": [
     {
       "pr": 384,
-      "head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
+      "head": "beb1a8d697e614a5c4501bfc76e1aa3a3a11d1a3",
       "branch": "codex/starport-native-catalog",
       "state": "OPEN",
       "draft": true,
       "owner": "CSP8",
-      "checks_run": 36234492082,
-      "disposition": "Keep. Native CI failed on both macOS jobs and Windows ARM64.",
-      "next_action": "Complete the active full branch review, publish PR #384, and qualify native CI. Merge producer PR #183 first.",
+      "checks_run": 36245287434,
+      "disposition": "Keep. Reviewed compiled catalog integration awaits native CI and complete task acceptance.",
+      "next_action": "Qualify native CI and all 63 CSP8 subcases. Merge after producer PR #183.",
       "local_head": "beb1a8d697e614a5c4501bfc76e1aa3a3a11d1a3",
       "native_failure_proof": "../../csp8/native-schedule-384/native-failure-current.json",
       "local_changes": [],
       "local_qualification": "All 34 commands and 733 real-storage task race tests pass without task skips.",
       "local_qualification_proof": "../../csp8/native-schedule-384/verification.json",
       "prepr": "PASS: all 34 required commands",
-      "review": "RUNNING: full branch, session 94121",
-      "native_watch_session": null,
-      "native_watch_status": "Terminal run: 11 jobs passed, three native jobs failed, build skipped.",
+      "review": "PASS: nine chunks, no findings at P0",
+      "native_watch_session": 56790,
+      "native_watch_status": "Active run 36245287434 at reviewed source.",
       "local_preparation_proof": "../../csp8/compiled-consumer-384/verification.json",
       "terminal_native_proof": "../../csp8/native-schedule-384/terminal-run.json",
-      "unpublished_commits": [
-        "24feb55198d3a8aaa585fed874adbb172313ad8f",
-        "beb1a8d697e614a5c4501bfc76e1aa3a3a11d1a3"
-      ],
+      "unpublished_commits": [],
       "candidate_module": "v0.16.6-0.20260926123426-0e53e6f9cbda"
     }
   ],
@@ -261,16 +258,22 @@
     "proof": "../../csp8/linux-migration-384/verification.json",
     "pr": 384,
     "checks_run": 36232078722,
-    "status": "Checks passed; complete branch review running.",
+    "status": "Published. Native CI running.",
     "linux_migration_proof": "../../csp8/linux-migration-384/verification.json",
     "issued_material_proof": "../../csp9/issued-material/verification.json",
     "active_review": {
       "session": 94121,
-      "status": "running",
-      "log": "/tmp/starport-384-compiled-review.log",
+      "status": "PASS",
+      "log": "full-branch-review.log.gz",
       "max_passes": 32,
       "reason": "Preserve the entire integration branch diff. Prior complete review used nine passes.",
-      "dataset": "tmp/review/verified-toolchain.json"
+      "dataset": "tmp/review/verified-toolchain.json",
+      "exit_code": 0,
+      "review_passes": 9,
+      "threshold": "P0",
+      "findings": 0,
+      "reviewer": "Claude Opus 5.5 high",
+      "secret_scan": "PASS"
     },
     "sdk_pre_pin_proof": "../../csp8/sdk-pre-pin/verification.json",
     "required_command_count": 34,
