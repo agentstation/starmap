@@ -1,0 +1,217 @@
+{
+  "status": "LOCAL_STORAGE_CHECKPOINT_POLICY_INTEGRATION_REQUIRED",
+  "owner": "CSP11",
+  "recorded_at": "2026-09-26T21:16:58.237851+00:00",
+  "producer": "09692630f795e89483b549dfdf7c35aaa32a37a1",
+  "consumer": "1999966706393f1847e912cd1782a3e265342973",
+  "published": false,
+  "merged": false,
+  "toolchain": "go1.27.1",
+  "paired_workspace": "Explicit temporary go.work selects both task trees. Published module pin is unchanged.",
+  "runs": {
+    "csp11-retention-before": {
+      "started": "2026-09-26T20:56:23.198227+00:00",
+      "images": [
+        "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94"
+      ],
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=4m",
+        "-json",
+        "-run",
+        "^TestFleetRetention",
+        "./internal/catalog"
+      ],
+      "exit_code": 1,
+      "cleanup": [
+        0,
+        0,
+        0
+      ],
+      "finished": "2026-09-26T20:56:30.869271+00:00",
+      "named_results": {
+        "fail": 2
+      },
+      "failed_tests": [
+        "TestFleetRetentionRefusesUnownedStaging",
+        "TestFleetRetentionBoundsCommittedSnapshots"
+      ]
+    },
+    "csp11-retention-after": {
+      "started": "2026-09-26T21:01:12.467004+00:00",
+      "images": [
+        "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94"
+      ],
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=4m",
+        "-json",
+        "-run",
+        "^TestFleet",
+        "./internal/catalog"
+      ],
+      "exit_code": 1,
+      "cleanup": [
+        0,
+        0,
+        0
+      ],
+      "finished": "2026-09-26T21:04:27.701096+00:00",
+      "named_results": {
+        "pass": 16,
+        "fail": 1
+      },
+      "failed_tests": [
+        "TestFleetRuntimeRejectsUnapprovedBackend"
+      ]
+    },
+    "csp11-retention-final-pair": {
+      "started": "2026-09-26T21:11:43.800641+00:00",
+      "images": [
+        "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94"
+      ],
+      "source_sha256": {
+        "internal/catalog/fleet_acceptance.go": "9f26f2c2656c1fc816157a76a41c4219eac0bad045664eadbe17a01f5b6c38bf",
+        "internal/catalog/fleet_lease.go": "c1bdbe7f018557f711b6ecbfaa46098932229b0d97b84b495baddb8b8b98d9df",
+        "internal/catalog/fleet_payload.go": "5d2a3896a21c99296de679ed068a7fca9f37016d10bf1e33769ebd6aa9e73f08",
+        "internal/catalog/fleet_process_test.go": "8a0e83cfd9d8d673d70047cd5edd2931921622c59b4d14f03626d3cea56d0bd4",
+        "internal/catalog/fleet_retention.go": "8b181be0624122e15926378e960e0d170790ae44b2a03110012baa81375a4da7",
+        "internal/catalog/fleet_retention_record.go": "19bc6b716ce32ebf9e0c0d12025da039da5d68f7ced9b2b35a5cf60f15792135",
+        "internal/catalog/fleet_retention_test.go": "3929634f1bb78d8a237eabae4a5d1ded5f38802988f806f38bc8647f148ab356",
+        "internal/catalog/fleet_store.go": "da3688230cf9d94d68fedaa5d421c2133c573fd230cfcdc2088e3542c2628cb2",
+        "internal/catalog/fleet_store_test.go": "7d278b292d90a2e0ae8e37d8bb24fac528416495022ddc98f7186d6be7fb1054"
+      },
+      "environment": {
+        "GOTOOLCHAIN": "go1.27.1",
+        "GOWORK": "/tmp/csp11-pair.work"
+      },
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=4m",
+        "-json",
+        "-run",
+        "^TestFleet",
+        "./internal/catalog"
+      ],
+      "exit_code": 0,
+      "cleanup": [
+        0,
+        0,
+        0
+      ],
+      "finished": "2026-09-26T21:14:56.793113+00:00",
+      "named_results": {
+        "pass": 28
+      },
+      "failed_tests": []
+    },
+    "csp11-retention-commit-check": {
+      "started": "2026-09-26T21:15:28.813800+00:00",
+      "images": [
+        "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94"
+      ],
+      "source_sha256": {
+        "internal/catalog/fleet_acceptance.go": "28cdd7a9ad18f3ab707dafbefb254a85b364e91762003fd5de7cfdf677ac792e",
+        "internal/catalog/fleet_lease.go": "c1bdbe7f018557f711b6ecbfaa46098932229b0d97b84b495baddb8b8b98d9df",
+        "internal/catalog/fleet_payload.go": "5d2a3896a21c99296de679ed068a7fca9f37016d10bf1e33769ebd6aa9e73f08",
+        "internal/catalog/fleet_process_test.go": "8a0e83cfd9d8d673d70047cd5edd2931921622c59b4d14f03626d3cea56d0bd4",
+        "internal/catalog/fleet_retention.go": "1b887d4665830d31a3aa2d85c623450e7d30ddd45701cebd2ba9b8464626911e",
+        "internal/catalog/fleet_retention_record.go": "19bc6b716ce32ebf9e0c0d12025da039da5d68f7ced9b2b35a5cf60f15792135",
+        "internal/catalog/fleet_retention_test.go": "3929634f1bb78d8a237eabae4a5d1ded5f38802988f806f38bc8647f148ab356",
+        "internal/catalog/fleet_store.go": "354084184e91cbab8392bc9a5a80f7d0df3654f5698d4386a6170de93e67e4bf",
+        "internal/catalog/fleet_store_test.go": "7d278b292d90a2e0ae8e37d8bb24fac528416495022ddc98f7186d6be7fb1054"
+      },
+      "environment": {
+        "GOTOOLCHAIN": "go1.27.1",
+        "GOWORK": "/tmp/csp11-pair.work"
+      },
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=4m",
+        "-json",
+        "-run",
+        "^(TestFleetRetention|TestFleetStore|TestFleetRuntimeRejectsUnapprovedBackend)",
+        "./internal/catalog"
+      ],
+      "exit_code": 0,
+      "cleanup": [
+        0,
+        0,
+        0
+      ],
+      "finished": "2026-09-26T21:15:47.009352+00:00",
+      "named_results": {
+        "pass": 24
+      },
+      "failed_tests": []
+    },
+    "csp11-fleet-init-pair": {
+      "started": "2026-09-26T20:55:37.875556+00:00",
+      "images": [
+        "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94"
+      ],
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=4m",
+        "-json",
+        "-run",
+        "^(TestFreshFleet|TestRecoveryWitness|TestFleetInitialization|TestInitializeFleet)",
+        "./internal/catalog/recovery",
+        "./internal/cli",
+        "./internal/app"
+      ],
+      "exit_code": 0,
+      "cleanup": [
+        0,
+        0,
+        0
+      ],
+      "finished": "2026-09-26T20:56:12.309160+00:00",
+      "named_results": {
+        "pass": 29
+      },
+      "failed_tests": []
+    }
+  },
+  "checks": {
+    "lint": "PASS, zero issues",
+    "writing": "PASS, eight files",
+    "vet": "PASS",
+    "dependency_direction": "PASS, six conditions",
+    "package_layout": "PASS",
+    "doc_links": "PASS"
+  },
+  "full_pair_source_note": "The 28-event run precedes only maintenance-release lint cleanup and the resource constant. The 24-event focused run verifies exact committed source hashes.",
+  "remaining": [
+    "Apply canonical retention settings and the automatic-disable contract",
+    "Expose explicit collection and truthful generation versus publication storage metrics",
+    "Resolve the pending baseline and acquisition-policy transition decision",
+    "Complete final branch review, native CI, and dependency-ordered merges"
+  ],
+  "raw_sha256": "4fabc946a2c854c19fc7a0c4a3e1f57eaa14d2de226ec89fb32a93b6675c926e"
+}

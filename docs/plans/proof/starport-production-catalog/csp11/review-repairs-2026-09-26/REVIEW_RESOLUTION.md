@@ -22,13 +22,16 @@ The producer regression failed before repair and now passes with the race detect
 The consumer regression also failed before repair and now passes.
 The verification record contains commands, source commits, counts, and raw output.
 
+Fresh fleet initialization now has an explicit command and passes 29 named race tests with real Valkey and PostgreSQL.
+The latest local producer pair also passes those checks. Review and merge remain pending.
+
 ## Remaining merge requirements
 
 | Owner | Required repair | Required evidence |
 | --- | --- | --- |
 | Starmap fleet policy | Define a safe transition for a changed embedded baseline or acquisition policy. Preserve ordinary replay compatibility checks. | Mixed-version replicas cannot alternate policy. The selected transition preserves permitted retained inputs. Old owners cannot publish after transition. |
 | Starport fleet initialization | Supply an explicit operation for fresh deployment approval before enabling shared startup. | A fresh Valkey/PostgreSQL deployment starts through the documented operation. Existing, replaced, or uncertain state refuses fresh initialization. Concurrent attempts cannot approve different backends. |
-| Starport fleet retention | Bound staged chunks, committed publications, generation indexes, and retry receipts. Protect current, accepted, retained rollback, and pinned generations. | Repeated publication and rejected staging remain bounded. Interrupted collection recovers. Concurrent publication, acceptance, reads, and collection preserve selected data. |
+| Starport fleet retention | Bound staged chunks, committed publications, generation indexes, and retry receipts. Protect current, accepted, retained rollback, and pinned generations. Apply canonical retention configuration. | Repeated publication and rejected staging remain bounded. Interrupted collection recovers. Concurrent publication, acceptance, reads, and collection preserve selected data. Disabled automatic cleanup and explicit collection retain their declared behavior. |
 
 The upgrade decision remains pending with the owner.
 The recommendation requires one explicit deployment-wide transition for a changed baseline or acquisition policy.
@@ -69,3 +72,23 @@ Retaining the pending candidate preserves the existing acceptance checks.
 
 No native suspend requirement changes in this work.
 Historical Intel Mac releases and evidence remain available.
+
+
+## September 26 retention checkpoint
+
+Two real-storage regressions confirm leaked rejected chunks and unbounded committed receipts.
+The local repair adds a bounded inventory, unique chunk ownership, a native maintenance lease, and a durable deletion record.
+It protects accepted rollback content and explicit generation readers. Ordinary diagnostic reads remain read-only.
+The adapter also refuses corrupt cleanup records that select protected content.
+
+The storage protocol passes its focused race checks. It is not ready for publication.
+Its current publication-triggered cleanup bypasses Starmap's canonical retention scheduler and disable switch.
+This discovered integration gap is a mandatory CSP11 repair, not an optional follow-up.
+
+Starmap must continue to own retention settings and scheduling.
+Connect the fleet adapter through an explicit collection capability, and remove unconditional committed-generation cleanup from publication and acceptance.
+Keep abandoned-upload recovery independent of that switch. Hard storage bounds must refuse uploads when operators disable collection and protected capacity is full.
+
+Report public catalog generations separately from publication receipts and private recovery bytes.
+Do not reinterpret the existing generation-count and manifest/payload-byte fields as publication counts or total snapshot bytes.
+Verify disabled scheduling, explicit collection, configured limits, safe refusal, and operator-visible capacity state before the final branch review.
