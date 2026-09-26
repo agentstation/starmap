@@ -23,5 +23,18 @@
     "goago": "No findings, stale ignores, or errors.",
     "technical_writing": "1853 files; zero diagnostics.",
     "scope": "Only pr.yaml and its workflow contract test differ from the integration merge. Hosted native execution remains unverified."
+  },
+  "pre_pr_review": {
+    "head": "caec09095bbba5082b7ca6bb6b3aa12c91319067",
+    "base": "19c85ad84293acba4ae9514fa5f68276e92d2461",
+    "profile": "auto",
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "P0",
+    "result": "clean",
+    "bundle_bytes": 200779,
+    "passes": 1,
+    "secret_scan": "clean",
+    "limit": "Review is for the prepared source and current base. Refresh and rerun the gate before publication if either changes."
   }
 }
