@@ -64,6 +64,11 @@ class CompletedRetryTests(RetryEvidenceFixture, unittest.TestCase):
             with self.subTest(receipt=receipt, event=event), self.assertRaises(publication.PublicationError):
                 self.inspect(99, receipt=receipt, event=event)
 
+    def test_new_receipt_for_same_artifact_is_not_a_completed_retry(self):
+        newer = dict(self.record, receipt_checksum="sha256:" + "e" * 64, receipt_tag="catalog-run-" + "e" * 64)
+        self.assertFalse(publication.completed(newer, self.channels))
+        self.assertTrue(publication.completed(self.record, self.channels))
+
     def test_explicit_retry_requires_both_channels_completed(self):
         self.channels["catalog/v1"]["document"] = None
         with self.assertRaises(publication.PublicationError):
