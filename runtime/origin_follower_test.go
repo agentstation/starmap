@@ -49,7 +49,12 @@ func TestOriginFollowerStartsWithoutPublishing(t *testing.T) {
 				t.Fatal(err)
 			}
 			watched := &originFollowerStore{Store: store, AuthorityHeadReader: store.(storage.AuthorityHeadReader)}
-			follower := openTestRuntime(t, append(base, WithStateDirectory(privateRuntimeDirectory(t)), WithAuthorityOrigin(watched, originTestConfig()), WithLeaseStore(&stubLeaseStore{refuseAll: true}))...)
+			follower := openTestRuntime(t, append(base,
+				WithStateDirectory(privateRuntimeDirectory(t)),
+				WithAuthorityOrigin(watched, originTestConfig()),
+				WithLeaseStore(&stubLeaseStore{refuseAll: true}),
+				withScheduleTimer(newStubScheduleTimer().after),
+			)...)
 			if follower.State().AuthorityHead != leader.State().AuthorityHead || follower.State().PayloadChecksum != leader.State().PayloadChecksum {
 				t.Fatal("follower did not select the accepted authority catalog")
 			}
