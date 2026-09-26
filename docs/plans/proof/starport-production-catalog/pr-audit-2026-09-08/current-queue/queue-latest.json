@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-25T23:56:53.817418+00:00",
+  "checked_at": "2026-09-26T00:23:43.775248+00:00",
   "starmap": [
     {
       "baseRefOid": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
@@ -293,8 +293,8 @@
       "title": "catalog: embed bindings-4e61b06110e35f6ba62a8237ec26408272ee815efedefb351e5f7f4e528b0213.local.1682a8241ee7",
       "updatedAt": "2026-09-25T23:56:08Z",
       "owner": "CSP6",
-      "disposition": "CI rerun",
-      "next_action": "Updated branch onto PR173 merge; qualify exact new head and current pending receipt before merge.",
+      "disposition": "blocked by fixture",
+      "next_action": "Wait for PR #180 fixture repair, refresh onto its merge, then qualify the current pending receipt and full native gate.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -303,8 +303,8 @@
         },
         {
           "name": "Analyze (actions)",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Coordinated Storage redis",
@@ -313,33 +313,33 @@
         },
         {
           "name": "Analyze (go)",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Analyze (python)",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Constructor Network Passivity",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Offline Server Persistence",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Verification Checks",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Security & Reliability",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Action Pin Provenance",
@@ -358,13 +358,13 @@
         },
         {
           "name": "Runtime ubuntu-24.04",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Runtime ubuntu-24.04-arm",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Runtime macos-15-intel",
@@ -373,38 +373,78 @@
         },
         {
           "name": "Runtime macos-15",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Publication windows-2025",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Publication windows-11-arm",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Publication ubuntu-24.04",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Publication ubuntu-24.04-arm",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Publication macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-1",
           "status": "IN_PROGRESS",
           "conclusion": ""
         },
         {
-          "name": "Publication macos-15",
-          "status": "QUEUED",
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "IN_PROGRESS",
           "conclusion": ""
+        },
+        {
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Go 1.27.1 race client",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Go 1.27.1 race application",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         }
       ]
     },
@@ -1177,109 +1217,79 @@
           "conclusion": "NEUTRAL"
         }
       ]
+    },
+    {
+      "baseRefOid": "19c85ad84293acba4ae9514fa5f68276e92d2461",
+      "headRefOid": "e7b16e489a22df0e5b853cfdf2b82c1db01c0ae2",
+      "isDraft": true,
+      "mergeStateStatus": "BLOCKED",
+      "number": 180,
+      "title": "ci: restore coordinated storage checks with durable S3 fixture",
+      "updatedAt": "2026-09-26T00:23:05Z",
+      "owner": "CSP6",
+      "disposition": "CI rerun",
+      "next_action": "Pinned MinIO source fixture built locally on Go 1.27.1. Qualify both coordinated-storage jobs and full native gate, then review and merge the exact head before refreshing PR #174.",
+      "checks": [
+        {
+          "name": "Analyze (actions)",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Analyze (go)",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Analyze (python)",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        }
+      ]
     }
   ],
   "starport": [
     {
-      "baseRefOid": "a9a8f6f845523473b89fca8ac0f8c94148ca730b",
-      "headRefOid": "df16154a1ae7f8ab0ec141a1a762e2b98369bde9",
+      "baseRefOid": "b068f0c2e2760e01033218113d21096a66a6056a",
+      "headRefOid": "6e0417ae9ed0cbb2dea05262d402c64327f67c77",
       "isDraft": false,
       "mergeStateStatus": "BLOCKED",
-      "number": 382,
-      "title": "chore(deps): bump the console-packages group in /console with 16 updates",
-      "updatedAt": "2026-09-25T23:53:01Z",
-      "owner": "dependency maintenance",
-      "disposition": "CI rerun",
-      "next_action": "Updated onto merge a9a8f6f; merge exact head after refreshed required checks pass.",
-      "checks": [
-        {
-          "name": "Lint",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Test (ubuntu-latest)",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        },
-        {
-          "name": "Test (macos-latest)",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        },
-        {
-          "name": "Test (windows-latest)",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        },
-        {
-          "name": "Security Scan",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Release Contract",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        },
-        {
-          "name": "OpenRouter SDK Compatibility",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Release Snapshot",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        },
-        {
-          "name": "Action Pin Provenance",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        }
-      ]
-    },
-    {
-      "baseRefOid": "46ec32a37e6d8f9f0f93df8fe0bdab8d29cb177d",
-      "headRefOid": "b3593cfc352897b91c3293904fd80b3a33fd58c8",
-      "isDraft": false,
-      "mergeStateStatus": "UNKNOWN",
       "number": 383,
       "title": "chore(deps): bump the go-modules group across 1 directory with 13 updates",
-      "updatedAt": "2026-09-22T04:56:52Z",
+      "updatedAt": "2026-09-26T00:10:37Z",
       "owner": "dependency maintenance",
-      "disposition": "compile failure",
-      "next_action": "WorkOS dependency changed Code to *string; repair API use and requalify before merge.",
+      "disposition": "CI rerun",
+      "next_action": "WorkOS Code pointer fix passed the local full Go suite. Wait for native checks on the refreshed head, then squash merge the exact head.",
       "checks": [
         {
           "name": "Lint",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Test (ubuntu-latest)",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Test (macos-latest)",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "status": "IN_PROGRESS",
+          "conclusion": ""
         },
         {
           "name": "Test (windows-latest)",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Security Scan",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Release Contract",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "SUCCESS"
         },
         {
           "name": "OpenRouter SDK Compatibility",
@@ -1289,17 +1299,12 @@
         {
           "name": "Release Snapshot",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Action Pin Provenance",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Build",
-          "status": "COMPLETED",
-          "conclusion": "SKIPPED"
         }
       ]
     }
@@ -1316,6 +1321,12 @@
       "pr": 378,
       "head": "b44ba8f431ad1d8e30a5a05ad5b9f33acd38eece",
       "merge_commit": "a9a8f6f845523473b89fca8ac0f8c94148ca730b"
+    },
+    {
+      "repo": "starport",
+      "pr": 382,
+      "head": "df16154a1ae7f8ab0ec141a1a762e2b98369bde9",
+      "merge_commit": "b068f0c2e2760e01033218113d21096a66a6056a"
     }
   ],
   "publication_replay": {
@@ -1325,8 +1336,8 @@
   },
   "cleanup": {
     "stale_worktree_registrations_pruned": 31,
-    "clean_merged_worktrees_removed": 6,
-    "local_exact_ancestor_branches_removed": 30,
+    "clean_merged_worktrees_removed": 7,
+    "local_exact_ancestor_branches_removed": 31,
     "live_remote_branches_deleted": 0,
     "note": "Full remote prune showed stale tracking refs; the remote branches were already absent. Dirty and unmerged worktrees remain."
   }
