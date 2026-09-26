@@ -98,23 +98,23 @@ func (r *Runtime) initializeFleetLayers(ctx context.Context, snapshot *FleetSnap
 	}
 	r.fleetHead, r.fleetReplayError = snapshot.Head, replayErr
 	r.fleetPublicationGrant = snapshot.Publication.Grant
+	r.pinRecord = pin
 	if replayErr == nil {
 		r.layers = layers
-		r.pinRecord = pin
 	}
 	return nil
 }
 
 func (r *Runtime) replayFleetSnapshot(ctx context.Context, snapshot FleetSnapshot, local layerSet) (layerSet, *generationPinRecord, error) {
 	layers, pin, err := recoverFleetState(ctx, snapshot, local)
+	if pin != nil && pin.Binding != r.pinBinding() {
+		return layerSet{}, nil, pinRecordConflict("the shared pin belongs to a different source or authority")
+	}
 	if err != nil {
-		return layerSet{}, nil, err
+		return layerSet{}, pin, err
 	}
 	if layers.source != nil && r.source != nil && layers.source.Identity != r.source.Identity() {
 		return layerSet{}, nil, fleetConflict("retained inputs belong to a different configured source")
-	}
-	if pin != nil && pin.Binding != r.pinBinding() {
-		return layerSet{}, nil, pinRecordConflict("the shared pin belongs to a different source or authority")
 	}
 	return layers, pin, nil
 }
@@ -278,9 +278,9 @@ func (r *Runtime) refreshFleetInputs(ctx context.Context, requireReplay bool) er
 	r.mu.Lock()
 	r.fleetHead, r.fleetReplayError = snapshot.Head, replayErr
 	r.fleetPublicationGrant = snapshot.Publication.Grant
+	r.pinRecord = pin
 	if replayErr == nil {
 		r.layers = layers
-		r.pinRecord = pin
 	}
 	if pin != nil && r.config.generationPin == pin.Receipt.SelectedGenerationID {
 		generation := snapshot.Publication.Generation

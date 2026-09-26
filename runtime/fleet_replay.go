@@ -48,40 +48,46 @@ func recoverFleetState(ctx context.Context, snapshot FleetSnapshot, local layerS
 	if err != nil {
 		return layerSet{}, nil, err
 	}
+	if record.Pin != nil && !pinRecordMatches(*record.Pin, snapshot.Publication.Generation) {
+		return layerSet{}, nil, pinRecordConflict("the shared pin receipt differs from the selected generation")
+	}
+	layers, err := recoverFleetLayers(ctx, snapshot, local, record)
+	return layers, record.Pin, err
+}
+
+// recoverFleetLayers validates acquisition replay independently of a valid pin receipt.
+func recoverFleetLayers(ctx context.Context, snapshot FleetSnapshot, local layerSet, record fleetRecoveryRecord) (layerSet, error) {
 	recovered, err := decodeFleetRecoveryRecord(ctx, record, local)
 	if err != nil {
-		return layerSet{}, nil, err
+		return layerSet{}, err
 	}
 	// The packaged baseline is a candidate for explicit promotion, not replay input.
 	local.embedded, local.embeddedManifest, local.fleetBaseline = recovered.embedded, recovered.embeddedManifest, recovered.fleetBaseline
 	compatibility, err := fleetLayerCompatibility(local)
 	if err != nil {
-		return layerSet{}, nil, err
+		return layerSet{}, err
 	}
 	if record.Compatibility != compatibility {
-		return layerSet{}, nil, fleetConflict("recovery requires the same baseline and acquisition policy")
+		return layerSet{}, fleetConflict("recovery requires the same baseline and acquisition policy")
 	}
 	if err := local.providerBindings.validateRetained(recovered.providers); err != nil {
-		return layerSet{}, nil, err
+		return layerSet{}, err
 	}
 	if err := validateManualHistory(recovered.manual, local.providerBindings); err != nil {
-		return layerSet{}, nil, err
+		return layerSet{}, err
 	}
 	local.publisherID, local.source = recovered.publisherID, recovered.source
 	local.providers, local.manual, local.removals = recovered.providers, recovered.manual, recovered.removals
 	state, err := local.build(ctx, local.embedded)
 	if err != nil {
-		return layerSet{}, nil, err
+		return layerSet{}, err
 	}
 	expectedChecksum := snapshot.Publication.Generation.Manifest.Payload.Checksum
 	if record.Pin != nil {
-		if !pinRecordMatches(*record.Pin, snapshot.Publication.Generation) {
-			return layerSet{}, nil, pinRecordConflict("the shared pin receipt differs from the selected generation")
-		}
 		expectedChecksum = record.ReplayChecksum
 	}
 	if state.PayloadChecksum != expectedChecksum {
-		return layerSet{}, nil, fleetConflict("recovered inputs do not reproduce the accepted catalog")
+		return layerSet{}, fleetConflict("recovered inputs do not reproduce the accepted catalog")
 	}
-	return local, record.Pin, nil
+	return local, nil
 }

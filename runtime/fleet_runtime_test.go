@@ -293,7 +293,7 @@ func TestFleetRuntimePinSurvivesLostDirectoriesAndUnpin(t *testing.T) {
 		}
 		t.Run(name, func(t *testing.T) {
 			backend := newFleetRuntimeBackend(t)
-			open := func(identity, pin string) *Runtime {
+			open := func(identity, pin string, extra ...Option) *Runtime {
 				session := &fleetTestSession{backend: backend, session: identity + "-process"}
 				option := WithFleetStore(session)
 				if origin {
@@ -301,8 +301,9 @@ func TestFleetRuntimePinSurvivesLostDirectoriesAndUnpin(t *testing.T) {
 					config.Bootstrap = true
 					option = WithFleetAuthorityOrigin(session, config)
 				}
-				return openTestRuntime(t, option, WithSchedulerIdentity(identity), WithSource(newStubSource("fleet-source")),
-					WithGenerationPin(pin), withScheduleTimer(newStubScheduleTimer().after))
+				options := []Option{option, WithSchedulerIdentity(identity), WithSource(newStubSource("fleet-source")),
+					WithGenerationPin(pin), withScheduleTimer(newStubScheduleTimer().after)}
+				return openTestRuntime(t, append(options, extra...)...)
 			}
 			leader := open("leader", "")
 			at := time.Date(2026, 9, 26, 0, 0, 0, 0, time.UTC)
@@ -333,6 +334,21 @@ func TestFleetRuntimePinSurvivesLostDirectoriesAndUnpin(t *testing.T) {
 			if !ok || !reflect.DeepEqual(followed, receipt) || follower.State().GenerationID != pinned.State().GenerationID {
 				t.Fatal("pin follower did not retain the shared acceptance")
 			}
+			incompatible := open("different-policy-pin-follower", selected, WithAcquisitionSources())
+			status, _ := incompatible.FleetStatus()
+			if status.ReplayReady || status.AcquisitionReady || incompatible.lease.status() != leaseLost {
+				t.Fatal("pinned policy mismatch permitted refresh ownership")
+			}
+			retainedPin, ok := incompatible.PinAcceptance()
+			if !ok || !reflect.DeepEqual(retainedPin, receipt) || incompatible.State().GenerationID != pinned.State().GenerationID {
+				t.Fatal("pinned policy mismatch hid the accepted catalog or receipt")
+			}
+			if err := incompatible.RefreshFleet(t.Context()); err != nil {
+				t.Fatal("pinned incompatible follower refresh:", err)
+			}
+			if _, err := incompatible.PublishObservations(t.Context(), manualTestObservation(t, "forbidden", at, false)); err == nil {
+				t.Fatal("incompatible pinned follower acquired refresh ownership")
+			}
 			directory := pinned.config.stateDirectory
 			if err := pinned.Close(); err != nil {
 				t.Fatal(err)
@@ -341,6 +357,13 @@ func TestFleetRuntimePinSurvivesLostDirectoriesAndUnpin(t *testing.T) {
 				t.Fatal(err)
 			}
 			restarted := open("pin-replacement", selected)
+			if err := incompatible.RefreshFleet(t.Context()); err != nil {
+				t.Fatal("incompatible pinned follower rejected the replacement owner:", err)
+			}
+			status, _ = incompatible.FleetStatus()
+			if status.ReplayReady || status.AcquisitionReady || incompatible.State().GenerationID != restarted.State().GenerationID {
+				t.Fatal("replacement owner changed incompatible follower readiness")
+			}
 			retained, ok := restarted.PinAcceptance()
 			if !ok || !reflect.DeepEqual(retained, receipt) {
 				t.Fatalf("pin restart changed the shared acceptance receipt: retained=%+v expected=%+v replay=%v", retained, receipt, restarted.fleetReplayError)
@@ -354,6 +377,9 @@ func TestFleetRuntimePinSurvivesLostDirectoriesAndUnpin(t *testing.T) {
 			unpin := open("unpin-owner", "")
 			if err := follower.RefreshFleet(t.Context()); err == nil {
 				t.Fatal("pinned follower accepted an unpinned head")
+			}
+			if err := incompatible.RefreshFleet(t.Context()); err == nil {
+				t.Fatal("incompatible pinned follower accepted an unpinned head")
 			}
 			provider, err := unpin.Catalog().Provider("manual-provider")
 			if err != nil || provider.Models["first"] == nil || provider.Models["second"] == nil {

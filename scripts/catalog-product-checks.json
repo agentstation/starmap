@@ -5842,6 +5842,18 @@
           "repository": "starmap",
           "package": "./acquisition",
           "test": "TestFleetCapabilityResolvesAcquisitionWithoutProviderCalls"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimePinSurvivesLostDirectoriesAndUnpin"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimeRefusesUnacceptedPinOnFollower"
         }
       ]
     },
