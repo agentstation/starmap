@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T10:51:25.146239+00:00",
+  "checked_at": "2026-09-26T12:44:09.656742+00:00",
   "starmap": [],
   "starport": [
     {
@@ -11,16 +11,10 @@
       "owner": "CSP8",
       "checks_run": 36234492082,
       "disposition": "Keep. Native CI failed on both macOS jobs and Windows ARM64.",
-      "next_action": "Qualify the local deadline and credential repairs with the compiled Starmap baseline. Review and publish both sources, then qualify native CI and all 63 CSP8 subcases.",
-      "local_head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
+      "next_action": "Resolve producer review, publish and qualify the producer, then pin its module. Complete final consumer qualification and full branch review before updating this PR.",
+      "local_head": "24feb55198d3a8aaa585fed874adbb172313ad8f",
       "native_failure_proof": "../../csp8/native-schedule-384/native-failure-current.json",
-      "local_changes": [
-        "internal/document/deadline_test.go",
-        "internal/document/extract.go",
-        "internal/document/extract_test.go",
-        "internal/providers/keyring/managed_lifecycle_test.go",
-        "internal/providers/keyring/managed_material.go"
-      ],
+      "local_changes": [],
       "local_qualification": "All 68 packages: 4227 passing named tests, six optional skips, zero failures. All 733 CSP8 tests pass without skips.",
       "local_qualification_proof": "../../csp8/native-schedule-384/verification.json",
       "prepr": "PASS: all 34 required commands",
@@ -28,7 +22,10 @@
       "native_watch_session": null,
       "native_watch_status": "Terminal run: 11 jobs passed, three native jobs failed, build skipped.",
       "local_preparation_proof": "../../csp8/compiled-bootstrap-preparation/verification.json",
-      "terminal_native_proof": "../../csp8/native-schedule-384/terminal-run.json"
+      "terminal_native_proof": "../../csp8/native-schedule-384/terminal-run.json",
+      "unpublished_commits": [
+        "24feb55198d3a8aaa585fed874adbb172313ad8f"
+      ]
     }
   ],
   "completed_merges": [
