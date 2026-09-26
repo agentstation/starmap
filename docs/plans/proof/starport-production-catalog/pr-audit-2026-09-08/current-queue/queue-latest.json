@@ -876,7 +876,7 @@
     "proof": "../../csp11/isolation-scope-2026-09-26/verification.json",
     "owner": "CSP11",
     "next_action": "Resolve the verified fleet review findings, then review and qualify the final head before publication and merge.",
-    "consumer": "2de185399f1deadec4d1ce9753aa3cf79e985a54",
+    "consumer": "527eeafd096a3567f330dd54d0d7c3745a71a572",
     "consumer_pr": 385,
     "ci": {
       "producer": 36265771789,
@@ -887,7 +887,7 @@
     "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json"
   },
   "local_consumer_checkpoint": {
-    "head": "2de185399f1deadec4d1ce9753aa3cf79e985a54",
+    "head": "527eeafd096a3567f330dd54d0d7c3745a71a572",
     "branch": "codex/catalog-fleet-adapter",
     "published": false
   },

@@ -11,7 +11,7 @@
   "preserved": "Historical releases and native evidence; all distinct behavioral checks and remaining architectures.",
   "commits": {
     "starmap": "37c01101257c06c065a51c93ed7bcca987c58da4",
-    "starport": "2de185399f1deadec4d1ce9753aa3cf79e985a54"
+    "starport": "527eeafd096a3567f330dd54d0d7c3745a71a572"
   },
   "checks": {
     "starmap_catalog_verifier_tests": 99,
@@ -24,10 +24,35 @@
     "homebrew_publication_fixture": "PASS",
     "goreleaser_check": "PASS in both repositories",
     "actionlint_syntax": "PASS in both repositories",
-    "changed_prose_lint": "PASS, zero diagnostics"
+    "changed_prose_lint": "PASS, zero diagnostics",
+    "starmap_actual_binaries": {
+      "status": "PASS",
+      "count": 5,
+      "toolchain": "Go 1.27.1",
+      "commit": "37c01101257c06c065a51c93ed7bcca987c58da4",
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 goreleaser build --snapshot --skip=before --parallelism=2 --timeout=5m && bash scripts/verify-release-binaries.sh dist",
+      "proof": "starmap-build.log",
+      "limits": "Binary build and linkage verification only. Release archives and native cross-platform execution are not qualified."
+    },
+    "plan_structure": {
+      "tasks": 40,
+      "completed": 22,
+      "in_progress": 1,
+      "unique_ids": 97,
+      "status": "PASS"
+    },
+    "starport_actual_binaries": {
+      "status": "PASS",
+      "count": 5,
+      "toolchain": "Go 1.27.1",
+      "commit": "527eeafd096a3567f330dd54d0d7c3745a71a572",
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 goreleaser build --snapshot --parallelism=2 --timeout=5m && bash scripts/verify-release-binaries.sh dist",
+      "proof": "starport-build.log",
+      "limits": "Binary build, linkage, and native console verification only. Release archives and native cross-platform execution remain pending."
+    }
   },
   "limitations": [
-    "New-head native CI and release snapshots are pending.",
+    "New-head native CI and release archive qualification are pending. Local builds verify five Go 1.27.1 binaries for each product.",
     "Full Starmap actionlint reports pre-existing SC2024 for redirecting output from a sudo-run test. Syntax-only validation passes.",
     "Whole Starport document lint reports pre-existing diagnostics outside the changed passages. Changed prose passes.",
     "Consumer full-branch review reports five findings across four issues. No consumer merge is authorized by these results."
@@ -38,5 +63,6 @@
     "publication_retention": "Confirmed no pruning in the fleet adapter; CSP11 must bound durable publication data.",
     "standalone_epoch_error": "Confirmed candidateFromState returns the epoch read error. Verify existing acceptance re-fencing before restoring previous behavior."
   },
-  "task_status": "CSP11 remains in_progress; neither PR is merged."
+  "task_status": "CSP11 remains in_progress; neither PR is merged.",
+  "branch_protection": "Inspected both main branches. Required aggregate checks remain unchanged; neither requires a retired Intel Mac job by name."
 }

@@ -1,0 +1,27 @@
+  • skipping before and validate...
+  • loading environment variables
+  • getting and validating git state
+    • using tags                                     previous=v0.16.4 current=v0.16.5
+    • pipe skipped or partially skipped              reason=disabled during snapshot mode
+  • parsing tag
+  • setting defaults
+  • snapshotting
+    • building snapshot...                           version=0.16.6-next
+  • ensuring distribution directory
+  • setting up metadata
+  • writing release metadata
+  • loading go mod information
+  • build prerequisites
+  • building binaries
+    • building                                       paths=cmd/starmap binaries=starmap target=linux_arm64_v8.0
+    • building                                       paths=cmd/starmap binaries=starmap target=linux_amd64_v1
+    • building                                       paths=cmd/starmap binaries=starmap target=darwin_arm64_v8.0
+    • building                                       paths=cmd/starmap binaries=starmap target=windows_amd64_v1
+    • building                                       paths=cmd/starmap binaries=starmap target=windows_arm64_v8.0
+      • took: 32s
+  • sign & notarize macOS binaries
+    • pipe skipped or partially skipped              reason=disabled
+  • writing artifacts metadata
+  • build succeeded after 32s
+  • thanks for using GoReleaser!
+verified 5 cgo-disabled release binaries; Linux is static and Windows imports no C/C++ runtime

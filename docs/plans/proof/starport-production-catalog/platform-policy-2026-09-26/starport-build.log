@@ -1,0 +1,47 @@
+  • skipping validate...
+  • loading environment variables
+  • getting and validating git state
+    • using tags                                     previous=v1.2.0 current=v1.2.1
+    • pipe skipped or partially skipped              reason=disabled during snapshot mode
+  • parsing tag
+  • setting defaults
+  • snapshotting
+    • building snapshot...                           version=1.2.2-next
+  • running before hooks
+    • running                                        hook=go mod verify
+      • took: 12s
+    • running                                        hook=bash scripts/build-console.sh
+      • took: 9s
+    • running                                        hook=bash scripts/generate-release-artifacts.sh build/release-artifacts
+      • took: 14s
+      • took: 34s
+  • ensuring distribution directory
+  • setting up metadata
+  • writing release metadata
+  • loading go mod information
+  • build prerequisites
+  • building binaries
+    • building                                       paths=cmd/starport binaries=starport target=linux_arm64_v8.0
+    • building                                       paths=cmd/starport binaries=starport target=linux_amd64_v1
+    • running hook                                   hook=python3 scripts/verify-embedded-console.py "/private/tmp/starport-clock-review-20260926/dist/starport_linux_amd64_v1/starport" internal/console/dist
+    • running hook                                   hook=python3 scripts/verify-embedded-console.py "/private/tmp/starport-clock-review-20260926/dist/starport_linux_arm64_v8.0/starport" internal/console/dist
+    • building                                       paths=cmd/starport binaries=starport target=darwin_arm64_v8.0
+    • building                                       paths=cmd/starport binaries=starport target=windows_amd64_v1
+    • running hook                                   hook=python3 scripts/verify-embedded-console.py "/private/tmp/starport-clock-review-20260926/dist/starport_darwin_arm64_v8.0/starport" internal/console/dist
+    • building                                       paths=cmd/starport binaries=starport target=windows_arm64_v8.0
+    • running hook                                   hook=python3 scripts/verify-embedded-console.py "/private/tmp/starport-clock-review-20260926/dist/starport_windows_amd64_v1/starport.exe" internal/console/dist
+      • took: 6s
+    • running hook                                   hook=python3 scripts/verify-embedded-console.py "/private/tmp/starport-clock-review-20260926/dist/starport_windows_arm64_v8.0/starport.exe" internal/console/dist
+      • took: 1m2s
+  • sign & notarize macOS binaries
+    • pipe skipped or partially skipped              reason=disabled
+  • writing artifacts metadata
+  • build succeeded after 1m36s
+  • thanks for using GoReleaser!
+release binary size: dist/starport_darwin_arm64_v8.0/starport (131679986 bytes)
+PASS console HTTP 200 and 18 referenced assets
+release binary size: dist/starport_linux_amd64_v1/starport (131866784 bytes)
+release binary size: dist/starport_linux_arm64_v8.0/starport (126419104 bytes)
+release binary size: dist/starport_windows_amd64_v1/starport.exe (136408576 bytes)
+release binary size: dist/starport_windows_arm64_v8.0/starport.exe (129876992 bytes)
+PASS 5 version-exact cgo-disabled release binaries for the supported target matrix
