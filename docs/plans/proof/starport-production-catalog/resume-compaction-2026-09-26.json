@@ -1,0 +1,60 @@
+{
+  "checked_at": "2026-09-26T02:54:53.045640+00:00",
+  "prior_plan_commit": "11edae686bd1cc755dcc279468f9579c15cd8d60",
+  "history": "execution-history-2026-09-26-qualification.html",
+  "moved_sections": {
+    "resume_sha256": "c8d076eb3bdf3b8b16c7b23e70e08ec5111d73fd34afb42b745a0900b6c2f299",
+    "outcome_sha256": "8d7b46f643e7131d904c6a7df01ea60675f635181d5ed2d320d233596dd685f2",
+    "older_log_rows": 73,
+    "older_log_sha256": "faeb5a4129998af84664545c5ed1aa84790bd377409894e35c6ba337d914df30"
+  },
+  "protected_sections_sha256": {
+    "ledger": "ac98abe01515dfe9e02d2e150d5be243763de0d782cc275af82518091601abfa",
+    "invariants": "13d5772c68bf9205af5c6a6d7cf22188fcb45f7a2652b3f293fb2019cc690d19",
+    "scope": "a5721bc4115884d8904ae4cab00fa9bc5a4d859c7fab73359dceef05a5c15c89",
+    "verification": "7b9550d8d881a64274d0369aaf23b254043f17edc14c5e14847ee5844edacb3f",
+    "goal": "050e2701a3c7cfa03a3a6863c9097ca31bdf858871025b6330074251e089525b"
+  },
+  "task_contract_count": 40,
+  "task_contracts_sha256": "91ef98b5b12b2fbddb1cf9a18acf2a727c50419d3cb3cf86d1cb5c0fac88d00b",
+  "ledger_rows": 40,
+  "resume_words_before": 760,
+  "resume_words_after": 246,
+  "plan_bytes_before": 155226,
+  "plan_bytes_after": 117445,
+  "budget_exception": "The whole plan retains 40 complete task contracts and all acceptance obligations. Resume reads current-resume, task-CSP6, invariants, goal, and the exact local qualification record. History is optional for named evidence questions.",
+  "cold_resume": {
+    "active_task": "CSP6",
+    "next_action": "Inspect live run 36210896546, then verify publisher merge and both channels before capture and retry.",
+    "source_and_worktree": "Exact PR head and detached checkout are recorded. Paired consumer source is recorded in local qualification.",
+    "authorization": "Reviewed merges and catalog retry are authorized. Product releases and review comments need separate authority.",
+    "unfinished": "Hosted promotion and same-byte retry remain unverified. All 50 primary acceptance cases and their required subcases remain part of whole-plan completion.",
+    "running_operation": "Watch session 65956 and GitHub run 36210896546. All local check sessions completed."
+  },
+  "bounded_resume_bytes": 12546,
+  "remaining_execution_entries": 10,
+  "progress_display": {
+    "before": {
+      "text": "0 of 40 tasks terminal (0%).",
+      "width": "0%",
+      "rows": 40
+    },
+    "after": {
+      "text": "15 of 40 tasks terminal (38%). In progress: CSP6 Promote published catalog input into releases (SM)",
+      "width": "38%",
+      "rows": 40
+    },
+    "method": "Execute the actual inline script with ledger rows parsed from the before and after HTML. The DOM fixture supplies only document methods used by that script."
+  },
+  "checks": {
+    "task_contracts": "40 unchanged",
+    "ledger": "40 rows unchanged",
+    "protected_sections": "byte-identical",
+    "moved_history": "all original sections and rows preserved",
+    "current_resume_links": "all targets exist",
+    "changed_prose": "PASS: 2 files, 0 diagnostics",
+    "repository_prose": "FAIL: 1697 files, 69 existing diagnostics in unchanged files",
+    "repository_log": "/tmp/catalog-resume-compaction-writing.log",
+    "diff_check": "PASS"
+  }
+}
