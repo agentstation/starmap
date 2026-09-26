@@ -1,0 +1,63 @@
+{
+  "checked_at": "2026-09-26T02:49:30.651021+00:00",
+  "starmap_head": "109f102e17e0d7d367218bf9a0b9e8ef9693fd69",
+  "starmap_worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
+  "starport_head": "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e",
+  "starport_worktree": "/Users/jack/src/github.com/agentstation/starport",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "generation": {
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off make GOCMD=go catalog-generation-check",
+    "exit_code": 0,
+    "passing_go_packages": 8,
+    "python_tests": 59,
+    "provider_fixture_contract": "PASS",
+    "initial_default_make": "Stopped before tests because the automatic Devbox prefix started package installation. The direct Go override uses the same Make target and exact required compiler. Ten generated untracked scripts were saved under /tmp/csp6-stopped-devbox-generated and removed."
+  },
+  "distribution": {
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport bash scripts/verify-catalog-distribution.sh",
+    "exit_code": 0,
+    "passed": 68,
+    "failed": 0,
+    "unverified": 0
+  },
+  "logs": {
+    "generation": {
+      "file": "generation.log.gz",
+      "sha256": "06fc0f588ffdf0dd09ba58fd4d7d844f9e04f37bf17d5b37d828f25165c20d31",
+      "uncompressed_sha256": "db5ff88bc5038ef10e9b9889fe956d478d97be262866c0cb5c2eb5ce502a8b77"
+    },
+    "distribution": {
+      "file": "distribution.log.gz",
+      "sha256": "4da6b20a0e739947a488e06f60fa42ffe206059d84ca2e1864e1577f9be21557",
+      "uncompressed_sha256": "4e174c77a1b6f87a1c90278fc280dad754680b36be1831c9e5936f397e6a1227"
+    }
+  },
+  "hosted_run": {
+    "id": 36210896546,
+    "head": "109f102e17e0d7d367218bf9a0b9e8ef9693fd69",
+    "status": "in_progress",
+    "conclusion": "",
+    "passing_jobs": 25,
+    "remaining": [
+      "Runtime windows-2025",
+      "Runtime windows-11-arm",
+      "Go 1.27.1 race client",
+      "Go 1.27.1 race runtime-3"
+    ],
+    "failures": []
+  },
+  "next_action": "After the exact PR head qualifies, verify the publisher merge and both-channel publication. Capture before evidence in the promoted checkout, replay receipt 587827167..., capture after evidence, and run the complete CSP6 acceptance verifier.",
+  "limitations": [
+    "Local generation and distribution checks do not prove hosted publication or same-byte retry.",
+    "This pair uses Starport main. It does not qualify the unpublished CSP8 integration or replace its producer dependency requirement."
+  ],
+  "preserved_dependency_branch": {
+    "name": "codex/dependency-consolidation",
+    "head": "0d2ba93b561b7f4216a2f206baadb59646b311e1"
+  },
+  "documentation_checks": {
+    "changed_plan": "PASS: 1 file, 0 diagnostics",
+    "repository": "FAIL: 1696 files, 69 existing diagnostics in unchanged files",
+    "log": "/tmp/csp6-174-local-writing.log"
+  }
+}
