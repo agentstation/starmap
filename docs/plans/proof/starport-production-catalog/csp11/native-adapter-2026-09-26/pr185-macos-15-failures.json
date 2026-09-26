@@ -1,0 +1,52 @@
+[
+  {
+    "Time": "2026-09-26T17:50:09.678696Z",
+    "Action": "run",
+    "Package": "github.com/agentstation/starmap/runtime",
+    "Test": "TestSourceAcquisitionLeaseLossRefusesPublication"
+  },
+  {
+    "Time": "2026-09-26T17:50:09.678719Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starmap/runtime",
+    "Test": "TestSourceAcquisitionLeaseLossRefusesPublication",
+    "Output": "=== RUN   TestSourceAcquisitionLeaseLossRefusesPublication\n",
+    "OutputType": "frame"
+  },
+  {
+    "Time": "2026-09-26T17:50:09.697322Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starmap/runtime",
+    "Test": "TestSourceAcquisitionLeaseLossRefusesPublication",
+    "Output": "{\"level\":\"warn\",\"error\":\"fleet publication conflict: renewal returned different ownership evidence\",\"holder\":\"70c3aac7c9dc3962de1536f4d45d8ec43dfa7a6637f02a62105c8b8046ef947a\",\"time\":\"2026-09-26T17:50:09Z\",\"message\":\"Runtime lease renewal failed\"}\n"
+  },
+  {
+    "Time": "2026-09-26T17:50:09.697418Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starmap/runtime",
+    "Test": "TestSourceAcquisitionLeaseLossRefusesPublication",
+    "Output": "    source_acquisition_test.go:282: failed to renew runtime lease 70c3aac7c9dc3962de1536f4d45d8ec43dfa7a6637f02a62105c8b8046ef947a: fleet publication conflict: renewal returned different ownership evidence\n",
+    "OutputType": "error"
+  },
+  {
+    "Time": "2026-09-26T17:50:09.698262Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starmap/runtime",
+    "Test": "TestSourceAcquisitionLeaseLossRefusesPublication",
+    "Output": "--- FAIL: TestSourceAcquisitionLeaseLossRefusesPublication (0.02s)\n",
+    "OutputType": "frame"
+  },
+  {
+    "Time": "2026-09-26T17:50:09.698317Z",
+    "Action": "fail",
+    "Package": "github.com/agentstation/starmap/runtime",
+    "Test": "TestSourceAcquisitionLeaseLossRefusesPublication",
+    "Elapsed": 0.02
+  },
+  {
+    "Time": "2026-09-26T17:51:27.202814Z",
+    "Action": "fail",
+    "Package": "github.com/agentstation/starmap/runtime",
+    "Elapsed": 406.881
+  }
+]

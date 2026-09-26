@@ -1993,6 +1993,11 @@ Advance the publication revision when selecting those inputs. Compare the comple
 An identical retry preserves the original grant, predecessor, catalog, and recovery bytes.
 Its result must identify the original accepted publication.
 
+After takeover, a validated update must bind unchanged retained inputs to the new owner before route acceptance.
+Advance the fleet publication revision while preserving the immutable catalog identity and bytes.
+An identical retry under the same grant must not create another revision.
+Do not relabel an already prepared publication with the new grant.
+
 Recovery must validate the exact input checksum, supported format, baseline, and declared acquisition policy before leadership.
 Preserve the difference between omitted source or provider selections and explicit empty selections.
 Rebuild the effective catalog from those inputs and compare its checksum with the selected publication.

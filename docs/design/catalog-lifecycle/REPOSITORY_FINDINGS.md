@@ -1,5 +1,16 @@
 # Catalog lifecycle repository findings
 
+## Native fleet adapter checkpoint, September 26
+
+Starport commit `01ca416dc` adds native Valkey expiry checks, process identity checks, shared recovery inputs, and atomic route acceptance.
+PostgreSQL holds the independent recovery approval. The gateway runtime and diagnostics do not use this adapter yet.
+
+Starmap commit `d56e6e73c` repairs unchanged catalog publication after owner takeover. A new grant gets a new publication revision without changing catalog content.
+The native job also exposed a renewal test that expected the superseded epoch-change behavior. The test now requires refusal and unchanged catalog state.
+
+The [checkpoint](../../plans/proof/starport-production-catalog/csp11/native-adapter-2026-09-26/verification.json) retains passing real-backend tests and the failure evidence.
+It excludes the subprocess helper from case counts. Full CSP11 qualification and both merges remain open.
+
 The current repositories implement most catalog distribution infrastructure.
 They do not yet satisfy every requested bootstrap, directory, credential, and
 authority behavior. The [PRD](PRD.md) defines the product requirements.

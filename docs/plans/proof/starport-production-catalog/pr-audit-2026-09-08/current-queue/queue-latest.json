@@ -1,18 +1,18 @@
 {
-  "checked_at": "2026-09-26T17:41:10.996483+00:00",
+  "checked_at": "2026-09-26T18:07:06.449536+00:00",
   "starmap": [
     {
       "baseRefName": "main",
       "headRefName": "codex/catalog-fleet-contract",
-      "headRefOid": "dd348601ab7ea684494e21c3a0ca0e429ed944d4",
+      "headRefOid": "d56e6e73c04241f05790b62f9d774bbd5969be9a",
       "isDraft": true,
       "number": 185,
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "updatedAt": "2026-09-26T17:39:48Z",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Reviewed producer; waiting for required CI",
-      "next_action": "Retry Intel macOS publication after workflow completion: module proxy timeout prevented tests. Verify required checks before merge; continue Starport adapter."
+      "disposition": "Reviewed repair published; native CI pending",
+      "next_action": "Monitor PR185 exact-head native qualification. Wire the Starport runtime and diagnostics to the adapter; add credential-capability preflight and complete eleven real-process subcases."
     }
   ],
   "starport": [],
@@ -820,7 +820,7 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Complete native producer qualification and the Starport adapter with real backend evidence.",
+    "next_action": "Monitor PR185 exact-head native qualification. Wire the Starport runtime and diagnostics to the adapter; add credential-capability preflight and complete eleven real-process subcases.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "blocked_task": "CSP10.2",
     "owner_question": "Native suspend qualification remains open. The owner has not changed this contract.",
@@ -853,12 +853,13 @@
     "checked_at": "2026-09-26T16:38:49.460723+00:00"
   },
   "fleet_preparation": {
-    "producer": "dd348601ab7ea684494e21c3a0ca0e429ed944d4",
+    "producer": "d56e6e73c04241f05790b62f9d774bbd5969be9a",
     "producer_pr": 185,
     "consumer_branch": "codex/catalog-fleet-adapter",
     "consumer_base": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
-    "proof": "../../csp11/runtime-integration-2026-09-26/verification.json",
+    "proof": "../../csp11/native-adapter-2026-09-26/verification.json",
     "owner": "CSP11",
-    "next_action": "Complete native producer qualification and the Starport adapter with real backend evidence."
+    "next_action": "Monitor PR185 exact-head native qualification. Wire the Starport runtime and diagnostics to the adapter; add credential-capability preflight and complete eleven real-process subcases.",
+    "consumer": "01ca416dc935412b52660b156bce4c0eb5f511e8"
   }
 }
