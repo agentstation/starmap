@@ -1,0 +1,5 @@
+--- FAIL: TestFleetCapabilityChecksUnobservedProvidersBeforeGrant (25.53s)
+    fleet_capability_test.go:118: replica took ownership without access to an unobserved provider
+FAIL
+FAIL	github.com/agentstation/starmap/runtime	26.143s
+FAIL

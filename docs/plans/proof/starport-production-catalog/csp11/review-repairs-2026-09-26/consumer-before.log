@@ -1,0 +1,5 @@
+--- FAIL: TestStandaloneCandidateRetriesPreparationWithoutAnotherPublication (0.00s)
+    runtime_delivery_test.go:61: candidate disappeared after a transient epoch read failure
+FAIL
+FAIL	github.com/agentstation/starport/internal/catalog	0.872s
+FAIL
