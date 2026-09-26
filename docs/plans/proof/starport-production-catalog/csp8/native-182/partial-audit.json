@@ -1,0 +1,75 @@
+{
+  "scope": "Partial artifact audit. The workflow and complete native gate remain unqualified.",
+  "run": 36224141186,
+  "source": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
+  "observations": [
+    {
+      "runner": "ubuntu-24.04",
+      "required_tests": 17,
+      "missing_or_skipped": [],
+      "failed_events": 0,
+      "toolchain": [
+        "go version go1.27.1 linux/amd64",
+        "linux",
+        "amd64",
+        "linux",
+        "amd64",
+        "0"
+      ]
+    },
+    {
+      "runner": "ubuntu-24.04-arm",
+      "required_tests": 17,
+      "missing_or_skipped": [],
+      "failed_events": 0,
+      "toolchain": [
+        "go version go1.27.1 linux/arm64",
+        "linux",
+        "arm64",
+        "linux",
+        "arm64",
+        "0"
+      ]
+    },
+    {
+      "runner": "macos-15",
+      "required_tests": 17,
+      "missing_or_skipped": [],
+      "failed_events": 0,
+      "toolchain": [
+        "go version go1.27.1 darwin/arm64",
+        "darwin",
+        "arm64",
+        "darwin",
+        "arm64",
+        "0"
+      ]
+    }
+  ],
+  "checked_at": "2026-09-26T07:02:31.008540+00:00",
+  "sha256": {
+    "native-runtime-ubuntu-24.04-arm/toolchain.txt": "272f5bcd02190b64ac3d34eb7071973e38cc4c5246b757e17b6be8b93990ce58",
+    "native-runtime-ubuntu-24.04-arm/tests.jsonl": "a1d42d95a28fc17531f76b55b2ec28bdacc3ce987d9a1af218aae22f6287b730",
+    "native-runtime-ubuntu-24.04-arm/filesystem-preflight.jsonl": "c4749c3da0a0382d67f4bb2908c52e226824dd1b8441a43549ad2597f9f87072",
+    "native-runtime-ubuntu-24.04-arm/service-owner.txt": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68",
+    "native-runtime-ubuntu-24.04/toolchain.txt": "9019a5d77dde6ec377ac457b0781b39e7066e10d84f3101c7b42d09bacff6fa0",
+    "native-runtime-ubuntu-24.04/tests.jsonl": "0814fa9fb7764642a082328ad2962f3ceae45ff616fdab5e2bf809c8beb31663",
+    "native-runtime-ubuntu-24.04/filesystem-preflight.jsonl": "70d86779d527619f30a1e4f7cda106ed03db5d8e8a9c8071efa2db3f45701985",
+    "native-runtime-ubuntu-24.04/service-owner.txt": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68",
+    "native-runtime-macos-15/toolchain.txt": "bd6912476815abe7799d5151a468b459ff557ff8c1cee943f59da6d3f74cbde3",
+    "native-runtime-macos-15/tests.jsonl": "0050f39de190f4b0c95dc31ec6b2e33aff922625e5be33b26d77a7ae845df752",
+    "native-runtime-macos-15/filesystem-preflight.jsonl": "310ac0f3b28767d57ecc1f9cf11dc56149818df27921893471d4aa75b8c25367"
+  },
+  "run_status": {
+    "headSha": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
+    "status": "in_progress",
+    "conclusion": "",
+    "url": "https://github.com/agentstation/starmap/actions/runs/36224141186"
+  },
+  "next_action": "Wait for all required producer checks, capture complete native evidence, verify exact PR head and base, then merge.",
+  "archive": {
+    "path": "partial-artifacts.tar.gz",
+    "sha256": "051479d9ccee5a3704931566aa793bb8536ddbd09118d35b76255c39f64183ae"
+  },
+  "linux_service_configuration": "Administrator-owned configuration read passed separately on AMD64 and ARM64."
+}
