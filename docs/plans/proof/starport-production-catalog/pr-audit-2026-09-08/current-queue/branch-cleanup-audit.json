@@ -1,0 +1,119 @@
+{
+  "checked_at": "2026-09-26T03:53:15.865860+00:00",
+  "removed": [
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-retry-idempotency",
+      "sha": "2ac396e9c5b1301b1ed341983f32eea2ef1a3e95",
+      "retained_ancestors": [
+        "codex/starmap-host-files"
+      ],
+      "matching_main_tree": null,
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-branch-audit/starmap-codex-catalog-retry-idempotency.bundle",
+      "bundle_sha256": "6995d7718a11dd9ed4eb24827a5fd8b93e80783dc839faa51be445097b6332e4",
+      "disposition": "removed after verified recovery bundle"
+    },
+    {
+      "repo": "starport",
+      "branch": "aon3-work-backup",
+      "sha": "66a23fad296ad608355281bda1fee17ad493c28e",
+      "retained_ancestors": [],
+      "matching_main_tree": "71cd24e6dd9b440a5933f0754fed4ca3567befa9",
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-branch-audit/starport-aon3-work-backup.bundle",
+      "bundle_sha256": "a90c18be7fdb73e338356e3dbfdd04c7e5ed19bbde5a048ba047f90dfd9e30b5",
+      "disposition": "removed after verified recovery bundle"
+    }
+  ],
+  "retained_unattached": [
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-git-qualification",
+      "sha": "3da0e489bcdfba21f6ecfbbd6518d662b04f2ad0",
+      "retained_ancestors": [],
+      "matching_main_tree": null
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-pr137-security",
+      "sha": "c827c64d9048f2bd3b882cf8e88b53e4dbf6f081",
+      "retained_ancestors": [],
+      "matching_main_tree": null
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-presence-integration",
+      "sha": "e55524c805b77e3b6f9a5c16397285f3d54042d2",
+      "retained_ancestors": [],
+      "matching_main_tree": null
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-publication-promotion",
+      "sha": "644ffc88450dd7c29b6edea658a401e3b7380c71",
+      "retained_ancestors": [],
+      "matching_main_tree": null
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-record-presence",
+      "sha": "6c691dddcf2fa212af2cf4207ca31d7b42e380fc",
+      "retained_ancestors": [],
+      "matching_main_tree": null
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-source-diagnostics",
+      "sha": "605084e76890be968b953811e295006a72c94f34",
+      "retained_ancestors": [],
+      "matching_main_tree": null
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-source-inventory",
+      "sha": "66e3ed4d848c7423e234ce0374af1bb5fde110e6",
+      "retained_ancestors": [],
+      "matching_main_tree": null
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-source-revocation",
+      "sha": "6a88f10d375aebcf87bbe60f354e1610a7e956a4",
+      "retained_ancestors": [],
+      "matching_main_tree": null
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-token-cost-presence",
+      "sha": "0e115004857bfc13dd9f76046d5c6bca019f4c0f",
+      "retained_ancestors": [],
+      "matching_main_tree": null
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-verified-snapshot",
+      "sha": "2699dafeb3153ce5d419f6341a9009c813eb4891",
+      "retained_ancestors": [],
+      "matching_main_tree": null
+    },
+    {
+      "repo": "starport",
+      "branch": "codex/csp9-credential-revocation",
+      "sha": "973c4d9d2ea5a399866824af0a243eba0983414c",
+      "retained_ancestors": [],
+      "matching_main_tree": null
+    }
+  ],
+  "remote_deletions": 0,
+  "worktree_deletions": 0,
+  "reason_retained": "Preserve active checkouts, uncommitted edits, and history without verified integration.",
+  "restore": "Verify the bundle digest, then fetch its recorded branch into a new local branch.",
+  "verification": {
+    "bundle_verification": "Both Git bundles verified; SHA-256 digests match.",
+    "branch_verification": "Both removed refs are absent.",
+    "plan_ledger": "40 rows; CSP6 is the only active row.",
+    "changed_html_prose": "PASS: 1 file, 0 diagnostics.",
+    "git_diff_check": "PASS",
+    "plan_links": "PASS: 107 local links resolve.",
+    "repository_prose": "Exit 2; unchanged historical proof diagnostics remain. See /tmp/catalog-branch-cleanup-writing.log. Changed HTML passes."
+  }
+}
