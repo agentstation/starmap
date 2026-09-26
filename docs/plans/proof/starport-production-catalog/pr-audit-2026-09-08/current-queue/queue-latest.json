@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T00:36:26.145596+00:00",
+  "checked_at": "2026-09-26T00:40:06.639569+00:00",
   "starmap": [
     {
       "baseRefOid": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
@@ -1221,14 +1221,14 @@
     {
       "baseRefOid": "19c85ad84293acba4ae9514fa5f68276e92d2461",
       "headRefOid": "b52744ae12bff6323823ebd235b48079f5801764",
-      "isDraft": true,
+      "isDraft": false,
       "mergeStateStatus": "BLOCKED",
       "number": 180,
       "title": "ci: restore coordinated storage checks with durable S3 fixture",
-      "updatedAt": "2026-09-26T00:29:49Z",
+      "updatedAt": "2026-09-26T00:35:00Z",
       "owner": "CSP6",
       "disposition": "CI rerun",
-      "next_action": "Pinned MinIO fixture and both storage jobs passed in the prior head. Current head adds the approved artifact pin and readiness check. Wait for all native checks, review exact head, then merge before refreshing PR #174.",
+      "next_action": "Both native coordinated-storage jobs pass on current head. Wait for the remaining platform and verification jobs, confirm exact head/base and no review threads, then merge.",
       "checks": [
         {
           "name": "Analyze (actions)",
@@ -1317,13 +1317,13 @@
         },
         {
           "name": "Publication ubuntu-24.04",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Publication ubuntu-24.04-arm",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Publication macos-15-intel",
@@ -1332,18 +1332,18 @@
         },
         {
           "name": "Publication macos-15",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Coordinated Storage valkey",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Coordinated Storage redis",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "CodeQL",
@@ -1387,9 +1387,9 @@
   },
   "cleanup": {
     "stale_worktree_registrations_pruned": 31,
-    "clean_merged_worktrees_removed": 9,
-    "local_exact_ancestor_branches_removed": 47,
+    "clean_merged_worktrees_removed": 10,
+    "local_exact_ancestor_branches_removed": 48,
     "live_remote_branches_deleted": 12,
-    "note": "Remote deletions were exact merged PR heads and used leases. Two more Starport worktrees contained only regenerable ignored caches and no tracked changes. Dirty worktrees, .tmp proof files, and diverged local branches remain."
+    "note": "Remote deletions were exact merged PR heads and used leases. Three more Starport worktrees contained only regenerable ignored caches or test data and no tracked changes. Dirty worktrees, .tmp proof files, and diverged local branches remain."
   }
 }

@@ -1,0 +1,19 @@
+{
+  "old_pr": 165,
+  "old_head": "e228e694ac5e66f75639721c438a261015a8026f",
+  "old_schema_version": 9,
+  "old_semantic_checksum": "sha256:0785c71e7167598b1f34d5150c2629f1cd5eb42466e1161aa1095fe8b518a3da",
+  "successor_pr": 174,
+  "successor_head": "208783174f950d1591ecec0dcb4df1a440411eb5",
+  "successor_schema_version": 10,
+  "successor_semantic_checksum": "sha256:875f2a8649ad25487fe4ab699d3c4c8be21982326b8896b5f1cedce311457678",
+  "comparison": {
+    "catalog_paths_old": 1278,
+    "catalog_paths_successor": 1278,
+    "old_paths_missing_in_successor": 0,
+    "new_paths": 0,
+    "changed_paths": 354
+  },
+  "method": "git ls-tree -r --name-only on each PR head under internal/embedded/catalog; git diff --name-only between heads",
+  "disposition": "Keep PR #165 open until PR #174 passes native qualification, merges, and its embedded catalog is accepted. Identical paths do not prove record-level equivalence; changed contents require product acceptance."
+}
