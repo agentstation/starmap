@@ -6,7 +6,6 @@
   "workspace": "/tmp/csp11-pair.work",
   "task_complete": false,
   "remaining": [
-    "task gate",
     "full branch review",
     "published module pair",
     "native CI",
@@ -363,7 +362,8 @@
         "scripts/catalog-product-checks.json": "5b9bf1df71e9b23581e298a7b638e4bd80c946d1652afd74101cf32c2eea756b",
         "docs/FLEET_RECOVERY.md": "a9ff8152add70f41d6777c91361f41f41ba2504d39f22f108b446f09210fe92d"
       },
-      "work_commit": "41ee1ef29276f6ab4f76a39cf11e1a1ec413e964"
+      "work_commit": "41ee1ef29276f6ab4f76a39cf11e1a1ec413e964",
+      "documentation_commit": "4ed5c190b3535bf0d320dc1ecb90a0e01e41fb45"
     },
     "consumer": {
       "head_before": "ac679bf6464e448b63576deed54dbdbd0f7696e6",
@@ -476,5 +476,13 @@
     },
     "gate_status": "FAIL",
     "reason": "The fixture omitted TEST_VALKEY_REPLACEMENT_URL. A13 and A14 pass. The corrected runner adds a distinct replacement backend."
+  },
+  "task_gate_final": {
+    "status": "PASS",
+    "selected_subcases": 11,
+    "passed_subcases": 11,
+    "failed_subcases": 0,
+    "unverified_subcases": 0,
+    "raw": "task-gate-final/task-report.json"
   }
 }

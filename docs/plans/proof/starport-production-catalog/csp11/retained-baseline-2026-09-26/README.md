@@ -15,8 +15,9 @@ Consumer commit: `0921b39ecfcfd384ca82e9ac5a2c587b0670d231`.
 The producer fleet suite passes 94 named race results.
 The paired native suite passes 46 with real Valkey and PostgreSQL.
 Both have zero failures and skips. The verifier regression suite passes 99 tests.
+
 The complete task gate first passed ten subcases and left one UNVERIFIED because its runner omitted the replacement backend.
-The corrected task runner uses a separate replacement Valkey service.
+The corrected task runner uses a separate replacement Valkey service. All eleven required CSP11 subcases pass.
 
 Failure evidence covers baseline mismatch, startup replacement, and a lost native catalog head.
 The compressed recovery record preserves the complete baseline within both input limits.
