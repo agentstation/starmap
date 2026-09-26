@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-09-26T08:56:45.434565+00:00",
+  "status": "PASS",
+  "pr": 182,
+  "reviewed_head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+  "merge_commit": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+  "merged_at": "2026-09-26T08:54:10Z",
+  "reviewed_tree_equals_merge": true,
+  "ci_run": 36228899978,
+  "passing_ci_jobs": 30,
+  "passing_pr_checks": 34,
+  "native_platforms": 6,
+  "required_native_test_occurrences": 104,
+  "required_native_skips": 0,
+  "unresolved_review_threads": 0,
+  "admin_bypass": false,
+  "wall_seconds": 2622.0,
+  "thirty_minute_target_met": false,
+  "consumer_module": "v0.16.6-0.20260926085409-71c5c8c72333",
+  "native_archive": {
+    "path": "native-evidence.tar.gz",
+    "sha256": "a44d6f86300786f08426cf6f3c767a9ef258707d0e2f0cb7a3f83d7095ad7340"
+  },
+  "scope": "Producer support change and native contracts. Consumer qualification and the complete CSP8 gate remain open.",
+  "plan_validation": {
+    "changed_plan_writing": "PASS: one file, zero diagnostics",
+    "repository_writing": "FAIL: 1698 files, 69 unchanged historical diagnostics",
+    "writing_exit_code": 2,
+    "writing_log_sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de",
+    "ledger": "40 rows, 16 done, CSP8 only in_progress",
+    "local_links": "PASS"
+  },
+  "reviewed_tree": "507c2a66f9ddc873a085fdc6d94178fe3495e963",
+  "merge_tree": "507c2a66f9ddc873a085fdc6d94178fe3495e963"
+}

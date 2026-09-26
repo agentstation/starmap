@@ -1,18 +1,6 @@
 {
-  "checked_at": "2026-09-26T08:30:03.163189+00:00",
-  "starmap": [
-    {
-      "pr": 182,
-      "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
-      "branch": "codex/catalog-native-consumer-qualification",
-      "state": "OPEN",
-      "draft": false,
-      "owner": "CSP8",
-      "checks_run": 36228899978,
-      "disposition": "Keep. Ready for review at the reviewed exact head; native and race qualification remain active.",
-      "next_action": "Capture successful native evidence, verify current head and base, then merge the producer before updating the consumer module."
-    }
-  ],
+  "checked_at": "2026-09-26T08:56:45.434565+00:00",
+  "starmap": [],
   "starport": [
     {
       "pr": 384,
@@ -23,7 +11,7 @@
       "owner": "CSP8",
       "checks_run": 36223300692,
       "disposition": "Keep. Published head has diagnosed failures; local repairs pass focused and task tests.",
-      "next_action": "Pin the corrected producer after its merge, verify the published pair, then push the existing PR for native qualification."
+      "next_action": "Complete verification and required review for the merged producer pin, then push the existing PR."
     }
   ],
   "completed_merges": [
@@ -99,6 +87,15 @@
       "unchanged_channel_documents_and_assets": true,
       "unchanged_channel_branch_heads": true,
       "proof": "../../csp6/promotion-181/merge-current.json"
+    },
+    {
+      "repo": "starmap",
+      "pr": 182,
+      "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+      "merge_commit": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+      "proof": "../../csp8/native-182/merged/verification.json",
+      "checks_run": 36228899978,
+      "passing_jobs": 30
     }
   ],
   "publication_replay": {
@@ -227,7 +224,7 @@
     "proof": "../../csp8/linux-migration-384/verification.json",
     "pr": 384,
     "checks_run": 36223300692,
-    "status": "Local dispatch revocation repair passes credential, connector, and real-Valkey integration checks. Await producer merge for final module pin.",
+    "status": "Final module pin prepared. All 34 required commands are running.",
     "linux_migration_proof": "../../csp8/linux-migration-384/verification.json",
     "issued_material_proof": "../../csp9/issued-material/verification.json",
     "active_review": {
@@ -239,14 +236,21 @@
     },
     "sdk_pre_pin_proof": "../../csp8/sdk-pre-pin/verification.json",
     "required_command_count": 34,
-    "required_command_note": "The current AGENTS.md roster includes SDK smoke checks. Use all 34 commands for the final pre-PR evidence."
+    "required_command_note": "The current AGENTS.md roster includes SDK smoke checks. Use all 34 commands for the final pre-PR evidence.",
+    "module": "v0.16.6-0.20260926085409-71c5c8c72333",
+    "final_verification": {
+      "session": 64457,
+      "runner": "/tmp/starport-384-final-prepr.py",
+      "output": "/tmp/starport-384-final-prepr/verification.json",
+      "status": "running"
+    }
   },
   "starmap_preparation": {
     "owner": "CSP8",
     "branch": "codex/catalog-native-consumer-qualification",
     "base": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
     "worktree": "starmap-host-files",
-    "status": "Repair passes 98 verifier tests and 51 runtime tests and subtests without skips. Required review passed; native CI is active.",
+    "status": "MERGED",
     "proof": "../../csp8/acceptance-batching/preparation.json",
     "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
     "pr": 182,
@@ -265,13 +269,15 @@
     "native_watch": {
       "session": 38941,
       "run": 36228899978,
-      "log": "/tmp/starmap-182-isolation-ci-watch.log"
+      "log": "/tmp/starmap-182-isolation-ci-watch.log",
+      "status": "completed",
+      "exit_code": 0
     },
     "native_progress": {
       "run": 36228899978,
-      "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
-      "status": "in_progress",
-      "passing_jobs": 26,
+      "status": "completed",
+      "conclusion": "success",
+      "passing_jobs": 30,
       "failed_jobs": 0
     },
     "native_timing_proof": "../../csp8/native-182/current-timing/verification.json",
@@ -285,7 +291,9 @@
       ],
       "admin_enforcement": true,
       "proof": "native-182-merge-preflight.json"
-    }
+    },
+    "merge_commit": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+    "merged_proof": "../../csp8/native-182/merged/verification.json"
   },
   "csp8_acceptance": {
     "status": "interrupted for security repair",
@@ -413,5 +421,13 @@
     "proof": "cleanup-recheck-latest.json",
     "inventory": "workspace-current.json",
     "additional_deletions": 0
+  },
+  "merged_branch_cleanup": {
+    "proof": "../../csp8/native-182/merged/branch-cleanup.json",
+    "additional_local_branches_removed": 1,
+    "additional_remote_branches_removed_by_github": 1,
+    "cumulative_worktrees_removed": 33,
+    "cumulative_local_branches_removed": 83,
+    "cumulative_remote_heads_removed": 15
   }
 }

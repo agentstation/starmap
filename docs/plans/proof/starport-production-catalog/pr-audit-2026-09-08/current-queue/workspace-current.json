@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T08:37:36.458504+00:00",
+  "checked_at": "2026-09-26T08:58:42.698131+00:00",
   "repositories": {
     "starmap": {
       "worktrees": [
@@ -335,11 +335,69 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
-          "HEAD": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
-          "branch": "refs/heads/codex/catalog-native-consumer-qualification",
-          "dirty_paths": [],
-          "dirty_count": 0,
-          "disposition": "Retain active or unverified historical work."
+          "HEAD": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+          "dirty_paths": [
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/capture.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/component-report.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/final-run.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-macos-15-intel/tests.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-macos-15-intel/toolchain.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-macos-15/tests.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-macos-15/toolchain.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04-arm/service-owner.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04-arm/tests.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04-arm/toolchain.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04/service-owner.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04/tests.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04/toolchain.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-11-arm/tests.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-11-arm/toolchain.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-2025/tests.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-2025/toolchain.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/proof-scan-inventory.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/proof-scan-results.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/proof-scan.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/proof-scan.log",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/verification.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/capture.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/component-report.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/final-run.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-macos-15-intel/tests.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-macos-15-intel/toolchain.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-macos-15/tests.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-macos-15/toolchain.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-ubuntu-24.04-arm/service-owner.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-ubuntu-24.04-arm/tests.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-ubuntu-24.04-arm/toolchain.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-ubuntu-24.04/service-owner.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-ubuntu-24.04/tests.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-ubuntu-24.04/toolchain.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-windows-11-arm/tests.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-windows-11-arm/toolchain.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-windows-2025/tests.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/native-runtime-windows-2025/toolchain.txt",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/proof-scan-inventory.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/proof-scan-results.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/proof-scan.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification-before-36228899978/verification.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-macos-15-intel/filesystem-preflight.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-macos-15/filesystem-preflight.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04-arm/filesystem-preflight.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04/filesystem-preflight.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-11-arm/filesystem-preflight.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-11-arm/windows-clock.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-11-arm/windows-time-access.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-11-arm/windows-time-service.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-2025/filesystem-preflight.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-2025/filesystem-race.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-2025/windows-clock.jsonl",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-2025/windows-time-access.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-2025/windows-time-service.json",
+            "docs/plans/proof/starport-production-catalog/csp2/native-qualification/qualification.json"
+          ],
+          "dirty_count": 57,
+          "disposition": "Active qualification. Preserve local native evidence.",
+          "detached": true
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
@@ -539,7 +597,6 @@
         "codex/catalog-foundation 205dd041fb2d0267a2643c0d6af8d9f45e34842d",
         "codex/catalog-host-clock 2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
         "codex/catalog-native-clock 7641eaea2b98f9ffbefb2807f67253919227b234",
-        "codex/catalog-native-consumer-qualification 854129199ef2f13c865d18a6ba54cbf514c34f8d",
         "codex/catalog-origin-settings 33118919dc18e1f824ea618502f23b756e50813a",
         "codex/catalog-partial-retention fa5954a6b598bc1ab7fcd5e24da15a136fbe8cd8",
         "codex/catalog-permission-clock 7239f4b76ee4d079479ae1703ac6e0ac55683925",
@@ -549,7 +606,7 @@
         "codex/catalog-public-acceptance 0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
         "codex/catalog-publication-promotion 644ffc88450dd7c29b6edea658a401e3b7380c71",
         "codex/catalog-publisher-cat99 7994fced889a29530c6811582d2af97ae18f71b9",
-        "codex/catalog-qualification 90b2297b65f3317ae573b90762a04fd64b7de0ca",
+        "codex/catalog-qualification 43323ad2d13a426373938b812359eb423e251787",
         "codex/catalog-qualification-evidence aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
         "codex/catalog-source-inventory 66e3ed4d848c7423e234ce0374af1bb5fde110e6",
         "codex/catalog-token-cost-presence 0e115004857bfc13dd9f76046d5c6bca019f4c0f",
@@ -583,29 +640,16 @@
           "ref": "refs/heads/catalog/v2"
         },
         {
-          "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
-          "ref": "refs/heads/codex/catalog-native-consumer-qualification"
-        },
-        {
-          "head": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+          "head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
           "ref": "refs/heads/main"
         }
       ],
-      "open_prs": [
-        {
-          "baseRefName": "main",
-          "headRefName": "codex/catalog-native-consumer-qualification",
-          "headRefOid": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
-          "isDraft": false,
-          "number": 182,
-          "title": "fix: qualify native catalog ownership and batch acceptance checks"
-        }
-      ],
+      "open_prs": [],
       "counts": {
         "worktrees": 37,
-        "dirty_worktrees": 34,
-        "local_branches": 40,
-        "remote_heads": 5
+        "dirty_worktrees": 35,
+        "local_branches": 39,
+        "remote_heads": 4
       }
     },
     "starport": {
@@ -638,9 +682,12 @@
           "worktree": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
           "HEAD": "b769aa514fea99856d3c37d426ee2709b8529ae0",
           "branch": "refs/heads/codex/starport-native-catalog",
-          "dirty_paths": [],
-          "dirty_count": 0,
-          "disposition": "Retain active or unverified historical work."
+          "dirty_paths": [
+            "go.mod",
+            "go.sum"
+          ],
+          "dirty_count": 2,
+          "disposition": "Active qualification. Preserve the final producer module pin."
         }
       ],
       "local_branches": [
@@ -671,7 +718,7 @@
       ],
       "counts": {
         "worktrees": 4,
-        "dirty_worktrees": 0,
+        "dirty_worktrees": 1,
         "local_branches": 4,
         "remote_heads": 2
       }

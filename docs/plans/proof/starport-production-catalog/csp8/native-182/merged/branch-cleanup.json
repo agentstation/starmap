@@ -1,0 +1,13 @@
+{
+  "repo": "starmap",
+  "pr": 182,
+  "branch": "codex/catalog-native-consumer-qualification",
+  "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+  "retained_branch": "codex/catalog-batched-verification",
+  "merge": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+  "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-native-182-merge/starmap-native-182.bundle",
+  "sha256": "e23d330a17d6b090292f8038cd16ecf23594ff16daf6483d2fd3ce5dd862c7ec",
+  "remote": "GitHub removed the merged branch under the existing repository setting.",
+  "restore": "Verify the bundle digest, then fetch its recorded branch into a new local branch.",
+  "local_ref_absent": true
+}
