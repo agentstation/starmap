@@ -369,7 +369,7 @@ Generation and operation directory components use lowercase SHA-256 hashes of th
 | Runtime ownership | `R/{owner.json,.owner.lock,instance-seed}` | Persistent initialization and process locking. Restore one identity to one active owner only. |
 | Runtime evidence | `R/catalog-runtime/source.json`, `R/catalog-runtime/providers/<provider-id>.json`, and `R/catalog-runtime/providers/bindings/<key-digest>.json` | Preserve permitted source layers across restart. Fleet-required layers also need shared durable storage. |
 | Runtime operator removals | `R/catalog-runtime/removals.json` | Owner-only snapshot bound to the accepted catalog through the publication journal. Preserve through restart, backup, and directory migration. Provider refresh cannot clear operator targets. |
-| Runtime pin acceptance | `R/catalog-runtime/generation-pin.json` | Owner-only recovery record for the latest pin operation, limited to 32 KiB. Preserve through restart, backup, and directory migration. Configuration authority owns the pin setting. This receipt does not replace it. |
+| Runtime pin acceptance | `R/catalog-runtime/generation-pin.json` | Owner-only local record for the latest pin operation, limited to 32 KiB. Fleet publication also retains the authoritative receipt with recovery inputs. Configuration authority owns the pin setting. This receipt does not replace it. |
 | Runtime manual history | `R/catalog-runtime/manual.json` | Owner-only head for accepted observation batches in `publication-inputs`. Preserve its full referenced history through restart and backup. |
 | Runtime publication record | `R/catalog-runtime/publication.json` | Owner-only transaction state. Startup resolves prepared records or replays committed records before reading retained inputs. |
 | Runtime publication inputs | `R/catalog-runtime/publication-inputs/<sha256>.json` | Owner-only immutable records for retention recovery. Preserve references from pending publication and accepted manual history. CSP5 owns safe compaction and collection. |
@@ -1996,6 +1996,10 @@ Its result must identify the original accepted publication.
 Recovery must validate the exact input checksum, supported format, baseline, and declared acquisition policy before leadership.
 Preserve the difference between omitted source or provider selections and explicit empty selections.
 Rebuild the effective catalog from those inputs and compare its checksum with the selected publication.
+
+An accepted pin retains its original receipt and a separate checksum for the unpinned replay state.
+The receipt binds the selected and accepted generation identities. An origin rollback can give the selected payload a newer authority sequence.
+Recover those inputs and the receipt after local directory loss. A follower must not serve a different selection under an unaccepted pin.
 A format, policy, or replay mismatch cannot grant refresh ownership.
 
 Follower instances read the durable candidate or accepted head and validate

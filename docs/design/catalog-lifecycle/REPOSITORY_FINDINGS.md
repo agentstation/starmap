@@ -9,6 +9,18 @@ This report records source inspection and selected local tests on 2026-09-04.
 It does not certify production availability or full API compatibility.
 Dated entries retain their original qualification limits. The canonical plan owns current task status.
 
+## September 26 runtime integration checkpoint
+
+Producer commit `eb64a9d57` connects the fleet contract to runtime startup and publication.
+Followers recover the selected inputs before takeover and preserve pin acceptance after local directory loss.
+A requested pin that the refresh owner has not accepted causes a follower startup conflict.
+Recovered catalog data does not supply authority permission or undo a known withdrawal.
+
+The [runtime checkpoint](../../plans/proof/starport-production-catalog/csp11/runtime-integration-2026-09-26/verification.json) records 64 passing race events across 56 leaf cases.
+Vet, goago, and the source writing checks pass. Broad runtime verification continues.
+The adapter in these tests runs in one process. Starport still needs real storage, recovery-witness, and acquisition-capability qualification.
+CSP11 remains in progress.
+
 ## Fleet contract review: 2026-09-26
 
 CSP11 remains in progress. The [contract audit](../../plans/proof/starport-production-catalog/csp11/contract-audit-2026-09-26.md) identifies two confirmed shared-publication defects.
