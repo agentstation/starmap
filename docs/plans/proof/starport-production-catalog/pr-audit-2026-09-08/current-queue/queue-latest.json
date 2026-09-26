@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T06:55:17.472067+00:00",
+  "checked_at": "2026-09-26T07:27:11.200416+00:00",
   "starmap": [
     {
       "pr": 182,
@@ -9,8 +9,8 @@
       "draft": true,
       "owner": "CSP8",
       "checks_run": 36224141186,
-      "disposition": "Keep. Reviewed implementation has active native CI.",
-      "next_action": "Qualify Windows owner inspection in native CI, then merge before the consumer module pin."
+      "disposition": "Keep. Native CI completed with 28 passing jobs and two Windows failures.",
+      "next_action": "Correct the stale Windows CLI expectation. Qualify acceptance batching, complete review, and update this PR before native qualification and merge."
     }
   ],
   "starport": [
@@ -235,7 +235,7 @@
     "branch": "codex/catalog-native-consumer-qualification",
     "base": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
     "worktree": "starmap-host-files",
-    "status": "Windows adapter checked, reviewed, and pushed. Native CI pending.",
+    "status": "Native run failed on the stale Windows CLI owner-binding expectation. Adapter tests passed. Repair and fresh qualification remain required.",
     "proof": "../../csp8/native-producer-181/preparation.json",
     "head": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
     "pr": 182,
@@ -244,7 +244,9 @@
     "superseded_run": {
       "id": 36223296385,
       "action": "Cancellation requested after the replacement head and native workflow were confirmed. Old source lacks the required Windows owner adapter."
-    }
+    },
+    "terminal_failure_proof": "../../csp8/native-182/terminal-failure.json",
+    "batching_proof": "../../csp8/acceptance-batching/preparation.json"
   },
   "csp8_acceptance": {
     "status": "interrupted for security repair",
@@ -359,5 +361,11 @@
         "pass_cap_reason": "Preserve complete prepared integration review scope, unchanged from the prior nine-pass review."
       }
     }
+  },
+  "workspace_cleanup": {
+    "local_branches_removed_total": 82,
+    "worktrees_removed_total": 33,
+    "remote_branches_removed_total": 14,
+    "current_pass": "contained-branch-cleanup.json"
   }
 }

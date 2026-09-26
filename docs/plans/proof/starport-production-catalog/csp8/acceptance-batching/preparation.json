@@ -1,0 +1,26 @@
+{
+  "checked_at": "2026-09-26T07:27:11.200416+00:00",
+  "source_head": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
+  "branch": "codex/catalog-batched-verification",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
+  "dirty_files": [
+    "scripts/catalog_product_verify.py",
+    "scripts/test_catalog_product_verify.py"
+  ],
+  "patch_sha256": "59b1b5e30135bcf76f1f2fdc5d41c1b6ba2d226c45798bd0f4d3ca474e080428",
+  "tests": {
+    "focused": 6,
+    "complete_verifier_suite": 97,
+    "result": "PASS"
+  },
+  "before": {
+    "named_tests": 3,
+    "go_processes": 3,
+    "seconds": 165.2375819160079,
+    "result": "PASS"
+  },
+  "after_measurement": "UNVERIFIED",
+  "commit_and_review": "Pending",
+  "checkout_reuse_archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-verifier-checkout-reuse/manifest.json",
+  "next_action": "Measure the same three tests with batching. Complete checks and review. Consolidate with the Windows test correction in existing PR #182."
+}

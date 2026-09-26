@@ -1,0 +1,49 @@
+{
+  "checked_at": "2026-09-26T07:27:11.200416+00:00",
+  "source": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
+  "run": 36224141186,
+  "status": "completed",
+  "conclusion": "failure",
+  "passing_jobs": 28,
+  "windows": [
+    {
+      "platform": "windows-2025",
+      "named_failures": [
+        {
+          "Time": "2026-09-26T07:09:38.1738777Z",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionReportsActiveOwnerAndLiteralWorkspace",
+          "Elapsed": 0.5
+        }
+      ],
+      "output": [
+        "=== RUN   TestFileInspectionReportsActiveOwnerAndLiteralWorkspace\n",
+        "    file_inspection_test.go:108: complete=true, owner=false, literal workspace stage=true\n",
+        "--- FAIL: TestFileInspectionReportsActiveOwnerAndLiteralWorkspace (0.50s)\n"
+      ],
+      "artifact": "windows-2025-tests.jsonl.gz",
+      "sha256": "8ea01fa60d7a906b1b45fbc14f02a9555d61b2411cfbf60969d9d99264610dbd"
+    },
+    {
+      "platform": "windows-11-arm",
+      "named_failures": [
+        {
+          "Time": "2026-09-26T00:06:29.0961808-07:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionReportsActiveOwnerAndLiteralWorkspace",
+          "Elapsed": 0.5
+        }
+      ],
+      "output": [
+        "=== RUN   TestFileInspectionReportsActiveOwnerAndLiteralWorkspace\n",
+        "    file_inspection_test.go:108: complete=true, owner=false, literal workspace stage=true\n",
+        "--- FAIL: TestFileInspectionReportsActiveOwnerAndLiteralWorkspace (0.50s)\n"
+      ],
+      "artifact": "windows-11-arm-tests.jsonl.gz",
+      "sha256": "e2e2df9f48f01cd8ae50b28dc3bbfc62357adc33a669be9447df162276845d32"
+    }
+  ],
+  "diagnosis": "The CLI test expects unverified owner binding on Windows. The new Windows implementation returns matches. Update the supported-platform expectation and rerun qualification."
+}

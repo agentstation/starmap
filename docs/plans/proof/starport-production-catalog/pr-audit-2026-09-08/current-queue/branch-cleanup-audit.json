@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T06:18:05.358824+00:00",
+  "checked_at": "2026-09-26T07:27:11.200416+00:00",
   "removed": [
     {
       "repo": "starmap",
@@ -57,6 +57,78 @@
       "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-branch-audit/starmap-codex-starmap-host-files.bundle",
       "bundle_sha256": "955d6dadba6100c8c64590e65665bc2e4c72eeddfe51be4735efb3d9a5a34823",
       "disposition": "Removed after merged tree equality and recovery bundle verification. The active verifier branch reuses its checkout."
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-final-publication",
+      "sha": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+      "retained_branch": "codex/catalog-native-consumer-qualification",
+      "retained_head": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
+      "verification": "The branch tip is an ancestor of the retained branch.",
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-contained-branch-cleanup/starmap-codex-catalog-final-publication.bundle",
+      "bundle_sha256": "42dcddb5229a9ed9bb5bdef80438ae897f635580dc624919924ab06f4314b18c",
+      "bundle_verified": true,
+      "ref_absent": true
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-git-qualification",
+      "sha": "3da0e489bcdfba21f6ecfbbd6518d662b04f2ad0",
+      "retained_branch": "codex/catalog-source-inventory",
+      "retained_head": "66e3ed4d848c7423e234ce0374af1bb5fde110e6",
+      "verification": "The branch tip is an ancestor of the retained branch.",
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-contained-branch-cleanup/starmap-codex-catalog-git-qualification.bundle",
+      "bundle_sha256": "c8bb7641af1ee86600eafa7a7bc3af8056517928466a5803e40e375c5a81cfcc",
+      "bundle_verified": true,
+      "ref_absent": true
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-record-presence",
+      "sha": "6c691dddcf2fa212af2cf4207ca31d7b42e380fc",
+      "retained_branch": "codex/catalog-presence-integration",
+      "retained_head": "e55524c805b77e3b6f9a5c16397285f3d54042d2",
+      "verification": "The branch tip is an ancestor of the retained branch.",
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-contained-branch-cleanup/starmap-codex-catalog-record-presence.bundle",
+      "bundle_sha256": "fcd219ffad39e6a638d8a36890ba9454bed0aaa4755130f18df463656b6eabd9",
+      "bundle_verified": true,
+      "ref_absent": true
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-source-diagnostics",
+      "sha": "605084e76890be968b953811e295006a72c94f34",
+      "retained_branch": "codex/catalog-source-inventory",
+      "retained_head": "66e3ed4d848c7423e234ce0374af1bb5fde110e6",
+      "verification": "The branch tip is an ancestor of the retained branch.",
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-contained-branch-cleanup/starmap-codex-catalog-source-diagnostics.bundle",
+      "bundle_sha256": "a02f6c7d18457977f91ba28f2c937863c490deefc75237380f834acbe128091f",
+      "bundle_verified": true,
+      "ref_absent": true
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-source-revocation",
+      "sha": "6a88f10d375aebcf87bbe60f354e1610a7e956a4",
+      "retained_branch": "codex/catalog-source-inventory",
+      "retained_head": "66e3ed4d848c7423e234ce0374af1bb5fde110e6",
+      "verification": "The branch tip is an ancestor of the retained branch.",
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-contained-branch-cleanup/starmap-codex-catalog-source-revocation.bundle",
+      "bundle_sha256": "f31fd76389b0b1cae07e4473f0943e6cbd71f1a837431eb4ba9ddc998377fcd3",
+      "bundle_verified": true,
+      "ref_absent": true
+    },
+    {
+      "repo": "starport",
+      "branch": "codex/csp9-credential-revocation",
+      "sha": "973c4d9d2ea5a399866824af0a243eba0983414c",
+      "retained_branch": "codex/starport-native-catalog",
+      "retained_head": "527aac7c570143e77db951fd6796d7333b924488",
+      "verification": "Both commits have equivalent patches in the retained integration branch.",
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-contained-branch-cleanup/starport-codex-csp9-credential-revocation.bundle",
+      "bundle_sha256": "d207fc7be74360fba016b4efed041172cdf422e9f51fd3ef3cfce6f26a0ca773",
+      "bundle_verified": true,
+      "ref_absent": true
     }
   ],
   "retained_unattached": [
@@ -148,16 +220,12 @@
       "sha256": "bdfdeb2a2f8b1a0d9299ed424c7968f04d8cf2a1a780abcee70073a9d791bf02"
     },
     "latest_recheck": {
-      "checked_at": "2026-09-26T06:49:06.161535+00:00",
-      "verified_bundles": 5,
-      "digest_matches": 5,
-      "removed_refs_absent": 5,
-      "additional_deletions": 0,
-      "retained_worktrees": {
-        "starmap": 37,
-        "starport": 4
-      },
-      "reason": "Uncommitted edits, active checks, and unique branch work remain. Clean historical checkouts are not ancestors of the active integration or main."
+      "checked_at": "2026-09-26T07:27:11.200416+00:00",
+      "verified_bundles": 6,
+      "removed_refs_absent": 6,
+      "additional_local_deletions": 6,
+      "worktree_status_inventories_unchanged": 41,
+      "proof": "contained-branch-cleanup.json"
     }
   },
   "local_main_fast_forward": {
