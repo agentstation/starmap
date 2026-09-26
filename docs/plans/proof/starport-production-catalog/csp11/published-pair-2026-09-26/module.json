@@ -1,0 +1,15 @@
+{
+	"Path": "github.com/agentstation/starmap",
+	"Version": "v0.16.6-0.20260926185237-a2d66bd259a1",
+	"Query": "a2d66bd259a10caa751d34c99294918431ff7100",
+	"Time": "2026-09-26T18:52:37Z",
+	"GoMod": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260926185237-a2d66bd259a1.mod",
+	"GoVersion": "1.27.1",
+	"Origin": {
+		"VCS": "git",
+		"URL": "https://github.com/agentstation/starmap",
+		"Hash": "a2d66bd259a10caa751d34c99294918431ff7100",
+		"TagSum": "t1:0u/rFQ7Vn0JyKvnk1j1zCh2XTsbmqAuhiLokQAXpigM=",
+		"Ref": "refs/heads/codex/catalog-fleet-contract"
+	}
+}

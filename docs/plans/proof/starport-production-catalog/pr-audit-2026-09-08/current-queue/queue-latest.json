@@ -1,21 +1,37 @@
 {
-  "checked_at": "2026-09-26T18:54:54.627490+00:00",
+  "checked_at": "2026-09-26T19:03:51.917662+00:00",
   "starmap": [
     {
       "baseRefName": "main",
+      "baseRefOid": "8122081e0494648fb1e356647053dd870a05fb1c",
       "headRefName": "codex/catalog-fleet-contract",
       "headRefOid": "a2d66bd259a10caa751d34c99294918431ff7100",
       "isDraft": true,
+      "mergeStateStatus": "BLOCKED",
       "number": 185,
       "title": "runtime: fence fleet publication and retain recovery inputs",
-      "updatedAt": "2026-09-26T17:39:48Z",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Reviewed final acceptance registration published; exact-head CI required",
-      "next_action": "Finish PR185 exact-head CI and merge; adopt its published module, complete consumer gates and review, then merge consumer."
+      "disposition": "Reviewed published head; exact-head CI running",
+      "next_action": "Complete exact-head CI, verify bases and review threads, merge Starmap #185 before Starport #385, and record actual merge commits."
     }
   ],
-  "starport": [],
+  "starport": [
+    {
+      "baseRefName": "main",
+      "baseRefOid": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
+      "headRefName": "codex/catalog-fleet-adapter",
+      "headRefOid": "09ed740cb06c0243b8603255ee376baa0913b485",
+      "isDraft": true,
+      "mergeStateStatus": "BLOCKED",
+      "number": 385,
+      "title": "catalog: fence fleet publication and recover shared acquisition state",
+      "url": "https://github.com/agentstation/starport/pull/385",
+      "owner": "CSP11",
+      "disposition": "Reviewed published head; exact-head CI running",
+      "next_action": "Complete exact-head CI, verify bases and review threads, merge Starmap #185 before Starport #385, and record actual merge commits."
+    }
+  ],
   "completed_merges": [
     {
       "repo": "starmap",
@@ -857,10 +873,11 @@
     "producer_pr": 185,
     "consumer_branch": "codex/catalog-fleet-adapter",
     "consumer_base": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
-    "proof": "../../csp11/acceptance-2026-09-26/verification.json",
+    "proof": "../../csp11/published-pair-2026-09-26/verification.json",
     "owner": "CSP11",
-    "next_action": "Finish PR185 exact-head CI and merge; adopt its published module, complete consumer gates and review, then merge consumer.",
-    "consumer": "26d67ccf7ede97f962badb56a8820f5f1cc9e0b3"
+    "next_action": "Complete exact-head CI, verify bases and review threads, merge Starmap #185 before Starport #385, and record actual merge commits.",
+    "consumer": "09ed740cb06c0243b8603255ee376baa0913b485",
+    "consumer_pr": 385
   },
   "local_consumer_checkpoint": {
     "head": "16d176ba3b528aa7b99cc1c99a9adb0609128d97",

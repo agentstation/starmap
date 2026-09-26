@@ -3658,4 +3658,18 @@ The existing shared-storage CI job now includes these contracts and process reco
 
 The [process checkpoint](../../plans/proof/starport-production-catalog/csp11/process-recovery-2026-09-26/verification.json) records exact commands and limits.
 Published-module qualification, acceptance registration, consumer review, and merges remain open.
-Six existing goago findings remain in the recorded lint output.
+The extra goago run used the Starmap tool through the temporary workspace.
+Starport does not declare that tool or its policy. Preserve its six reports as historical diagnostics, outside the Starport gate roster.
+
+
+### CSP11 published dependency qualification: September 26, 2026
+
+Starport `09ed740cb` pins published Starmap `a2d66bd25`.
+All eleven fleet acceptance subcases pass without a local Go workspace.
+The architecture rerun passes twelve conditions, including the full Go suite.
+The remaining required repository commands pass. Both pre-PR reviews report no findings.
+
+[Starmap #185](https://github.com/agentstation/starmap/pull/185) must merge before [Starport #385](https://github.com/agentstation/starport/pull/385).
+Both PRs still need exact-head CI and protected merges.
+The [published-pair checkpoint](../../plans/proof/starport-production-catalog/csp11/published-pair-2026-09-26/verification.json) retains commands, review results, and the initial workspace-boundary failure.
+CSP13 owns upgrade compatibility and complete state migration. CSP15 owns immutable payload retention and backend qualification.

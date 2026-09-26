@@ -1,0 +1,58 @@
+{
+  "recorded_at": "2026-09-26T19:03:51.917662+00:00",
+  "producer": "a2d66bd259a10caa751d34c99294918431ff7100",
+  "consumer": "09ed740cb06c0243b8603255ee376baa0913b485",
+  "go": "1.27.1",
+  "module": "v0.16.6-0.20260926185237-a2d66bd259a1",
+  "module_origin": {
+    "VCS": "git",
+    "URL": "https://github.com/agentstation/starmap",
+    "Hash": "a2d66bd259a10caa751d34c99294918431ff7100",
+    "TagSum": "t1:0u/rFQ7Vn0JyKvnk1j1zCh2XTsbmqAuhiLokQAXpigM=",
+    "Ref": "refs/heads/codex/catalog-fleet-contract"
+  },
+  "acceptance": {
+    "GOWORK": "off",
+    "status": "PASS",
+    "subcases": {
+      "A13.two_real_processes": "PASS",
+      "A13.lease_expiry_during_commit": "PASS",
+      "A13.stale_epoch_rejection": "PASS",
+      "A14.missed_events": "PASS",
+      "A14.follower_restart": "PASS",
+      "A14.leader_loss_with_local_files_removed": "PASS",
+      "A14.equivalent_acquisition_capability": "PASS",
+      "A03.two_instances_same_user": "PASS",
+      "A03.duplicate_owner_refusal": "PASS",
+      "A41.deployment_key_channel_isolation": "PASS",
+      "A41.namespace_atomic_layout": "PASS"
+    }
+  },
+  "repository_gates": {
+    "count": 34,
+    "initial_workspace_module_boundary": "FAIL, retained in repository-gates.json",
+    "published_module_architecture_rerun": "PASS: all 12 conditions including full Go suite, GOWORK=off",
+    "all_other_commands": "PASS",
+    "scope": "The original roster used the development workspace. The default-module architecture and native acceptance reruns qualify the published dependency. The workspace producer and published module identify the same commit."
+  },
+  "review": {
+    "producer": "Sol high and Opus 5.5 high: no findings",
+    "consumer": "Sol high and Opus 5.5 high: no findings"
+  },
+  "goago_scope_correction": "Starport does not declare goago in its module or repository checks. The earlier six diagnostic findings came from invoking the producer tool through GOWORK. Preserve that output as an extra diagnostic, not a failing Starport gate. No policy adoption or unrelated source rewrite was made.",
+  "prs": {
+    "producer": 185,
+    "consumer": 385,
+    "merge_order": [
+      185,
+      385
+    ],
+    "merges": []
+  },
+  "limits": [
+    "Exact-head CI and protected merges remain required. CSP11 is in progress.",
+    "Consumer review and tests qualify the published producer commit before main merge. Verify the producer merge preserves its code tree.",
+    "The native process fixture accelerates dead-owner expiry explicitly; it does not wait the production lease TTL.",
+    "Full shared migration, backend recipes, retention cleanup, and final released-pair qualification remain with their named plan tasks."
+  ]
+}
