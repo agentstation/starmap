@@ -1,0 +1,29 @@
+{
+  "status": "SOURCE_AUDIT",
+  "task": "CSP11",
+  "recorded_at": "2026-09-26T21:46:36.780776+00:00",
+  "producer": "75e84878d8520a9c5f456643f929bc776d52fa3e",
+  "consumer": "ac679bf6464e448b63576deed54dbdbd0f7696e6",
+  "findings": [
+    "Replay compatibility includes the embedded generation and acquisition configuration.",
+    "Incompatible replay refuses ownership before lease acquisition.",
+    "An unchanged shared head preserves the replay error.",
+    "The native fleet contract does not bind refresh ownership to a selected policy.",
+    "Recovery records retain a compatibility digest but not the complete prior embedded baseline."
+  ],
+  "contract": "CONTRACT.md",
+  "acceptance_criteria": 10,
+  "owner_decision": "Explicit transitions for both baseline and acquisition policy, or automatic baseline adoption with explicit policy transitions. Pending.",
+  "runtime_changes": false,
+  "new_test_runs": false,
+  "qualification": "UNVERIFIED: transition API and native protocol are not implemented. Existing refusal tests do not prove upgrade recovery.",
+  "source_sha256": {
+    "runtime/fleet_replay.go": "015a30b79145c1a8d3a49bceaea564dc43c2e58363a85c7135c542008c0a65ae",
+    "runtime/fleet_runtime.go": "489b314d3d9c71d27cb9688905ace799616bb0b8ac0a52758264a882e27dfd10",
+    "runtime/fleet_capability.go": "548e3c0525fb0081fb907640660fb5582e92cc0967aa1f8fc63734e19065ffa0",
+    "runtime/fleet_store.go": "1433cc669b08a657650ad97e01498bd7805f387a8640fe50e878cc1f67d5ce03",
+    "runtime/fleet_recovery.go": "2644568917c7305071361a8354aa984ed7ed344fa9f3fe9bf9c2024c4275fe60",
+    "runtime/fleet_runtime_test.go": "e5b742759f457a5c9a6edf849b1fc0bd6e5582acbbb09c7a851c1ee5f0e112f8"
+  },
+  "writing": "PASS: one contract file, zero diagnostics"
+}

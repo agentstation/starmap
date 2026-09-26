@@ -38,6 +38,7 @@ The [retention proof](../retention-policy-2026-09-26/verification.json) records 
 Complete branch review and final-head qualification remain open for both repairs.
 
 The upgrade decision remains pending with the owner.
+The [transition contract](../upgrade-contract-2026-09-26/CONTRACT.md) defines the shared fencing, retry, and input-validation requirements.
 The recommendation requires one explicit deployment-wide transition for a changed baseline or acquisition policy.
 Ordinary source refresh remains automatic.
 Retained catalog availability remains subject to the existing permission and expiry contracts.
