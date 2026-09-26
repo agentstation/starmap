@@ -1,19 +1,25 @@
 {
-  "checked_at": "2026-09-26T09:27:54.156122+00:00",
+  "checked_at": "2026-09-26T10:02:04.947367+00:00",
   "starmap": [],
   "starport": [
     {
       "pr": 384,
-      "head": "1774cea4527429a672cd78608ca42304b96a5aa6",
+      "head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
       "branch": "codex/starport-native-catalog",
       "state": "OPEN",
       "draft": true,
       "owner": "CSP8",
-      "checks_run": 36232078722,
-      "disposition": "Keep. Native macOS ARM64 and Windows AMD64 failed the two migration subprocess checks.",
-      "next_action": "Reproduce the subprocess failure under constrained native load. Inspect cold embedded baseline validation and concurrent phase work. Preserve recovery assertions and crash points. Qualify a reviewed fix in the same PR before full CSP8 acceptance.",
-      "local_head": "1774cea4527429a672cd78608ca42304b96a5aa6",
-      "native_failure_proof": "../../csp8/native-384/failure.json"
+      "checks_run": 36234492082,
+      "disposition": "Keep. Reviewed test scheduling repair is published; native CI is active.",
+      "next_action": "Capture successful native CI, run all 63 CSP8 subcases with real storage, verify exact merge inputs, and merge PR #384.",
+      "local_head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
+      "native_failure_proof": "../../csp8/native-384/failure.json",
+      "local_changes": [],
+      "local_qualification": "All 68 packages: 4227 passing named tests, six optional skips, zero failures. All 733 CSP8 tests pass without skips.",
+      "local_qualification_proof": "../../csp8/native-schedule-384/verification.json",
+      "prepr": "PASS: all 34 required commands",
+      "review": "PASS: nine chunks, zero findings at P0",
+      "native_watch_session": 20411
     }
   ],
   "completed_merges": [
@@ -328,10 +334,11 @@
     "status": "awaiting consumer native qualification",
     "required_subcases": 63,
     "producer_merge": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
-    "consumer_head": "1774cea4527429a672cd78608ca42304b96a5aa6",
+    "consumer_head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
     "producer_native": "PASS",
-    "consumer_native_run": 36232078722,
-    "next_action": "After native capture, run the complete CSP8 task verifier with separate real durable and cache Valkey services and PostgreSQL."
+    "consumer_native_run": 36234492082,
+    "next_action": "After native capture, run the complete CSP8 task verifier with separate real durable and cache Valkey services and PostgreSQL.",
+    "consumer_native_status": "in_progress"
   },
   "workspace_cleanup": {
     "local_branches_removed_total": 84,

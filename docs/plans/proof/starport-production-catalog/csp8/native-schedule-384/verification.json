@@ -1,0 +1,605 @@
+{
+  "status": "PUBLISHED_NATIVE_RUNNING",
+  "source_head": "1774cea4527429a672cd78608ca42304b96a5aa6",
+  "patch_sha256": "07f185705f82f7b549b0667c5196a268790189e01f09971bbadc81c2c10cdf80",
+  "source_files": {
+    ".github/workflows/ci.yml": "8ed313e14f2fc418144eced1f6de2658aa6ce9cbfc9800e9d43d6a97b17c3093",
+    "internal/catalog/acquisition_lifecycle_test.go": "eeb8a2f03c781321a9ff78fee977f3c41d9cb95408782d66c3ec21cbd4270237",
+    "internal/catalog/migration_phase_crash_test.go": "3a8b95002017bfc6aa84dafa56b8bdef5d685397480e125f47f7f99f4c2474f1",
+    "internal/catalog/runtime_acquisition_test.go": "9ed707f85a8dcbe776088989420dc6f2934b490e6a984a7b076466d05f094cae",
+    "internal/catalog/source_acquisition_test.go": "37e0db3b2461ea222e17f94469329bef03ed5e8be8e5b9b5efb73667c1b4fdb8"
+  },
+  "scope": "Test fixtures and native CI scheduling; no production behavior changes.",
+  "preserved": [
+    "All native platforms and race settings",
+    "Every migration crash point and exit assertion",
+    "One-minute migration child limit",
+    "Five-minute local package limit",
+    "All packages and combined atomic coverage"
+  ],
+  "local_runner": "/tmp/starport-native-schedule-qualified/runner.json",
+  "session": 22901,
+  "native_fail_before": "../native-384/failure.json",
+  "next_action": "Qualify controlled catalog fixtures and serialized cold recovery children. Review and update PR #384, then require successful native CI and all 63 CSP8 subcases.",
+  "checked_at": "2026-09-26T09:50:33.407925+00:00",
+  "local_run": {
+    "started_at": "2026-09-26T09:43:45.526690+00:00",
+    "status": "PASS",
+    "services": [
+      {
+        "role": "durable",
+        "id": "3d3f23ded52297f8989e046861dc7d8b3c763349fe014a990bd9de52444a8cd0",
+        "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "address": "127.0.0.1:60330"
+      },
+      {
+        "role": "cache",
+        "id": "17069f13c46d3298a616488dbb172e0cd4a4690a114830eb0b80a3335c97e7af",
+        "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "address": "127.0.0.1:60331"
+      },
+      {
+        "role": "sql",
+        "id": "1be03882724c3bde146db2c6abc1ec9cee21682de6b09362b64cd0df2d3c17c2",
+        "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+        "address": "127.0.0.1:60332"
+      }
+    ],
+    "producer": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+    "consumer": "1774cea4527429a672cd78608ca42304b96a5aa6",
+    "source_diff_sha256": "07f185705f82f7b549b0667c5196a268790189e01f09971bbadc81c2c10cdf80",
+    "module_files": {
+      "go.mod": "07c2a1e81e5e67faa540ae31689ec336d9342e4fb3408222ba8ee1d698cece5a",
+      "go.sum": "93a8496939fc6e2708db2306902e63732a722ce755bde32924a440bb8b8576d9"
+    },
+    "consumer_module": "github.com/agentstation/starmap v0.16.6-0.20260926085409-71c5c8c72333",
+    "command": [
+      "bash",
+      "/tmp/starport-native-schedule.sh"
+    ],
+    "exit_code": 0,
+    "seconds": 400.86595641600434,
+    "cleanup": [
+      {
+        "id": "3d3f23ded52297f8989e046861dc7d8b3c763349fe014a990bd9de52444a8cd0",
+        "exit_code": 0
+      },
+      {
+        "id": "17069f13c46d3298a616488dbb172e0cd4a4690a114830eb0b80a3335c97e7af",
+        "exit_code": 0
+      },
+      {
+        "id": "1be03882724c3bde146db2c6abc1ec9cee21682de6b09362b64cd0df2d3c17c2",
+        "exit_code": 0
+      }
+    ],
+    "finished_at": "2026-09-26T09:50:30.192286+00:00"
+  },
+  "named_results": {
+    "pass": 4227,
+    "skip": 6,
+    "fail": 0
+  },
+  "packages": 68,
+  "all_packages_exactly_once": true,
+  "combined_coverage_blocks": 22361,
+  "coverage_union_exact": true,
+  "source_unchanged": true,
+  "skipped_tests": [
+    {
+      "package": "github.com/agentstation/starport/internal/authorization",
+      "test": "TestAuthorizationTenantChurnCapacity"
+    },
+    {
+      "package": "github.com/agentstation/starport/internal/authorization",
+      "test": "TestFleetDurableReceiptPrecedesReplicaEnforcement"
+    },
+    {
+      "package": "github.com/agentstation/starport/internal/cache",
+      "test": "TestDefaultCacheMemoryBudget"
+    },
+    {
+      "package": "github.com/agentstation/starport/internal/cache",
+      "test": "TestSharedCachePausedServiceDeadlineAndRecovery"
+    },
+    {
+      "package": "github.com/agentstation/starport/internal/server",
+      "test": "TestSDKCanonicalRemovalAfterSuccessfulInference"
+    },
+    {
+      "package": "github.com/agentstation/starport/internal/server/controllers",
+      "test": "TestGatewayOverheadBenchmark"
+    }
+  ],
+  "package_results": [
+    {
+      "Time": "2026-09-26T04:47:10.730746-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Elapsed": 197.358
+    },
+    {
+      "Time": "2026-09-26T04:47:28.87161-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/examples",
+      "Elapsed": 1.7730000000000001
+    },
+    {
+      "Time": "2026-09-26T04:47:29.048842-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/apikey",
+      "Elapsed": 1.95
+    },
+    {
+      "Time": "2026-09-26T04:47:29.356226-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/account",
+      "Elapsed": 2.258
+    },
+    {
+      "Time": "2026-09-26T04:47:29.548528-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/catalog/disclosure",
+      "Elapsed": 0.182
+    },
+    {
+      "Time": "2026-09-26T04:47:31.365681-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/authorization",
+      "Elapsed": 2.4859999999999998
+    },
+    {
+      "Time": "2026-09-26T04:47:32.477743-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/audit",
+      "Elapsed": 3.598
+    },
+    {
+      "Time": "2026-09-26T04:47:32.551469-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/authmode",
+      "Elapsed": 3.672
+    },
+    {
+      "Time": "2026-09-26T04:47:32.95894-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/blob",
+      "Elapsed": 4.078
+    },
+    {
+      "Time": "2026-09-26T04:47:33.003004-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/architecture",
+      "Elapsed": 4.123
+    },
+    {
+      "Time": "2026-09-26T04:47:33.334474-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/availability",
+      "Elapsed": 4.454
+    },
+    {
+      "Time": "2026-09-26T04:47:33.570698-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache/connection",
+      "Elapsed": 4.509
+    },
+    {
+      "Time": "2026-09-26T04:47:33.758591-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/catalog/logos",
+      "Elapsed": 4.21
+    },
+    {
+      "Time": "2026-09-26T04:47:34.061727-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/authorization/revision",
+      "Elapsed": 5.181
+    },
+    {
+      "Time": "2026-09-26T04:47:34.557842-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Elapsed": 5.676
+    },
+    {
+      "Time": "2026-09-26T04:47:35.430964-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/cli",
+      "Elapsed": 2.949
+    },
+    {
+      "Time": "2026-09-26T04:47:36.084684-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/console",
+      "Elapsed": 3.117
+    },
+    {
+      "Time": "2026-09-26T04:47:36.835208-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/credentials/cloudchain",
+      "Elapsed": 3.497
+    },
+    {
+      "Time": "2026-09-26T04:47:36.98319-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/deployment",
+      "Elapsed": 3.41
+    },
+    {
+      "Time": "2026-09-26T04:47:37.969184-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/doclinks",
+      "Elapsed": 3.896
+    },
+    {
+      "Time": "2026-09-26T04:47:38.632872-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/document",
+      "Elapsed": 4.069
+    },
+    {
+      "Time": "2026-09-26T04:47:38.771776-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/failure",
+      "Elapsed": 1.928
+    },
+    {
+      "Time": "2026-09-26T04:47:38.886484-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/execution",
+      "Elapsed": 2.7880000000000003
+    },
+    {
+      "Time": "2026-09-26T04:47:39.099796-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/files",
+      "Elapsed": 2.109
+    },
+    {
+      "Time": "2026-09-26T04:47:39.217105-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/guardrails",
+      "Elapsed": 1.227
+    },
+    {
+      "Time": "2026-09-26T04:47:39.887858-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/events",
+      "Elapsed": 4.315
+    },
+    {
+      "Time": "2026-09-26T04:47:40.180371-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/inference",
+      "Elapsed": 1.4060000000000001
+    },
+    {
+      "Time": "2026-09-26T04:47:40.541674-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/jobs",
+      "Elapsed": 1.6440000000000001
+    },
+    {
+      "Time": "2026-09-26T04:47:40.577711-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/limits",
+      "Elapsed": 1.472
+    },
+    {
+      "Time": "2026-09-26T04:47:40.802097-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/protocol/mediaform",
+      "Elapsed": 0.24
+    },
+    {
+      "Time": "2026-09-26T04:47:41.01582-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/identity",
+      "Elapsed": 2.378
+    },
+    {
+      "Time": "2026-09-26T04:47:41.076739-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/policyrecord",
+      "Elapsed": 1.183
+    },
+    {
+      "Time": "2026-09-26T04:47:41.76093-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/presets",
+      "Elapsed": 1.576
+    },
+    {
+      "Time": "2026-09-26T04:47:41.852388-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/protocol/openai",
+      "Elapsed": 1.266
+    },
+    {
+      "Time": "2026-09-26T04:47:42.027976-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/protocol/openrouter",
+      "Elapsed": 1.226
+    },
+    {
+      "Time": "2026-09-26T04:47:42.23931-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/localauth",
+      "Elapsed": 3.015
+    },
+    {
+      "Time": "2026-09-26T04:47:43.125241-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/providers/auth",
+      "Elapsed": 2.045
+    },
+    {
+      "Time": "2026-09-26T04:47:45.259262-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/providers/statuspage",
+      "Elapsed": 3.014
+    },
+    {
+      "Time": "2026-09-26T04:47:45.586402-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/credentials",
+      "Elapsed": 12.56
+    },
+    {
+      "Time": "2026-09-26T04:47:46.80707-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/ratelimit",
+      "Elapsed": 1.5350000000000001
+    },
+    {
+      "Time": "2026-09-26T04:47:47.039258-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/providers/connectors",
+      "Elapsed": 5.271
+    },
+    {
+      "Time": "2026-09-26T04:47:48.107036-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/repotest",
+      "Elapsed": 1.285
+    },
+    {
+      "Time": "2026-09-26T04:47:48.419967-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/response/cache",
+      "Elapsed": 1.275
+    },
+    {
+      "Time": "2026-09-26T04:47:50.217431-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/routing",
+      "Elapsed": 1.7770000000000001
+    },
+    {
+      "Time": "2026-09-26T04:48:24.916743-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/cmd/starport",
+      "Elapsed": 57.818
+    },
+    {
+      "Time": "2026-09-26T04:48:38.042578-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/catalog/view",
+      "Elapsed": 66.67
+    },
+    {
+      "Time": "2026-09-26T04:48:38.479962-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/dto",
+      "Elapsed": 0.409
+    },
+    {
+      "Time": "2026-09-26T04:48:38.6776-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/requestctx",
+      "Elapsed": 0.198
+    },
+    {
+      "Time": "2026-09-26T04:48:51.982269-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/providers/state",
+      "Elapsed": 69.945
+    },
+    {
+      "Time": "2026-09-26T04:48:54.748292-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/registry",
+      "Elapsed": 69.118
+    },
+    {
+      "Time": "2026-09-26T04:48:54.883869-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/sqlstore",
+      "Elapsed": 2.828
+    },
+    {
+      "Time": "2026-09-26T04:48:56.535111-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/telemetry",
+      "Elapsed": 1.649
+    },
+    {
+      "Time": "2026-09-26T04:48:58.177328-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/tokenize",
+      "Elapsed": 1.6179999999999999
+    },
+    {
+      "Time": "2026-09-26T04:48:58.94895-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/router",
+      "Elapsed": 70.827
+    },
+    {
+      "Time": "2026-09-26T04:48:59.658977-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/scripts/doclinks",
+      "Elapsed": 0.523
+    },
+    {
+      "Time": "2026-09-26T04:48:59.866079-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/scripts/sdk-smoke-server",
+      "Elapsed": 0.207
+    },
+    {
+      "Time": "2026-09-26T04:48:59.866291-05:00",
+      "Action": "skip",
+      "Package": "github.com/agentstation/starport/skills/starport",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-26T04:49:05.540381-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/usage",
+      "Elapsed": 7.356
+    },
+    {
+      "Time": "2026-09-26T04:49:14.421807-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Elapsed": 84.201
+    },
+    {
+      "Time": "2026-09-26T04:49:16.158861-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Elapsed": 21.308
+    },
+    {
+      "Time": "2026-09-26T04:49:22.517504-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Elapsed": 57.315
+    },
+    {
+      "Time": "2026-09-26T04:49:28.901974-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/providers/keyring",
+      "Elapsed": 107.04
+    },
+    {
+      "Time": "2026-09-26T04:49:34.271129-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/proxy",
+      "Elapsed": 111.141
+    },
+    {
+      "Time": "2026-09-26T04:49:52.208782-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/diagnosis",
+      "Elapsed": 138.445
+    },
+    {
+      "Time": "2026-09-26T04:49:53.549968-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/setup",
+      "Elapsed": 74.872
+    },
+    {
+      "Time": "2026-09-26T04:50:09.305134-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/config",
+      "Elapsed": 156.745
+    },
+    {
+      "Time": "2026-09-26T04:50:14.645928-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/providers",
+      "Elapsed": 153.612
+    },
+    {
+      "Time": "2026-09-26T04:50:28.866577-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Elapsed": 179.986
+    }
+  ],
+  "csp8_packages": {
+    "config": {
+      "pass": 327,
+      "fail": 0,
+      "skip": 0
+    },
+    "catalog": {
+      "pass": 246,
+      "fail": 0,
+      "skip": 0
+    },
+    "app": {
+      "pass": 160,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "artifacts": [
+    {
+      "path": "tests.jsonl.gz",
+      "sha256": "a5535d3efc358dc75130dd40e991cead2fec0ebacc0da4ab07010a6223b0a4ee"
+    },
+    {
+      "path": "packages.txt.gz",
+      "sha256": "64b62d386262695908e691a2faa882ba8b7c7b26cadd3ecceb20c22806c305e3"
+    },
+    {
+      "path": "combined.coverage.txt.gz",
+      "sha256": "7b47999f0b16b2b66e042f8324ba52f88fec5a7cdb422ab47147ac0a93eec2ca"
+    },
+    {
+      "path": "runner.json.gz",
+      "sha256": "5b6b326c7f8594f4644e632bdaf7f357c8d2ab4d1af3f43fbbb7906112d83dcf"
+    },
+    {
+      "path": "starport-native-schedule.sh.gz",
+      "sha256": "3e03467f27f54344d807623cf5a6178a740c427a3d65d07a41f14fe60e5879fd"
+    }
+  ],
+  "work_commit": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
+  "prepr": {
+    "commands": 34,
+    "status": "PASS",
+    "source_unchanged": true,
+    "module_files_unchanged": true,
+    "seconds": 385.473638,
+    "archive": "prepr-evidence.tar.gz",
+    "sha256": "d732f574c697b0fe463b30f7c4115c8c1a81d135e5f4a23ed84d3cb54187e638"
+  },
+  "review": {
+    "status": "PASS",
+    "passes": 9,
+    "findings": 0,
+    "profile": "auto",
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "P0",
+    "secret_scan": "clean",
+    "bundle_bytes": 1838460,
+    "log": "autoreview.log.gz",
+    "sha256": "cd87d56ba1ca2505dbdda45a53d09c7a2f00152a6b22ff3d15591d2aff100301",
+    "pass_cap": 32,
+    "pass_cap_reason": "Review the complete consolidated branch without a partial diff."
+  },
+  "native": {
+    "run": 36234492082,
+    "url": "https://github.com/agentstation/starport/actions/runs/36234492082",
+    "status": "in_progress",
+    "watch_session": 20411,
+    "watch_log": "/tmp/starport-384-native-schedule-ci-watch.log"
+  },
+  "publication": {
+    "pr": 384,
+    "head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
+    "github_signature_verified": true
+  },
+  "source_patch": {
+    "file": "source.patch.gz",
+    "compressed_sha256": "76a71935acacbd2b57e5f027320a3cbb06e03feb69924d0b938894d041199d8f",
+    "uncompressed_sha256": "07f185705f82f7b549b0667c5196a268790189e01f09971bbadc81c2c10cdf80"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T09:27:54.156122+00:00",
+  "checked_at": "2026-09-26T09:47:20.362656+00:00",
   "status": "NATIVE_FAILURE",
   "source": "1774cea4527429a672cd78608ca42304b96a5aa6",
   "run": "https://github.com/agentstation/starport/actions/runs/36232078722",
@@ -17,12 +17,16 @@
   "event_file": "macos-arm64-migration-events.jsonl.gz",
   "event_sha256": "289f050e0ee29d1d4c51401e58ed93801e252e69b85caeca027f79c6c662212e",
   "local_comparison": "The final CSP9 race command passes 535 named events without skips, including these recovery phases, on the same source.",
-  "next_action": "Reproduce the subprocess failure under constrained native load. Inspect cold embedded baseline validation and concurrent phase work. Preserve recovery assertions and crash points. Qualify a reviewed fix in the same PR before full CSP8 acceptance.",
+  "next_action": "Qualify serialized migration children, controlled acquisition fixtures, and separate native catalog-package scheduling. Preserve every crash point, assertion, platform, and timeout. Review and publish through PR #384, then capture successful native CI and run all 63 CSP8 subcases.",
   "platforms": [
+    "ubuntu-24.04",
+    "macos-15-intel",
     "macos-15",
     "windows-2025"
   ],
   "failed_jobs": [
+    108376992003,
+    108376992031,
     108376992077,
     108376992088
   ],
@@ -31,5 +35,35 @@
   "windows_subcase_seconds": {
     "TestMigrationPhaseProcessRecovery/complete": 62.77,
     "TestMigrationPhaseProcessRecovery/publish": 62.89
-  }
+  },
+  "run_status": "completed",
+  "run_conclusion": "failure",
+  "passing_jobs": 10,
+  "failing_jobs": 4,
+  "skipped_jobs": 1,
+  "additional_failure": {
+    "platform": "macos-15-intel",
+    "package": "internal/catalog",
+    "error": "test timed out after 10m0s",
+    "package_seconds": 600.534,
+    "active_test": "TestRuntimeAcquiresSelectedMetadataSource"
+  },
+  "terminal_logs": [
+    {
+      "file": "macos-arm64-job.log.gz",
+      "sha256": "c68c5ee10f907919aecea9ecf19ef0bb32e6f4085539c38d7f4e32797586de1f"
+    },
+    {
+      "file": "windows-amd64-job.log.gz",
+      "sha256": "b189a029d8b2ab6905e6c23e97d1865165d7abb8c8204a9cf59c4eb95158c0a2"
+    },
+    {
+      "file": "linux-amd64-job.log.gz",
+      "sha256": "cf3f0b7985c256406ffb6f7013b08651e791aa71d15bac505407fdae56b3fbb1"
+    },
+    {
+      "file": "macos-amd64-job.log.gz",
+      "sha256": "4843472db9e03588a0ee3889342ef94d6d8a0463f2ac0aa0429d050d0dd145a6"
+    }
+  ]
 }

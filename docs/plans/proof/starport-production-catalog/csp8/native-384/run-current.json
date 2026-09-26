@@ -1,5 +1,5 @@
 {
-  "conclusion": "",
+  "conclusion": "failure",
   "databaseId": 36232078722,
   "headSha": "1774cea4527429a672cd78608ca42304b96a5aa6",
   "jobs": [
@@ -756,12 +756,12 @@
       "url": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376992012"
     },
     {
-      "completedAt": "0001-01-01T00:00:00Z",
-      "conclusion": "",
+      "completedAt": "2026-09-26T09:35:21Z",
+      "conclusion": "failure",
       "databaseId": 108376992031,
       "name": "Test (macos-15-intel)",
       "startedAt": "2026-09-26T09:12:44Z",
-      "status": "in_progress",
+      "status": "completed",
       "steps": [
         {
           "completedAt": "2026-09-26T09:12:48Z",
@@ -812,44 +812,52 @@
           "status": "completed"
         },
         {
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
+          "completedAt": "2026-09-26T09:35:13Z",
+          "conclusion": "failure",
           "name": "Run native tests",
           "number": 7,
           "startedAt": "2026-09-26T09:14:17Z",
-          "status": "in_progress"
+          "status": "completed"
         },
         {
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
+          "completedAt": "2026-09-26T09:35:14Z",
+          "conclusion": "success",
           "name": "Retain native test evidence",
           "number": 8,
-          "startedAt": "0001-01-01T00:00:00Z",
-          "status": "pending"
+          "startedAt": "2026-09-26T09:35:13Z",
+          "status": "completed"
         },
         {
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
+          "completedAt": "2026-09-26T09:35:14Z",
+          "conclusion": "skipped",
           "name": "Upload coverage to Codecov",
           "number": 9,
-          "startedAt": "0001-01-01T00:00:00Z",
-          "status": "pending"
+          "startedAt": "2026-09-26T09:35:14Z",
+          "status": "completed"
         },
         {
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
+          "completedAt": "2026-09-26T09:35:14Z",
+          "conclusion": "skipped",
           "name": "Post Set up Go",
           "number": 17,
-          "startedAt": "0001-01-01T00:00:00Z",
-          "status": "pending"
+          "startedAt": "2026-09-26T09:35:14Z",
+          "status": "completed"
         },
         {
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
+          "completedAt": "2026-09-26T09:35:15Z",
+          "conclusion": "success",
           "name": "Post Checkout code",
           "number": 18,
-          "startedAt": "0001-01-01T00:00:00Z",
-          "status": "pending"
+          "startedAt": "2026-09-26T09:35:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-09-26T09:35:16Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 19,
+          "startedAt": "2026-09-26T09:35:15Z",
+          "status": "completed"
         }
       ],
       "url": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376992031"
@@ -1324,8 +1332,18 @@
         }
       ],
       "url": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376992088"
+    },
+    {
+      "completedAt": "2026-09-26T09:35:21Z",
+      "conclusion": "skipped",
+      "databaseId": 108380217999,
+      "name": "Build",
+      "startedAt": "2026-09-26T09:35:21Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108380217999"
     }
   ],
-  "status": "in_progress",
+  "status": "completed",
   "url": "https://github.com/agentstation/starport/actions/runs/36232078722"
 }
