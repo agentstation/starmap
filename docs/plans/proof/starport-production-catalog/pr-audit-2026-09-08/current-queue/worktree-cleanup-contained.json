@@ -1,0 +1,54 @@
+{
+  "checked_at": "2026-09-26T01:55:16.650757+00:00",
+  "removed": [
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-indexes",
+      "branch": "codex/starmap-catalog-indexes",
+      "head": "c706270944f710879898b937b19b298a5dbdef89",
+      "retained_by": "codex/starmap-host-files",
+      "retained_head": "caec09095bbba5082b7ca6bb6b3aa12c91319067",
+      "tracked_and_untracked_clean": true,
+      "ignored_generated_files": [
+        "scripts/__pycache__/catalog_product_verify.cpython-314.pyc",
+        "scripts/__pycache__/catalog_sdk.cpython-314.pyc",
+        "scripts/__pycache__/cold_server.cpython-314.pyc",
+        "scripts/__pycache__/constructor_network.cpython-314.pyc",
+        "scripts/__pycache__/native_catalog.cpython-314.pyc",
+        "scripts/__pycache__/test_catalog_component_checks.cpython-314.pyc",
+        "scripts/__pycache__/test_catalog_sdk.cpython-314.pyc"
+      ],
+      "active_processes": []
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-credential-roles",
+      "branch": "codex/starmap-credential-roles",
+      "head": "ac3d25e7e650135609936f1c7eaed4b1efc7a9b4",
+      "retained_by": "codex/starmap-host-files",
+      "retained_head": "caec09095bbba5082b7ca6bb6b3aa12c91319067",
+      "tracked_and_untracked_clean": true,
+      "ignored_generated_files": [
+        "scripts/__pycache__/catalog_product_verify.cpython-314.pyc",
+        "scripts/__pycache__/catalog_sdk.cpython-314.pyc",
+        "scripts/__pycache__/cold_server.cpython-314.pyc",
+        "scripts/__pycache__/constructor_network.cpython-314.pyc",
+        "scripts/__pycache__/native_catalog.cpython-314.pyc",
+        "scripts/__pycache__/test_catalog_component_checks.cpython-314.pyc",
+        "scripts/__pycache__/test_catalog_product_verify.cpython-314.pyc",
+        "scripts/__pycache__/test_catalog_sdk.cpython-314.pyc"
+      ],
+      "active_processes": []
+    }
+  ],
+  "method": "Unmanaged worktrees; exact-head ancestry and clean-state checks before git worktree remove, then expected-old-value branch deletion. App artifacts contain no managed worktrees.",
+  "verification": {
+    "removed_paths_and_refs": 2,
+    "preserved_ancestor_heads": 2,
+    "plan_strict_prose": "PASS: 1 file, 0 diagnostics",
+    "git_diff_check": "pass",
+    "full_prose_log": "/tmp/catalog-cleanup-writing-check.log",
+    "full_prose_result": [
+      "FAIL: 1694 file(s), 69 diagnostic(s)",
+      "make: *** [technical-writing-check] Error 1"
+    ]
+  }
+}

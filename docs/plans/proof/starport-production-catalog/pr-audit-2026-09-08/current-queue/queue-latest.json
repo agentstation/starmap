@@ -1413,14 +1413,14 @@
   "cleanup": {
     "stale_worktree_registrations_pruned": 31,
     "clean_merged_worktrees_removed": 12,
-    "local_exact_ancestor_branches_removed": 49,
+    "local_exact_ancestor_branches_removed": 51,
     "live_remote_branches_deleted": 13,
-    "note": "Remote deletions used exact-head leases. Twelve Starport branches matched merged PR heads; Starmap #165 was verified superseded by merged #168. Three removed worktrees held only regenerable ignored caches or test data. Dirty worktrees, .tmp proof files, and diverged local branches remain.",
+    "note": "Remote deletions used exact-head leases. Twelve Starport branches matched merged PR heads; Starmap #165 was verified superseded by merged #168. Three removed worktrees held only regenerable ignored caches or test data. Dirty worktrees, .tmp proof files, and diverged local branches remain. Two additional clean Starmap checkouts and branches were fully contained in retained host API head caec09095bbba5082b7ca6bb6b3aa12c91319067. Only regenerable Python bytecode was discarded.",
     "retained_inventory": {
       "starmap": {
-        "worktrees": 44,
+        "worktrees": 42,
         "dirty": 34,
-        "clean_not_main_ancestor": 10
+        "clean_not_main_ancestor": 8
       },
       "starport": {
         "worktrees": 18,
@@ -1430,7 +1430,11 @@
       },
       "criterion": "No remaining secondary checkout has a clean tracked tree whose head is an ancestor of origin/main. Squash-merged or superseded histories require separate proof."
     },
-    "final_pass_proof": "worktree-cleanup-final-pass.json"
+    "final_pass_proof": "worktree-cleanup-final-pass.json",
+    "contained_unmerged_worktrees_removed": 2,
+    "total_worktrees_removed": 14,
+    "contained_pass_proof": "worktree-cleanup-contained.json",
+    "retained_inventory_proof": "workspace-retained.json"
   },
   "closed_superseded": [
     {
