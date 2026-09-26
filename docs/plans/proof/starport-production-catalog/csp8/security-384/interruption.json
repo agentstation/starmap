@@ -1,0 +1,9 @@
+{
+  "reason": "Stop old-source acceptance before required Security Scan repair. No interrupted result qualifies a task.",
+  "stopped_pid": 45589,
+  "children": [
+    6480,
+    6462
+  ],
+  "time": "2026-09-26T06:21:42.020055+00:00"
+}

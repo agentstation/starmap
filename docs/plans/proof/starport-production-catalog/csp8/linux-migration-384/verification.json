@@ -1,0 +1,56 @@
+{
+  "status": "Investigate and repair within CSP8 before updating Starport #384.",
+  "source": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+  "run": 36223300692,
+  "job": 108352484199,
+  "failures": [
+    {
+      "Time": "2026-09-26T06:22:50.612388028Z",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestMigrationPhaseProcessRecovery/publish",
+      "Elapsed": 60.23
+    },
+    {
+      "Time": "2026-09-26T06:22:50.613369149Z",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestMigrationPhaseProcessRecovery/stage",
+      "Elapsed": 60.24
+    },
+    {
+      "Time": "2026-09-26T06:22:50.613392804Z",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestMigrationPhaseProcessRecovery/complete",
+      "Elapsed": 60.24
+    },
+    {
+      "Time": "2026-09-26T06:22:50.613398939Z",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestMigrationPhaseProcessRecovery",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-26T06:24:57.431607838Z",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Elapsed": 298.436
+    }
+  ],
+  "observation": "All three TestMigrationPhaseProcessRecovery children exceeded the 60-second command deadline and returned -1 instead of crash exit 73. Native CI uses race detection and atomic coverage. The child constructs the initial runtime before the migration phase under test. Setup cost is a hypothesis, not yet measured.",
+  "next_action": "Reproduce with CI instrumentation. Separate reusable setup from the process crash boundary if evidence confirms setup dominates. Preserve all phases, byte checks, identity checks, deadline, and real storage.",
+  "log": {
+    "path": "before.log.gz",
+    "sha256": "d91e1ec4cf1167ca3bb720b04da5421e77222b65dd86d7ac3b92c8e4f75c82a1"
+  },
+  "local_reproduction": {
+    "session": 40628,
+    "source": "40dea618e22618f44a2e229d0d75f21256243590",
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -covermode=atomic -coverprofile=/tmp/starport-384-migration-before.cover -count=1 -timeout 5m -json -run '^TestMigrationPhaseProcessRecovery$' ./internal/catalog",
+    "stdout": "/tmp/starport-384-migration-before.jsonl",
+    "stderr": "/tmp/starport-384-migration-before.stderr",
+    "status": "running"
+  }
+}

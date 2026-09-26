@@ -1,16 +1,16 @@
 {
-  "checked_at": "2026-09-26T06:19:16.800919+00:00",
+  "checked_at": "2026-09-26T06:36:34.825368+00:00",
   "starmap": [
     {
       "pr": 182,
-      "head": "d464980961d87b6b24e40c7275c93e4114f2b643",
+      "head": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
       "branch": "codex/catalog-native-consumer-qualification",
       "state": "OPEN",
       "draft": true,
       "owner": "CSP8",
-      "checks_run": 36223296385,
+      "checks_run": 36224141186,
       "disposition": "Keep. Reviewed implementation has active native CI.",
-      "next_action": "Capture successful native evidence, qualify all 63 task subcases, and merge in producer then consumer order."
+      "next_action": "Qualify Windows owner inspection in native CI, then merge before the consumer module pin."
     }
   ],
   "starport": [
@@ -23,7 +23,7 @@
       "owner": "CSP8",
       "checks_run": 36223300692,
       "disposition": "Keep. Reviewed implementation has active native CI.",
-      "next_action": "Capture successful native evidence, qualify all 63 task subcases, and merge in producer then consumer order."
+      "next_action": "Repair migration-child timeouts, retain the security repair, pin the merged producer module, and update the existing PR after checks and review."
     }
   ],
   "completed_merges": [
@@ -199,10 +199,10 @@
     "changed_plan_strict_lint": "PASS: 1 file, zero diagnostics.",
     "repository_technical_writing_check": "FAIL: 1698 files, 69 unchanged historical diagnostics.",
     "ledger": "40 rows, 16 terminal, CSP8 only in_progress.",
-    "local_links": "94 unique local links resolve.",
+    "local_links": "97 unique local links resolve.",
     "diff_check": "PASS",
     "writing_log": {
-      "path": "publication-plan-writing.log.gz",
+      "path": "../../csp8/windows-owner-182/plan-writing.log.gz",
       "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
     }
   },
@@ -219,7 +219,7 @@
     "result": "CSP6 complete: all six subcases pass at merged source."
   },
   "starport_preparation": {
-    "head": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+    "head": "40dea618e22618f44a2e229d0d75f21256243590",
     "owner": "CSP8",
     "pre_pr_checks": "PASS: 733 task race tests with real Valkey and PostgreSQL, zero skips; ordinary suite 4,139 passes and 61 skips; lint zero issues.",
     "review": "PASS at 65a3cb3: nine complete review passes, zero actionable findings at configured P0 threshold, clean secret scan.",
@@ -227,23 +227,145 @@
     "proof": "../../csp8/race-suite-bound-2026-09-26/after.json",
     "pr": 384,
     "checks_run": 36223300692,
-    "status": "Published draft. Native CI is active."
+    "status": "Local security repair 40dea61 passes tests and review. Hold update until corrected producer module is available.",
+    "linux_migration_proof": "../../csp8/linux-migration-384/verification.json",
+    "migration_reproduction": {
+      "session": 40628,
+      "source": "40dea618e22618f44a2e229d0d75f21256243590",
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -covermode=atomic -coverprofile=/tmp/starport-384-migration-before.cover -count=1 -timeout 5m -json -run '^TestMigrationPhaseProcessRecovery$' ./internal/catalog",
+      "stdout": "/tmp/starport-384-migration-before.jsonl",
+      "stderr": "/tmp/starport-384-migration-before.stderr",
+      "status": "running"
+    }
   },
   "starmap_preparation": {
     "owner": "CSP8",
     "branch": "codex/catalog-native-consumer-qualification",
     "base": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
     "worktree": "starmap-host-files",
-    "status": "Published draft. Native CI is active.",
+    "status": "Windows adapter checked, reviewed, and pushed. Native CI pending.",
     "proof": "../../csp8/native-producer-181/preparation.json",
-    "head": "d464980961d87b6b24e40c7275c93e4114f2b643",
+    "head": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
     "pr": 182,
-    "checks_run": 36223296385
+    "checks_run": 36224141186,
+    "windows_proof": "../../csp8/windows-owner-182/verification.json",
+    "superseded_run": {
+      "id": 36223296385,
+      "action": "Cancellation requested after the replacement head and native workflow were confirmed. Old source lacks the required Windows owner adapter."
+    }
   },
   "csp8_acceptance": {
-    "status": "running",
+    "status": "interrupted for security repair",
     "session": 40997,
     "directory": "/tmp/csp8-task-qualification-182",
-    "note": "Uses isolated real Valkey and PostgreSQL. Native qualification remains pending until both workflows succeed."
+    "note": "Uses isolated real Valkey and PostgreSQL. Native qualification remains pending until both workflows succeed.",
+    "exit_code": -15,
+    "proof": "../../csp8/security-384/interrupted-run.json",
+    "replacement_checks": {
+      "focused": {
+        "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -count=1 -timeout 5m -json ./internal/app -run '^(TestDevelopmentScratch|TestDev)'",
+        "exit_code": 0,
+        "named_pass": 40,
+        "skip": 0,
+        "seconds": 60.9
+      },
+      "security": {
+        "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go run github.com/securego/gosec/v2/cmd/gosec@v2.29.0 -fmt sarif -out /tmp/starport-384-gosec-after.sarif ./...",
+        "exit_code": 0,
+        "findings": 0
+      },
+      "lint": {
+        "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off make lint",
+        "exit_code": 0,
+        "issues": 0
+      },
+      "task_race": {
+        "started_at": "2026-09-26T06:23:28.636689+00:00",
+        "status": "PASS",
+        "services": [
+          {
+            "role": "durable",
+            "id": "25a61692187955fcc48da77a2cd7254d15547fb7a5282c7d9300863c7d988535",
+            "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+            "address": "127.0.0.1:51203"
+          },
+          {
+            "role": "cache",
+            "id": "e08a3c5d021a5021d948b66eef7b6a3ed66e0106d16c1192739b97d5bdc2eee1",
+            "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+            "address": "127.0.0.1:51224"
+          },
+          {
+            "role": "sql",
+            "id": "571848d89a185b4a648978cf08e91f882599598651073f69c85d1e6f25f8a595",
+            "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+            "address": "127.0.0.1:51228"
+          }
+        ],
+        "producer": "d464980961d87b6b24e40c7275c93e4114f2b643",
+        "consumer": "40dea618e22618f44a2e229d0d75f21256243590",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "./internal/config",
+          "./internal/catalog",
+          "./internal/app"
+        ],
+        "exit_code": 0,
+        "seconds": 249.37384683301207,
+        "cleanup": [
+          {
+            "id": "25a61692187955fcc48da77a2cd7254d15547fb7a5282c7d9300863c7d988535",
+            "exit_code": 0
+          },
+          {
+            "id": "e08a3c5d021a5021d948b66eef7b6a3ed66e0106d16c1192739b97d5bdc2eee1",
+            "exit_code": 0
+          },
+          {
+            "id": "571848d89a185b4a648978cf08e91f882599598651073f69c85d1e6f25f8a595",
+            "exit_code": 0
+          }
+        ],
+        "finished_at": "2026-09-26T06:27:40.238359+00:00",
+        "named_results": {
+          "pass": 733,
+          "skip": 0,
+          "fail": 0
+        },
+        "packages": [
+          {
+            "Time": "2026-09-26T01:25:16.613607-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/config",
+            "Elapsed": 103.75
+          },
+          {
+            "Time": "2026-09-26T01:27:27.955418-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Elapsed": 228.862
+          },
+          {
+            "Time": "2026-09-26T01:27:39.581552-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/catalog",
+            "Elapsed": 246.718
+          }
+        ]
+      },
+      "review": {
+        "session": 17096,
+        "log": "/tmp/starport-384-recovery-autoreview.log",
+        "command": "autoreview --gate pre-pr --mode auto --max-passes 32",
+        "status": "PASS",
+        "pass_cap_reason": "Preserve complete prepared integration review scope, unchanged from the prior nine-pass review."
+      }
+    }
   }
 }

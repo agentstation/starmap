@@ -1,0 +1,175 @@
+{
+  "recorded_at": "2026-09-26T06:22:29.075674+00:00",
+  "source": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+  "pr": 384,
+  "ci_run": 36223300692,
+  "job": 108352484056,
+  "finding": "G304: development scratch recovery opens the selected temporary directory with os.Open.",
+  "repair": "Open the temporary directory with os.OpenRoot, then use root.Open for bounded directory reads. Preserve ownership checks and close both handles.",
+  "status": "Repair commit 40dea61 passes focused tests, full task race tests, scanner, lint, and full-branch review. Hold the PR update for the Windows producer fix and compatible module pin.",
+  "interrupted_acceptance": "Stopped old-source task acceptance before editing. Exit -15 qualifies no cases. Both temporary service containers were removed.",
+  "files": [
+    {
+      "path": "before.sarif.gz",
+      "sha256": "bb799af19cb288349cc044e65f63dc3d78ef96de9f387dda51c462bd742f8c5a"
+    },
+    {
+      "path": "before.log.gz",
+      "sha256": "48bb41626e803d98e3be576b0fa2c3c55ec7d86578c6fcd4e35afd9d2d6a8fc4"
+    },
+    {
+      "path": "interrupted-run.json",
+      "sha256": "470982a738d11de6971dc2da8fecd03588fe8af1f7ef5425d146fa8bfa228586"
+    },
+    {
+      "path": "interruption.json",
+      "sha256": "eef2e67b264c38c57c850496ca411442f3e826e1e28f03d2838827081a7f9abf"
+    },
+    {
+      "path": "focused.jsonl.gz",
+      "sha256": "b7147eab8123780ef7d864ee5a35b9835cb97f8be7a910a91c805fd8015c1616"
+    },
+    {
+      "path": "focused.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "after.sarif.gz",
+      "sha256": "690444059dbc955eb2b9fe756109990a3e769e0e4918bbdc9de427ba615bc037"
+    },
+    {
+      "path": "security.log.gz",
+      "sha256": "d7b0c8a7337c019a166b0007a1360136091a3cca6bcd059906789d14957469a3"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "task-race.jsonl.gz",
+      "sha256": "452fc63c6f846788338394c6306a46ff9a349b448b5c51ce226d12a7a2d09544"
+    },
+    {
+      "path": "task-race.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "review.log.gz",
+      "sha256": "d4be8ccaa56aa6d149f10b861ee2ee9ee3cf8cfc2f32a21d6935f17c985743fb"
+    }
+  ],
+  "repair_commit": "40dea618e22618f44a2e229d0d75f21256243590",
+  "checks": {
+    "focused": {
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -count=1 -timeout 5m -json ./internal/app -run '^(TestDevelopmentScratch|TestDev)'",
+      "exit_code": 0,
+      "named_pass": 40,
+      "skip": 0,
+      "seconds": 60.9
+    },
+    "security": {
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go run github.com/securego/gosec/v2/cmd/gosec@v2.29.0 -fmt sarif -out /tmp/starport-384-gosec-after.sarif ./...",
+      "exit_code": 0,
+      "findings": 0
+    },
+    "lint": {
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off make lint",
+      "exit_code": 0,
+      "issues": 0
+    },
+    "task_race": {
+      "started_at": "2026-09-26T06:23:28.636689+00:00",
+      "status": "PASS",
+      "services": [
+        {
+          "role": "durable",
+          "id": "25a61692187955fcc48da77a2cd7254d15547fb7a5282c7d9300863c7d988535",
+          "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+          "address": "127.0.0.1:51203"
+        },
+        {
+          "role": "cache",
+          "id": "e08a3c5d021a5021d948b66eef7b6a3ed66e0106d16c1192739b97d5bdc2eee1",
+          "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+          "address": "127.0.0.1:51224"
+        },
+        {
+          "role": "sql",
+          "id": "571848d89a185b4a648978cf08e91f882599598651073f69c85d1e6f25f8a595",
+          "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+          "address": "127.0.0.1:51228"
+        }
+      ],
+      "producer": "d464980961d87b6b24e40c7275c93e4114f2b643",
+      "consumer": "40dea618e22618f44a2e229d0d75f21256243590",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/config",
+        "./internal/catalog",
+        "./internal/app"
+      ],
+      "exit_code": 0,
+      "seconds": 249.37384683301207,
+      "cleanup": [
+        {
+          "id": "25a61692187955fcc48da77a2cd7254d15547fb7a5282c7d9300863c7d988535",
+          "exit_code": 0
+        },
+        {
+          "id": "e08a3c5d021a5021d948b66eef7b6a3ed66e0106d16c1192739b97d5bdc2eee1",
+          "exit_code": 0
+        },
+        {
+          "id": "571848d89a185b4a648978cf08e91f882599598651073f69c85d1e6f25f8a595",
+          "exit_code": 0
+        }
+      ],
+      "finished_at": "2026-09-26T06:27:40.238359+00:00",
+      "named_results": {
+        "pass": 733,
+        "skip": 0,
+        "fail": 0
+      },
+      "packages": [
+        {
+          "Time": "2026-09-26T01:25:16.613607-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Elapsed": 103.75
+        },
+        {
+          "Time": "2026-09-26T01:27:27.955418-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Elapsed": 228.862
+        },
+        {
+          "Time": "2026-09-26T01:27:39.581552-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 246.718
+        }
+      ]
+    },
+    "review": {
+      "session": 17096,
+      "log": "/tmp/starport-384-recovery-autoreview.log",
+      "command": "autoreview --gate pre-pr --mode auto --max-passes 32",
+      "status": "PASS",
+      "pass_cap_reason": "Preserve complete prepared integration review scope, unchanged from the prior nine-pass review.",
+      "exit_code": 0,
+      "passes": 9,
+      "findings": 0,
+      "profile": "auto",
+      "reviewer": "claude-opus-5-5",
+      "effort": "high",
+      "priority_threshold": "P0"
+    }
+  }
+}

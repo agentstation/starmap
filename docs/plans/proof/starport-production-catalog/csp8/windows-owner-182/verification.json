@@ -1,0 +1,527 @@
+{
+  "recorded_at": "2026-09-26T06:29:19.220027+00:00",
+  "status": "Committed, checked, reviewed, and pushed to PR #182. Fresh native CI is required.",
+  "producer_base": "d464980961d87b6b24e40c7275c93e4114f2b643",
+  "consumer_head": "40dea618e22618f44a2e229d0d75f21256243590",
+  "failed_native_run": 36223300692,
+  "failed_native_job": 108352484147,
+  "failed_named_tests": 59,
+  "failed_packages": {
+    "github.com/agentstation/starport/internal/app": 38,
+    "github.com/agentstation/starport/internal/catalog": 21
+  },
+  "cause": "InspectDirectoryOwnerRecord has no Windows adapter. Starport refuses the unverified owner result before opening gateway stores. Existing producer tests allowed that result on Windows.",
+  "repair": "Add a Windows read-only native handle adapter. Require owner inspection on Linux, macOS, and Windows. Add owner support, binding, and active-runtime tests to all three producer native path cases. Preserve Starport refusal when ownership is unverified.",
+  "next_action": "Finish producer checks and review, update PR #182, and qualify native CI. Merge the producer before pinning its published module in Starport #384.",
+  "sessions": {
+    "focused": 86884,
+    "windows_builds": 97523,
+    "repository_checks": 12405,
+    "writing": 51923
+  },
+  "goago": {
+    "exit_code": 0,
+    "findings": 0,
+    "stale_ignores": 0,
+    "errors": 0
+  },
+  "before_log": {
+    "path": "before.log.gz",
+    "sha256": "617c166702b225bb857096a5ef9d8f3d9f70045cad28741b029f5388a686fb39"
+  },
+  "failed_events": [
+    {
+      "Time": "2026-09-25T23:22:04.8565408-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDefaultCatalogFactoryComposesOneConnectedRuntime/no_source_address",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:22:04.8565408-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDefaultCatalogFactoryComposesOneConnectedRuntime/deployment_source_address",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:22:04.8565408-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDefaultCatalogFactoryComposesOneConnectedRuntime",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-25T23:22:08.1922644-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestProductionAcquisitionLifecycle",
+      "Elapsed": 0.09
+    },
+    {
+      "Time": "2026-09-25T23:22:08.2194694-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable",
+      "Elapsed": 0.07
+    },
+    {
+      "Time": "2026-09-25T23:22:08.2777224-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending",
+      "Elapsed": 0.06
+    },
+    {
+      "Time": "2026-09-25T23:22:08.2777224-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestConfiguredAuthorityColdStartupKeepsDiagnostics",
+      "Elapsed": 0.14
+    },
+    {
+      "Time": "2026-09-25T23:22:08.8728164-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestConfiguredProviderMissingCatalogFailsStartup",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:22:17.9611201-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestInferenceCredentialsNeverEnterCatalogState",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:22:17.9817817-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestAuthPlanesAreIsolated",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-25T23:22:19.6028277-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestCatalogConfigurationControlsRuntimeTraffic/offline",
+      "Elapsed": 1.62
+    },
+    {
+      "Time": "2026-09-25T23:22:20.9211833-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestCatalogConfigurationControlsRuntimeTraffic/manual",
+      "Elapsed": 1.32
+    },
+    {
+      "Time": "2026-09-25T23:22:20.9211833-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestCatalogConfigurationControlsRuntimeTraffic",
+      "Elapsed": 2.94
+    },
+    {
+      "Time": "2026-09-25T23:22:21.0045216-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestOfflineCatalogAllowsInferenceEgress",
+      "Elapsed": 0.08
+    },
+    {
+      "Time": "2026-09-25T23:22:22.9161407-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestCatalogPersistsProductBaselineAndOwnershipOffline",
+      "Elapsed": 1.78
+    },
+    {
+      "Time": "2026-09-25T23:22:22.9161407-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestCatalogOwnerConflictRefusesBeforeGatewayStores",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:22:22.9868259-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestApplicationRefusesUnapprovedCredentialDestination",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-25T23:22:23.1278486-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestApplicationUsesExplicitCredentialDestinationApproval",
+      "Elapsed": 0.13
+    },
+    {
+      "Time": "2026-09-25T23:22:23.481885-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDevLetsStarmapCreateCatalogState",
+      "Elapsed": 0.36
+    },
+    {
+      "Time": "2026-09-25T23:22:23.8468159-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDevelopmentExportsBaselineOnlyInScratch",
+      "Elapsed": 0.36
+    },
+    {
+      "Time": "2026-09-25T23:22:29.2064529-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDevFailedCompositionPreservesUnpublishedScratch",
+      "Elapsed": 0.27
+    },
+    {
+      "Time": "2026-09-25T23:22:35.3311762-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDevRepeatedClosePreservesReusedScratchPath",
+      "Elapsed": 0.3
+    },
+    {
+      "Time": "2026-09-25T23:22:35.5670563-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDevelopmentDatabasesAreSessionLocal",
+      "Elapsed": 0.25
+    },
+    {
+      "Time": "2026-09-25T23:22:35.8421145-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDevUsesInMemoryBadger",
+      "Elapsed": 0.27
+    },
+    {
+      "Time": "2026-09-25T23:22:36.148774-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDevKeepsTheLocalTokenOffDisk",
+      "Elapsed": 0.31
+    },
+    {
+      "Time": "2026-09-25T23:22:36.4392671-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDevAcceptsTheMachineTokenWithoutTouchingIt",
+      "Elapsed": 0.29
+    },
+    {
+      "Time": "2026-09-25T23:22:36.7847946-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDevRemovesItsScratchFileStorageOnClose",
+      "Elapsed": 0.34
+    },
+    {
+      "Time": "2026-09-25T23:22:37.084496-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDevKeepsCatalogStateInScratch",
+      "Elapsed": 0.31
+    },
+    {
+      "Time": "2026-09-25T23:22:37.3985064-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestDevBindsLoopbackOnly",
+      "Elapsed": 0.31
+    },
+    {
+      "Time": "2026-09-25T23:22:37.4070759-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestInferencePolicyIsRecordedBeforeCatalogStartup/fresh",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:22:37.410538-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestInferencePolicyIsRecordedBeforeCatalogStartup/retained",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:22:37.410538-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestInferencePolicyIsRecordedBeforeCatalogStartup",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-25T23:22:40.4693143-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestFullPathMeasurementIncludesAuthentication",
+      "Elapsed": 0.23
+    },
+    {
+      "Time": "2026-09-25T23:22:40.6243538-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestFullPathMeasurementBaseline",
+      "Elapsed": 0.16
+    },
+    {
+      "Time": "2026-09-25T23:22:40.797833-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestStartupKeepsStarmapFilesAndServerSettingsIsolated",
+      "Elapsed": 0.16
+    },
+    {
+      "Time": "2026-09-25T23:22:55.5732722-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestRuntimeMigrationOperatorLifecycle",
+      "Elapsed": 8.09
+    },
+    {
+      "Time": "2026-09-25T23:22:57.6249208-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestPendingSetupRefusesBeforeGatewayStores",
+      "Elapsed": 2.05
+    },
+    {
+      "Time": "2026-09-25T23:23:00.4036591-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestGatewayHoldsSetupGuardUntilStorageCloses",
+      "Elapsed": 2.78
+    },
+    {
+      "Time": "2026-09-25T23:23:00.8971511-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestStandaloneAuthorizationCannotReplaceCatalogAuthority",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-25T23:23:06.5882834-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Elapsed": 71.891
+    },
+    {
+      "Time": "2026-09-25T23:23:08.7668579-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestMigrationPhaseProcessRecovery/publish",
+      "Elapsed": 0.45
+    },
+    {
+      "Time": "2026-09-25T23:23:08.8603214-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestMigrationPhaseProcessRecovery/stage",
+      "Elapsed": 0.49
+    },
+    {
+      "Time": "2026-09-25T23:23:08.8603214-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestMigrationPhaseProcessRecovery/complete",
+      "Elapsed": 0.55
+    },
+    {
+      "Time": "2026-09-25T23:23:08.8603214-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestMigrationPhaseProcessRecovery",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:23:11.3375832-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestOfflineRuntimeDefersAcquisitionCredentials",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:23:11.7506399-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestOfflineRuntimeReadsLocalFileUpdates",
+      "Elapsed": 0.38
+    },
+    {
+      "Time": "2026-09-25T23:23:11.8347404-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestManualSourceRetainsAutomaticProviderAcquisition",
+      "Elapsed": 0.11
+    },
+    {
+      "Time": "2026-09-25T23:23:11.9418316-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestGenerationPinBlocksAcquisitionAcrossRestart",
+      "Elapsed": 0.09
+    },
+    {
+      "Time": "2026-09-25T23:23:14.4997172-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestRuntimeDirectoryMigrationPreservesAcceptedCatalog",
+      "Elapsed": 0.06
+    },
+    {
+      "Time": "2026-09-25T23:23:14.5151237-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestConfiguredPermissionClockLifecycle/close",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:23:14.5151237-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestConfiguredPermissionClockLifecycle/canceled_construction_context",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:23:14.5151237-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestConfiguredPermissionClockLifecycle",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:23:14.5151237-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestConfiguredPermissionClockDisabledStartsNoMonitor",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:23:14.5151237-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestRuntimeIdentityFollowsPrivateStateDirectory",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:23:14.5151237-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestStateDirectoryIsNeverTheWorkspacePath",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:23:14.5151237-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestRuntimeRejectsConcurrentStateDirectoryUse",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:23:14.5767533-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestRuntimeAcquiresSelectedMetadataSource",
+      "Elapsed": 0.06
+    },
+    {
+      "Time": "2026-09-25T23:23:14.5767533-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestMetadataAcquisitionRespectsOfflineAndEmptySelection/offline",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:23:14.5767533-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestMetadataAcquisitionRespectsOfflineAndEmptySelection/empty-selection",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:23:14.5767533-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Test": "TestMetadataAcquisitionRespectsOfflineAndEmptySelection",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-25T23:23:14.6734044-07:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Elapsed": 66.688
+    }
+  ],
+  "checks": {
+    "focused": {
+      "exit_code": 0,
+      "named_pass": 13,
+      "skip": 0,
+      "seconds": 54.054
+    },
+    "windows_builds": {
+      "exit_code": 0,
+      "architectures": [
+        "amd64",
+        "arm64"
+      ],
+      "scope": "Compile only; native execution still required."
+    },
+    "writing": {
+      "exit_code": 0,
+      "files": 1855,
+      "diagnostics": 0
+    },
+    "repository": {
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-native-catalog CSP_STARPORT_WORKTREE=/Users/jack/src/github.com/agentstation/starport-native-catalog make verify-checks",
+      "exit_code": 0
+    }
+  },
+  "logs": [
+    {
+      "path": "focused.jsonl.gz",
+      "sha256": "83188b927dd6c13b41cde4320c8e94986f72705d8ece1d226d87b6024254cd80"
+    },
+    {
+      "path": "focused.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "goago.json.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    {
+      "path": "writing.log.gz",
+      "sha256": "fe934b456ad781fb1d0394b07b353d87be8b4b748f33b012d6a0169002242a7e"
+    },
+    {
+      "path": "repository.log.gz",
+      "sha256": "623b22a8217a1e0adc2a07a55884343169308c59ee0d894b7d6898c3cb4c0f99"
+    },
+    {
+      "path": "review.log.gz",
+      "sha256": "93ba360654025aee76ca75246c0b382169af04d329e84ee688c828da08424aab"
+    }
+  ],
+  "repair_commit": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
+  "review": {
+    "exit_code": 0,
+    "profile": "auto",
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "passes": 1,
+    "priority_threshold": "P0",
+    "findings": 0,
+    "secret_scan": "clean",
+    "bundle_bytes": 42174
+  },
+  "native_run": 36224141186,
+  "superseded_run": {
+    "id": 36223296385,
+    "action": "Cancellation requested after the replacement head and native workflow were confirmed. Old source lacks the required Windows owner adapter."
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "started_at": "2026-09-26T06:18:50.601217+00:00",
+  "status": "NOT_PASS",
+  "services": [
+    {
+      "role": "durable",
+      "id": "04e37332f97cd0b88e7addaee8b4de7d2fdad3acfdda7138c08cb9d60acdd000",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:49958"
+    },
+    {
+      "role": "sql",
+      "id": "4d4961fbdba02cfb5fa35c2f32782bd4ec395d3ecdd09435ba2e60491f641537",
+      "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+      "address": "127.0.0.1:49960"
+    }
+  ],
+  "producer": "d464980961d87b6b24e40c7275c93e4114f2b643",
+  "consumer": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+  "command": [
+    "bash",
+    "scripts/verify-catalog-product.sh",
+    "--starport-root",
+    "/Users/jack/src/github.com/agentstation/starport-native-catalog",
+    "--task",
+    "CSP8",
+    "--json"
+  ],
+  "exit_code": -15,
+  "seconds": 168.17100925001432,
+  "cleanup": [
+    {
+      "id": "04e37332f97cd0b88e7addaee8b4de7d2fdad3acfdda7138c08cb9d60acdd000",
+      "exit_code": 0
+    },
+    {
+      "id": "4d4961fbdba02cfb5fa35c2f32782bd4ec395d3ecdd09435ba2e60491f641537",
+      "exit_code": 0
+    }
+  ],
+  "finished_at": "2026-09-26T06:21:42.299698+00:00"
+}
