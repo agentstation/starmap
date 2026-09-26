@@ -748,10 +748,12 @@
   "producer_preparation": {
     "branch": "codex/catalog-bootstrap-payload",
     "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
-    "state": "uncommitted",
+    "state": "committed",
     "proof": "../../csp8/compiled-bootstrap-preparation/verification.json",
-    "next_action": "Revalidate session 93064 and wait for this exact gate. Do not restart on an observation timeout. Diagnose a terminal failure, or commit and run pre-PR autoreview after success.",
+    "next_action": "Await owner decision on the generated-binary review restriction. Complete source review before publication.",
     "gate_session": 93064,
-    "gate_status": "RUNNING"
+    "gate_status": "PASS",
+    "head": "0e53e6f9cbdaa5038d2b249bdcdd8a5b60c97edf",
+    "gate_exit_code": 0
   }
 }

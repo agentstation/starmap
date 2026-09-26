@@ -271,13 +271,13 @@
     "The full producer gate failed on stale internal/embedded/README.md. Regenerate it before restarting the gate.",
     "Full checks, review, publication, native qualification, task acceptance, and merge remain open."
   ],
-  "next_action": "Revalidate full producer gate session 93064. Commit 0e53e6f9c is clean. After the gate succeeds, run pre-PR autoreview, publish, and qualify native CI.",
+  "next_action": "Await the owner decision on generated-binary review. All local gates pass at commit 0e53e6f9c. Do not publish without the required source review.",
   "continuation": {
     "updated_at": "2026-09-26T10:51:25.146239+00:00",
     "generated_document": "internal/embedded/README.md regenerated with go generate ./internal/embedded. docs-check now passes.",
     "producer_gate": {
       "session": 93064,
-      "status": "RUNNING",
+      "status": "PASS",
       "log": "/tmp/starmap-compiled-bootstrap-verify-final.log",
       "toolchain": "go1.27.1",
       "make_overrides": [
@@ -298,10 +298,10 @@
         "container smoke",
         "all critical coverage thresholds"
       ],
-      "current": "All race groups completed. The capacity test remains active in session 93064. The required public-fixture follow-up passed all eight test events without skips.",
+      "current": "All repository gates completed. Required public-fixture follow-up and later source checks pass.",
       "staged_diff_sha256": "edc98fe4026b1e5f6413b22c881195013690a76e375aee336b443ec2dd6b1f73",
       "source_commit": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
-      "next_action": "Revalidate session 93064 and wait for this exact gate. Do not restart on an observation timeout. Diagnose a terminal failure, or commit and run pre-PR autoreview after success.",
+      "next_action": "Resolve the generated-binary review restriction, then complete source review, publication, and native qualification.",
       "public_fixture_followup": {
         "status": "PASS",
         "archive": "/tmp/starmap-public-fixture-20260908.tar.gz",
@@ -672,10 +672,25 @@
       },
       "event_retention": {
         "session": 40148,
-        "state": "RUNNING",
+        "state": "COMPLETE",
         "purpose": "Preserve hard links to every suite event file before temporary-directory cleanup. No tests are added or rerun.",
         "directory": "/tmp/starmap-compiled-bootstrap-verify-events",
-        "completion_record": "/tmp/starmap-compiled-bootstrap-verify-events/event-retention.json"
+        "completion_record": "/tmp/starmap-compiled-bootstrap-verify-events/event-retention.json",
+        "exit_code": 0,
+        "result": {
+          "checked_at": "2026-09-26T12:39:57.363670+00:00",
+          "terminal_marker": true,
+          "retained": {
+            "0": "/tmp/starmap-compiled-bootstrap-verify-events/complete-suite-0.jsonl",
+            "1": "/tmp/starmap-compiled-bootstrap-verify-events/complete-suite-1.jsonl",
+            "2": "/tmp/starmap-compiled-bootstrap-verify-events/complete-suite-2.jsonl",
+            "3": "/tmp/starmap-compiled-bootstrap-verify-events/complete-suite-3.jsonl",
+            "4": "/tmp/starmap-compiled-bootstrap-verify-events/complete-suite-4.jsonl",
+            "5": "/tmp/starmap-compiled-bootstrap-verify-events/complete-suite-5.jsonl",
+            "6": "/tmp/starmap-compiled-bootstrap-verify-events/complete-suite-6.jsonl",
+            "7": "/tmp/starmap-compiled-bootstrap-verify-events/complete-suite-7.jsonl"
+          }
+        }
       },
       "application_final": {
         "counts": {
@@ -1197,6 +1212,27 @@
         "log": "contracts-final.jsonl.gz",
         "sha256": "ae19e3e997d191fc90a5e61e6435b74492dec536aa20de918bff70f4b623db2f",
         "skip_disposition": "Four live provider fixture operations require credentials. The missing-provider case has no eligible fixture. One Windows test does not apply on macOS. Fifteen real Valkey/process/service test events require their dedicated native service jobs."
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-26T12:39:57Z",
+      "full-producer-gate": {
+        "path": "full-producer-gate.log.gz",
+        "sha256": "71d680a5ab8d66b37734bdcb7bb060b2f9b0e09fb08efbc4f4a4a40e157ef13b"
+      },
+      "capacity-final": {
+        "path": "capacity-final.log.gz",
+        "sha256": "2c20d434bd6bbaea17e36e726c7531b066ee2eb06437d63fcc4516ea70f05d0b"
+      },
+      "autoreview-binary-refusal": {
+        "path": "autoreview-binary-refusal.log.gz",
+        "sha256": "189fd522a2d5748bec1d5d55546c83a932a2c07b586ef9dc21dbb59418e55af8"
+      },
+      "capacity": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0,
+        "publication_cycles": 8,
+        "seconds": 204.77
       }
     },
     "consumer_checks": {
@@ -1353,7 +1389,7 @@
     },
     "historical_publication_repair": {
       "checked_at": "2026-09-26T12:33:31.441515+00:00",
-      "status": "COMMITTED_AWAITING_FULL_GATE_AND_REVIEW",
+      "status": "COMMITTED_REVIEW_RESTRICTION_PENDING",
       "behavior": "New publication requires the compiled payload. Completed retries verify the accepted source commit, receipt, checkpoint, catalog facts and evidence. Historical verification permits only an absent compiled payload; it rejects a corrupt payload when present.",
       "fail_before": {
         "exit_code": 1,
@@ -1458,6 +1494,26 @@
         "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de",
         "corrected_draft": "Removed a redundant passive sentence to retain the six-sentence paragraph limit."
       }
+    }
+  },
+  "review": {
+    "session": 33485,
+    "status": "REFUSED_BINARY_INPUT_BEFORE_REVIEW",
+    "exit_code": 1,
+    "log": "autoreview-binary-refusal.log.gz",
+    "commit": "0e53e6f9cbdaa5038d2b249bdcdd8a5b60c97edf",
+    "selected_reviewer": "Claude Opus 5.5 high",
+    "model_invoked": false,
+    "trufflehog": "PASS",
+    "reason": "The helper rejects any binary change in the full branch diff. No supported generated-file exception exists.",
+    "owner_question": "Allow complete source review plus deterministic generated-payload verification, or first repair binary support in the review helper.",
+    "plan_validation": {
+      "writing_exit_code": 2,
+      "historical_diagnostics": 69,
+      "new_diagnostics": 0,
+      "exact_previous_match": true,
+      "log": "review-pending-plan-writing.log.gz",
+      "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
     }
   }
 }
