@@ -3673,3 +3673,16 @@ The remaining required repository commands pass. Both pre-PR reviews report no f
 Both PRs still need exact-head CI and protected merges.
 The [published-pair checkpoint](../../plans/proof/starport-production-catalog/csp11/published-pair-2026-09-26/verification.json) retains commands, review results, and the initial workspace-boundary failure.
 CSP13 owns upgrade compatibility and complete state migration. CSP15 owns immutable payload retention and backend qualification.
+
+
+### Deployment isolation evidence correction: September 26, 2026
+
+The earlier CSP11 namespace tests prove catalog isolation only.
+A real-Valkey probe against Starport `09ed740cb` gives two configurations distinct deployment IDs.
+The second configuration can read a gateway API-key record created through the first configuration.
+`identity:v1:` and `credentials:v1:` still identify concept namespaces without a deployment prefix.
+
+The [scope audit](../../plans/proof/starport-production-catalog/csp11/isolation-scope-2026-09-26/verification.json) preserves the failing test and source.
+CSP12 owns all gateway namespace enforcement and explicit fresh-fleet initialization. CSP13 owns populated-state recovery.
+The acceptance map retains every original A41 requirement and adds two catalog-specific cases.
+The original broad labels must not turn catalog evidence into a deployment-wide qualification claim.

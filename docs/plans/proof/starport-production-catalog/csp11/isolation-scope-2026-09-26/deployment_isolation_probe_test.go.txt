@@ -1,0 +1,42 @@
+package app
+
+import (
+	"crypto/rand"
+	"github.com/agentstation/starport/internal/apikey"
+	"github.com/agentstation/starport/internal/config"
+	"github.com/agentstation/starport/internal/storage"
+	"github.com/stretchr/testify/require"
+	"os"
+	"testing"
+)
+
+func TestDeploymentIsolationIncludesGatewayRecords(t *testing.T) {
+	address := os.Getenv("TEST_VALKEY_URL")
+	if address == "" {
+		t.Skip("UNVERIFIED: real Valkey is required")
+	}
+	open := func(deployment string) storage.KVStore {
+		t.Helper()
+		cfg, err := config.NewLoader().WithPaths(config.PathsForConfigDir(t.TempDir())).WithEnvFiles().WithEnvironment(map[string]string{
+			"STARPORT_DEPLOYMENT_ID":      deployment,
+			"STARPORT_STORAGE_MODE":       "valkey",
+			"STARPORT_STORAGE_VALKEY_URL": address,
+		}).Load(t.Context())
+		require.NoError(t, err)
+		require.Equal(t, deployment, cfg.EffectivePaths().DeploymentID)
+		store, err := openStorage(cfg.Storage)
+		require.NoError(t, err)
+		t.Cleanup(func() { require.NoError(t, store.Close()) })
+		return store
+	}
+	first, err := apikey.Open(open("first-" + rand.Text()))
+	require.NoError(t, err)
+	second, err := apikey.Open(open("second-" + rand.Text()))
+	require.NoError(t, err)
+	key := testAPIKey()
+	key.ID, key.Hash = "isolation-"+rand.Text(), rand.Text()
+	_, err = first.Create(t.Context(), key)
+	require.NoError(t, err)
+	_, err = second.GetByID(t.Context(), key.ID)
+	require.ErrorIs(t, err, apikey.ErrNotFound, "a distinct deployment must not read another deployment's gateway key")
+}

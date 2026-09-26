@@ -2462,6 +2462,11 @@ An endpoint URL and records restored inside Valkey cannot establish process cont
 Use the backend's process identity and replication metadata under the tested adapter contract.
 [Valkey INFO fields](https://valkey.io/commands/info/)
 
+CSP12 must provide explicit operator initialization for a fresh deployment before its first shared startup.
+Initialization must distinguish an empty deployment from existing, restored, or uncertain state.
+It must refuse those states and direct the operator to CSP13 recovery.
+Starting a gateway must never create its own missing approval.
+
 Recovery follows this order:
 
 1. Close the independent recovery gate and stop admission on every gateway.
@@ -2544,6 +2549,11 @@ An encrypted endpoint must never downgrade silently. Invalid certificates or mal
 
 Reject conflicting URL and separate credential values without exposing either value.
 Record exact secure scheme names in the generated descriptor reference before CSP12 completes.
+
+Catalog fleet isolation is a separate acceptance boundary from complete gateway isolation.
+`A41.catalog_fleet_deployment_isolation` and `A41.catalog_fleet_atomic_layout` qualify the catalog adapter.
+They do not qualify gateway API keys, inference credentials, budgets, jobs, or their notification channels.
+CSP12 must satisfy the original deployment-wide isolation and atomic-layout cases. CSP15 repeats them against real supported backends.
 
 Every deployment-scoped key and notification channel needs the same canonical deployment prefix.
 Use an encoded deployment identity with an explicit schema version. Prevent another deployment from claiming an existing namespace.

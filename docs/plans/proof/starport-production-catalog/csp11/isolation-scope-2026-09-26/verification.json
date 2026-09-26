@@ -1,0 +1,76 @@
+{
+  "recorded_at": "2026-09-26T19:13:23.011527+00:00",
+  "producer": "1135eb46f2d2bd54e775770325bf2f3a38e4e3a7",
+  "consumer": "09ed740cb06c0243b8603255ee376baa0913b485",
+  "finding": "The catalog tests do not establish isolation for all gateway records. Distinct configured deployment IDs read the same API-key record through the actual Valkey storage composition.",
+  "native_probe": "FAIL: TestDeploymentIsolationIncludesGatewayRecords returned the first deployment key to the second deployment; both isolated fixture containers were removed.",
+  "scope_correction": {
+    "catalog_cases": [
+      "A41.catalog_fleet_deployment_isolation",
+      "A41.catalog_fleet_atomic_layout"
+    ],
+    "original_cases_retained": [
+      "A41.deployment_key_channel_isolation",
+      "A41.namespace_atomic_layout"
+    ],
+    "global_implementation_owner": "CSP12",
+    "full_qualification_owner": "CSP15",
+    "primary_cases": 50,
+    "required_subcases": 326,
+    "no_product_requirement_removed": true
+  },
+  "evidence_policy": "The earlier published-pair checkpoint records passing commands, but its two global namespace labels overstate their scope. Use those results only for catalog isolation. Full deployment isolation remains unqualified.",
+  "verifier_tests": 99,
+  "review": {
+    "findings": [],
+    "overall_correctness": "patch is correct",
+    "overall_explanation": "Panel review complete. claude model=claude-opus-5-5 thinking=high: 0 finding(s), codex model=gpt-6-sol thinking=high: 0 finding(s).",
+    "overall_confidence": 0.91
+  },
+  "corrected_acceptance": {
+    "status": "PASS",
+    "selected_subcases": 11,
+    "primary_cases_pass": [
+      "A13",
+      "A14"
+    ],
+    "primary_A41": "UNVERIFIED",
+    "consumer": "09ed740cb06c0243b8603255ee376baa0913b485",
+    "GOWORK": "off",
+    "runner_exit_code": 0,
+    "cleanup": [
+      0,
+      0,
+      0
+    ]
+  },
+  "consumer_pin": "v0.16.6-0.20260926185237-a2d66bd259a1",
+  "unchanged_production_code": "The producer correction changes only the acceptance map, registry, and verifier regression test. The consumer pin retains identical Go source and catalog bytes.",
+  "next_action": "Wait for exact-head CI on Starmap #185 and Starport #385. Merge Starmap first, then record both actual merge commits.",
+  "probe_limits": "The probe exercises config loading, actual storage composition, and API-key repositories. It does not start an HTTP gateway or demonstrate unauthenticated HTTP access.",
+  "consumer_ci_successor": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
+  "consumer_ci_split": {
+    "commit": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
+    "before_job": 108466768642,
+    "before_run": 36264606005,
+    "before_result": "10-minute job limit cancelled authorization and skipped cache after startup and fleet recovery passed",
+    "test_commands_preserved": 4,
+    "checks": [
+      "actionlint",
+      "14 action references matched pinned release tags",
+      "release workflow contract",
+      "build dependency includes both jobs"
+    ],
+    "review": {
+      "findings": [],
+      "overall_correctness": "patch is correct",
+      "overall_explanation": "Panel review complete. claude model=claude-opus-5-5 thinking=high: 0 finding(s), codex model=gpt-6-sol thinking=high: 0 finding(s).",
+      "overall_confidence": 0.78
+    },
+    "ci_run": 36265779872,
+    "ci_status": "IN_PROGRESS"
+  },
+  "producer_ci_run": 36265771789,
+  "producer_ci_status": "PENDING",
+  "published_heads_verified": true
+}
