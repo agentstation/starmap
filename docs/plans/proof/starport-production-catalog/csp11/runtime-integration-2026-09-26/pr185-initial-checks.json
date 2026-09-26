@@ -1,0 +1,220 @@
+{
+  "baseRefOid": "8122081e0494648fb1e356647053dd870a05fb1c",
+  "headRefOid": "dd348601ab7ea684494e21c3a0ca0e429ed944d4",
+  "isDraft": true,
+  "number": 185,
+  "state": "OPEN",
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259820992/job/108453387705",
+      "name": "Analyze (actions)",
+      "startedAt": "2026-09-26T17:39:51Z",
+      "status": "QUEUED",
+      "workflowName": "CodeQL"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453389001",
+      "name": "Build pinned object fixture",
+      "startedAt": "2026-09-26T17:39:54Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259820992/job/108453387496",
+      "name": "Analyze (go)",
+      "startedAt": "2026-09-26T17:39:53Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CodeQL"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259820992/job/108453387698",
+      "name": "Analyze (python)",
+      "startedAt": "2026-09-26T17:39:53Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CodeQL"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453388989",
+      "name": "Constructor Network Passivity",
+      "startedAt": "2026-09-26T17:39:54Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453389000",
+      "name": "Offline Server Persistence",
+      "startedAt": "2026-09-26T17:39:52Z",
+      "status": "QUEUED",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453388847",
+      "name": "Verification Checks",
+      "startedAt": "2026-09-26T17:39:53Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453388953",
+      "name": "Security & Reliability",
+      "startedAt": "2026-09-26T17:39:54Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453388994",
+      "name": "Action Pin Provenance",
+      "startedAt": "2026-09-26T17:39:54Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453389087",
+      "name": "Runtime windows-2025",
+      "startedAt": "2026-09-26T17:39:54Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453389066",
+      "name": "Runtime windows-11-arm",
+      "startedAt": "2026-09-26T17:39:54Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453389102",
+      "name": "Runtime ubuntu-24.04",
+      "startedAt": "2026-09-26T17:39:54Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453389084",
+      "name": "Runtime ubuntu-24.04-arm",
+      "startedAt": "2026-09-26T17:39:56Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453389151",
+      "name": "Runtime macos-15-intel",
+      "startedAt": "2026-09-26T17:39:56Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453389106",
+      "name": "Runtime macos-15",
+      "startedAt": "2026-09-26T17:40:00Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453388973",
+      "name": "Publication windows-2025",
+      "startedAt": "2026-09-26T17:39:53Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453389197",
+      "name": "Publication windows-11-arm",
+      "startedAt": "2026-09-26T17:39:54Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453389088",
+      "name": "Publication ubuntu-24.04",
+      "startedAt": "2026-09-26T17:39:54Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453389036",
+      "name": "Publication ubuntu-24.04-arm",
+      "startedAt": "2026-09-26T17:39:56Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453389112",
+      "name": "Publication macos-15-intel",
+      "startedAt": "2026-09-26T17:39:52Z",
+      "status": "QUEUED",
+      "workflowName": "Pull Request"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36259822173/job/108453388998",
+      "name": "Publication macos-15",
+      "startedAt": "2026-09-26T17:39:58Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "Pull Request"
+    }
+  ],
+  "url": "https://github.com/agentstation/starmap/pull/185"
+}

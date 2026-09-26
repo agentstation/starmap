@@ -17,7 +17,10 @@ A requested pin that the refresh owner has not accepted causes a follower startu
 Recovered catalog data does not supply authority permission or undo a known withdrawal.
 
 The [runtime checkpoint](../../plans/proof/starport-production-catalog/csp11/runtime-integration-2026-09-26/verification.json) records 64 passing race events across 56 leaf cases.
-Vet, goago, and the source writing checks pass. Broad runtime verification continues.
+Refinement `dd348601a` passes 134 race events across 117 leaf cases and clears seven lint findings.
+The broad local run timed out after 900.683 seconds with 536 passing events and no named failure events.
+It remains incomplete. Vet, goago, pure-Go checks, and source writing checks pass. Sol and Opus report no pre-PR findings.
+
 The adapter in these tests runs in one process. Starport still needs real storage, recovery-witness, and acquisition-capability qualification.
 CSP11 remains in progress.
 
