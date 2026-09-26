@@ -1,0 +1,23 @@
+{
+  "time": "2026-09-26T16:20:16.473248+00:00",
+  "history": "execution-history-2026-09-26-consumer-merge.html",
+  "old_entries": 56,
+  "preserved_entries": 47,
+  "current_entries": 10,
+  "moved_sha256": "41096e518fec6ce0eea343e1ef0bb86ae69a76282a6e843faccd15db73094e47",
+  "task_contracts_unchanged": true,
+  "ledger_unchanged": true,
+  "tasks": 40,
+  "done": 21,
+  "active": "CSP10.2",
+  "resume_words": 288,
+  "read_path": [
+    "starport-production-catalog-plan.html#current-resume",
+    "starport-production-catalog-plan.html#task-CSP10.2",
+    "starport-production-catalog-plan.html#invariants",
+    "starport-production-catalog-plan.html#goal",
+    "csp10.2/prepared-0a11033/verification.json"
+  ],
+  "budget_exception": "The plan retains all 40 complete task contracts. History is optional for named evidence questions.",
+  "cold_resume": "Current text identifies the active task, merged sources, pending owner decision, running handle, retained permissions, and unverified suspend behavior."
+}
