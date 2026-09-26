@@ -1,0 +1,20 @@
+{
+  "producer_commit": "95320e13b5667c060df82f9960dfd5a24b3d766e",
+  "reviewed_commit": "4ed5c190b",
+  "finding": "A pinned replica with an incompatible acquisition policy fails startup.",
+  "disposition": "Accepted and repaired. Validate the pin receipt and authority binding independently of acquisition replay. Preserve ownership refusal.",
+  "results": {
+    "d41-pin-before.jsonl": {
+      "fail": 3
+    },
+    "d41-pin-after-fleet.jsonl": {
+      "pass": 94
+    }
+  },
+  "remaining": [
+    "complete task gate rerun",
+    "pre-PR review rerun",
+    "publication and CI",
+    "ordered merges"
+  ]
+}
