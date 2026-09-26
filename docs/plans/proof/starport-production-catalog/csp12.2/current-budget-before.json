@@ -1,0 +1,36 @@
+{
+  "checked_at": "2026-09-26T01:45:22.798303+00:00",
+  "status": "fail-before-current-integration",
+  "starport_head": "ca2d2057d60c07ad0bd6668023af8ae8647534c1",
+  "starmap_head": "ffecd9eb890adfd424d21b92638dc5d702c92553",
+  "toolchain": "go1.27.1",
+  "command": "GOWORK=<temporary paired workspace> GOFLAGS=-mod=readonly go test -race -count=1 -json -timeout=5m -overlay /tmp/csp122-current-budget-overlay.json ./internal/server -run ^TestCSP122RemainingAllowanceIsExclusive$",
+  "exit_code": 1,
+  "admitted": 2,
+  "consumed": 2,
+  "probe_sha256": "bb0f878f99e0d4460ac0ea56f26fe9abe800966252fa1df3d1648f99b2e15ebc",
+  "events_sha256": "41790c3b0716a5472d05d6bd95c0738bedceb90efb6e91f9544e55b3ebe94323",
+  "expiry_repair": {
+    "commit": "c18b22f686f56e9eb70df3461bbcbe00deddc47a",
+    "command": "GOTOOLCHAIN=go1.27.1 go test -race -count=1 -timeout=5m ./internal/storage -run '^TestBadgerExpiry(PreservesConcurrentIncrements|CancellationPreservesValueAndDeadline)$'",
+    "exit_code": 0,
+    "tests": 2
+  },
+  "assessment": [
+    "The current prepared integration includes the atomic Badger expiry repair. Its two regression tests pass.",
+    "The current middleware still admits two requests against one token of budget. Repair admission through per-attempt reservations across all applicable meters.",
+    "The probe does not establish multi-process, Valkey, retry, crash, or complete paid-operation semantics. CSP12.2 remains unqualified.",
+    "This middleware probe counts entry into synthetic paid handlers. It is a diagnostic, not the final admission acceptance test. The final test must count provider dispatches and inspect durable per-attempt reservations through the production execution path.",
+    "A correct per-attempt implementation may let concurrent HTTP requests reach routing while only one acquires scarce provider capacity. Do not force reservation into HTTP middleware merely to satisfy this probe.",
+    "AllowanceFromContext currently treats a missing context value as unbounded. Required-budget admission must distinguish confirmed absence from missing policy evidence, including internal paid calls."
+  ],
+  "scope": "Read-only verification through a test overlay, real on-disk Badger, no provider calls, and no production source changes.",
+  "source_paths": [
+    "internal/server/budget.go",
+    "internal/limits/spend.go",
+    "internal/execution/executor.go",
+    "internal/proxy/parser.go",
+    "internal/proxy/rerank.go",
+    "internal/storage/badger.go"
+  ]
+}
