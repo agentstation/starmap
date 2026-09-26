@@ -118,7 +118,7 @@ pricing:
 limits:
   context_window: 1048576
   input_tokens: 0
-  output_tokens: 65536
+  output_tokens: 65535
 extensions:
   google-vertex:
     fields:
@@ -130,4 +130,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-09-18T21:17:47.645556677Z
+updated_at: 2026-09-26T04:35:09.328159722Z

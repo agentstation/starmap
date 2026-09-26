@@ -7,8 +7,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:5515a156c6a6f6bc16ac64123cad7b5ab2acab2a464d93f961b52d3488c45f01
-    observed_at: "2026-09-20T13:03:28.038274367Z"
+    observation_id: observation:v4:0a0595f0618eeebd184425a1a815c0b6c568fee8dee0b15e848cec5acbd831b9
+    observed_at: "2026-09-26T04:35:08.55274582Z"
     model_ids:
     - deepseek-v4-flash
     - deepseek-v4-flash-0731
@@ -123,8 +123,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:10ce8ba5d267274882bacc091b429bda16598368ca8fb625b3176a9ebde45214
-    observed_at: "2026-09-20T13:03:28.549885543Z"
+    observation_id: observation:v4:963c8a07d9539a8f1c671f7b571bda2c706930d8fd3f724d7fa2d8e6fe09955f
+    observed_at: "2026-09-26T04:35:08.848852351Z"
     model_ids:
     - claude-fable-5
     - claude-fable-5-1
@@ -134,6 +134,7 @@
     - claude-opus-4-7
     - claude-opus-4-8
     - claude-opus-5
+    - claude-opus-5-5
     - claude-sonnet-4-5-20250929
     - claude-sonnet-4-6
     - claude-sonnet-5
@@ -147,8 +148,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:5de0cfa0e8b89c3f71574367ff6a9d992cc9138e881d3845c07f1a8e3a24d173
-    observed_at: "2026-09-20T13:03:28.029092504Z"
+    observation_id: observation:v4:9edec6b1e866c76d0a33d663d96370a3e08ff2818c587b3f2273dce54ec03600
+    observed_at: "2026-09-26T04:35:08.920109117Z"
     model_ids:
     - gpt-oss-120b
     - qwen-3.8-27b
@@ -162,8 +163,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:585624cf5e0b7be8e77fcaa2aede795e74e197c41107cfa3d7e5dd9fc9fe9542
-    observed_at: "2026-09-20T13:03:28.576839995Z"
+    observation_id: observation:v4:3196e37fcca262bc2e45b83d675f960166f26032a5af86a0b67521cc286482d5
+    observed_at: "2026-09-26T04:35:08.417718659Z"
     model_ids:
     - Audio8/Audio8-TTS-Preview-0.6b
     - BAAI/bge-base-en-v1.5
@@ -219,7 +220,6 @@
     - Qwen/Qwen3-TTS-VoiceDesign
     - Qwen/Qwen3-VL-235B-A22B-Instruct
     - Qwen/Qwen3-VL-30B-A3B-Instruct
-    - Qwen/Qwen3.5-122B-A10B
     - Qwen/Qwen3.5-27B
     - Qwen/Qwen3.5-35B-A3B
     - Qwen/Qwen3.5-397B-A17B
@@ -238,15 +238,16 @@
     - Wan-AI/Wan2.2-T2V-A14B
     - Wan-AI/Wan2.6-T2I
     - Wan-AI/Wan2.6-T2V
-    - XiaomiMiMo/MiMo-V2.5
-    - XiaomiMiMo/MiMo-V2.5-Pro
     - XiaomiMiMo/MiMo-V2.5-tts
     - XiaomiMiMo/MiMo-V2.5-tts-voicedesign
+    - XiaomiMiMo/MiMo-V2.6-Flash
+    - XiaomiMiMo/MiMo-V2.6-Pro
     - anthropic/claude-fable-5
     - anthropic/claude-haiku-4-5
     - anthropic/claude-opus-4-7
     - anthropic/claude-opus-4-8
     - anthropic/claude-opus-5
+    - anthropic/claude-opus-5-5
     - anthropic/claude-sonnet-4-6
     - anthropic/claude-sonnet-5
     - black-forest-labs/FLUX-1-Redux-dev
@@ -262,7 +263,6 @@
     - bosonai/HiggsAudioV2.5
     - deepseek-ai/DeepSeek-R1-0528
     - deepseek-ai/DeepSeek-V3
-    - deepseek-ai/DeepSeek-V3-0324
     - deepseek-ai/DeepSeek-V3.1
     - deepseek-ai/DeepSeek-V3.2
     - deepseek-ai/DeepSeek-V4-Flash
@@ -286,7 +286,6 @@
     - google/gemma-4-31B-it
     - google/gemma-4-31B-it-Ultra
     - google/gemma-4-31B-it-turbo
-    - google/gemma-4-E4B-it
     - google/nano-banana-2
     - google/nano-banana-2-lite
     - google/nano-banana-pro
@@ -307,7 +306,6 @@
     - inworld-ai/realtime-tts-1.5-mini
     - inworld-ai/realtime-tts-2
     - meta-llama/Llama-3.3-70B-Instruct-Turbo
-    - meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8
     - meta-llama/Llama-4-Scout-17B-16E-Instruct
     - meta-llama/Llama-Guard-4-12B
     - meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo
@@ -320,7 +318,6 @@
     - mistralai/Voxtral-Mini-3B-2507
     - mistralai/Voxtral-Small-24B-2507
     - moonshotai/Kimi-K2.6
-    - moonshotai/Kimi-K2.7-Code
     - moonshotai/Kimi-K3
     - nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
     - nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B
@@ -345,15 +342,14 @@
     - sesame/csm-1b
     - shibing624/text2vec-base-chinese
     - stabilityai/sdxl-turbo
-    - stepfun-ai/Step-3.7-Flash
     - tencent/Hy3
+    - tencent/Hy4-preview
     - thenlper/gte-base
     - thenlper/gte-large
     - thinkingmachines/Inkling
     - thinkingmachines/Inkling-Small
     - zai-org/GLM-4.6
     - zai-org/GLM-4.7
-    - zai-org/GLM-5.1
     - zai-org/GLM-5.2
     - zai-org/GLM-5.3
     - zai-org/GLM-5.3-Flash
@@ -367,8 +363,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:c773284cb5462eac8927c852e8efb3cfc610d34184eb4316c4129bd4a8a08408
-    observed_at: "2026-09-20T13:03:28.229763819Z"
+    observation_id: observation:v4:dc338fc9049a40e101e1743614543b56fb0975c67e08f79f9cba76cb10ef193e
+    observed_at: "2026-09-26T04:35:08.495386649Z"
     model_ids:
     - deepseek-flash
     - deepseek-v4-pro
@@ -382,14 +378,15 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:f5060c9e16021f9404beb7de0ebda35a7d5b29a52cf69c07fb81cdef36986817
-    observed_at: "2026-09-20T13:03:28.441155859Z"
+    observation_id: observation:v4:482a363e08159613128909bd285bac68b5a90a338c2973a76c6da3b8b1b24550
+    observed_at: "2026-09-26T04:35:08.703579024Z"
     model_ids:
     - accounts/fireworks/models/deepseek-v4-flash-0731
     - accounts/fireworks/models/deepseek-v4-flash-vision-exp
     - accounts/fireworks/models/deepseek-v4-pro
     - accounts/fireworks/models/deepseek-v4-pro-0813
     - accounts/fireworks/models/deepseek-v4p1-flash
+    - accounts/fireworks/models/ember-1
     - accounts/fireworks/models/glm-5p2
     - accounts/fireworks/models/glm-5p3
     - accounts/fireworks/models/glm-5p3-flash
@@ -421,11 +418,12 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:fc1a5d7fdda47df63e1d85c9da8038b9dac4f140b95ab37bb38f6f1dd4720574
-    observed_at: "2026-09-20T13:03:27.912833874Z"
+    observation_id: observation:v4:3def8c323417d5d162539f3a0a5a8bbf8146eb5566bca4468eb76196dc696ce4
+    observed_at: "2026-09-26T04:35:08.865063733Z"
     model_ids:
     - antigravity-preview-05-2026
     - antigravity-preview-09-2026
+    - antigravity-preview-latest
     - aqa
     - deep-research-max-preview-04-2026
     - deep-research-preview-04-2026
@@ -460,6 +458,8 @@
     - gemini-3.6-flash
     - gemini-3.7-flash
     - gemini-3.8-flash
+    - gemini-3.8-flash-lite-tts
+    - gemini-3.8-flash-tts
     - gemini-3.8-live
     - gemini-3.8-live-extended-thinking
     - gemini-embedding-001
@@ -492,14 +492,12 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:1f1efba85bf7a4fd944ed2943211f6bc7b37434aad18e7b76244b96bab6fc8ed
-    observed_at: "2026-09-20T13:03:28.111250337Z"
+    observation_id: observation:v4:51c6ef12c6f5d0a6c75594b8a3413cc61f03cd7d302e56f4dd692c4dbc1b9a67
+    observed_at: "2026-09-26T04:35:08.85066885Z"
     model_ids:
     - allam-2-7b
     - canopylabs/orpheus-arabic-saudi
     - canopylabs/orpheus-v1-english
-    - groq/compound
-    - groq/compound-mini
     - meta-llama/llama-prompt-guard-2-22m
     - meta-llama/llama-prompt-guard-2-86m
     - openai/gpt-oss-120b
@@ -518,8 +516,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:626c3a43816504248a5729a1b7cd4995670fd495e027478113b98448f90310b3
-    observed_at: "2026-09-20T13:03:28.55045989Z"
+    observation_id: observation:v4:a1be18ade122632a5e5363c399c5ab9c71d2c052de1e45de7d6a5413eb40a87d
+    observed_at: "2026-09-26T04:35:08.833213531Z"
     model_ids:
     - Qwen/Qwen3.6-35B-A3B-FP8
     - Qwen3.8-27B
@@ -533,8 +531,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:b4289b1ef1da7831098d7647be1e7330b37c2a69e419fa3bda8364bfcd066c9d
-    observed_at: "2026-09-20T13:03:28.322807442Z"
+    observation_id: observation:v4:12ade1fa9ce0370cdfefc641b0ba47f0508d5f86368b36e288c4acabfb6431c1
+    observed_at: "2026-09-26T04:35:08.474848481Z"
     model_ids:
     - codestral-2508
     - codestral-embed
@@ -592,8 +590,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:ac058a6e313e003c667e920da3afb1538a42a81805c8156af9aa68971043952c
-    observed_at: "2026-09-20T13:03:28.292715974Z"
+    observation_id: observation:v4:2627682b22f1de71450f5a73cf9bd58979ae4b70ddbe83dea96f2f8827f058f0
+    observed_at: "2026-09-26T04:35:08.753900423Z"
     model_ids:
     - kimi-k2.6
     - kimi-k2.7-code
@@ -609,8 +607,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:fdda6f5d782a0253cdece52941b852293c454c4bd2477b2b9387479405b5e542
-    observed_at: "2026-09-20T13:03:28.999251755Z"
+    observation_id: observation:v4:70027063d2ca2b671108a4a7cd69e2067b01c2b69c6cf3436b78552f296d039a
+    observed_at: "2026-09-26T04:35:09.404383032Z"
     model_ids:
     - babbage-002
     - chat-latest
@@ -688,6 +686,8 @@
     - gpt-5.6-sol
     - gpt-5.6-terra
     - gpt-6-astra
+    - gpt-6-luna
+    - gpt-6-sol
     - gpt-audio
     - gpt-audio-1.5
     - gpt-audio-2025-08-28
