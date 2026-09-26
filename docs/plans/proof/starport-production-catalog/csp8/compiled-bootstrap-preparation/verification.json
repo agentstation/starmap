@@ -1,0 +1,275 @@
+{
+  "checked_at": "2026-09-26T10:37:42.016114+00:00",
+  "state": "UNCOMMITTED_PREPARATION",
+  "sources": {
+    "starmap-object-ci-repair": {
+      "head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+      "changes": [
+        {
+          "path": ".gitignore",
+          "status": "M ",
+          "sha256": "a30211f782fe15d427ee23d333998e27abfc8ccf1352fe95234ca211f772a4ea"
+        },
+        {
+          "path": "Makefile",
+          "status": " M",
+          "sha256": "4ce0bdc3829686ecc2f41e6abde20cabfbd2adaef425cc74c2eb211b2aff6a4c"
+        },
+        {
+          "path": "cmd/starmap-bootstrap-manifest/committed.go",
+          "status": " M",
+          "sha256": "2621043214cac5e8b6a1513bcb547e19ebe86aac0a51a03941281ea23950c863"
+        },
+        {
+          "path": "cmd/starmap-bootstrap-manifest/main.go",
+          "status": " M",
+          "sha256": "5c5919343f0323e3ac6f40dc40c76db77a84f5b2bd1646533d686b1404834ee9"
+        },
+        {
+          "path": "cmd/starmap-bootstrap-manifest/main_test.go",
+          "status": " M",
+          "sha256": "9d2bf71f3e7df0e2cf50d8a5c0790823a0a9eebbf1a97e9467fc6168df909689"
+        },
+        {
+          "path": "cmd/starmap-catalog-release/promotion.go",
+          "status": " M",
+          "sha256": "4b8ed570155c8993c09211af2b614a63288ea851d3eeecc89de70fc8686d57db"
+        },
+        {
+          "path": "cmd/starmap-catalog-release/promotion_stage.go",
+          "status": " M",
+          "sha256": "6ddf61a3c30c1060945cfa47045bb7b623b802fe2d4c584334d81f8d216957ff"
+        },
+        {
+          "path": "cmd/starmap-catalog-release/promotion_test.go",
+          "status": " M",
+          "sha256": "4ea5029f085f3c971a97f0ddabff7223d7d3bc1021b6d8b0cddec67fc971417b"
+        },
+        {
+          "path": "docs/ARCHITECTURE.md",
+          "status": " M",
+          "sha256": "5dd8f6300d4afd7b54666b1f93d6e528d9458c17f7aa06b1b0049eb9a48deb4c"
+        },
+        {
+          "path": "internal/bootstrap/bootstrap.go",
+          "status": " M",
+          "sha256": "dc00ccd8db4235ef03da7e50850aa7123e48d52f5b9017e8b8f84b7ba7d54164"
+        },
+        {
+          "path": "internal/bootstrap/bootstrap_test.go",
+          "status": " M",
+          "sha256": "5d394007d4aca155585e0c1c4e24070fec5a79303e0a2d8c0ced16fc2c2e6320"
+        },
+        {
+          "path": "internal/embedded/catalog/generation-payload.json.gz",
+          "status": "A ",
+          "sha256": "7b8904bccbbba23f2918089c8983da23e37bd0cb48164a46360bad59630bc5d3"
+        },
+        {
+          "path": "internal/embedded/embed.go",
+          "status": " M",
+          "sha256": "2864ffec0aa9d408893fc6e4f0682c452ee38deddc37f7407b1808907ba5f6ad"
+        },
+        {
+          "path": "pkg/catalogs/README.md",
+          "status": " M",
+          "sha256": "d937231ddd03484c4d0ee33100b257ea83a92b0dd68dce1971d432785a820acf"
+        },
+        {
+          "path": "pkg/catalogs/payload.go",
+          "status": " M",
+          "sha256": "dec8603b19a721e0a7e74f54f74d0fc088cf0ab5a18634a975706b84c1b5e8d5"
+        },
+        {
+          "path": ".devbox/gen/scripts/.hooks.sh",
+          "status": "??",
+          "sha256": "ce7fbb6973055f23dcf394a8466848724f234a230bdc87dd246c7e02c92ee4d9"
+        },
+        {
+          "path": ".devbox/gen/scripts/build.sh",
+          "status": "??",
+          "sha256": "0c1a25ef705d95676ca3086d4568792ae9fb9f757fc934336ebb34c050fa9d29"
+        },
+        {
+          "path": ".devbox/gen/scripts/check.sh",
+          "status": "??",
+          "sha256": "0ab5fa8c599c742e3d4a0b8792c52dab4a29a8b2e90e3dc9978c545e3512f9a3"
+        },
+        {
+          "path": ".devbox/gen/scripts/docs.sh",
+          "status": "??",
+          "sha256": "65db71c6acb9fef329c0ff2993aef66ce611582410182a1b00ed0192fe5fde72"
+        },
+        {
+          "path": ".devbox/gen/scripts/fix.sh",
+          "status": "??",
+          "sha256": "ccdc3dcac1c1903aa275352be5ba6991e6b4e19df2e4f6561aa113f8f2db58c6"
+        },
+        {
+          "path": ".devbox/gen/scripts/lint-fix.sh",
+          "status": "??",
+          "sha256": "8f35746d0d1b06cb32a2cb24027fa4a9c79b80820e3ff65b92313219636a81b1"
+        },
+        {
+          "path": ".devbox/gen/scripts/lint.sh",
+          "status": "??",
+          "sha256": "7c1e32d9b4e4cfe056b860524ac0d8f522da3bbb6b7a0dd526c2817e186e61d2"
+        },
+        {
+          "path": ".devbox/gen/scripts/test-race.sh",
+          "status": "??",
+          "sha256": "70f1e3ead3f8acc627a355d73929545f81c72f98070ffaa7ef1defc03bd958b7"
+        },
+        {
+          "path": ".devbox/gen/scripts/test.sh",
+          "status": "??",
+          "sha256": "f4ffbcf607758c38638e3f70892116be2ae4b2fcc2b7cf6be99abf114cf31f04"
+        },
+        {
+          "path": ".devbox/gen/scripts/vet.sh",
+          "status": "??",
+          "sha256": "87fc777f15703f2da85740ca1eef2ff4a8e1877ad6164b52a0a3c3ba795b2268"
+        },
+        {
+          "path": "internal/bootstrap/payload.go",
+          "status": "??",
+          "sha256": "5ab3e07802d2959c7b7eaef52914e5a8b6a8c3d0d8742261d54a12e1800402fd"
+        },
+        {
+          "path": "internal/bootstrap/payload_test.go",
+          "status": "??",
+          "sha256": "05a45c288d8aca2c1b8d63946c2e7508cc066389f25a5ba49d168cca9c862a96"
+        }
+      ]
+    },
+    "starport-native-catalog": {
+      "head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
+      "changes": [
+        {
+          "path": "internal/document/deadline_test.go",
+          "status": " M",
+          "sha256": "9382d0e005a00d5d9301af100e1b56dc63e90184c6437d7b67b8b712b912fb75"
+        },
+        {
+          "path": "internal/document/extract.go",
+          "status": " M",
+          "sha256": "95eaca1951aca4b04a167b14e2b7a1ee4a74d666e202325b6506053627e7bf75"
+        },
+        {
+          "path": "internal/document/extract_test.go",
+          "status": " M",
+          "sha256": "b21f9597944562037f14f2d6af3bb03ac719fedf6dae66b43b2f53d7b3a58057"
+        },
+        {
+          "path": "internal/providers/keyring/managed_lifecycle_test.go",
+          "status": " M",
+          "sha256": "43e64e5db8d09767f5b9eb7ea23f66d49adc57e8e1cf69b0518c985a79fefc7f"
+        },
+        {
+          "path": "internal/providers/keyring/managed_material.go",
+          "status": " M",
+          "sha256": "1080e08bd4d840a277c585e34025948c9a471f7f196eddd20ac71ace8c9a1c67"
+        }
+      ]
+    }
+  },
+  "checks": {
+    "document-final": {
+      "log": "document-final.log.gz",
+      "sha256": "63b06a0f3e58add45b5f947756fd35ef9cd9c063b1630a0aff66d1f771cf1cd2",
+      "named_test_events": {
+        "pass": 50
+      }
+    },
+    "managed-retention-final": {
+      "log": "managed-retention-final.log.gz",
+      "sha256": "0fd7ec3e4910b3b05ee19f4a40f84fa8e36d5c02c1b033efd9922fab960ba54c",
+      "named_test_events": {
+        "pass": 20
+      }
+    },
+    "migration-candidate": {
+      "log": "migration-candidate.log.gz",
+      "sha256": "793071688e31e1dd1f6e53a69fb62033929d95777ec1570f41db1412d2282835",
+      "named_test_events": {
+        "pass": 4
+      }
+    },
+    "managed-withdrawal-before": {
+      "log": "managed-withdrawal-before.log.gz",
+      "sha256": "da9285acd0d7f77978e29e6c675b214cd50ef353df94f5533681887ee54f1915",
+      "named_test_events": {
+        "fail": 2
+      }
+    },
+    "bootstrap-before": {
+      "log": "bootstrap-before.log.gz",
+      "sha256": "a7c0f6c690b7aa20b8b8f20b0d48c50a823cdf175f97ed0f884a98cb11bacd4f",
+      "named_test_events": {
+        "fail": 1
+      }
+    },
+    "bootstrap-focused": {
+      "log": "bootstrap-focused.log.gz",
+      "sha256": "60c75ec3ad3795cb5acf2e0fbcf28a15d68b58d23c87646140c7a472177aa12f",
+      "named_test_events": {
+        "pass": 187,
+        "fail": 1
+      }
+    },
+    "checkout-final": {
+      "log": "checkout-final.log.gz",
+      "sha256": "22a8d9944722934df1598260c4cc0b14e1a7e99fb016577a16cd1eae66f99305",
+      "named_test_events": {
+        "pass": 1
+      }
+    },
+    "producer-verify-docs-failure": {
+      "log": "producer-verify-docs-failure.log.gz",
+      "sha256": "442a13935d8082d69e1a00af892719e5f818543c45c83f58681bedbf1d4b23c1",
+      "named_test_events": {}
+    }
+  },
+  "cold_start_comparison": [
+    {
+      "label": "before",
+      "root": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+      "head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+      "exit_code": 0,
+      "command_seconds": 32.873051917005796,
+      "tests": [
+        {
+          "Time": "2026-09-26T05:32:03.337561-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/bootstrap",
+          "Test": "TestEmbeddedReturnsOneVerifiedImmutableCatalog",
+          "Elapsed": 30.1
+        }
+      ]
+    },
+    {
+      "label": "after",
+      "root": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
+      "head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+      "exit_code": 0,
+      "command_seconds": 13.826659207988996,
+      "tests": [
+        {
+          "Time": "2026-09-26T05:32:17.150826-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/bootstrap",
+          "Test": "TestEmbeddedReturnsOneVerifiedImmutableCatalog",
+          "Elapsed": 11.83
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Single-host cold-start observations do not qualify production latency or native platforms.",
+    "Consumer migration used a temporary external module replacement. Repository module files remain unchanged.",
+    "Initial producer focused command reached its ad hoc five-minute package timeout. Requalify with the repository command budget.",
+    "The full producer gate failed on stale internal/embedded/README.md. Regenerate it before restarting the gate.",
+    "Full checks, review, publication, native qualification, task acceptance, and merge remain open."
+  ],
+  "next_action": "Regenerate the embedded package documentation. Run the producer gate with Go 1.27.1 and direct Make tool overrides. Qualify and review both repairs before publication."
+}

@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T10:19:33.931120+00:00",
+  "checked_at": "2026-09-26T10:37:42.016114+00:00",
   "repositories": {
     "starmap": {
       "worktrees": [
@@ -69,7 +69,7 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
-          "HEAD": "fc36cab28788c86b6a6fdc772fd34708eb3e6b62",
+          "HEAD": "e89164ca569a0110091cbfd0d488e107c59091c3",
           "branch": "refs/heads/codex/catalog-qualification",
           "dirty_paths": [
             "AGENTS.md",
@@ -191,8 +191,36 @@
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
           "HEAD": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
           "branch": "refs/heads/codex/catalog-bootstrap-payload",
-          "dirty_paths": [],
-          "dirty_count": 0,
+          "dirty_paths": [
+            ".gitignore",
+            "Makefile",
+            "cmd/starmap-bootstrap-manifest/committed.go",
+            "cmd/starmap-bootstrap-manifest/main.go",
+            "cmd/starmap-bootstrap-manifest/main_test.go",
+            "cmd/starmap-catalog-release/promotion.go",
+            "cmd/starmap-catalog-release/promotion_stage.go",
+            "cmd/starmap-catalog-release/promotion_test.go",
+            "docs/ARCHITECTURE.md",
+            "internal/bootstrap/bootstrap.go",
+            "internal/bootstrap/bootstrap_test.go",
+            "internal/embedded/catalog/generation-payload.json.gz",
+            "internal/embedded/embed.go",
+            "pkg/catalogs/README.md",
+            "pkg/catalogs/payload.go",
+            ".devbox/gen/scripts/.hooks.sh",
+            ".devbox/gen/scripts/build.sh",
+            ".devbox/gen/scripts/check.sh",
+            ".devbox/gen/scripts/docs.sh",
+            ".devbox/gen/scripts/fix.sh",
+            ".devbox/gen/scripts/lint-fix.sh",
+            ".devbox/gen/scripts/lint.sh",
+            ".devbox/gen/scripts/test-race.sh",
+            ".devbox/gen/scripts/test.sh",
+            ".devbox/gen/scripts/vet.sh",
+            "internal/bootstrap/payload.go",
+            "internal/bootstrap/payload_test.go"
+          ],
+          "dirty_count": 27,
           "disposition": "Retain active work or changes without verified integration."
         },
         {
@@ -426,8 +454,14 @@
           "worktree": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
           "HEAD": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
           "branch": "refs/heads/codex/starport-native-catalog",
-          "dirty_paths": [],
-          "dirty_count": 0,
+          "dirty_paths": [
+            "internal/document/deadline_test.go",
+            "internal/document/extract.go",
+            "internal/document/extract_test.go",
+            "internal/providers/keyring/managed_lifecycle_test.go",
+            "internal/providers/keyring/managed_material.go"
+          ],
+          "dirty_count": 5,
           "disposition": "Retain active work or changes without verified integration."
         }
       ],
@@ -441,5 +475,6 @@
         "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e\trefs/heads/main"
       ]
     }
-  }
+  },
+  "inventory_note": "Counts exclude this inventory update and its accompanying proof in the plan checkout."
 }

@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T10:19:33.931120+00:00",
+  "checked_at": "2026-09-26T10:37:42.016114+00:00",
   "starmap": [],
   "starport": [
     {
@@ -11,15 +11,23 @@
       "owner": "CSP8",
       "checks_run": 36234492082,
       "disposition": "Keep. Native CI failed on both macOS jobs and Windows ARM64.",
-      "next_action": "Repair cold bootstrap cost and deterministic document deadlines. Requalify native CI and all 63 CSP8 subcases before merge.",
+      "next_action": "Qualify the local deadline and credential repairs with the compiled Starmap baseline. Review and publish both sources, then qualify native CI and all 63 CSP8 subcases.",
       "local_head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
       "native_failure_proof": "../../csp8/native-schedule-384/native-failure-current.json",
-      "local_changes": [],
+      "local_changes": [
+        "internal/document/deadline_test.go",
+        "internal/document/extract.go",
+        "internal/document/extract_test.go",
+        "internal/providers/keyring/managed_lifecycle_test.go",
+        "internal/providers/keyring/managed_material.go"
+      ],
       "local_qualification": "All 68 packages: 4227 passing named tests, six optional skips, zero failures. All 733 CSP8 tests pass without skips.",
       "local_qualification_proof": "../../csp8/native-schedule-384/verification.json",
       "prepr": "PASS: all 34 required commands",
       "review": "PASS: nine chunks, zero findings at P0",
-      "native_watch_session": 20411
+      "native_watch_session": null,
+      "native_watch_status": "Stopped after API rate limit. Latest Actions state remains unverified.",
+      "local_preparation_proof": "../../csp8/compiled-bootstrap-preparation/verification.json"
     }
   ],
   "completed_merges": [
@@ -125,19 +133,19 @@
     "note": "Private archives preserve removed worktrees and Git bundles preserve unique history. The latest pass removed one automatic merge commit whose parents and dependency update are present in main. Uncommitted and unpublished work remains.",
     "retained_inventory": {
       "starmap": {
-        "worktrees": 37,
-        "dirty": 35,
-        "remote_heads": 5
+        "worktrees": 22,
+        "dirty": 21,
+        "remote_heads": 4
       },
       "starport": {
-        "worktrees": 4,
-        "dirty": 0,
+        "worktrees": 3,
+        "dirty": 1,
         "remote_heads": 2
       }
     },
     "final_pass_proof": "worktree-cleanup-final-pass.json",
     "contained_unmerged_worktrees_removed": 13,
-    "total_worktrees_removed": 33,
+    "total_worktrees_removed": 49,
     "contained_pass_proof": "worktree-cleanup-contained.json",
     "retained_inventory_proof": "workspace-current.json",
     "automatic_merged_remote_branch_deletions": 3,
@@ -145,10 +153,17 @@
     "preserved_pass_proof": "worktree-cleanup-preserved.json",
     "archive_verification": "PASS: eight additional archive and bundle digests match, all eight worktree paths and branch refs are absent.",
     "additional_proven_branches_removed": 8,
-    "total_local_branches_removed": 82,
+    "total_local_branches_removed": 100,
     "additional_pass_proof": "worktree-cleanup-additional.json",
     "remote_additional_proof": "remote-cleanup-additional.json",
-    "automatic_superseded_remote_branch_deletions": 5
+    "automatic_superseded_remote_branch_deletions": 5,
+    "cumulative_totals": {
+      "worktrees": 49,
+      "local_branches": 100,
+      "remote_heads": 15
+    },
+    "current_inventory_proof": "cleanup-final-inventory.json",
+    "total_remote_heads_removed": 15
   },
   "closed_superseded": [
     {
@@ -730,10 +745,10 @@
     "merge_qualification": "pending"
   },
   "producer_preparation": {
-    "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
     "branch": "codex/catalog-bootstrap-payload",
-    "head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
-    "source_changes": false,
-    "proof": "../../csp8/native-schedule-384/bootstrap-format-probe.json"
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
+    "state": "uncommitted",
+    "proof": "../../csp8/compiled-bootstrap-preparation/verification.json",
+    "next_action": "Regenerate the embedded package documentation. Run the producer gate with Go 1.27.1 and direct Make tool overrides. Qualify and review both repairs before publication."
   }
 }

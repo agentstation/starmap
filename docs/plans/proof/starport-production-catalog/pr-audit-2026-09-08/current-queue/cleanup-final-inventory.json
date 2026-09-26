@@ -1,0 +1,400 @@
+{
+  "checked_at": "2026-09-26T10:36:30.177400+00:00",
+  "repositories": {
+    "starmap": {
+      "main": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+      "worktrees": [
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap",
+          "head": "fa7c26bbd57c829be30a861ce8dc7eb8a70fca50",
+          "branch": "refs/heads/codex/security-baseline",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap-advisory-exchange",
+          "head": "ffecd9eb890adfd424d21b92638dc5d702c92553",
+          "branch": "refs/heads/codex/starmap-advisory-exchange",
+          "dirty_entries": 0,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-dependency-qualification",
+          "head": "e2343509c3007919f5f83c07c4654cb24270508f",
+          "branch": "refs/heads/codex/catalog-dependency-qualification",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-partial-retention",
+          "head": "fa5954a6b598bc1ab7fcd5e24da15a136fbe8cd8",
+          "branch": "refs/heads/codex/catalog-partial-retention",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-publisher",
+          "head": "7994fced889a29530c6811582d2af97ae18f71b9",
+          "branch": "refs/heads/codex/catalog-publisher-cat99",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+          "head": "e89164ca569a0110091cbfd0d488e107c59091c3",
+          "branch": "refs/heads/codex/catalog-qualification",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+          "head": "8683287dfcd5fc17268d501e70f9b6753aea1c67",
+          "branch": "refs/heads/codex/catalog-update-controls",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap-coalescing-candidate",
+          "head": "f91908cede32e052a5dc36da12d3ec26c0e126ef",
+          "branch": null,
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap-homebrew-fix",
+          "head": "dfcfb97b4bb0cb73f2285fa032c9b4298da7924e",
+          "branch": "refs/heads/codex/homebrew-install-fixes",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+          "head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+          "branch": null,
+          "dirty_entries": 57,
+          "ancestor_of_main": true
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
+          "head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+          "branch": "refs/heads/codex/catalog-bootstrap-payload",
+          "dirty_entries": 27,
+          "ancestor_of_main": true
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair",
+          "head": "8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
+          "branch": null,
+          "dirty_entries": 15,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap-promotion-reproduction",
+          "head": "e228e694ac5e66f75639721c438a261015a8026f",
+          "branch": null,
+          "dirty_entries": 18,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-a2833928ec887009d",
+          "head": "02c56750b90a4ee97d7b2c39ea5bd45dac6f4620",
+          "branch": "refs/heads/worktree-agent-a2833928ec887009d",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-a3b4423c29ae16758",
+          "head": "09d29035328dd6a94a398fce59dd79d590162965",
+          "branch": "refs/heads/worktree-agent-a3b4423c29ae16758",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-a5bb2ba1c077f62f8",
+          "head": "6b5247635e44951aeaffe36da13c53fccdfba36b",
+          "branch": "refs/heads/worktree-agent-a5bb2ba1c077f62f8",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-a691cd5dfd6445af6",
+          "head": "d4b883a1635672f61005fbc63bcbdf5f080a1d74",
+          "branch": "refs/heads/worktree-agent-a691cd5dfd6445af6",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-a9480ac6db5e6874b",
+          "head": "074f5221d43fcd4db5d4b4b40f71104c884fd389",
+          "branch": "refs/heads/worktree-agent-a9480ac6db5e6874b",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-ade948274d900ed83",
+          "head": "093006be7a3917ca3fdeb2dc5c1e9172ca86d91a",
+          "branch": "refs/heads/worktree-agent-ade948274d900ed83",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-aecb46be749547b1f",
+          "head": "a7ca6f33a51e4d5a0fbc13be5fe37221599e52d0",
+          "branch": "refs/heads/worktree-agent-aecb46be749547b1f",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-af475d8f5d3e5ae88",
+          "head": "351c8a81e11832adc48724272f7fae56d6b626b7",
+          "branch": "refs/heads/worktree-agent-af475d8f5d3e5ae88",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-afb8363e5a8a081c3",
+          "head": "ed0335f268fb708a757f106b7b2ec85a3b1cdff4",
+          "branch": "refs/heads/worktree-agent-afb8363e5a8a081c3",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        }
+      ],
+      "branches": [
+        {
+          "branch": "codex/catalog-bootstrap-payload",
+          "head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+          "ancestor_of_main": true,
+          "checked_out": true
+        },
+        {
+          "branch": "codex/catalog-dependency-qualification",
+          "head": "e2343509c3007919f5f83c07c4654cb24270508f",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "codex/catalog-partial-retention",
+          "head": "fa5954a6b598bc1ab7fcd5e24da15a136fbe8cd8",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "codex/catalog-presence-integration",
+          "head": "e55524c805b77e3b6f9a5c16397285f3d54042d2",
+          "ancestor_of_main": false,
+          "checked_out": false
+        },
+        {
+          "branch": "codex/catalog-publication-promotion",
+          "head": "644ffc88450dd7c29b6edea658a401e3b7380c71",
+          "ancestor_of_main": false,
+          "checked_out": false
+        },
+        {
+          "branch": "codex/catalog-publisher-cat99",
+          "head": "7994fced889a29530c6811582d2af97ae18f71b9",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "codex/catalog-qualification",
+          "head": "e89164ca569a0110091cbfd0d488e107c59091c3",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "codex/catalog-source-inventory",
+          "head": "66e3ed4d848c7423e234ce0374af1bb5fde110e6",
+          "ancestor_of_main": false,
+          "checked_out": false
+        },
+        {
+          "branch": "codex/catalog-token-cost-presence",
+          "head": "0e115004857bfc13dd9f76046d5c6bca019f4c0f",
+          "ancestor_of_main": false,
+          "checked_out": false
+        },
+        {
+          "branch": "codex/catalog-update-controls",
+          "head": "8683287dfcd5fc17268d501e70f9b6753aea1c67",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "codex/catalog-verified-snapshot",
+          "head": "2699dafeb3153ce5d419f6341a9009c813eb4891",
+          "ancestor_of_main": false,
+          "checked_out": false
+        },
+        {
+          "branch": "codex/homebrew-install-fixes",
+          "head": "dfcfb97b4bb0cb73f2285fa032c9b4298da7924e",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "codex/security-baseline",
+          "head": "fa7c26bbd57c829be30a861ce8dc7eb8a70fca50",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "codex/starmap-advisory-exchange",
+          "head": "ffecd9eb890adfd424d21b92638dc5d702c92553",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "main",
+          "head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+          "ancestor_of_main": true,
+          "checked_out": false
+        },
+        {
+          "branch": "worktree-agent-a2833928ec887009d",
+          "head": "02c56750b90a4ee97d7b2c39ea5bd45dac6f4620",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "worktree-agent-a3b4423c29ae16758",
+          "head": "09d29035328dd6a94a398fce59dd79d590162965",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "worktree-agent-a5bb2ba1c077f62f8",
+          "head": "6b5247635e44951aeaffe36da13c53fccdfba36b",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "worktree-agent-a691cd5dfd6445af6",
+          "head": "d4b883a1635672f61005fbc63bcbdf5f080a1d74",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "worktree-agent-a9480ac6db5e6874b",
+          "head": "074f5221d43fcd4db5d4b4b40f71104c884fd389",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "worktree-agent-ade948274d900ed83",
+          "head": "093006be7a3917ca3fdeb2dc5c1e9172ca86d91a",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "worktree-agent-aecb46be749547b1f",
+          "head": "a7ca6f33a51e4d5a0fbc13be5fe37221599e52d0",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "worktree-agent-af475d8f5d3e5ae88",
+          "head": "351c8a81e11832adc48724272f7fae56d6b626b7",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "worktree-agent-afb8363e5a8a081c3",
+          "head": "ed0335f268fb708a757f106b7b2ec85a3b1cdff4",
+          "ancestor_of_main": false,
+          "checked_out": true
+        }
+      ],
+      "remote_heads": [
+        "dfbcbe671dc43a23fa2a0a75a9ca7ea2614733bd\trefs/heads/catalog/publication",
+        "450b6728de69035042dd9c2cf401d765b39b52d5\trefs/heads/catalog/v1",
+        "2a1bb2d8de1875c3fef0e671b4c97de257c8a9e0\trefs/heads/catalog/v2",
+        "71c5c8c723334bdfc4e1b04dc85e748211fe5071\trefs/heads/main"
+      ]
+    },
+    "starport": {
+      "main": "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e",
+      "worktrees": [
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starport",
+          "head": "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e",
+          "branch": "refs/heads/main",
+          "dirty_entries": 0,
+          "ancestor_of_main": true
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-starmap-main",
+          "head": "d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
+          "branch": "refs/heads/codex/catalog-starmap-main",
+          "dirty_entries": 0,
+          "ancestor_of_main": false
+        },
+        {
+          "path": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
+          "head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
+          "branch": "refs/heads/codex/starport-native-catalog",
+          "dirty_entries": 5,
+          "ancestor_of_main": false
+        }
+      ],
+      "branches": [
+        {
+          "branch": "codex/catalog-starmap-main",
+          "head": "d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "codex/starport-native-catalog",
+          "head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
+          "ancestor_of_main": false,
+          "checked_out": true
+        },
+        {
+          "branch": "main",
+          "head": "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e",
+          "ancestor_of_main": true,
+          "checked_out": true
+        }
+      ],
+      "remote_heads": [
+        "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793\trefs/heads/codex/starport-native-catalog",
+        "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e\trefs/heads/main"
+      ]
+    }
+  },
+  "main_fast_forward": {
+    "checked_at": "2026-09-26T10:37:07.444670+00:00",
+    "old": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
+    "new": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+    "verified_ancestor": true,
+    "checked_out": false,
+    "worktree_files_changed": false
+  },
+  "additional_retirements": 0,
+  "cumulative_totals": {
+    "worktrees": 49,
+    "local_branches": 100,
+    "remote_heads": 15
+  },
+  "retention_reason": "Keep active work, local changes, and historical commits without verified successors.",
+  "worktree_prune_dry_run": "No stale registrations in either repository.",
+  "github_ci_refresh": "UNVERIFIED: Actions API returned HTTP 403 rate limit at 2026-09-26T10:36:47Z. Remote heads and open PR lists succeeded.",
+  "verification": {
+    "plan_lint": "PASS: 1 file, 0 diagnostics.",
+    "local_links": "PASS: 149 local links resolve.",
+    "ledger": "PASS: 40 tasks, 16 done, CSP8 is the only active task.",
+    "preserved_files": "PASS: all five unrelated file hashes match.",
+    "recovery_recheck": "PASS: 15 retired paths and branch refs remain absent. Recovery archives and manifest remain present.",
+    "implementation_tests": "Not rerun for cleanup. Local repair evidence is recorded separately.",
+    "repository_writing_check": {
+      "exit_code": 2,
+      "files": 1698,
+      "diagnostics": 69,
+      "new_diagnostics": 0,
+      "comparison": "All 69 historical diagnostics match the prior record.",
+      "log": "cleanup-final-writing.log.gz",
+      "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
+    }
+  }
+}
