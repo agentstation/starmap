@@ -806,10 +806,13 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Reproduce lease expiry between validation and shared head commit, then leader loss without local evidence.",
+    "next_action": "Implement atomic fleet publication and generation-bound shared recovery inputs. Both failure mechanisms have reproducible evidence.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "blocked_task": "CSP10.2",
-    "owner_question": "Native suspend qualification remains open. The owner has not changed this contract."
+    "owner_question": "Native suspend qualification remains open. The owner has not changed this contract.",
+    "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
+    "contract_audit": "../../csp11/contract-audit-2026-09-26.md",
+    "recovery_failure_proof": "../../csp11/recovery-failure-2026-09-26/verification.json"
   },
   "merged_followups": {
     "tasks": [
@@ -825,5 +828,14 @@
     "producer": "8122081e0494648fb1e356647053dd870a05fb1c",
     "consumer": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
     "proof": "../../csp9/merged-qualification-2026-09-26/verification.json"
+  },
+  "merged_branch_cleanup_after_384": {
+    "status": "PASS",
+    "proof": "merged-branches-cleanup-2026-09-26.json",
+    "local_branches_removed": 2,
+    "remote_branches_removed": 1,
+    "producer_remote_already_absent": true,
+    "both_queues_empty": true,
+    "checked_at": "2026-09-26T16:38:49.460723+00:00"
   }
 }

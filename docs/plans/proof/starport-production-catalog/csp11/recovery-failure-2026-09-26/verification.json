@@ -1,0 +1,49 @@
+{
+  "status": "FAIL_BEFORE_CONFIRMED",
+  "task": "CSP11",
+  "producer": "8122081e0494648fb1e356647053dd870a05fb1c",
+  "toolchain": "go1.27.1",
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "-overlay",
+    "/tmp/csp11-recovery-probe-overlay.json",
+    "-run",
+    "^TestFleetRecoveryRetainsInputsWithoutFormerLeaderDirectory$",
+    "-json",
+    "./runtime"
+  ],
+  "cwd": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
+  "named_failures": 1,
+  "test_seconds": 29.58,
+  "observed_result": "Follower reopened the same accepted generation after the former leader private directory was removed. Its next partial observation update lost the first model.",
+  "backend": "Real filesystem catalog store in a test-owned directory. This isolates retained-input recovery and does not qualify distributed lease behavior.",
+  "source_changes": "Test overlay only. No repository source changes.",
+  "artifacts": [
+    {
+      "path": "csp11-recovery-probe.jsonl.gz",
+      "sha256": "0dbd8652614cb4569b0f37670bed355914331d21372de6e8645b6d324bf58aeb"
+    },
+    {
+      "path": "csp11-recovery-probe.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp11_recovery_probe_test.go.gz",
+      "sha256": "ed3d2b01023b6b6e38f52e147ee61e4eaa58304a890d8ae549e43de8c5c86ca3"
+    },
+    {
+      "path": "csp11-recovery-probe-overlay.json.gz",
+      "sha256": "f4c61779313132fa8500a7055f7c6538d3424fb90cf80f6283b71e4b65a985ee"
+    }
+  ],
+  "checked_at": "2026-09-26T16:36:50.557228+00:00",
+  "secret_scan": {
+    "findings": 0,
+    "verification_disabled": true
+  }
+}
