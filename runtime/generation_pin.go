@@ -79,6 +79,21 @@ func (r *Runtime) initializeGenerationPin(ctx context.Context) error {
 	r.pinnedSource = &sourceLayer{GenerationID: generation.Manifest.GenerationID, Payload: generation.Payload,
 		Manifest: &generation.Manifest, PublishedAt: generation.Manifest.GeneratedAt}
 	current := r.client.CurrentCatalogState()
+	if r.config.fleetStore != nil && r.pinRecord != nil && r.pinRecord.Phase == pinAccepted &&
+		r.pinRecord.Receipt.SelectedGenerationID == r.config.generationPin && r.pinRecord.Receipt.AcceptedGenerationID == current.GenerationID {
+		accepted, err := r.client.CurrentGeneration(ctx)
+		if err != nil {
+			return err
+		}
+		if !pinRecordMatches(*r.pinRecord, accepted) || accepted.Manifest.Payload.Checksum != generation.Manifest.Payload.Checksum {
+			return pinRecordConflict("the shared pin receipt does not match the requested artifact")
+		}
+		r.pinnedSource = &sourceLayer{GenerationID: accepted.Manifest.GenerationID, Payload: accepted.Payload,
+			Manifest: &accepted.Manifest, PublishedAt: accepted.Manifest.GeneratedAt}
+		r.effective = current
+		r.report.startedAt = r.config.now()
+		return nil
+	}
 	r.effective = starmap.CatalogState{Catalog: catalog, GenerationID: generation.Manifest.GenerationID,
 		PayloadChecksum: generation.Manifest.Payload.Checksum, GeneratedAt: generation.Manifest.GeneratedAt,
 		AuthorityHead: head, Sequence: current.Sequence}
@@ -125,11 +140,15 @@ func (r *Runtime) publishGenerationPin(ctx context.Context) error {
 		}
 	}
 	pendingPublication := record.Phase == pinPrepared && record.Receipt.PreviousGenerationID != record.Receipt.AcceptedGenerationID
+	ctx, attempt, err := r.prepareFleetCommitWithPin(ctx, r.lease.epoch(), r.layers, record)
+	if err != nil {
+		return err
+	}
+	pinContext := context.WithValue(r.authorityPublicationContext(ctx), generationPinContextKey{}, r.config.pinCapability)
 	if current.GenerationID != generation.Manifest.GenerationID || pendingPublication {
 		if err := r.lease.fence(r.lease.epoch()); err != nil {
 			return err
 		}
-		pinContext := context.WithValue(r.authorityPublicationContext(ctx), generationPinContextKey{}, r.config.pinCapability)
 		if r.config.origin != nil {
 			if _, err := r.client.Activate(pinContext, generation); err != nil {
 				return err
@@ -137,6 +156,12 @@ func (r *Runtime) publishGenerationPin(ctx context.Context) error {
 		} else if _, err := r.client.Rollback(pinContext, generation.Manifest.GenerationID); err != nil {
 			return err
 		}
+	}
+	if err := r.finishFleetCommit(pinContext, attempt); err != nil {
+		return err
+	}
+	if attempt != nil {
+		record = attempt.pin
 	}
 	active := r.client.CurrentCatalogState()
 	if active.GenerationID != record.Receipt.AcceptedGenerationID || active.PayloadChecksum != record.Receipt.PayloadChecksum || active.AuthorityHead != record.Receipt.AuthorityHead {

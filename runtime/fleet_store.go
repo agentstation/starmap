@@ -114,6 +114,9 @@ func (s FleetSnapshot) Validate() error {
 type FleetStore interface {
 	LeaseStore
 
+	// CurrentHead reads publication metadata without transferring catalog or recovery payloads.
+	CurrentHead(context.Context) (FleetHead, error)
+
 	// CurrentPublication reads the complete durable head and the exact selected bytes.
 	// Missing immutable bytes or recovery inputs are errors, never an empty-store result.
 	CurrentPublication(context.Context) (FleetSnapshot, error)

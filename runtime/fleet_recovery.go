@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json/v2"
+	"strings"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
@@ -40,13 +41,15 @@ func (r FleetRecovery) Validate(generation catalogs.Generation) error {
 
 // fleetRecoveryRecord retains semantic inputs without private filesystem references.
 type fleetRecoveryRecord struct {
-	Version       int                            `json:"version"`
-	PublisherID   string                         `json:"publisher_id"`
-	Compatibility string                         `json:"compatibility"`
-	Source        *sourceLayer                   `json:"source,omitempty"`
-	Providers     []ProviderLayer                `json:"providers,omitempty"`
-	Manual        *manualCheckpoint              `json:"manual,omitempty"`
-	Removals      *catalogs.CatalogRemovalPolicy `json:"removals,omitempty"`
+	Version        int                            `json:"version"`
+	PublisherID    string                         `json:"publisher_id"`
+	Compatibility  string                         `json:"compatibility"`
+	Pin            *generationPinRecord           `json:"pin,omitempty"`
+	ReplayChecksum string                         `json:"replay_checksum,omitempty"`
+	Source         *sourceLayer                   `json:"source,omitempty"`
+	Providers      []ProviderLayer                `json:"providers,omitempty"`
+	Manual         *manualCheckpoint              `json:"manual,omitempty"`
+	Removals       *catalogs.CatalogRemovalPolicy `json:"removals,omitempty"`
 }
 
 func fleetRecoveryChecksum(data []byte) string {
@@ -60,6 +63,10 @@ func validFleetChecksum(value string) bool {
 }
 
 func encodeFleetRecovery(ctx context.Context, layers layerSet) ([]byte, error) {
+	return encodeFleetRecoveryWithPin(ctx, layers, nil)
+}
+
+func encodeFleetRecoveryWithPin(ctx context.Context, layers layerSet, pin *generationPinRecord) ([]byte, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
@@ -72,6 +79,19 @@ func encodeFleetRecovery(ctx context.Context, layers layerSet) ([]byte, error) {
 	}
 	record := fleetRecoveryRecord{Version: fleetRecoveryVersion, PublisherID: layers.publisherID, Compatibility: compatibility,
 		Source: layers.source, Removals: layers.removals}
+	if pin != nil {
+		if err := pin.validate(); err != nil {
+			return nil, err
+		}
+		if pin.Phase != pinAccepted {
+			return nil, pinRecordConflict("fleet recovery requires an accepted pin record")
+		}
+		state, err := layers.build(ctx, layers.embedded)
+		if err != nil {
+			return nil, err
+		}
+		record.Pin, record.ReplayChecksum = pin, state.PayloadChecksum
+	}
 	for _, key := range layers.providerOrder() {
 		record.Providers = append(record.Providers, layers.providers[key])
 	}
@@ -113,6 +133,16 @@ func readFleetRecovery(ctx context.Context, data []byte) (fleetRecoveryRecord, e
 	}
 	if record.Version != fleetRecoveryVersion || record.PublisherID == "" || !validFleetChecksum(record.Compatibility) {
 		return record, invalidInputPublication("fleet recovery has an unsupported version or incomplete identity")
+	}
+	if record.Pin != nil {
+		if err := record.Pin.validate(); err != nil {
+			return record, err
+		}
+		if record.Pin.Phase != pinAccepted || !strings.HasPrefix(record.ReplayChecksum, "sha256:") || !validFleetChecksum(strings.TrimPrefix(record.ReplayChecksum, "sha256:")) {
+			return record, pinRecordConflict("fleet pin recovery has an invalid acceptance or replay checksum")
+		}
+	} else if record.ReplayChecksum != "" {
+		return record, pinRecordConflict("an alternate replay checksum requires an accepted pin")
 	}
 	return record, nil
 }

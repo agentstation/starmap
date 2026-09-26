@@ -41,6 +41,9 @@ func TestFleetReplayRequiresEquivalentBaselineAndPolicy(t *testing.T) {
 			l.providerBindings = &providerBindingPolicy{bindings: map[string]sources.ProviderAcquisitionBinding{}}
 		}},
 		{"explicit-no-sources", func(l *layerSet) { l.acquisitionSources = &acquisitionSourcePolicy{ids: []sources.ID{}} }},
+		{"source-capability", func(l *layerSet) {
+			l.sourceConfiguration = []sources.SourceActivity{{Source: sources.ProvidersID, Supported: true}}
+		}},
 		{"publisher-aliases", func(l *layerSet) { l.publisherAliases = []string{"different"} }},
 	} {
 		t.Run(scenario.name, func(t *testing.T) {

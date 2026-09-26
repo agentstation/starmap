@@ -7,6 +7,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // fleetCommitStore adapts the root client's publication to one fleet transaction.
@@ -16,6 +17,26 @@ type fleetCommitStore struct {
 }
 
 type fleetCommitContextKey struct{}
+type fleetReadContextKey struct{}
+
+type fleetRead struct {
+	store    *fleetCommitStore
+	snapshot *FleetSnapshot
+}
+
+func (s *fleetCommitStore) readContext(ctx context.Context, snapshot *FleetSnapshot) context.Context {
+	return context.WithValue(ctx, fleetReadContextKey{}, fleetRead{store: s, snapshot: snapshot})
+}
+
+func (s *fleetCommitStore) guard(ctx context.Context) error {
+	if supplied, ok := ctx.Value(fleetReadContextKey{}).(fleetRead); ok && supplied.store == s {
+		return nil
+	}
+	if supplied, ok := ctx.Value(fleetCommitContextKey{}).(*fleetCommit); ok && supplied != nil && supplied.store == s {
+		return nil
+	}
+	return fleetConflict("fleet publication must use the connected runtime")
+}
 
 // fleetCommit retains one attempted publication across an ambiguous backend response.
 // Its expected head and ownership grant never advance to make a retry succeed.
@@ -25,6 +46,7 @@ type fleetCommit struct {
 	expected FleetHead
 	data     []byte
 	checksum string
+	pin      *generationPinRecord
 
 	mu              sync.Mutex
 	accepted        FleetHead
@@ -32,21 +54,31 @@ type fleetCommit struct {
 }
 
 func (s *fleetCommitStore) prepare(ctx context.Context, grant Lease, expected FleetHead, layers layerSet) (context.Context, *fleetCommit, error) {
+	return s.prepareWithPin(ctx, grant, expected, layers, nil)
+}
+
+func (s *fleetCommitStore) prepareWithPin(ctx context.Context, grant Lease, expected FleetHead, layers layerSet, pin *generationPinRecord) (context.Context, *fleetCommit, error) {
 	if err := grant.validateFleet(); err != nil {
 		return nil, nil, err
 	}
 	if err := expected.Validate(); err != nil {
 		return nil, nil, err
 	}
-	data, err := encodeFleetRecovery(ctx, layers)
+	data, err := encodeFleetRecoveryWithPin(ctx, layers, pin)
 	if err != nil {
 		return nil, nil, err
 	}
-	commit := &fleetCommit{store: s, grant: grant, expected: expected, data: data, checksum: fleetRecoveryChecksum(data)}
+	commit := &fleetCommit{store: s, grant: grant, expected: expected, data: data, checksum: fleetRecoveryChecksum(data), pin: pin}
 	return context.WithValue(ctx, fleetCommitContextKey{}, commit), commit, nil
 }
 
 func (s *fleetCommitStore) Current(ctx context.Context) (catalogs.Generation, error) {
+	if supplied, ok := ctx.Value(fleetReadContextKey{}).(fleetRead); ok && supplied.store == s {
+		if supplied.snapshot == nil {
+			return catalogs.Generation{}, &errors.NotFoundError{Resource: "fleet publication", ID: "current"}
+		}
+		return supplied.snapshot.Publication.Generation.Copy(), nil
+	}
 	snapshot, err := s.CurrentPublication(ctx)
 	if err != nil {
 		return catalogs.Generation{}, err
@@ -55,6 +87,14 @@ func (s *fleetCommitStore) Current(ctx context.Context) (catalogs.Generation, er
 		return catalogs.Generation{}, err
 	}
 	return snapshot.Publication.Generation, nil
+}
+
+func (s *fleetCommitStore) CurrentAuthorityHead(ctx context.Context) (catalogs.CatalogAuthorityHead, error) {
+	reader, ok := s.FleetStore.(storage.AuthorityHeadReader)
+	if !ok {
+		return catalogs.CatalogAuthorityHead{}, fleetConflict("the fleet store does not support independent authority observations")
+	}
+	return reader.CurrentAuthorityHead(ctx)
 }
 
 func (s *fleetCommitStore) Commit(ctx context.Context, generation catalogs.Generation, expected string) error {

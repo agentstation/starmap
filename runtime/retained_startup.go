@@ -2,7 +2,7 @@ package runtime
 
 import "context"
 
-func (r *Runtime) initializeRetainedState(ctx context.Context) error {
+func (r *Runtime) initializeRetainedState(ctx context.Context, initialFleet *FleetSnapshot) error {
 	var err error
 	r.store, err = newLayerStore(r.config.stateDirectory)
 	if err != nil {
@@ -11,11 +11,17 @@ func (r *Runtime) initializeRetainedState(ctx context.Context) error {
 	if err := r.store.recoverRecordPublications(ctx); err != nil {
 		return err
 	}
-	if err := r.store.recoverInputPublication(ctx, r.client.CurrentCatalogState()); err != nil {
-		return err
-	}
-	if err := r.loadRetainedLayers(ctx); err != nil {
-		return err
+	if r.config.fleetStore != nil {
+		if err := r.initializeFleetLayers(ctx, initialFleet); err != nil {
+			return err
+		}
+	} else {
+		if err := r.store.recoverInputPublication(ctx, r.client.CurrentCatalogState()); err != nil {
+			return err
+		}
+		if err := r.loadRetainedLayers(ctx); err != nil {
+			return err
+		}
 	}
 	if err := r.initializePinRecord(); err != nil {
 		return err

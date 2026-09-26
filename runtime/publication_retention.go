@@ -45,8 +45,10 @@ func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceL
 	defer r.publicationMu.Unlock()
 	r.providerRetentionMu.Lock()
 	defer r.providerRetentionMu.Unlock()
-	if err := r.store.refuseInputPublication(); err != nil {
-		return starmap.CatalogState{}, err
+	if r.config.fleetStore == nil {
+		if err := r.store.refuseInputPublication(); err != nil {
+			return starmap.CatalogState{}, err
+		}
 	}
 	if err := r.lease.fence(epoch); err != nil {
 		return starmap.CatalogState{}, err
@@ -100,17 +102,17 @@ func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceL
 	if removal != nil {
 		changes.removals = candidate.removals
 	}
-	record, err = changes.stage(ctx, r.store, record)
-	if err != nil {
-		return starmap.CatalogState{}, err
-	}
-	changed := !changes.empty()
+	changed := r.config.fleetStore == nil && !changes.empty()
 	if changed {
+		record, err = changes.stage(ctx, r.store, record)
+		if err != nil {
+			return starmap.CatalogState{}, err
+		}
 		if err := r.store.writeInputPublication(ctx, record); err != nil {
 			return starmap.CatalogState{}, err
 		}
 	}
-	durable, err := r.commitPrepared(ctx, publication, epoch, candidate.buildEvidence, candidate.source)
+	durable, err := r.commitPrepared(ctx, publication, epoch, candidate.buildEvidence, candidate.source, candidate)
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}
