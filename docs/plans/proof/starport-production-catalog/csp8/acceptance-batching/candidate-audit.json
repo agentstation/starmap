@@ -1,0 +1,84 @@
+{
+  "started_at": "2026-09-26T07:40:20.692788+00:00",
+  "status": "NOT_PASS",
+  "services": [
+    {
+      "role": "durable",
+      "id": "972fd5dc208e93d26b1c1afdec6c6d89c480d5a19fbed7bd078170f4c6f0ece3",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:61880"
+    },
+    {
+      "role": "cache",
+      "id": "24d47bccd731971921f06a639787af2a70e7354b78d45120501f4edf5bdfeb62",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:61881"
+    },
+    {
+      "role": "sql",
+      "id": "d198cdc80aedf2d6318bbbd63c4f323c3baa83a1bf7c3d41f1d3bc6e1f7e8751",
+      "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+      "address": "127.0.0.1:61884"
+    }
+  ],
+  "producer": "e8a9a485c3e83fe02237d80b6134053bc9d4bd97",
+  "consumer": "527aac7c570143e77db951fd6796d7333b924488",
+  "scope": "Candidate functional audit. Native evidence and the final producer module pin remain pending.",
+  "consumer_starmap_module": "github.com/agentstation/starmap v0.16.6-0.20260926043135-d5b9eba0e15a",
+  "command": [
+    "bash",
+    "scripts/verify-catalog-product.sh",
+    "--starport-root",
+    "/Users/jack/src/github.com/agentstation/starport-native-catalog",
+    "--task",
+    "CSP8",
+    "--json"
+  ],
+  "exit_code": 1,
+  "seconds": 1038.489044707996,
+  "cleanup": [
+    {
+      "id": "972fd5dc208e93d26b1c1afdec6c6d89c480d5a19fbed7bd078170f4c6f0ece3",
+      "exit_code": 0
+    },
+    {
+      "id": "24d47bccd731971921f06a639787af2a70e7354b78d45120501f4edf5bdfeb62",
+      "exit_code": 0
+    },
+    {
+      "id": "d198cdc80aedf2d6318bbbd63c4f323c3baa83a1bf7c3d41f1d3bc6e1f7e8751",
+      "exit_code": 0
+    }
+  ],
+  "finished_at": "2026-09-26T07:57:42.913639+00:00",
+  "selected_subcases": 63,
+  "passed_subcases": 46,
+  "failed_subcases": 5,
+  "unverified_native_subcases": 12,
+  "diagnosis": "The shared runtime package process exceeded five minutes. Completion recovery passed in 113.6 seconds. Publication recovery reached its fifth crash point at the process timeout. Both require independent five-minute process budgets.",
+  "next_action": "Register separate processes for the two long recovery tests. Verify the scheduler and focused runtime selection before updating PR #182.",
+  "repair": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
+    "branch": "codex/catalog-batched-verification",
+    "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+    "dirty_files": [],
+    "scheduler_tests": {
+      "passed": 98,
+      "seconds": 10.072
+    },
+    "runtime_session": 81394,
+    "runtime_report": "/tmp/catalog-batch-isolation-runtime.json",
+    "writing_session": 9419,
+    "writing_log": "/tmp/catalog-batch-isolation-writing.log",
+    "next_action": "Qualify published correction at 854129199 in native run 36228899978 before merge. Full CSP8 acceptance remains required.",
+    "runtime_result": {
+      "status": "PASS",
+      "selected": 11,
+      "named_pass": 51,
+      "processes": 3,
+      "seconds": 446.11114399999497
+    },
+    "writing_result": "PASS: 1843 files, zero diagnostics.",
+    "verification": "isolation-verification.json"
+  }
+}

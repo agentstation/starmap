@@ -1,16 +1,16 @@
 {
-  "checked_at": "2026-09-26T07:36:48.984200+00:00",
+  "checked_at": "2026-09-26T08:10:02.418017+00:00",
   "starmap": [
     {
       "pr": 182,
-      "head": "e8a9a485c3e83fe02237d80b6134053bc9d4bd97",
+      "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
       "branch": "codex/catalog-native-consumer-qualification",
       "state": "OPEN",
       "draft": true,
       "owner": "CSP8",
-      "checks_run": 36227245093,
-      "disposition": "Keep. Reviewed Windows test correction and acceptance batching are published. Fresh native CI is active.",
-      "next_action": "Verify native CI at the exact published head, then merge before the consumer module pin."
+      "checks_run": 36228899978,
+      "disposition": "Keep. Reviewed recovery scheduling repair is published. Native CI runs against the current head.",
+      "next_action": "Capture successful native evidence, verify current head and base, then merge the producer before updating the consumer module."
     }
   ],
   "starport": [
@@ -140,7 +140,7 @@
     "preserved_pass_proof": "worktree-cleanup-preserved.json",
     "archive_verification": "PASS: eight additional archive and bundle digests match, all eight worktree paths and branch refs are absent.",
     "additional_proven_branches_removed": 8,
-    "total_local_branches_removed": 76,
+    "total_local_branches_removed": 82,
     "additional_pass_proof": "worktree-cleanup-additional.json",
     "remote_additional_proof": "remote-cleanup-additional.json",
     "automatic_superseded_remote_branch_deletions": 5
@@ -199,10 +199,10 @@
     "changed_plan_strict_lint": "PASS: 1 file, zero diagnostics.",
     "repository_technical_writing_check": "FAIL: 1698 files, 69 unchanged historical diagnostics.",
     "ledger": "40 rows, 16 terminal, CSP8 only in_progress.",
-    "local_links": "97 unique local links resolve.",
+    "local_links": "PASS: all 114 local links resolve.",
     "diff_check": "PASS",
     "writing_log": {
-      "path": "../../csp8/windows-owner-182/plan-writing.log.gz",
+      "path": "../../csp8/acceptance-batching/isolation-plan-writing.log.gz",
       "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
     }
   },
@@ -235,18 +235,22 @@
     "branch": "codex/catalog-native-consumer-qualification",
     "base": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
     "worktree": "starmap-host-files",
-    "status": "Repository checks, 56 selected CLI tests, and full-branch review pass. Fresh native CI is active.",
+    "status": "Repair passes 98 verifier tests and 51 runtime tests and subtests without skips. Required review passed; native CI is active.",
     "proof": "../../csp8/acceptance-batching/preparation.json",
-    "head": "e8a9a485c3e83fe02237d80b6134053bc9d4bd97",
+    "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
     "pr": 182,
-    "checks_run": 36227245093,
+    "checks_run": 36228899978,
     "windows_proof": "../../csp8/windows-owner-182/verification.json",
     "superseded_run": {
-      "id": 36223296385,
-      "action": "Cancellation requested after the replacement head and native workflow were confirmed. Old source lacks the required Windows owner adapter."
+      "id": 36227245093,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "reason": "Superseded by the reviewed scheduling correction at 854129199."
     },
     "terminal_failure_proof": "../../csp8/native-182/terminal-failure.json",
-    "batching_proof": "../../csp8/acceptance-batching/preparation.json"
+    "batching_proof": "../../csp8/acceptance-batching/preparation.json",
+    "candidate_audit": "../../csp8/acceptance-batching/candidate-audit.json",
+    "isolation_proof": "../../csp8/acceptance-batching/isolation-verification.json"
   },
   "csp8_acceptance": {
     "status": "interrupted for security repair",
@@ -360,7 +364,8 @@
         "status": "PASS",
         "pass_cap_reason": "Preserve complete prepared integration review scope, unchanged from the prior nine-pass review."
       }
-    }
+    },
+    "latest_candidate_audit": "../../csp8/acceptance-batching/candidate-audit.json"
   },
   "workspace_cleanup": {
     "local_branches_removed_total": 82,

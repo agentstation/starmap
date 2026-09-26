@@ -1,0 +1,50 @@
+{
+  "checked_at": "2026-09-26T08:10:02.418017+00:00",
+  "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+  "base": "e8a9a485c3e83fe02237d80b6134053bc9d4bd97",
+  "patch_sha256": "f6eb96fe0043ecfbac5314a8a85838d0275374ff52490d309e34c5d73bb9d6f3",
+  "status": "PUBLISHED_NATIVE_CI_RUNNING",
+  "changes": "Run the two long migration recovery tests in separate processes. Keep the other selected tests batched. Retain race detection, fresh runs, assertions, crash points, and five-minute process limits.",
+  "tests": {
+    "verifier_suite": {
+      "passed": 98,
+      "seconds": 10.072
+    },
+    "runtime_selection": {
+      "selected": 11,
+      "named_pass": 51,
+      "skip": 0,
+      "fail": 0,
+      "processes": 3,
+      "seconds": 446.11114399999497
+    },
+    "strict_writing": {
+      "files": 1843,
+      "diagnostics": 0
+    },
+    "diff_check": "PASS"
+  },
+  "artifacts": {
+    "isolation-runtime.json.gz": "d311d907f44907435713b2dee6c35756cf620e30b19cd1db4a36927b47bcd585",
+    "isolation-tests.log.gz": "3b746f88d5d8fa2d0f2f58a1b6b533dada3cddaec43e77ed0bd5d10e82cb21a4",
+    "isolation-writing.log.gz": "9219d0268c8f93cad98e8e2ada7966ad66d7516389738cb984c11125f1038e5a",
+    "isolation.patch.gz": "941609d2526dc89432a7a69687f05ba5117b7f66a7999386f978571004c1a9fd",
+    "isolation-review.log.gz": "2e9d0b1c3d4535d70d782d1fe78122870f1dfaa5b7adfdc2e4ce283513ea03fb"
+  },
+  "limits": "Focused repair evidence. Full CSP8 acceptance and native qualification remain required. Go sources, modules, and workflows are unchanged from the base.",
+  "review": {
+    "status": "PASS",
+    "profile": "auto",
+    "model": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "P0",
+    "passes": 1,
+    "bundle_bytes": 63337,
+    "findings": 0,
+    "secret_scan": "clean",
+    "log": "isolation-review.log.gz"
+  },
+  "pr": 182,
+  "native_run": 36228899978,
+  "signature": "GitHub verified: valid"
+}
