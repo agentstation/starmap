@@ -252,7 +252,7 @@ func TestFleetRuntimeRecoversInputsWithoutLeaderDirectory(t *testing.T) {
 		}
 	}
 	status, ok := restarted.FleetStatus()
-	if !ok || !status.ReplayReady || status.Head.Revision != 4 {
+	if !ok || !status.ReplayReady || status.Head.Revision != 6 {
 		t.Fatalf("fleet state: %+v", status)
 	}
 	if _, err := restarted.Client().Update(t.Context(), func(context.Context, *catalogs.Catalog) (*starmap.Candidate, error) {
@@ -545,6 +545,14 @@ func TestFleetRuntimeUnchangedRefreshRebindsAfterTakeover(t *testing.T) {
 		t.Fatal(err)
 	}
 	replacement := openFleetRuntime(t, backend, "replacement", privateRuntimeDirectory(t))
+	startup, _ := replacement.FleetStatus()
+	backend.mu.Lock()
+	startupGrant := backend.snapshots[startup.Head].Publication.Grant
+	startupOwner := backend.lease
+	backend.mu.Unlock()
+	if startup.Head.Revision <= before.Head.Revision || !sameLeaseGrant(startupGrant, startupOwner) {
+		t.Fatal("startup did not revalidate the retained publication under the new owner")
+	}
 	if _, err := replacement.PublishObservations(t.Context(), observation); err != nil {
 		t.Fatal(err)
 	}

@@ -62,7 +62,7 @@ func (r *Runtime) publishAcquisitionPolicyStartup(ctx context.Context) error {
 	evidence := r.layers.buildEvidence
 	r.mu.RUnlock()
 	current := r.client.CurrentCatalogState()
-	if current.GenerationID == state.GenerationID && current.PayloadChecksum == state.PayloadChecksum && (r.config.fleetStore == nil || r.fleetHead.Revision != 0) {
+	if current.GenerationID == state.GenerationID && current.PayloadChecksum == state.PayloadChecksum && !r.needsFleetOwnershipPublication(ctx) {
 		return nil
 	}
 	committed, err := r.commit(ctx, state, r.lease.epoch(), evidence, nil)
