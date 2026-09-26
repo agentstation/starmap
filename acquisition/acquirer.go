@@ -231,7 +231,8 @@ func eligibleProviders(request runtime.AcquisitionRequest) []catalogs.ProviderID
 // source. It holds the repository provider clients, so a deployment that
 // imports starmap alone still imports no provider SDK.
 type providerSourceObserver struct {
-	options []providers.SourceOption
+	resolver sources.ProviderCredentialResolver
+	options  []providers.SourceOption
 }
 
 // newProviderSourceObserver returns the default per-provider observation. A
@@ -240,7 +241,7 @@ func newProviderSourceObserver(resolver sources.ProviderCredentialResolver) *pro
 	if resolver == nil {
 		resolver = auth.NewResolver()
 	}
-	return &providerSourceObserver{options: []providers.SourceOption{
+	return &providerSourceObserver{resolver: resolver, options: []providers.SourceOption{
 		providers.WithClientFactory(defaultProviderClientFactory),
 		providers.WithCredentialResolver(resolver),
 	}}

@@ -65,6 +65,9 @@ func (config options) openServingClient(ctx context.Context) (*starmap.Client, *
 func (r *Runtime) initializeRefreshOwnership(ctx context.Context) (context.Context, error) {
 	r.adoptSourceIdentity()
 	r.lease = newLeaseKeeper(r.config.leaseStore, r.schedule.identity.Instance, r.config.now)
+	if r.config.fleetStore != nil {
+		r.lease.checkCapability = r.checkFleetAcquisition
+	}
 	if err := r.lease.start(r.ctx, &r.work, r.onLeaseLost, !r.originFollowed && r.fleetReplayError == nil); err != nil {
 		return nil, err
 	}

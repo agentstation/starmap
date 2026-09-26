@@ -79,9 +79,10 @@ const (
 // fences every durable commit with the epoch of the acquisition that the
 // commit started under.
 type leaseKeeper struct {
-	store  LeaseStore
-	holder string
-	now    func() time.Time
+	checkCapability func(context.Context) error
+	store           LeaseStore
+	holder          string
+	now             func() time.Time
 
 	// base is the runtime context. Renewal runs under it, so Close stops
 	// renewal even when a later run took the lease again.
@@ -158,6 +159,11 @@ func (k *leaseKeeper) ensureHeld(ctx context.Context) error {
 // take takes the lease and restarts renewal. A refusal leaves the keeper in
 // the lost state and returns the typed conflict.
 func (k *leaseKeeper) take(ctx context.Context) error {
+	if k.checkCapability != nil {
+		if err := k.checkCapability(ctx); err != nil {
+			return err
+		}
+	}
 	lease, err := k.store.AcquireLease(ctx, k.holder, LeaseTTL)
 	if err != nil {
 		k.mu.Lock()
@@ -235,7 +241,15 @@ func (k *leaseKeeper) renewOnce(ctx context.Context) error {
 	current := k.lease
 	k.mu.RUnlock()
 
-	renewed, err := k.store.Renew(ctx, current, LeaseTTL)
+	var renewed Lease
+	var err error
+	if k.checkCapability != nil {
+		err = k.checkCapability(ctx)
+	}
+	capabilityLost := err != nil
+	if err == nil {
+		renewed, err = k.store.Renew(ctx, current, LeaseTTL)
+	}
 	k.mu.Lock()
 	if k.stopped || k.state != leaseHeld || !sameLeaseGrant(k.lease, current) {
 		k.mu.Unlock()
@@ -247,6 +261,9 @@ func (k *leaseKeeper) renewOnce(ctx context.Context) error {
 	if err != nil {
 		k.state = leaseLost
 		k.mu.Unlock()
+		if capabilityLost {
+			k.release(current)
+		}
 		logging.Warn().
 			Err(err).
 			Str("holder", k.holder).

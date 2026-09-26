@@ -93,6 +93,8 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func StageDirectoryMigration\(ctx context.Context, request DirectoryMigrationRequest\) \(DirectoryMigrationStage, error\)](<#StageDirectoryMigration>)
 - [type DirectoryOwner](<#DirectoryOwner>)
   - [func \(o DirectoryOwner\) Validate\(\) error](<#DirectoryOwner.Validate>)
+- [type FleetAcquisitionChecker](<#FleetAcquisitionChecker>)
+- [type FleetAcquisitionRequirements](<#FleetAcquisitionRequirements>)
 - [type FleetHead](<#FleetHead>)
   - [func \(h FleetHead\) Validate\(\) error](<#FleetHead.Validate>)
 - [type FleetIdentity](<#FleetIdentity>)
@@ -760,6 +762,30 @@ func (o DirectoryOwner) Validate() error
 
 Validate checks the ownership identity without creating files.
 
+<a name="FleetAcquisitionChecker"></a>
+## type [FleetAcquisitionChecker](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_capability.go#L22-L24>)
+
+FleetAcquisitionChecker verifies access before grant acquisition or renewal. It must use acquisition credentials and must not fetch provider inventories.
+
+```go
+type FleetAcquisitionChecker interface {
+    CheckFleetAcquisition(context.Context, FleetAcquisitionRequirements) error
+}
+```
+
+<a name="FleetAcquisitionRequirements"></a>
+## type [FleetAcquisitionRequirements](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_capability.go#L14-L18>)
+
+FleetAcquisitionRequirements identifies the acquisition access a refresh owner must retain. Bindings declare scopes. Unbound providers retain the deployment's implicit acquisition policy. No credential value or credential digest belongs in this record.
+
+```go
+type FleetAcquisitionRequirements struct {
+    Catalog   *catalogs.Catalog
+    Providers []catalogs.ProviderID
+    Bindings  []sources.ProviderAcquisitionBinding
+}
+```
+
 <a name="FleetHead"></a>
 ## type [FleetHead](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L31-L36>)
 
@@ -873,14 +899,15 @@ func (s FleetSnapshot) Validate() error
 Validate checks that the head selects exactly this publication and its recovery inputs.
 
 <a name="FleetStatus"></a>
-## type [FleetStatus](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_runtime.go#L46-L49>)
+## type [FleetStatus](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_runtime.go#L46-L50>)
 
 FleetStatus describes the accepted publication and this replica's ability to replay its inputs. Replay readiness does not establish current lease ownership or inference permission.
 
 ```go
 type FleetStatus struct {
-    Head        FleetHead
-    ReplayReady bool
+    Head             FleetHead
+    ReplayReady      bool
+    AcquisitionReady bool
 }
 ```
 
@@ -1887,7 +1914,7 @@ type RetentionStatus = status.RetentionStatus
 ```
 
 <a name="Runtime"></a>
-## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L102-L150>)
+## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L102-L151>)
 
 Runtime is a connected Starmap. It serves the embedded catalog immediately, refreshes from one selected upstream source, retains per\-provider observations, and rebuilds one immutable effective catalog from those layers. Reads reach no external system.
 
@@ -1898,7 +1925,7 @@ type Runtime struct {
 ```
 
 <a name="Open"></a>
-### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L156>)
+### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L157>)
 
 ```go
 func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error)
@@ -1934,7 +1961,7 @@ func (r *Runtime) AllowsNewAttempt() bool
 AllowsNewAttempt checks current catalog permission using memory only. Call it for every new attempt, including retries and cached response delivery. It does not replace model, destination, account, or budget authorization.
 
 <a name="Runtime.Catalog"></a>
-### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L273>)
+### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L274>)
 
 ```go
 func (r *Runtime) Catalog() *catalogs.Catalog
@@ -1943,7 +1970,7 @@ func (r *Runtime) Catalog() *catalogs.Catalog
 Catalog returns the current immutable effective catalog. It reaches no external system and never blocks on the source.
 
 <a name="Runtime.Client"></a>
-### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L295>)
+### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L296>)
 
 ```go
 func (r *Runtime) Client() *starmap.Client
@@ -1952,7 +1979,7 @@ func (r *Runtime) Client() *starmap.Client
 Client returns the immutable publication client underneath the runtime. Use it for explicit publication, hooks, and generation retrieval.
 
 <a name="Runtime.Close"></a>
-### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L315>)
+### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L316>)
 
 ```go
 func (r *Runtime) Close() error
@@ -1979,7 +2006,7 @@ func (r *Runtime) CompleteDirectoryMigration(ctx context.Context, request Direct
 CompleteDirectoryMigration confirms this runtime's selected directory, owner, and retained identity. Call it after the host selects the replacement configuration and opens this runtime. This method records completion without editing configuration files or deleting the source.
 
 <a name="Runtime.FleetStatus"></a>
-### func \(\*Runtime\) [FleetStatus](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_runtime.go#L52>)
+### func \(\*Runtime\) [FleetStatus](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_runtime.go#L53>)
 
 ```go
 func (r *Runtime) FleetStatus() (FleetStatus, bool)
@@ -2069,7 +2096,7 @@ func (r *Runtime) Refresh(ctx context.Context) (RefreshReport, error)
 Refresh reads the upstream and then observes configured acquisition sources. It changes the upstream layer and acquisition inputs in one run.
 
 <a name="Runtime.RefreshFleet"></a>
-### func \(\*Runtime\) [RefreshFleet](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_runtime.go#L304>)
+### func \(\*Runtime\) [RefreshFleet](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_runtime.go#L305>)
 
 ```go
 func (r *Runtime) RefreshFleet(ctx context.Context) error
@@ -2114,7 +2141,7 @@ func (r *Runtime) RetentionSnapshot() RetentionStatus
 RetentionSnapshot returns the configured policy and last collection result without storage reads.
 
 <a name="Runtime.State"></a>
-### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L284>)
+### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L285>)
 
 ```go
 func (r *Runtime) State() starmap.CatalogState
@@ -2161,7 +2188,7 @@ UpdateObservations prepares and publishes original observations under runtime ow
 Optional resets replace prior local acquisition observations within the named scopes. Each scope requires complete successful replacement evidence. The baseline and unrelated scopes remain. Resets and replacements share the catalog publication journal.
 
 <a name="Runtime.Updates"></a>
-### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L305>)
+### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L306>)
 
 ```go
 func (r *Runtime) Updates() <-chan starmap.CatalogState

@@ -33,7 +33,7 @@ type fleetTestSession struct {
 	session string
 }
 
-func newFleetRuntimeBackend(t *testing.T) *fleetTestBackend {
+func newFleetRuntimeBackend(t *testing.T, options ...Option) *fleetTestBackend {
 	t.Helper()
 	p := fleetTestPublication(t)
 	embedded, manifest, err := bootstrap.Embedded()
@@ -45,7 +45,13 @@ func newFleetRuntimeBackend(t *testing.T) *fleetTestBackend {
 		source: &sourceLayer{Identity: "fleet-source", GenerationID: p.Generation.Manifest.GenerationID,
 			Payload: p.Generation.Payload, Checksum: p.Generation.Manifest.Payload.Checksum, Manifest: &p.Generation.Manifest,
 			PublishedAt: p.Generation.Manifest.GeneratedAt}}
-	layers.sourceConfiguration, err = describeSources(defaults())
+	config := defaults()
+	for _, option := range options {
+		if err := option(config); err != nil {
+			t.Fatal(err)
+		}
+	}
+	layers.sourceConfiguration, err = describeSources(config)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -325,12 +331,12 @@ func TestFleetRuntimePinSurvivesLostDirectoriesAndUnpin(t *testing.T) {
 				t.Fatal("origin rollback did not advance the authority sequence")
 			}
 			follower := open("pin-follower", selected)
+			if err := follower.RefreshFleet(t.Context()); err != nil {
+				t.Fatal("pinned follower catch-up:", err)
+			}
 			followed, ok := follower.PinAcceptance()
 			if !ok || !reflect.DeepEqual(followed, receipt) || follower.State().GenerationID != pinned.State().GenerationID {
 				t.Fatal("pin follower did not retain the shared acceptance")
-			}
-			if err := follower.Close(); err != nil {
-				t.Fatal(err)
 			}
 			directory := pinned.config.stateDirectory
 			if err := pinned.Close(); err != nil {
@@ -351,6 +357,9 @@ func TestFleetRuntimePinSurvivesLostDirectoriesAndUnpin(t *testing.T) {
 				t.Fatal(err)
 			}
 			unpin := open("unpin-owner", "")
+			if err := follower.RefreshFleet(t.Context()); err == nil {
+				t.Fatal("pinned follower accepted an unpinned head")
+			}
 			provider, err := unpin.Catalog().Provider("manual-provider")
 			if err != nil || provider.Models["first"] == nil || provider.Models["second"] == nil {
 				t.Fatalf("unpin lost acquisition inputs: %v", err)

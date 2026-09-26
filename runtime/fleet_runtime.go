@@ -44,8 +44,9 @@ func WithFleetAuthorityOrigin(store FleetStore, origin OriginConfig) Option {
 // FleetStatus describes the accepted publication and this replica's ability to replay its inputs.
 // Replay readiness does not establish current lease ownership or inference permission.
 type FleetStatus struct {
-	Head        FleetHead
-	ReplayReady bool
+	Head             FleetHead
+	ReplayReady      bool
+	AcquisitionReady bool
 }
 
 // FleetStatus returns local fleet state without a storage operation.
@@ -55,7 +56,7 @@ func (r *Runtime) FleetStatus() (FleetStatus, bool) {
 	}
 	r.mu.RLock()
 	defer r.mu.RUnlock()
-	return FleetStatus{Head: r.fleetHead, ReplayReady: r.fleetReplayError == nil}, true
+	return FleetStatus{Head: r.fleetHead, ReplayReady: r.fleetReplayError == nil, AcquisitionReady: r.fleetReplayError == nil && r.fleetCapabilityError == nil}, true
 }
 
 func (config options) readFleetBootstrap(ctx context.Context) (context.Context, *FleetSnapshot, error) {

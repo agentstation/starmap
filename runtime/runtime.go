@@ -119,6 +119,7 @@ type Runtime struct {
 	fleetHead             FleetHead
 	fleetPublicationGrant Lease
 	fleetReplayError      error
+	fleetCapabilityError  error
 	effective             starmap.CatalogState
 	report                statusState
 	permissions           authorityPermissions
