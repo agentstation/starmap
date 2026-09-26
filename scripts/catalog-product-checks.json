@@ -5801,6 +5801,161 @@
           "test": "TestValkeyIncarnationRejectsReplacementBackend"
         }
       ]
+    },
+    "A46.validity_skew_withdrawal": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestReceiptBoundsValidityAndClockHealth"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMutationRevokesCopiesAndInFlightLoads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestReceiptRejectsUnverifiedEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestConcurrentChecksObserveWithdrawal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestElapsedPermissionExpiresAcrossSuspend"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestElapsedPermissionRejectsUnknownAndRollback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestElapsedPermissionCountsSourceDelay"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestElapsedClockFailureRefusesColdLoadsAndReadiness"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestKeyExpiryPreservesMonotonicCacheDeadline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestInvalidReceiptCannotReviveAfterClockRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorCatchesMissedChangeDuringOtherAuthorityOutage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorObservationsDoNotRenewPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorEpochChangeCannotRecoverUnderOldEpoch"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorRejectsRevisionRollback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorRetainsKnownWithdrawalAfterReadDeadline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorPropagationIncludesReadLatency"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestReadinessDoesNotLoadOrRenewPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestFleetDurableReceiptPrecedesReplicaEnforcement"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestStandaloneAuthorizationNeedsNoNativeClock"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestSharedAuthorizationDoesNotRequireCatalogClock"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestStandaloneAuthorizationCannotReplaceCatalogAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestReadinessTracksAdmissionWithoutBlockingLiveness"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestOperatorDiagnosticAllowlist"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCachedPermissionKeepsOriginalDeadline"
+        }
+      ]
     }
   },
   "task_component_checks": {

@@ -2833,7 +2833,14 @@ Expired sessions, rotated tokens, identity grants, and explicit bearer keys cann
 
 
 A46 qualification covers forward and backward clock changes, suspend/resume, restart, delayed responses, missed notifications, partitions, expiry, and known withdrawals.
-Test these across the actual KV/SQL ownership split. Native suspend behavior remains a required qualification case.
+Test these across the actual KV/SQL ownership split.
+
+D40 requires documented OS clock behavior, native adapter checks, and deterministic expiry, withdrawal, and clock-failure tests.
+Physical OS suspend/resume testing supplies additional platform evidence and does not block task completion or release.
+Actual suspend behavior remains UNVERIFIED until a controlled sleep/wake test records it.
+
+Keep this optional qualification with CSP22. It must not delay independent product work.
+The 60-second authorization limit and stricter Starmap authority-receipt requirements remain unchanged.
 Warm checks read memory without allocating or querying a time service. Refresh and required admission operations remain bounded.
 
 The initial authorization profile permits 64 KiB per encoded key, account, user, or team record.

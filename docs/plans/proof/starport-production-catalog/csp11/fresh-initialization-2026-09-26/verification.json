@@ -1,0 +1,81 @@
+{
+  "status": "LOCAL_PASS_REVIEW_AND_MERGE_PENDING",
+  "owner": "CSP11",
+  "consumer_commit": "97d2124046238eb90b6e46b1196f03da04a9e4b6",
+  "toolchain": "go1.27.1",
+  "module_mode": "GOWORK=off",
+  "runner": {
+    "started": "2026-09-26T20:35:27.554540+00:00",
+    "images": [
+      "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94"
+    ],
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout=4m",
+      "-json",
+      "-run",
+      "^(TestFreshFleet|TestRecoveryWitness|TestFleetInitialization|TestInitializeFleet)",
+      "./internal/catalog/recovery",
+      "./internal/cli",
+      "./internal/app"
+    ],
+    "exit_code": 0,
+    "cleanup": [
+      0,
+      0,
+      0
+    ],
+    "finished": "2026-09-26T20:36:05.211150+00:00"
+  },
+  "named_results": {
+    "pass": 29
+  },
+  "test_names": [
+    "TestFreshFleetInitialization",
+    "TestFreshFleetRefusesExistingState/kv",
+    "TestFreshFleetRefusesExistingState/sql",
+    "TestFreshFleetRefusesExistingState/approval",
+    "TestFreshFleetRefusesExistingState/closed-approval",
+    "TestFreshFleetRefusesExistingState/row-security",
+    "TestFreshFleetRefusesExistingState/unknown-table",
+    "TestFreshFleetRefusesExistingState",
+    "TestFreshFleetInterruptedClaim",
+    "TestFreshFleetConcurrentInitialization",
+    "TestFreshFleetRefusesChangedIncarnation",
+    "TestFreshFleetSQLFailureRetainsOnlyRetryClaim",
+    "TestRecoveryWitnessTransitions/sqlite",
+    "TestRecoveryWitnessTransitions/postgres",
+    "TestRecoveryWitnessTransitions",
+    "TestFleetInitializationCommandIsDiscoverable",
+    "TestFleetInitializationCommand/success",
+    "TestFleetInitializationCommand/missing-operation",
+    "TestFleetInitializationCommand/empty-evidence",
+    "TestFleetInitializationCommand/extra-argument",
+    "TestFleetInitializationCommand/unavailable",
+    "TestFleetInitializationCommand",
+    "TestInitializeFleetFreshStartup",
+    "TestInitializeFleetRefusesLocalStorage/nil",
+    "TestInitializeFleetRefusesLocalStorage/badger",
+    "TestInitializeFleetRefusesLocalStorage/sqlite",
+    "TestInitializeFleetRefusesLocalStorage/mysql",
+    "TestInitializeFleetRefusesLocalStorage/cluster",
+    "TestInitializeFleetRefusesLocalStorage"
+  ],
+  "checks": {
+    "vet": "PASS",
+    "dependencies": "PASS",
+    "layout": "PASS",
+    "doc_links": "PASS"
+  },
+  "raw_sha256": "75cacfdc45397bdaebba44f673524a032130e79896f7679c49d27c620b685a59",
+  "limits": [
+    "Not a merged implementation",
+    "Final review and paired producer integration remain required",
+    "Existing deployment recovery remains owned by CSP13"
+  ]
+}

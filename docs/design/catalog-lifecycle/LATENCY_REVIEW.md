@@ -356,3 +356,18 @@ This measurement uses separate processes and real stores on one host. It does no
 The [disconnected-expiry proof](../../plans/proof/starport-production-catalog/csp10.2/disconnected-expiry.json) verifies expiry without an observed withdrawal for both authority owners.
 Its reported intervals start after mutation completion. About two seconds of the original permission lifetime elapsed before that measurement.
 Native suspend and clock discontinuity qualification remain open.
+
+
+## September 26 clock qualification decision
+
+D40 makes physical OS suspend testing optional platform evidence. CSP22 owns that follow-up, which remains UNVERIFIED.
+The 60-second authorization limit, observed withdrawal enforcement, and stricter Starmap authority receipts remain mandatory.
+Native adapter checks and deterministic expiry, clock-failure, and withdrawal tests remain required.
+
+The [clock audit](../../plans/proof/starport-production-catalog/csp10.2/clock-contract-audit-2026-09-26/verification.json) passes all 25 required tests with no failures or skips.
+D40 resolves its former pending policy decision. Historical results remain unchanged.
+The [optional procedure](../../plans/proof/starport-production-catalog/csp10.2/optional-suspend-qualification.md) defines the additional hardware test.
+These clock results do not establish complete gateway latency or multi-host propagation performance.
+
+The [proof](../../plans/proof/starport-production-catalog/csp10.2/merged-qualification-2026-09-26/verification.json) passes all ten A46 subcases. The toolchain is Go 1.27.1.
+It records 192 named passing test events, with no failures or skips. CSP10.2 is complete at Starport merge `f5f066ddb`.

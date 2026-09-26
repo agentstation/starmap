@@ -1,0 +1,75 @@
+{
+  "status": "PASS",
+  "task": "CSP10.2",
+  "decision": "D40",
+  "producer_merge": "8122081e0494648fb1e356647053dd870a05fb1c",
+  "consumer_merge": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
+  "merged_in_pr": 384,
+  "selected_consumer_module": "github.com/agentstation/starmap v0.16.6-0.20260926123426-0e53e6f9cbda",
+  "toolchain": "go1.27.1",
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "verifier_checkout_commit": "b92a362a7248e9b80b8a37d55dea6821f9a228a3",
+  "verifier_note": "The runner producer field identifies the verification checkout, not the selected runtime module. The registry includes the D40 clock contract.",
+  "selected_subcases": {
+    "A46.warm_no_stable_store_reads": "PASS",
+    "A46.dependency_revision_coherence": "PASS",
+    "A46.confirmed_absence_vs_unknown": "PASS",
+    "A46.local_mutation_fencing": "PASS",
+    "A46.fleet_receipt_vs_enforcement": "PASS",
+    "A46.missed_event_catchup": "PASS",
+    "A46.validity_skew_withdrawal": "PASS",
+    "A46.cache_retry_batch_admission": "PASS",
+    "A46.cold_load_deadline_coalescing": "PASS",
+    "A46.bounded_tenant_working_set": "PASS"
+  },
+  "unique_command_results": 94,
+  "named_results": {
+    "pass": 192
+  },
+  "unique_passing_test_names": 174,
+  "required_clock_tests": 25,
+  "native_platform_records": 10,
+  "native_evidence": "native-clock-evidence.json",
+  "seconds": 752.8915687499975,
+  "cleanup": [
+    {
+      "id": "162340f7cd41b23133342e95ef429fa78eb641f33d6416816172f063fef443b2",
+      "exit_code": 0
+    },
+    {
+      "id": "f89df2085227758424cea6c27a86cc275b4711cbca21b9ce47c70e161951da1b",
+      "exit_code": 0
+    },
+    {
+      "id": "506de8f4bc1e21a4b5a06300451854f12578460f079590427d84636ee5f7c3c8",
+      "exit_code": 0
+    }
+  ],
+  "physical_suspend": "UNVERIFIED_OPTIONAL_CSP22",
+  "optional_procedure": "../optional-suspend-qualification.md",
+  "artifacts_sha256": {
+    "runner.json.gz": "276a19bb17fec7f6ffa4aed0ce5dba69f3276704db50d758ffaea7c7ef0c8b31",
+    "acceptance.json.gz": "5320714a3228194ce75131749b9c44530dd69b877efa8e2095c3a80d393b9818",
+    "acceptance.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "run-csp10-2-final-qualification.py.gz": "c07f22ccea5aa99111816bf7e4d7f96073f9f121dc13cc76b89419ab6570fb3c",
+    "d40-registry-tests.log.gz": "ebc7d5c729d061b7f1ce8f50a421490c8e460d02e9d4adf729d61796fbd9a143",
+    "d40-writing.log.gz": "32d48ca0282fe7a6fc14fa5a916269b5ed58f3c05d594c86c734b9eede3b5119",
+    "changed-writing.log.gz": "64831690ac5141b2b28f093403ddbc2140ff3c485ebb18aa39bb4443808ee3be"
+  },
+  "limitations": [
+    "Only A46 was selected. Other product cases remain outside this run.",
+    "The canonical verifier runs named checks individually. Future qualification should use the maintained batched verifier.",
+    "Repository-wide writing check reports 91 findings in pre-existing evidence files. Changed maintained prose passes its focused check."
+  ],
+  "plan_validation": {
+    "task_rows": 40,
+    "done": 23,
+    "active": "CSP11",
+    "unique_ids": 97,
+    "local_evidence_links": "PASS"
+  },
+  "registry_tests": {
+    "pass": 99,
+    "fail": 0
+  }
+}
