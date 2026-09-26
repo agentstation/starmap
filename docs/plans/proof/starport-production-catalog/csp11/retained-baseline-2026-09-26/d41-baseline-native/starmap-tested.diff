@@ -1,0 +1,469 @@
+diff --git i/runtime/fleet_recovery.go w/runtime/fleet_recovery.go
+index bf73603f4..376b49d86 100644
+--- i/runtime/fleet_recovery.go
++++ w/runtime/fleet_recovery.go
+@@ -7,11 +7,12 @@ import (
+ 	"encoding/json/v2"
+ 	"strings"
+ 
++	"github.com/agentstation/starmap"
+ 	"github.com/agentstation/starmap/pkg/catalogs"
+ 	"github.com/agentstation/starmap/pkg/catalogs/storage"
+ )
+ 
+-const fleetRecoveryVersion = 1
++const fleetRecoveryVersion = 2
+ 
+ // MaxFleetRecoveryBytes bounds the private inputs attached to one fleet publication.
+ const MaxFleetRecoveryBytes = storage.DefaultRetentionInputMaxBytes
+@@ -42,6 +43,7 @@ func (r FleetRecovery) Validate(generation catalogs.Generation) error {
+ // fleetRecoveryRecord retains semantic inputs without private filesystem references.
+ type fleetRecoveryRecord struct {
+ 	Version        int                            `json:"version"`
++	Baseline       catalogs.Generation            `json:"baseline"`
+ 	PublisherID    string                         `json:"publisher_id"`
+ 	Compatibility  string                         `json:"compatibility"`
+ 	Pin            *generationPinRecord           `json:"pin,omitempty"`
+@@ -69,12 +71,16 @@ func encodeFleetRecoveryWithPin(ctx context.Context, layers layerSet, pin *gener
+ 	if layers.publisherID == "" {
+ 		return nil, invalidInputPublication("fleet recovery requires a publisher identity")
+ 	}
++	baseline, err := fleetBaseline(layers)
++	if err != nil {
++		return nil, err
++	}
+ 	compatibility, err := fleetLayerCompatibility(layers)
+ 	if err != nil {
+ 		return nil, err
+ 	}
+ 	record := fleetRecoveryRecord{Version: fleetRecoveryVersion, PublisherID: layers.publisherID, Compatibility: compatibility,
+-		Source: layers.source, Removals: layers.removals}
++		Baseline: baseline, Source: layers.source, Removals: layers.removals}
+ 	if pin != nil {
+ 		if err := pin.validate(); err != nil {
+ 			return nil, err
+@@ -137,6 +143,14 @@ func readFleetRecovery(ctx context.Context, data []byte) (fleetRecoveryRecord, e
+ 
+ func decodeFleetRecoveryRecord(ctx context.Context, record fleetRecoveryRecord) (layerSet, error) {
+ 	var layers layerSet
++	baseline, err := catalogs.DecodeCatalogGeneration(record.Baseline)
++	if err != nil {
++		return layers, err
++	}
++	manifest := record.Baseline.Manifest.Copy()
++	layers.embedded = starmap.CatalogState{Catalog: baseline, GenerationID: manifest.GenerationID,
++		PayloadChecksum: manifest.Payload.Checksum, GeneratedAt: manifest.GeneratedAt}
++	layers.embeddedManifest = &manifest
+ 	if record.Source != nil {
+ 		if err := validateSourceInput(record.Source); err != nil {
+ 			return layers, err
+@@ -175,3 +189,23 @@ func decodeFleetRecoveryRecord(ctx context.Context, record fleetRecoveryRecord)
+ 	}
+ 	return layers, nil
+ }
++
++// fleetBaseline retains the complete reconstruction baseline independently of the binary.
++func fleetBaseline(layers layerSet) (catalogs.Generation, error) {
++	if layers.embeddedManifest == nil || layers.embedded.Catalog == nil {
++		return catalogs.Generation{}, invalidInputPublication("fleet recovery requires the complete baseline")
++	}
++	manifest := layers.embeddedManifest.Copy()
++	if manifest.GenerationID != layers.embedded.GenerationID || manifest.Payload.Checksum != layers.embedded.PayloadChecksum || !manifest.GeneratedAt.Equal(layers.embedded.GeneratedAt) {
++		return catalogs.Generation{}, invalidInputPublication("fleet baseline state differs from its manifest")
++	}
++	payload, err := catalogs.EncodeCatalogPayload(layers.embedded.Catalog)
++	if err != nil {
++		return catalogs.Generation{}, err
++	}
++	generation := catalogs.Generation{Manifest: manifest, Payload: payload}
++	if err := generation.Validate(); err != nil {
++		return catalogs.Generation{}, err
++	}
++	return generation, nil
++}
+diff --git i/runtime/fleet_recovery_test.go w/runtime/fleet_recovery_test.go
+index 274ad25f7..7bb53647f 100644
+--- i/runtime/fleet_recovery_test.go
++++ w/runtime/fleet_recovery_test.go
+@@ -16,17 +16,14 @@ import (
+ 
+ func TestFleetRecoveryPreservesNextPartialMerge(t *testing.T) {
+ 	at := time.Date(2026, 9, 26, 0, 0, 0, 0, time.UTC)
+-	baseline, err := catalogs.DecodeCatalogPayload(testCatalogPayload(t, "baseline", "base", "Base"))
+-	if err != nil {
+-		t.Fatal(err)
+-	}
+-	embedded := starmap.CatalogState{GenerationID: "baseline", Catalog: baseline, GeneratedAt: at}
++	layers := fleetTestLayers(t)
++	embedded := layers.embedded
+ 	first := manualTestObservation(t, "first", at.Add(time.Minute), false)
+ 	prepared, err := prepareManualObservations(t.Context(), []sources.Observation{first})
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
+-	layers := layerSet{publisherID: "deployment", embedded: embedded, manual: &manualBatch{observations: prepared}}
++	layers.manual = &manualBatch{observations: prepared}
+ 	before, err := layers.build(t.Context(), embedded)
+ 	if err != nil {
+ 		t.Fatal(err)
+@@ -39,8 +36,7 @@ func TestFleetRecoveryPreservesNextPartialMerge(t *testing.T) {
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
+-	restored.embedded = embedded
+-	current, err := restored.build(t.Context(), embedded)
++	current, err := restored.build(t.Context(), restored.embedded)
+ 	if err != nil || current.GenerationID != before.GenerationID || current.PayloadChecksum != before.PayloadChecksum {
+ 		t.Fatalf("recovery changed the accepted state: %v", err)
+ 	}
+@@ -52,7 +48,7 @@ func TestFleetRecoveryPreservesNextPartialMerge(t *testing.T) {
+ 	if _, err := restored.prepareManualInputs(t.Context(), incoming, nil, nil); err != nil {
+ 		t.Fatal(err)
+ 	}
+-	next, err := restored.build(t.Context(), embedded)
++	next, err := restored.build(t.Context(), restored.embedded)
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
+@@ -99,28 +95,35 @@ func TestFleetRecoveryBindsExactGenerationAndBytes(t *testing.T) {
+ }
+ 
+ func TestFleetRecoveryRejectsAmbiguousAndInvalidInputs(t *testing.T) {
+-	compatibility, err := fleetLayerCompatibility(layerSet{})
++	layers := fleetTestLayers(t)
++	raw, err := encodeFleetRecoveryWithPin(t.Context(), layers, nil)
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
+-	for _, raw := range []string{
+-		`{"version":2,"publisher_id":"deployment"}`,
+-		`{"version":1}`,
+-		`{"version":1,"publisher_id":"deployment","unknown":true}`,
+-		`{"version":1,"version":1,"publisher_id":"deployment"}`,
+-		`{"version":1,"publisher_id":"deployment"}{}`,
+-		`{"version":1,"publisher_id":"deployment","source":{"generation_id":"x"}}`,
+-		`{"version":1,"publisher_id":"deployment","manual":{}}`,
+-		`{"version":1,"publisher_id":"deployment","providers":[{"provider_id":"x"}]}`,
++	for _, scenario := range []struct {
++		name   string
++		change func(string) string
++	}{
++		{"version", func(s string) string { return strings.Replace(s, `"version":2`, `"version":1`, 1) }},
++		{"publisher", func(s string) string {
++			return strings.Replace(s, `"publisher_id":"deployment"`, `"publisher_id":""`, 1)
++		}},
++		{"unknown", func(s string) string { return strings.Replace(s, `"version":2`, `"version":2,"unknown":true`, 1) }},
++		{"duplicate", func(s string) string { return strings.Replace(s, `"version":2`, `"version":2,"version":2`, 1) }},
++		{"trailing", func(s string) string { return s + "{}" }},
++		{"source", func(s string) string { return strings.TrimSuffix(s, "}") + `,"source":{"generation_id":"x"}}` }},
++		{"manual", func(s string) string { return strings.TrimSuffix(s, "}") + `,"manual":{}}` }},
++		{"provider", func(s string) string { return strings.TrimSuffix(s, "}") + `,"providers":[{"provider_id":"x"}]}` }},
+ 	} {
+-		raw = strings.ReplaceAll(raw, `"publisher_id":"deployment"`, `"publisher_id":"deployment","compatibility":"`+compatibility+`"`)
+-		if _, err := decodeFleetRecovery(t.Context(), []byte(raw)); err == nil {
+-			t.Errorf("accepted invalid recovery: %s", raw)
+-		}
++		t.Run(scenario.name, func(t *testing.T) {
++			if _, err := decodeFleetRecovery(t.Context(), []byte(scenario.change(string(raw)))); err == nil {
++				t.Fatal("accepted invalid recovery")
++			}
++		})
+ 	}
+ 	ctx, cancel := context.WithCancel(t.Context())
+ 	cancel()
+-	if _, err := decodeFleetRecovery(ctx, []byte(`{"version":1,"publisher_id":"deployment"}`)); err == nil {
++	if _, err := decodeFleetRecovery(ctx, raw); err == nil {
+ 		t.Fatal("recovery ignored cancellation")
+ 	}
+ }
+@@ -133,7 +136,11 @@ func TestFleetRecoveryRetainsProviderScopesAndRejectsDuplicates(t *testing.T) {
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
+-	record := fleetRecoveryRecord{Version: fleetRecoveryVersion, PublisherID: "deployment", Compatibility: compatibility, Providers: []ProviderLayer{layer, peer}}
++	baseline, err := fleetBaseline(fleetTestLayers(t))
++	if err != nil {
++		t.Fatal(err)
++	}
++	record := fleetRecoveryRecord{Version: fleetRecoveryVersion, Baseline: baseline, PublisherID: "deployment", Compatibility: compatibility, Providers: []ProviderLayer{layer, peer}}
+ 	raw, err := json.Marshal(record)
+ 	if err != nil {
+ 		t.Fatal(err)
+@@ -178,8 +185,9 @@ func TestFleetRecoveryPreservesSourceResetsAndRemovals(t *testing.T) {
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
+-	layers := layerSet{publisherID: "deployment", source: source, manual: history,
+-		removals: &catalogs.CatalogRemovalPolicy{PublisherID: "deployment", Targets: []catalogs.CatalogRemovalTarget{target}}}
++	layers := fleetTestLayers(t)
++	layers.source, layers.manual = source, history
++	layers.removals = &catalogs.CatalogRemovalPolicy{PublisherID: "deployment", Targets: []catalogs.CatalogRemovalTarget{target}}
+ 	raw, err := encodeFleetRecoveryWithPin(t.Context(), layers, nil)
+ 	if err != nil {
+ 		t.Fatal(err)
+@@ -208,3 +216,47 @@ func decodeFleetRecovery(ctx context.Context, data []byte) (layerSet, error) {
+ 	}
+ 	return decodeFleetRecoveryRecord(ctx, record)
+ }
++
++func fleetTestLayers(t *testing.T) layerSet {
++	t.Helper()
++	generation := aliasGeneration(t, "baseline")
++	baseline, err := catalogs.DecodeCatalogGeneration(generation)
++	if err != nil {
++		t.Fatal(err)
++	}
++	return layerSet{publisherID: "deployment", embeddedManifest: &generation.Manifest,
++		embedded: starmap.CatalogState{Catalog: baseline, GenerationID: generation.Manifest.GenerationID, PayloadChecksum: generation.Manifest.Payload.Checksum, GeneratedAt: generation.Manifest.GeneratedAt}}
++}
++
++func TestFleetRecoveryRejectsMissingOrCorruptBaseline(t *testing.T) {
++	raw, err := encodeFleetRecoveryWithPin(t.Context(), fleetTestLayers(t), nil)
++	if err != nil {
++		t.Fatal(err)
++	}
++	original, err := readFleetRecovery(t.Context(), raw)
++	if err != nil {
++		t.Fatal(err)
++	}
++	for _, scenario := range []struct {
++		name   string
++		change func(*catalogs.Generation)
++	}{
++		{"missing", func(g *catalogs.Generation) { *g = catalogs.Generation{} }},
++		{"manifest", func(g *catalogs.Generation) { g.Manifest.GenerationID = "" }},
++		{"payload", func(g *catalogs.Generation) { g.Payload = append(g.Payload, ' ') }},
++		{"schema", func(g *catalogs.Generation) { g.Manifest.SchemaVersion++ }},
++	} {
++		t.Run(scenario.name, func(t *testing.T) {
++			record := original
++			record.Baseline = original.Baseline.Copy()
++			scenario.change(&record.Baseline)
++			raw, err := json.Marshal(record)
++			if err != nil {
++				t.Fatal(err)
++			}
++			if _, err := decodeFleetRecovery(t.Context(), raw); err == nil {
++				t.Fatal("accepted an unusable baseline")
++			}
++		})
++	}
++}
+diff --git i/runtime/fleet_replay.go w/runtime/fleet_replay.go
+index 5602f6f21..3dd614a1c 100644
+--- i/runtime/fleet_replay.go
++++ w/runtime/fleet_replay.go
+@@ -48,6 +48,12 @@ func recoverFleetState(ctx context.Context, snapshot FleetSnapshot, local layerS
+ 	if err != nil {
+ 		return layerSet{}, nil, err
+ 	}
++	recovered, err := decodeFleetRecoveryRecord(ctx, record)
++	if err != nil {
++		return layerSet{}, nil, err
++	}
++	// The packaged baseline is a candidate for explicit promotion, not replay input.
++	local.embedded, local.embeddedManifest = recovered.embedded, recovered.embeddedManifest
+ 	compatibility, err := fleetLayerCompatibility(local)
+ 	if err != nil {
+ 		return layerSet{}, nil, err
+@@ -55,10 +61,6 @@ func recoverFleetState(ctx context.Context, snapshot FleetSnapshot, local layerS
+ 	if record.Compatibility != compatibility {
+ 		return layerSet{}, nil, fleetConflict("recovery requires the same baseline and acquisition policy")
+ 	}
+-	recovered, err := decodeFleetRecoveryRecord(ctx, record)
+-	if err != nil {
+-		return layerSet{}, nil, err
+-	}
+ 	if err := local.providerBindings.validateRetained(recovered.providers); err != nil {
+ 		return layerSet{}, nil, err
+ 	}
+diff --git i/runtime/fleet_replay_test.go w/runtime/fleet_replay_test.go
+index aecffb804..33e39a031 100644
+--- i/runtime/fleet_replay_test.go
++++ w/runtime/fleet_replay_test.go
+@@ -15,7 +15,7 @@ func fleetReplayFixture(t *testing.T) (FleetSnapshot, layerSet) {
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
+-	local := layerSet{publisherID: "deployment", embedded: starmap.CatalogState{GenerationID: p.Generation.Manifest.GenerationID,
++	local := layerSet{publisherID: "deployment", embeddedManifest: &p.Generation.Manifest, embedded: starmap.CatalogState{GenerationID: p.Generation.Manifest.GenerationID,
+ 		PayloadChecksum: p.Generation.Manifest.Payload.Checksum, Catalog: catalog, GeneratedAt: p.Generation.Manifest.GeneratedAt}}
+ 	p.Recovery.Data, err = encodeFleetRecoveryWithPin(t.Context(), local, nil)
+ 	if err != nil {
+@@ -25,7 +25,7 @@ func fleetReplayFixture(t *testing.T) (FleetSnapshot, layerSet) {
+ 	return FleetSnapshot{Head: p.nextHead(), Publication: p}, local
+ }
+ 
+-func TestFleetReplayRequiresEquivalentBaselineAndPolicy(t *testing.T) {
++func TestFleetReplayRequiresEquivalentPolicy(t *testing.T) {
+ 	snapshot, local := fleetReplayFixture(t)
+ 	if _, _, err := recoverFleetState(t.Context(), snapshot, local); err != nil {
+ 		t.Fatal(err)
+@@ -34,8 +34,6 @@ func TestFleetReplayRequiresEquivalentBaselineAndPolicy(t *testing.T) {
+ 		name   string
+ 		change func(*layerSet)
+ 	}{
+-		{"baseline-id", func(l *layerSet) { l.embedded.GenerationID = "other" }},
+-		{"baseline-bytes", func(l *layerSet) { l.embedded.PayloadChecksum = "other" }},
+ 		{"authority", func(l *layerSet) { l.requireAuthority = true }},
+ 		{"explicit-no-providers", func(l *layerSet) {
+ 			l.providerBindings = &providerBindingPolicy{bindings: map[string]sources.ProviderAcquisitionBinding{}}
+@@ -82,3 +80,41 @@ func TestFleetReplayRejectsInputsThatDoNotReproduceCatalog(t *testing.T) {
+ 		t.Fatal("failed recovery changed local inputs")
+ 	}
+ }
++
++func TestFleetReplayRetainsBaselineAcrossBinaryUpgrade(t *testing.T) {
++	snapshot, original := fleetReplayFixture(t)
++	for _, name := range []string{"embedded-only", "configured-upstream"} {
++		t.Run(name, func(t *testing.T) {
++			snapshot, original := snapshot, original
++			if name == "configured-upstream" {
++				g := snapshot.Publication.Generation
++				original.source = &sourceLayer{Identity: "upstream", GenerationID: g.Manifest.GenerationID, Checksum: g.Manifest.Payload.Checksum, Payload: g.Payload, Manifest: &g.Manifest, PublishedAt: g.Manifest.GeneratedAt}
++				raw, err := encodeFleetRecoveryWithPin(t.Context(), original, nil)
++				if err != nil {
++					t.Fatal(err)
++				}
++				snapshot.Publication.Recovery.Data = raw
++				snapshot.Publication.Recovery.Checksum = fleetRecoveryChecksum(raw)
++				snapshot.Head = snapshot.Publication.nextHead()
++			}
++			upgraded := original
++			next := aliasGeneration(t, "new-binary")
++			decoded, err := catalogs.DecodeCatalogGeneration(next)
++			if err != nil {
++				t.Fatal(err)
++			}
++			upgraded.embedded = starmap.CatalogState{Catalog: decoded, GenerationID: next.Manifest.GenerationID, PayloadChecksum: next.Manifest.Payload.Checksum, GeneratedAt: next.Manifest.GeneratedAt}
++			upgraded.embeddedManifest = &next.Manifest
++			restored, _, err := recoverFleetState(t.Context(), snapshot, upgraded)
++			if err != nil {
++				t.Fatalf("binary upgrade cannot replay retained baseline: %v", err)
++			}
++			if restored.embedded.GenerationID != original.embedded.GenerationID || restored.embedded.PayloadChecksum != original.embedded.PayloadChecksum {
++				t.Fatal("binary replaced the fleet baseline")
++			}
++			if restored.embeddedManifest == nil || restored.embeddedManifest.GenerationID != original.embedded.GenerationID {
++				t.Fatal("recovery lost baseline manifest")
++			}
++		})
++	}
++}
+diff --git i/runtime/fleet_runtime_test.go w/runtime/fleet_runtime_test.go
+index cde3a3b2e..4c5152b78 100644
+--- i/runtime/fleet_runtime_test.go
++++ w/runtime/fleet_runtime_test.go
+@@ -10,7 +10,6 @@ import (
+ 	"time"
+ 
+ 	"github.com/agentstation/starmap"
+-	"github.com/agentstation/starmap/internal/bootstrap"
+ 	"github.com/agentstation/starmap/pkg/catalogs"
+ 	"github.com/agentstation/starmap/pkg/errors"
+ )
+@@ -36,15 +35,11 @@ type fleetTestSession struct {
+ func newFleetRuntimeBackend(t *testing.T, options ...Option) *fleetTestBackend {
+ 	t.Helper()
+ 	p := fleetTestPublication(t)
+-	embedded, manifest, err := bootstrap.Embedded()
+-	if err != nil {
+-		t.Fatal(err)
+-	}
+-	layers := layerSet{publisherID: "deployment", embedded: starmap.CatalogState{Catalog: embedded,
+-		GenerationID: manifest.GenerationID, PayloadChecksum: manifest.Payload.Checksum, GeneratedAt: manifest.GeneratedAt},
+-		source: &sourceLayer{Identity: "fleet-source", GenerationID: p.Generation.Manifest.GenerationID,
+-			Payload: p.Generation.Payload, Checksum: p.Generation.Manifest.Payload.Checksum, Manifest: &p.Generation.Manifest,
+-			PublishedAt: p.Generation.Manifest.GeneratedAt}}
++	layers := fleetTestLayers(t)
++	layers.source = &sourceLayer{Identity: "fleet-source", GenerationID: p.Generation.Manifest.GenerationID,
++		Payload: p.Generation.Payload, Checksum: p.Generation.Manifest.Payload.Checksum, Manifest: &p.Generation.Manifest,
++		PublishedAt: p.Generation.Manifest.GeneratedAt}
++	var err error
+ 	config := defaults()
+ 	for _, option := range options {
+ 		if err := option(config); err != nil {
+@@ -599,3 +594,33 @@ func TestFleetRuntimeUnchangedRefreshRebindsAfterTakeover(t *testing.T) {
+ 		t.Fatal("an empty validated update did not bind the recovered catalog to its new owner")
+ 	}
+ }
++
++func TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates(t *testing.T) {
++	backend := newFleetRuntimeBackend(t)
++	source := newStubSource("fleet-source")
++	generation := aliasGeneration(t, "updated-source")
++	source.replies = []SourceRead{{Changed: true, Generation: generation, PublishedAt: generation.Manifest.GeneratedAt, Health: HealthOK}}
++	connected := openFleetRuntime(t, backend, "upgraded", privateRuntimeDirectory(t), WithSource(source))
++	if connected.layers.embedded.GenerationID != "baseline" || connected.layers.embeddedManifest.GenerationID != "baseline" {
++		t.Fatal("startup replaced the retained baseline with the packaged baseline")
++	}
++	if connected.layers.embedded.GenerationID == connected.Client().EmbeddedCatalogState().GenerationID {
++		t.Fatal("test requires different retained and packaged baselines")
++	}
++	if _, err := connected.RefreshSource(t.Context()); err != nil {
++		t.Fatal(err)
++	}
++	if connected.State().GenerationID != generation.Manifest.GenerationID {
++		t.Fatal("configured upstream update did not advance")
++	}
++	if connected.layers.embedded.GenerationID != "baseline" {
++		t.Fatal("source update replaced the retained fallback")
++	}
++	if err := connected.Close(); err != nil {
++		t.Fatal(err)
++	}
++	replacement := openFleetRuntime(t, backend, "rollback", privateRuntimeDirectory(t))
++	if replacement.layers.embedded.GenerationID != "baseline" || replacement.State().GenerationID != generation.Manifest.GenerationID {
++		t.Fatal("replacement lost retained inputs or selected source")
++	}
++}
+diff --git i/runtime/fleet_store_test.go w/runtime/fleet_store_test.go
+index 55b18d238..b8bda64ff 100644
+--- i/runtime/fleet_store_test.go
++++ w/runtime/fleet_store_test.go
+@@ -98,7 +98,7 @@ func TestFleetCommitPreservesOriginalGrantAndInputsOnRetry(t *testing.T) {
+ 	backend := &fleetRecordingStore{err: stderrors.New("ambiguous backend response")}
+ 	store := &fleetCommitStore{FleetStore: backend}
+ 	p := fleetTestPublication(t)
+-	ctx, attempt, err := store.prepareWithPin(t.Context(), p.Grant, p.Expected, layerSet{publisherID: "deployment"}, nil)
++	ctx, attempt, err := store.prepareWithPin(t.Context(), p.Grant, p.Expected, fleetTestLayers(t), nil)
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
+@@ -128,7 +128,7 @@ func TestFleetCommitRefusesUnownedContextsAndWrongPredecessor(t *testing.T) {
+ 	backend := &fleetRecordingStore{}
+ 	store := &fleetCommitStore{FleetStore: backend}
+ 	p := fleetTestPublication(t)
+-	ctx, _, err := store.prepareWithPin(t.Context(), p.Grant, p.Expected, layerSet{publisherID: "deployment"}, nil)
++	ctx, _, err := store.prepareWithPin(t.Context(), p.Grant, p.Expected, fleetTestLayers(t), nil)
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
+@@ -156,7 +156,7 @@ func TestFleetCommitRejectsMismatchedBackendReceipt(t *testing.T) {
+ 	backend := &fleetRecordingStore{wrongHead: true}
+ 	store := &fleetCommitStore{FleetStore: backend}
+ 	p := fleetTestPublication(t)
+-	ctx, attempt, err := store.prepareWithPin(t.Context(), p.Grant, p.Expected, layerSet{publisherID: "deployment"}, nil)
++	ctx, attempt, err := store.prepareWithPin(t.Context(), p.Grant, p.Expected, fleetTestLayers(t), nil)
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
+diff --git i/runtime/runtime.go w/runtime/runtime.go
+index 077503d3d..53a5bd689 100644
+--- i/runtime/runtime.go
++++ w/runtime/runtime.go
+@@ -369,8 +369,12 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
+ 	if err != nil {
+ 		return err
+ 	}
+-	r.layers.embedded = baseline
+-	r.layers.embeddedManifest = &manifest
++	if r.config.fleetStore == nil {
++		r.layers.embedded = baseline
++		r.layers.embeddedManifest = &manifest
++	} else {
++		baseline = r.layers.embedded
++	}
+ 	r.layers.requireAuthority = r.requiresAuthority()
+ 	r.layers.providerBindings = r.config.providerBindings
+ 	r.layers.acquisitionSources = r.config.acquisitionSources

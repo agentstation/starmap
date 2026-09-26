@@ -2325,7 +2325,8 @@ Unsupported retained formats refuse acquisition without inventing catalog permis
 Software rollback and catalog rollback remain separate operations.
 
 The [approved transition contract](../../plans/proof/starport-production-catalog/csp11/upgrade-contract-2026-09-26/CONTRACT.md) defines required validation, native fencing, and retry evidence.
-CSP11 owns implementation and qualification. Configuration UI integration remains with its existing task.
+CSP11 owns retained baseline recovery. CSP16 owns coordinated policy apply, including native fencing.
+CSP16.1 owns explicit baseline promotion. The transition contract assigns every acceptance condition to its owning task.
 These operations must not add storage calls to inference requests.
 
 Redis or Valkey Cluster requires every key in one atomic operation to share a

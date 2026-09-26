@@ -1,0 +1,43 @@
+{
+  "started": "2026-09-26T22:08:32.604725+00:00",
+  "images": [
+    "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94"
+  ],
+  "source_sha256": {
+    "internal/catalog/fleet_acceptance.go": "d74b7d4a9e4a5eca27062ea7560c8c11fde317721f7b7a908c69b51d12dbefac",
+    "internal/catalog/fleet_collection.go": "fc2a639d5fb8702adcac6d74538b4b5c60e9cf36ba4ffb55374032735ffc7a14",
+    "internal/catalog/fleet_collection_test.go": "cd3a9a94ab9377d0eb5296497d3cba1aafe92c165d164d071099b15e1f7eb841",
+    "internal/catalog/fleet_lease.go": "c1bdbe7f018557f711b6ecbfaa46098932229b0d97b84b495baddb8b8b98d9df",
+    "internal/catalog/fleet_payload.go": "c062fe846fcf54f59cd2e20ad8a90e01e4b51ec49dd309b58a5a64310d745142",
+    "internal/catalog/fleet_process_test.go": "8a0e83cfd9d8d673d70047cd5edd2931921622c59b4d14f03626d3cea56d0bd4",
+    "internal/catalog/fleet_retention.go": "d3ff475e2ea0e12158fb9efe15448d7d9422e3fa53f1f4ae3a5c73cc59327bff",
+    "internal/catalog/fleet_retention_record.go": "8281a74df7f01f003bf4837ced7f0dcdcf8310cdb581b02aae18632eaddb859d",
+    "internal/catalog/fleet_retention_test.go": "3b48dc66c14963ab95b8a03d610304527eff72cd1d3a9a2977e0b77c5df17139",
+    "internal/catalog/fleet_store.go": "516139598884acad08b1e3a9e98cb809622eb1662e7279c037122cd438175f08",
+    "internal/catalog/fleet_store_test.go": "7d278b292d90a2e0ae8e37d8bb24fac528416495022ddc98f7186d6be7fb1054"
+  },
+  "environment": {
+    "GOTOOLCHAIN": "go1.27.1",
+    "GOWORK": "/tmp/csp11-pair.work"
+  },
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout=6m",
+    "-json",
+    "-run",
+    "^TestFleetRuntime",
+    "./internal/catalog"
+  ],
+  "exit_code": 0,
+  "cleanup": [
+    0,
+    0,
+    0
+  ],
+  "finished": "2026-09-26T22:14:43.528520+00:00"
+}

@@ -3734,7 +3734,18 @@ It records 192 named passing test events, with no failures or skips. CSP10.2 is 
 D41 retains the fleet baseline independently of binary releases.
 The existing replay digest includes the packaged baseline, but recovery records omit its complete bytes.
 That combination can prevent every upgraded replica from owning refresh.
-The [transition contract](../../plans/proof/starport-production-catalog/csp11/upgrade-contract-2026-09-26/CONTRACT.md) assigns the repair and seventeen acceptance conditions to CSP11.
+The [transition contract](../../plans/proof/starport-production-catalog/csp11/upgrade-contract-2026-09-26/CONTRACT.md) assigns seventeen acceptance conditions across CSP11, CSP16, and CSP16.1.
 
 Configured catalog updates remain automatic. Acquisition-policy apply and embedded-only promotion remain explicit.
 The owner decision is complete. Implementation, native qualification, review, and both merges remain open.
+
+### Configuration ownership after D41
+
+The current CSP16 contract already assigns shared SQL configuration revisions and transactional audit to one configuration owner.
+CSP16.1 assigns expected revisions, idempotency, and saved-versus-applied status to its operator API.
+A separate CSP11 policy-apply protocol would duplicate those responsibilities.
+D41 permits the binary-upgrade repair without that duplicate: replay uses the retained baseline while incompatible policy still refuses ownership.
+
+CSP16 must bind the approved SQL revision to native Valkey publication and lease fencing before enabling policy writes.
+CSP16.1 must implement explicit baseline promotion through that operation contract.
+The transition contract retains all seventeen acceptance conditions. The baseline repair does not implement policy transitions.

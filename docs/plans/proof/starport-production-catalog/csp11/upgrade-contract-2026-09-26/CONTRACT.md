@@ -1,7 +1,8 @@
 # Fleet upgrade transition contract
 
 Status: approved third option under D41 on September 26, 2026. Implementation and qualification remain open.
-Owner: CSP11. Current producer: `75e84878d8520a9c5f456643f929bc776d52fa3e`.
+Owners: CSP11 for retained baseline recovery, CSP16 for coordinated policy apply, and CSP16.1 for explicit baseline promotion.
+Current producer: `75e84878d8520a9c5f456643f929bc776d52fa3e`.
 Current consumer: `ac679bf6464e448b63576deed54dbdbd0f7696e6`.
 
 ## Confirmed failure
@@ -96,3 +97,31 @@ Request admission continues to use the accepted catalog in memory.
 15. Same-scope credential rotation preserves policy identity. Different scope selection requires coordinated apply.
 16. Promotion preserves pins, source authority, valid permission deadlines, and explicit removal rules.
 17. Transition and upgrade operations add no request-path storage calls.
+
+## Execution ownership after D41
+
+D41 separates ordinary binary upgrades from changes to deployment configuration.
+CSP11 repairs the upgrade deadlock by retaining the baseline and refusing incompatible acquisition policy.
+It does not expose a policy-apply operation.
+CSP16 owns coordinated policy apply through the shared SQL configuration revision and audit contract.
+CSP16.1 owns explicit baseline promotion through the operator operation contract.
+All seventeen conditions remain required before the production plan completes.
+
+| Conditions | Required owner and evidence |
+| --- | --- |
+| 1–10 | CSP16 and CSP16.1 qualify transition selection, native fencing, exact retries, retained inputs, authority, rollback, and status. |
+| 11–12 | CSP11 proves baseline replay across binary changes and continuing configured source updates. |
+| 13 | CSP11 proves baseline retention. CSP16.1 proves explicit promotion and software rollback behavior. |
+| 14 | CSP11 proves refusal of invalid retained data and lost catalog heads. CSP13 qualifies complete storage recovery. |
+| 15 | CSP11 preserves the credential-free compatibility identity. CSP16 qualifies coordinated scope changes and credential rotation. |
+| 16 | CSP11 preserves existing pin and authority checks. CSP16.1 qualifies those checks during explicit promotion. |
+| 17 | Each owner proves that its operations add no request-path storage access. |
+
+SQL owns the approved configuration revision and its audit record.
+Valkey owns the applied catalog policy and publication fence.
+One operator apply must coordinate those owners and recover a partial result.
+It must report saved and applied revisions separately. It cannot assume a transaction spans both databases.
+Do not enable shared acquisition-policy writes before the native transition requirements pass.
+
+This routing supersedes the earlier requirement to create a separate policy transition inside CSP11.
+It changes task ownership. It removes no product acceptance condition.

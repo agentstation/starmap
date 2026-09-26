@@ -1,0 +1,9 @@
+{"Time":"2026-09-26T17:07:00.038319-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-26T17:07:00.644398-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates"}
+{"Time":"2026-09-26T17:07:00.64449-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates","Output":"=== RUN   TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates\n","OutputType":"frame"}
+{"Time":"2026-09-26T17:07:20.798575-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates","Output":"    fleet_runtime_test.go:605: startup replaced the retained baseline with the packaged baseline\n","OutputType":"error"}
+{"Time":"2026-09-26T17:07:20.799676-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates","Output":"--- FAIL: TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates (20.16s)\n","OutputType":"frame"}
+{"Time":"2026-09-26T17:07:20.799709-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates","Elapsed":20.16}
+{"Time":"2026-09-26T17:07:20.800017-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-09-26T17:07:20.824464-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime\t20.786s\n","OutputType":"frame"}
+{"Time":"2026-09-26T17:07:20.824503-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":20.786}

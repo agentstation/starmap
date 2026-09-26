@@ -1,0 +1,161 @@
+diff --git c/docs/FLEET_RETENTION.md w/docs/FLEET_RETENTION.md
+index 40d85b73..ab72dd9b 100644
+--- c/docs/FLEET_RETENTION.md
++++ w/docs/FLEET_RETENTION.md
+@@ -55,3 +55,11 @@ The scan limit bounds the number of inspected inventory entries. The input byte
+ Collection reserves the maximum receipt read and complete chunk size before deletion. An insufficient limit refuses the pass before data changes.
+ Increase `catalog_retention.input_max_bytes` when the reported cleanup cannot fit the configured bound.
+ An interrupted deletion retains a durable pending record. The next collection can resume it.
++
++The first publication atomically records that the catalog head exists.
++A missing head after initialization requires recovery. It cannot authorize another embedded bootstrap.
++Lease acquisition also compares the observed head in its native transaction.
++
++Starmap version 2 recovery retains the complete reconstruction baseline independently of the binary.
++Its compressed record reduces storage while bounding both encoded and decoded input bytes.
++The stored recovery-byte count measures compressed bytes. The full publication count includes JSON framing and encoding overhead.
+diff --git c/internal/catalog/fleet_lease.go w/internal/catalog/fleet_lease.go
+index 4523c6ed..4725c75c 100644
+--- c/internal/catalog/fleet_lease.go
++++ w/internal/catalog/fleet_lease.go
+@@ -35,6 +35,17 @@ func (s *FleetStore) AcquireLease(ctx context.Context, holder string, ttl time.D
+ 	if err := s.checkApproval(ctx); err != nil {
+ 		return runtime.Lease{}, err
+ 	}
++	head, err := s.CurrentHead(ctx)
++	if err != nil && !starmaperrors.IsNotFound(err) {
++		return runtime.Lease{}, err
++	}
++	var headValue []byte
++	if head != (runtime.FleetHead{}) {
++		headValue, err = json.Marshal(head)
++		if err != nil {
++			return runtime.Lease{}, err
++		}
++	}
+ 	current, _, err := s.store.ReadWithLifetime(ctx, s.prefix+"lease", 4096)
+ 	if err == nil {
+ 		var held fleetGrant
+@@ -74,6 +85,7 @@ func (s *FleetStore) AcquireLease(ctx context.Context, holder string, ttl time.D
+ 		return runtime.Lease{}, err
+ 	}
+ 	err = s.store.CompareAndSwap(ctx, []storage.CompareAndSwapMutation{
++		{Key: s.prefix + "head", ExpectedValue: headValue, NewValue: headValue},
+ 		{Key: s.prefix + "epoch", ExpectedValue: previous, NewValue: []byte(strconv.FormatUint(lease.Epoch, 10))},
+ 		{Key: s.prefix + "lease", NewValue: encoded, TTL: ttl},
+ 	})
+diff --git c/internal/catalog/fleet_retention.go w/internal/catalog/fleet_retention.go
+index 230881b3..6642c5de 100644
+--- c/internal/catalog/fleet_retention.go
++++ w/internal/catalog/fleet_retention.go
+@@ -265,7 +265,7 @@ func (m *fleetMaintenance) read(ctx context.Context, blob fleetBlob) (runtime.Fl
+ func (m *fleetMaintenance) readHead(ctx context.Context) (runtime.FleetHead, []byte, error) {
+ 	value, _, err := m.owner.store.ReadWithLifetime(ctx, m.owner.prefix+"head", 4096)
+ 	if errors.Is(err, storage.ErrNotFound) {
+-		return runtime.FleetHead{}, nil, nil
++		return runtime.FleetHead{}, nil, m.owner.checkEmptyHead(ctx)
+ 	}
+ 	if err != nil {
+ 		return runtime.FleetHead{}, nil, err
+diff --git c/internal/catalog/fleet_store.go w/internal/catalog/fleet_store.go
+index eb03ee01..07b65131 100644
+--- c/internal/catalog/fleet_store.go
++++ w/internal/catalog/fleet_store.go
+@@ -70,6 +70,11 @@ func (s *FleetStore) CurrentHead(ctx context.Context) (runtime.FleetHead, error)
+ 		return runtime.FleetHead{}, err
+ 	}
+ 	data, _, err := s.store.ReadWithLifetime(ctx, s.prefix+"head", 4096)
++	if errors.Is(err, storage.ErrNotFound) {
++		if err := s.checkEmptyHead(ctx); err != nil {
++			return runtime.FleetHead{}, err
++		}
++	}
+ 	if err != nil {
+ 		return runtime.FleetHead{}, fleetReadError(err, "current")
+ 	}
+@@ -237,8 +242,13 @@ func (s *FleetStore) CommitPublication(ctx context.Context, publication runtime.
+ 	if err != nil {
+ 		return runtime.FleetHead{}, err
+ 	}
++	var initialized []byte
++	if publication.Expected != (runtime.FleetHead{}) {
++		initialized = []byte("fleet-head/1")
++	}
+ 	err = m.mutate(ctx, []storage.CompareAndSwapMutation{
+ 		{Key: s.prefix + "lease", ExpectedValue: grant, NewValue: grant},
++		{Key: s.prefix + "head-initialized", ExpectedValue: initialized, NewValue: []byte("fleet-head/1")},
+ 		{Key: s.prefix + "head", ExpectedValue: previous, NewValue: selected},
+ 		{Key: s.publicationKey(head), NewValue: record},
+ 		{Key: s.prefix + "inventory", ExpectedValue: m.encoded, NewValue: inventory},
+@@ -269,3 +279,19 @@ func fleetStoreConflict(message string) error {
+ }
+ 
+ var _ runtime.FleetStore = (*FleetStore)(nil)
++
++// checkEmptyHead distinguishes an unused publication store from lost or uncertain state.
++func (s *FleetStore) checkEmptyHead(ctx context.Context) error {
++	_, _, err := s.store.ReadWithLifetime(ctx, s.prefix+"head-initialized", 64)
++	if !errors.Is(err, storage.ErrNotFound) {
++		return fleetStoreConflict("initialized catalog head is missing or uncertain; recovery is required")
++	}
++	m := &fleetMaintenance{owner: s}
++	if err := m.load(ctx); err != nil {
++		return err
++	}
++	if len(m.inventory.Entries) != 0 {
++		return fleetStoreConflict("retained catalog publications have no selected head; recovery is required")
++	}
++	return nil
++}
+diff --git c/internal/catalog/fleet_store_test.go w/internal/catalog/fleet_store_test.go
+index 27ead8ee..e5689037 100644
+--- c/internal/catalog/fleet_store_test.go
++++ w/internal/catalog/fleet_store_test.go
+@@ -323,3 +323,24 @@ func TestFleetStoreLeaseExpiresDuringSelection(t *testing.T) {
+ 		})
+ 	}
+ }
++
++func TestFleetStoreLostHeadCannotBootstrapAgain(t *testing.T) {
++	fleet, kv, _ := fleetTestStore(t)
++	grant, err := fleet.AcquireLease(t.Context(), "owner", time.Minute)
++	require.NoError(t, err)
++	head, err := fleet.CommitPublication(t.Context(), fleetTestPublication(t, grant, runtime.FleetHead{}, "initialized"))
++	require.NoError(t, err)
++	require.NoError(t, fleet.Release(t.Context(), grant))
++	require.NoError(t, kv.Delete(t.Context(), fleet.prefix+"head"))
++	_, err = fleet.CurrentHead(t.Context())
++	require.Error(t, err)
++	require.NotErrorIs(t, err, starmaperrors.ErrNotFound, "loss of the selected head must require recovery")
++	_, err = fleet.CurrentPublication(t.Context())
++	require.Error(t, err)
++	require.NotErrorIs(t, err, starmaperrors.ErrNotFound)
++	_, err = fleet.AcquireLease(t.Context(), "replacement", time.Minute)
++	require.Error(t, err, "missing head must not permit fresh acquisition")
++	retained, err := fleet.Publication(t.Context(), head)
++	require.NoError(t, err, "recovery must retain the previous publication")
++	require.Equal(t, head, retained.Head)
++}
+diff --git c/internal/catalog/runtime_fleet_test.go w/internal/catalog/runtime_fleet_test.go
+index 5df2a48f..b81da588 100644
+--- c/internal/catalog/runtime_fleet_test.go
++++ w/internal/catalog/runtime_fleet_test.go
+@@ -2,6 +2,7 @@ package catalog
+ 
+ import (
+ 	"context"
++	"encoding/json"
+ 	"os"
+ 	"path/filepath"
+ 	"testing"
+@@ -80,6 +81,10 @@ func TestFleetRuntimePreservesOriginalGrantThroughAcceptance(t *testing.T) {
+ 	original, err := fleet.Publication(t.Context(), candidate.FleetHead)
+ 	require.NoError(t, err)
+ 	require.Equal(t, original.Publication.Grant.Epoch, candidate.Epoch)
++	encoded, err := json.Marshal(original)
++	require.NoError(t, err)
++	t.Logf("retained baseline publication: %d encoded bytes, %d recovery bytes", len(encoded), len(original.Publication.Recovery.Data))
++	require.Less(t, int64(len(encoded))*catalogGenerationIndexCap, int64(fleetRetentionMaxBytes), "the protected receipt window must fit the native byte bound before local acquisition")
+ 	require.NoError(t, first.Close(t.Context()))
+ 	closed = true
+ 	require.NoError(t, os.RemoveAll(root))

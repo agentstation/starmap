@@ -837,7 +837,7 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Implement D41 retained baseline recovery, coordinated policy apply, and explicit embedded-only promotion. Qualify native fencing and retries, review, publish producer, update consumer pin, and merge in order.",
+    "next_action": "Qualify and review D41 retained baseline recovery, publish the producer, update the consumer module pin, and merge in order. CSP16 owns coordinated policy apply. CSP16.1 owns explicit baseline promotion.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
     "contract_audit": "../../csp11/contract-audit-2026-09-26.md",
@@ -869,14 +869,14 @@
     "checked_at": "2026-09-26T16:38:49.460723+00:00"
   },
   "fleet_preparation": {
-    "producer": "75e84878d8520a9c5f456643f929bc776d52fa3e",
+    "producer": "41ee1ef29276f6ab4f76a39cf11e1a1ec413e964",
     "producer_pr": 185,
     "consumer_branch": "codex/catalog-fleet-adapter",
     "consumer_base": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
     "proof": "../../csp11/isolation-scope-2026-09-26/verification.json",
     "owner": "CSP11",
-    "next_action": "Implement D41 retained baseline recovery, coordinated policy apply, and explicit embedded-only promotion. Qualify native fencing and retries, review, publish producer, update consumer pin, and merge in order.",
-    "consumer": "ac679bf6464e448b63576deed54dbdbd0f7696e6",
+    "next_action": "Qualify and review D41 retained baseline recovery, publish the producer, update the consumer module pin, and merge in order. CSP16 owns coordinated policy apply. CSP16.1 owns explicit baseline promotion.",
+    "consumer": "0921b39ecfcfd384ca82e9ac5a2c587b0670d231",
     "consumer_pr": 385,
     "ci": {
       "producer": 36265771789,
@@ -894,10 +894,16 @@
     "transition_contract": "../../csp11/upgrade-contract-2026-09-26/CONTRACT.md",
     "transition_audit": "../../csp11/upgrade-contract-2026-09-26/verification.json",
     "blocked_audit": "../../csp11/upgrade-contract-2026-09-26/blocked-audit.json",
-    "owner_decision": "D41 approved: refined third option"
+    "owner_decision": "D41 approved: refined third option",
+    "transition_owners": {
+      "CSP11": "retained baseline recovery",
+      "CSP16": "coordinated policy apply",
+      "CSP16.1": "explicit baseline promotion"
+    },
+    "retained_baseline_proof": "../../csp11/retained-baseline-2026-09-26/verification.json"
   },
   "local_consumer_checkpoint": {
-    "head": "ac679bf6464e448b63576deed54dbdbd0f7696e6",
+    "head": "0921b39ecfcfd384ca82e9ac5a2c587b0670d231",
     "branch": "codex/catalog-fleet-adapter",
     "published": false
   },
@@ -917,5 +923,5 @@
       "scope": "kvconnection, config, storage, cache with race detection and real Valkey. Full CSP12 is incomplete."
     }
   },
-  "local_updated_at": "2026-09-26T22:01:39.136305+00:00"
+  "local_updated_at": "2026-09-26T22:37:33.482060+00:00"
 }

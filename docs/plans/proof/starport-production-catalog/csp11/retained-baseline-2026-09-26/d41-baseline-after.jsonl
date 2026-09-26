@@ -1,0 +1,6 @@
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"# github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"runtime/fleet_runtime_test.go:43:66: cannot use \u0026manifest (value of type *catalogs.BootstrapManifest) as *catalogs.GenerationManifest value in struct literal\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-fail"}
+{"Time":"2026-09-26T17:04:45.048334-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-26T17:04:45.048454-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime [build failed]\n","OutputType":"frame"}
+{"Time":"2026-09-26T17:04:45.048472-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":0,"FailedBuild":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]"}

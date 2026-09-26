@@ -29,7 +29,7 @@ The latest local producer pair also passes those checks. Review and merge remain
 
 | Owner | Required repair | Required evidence |
 | --- | --- | --- |
-| Starmap fleet policy | Define a safe transition for a changed embedded baseline or acquisition policy. Preserve ordinary replay compatibility checks. | Mixed-version replicas cannot alternate policy. The selected transition preserves permitted retained inputs. Old owners cannot publish after transition. |
+| Starmap fleet policy | Retain the fleet baseline across binary upgrades under D41. Preserve refusal of incompatible acquisition policy. | Different binary baselines replay retained inputs. CSP16 owns coordinated policy changes. CSP16.1 owns explicit baseline promotion. |
 | Starport fleet initialization | Supply an explicit operation for fresh deployment approval before enabling shared startup. | A fresh Valkey/PostgreSQL deployment starts through the documented operation. Existing, replaced, or uncertain state refuses fresh initialization. Concurrent attempts cannot approve different backends. |
 | Starport fleet retention | Bound staged chunks, committed publications, generation indexes, and retry receipts. Protect current, accepted, retained rollback, and pinned generations. Apply canonical retention configuration. | Repeated publication and rejected staging remain bounded. Interrupted collection recovers. Concurrent publication, acceptance, reads, and collection preserve selected data. Disabled automatic cleanup and explicit collection retain their declared behavior. |
 
@@ -37,14 +37,16 @@ Fresh initialization and canonical retention now have local implementations and 
 The [retention proof](../retention-policy-2026-09-26/verification.json) records 45 fleet and startup race results with no failures or skips.
 Complete branch review and final-head qualification remain open for both repairs.
 
-The upgrade decision remains pending with the owner.
+D41 resolves the upgrade decision.
 The [transition contract](../upgrade-contract-2026-09-26/CONTRACT.md) defines the shared fencing, retry, and input-validation requirements.
-The recommendation requires one explicit deployment-wide transition for a changed baseline or acquisition policy.
+CSP11 retains the fleet baseline across binary upgrades. CSP16 and CSP16.1 own coordinated policy apply and explicit baseline promotion.
+
 Ordinary source refresh remains automatic.
 Retained catalog availability remains subject to the existing permission and expiry contracts.
 A transition cannot invent permission or override a known withdrawal.
 
-CSP11 owns these merge requirements because its integration enables the fleet path.
+CSP11 owns retained baseline recovery, fresh initialization, and bounded retention before fleet integration.
+The transition contract assigns configuration operations to CSP16 and CSP16.1 without removing their required evidence.
 CSP12 retains complete recipe validation and all remaining storage contracts.
 CSP13 retains populated-state migration and recovery procedures.
 Move the minimal fresh-initialization operation into the CSP11 delivery without deleting the broader CSP12 acceptance requirements.
