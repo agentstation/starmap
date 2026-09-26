@@ -9,6 +9,26 @@ This report records source inspection and selected local tests on 2026-09-04.
 It does not certify production availability or full API compatibility.
 Dated entries retain their original qualification limits. The canonical plan owns current task status.
 
+## Fleet contract review: 2026-09-26
+
+CSP11 remains in progress. The [contract audit](../../plans/proof/starport-production-catalog/csp11/contract-audit-2026-09-26.md) identifies two confirmed shared-publication defects.
+The real Valkey probe accepts a stale writer after expiry, release, or separate-process takeover.
+The filesystem recovery probe loses an earlier model after removing the former leader directory and applying a partial update.
+
+The producer work also found unsafe renewal behavior.
+A renewal could replace the original grant or overwrite newer local ownership state.
+The prepared lease repair rejects changed ownership evidence and late responses after loss, shutdown, or a newer grant.
+The [producer checkpoint](../../plans/proof/starport-production-catalog/csp11/producer-contract-2026-09-26/verification.json) records the failing regressions and subsequent checks.
+
+The new contract retains a process session and an independently approved backend identity with each grant.
+A separate publication revision binds the selected catalog and private recovery inputs.
+The revision distinguishes retained-input changes that do not change the visible catalog.
+Replay checks baseline and acquisition-policy compatibility before comparing the rebuilt catalog checksum.
+
+The contract and replay code are preparation work.
+Runtime integration, the real Starport adapter, and cross-process qualification remain incomplete.
+These checks do not qualify A13 or A14 and do not close CSP11.
+
 ## Toolchain policy revision: 2026-09-16
 
 The owner selected Go 1.27.1 for both products under D36. CSP6.1 owns the coordinated migration.

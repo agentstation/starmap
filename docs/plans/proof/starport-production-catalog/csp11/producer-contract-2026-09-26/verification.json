@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "task": "CSP11",
+  "status": "PREPARED",
+  "recorded_at": "2026-09-26T16:59:46.498152+00:00",
+  "producer_commit": "5610f3661c51d3abfed7030d784b4ed2180adbba",
+  "producer_branch": "codex/catalog-fleet-contract",
+  "consumer_commit": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "source_files": {
+    "runtime/fleet_commit.go": "5fd6560a651935ddebb2c416c88b5087181a38b3ab40f27e428759627044ead2",
+    "runtime/fleet_lease_test.go": "378b17b7d19ae7a75c688351dd1fab485b8fd2d8139da9975fd2cbb218cb7ce9",
+    "runtime/fleet_recovery.go": "2d7400a3f969ae69ba7f593d77db42ac323dd45bb5c655cc0e076594f80b5123",
+    "runtime/fleet_recovery_test.go": "b734a117ee6996c7c817c8a3190da47395bcb886f9844e07973c914ab4746a26",
+    "runtime/fleet_replay.go": "4061915bbe771603c01e8369e63288d58e083d230407779446fe0587c2a206f6",
+    "runtime/fleet_replay_test.go": "135a9d989dce172b0ecedf874fa51cbae04499fa1ec5cb44e625fc4980eddb1b",
+    "runtime/fleet_store.go": "0e726d9332c7b8efea2623d502dd93faff24a4c71096ff1e52cca1b11e275b9e",
+    "runtime/fleet_store_test.go": "df0437ba330c2b1b376035321ff2f740c92f029be6c9eabf02f4ef2b0222795c",
+    "runtime/lease.go": "fd4e3453e080ac216310a3d024e1bdfa9779505e815edfbed1c68a0b53bbfb21",
+    "runtime/lease_test.go": "489d489cb5c5519087005aa468cd00b1828cffc9bbaaaf763e51138496c00c9b"
+  },
+  "checks": {
+    "focused_race": {
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -count=1 -timeout 5m -run '^(TestFleet|TestRuntimeLease|TestTakeReleasesALease|TestRefusedLeaseOpensAsANonOwner|TestScheduledRunSkipsWhileAnotherInstanceOwnsTheLease|TestManualRunByANonOwnerReturnsAConflict)' -json ./runtime",
+      "exit_code": 0,
+      "result": {
+        "pass": {
+          "named_events": 52,
+          "leaf_cases": 47,
+          "names": [
+            "TestFleetLeaseRenewalCannotReplaceGrant/holder",
+            "TestFleetLeaseRenewalCannotReplaceGrant/epoch",
+            "TestFleetLeaseRenewalCannotReplaceGrant/session",
+            "TestFleetLeaseRenewalCannotReplaceGrant/backend",
+            "TestFleetLeaseRenewalCannotReplaceGrant/recovery-epoch",
+            "TestFleetLeaseRenewalCannotReplaceGrant",
+            "TestFleetLeaseLateRenewalCannotReplaceCurrentState/closed",
+            "TestFleetLeaseLateRenewalCannotReplaceCurrentState/lost",
+            "TestFleetLeaseLateRenewalCannotReplaceCurrentState/new-grant",
+            "TestFleetLeaseLateRenewalCannotReplaceCurrentState/new-grant-error",
+            "TestFleetLeaseLateRenewalCannotReplaceCurrentState",
+            "TestFleetRecoveryPreservesNextPartialMerge",
+            "TestFleetRecoveryBindsExactGenerationAndBytes/generation",
+            "TestFleetRecoveryBindsExactGenerationAndBytes/payload",
+            "TestFleetRecoveryBindsExactGenerationAndBytes/checksum",
+            "TestFleetRecoveryBindsExactGenerationAndBytes/bytes",
+            "TestFleetRecoveryBindsExactGenerationAndBytes/empty",
+            "TestFleetRecoveryBindsExactGenerationAndBytes",
+            "TestFleetRecoveryRejectsAmbiguousAndInvalidInputs",
+            "TestFleetRecoveryRetainsProviderScopesAndRejectsDuplicates",
+            "TestFleetRecoveryPreservesSourceResetsAndRemovals",
+            "TestFleetReplayRequiresEquivalentBaselineAndPolicy/baseline-id",
+            "TestFleetReplayRequiresEquivalentBaselineAndPolicy/baseline-bytes",
+            "TestFleetReplayRequiresEquivalentBaselineAndPolicy/authority",
+            "TestFleetReplayRequiresEquivalentBaselineAndPolicy/explicit-no-providers",
+            "TestFleetReplayRequiresEquivalentBaselineAndPolicy/explicit-no-sources",
+            "TestFleetReplayRequiresEquivalentBaselineAndPolicy/publisher-aliases",
+            "TestFleetReplayRequiresEquivalentBaselineAndPolicy",
+            "TestFleetReplayRejectsInputsThatDoNotReproduceCatalog",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity/holder",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity/session",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity/epoch",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity/deployment",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity/recovery-epoch",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity/backend",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity/foreign-predecessor",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity/restored-predecessor",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity/different-process",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity/revision-overflow",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity/partial-head",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity/malformed-digest",
+            "TestFleetPublicationRejectsIncompleteAndForeignIdentity",
+            "TestFleetHeadDistinguishesInputsForUnchangedCatalog",
+            "TestFleetCommitPreservesOriginalGrantAndInputsOnRetry",
+            "TestFleetCommitRefusesUnownedContextsAndWrongPredecessor",
+            "TestFleetCommitRejectsMismatchedBackendReceipt",
+            "TestTakeReleasesALeaseThatRacedClose",
+            "TestRuntimeLeaseFenceRejectsALostLease",
+            "TestRefusedLeaseOpensAsANonOwner",
+            "TestScheduledRunSkipsWhileAnotherInstanceOwnsTheLease",
+            "TestRuntimeLeaseRejectsStaleEpochAtCommit",
+            "TestManualRunByANonOwnerReturnsAConflict"
+          ]
+        },
+        "fail": {
+          "named_events": 0,
+          "leaf_cases": 0,
+          "names": []
+        },
+        "skip": {
+          "named_events": 0,
+          "leaf_cases": 0,
+          "names": []
+        },
+        "package_results": [
+          {
+            "Time": "2026-09-26T11:58:42.80409-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starmap/runtime",
+            "Elapsed": 27.11
+          }
+        ],
+        "race_warning": false
+      },
+      "output": {
+        "path": "tests.jsonl.gz",
+        "sha256": "b2c5f0aa70aeafbfbf763160874e307cb6599d8990ac4e27380f969334a6a2f5",
+        "raw_sha256": "e317953b4e6478dddd0c9ef8e4ab087fa9dc3bbeb1b6b67e184215463e4fa3f2"
+      }
+    },
+    "renewal_regression_before": {
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -overlay=/tmp/csp11-merged-renewal-overlay.json -race -count=1 -timeout 3m -run '^TestFleetLease' -json ./runtime",
+      "exit_code": 1,
+      "source_note": "The Go overlay restores only renewOnce from merged producer 8122081e0494648fb1e356647053dd870a05fb1c. The committed contract types and regression tests remain present.",
+      "result": {
+        "pass": {
+          "named_events": 0,
+          "leaf_cases": 0,
+          "names": []
+        },
+        "fail": {
+          "named_events": 11,
+          "leaf_cases": 9,
+          "names": [
+            "TestFleetLeaseRenewalCannotReplaceGrant/holder",
+            "TestFleetLeaseRenewalCannotReplaceGrant/epoch",
+            "TestFleetLeaseRenewalCannotReplaceGrant/session",
+            "TestFleetLeaseRenewalCannotReplaceGrant/backend",
+            "TestFleetLeaseRenewalCannotReplaceGrant/recovery-epoch",
+            "TestFleetLeaseRenewalCannotReplaceGrant",
+            "TestFleetLeaseLateRenewalCannotReplaceCurrentState/closed",
+            "TestFleetLeaseLateRenewalCannotReplaceCurrentState/lost",
+            "TestFleetLeaseLateRenewalCannotReplaceCurrentState/new-grant",
+            "TestFleetLeaseLateRenewalCannotReplaceCurrentState/new-grant-error",
+            "TestFleetLeaseLateRenewalCannotReplaceCurrentState"
+          ]
+        },
+        "skip": {
+          "named_events": 0,
+          "leaf_cases": 0,
+          "names": []
+        },
+        "package_results": [
+          {
+            "Time": "2026-09-26T11:59:17.958347-05:00",
+            "Action": "fail",
+            "Package": "github.com/agentstation/starmap/runtime",
+            "Elapsed": 0.64
+          }
+        ],
+        "race_warning": false
+      },
+      "output": {
+        "path": "renewal-before.jsonl.gz",
+        "sha256": "9b0ae0b1586f64a55a18dd99d77aea9ebdad80e5fca25a89af38675e52efd212",
+        "raw_sha256": "72ddb0f4f1ddfd90a9c524ff4caff8b9aff45f25017f73d8bac975324b466a19"
+      },
+      "overlay": {
+        "path": "renewal-before-overlay.json.gz",
+        "sha256": "555ca231209108ca1b35d4b4819cb35630242ab9ae8dcbad3fe5ff6af216b330",
+        "raw_sha256": "524e9220f1b308c4e9c2e86060917821d1d187d43d74d530dfaa8cfa925c5992"
+      },
+      "source": {
+        "path": "renewal-before.go.gz",
+        "sha256": "82e10694f5295f7c754559c85e47eb195a59b3908b8d50b7772fc26d242dbbb3",
+        "raw_sha256": "8375848f9340b3dcf7b8bd5ed97df5ba77cbea59fbd3fa29a173dc54f127421d"
+      }
+    },
+    "goago": {
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "result": {
+        "schemaVersion": 1,
+        "version": "v0.3.0",
+        "rules": [
+          "no-dot-import",
+          "no-generic-methods",
+          "no-goto",
+          "no-invalid-ignore",
+          "no-naked-return",
+          "no-new-expr",
+          "no-self-referential-constraints"
+        ],
+        "findings": [],
+        "staleIgnores": [],
+        "errors": []
+      }
+    },
+    "writing": {
+      "command": "make HAS_DEVBOX= RUN_PREFIX= technical-writing-check",
+      "exit_code": 0,
+      "files": 1861,
+      "diagnostics": 0,
+      "output": {
+        "path": "writing.log.gz",
+        "sha256": "827bd92bea08841a9a467afdfb33f4dbd28668e91f0fb2c2391bd1b30b8c3936",
+        "raw_sha256": "6b83624c1e9ca7d59d81c1b3162cb625684bcdb65bde43cd7db7488bce1cbeb2"
+      }
+    }
+  },
+  "remaining": [
+    "Connect fleet preparation and recovery to every runtime publication path, including origin, authority, pin, and rollback.",
+    "Capture the complete grant before candidate production and recover the exact shared predecessor before takeover.",
+    "Implement the Starport adapter with atomic native expiry, publication revision, scoped keys, and approved recovery identity.",
+    "Qualify real concurrent processes, missed events, leader-directory loss, capability mismatch, and namespace isolation.",
+    "Complete repository checks, pre-PR review, native qualification, and ordered producer and consumer merges."
+  ],
+  "limits": [
+    "This local commit is not published or merged.",
+    "The fleet interfaces, commit adapter, and replay code are not wired into Runtime.Open.",
+    "The new tests qualify producer contracts and local lease behavior, not the real backend transaction.",
+    "A13, A14, and CSP11 remain incomplete."
+  ]
+}

@@ -1983,6 +1983,21 @@ lease validity, and expected catalog head. A local check followed by a separate
 head write does not satisfy this contract. Include both conditions in one
 backend transaction or multi-key compare-and-swap.
 
+The grant also identifies the acquiring process session, deployment, approved backend incarnation, and recovery epoch.
+Capture this complete grant before candidate production. Renewal can extend its lifetime but cannot change that identity.
+A late renewal cannot replace a newer local grant or restore ownership after shutdown.
+
+The expected head includes a publication revision and the selected recovery-input checksum.
+Catalog generation identity alone cannot detect changes to retained inputs that leave the visible catalog unchanged.
+Advance the publication revision when selecting those inputs. Compare the complete predecessor in the same transaction.
+An identical retry preserves the original grant, predecessor, catalog, and recovery bytes.
+Its result must identify the original accepted publication.
+
+Recovery must validate the exact input checksum, supported format, baseline, and declared acquisition policy before leadership.
+Preserve the difference between omitted source or provider selections and explicit empty selections.
+Rebuild the effective catalog from those inputs and compare its checksum with the selected publication.
+A format, policy, or replay mismatch cannot grant refresh ownership.
+
 Follower instances read the durable candidate or accepted head and validate
 their own runtime compatibility. Pubsub and SSE are hints. After a missed
 event, reconnect, or restart, a follower must recover from the durable head.
