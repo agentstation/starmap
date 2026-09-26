@@ -72,5 +72,24 @@
   },
   "producer_ci_run": 36265771789,
   "producer_ci_status": "PENDING",
-  "published_heads_verified": true
+  "published_heads_verified": true,
+  "canonical_plan_verifier_tests": 74,
+  "artifacts": [
+    {
+      "path": "acceptance.json.gz",
+      "sha256": "8c9a9906107f68bd0991ba5fe1f09019504a2de3b9b635c31b5406836a70fc91"
+    },
+    {
+      "path": "isolation-failure.jsonl.gz",
+      "sha256": "c7d65de9913842cd85fab5919beec6757651a274f4896500cf61ff092d0df109"
+    },
+    {
+      "path": "runner.json.gz",
+      "sha256": "4c45f8ef083b90e4ee6103244fa8676aafad728bcf4a717cdc14f5c7f361fc08"
+    },
+    {
+      "path": "stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    }
+  ]
 }
