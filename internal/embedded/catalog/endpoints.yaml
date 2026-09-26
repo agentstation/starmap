@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: bindings-4e61b06110e35f6ba62a8237ec26408272ee815efedefb351e5f7f4e528b0213.local.1682a8241ee7
-catalog_digest: sha256:b7ee7626991ecc849946facf591c0c19ca38c6dd9dce8a0e5cf58ec9c0e9dd16
+generation_id: bindings-c914f1117bfe4da2a681ad9bbcd7d7908797996feba7d9a89c43c3ba3c1e9f24.local.65556b3539e5
+catalog_digest: sha256:df705f2078a6fa0d4be47fd279f600469346712ee80441990a43e4bd1f10ae7a
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -1789,9 +1789,9 @@ models:
         limits:
           context_window: 1000000
           input_tokens: 0
-          output_tokens: 384000
+          output_tokens: 393216
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -1872,7 +1872,7 @@ models:
         limits:
           context_window: 1000000
           input_tokens: 0
-          output_tokens: 384000
+          output_tokens: 393216
         availability: unknown
         lifecycle: unknown
         service:
@@ -2718,7 +2718,7 @@ models:
         limits:
           context_window: 1048576
           input_tokens: 0
-          output_tokens: 65536
+          output_tokens: 65535
         availability: unknown
         lifecycle: unknown
         service:
@@ -6657,7 +6657,7 @@ models:
           currency: USD
         limits:
           context_window: 1048576
-          output_tokens: 131072
+          output_tokens: 1048576
         availability: unknown
         lifecycle: unknown
         service:
@@ -12001,7 +12001,7 @@ models:
         limits:
           context_window: 1000000
           input_tokens: 0
-          output_tokens: 65536
+          output_tokens: 131072
         availability: unknown
         lifecycle: unknown
         service:
@@ -12131,7 +12131,7 @@ models:
         limits:
           context_window: 1000000
           input_tokens: 0
-          output_tokens: 65536
+          output_tokens: 131072
         availability: unknown
         lifecycle: unknown
         service:
