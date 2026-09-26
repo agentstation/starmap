@@ -271,5 +271,91 @@
     "The full producer gate failed on stale internal/embedded/README.md. Regenerate it before restarting the gate.",
     "Full checks, review, publication, native qualification, task acceptance, and merge remain open."
   ],
-  "next_action": "Regenerate the embedded package documentation. Run the producer gate with Go 1.27.1 and direct Make tool overrides. Qualify and review both repairs before publication."
+  "next_action": "Regenerate the embedded package documentation. Run the producer gate with Go 1.27.1 and direct Make tool overrides. Qualify and review both repairs before publication.",
+  "continuation": {
+    "updated_at": "2026-09-26T10:51:25.146239+00:00",
+    "generated_document": "internal/embedded/README.md regenerated with go generate ./internal/embedded. docs-check now passes.",
+    "producer_gate": {
+      "session": 93064,
+      "status": "RUNNING",
+      "log": "/tmp/starmap-compiled-bootstrap-verify-final.log",
+      "toolchain": "go1.27.1",
+      "make_overrides": [
+        "HAS_DEVBOX=",
+        "RUN_PREFIX=",
+        "GOCMD=go"
+      ],
+      "passed": [
+        "generated documentation",
+        "structural and verifier checks",
+        "56 CI workflow race tests",
+        "go vet",
+        "golangci-lint",
+        "goago",
+        "technical writing: 1845 files, zero diagnostics",
+        "pure-Go external consumers",
+        "catalog access performance",
+        "container smoke",
+        "all critical coverage thresholds"
+      ],
+      "current": "runtime race suites",
+      "staged_diff_sha256": "edc98fe4026b1e5f6413b22c881195013690a76e375aee336b443ec2dd6b1f73",
+      "source_commit": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+      "next_action": "Revalidate session 93064 and wait for this exact gate. Do not restart on an observation timeout. Diagnose a terminal failure, or commit and run pre-PR autoreview after success.",
+      "public_fixture_followup": {
+        "status": "REQUIRED_AFTER_GATE",
+        "archive": "/tmp/starmap-public-fixture-20260908.tar.gz",
+        "preparation": {
+          "outcome": "downloaded-and-verified",
+          "path": "/tmp/starmap-public-fixture-20260908.tar.gz",
+          "size_bytes": 411974
+        },
+        "next_action": "Install the verified fixture at runtime/testdata/public-catalog-20260908/starmap-catalog.tar.gz after the current gate finishes. Run all tests that use newPublicCatalogFixture with STARMAP_PUBLIC_FIXTURE_REQUIRED=1."
+      }
+    },
+    "consumer_checks": {
+      "command": "go test -race -count=1 -timeout 5m -json ./internal/providers/keyring ./internal/credentials ./internal/document",
+      "passed": 349,
+      "skipped": 3,
+      "failed": 0,
+      "vet": "PASS",
+      "skipped_followup": "Six selected tests and subtests pass with pinned Valkey. No skips. Container cleanup succeeded.",
+      "consumer-repairs-race": {
+        "log": "consumer-repairs-race.log.gz",
+        "sha256": "ff4512f0b48d965bfb0b5d6ef65d1bb0cd70eb435fc5fe70f8e91ec08fd8ee09"
+      },
+      "consumer-real-storage": {
+        "log": "consumer-real-storage.log.gz",
+        "sha256": "4dc550624bbfdc7b1fc7944e0ceec1812820e42a7bcdc61d45c361464651131f"
+      },
+      "real_storage_runner": {
+        "started_at": "2026-09-26T10:42:10.009019+00:00",
+        "service": {
+          "id": "d7446b5e28020a10e0c72e5b4bb76493b080f295e56587c7b2ad405e1ee4cc62",
+          "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+          "address": "127.0.0.1:54751"
+        },
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "./internal/providers/keyring",
+          "-run",
+          "^(TestManagedMaterialValkeyOutageAndRecovery|TestProviderCredentialRepositoryContract|TestManagedMaterialStorageRotationRevocationAndRecreation)$"
+        ],
+        "exit_code": 0,
+        "cleanup_exit_code": 0,
+        "finished_at": "2026-09-26T10:42:48.138433+00:00"
+      }
+    },
+    "plan_validation": {
+      "plan_lint": "PASS: 1 file, zero diagnostics.",
+      "repository_writing": "FAIL: 1698 files, 69 unchanged historical diagnostics, no new diagnostics.",
+      "writing_log": "continuation-writing.log.gz"
+    }
+  }
 }

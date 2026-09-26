@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T10:37:42.016114+00:00",
+  "checked_at": "2026-09-26T10:51:25.146239+00:00",
   "starmap": [],
   "starport": [
     {
@@ -26,8 +26,9 @@
       "prepr": "PASS: all 34 required commands",
       "review": "PASS: nine chunks, zero findings at P0",
       "native_watch_session": null,
-      "native_watch_status": "Stopped after API rate limit. Latest Actions state remains unverified.",
-      "local_preparation_proof": "../../csp8/compiled-bootstrap-preparation/verification.json"
+      "native_watch_status": "Terminal run: 11 jobs passed, three native jobs failed, build skipped.",
+      "local_preparation_proof": "../../csp8/compiled-bootstrap-preparation/verification.json",
+      "terminal_native_proof": "../../csp8/native-schedule-384/terminal-run.json"
     }
   ],
   "completed_merges": [
@@ -749,6 +750,8 @@
     "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
     "state": "uncommitted",
     "proof": "../../csp8/compiled-bootstrap-preparation/verification.json",
-    "next_action": "Regenerate the embedded package documentation. Run the producer gate with Go 1.27.1 and direct Make tool overrides. Qualify and review both repairs before publication."
+    "next_action": "Revalidate session 93064 and wait for this exact gate. Do not restart on an observation timeout. Diagnose a terminal failure, or commit and run pre-PR autoreview after success.",
+    "gate_session": 93064,
+    "gate_status": "RUNNING"
   }
 }
