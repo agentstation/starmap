@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T00:23:43.775248+00:00",
+  "checked_at": "2026-09-26T00:33:59.595700+00:00",
   "starmap": [
     {
       "baseRefOid": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
@@ -1220,84 +1220,53 @@
     },
     {
       "baseRefOid": "19c85ad84293acba4ae9514fa5f68276e92d2461",
-      "headRefOid": "e7b16e489a22df0e5b853cfdf2b82c1db01c0ae2",
+      "headRefOid": "b52744ae12bff6323823ebd235b48079f5801764",
       "isDraft": true,
       "mergeStateStatus": "BLOCKED",
       "number": 180,
       "title": "ci: restore coordinated storage checks with durable S3 fixture",
-      "updatedAt": "2026-09-26T00:23:05Z",
+      "updatedAt": "2026-09-26T00:29:49Z",
       "owner": "CSP6",
       "disposition": "CI rerun",
-      "next_action": "Pinned MinIO source fixture built locally on Go 1.27.1. Qualify both coordinated-storage jobs and full native gate, then review and merge the exact head before refreshing PR #174.",
+      "next_action": "Pinned MinIO fixture and both storage jobs passed in the prior head. Current head adds the approved artifact pin and readiness check. Wait for all native checks, review exact head, then merge before refreshing PR #174.",
       "checks": [
         {
           "name": "Analyze (actions)",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Build pinned object fixture",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Analyze (go)",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Analyze (python)",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        }
-      ]
-    }
-  ],
-  "starport": [
-    {
-      "baseRefOid": "b068f0c2e2760e01033218113d21096a66a6056a",
-      "headRefOid": "6e0417ae9ed0cbb2dea05262d402c64327f67c77",
-      "isDraft": false,
-      "mergeStateStatus": "BLOCKED",
-      "number": 383,
-      "title": "chore(deps): bump the go-modules group across 1 directory with 13 updates",
-      "updatedAt": "2026-09-26T00:10:37Z",
-      "owner": "dependency maintenance",
-      "disposition": "CI rerun",
-      "next_action": "WorkOS Code pointer fix passed the local full Go suite. Wait for native checks on the refreshed head, then squash merge the exact head.",
-      "checks": [
-        {
-          "name": "Lint",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
         },
         {
-          "name": "Test (ubuntu-latest)",
+          "name": "Constructor Network Passivity",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
         },
         {
-          "name": "Test (macos-latest)",
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Checks",
           "status": "IN_PROGRESS",
           "conclusion": ""
         },
         {
-          "name": "Test (windows-latest)",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Security Scan",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Release Contract",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "OpenRouter SDK Compatibility",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Release Snapshot",
+          "name": "Security & Reliability",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
         },
@@ -1305,10 +1274,86 @@
           "name": "Action Pin Provenance",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         }
       ]
     }
   ],
+  "starport": [],
   "completed_merges": [
     {
       "repo": "starmap",
@@ -1327,6 +1372,12 @@
       "pr": 382,
       "head": "df16154a1ae7f8ab0ec141a1a762e2b98369bde9",
       "merge_commit": "b068f0c2e2760e01033218113d21096a66a6056a"
+    },
+    {
+      "repo": "starport",
+      "pr": 383,
+      "head": "6e0417ae9ed0cbb2dea05262d402c64327f67c77",
+      "merge_commit": "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e"
     }
   ],
   "publication_replay": {
