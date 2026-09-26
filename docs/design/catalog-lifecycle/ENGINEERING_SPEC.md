@@ -2296,6 +2296,23 @@ Failover must recover the last committed effective catalog and the evidence
 needed for the next merge. Private source-layer files on the former leader
 cannot be the only copy of required acquisition evidence.
 
+Fleet ownership must check acquisition access before a grant and each renewal.
+Explicit provider bindings define the required scopes.
+Without bindings, implicit provider acquisition includes every current catalog provider and every retained provider scope.
+The check must include providers without an earlier observation and must not fetch inventories.
+A deployment that queries only some providers must select explicit bindings.
+
+A failed standalone candidate-preparation read must retain the candidate for bounded background retry.
+A newer pending candidate replaces the older pending candidate.
+Unknown lease state cannot authorize acceptance. Idle standalone delivery must not poll storage.
+These operations remain outside inference requests.
+
+The [fleet review resolution](../../plans/proof/starport-production-catalog/csp11/review-repairs-2026-09-26/REVIEW_RESOLUTION.md) adds three requirements before CSP11 merge.
+Fresh fleet approval needs an explicit operation that refuses existing, replaced, or uncertain state.
+Fleet retention must bound staged and committed bytes while protecting selected, accepted, rollback, and pinned generations.
+Baseline and acquisition-policy upgrades need a transition that fences incompatible writers and preserves permitted retained inputs.
+The recommendation for an explicit deployment-wide transition remains pending with the owner.
+
 Redis or Valkey Cluster requires every key in one atomic operation to share a
 hash slot. The implementation must prove this layout before advertising
 cluster support for catalog and lease transactions.

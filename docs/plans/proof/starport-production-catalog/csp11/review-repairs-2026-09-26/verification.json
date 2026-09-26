@@ -1,0 +1,73 @@
+{
+  "status": "LOCAL_REPAIRS_PASS_FLEET_REVIEW_OPEN",
+  "recorded_at": "2026-09-26T20:24:33.726108+00:00",
+  "toolchain": "go1.27.1",
+  "environment": "GOWORK=off",
+  "producer": {
+    "commit": "c6aae50119cf1148439d90345e084fc4d7429fed",
+    "command": "go test -race -count=1 -timeout=5m -json ./runtime ./acquisition -run 'Fleet|Capability'",
+    "exit_code": 0,
+    "named_results": {
+      "pass": 73
+    },
+    "packages": [
+      {
+        "Time": "2026-09-26T15:15:46.264363-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/acquisition",
+        "Elapsed": 2.219
+      },
+      {
+        "Time": "2026-09-26T15:16:08.349185-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 24.323
+      }
+    ],
+    "vet": "PASS",
+    "goago": "PASS",
+    "writing": "PASS, 1867 files, zero diagnostics"
+  },
+  "consumer": {
+    "commit": "bc44851cfd2274f037b7b05d216e8b9c475116b9",
+    "command": "go test -race -count=1 -timeout=2m -json ./internal/catalog -run '^(TestStandaloneCandidateRetriesPreparationWithoutAnotherPublication|TestRemoteRuntimeAcceptsOnlyMatchingForwardState|TestLeaseStore.*|TestValidationRecord.*)$'",
+    "exit_code": 0,
+    "named_results": {
+      "pass": 10
+    },
+    "packages": [
+      {
+        "Time": "2026-09-26T15:21:15.916389-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starport/internal/catalog",
+        "Elapsed": 1.8900000000000001
+      }
+    ],
+    "vet": "PASS",
+    "writing": "PASS, 2 changed files, zero diagnostics"
+  },
+  "fail_before": {
+    "producer": "Initial ownership was granted without access to an unobserved provider.",
+    "consumer": "A candidate disappeared after a transient epoch read failure."
+  },
+  "remaining": [
+    "Owner decision for baseline and acquisition-policy transition",
+    "Explicit fresh fleet initialization",
+    "Bounded fleet publication retention",
+    "Final full-branch reviews",
+    "Exact-head native CI and dependency-ordered merges"
+  ],
+  "merge_commits": null,
+  "raw_sha256": {
+    "producer-before.log": "984c40158b17ae64883e2b35215700b3fa771b3138c6e663413f503651cb69bc",
+    "producer-tests.jsonl": "488267070a0e7198a36e4dc2f07c461f42a0fbca6f9fc8aa0795942f1b8463b0",
+    "producer-tests.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "producer-goago.json": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+    "producer-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "producer-writing.log": "538e4e5bfc2c3ddbe5ea214bed3fb4326895d753a043ca55624f446b415acb38",
+    "consumer-before.log": "f8d6062f976f59d17450d6a702933eec901b178a4d73e333670f3621711be70c",
+    "consumer-tests.jsonl": "eecb48ae0642a8f0750b4f0fe36eb27caf48d334ade196b1e391c2a026fab16d",
+    "consumer-tests.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "consumer-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

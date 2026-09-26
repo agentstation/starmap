@@ -12,8 +12,8 @@
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Local platform update verified; fleet review findings prevent publication and merge",
-      "next_action": "Resolve producer upgrade/admission and consumer retention/startup/standalone findings. Preserve the completed D39 changes. Review and qualify final heads before publication and dependency-ordered merges."
+      "disposition": "Local platform and two review repairs verified; remaining fleet findings prevent publication and merge",
+      "next_action": "Resolve the pending upgrade transition, fresh fleet initialization, and bounded publication retention. Preserve the verified platform, acquisition-access, and standalone-delivery changes. Review and qualify final heads before publication and ordered merges."
     }
   ],
   "starport": [
@@ -28,8 +28,8 @@
       "title": "catalog: fence fleet publication and recover shared acquisition state",
       "url": "https://github.com/agentstation/starport/pull/385",
       "owner": "CSP11",
-      "disposition": "Local platform update verified; fleet review findings prevent publication and merge",
-      "next_action": "Resolve producer upgrade/admission and consumer retention/startup/standalone findings. Preserve the completed D39 changes. Review and qualify final heads before publication and dependency-ordered merges."
+      "disposition": "Local platform and two review repairs verified; remaining fleet findings prevent publication and merge",
+      "next_action": "Resolve the pending upgrade transition, fresh fleet initialization, and bounded publication retention. Preserve the verified platform, acquisition-access, and standalone-delivery changes. Review and qualify final heads before publication and ordered merges."
     }
   ],
   "completed_merges": [
@@ -836,13 +836,14 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Resolve producer upgrade/admission and consumer retention/startup/standalone findings. Preserve the completed D39 changes. Review and qualify final heads before publication and dependency-ordered merges.",
+    "next_action": "Resolve the pending upgrade transition, fresh fleet initialization, and bounded publication retention. Preserve the verified platform, acquisition-access, and standalone-delivery changes. Review and qualify final heads before publication and ordered merges.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "blocked_task": "CSP10.2",
     "owner_question": "Native suspend qualification remains open. The owner has not changed this contract.",
     "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
     "contract_audit": "../../csp11/contract-audit-2026-09-26.md",
-    "recovery_failure_proof": "../../csp11/recovery-failure-2026-09-26/verification.json"
+    "recovery_failure_proof": "../../csp11/recovery-failure-2026-09-26/verification.json",
+    "pending_upgrade_decision": "Explicit deployment-wide baseline and acquisition-policy transition is recommended; owner answer pending."
   },
   "merged_followups": {
     "tasks": [
@@ -869,14 +870,14 @@
     "checked_at": "2026-09-26T16:38:49.460723+00:00"
   },
   "fleet_preparation": {
-    "producer": "37c01101257c06c065a51c93ed7bcca987c58da4",
+    "producer": "c6aae50119cf1148439d90345e084fc4d7429fed",
     "producer_pr": 185,
     "consumer_branch": "codex/catalog-fleet-adapter",
     "consumer_base": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
     "proof": "../../csp11/isolation-scope-2026-09-26/verification.json",
     "owner": "CSP11",
-    "next_action": "Resolve producer upgrade/admission and consumer retention/startup/standalone findings. Preserve the completed D39 changes. Review and qualify final heads before publication and dependency-ordered merges.",
-    "consumer": "527eeafd096a3567f330dd54d0d7c3745a71a572",
+    "next_action": "Resolve the pending upgrade transition, fresh fleet initialization, and bounded publication retention. Preserve the verified platform, acquisition-access, and standalone-delivery changes. Review and qualify final heads before publication and ordered merges.",
+    "consumer": "bc44851cfd2274f037b7b05d216e8b9c475116b9",
     "consumer_pr": 385,
     "ci": {
       "producer": 36265771789,
@@ -886,10 +887,11 @@
     },
     "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json",
     "review_status": "FINDINGS, no push or merge",
-    "running_sessions": []
+    "running_sessions": [],
+    "repair_proof": "../../csp11/review-repairs-2026-09-26/verification.json"
   },
   "local_consumer_checkpoint": {
-    "head": "527eeafd096a3567f330dd54d0d7c3745a71a572",
+    "head": "bc44851cfd2274f037b7b05d216e8b9c475116b9",
     "branch": "codex/catalog-fleet-adapter",
     "published": false
   },
@@ -908,5 +910,6 @@
       "named_fail": 0,
       "scope": "kvconnection, config, storage, cache with race detection and real Valkey. Full CSP12 is incomplete."
     }
-  }
+  },
+  "local_updated_at": "2026-09-26T20:24:33.726108+00:00"
 }
