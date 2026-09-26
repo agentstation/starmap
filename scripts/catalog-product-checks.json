@@ -5718,6 +5718,122 @@
           "test": "TestDevelopmentRejectsPersistentEnvironmentSelections"
         }
       ]
+    },
+    "A13.two_real_processes": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetStoreSeparateProcessTakeover"
+        }
+      ]
+    },
+    "A13.lease_expiry_during_commit": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestFleetStoreLeaseExpiresDuringSelection"
+    },
+    "A13.stale_epoch_rejection": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetStoreSeparateProcessTakeover"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetStoreAcceptanceUsesOriginalGrant"
+        }
+      ]
+    },
+    "A14.missed_events": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+    },
+    "A14.follower_restart": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+    },
+    "A14.leader_loss_with_local_files_removed": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+    },
+    "A14.equivalent_acquisition_capability": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetCapabilityRefusesOwnershipAndRecovers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetCapabilityChecksActiveBindings"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimeIncompatibleReplayRemainsFollower"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestFleetCapabilityResolvesAcquisitionWithoutProviderCalls"
+        }
+      ]
+    },
+    "A41.catalog_fleet_deployment_isolation": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestFleetStoreNamespaceAndMalformedDescriptor"
+    },
+    "A41.catalog_fleet_atomic_layout": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetStoreNativePublication"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyIncarnationAtomicContract"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyIncarnationRejectsReplacementBackend"
+        }
+      ]
     }
   },
   "task_component_checks": {

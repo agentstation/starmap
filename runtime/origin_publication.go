@@ -124,7 +124,25 @@ func (origin *authorityOrigin) matchesSource(current catalogs.Generation, state 
 	return derived.Manifest.GenerationID == current.Manifest.GenerationID, nil
 }
 
-func (r *Runtime) commitPrepared(ctx context.Context, prepared preparedPublication, epoch uint64, evidence starmap.CandidateEvidence, source *sourceLayer) (starmap.CatalogState, error) {
+func (r *Runtime) commitPrepared(ctx context.Context, prepared preparedPublication, epoch uint64, evidence starmap.CandidateEvidence, source *sourceLayer, layers layerSet) (starmap.CatalogState, error) {
+	ctx, attempt, err := r.prepareFleetCommit(ctx, epoch, layers)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
+	state, err := r.commitPreparedCatalog(ctx, prepared, epoch, evidence, source)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
+	if err := r.finishFleetCommit(ctx, attempt); err != nil {
+		return starmap.CatalogState{}, err
+	}
+	if attempt != nil {
+		return r.client.CurrentCatalogState(), nil
+	}
+	return state, nil
+}
+
+func (r *Runtime) commitPreparedCatalog(ctx context.Context, prepared preparedPublication, epoch uint64, evidence starmap.CandidateEvidence, source *sourceLayer) (starmap.CatalogState, error) {
 	if prepared.generation == nil {
 		return r.commitOrdinary(ctx, prepared.state, epoch, evidence, source)
 	}
@@ -145,7 +163,10 @@ func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch 
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}
-	return r.commitPrepared(ctx, prepared, epoch, evidence, source)
+	r.mu.RLock()
+	layers := r.layers
+	r.mu.RUnlock()
+	return r.commitPrepared(ctx, prepared, epoch, evidence, source, layers)
 }
 
 func (r *Runtime) publishOriginStartup(ctx context.Context) error {

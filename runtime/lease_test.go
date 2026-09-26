@@ -47,8 +47,8 @@ func TestRuntimeLeaseRejectsStaleEpochAtCommit(t *testing.T) {
 	// lease, and this instance observes the new epoch on its next renewal.
 	<-source.entered
 	leases.bumpEpoch()
-	if err := runtime.lease.renewOnce(ctx); err != nil {
-		t.Fatalf("renewOnce: %v", err)
+	if err := runtime.lease.renewOnce(ctx); err == nil {
+		t.Fatal("renewal accepted a different lease epoch")
 	}
 	close(source.release)
 

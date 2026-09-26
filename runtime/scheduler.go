@@ -138,10 +138,21 @@ func (r *Runtime) sourceChanges() <-chan struct{} {
 func (r *Runtime) startSchedules() {
 	r.startPermissionSchedule()
 	r.startRetentionSchedule()
+	if r.config.fleetStore != nil {
+		r.work.Go(func() {
+			r.runSchedule(controllerAccepted, originAcceptedPollInterval, r.schedule.acceptedOffset, r.schedule.acceptedPhase, false, nil, func(ctx context.Context) {
+				if r.lease.status() == leaseLost {
+					if err := r.RefreshFleet(ctx); err != nil {
+						r.logScheduledFailure(controllerAccepted, err)
+					}
+				}
+			})
+		})
+	}
 	if r.config.generationPin != "" {
 		return
 	}
-	if r.config.origin != nil && r.config.leaseStore != nil {
+	if r.config.fleetStore == nil && r.config.origin != nil && r.config.leaseStore != nil {
 		r.work.Go(func() {
 			r.runSchedule(controllerAccepted, originAcceptedPollInterval, r.schedule.acceptedOffset, r.schedule.acceptedPhase, false, nil, func(ctx context.Context) {
 				if r.lease.status() != leaseLost {

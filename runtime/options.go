@@ -74,6 +74,7 @@ type options struct {
 	sourceAcquirer      SourceAcquirer
 	sourceConfiguration []sources.SourceActivity
 	leaseStore          LeaseStore
+	fleetStore          *fleetCommitStore
 
 	now                        func() time.Time
 	random                     Random
@@ -143,6 +144,9 @@ func (r *options) resolve() {
 
 // validate checks every runtime setting before Open starts any work.
 func (r options) validate() error {
+	if r.fleetStore != nil && r.originStore != nil && r.originStore != r.fleetStore {
+		return fleetConflict("fleet publication and authority issuance must use the same store")
+	}
 	if err := r.retention.Validate(); err != nil {
 		return err
 	}
@@ -513,6 +517,9 @@ func WithListenAddress(address string) Option {
 // A deployment without shared storage needs no lease.
 func WithLeaseStore(store LeaseStore) Option {
 	return func(r *options) error {
+		if r.fleetStore != nil {
+			return fleetConflict("the fleet store owns refresh leases")
+		}
 		if store == nil {
 			return &errors.ValidationError{Field: "lease_store", Message: "is required"}
 		}

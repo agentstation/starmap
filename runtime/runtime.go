@@ -116,6 +116,10 @@ type Runtime struct {
 	// mu guards the retained layers and the published effective state.
 	mu                    sync.RWMutex
 	layers                layerSet
+	fleetHead             FleetHead
+	fleetPublicationGrant Lease
+	fleetReplayError      error
+	fleetCapabilityError  error
 	effective             starmap.CatalogState
 	report                statusState
 	permissions           authorityPermissions
@@ -217,14 +221,8 @@ func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 	if err != nil {
 		return nil, errors.WrapResource("prepare", "runtime instance seed", "", err)
 	}
-	client, err := starmap.NewContext(ctx, config.acquisitionPolicyClientOptions()...)
+	client, initialFleet, err := config.openServingClient(ctx)
 	if err != nil {
-		return nil, err
-	}
-	if err := config.validateStoredAuthoritySelection(client.CurrentCatalogState().AuthorityHead); err != nil {
-		return nil, err
-	}
-	if err := repairWorkspaceForStartup(ctx, client); err != nil {
 		return nil, err
 	}
 
@@ -245,16 +243,11 @@ func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 		return nil, err
 	}
 
-	if err := runtime.initializeRetainedState(ctx); err != nil {
+	if err := runtime.initializeRetainedState(ctx, initialFleet); err != nil {
 		return nil, err
 	}
-	runtime.adoptSourceIdentity()
-	runtime.lease = newLeaseKeeper(
-		runtime.config.leaseStore,
-		runtime.schedule.identity.Instance,
-		runtime.config.now,
-	)
-	if err := runtime.lease.start(runtime.ctx, &runtime.work, runtime.onLeaseLost, !runtime.originFollowed); err != nil {
+	ctx, err = runtime.initializeRefreshOwnership(ctx)
+	if err != nil {
 		return nil, err
 	}
 
@@ -381,6 +374,11 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	r.layers.requireAuthority = r.requiresAuthority()
 	r.layers.providerBindings = r.config.providerBindings
 	r.layers.acquisitionSources = r.config.acquisitionSources
+	if r.config.fleetStore != nil && r.fleetHead.Revision != 0 && !r.releasesAcceptedPin(current.GenerationID) {
+		r.effective = current
+		r.report.startedAt = r.config.now()
+		return nil
+	}
 	if r.requiresAuthority() && r.layers.source == nil {
 		// Retain available diagnostics until this authority supplies a source generation.
 		// Without a retained source, initializeAuthority cannot approve this catalog.

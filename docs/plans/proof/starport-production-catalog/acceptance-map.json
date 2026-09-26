@@ -369,7 +369,9 @@
       "A41.deployment_key_channel_isolation",
       "A41.namespace_atomic_layout",
       "A41.unprefixed_record_migration",
-      "A41.unsupported_modes_refused"
+      "A41.unsupported_modes_refused",
+      "A41.catalog_fleet_deployment_isolation",
+      "A41.catalog_fleet_atomic_layout"
     ],
     "A42": [
       "A42.memory_and_shared_cache_selection",
@@ -708,8 +710,8 @@
       "A14.equivalent_acquisition_capability",
       "A03.two_instances_same_user",
       "A03.duplicate_owner_refusal",
-      "A41.deployment_key_channel_isolation",
-      "A41.namespace_atomic_layout"
+      "A41.catalog_fleet_deployment_isolation",
+      "A41.catalog_fleet_atomic_layout"
     ],
     "CSP12": [
       "A15.budget_usage_unknown",
@@ -818,7 +820,9 @@
       "A47.late_usage_pinned_valuation",
       "A47.policy_edit_preserves_spend",
       "A47.clock_and_window_authority",
-      "A47.reconciliation_retention"
+      "A47.reconciliation_retention",
+      "A41.catalog_fleet_deployment_isolation",
+      "A41.catalog_fleet_atomic_layout"
     ],
     "CSP16": [
       "A28.desired_applied_drift",
@@ -1198,7 +1202,9 @@
       "A29.no_dynamic_data_disclosure",
       "A35.each_advertised_native_install",
       "A35.clean_catalog_no_keys",
-      "A35.documented_inference"
+      "A35.documented_inference",
+      "A41.catalog_fleet_deployment_isolation",
+      "A41.catalog_fleet_atomic_layout"
     ],
     "CSP23": [
       "A29.embedded_offline_search",
@@ -1536,7 +1542,9 @@
       "A47.late_usage_pinned_valuation",
       "A47.policy_edit_preserves_spend",
       "A47.clock_and_window_authority",
-      "A47.reconciliation_retention"
+      "A47.reconciliation_retention",
+      "A41.catalog_fleet_deployment_isolation",
+      "A41.catalog_fleet_atomic_layout"
     ],
     "CSP16.1": [
       "A26.local_file_stale_revision",
