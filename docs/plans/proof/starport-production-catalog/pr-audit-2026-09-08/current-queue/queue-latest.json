@@ -11,7 +11,7 @@
       "updatedAt": "2026-09-19T03:33:36Z",
       "owner": "CSP8",
       "disposition": "draft local integration",
-      "next_action": "After CSP6 publication, refresh the complete prepared host API bundle onto current main, review, and publish to existing PR #171. See host-api-consolidation-prepared.json.",
+      "next_action": "After catalog publication, refresh prepared host API head 7222d372f, complete final review, and publish to this existing PR.",
       "checks": [
         {
           "name": "Analyze (actions)",
@@ -169,7 +169,7 @@
           "conclusion": "SUCCESS"
         }
       ],
-      "local_head": "caec09095bbba5082b7ca6bb6b3aa12c91319067"
+      "local_head": "7222d372f759b1bdc3e40bd71757ba7720b99a76"
     },
     {
       "baseRefOid": "58154b3e6faa3771cf6ef21e0d911cc0d76f7f70",
@@ -560,7 +560,7 @@
       "updatedAt": "2026-09-21T14:37:28Z",
       "owner": "dependency maintenance",
       "disposition": "selected for compatible dependency consolidation",
-      "next_action": "After catalog publication, refresh and qualify prepared dependency consolidation 104c81de8 on current main, review, and publish to this PR. Preserve #175 and #177\u2013179 until successor qualification. See dependency-consolidation-prepared.json.",
+      "next_action": "After catalog publication, refresh dependency consolidation 0d2ba93b5, complete final review, and publish to this existing PR. Retain the other dependency PRs until successor qualification.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -703,7 +703,7 @@
           "conclusion": "NEUTRAL"
         }
       ],
-      "local_head": "104c81de820a61f8a63f29d556ff0da1e27fb15c"
+      "local_head": "0d2ba93b561b7f4216a2f206baadb59646b311e1"
     },
     {
       "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
@@ -1213,7 +1213,7 @@
   "cleanup": {
     "stale_worktree_registrations_pruned": 31,
     "clean_merged_worktrees_removed": 12,
-    "local_exact_ancestor_branches_removed": 51,
+    "local_exact_ancestor_branches_removed": 52,
     "live_remote_branches_deleted": 13,
     "note": "Remote deletions used exact-head leases. Twelve Starport branches matched merged PR heads; Starmap #165 was verified superseded by merged #168. Three removed worktrees held only regenerable ignored caches or test data. Dirty worktrees, .tmp proof files, and diverged local branches remain. Two additional clean Starmap checkouts and branches were fully contained in retained host API head caec09095bbba5082b7ca6bb6b3aa12c91319067. Only regenerable Python bytecode was discarded.",
     "retained_inventory": {
@@ -1234,7 +1234,9 @@
     "contained_unmerged_worktrees_removed": 2,
     "total_worktrees_removed": 14,
     "contained_pass_proof": "worktree-cleanup-contained.json",
-    "retained_inventory_proof": "workspace-retained.json"
+    "retained_inventory_proof": "workspace-retained.json",
+    "automatic_merged_remote_branch_deletions": 1,
+    "ci_repair_branch_proof": "ci-repair-branch-cleanup.json"
   },
   "closed_superseded": [
     {

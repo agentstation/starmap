@@ -36,5 +36,41 @@
     "passes": 1,
     "secret_scan": "clean",
     "limit": "Review is for the prepared source and current base. Refresh and rerun the gate before publication if either changes."
+  },
+  "refresh_after_ci_repair": {
+    "checked_at": "2026-09-26T02:15:10.446897+00:00",
+    "previous_head": "caec09095bbba5082b7ca6bb6b3aa12c91319067",
+    "prepared_head": "7222d372f759b1bdc3e40bd71757ba7720b99a76",
+    "merged_main": "58154b3e6faa3771cf6ef21e0d911cc0d76f7f70",
+    "conflicts": [],
+    "changed_files": [
+      ".github/workflows/pr.yaml",
+      "docs/TESTING.md",
+      "internal/ciworkflow/current_actions_test.go",
+      "internal/ciworkflow/verification_gate_test.go",
+      "scripts/test_verification_tests.py",
+      "scripts/verification_tests.py"
+    ],
+    "production_source_or_dependency_pins_unchanged": true,
+    "publication": "Local only. Refresh from completed catalog publication, then run final review and hosted qualification.",
+    "checks": {
+      "workflow_race_package": {
+        "command": "GOTOOLCHAIN=go1.27.1 go test -race -count=1 -timeout=5m ./internal/ciworkflow",
+        "exit_code": 0,
+        "elapsed_seconds": 2.317
+      },
+      "inventory_tests": {
+        "command": "python3 -m unittest discover -s scripts -p test_verification_tests.py",
+        "passed": 9,
+        "exit_code": 0
+      },
+      "goago": {
+        "findings": 0,
+        "staleIgnores": 0,
+        "errors": 0
+      },
+      "diff_check": "pass"
+    },
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files"
   }
 }

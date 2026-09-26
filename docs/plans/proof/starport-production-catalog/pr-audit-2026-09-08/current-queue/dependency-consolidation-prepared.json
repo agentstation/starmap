@@ -107,5 +107,33 @@
     "output": "External consumer toolchain: go1.27.1\nok  \tgithub.com/agentstation/starmap-test/read-only-consumer\t4.163s\nok  \tgithub.com/agentstation/starmap-test/store-only-consumer\t4.697s\nok  \tgithub.com/agentstation/starmap-test/pinned-artifact-consumer\t3.732s\nok  \tgithub.com/agentstation/starmap-test/server-embed-consumer\t3.997s\nok  \tgithub.com/agentstation/starmap-test/remote-subscriber-consumer\t5.894s\nok  \tgithub.com/agentstation/starmap-test/server-storage-consumer\t11.939s\nread-only consumer dependency closure: 37/37 non-standard packages (171 total on this platform); forbidden families absent\nstore-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent\npinned-artifact consumer: 38/38 non-standard packages; offline verified activation passed; online/acquisition families absent\nserver-embed consumer non-standard dependency closure: 60/60 packages; acquisition families absent\nserver-embed consumer: external compile and lifecycle test passed\nremote-subscriber consumer non-standard dependency closure: 44/44 packages; forbidden families absent\nremote-subscriber consumer: external compile and reactive lifecycle test passed\nserver-storage consumer non-standard dependency closure: 133/133 packages; filesystem/S3 server and reactive restart matrix passed\n"
   },
   "module_verification": "go mod verify passed",
-  "publication_status": "Not pushed. Full hosted qualification remains required. Preserve all original PRs until the successor passes."
+  "publication_status": "Not pushed. Full hosted qualification remains required. Preserve all original PRs until the successor passes.",
+  "refresh_after_ci_repair": {
+    "checked_at": "2026-09-26T02:15:10.446897+00:00",
+    "previous_head": "104c81de820a61f8a63f29d556ff0da1e27fb15c",
+    "prepared_head": "0d2ba93b561b7f4216a2f206baadb59646b311e1",
+    "merged_main": "58154b3e6faa3771cf6ef21e0d911cc0d76f7f70",
+    "conflicts": [],
+    "changed_files": [
+      ".github/workflows/pr.yaml",
+      "docs/TESTING.md",
+      "internal/ciworkflow/current_actions_test.go",
+      "internal/ciworkflow/verification_gate_test.go",
+      "scripts/test_verification_tests.py",
+      "scripts/verification_tests.py"
+    ],
+    "production_source_or_dependency_pins_unchanged": true,
+    "publication": "Local only. Refresh from completed catalog publication, then run final review and hosted qualification.",
+    "checks": {
+      "lock_files_identical_to_previous_prepared_head": true,
+      "diff_scope_against_main": [
+        "go.mod",
+        "go.sum",
+        "testdata/consumers/server-storage/go.mod",
+        "testdata/consumers/server-storage/go.sum"
+      ],
+      "diff_check": "pass"
+    },
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair"
+  }
 }

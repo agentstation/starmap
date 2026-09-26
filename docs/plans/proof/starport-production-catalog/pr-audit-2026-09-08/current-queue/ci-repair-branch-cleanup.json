@@ -1,0 +1,9 @@
+{
+  "checked_at": "2026-09-26T02:16:42.666611+00:00",
+  "removed_local_branch": "codex/starmap-object-ci-repair",
+  "head": "3458eed202676ef343fa5512c5e142c8abf0888c",
+  "merged_pull": 180,
+  "merge_commit": "58154b3e6faa3771cf6ef21e0d911cc0d76f7f70",
+  "remote_branch": "GitHub removed the source branch after merge; fetch observed its deletion.",
+  "worktree": "Reused for codex/dependency-consolidation at 0d2ba93b561b7f4216a2f206baadb59646b311e1. No checkout removed."
+}
