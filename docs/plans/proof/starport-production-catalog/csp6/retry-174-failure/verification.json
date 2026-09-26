@@ -1,0 +1,48 @@
+{
+  "checked_at": "2026-09-26T03:22:25.433480+00:00",
+  "promotion_pull": 174,
+  "promotion_head": "109f102e17e0d7d367218bf9a0b9e8ef9693fd69",
+  "promotion_merge": "2337de79d567e7858a522a0f032a0c5ef004a553",
+  "publication_run": 36213301460,
+  "retry_run": 36213744750,
+  "workflow_results": "Both runs reported success. The after-capture rejected the retry because the legacy channel changed.",
+  "capture_error": "Retry changed an already completed discovery publication.",
+  "changed_fields": [
+    "catalog/v1.sequence: 40 -> 41",
+    "catalog/v1.channel_updated_at: 2026-09-26T03:05:06.037008261Z -> 2026-09-26T03:14:02.330700823Z"
+  ],
+  "modern_channel_unchanged": true,
+  "before_capture_preserved": "before-capture",
+  "logs": {
+    "regression-before": {
+      "path": "regression-before.log.gz",
+      "sha256": "e238700b72044e5e94d56dd8dc6e68cfd9a030a545d40ec92007cb6dccf2ee1e"
+    },
+    "regression-after": {
+      "path": "regression-after.log.gz",
+      "sha256": "fed02f9de133788ec554d5bb3e3f7393fe952d0a55d99282b0fb3c0e70b3bd7d"
+    },
+    "publication-suite": {
+      "path": "publication-suite.log.gz",
+      "sha256": "4c455e5b9edd0de7ddd8cb49cd7e4c625aecd6a670d3bb1220ff497e1b823b70"
+    }
+  },
+  "regression": {
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off python3 scripts/test_catalog_publication.py PublicationRecoveryTests.test_interrupted_promotion_merges_exact_artifact_before_both_channels",
+    "before_exit_code": 1,
+    "before_seconds": 12.496,
+    "after_exit_code": 0,
+    "after_seconds": 12.834,
+    "contract": "Use real catalog executables and isolated Git repositories. Preserve both staged channel documents, remote branch commits, immutable release state, and existing PR identity after a completed retry."
+  },
+  "repair_commit": "2ac396e9c5b1301b1ed341983f32eea2ef1a3e95",
+  "combined_host_head": "2fc2ec46f5e654315ce94b8762a6bd2cce17150c",
+  "python_suite": {
+    "tests": 51,
+    "failed": 0,
+    "exit_code": 0,
+    "seconds": 14.258
+  },
+  "status": "local repair, combined review and native CI required",
+  "next_action": "Qualify and publish the combined producer work through existing PR #171. After merge, capture a fresh before snapshot and repeat the exact-receipt retry without overwriting this failure evidence. Keep CSP6 in progress."
+}

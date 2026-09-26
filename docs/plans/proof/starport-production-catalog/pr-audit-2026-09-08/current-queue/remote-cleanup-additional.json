@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-09-26T03:29:42.463536+00:00",
+  "repo": "agentstation/starport",
+  "deleted_ref": "refs/heads/codex/catalog-lifecycle",
+  "head": "2973fd08122bc8264c499b99e60b44c890f3c6c7",
+  "merged_pr": 366,
+  "merge_commit": "cffa9300160d90eecb641b756a3ab2dd05d6ef47",
+  "tree_equality": true,
+  "open_prs": 0,
+  "lease_protected_delete": true,
+  "local_lifecycle_branch": "retained: contains later unpublished work",
+  "starmap_174_remote": "GitHub automatically deleted catalog/promotion/5878271674e4353a0dab1ab3604ea9ab88dceb427f1d7b2b46178106db38827c after merge. Fetch pruned its remote-tracking ref."
+}

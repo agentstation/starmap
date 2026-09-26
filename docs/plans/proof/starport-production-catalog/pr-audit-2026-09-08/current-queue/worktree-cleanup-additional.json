@@ -1,0 +1,281 @@
+{
+  "checked_at": "2026-09-26T03:27:35.561963+00:00",
+  "removed": [
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starport-dependency-qualification",
+      "repo": "starport",
+      "head": "3a79fc6dc2d34c8826fd1713f2fe1140b788a9ff",
+      "branch": "codex/dependency-qualification",
+      "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starport-dependency-qualification.tar.gz",
+      "archive_sha256": "30061b52e5396856610eded20aee4473e9d684aa49eea8d5a12e95b074e38747",
+      "files": {},
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starport-dependency-qualification.bundle",
+      "bundle_sha256": "e427e44a2a60e04b64272a416da77c02bdcdf977cb4889defdbc0deebd94dbf7",
+      "proof": "patch ID and exact module bytes match merged PR #368 commit 857bd854; qualification merge adds exactly that patch",
+      "status": "removed"
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-embedding-files",
+      "repo": "starmap",
+      "head": "c7188b5e49be7226a1c7514fafee3dae07786aa1",
+      "branch": "codex/starmap-embedding-files",
+      "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-embedding-files.tar.gz",
+      "archive_sha256": "b96c3dd14acf4e3e3f48513b79311ec2cbe0011c52fca967f11b86237f3c1e50",
+      "files": {
+        ".devbox/.gitignore": {
+          "sha256": "13f338175b8dca5c0a7fbdd0fab6751ca9f4220a7460bd1cc38baa2a0976bae5"
+        },
+        ".devbox/.nix-print-dev-env-cache": {
+          "sha256": "1096b93eb5d117adedb562bf154aad4688bf9e4e624a37e3850d1e03bf36be5e"
+        },
+        ".devbox/gen/flake/flake.lock": {
+          "sha256": "c15adbfb5daa778d28b99a607953b4405996401af0a522911472ad060cad2a29"
+        },
+        ".devbox/gen/flake/flake.nix": {
+          "sha256": "e183f67dfaf3cdf9eba012814d74d398657da62833b8b02b3f5f42be5faaf881"
+        },
+        ".devbox/gen/scripts/.cmd.sh": {
+          "sha256": "6f25111cace255086689f79883cd1270b05885b0cb801a10a814a7bd7bbaedbc"
+        },
+        ".devbox/gen/scripts/.hooks.sh": {
+          "sha256": "298ae14fc3bf3bff90ea81ddf7c86f4abee93068944d35a81a0cab708da23c74"
+        },
+        ".devbox/gen/scripts/build.sh": {
+          "sha256": "fb0066133422e9d464162a82518b0969d1066835aac0090252b6f1e286c8d4e4"
+        },
+        ".devbox/gen/scripts/check.sh": {
+          "sha256": "9f18bbca5cba2c6ba031cba413ff140dc353fbb6f85b8c54adbb1d9151492b3f"
+        },
+        ".devbox/gen/scripts/docs.sh": {
+          "sha256": "dba8609b41fc5e6ad8f01349b30b2200b75e96391fe83316b1f69536c6b5f9f1"
+        },
+        ".devbox/gen/scripts/fix.sh": {
+          "sha256": "d61345765136cd75993add0f03f872ce6c9c0924d46910828a7d35e2f630947c"
+        },
+        ".devbox/gen/scripts/lint-fix.sh": {
+          "sha256": "b24b84a4fe80f732da142ae67005fa1e740b83f68936b7a079d06b99fe1885f3"
+        },
+        ".devbox/gen/scripts/lint.sh": {
+          "sha256": "46395cace848de1b5b23e68216d19c39faf4a85f28712445bbdd4e5a3e997bdb"
+        },
+        ".devbox/gen/scripts/test-race.sh": {
+          "sha256": "76b3c827ae49120641f3acb224cde895011c7ec9da495a074f5a8fb614db023c"
+        },
+        ".devbox/gen/scripts/test.sh": {
+          "sha256": "5523f453b975799038e4a1335dda29dc8967b4cc1fd15cf42ecf4fc0256556be"
+        },
+        ".devbox/gen/scripts/vet.sh": {
+          "sha256": "ba18f0f1051fb5d12f1dc187b70dec853850b60d9f76eed160400fde9dd4b122"
+        },
+        ".devbox/gen/shell.nix": {
+          "sha256": "2837ea649944c89686fee9b741e0435ac4a5f0fbfae92cfd8a11eef8ddd56014"
+        },
+        ".devbox/nix/profile/default": {
+          "symlink": "default-1-link"
+        },
+        ".devbox/nix/profile/default-1-link": {
+          "symlink": "/nix/store/nb1a4qaa3znc8lfk8lq0dxqzvwzlqafj-profile"
+        },
+        ".devbox/state.json": {
+          "sha256": "afa7fea387182c13dc952ebe0b0cb59a5a0361c46318486beb48fb173e6feb83"
+        },
+        ".tmp/csp8/goago-policy.json": {
+          "sha256": "16baaa571b87aa21501669fe6da001a10afa3993b865fd79e93cbfb7e421ae04"
+        },
+        ".tmp/csp8/godoc.log": {
+          "sha256": "7113fca386ffe1a8dccf836f953e06f44b7c789feb51bf579509ea549a573312"
+        },
+        ".tmp/csp8/public-baseline-fail-before.log": {
+          "sha256": "8d374f89955c8818da87e1ed682c9c953ded4e49315a3daa460d0259b4d0c6f0"
+        },
+        ".tmp/csp8/public-files-first.jsonl": {
+          "sha256": "38e7fb94ba685d89bcce2c3c712adf828c368733b2506f29f3cd2f322050dd57"
+        },
+        ".tmp/csp8/public-files-first.stderr": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        ".tmp/csp8/public-files-minimum.jsonl": {
+          "sha256": "b84ea0b8352db0947292ff0e7279d833b96f85e5bdea838bde3c3984bcbd0aee"
+        },
+        ".tmp/csp8/public-files-minimum.stderr": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        ".tmp/csp8/public-files-repair.jsonl": {
+          "sha256": "ea388ce4eb35033f1bcd0e5f48fa3293bbf9f97655d3eceed1b6a26b638b1df8"
+        },
+        ".tmp/csp8/public-files-repair.stderr": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        ".tmp/csp8/public-files-second-repair.jsonl": {
+          "sha256": "ddff8c3f0b8eaf6e19a7e295c6ab2ab933a820cf8f251918870f39c8e9455f52"
+        },
+        ".tmp/csp8/public-files-second-repair.stderr": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        ".tmp/csp8/public-input-fail-before.log": {
+          "sha256": "5ca33c16a6ba8986ae0d363d2fc3f3859786817c19bfd24768302701a62dc02b"
+        },
+        ".tmp/csp8/pure-go-repair.log": {
+          "sha256": "4eac8a4248cd80aa6ffc07275ae18e76d8f6572f8f0babfe3fdce3045f30b837"
+        },
+        ".tmp/csp8/verify-remainder.exit": {
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        ".tmp/csp8/verify-remainder.log": {
+          "sha256": "45ee488efae66016db30aef594e1e7aa39dbf55b0bf5a449715119838f2a0e9b"
+        },
+        ".tmp/csp8/verify.exit": {
+          "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+        },
+        ".tmp/csp8/verify.log": {
+          "sha256": "9cf3718bf866f3161ba02c3219286e0eea6d43b532920bedf46c655ea596e6cd"
+        },
+        "devbox/swag/flake.lock": {
+          "sha256": "f2ad72b6b33046389a58ca5389a8ec66e6a4b4bbd505f0347fee613e7dcb5f5b"
+        },
+        "scripts/__pycache__/catalog_product_verify.cpython-314.pyc": {
+          "sha256": "22c15db29614cb5b4c05bea71a22ce6e3d29120e7a8610afed271858beb6c77b"
+        },
+        "scripts/__pycache__/cold_server.cpython-314.pyc": {
+          "sha256": "55f7e53d5447218f7f291d71708ddd83411e2d9712083fe640eda55dbcc899a8"
+        },
+        "scripts/__pycache__/constructor_network.cpython-314.pyc": {
+          "sha256": "0a9976a50dfc28c226fabf7ae560428146e4f1ebb33b898147562c87b6ec8841"
+        },
+        "scripts/__pycache__/native_catalog.cpython-314.pyc": {
+          "sha256": "d194a400b698b2b4c05683eb3a7c1ee34d93fdf134e82e857d4d58e72c2ac93a"
+        },
+        "scripts/__pycache__/prepare_public_catalog_fixture.cpython-314.pyc": {
+          "sha256": "2e1aeed6fc0940f3acf5883076b6395fc471ef9de90315db91cee33e2de35c82"
+        },
+        "scripts/__pycache__/test_catalog_component_checks.cpython-314.pyc": {
+          "sha256": "6fc1f9670dffa265c0f32ad8fb0a75283b3b65e6c6bd6cd8cd67a413d79eb207"
+        }
+      },
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-embedding-files.bundle",
+      "bundle_sha256": "2f12c4c7dd4d9d8b31ff4a22c7eb6b442146015b32bf3fee13354c897a6baf52",
+      "proof": "exact ancestry in published PR #171 head 2fc2ec46f",
+      "status": "removed"
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+      "repo": "starport",
+      "head": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+      "branch": "codex/catalog-authority-consumer",
+      "merge_commit": "cb6f03a26ff070172ab503aca11a0c5014040a19",
+      "pr": 373,
+      "proof": "exact tree equality with merged PR",
+      "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starport-catalog-authority-consumer.tar.gz",
+      "archive_sha256": "0baf107c87e9b14c51ec922cf5ea27365182d7858de7d52ea3849e461b402ced",
+      "manifest": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starport-catalog-authority-consumer.manifest.json",
+      "manifest_sha256": "4c7e074d3c5824171b6062de6d888ef3d9639b08a2ac3ce25f8d2d1f80fd2d50",
+      "preserved_files": 43313,
+      "regenerable_files": 46728,
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starport-catalog-authority-consumer.bundle",
+      "bundle_sha256": "12af6edce0120fae85daef2ee97326fff27b444ea195994573d7e7a605a4b3f9",
+      "status": "removed",
+      "open_files": 0
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-billing",
+      "repo": "starport",
+      "head": "9f80f176dcc1df6cb3ba7410b3d78c9ef04ba4d4",
+      "branch": "codex/catalog-operation-billing",
+      "merge_commit": "d5d891eefc32d221406f059dc025a3a1e3ab4070",
+      "pr": 377,
+      "proof": "exact tree equality with merged PR",
+      "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starport-catalog-billing.tar.gz",
+      "archive_sha256": "cda77df5042f735e8bd864f1c913228f069130b9273bbe68d884d6af981c718d",
+      "manifest": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starport-catalog-billing.manifest.json",
+      "manifest_sha256": "26cbf439a0c5404f37827cde836a0734cd483383ad78290728e1bd29fc9aea91",
+      "preserved_files": 155,
+      "regenerable_files": 46729,
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starport-catalog-billing.bundle",
+      "bundle_sha256": "e06d9efa803624e6c93108e41be8e5dfbbd08b3a00c86642bbc290579a4a729c",
+      "status": "removed",
+      "open_files": 0
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-acquisition-credentials",
+      "repo": "starmap",
+      "head": "d8a824c38ea098f9d8f49d52e5436200c5ac7167",
+      "branch": "codex/catalog-acquisition-credentials",
+      "merge_commit": "a4951c302c7d0d6653b17ac5c4569c95b0daae73",
+      "pr": 161,
+      "proof": "exact tree equality with merged PR",
+      "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-catalog-acquisition-credentials.tar.gz",
+      "archive_sha256": "6c5159a42f9a654a1fa02994a17e0e4ea7e50778ab36f3aea53c5bab2b250a11",
+      "manifest": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-catalog-acquisition-credentials.manifest.json",
+      "manifest_sha256": "29d1f4c01c3c978d8deea3f46c5d246ef0d90889132f13ef4a7ba0eaddc2b2b9",
+      "preserved_files": 148,
+      "regenerable_files": 6,
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-catalog-acquisition-credentials.bundle",
+      "bundle_sha256": "679950eba6f0c17c5db5a0a7c348644c4cb30b9e535f2f840dbacd544d636f17",
+      "status": "removed",
+      "open_files": 0
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "repo": "starmap",
+      "head": "71a1af61927bd4251fb3cf3a3cba82baf86cc472",
+      "branch": "codex/catalog-update-controls-qualification",
+      "merge_commit": "10717ec3f64e1dd18aaa1e334cd86b2b521e09bd",
+      "pr": 154,
+      "proof": "exact tree equality with merged PR",
+      "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-catalog-update-controls-qualification.tar.gz",
+      "archive_sha256": "966936e9ab637b72085ccb5e4760ca8a0fb35284e8f3b9dcd5550e58cef0b16e",
+      "manifest": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-catalog-update-controls-qualification.manifest.json",
+      "manifest_sha256": "8efc7bed3131546b89c5916837211e388345c6eb5347b680cf900fb32dbd3ea0",
+      "preserved_files": 778,
+      "regenerable_files": 6,
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-catalog-update-controls-qualification.bundle",
+      "bundle_sha256": "40d747b32c5c338835236645256169c83e51f82d61edbd7fa6116945e8d89927",
+      "status": "removed",
+      "open_files": 0
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-server-administration",
+      "repo": "starmap",
+      "head": "8fbbb30431db8f776368a42add4feb7134912392",
+      "branch": "codex/starmap-server-administration",
+      "merge_commit": "e7a6abdf7e419e872f090909c2c9c8ffc5056191",
+      "pr": 163,
+      "proof": "exact tree equality with merged PR",
+      "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-server-administration.tar.gz",
+      "archive_sha256": "d31c1e7aa9b9882ca119b1d19e6aff675fdfb2707cb22ede01438198fd49d3cd",
+      "manifest": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-server-administration.manifest.json",
+      "manifest_sha256": "8fc23d4ad04bed8961bb023f90fb537f835145290221bf4f7b0bd2124e727b6f",
+      "preserved_files": 197,
+      "regenerable_files": 7,
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-server-administration.bundle",
+      "bundle_sha256": "d3dec57140a44e38323cdac2206f9a4b103c16c10a515522f0367e71be76ad39",
+      "status": "removed",
+      "open_files": 0
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-roundtrip",
+      "repo": "starmap",
+      "head": "5160414e4d113343cebb11397cb7d79e565e76be",
+      "branch": "codex/catalog-update-controls-roundtrip",
+      "merge_commit": "10717ec3f64e1dd18aaa1e334cd86b2b521e09bd",
+      "pr": 154,
+      "proof": "ancestor of exact squash-merged head 71a1af61927bd4251fb3cf3a3cba82baf86cc472",
+      "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-catalog-update-controls-roundtrip.tar.gz",
+      "archive_sha256": "503577411be2e3b7616a4e3d0369d64bf74c554cdccb1818337559af41395d17",
+      "manifest": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-catalog-update-controls-roundtrip.manifest.json",
+      "manifest_sha256": "a98751200ec300ba9c04a307cedbc629d783a9025caacb120259493f385bf528",
+      "preserved_files": 58,
+      "regenerable_files": 6,
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/starmap-catalog-update-controls-roundtrip.bundle",
+      "bundle_sha256": "6316ea9011135a9b210190aac94f27a1e3191abe4d7d65e47785e72c049fbb14",
+      "status": "removed",
+      "open_files": 0
+    }
+  ],
+  "restore": [
+    "Verify the recorded bundle and archive digests.",
+    "Fetch the recorded branch from the local bundle into a restored branch.",
+    "Create a worktree at its head and extract the archive there."
+  ],
+  "process_check": "lsof returned no open files or working directories in either worktree."
+}

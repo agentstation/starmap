@@ -1,0 +1,14 @@
+{
+  "archive_checksum": "sha256:493831fba03a6e4d33382c816cc0d52ddaeb811c4e7da25ac7a7b7ee8050425f",
+  "artifact_tag": "catalog-875f2a8649ad25487fe4ab699d3c4c8be21982326b8896b5f1cedce311457678",
+  "catalog_checksum": "sha256:875f2a8649ad25487fe4ab699d3c4c8be21982326b8896b5f1cedce311457678",
+  "checkpoint_checksum": "sha256:5744d5f0fa0ef2d1be090c0b91d02c46f27d03569e60f55c121c367315591605",
+  "generation_id": "bindings-4e61b06110e35f6ba62a8237ec26408272ee815efedefb351e5f7f4e528b0213.local.1682a8241ee7",
+  "preparation_commit": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+  "profile_checksum": "sha256:30fae11e08b5d27c3c0e4b2dab8b022fa282d75e0ab302f33fa97540a2307f2c",
+  "receipt_checksum": "sha256:5878271674e4353a0dab1ab3604ea9ab88dceb427f1d7b2b46178106db38827c",
+  "receipt_tag": "catalog-run-5878271674e4353a0dab1ab3604ea9ab88dceb427f1d7b2b46178106db38827c",
+  "run_id": "github-35512318338",
+  "schema_version": 1,
+  "workflow_run_id": 35512318338
+}

@@ -1,0 +1,68 @@
+{
+  "head": "2fc2ec46f5e654315ce94b8762a6bd2cce17150c",
+  "base": "2337de79d567e7858a522a0f032a0c5ef004a553",
+  "pr": 171,
+  "ci_run": 36214804333,
+  "state": "published, ready, CI running",
+  "review": {
+    "engine": "claude-opus-5-5",
+    "effort": "high",
+    "profile": "auto",
+    "threshold": "P0",
+    "result": "clean",
+    "passes": 1,
+    "bundle_bytes": 208744,
+    "exit": 0
+  },
+  "checks": {
+    "repository_checks": {
+      "commit": "c135da05f8194ea0628c536227d1460dfaea987d",
+      "exit": 0,
+      "limitation": "Before the Python-only retry repair. Go source is unchanged."
+    },
+    "focused_race": {
+      "commit": "c135da05f8194ea0628c536227d1460dfaea987d",
+      "named_tests": 154,
+      "packages": 4,
+      "skipped": 0,
+      "failed": 0
+    },
+    "combined_publication": {
+      "commit": "2fc2ec46f5e654315ce94b8762a6bd2cce17150c",
+      "tests": 51,
+      "exit": 0
+    },
+    "combined_prose": {
+      "files": 1853,
+      "diagnostics": 0,
+      "exit": 0
+    }
+  },
+  "remaining": [
+    "Native CI on the exact published head.",
+    "Protected merge after required checks pass.",
+    "Hosted retry capture and CSP6 qualification."
+  ],
+  "logs": {
+    "starmap-host-combined-autoreview.log.gz": {
+      "sha256": "96f28feef54fc06348009d87c6b5906cad99440c6ebc4a472a04990a8eb86f89",
+      "uncompressed_bytes": 1809
+    },
+    "starmap-host-combined-publication.log.gz": {
+      "sha256": "3cf4f8131981fefb79b169217b4d999fdbdf653345c3e9e213a29fbc2022076d",
+      "uncompressed_bytes": 151
+    },
+    "starmap-host-combined-writing.log.gz": {
+      "sha256": "8753d81304f03cc391a3808c0e622ab4f2cc755300ffcccef8ce87d3327dad49",
+      "uncompressed_bytes": 538
+    },
+    "starmap-host-final-checks-after.log.gz": {
+      "sha256": "a426db045203504bfcda255fe7354b568e7fea43cb36d93ef6c98df7dfcc2291",
+      "uncompressed_bytes": 63801
+    },
+    "starmap-host-final-race.jsonl.gz": {
+      "sha256": "6d13efa30f05e247d7a3daf8f8c7d1705be8d024f8680c5f91e7d996df94f675",
+      "uncompressed_bytes": 152512
+    }
+  }
+}
