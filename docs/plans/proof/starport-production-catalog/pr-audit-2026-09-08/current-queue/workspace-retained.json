@@ -1,8 +1,8 @@
 {
-  "checked_at": "2026-09-26T01:55:34.494690+00:00",
+  "checked_at": "2026-09-26T02:39:46.175939+00:00",
   "repositories": {
     "starmap": {
-      "main": "19c85ad84293acba4ae9514fa5f68276e92d2461",
+      "main": "58154b3e6faa3771cf6ef21e0d911cc0d76f7f70",
       "worktrees": [
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap",
@@ -57,7 +57,7 @@
           ],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-acquisition-credentials",
@@ -78,7 +78,7 @@
           ],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer",
@@ -495,14 +495,15 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
-          "HEAD": "bd0ff51057468b5a9c3d34cecf54f46ff3e126e7",
+          "HEAD": "83eae36c3a5baeb9a28aa00522e2dea220532c31",
           "branch": "refs/heads/codex/catalog-qualification",
           "status": [
             " M AGENTS.md",
             " M Makefile",
             " M go.mod",
             " M go.sum",
-            " M scripts/verify.sh"
+            " M scripts/verify.sh",
+            "?? docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/worktree-cleanup-preserved.json"
           ],
           "ignored": [
             ".devbox/",
@@ -563,7 +564,7 @@
           ],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-roundtrip",
@@ -576,7 +577,7 @@
           ],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-coalescing-candidate",
@@ -613,7 +614,7 @@
           ],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-homebrew-fix",
@@ -633,7 +634,7 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
-          "HEAD": "caec09095bbba5082b7ca6bb6b3aa12c91319067",
+          "HEAD": "7222d372f759b1bdc3e40bd71757ba7720b99a76",
           "branch": "refs/heads/codex/starmap-host-files",
           "status": [],
           "ignored": [
@@ -650,19 +651,19 @@
           ],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
-          "HEAD": "3458eed202676ef343fa5512c5e142c8abf0888c",
-          "branch": "refs/heads/codex/starmap-object-ci-repair",
+          "HEAD": "0d2ba93b561b7f4216a2f206baadb59646b311e1",
+          "branch": "refs/heads/codex/dependency-consolidation",
           "status": [],
           "ignored": [
             "scripts/__pycache__/"
           ],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair",
@@ -751,7 +752,7 @@
           ],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-a2833928ec887009d",
@@ -1092,7 +1093,7 @@
         },
         {
           "name": "codex/catalog-qualification",
-          "head": "bd0ff51057468b5a9c3d34cecf54f46ff3e126e7",
+          "head": "83eae36c3a5baeb9a28aa00522e2dea220532c31",
           "ancestor_main": false
         },
         {
@@ -1147,7 +1148,7 @@
         },
         {
           "name": "codex/dependency-consolidation",
-          "head": "104c81de820a61f8a63f29d556ff0da1e27fb15c",
+          "head": "0d2ba93b561b7f4216a2f206baadb59646b311e1",
           "ancestor_main": false
         },
         {
@@ -1172,12 +1173,7 @@
         },
         {
           "name": "codex/starmap-host-files",
-          "head": "caec09095bbba5082b7ca6bb6b3aa12c91319067",
-          "ancestor_main": false
-        },
-        {
-          "name": "codex/starmap-object-ci-repair",
-          "head": "3458eed202676ef343fa5512c5e142c8abf0888c",
+          "head": "7222d372f759b1bdc3e40bd71757ba7720b99a76",
           "ancestor_main": false
         },
         {
@@ -1237,12 +1233,12 @@
         },
         {
           "name": "origin",
-          "head": "19c85ad84293acba4ae9514fa5f68276e92d2461",
+          "head": "58154b3e6faa3771cf6ef21e0d911cc0d76f7f70",
           "ancestor_main": true
         },
         {
           "name": "origin/catalog/promotion/5878271674e4353a0dab1ab3604ea9ab88dceb427f1d7b2b46178106db38827c",
-          "head": "208783174f950d1591ecec0dcb4df1a440411eb5",
+          "head": "109f102e17e0d7d367218bf9a0b9e8ef9693fd69",
           "ancestor_main": false
         },
         {
@@ -1263,11 +1259,6 @@
         {
           "name": "origin/codex/starmap-host-files",
           "head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
-          "ancestor_main": false
-        },
-        {
-          "name": "origin/codex/starmap-object-ci-repair",
-          "head": "3458eed202676ef343fa5512c5e142c8abf0888c",
           "ancestor_main": false
         },
         {
@@ -1297,8 +1288,54 @@
         },
         {
           "name": "origin/main",
-          "head": "19c85ad84293acba4ae9514fa5f68276e92d2461",
+          "head": "58154b3e6faa3771cf6ef21e0d911cc0d76f7f70",
           "ancestor_main": true
+        }
+      ],
+      "remote_heads": [
+        {
+          "head": "109f102e17e0d7d367218bf9a0b9e8ef9693fd69",
+          "ref": "refs/heads/catalog/promotion/5878271674e4353a0dab1ab3604ea9ab88dceb427f1d7b2b46178106db38827c"
+        },
+        {
+          "head": "256810caee8b565bf59da1b81846a1a7222ea49a",
+          "ref": "refs/heads/catalog/publication"
+        },
+        {
+          "head": "f04258540727b4b9006121b815af6aaad64667da",
+          "ref": "refs/heads/catalog/v1"
+        },
+        {
+          "head": "ef03e4e77576c49ad42ab6afbb484cae2763890f",
+          "ref": "refs/heads/catalog/v2"
+        },
+        {
+          "head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+          "ref": "refs/heads/codex/starmap-host-files"
+        },
+        {
+          "head": "1709f8a334d69e643f715b29c352a2cc80a0682d",
+          "ref": "refs/heads/dependabot/go_modules/go_modules-7142bd41e8"
+        },
+        {
+          "head": "9b70391b08a208bd85dbc82198f35c14a883741a",
+          "ref": "refs/heads/dependabot/go_modules/go_modules-aad2612d56"
+        },
+        {
+          "head": "e1d4e93628a31d327bb1186472b19973d698eca4",
+          "ref": "refs/heads/dependabot/go_modules/go_modules-bd6f588006"
+        },
+        {
+          "head": "da3dcafa7670d6e1248c2a52ba1d589823844cc3",
+          "ref": "refs/heads/dependabot/go_modules/go_modules-bdbecc7a40"
+        },
+        {
+          "head": "917acfeff1371b994f7a0cb79fdd5b6d9327743a",
+          "ref": "refs/heads/dependabot/go_modules/go_modules-e2253a62a5"
+        },
+        {
+          "head": "58154b3e6faa3771cf6ef21e0d911cc0d76f7f70",
+          "ref": "refs/heads/main"
         }
       ]
     },
@@ -1334,70 +1371,7 @@
           ],
           "ancestor_main": true,
           "disposition": "retain",
-          "reason": "Primary checkout."
-        },
-        {
-          "worktree": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
-          "HEAD": "a5aab8195011db63ef81e0317b942c0c645dd35d",
-          "branch": "refs/heads/codex/starport-advisory-exchange",
-          "status": [],
-          "ignored": [
-            "console/.tanstack/",
-            "console/.tanstack/tmp/",
-            "console/node_modules/",
-            "console/src/routeTree.gen.ts",
-            "internal/console/dist/assets/",
-            "internal/console/dist/index.html",
-            "internal/storage/data/",
-            "internal/storage/data/badger/",
-            "scripts/__pycache__/",
-            "starport"
-          ],
-          "ancestor_main": false,
-          "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
-        },
-        {
-          "worktree": "/Users/jack/src/github.com/agentstation/starport-authorization-memory",
-          "HEAD": "31feeca89b9716b9d1bb162c38db72787818ed82",
-          "branch": "refs/heads/codex/starport-authorization-memory",
-          "status": [],
-          "ignored": [
-            "console/.tanstack/",
-            "console/.tanstack/tmp/",
-            "console/node_modules/",
-            "console/src/routeTree.gen.ts",
-            "internal/console/dist/assets/",
-            "internal/console/dist/index.html",
-            "internal/storage/data/",
-            "internal/storage/data/badger/",
-            "scripts/__pycache__/",
-            "starport"
-          ],
-          "ancestor_main": false,
-          "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
-        },
-        {
-          "worktree": "/Users/jack/src/github.com/agentstation/starport-cache-storage",
-          "HEAD": "c1c272b642e717ed4554c8aa3f5027e23b255793",
-          "branch": "refs/heads/codex/starport-cache-storage",
-          "status": [],
-          "ignored": [
-            "console/.tanstack/",
-            "console/.tanstack/tmp/",
-            "console/node_modules/",
-            "console/src/routeTree.gen.ts",
-            "internal/console/dist/assets/",
-            "internal/console/dist/index.html",
-            "internal/storage/data/",
-            "internal/storage/data/badger/",
-            "scripts/__pycache__/",
-            "starport"
-          ],
-          "ancestor_main": false,
-          "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
@@ -1419,7 +1393,7 @@
           ],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-billing",
@@ -1442,41 +1416,7 @@
           ],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
-        },
-        {
-          "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-indexes",
-          "HEAD": "05a1ae10e2d46f59443b37bc8cb9cec2749906d6",
-          "branch": "refs/heads/codex/starport-catalog-indexes",
-          "status": [],
-          "ignored": [
-            "console/.tanstack/",
-            "console/.tanstack/tmp/",
-            "console/node_modules/",
-            "console/src/routeTree.gen.ts",
-            "internal/console/dist/assets/",
-            "internal/console/dist/index.html",
-            "internal/storage/data/",
-            "internal/storage/data/badger/",
-            "scripts/__pycache__/",
-            "starport"
-          ],
-          "ancestor_main": false,
-          "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
-        },
-        {
-          "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-integration",
-          "HEAD": "c22a5579304387b49b54352c520a11c2a85e9621",
-          "branch": "refs/heads/codex/starport-catalog-integration",
-          "status": [],
-          "ignored": [
-            "internal/storage/data/",
-            "internal/storage/data/badger/"
-          ],
-          "ancestor_main": false,
-          "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
@@ -1498,28 +1438,7 @@
           ],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
-        },
-        {
-          "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
-          "HEAD": "79978cdf2557825ce5c1aa99fcf07f7611741f24",
-          "branch": "refs/heads/codex/starport-catalog-routing",
-          "status": [],
-          "ignored": [
-            "console/.tanstack/",
-            "console/.tanstack/tmp/",
-            "console/node_modules/",
-            "console/src/routeTree.gen.ts",
-            "internal/console/dist/assets/",
-            "internal/console/dist/index.html",
-            "internal/storage/data/",
-            "internal/storage/data/badger/",
-            "scripts/__pycache__/",
-            "starport"
-          ],
-          "ancestor_main": false,
-          "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-starmap-main",
@@ -1529,28 +1448,7 @@
           "ignored": [],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
-        },
-        {
-          "worktree": "/Users/jack/src/github.com/agentstation/starport-credential-roles",
-          "HEAD": "c7e1b9a578c5da56af97a02a58b8146afaa2faa0",
-          "branch": "refs/heads/codex/starport-credential-roles",
-          "status": [],
-          "ignored": [
-            "console/.tanstack/",
-            "console/.tanstack/tmp/",
-            "console/node_modules/",
-            "console/src/routeTree.gen.ts",
-            "internal/console/dist/assets/",
-            "internal/console/dist/index.html",
-            "internal/storage/data/",
-            "internal/storage/data/badger/",
-            "scripts/__pycache__/",
-            "starport"
-          ],
-          "ancestor_main": false,
-          "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport-dependency-qualification",
@@ -1560,28 +1458,7 @@
           "ignored": [],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
-        },
-        {
-          "worktree": "/Users/jack/src/github.com/agentstation/starport-managed-material",
-          "HEAD": "c651009c4209b423b4c96702be171892d031ecbe",
-          "branch": "refs/heads/codex/starport-managed-material",
-          "status": [],
-          "ignored": [
-            "console/.tanstack/",
-            "console/.tanstack/tmp/",
-            "console/node_modules/",
-            "console/src/routeTree.gen.ts",
-            "internal/console/dist/assets/",
-            "internal/console/dist/index.html",
-            "internal/storage/data/",
-            "internal/storage/data/badger/",
-            "scripts/__pycache__/",
-            "starport"
-          ],
-          "ancestor_main": false,
-          "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
@@ -1593,54 +1470,7 @@
           ],
           "ancestor_main": false,
           "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
-        },
-        {
-          "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
-          "HEAD": "1a6607bc32909cf8ebea3beb6ca7d8e63a9ebf5b",
-          "branch": "refs/heads/codex/starport-product-paths",
-          "status": [],
-          "ignored": [
-            ".tmp/",
-            "console/.tanstack/",
-            "console/.tanstack/tmp/",
-            "console/node_modules/",
-            "console/src/routeTree.gen.ts",
-            "internal/console/dist/assets/",
-            "internal/console/dist/index.html",
-            "internal/storage/data/",
-            "internal/storage/data/badger/",
-            "scripts/__pycache__/",
-            "starport"
-          ],
-          "ancestor_main": false,
-          "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
-        },
-        {
-          "worktree": "/Users/jack/src/github.com/agentstation/starport-shared-catalog",
-          "HEAD": "34f3866c430e9d615890df12d1bb4e1af4355812",
-          "branch": "refs/heads/codex/starport-shared-catalog",
-          "status": [],
-          "ignored": [
-            ".tmp/"
-          ],
-          "ancestor_main": false,
-          "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
-        },
-        {
-          "worktree": "/Users/jack/src/github.com/agentstation/starport-sql-contract-isolation",
-          "HEAD": "c18b22f686f56e9eb70df3461bbcbe00deddc47a",
-          "branch": "refs/heads/codex/sql-contract-isolation",
-          "status": [],
-          "ignored": [
-            "internal/storage/data/",
-            "internal/storage/data/badger/"
-          ],
-          "ancestor_main": false,
-          "disposition": "retain",
-          "reason": "Unpublished work, verification evidence, or active integration checkout."
+          "reason": "Primary checkout, active integration, unpublished work, or retained evidence."
         }
       ],
       "branches": [
@@ -1680,63 +1510,8 @@
           "ancestor_main": false
         },
         {
-          "name": "codex/sql-contract-isolation",
-          "head": "c18b22f686f56e9eb70df3461bbcbe00deddc47a",
-          "ancestor_main": false
-        },
-        {
-          "name": "codex/starport-advisory-exchange",
-          "head": "a5aab8195011db63ef81e0317b942c0c645dd35d",
-          "ancestor_main": false
-        },
-        {
-          "name": "codex/starport-authorization-memory",
-          "head": "31feeca89b9716b9d1bb162c38db72787818ed82",
-          "ancestor_main": false
-        },
-        {
-          "name": "codex/starport-cache-storage",
-          "head": "c1c272b642e717ed4554c8aa3f5027e23b255793",
-          "ancestor_main": false
-        },
-        {
-          "name": "codex/starport-catalog-indexes",
-          "head": "05a1ae10e2d46f59443b37bc8cb9cec2749906d6",
-          "ancestor_main": false
-        },
-        {
-          "name": "codex/starport-catalog-integration",
-          "head": "c22a5579304387b49b54352c520a11c2a85e9621",
-          "ancestor_main": false
-        },
-        {
-          "name": "codex/starport-catalog-routing",
-          "head": "79978cdf2557825ce5c1aa99fcf07f7611741f24",
-          "ancestor_main": false
-        },
-        {
-          "name": "codex/starport-credential-roles",
-          "head": "c7e1b9a578c5da56af97a02a58b8146afaa2faa0",
-          "ancestor_main": false
-        },
-        {
-          "name": "codex/starport-managed-material",
-          "head": "c651009c4209b423b4c96702be171892d031ecbe",
-          "ancestor_main": false
-        },
-        {
           "name": "codex/starport-native-catalog",
           "head": "ca2d2057d60c07ad0bd6668023af8ae8647534c1",
-          "ancestor_main": false
-        },
-        {
-          "name": "codex/starport-product-paths",
-          "head": "1a6607bc32909cf8ebea3beb6ca7d8e63a9ebf5b",
-          "ancestor_main": false
-        },
-        {
-          "name": "codex/starport-shared-catalog",
-          "head": "34f3866c430e9d615890df12d1bb4e1af4355812",
           "ancestor_main": false
         },
         {
@@ -1759,15 +1534,26 @@
           "head": "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e",
           "ancestor_main": true
         }
+      ],
+      "remote_heads": [
+        {
+          "head": "2973fd08122bc8264c499b99e60b44c890f3c6c7",
+          "ref": "refs/heads/codex/catalog-lifecycle"
+        },
+        {
+          "head": "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e",
+          "ref": "refs/heads/main"
+        }
       ]
     }
   },
   "counts": {
     "starmap_worktrees": 42,
-    "starport_worktrees": 18,
-    "total_worktrees_removed": 14,
-    "total_local_branches_removed": 51,
+    "starport_worktrees": 7,
+    "total_worktrees_removed": 25,
+    "total_local_branches_removed": 63,
     "total_remote_branches_removed": 13,
     "stale_registrations_pruned": 31
-  }
+  },
+  "latest_cleanup_proof": "worktree-cleanup-preserved.json"
 }

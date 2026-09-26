@@ -1,409 +1,14 @@
 {
-  "checked_at": "2026-09-26T02:12:26.915644+00:00",
+  "checked_at": "2026-09-26T02:39:46.175939+00:00",
   "starmap": [
     {
-      "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
-      "headRefOid": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
-      "isDraft": true,
-      "mergeStateStatus": "BEHIND",
-      "number": 171,
-      "title": "feat: expose checked file operations for catalog hosts",
-      "updatedAt": "2026-09-19T03:33:36Z",
-      "owner": "CSP8",
-      "disposition": "draft local integration",
-      "next_action": "After catalog publication, refresh prepared host API head 7222d372f, complete final review, and publish to this existing PR.",
-      "checks": [
-        {
-          "name": "Analyze (actions)",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Coordinated Storage valkey",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Analyze (go)",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Coordinated Storage redis",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Analyze (python)",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Constructor Network Passivity",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Offline Server Persistence",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Verification Checks",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Security & Reliability",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Action Pin Provenance",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime windows-2025",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime windows-11-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime ubuntu-24.04",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime ubuntu-24.04-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime macos-15-intel",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime macos-15",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication windows-2025",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication windows-11-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication ubuntu-24.04",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication ubuntu-24.04-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication macos-15-intel",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication macos-15",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race runtime-1",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race runtime-2",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race runtime-3",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race client",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race application",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race contracts",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Full Catalog Capacity",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Verification Gate",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "CodeQL",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        }
-      ],
-      "local_head": "7222d372f759b1bdc3e40bd71757ba7720b99a76"
-    },
-    {
-      "baseRefOid": "58154b3e6faa3771cf6ef21e0d911cc0d76f7f70",
-      "headRefOid": "109f102e17e0d7d367218bf9a0b9e8ef9693fd69",
-      "isDraft": false,
-      "mergeStateStatus": "BLOCKED",
-      "number": 174,
-      "title": "catalog: embed bindings-4e61b06110e35f6ba62a8237ec26408272ee815efedefb351e5f7f4e528b0213.local.1682a8241ee7",
-      "updatedAt": "2026-09-25T23:56:08Z",
-      "owner": "CSP6",
-      "disposition": "native qualification in progress",
-      "next_action": "Follow run 36210896546. After successful exact-head qualification, verify publisher completion of both channels, capture before evidence, and replay the same receipt.",
-      "checks": [
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000347",
-          "name": "Build pinned object fixture",
-          "startedAt": "2026-09-26T02:11:29Z",
-          "status": "QUEUED",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210894572/job/108316995863",
-          "name": "Analyze (actions)",
-          "startedAt": "2026-09-26T02:11:30Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "CodeQL"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210894572/job/108316995894",
-          "name": "Analyze (go)",
-          "startedAt": "2026-09-26T02:11:28Z",
-          "status": "QUEUED",
-          "workflowName": "CodeQL"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210894572/job/108316995817",
-          "name": "Analyze (python)",
-          "startedAt": "2026-09-26T02:11:30Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "CodeQL"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000427",
-          "name": "Constructor Network Passivity",
-          "startedAt": "2026-09-26T02:11:32Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000453",
-          "name": "Offline Server Persistence",
-          "startedAt": "2026-09-26T02:11:32Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000365",
-          "name": "Verification Checks",
-          "startedAt": "2026-09-26T02:11:31Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000384",
-          "name": "Security & Reliability",
-          "startedAt": "2026-09-26T02:11:31Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000328",
-          "name": "Action Pin Provenance",
-          "startedAt": "2026-09-26T02:11:31Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000488",
-          "name": "Runtime windows-2025",
-          "startedAt": "2026-09-26T02:11:31Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000498",
-          "name": "Runtime windows-11-arm",
-          "startedAt": "2026-09-26T02:11:32Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000497",
-          "name": "Runtime ubuntu-24.04",
-          "startedAt": "2026-09-26T02:11:31Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000546",
-          "name": "Runtime ubuntu-24.04-arm",
-          "startedAt": "2026-09-26T02:11:34Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000527",
-          "name": "Runtime macos-15-intel",
-          "startedAt": "2026-09-26T02:11:34Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000526",
-          "name": "Runtime macos-15",
-          "startedAt": "2026-09-26T02:11:37Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000516",
-          "name": "Publication windows-2025",
-          "startedAt": "2026-09-26T02:11:35Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000542",
-          "name": "Publication windows-11-arm",
-          "startedAt": "2026-09-26T02:11:32Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000463",
-          "name": "Publication ubuntu-24.04",
-          "startedAt": "2026-09-26T02:11:32Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000521",
-          "name": "Publication ubuntu-24.04-arm",
-          "startedAt": "2026-09-26T02:11:34Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000459",
-          "name": "Publication macos-15-intel",
-          "startedAt": "2026-09-26T02:11:32Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        },
-        {
-          "__typename": "CheckRun",
-          "completedAt": "0001-01-01T00:00:00Z",
-          "conclusion": "",
-          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000478",
-          "name": "Publication macos-15",
-          "startedAt": "2026-09-26T02:11:36Z",
-          "status": "IN_PROGRESS",
-          "workflowName": "Pull Request"
-        }
-      ],
-      "checks_run": 36210896546
-    },
-    {
       "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
-      "headRefOid": "1709f8a334d69e643f715b29c352a2cc80a0682d",
+      "headRefOid": "9b70391b08a208bd85dbc82198f35c14a883741a",
       "isDraft": false,
       "mergeStateStatus": "BEHIND",
-      "number": 175,
-      "title": "build(deps): bump cloud.google.com/go/auth in /",
-      "updatedAt": "2026-09-21T14:36:01Z",
+      "number": 179,
+      "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/secretsmanager in /",
+      "updatedAt": "2026-09-21T14:42:55Z",
       "owner": "dependency maintenance",
       "disposition": "retain pending verified successor #176",
       "next_action": "Preserve until #176 includes and qualifies every requested pin and checksum change. Close only after successor verification. See dependency-consolidation.json.",
@@ -411,451 +16,198 @@
         {
           "name": "Coordinated Storage valkey",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998765",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Coordinated Storage redis",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998376",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Constructor Network Passivity",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998707",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Offline Server Persistence",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998444",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Verification Checks",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998204",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Security & Reliability",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998610",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Action Pin Provenance",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998370",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime windows-2025",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998775",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime windows-11-arm",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998860",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime ubuntu-24.04",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998978",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime ubuntu-24.04-arm",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379999025",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime macos-15-intel",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998834",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime macos-15",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379999154",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication windows-2025",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998983",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication windows-11-arm",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998966",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication ubuntu-24.04",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998818",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication ubuntu-24.04-arm",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379999028",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication macos-15-intel",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379998886",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication macos-15",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106379999036",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race runtime-1",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106383504626",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race runtime-2",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106383504644",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race runtime-3",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106383504692",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race client",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106383504808",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race application",
           "status": "COMPLETED",
-          "conclusion": "CANCELLED"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106383504680",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race contracts",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106383504537",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Full Catalog Capacity",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106383504553",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Verification Gate",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35614016550/job/106409015487",
+          "workflowName": "Pull Request"
         },
         {
           "name": "CodeQL",
           "status": "COMPLETED",
-          "conclusion": "NEUTRAL"
-        }
-      ]
-    },
-    {
-      "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
-      "headRefOid": "e1d4e93628a31d327bb1186472b19973d698eca4",
-      "isDraft": false,
-      "mergeStateStatus": "BEHIND",
-      "number": 176,
-      "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
-      "updatedAt": "2026-09-21T14:37:28Z",
-      "owner": "dependency maintenance",
-      "disposition": "selected for compatible dependency consolidation",
-      "next_action": "After catalog publication, refresh dependency consolidation 0d2ba93b5, complete final review, and publish to this existing PR. Retain the other dependency PRs until successor qualification.",
-      "checks": [
-        {
-          "name": "Coordinated Storage valkey",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Coordinated Storage redis",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Constructor Network Passivity",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Offline Server Persistence",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Verification Checks",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Security & Reliability",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Action Pin Provenance",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime windows-2025",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Runtime windows-11-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime ubuntu-24.04",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime ubuntu-24.04-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime macos-15-intel",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime macos-15",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication windows-2025",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication windows-11-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication ubuntu-24.04",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication ubuntu-24.04-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication macos-15-intel",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication macos-15",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race runtime-1",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race runtime-2",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race runtime-3",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Go 1.27.1 race client",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race application",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Go 1.27.1 race contracts",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Full Catalog Capacity",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Verification Gate",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "CodeQL",
-          "status": "COMPLETED",
-          "conclusion": "NEUTRAL"
-        }
-      ],
-      "local_head": "0d2ba93b561b7f4216a2f206baadb59646b311e1"
-    },
-    {
-      "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
-      "headRefOid": "da3dcafa7670d6e1248c2a52ba1d589823844cc3",
-      "isDraft": false,
-      "mergeStateStatus": "BEHIND",
-      "number": 177,
-      "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/credentials in /",
-      "updatedAt": "2026-09-21T14:38:50Z",
-      "owner": "dependency maintenance",
-      "disposition": "retain pending verified successor #176",
-      "next_action": "Preserve until #176 includes and qualifies every requested pin and checksum change. Close only after successor verification. See dependency-consolidation.json.",
-      "checks": [
-        {
-          "name": "Coordinated Storage valkey",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Coordinated Storage redis",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Constructor Network Passivity",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Offline Server Persistence",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Verification Checks",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Security & Reliability",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Action Pin Provenance",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime windows-2025",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime windows-11-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime ubuntu-24.04",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime ubuntu-24.04-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime macos-15-intel",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime macos-15",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Publication windows-2025",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Publication windows-11-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication ubuntu-24.04",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication ubuntu-24.04-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication macos-15-intel",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication macos-15",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race runtime-1",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race runtime-2",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Go 1.27.1 race runtime-3",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Go 1.27.1 race client",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race application",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Go 1.27.1 race contracts",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Full Catalog Capacity",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Verification Gate",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "CodeQL",
-          "status": "COMPLETED",
-          "conclusion": "NEUTRAL"
+          "conclusion": "NEUTRAL",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/106379974533",
+          "workflowName": ""
         }
       ]
     },
@@ -874,153 +226,209 @@
         {
           "name": "Coordinated Storage valkey",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379440768",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Coordinated Storage redis",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379440745",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Constructor Network Passivity",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379440726",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Offline Server Persistence",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379440814",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Verification Checks",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379440568",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Security & Reliability",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379440799",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Action Pin Provenance",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379440738",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime windows-2025",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379441100",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime windows-11-arm",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379441167",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime ubuntu-24.04",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379441029",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime ubuntu-24.04-arm",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379440964",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime macos-15-intel",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379441116",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime macos-15",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379440945",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication windows-2025",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379441069",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication windows-11-arm",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379440783",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication ubuntu-24.04",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379440856",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication ubuntu-24.04-arm",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379440879",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication macos-15-intel",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379441005",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication macos-15",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106379441102",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race runtime-1",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106383481430",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race runtime-2",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106383481378",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race runtime-3",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106383481365",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race client",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106383481605",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race application",
           "status": "COMPLETED",
-          "conclusion": "CANCELLED"
+          "conclusion": "CANCELLED",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106383481509",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race contracts",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106383481448",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Full Catalog Capacity",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106383481343",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Verification Gate",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613851823/job/106404286363",
+          "workflowName": "Pull Request"
         },
         {
           "name": "CodeQL",
           "status": "COMPLETED",
-          "conclusion": "NEUTRAL"
+          "conclusion": "NEUTRAL",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/106379416528",
+          "workflowName": ""
         }
       ]
     },
     {
       "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
-      "headRefOid": "9b70391b08a208bd85dbc82198f35c14a883741a",
+      "headRefOid": "da3dcafa7670d6e1248c2a52ba1d589823844cc3",
       "isDraft": false,
       "mergeStateStatus": "BEHIND",
-      "number": 179,
-      "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/secretsmanager in /",
-      "updatedAt": "2026-09-21T14:42:55Z",
+      "number": 177,
+      "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/credentials in /",
+      "updatedAt": "2026-09-21T14:38:50Z",
       "owner": "dependency maintenance",
       "disposition": "retain pending verified successor #176",
       "next_action": "Preserve until #176 includes and qualifies every requested pin and checksum change. Close only after successor verification. See dependency-consolidation.json.",
@@ -1028,144 +436,1099 @@
         {
           "name": "Coordinated Storage valkey",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450344",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Coordinated Storage redis",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450575",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Constructor Network Passivity",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450352",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Offline Server Persistence",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450204",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Verification Checks",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450515",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Security & Reliability",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450373",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Action Pin Provenance",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450281",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime windows-2025",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450843",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime windows-11-arm",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450589",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime ubuntu-24.04",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450592",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime ubuntu-24.04-arm",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450684",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime macos-15-intel",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450456",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Runtime macos-15",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450596",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication windows-2025",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450614",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication windows-11-arm",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450613",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication ubuntu-24.04",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450444",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication ubuntu-24.04-arm",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450689",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication macos-15-intel",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450554",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Publication macos-15",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106378450571",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race runtime-1",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106382430959",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race runtime-2",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106382430992",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race runtime-3",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106382430945",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race client",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106382431060",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race application",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106382431011",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Go 1.27.1 race contracts",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106382431080",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Full Catalog Capacity",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106382430814",
+          "workflowName": "Pull Request"
         },
         {
           "name": "Verification Gate",
           "status": "COMPLETED",
-          "conclusion": "FAILURE"
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613559547/job/106397722739",
+          "workflowName": "Pull Request"
         },
         {
           "name": "CodeQL",
           "status": "COMPLETED",
-          "conclusion": "NEUTRAL"
+          "conclusion": "NEUTRAL",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/106378421021",
+          "workflowName": ""
         }
       ]
+    },
+    {
+      "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+      "headRefOid": "e1d4e93628a31d327bb1186472b19973d698eca4",
+      "isDraft": false,
+      "mergeStateStatus": "BEHIND",
+      "number": 176,
+      "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
+      "updatedAt": "2026-09-21T14:37:28Z",
+      "owner": "dependency maintenance",
+      "disposition": "selected for compatible dependency consolidation",
+      "next_action": "After catalog publication, refresh dependency consolidation 0d2ba93b5, complete final review, and publish to this existing PR. Retain the other dependency PRs until successor qualification.",
+      "checks": [
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938791",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938510",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938243",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938582",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Verification Checks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938839",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938639",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938703",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938898",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377939100",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938843",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938678",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938949",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938687",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938953",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938881",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938704",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938817",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938578",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106377938933",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-1",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106382087352",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106382087402",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106382087531",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race client",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106382087366",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race application",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106382087534",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106382087358",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106382087109",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Verification Gate",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613409497/job/106395151642",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "NEUTRAL",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/106377918892",
+          "workflowName": ""
+        }
+      ],
+      "local_head": "0d2ba93b561b7f4216a2f206baadb59646b311e1"
+    },
+    {
+      "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+      "headRefOid": "1709f8a334d69e643f715b29c352a2cc80a0682d",
+      "isDraft": false,
+      "mergeStateStatus": "BEHIND",
+      "number": 175,
+      "title": "build(deps): bump cloud.google.com/go/auth in /",
+      "updatedAt": "2026-09-21T14:36:01Z",
+      "owner": "dependency maintenance",
+      "disposition": "retain pending verified successor #176",
+      "next_action": "Preserve until #176 includes and qualifies every requested pin and checksum change. Close only after successor verification. See dependency-consolidation.json.",
+      "checks": [
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377390876",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377390870",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377390814",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377390389",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Verification Checks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377390951",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377390721",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377390878",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377391152",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377390730",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377391078",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377391164",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377391132",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377391162",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377391210",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377391227",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377391295",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377391165",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377390975",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106377391175",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-1",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106380262979",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106380262935",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106380262896",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race client",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106380263212",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race application",
+          "status": "COMPLETED",
+          "conclusion": "CANCELLED",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106380262927",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106380263121",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106380262683",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Verification Gate",
+          "status": "COMPLETED",
+          "conclusion": "FAILURE",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35613249942/job/106395984846",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "NEUTRAL",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/106377367272",
+          "workflowName": ""
+        }
+      ]
+    },
+    {
+      "baseRefOid": "58154b3e6faa3771cf6ef21e0d911cc0d76f7f70",
+      "headRefOid": "109f102e17e0d7d367218bf9a0b9e8ef9693fd69",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 174,
+      "title": "catalog: embed bindings-4e61b06110e35f6ba62a8237ec26408272ee815efedefb351e5f7f4e528b0213.local.1682a8241ee7",
+      "updatedAt": "2026-09-26T02:11:24Z",
+      "owner": "CSP6",
+      "disposition": "native qualification in progress",
+      "next_action": "Follow run 36210896546. After successful exact-head qualification, verify publisher completion of both channels, capture before evidence, and replay the same receipt.",
+      "checks": [
+        {
+          "name": "Analyze (actions)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210894572/job/108316995863",
+          "workflowName": "CodeQL"
+        },
+        {
+          "name": "Build pinned object fixture",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000347",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Analyze (go)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210894572/job/108316995894",
+          "workflowName": "CodeQL"
+        },
+        {
+          "name": "Analyze (python)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210894572/job/108316995817",
+          "workflowName": "CodeQL"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000427",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000453",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Verification Checks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000365",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000384",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000328",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "IN_PROGRESS",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000488",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "IN_PROGRESS",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000498",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000497",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000546",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "IN_PROGRESS",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000527",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000526",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000516",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000542",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000463",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000521",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000459",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317000478",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317335140",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108317335215",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-1",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108318572926",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "IN_PROGRESS",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108318572987",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "IN_PROGRESS",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108318572969",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race client",
+          "status": "IN_PROGRESS",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108318572955",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race application-1",
+          "status": "IN_PROGRESS",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108318572946",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race application-2",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108318572902",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race application-3",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108318572924",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "IN_PROGRESS",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108318572977",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36210896546/job/108318572931",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/108317141410",
+          "workflowName": ""
+        }
+      ],
+      "checks_run": 36210896546
+    },
+    {
+      "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
+      "headRefOid": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+      "isDraft": true,
+      "mergeStateStatus": "BEHIND",
+      "number": 171,
+      "title": "feat: expose checked file operations for catalog hosts",
+      "updatedAt": "2026-09-19T03:33:36Z",
+      "owner": "CSP8",
+      "disposition": "draft local integration",
+      "next_action": "After catalog publication, refresh prepared host API head 7222d372f, complete final review, and publish to this existing PR.",
+      "checks": [
+        {
+          "name": "Analyze (actions)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418890626/job/105832700835",
+          "workflowName": "CodeQL"
+        },
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771912",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Analyze (go)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418890626/job/105832700680",
+          "workflowName": "CodeQL"
+        },
+        {
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771896",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Analyze (python)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418890626/job/105832700801",
+          "workflowName": "CodeQL"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771989",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771855",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Verification Checks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771788",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832772017",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771938",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832772014",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771929",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771946",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771996",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771866",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771919",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771911",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771890",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771915",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771906",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771947",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Publication macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105832771895",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-1",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105833791480",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105833791433",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105833791421",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race client",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105833791378",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race application",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105833791478",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105833791422",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105833791314",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "Verification Gate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35418891869/job/105836437442",
+          "workflowName": "Pull Request"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/105832792433",
+          "workflowName": ""
+        }
+      ],
+      "local_head": "7222d372f759b1bdc3e40bd71757ba7720b99a76"
     }
   ],
   "starport": [],
@@ -1213,9 +1576,9 @@
   "cleanup": {
     "stale_worktree_registrations_pruned": 31,
     "clean_merged_worktrees_removed": 12,
-    "local_exact_ancestor_branches_removed": 52,
+    "local_exact_ancestor_branches_removed": 63,
     "live_remote_branches_deleted": 13,
-    "note": "Remote deletions used exact-head leases. Twelve Starport branches matched merged PR heads; Starmap #165 was verified superseded by merged #168. Three removed worktrees held only regenerable ignored caches or test data. Dirty worktrees, .tmp proof files, and diverged local branches remain. Two additional clean Starmap checkouts and branches were fully contained in retained host API head caec09095bbba5082b7ca6bb6b3aa12c91319067. Only regenerable Python bytecode was discarded.",
+    "note": "Prior removals preserve their original proof. This pass removes eleven clean Starport worktrees and branches fully contained in ca2d2057d60c07ad0bd6668023af8ae8647534c1. Verified private local archives preserve all ignored files except regenerable build outputs, console dependencies, and Python bytecode. Dirty and active worktrees remain.",
     "retained_inventory": {
       "starmap": {
         "worktrees": 42,
@@ -1223,20 +1586,22 @@
         "clean_not_main_ancestor": 8
       },
       "starport": {
-        "worktrees": 18,
+        "worktrees": 7,
         "dirty": 0,
         "primary_main_checkout": 1,
-        "clean_not_main_ancestor": 17
+        "clean_not_main_ancestor": 6
       },
       "criterion": "No remaining secondary checkout has a clean tracked tree whose head is an ancestor of origin/main. Squash-merged or superseded histories require separate proof."
     },
     "final_pass_proof": "worktree-cleanup-final-pass.json",
-    "contained_unmerged_worktrees_removed": 2,
-    "total_worktrees_removed": 14,
+    "contained_unmerged_worktrees_removed": 13,
+    "total_worktrees_removed": 25,
     "contained_pass_proof": "worktree-cleanup-contained.json",
     "retained_inventory_proof": "workspace-retained.json",
     "automatic_merged_remote_branch_deletions": 1,
-    "ci_repair_branch_proof": "ci-repair-branch-cleanup.json"
+    "ci_repair_branch_proof": "ci-repair-branch-cleanup.json",
+    "preserved_pass_proof": "worktree-cleanup-preserved.json",
+    "archive_verification": "PASS: all eleven archive digests match, all removed worktrees and local branch refs are absent, and retained integration contains every removed head."
   },
   "closed_superseded": [
     {
@@ -1250,9 +1615,10 @@
   ],
   "plan_validation": {
     "changed_plan_strict_lint": "PASS: 1 file, 0 diagnostics",
-    "repository_technical_writing_check": "FAIL: 1694 files, 69 diagnostics in unchanged files, including historical proof logs; preserved as evidence",
-    "json": "PASS",
+    "repository_technical_writing_check": "FAIL: 1696 files, 69 existing diagnostics in unchanged files. Log: /tmp/catalog-cleanup-writing.log",
+    "json": "PASS: three changed JSON records parse",
     "ledger": "CSP6 is the sole in_progress row",
-    "diff_check": "PASS"
+    "diff_check": "PASS",
+    "cleanup": "PASS: eleven archives and removals verified"
   }
 }
