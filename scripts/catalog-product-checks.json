@@ -4772,6 +4772,914 @@
           "test": "TestConcurrentOptionalCacheCapacity"
         }
       ]
+    },
+    "A20.starport_provider_nonprovider": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestProductionAcquisitionLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestRuntimeAcquiresSelectedMetadataSource"
+        }
+      ]
+    },
+    "A01.starport_cold_offline": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogPersistsProductBaselineAndOwnershipOffline"
+        }
+      ]
+    },
+    "A01.restart_same_baseline": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogPersistsProductBaselineAndOwnershipOffline"
+        }
+      ]
+    },
+    "A22.startup_poll_stream_manual": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogConfigurationControlsRuntimeTraffic"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestOfflineRuntimeDefersAcquisitionCredentials"
+        }
+      ]
+    },
+    "A22.lazy_secret_resolution": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestOfflineRuntimeDefersAcquisitionCredentials"
+        }
+      ]
+    },
+    "A22.local_import_allowed": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestOfflineRuntimeReadsLocalFileUpdates"
+        }
+      ]
+    },
+    "A22.inference_separate_egress": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestOfflineCatalogAllowsInferenceEgress"
+        }
+      ]
+    },
+    "A23.manual_source_with_acquisition": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestManualSourceRetainsAutomaticProviderAcquisition"
+        }
+      ]
+    },
+    "A23.pin_blocks_all_activation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestGenerationPinBlocksAcquisitionAcrossRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcceptRejectsStaleLeaseEpoch"
+        }
+      ]
+    },
+    "A23.explicit_refresh": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestProductionAcquisitionLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestManualSourceRetainsAutomaticProviderAcquisition"
+        }
+      ]
+    },
+    "A23.restart_watcher_guards": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogConfigurationControlsRuntimeTraffic"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestGenerationPinBlocksAcquisitionAcrossRestart"
+        }
+      ]
+    },
+    "A24.local_fallback": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogInheritancePreservesExplicitSelections"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogInheritanceExcludesNodeAndServerAuthority"
+        }
+      ]
+    },
+    "A24.scope_authority_origins": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogInheritanceExcludesNodeAndServerAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestPathOriginsDistinguishFilesEnvironmentAndGoOverrides"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogFileOriginIdentifiesStarmapFallback"
+        }
+      ]
+    },
+    "A03.starport_linux": {
+      "kind": "native_ci",
+      "repository": "starport",
+      "platform": "linux",
+      "tests": [
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestPlatformPathsUseUserConfigDirectory"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestPlatformPathsUseExplicitDirectory"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestLoaderOwnsIndependentProductRoots"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestLoaderRejectsInvalidRootAndInstanceSelections"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestFileManifestUsesConfigurationReadPolicy"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "test": "TestConfigPathsUsesEffectivePrimaryFileWithoutCreatingState"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "test": "TestConfigFileManifestReportsPrivateStateAccessConflict"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestCatalogPersistsProductBaselineAndOwnershipOffline"
+        }
+      ]
+    },
+    "A03.starport_macos": {
+      "kind": "native_ci",
+      "repository": "starport",
+      "platform": "darwin",
+      "tests": [
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestPlatformPathsUseUserConfigDirectory"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestPlatformPathsUseExplicitDirectory"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestLoaderOwnsIndependentProductRoots"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestLoaderRejectsInvalidRootAndInstanceSelections"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestFileManifestUsesConfigurationReadPolicy"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "test": "TestConfigPathsUsesEffectivePrimaryFileWithoutCreatingState"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "test": "TestConfigFileManifestReportsPrivateStateAccessConflict"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestCatalogPersistsProductBaselineAndOwnershipOffline"
+        }
+      ]
+    },
+    "A03.starport_windows": {
+      "kind": "native_ci",
+      "repository": "starport",
+      "platform": "windows",
+      "tests": [
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestPlatformPathsUseUserConfigDirectory"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestPlatformPathsUseExplicitDirectory"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestLoaderOwnsIndependentProductRoots"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestLoaderRejectsInvalidRootAndInstanceSelections"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestFileManifestUsesConfigurationReadPolicy"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "test": "TestConfigPathsUsesEffectivePrimaryFileWithoutCreatingState"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "test": "TestConfigFileManifestReportsPrivateStateAccessConflict"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestCatalogPersistsProductBaselineAndOwnershipOffline"
+        }
+      ]
+    },
+    "A04.starport_linux_interruption": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "native_ci",
+          "repository": "starmap",
+          "platform": "linux",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestStageDirectoryMigrationRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestDirectoryMigrationCompletionRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestMigrationJournalRecoversAfterProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/cli/app",
+              "test": "TestRuntimeRestartCompletesProjectionAfterMigrationMove"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestWorkspaceReplacementPreservesAccessPolicy"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestJournalReplacementRecoversAfterProcessExit"
+            }
+          ]
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "linux",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationJournalProcessRecovery"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationPhaseProcessRecovery"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestRuntimeDirectoryMigrationPreservesAcceptedCatalog"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationBindingRetainsGenerationBeyondHistoryWindow"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/app",
+              "test": "TestRuntimeMigrationOperatorLifecycle"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/config",
+              "test": "TestSavedRuntimeMigrationSelection"
+            }
+          ]
+        }
+      ]
+    },
+    "A04.starport_macos_interruption": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "native_ci",
+          "repository": "starmap",
+          "platform": "darwin",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestStageDirectoryMigrationRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestDirectoryMigrationCompletionRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestMigrationJournalRecoversAfterProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/cli/app",
+              "test": "TestRuntimeRestartCompletesProjectionAfterMigrationMove"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestWorkspaceReplacementPreservesAccessPolicy"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestJournalReplacementRecoversAfterProcessExit"
+            }
+          ]
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "darwin",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationJournalProcessRecovery"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationPhaseProcessRecovery"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestRuntimeDirectoryMigrationPreservesAcceptedCatalog"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationBindingRetainsGenerationBeyondHistoryWindow"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/app",
+              "test": "TestRuntimeMigrationOperatorLifecycle"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/config",
+              "test": "TestSavedRuntimeMigrationSelection"
+            }
+          ]
+        }
+      ]
+    },
+    "A04.starport_windows_interruption": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "native_ci",
+          "repository": "starmap",
+          "platform": "windows",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestStageDirectoryMigrationRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestDirectoryMigrationCompletionRecoversProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/runtime",
+              "test": "TestMigrationJournalRecoversAfterProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/cli/app",
+              "test": "TestRuntimeRestartCompletesProjectionAfterMigrationMove"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestWorkspaceReplacementPreservesAccessPolicy"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestJournalReplacementRecoversAfterProcessExit"
+            },
+            {
+              "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "test": "TestWindowsJournalReplacementRecoversAfterEditorHandleCloses"
+            }
+          ]
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "windows",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationJournalProcessRecovery"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationPhaseProcessRecovery"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestRuntimeDirectoryMigrationPreservesAcceptedCatalog"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/catalog",
+              "test": "TestMigrationBindingRetainsGenerationBeyondHistoryWindow"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/app",
+              "test": "TestRuntimeMigrationOperatorLifecycle"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/config",
+              "test": "TestSavedRuntimeMigrationSelection"
+            }
+          ]
+        }
+      ]
+    },
+    "A24.primary_config_file_selection": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderUsesPlatformConfigFile"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderRejectsMissingExplicitConfiguration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderPrimaryFileCannotAuthorizeItsOwnRelativeSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigPathsUsesEffectivePrimaryFileWithoutCreatingState"
+        }
+      ]
+    },
+    "A24.bootstrap_file_location": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderRootSpecificityAndBootstrapSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderPrimaryFileCannotAuthorizeItsOwnRelativeSelection"
+        }
+      ]
+    },
+    "A24.generated_file_inventory": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestIncludesWorkspaceRecoveryArtifacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestIncludesSetupArtifactsAtSelectedLeaves"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestSourceCachesFollowCanonicalSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigFileManifestReportsSelectedStorageWithoutOpeningIt"
+        }
+      ]
+    },
+    "A03.starport_file_manifest": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestIncludesWorkspaceRecoveryArtifacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestIncludesSetupArtifactsAtSelectedLeaves"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestUsesConfigurationReadPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestReportsOnlySelectedConfigurationFiles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestSharedBackendsOmitCredentialsAndLocalSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestDevelopmentDisablesPersistentStores"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestSourceCachesFollowCanonicalSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigFileManifestReportsSelectedStorageWithoutOpeningIt"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigFileManifestInspectionHasABoundAndReadsNoContents"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigFileManifestRejectsInvalidInspectionBeforeLoading"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigFileManifestInspectionPreservesCancellation"
+        }
+      ]
+    },
+    "A03.effective_path_report": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestPathOriginsDistinguishFilesEnvironmentAndGoOverrides"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogFileOriginIdentifiesStarmapFallback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigPathsUsesEffectivePrimaryFileWithoutCreatingState"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigPathsTextIncludesRuntimeAndStorageLocations"
+        }
+      ]
+    },
+    "A03.shared_backend_no_local_databases": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestSharedStartupDoesNotCreateLocalDatabases"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestSharedBackendsOmitCredentialsAndLocalSelection"
+        }
+      ]
+    },
+    "A43.memory_databases": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentDatabasesAreSessionLocal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevUsesInMemoryBadger"
+        }
+      ]
+    },
+    "A43.scratch_blobs_runtime": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentDatabasesAreSessionLocal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentExportsBaselineOnlyInScratch"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevKeepsCatalogStateInScratch"
+        }
+      ]
+    },
+    "A43.persistent_selectors_rejected": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestDevelopmentRejectsPersistentEnvironmentSelections"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestDevelopmentRejectsPersistentGoOverrides"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentRefusesPersistentConfigurationBeforeStores"
+        }
+      ]
+    },
+    "A43.persistent_installation_untouched": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentDatabasesAreSessionLocal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentExportsBaselineOnlyInScratch"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevAcceptsTheMachineTokenWithoutTouchingIt"
+        }
+      ]
+    },
+    "A43.normal_shutdown_cleanup": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentDatabasesAreSessionLocal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevRemovesItsScratchFileStorageOnClose"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevRepeatedClosePreservesReusedScratchPath"
+        }
+      ]
+    },
+    "A43.crash_cleanup_ownership": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchExcludesLiveProcessAndRecoversKilledProcess"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchPreservesUnknownEntries"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchPreservesChangedOwnershipRecord"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchReplacedLockCannotAuthorizeRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchPreservesReplacedRoot"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchPreservesReplacedChild"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchRecoversInterruptedCleanup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchPreservesUnrecognizedRecords"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchRecoveryBoundsCandidates"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchCancelledRecoveryPreservesState"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevFailedCompositionPreservesUnpublishedScratch"
+        }
+      ]
+    },
+    "A43.migration_diagnostic": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestDevelopmentRejectsPersistentEnvironmentSelections"
+        }
+      ]
     }
   },
   "task_component_checks": {

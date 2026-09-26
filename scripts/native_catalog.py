@@ -78,14 +78,16 @@ def validate_platform(directory, proof, system, tests):
         if not events or any(not isinstance(event, dict) or event.get("Action") == "fail" for event in events):
             raise ValueError("Native test evidence is empty or contains failed tests.")
         skipped = [event for event in events if event.get("Action") == "skip"]
-        if len(skipped) > 1 or any(system != "linux" or event.get("Package") != "github.com/agentstation/starmap/internal/privatefiles" or event.get("Test") != "TestServiceConfigurationAdministratorOwnedRead" for event in skipped):
-            raise ValueError("Native test evidence contains an unqualified skipped test.")
         for test in tests:
             if not isinstance(test, dict):
                 raise ValueError("Native qualification has an invalid test record.")
             package, name = test.get("package", ""), test.get("test", "")
             if not (package == "github.com/agentstation/starmap" or package.startswith("github.com/agentstation/starmap/")) or not re.fullmatch(r"Test[A-Za-z0-9_]+", name):
                 raise ValueError("Native qualification has an invalid named test.")
+            if any(event.get("Package") == package and
+                   (event.get("Test") == name or str(event.get("Test", "")).startswith(name + "/"))
+                   for event in skipped):
+                raise ValueError("A required native test or subtest was skipped.")
             matched = [event for event in events if event.get("Package") == package and event.get("Test") == name]
             if sum(event.get("Action") == "run" for event in matched) != 1 or sum(event.get("Action") == "pass" for event in matched) != 1:
                 raise ValueError("A required native test did not run and pass exactly once.")
@@ -95,7 +97,12 @@ def validate_platform(directory, proof, system, tests):
             owner = read_bound_file(directory, prefix + "service-owner.txt", proof["sha256"])
             if not re.search(r"^=== RUN   TestServiceConfigurationAdministratorOwnedRead$", owner, re.MULTILINE) or not re.search(r"^--- PASS: TestServiceConfigurationAdministratorOwnedRead \(", owner, re.MULTILINE) or "--- SKIP:" in owner or "--- FAIL:" in owner:
                 raise ValueError("Administrator-owned service configuration lacks native read evidence.")
-        observations.append({"platform": system, "architecture": arch, "job_id": jobs[0]["databaseId"], "required_tests": len(tests), "unprivileged_skips": len(skipped), "separate_administrator_read": system == "linux"})
+        unprivileged = [event for event in skipped if system == "linux" and
+                        event.get("Package") == "github.com/agentstation/starmap/internal/privatefiles" and
+                        event.get("Test") == "TestServiceConfigurationAdministratorOwnedRead"]
+        observations.append({"platform": system, "architecture": arch, "job_id": jobs[0]["databaseId"],
+                             "required_tests": len(tests), "unprivileged_skips": len(unprivileged),
+                             "unselected_skips": skipped, "separate_administrator_read": system == "linux"})
     return observations
 
 

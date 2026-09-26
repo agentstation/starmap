@@ -728,6 +728,28 @@ class NativeCatalogTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 self.validate()
 
+    def test_unselected_skips_are_reported_without_qualifying_them(self):
+        name = "native-runtime-windows-2025/tests.jsonl"
+        original = (self.root / name).read_text()
+        skipped = [
+            {"Package": self.test["package"], "Test": self.test["test"] + "Extra/child", "Action": "skip"},
+            {"Package": "github.com/agentstation/starmap/other", "Test": self.test["test"], "Action": "skip"},
+        ]
+        self.write(name, original + "\n" + "\n".join(map(json.dumps, skipped)))
+        result = next(item for item in self.validate() if item["architecture"] == "amd64")
+        self.assertEqual(result["unselected_skips"], skipped)
+        self.assertEqual(result["unprivileged_skips"], 0)
+
+    def test_required_parent_skip_and_unselected_failure_refuse(self):
+        name = "native-runtime-windows-2025/tests.jsonl"
+        original = (self.root / name).read_text()
+        for action, test in [("skip", self.test["test"]), ("fail", "TestOtherContract")]:
+            with self.subTest(action=action, test=test):
+                event = {"Package": self.test["package"], "Test": test, "Action": action}
+                self.write(name, original + "\n" + json.dumps(event))
+                with self.assertRaises(ValueError):
+                    self.validate()
+
     def test_absent_capture_is_unverified(self):
         self.assertEqual(native_catalog.verify(self.root, {"platform": "windows", "tests": [self.test]})["status"], "UNVERIFIED")
 
