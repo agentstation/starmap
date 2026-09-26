@@ -1,0 +1,110 @@
+[0;34mChecking if documentation is up to date...[0m 
+Checking ./pkg/catalogs...
+Checking ./pkg/catalogs/evidence...
+Checking ./pkg/catalogs/storage...
+
+[1mREADME.md[0m - [31m(expected)[0m [32m(actual)[0m
+[2m 74 | [0m[2m 74 | [0m  [2m- [type ObjectReaderClaims](<#ObjectReaderClaims>)[0m
+[2m 75 | [0m[2m 75 | [0m  [2m- [type ObjectValue](<#ObjectValue>)[0m
+[2m 76 | [0m[2m 76 | [0m  [2m- [type [0m[30;41mPublicationRetentionReport](<#PublicationRetentionReport>)[0m
+[31m 77 | [0m      [31m-[0m [30;41m- [type PublicationRetentionUsage](<#PublicationRetentionUsage>)[0m
+[2m 78 | [0m[2m 76 | [0m  [30;41m- [type [0m[2mRetainingStore](<#RetainingStore>)[0m
+[2m 79 | [0m[2m 77 | [0m  [2m- [type RetentionReport](<#RetentionReport>)[0m
+[2m 80 | [0m[2m 78 | [0m  [2m- [type RetentionRequest](<#RetentionRequest[0m[30;41m>)[0m
+[2m 81 | [0m[2m 78 | [0m  [30;41m  - [func \(r RetentionRequest\) Validate\(\) error](<#RetentionRequest.Validate[0m[2m>)[0m
+[2m 82 | [0m[2m 79 | [0m  [2m- [type RetentionUsage](<#RetentionUsage>)[0m
+[2m 83 | [0m[2m 80 | [0m  [2m- [type Store](<#Store>)[0m
+[2m~~~[0m   [2m~~~[0m
+[2m734 | [0m[2m731 | [0m  [2m```[0m
+[2m735 | [0m[2m732 | [0m  [2m[0m
+[2m736 | [0m[2m733 | [0m  [2m<a name="[0m[30;41mPublication[0m[2mRet[0m[30;41mentionReport"></[0m[2ma[0m[30;41m>[0m
+[2m737 | [0m[2m733 | [0m  [30;41m## type [Publicat[0m[2mi[0m[30;41monRete[0m[2mn[0m[30;41mt[0m[2mi[0m[30;41mo[0m[2mn[0m[30;41mReport](<https://[0m[2mg[0m[30;41mithub.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L122-L129>)[0m
+[31m738 | [0m      [31m-[0m [30;41m[0m
+[31m739 | [0m      [31m-[0m [30;41mPublicationRetentionReport describes receipt cleanup and fixed adapter capacity bounds. Dry runs retain Before in After and report the proposed usage in Projected.[0m
+[31m740 | [0m      [31m-[0m [30;41m[0m
+[31m741 | [0m      [31m-[0m [30;41m```go[0m
+[31m742 | [0m      [31m-[0m [30;41mtype PublicationRetentionReport struct {[0m
+[31m743 | [0m      [31m-[0m [30;41m    Before          PublicationRetentionUsage[0m
+[31m744 | [0m      [31m-[0m [30;41m    After           PublicationRetentionUsage[0m
+[31m745 | [0m      [31m-[0m [30;41m    Projected       PublicationRetentionUsage[0m
+[31m746 | [0m      [31m-[0m [30;41m    Protected       PublicationRetentionUsage[0m
+[31m747 | [0m      [31m-[0m [30;41m    MaxReceipts     int[0m
+[31m748 | [0m      [31m-[0m [30;41m    MaxEncodedBytes int64[0m
+[31m749 | [0m      [31m-[0m [30;41m}[0m
+[31m750 | [0m      [31m-[0m [30;41m```[0m
+[31m751 | [0m      [31m-[0m [30;41m[0m
+[31m752 | [0m      [31m-[0m [30;41m<a name="PublicationRetentionUsage"></a>[0m
+[31m753 | [0m      [31m-[0m [30;41m## type [PublicationRetentionUsage](<https://github.com/agentstation/star[0m[30;41mmap/blob/main/pkg/catalogs/storage/retention.go#L113-L118>)[0m
+[31m754 | [0m      [31m-[0m [30;41m[0m
+[31m755 | [0m      [31m-[0m [30;41mPublicationRetentionUsage counts fleet storage separately from public catalog generations. EncodedBytes includes pending reservations, but excludes metadata and backend replication. RecoveryBytes counts unencoded acquisition recovery inputs across those reservations.[0m
+[31m756 | [0m      [31m-[0m [30;41m[0m
+[31m757 | [0m      [31m-[0m [30;41m```go[0m
+[31m758 | [0m      [31m-[0m [30;41mtype PublicationRetentionUsage struct {[0m
+[31m759 | [0m      [31m-[0m [30;41m    Receipts      int[0m
+[31m760 | [0m      [31m-[0m [30;41m    EncodedBytes  int64[0m
+[31m761 | [0m      [31m-[0m [30;41m    RecoveryBytes int64[0m
+[31m762 | [0m      [31m-[0m [30;41m    ReaderClaims  int[0m
+[31m763 | [0m      [31m-[0m [30;41m}[0m
+[31m764 | [0m      [31m-[0m [30;41m```[0m
+[31m765 | [0m      [31m-[0m [30;41m[0m
+[2m766 | [0m[2m733 | [0m  [30;41m<a name="Retaining[0m[2mStore"></a>[0m
+[2m767 | [0m[2m734 | [0m  [2m## type [RetainingStore](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L25-L29>)[0m
+[2m768 | [0m[2m735 | [0m  [2m[0m
+[2m~~~[0m   [2m~~~[0m
+[2m778 | [0m[2m745 | [0m  [2m[0m
+[2m779 | [0m[2m746 | [0m  [2m<a name="RetentionReport"></a>[0m
+[31m780 | [0m      [31m-[0m [31m## type [RetentionReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L98-L10[0m[30;41m8[0m[31m>)[0m
+      [32m747 | [0m[32m+[0m [32m## type [RetentionReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L98-L10[0m[30;42m6[0m[32m>)[0m
+[2m781 | [0m[2m748 | [0m  [2m[0m
+[2m782 | [0m[2m749 | [0m  [2mRetentionReport describes a complete collection decision and its applied changes. Candidates names generations in eviction order. Removed names actual deletions. Dry runs leave After equal to Before. Projected describes the proposed result. OverLimit means protected content alone exceeds at least one requested limit.[0m
+[2m~~~[0m   [2m~~~[0m
+[2m791 | [0m[2m758 | [0m  [2m    Removed    []string[0m
+[2m792 | [0m[2m759 | [0m  [2m    OverLimit  bool[0m
+[31m793 | [0m      [31m-[0m [30;41m    // Publications separates fleet receipts and private recovery inputs from catalog usage.[0m
+[31m794 | [0m      [31m-[0m [30;41m    Publications *PublicationRetentionReport[0m
+[2m795 | [0m[2m760 | [0m  [30;41m[0m[2m}[0m
+[2m796 | [0m[2m761 | [0m  [2m```[0m
+[2m797 | [0m[2m762 | [0m  [2m[0m
+[2m~~~[0m   [2m~~~[0m
+[2m812 | [0m[2m777 | [0m  [2m    DryRun        bool[0m
+[2m813 | [0m[2m778 | [0m  [2m}[0m
+[2m814 | [0m[2m779 | [0m  [2m```[0m[30;41m[0m
+[31m815 | [0m      [31m-[0m [30;41m[0m
+[31m816 | [0m      [31m-[0m [30;41m<a name="RetentionRequest.Validate"></a>[0m
+[31m817 | [0m      [31m-[0m [30;41m### func \(RetentionRequest\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L132>)[0m
+[31m818 | [0m      [31m-[0m [30;41m[0m
+[31m819 | [0m      [31m-[0m [30;41m```go[0m
+[31m820 | [0m      [31m-[0m [30;41mfunc (r RetentionRequest) Validate() error[0m
+[31m821 | [0m      [31m-[0m [30;41m```[0m
+[31m822 | [0m      [31m-[0m [30;41m[0m
+[31m823 | [0m      [31m-[0m [30;41mValidate checks the common retention limits before an adapter reads storage.[0m
+[2m824 | [0m[2m780 | [0m  [2m[0m
+[2m825 | [0m[2m781 | [0m  [2m<a name="RetentionUsage"></a>[0m
+Error: output does not match current files. Did you forget to run gomarkdoc?
+Usage:
+  gomarkdoc [package ...] [flags]
+
+Flags:
+  -c, --check                              Check the output to see if it matches the generated documentation. --output must be specified to use this.
+      --config string                      File from which to load configuration (default: .gomarkdoc.yml)
+  -e, --embed                              Embed documentation into existing markdown files if available, otherwise append to file.
+      --exclude-dirs strings               List of package directories to ignore when producing documentation.
+      --footer string                      Additional content to inject at the end of each output file.
+      --footer-file string                 File containing additional content to inject at the end of each output file.
+  -f, --format string                      Format to use for writing output data. Valid options: github (default), azure-devops, plain (default "github")
+      --header string                      Additional content to inject at the beginning of each output file.
+      --header-file string                 File containing additional content to inject at the beginning of each output file.
+  -h, --help                               help for gomarkdoc
+  -u, --include-unexported                 Output documentation for unexported symbols, methods and fields in addition to exported ones.
+  -o, --output string                      File or pattern specifying where to write documentation output. Defaults to printing to stdout.
+      --repository.default-branch string   Manual override for the git repository URL used in place of automatic detection.
+      --repository.path string             Manual override for the path from the root of the git repository used in place of automatic detection.
+      --repository.url string              Manual override for the git repository URL used in place of automatic detection.
+      --tags strings                       Set of build tags to apply when choosing which files to include for documentation generation.
+  -t, --template stringToString            Custom template string to use for the provided template name instead of the default template. (default [])
+      --template-file stringToString       Custom template file to use for the provided template name instead of the default template. (default [])
+  -v, --verbose count                      Log additional output from the execution of the command. Can be chained for additional verbosity.
+      --version                            Print the version.
+
+output does not match current files. Did you forget to run gomarkdoc?
+make: *** [docs-check] Error 1

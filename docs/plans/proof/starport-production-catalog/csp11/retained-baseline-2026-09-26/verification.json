@@ -457,7 +457,8 @@
         "internal/catalog/page_price_test.go": "987d35771cee94a5ba30b410f56beffb2292553c169718e9a963601a09ba5080",
         "docs/FLEET_RETENTION.md": "cbbc2d1c028fbed498f471c4d37eb96e2765975d5b7679a41a0b70559dfa72c0"
       },
-      "work_commit": "0921b39ecfcfd384ca82e9ac5a2c587b0670d231"
+      "work_commit": "0921b39ecfcfd384ca82e9ac5a2c587b0670d231",
+      "ci_commit": "509044a005323d75ce46830cf46494b04c0c0fc9"
     }
   },
   "limitations": [
@@ -484,5 +485,24 @@
     "failed_subcases": 0,
     "unverified_subcases": 0,
     "raw": "task-gate-final/task-report.json"
+  },
+  "ci_initialization": {
+    "passed_named_results": 19,
+    "failed": 0,
+    "skipped": 0,
+    "raw": "ci-initialization/tests.jsonl",
+    "purpose": "Include fresh fleet approval, refusals, interruption, concurrent initialization, and application startup in the shared-storage CI job."
+  },
+  "producer_documentation": {
+    "status": "PASS",
+    "command": "make HAS_DEVBOX= GOCMD=go docs-check test-file-sizes technical-writing-check",
+    "raw": "d41-producer-final-gates.log",
+    "writing_files": 1872,
+    "diagnostics": 0,
+    "fail_before": [
+      "d41-producer-docs-size.log",
+      "d41-producer-docs-size-final.log"
+    ],
+    "repair": "Regenerate storage and runtime API pages."
   }
 }

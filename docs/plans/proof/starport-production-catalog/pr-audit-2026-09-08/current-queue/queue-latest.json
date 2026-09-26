@@ -876,7 +876,7 @@
     "proof": "../../csp11/isolation-scope-2026-09-26/verification.json",
     "owner": "CSP11",
     "next_action": "Qualify and review D41 retained baseline recovery, publish the producer, update the consumer module pin, and merge in order. CSP16 owns coordinated policy apply. CSP16.1 owns explicit baseline promotion.",
-    "consumer": "0921b39ecfcfd384ca82e9ac5a2c587b0670d231",
+    "consumer": "509044a005323d75ce46830cf46494b04c0c0fc9",
     "consumer_pr": 385,
     "ci": {
       "producer": 36265771789,
@@ -885,7 +885,7 @@
       "consumer_status": "failure on 7068380bd; Intel managed-credential test depended on wall time; local deterministic repair passes."
     },
     "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json",
-    "review_status": "FINDINGS, no push or merge",
+    "review_status": "Producer complete-branch review running on 4ed5c190b; consumer final module pin and review pending.",
     "running_sessions": [],
     "repair_proof": "../../csp11/review-repairs-2026-09-26/verification.json",
     "initialization_proof": "../../csp11/fresh-initialization-2026-09-26/verification.json",
@@ -908,7 +908,7 @@
     }
   },
   "local_consumer_checkpoint": {
-    "head": "0921b39ecfcfd384ca82e9ac5a2c587b0670d231",
+    "head": "509044a005323d75ce46830cf46494b04c0c0fc9",
     "branch": "codex/catalog-fleet-adapter",
     "published": false
   },
@@ -928,5 +928,5 @@
       "scope": "kvconnection, config, storage, cache with race detection and real Valkey. Full CSP12 is incomplete."
     }
   },
-  "local_updated_at": "2026-09-26T22:37:33.482060+00:00"
+  "local_updated_at": "2026-09-26T22:44:00.353555+00:00"
 }
