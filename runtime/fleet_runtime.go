@@ -184,6 +184,23 @@ func (r *Runtime) needsFleetOwnershipPublication(ctx context.Context) bool {
 	return r.fleetHead == (FleetHead{}) || !sameLeaseGrant(r.fleetPublicationGrant, original)
 }
 
+// completeFleetOwnershipPublication binds unchanged content to a successful operation's grant.
+func (r *Runtime) completeFleetOwnershipPublication(ctx context.Context, epoch uint64) error {
+	if !r.needsFleetOwnershipPublication(ctx) {
+		return nil
+	}
+	r.publicationMu.Lock()
+	defer r.publicationMu.Unlock()
+	r.mu.RLock()
+	layers := r.layers
+	r.mu.RUnlock()
+	ctx, attempt, err := r.prepareFleetCommit(ctx, epoch, layers)
+	if err != nil {
+		return err
+	}
+	return r.finishFleetCommit(ctx, attempt)
+}
+
 func (r *Runtime) finishFleetCommit(ctx context.Context, attempt *fleetCommit) error {
 	if attempt == nil {
 		return nil

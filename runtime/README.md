@@ -763,7 +763,7 @@ func (o DirectoryOwner) Validate() error
 Validate checks the ownership identity without creating files.
 
 <a name="FleetAcquisitionChecker"></a>
-## type [FleetAcquisitionChecker](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_capability.go#L23-L25>)
+## type [FleetAcquisitionChecker](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_capability.go#L26-L28>)
 
 FleetAcquisitionChecker verifies access before grant acquisition or renewal. It must use acquisition credentials and must not fetch provider inventories.
 
@@ -774,16 +774,19 @@ type FleetAcquisitionChecker interface {
 ```
 
 <a name="FleetAcquisitionRequirements"></a>
-## type [FleetAcquisitionRequirements](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_capability.go#L14-L19>)
+## type [FleetAcquisitionRequirements](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_capability.go#L14-L22>)
 
 FleetAcquisitionRequirements identifies the acquisition access a refresh owner must retain. Bindings declare scopes. Unbound providers retain the deployment's implicit acquisition policy. No credential value or credential digest belongs in this record.
 
 ```go
 type FleetAcquisitionRequirements struct {
     // Catalog contains reconciled provider metadata and need not match the serving catalog.
-    Catalog   *catalogs.Catalog
+    Catalog *catalogs.Catalog
+    // Providers contains retained scopes whose acquisition credentials remain required.
     Providers []catalogs.ProviderID
-    Bindings  []sources.ProviderAcquisitionBinding
+    // Candidates contains unobserved providers that can lack configured credentials.
+    Candidates []catalogs.ProviderID
+    Bindings   []sources.ProviderAcquisitionBinding
 }
 ```
 
@@ -2099,7 +2102,7 @@ func (r *Runtime) Refresh(ctx context.Context) (RefreshReport, error)
 Refresh reads the upstream and then observes configured acquisition sources. It changes the upstream layer and acquisition inputs in one run.
 
 <a name="Runtime.RefreshFleet"></a>
-### func \(\*Runtime\) [RefreshFleet](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_runtime.go#L305>)
+### func \(\*Runtime\) [RefreshFleet](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_runtime.go#L322>)
 
 ```go
 func (r *Runtime) RefreshFleet(ctx context.Context) error

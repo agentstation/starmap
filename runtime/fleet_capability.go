@@ -13,9 +13,12 @@ import (
 // No credential value or credential digest belongs in this record.
 type FleetAcquisitionRequirements struct {
 	// Catalog contains reconciled provider metadata and need not match the serving catalog.
-	Catalog   *catalogs.Catalog
+	Catalog *catalogs.Catalog
+	// Providers contains retained scopes whose acquisition credentials remain required.
 	Providers []catalogs.ProviderID
-	Bindings  []sources.ProviderAcquisitionBinding
+	// Candidates contains unobserved providers that can lack configured credentials.
+	Candidates []catalogs.ProviderID
+	Bindings   []sources.ProviderAcquisitionBinding
 }
 
 // FleetAcquisitionChecker verifies access before grant acquisition or renewal.
@@ -41,24 +44,25 @@ func (r *Runtime) checkFleetAcquisition(ctx context.Context) error {
 		if layers.providerBindings != nil {
 			request.Bindings, _ = layers.providerBindings.selected(nil)
 		} else {
-			// Implicit acquisition visits every catalog provider, including providers
-			// with no retained observation. Check that access before taking the lease.
-			if r.config.acquirer != nil && request.Catalog != nil {
-				for _, provider := range request.Catalog.Providers().List() {
-					request.Providers = append(request.Providers, provider.ID)
-				}
-			}
 			for _, key := range layers.activeProviderOrder() {
 				id := layers.providers[key].ProviderID
 				if !slices.Contains(request.Providers, id) {
 					request.Providers = append(request.Providers, id)
 				}
 			}
+			if r.config.acquirer != nil && request.Catalog != nil {
+				for _, provider := range request.Catalog.Providers().List() {
+					if !slices.Contains(request.Providers, provider.ID) {
+						request.Candidates = append(request.Candidates, provider.ID)
+					}
+				}
+			}
 		}
 	}
 	slices.Sort(request.Providers)
+	slices.Sort(request.Candidates)
 	var err error
-	if len(request.Providers)+len(request.Bindings) > 0 {
+	if len(request.Providers)+len(request.Candidates)+len(request.Bindings) > 0 {
 		checker, ok := r.config.acquirer.(FleetAcquisitionChecker)
 		if !ok {
 			err = fleetConflict("refresh ownership requires an acquisition capability checker")
@@ -83,6 +87,14 @@ func (l *layerSet) retainFleetAcquisitionCatalog(ctx context.Context, catalog *c
 		return nil
 	}
 	builder := catalogs.NewEmpty()
+	for _, author := range catalog.Authors().List() {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
+		if err := builder.SetAuthor(author); err != nil {
+			return err
+		}
+	}
 	for _, provider := range catalog.Providers().List() {
 		if err := ctx.Err(); err != nil {
 			return err

@@ -15,6 +15,20 @@ Pins and internal authority still restrict publication.
 Credential values do not enter the replay compatibility digest.
 A changed credential value within the same declared identity and scope does not change that digest.
 
+## Refresh ownership
+
+Required acquisition credentials belong to retained provider scopes and explicit
+bindings. Catalog membership alone does not make a provider a required scope.
+An unobserved provider with no configured credentials remains optional. Invalid
+selected credentials and lost required credentials refuse ownership.
+Capability checks retain provider metadata and its referenced authors independently
+of serving pins. They retain no model payloads and make no provider inventory requests.
+
+A successful refresh under a new ownership grant must publish retained content
+under that grant, even when the source reports no changes. Native acceptance
+continues to check the original grant and exact predecessor. This publication
+cannot extend permission or restore a withdrawal.
+
 ## Storage and validation
 
 The private version 2 recovery format contains one gzip member with deterministic JSON.

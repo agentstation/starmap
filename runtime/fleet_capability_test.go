@@ -134,7 +134,7 @@ func TestFleetCapabilityChecksUnobservedProvidersBeforeGrant(t *testing.T) {
 	}
 	probe.mu.Lock()
 	for _, provider := range providers {
-		if !slices.Contains(probe.request.Providers, provider.ID) {
+		if !slices.Contains(probe.request.Candidates, provider.ID) {
 			t.Errorf("unobserved provider %q is missing from the capability check", provider.ID)
 		}
 	}
@@ -198,5 +198,53 @@ func TestFleetCapabilityRetainsProviderMetadataAcrossPin(t *testing.T) {
 	provider, err := unpin.Catalog().Provider(layer.ProviderID)
 	if err != nil || provider.Models["model"] == nil {
 		t.Fatal("unpin lost the retained provider model:", err)
+	}
+}
+
+func TestFleetCapabilityClassifiesDiscoveryCandidates(t *testing.T) {
+	probe := &fleetCapabilityProbe{}
+	backend := newFleetRuntimeBackend(t, WithAcquirer(probe))
+	leader := openFleetRuntime(t, backend, "discovery-owner", privateRuntimeDirectory(t), WithAcquirer(probe))
+	source := leader.source.(*stubSource)
+	source.mu.Lock()
+	source.replies = []SourceRead{testSourceRead(t, "new-provider-source", testCatalogPayload(t, "unconfigured", "model", "Model"), time.Now().UTC())}
+	source.mu.Unlock()
+	if _, err := leader.RefreshSource(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	if err := leader.lease.renewOnce(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	probe.mu.Lock()
+	defer probe.mu.Unlock()
+	if slices.Contains(probe.request.Providers, "unconfigured") {
+		t.Fatal("upstream catalog growth made an unobserved provider a required credential scope")
+	}
+}
+
+func TestFleetCapabilityPreservesAuthorMappingTargets(t *testing.T) {
+	builder := catalogs.NewEmpty()
+	if err := builder.SetAuthor(catalogs.Author{ID: "author", Name: "Author"}); err != nil {
+		t.Fatal(err)
+	}
+	if err := builder.SetProvider(catalogs.Provider{ID: "provider", Name: "Provider", Catalog: &catalogs.ProviderCatalog{
+		Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeOpenAI, URL: "https://example.test/models", AuthorMapping: &catalogs.AuthorMapping{Field: "owned_by", Normalized: map[string]catalogs.AuthorID{"Author": "author"}}},
+	}}); err != nil {
+		t.Fatal(err)
+	}
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatal(err)
+	}
+	layers := layerSet{fleetBaseline: &catalogs.Generation{}}
+	if err := layers.retainFleetAcquisitionCatalog(t.Context(), catalog); err != nil {
+		t.Fatal(err)
+	}
+	provider, err := layers.fleetAcquisitionCatalog.Provider("provider")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if author, ok := provider.Catalog.Endpoint.AuthorMapping.Resolve("Author"); !ok || author != "author" {
+		t.Fatal("capability metadata lost the canonical author mapping")
 	}
 }

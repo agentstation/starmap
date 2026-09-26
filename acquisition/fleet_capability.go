@@ -2,6 +2,7 @@ package acquisition
 
 import (
 	"context"
+	stderrors "errors"
 
 	"github.com/agentstation/starmap/internal/sources/providers"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -33,6 +34,18 @@ func (o *providerSourceObserver) CheckFleetAcquisition(ctx context.Context, requ
 		}
 		if _, err := o.resolver.ResolveCatalog(ctx, &provider); err != nil {
 			return err
+		}
+	}
+	for _, id := range request.Candidates {
+		provider, err := request.Catalog.Provider(id)
+		if err != nil {
+			return err
+		}
+		if _, err := o.resolver.ResolveCatalog(ctx, &provider); err != nil {
+			var missing *errors.AuthenticationError
+			if !stderrors.As(err, &missing) || missing.Method != "catalog-declared" {
+				return err
+			}
 		}
 	}
 	for _, binding := range request.Bindings {

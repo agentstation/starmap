@@ -5755,6 +5755,18 @@
           "repository": "starport",
           "package": "./internal/catalog",
           "test": "TestFleetStoreAcceptanceUsesOriginalGrant"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimeUnchangedSourceTakeover"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetRuntimeLiveTakeoverAcceptance"
         }
       ]
     },
@@ -5860,6 +5872,24 @@
           "repository": "starmap",
           "package": "./runtime",
           "test": "TestFleetCapabilityRetainsProviderMetadataAcrossPin"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetCapabilityClassifiesDiscoveryCandidates"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestFleetCapabilityOptionalCandidates"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetCapabilityPreservesAuthorMappingTargets"
         }
       ]
     },

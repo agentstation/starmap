@@ -650,3 +650,30 @@ func TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates(t *testing.T) 
 		t.Fatal("replacement lost retained inputs or selected source")
 	}
 }
+
+func TestFleetRuntimeUnchangedSourceTakeover(t *testing.T) {
+	backend := newFleetRuntimeBackend(t)
+	leader := openFleetRuntime(t, backend, "live-leader", privateRuntimeDirectory(t))
+	follower := openFleetRuntime(t, backend, "live-follower", privateRuntimeDirectory(t))
+	before, _ := follower.FleetStatus()
+	if follower.lease.status() != leaseLost {
+		t.Fatal("follower took the live leader's grant")
+	}
+	if err := leader.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := follower.RefreshSource(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	after, _ := follower.FleetStatus()
+	if after.Head.Revision <= before.Head.Revision {
+		t.Fatal("unchanged source takeover did not publish under the new grant")
+	}
+	backend.mu.Lock()
+	snapshot := backend.snapshots[backend.head]
+	grant := backend.lease
+	backend.mu.Unlock()
+	if !sameLeaseGrant(snapshot.Publication.Grant, grant) || after.Head.GenerationID != before.Head.GenerationID {
+		t.Fatal("takeover changed catalog content or retained the old publication grant")
+	}
+}

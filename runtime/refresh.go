@@ -362,6 +362,9 @@ func (r *Runtime) execute(
 		if workErr == nil {
 			workErr = work(runCtx, &report, run.epoch)
 		}
+		if workErr == nil && kind != runKindAccepted {
+			workErr = r.completeFleetOwnershipPublication(runCtx, run.epoch)
+		}
 	}
 	report.CompletedAt = r.config.now()
 
