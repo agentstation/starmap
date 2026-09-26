@@ -1,0 +1,92 @@
+{
+  "checked_at": "2026-09-26T09:10:25.167066+00:00",
+  "status": "PUBLISHED_NATIVE_CI_RUNNING",
+  "consumer_commit": "1774cea4527429a672cd78608ca42304b96a5aa6",
+  "producer_merge": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+  "module": "github.com/agentstation/starmap v0.16.6-0.20260926085409-71c5c8c72333",
+  "module_files_sha256": {
+    "go.mod": "07c2a1e81e5e67faa540ae31689ec336d9342e4fb3408222ba8ee1d698cece5a",
+    "go.sum": "93a8496939fc6e2708db2306902e63732a722ce755bde32924a440bb8b8576d9"
+  },
+  "required_commands": 34,
+  "commands_passed": 34,
+  "ordinary_packages_passed": 60,
+  "ordinary_test_cache": "The repository command permits Go test caching. Its complete output is retained.",
+  "race": {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout",
+      "5m",
+      "-json",
+      "./internal/config",
+      "./internal/catalog",
+      "./internal/app"
+    ],
+    "named_passes": 733,
+    "skips": 0,
+    "failures": 0,
+    "seconds": 245.31211416699807,
+    "services": [
+      "durable",
+      "cache",
+      "sql"
+    ],
+    "services_removed": 3
+  },
+  "archive": {
+    "path": "verification-logs.tar.gz",
+    "sha256": "09ac0320fca4d66f305e1bf4156880ebb9231cfe1a64dfa279cbc4b57d1f41d3"
+  },
+  "proof_scan": {
+    "command": "trufflehog filesystem /tmp/starport-384-final-prepr /tmp/csp8-final-producer-384-race --no-update --no-verification --fail --json",
+    "exit_code": 0,
+    "findings": 0,
+    "scope": "All detector findings included. No external credential verification.",
+    "log": "proof-scan.log.gz",
+    "log_sha256": "38636b94de0ed267194984366265b8f332f50e7f113ec0a2bbcb32b93845f815"
+  },
+  "review": {
+    "session": 48932,
+    "status": "PASS",
+    "log": "/tmp/starport-384-final-review.log",
+    "max_passes": 32,
+    "reason": "Review the existing complete integration branch without truncation. The prior complete review required nine passes.",
+    "exit_code": 0,
+    "passes": 9,
+    "profile": "auto",
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "findings": 0,
+    "bundle_bytes": 1834431,
+    "secret_scan": "clean",
+    "proof_log": "review.log.gz",
+    "proof_log_sha256": "610186be54bf8deadcdc113d84d5e2211b5a4514dcf4f5c4c65ca7d83788fe9f"
+  },
+  "remaining": [
+    "Complete required review and publish the existing PR.",
+    "Qualify native consumer CI and all 63 CSP8 subcases.",
+    "Merge the reviewed consumer head before task completion."
+  ],
+  "published_pr": 384,
+  "native_ci": {
+    "run": 36232078722,
+    "url": "https://github.com/agentstation/starport/actions/runs/36232078722",
+    "session": 27733,
+    "status": "in_progress",
+    "watch_log": "/tmp/starport-384-final-ci-watch.log"
+  },
+  "plan_validation": {
+    "changed_plan": "PASS: one file, zero diagnostics",
+    "full_repository": "FAIL: 1698 files, 69 unchanged historical diagnostics",
+    "log": "plan-writing.log.gz",
+    "log_sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
+  },
+  "commit_signature": {
+    "verified": true,
+    "reason": "valid",
+    "source": "GitHub commit API"
+  }
+}

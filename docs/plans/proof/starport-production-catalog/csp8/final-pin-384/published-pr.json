@@ -1,0 +1,147 @@
+{
+  "baseRefOid": "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e",
+  "headRefOid": "1774cea4527429a672cd78608ca42304b96a5aa6",
+  "isDraft": true,
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376992037",
+      "name": "Lint",
+      "startedAt": "2026-09-26T09:12:44Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376992003",
+      "name": "Test (ubuntu-24.04)",
+      "startedAt": "2026-09-26T09:12:44Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376992057",
+      "name": "Test (ubuntu-24.04-arm)",
+      "startedAt": "2026-09-26T09:12:46Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376992077",
+      "name": "Test (macos-15)",
+      "startedAt": "2026-09-26T09:12:47Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376992031",
+      "name": "Test (macos-15-intel)",
+      "startedAt": "2026-09-26T09:12:44Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376992088",
+      "name": "Test (windows-2025)",
+      "startedAt": "2026-09-26T09:12:44Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376991974",
+      "name": "Test (windows-11-arm)",
+      "startedAt": "2026-09-26T09:12:44Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376991955",
+      "name": "Shared Storage Startup",
+      "startedAt": "2026-09-26T09:12:44Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376991988",
+      "name": "Authorization Capacity",
+      "startedAt": "2026-09-26T09:12:44Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376991989",
+      "name": "Security Scan",
+      "startedAt": "2026-09-26T09:12:43Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376992047",
+      "name": "Release Contract",
+      "startedAt": "2026-09-26T09:12:44Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376991975",
+      "name": "OpenRouter SDK Compatibility",
+      "startedAt": "2026-09-26T09:12:44Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376992012",
+      "name": "Release Snapshot",
+      "startedAt": "2026-09-26T09:12:43Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-26T09:12:54Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36232078722/job/108376991970",
+      "name": "Action Pin Provenance",
+      "startedAt": "2026-09-26T09:12:44Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    }
+  ]
+}

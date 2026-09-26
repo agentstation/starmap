@@ -680,25 +680,22 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
-          "HEAD": "b769aa514fea99856d3c37d426ee2709b8529ae0",
+          "HEAD": "1774cea4527429a672cd78608ca42304b96a5aa6",
           "branch": "refs/heads/codex/starport-native-catalog",
-          "dirty_paths": [
-            "go.mod",
-            "go.sum"
-          ],
-          "dirty_count": 2,
-          "disposition": "Active qualification. Preserve the final producer module pin."
+          "dirty_paths": [],
+          "dirty_count": 0,
+          "disposition": "Published integration. Native CI and full task acceptance remain active."
         }
       ],
       "local_branches": [
         "codex/catalog-lifecycle 69b5affb3b75ab911e167e92b4418f141212921d",
         "codex/catalog-starmap-main d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
-        "codex/starport-native-catalog b769aa514fea99856d3c37d426ee2709b8529ae0",
+        "codex/starport-native-catalog 1774cea4527429a672cd78608ca42304b96a5aa6",
         "main bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e"
       ],
       "remote_heads": [
         {
-          "head": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+          "head": "1774cea4527429a672cd78608ca42304b96a5aa6",
           "ref": "refs/heads/codex/starport-native-catalog"
         },
         {
@@ -710,7 +707,7 @@
         {
           "baseRefName": "main",
           "headRefName": "codex/starport-native-catalog",
-          "headRefOid": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+          "headRefOid": "1774cea4527429a672cd78608ca42304b96a5aa6",
           "isDraft": true,
           "number": 384,
           "title": "feat: integrate catalog lifecycle, memory authorization, and isolated caches"
@@ -718,7 +715,7 @@
       ],
       "counts": {
         "worktrees": 4,
-        "dirty_worktrees": 1,
+        "dirty_worktrees": 0,
         "local_branches": 4,
         "remote_heads": 2
       }
