@@ -1,20 +1,6 @@
 {
-  "checked_at": "2026-09-26T05:45:54.464194+00:00",
-  "starmap": [
-    {
-      "number": 181,
-      "head": "36cb3ecd1756ad46294edd9dcdbf645bdfa56073",
-      "base": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
-      "owner": "CSP6",
-      "disposition": "qualify and merge after exact-head checks",
-      "next_action": "Follow publisher run 36221483290. Verify the actual merge and both-channel completion, then capture and retry the exact receipt.",
-      "checks_run": 36219211223,
-      "proof": "../../csp6/promotion-181/verification.json",
-      "native_status": "completed",
-      "passing_jobs": 30,
-      "native_conclusion": "success"
-    }
-  ],
+  "checked_at": "2026-09-26T06:13:12.457723+00:00",
+  "starmap": [],
   "starport": [],
   "completed_merges": [
     {
@@ -73,6 +59,22 @@
       "proof": "host-api-171-merged.json",
       "checks_run": 36215845749,
       "passing_jobs": 30
+    },
+    {
+      "repo": "starmap",
+      "pr": 181,
+      "head": "36cb3ecd1756ad46294edd9dcdbf645bdfa56073",
+      "merge_commit": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+      "merged_at": "2026-09-26T05:49:06Z",
+      "checks_run": 36219211223,
+      "passing_jobs": 30,
+      "publisher_run": 36221483290,
+      "retry_run": 36222128051,
+      "publication_status": "success",
+      "retry_status": "success",
+      "unchanged_channel_documents_and_assets": true,
+      "unchanged_channel_branch_heads": true,
+      "proof": "../../csp6/promotion-181/merge-current.json"
     }
   ],
   "publication_replay": {
@@ -83,7 +85,7 @@
     "repair_head": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3",
     "repair_pr": 171,
     "proof": "../../csp6/retry-174-failure/verification.json",
-    "next_action": "Run 36218156255 prepares a fresh catalog from repaired main. Qualify and merge its proposal, capture completed publication, then retry the exact receipt.",
+    "next_action": "CSP6 final acceptance passed all six subcases at merge 1cd0d9b8b. Preserve this earlier failure as recovery evidence.",
     "repair_merge": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c"
   },
   "cleanup": {
@@ -96,7 +98,7 @@
       "starmap": {
         "worktrees": 37,
         "dirty": 34,
-        "remote_heads": 5
+        "remote_heads": 4
       },
       "starport": {
         "worktrees": 4,
@@ -171,28 +173,42 @@
   ],
   "plan_validation": {
     "changed_plan_strict_lint": "PASS: 1 file, zero diagnostics.",
-    "repository_technical_writing_check": "1698 files, 69 unchanged historical diagnostics.",
-    "ledger": "40 rows, 15 terminal, CSP6 only in_progress.",
-    "local_links": "90 unique local links resolve.",
+    "repository_technical_writing_check": "FAIL: 1698 files, 69 unchanged historical diagnostics.",
+    "ledger": "40 rows, 16 terminal, CSP8 only in_progress.",
+    "local_links": "94 unique local links resolve.",
     "diff_check": "PASS",
     "writing_log": {
-      "path": "../../csp6/promotion-181/plan-writing-native.log.gz",
+      "path": "../../csp6/promotion-181/plan-writing-completion.log.gz",
       "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
     }
   },
   "active_publication": {
     "run": 36221483290,
-    "source": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
-    "status": "in_progress",
+    "source": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+    "status": "completed",
+    "conclusion": "success",
     "owner": "CSP6",
-    "result": "Completing checked promotion after native CI success."
+    "retry_run": 36222128051,
+    "retry_status": "success",
+    "qualification_session": 83644,
+    "qualification_status": "PASS",
+    "result": "CSP6 complete: all six subcases pass at merged source."
   },
   "starport_preparation": {
     "head": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
     "owner": "CSP8",
     "pre_pr_checks": "PASS: 733 task race tests with real Valkey and PostgreSQL, zero skips; ordinary suite 4,139 passes and 61 skips; lint zero issues.",
     "review": "PASS at 65a3cb3: nine complete review passes, zero actionable findings at configured P0 threshold, clean secret scan.",
-    "disposition": "retain reviewed unpublished integration until CSP6 qualification",
+    "disposition": "Publish reviewed integration and qualify native CI for CSP8.",
     "proof": "../../csp8/race-suite-bound-2026-09-26/after.json"
+  },
+  "starmap_preparation": {
+    "owner": "CSP8",
+    "branch": "codex/catalog-native-consumer-qualification",
+    "base": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+    "worktree": "starmap-host-files",
+    "status": "Repository checks and pre-PR review pass. Ready to publish supporting draft PR.",
+    "proof": "../../csp8/native-producer-181/preparation.json",
+    "head": "d464980961d87b6b24e40c7275c93e4114f2b643"
   }
 }

@@ -1,0 +1,143 @@
+{
+  "checked_at": "2026-09-26T06:11:49.864362+00:00",
+  "status": "PASS",
+  "task": "CSP6",
+  "source_commit": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+  "consumer_commit": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+  "pr": 181,
+  "head": "36cb3ecd1756ad46294edd9dcdbf645bdfa56073",
+  "merge_commit": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+  "reviewed_tree_matches_merge": true,
+  "tree": "ad6e80683e10ba803ae4c8b0c357e7c54710d519",
+  "native_run": 36219211223,
+  "native_jobs_passed": 30,
+  "native_duration": "45m48s",
+  "native_target": "30m; missed",
+  "completion_run": 36221483290,
+  "retry_run": 36222128051,
+  "subcases": {
+    "A05.required_source_absent": "PASS",
+    "A05.partial_retained_admission": "PASS",
+    "A05.complete_deletion_threshold": "PASS",
+    "A05.bot_required_checks": "PASS",
+    "A05.each_publication_failure": "PASS",
+    "A05.same_bytes_retry": "PASS"
+  },
+  "task_gate": "PASS",
+  "primary_case": "A05",
+  "scope": "All six CSP6 subcases pass. The other 49 primary cases are outside this task invocation; this result does not qualify the complete released pair.",
+  "hosted": {
+    "status": "PASS",
+    "promotion": {
+      "head": "36cb3ecd1756ad46294edd9dcdbf645bdfa56073",
+      "merge": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+      "merged_at": "2026-09-26T05:49:06Z",
+      "checks": {
+        "Security & Reliability": 108341149227,
+        "Verification Gate": 108347137999,
+        "Runtime ubuntu-24.04": 108341149242,
+        "Runtime ubuntu-24.04-arm": 108341149391,
+        "Runtime macos-15": 108341149436,
+        "Runtime macos-15-intel": 108341149406,
+        "Runtime windows-2025": 108341149439,
+        "Runtime windows-11-arm": 108341149425
+      }
+    },
+    "retry": {
+      "completion_run": [
+        36221483290,
+        1
+      ],
+      "retry_run": [
+        36222128051,
+        1
+      ],
+      "asset_ids": [
+        589950721,
+        589950740,
+        589950994,
+        589951024,
+        589951052
+      ]
+    },
+    "attested_subjects": 5,
+    "source_commit": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+    "catalog_checksum": "sha256:e0ac0e10863b8892518a5565d3fc8730e2eb17782f3a7e78f5482bedc306ea7a",
+    "evidence_scope": "product"
+  },
+  "recovery": {
+    "tests": 10,
+    "release_write_boundaries": 12,
+    "status": "PASS"
+  },
+  "unchanged_channel_branch_heads": true,
+  "channels": {
+    "catalog/v1": 42,
+    "catalog/v2": 3
+  },
+  "commands": [
+    {
+      "name": "retry",
+      "command": [
+        "gh",
+        "run",
+        "watch",
+        "36222128051",
+        "-R",
+        "agentstation/starmap",
+        "--interval",
+        "30",
+        "--exit-status"
+      ],
+      "exit_code": 0,
+      "seconds": 651.17
+    },
+    {
+      "name": "capture-after",
+      "command": [
+        "python3",
+        "scripts/catalog_publication_capture.py",
+        "after",
+        "--directory",
+        "docs/plans/proof/starport-production-catalog/csp6/hosted-publication",
+        "--run",
+        "36222128051",
+        "--attempt",
+        "1"
+      ],
+      "exit_code": 0,
+      "seconds": 2.19
+    },
+    {
+      "name": "task",
+      "command": [
+        "bash",
+        "scripts/verify-catalog-product.sh",
+        "--starport-root",
+        "/Users/jack/src/github.com/agentstation/starport-native-catalog",
+        "--task",
+        "CSP6",
+        "--json"
+      ],
+      "exit_code": 0,
+      "seconds": 238.74
+    }
+  ],
+  "logs": [
+    {
+      "path": "acceptance.json.gz",
+      "sha256": "e01b642ab36a43a812786c9c353931e37e73c4594aecaa1ec782fbcf99822005"
+    },
+    {
+      "path": "acceptance.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "retry-watch.log.gz",
+      "sha256": "754634faa5fd832cf080bac3887d651004afc34b998740d38a9d03cf8de0d54e"
+    }
+  ],
+  "capture_directory": "hosted-publication",
+  "earlier_failures": "../retry-174-failure/verification.json",
+  "generation_and_distribution_proof": "verification.json"
+}

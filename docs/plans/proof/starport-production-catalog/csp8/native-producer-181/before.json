@@ -1,0 +1,202 @@
+{
+  "checked_at": "2026-09-26T05:56:49.929492+00:00",
+  "producer": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+  "native_run": 36219211223,
+  "native_head": "36cb3ecd1756ad46294edd9dcdbf645bdfa56073",
+  "plan_registry_source": "8b002bfadd948aaeed9379846e7ae12fbd996c6b",
+  "native_results": [
+    {
+      "subcase": "A03.starmap_linux",
+      "status": "UNVERIFIED",
+      "reason": "Native test evidence contains an unqualified skipped test."
+    },
+    {
+      "subcase": "A03.starmap_macos",
+      "status": "UNVERIFIED",
+      "reason": "Native test evidence contains an unqualified skipped test."
+    },
+    {
+      "subcase": "A03.starmap_windows",
+      "status": "UNVERIFIED",
+      "reason": "Native test evidence contains an unqualified skipped test."
+    },
+    {
+      "subcase": "A04.starmap_linux_interruption",
+      "status": "UNVERIFIED",
+      "reason": "Native test evidence contains an unqualified skipped test."
+    },
+    {
+      "subcase": "A04.starmap_macos_interruption",
+      "status": "UNVERIFIED",
+      "reason": "Native test evidence contains an unqualified skipped test."
+    },
+    {
+      "subcase": "A04.starmap_windows_interruption",
+      "status": "UNVERIFIED",
+      "reason": "Native test evidence contains an unqualified skipped test."
+    }
+  ],
+  "skips": {
+    "native-runtime-macos-15": [
+      {
+        "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+        "Test": "TestWindowsMonitorFactoryRequiresSourceBounds"
+      }
+    ],
+    "native-runtime-macos-15-intel": [
+      {
+        "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+        "Test": "TestWindowsMonitorFactoryRequiresSourceBounds"
+      }
+    ],
+    "native-runtime-ubuntu-24.04": [
+      {
+        "Package": "github.com/agentstation/starmap/internal/privatefiles",
+        "Test": "TestServiceConfigurationAdministratorOwnedRead"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+        "Test": "TestWindowsMonitorFactoryRequiresSourceBounds"
+      }
+    ],
+    "native-runtime-ubuntu-24.04-arm": [
+      {
+        "Package": "github.com/agentstation/starmap/internal/privatefiles",
+        "Test": "TestServiceConfigurationAdministratorOwnedRead"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+        "Test": "TestWindowsMonitorFactoryRequiresSourceBounds"
+      }
+    ],
+    "native-runtime-windows-11-arm": [
+      {
+        "Package": "github.com/agentstation/starmap/internal/auth",
+        "Test": "TestCredentialSourceConformance/rotation_symlink_swap"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/internal/auth",
+        "Test": "TestCredentialSourceConformance/rotation_mounted_replace"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+        "Test": "TestWindowsTimeServicePreparedPrivilege"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+        "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/unknown-file"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+        "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/changed-file"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+        "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-file"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+        "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-root"
+      }
+    ],
+    "native-runtime-windows-2025": [
+      {
+        "Package": "github.com/agentstation/starmap/internal/auth",
+        "Test": "TestCredentialSourceConformance/rotation_symlink_swap"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/internal/auth",
+        "Test": "TestCredentialSourceConformance/rotation_mounted_replace"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+        "Test": "TestWindowsTimeServicePreparedPrivilege"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+        "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/unknown-file"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+        "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/changed-file"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+        "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-file"
+      },
+      {
+        "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+        "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-root"
+      }
+    ]
+  },
+  "missing_task_registrations": [
+    "A20.starport_provider_nonprovider",
+    "A01.starport_cold_offline",
+    "A01.restart_same_baseline",
+    "A22.startup_poll_stream_manual",
+    "A22.lazy_secret_resolution",
+    "A22.local_import_allowed",
+    "A22.inference_separate_egress",
+    "A23.manual_source_with_acquisition",
+    "A23.pin_blocks_all_activation",
+    "A23.explicit_refresh",
+    "A23.restart_watcher_guards",
+    "A24.local_fallback",
+    "A24.scope_authority_origins",
+    "A03.starport_linux",
+    "A03.starport_macos",
+    "A03.starport_windows",
+    "A04.starport_linux_interruption",
+    "A04.starport_macos_interruption",
+    "A04.starport_windows_interruption",
+    "A24.primary_config_file_selection",
+    "A24.bootstrap_file_location",
+    "A24.generated_file_inventory",
+    "A03.starport_file_manifest",
+    "A03.effective_path_report",
+    "A03.shared_backend_no_local_databases",
+    "A43.memory_databases",
+    "A43.scratch_blobs_runtime",
+    "A43.persistent_selectors_rejected",
+    "A43.persistent_installation_untouched",
+    "A43.normal_shutdown_cleanup",
+    "A43.crash_cleanup_ownership",
+    "A43.migration_diagnostic"
+  ],
+  "prepared_task_registrations": [
+    "A20.starport_provider_nonprovider",
+    "A01.starport_cold_offline",
+    "A01.restart_same_baseline",
+    "A22.startup_poll_stream_manual",
+    "A22.lazy_secret_resolution",
+    "A22.local_import_allowed",
+    "A22.inference_separate_egress",
+    "A23.manual_source_with_acquisition",
+    "A23.pin_blocks_all_activation",
+    "A23.explicit_refresh",
+    "A23.restart_watcher_guards",
+    "A24.local_fallback",
+    "A24.scope_authority_origins",
+    "A03.starport_linux",
+    "A03.starport_macos",
+    "A03.starport_windows",
+    "A04.starport_linux_interruption",
+    "A04.starport_macos_interruption",
+    "A04.starport_windows_interruption",
+    "A24.primary_config_file_selection",
+    "A24.bootstrap_file_location",
+    "A24.generated_file_inventory",
+    "A03.starport_file_manifest",
+    "A03.effective_path_report",
+    "A03.shared_backend_no_local_databases",
+    "A43.memory_databases",
+    "A43.scratch_blobs_runtime",
+    "A43.persistent_selectors_rejected",
+    "A43.persistent_installation_untouched",
+    "A43.normal_shutdown_cleanup",
+    "A43.crash_cleanup_ownership",
+    "A43.migration_diagnostic"
+  ],
+  "next_action": "CSP8 must integrate its prepared behavior registry and qualify exact required native tests, including child tests. Preserve and report platform skips; do not count a skipped required behavior as passing. CSP6 source remains unchanged until hosted qualification finishes."
+}

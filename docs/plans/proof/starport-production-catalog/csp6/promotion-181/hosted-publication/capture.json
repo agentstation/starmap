@@ -1,0 +1,17 @@
+{
+  "source_commit": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+  "sha256": {
+    "pending.json": "ab50885265af451ce064187a181fc35497ddeb44fe802f87198b918d246caa35",
+    "pull.json": "fe8e1c74a9226344e1f55f1c87f1de00345b976e3dbe16713c8b5d0efb2ca356",
+    "protection.json": "def81981945f046a854c34d02c9e0f65e63068f443e20911240988b0120390c2",
+    "checks.json": "22af3f08d7c2b185be16209149e417aec1eb3e701792346da066ab5752041e05",
+    "completion.json": "1dd34a735e4d485f42247ad56dca102b99dfc780c6dcd7c289f875de06f26195",
+    "releases-before.json": "c30588bc80f1647e0accfd864f927c0c7f580aa6da873ff31c84199930182974",
+    "channels-before.json": "67084348bd0dd5fe88c552cf5d8eb0c82fde3a05ebe7a03b41824bd18ab162c0",
+    "retry.json": "bf27393814820da0f84c13918b59297dbaa7fe0d7e26c9622f1f07792b70a218",
+    "releases-after.json": "d6f04475fd699727773e01abe8490f5d946b33c2a832afce7780017558db5f59",
+    "channels-after.json": "67084348bd0dd5fe88c552cf5d8eb0c82fde3a05ebe7a03b41824bd18ab162c0",
+    "channel-v1.raw.json": "7cdcdab56c3c23c86f524ac4c9256612f36ff3c4aba708358643743d8397a119",
+    "channel-v2.raw.json": "3302d9bc647144422ab05ed704e6c111bb2f0fffc144dee015bf2773d37ae46d"
+  }
+}

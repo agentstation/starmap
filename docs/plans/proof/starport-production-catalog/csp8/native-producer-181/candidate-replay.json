@@ -1,0 +1,437 @@
+{
+  "scope": "Candidate verifier replay of previously captured native evidence. Fresh native qualification at the candidate source remains required.",
+  "native_head": "36cb3ecd1756ad46294edd9dcdbf645bdfa56073",
+  "native_run": 36219211223,
+  "results": [
+    {
+      "case": "A03.starmap_linux",
+      "observations": [
+        {
+          "platform": "linux",
+          "architecture": "amd64",
+          "job_id": 108341149242,
+          "required_tests": 7,
+          "unprivileged_skips": 1,
+          "unselected_skips": [
+            {
+              "Time": "2026-09-26T05:04:09.54370539Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/privatefiles",
+              "Test": "TestServiceConfigurationAdministratorOwnedRead",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:06:20.258647284Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+              "Test": "TestWindowsMonitorFactoryRequiresSourceBounds",
+              "Elapsed": 0
+            }
+          ],
+          "separate_administrator_read": true
+        },
+        {
+          "platform": "linux",
+          "architecture": "arm64",
+          "job_id": 108341149391,
+          "required_tests": 7,
+          "unprivileged_skips": 1,
+          "unselected_skips": [
+            {
+              "Time": "2026-09-26T05:04:56.636914965Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/privatefiles",
+              "Test": "TestServiceConfigurationAdministratorOwnedRead",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:07:05.920139751Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+              "Test": "TestWindowsMonitorFactoryRequiresSourceBounds",
+              "Elapsed": 0
+            }
+          ],
+          "separate_administrator_read": true
+        }
+      ]
+    },
+    {
+      "case": "A04.starmap_linux_interruption",
+      "observations": [
+        {
+          "platform": "linux",
+          "architecture": "amd64",
+          "job_id": 108341149242,
+          "required_tests": 7,
+          "unprivileged_skips": 1,
+          "unselected_skips": [
+            {
+              "Time": "2026-09-26T05:04:09.54370539Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/privatefiles",
+              "Test": "TestServiceConfigurationAdministratorOwnedRead",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:06:20.258647284Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+              "Test": "TestWindowsMonitorFactoryRequiresSourceBounds",
+              "Elapsed": 0
+            }
+          ],
+          "separate_administrator_read": true
+        },
+        {
+          "platform": "linux",
+          "architecture": "arm64",
+          "job_id": 108341149391,
+          "required_tests": 7,
+          "unprivileged_skips": 1,
+          "unselected_skips": [
+            {
+              "Time": "2026-09-26T05:04:56.636914965Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/privatefiles",
+              "Test": "TestServiceConfigurationAdministratorOwnedRead",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:07:05.920139751Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+              "Test": "TestWindowsMonitorFactoryRequiresSourceBounds",
+              "Elapsed": 0
+            }
+          ],
+          "separate_administrator_read": true
+        }
+      ]
+    },
+    {
+      "case": "A03.starmap_macos",
+      "observations": [
+        {
+          "platform": "darwin",
+          "architecture": "amd64",
+          "job_id": 108341149406,
+          "required_tests": 7,
+          "unprivileged_skips": 0,
+          "unselected_skips": [
+            {
+              "Time": "2026-09-26T05:28:19.550354Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+              "Test": "TestWindowsMonitorFactoryRequiresSourceBounds",
+              "Elapsed": 0
+            }
+          ],
+          "separate_administrator_read": false
+        },
+        {
+          "platform": "darwin",
+          "architecture": "arm64",
+          "job_id": 108341149436,
+          "required_tests": 7,
+          "unprivileged_skips": 0,
+          "unselected_skips": [
+            {
+              "Time": "2026-09-26T05:11:16.831287Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+              "Test": "TestWindowsMonitorFactoryRequiresSourceBounds",
+              "Elapsed": 0
+            }
+          ],
+          "separate_administrator_read": false
+        }
+      ]
+    },
+    {
+      "case": "A04.starmap_macos_interruption",
+      "observations": [
+        {
+          "platform": "darwin",
+          "architecture": "amd64",
+          "job_id": 108341149406,
+          "required_tests": 7,
+          "unprivileged_skips": 0,
+          "unselected_skips": [
+            {
+              "Time": "2026-09-26T05:28:19.550354Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+              "Test": "TestWindowsMonitorFactoryRequiresSourceBounds",
+              "Elapsed": 0
+            }
+          ],
+          "separate_administrator_read": false
+        },
+        {
+          "platform": "darwin",
+          "architecture": "arm64",
+          "job_id": 108341149436,
+          "required_tests": 7,
+          "unprivileged_skips": 0,
+          "unselected_skips": [
+            {
+              "Time": "2026-09-26T05:11:16.831287Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+              "Test": "TestWindowsMonitorFactoryRequiresSourceBounds",
+              "Elapsed": 0
+            }
+          ],
+          "separate_administrator_read": false
+        }
+      ]
+    },
+    {
+      "case": "A03.starmap_windows",
+      "observations": [
+        {
+          "platform": "windows",
+          "architecture": "amd64",
+          "job_id": 108341149439,
+          "required_tests": 7,
+          "unprivileged_skips": 0,
+          "unselected_skips": [
+            {
+              "Time": "2026-09-26T05:19:30.6627766Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/auth",
+              "Test": "TestCredentialSourceConformance/rotation_symlink_swap",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:19:30.6627766Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/auth",
+              "Test": "TestCredentialSourceConformance/rotation_mounted_replace",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:26:27.2047326Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+              "Test": "TestWindowsTimeServicePreparedPrivilege",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:30:03.2343861Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/unknown-file",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:30:03.2343861Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/changed-file",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:30:03.2343861Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-file",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:30:03.2343861Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-root",
+              "Elapsed": 0
+            }
+          ],
+          "separate_administrator_read": false
+        },
+        {
+          "platform": "windows",
+          "architecture": "arm64",
+          "job_id": 108341149425,
+          "required_tests": 7,
+          "unprivileged_skips": 0,
+          "unselected_skips": [
+            {
+              "Time": "2026-09-25T22:25:02.0648548-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/auth",
+              "Test": "TestCredentialSourceConformance/rotation_symlink_swap",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-25T22:25:02.0648548-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/auth",
+              "Test": "TestCredentialSourceConformance/rotation_mounted_replace",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-25T22:33:01.8988679-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+              "Test": "TestWindowsTimeServicePreparedPrivilege",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-25T22:38:55.7779012-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/unknown-file",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-25T22:38:55.7779012-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/changed-file",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-25T22:38:55.7779012-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-file",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-25T22:38:55.7779012-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-root",
+              "Elapsed": 0
+            }
+          ],
+          "separate_administrator_read": false
+        }
+      ]
+    },
+    {
+      "case": "A04.starmap_windows_interruption",
+      "observations": [
+        {
+          "platform": "windows",
+          "architecture": "amd64",
+          "job_id": 108341149439,
+          "required_tests": 8,
+          "unprivileged_skips": 0,
+          "unselected_skips": [
+            {
+              "Time": "2026-09-26T05:19:30.6627766Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/auth",
+              "Test": "TestCredentialSourceConformance/rotation_symlink_swap",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:19:30.6627766Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/auth",
+              "Test": "TestCredentialSourceConformance/rotation_mounted_replace",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:26:27.2047326Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+              "Test": "TestWindowsTimeServicePreparedPrivilege",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:30:03.2343861Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/unknown-file",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:30:03.2343861Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/changed-file",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:30:03.2343861Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-file",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-26T05:30:03.2343861Z",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-root",
+              "Elapsed": 0
+            }
+          ],
+          "separate_administrator_read": false
+        },
+        {
+          "platform": "windows",
+          "architecture": "arm64",
+          "job_id": 108341149425,
+          "required_tests": 8,
+          "unprivileged_skips": 0,
+          "unselected_skips": [
+            {
+              "Time": "2026-09-25T22:25:02.0648548-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/auth",
+              "Test": "TestCredentialSourceConformance/rotation_symlink_swap",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-25T22:25:02.0648548-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/auth",
+              "Test": "TestCredentialSourceConformance/rotation_mounted_replace",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-25T22:33:01.8988679-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+              "Test": "TestWindowsTimeServicePreparedPrivilege",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-25T22:38:55.7779012-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/unknown-file",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-25T22:38:55.7779012-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/changed-file",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-25T22:38:55.7779012-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-file",
+              "Elapsed": 0
+            },
+            {
+              "Time": "2026-09-25T22:38:55.7779012-07:00",
+              "Action": "skip",
+              "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+              "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-root",
+              "Elapsed": 0
+            }
+          ],
+          "separate_administrator_read": false
+        }
+      ]
+    }
+  ]
+}

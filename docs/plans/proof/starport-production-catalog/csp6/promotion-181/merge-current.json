@@ -1,9 +1,11 @@
 {
   "baseRefOid": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
   "headRefOid": "36cb3ecd1756ad46294edd9dcdbf645bdfa56073",
-  "mergeCommit": null,
-  "mergedAt": null,
-  "state": "OPEN",
+  "mergeCommit": {
+    "oid": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753"
+  },
+  "mergedAt": "2026-09-26T05:49:06Z",
+  "state": "MERGED",
   "statusCheckRollup": [
     {
       "__typename": "CheckRun",

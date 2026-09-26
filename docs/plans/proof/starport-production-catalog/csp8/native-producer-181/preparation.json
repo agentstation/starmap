@@ -1,0 +1,75 @@
+{
+  "recorded_at": "2026-09-26T05:58:32.068909+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+  "previous_branch": "codex/starmap-host-files",
+  "previous_head": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3",
+  "branch": "codex/catalog-native-consumer-qualification",
+  "base": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+  "scope": "Add the 32 prepared CSP8 consumer checks. Bind native qualification to the selected named tests and every child, retaining all unselected skip observations. Preserve source binding, native architecture checks, and administrator-read qualification.",
+  "status": "Committed, checked, and reviewed. CSP6 qualification passed. Ready to publish.",
+  "publication": "Publish supporting draft PR and obtain fresh native evidence before merge.",
+  "files": [
+    "scripts/native_catalog.py",
+    "scripts/test_catalog_product_verify.py",
+    "scripts/catalog-product-checks.json"
+  ],
+  "checks": {
+    "before": "13 focused tests: 12 pass, one error from unrelated skipped tests",
+    "focused_after": "13 pass",
+    "suite": "91 pass",
+    "writing": "1853 files, zero diagnostics",
+    "consumer_mappings": "77 mapped Go behavior leaves observed passing in current Starport logs; full task verification still required"
+  },
+  "archive": {
+    "path": "native-evidence.tar.gz",
+    "sha256": "92709a4936ede42d09b168a9bbb4c9ca5c5bde29ff236cdf0db443fd43a28f39",
+    "bytes": 1701899,
+    "scope": "Original native runtime artifacts from run 36219211223, including capture digests."
+  },
+  "repository_checks": {
+    "session": 46462,
+    "log": "/tmp/csp8-native-consumer-verify-checks.log",
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "head": "d464980961d87b6b24e40c7275c93e4114f2b643",
+  "review": {
+    "status": "PASS",
+    "exit_code": 0,
+    "profile": "auto",
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "priority_threshold": "P0",
+    "passes": 1,
+    "bundle_bytes": 36120,
+    "findings": 0,
+    "secret_scan": "clean",
+    "routing_question_assessment": "No defect: catalog_product_verify.run_check selects roots[entry.repository] and loads that repository scripts/native_catalog.py. Starport has its own validator and its own package prefix. The change does not route Starport entries through the Starmap validator."
+  },
+  "logs": [
+    {
+      "path": "before.log.gz",
+      "sha256": "3d71cea9466e38388471d866e1ed4d30c7a6911bf1a3eb6f0fc7cd55d33f0ad3"
+    },
+    {
+      "path": "focused.log.gz",
+      "sha256": "d30831b9ed45818c2f5c7a65a035e6e541648ccc7b9f8276cb5366e4615a6484"
+    },
+    {
+      "path": "suite.log.gz",
+      "sha256": "b9c6f8c527649e40329819f454332f5b472e14a0591d1322cb14621f380dd4bf"
+    },
+    {
+      "path": "writing.log.gz",
+      "sha256": "8753d81304f03cc391a3808c0e622ab4f2cc755300ffcccef8ce87d3327dad49"
+    },
+    {
+      "path": "repository-checks.log.gz",
+      "sha256": "76423898cd4ff51b235ef4ffb7536247a6c589cd5ed3d66066584f828237ebd8"
+    },
+    {
+      "path": "autoreview.log.gz",
+      "sha256": "979defccd3454816d60c9d8e060c2431b3a96e38a265d40da96fc10c6a6dc61d"
+    }
+  ]
+}
