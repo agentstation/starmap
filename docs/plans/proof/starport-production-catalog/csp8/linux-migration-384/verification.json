@@ -1,5 +1,5 @@
 {
-  "status": "Investigate and repair within CSP8 before updating Starport #384.",
+  "status": "Repairs committed. Final local task tests pass. Full branch review is running; native qualification remains open.",
   "source": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
   "run": 36223300692,
   "job": 108352484199,
@@ -39,8 +39,8 @@
       "Elapsed": 298.436
     }
   ],
-  "observation": "All three TestMigrationPhaseProcessRecovery children exceeded the 60-second command deadline and returned -1 instead of crash exit 73. Native CI uses race detection and atomic coverage. The child constructs the initial runtime before the migration phase under test. Setup cost is a hypothesis, not yet measured.",
-  "next_action": "Reproduce with CI instrumentation. Separate reusable setup from the process crash boundary if evidence confirms setup dominates. Preserve all phases, byte checks, identity checks, deadline, and real storage.",
+  "observation": "All three migration children exceeded their 60-second deadline in native Linux and macOS jobs. Windows also lacks the required owner inspection adapter. Intel macOS additionally timed out three packages at ten minutes.",
+  "next_action": "Complete final task tests, commit repairs, and pin the corrected producer after its reviewed native-qualified merge. Review the complete consumer branch before its next push.",
   "log": {
     "path": "before.log.gz",
     "sha256": "d91e1ec4cf1167ca3bb720b04da5421e77222b65dd86d7ac3b92c8e4f75c82a1"
@@ -51,6 +51,326 @@
     "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -covermode=atomic -coverprofile=/tmp/starport-384-migration-before.cover -count=1 -timeout 5m -json -run '^TestMigrationPhaseProcessRecovery$' ./internal/catalog",
     "stdout": "/tmp/starport-384-migration-before.jsonl",
     "stderr": "/tmp/starport-384-migration-before.stderr",
-    "status": "running"
+    "status": "PASS on macOS ARM64. Linux AMD64 and ARM64 CI both exceed the child deadline.",
+    "exit_code": 0,
+    "named_pass": 4,
+    "skip": 0,
+    "seconds": 78.006
+  },
+  "measurement": {
+    "source": "40dea618e22618f44a2e229d0d75f21256243590",
+    "host": "macOS ARM64",
+    "instrumentation": "race and atomic coverage",
+    "scope": "Measure current fixture creation before the migration request file exists. This does not qualify recovery.",
+    "records": [
+      {
+        "phase": "stage",
+        "started_at": "2026-09-26T06:37:33.720009+00:00",
+        "fixture_marker_seconds": 39.15868937497726,
+        "exit_code": 73,
+        "total_seconds": 40.11755862500286
+      },
+      {
+        "phase": "publish",
+        "started_at": "2026-09-26T06:37:33.721538+00:00",
+        "fixture_marker_seconds": 39.20608954099589,
+        "exit_code": 73,
+        "total_seconds": 40.26500804099487
+      },
+      {
+        "phase": "complete",
+        "started_at": "2026-09-26T06:37:33.722959+00:00",
+        "fixture_marker_seconds": 39.10014612501254,
+        "exit_code": 73,
+        "total_seconds": 40.36643812499824
+      }
+    ]
+  },
+  "repair": "Prepare the durable initial catalog in the parent before starting the bounded crash process. The child reads that request and performs every migration operation. Preserve real Badger storage, all three crash phases, the 60-second deadline, and every recovery assertion.",
+  "focused_after": {
+    "exit_code": 0,
+    "named_pass": 4,
+    "skip": 0,
+    "seconds": 79.852,
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -covermode=atomic -coverprofile=/tmp/starport-384-migration-after.cover -count=1 -timeout 5m -json -run '^TestMigrationPhaseProcessRecovery$' ./internal/catalog"
+  },
+  "lint": {
+    "exit_code": 0,
+    "issues": 0
+  },
+  "logs": [
+    {
+      "path": "before-local.jsonl.gz",
+      "sha256": "8c32ee4eecd7008c27521fc1471566b9d540744ab9870c3805d5e99e3fe2e1ff"
+    },
+    {
+      "path": "before-local.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "linux-amd64.log.gz",
+      "sha256": "60e489c0537dad136bb028b91fe7b5d2bd0fae007b6a947241f1a6b79a795610"
+    },
+    {
+      "path": "measure-stage.log.gz",
+      "sha256": "91f07d17658c5bc4f364f938063bf66ffe3cebf6c37697fc31823e5051aff706"
+    },
+    {
+      "path": "measure-publish.log.gz",
+      "sha256": "91f07d17658c5bc4f364f938063bf66ffe3cebf6c37697fc31823e5051aff706"
+    },
+    {
+      "path": "measure-complete.log.gz",
+      "sha256": "91f07d17658c5bc4f364f938063bf66ffe3cebf6c37697fc31823e5051aff706"
+    },
+    {
+      "path": "after-local.jsonl.gz",
+      "sha256": "a795857616c1d36e0eaf703b0ee0fdff5786f2c216baa5fe8754c6268f13b2ab"
+    },
+    {
+      "path": "after-local.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    }
+  ],
+  "migration_task_after": {
+    "started_at": "2026-09-26T06:41:24.440213+00:00",
+    "status": "PASS",
+    "services": [
+      {
+        "role": "durable",
+        "id": "7edf145b9228a355fc4429f73aa336e039ae32d4dfba6b76683002d144b65530",
+        "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "address": "127.0.0.1:54130"
+      },
+      {
+        "role": "cache",
+        "id": "835dfd7ef49fcb9ffc6e03bf533321d9c62cb2d0bbccff11b80a1eab39fd1d37",
+        "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "address": "127.0.0.1:54133"
+      },
+      {
+        "role": "sql",
+        "id": "9d3a61b2f986877c307bc2c90358b077ad7076254b7a3bf88b7679658d506f94",
+        "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+        "address": "127.0.0.1:54137"
+      }
+    ],
+    "producer": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
+    "consumer": "40dea618e22618f44a2e229d0d75f21256243590",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout",
+      "5m",
+      "-json",
+      "./internal/config",
+      "./internal/catalog",
+      "./internal/app"
+    ],
+    "exit_code": 0,
+    "seconds": 251.3640406249906,
+    "cleanup": [
+      {
+        "id": "7edf145b9228a355fc4429f73aa336e039ae32d4dfba6b76683002d144b65530",
+        "exit_code": 0
+      },
+      {
+        "id": "835dfd7ef49fcb9ffc6e03bf533321d9c62cb2d0bbccff11b80a1eab39fd1d37",
+        "exit_code": 0
+      },
+      {
+        "id": "9d3a61b2f986877c307bc2c90358b077ad7076254b7a3bf88b7679658d506f94",
+        "exit_code": 0
+      }
+    ],
+    "finished_at": "2026-09-26T06:45:39.892839+00:00",
+    "tested_source": {
+      "base": "40dea618e22618f44a2e229d0d75f21256243590",
+      "patch_sha256": "a0712c0ae200e7ecf536bdb3202ad874a2b181fa0697cce1c8d598c1ef3b645f",
+      "patch_file": {
+        "path": "migration-input.patch.gz",
+        "sha256": "5062c9794b7b28e2456ce3d04b011892fbd67fcc708261366fbeb31e840482ae"
+      }
+    },
+    "counts": {
+      "pass": 733,
+      "fail": 0,
+      "skip": 0
+    },
+    "log": {
+      "path": "migration-task.jsonl.gz",
+      "sha256": "872d74b27e0b503cde16a7b0876182ef89f57705071922691f5c47d60bc92158"
+    }
+  },
+  "additional_native_logs": [
+    {
+      "path": "macos-amd64.log.gz",
+      "sha256": "c45906676d5e6e576d7c996f052bdd88976a4d19dc9425222a5e7e7b6c0bf4f7"
+    },
+    {
+      "path": "macos-arm64.log.gz",
+      "sha256": "092b452d9edb54f9b384e477691e52fe04e51956444f2f5f04f55c16cbebab33"
+    },
+    {
+      "path": "windows-amd64.log.gz",
+      "sha256": "c89c8106533f0edbd2d033c8618bf97b2cf001e29e77d9c41112328f8d085e6a"
+    }
+  ],
+  "fixture_repair": "Read the verified immutable embedded catalog through a fresh Starmap client. Each test retains independent mutable runtime and storage state. Synthetic fixtures still copy and modify provider records.",
+  "coverage_repair": "Collect atomic coverage on Linux AMD64, which uploads the coverage report. Retain all six native platform and architecture test jobs and their existing race and pure-Go settings.",
+  "fixture_focused": {
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -coverprofile=/tmp/starport-fixtures-after.cover -covermode=atomic -count=1 -timeout 5m -json ./internal/providers/state ./internal/app -run 'TestProviderState|TestUnreachable|TestIncident|TestPublishIncidents|TestCredentialDetail|TestFailureTransitions|TestMaterialVersion|TestRouting|TestTransition|TestOpenTransitions|TestSyntheticCatalogProviderInferenceContract|TestUnsupportedCatalogPrimitivesRemainUnavailable'",
+    "counts": {
+      "pass": 21,
+      "fail": 0,
+      "skip": 0
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/providers/state",
+        "Elapsed": 33.254
+      },
+      {
+        "Package": "github.com/agentstation/starport/internal/app",
+        "Elapsed": 34.892
+      }
+    ],
+    "log": {
+      "path": "fixtures-focused.jsonl.gz",
+      "sha256": "24d7425f7e3a7065d0687aabc2a4de5f3e3cd742365cc1277e48222e4ea88b9e"
+    },
+    "limitation": "Local macOS ARM64 evidence does not qualify hosted Intel macOS."
+  },
+  "fixture_lint": {
+    "exit_code": 0,
+    "findings": 0,
+    "log": {
+      "path": "fixtures-lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    }
+  },
+  "workflow_checks": {
+    "actionlint": "PASS",
+    "native_verifier_unit_tests": 10,
+    "git_diff_check": "PASS"
+  },
+  "prose_check": {
+    "status": "Four existing diagnostics in unchanged provider-state test strings and comments. New migration comments pass.",
+    "log": {
+      "path": "fixtures-writing.log.gz",
+      "sha256": "0aabd73f1eb8c790432e43144f1828b44eb16406bb75312fc15855eb357ad50a"
+    }
+  },
+  "repair_commit": "527aac7c570143e77db951fd6796d7333b924488",
+  "final_task_after": {
+    "started_at": "2026-09-26T06:46:46.885821+00:00",
+    "status": "PASS",
+    "services": [
+      {
+        "role": "durable",
+        "id": "b6d011a7cc18ae8f44e792391449bcbf04e46918caa3ac74a646a0d894a5e306",
+        "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "address": "127.0.0.1:54413"
+      },
+      {
+        "role": "cache",
+        "id": "1bd838c840546bbe2d4a67ca418b009530466586d60ce535ef8bd4b476349bcb",
+        "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "address": "127.0.0.1:54414"
+      },
+      {
+        "role": "sql",
+        "id": "6ec529e5746759101006479a5b5876494337f1b04974618da7c0ed01b046b8f0",
+        "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+        "address": "127.0.0.1:54417"
+      }
+    ],
+    "producer": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
+    "consumer": "40dea618e22618f44a2e229d0d75f21256243590",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout",
+      "5m",
+      "-json",
+      "./internal/config",
+      "./internal/catalog",
+      "./internal/app"
+    ],
+    "exit_code": 0,
+    "seconds": 238.40948908397695,
+    "cleanup": [
+      {
+        "id": "b6d011a7cc18ae8f44e792391449bcbf04e46918caa3ac74a646a0d894a5e306",
+        "exit_code": 0
+      },
+      {
+        "id": "1bd838c840546bbe2d4a67ca418b009530466586d60ce535ef8bd4b476349bcb",
+        "exit_code": 0
+      },
+      {
+        "id": "6ec529e5746759101006479a5b5876494337f1b04974618da7c0ed01b046b8f0",
+        "exit_code": 0
+      }
+    ],
+    "finished_at": "2026-09-26T06:50:47.463351+00:00",
+    "tested_source": {
+      "base": "40dea618e22618f44a2e229d0d75f21256243590",
+      "patch_sha256": "8b1b6d51fc81a4dac517419681623493483afd9fc3a4dc382beb22a9e98bdcf1",
+      "commit": "527aac7c570143e77db951fd6796d7333b924488",
+      "commit_diff_equals_tested_patch": true,
+      "patch": {
+        "path": "fixtures-input.patch.gz",
+        "sha256": "32f60d28ef2a4076ffb5a123ad493e66fda905e94a37b707cd2f6258659f0470"
+      }
+    },
+    "counts": {
+      "pass": 733,
+      "fail": 0,
+      "skip": 0
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/config",
+        "Elapsed": 105.743
+      },
+      {
+        "Package": "github.com/agentstation/starport/internal/app",
+        "Elapsed": 121.836
+      },
+      {
+        "Package": "github.com/agentstation/starport/internal/catalog",
+        "Elapsed": 236.585
+      }
+    ],
+    "log": {
+      "path": "fixtures-task.jsonl.gz",
+      "sha256": "29f3cb9759d98c4482861a63ea4f8a041a2807efd701f32ef333e3ecfc576f81"
+    }
+  },
+  "review": {
+    "session": 32670,
+    "status": "running",
+    "command": "autoreview --gate pre-pr --mode auto --max-passes 32",
+    "reason": "Retain complete branch scope for the prepared integration."
+  },
+  "plan_validation": {
+    "changed_plan": "PASS: one file, zero diagnostics.",
+    "ledger": "40 rows; 16 terminal; CSP8 only active.",
+    "local_links": 97,
+    "diff_check": "PASS",
+    "repository_prose": "69 unchanged historical diagnostics across 1698 files.",
+    "repository_prose_log": {
+      "path": "repository-writing.log.gz",
+      "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
+    }
   }
 }

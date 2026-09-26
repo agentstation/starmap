@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T06:19:16.800919+00:00",
+  "checked_at": "2026-09-26T06:49:06.160129+00:00",
   "repositories": {
     "starmap": {
       "worktrees": [
@@ -279,12 +279,12 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
-          "HEAD": "24ee33a143cf90ed6551513aaa674388dd892949",
+          "HEAD": "4de406ca8f34b828d5312ee473ac8f9f011e87ba",
           "branch": "refs/heads/codex/catalog-qualification",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
-            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/branch-cleanup-audit.json",
+            "docs/plans/proof/starport-production-catalog/csp8/linux-migration-384/verification.json",
             "go.mod",
             "go.sum",
             "scripts/verify.sh"
@@ -318,7 +318,8 @@
             "scripts/verification_tests.py"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes"
+          "disposition": "retain uncommitted changes",
+          "branch": null
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-homebrew-fix",
@@ -336,7 +337,7 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
-          "HEAD": "d464980961d87b6b24e40c7275c93e4114f2b643",
+          "HEAD": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
           "branch": "refs/heads/codex/catalog-native-consumer-qualification",
           "dirty_paths": [],
           "dirty_count": 0,
@@ -414,7 +415,8 @@
             "acquisition/fixture_evidence_test.go"
           ],
           "dirty_count": 15,
-          "disposition": "retain uncommitted changes"
+          "disposition": "retain uncommitted changes",
+          "branch": null
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-reproduction",
@@ -441,7 +443,8 @@
             "pkg/provenance/decode_test.go"
           ],
           "dirty_count": 18,
-          "disposition": "retain uncommitted changes"
+          "disposition": "retain uncommitted changes",
+          "branch": null
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-a2833928ec887009d",
@@ -621,11 +624,11 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
-          "HEAD": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+          "HEAD": "527aac7c570143e77db951fd6796d7333b924488",
           "branch": "refs/heads/codex/starport-native-catalog",
           "dirty_paths": [],
           "dirty_count": 0,
-          "disposition": "retain active or unpublished work"
+          "disposition": "retain active integration and unpublished repairs"
         }
       ],
       "remote_heads": [

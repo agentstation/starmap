@@ -146,6 +146,18 @@
     "repository_prose_log": {
       "path": "cleanup-final-writing.log.gz",
       "sha256": "bdfdeb2a2f8b1a0d9299ed424c7968f04d8cf2a1a780abcee70073a9d791bf02"
+    },
+    "latest_recheck": {
+      "checked_at": "2026-09-26T06:49:06.161535+00:00",
+      "verified_bundles": 5,
+      "digest_matches": 5,
+      "removed_refs_absent": 5,
+      "additional_deletions": 0,
+      "retained_worktrees": {
+        "starmap": 37,
+        "starport": 4
+      },
+      "reason": "Uncommitted edits, active checks, and unique branch work remain. Clean historical checkouts are not ancestors of the active integration or main."
     }
   },
   "local_main_fast_forward": {
