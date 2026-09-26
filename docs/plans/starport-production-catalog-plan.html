@@ -15,7 +15,7 @@
 
 <p>Consumer <a href="https://github.com/agentstation/starport/pull/385">Starport #385</a> contains the reviewed CI split at <code>7068380bd</code>. Its published Starmap module contains the same production code. Preserve both PRs and merge Starmap first after exact-head CI. Do not count catalog isolation as complete deployment isolation.</p>
 
-<p>The combined storage job reached its ten-minute limit after startup and fleet recovery passed. Consumer <code>7068380bd</code> separates catalog recovery from gateway storage checks. Both jobs retain their test commands, real services, and race checks. The build requires both jobs. Native CI must qualify the split.</p>
+<p>The combined storage job reached its ten-minute limit after startup and fleet recovery passed. Consumer <code>7068380bd</code> separates catalog recovery from gateway storage checks. Both jobs retain their test commands, real services, and race checks. The build requires both jobs. Both storage jobs pass in native CI. Other required checks remain pending.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp11/runtime-integration-2026-09-26/verification.json">runtime checkpoint</a> passes 134 named race events across 117 leaf cases after refinement. It covers fleet recovery, pins, grants, and local retention recovery. It does not qualify A13 or A14.</p>
 

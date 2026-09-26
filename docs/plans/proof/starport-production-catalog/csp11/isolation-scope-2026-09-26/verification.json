@@ -68,7 +68,11 @@
       "overall_confidence": 0.78
     },
     "ci_run": 36265779872,
-    "ci_status": "IN_PROGRESS"
+    "ci_status": "BOTH_STORAGE_JOBS_PASS_OTHER_REQUIRED_JOBS_PENDING",
+    "verified_jobs": [
+      108470047441,
+      108470047578
+    ]
   },
   "producer_ci_run": 36265771789,
   "producer_ci_status": "PENDING",
