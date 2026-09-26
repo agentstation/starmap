@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T00:52:21.506466+00:00",
+  "checked_at": "2026-09-26T01:28:13.811773+00:00",
   "starmap": [
     {
       "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
@@ -11,7 +11,7 @@
       "updatedAt": "2026-09-19T03:33:36Z",
       "owner": "CSP8",
       "disposition": "draft local integration",
-      "next_action": "Rebase reviewed local host work onto merge 19c85ad, publish to existing PR, run native gates; merge after CSP6 publication proof.",
+      "next_action": "Merge current main into the prepared producer branch without rewriting published history. Include the complete qualified consumer API prerequisites, then review, publish to the existing PR, and run native gates after CSP6 publication.",
       "checks": [
         {
           "name": "Analyze (actions)",
@@ -1111,88 +1111,18 @@
     },
     {
       "baseRefOid": "19c85ad84293acba4ae9514fa5f68276e92d2461",
-      "headRefOid": "b52744ae12bff6323823ebd235b48079f5801764",
+      "headRefOid": "3458eed202676ef343fa5512c5e142c8abf0888c",
       "isDraft": false,
       "mergeStateStatus": "BLOCKED",
       "number": 180,
       "title": "ci: restore coordinated storage checks with durable S3 fixture",
       "updatedAt": "2026-09-26T00:35:00Z",
       "owner": "CSP6",
-      "disposition": "CI rerun",
-      "next_action": "Both native coordinated-storage jobs pass on current head. Wait for the remaining platform and verification jobs, confirm exact head/base and no review threads, then merge.",
-      "checks": [
-        {
-          "name": "Analyze (actions)",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Build pinned object fixture",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Analyze (go)",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Analyze (python)",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Constructor Network Passivity",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Offline Server Persistence",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Verification Checks",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Security & Reliability",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
+      "disposition": "reviewed repair in native qualification",
+      "next_action": "Qualify run 36208494218 on the exact current head, then merge before refreshing #174. See application-race-timeout.json.",
+      "previous_head_checks": [
         {
           "name": "Action Pin Provenance",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime windows-2025",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        },
-        {
-          "name": "Runtime windows-11-arm",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        },
-        {
-          "name": "Runtime ubuntu-24.04",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime ubuntu-24.04-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime macos-15-intel",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        },
-        {
-          "name": "Runtime macos-15",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
         },
@@ -1202,22 +1132,12 @@
           "conclusion": "SUCCESS"
         },
         {
-          "name": "Publication windows-11-arm",
+          "name": "Offline Server Persistence",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
         },
         {
-          "name": "Publication ubuntu-24.04",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication ubuntu-24.04-arm",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Publication macos-15-intel",
+          "name": "Runtime macos-15-intel",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
         },
@@ -1227,12 +1147,97 @@
           "conclusion": "SUCCESS"
         },
         {
-          "name": "Coordinated Storage valkey",
+          "name": "Security & Reliability",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Checks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Build pinned object fixture",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication macos-15-intel",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Constructor Network Passivity",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
         },
         {
           "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race application",
+          "status": "COMPLETED",
+          "conclusion": "CANCELLED"
+        },
+        {
+          "name": "Go 1.27.1 race client",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
         },
@@ -1243,40 +1248,22 @@
         },
         {
           "name": "Go 1.27.1 race runtime-2",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Go 1.27.1 race runtime-3",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        },
-        {
-          "name": "Go 1.27.1 race client",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        },
-        {
-          "name": "Go 1.27.1 race application",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        },
-        {
-          "name": "Go 1.27.1 race contracts",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
-        },
-        {
-          "name": "Full Catalog Capacity",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
         },
         {
-          "name": "CodeQL",
+          "name": "Verification Gate",
           "status": "COMPLETED",
-          "conclusion": "SUCCESS"
+          "conclusion": "FAILURE"
         }
-      ]
+      ],
+      "checks": [],
+      "run_id": 36208494218
     }
   ],
   "starport": [],

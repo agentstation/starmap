@@ -1,0 +1,270 @@
+{
+  "checked_at": "2026-09-26T01:27:28.387552+00:00",
+  "pr": 180,
+  "failed_head": "b52744ae12bff6323823ebd235b48079f5801764",
+  "run_id": 36205063056,
+  "failed_job_id": 108301791915,
+  "failure": "Application race execution reached the 40-minute job limit. The aggregate gate failed. All other 26 jobs passed.",
+  "events_sha256": "6be1e2b21560e29da6d8ef55ef28743d00ab149c9cca2c026920ad435120a7f9",
+  "slowest_tests": [
+    {
+      "package": "github.com/agentstation/starmap/cmd/starmap-catalog-publish",
+      "test": "TestPublicationCommandSelectsCompiledBaselineAndBindsRetry",
+      "seconds": 464.22
+    },
+    {
+      "package": "github.com/agentstation/starmap/internal/cli/app",
+      "test": "TestFileInspectionCoversRetainedRemovalAndPin",
+      "seconds": 268.63
+    },
+    {
+      "package": "github.com/agentstation/starmap/internal/server",
+      "test": "TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart",
+      "seconds": 251.84
+    },
+    {
+      "package": "github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest",
+      "test": "TestScheduledGenerationManifestUsesExactCommittedIdentity",
+      "seconds": 104.67
+    },
+    {
+      "package": "github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest",
+      "test": "TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchangedBytes",
+      "seconds": 93.56
+    },
+    {
+      "package": "github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest",
+      "test": "TestScheduledGenerationManifestReplacesPriorSchemaManifest",
+      "seconds": 93.36
+    },
+    {
+      "package": "github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest",
+      "test": "TestScheduledGenerationManifestAllowsEmptyStoreOnlyWhenUnchanged",
+      "seconds": 92.92
+    },
+    {
+      "package": "github.com/agentstation/starmap/cmd/starmap-embedded-budget",
+      "test": "TestEmbeddedBudgetCommandEmitsPassingMachineReadableReport",
+      "seconds": 74.9
+    },
+    {
+      "package": "github.com/agentstation/starmap/cmd/starmap-catalog-release",
+      "test": "TestGitPublisherStagesAllProviderAndMetadataIngestion",
+      "seconds": 58.03
+    },
+    {
+      "package": "github.com/agentstation/starmap/cmd/starmap-catalog-release",
+      "test": "TestPublisherStagesAllProviderAndMetadataIngestion",
+      "seconds": 57.7
+    }
+  ],
+  "estimated_shard_test_seconds": {
+    "1": 1103.0799999999992,
+    "2": 696.5699999999997,
+    "3": 368.48999999999984
+  },
+  "estimate_limit": "Sums cover completed top-level tests from the cancelled job. They exclude compilation, fixture setup, scheduling, and unfinished tests. They are not hosted qualification.",
+  "inventory": {
+    "packages": 43,
+    "tests": 390,
+    "shards": [
+      139,
+      133,
+      118
+    ]
+  },
+  "repair_commit": "3458eed202676ef343fa5512c5e142c8abf0888c",
+  "coverage": "Three application race shards partition the complete discovered inventory. Every shard verifies exact test completion. No timeouts, tests, assertions, or platform coverage were removed.",
+  "local_checks": {
+    "python_runner_tests": {
+      "passed": 9
+    },
+    "race_workflow_contracts": "passed; Go 1.27.1",
+    "goago": "no findings, stale ignores, or errors",
+    "technical_writing": "1826 files; no diagnostics",
+    "actionlint": "Workflow validation passed. ShellCheck reports pre-existing SC2024 for a sudo test whose output file intentionally belongs to the runner."
+  },
+  "hosted_qualification": {
+    "head": "3458eed202676ef343fa5512c5e142c8abf0888c",
+    "run_id": 36208494218,
+    "status": "in_progress"
+  },
+  "jobs": [
+    {
+      "name": "Action Pin Provenance",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:14Z",
+      "completed_at": "2026-09-26T00:31:28Z"
+    },
+    {
+      "name": "Publication windows-2025",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:13Z",
+      "completed_at": "2026-09-26T00:40:57Z"
+    },
+    {
+      "name": "Offline Server Persistence",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:12Z",
+      "completed_at": "2026-09-26T00:32:43Z"
+    },
+    {
+      "name": "Runtime macos-15-intel",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:14Z",
+      "completed_at": "2026-09-26T01:03:23Z"
+    },
+    {
+      "name": "Publication macos-15",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:17Z",
+      "completed_at": "2026-09-26T00:39:32Z"
+    },
+    {
+      "name": "Security & Reliability",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:13Z",
+      "completed_at": "2026-09-26T00:33:31Z"
+    },
+    {
+      "name": "Verification Checks",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:14Z",
+      "completed_at": "2026-09-26T00:41:07Z"
+    },
+    {
+      "name": "Publication windows-11-arm",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:12Z",
+      "completed_at": "2026-09-26T00:41:53Z"
+    },
+    {
+      "name": "Build pinned object fixture",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:12Z",
+      "completed_at": "2026-09-26T00:32:54Z"
+    },
+    {
+      "name": "Runtime windows-11-arm",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:12Z",
+      "completed_at": "2026-09-26T01:09:39Z"
+    },
+    {
+      "name": "Runtime macos-15",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:17Z",
+      "completed_at": "2026-09-26T00:49:41Z"
+    },
+    {
+      "name": "Publication ubuntu-24.04-arm",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:14Z",
+      "completed_at": "2026-09-26T00:38:46Z"
+    },
+    {
+      "name": "Runtime windows-2025",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:13Z",
+      "completed_at": "2026-09-26T01:14:35Z"
+    },
+    {
+      "name": "Runtime ubuntu-24.04",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:13Z",
+      "completed_at": "2026-09-26T00:45:58Z"
+    },
+    {
+      "name": "Publication macos-15-intel",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:16Z",
+      "completed_at": "2026-09-26T00:49:37Z"
+    },
+    {
+      "name": "Publication ubuntu-24.04",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:13Z",
+      "completed_at": "2026-09-26T00:39:21Z"
+    },
+    {
+      "name": "Runtime ubuntu-24.04-arm",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:15Z",
+      "completed_at": "2026-09-26T00:45:07Z"
+    },
+    {
+      "name": "Constructor Network Passivity",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:31:13Z",
+      "completed_at": "2026-09-26T00:31:57Z"
+    },
+    {
+      "name": "Coordinated Storage redis",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:32:56Z",
+      "completed_at": "2026-09-26T00:34:32Z"
+    },
+    {
+      "name": "Coordinated Storage valkey",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:32:56Z",
+      "completed_at": "2026-09-26T00:34:16Z"
+    },
+    {
+      "name": "Full Catalog Capacity",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:41:09Z",
+      "completed_at": "2026-09-26T00:48:02Z"
+    },
+    {
+      "name": "Go 1.27.1 race contracts",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:41:09Z",
+      "completed_at": "2026-09-26T01:01:56Z"
+    },
+    {
+      "name": "Go 1.27.1 race application",
+      "conclusion": "cancelled",
+      "started_at": "2026-09-26T00:41:10Z",
+      "completed_at": "2026-09-26T01:21:27Z"
+    },
+    {
+      "name": "Go 1.27.1 race client",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:41:10Z",
+      "completed_at": "2026-09-26T01:15:31Z"
+    },
+    {
+      "name": "Go 1.27.1 race runtime-1",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:41:09Z",
+      "completed_at": "2026-09-26T00:51:33Z"
+    },
+    {
+      "name": "Go 1.27.1 race runtime-2",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:41:09Z",
+      "completed_at": "2026-09-26T01:05:51Z"
+    },
+    {
+      "name": "Go 1.27.1 race runtime-3",
+      "conclusion": "success",
+      "started_at": "2026-09-26T00:41:09Z",
+      "completed_at": "2026-09-26T01:09:09Z"
+    },
+    {
+      "name": "Verification Gate",
+      "conclusion": "failure",
+      "started_at": "2026-09-26T01:21:30Z",
+      "completed_at": "2026-09-26T01:21:34Z"
+    }
+  ],
+  "review": {
+    "profile": "auto",
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "P0",
+    "result": "clean",
+    "limitations_resolved": "The complete runner sends the selected filter to Go and verifies exact completion. Both hosted storage jobs already passed with the pinned MinIO build."
+  }
+}
