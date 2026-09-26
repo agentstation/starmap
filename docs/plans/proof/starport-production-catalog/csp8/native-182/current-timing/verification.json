@@ -1,0 +1,504 @@
+{
+  "checked_at": "2026-09-26T08:28:02.157611+00:00",
+  "source": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+  "run": 36228899978,
+  "scope": "Timing measurements from completed native jobs. The whole run and required remaining platforms are not yet qualified.",
+  "platforms": {
+    "native-runtime-ubuntu-24.04-arm": {
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "seconds": 377.785
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "seconds": 127.476
+        },
+        {
+          "package": "github.com/agentstation/starmap",
+          "seconds": 118.522
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "seconds": 68.351
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "seconds": 30.222
+        },
+        {
+          "package": "github.com/agentstation/starmap/server",
+          "seconds": 7.183
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "seconds": 1.252
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "seconds": 1.2
+        },
+        {
+          "package": "github.com/agentstation/starmap/server/administration",
+          "seconds": 1.119
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/privatefiles",
+          "seconds": 0.52
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/github",
+          "seconds": 0.334
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/server/middleware",
+          "seconds": 0.255
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/test/gitfixture",
+          "seconds": 0.053
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+          "seconds": 0.039
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productfiles",
+          "seconds": 0.03
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+          "seconds": 0.024
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/commands/serve",
+          "seconds": 0.009
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths",
+          "seconds": 0.009
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/filepublish",
+          "seconds": 0.007
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+          "seconds": 0.003
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+          "seconds": 0.002
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+          "seconds": 0.002
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile",
+          "seconds": 0.002
+        }
+      ],
+      "slowest_tests": [
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestFileInspectionCoversRetainedRemovalAndPin",
+          "seconds": 83.02
+        },
+        {
+          "package": "github.com/agentstation/starmap",
+          "test": "TestFirstExplicitUpdateAtomicallySeedsAbsentWorkspaceFromEmbedded",
+          "seconds": 48.24
+        },
+        {
+          "package": "github.com/agentstation/starmap",
+          "test": "TestWritableStoreAllowsConfiguredMutationTriggers",
+          "seconds": 41.04
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState",
+          "seconds": 32.27
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPublishDirectoryMigrationRecoversProcessExit",
+          "seconds": 30.77
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestRuntimeRecoversRecordPublicationAfterProcessExit",
+          "seconds": 30.5
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportRecoversAfterProcessInterruption",
+          "seconds": 25.27
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryResumesInterruptedCollection",
+          "seconds": 18.69
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOriginFollowerStartsWithoutPublishing",
+          "seconds": 15.69
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestDirectoryMigrationCompletionRecoversProcessExit",
+          "seconds": 12.27
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedBootstrapManifestMatchesCanonicalCatalog",
+          "seconds": 11.35
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh",
+          "seconds": 10.19
+        }
+      ],
+      "named": {
+        "pass": 3277,
+        "skip": 2
+      }
+    },
+    "native-runtime-ubuntu-24.04": {
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "seconds": 387.63
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "seconds": 139.524
+        },
+        {
+          "package": "github.com/agentstation/starmap",
+          "seconds": 124.454
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "seconds": 68.026
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "seconds": 35.985
+        },
+        {
+          "package": "github.com/agentstation/starmap/server",
+          "seconds": 7.116
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "seconds": 1.377
+        },
+        {
+          "package": "github.com/agentstation/starmap/server/administration",
+          "seconds": 1.292
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "seconds": 1.206
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/privatefiles",
+          "seconds": 0.608
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/github",
+          "seconds": 0.385
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/server/middleware",
+          "seconds": 0.261
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/test/gitfixture",
+          "seconds": 0.066
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+          "seconds": 0.046
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productfiles",
+          "seconds": 0.033
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+          "seconds": 0.025
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/commands/serve",
+          "seconds": 0.011
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths",
+          "seconds": 0.01
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/filepublish",
+          "seconds": 0.008
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+          "seconds": 0.004
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+          "seconds": 0.004
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile",
+          "seconds": 0.003
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+          "seconds": 0.002
+        }
+      ],
+      "slowest_tests": [
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestFileInspectionCoversRetainedRemovalAndPin",
+          "seconds": 89.75
+        },
+        {
+          "package": "github.com/agentstation/starmap",
+          "test": "TestFirstExplicitUpdateAtomicallySeedsAbsentWorkspaceFromEmbedded",
+          "seconds": 51.71
+        },
+        {
+          "package": "github.com/agentstation/starmap",
+          "test": "TestWritableStoreAllowsConfiguredMutationTriggers",
+          "seconds": 43.94
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState",
+          "seconds": 35.79
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPublishDirectoryMigrationRecoversProcessExit",
+          "seconds": 29.52
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestRuntimeRecoversRecordPublicationAfterProcessExit",
+          "seconds": 28.57
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportRecoversAfterProcessInterruption",
+          "seconds": 24.21
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryResumesInterruptedCollection",
+          "seconds": 17.88
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOriginFollowerStartsWithoutPublishing",
+          "seconds": 16.15
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestProviderCompositeRecoveryPreservesContributions",
+          "seconds": 15.22
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh",
+          "seconds": 12.72
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestAcceptedSourcesSurviveFailureAndRespectRestartPolicy",
+          "seconds": 12.05
+        }
+      ],
+      "named": {
+        "pass": 3277,
+        "skip": 2
+      }
+    },
+    "native-runtime-macos-15": {
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "seconds": 445.115
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "seconds": 140.948
+        },
+        {
+          "package": "github.com/agentstation/starmap",
+          "seconds": 119.448
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "seconds": 58.825
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "seconds": 43.99
+        },
+        {
+          "package": "github.com/agentstation/starmap/server",
+          "seconds": 7.886
+        },
+        {
+          "package": "github.com/agentstation/starmap/server/administration",
+          "seconds": 3.513
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "seconds": 3.176
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/privatefiles",
+          "seconds": 2.006
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "seconds": 1.342
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/github",
+          "seconds": 0.853
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/server/middleware",
+          "seconds": 0.353
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/test/gitfixture",
+          "seconds": 0.328
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+          "seconds": 0.109
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productfiles",
+          "seconds": 0.082
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+          "seconds": 0.037
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths",
+          "seconds": 0.035
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/filepublish",
+          "seconds": 0.031
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/commands/serve",
+          "seconds": 0.022
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+          "seconds": 0.01
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+          "seconds": 0.008
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+          "seconds": 0.007
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile",
+          "seconds": 0.007
+        }
+      ],
+      "slowest_tests": [
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestFileInspectionCoversRetainedRemovalAndPin",
+          "seconds": 84.87
+        },
+        {
+          "package": "github.com/agentstation/starmap",
+          "test": "TestFirstExplicitUpdateAtomicallySeedsAbsentWorkspaceFromEmbedded",
+          "seconds": 49.39
+        },
+        {
+          "package": "github.com/agentstation/starmap",
+          "test": "TestWritableStoreAllowsConfiguredMutationTriggers",
+          "seconds": 43.89
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState",
+          "seconds": 40.31
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestProviderCompositeRecoveryPreservesContributions",
+          "seconds": 32.92
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestRuntimeRecoversRecordPublicationAfterProcessExit",
+          "seconds": 28.39
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPublishDirectoryMigrationRecoversProcessExit",
+          "seconds": 26.59
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestProviderOptionalRecordRecoveryPreservesPresence",
+          "seconds": 23.65
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportRecoversAfterProcessInterruption",
+          "seconds": 22.12
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh",
+          "seconds": 22.04
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryResumesInterruptedCollection",
+          "seconds": 15.88
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOriginFollowerStartsWithoutPublishing",
+          "seconds": 13.57
+        }
+      ],
+      "named": {
+        "pass": 3323,
+        "skip": 1
+      }
+    }
+  },
+  "artifacts": {
+    "native-runtime-macos-15-tests.jsonl.gz": "d41f5f63824235a3161d2fdf9571db1a76961ce4e939a128a4a93768b8d9c87b",
+    "native-runtime-macos-15-toolchain.txt.gz": "6e490c499188249bdc130065ebbee003714c4508246f262233f1c816cfea941b",
+    "native-runtime-ubuntu-24.04-tests.jsonl.gz": "b0d3fa7303ec3388887915f851cd284740524c6fbf1e0a61ed58f5994485a164",
+    "native-runtime-ubuntu-24.04-toolchain.txt.gz": "bf3d224792515352796ee049b4260a417d964975055291c3dd6d5c7da609e32f",
+    "native-runtime-ubuntu-24.04-arm-tests.jsonl.gz": "20d47fa19fed9ba8e3cccf2ca0ed015b89a2f7572d4f0f28728b84e903db4d4c",
+    "native-runtime-ubuntu-24.04-arm-toolchain.txt.gz": "5cb5fb89008560c7073bfe79ee812fd45708a05f86d7baf27e4a2b5270755a51"
+  },
+  "observation": "Runtime package execution is the largest completed native cost on all three measured runners. The CLI inspection and two root-package workspace tests are the slowest individual cases. These measurements do not include the unfinished race groups.",
+  "next_action": "Preserve this current qualification run. Use its complete timing evidence after qualification before selecting any further test optimization."
+}
