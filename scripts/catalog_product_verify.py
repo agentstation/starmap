@@ -11,6 +11,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 
@@ -99,6 +100,107 @@ def registered_check(args, registry, identity):
         if identity in components:
             return components[identity], "producer_component"
     return registry["checks"].get(identity), "product"
+
+
+def go_check_input(entry, roots):
+    root = roots.get(entry.get("repository"))
+    package, test = entry.get("package", ""), entry.get("test", "")
+    if root is None or not (root / "go.mod").is_file():
+        return None, {"status": "UNVERIFIED", "reason": "The required repository is unavailable."}
+    if (not isinstance(test, str) or not isinstance(package, str)
+            or not re.fullmatch(r"Test[A-Za-z0-9_]+", test) or not package.startswith("./")
+            or any(part in ("..", "...") for part in package.split("/")[1:])):
+        return None, {"status": "FAIL", "reason": "Invalid named Go behavior check."}
+    return (root.resolve(), package, test), None
+
+
+def leaf_checks(entry):
+    if not isinstance(entry, dict):
+        return
+    if entry.get("kind") == "all":
+        for child in entry.get("checks", []):
+            yield from leaf_checks(child)
+    else:
+        yield entry
+
+
+class GoEvidence:
+    """Run each selected package once and retain named results for this invocation."""
+
+    def __init__(self, entries, roots):
+        self.groups = {}
+        self.results = {}
+        for entry in entries:
+            for check in leaf_checks(entry):
+                if check.get("kind") != "go_test":
+                    continue
+                inputs, error = go_check_input(check, roots)
+                if error is None:
+                    root, package, test = inputs
+                    self.groups.setdefault((root, package), set()).add(test)
+
+    def check(self, root, package, test):
+        key = (root, package, test)
+        if key not in self.results:
+            names = sorted(self.groups.get((root, package), {test}))
+            for name, result in run_go_tests(root, package, names).items():
+                self.results[(root, package, name)] = result
+        return dict(self.results[key])
+
+
+def run_go_tests(root, package, names):
+    pattern = "^(" + "|".join(names) + ")$"
+    command = ["go", "test", "-race", "-count=1", "-timeout", "5m", "-json", "-run", pattern, package]
+    started = time.monotonic()
+    try:
+        module = re.search(r"(?m)^module[ \t]+([^\s]+)", (root / "go.mod").read_text())
+        if module is None:
+            raise ValueError("The repository has no module declaration.")
+        import_path = module.group(1).strip('"')
+        if package.rstrip("/") != ".":
+            import_path += "/" + package[2:].rstrip("/")
+        result = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=330)
+    except (OSError, ValueError, subprocess.TimeoutExpired) as error:
+        return {name: {"status": "UNVERIFIED", "reason": type(error).__name__, "command": command,
+                       "cwd": str(root), "elapsed_seconds": time.monotonic() - started} for name in names}
+    evidence = {"command": command, "cwd": str(root), "exit_code": result.returncode,
+                "stdout": result.stdout, "stderr": result.stderr, "elapsed_seconds": time.monotonic() - started}
+    events, invalid = [], False
+    for line in result.stdout.splitlines():
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+            if (not isinstance(event, dict) or not isinstance(event.get("Action"), str)
+                    or ("Test" in event and not isinstance(event["Test"], str))
+                    or ("Package" in event and not isinstance(event["Package"], str))):
+                invalid = True
+            else:
+                events.append(event)
+        except json.JSONDecodeError:
+            invalid = True
+    failed = result.returncode or any(event.get("Action") == "fail" for event in events)
+    package_passes = sum(event.get("Action") == "pass" and event.get("Package") == import_path
+                         and not event.get("Test") for event in events)
+    results = {}
+    for name in names:
+        matched = [event for event in events if event.get("Package") == import_path and event.get("Test") == name]
+        skipped = any(event.get("Action") == "skip" and event.get("Package") == import_path
+                      and (event.get("Test") == name or event.get("Test", "").startswith(name + "/"))
+                      for event in events)
+        if failed:
+            status, reason = "FAIL", "The behavior command failed."
+        elif invalid or package_passes != 1:
+            status, reason = "UNVERIFIED", "The package has no complete valid event stream."
+        elif skipped:
+            status, reason = "UNVERIFIED", "The named behavior test or a subtest was skipped."
+        elif (sum(event.get("Action") == "run" for event in matched) != 1
+              or sum(event.get("Action") == "pass" for event in matched) != 1):
+            status, reason = "UNVERIFIED", "The named behavior test did not run and pass exactly once."
+        else:
+            status, reason = "PASS", "The named behavior test passed in this invocation."
+        results[name] = dict(evidence, status=status, reason=reason)
+    return results
 
 
 def run_check(identity, entry, roots, go_evidence=None):
@@ -191,40 +293,16 @@ def run_check(identity, entry, roots, go_evidence=None):
             return {"status": "UNVERIFIED", "reason": str(error)}
     if entry.get("kind") != "go_test":
         return {"status": "UNVERIFIED", "reason": "This evidence adapter has not been implemented."}
-    root = roots.get(entry.get("repository"))
-    package = entry.get("package", "")
-    test = entry.get("test", "")
-    if root is None or not (root / "go.mod").is_file():
-        return {"status": "UNVERIFIED", "reason": "The required repository is unavailable."}
-    if not re.fullmatch(r"Test[A-Za-z0-9_]+", test) or not package.startswith("./") or ".." in package.split("/")[1:]:
-        return {"status": "FAIL", "reason": "Invalid named Go behavior check."}
-    command = ["go", "test", "-race", "-count=1", "-timeout", "5m", "-json", "-run", f"^{test}$", package]
-    evidence_key = (str(root.resolve()), tuple(command))
+    inputs, error = go_check_input(entry, roots)
+    if error is not None:
+        return error
+    root, package, test = inputs
+    if isinstance(go_evidence, GoEvidence):
+        return go_evidence.check(root, package, test)
+    evidence_key = (root, package, test)
     if go_evidence is not None and evidence_key in go_evidence:
         return dict(go_evidence[evidence_key])
-    try:
-        result = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=330)
-    except (OSError, subprocess.TimeoutExpired) as error:
-        return {"status": "UNVERIFIED", "reason": type(error).__name__, "command": command}
-    events = []
-    for line in result.stdout.splitlines():
-        try:
-            events.append(json.loads(line))
-        except json.JSONDecodeError:
-            continue
-    matched = [event for event in events if event.get("Test") == test]
-    passed = any(event.get("Action") == "pass" for event in matched)
-    skipped = any(event.get("Action") == "skip" for event in events)
-    if result.returncode:
-        status, reason = "FAIL", "The behavior command failed."
-    elif not matched or skipped:
-        status, reason = "UNVERIFIED", "The named behavior test is missing or a test was skipped."
-    elif not passed:
-        status, reason = "UNVERIFIED", "The named behavior test has no passing result."
-    else:
-        status, reason = "PASS", "The named behavior test passed in this invocation."
-    evidence = {"status": status, "reason": reason, "command": command, "cwd": str(root),
-                "exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr}
+    evidence = run_go_tests(root, package, [test])[test]
     if go_evidence is not None:
         go_evidence[evidence_key] = evidence
     return dict(evidence)
@@ -664,7 +742,7 @@ def main():
         selected = select_checks(args, roster)
         roots = {"starmap": ROOT, "starport": args.starport_root.resolve()}
         results = {}
-        go_evidence = {}
+        go_evidence = GoEvidence([registered_check(args, registry, item)[0] for item in selected], roots)
         for item in selected:
             entry, scope = registered_check(args, registry, item)
             results[item] = run_check(item, entry, roots, go_evidence)

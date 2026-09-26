@@ -92,7 +92,7 @@ func TestFileInspectionReportsActiveOwnerAndLiteralWorkspace(t *testing.T) {
 		t.Fatal(err)
 	}
 	wantBinding := "matches"
-	if runtime.GOOS != "darwin" && runtime.GOOS != "linux" {
+	if runtime.GOOS != "darwin" && runtime.GOOS != "linux" && runtime.GOOS != "windows" {
 		wantBinding = "unverified"
 	}
 	ownerFound, stageFound := false, false

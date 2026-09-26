@@ -130,6 +130,14 @@ catalog once per process. Callers receive owned copies of mutable generation
 data. Never share a mutable builder, store, environment, clock, or source reply
 between independent tests. Never cache a success receipt across changed inputs.
 
+The catalog acceptance runner groups selected Go tests by repository and package.
+Each group runs once per invocation with race detection, `-count=1`, and a
+five-minute timeout. This reuses immutable bootstrap data within that process.
+
+Each selected test must run and pass exactly once in a complete package result.
+A skipped required subtest leaves its named parent unverified. A failed command
+fails the group. Results never carry across verifier invocations.
+
 Use `t.Parallel()` only when each test owns all mutable state. Tests that change
 the process environment or current directory must remain serial. Concurrency
 tests need explicit channels or barriers that establish the required ordering.
