@@ -74,16 +74,36 @@
       "sha256": "40414a556b298641888f1527bbc71717bcf51cb4b0021b1734f513e7b49f8915"
     },
     {
+      "path": "interrupted-startup-stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "interrupted-startup-tests.jsonl.gz",
+      "sha256": "d5f9f3a079d42b1bc20b6150b8f81d52ff67a438b723c9b37ced7552a1d74589"
+    },
+    {
       "path": "recipe-focused.jsonl.gz",
       "sha256": "262537f094bddda288c743f28fa572903a2f5354c6b5d0841c9f34c4ddb28100"
+    },
+    {
+      "path": "startup-runner.json.gz",
+      "sha256": "4db44cfec6b8f6d2dc976d3772cde1eb3734b16ba429cdc27866610be7175091"
+    },
+    {
+      "path": "startup-stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "startup-tests.jsonl.gz",
+      "sha256": "9c67bf9ef6f6d279d37d6a50b4c938a4442ad686e1ae8247f6e3759f7f242ba9"
     }
   ],
   "local_preparation": {
     "worktree": "/tmp/starport-fleet-review-20260926",
     "branch": "codex/storage-recipe-contract",
     "parent": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
-    "commit": null,
-    "state": "UNCOMMITTED_UNPUBLISHED",
+    "commit": "16aacc6c2d4a5bad73028f2dd7a569b9ecb7e0c1",
+    "state": "COMMITTED_UNPUBLISHED",
     "implemented": "Reject incomplete distributed SQL and file recipes, unqualified MySQL and cluster combinations, before storage access. Preserve inspection redaction for unsupported selections.",
     "focused_tests": {
       "named_passes": 16,
@@ -92,7 +112,7 @@
       "skips": 0
     },
     "initial_broad_run": "487 passing named events, four expected failure events from fixtures using newly refused configurations, four shared-service skips. Updated fixtures pass focused checks. The full final run remains required.",
-    "native_startup": "Original foreground run interrupted. Its two containers were removed. A detached bounded runner is now verified live by PID.",
+    "native_startup": "PASS: TestAppWithValkey and TestSharedStartupDoesNotCreateLocalDatabases with real Valkey and PostgreSQL. Both test containers removed.",
     "native_runner": "/tmp/run-csp12-recipe-startup.py",
     "native_pid": 49633,
     "native_report": "/tmp/csp12-recipe-startup-native/runner.json",
@@ -106,6 +126,17 @@
       "internal/config/file_manifest_test.go": "500e3c2622b604103652c678cc3edd486a44c3f98ec29b2ea3df596b085cf204",
       "internal/config/storage_recipe.go": "3b492a030b463a982344c3591e0642bf41ebf8c0aaa483ff647ad61a5d799bed",
       "internal/config/storage_recipe_test.go": "c3e2853b1932c3a0be87383d6ff5de109621409c38b184ac43ce68c364e0a439"
+    },
+    "native_result": {
+      "exit_code": 0,
+      "named_passes": 2,
+      "skips": 0,
+      "failures": 0,
+      "cleanup": [
+        0,
+        0
+      ],
+      "scope": "Storage startup, recovery approval and restart. This run does not qualify shared object data operations."
     }
   }
 }

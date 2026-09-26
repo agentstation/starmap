@@ -888,5 +888,13 @@
     "head": "16d176ba3b528aa7b99cc1c99a9adb0609128d97",
     "branch": "codex/catalog-fleet-adapter",
     "published": false
+  },
+  "storage_recipe_preparation": {
+    "owner": "CSP12",
+    "branch": "codex/storage-recipe-contract",
+    "worktree": "/tmp/starport-fleet-review-20260926",
+    "commit": "16aacc6c2d4a5bad73028f2dd7a569b9ecb7e0c1",
+    "published": false,
+    "next_action": "Finish the complete CSP12 storage contract, then run final checks and review before publication. Keep PR385 at reviewed 7068380bd while CI and merges complete."
   }
 }
