@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "task": "CSP10.3",
+  "producer_merge": "8122081e0494648fb1e356647053dd870a05fb1c",
+  "consumer_merge": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
+  "merged_in_pr": 384,
+  "reviewed_tree_equals_merged_tree": true,
+  "selected_subcases": 7,
+  "unique_go_commands": 3,
+  "named_race_passes": 39,
+  "required_skips": 0,
+  "acceptance_evidence": "../prepared-8170d65/verification.json",
+  "native_full_package_results": [
+    {
+      "runner": "native-catalog-macos-15",
+      "package_passes": [
+        "github.com/agentstation/starport/internal/availability",
+        "github.com/agentstation/starport/internal/router",
+        "github.com/agentstation/starport/internal/app"
+      ],
+      "sha256": "c7ebeb1d8378445f4bb50cebd372d86cd1c9510e4c6f6550870d755e5afabb35"
+    },
+    {
+      "runner": "native-catalog-macos-15-intel",
+      "package_passes": [
+        "github.com/agentstation/starport/internal/availability",
+        "github.com/agentstation/starport/internal/router",
+        "github.com/agentstation/starport/internal/app"
+      ],
+      "sha256": "14fd8c15572835651bf28683196e111878370851e66d2c7980355dc1dd5d58ee"
+    },
+    {
+      "runner": "native-catalog-ubuntu-24.04",
+      "package_passes": [
+        "github.com/agentstation/starport/internal/availability",
+        "github.com/agentstation/starport/internal/router",
+        "github.com/agentstation/starport/internal/app"
+      ],
+      "sha256": "b69adcac0b56b4f707b0c6853414bff89a6c7d3468acafb94eb0eab8473fd09c"
+    },
+    {
+      "runner": "native-catalog-ubuntu-24.04-arm",
+      "package_passes": [
+        "github.com/agentstation/starport/internal/availability",
+        "github.com/agentstation/starport/internal/router",
+        "github.com/agentstation/starport/internal/app"
+      ],
+      "sha256": "781278e2e316027b6952e355479084a64a226d6e367d110a8b85664b853da2de"
+    },
+    {
+      "runner": "native-catalog-windows-11-arm",
+      "package_passes": [
+        "github.com/agentstation/starport/internal/availability",
+        "github.com/agentstation/starport/internal/router",
+        "github.com/agentstation/starport/internal/app"
+      ],
+      "sha256": "48545b648f55d70e38f55ef703a9716e11279be138abd4adee4b066db3410448"
+    },
+    {
+      "runner": "native-catalog-windows-2025",
+      "package_passes": [
+        "github.com/agentstation/starport/internal/availability",
+        "github.com/agentstation/starport/internal/router",
+        "github.com/agentstation/starport/internal/app"
+      ],
+      "sha256": "bc1a92b3575dcb604dd1e31366391a60d5944b1e5926babb84c00cd320319675"
+    }
+  ],
+  "native_artifacts": "../../csp8/native-timing-384/final-native/native-evidence.tar.gz",
+  "required_review_evidence": "../../csp8/native-timing-384/autoreview.log.gz",
+  "merge_evidence": "../../csp8/merged-qualification-2026-09-26/consumer-merge.json",
+  "scope": "Merged task qualification. Complete released-pair acceptance remains required.",
+  "checked_at": "2026-09-26T16:28:35.669943+00:00",
+  "plan_writing": {
+    "changed_plan": "PASS",
+    "repository": "FAIL",
+    "unchanged_historical_diagnostics": 69,
+    "proof": "plan-writing.log.gz"
+  }
+}

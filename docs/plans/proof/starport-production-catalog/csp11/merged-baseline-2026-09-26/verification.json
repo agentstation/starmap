@@ -1,0 +1,56 @@
+{
+  "status": "UNVERIFIED",
+  "task": "CSP11",
+  "producer": "8122081e0494648fb1e356647053dd870a05fb1c",
+  "consumer": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
+  "selected_subcases": 11,
+  "results": {
+    "UNVERIFIED": 9,
+    "PASS": 2
+  },
+  "unregistered": [
+    "A13.two_real_processes",
+    "A13.lease_expiry_during_commit",
+    "A13.stale_epoch_rejection",
+    "A14.missed_events",
+    "A14.follower_restart",
+    "A14.leader_loss_with_local_files_removed",
+    "A14.equivalent_acquisition_capability",
+    "A41.deployment_key_channel_isolation",
+    "A41.namespace_atomic_layout"
+  ],
+  "seconds": 50.78397912500077,
+  "cleanup": [
+    {
+      "id": "d2e4f48d22a503caa35f45ad6ac61f834861a5c913284e0d8c70aac763ddb144",
+      "exit_code": 0
+    },
+    {
+      "id": "64431c896b8043cff8f8e728a1f0703707ecb7b812580aee4b3ee7fe8d5422bb",
+      "exit_code": 0
+    },
+    {
+      "id": "6f778c649a712cb0d2042e24c4cd8406c190928bd5ef3f52abc34b167d600edf",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "runner.json.gz",
+      "sha256": "a3d32a51450670edfc66666ac1af4714487a1807e9c4beeed712fc041e5db3af"
+    },
+    {
+      "path": "acceptance.json.gz",
+      "sha256": "2201116fd906755cfb73e72e2ab74f5d1976fc4a5d7502106e53af963e3b4db7"
+    },
+    {
+      "path": "acceptance.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp11-merged-baseline.py.gz",
+      "sha256": "02533484c8882aa94c2d2d9ebeb7b5cd28e810b8aaafdeecb2672ee458936add"
+    }
+  ],
+  "scope": "Missing behavior bindings are not proof of a production defect. Reproduce lease expiry during commit and leader loss before a repair."
+}

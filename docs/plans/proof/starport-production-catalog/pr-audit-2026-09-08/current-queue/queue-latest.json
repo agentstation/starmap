@@ -792,7 +792,9 @@
     "subcases": 7,
     "test_events": 39,
     "proof": "../../csp10.3/prepared-8170d65/verification.json",
-    "task_completed": false
+    "task_completed": true,
+    "merge_commit": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
+    "completion_proof": "../../csp10.3/merged-qualification-2026-09-26/verification.json"
   },
   "cache_preparation": {
     "consumer": "8170d65c3904279d4d219e57e3af95eced371d5a",
@@ -803,10 +805,11 @@
     "task_completed": false
   },
   "next_task": {
-    "task": "CSP10.2",
-    "next_action": "Audit A46 clock-validity coverage and resolve the real-suspend qualification requirement.",
-    "clock_audit_runner": "/tmp/csp10-2-clock-contract-audit.py",
-    "owner_question": "Retain controlled native suspend/wake qualification or accept OS contracts plus native and deterministic tests. No answer yet."
+    "task": "CSP11",
+    "next_action": "Reproduce lease expiry between validation and shared head commit, then leader loss without local evidence.",
+    "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
+    "blocked_task": "CSP10.2",
+    "owner_question": "Native suspend qualification remains open. The owner has not changed this contract."
   },
   "merged_followups": {
     "tasks": [
