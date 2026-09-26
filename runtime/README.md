@@ -432,7 +432,7 @@ const (
 )
 ```
 
-<a name="MaxFleetRecoveryBytes"></a>MaxFleetRecoveryBytes bounds the private inputs attached to one fleet publication.
+<a name="MaxFleetRecoveryBytes"></a>MaxFleetRecoveryBytes bounds both encoded and decoded private inputs for one fleet publication.
 
 ```go
 const MaxFleetRecoveryBytes = storage.DefaultRetentionInputMaxBytes
@@ -855,7 +855,7 @@ func (p FleetPublication) Validate() error
 Validate checks publication content and identity before a backend operation. The backend must still compare the live grant, expiry, approved identity, and head atomically. No local clock reading can replace that comparison.
 
 <a name="FleetRecovery"></a>
-## type [FleetRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L22-L27>)
+## type [FleetRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L25-L30>)
 
 FleetRecovery binds private acquisition inputs to one immutable generation. Stores retain these bytes with the generation and never expose them as public catalog data. The runtime owns the encoding. Hosts preserve the bytes without modification.
 
@@ -869,7 +869,7 @@ type FleetRecovery struct {
 ```
 
 <a name="FleetRecovery.Validate"></a>
-### func \(FleetRecovery\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L31>)
+### func \(FleetRecovery\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L34>)
 
 ```go
 func (r FleetRecovery) Validate(generation catalogs.Generation) error
@@ -912,7 +912,7 @@ type FleetStatus struct {
 ```
 
 <a name="FleetStore"></a>
-## type [FleetStore](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L114-L138>)
+## type [FleetStore](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L114-L140>)
 
 FleetStore owns shared publication, retained inputs, and refresh ownership. Hosts supply the adapter. Standalone stores keep the separate storage.Store contract. Each method uses one deployment namespace and the approved backend incarnation. New or recovered connections must validate that incarnation before application operations.
 
@@ -936,7 +936,9 @@ type FleetStore interface {
     // CommitPublication selects the catalog and recovery reference in one backend transaction.
     // It compares Expected, the exact holder, process session, epoch, live expiry, and recovery identity.
     // A refusal changes neither the head nor the recovery reference. Staged bytes confer no permission.
-    // An identical successful retry returns its original head without another publication.
+    //
+    // An identical successful retry returns its original head while its receipt remains retained.
+    // A retry after receipt collection refuses without another publication.
     // The store must prove that retry from the retained request, including its original grant.
     //
     // Lease expiry must not erase the durable epoch. Reuse of an active holder by another session fails.
@@ -2132,7 +2134,7 @@ func (r *Runtime) ReplaceRemovalTargets(ctx context.Context, expected starmap.Ca
 ReplaceRemovalTargets replaces this runtime's operator removal snapshot. Expected generation identity and checksum prevent stale edits. An empty target list restores local removals. The caller authorizes the operator action. Other publishers retain their own policies.
 
 <a name="Runtime.RetentionSnapshot"></a>
-### func \(\*Runtime\) [RetentionSnapshot](<https://github.com/agentstation/starmap/blob/main/runtime/retention.go#L113>)
+### func \(\*Runtime\) [RetentionSnapshot](<https://github.com/agentstation/starmap/blob/main/runtime/retention.go#L117>)
 
 ```go
 func (r *Runtime) RetentionSnapshot() RetentionStatus
