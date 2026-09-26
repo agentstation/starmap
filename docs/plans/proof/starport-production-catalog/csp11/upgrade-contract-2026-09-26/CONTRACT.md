@@ -2,10 +2,10 @@
 
 Status: approved third option under D41 on September 26, 2026. Implementation and qualification remain open.
 Owners: CSP11 for retained baseline recovery, CSP16 for coordinated policy apply, and CSP16.1 for explicit baseline promotion.
-Current producer: `75e84878d8520a9c5f456643f929bc776d52fa3e`.
-Current consumer: `ac679bf6464e448b63576deed54dbdbd0f7696e6`.
+Inspected producer: `75e84878d8520a9c5f456643f929bc776d52fa3e`.
+Inspected consumer: `ac679bf6464e448b63576deed54dbdbd0f7696e6`.
 
-## Confirmed failure
+## Confirmed failure at the inspected revisions
 
 `runtime/fleet_replay.go` binds replay to the embedded baseline and acquisition policy.
 A mismatch returns a conflict before input replacement.
@@ -53,7 +53,7 @@ Do not silently discard incompatible retained inputs. Report the conflicting sco
 A source or authority change must use the existing source-transition and permission rules.
 Starmap owns this validation. The storage adapter must preserve recovery bytes as opaque data.
 
-The current recovery record lacks the previous baseline. The replacement format must retain its complete validated manifest and payload.
+The inspected recovery record lacks the previous baseline. The replacement format must retain its complete validated manifest and payload.
 Replay must use that retained baseline. A corrupt or unavailable baseline must refuse acquisition.
 The target candidate and its retained input selection must remain stable across a retried transition.
 

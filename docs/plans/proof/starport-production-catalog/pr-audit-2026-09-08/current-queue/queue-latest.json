@@ -12,8 +12,8 @@
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "D41 retained baseline and pin repairs pass local qualification; final review, published pair CI, and merges remain open",
-      "next_action": "Review producer, publish it, update consumer module pin, qualify final pair, review consumer, and merge in dependency order. CSP16 owns policy apply; CSP16.1 owns baseline promotion."
+      "disposition": "Hold publication: final review found two ownership defects after two repair cycles",
+      "next_action": "Re-scope acquisition capability and live takeover publication, add failing regressions, repair at the owning seams, then qualify and review before producer-first publication and merges."
     }
   ],
   "starport": [
@@ -28,8 +28,8 @@
       "title": "catalog: fence fleet publication and recover shared acquisition state",
       "url": "https://github.com/agentstation/starport/pull/385",
       "owner": "CSP11",
-      "disposition": "D41 retained baseline and pin repairs pass local qualification; final review, published pair CI, and merges remain open",
-      "next_action": "Review producer, publish it, update consumer module pin, qualify final pair, review consumer, and merge in dependency order. CSP16 owns policy apply; CSP16.1 owns baseline promotion."
+      "disposition": "Hold publication: final review found two ownership defects after two repair cycles",
+      "next_action": "Re-scope acquisition capability and live takeover publication, add failing regressions, repair at the owning seams, then qualify and review before producer-first publication and merges."
     }
   ],
   "completed_merges": [
@@ -837,12 +837,13 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Repeat producer review after pin metadata repair, then publish producer and qualify the pinned consumer pair.",
+    "next_action": "Pause patch loop and define the two seam contracts in the final review repair scope before further implementation.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
     "contract_audit": "../../csp11/contract-audit-2026-09-26.md",
     "recovery_failure_proof": "../../csp11/recovery-failure-2026-09-26/verification.json",
-    "decision": "D41 approved; no pending owner question"
+    "decision": "D41 approved; no pending owner question",
+    "review_scope": "../../csp11/retained-baseline-2026-09-26/final-review-rescope/REPAIR_SCOPE.md"
   },
   "merged_followups": {
     "tasks": [

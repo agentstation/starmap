@@ -1,0 +1,29 @@
+{
+  "findings": [
+    {
+      "title": "Implicit fleet capability check needs credentials for every catalog provider; upstream catalog growth can deadlock ownership",
+      "body": "Reviewer: claude model=claude-opus-5-5 thinking=high\n\nIn implicit acquisition mode (no explicit bindings), `checkFleetAcquisition` adds every provider in `fleetAcquisitionCatalog` to `request.Providers`. `providerSourceObserver.CheckFleetAcquisition` then calls `resolver.ResolveCatalog` for each one and fails on the first provider without credentials. The check runs before lease acquisition and on every renewal, and a failed renewal check releases the grant (`renewOnce` \u2192 `k.release(current)`).\n\n`fleetAcquisitionCatalog` is rebuilt from the effective catalog on every build, including upstream source updates. When the upstream catalog adds a provider the deployment has no credentials for, the owner's next renewal fails and ownership is dropped. Every equivalently configured replica fails the same check, so no replica can take ownership again. Configured upstream updates (which D41 says continue automatically) and all acquisition stop until an operator adds explicit bindings.\n\nThe ordinary acquisition path treats an unconfigured provider as `ProviderOutcomeSkippedNotConfigured` (degraded, still publishes), not as a failure. The ownership gate is therefore stricter than the work it protects.\n\nFix: restrict the implicit requirement to providers the acquirer would actually query (retained provider scopes plus providers with configured acquisition credentials). Treat a missing profile for a never-observed provider as a skip, not a capability failure.",
+      "priority": "P2",
+      "confidence": 0.45,
+      "category": "bug",
+      "code_location": {
+        "file_path": "runtime/fleet_capability.go",
+        "line": 46
+      }
+    },
+    {
+      "title": "[P1] Publish the retained catalog when an existing follower takes over",
+      "body": "Reviewer: codex model=gpt-6-sol thinking=high\n\nWhen an already running follower acquires the fleet lease during `RefreshSource`, `captureFleetGrant` records the new grant, but an unchanged source read returns without a publication. The shared head still carries the former owner's grant, so route acceptance cannot validate the catalog under the new owner even though the refresh succeeds. Startup handles this through `needsFleetOwnershipPublication`, but live takeover does not. Rebind the retained catalog and recovery inputs to the new grant when a refresh produces no input change.",
+      "priority": "P1",
+      "confidence": 0.91,
+      "category": "bug",
+      "code_location": {
+        "file_path": "runtime/refresh.go",
+        "line": 360
+      }
+    }
+  ],
+  "overall_correctness": "patch is incorrect",
+  "overall_explanation": "Panel review complete. claude model=claude-opus-5-5 thinking=high: 1 finding(s), codex model=gpt-6-sol thinking=high: 1 finding(s).",
+  "overall_confidence": 0.88
+}
