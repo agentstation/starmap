@@ -12,6 +12,9 @@ import (
 	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
+// MaxCatalogPayloadBytes bounds one canonical catalog JSON payload before decoding.
+const MaxCatalogPayloadBytes = resourcepolicy.MaxPayloadBytes
+
 // CatalogPayload is the canonical construction-record JSON representation.
 // Author models own provider-independent facts. Provider models own serving
 // facts and link to author models through Model.ModelRef.

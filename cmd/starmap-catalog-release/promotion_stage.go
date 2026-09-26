@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/bootstrap/manifest"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/constants"
@@ -52,7 +53,7 @@ func (p promotionStager) stage(path, releasePath string) (promotionReport, error
 	if err != nil {
 		return promotionReport{}, err
 	}
-	bootstrap, _, err := manifest.DeriveCommitted(catalog, generation, nil)
+	baseline, _, err := manifest.DeriveCommitted(catalog, generation, nil)
 	if err != nil {
 		return promotionReport{}, err
 	}
@@ -72,10 +73,17 @@ func (p promotionStager) stage(path, releasePath string) (promotionReport, error
 	}); err != nil {
 		return promotionReport{}, err
 	}
-	if err := writeStagedPromotionManifest(candidate, bootstrap); err != nil {
+	if err := writeStagedPromotionManifest(candidate, baseline); err != nil {
 		return promotionReport{}, err
 	}
 	if err := writeStagedPromotionMetadata(candidate, catalogs.BootstrapGenerationManifestFilename, generation.Manifest); err != nil {
+		return promotionReport{}, err
+	}
+	payload, err := bootstrap.EncodePayload(generation.Payload)
+	if err != nil {
+		return promotionReport{}, err
+	}
+	if err := writeStagedPromotionBytes(candidate, bootstrap.PayloadFilename, payload); err != nil {
 		return promotionReport{}, err
 	}
 	report, err := verifyPromotionDirectory(candidate, releasePath)
@@ -111,6 +119,10 @@ func writeStagedPromotionMetadata(path, name string, value any) error {
 	if err != nil {
 		return err
 	}
+	return writeStagedPromotionBytes(path, name, append(data, '\n'))
+}
+
+func writeStagedPromotionBytes(path, name string, data []byte) error {
 	root, err := os.OpenRoot(path)
 	if err != nil {
 		return err
@@ -120,7 +132,7 @@ func writeStagedPromotionMetadata(path, name string, value any) error {
 	if err != nil {
 		return err
 	}
-	if _, err := file.Write(append(data, '\n')); err != nil {
+	if _, err := file.Write(data); err != nil {
 		_ = file.Close()
 		return err
 	}

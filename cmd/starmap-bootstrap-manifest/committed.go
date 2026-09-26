@@ -8,11 +8,32 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/bootstrap/manifest"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
+
+func writeBootstrapPayload(path string, catalog *catalogs.Catalog) error {
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
+	if err != nil {
+		return err
+	}
+	data, err := bootstrap.EncodePayload(payload)
+	if err != nil {
+		return err
+	}
+	name := filepath.Join(filepath.Dir(path), bootstrap.PayloadFilename)
+	previous, err := os.ReadFile(name) //nolint:gosec // Explicit repository tooling path.
+	if err != nil && !os.IsNotExist(err) {
+		return errors.WrapIO("read", name, err)
+	}
+	if bytes.Equal(previous, data) {
+		return nil
+	}
+	return writeAtomic(name, data)
+}
 
 func deriveMetadata(catalog *catalogs.Catalog, directory, storePath string, current *catalogs.BootstrapManifest, now time.Time) (catalogs.BootstrapManifest, manifest.Report, *catalogs.Generation, error) {
 	committed, missingStore, err := committedInput(catalog, directory, storePath)

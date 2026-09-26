@@ -24,21 +24,16 @@ var (
 
 // Embedded returns the process-wide verified immutable bootstrap catalog and
 // its digest-bound manifest. The catalog is safe to retain across goroutines.
-// Verification and YAML decoding run once because the embedded filesystem
+// Verification and JSON decoding run once because the embedded filesystem
 // cannot change during a process lifetime.
 func Embedded() (*catalogs.Catalog, catalogs.BootstrapManifest, error) {
 	embeddedOnce.Do(func() {
-		builder, err := NewEmbeddedBuilder()
+		catalogFS, err := fs.Sub(embedded.FS, "catalog")
 		if err != nil {
 			embeddedErr = errors.WrapResource("load", "embedded bootstrap catalog", "", err)
 			return
 		}
-		embeddedCatalog, err = builder.Build()
-		if err != nil {
-			embeddedErr = errors.WrapResource("publish", "embedded bootstrap catalog", "", err)
-			return
-		}
-		embeddedManifest, embeddedErr = Load(embeddedCatalog)
+		embeddedCatalog, embeddedManifest, embeddedErr = loadCompiled(catalogFS)
 	})
 	return embeddedCatalog, embeddedManifest, embeddedErr
 }
@@ -72,16 +67,23 @@ func Load(reader catalogs.Reader) (catalogs.BootstrapManifest, error) {
 	if err != nil {
 		return catalogs.BootstrapManifest{}, err
 	}
+	if err := verifyCatalog(reader, manifest); err != nil {
+		return catalogs.BootstrapManifest{}, err
+	}
+	return manifest, nil
+}
+
+func verifyCatalog(reader catalogs.Reader, manifest catalogs.BootstrapManifest) error {
 	payload, err := catalogs.EncodeCatalogPayload(reader)
 	if err != nil {
-		return catalogs.BootstrapManifest{}, errors.WrapResource("encode", "embedded bootstrap catalog", manifest.GenerationID, err)
+		return errors.WrapResource("encode", "embedded bootstrap catalog", manifest.GenerationID, err)
 	}
 	if err := manifest.Payload.Verify(payload); err != nil {
-		return catalogs.BootstrapManifest{}, errors.WrapResource("verify", "embedded bootstrap catalog", manifest.GenerationID, err)
+		return errors.WrapResource("verify", "embedded bootstrap catalog", manifest.GenerationID, err)
 	}
 	semanticChecksum, err := catalogs.CatalogSemanticChecksum(reader)
 	if err != nil {
-		return catalogs.BootstrapManifest{}, errors.WrapResource(
+		return errors.WrapResource(
 			"encode",
 			"embedded bootstrap catalog semantics",
 			manifest.GenerationID,
@@ -89,13 +91,13 @@ func Load(reader catalogs.Reader) (catalogs.BootstrapManifest, error) {
 		)
 	}
 	if semanticChecksum != manifest.SemanticChecksum {
-		return catalogs.BootstrapManifest{}, &errors.ValidationError{
+		return &errors.ValidationError{
 			Field:   "bootstrap_manifest.semantic_checksum",
 			Value:   semanticChecksum,
 			Message: "does not match the embedded catalog facts",
 		}
 	}
-	return manifest, nil
+	return nil
 }
 
 // Generation returns an owned copy of the process-wide verified embedded generation.

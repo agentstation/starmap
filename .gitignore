@@ -91,6 +91,7 @@ log/
 *.7z
 *.dmg
 *.gz
+!internal/embedded/catalog/generation-payload.json.gz
 *.iso
 *.jar
 *.rar

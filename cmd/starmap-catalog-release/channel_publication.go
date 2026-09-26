@@ -30,7 +30,7 @@ func (o channelPublicationOptions) requested() bool {
 	return o.receiptPath != "" || o.receiptChecksum != "" || o.checkpointPath != "" || o.checkpointChecksum != "" || o.sourceCommit != "" || o.repository != "" || o.receiptAttested || o.checkpointAttested
 }
 
-func verifyChannelPublication(o channelPublicationOptions, release releaseReport) (artifact.PublicationPromotion, error) {
+func verifyChannelPublication(o channelPublicationOptions, release releaseReport, current artifact.Channel) (artifact.PublicationPromotion, error) {
 	if o.receiptPath == "" || o.receiptChecksum == "" || o.checkpointPath == "" || o.checkpointChecksum == "" || o.repository == "" || o.sourceCommit == "" || !o.receiptAttested || !o.checkpointAttested {
 		return artifact.PublicationPromotion{}, channelFlagError("publication", "requires verified receipt, checkpoint, and merged source inputs")
 	}
@@ -39,7 +39,9 @@ func verifyChannelPublication(o channelPublicationOptions, release releaseReport
 	if err := verifyPromotionCommit(ctx, o.repository, o.sourceCommit); err != nil {
 		return artifact.PublicationPromotion{}, err
 	}
-	if _, err := verifyPromotionDirectory(filepath.Join(o.repository, "internal", "embedded", "catalog"), release.Directory); err != nil {
+	historical := current.Publication != nil && current.Publication.Receipt.Checksum == o.receiptChecksum &&
+		current.Publication.Checkpoint.Checksum == o.checkpointChecksum && current.Publication.SourceCommit == o.sourceCommit
+	if _, err := verifyPromotionInput(filepath.Join(o.repository, "internal", "embedded", "catalog"), release.Directory, historical); err != nil {
 		return artifact.PublicationPromotion{}, err
 	}
 	receipt, err := readPublicationInput(o.receiptPath, artifact.MaxPublicationReceiptBytes)

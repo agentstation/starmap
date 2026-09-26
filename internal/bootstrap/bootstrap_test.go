@@ -2,7 +2,9 @@ package bootstrap
 
 import (
 	"bytes"
+	"compress/gzip"
 	stderrors "errors"
+	"io"
 	"io/fs"
 	"strings"
 	"testing"
@@ -14,6 +16,29 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
+
+func TestEmbeddedBootstrapHasCompiledCanonicalPayload(t *testing.T) {
+	compressed, err := embedded.FS.ReadFile("catalog/generation-payload.json.gz")
+	if err != nil {
+		t.Fatal(err)
+	}
+	reader, err := gzip.NewReader(bytes.NewReader(compressed))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer reader.Close()
+	payload, err := io.ReadAll(reader)
+	if err != nil {
+		t.Fatal(err)
+	}
+	generation, err := Generation()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(payload, generation.Payload) {
+		t.Fatal("compiled payload differs from the verified generation")
+	}
+}
 
 func TestEmbeddedBootstrapManifestMatchesCanonicalCatalog(t *testing.T) {
 	builder, err := NewEmbeddedBuilder()

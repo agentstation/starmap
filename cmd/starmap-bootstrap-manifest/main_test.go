@@ -41,6 +41,22 @@ func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchange
 	if err != nil {
 		t.Fatalf("ReadFile first manifest: %v", err)
 	}
+	payloadPath := filepath.Join(outputDir, bootstrap.PayloadFilename)
+	firstPayload, err := os.ReadFile(payloadPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	baseline, err := catalogs.ParseBootstrapManifestJSON(firstBytes)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := bootstrap.DecodePayload(firstPayload, baseline.Payload); err != nil {
+		t.Fatal(err)
+	}
+	payloadInfo, err := os.Stat(payloadPath)
+	if err != nil {
+		t.Fatal(err)
+	}
 	if info, err := os.Stat(manifestPath); err != nil || info.Mode().Perm() != constants.FilePermissions {
 		t.Fatalf("manifest permissions = %v, %v", info, err)
 	}
@@ -64,6 +80,14 @@ func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchange
 	secondBytes, err := os.ReadFile(manifestPath)
 	if err != nil {
 		t.Fatalf("ReadFile second manifest: %v", err)
+	}
+	secondPayload, err := os.ReadFile(payloadPath)
+	if err != nil || !bytes.Equal(firstPayload, secondPayload) {
+		t.Fatalf("unchanged compiled payload differs: %v", err)
+	}
+	secondPayloadInfo, err := os.Stat(payloadPath)
+	if err != nil || !os.SameFile(payloadInfo, secondPayloadInfo) || !payloadInfo.ModTime().Equal(secondPayloadInfo.ModTime()) {
+		t.Fatalf("unchanged compiled payload was rewritten: %v", err)
 	}
 	if second.Changed || second.GenerationID != first.GenerationID || !bytes.Equal(secondBytes, firstBytes) {
 		t.Fatalf("unchanged rerun report/bytes = %#v/%v", second, bytes.Equal(secondBytes, firstBytes))
