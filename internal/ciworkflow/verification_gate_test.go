@@ -4,6 +4,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"slices"
 	"strings"
 	"testing"
 
@@ -167,4 +168,26 @@ func TestNativePublicationPreservesPlatformCoverage(t *testing.T) {
 	if len(want) != 0 {
 		t.Fatalf("missing native platforms: %v", want)
 	}
+}
+
+func TestNativeRuntimeExercisesPublicHostFiles(t *testing.T) {
+	workflow := readVerificationWorkflow(t)
+	for _, step := range workflow.Jobs["native-runtime"].Steps {
+		after, found := strings.CutPrefix(strings.TrimSpace(step.Run), "native_packages=(")
+		if !found {
+			_, after, found = strings.Cut(step.Run, "\nnative_packages=(")
+		}
+		if !found {
+			continue
+		}
+		packages, _, found := strings.Cut(after, ")")
+		if !found || !slices.Contains(strings.Fields(packages), "./pkg/productfiles") {
+			t.Fatal("native runtime qualification omits the public host file contract")
+		}
+		if !strings.Contains(step.Run, `"${native_packages[@]}"`) {
+			t.Fatal("native runtime qualification does not execute its selected packages")
+		}
+		return
+	}
+	t.Fatal("native runtime qualification has no package selection")
 }
