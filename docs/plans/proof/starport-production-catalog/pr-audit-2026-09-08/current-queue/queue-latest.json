@@ -1,120 +1,6 @@
 {
-  "checked_at": "2026-09-26T00:40:06.639569+00:00",
+  "checked_at": "2026-09-26T00:47:16.239705+00:00",
   "starmap": [
-    {
-      "baseRefOid": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
-      "headRefOid": "e228e694ac5e66f75639721c438a261015a8026f",
-      "isDraft": false,
-      "mergeStateStatus": "DIRTY",
-      "number": 165,
-      "title": "catalog: embed bindings-d0cc72f614a783e732d89376c73f46da0db4b851f2627d3f266fb74e4c6964d4.local.b015f73478ee",
-      "updatedAt": "2026-09-17T15:09:19Z",
-      "owner": "CSP6",
-      "disposition": "hold",
-      "next_action": "Older catalog proposal; verify every required record and artifact is preserved in the accepted successor before close.",
-      "checks": [
-        {
-          "name": "Analyze (actions)",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Coordinated Storage valkey",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Analyze (go)",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Coordinated Storage redis",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Analyze (python)",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Constructor Network Passivity",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Offline Server Persistence",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Verification Checks",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Security & Reliability",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Action Pin Provenance",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        },
-        {
-          "name": "Runtime windows-2025",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Runtime windows-11-arm",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Runtime ubuntu-24.04",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Runtime ubuntu-24.04-arm",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Runtime macos-15-intel",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Runtime macos-15",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "Go 1.27.1 race ${{ matrix.group }}",
-          "status": "COMPLETED",
-          "conclusion": "SKIPPED"
-        },
-        {
-          "name": "Full Catalog Capacity",
-          "status": "COMPLETED",
-          "conclusion": "SKIPPED"
-        },
-        {
-          "name": "Verification Gate",
-          "status": "COMPLETED",
-          "conclusion": "FAILURE"
-        },
-        {
-          "name": "CodeQL",
-          "status": "COMPLETED",
-          "conclusion": "SUCCESS"
-        }
-      ]
-    },
     {
       "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
       "headRefOid": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
@@ -457,8 +343,8 @@
       "title": "build(deps): bump cloud.google.com/go/auth in /",
       "updatedAt": "2026-09-21T14:36:01Z",
       "owner": "dependency maintenance",
-      "disposition": "failing CI",
-      "next_action": "Triage root failure and update on current main only after catalog publication is settled.",
+      "disposition": "triaged; refresh after fixture repair and catalog publication",
+      "next_action": "Refresh onto the repaired main, qualify all checks, and review the exact dependency diff. Prior failures and the migration repair are recorded in dependency-triage-2026-09-25.json.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -611,8 +497,8 @@
       "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
       "updatedAt": "2026-09-21T14:37:28Z",
       "owner": "dependency maintenance",
-      "disposition": "failing CI",
-      "next_action": "Triage root failure and update on current main only after catalog publication is settled.",
+      "disposition": "triaged; refresh after fixture repair and catalog publication",
+      "next_action": "Refresh onto the repaired main, qualify all checks, and review the exact dependency diff. Prior failures and the migration repair are recorded in dependency-triage-2026-09-25.json.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -765,8 +651,8 @@
       "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/credentials in /",
       "updatedAt": "2026-09-21T14:38:50Z",
       "owner": "dependency maintenance",
-      "disposition": "failing CI",
-      "next_action": "Triage root failure and update on current main only after catalog publication is settled.",
+      "disposition": "triaged; refresh after fixture repair and catalog publication",
+      "next_action": "Refresh onto the repaired main, qualify all checks, and review the exact dependency diff. Prior failures and the migration repair are recorded in dependency-triage-2026-09-25.json.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -919,8 +805,8 @@
       "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/s3 in /",
       "updatedAt": "2026-09-21T14:41:27Z",
       "owner": "dependency maintenance",
-      "disposition": "failing CI",
-      "next_action": "Triage root failure and update on current main only after catalog publication is settled.",
+      "disposition": "triaged; refresh after fixture repair and catalog publication",
+      "next_action": "Refresh onto the repaired main, qualify all checks, and review the exact dependency diff. Prior failures and the migration repair are recorded in dependency-triage-2026-09-25.json.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -1073,8 +959,8 @@
       "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/secretsmanager in /",
       "updatedAt": "2026-09-21T14:42:55Z",
       "owner": "dependency maintenance",
-      "disposition": "failing CI",
-      "next_action": "Triage root failure and update on current main only after catalog publication is settled.",
+      "disposition": "triaged; refresh after fixture repair and catalog publication",
+      "next_action": "Refresh onto the repaired main, qualify all checks, and review the exact dependency diff. Prior failures and the migration repair are recorded in dependency-triage-2026-09-25.json.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -1389,7 +1275,38 @@
     "stale_worktree_registrations_pruned": 31,
     "clean_merged_worktrees_removed": 10,
     "local_exact_ancestor_branches_removed": 48,
-    "live_remote_branches_deleted": 12,
-    "note": "Remote deletions were exact merged PR heads and used leases. Three more Starport worktrees contained only regenerable ignored caches or test data and no tracked changes. Dirty worktrees, .tmp proof files, and diverged local branches remain."
+    "live_remote_branches_deleted": 13,
+    "note": "Remote deletions used exact-head leases. Twelve Starport branches matched merged PR heads; Starmap #165 was verified superseded by merged #168. Three removed worktrees held only regenerable ignored caches or test data. Dirty worktrees, .tmp proof files, and diverged local branches remain.",
+    "retained_inventory": {
+      "starmap": {
+        "worktrees": 44,
+        "dirty": 34,
+        "clean_not_main_ancestor": 10
+      },
+      "starport": {
+        "worktrees": 20,
+        "dirty": 0,
+        "primary_main_checkout": 1,
+        "clean_not_main_ancestor": 19
+      },
+      "criterion": "No remaining secondary checkout has a clean tracked tree whose head is an ancestor of origin/main. Squash-merged or superseded histories require separate proof."
+    }
+  },
+  "closed_superseded": [
+    {
+      "repo": "starmap",
+      "pr": 165,
+      "head": "e228e694ac5e66f75639721c438a261015a8026f",
+      "successor_pr": 168,
+      "successor_merge": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+      "proof": "catalog-165-supersession.json"
+    }
+  ],
+  "plan_validation": {
+    "changed_plan_strict_lint": "PASS: 1 file, 0 diagnostics",
+    "repository_technical_writing_check": "FAIL: 1694 files, 69 diagnostics in unchanged files, including historical proof logs; preserved as evidence",
+    "json": "PASS",
+    "ledger": "CSP6 is the sole in_progress row",
+    "diff_check": "PASS"
   }
 }

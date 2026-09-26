@@ -1,0 +1,122 @@
+{
+  "checked_at": "2026-09-26T00:51:01.845997+00:00",
+  "repository": "agentstation/starmap",
+  "base": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+  "pull_requests": [
+    {
+      "pr": 175,
+      "run": 35613249942,
+      "url": "https://github.com/agentstation/starmap/actions/runs/35613249942",
+      "failures": {
+        "Go 1.27.1 race runtime-3": {
+          "http_504": false,
+          "failed_tests": [
+            "TestOriginFollowerStartsWithoutPublishing/filesystem",
+            "TestOriginFollowerStartsWithoutPublishing",
+            "TestDirectoryMigrationCompletionRecoversProcessExit/completion-recorded",
+            "TestDirectoryMigrationCompletionRecoversProcessExit/journal-completed",
+            "TestDirectoryMigrationCompletionRecoversProcessExit"
+          ]
+        }
+      }
+    },
+    {
+      "pr": 176,
+      "run": 35613409497,
+      "url": "https://github.com/agentstation/starmap/actions/runs/35613409497",
+      "failures": {
+        "Go 1.27.1 race runtime-3": {
+          "http_504": true,
+          "failed_tests": []
+        },
+        "Go 1.27.1 race application": {
+          "http_504": true,
+          "failed_tests": []
+        }
+      }
+    },
+    {
+      "pr": 177,
+      "run": 35613559547,
+      "url": "https://github.com/agentstation/starmap/actions/runs/35613559547",
+      "failures": {
+        "Runtime macos-15": {
+          "http_504": true,
+          "failed_tests": []
+        },
+        "Publication windows-2025": {
+          "http_504": true,
+          "failed_tests": []
+        },
+        "Go 1.27.1 race runtime-3": {
+          "http_504": true,
+          "failed_tests": []
+        },
+        "Go 1.27.1 race runtime-2": {
+          "http_504": true,
+          "failed_tests": []
+        }
+      }
+    },
+    {
+      "pr": 178,
+      "run": 35613851823,
+      "url": "https://github.com/agentstation/starmap/actions/runs/35613851823",
+      "failures": {
+        "Runtime windows-2025": {
+          "http_504": true,
+          "failed_tests": []
+        },
+        "Go 1.27.1 race runtime-3": {
+          "http_504": true,
+          "failed_tests": []
+        },
+        "Go 1.27.1 race runtime-2": {
+          "http_504": true,
+          "failed_tests": []
+        },
+        "Go 1.27.1 race runtime-1": {
+          "http_504": true,
+          "failed_tests": []
+        }
+      }
+    },
+    {
+      "pr": 179,
+      "run": 35614016550,
+      "url": "https://github.com/agentstation/starmap/actions/runs/35614016550",
+      "failures": {
+        "Runtime ubuntu-24.04": {
+          "http_504": true,
+          "failed_tests": []
+        },
+        "Go 1.27.1 race contracts": {
+          "http_504": true,
+          "failed_tests": []
+        },
+        "Go 1.27.1 race runtime-2": {
+          "http_504": true,
+          "failed_tests": []
+        },
+        "Go 1.27.1 race application": {
+          "http_504": true,
+          "failed_tests": []
+        },
+        "Go 1.27.1 race runtime-3": {
+          "http_504": false,
+          "failed_tests": [
+            "TestDirectoryMigrationCompletionRecoversProcessExit/completion-recorded",
+            "TestDirectoryMigrationCompletionRecoversProcessExit/journal-completed",
+            "TestDirectoryMigrationCompletionRecoversProcessExit"
+          ]
+        }
+      }
+    }
+  ],
+  "assessment": {
+    "setup": "Bun downloads or public catalog fixture preparation failed with HTTP 504. Missing artifacts are secondary failures before tests ran.",
+    "migration": "PR #173 merge 19c85ad84293acba4ae9514fa5f68276e92d2461 serializes crash-point tests without changing their timeout. Refresh the dependency branches to include that fix.",
+    "follower": "PR #175 also failed TestOriginFollowerStartsWithoutPublishing/filesystem during Close after 5s. The refreshed race runtime-3 result must pass; no exemption applies."
+  },
+  "next_action": "Refresh after the shared fixture repair and catalog publication. Run the complete current gate. Review each exact dependency diff and required checks before merge."
+}
