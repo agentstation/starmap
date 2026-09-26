@@ -17,8 +17,32 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  object-fixture:
+    name: Build pinned object fixture
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Set up qualification Go toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.27.1"
+          cache: false
+      - name: Build MinIO fixture from pinned source
+        run: |
+          mkdir -p "$RUNNER_TEMP/starmap-object-bin"
+          GOBIN="$RUNNER_TEMP/starmap-object-bin" CGO_ENABLED=0 \
+            go install github.com/minio/minio@9e49d5e7a648f00e26f2246f4dc28e6b07f8c84a
+          go version -m "$RUNNER_TEMP/starmap-object-bin/minio"
+      - name: Share object fixture with storage jobs
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: starmap-minio-fixture
+          path: ${{ runner.temp }}/starmap-object-bin/minio
+          retention-days: 1
+
   coordinated-storage:
     name: Coordinated Storage ${{ matrix.server }}
+    needs: object-fixture
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
@@ -51,20 +75,29 @@ jobs:
         with:
           go-version: "1.27.1"
           cache: true
+      - name: Download pinned object fixture
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: starmap-minio-fixture
+          path: ${{ runner.temp }}/starmap-object-bin
       - name: Start isolated storage services
         run: |
           mkdir -p "$RUNNER_TEMP/starmap-object-data"
+          chmod +x "$RUNNER_TEMP/starmap-object-bin/minio"
           docker run -d --name "$STARMAP_TEST_COORDINATION_CONTAINER" \
             -p 127.0.0.1:6379:6379 "$COORDINATION_IMAGE" \
             --save '' --appendonly yes --appendfsync always --maxmemory-policy noeviction
           docker run -d --name "$STARMAP_TEST_OBJECT_CONTAINER" \
-            -p 127.0.0.1:9000:4566 \
-            -v "$RUNNER_TEMP/starmap-object-data:/var/lib/localstack" \
-            -e SERVICES=s3 -e PERSISTENCE=1 \
-            localstack/localstack@sha256:6b6172cfceb04b4fbc35097a55f717c365a35fafa572be49f7341771cf9023ed
+            -p 127.0.0.1:9000:9000 \
+            -v "$RUNNER_TEMP/starmap-object-bin/minio:/usr/local/bin/minio:ro" \
+            -v "$RUNNER_TEMP/starmap-object-data:/data" \
+            -e MINIO_ROOT_USER=starmap-test \
+            -e MINIO_ROOT_PASSWORD=starmap-test-secret-only \
+            busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e \
+            /usr/local/bin/minio server /data
           for attempt in {1..60}; do
             if docker exec "$STARMAP_TEST_COORDINATION_CONTAINER" "$COORDINATION_CLI" ping && \
-               curl --fail --silent "$STARMAP_TEST_S3_ENDPOINT/_localstack/health"; then
+               curl --fail --silent "$STARMAP_TEST_S3_ENDPOINT/minio/health/live"; then
               exit 0
             fi
             sleep 1
