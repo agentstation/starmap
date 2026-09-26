@@ -130,7 +130,9 @@ type FleetStore interface {
 	// CommitPublication selects the catalog and recovery reference in one backend transaction.
 	// It compares Expected, the exact holder, process session, epoch, live expiry, and recovery identity.
 	// A refusal changes neither the head nor the recovery reference. Staged bytes confer no permission.
-	// An identical successful retry returns its original head without another publication.
+	//
+	// An identical successful retry returns its original head while its receipt remains retained.
+	// A retry after receipt collection refuses without another publication.
 	// The store must prove that retry from the retained request, including its original grant.
 	//
 	// Lease expiry must not erase the durable epoch. Reuse of an active holder by another session fails.

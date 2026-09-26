@@ -29,10 +29,10 @@ func (r *Runtime) retentionStatus(last RetentionStatus) RetentionStatus {
 	last.Health = orUnknown(last.Health)
 	if last.GenerationCollection == "" {
 		last.GenerationCollection = "unsupported"
-		if r.config.leaseStore != nil {
-			last.GenerationCollection = "shared_coordination_required"
-		} else if r.client.CanCollectGenerations() {
+		if r.client.CanCollectGenerations() && (r.config.leaseStore == nil || r.config.fleetStore != nil) {
 			last.GenerationCollection = "supported"
+		} else if r.config.leaseStore != nil {
+			last.GenerationCollection = "shared_coordination_required"
 		}
 	}
 	return last
@@ -102,6 +102,10 @@ func (r *Runtime) collectRetainedState(ctx context.Context) (resultErr error) {
 	report.Generations, report.GenerationBytes = generations.After.Generations, generations.After.Bytes
 	report.ProtectedGenerations, report.ProtectedBytes = generations.Protected.Generations, generations.Protected.Bytes
 	report.RemovedGenerations, report.OverLimit = len(generations.Removed), generations.OverLimit
+	if generations.Publications != nil {
+		report.PublicationAccounting = true
+		report.Publications = *generations.Publications
+	}
 	if err != nil {
 		report.Reason = "generation_collection_failed"
 		return err
