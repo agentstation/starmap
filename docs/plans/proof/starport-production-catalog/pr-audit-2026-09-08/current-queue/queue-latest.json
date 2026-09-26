@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T08:10:02.418017+00:00",
+  "checked_at": "2026-09-26T08:26:04.880063+00:00",
   "starmap": [
     {
       "pr": 182,
@@ -196,13 +196,13 @@
     }
   ],
   "plan_validation": {
-    "changed_plan_strict_lint": "PASS: 1 file, zero diagnostics.",
+    "changed_plan_strict_lint": "PASS: plan and repository findings; two files, zero diagnostics.",
     "repository_technical_writing_check": "FAIL: 1698 files, 69 unchanged historical diagnostics.",
     "ledger": "40 rows, 16 terminal, CSP8 only in_progress.",
     "local_links": "PASS: all 114 local links resolve.",
     "diff_check": "PASS",
     "writing_log": {
-      "path": "../../csp8/acceptance-batching/isolation-plan-writing.log.gz",
+      "path": "../../csp9/issued-material/plan-writing.log.gz",
       "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
     }
   },
@@ -219,16 +219,24 @@
     "result": "CSP6 complete: all six subcases pass at merged source."
   },
   "starport_preparation": {
-    "head": "527aac7c570143e77db951fd6796d7333b924488",
+    "head": "b769aa514fea99856d3c37d426ee2709b8529ae0",
     "owner": "CSP8",
     "pre_pr_checks": "PASS: 733 task race tests with real Valkey and PostgreSQL, zero skips; ordinary suite 4,139 passes and 61 skips; lint zero issues.",
-    "review": "PASS at 527aac7: nine complete passes, zero findings at configured P0 threshold, clean secret scan.",
+    "review": "Complete: nine passes. One false standard-library finding rejected using Go 1.27.1 and passing compiled tests. Raw helper exit was 1.",
     "disposition": "Qualify native CI and CSP8 task acceptance before merge.",
     "proof": "../../csp8/linux-migration-384/verification.json",
     "pr": 384,
     "checks_run": 36223300692,
-    "status": "Reviewed local repair passes 733 task race tests and 21 focused instrumented tests, without skips. Await producer merge for final module pin.",
-    "linux_migration_proof": "../../csp8/linux-migration-384/verification.json"
+    "status": "Local dispatch revocation repair passes credential, connector, and real-Valkey integration checks. Await producer merge for final module pin.",
+    "linux_migration_proof": "../../csp8/linux-migration-384/verification.json",
+    "issued_material_proof": "../../csp9/issued-material/verification.json",
+    "active_review": {
+      "session": 48718,
+      "head": "b769aa514fea99856d3c37d426ee2709b8529ae0",
+      "log": "/tmp/starport-issued-material-review.log",
+      "status": "COMPLETE_FINDING_REJECTED",
+      "exit_code": 1
+    }
   },
   "starmap_preparation": {
     "owner": "CSP8",
@@ -250,7 +258,19 @@
     "terminal_failure_proof": "../../csp8/native-182/terminal-failure.json",
     "batching_proof": "../../csp8/acceptance-batching/preparation.json",
     "candidate_audit": "../../csp8/acceptance-batching/candidate-audit.json",
-    "isolation_proof": "../../csp8/acceptance-batching/isolation-verification.json"
+    "isolation_proof": "../../csp8/acceptance-batching/isolation-verification.json",
+    "native_watch": {
+      "session": 38941,
+      "run": 36228899978,
+      "log": "/tmp/starmap-182-isolation-ci-watch.log"
+    },
+    "native_progress": {
+      "run": 36228899978,
+      "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+      "status": "in_progress",
+      "passing_jobs": 17,
+      "failed_jobs": 0
+    }
   },
   "csp8_acceptance": {
     "status": "interrupted for security repair",

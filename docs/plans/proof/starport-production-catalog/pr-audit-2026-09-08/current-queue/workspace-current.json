@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T08:10:02.418017+00:00",
+  "checked_at": "2026-09-26T08:22:34.625323+00:00",
   "repositories": {
     "starmap": {
       "worktrees": [
@@ -626,10 +626,10 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
-          "HEAD": "527aac7c570143e77db951fd6796d7333b924488",
+          "HEAD": "b769aa514fea99856d3c37d426ee2709b8529ae0",
           "dirty_paths": [],
           "dirty_count": 0,
-          "disposition": "retain active integration and unpublished repairs",
+          "disposition": "Retain active integration and unpublished native and credential repairs.",
           "branch": "refs/heads/codex/starport-native-catalog"
         }
       ],
@@ -646,7 +646,7 @@
       "local_branches": [
         "codex/catalog-lifecycle 69b5affb3b75ab911e167e92b4418f141212921d",
         "codex/catalog-starmap-main d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
-        "codex/starport-native-catalog 527aac7c570143e77db951fd6796d7333b924488",
+        "codex/starport-native-catalog b769aa514fea99856d3c37d426ee2709b8529ae0",
         "main bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e"
       ]
     }

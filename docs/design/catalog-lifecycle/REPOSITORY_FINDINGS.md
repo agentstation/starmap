@@ -3564,3 +3564,22 @@ CSP12.2 must use a qualified atomic batch operation for its reservation ledger.
 The current Valkey transaction API cannot provide that contract.
 The usage repository also cannot serve as that ledger: `Put` updates each scope counter separately and repeated calls accumulate usage again.
 Required settlement must retain its own idempotent state and recovery evidence.
+
+### Deployment credential revocation, September 26
+
+The [issued-material proof](../../plans/proof/starport-production-catalog/csp9/issued-material/verification.json) records a dispatch gap at Starport `527aac7c5`.
+The resolver removed revoked material from its cache. Previously returned material remained valid while a request waited for a connection.
+Regression tests reproduce this failure with explicit revocation and denied, invalid, or removed source material.
+Both HTTP/1.1 and HTTP/2 tests sent the waiting request after revocation.
+
+Local repair `b769aa5` binds deployment material to the existing in-memory revocation fence.
+Terminal refresh failures, removal, explicit revocation, and rotation invalidate issued handles.
+An unchanged refresh preserves each issued deadline. Transient failures retain material only within its existing validity.
+The admitted stream still finishes. Waiting requests fail before dispatch.
+
+The credential and connector suites pass 485 race test events, with one unrelated Valkey repository skip.
+A separate real-Valkey run passes all 143 provider, authentication, and keyring test events without skips.
+The warm credential lookup reports zero allocations in three runs. This does not measure complete gateway overhead.
+
+The nine-pass review claimed that the standard `uuid` package does not exist. Go 1.27.1 and the compiled tests disprove that finding.
+Final checks and the pre-PR gate remain required after the published Starmap module update.

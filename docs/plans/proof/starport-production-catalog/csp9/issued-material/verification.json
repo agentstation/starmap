@@ -1,0 +1,104 @@
+{
+  "checked_at": "2026-09-26T08:20:16.723754+00:00",
+  "owner": "CSP9",
+  "status": "LOCAL_CHECKS_PASS_REVIEW_FINDING_REJECTED",
+  "base": "527aac7c570143e77db951fd6796d7333b924488",
+  "head": "b769aa514fea99856d3c37d426ee2709b8529ae0",
+  "consumer_module": "v0.16.6-0.20260926043135-d5b9eba0e15a",
+  "patch_sha256": "a20f8e3ecb74eb461bc8891fcea25f13409ec84c7497628078d96195e6118c35",
+  "finding": "Revocation deleted deployment material from the resolver cache but did not invalidate copies already bound to requests waiting for an HTTP connection.",
+  "before": {
+    "resolver_failed_named_events": 5,
+    "dispatch_failed_named_events": 3,
+    "dispatch_protocols": [
+      "HTTP/1.1",
+      "HTTP/2"
+    ],
+    "source_overlay": "The two production credential files came from the base commit. The regression tests were the same tests used after the fix."
+  },
+  "repair": "Attach a revocation fence when the resolver publishes material. Revoke issued generations on terminal refresh failure, removal, explicit revocation, or changed material. Keep issued deadlines fixed and preserve valid material during transient failure.",
+  "after": {
+    "contracts": {
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -count=1 -timeout 5m -json ./internal/credentials ./internal/providers/connectors",
+      "pass": 485,
+      "skip": 1,
+      "fail": 0,
+      "skip_reason": "TestProviderCredentialRepositoryContract/valkey requires TEST_VALKEY_URL; this run had no service."
+    },
+    "disappeared_ambient": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "integration": {
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -count=1 -timeout 5m -json ./internal/providers ./internal/providers/auth ./internal/providers/keyring",
+      "pass": 143,
+      "skip": 0,
+      "fail": 0,
+      "seconds": 110.2270884999889,
+      "real_valkey": true,
+      "service_cleanup": "PASS"
+    },
+    "lint": "PASS: zero issues.",
+    "changed_prose": "PASS: six files, zero diagnostics.",
+    "warm_lookup": {
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -run '^$' -bench '^BenchmarkProviderCachedMaterial$' -benchmem -count=3 ./internal/credentials",
+      "ns_per_op": [
+        83.93,
+        89.04,
+        83.09
+      ],
+      "bytes_per_op": 0,
+      "allocations_per_op": 0,
+      "limit": "Isolated lookup only; not full gateway overhead."
+    }
+  },
+  "discarded_fixture_attempts": {
+    "reason": "The new deployment fixture initially used a destination grant for a different handle. The first request failed before dispatch and the helper waited for response headers. Both runs were terminated. The corrected fixture binds the actual handle and reports a first-request error without waiting.",
+    "sessions": [
+      79213,
+      94962
+    ]
+  },
+  "review": {
+    "session": 48718,
+    "command": "autoreview --gate pre-pr --mode auto --max-passes 32",
+    "status": "COMPLETE_FINDING_REJECTED",
+    "reason_for_pass_cap": "Preserve the complete prepared integration branch, as in its prior nine-pass review.",
+    "exit_code": 1,
+    "passes": 9,
+    "bundle_bytes": 1834431,
+    "model": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "P0",
+    "findings": 1,
+    "accepted": 0,
+    "secret_scan": "clean",
+    "finding": "The reviewer claimed the standard uuid package does not exist.",
+    "disposition": "Rejected. The pinned Go 1.27.1 toolchain reports uuid standard=true and documents uuid.New. The affected keyring package compiled and passed 143 real-service integration test events with the other selected packages.",
+    "evidence": "review-toolchain.txt.gz"
+  },
+  "artifacts": {
+    "resolver-before.jsonl.gz": "f926be42086db381136d49b802095d7e448209cd01379d0b976e520341cd3c2a",
+    "dispatch-before.jsonl.gz": "1c8b7ed3457d246bbe334ebd505d37c2c3b5a3f27e87a294ae652bb0f5dae423",
+    "contracts-after.jsonl.gz": "85e53315508115acae433d89c67847814c970b1fff01f8cd5b52444cc0f0a8bb",
+    "disappeared-after.jsonl.gz": "680fda62a503b572b8f9b04d1aa0ea1506c249f6fa3d1a8912e48eee062192a9",
+    "integration-after.jsonl.gz": "d38c171b9d673920cee225122759e6491d26f8dc5d0f5874430fb0653bd50d58",
+    "integration-runner.json.gz": "8a386f62a4e694951380d673c29494df8cbf245ebbe266c3c796470cbdc331a1",
+    "lint.log.gz": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+    "benchmark.txt.gz": "b850b3d654918b620e3a51a3351ec8fae6ccc587eddb1f800950728321cf19af",
+    "change.patch.gz": "cd429d4e2df4a17403514d3db094f2706badc54cf1d5a9e14f56390c45b36c5f",
+    "fixture-attempt-contracts.jsonl.gz": "ed43b126bdb4e5f028f4c0a0c227d3d0cc45f94808542ba7adcdf0a238a77323",
+    "fixture-attempt-dispatch.jsonl.gz": "65ed7936dfec555b79aa51f72aa5bb6de40b70da09859aba4913fa53f62227b1",
+    "review.log.gz": "e35b4f8758a35ffe5c4f53601bb3b68691d915ed3c720ce94cabaeda1facb5a3",
+    "review-toolchain.txt.gz": "9544961b0613e3e5d44dbdd9f6f77df7c7b73dfc8e63dda83ae08adc367866b3",
+    "plan-writing.log.gz": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
+  },
+  "next_action": "After producer merge, update the published module pin, complete final checks, and run the required pre-PR gate with the verified Go 1.27.1 standard-library facts. Reuse PR #384.",
+  "plan_checks": {
+    "changed_documents": "PASS: two files, zero diagnostics.",
+    "repository_writing": "FAIL: 1698 files, 69 unchanged historical diagnostics.",
+    "diff_check": "PASS",
+    "ledger": "40 tasks; 16 done; CSP8 only in progress."
+  }
+}
