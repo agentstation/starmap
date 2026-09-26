@@ -1,0 +1,30 @@
+{
+  "owner_approval": "2026-09-26: full source review plus automated generated-file verification",
+  "source_commit": "e042cf6e5017194d78c442c43dbe07031eaae8cd",
+  "base_commit": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+  "review_snapshot": "bafec3450c8c9b2dbb2201d07c7cf3cafac00f69",
+  "review_scope": "Complete source diff; only the generated gzip is absent from the review snapshot. The shipping commit and working files are unchanged.",
+  "source_diff_sha256": "4a9075dcf840686633d3689dc718b95ad2be9735a37ffc78f04c8a351e7d559f",
+  "excluded_file": "internal/embedded/catalog/generation-payload.json.gz",
+  "compressed_bytes": 1158337,
+  "compressed_sha256": "7b8904bccbbba23f2918089c8983da23e37bd0cb48164a46360bad59630bc5d3",
+  "payload_bytes": 26420583,
+  "payload_sha256": "df705f2078a6fa0d4be47fd279f600469346712ee80441990a43e4bd1f10ae7a",
+  "regeneration": "Exact byte equality with generated output from authored YAML",
+  "manifest": "Unchanged",
+  "endpoints": "Unchanged",
+  "generator_report": {
+    "changed": false,
+    "previous_generation_id": "bindings-c914f1117bfe4da2a681ad9bbcd7d7908797996feba7d9a89c43c3ba3c1e9f24.local.65556b3539e5",
+    "generation_id": "bindings-c914f1117bfe4da2a681ad9bbcd7d7908797996feba7d9a89c43c3ba3c1e9f24.local.65556b3539e5",
+    "generated_at": "2026-09-26T04:35:09.759105707Z",
+    "payload_checksum": "sha256:df705f2078a6fa0d4be47fd279f600469346712ee80441990a43e4bd1f10ae7a",
+    "semantic_checksum": "sha256:e0ac0e10863b8892518a5565d3fc8730e2eb17782f3a7e78f5482bedc306ea7a",
+    "payload_size_bytes": 26420583
+  },
+  "review_snapshot_tree_difference": [
+    "internal/embedded/catalog/generation-payload.json.gz"
+  ],
+  "artifact_regeneration_source_commit": "0e53e6f9cbdaa5038d2b249bdcdd8a5b60c97edf",
+  "unchanged_artifact_inputs": "The only change since exact regeneration is runtime/origin_follower_test.go. All artifact bytes and generation inputs are unchanged."
+}

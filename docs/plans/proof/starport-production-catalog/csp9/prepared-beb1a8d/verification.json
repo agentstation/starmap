@@ -1,0 +1,26 @@
+{
+  "status": "PASS_PREPARATION_ONLY",
+  "producer": "0e53e6f9cbdaa5038d2b249bdcdd8a5b60c97edf",
+  "consumer": "beb1a8d697e614a5c4501bfc76e1aa3a3a11d1a3",
+  "module": "github.com/agentstation/starmap v0.16.6-0.20260926123426-0e53e6f9cbda",
+  "selected_cases": [
+    "A11",
+    "A12",
+    "A44",
+    "A45"
+  ],
+  "selected_subcases": 29,
+  "all_selected_pass": true,
+  "qualification": "Component acceptance only. The 46 unselected primary cases remain unverified.",
+  "task_dependencies": "CSP8, applicable prior tasks, and consumer merge must precede task closure.",
+  "seconds": 131.58256241699564,
+  "cleanup_exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "secret_scan": {
+    "exit_code": 0,
+    "findings": 0
+  }
+}

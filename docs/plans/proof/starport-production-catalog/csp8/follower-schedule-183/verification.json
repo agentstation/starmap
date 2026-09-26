@@ -1,0 +1,66 @@
+{
+  "checked_at": "2026-09-26T13:50:49.088776+00:00",
+  "state": "PUBLISHED_NATIVE_CI_PENDING",
+  "producer_head": "0e53e6f9cbdaa5038d2b249bdcdd8a5b60c97edf",
+  "failed_run": 36244159069,
+  "failed_job": 108411368741,
+  "failed_test": "TestOriginFollowerStartsWithoutPublishing/filesystem",
+  "error": "Close: operation close starmap runtime timed out after 5s",
+  "failure_log": "native-runtime3-failure.log.gz",
+  "failure_sha256": "a668fe557e8c86c06d87130c60830d85b5f138c968422e2eff3208e803d09ce5",
+  "repair": "Inject a non-firing schedule timer into the manually driven follower startup test. Preserve the separate scheduled adoption test and shutdown deadline.",
+  "changed_files": [
+    "runtime/origin_follower_test.go"
+  ],
+  "focused_race": {
+    "session": 98284,
+    "log": "focused-race.jsonl.gz",
+    "status": "PASS",
+    "exit_code": 0,
+    "named_pass": 5,
+    "named_skip": 0,
+    "named_fail": 0,
+    "seconds": 263.692
+  },
+  "static_checks": {
+    "vet": 0,
+    "lint": 0,
+    "goago": 0
+  },
+  "remaining": [
+    "Qualify corrected producer head e042cf6e5 on native CI.",
+    "Merge producer with its reviewed parent 0e53e6f9c in ancestry before consumer PR #384.",
+    "Qualify all 63 CSP8 subcases and consumer native CI before the consumer merge."
+  ],
+  "repair_commit": "e042cf6e5017194d78c442c43dbe07031eaae8cd",
+  "review": {
+    "session": 76842,
+    "status": "PASS",
+    "log": "source-review.log.gz",
+    "scope": "Complete source diff plus approved generated-payload verification.",
+    "review_snapshot": "bafec3450c8c9b2dbb2201d07c7cf3cafac00f69",
+    "exit_code": 0,
+    "reviewer": "Claude Opus 5.5 high",
+    "review_passes": 1,
+    "findings": 0,
+    "threshold": "P0",
+    "secret_scan": "PASS"
+  },
+  "publication": {
+    "head": "e042cf6e5017194d78c442c43dbe07031eaae8cd",
+    "run": 36246440599,
+    "watch_session": 3478,
+    "watch_log": "/tmp/starmap-183-repaired-native-watch.log",
+    "signature_verified": true,
+    "capture_command": "python3 scripts/native_catalog.py --run 36246440599 --output /tmp/starmap-183-repaired-native",
+    "qualification_command": "python3 /tmp/qualify-starmap-183-repaired-native.py /tmp/starmap-183-repaired-native"
+  },
+  "previous_run_conclusion": "cancelled",
+  "previous_run_limits": "runtime-3 and Verification Gate failed. The later push canceled the unfinished Windows AMD64 job. All other jobs passed.",
+  "plan_validation": {
+    "writing_exit_code": 2,
+    "historical_diagnostics": 69,
+    "new_diagnostics": 0,
+    "log": "published-plan-writing.log.gz"
+  }
+}
