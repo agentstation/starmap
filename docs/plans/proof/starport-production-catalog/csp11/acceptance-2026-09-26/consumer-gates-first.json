@@ -1,0 +1,31 @@
+{
+  "started": "2026-09-26T18:50:04.888533+00:00",
+  "source": "/Users/jack/src/github.com/agentstation/starport-native-catalog/AGENTS.md",
+  "workspace": "/tmp/csp11-fleet.go.work",
+  "results": [
+    {
+      "command": "bash scripts/verify-starmap-ownership.sh",
+      "started": "2026-09-26T18:50:04.888706+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-26T18:51:18.686368+00:00"
+    },
+    {
+      "command": "bash scripts/verify-v1-architecture.sh",
+      "started": "2026-09-26T18:51:18.686871+00:00",
+      "exit_code": 1,
+      "finished": "2026-09-26T18:53:39.468838+00:00"
+    },
+    {
+      "command": "bash scripts/test-dependency-direction-verifier.sh",
+      "started": "2026-09-26T18:54:08.252612+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-26T18:54:08.965794+00:00"
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "started": "2026-09-26T18:54:08.966170+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-26T18:54:09.660658+00:00"
+    }
+  ]
+}

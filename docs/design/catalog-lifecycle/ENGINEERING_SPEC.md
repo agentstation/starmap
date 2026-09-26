@@ -2377,7 +2377,19 @@ Loss of required access releases the grant and preserves follower reads.
 These checks use acquisition credential resolution without provider inventory requests.
 Declared scope equivalence does not prove upstream account ownership or require matching secret bytes.
 
+The fleet adapter uses deployment-scoped durable polling. It has no catalog notification channel.
+Catalog publication, recovery input references, and accepted-head selection share the same native transaction namespace.
+
+A bounded history index does not bound immutable payload storage.
+CSP15 must qualify publication retention and orphan cleanup before production storage claims.
+Cleanup must preserve current, accepted, pinned, and recovery-required payloads.
+
 ### 8.6 Recipe format, migration, and disaster recovery
+
+CSP13 must define upgrade recovery when a new baseline cannot replay retained acquisition inputs.
+An incompatible replica can read a supported accepted catalog but cannot own acquisition.
+Do not bypass replay checks to complete a rolling upgrade.
+Qualify the migration and rollback path before declaring that upgrade supported.
 
 Each recipe must include a diagram, supported release pair, prerequisites,
 configuration, resolved paths, credential roles, network destinations, and validation commands.

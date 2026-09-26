@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-09-26T18:54:54.627490+00:00",
+  "producer": "a2d66bd259a10caa751d34c99294918431ff7100",
+  "producer_code": "80604e2975a4dbdf3f81161efa06269b85942261",
+  "consumer": "26d67ccf7ede97f962badb56a8820f5f1cc9e0b3",
+  "go": "1.27.1",
+  "local_workspace": "/tmp/csp11-fleet.go.work",
+  "status": "PASS",
+  "selected_subcases": 11,
+  "subcases": {
+    "A13.two_real_processes": "PASS",
+    "A13.lease_expiry_during_commit": "PASS",
+    "A13.stale_epoch_rejection": "PASS",
+    "A14.missed_events": "PASS",
+    "A14.follower_restart": "PASS",
+    "A14.leader_loss_with_local_files_removed": "PASS",
+    "A14.equivalent_acquisition_capability": "PASS",
+    "A03.two_instances_same_user": "PASS",
+    "A03.duplicate_owner_refusal": "PASS",
+    "A41.deployment_key_channel_isolation": "PASS",
+    "A41.namespace_atomic_layout": "PASS"
+  },
+  "unique_commands": 5,
+  "named_passes": 27,
+  "leaf_passes": 24,
+  "failures": [],
+  "skips": [],
+  "registry_sha256": "7f8b87f634551f1b81daae2d5c5e2b9622a53b22e01ae95a11b1820914ffffc7",
+  "roster_sha256": "6149b0a4388129713996e36c7545e5093d354fadc3016ca99dd97b5ab59544bc",
+  "verifier_regressions": 98,
+  "producer_review": "Sol high and Opus 5.5 high: zero findings",
+  "limits": [
+    "CSP11 remains in progress until producer and consumer merge.",
+    "Consumer module adoption, complete repository gates, review, and exact-head native CI remain open.",
+    "The consumer architecture gate passes its full Go suite but fails the published-module check while GOWORK selects local Starmap.",
+    "This is task component qualification, not the final released-pair gate.",
+    "The recovery process test injects native expiry after leader death; it does not wait the production lease TTL."
+  ]
+}
