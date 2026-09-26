@@ -12,7 +12,7 @@
 
 <p>Updated September 26, 2026 UTC. <a href="#CSP8">CSP8</a> is the sole active task. Sixteen of 40 tasks are complete. Read its <a href="#task-CSP8">contract</a>, <a href="#invariants">invariants</a>, and <a href="#goal">goal</a>.</p>
 
-<p id="next-action">Qualify corrected Starmap PR #183 at <code>e042cf6e5</code>, run <code>36246440599</code>. The follower timer repair passes five race test events and complete source review. Starport PR #384 continues native qualification at <code>beb1a8d</code>. The producer repair changes only a test, so Starport retains its current module pin. Merge the producer first, then complete all 63 CSP8 subcases before the consumer merge.</p>
+<p id="next-action">Complete Starport's native ACL test repair, required checks, and full branch review. Its CI run passed, but the required access-conflict test skipped both Windows architectures. The test now creates a real Windows DACL conflict. Corrected Starmap run <code>36246440599</code> continues independently. Both native evidence and all 63 CSP8 subcases remain required before the consumer merge.</p>
 
 <p>Starmap <a href="https://github.com/agentstation/starmap/pull/182">PR #182</a> merged at <code>71c5c8c723334bdfc4e1b04dc85e748211fe5071</code>. The <a href="proof/starport-production-catalog/csp8/native-182/merged/verification.json">merge proof</a> records exact tree equality, 34 passing PR checks, and 30 passing CI jobs. All 104 required native test occurrences pass across six platforms without required skips. Full CI still exceeds the 30-minute target.</p>
 

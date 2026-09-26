@@ -25,17 +25,22 @@
       "draft": true,
       "owner": "CSP8",
       "checks_run": 36245287434,
-      "disposition": "Keep. Reviewed compiled catalog integration awaits native CI and complete task acceptance.",
-      "next_action": "Qualify native CI and all 63 CSP8 subcases. Merge after producer PR #183.",
+      "disposition": "Keep. CI passed, but required Windows access-conflict coverage skipped. Native DACL fixture repair is local.",
+      "next_action": "Finish the 34-command runner in session 11742, commit and review the Windows test repair, then update existing PR #384.",
       "local_head": "beb1a8d697e614a5c4501bfc76e1aa3a3a11d1a3",
-      "native_failure_proof": "../../csp8/native-schedule-384/native-failure-current.json",
-      "local_changes": [],
+      "native_failure_proof": "../../csp8/access-manifest-384/verification.json",
+      "local_changes": [
+        "go.mod",
+        "internal/cli/file_manifest_test.go",
+        "internal/cli/file_manifest_permissions_other_test.go",
+        "internal/cli/file_manifest_permissions_windows_test.go"
+      ],
       "local_qualification": "All 34 commands and 733 real-storage task race tests pass without task skips.",
       "local_qualification_proof": "../../csp8/native-schedule-384/verification.json",
       "prepr": "PASS: all 34 required commands",
       "review": "PASS: nine chunks, no findings at P0",
-      "native_watch_session": 56790,
-      "native_watch_status": "Active run 36245287434 at reviewed source.",
+      "native_watch_session": null,
+      "native_watch_status": "Terminal success, 15 jobs. Required Windows coverage is unverified.",
       "local_preparation_proof": "../../csp8/compiled-consumer-384/verification.json",
       "terminal_native_proof": "../../csp8/native-schedule-384/terminal-run.json",
       "unpublished_commits": [],
@@ -259,7 +264,7 @@
     "proof": "../../csp8/linux-migration-384/verification.json",
     "pr": 384,
     "checks_run": 36232078722,
-    "status": "Published. Native CI running.",
+    "status": "Native ACL coverage repair. Focused checks and both Windows cross-compiles pass; required 34-command runner is active.",
     "linux_migration_proof": "../../csp8/linux-migration-384/verification.json",
     "issued_material_proof": "../../csp9/issued-material/verification.json",
     "active_review": {
@@ -302,6 +307,12 @@
       "session": 27733,
       "status": "in_progress",
       "watch_log": "/tmp/starport-384-final-ci-watch.log"
+    },
+    "active_verification": {
+      "session": 11742,
+      "status": "RUNNING",
+      "runner": "/tmp/starport-384-access-prepr.py",
+      "report": "/tmp/starport-384-access-prepr/verification.json"
     }
   },
   "starmap_preparation": {

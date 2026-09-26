@@ -1,0 +1,64 @@
+{
+  "state": "WINDOWS_COVERAGE_REPAIR_IN_PROGRESS",
+  "consumer_head": "beb1a8d697e614a5c4501bfc76e1aa3a3a11d1a3",
+  "ci_run": 36245287434,
+  "ci_conclusion": "success",
+  "ci_jobs": 15,
+  "native_qualification": "UNVERIFIED_REQUIRED_WINDOWS_TEST_SKIPPED",
+  "required_test": "TestConfigFileManifestReportsPrivateStateAccessConflict",
+  "missing_platforms": [
+    "windows/amd64",
+    "windows/arm64"
+  ],
+  "skip_reason": "POSIX mode conflict. Native DACL checks belong to the shared inspector.",
+  "native_archive": {
+    "path": "native-before.tar.gz",
+    "sha256": "c8134e0331da6580777369bb03564fa934db004666fd01e67e5cf7f4cff64bdd",
+    "secret_scan": {
+      "exit_code": 0,
+      "findings": 0
+    }
+  },
+  "repair": "Use native Windows DACL APIs to grant public read on the temporary runtime directory, then verify the same CLI conflict report. Keep POSIX mode checks.",
+  "focused_race": {
+    "named_pass": 12,
+    "named_skip": 0,
+    "named_fail": 0,
+    "log": "local-race.jsonl.gz"
+  },
+  "static_checks": {
+    "vet": 0,
+    "lint": 0
+  },
+  "cross_compile": {
+    "session": 77725,
+    "status": "PASS",
+    "platforms": [
+      "windows/amd64",
+      "windows/arm64"
+    ],
+    "exit_code": 0,
+    "outputs": [
+      "/tmp/starport-cli-access-amd64.test.exe",
+      "/tmp/starport-cli-access-arm64.test.exe"
+    ],
+    "scope": "Pure-Go compilation only; native ACL behavior remains unverified."
+  },
+  "remaining": [
+    "Complete pure-Go cross-compilation, required pre-PR checks, commit, and full branch review.",
+    "Update PR #384 and qualify all required native tests without skips.",
+    "Merge producer first and pass all 63 CSP8 subcases before consumer merge."
+  ],
+  "prepr": {
+    "session": 11742,
+    "status": "RUNNING",
+    "runner": "/tmp/starport-384-access-prepr.py",
+    "report": "/tmp/starport-384-access-prepr/verification.json"
+  },
+  "plan_validation": {
+    "writing_exit_code": 2,
+    "historical_diagnostics": 69,
+    "new_diagnostics": 0,
+    "log": "plan-writing.log.gz"
+  }
+}
