@@ -811,7 +811,8 @@ class Publisher:
 
     def finish(self):
         control = read_json(self.control)
-        for name in ("catalog/v2", "catalog/v1"):
+        # Publish the receipt last so an interrupted same-artifact update remains pending.
+        for name in ("catalog/v1", "catalog/v2"):
             document = self.root / "channels" / (name.replace("/", "-") + ".json")
             previous = control["channels"][name]
             if not previous["path"] or checksum(Path(previous["path"])) != checksum(document):

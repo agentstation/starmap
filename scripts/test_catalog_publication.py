@@ -795,16 +795,17 @@ scopes:
             publish_channel = checked.push_document
 
             def interrupt_second_channel(branch, *args):
-                if branch == "catalog/v1":
-                    raise publication.PublicationError("fixture interrupted before legacy channel")
+                if branch == "catalog/v2":
+                    raise publication.PublicationError("fixture interrupted before receipt channel")
                 return publish_channel(branch, *args)
 
             with patch.object(checked, "push_document", side_effect=interrupt_second_channel):
-                with self.assertRaisesRegex(publication.PublicationError, "before legacy channel"):
+                with self.assertRaisesRegex(publication.PublicationError, "before receipt channel"):
                     checked.finish()
             partial = {name: checked.read_branch(name, "channel.json") for name in channel_state}
-            self.assertEqual(record["artifact_tag"], partial["catalog/v2"]["document"]["tag"])
-            self.assertIsNone(partial["catalog/v1"]["document"])
+            self.assertIsNotNone(partial["catalog/v1"]["document"], "publish legacy freshness before the completion receipt")
+            self.assertEqual(record["artifact_tag"], partial["catalog/v1"]["document"]["tag"])
+            self.assertIsNone(partial["catalog/v2"]["document"])
             self.assertFalse(publication.completed(record, partial))
             self.assertNotEqual("published", checked.emitted.get("status"))
             retained_releases = copy.deepcopy(platform["releases"])

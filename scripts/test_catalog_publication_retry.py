@@ -69,6 +69,15 @@ class CompletedRetryTests(RetryEvidenceFixture, unittest.TestCase):
         self.assertFalse(publication.completed(newer, self.channels))
         self.assertTrue(publication.completed(self.record, self.channels))
 
+    def test_partial_same_artifact_run_finishes_before_new_acquisition(self):
+        # Legacy freshness can publish before the new receipt without changing the artifact tag.
+        self.record = dict(self.record, receipt_checksum="sha256:" + "e" * 64, receipt_tag="catalog-run-" + "e" * 64)
+        control, recovered, requests = self.inspect(99, event="schedule")
+        self.assertTrue(control["active"])
+        self.assertFalse(control["acquire"])
+        self.assertEqual(self.record, recovered[0].args[0])
+        self.assertEqual([], requests)
+
     def test_explicit_retry_requires_both_channels_completed(self):
         self.channels["catalog/v1"]["document"] = None
         with self.assertRaises(publication.PublicationError):

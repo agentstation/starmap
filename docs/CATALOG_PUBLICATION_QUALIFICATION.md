@@ -56,6 +56,11 @@ The local recovery adapter injects failures into simulated GitHub transport whil
 Those tests establish transition recovery. They cannot replace hosted publication evidence.
 Both adapters must pass before CSP6 is complete.
 
+The publisher writes the legacy channel before the receipt-bearing channel.
+The receipt marks completion only after both writes succeed, including when a new receipt selects the same artifact.
+A completed receipt retry preserves both channel documents and branch heads.
+A fresh acquisition can advance channel freshness even when catalog contents stay unchanged.
+
 ## Reject a failed candidate
 
 The publisher retries a pending candidate until both channels accept it.
