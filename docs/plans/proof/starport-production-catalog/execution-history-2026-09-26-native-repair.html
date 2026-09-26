@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><base href="../../starport-production-catalog-plan.html"><title>Catalog native repair history</title></head><body><h1>Historical resume state</h1><p>The active plan owns current actions. This record preserves earlier source and verification evidence.</p><section id="current-resume"><h2>Current resume state</h2>
+
+<p>Updated September 26, 2026 UTC. <a href="#CSP8">CSP8</a> is the sole active task. Sixteen of 40 tasks are complete. Read its <a href="#task-CSP8">contract</a>, <a href="#invariants">invariants</a>, and <a href="#goal">goal</a>.</p>
+
+<p id="next-action">Complete Starport's native ACL test repair, required checks, and full branch review. Its CI run passed, but the required access-conflict test skipped both Windows architectures. The test now creates a real Windows DACL conflict. Corrected Starmap run <code>36246440599</code> continues independently. Both native evidence and all 63 CSP8 subcases remain required before the consumer merge.</p>
+
+<p>Starmap <a href="https://github.com/agentstation/starmap/pull/182">PR #182</a> merged at <code>71c5c8c723334bdfc4e1b04dc85e748211fe5071</code>. The <a href="proof/starport-production-catalog/csp8/native-182/merged/verification.json">merge proof</a> records exact tree equality, 34 passing PR checks, and 30 passing CI jobs. All 104 required native test occurrences pass across six platforms without required skips. Full CI still exceeds the 30-minute target.</p>
+
+<p>Accepted producer evidence checkout: <code>starmap-host-files</code>, detached at the merge. Its local native capture now contains the successful run. The previous capture remains in <code>csp2/native-qualification-before-36228899978</code>. These local evidence changes do not change implementation source.</p>
+
+<p>Active producer checkout: <code>starmap-object-ci-repair</code> on <code>codex/catalog-bootstrap-payload</code> at <code>e042cf6e5</code>. The branch adds a compressed canonical bootstrap payload and validation tests. The <a href="proof/starport-production-catalog/csp8/compiled-bootstrap-preparation/verification.json">preparation evidence</a> records cold race-test times of 30.10 seconds before and 11.83 seconds after. These single-host observations do not qualify native platforms or production latency.</p>
+
+<p>Generated documentation matches the source. Full producer verification passed in session <code>93064</code>. Structural, lint, pure-Go, performance, container, coverage, race, and capacity checks pass. The capacity test covers eight publication cycles. Required public-fixture tests pass separately without skips. </p>
+
+<p>Source review passes. PR #183 now runs native qualification.</p>
+
+<p>The publisher now supports the compressed catalog file. Its regression test first failed on UTF-8 decoding. All 53 publication and evidence tests pass after the repair. Exact blob, tree, and signature checks remain required. The preparation evidence preserves the source used by those checks.</p>
+
+<p>Historical publication retries now accept a missing compiled payload only for an accepted receipt and source commit. New publications still require the payload. Separate checks pass 74 release-command race tests and 27 publisher tests. Vet, lint, goago, and writing checks pass. Required public-fixture checks pass all 8 tests and subtests without skips. The preparation evidence records the source changes after the original application group completed.</p>
+
+<p>Active consumer checkout: <code>starport-native-catalog</code> on <code>codex/starport-native-catalog</code> at <code>beb1a8d</code>. Its preceding commit contains five files for deterministic document deadlines and credential retention during transient refresh failures. Focused checks pass 50 document tests and 20 credential tests and subtests. Candidate migration recovery passes all four test events with a temporary external module replacement. The committed module pin selects published producer <code>0e53e6f9c</code> without a replacement. PR #384 now matches <code>beb1a8d</code>.</p>
+
+<p>The committed consumer files match the qualified source hashes. Focused lint reports zero issues.</p>
+
+<p>The updated consumer packages pass 349 race tests and subtests. Three storage cases initially skipped. All six selected storage tests and subtests then passed against pinned Valkey without skips. Container cleanup and affected-package vet passed.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp8/final-pin-384/verification.json">published-source checks</a> pass all 34 commands and 733 race tests without skips. The <a href="proof/starport-production-catalog/csp8/native-schedule-384/verification.json">new-source qualification</a> passes 4,227 tests and subtests across all 68 packages. All 733 CSP8 tests pass without skips. Six optional checks require their dedicated commands.</p>
+
+<p>Native run <a href="https://github.com/agentstation/starport/actions/runs/36232078722">36232078722</a> ended with ten passing jobs, four failed native jobs, and one skipped build. The <a href="proof/starport-production-catalog/csp8/native-384/failure.json">terminal failure record</a> preserves all four logs. Concurrent cold recovery children exceeded their minute limit. Intel macOS also exceeded the catalog package limit.</p>
+
+<p>Local race and coverage checks pass in 401 seconds with three real storage services. Coverage contains all 22,361 blocks from both batches. All 34 pre-PR commands pass in 385 seconds. The nine-chunk review passes with no findings at P0. The published head has a verified signature.</p>
+
+<p>Native run <a href="https://github.com/agentstation/starport/actions/runs/36234492082">36234492082</a> failed on both macOS jobs and Windows ARM64. The <a href="proof/starport-production-catalog/csp8/native-schedule-384/native-failure-current.json">failure record</a> preserves the logs. macOS recovery children exceed their minute limit. Windows ARM64 completes document extraction before the one-nanosecond test deadline becomes observable.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp8/native-schedule-384/terminal-run.json">terminal run</a> confirms 11 passing jobs, three failed native jobs, and one skipped build. Windows AMD64 passed. Native qualification and all 63 CSP8 subcases remain open.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp9/prepared-1e8fe2d/verification.json">prepared acceptance</a> passes 29 subcases. These cover CSP9, CSP9.1, and CSP10.1. The <a href="proof/starport-production-catalog/csp9.1/transient-refresh-preparation/verification.json">additional credential probe</a> exposes premature invalidation after a transient refresh failure. Its temporary correction passes six race tests. The local source now preserves valid material during transient failures and preserves withdrawal errors at a simultaneous deadline. Full qualification and merge remain open.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp8/linux-migration-384/verification.json">migration repair</a> passes 733 task race tests with real services. The <a href="proof/starport-production-catalog/csp9/issued-material/verification.json">credential repair</a> preserves revocation through HTTP dispatch waits. Its nine-pass review returned one false compiler finding. Go 1.27.1 includes the standard package <code>uuid</code>. The final review used this verified toolchain contract and returned zero findings.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp9/final-1774/verification.json">CSP9 preparation</a> passes all 12 assigned subcases and 535 race tests without skips at <code>1774cea452</code>. Cleanup removed all three test services. CSP9 closure still requires CSP8 completion and merged-source evidence.</p>
+
+<p>The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-latest.json">queue</a> records current heads and next actions. Cleanup totals are 49 worktrees, 100 local branches, and 15 remote heads. The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/merged-worktree-cleanup.json">latest cleanup</a> retired 15 merged worktrees and 16 local branches. Verified private archives preserve their edits, ignored files, and Git history. The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/workspace-current.json">retained inventory</a> contains 25 worktrees.</p>
+
+<p>The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/cleanup-final-inventory.json">final inventory</a> confirms 22 Starmap worktrees and three Starport worktrees. The earlier remote inventory contained main, publication channels, and the active consumer branch. PR #183 now adds the active producer branch. Starmap local main now matches its verified remote commit. Keep active work and branches without verified integration.</p>
+
+<p>The plan checkout remains <code>starmap-catalog-requirements</code> on <code>codex/catalog-qualification</code>. Preserve unrelated changes in <code>AGENTS.md</code>, <code>Makefile</code>, <code>go.mod</code>, <code>go.sum</code>, and <code>scripts/verify.sh</code>. The owner authorized reviewed merges and cleanup. Product releases and review comments require separate authority. The <a href="proof/starport-production-catalog/csp8/native-182/merged/prior-resume.html.gz">previous resume state</a> preserves earlier evidence and limits.</p>
+</section></body></html>

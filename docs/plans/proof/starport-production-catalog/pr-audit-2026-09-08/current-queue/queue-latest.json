@@ -264,22 +264,16 @@
     "proof": "../../csp8/linux-migration-384/verification.json",
     "pr": 384,
     "checks_run": 36232078722,
-    "status": "Native ACL coverage repair. Focused checks and both Windows cross-compiles pass; required 34-command runner is active.",
+    "status": "All 34 required commands pass. Native ACL test repair committed; full branch review is active.",
     "linux_migration_proof": "../../csp8/linux-migration-384/verification.json",
     "issued_material_proof": "../../csp9/issued-material/verification.json",
     "active_review": {
-      "session": 94121,
-      "status": "PASS",
-      "log": "full-branch-review.log.gz",
+      "status": "RUNNING",
+      "session": 81710,
+      "log": "/tmp/starport-384-access-review.log",
       "max_passes": 32,
-      "reason": "Preserve the entire integration branch diff. Prior complete review used nine passes.",
-      "dataset": "tmp/review/verified-toolchain.json",
-      "exit_code": 0,
-      "review_passes": 9,
-      "threshold": "P0",
-      "findings": 0,
-      "reviewer": "Claude Opus 5.5 high",
-      "secret_scan": "PASS"
+      "reason": "Preserve entire integration branch diff.",
+      "head": "0a110339856b5cef3fac11da012e43b41482dab7"
     },
     "sdk_pre_pin_proof": "../../csp8/sdk-pre-pin/verification.json",
     "required_command_count": 34,
@@ -302,18 +296,22 @@
       "exit_code": 1
     },
     "native_watch": {
-      "run": 36232078722,
-      "url": "https://github.com/agentstation/starport/actions/runs/36232078722",
+      "run": 36245287434,
+      "url": "https://github.com/agentstation/starport/actions/runs/36245287434",
       "session": 27733,
-      "status": "in_progress",
-      "watch_log": "/tmp/starport-384-final-ci-watch.log"
+      "status": "completed",
+      "watch_log": "/tmp/starport-384-final-ci-watch.log",
+      "exit_code": 0,
+      "qualification": "UNVERIFIED_REQUIRED_WINDOWS_TEST_SKIPPED"
     },
     "active_verification": {
       "session": 11742,
-      "status": "RUNNING",
+      "status": "PASS",
       "runner": "/tmp/starport-384-access-prepr.py",
-      "report": "/tmp/starport-384-access-prepr/verification.json"
-    }
+      "report": "/tmp/starport-384-access-prepr/verification.json",
+      "exit_code": 0
+    },
+    "local_head": "0a110339856b5cef3fac11da012e43b41482dab7"
   },
   "starmap_preparation": {
     "owner": "CSP8",

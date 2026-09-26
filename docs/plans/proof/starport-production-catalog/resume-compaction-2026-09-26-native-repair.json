@@ -1,0 +1,14 @@
+{
+  "before_resume_words": 948,
+  "after_resume_words": 312,
+  "preserved_resume_sha256": "de5beb4320dec99a4c2462a25759b4d9cfd57a49bbb6469b3234726b96b66c55",
+  "unchanged_other_plan_content": true,
+  "history": "execution-history-2026-09-26-native-repair.html",
+  "cold_resume": "PASS: active task, next actions, source identities, live sessions, remaining gates, and authority limits are explicit.",
+  "local_links": 202,
+  "ledger_rows": 40,
+  "done_rows": 16,
+  "active_task": "CSP8",
+  "task_contracts_unchanged": 40,
+  "ledger_invariants_goal_unchanged": true
+}

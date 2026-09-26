@@ -1,5 +1,5 @@
 {
-  "state": "WINDOWS_COVERAGE_REPAIR_IN_PROGRESS",
+  "state": "COMMITTED_REVIEW_RUNNING",
   "consumer_head": "beb1a8d697e614a5c4501bfc76e1aa3a3a11d1a3",
   "ci_run": 36245287434,
   "ci_conclusion": "success",
@@ -45,20 +45,32 @@
     "scope": "Pure-Go compilation only; native ACL behavior remains unverified."
   },
   "remaining": [
-    "Complete pure-Go cross-compilation, required pre-PR checks, commit, and full branch review.",
-    "Update PR #384 and qualify all required native tests without skips.",
+    "Complete full branch review and update existing PR #384.",
+    "Qualify native tests without required skips.",
     "Merge producer first and pass all 63 CSP8 subcases before consumer merge."
   ],
   "prepr": {
     "session": 11742,
-    "status": "RUNNING",
+    "status": "PASS",
     "runner": "/tmp/starport-384-access-prepr.py",
-    "report": "/tmp/starport-384-access-prepr/verification.json"
+    "report": "/tmp/starport-384-access-prepr/verification.json",
+    "exit_code": 0,
+    "commands": 34,
+    "evidence": "pre-pr-verification.json"
   },
   "plan_validation": {
     "writing_exit_code": 2,
     "historical_diagnostics": 69,
     "new_diagnostics": 0,
-    "log": "plan-writing.log.gz"
+    "log": "review-plan-writing.log.gz",
+    "unchanged_diagnostics": true
+  },
+  "repair_commit": "0a110339856b5cef3fac11da012e43b41482dab7",
+  "review": {
+    "status": "RUNNING",
+    "session": 81710,
+    "log": "/tmp/starport-384-access-review.log",
+    "max_passes": 32,
+    "scope": "Complete integration branch diff. Preserve all changes across review chunks."
   }
 }
