@@ -1,0 +1,69 @@
+{
+  "recorded_at": "2026-09-26T19:25:34.447823+00:00",
+  "consumer": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
+  "status": "FAIL_BEFORE_CONFIRMED",
+  "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -json -race -count=1 -timeout 2m ./internal/config -run ^TestFleetRecipeRejectsReplicaLocalStores$",
+  "exit_code": 1,
+  "failed_leaf_cases": [
+    "TestFleetRecipeRejectsReplicaLocalStores/sqlite",
+    "TestFleetRecipeRejectsReplicaLocalStores/postgres"
+  ],
+  "observation": "Config loader accepts Valkey with SQLite and local blobs, and Valkey with PostgreSQL and local blobs. Both are incomplete replicated recipes.",
+  "scope": "Configuration validation only. No network connections or gateway startup. Separate recovery validation may refuse later startup.",
+  "implementation_owner": "CSP12",
+  "next_action": "Add complete recipe validation, canonical deployment namespaces, effective adapter settings, and explicit fresh-fleet initialization after CSP11 merges. Preserve the existing unknown-budget refusal behavior and qualify its full online, batch, and retry scope.",
+  "existing_budget_checks": {
+    "exit_code": 0,
+    "named_passes": 20,
+    "leaf_passes": 15,
+    "skips": 0,
+    "failures": 0,
+    "tests": [
+      "TestCachedTeamBudgetUsesAdmittedPolicy",
+      "TestAuthorizationUnknownAccountRefusesAdmission/memory/unavailable",
+      "TestAuthorizationUnknownAccountRefusesAdmission/memory/missing",
+      "TestAuthorizationUnknownAccountRefusesAdmission/memory",
+      "TestAuthorizationUnknownAccountRefusesAdmission/badger/unavailable",
+      "TestAuthorizationUnknownAccountRefusesAdmission/badger/missing",
+      "TestAuthorizationUnknownAccountRefusesAdmission/badger",
+      "TestAuthorizationUnknownAccountRefusesAdmission/valkey/unavailable",
+      "TestAuthorizationUnknownAccountRefusesAdmission/valkey/missing",
+      "TestAuthorizationUnknownAccountRefusesAdmission/valkey",
+      "TestAuthorizationUnknownAccountRefusesAdmission",
+      "TestBatchBudgetUnknownRequiredStateRefuses/missing_usage",
+      "TestBatchBudgetUnknownRequiredStateRefuses/unavailable_usage",
+      "TestBatchBudgetUnknownRequiredStateRefuses/missing_team_reader",
+      "TestBatchBudgetUnknownRequiredStateRefuses/unavailable_team",
+      "TestBatchBudgetUnknownRequiredStateRefuses",
+      "TestBatchBudgetConfirmedAbsenceNeedsNoUsageReader",
+      "TestBudgetStorageErrorRefuses",
+      "TestTeamBudgetReadErrorRefuses",
+      "TestBudgetMiddlewarePassesKeysWithoutBudgets"
+    ],
+    "cleanup": 0,
+    "scope": "Existing online and batch refusal checks, confirmed absence, cached team policy, and unknown-account refusal on memory, Badger, and real Valkey. This run does not qualify every retry path or atomic reservation.",
+    "initial_run": "Passed 17 named events and skipped the Valkey variant without a fixture. The native repeat covers that variant."
+  },
+  "artifacts": [
+    {
+      "path": "budget-initial-with-skip.jsonl.gz",
+      "sha256": "cb17bd08445803d64ee789aa1f3b3d44460a49a01b2838dacdb1bed7b5f1dabe"
+    },
+    {
+      "path": "budget-runner.json.gz",
+      "sha256": "c253a2e0ba19de39079bf96dd1292e919ffae072910eab03735352abb0826447"
+    },
+    {
+      "path": "budget-runner.py.gz",
+      "sha256": "f130c0d025db369c445866a5c80aec43d49bcfc0bb54d0a6b677dea614312a6b"
+    },
+    {
+      "path": "budget-stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "budget-tests.jsonl.gz",
+      "sha256": "290388fe360f1de673d0c1f1e3827cd2859dd787e41048f738dca17616c14c5d"
+    }
+  ]
+}

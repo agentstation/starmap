@@ -19,6 +19,8 @@
 
 <p>The <a href="proof/starport-production-catalog/csp11/runtime-integration-2026-09-26/verification.json">runtime checkpoint</a> passes 134 named race events across 117 leaf cases after refinement. It covers fleet recovery, pins, grants, and local retention recovery. It does not qualify A13 or A14.</p>
 
+<p>The <a href="proof/starport-production-catalog/csp12/recipe-audit-2026-09-26/verification.json">CSP12 preparation</a> records two failing recipe-validation cases. Existing budget-refusal checks pass on memory, Badger, and real Valkey. CSP12 remains pending CSP11 merges. Full retry and reservation qualification remains open.</p>
+
 <p>CSP10.2 awaits native suspend qualification. The <a href="proof/starport-production-catalog/csp10.2/clock-contract-audit-2026-09-26/verification.json">clock audit</a> passes 25 required tests and 50 named events without skips. The owner question remains open: retain real suspend evidence, or accept OS contracts plus native and deterministic tests. Do not count simulated suspend as native qualification.</p>
 
 <p>CSP10.3 is complete after Starport #384 merged. Its <a href="proof/starport-production-catalog/csp10.3/merged-qualification-2026-09-26/verification.json">proof</a> binds seven passing subcases and six-platform package results to the merge.</p>

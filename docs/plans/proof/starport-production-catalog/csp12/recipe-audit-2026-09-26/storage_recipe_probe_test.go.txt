@@ -1,0 +1,21 @@
+package config
+
+import "testing"
+
+func TestFleetRecipeRejectsReplicaLocalStores(t *testing.T) {
+	for _, sqlMode := range []string{"sqlite", "postgres"} {
+		t.Run(sqlMode, func(t *testing.T) {
+			cfg, err := NewLoader().WithPaths(PathsForConfigDir(t.TempDir())).WithEnvFiles().WithEnvironment(map[string]string{
+				"STARPORT_DEPLOYMENT_ID":            "recipe-probe",
+				"STARPORT_STORAGE_MODE":             "valkey",
+				"STARPORT_STORAGE_VALKEY_URL":       "redis://127.0.0.1:6379",
+				"STARPORT_STORAGE_SQL_MODE":         sqlMode,
+				"STARPORT_STORAGE_SQL_POSTGRES_URL": "postgres://localhost/starport",
+				"STARPORT_FILES_BACKEND":            "filesystem",
+			}).Load(t.Context())
+			if err == nil {
+				t.Fatalf("incomplete fleet recipe accepted: KV=%s SQL=%s files=%s", cfg.Storage.Mode, cfg.Storage.SQL.Mode, cfg.Files.Backend)
+			}
+		})
+	}
+}
