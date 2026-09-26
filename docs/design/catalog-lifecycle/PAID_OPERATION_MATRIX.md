@@ -60,8 +60,14 @@ Any future provider-native batch path requires its own matrix entry before stric
 ## Observed gaps
 
 The current HTTP budget gate reads totals before dispatch. It does not reserve capacity.
-The [current concurrency probe](../../plans/proof/starport-production-catalog/csp12.2/current-budget-before.json) admits two requests against one remaining token.
-That probe diagnoses the middleware behavior. Acceptance must count provider dispatches and inspect durable reservations.
+The [production dispatch probe](../../plans/proof/starport-production-catalog/csp12.2/provider-dispatch-before.json) sends two concurrent requests through the production router and OpenAI connector.
+Both reach the loopback provider before either response completes. Both return HTTP 200.
+Badger records 1,202 tokens against a 1,000-token key limit.
+Each request permits 600 output tokens, so their combined output allowance already exceeds that limit.
+
+The [earlier concurrency probe](../../plans/proof/starport-production-catalog/csp12.2/current-budget-before.json) remains evidence about middleware behavior.
+The newer probe uses real local storage and production dispatch. Shared storage, other scopes, other operations, and recovery remain unqualified.
+Acceptance must also inspect durable reservations after implementation.
 
 `internal/limits/spend.go` returns an unbounded allowance when context contains no allowance.
 Internal calls therefore need explicit policy evidence through the shared admission owner.

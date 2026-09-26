@@ -3529,3 +3529,17 @@ Video submission, poll, cancel, and content currently share `videos-generations`
 Admission needs the call purpose and billing evidence to distinguish new work from observation or retrieval.
 Semantic-cache embeddings and guardrail moderation call the gateway internally and need independent child reservations.
 The [audit record](../../plans/proof/starport-production-catalog/csp12.2/operation-inventory.json) binds these findings to exact source hashes.
+
+
+### Production dispatch confirms the budget overrun
+
+The [dispatch failure proof](../../plans/proof/starport-production-catalog/csp12.2/provider-dispatch-before.json) strengthens the earlier middleware-only evidence at Starport `ca2d2057`.
+Two concurrent requests pass HTTP authentication, budget middleware, routing, execution, and the production OpenAI connector.
+Both reach a barrier-controlled loopback provider before either response completes.
+Both return HTTP 200. The real Badger usage repository records 1,202 tokens against the key's 1,000-token daily limit.
+Each request permits 600 output tokens. No paid provider request occurs.
+
+The race-enabled probe fails its provider-dispatch bound in 38.19 seconds without a data-race report.
+The overlay changes only the test fixture. Application code and both source worktrees remain unchanged.
+This proves the current local token-budget failure. It does not qualify reservation correctness, shared storage, other scopes, other operations, or recovery.
+CSP12.2 must repair the production admission boundary and retain this failure evidence.

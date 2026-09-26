@@ -1,0 +1,68 @@
+{
+  "checked_at": "2026-09-26T02:26:28.486736+00:00",
+  "classification": "expected failure before atomic admission",
+  "owner": "CSP12.2",
+  "starport_head": "ca2d2057d60c07ad0bd6668023af8ae8647534c1",
+  "starmap_head": "ffecd9eb890adfd424d21b92638dc5d702c92553",
+  "toolchain": "go1.27.1",
+  "command": "GOTOOLCHAIN=go1.27.1 GOWORK=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-native-workspace-i6dpzet8/go.work GOFLAGS=-mod=readonly go test -race -count=1 -json -timeout=5m -overlay /tmp/csp122-dispatch-overlay.json ./internal/app -run ^TestCSP122ProviderDispatchRespectsExclusiveTokenCapacity$",
+  "exit_code": 1,
+  "tests_failed": 1,
+  "tests_skipped": 0,
+  "elapsed_seconds": 38.19,
+  "data_race_reported": false,
+  "configured_key_token_limit": 1000,
+  "request_output_token_limit": 600,
+  "provider_usage_per_response": {
+    "input_tokens": 1,
+    "output_tokens": 600,
+    "total_tokens": 601
+  },
+  "provider_dispatches": 2,
+  "http_statuses": [
+    200,
+    200
+  ],
+  "raw_sha256": "13f163a6fa4038c904a3a6603d417c0bd4fe3baa07b4f7d6523e5891e16e8967",
+  "source_changes": false,
+  "fixture_overlay_changes": [
+    "Use a 1000-token daily key budget instead of the performance fixture spend budget.",
+    "Use a barrier-controlled loopback provider that reports 601 tokens per response.",
+    "Increase the fixture timing channel capacity to avoid blocking two completed handlers.",
+    "Expose the application real storage adapter for usage repository reads."
+  ],
+  "production_path": [
+    "App.New",
+    "HTTP authentication and budget middleware",
+    "canonical proxy and router",
+    "execution retry owner",
+    "production OpenAI connector",
+    "loopback HTTP provider",
+    "production usage capture and real Badger usage repository"
+  ],
+  "limits": [
+    "Single-process Badger token-budget failure evidence only.",
+    "Provider is a controlled HTTP fixture; no paid or public provider request occurs.",
+    "No durable reservation schema exists to inspect at this source revision.",
+    "This is not passing A47 qualification or proof for shared Valkey, all scopes, other operations, restart, or failover.",
+    "The captured log calls the Badger total durable_tokens. The probe verifies a repository read, not crash durability or restart recovery."
+  ],
+  "artifacts": [
+    "provider-dispatch-budget-probe.md",
+    "provider-dispatch-fixture.patch",
+    "provider-dispatch-before.jsonl.gz"
+  ],
+  "fixture_original_sha256": "0842086e95f8ad4bbe606eb8ef20469dc882bbad9c911b55ba63fda1956b99bf",
+  "fixture_overlay_sha256": "2b5a628ba645d883ff6cbd5b88277562afac6edb49c567ae9bcf562697bb8acb",
+  "probe_source_sha256": "247e4772da96251b4c96f5ba198ec2b0d9834b523b68cfaab70ade7b78db0ff9",
+  "reproduction": [
+    "Use the recorded Starport and Starmap commits in a temporary Go workspace.",
+    "Apply provider-dispatch-fixture.patch to a temporary copy of internal/app/performance_test.go.",
+    "Extract the Go code block from provider-dispatch-budget-probe.md into a temporary Go file. Map it and the patched fixture copy into internal/app with a Go overlay.",
+    "Run only TestCSP122ProviderDispatchRespectsExclusiveTokenCapacity with the recorded Go 1.27.1 command.",
+    "Expect the recorded failure on the before source. Preserve ordinary production source files."
+  ],
+  "stored_badger_tokens": 1202,
+  "fixture_patch_reproduces_overlay_bytes": true,
+  "evidence_format": "The Markdown Go block preserves the executed probe bytes. The zero-context patch reproduces the executed fixture bytes."
+}

@@ -1,0 +1,13 @@
+--- internal/app/performance_test.go
++++ internal/app/performance_test.go
+@@ -96 +96 @@
+-	f := &performanceFixture{samples: make(chan performanceUpstreamSample, 1), handlers: make(chan time.Duration, 1), wait: wait}
++	f := &performanceFixture{samples: make(chan performanceUpstreamSample, 1), handlers: make(chan time.Duration, 4), wait: wait}
+@@ -101 +101 @@
+-		f.serveUpstream(w, r)
++		csp122Provider(w, r)
+@@ -140 +140 @@
+-	key.Limits = &limits.Limits{Spend: &limits.Budget{Limit: 1_000_000, Interval: limits.IntervalDay}}
++	key.Limits = &limits.Limits{Tokens: &limits.Budget{Limit: 1000, Interval: limits.IntervalDay}}
+@@ -148,0 +149 @@
++	csp122Store = application.store
