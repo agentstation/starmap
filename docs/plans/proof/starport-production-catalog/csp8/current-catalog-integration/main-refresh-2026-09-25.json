@@ -1,0 +1,61 @@
+{
+  "checked_at": "2026-09-26T01:01:51.334420+00:00",
+  "owner": "CSP8",
+  "consumer": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
+    "branch": "codex/starport-native-catalog",
+    "head": "ca2d2057d60c07ad0bd6668023af8ae8647534c1",
+    "merged_main": "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e"
+  },
+  "producer": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-advisory-exchange",
+    "branch": "codex/starmap-advisory-exchange",
+    "head": "ffecd9eb890adfd424d21b92638dc5d702c92553"
+  },
+  "resolved_conflicts": {
+    "ci": "Preserve six native runner architectures and evidence retention. Use the merged Codecov v7.1.1 pin with matrix.runner.",
+    "usage": "Preserve the merged current-UTC-date fixture and the existing concise fixture comments."
+  },
+  "completed_checks": {
+    "native_adapter": {
+      "command": "python3 scripts/test-native-catalog.py",
+      "tests": 10,
+      "exit_code": 0
+    },
+    "workflow": {
+      "command": "actionlint .github/workflows/ci.yml",
+      "exit_code": 0
+    },
+    "focused_race": {
+      "command": "GOTOOLCHAIN=go1.27.1 go test -race -count=1 -timeout=5m ./internal/usage ./internal/identity",
+      "packages": 2,
+      "exit_code": 0
+    },
+    "changed_prose": {
+      "files": 1,
+      "diagnostics": 0,
+      "exit_code": 0
+    },
+    "diff_check": {
+      "exit_code": 0
+    }
+  },
+  "dependency_findings": {
+    "published_pin": "v0.16.6-0.20260917204518-b09931c66d7d lacks pkg/productfiles; catalog and app setup fail.",
+    "host_pr_only": "Producer host-files head 87bed00f3 lacks acquisition CredentialResolverConfig Product/Lookup and CredentialProductStarport, productfiles.ValidateAncestors, and Runtime.PermissionClock.",
+    "required_candidate": "The full recorded producer integration has these APIs. Qualify and merge that complete producer contract before selecting a release for this consumer. PR #171 alone is insufficient."
+  },
+  "local_integration": {
+    "command": "GOWORK=<temporary workspace selecting the recorded producer and consumer> GOTOOLCHAIN=go1.27.1 GOFLAGS=-mod=readonly go test -race -json -count=1 -timeout=20m ./internal/catalog ./internal/app",
+    "session_id": 61858,
+    "events": "/tmp/starport-native-main-integration-full-producer.jsonl",
+    "stderr": "/tmp/starport-native-main-integration-full-producer.err",
+    "status": "running"
+  },
+  "limitations": [
+    "No module replacement was committed.",
+    "No consumer publication or released-pair qualification has occurred.",
+    "Complete pre-PR checks, review, native hosted qualification, and merge remain required."
+  ],
+  "goago": "The consumer module declares neither goago nor ago; no tool was added."
+}
