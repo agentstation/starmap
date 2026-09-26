@@ -20,7 +20,9 @@
 
 <p>Active producer checkout: <code>starmap-object-ci-repair</code> on <code>codex/catalog-bootstrap-payload</code> at the same merge. Local edits add a compressed canonical bootstrap payload and validation tests. The <a href="proof/starport-production-catalog/csp8/compiled-bootstrap-preparation/verification.json">preparation evidence</a> records cold race-test times of 30.10 seconds before and 11.83 seconds after. These single-host observations do not qualify native platforms or production latency.</p>
 
-<p>Generated documentation now matches the source. Verification session <code>93064</code> is active at <code>/tmp/starmap-compiled-bootstrap-verify-final.log</code>. Structural, lint, pure-Go, performance, container, and coverage checks pass. Runtime race suites remain active. Source changes remain uncommitted.</p>
+<p>Generated documentation now matches the source. Verification session <code>93064</code> is active at <code>/tmp/starmap-compiled-bootstrap-verify-final.log</code>. Structural, lint, pure-Go, performance, container, and coverage checks pass. All three runtime race suites pass with three recorded fixture skips. Client race tests remain active. Source changes remain uncommitted.</p>
+
+<p>The publisher now supports the compressed catalog file. Its regression test first failed on UTF-8 decoding. All 53 publication and evidence tests pass after the repair. Exact blob, tree, and signature checks remain required. The preparation evidence records these results and the unchanged Go source.</p>
 
 <p>Active consumer checkout: <code>starport-native-catalog</code> on <code>codex/starport-native-catalog</code> at <code>1e8fe2da09</code>. The checkout contains five changed files for deterministic document deadlines and credential retention during transient refresh failures. Focused checks pass 50 document tests and 20 credential tests and subtests. Candidate migration recovery passes all four test events with a temporary external module replacement. The committed module pin remains unchanged.</p>
 
@@ -129,6 +131,7 @@
 <tr><td>Clock lifecycle and canonical host settings</td><td>Starmap PR #152.</td></tr>
 <tr><td>Origin settings, shared-store followers, and authority transitions</td><td>Starmap PR #152. Complete fleet recovery remains with CSP11.</td></tr>
 <tr><td>Starport consumer integration</td><td>Starport PR #373, with all ten CI checks passing.</td></tr>
+<tr><td>2026-09-26</td><td>CSP8 binary publication repair</td><td>Reproduce the compressed-payload publication failure and preserve binary bytes through the GitHub blob API. Keep the existing Go gate active.</td><td>The <a href="proof/starport-production-catalog/csp8/compiled-bootstrap-preparation/verification.json">repair evidence</a> records 53 passing publisher tests, a clean writing check, and 1,215 passing runtime tests. Three fixture skips, remaining Go groups, review, and native qualification remain open.</td></tr>
 </tbody></table>
 </section>
 <section id="verification"><h2>Verification and delivery rules</h2><p>The owner requested larger implementation iterations on September 13. Complete a working flow before full verification, required review, and merge. Use focused tests during development. Update detailed proof at delivery or when a real blocker changes the next action. Required acceptance checks and review gates remain unchanged.</p>

@@ -298,7 +298,7 @@
         "container smoke",
         "all critical coverage thresholds"
       ],
-      "current": "Third runtime race shard. First and second shards passed. Two public-fixture skips require the recorded follow-up.",
+      "current": "All three runtime shards passed: 1215 named pass events and three signed-public-fixture skips. Client race group is running; application, contracts, and capacity remain.",
       "staged_diff_sha256": "edc98fe4026b1e5f6413b22c881195013690a76e375aee336b443ec2dd6b1f73",
       "source_commit": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
       "next_action": "Revalidate session 93064 and wait for this exact gate. Do not restart on an observation timeout. Diagnose a terminal failure, or commit and run pre-PR autoreview after success.",
@@ -310,10 +310,15 @@
           "path": "/tmp/starmap-public-fixture-20260908.tar.gz",
           "size_bytes": 411974
         },
-        "next_action": "Install the verified fixture at runtime/testdata/public-catalog-20260908/starmap-catalog.tar.gz after the current gate finishes. Run all tests that use newPublicCatalogFixture with STARMAP_PUBLIC_FIXTURE_REQUIRED=1."
+        "next_action": "Install the verified fixture at runtime/testdata/public-catalog-20260908/starmap-catalog.tar.gz after the current gate finishes. Run all tests that use newPublicCatalogFixture with STARMAP_PUBLIC_FIXTURE_REQUIRED=1.",
+        "skipped_tests": [
+          "TestPublicChannelUpgradeRetainsAcceptedCatalogBeforeRefresh",
+          "TestPublicCatalogActivatesWithoutProviderCredentials",
+          "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
+        ]
       },
       "progress": {
-        "checked_at": "2026-09-26T11:12:18.659303+00:00",
+        "checked_at": "2026-09-26T11:34:29.888879+00:00",
         "session": 93064,
         "state": "RUNNING",
         "suites": [
@@ -328,7 +333,8 @@
                 "Action": "pass",
                 "Elapsed": 1.983
               }
-            ]
+            ],
+            "active": []
           },
           {
             "suite": 1,
@@ -342,7 +348,8 @@
                 "Action": "pass",
                 "Elapsed": 509.299
               }
-            ]
+            ],
+            "active": []
           },
           {
             "suite": 2,
@@ -355,17 +362,85 @@
                 "Action": "pass",
                 "Elapsed": 1057.331
               }
-            ]
+            ],
+            "active": []
           },
           {
             "suite": 3,
             "tests": {
-              "pass": 84
+              "pass": 423,
+              "skip": 1
             },
-            "finished": []
+            "finished": [
+              {
+                "Package": "github.com/agentstation/starmap/runtime",
+                "Action": "pass",
+                "Elapsed": 1027.256
+              }
+            ],
+            "active": []
+          },
+          {
+            "suite": 4,
+            "tests": {
+              "pass": 21
+            },
+            "finished": [],
+            "active": [
+              "TestFirstExplicitUpdateCommitFailureLeavesWorkspaceAbsent"
+            ]
           }
         ]
-      }
+      },
+      "runtime_final": [
+        {
+          "shard": 1,
+          "counts": {
+            "pass": 311,
+            "skip": 2
+          },
+          "terminal": [
+            {
+              "Package": "github.com/agentstation/starmap/runtime",
+              "Action": "pass",
+              "Elapsed": 509.299
+            }
+          ],
+          "log": "runtime-1-final.jsonl.gz",
+          "sha256": "dd5dd3a62f290568443d1da1659050b3d3776b1767b33b5ff0e3c6eb572fd284"
+        },
+        {
+          "shard": 2,
+          "counts": {
+            "pass": 481
+          },
+          "terminal": [
+            {
+              "Package": "github.com/agentstation/starmap/runtime",
+              "Action": "pass",
+              "Elapsed": 1057.331
+            }
+          ],
+          "log": "runtime-2-final.jsonl.gz",
+          "sha256": "00d465c0ee1e17eb92cf3a13ce53d94e4f50af0265853c714dc66f18d9111398"
+        },
+        {
+          "shard": 3,
+          "counts": {
+            "pass": 423,
+            "skip": 1
+          },
+          "terminal": [
+            {
+              "Package": "github.com/agentstation/starmap/runtime",
+              "Action": "pass",
+              "Elapsed": 1027.256
+            }
+          ],
+          "log": "runtime-3-final.jsonl.gz",
+          "sha256": "a2cf5d759875f66fe51029e088a87be0a32a82ad5efbcb898f2e93f41ae954fa"
+        }
+      ]
     },
     "consumer_checks": {
       "command": "go test -race -count=1 -timeout 5m -json ./internal/providers/keyring ./internal/credentials ./internal/document",
@@ -410,6 +485,103 @@
       "plan_lint": "PASS: 1 file, zero diagnostics.",
       "repository_writing": "FAIL: 1698 files, 69 unchanged historical diagnostics, no new diagnostics.",
       "writing_log": "continuation-writing.log.gz"
+    },
+    "binary_publication_repair": {
+      "checked_at": "2026-09-26T11:34:05.404943+00:00",
+      "status": "LOCAL_CHECKS_PASS_UNCOMMITTED",
+      "reason": "Signed promotion decoded every catalog file as UTF-8. The compiled gzip payload triggered UnicodeDecodeError.",
+      "implementation": "Validate all catalog paths and regular files before remote writes. Upload non-UTF-8 blobs as base64, verify the returned Git blob identity, then preserve exact-tree and signed-commit checks.",
+      "api_contract": "https://docs.github.com/en/rest/git/blobs#create-a-blob",
+      "before": {
+        "exit_code": 1,
+        "tests": 5,
+        "errors": 6
+      },
+      "focused_after": {
+        "exit_code": 0,
+        "tests": 5
+      },
+      "publisher_suites": {
+        "publication": 27,
+        "qualification": 5,
+        "retry": 7,
+        "hosted": 9,
+        "capture": 5,
+        "total": 53,
+        "all_exit_codes": 0
+      },
+      "writing": {
+        "exit_code": 0,
+        "files": 1845,
+        "diagnostics": 0
+      },
+      "logs": {
+        "binary-before": {
+          "path": "binary-before.log.gz",
+          "sha256": "8138251f0fe9fa9ddcd686fadd42ce40995fc71e33617211dbbb20bb45eb9963"
+        },
+        "binary-after": {
+          "path": "binary-after.log.gz",
+          "sha256": "fd7224168ea23f5a71b0fa385951f75d8de9dd52c5149e41c5d335a264ec5eb9"
+        },
+        "publisher": {
+          "path": "publisher.log.gz",
+          "sha256": "64be94b2d4f746f3e70129cd8f6c8f1aa71711b384705fb55038c1b70324ca8a"
+        },
+        "publisher-qualification": {
+          "path": "publisher-qualification.log.gz",
+          "sha256": "97effd2ebbe61a3cfcf40329e17e13f516d31d2e57d4b9d61ead10a9bad8e5fd"
+        },
+        "publisher-retry": {
+          "path": "publisher-retry.log.gz",
+          "sha256": "b5256d6cfdf17c8f5b61ff2420447d787f9a695e14fb91c4428162db990d9a41"
+        },
+        "publisher-hosted": {
+          "path": "publisher-hosted.log.gz",
+          "sha256": "eb28ae24ec0ee0af8a05055907f4c186f5f6677676e18f8a0146485b684ee6ca"
+        },
+        "publisher-capture": {
+          "path": "publisher-capture.log.gz",
+          "sha256": "f0ab91a142fe3e4cf814f9f294e724e992142b5277f1475bbd88590d0bc1af7a"
+        },
+        "writing-final": {
+          "path": "writing-final.log.gz",
+          "sha256": "77dc8d58a3eefb6175824a2a62538d2c1cad19e0ae0ac2b964d6112c6e32d3fa"
+        },
+        "client-symbolized": {
+          "path": "client-symbolized.txt.gz",
+          "sha256": "5a3029c79a87afe79ab7de97ce63f7beec6495ee6c00d159c259b98eb293e719"
+        }
+      },
+      "gate_source_boundary": "Only scripts/catalog_publication.py and scripts/test_catalog_publication.py changed after the gate started. The original 18-file staged diff still matches its recorded SHA256. All Go source remains unchanged; the added Python checks and writing check ran on the final Python source.",
+      "current_staged_diff_sha256": "64fec3e0df70f38a8f48daebc8b8af4500abab3c4a029cb9ebbe8a066a0daba3",
+      "next_action": "Finish live gate 93064, require the captured public fixture for its three skipped tests, commit, review, publish, and qualify native CI.",
+      "plan_checks": {
+        "local_links": 153,
+        "missing_links": 0,
+        "tasks": 40,
+        "done": 16,
+        "sole_active": "CSP8",
+        "unrelated_files_unchanged": 5,
+        "full_writing": {
+          "exit_code": 2,
+          "files": 1698,
+          "historical_diagnostics": 69,
+          "new_diagnostics": 0,
+          "exact_previous_match": true,
+          "log": "binary-repair-plan-writing.log.gz",
+          "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
+        }
+      }
+    },
+    "client_sample": {
+      "status": "DIAGNOSTIC_ONLY",
+      "pid": 72940,
+      "duration_seconds": 2,
+      "test": "TestFirstExplicitUpdateAtomicallySeedsAbsentWorkspaceFromEmbedded",
+      "observed_stack": "workspace.stageCatalog -> validateStableProjection -> readSemanticState -> EncodeCatalogPayload -> encoding/json/v2.Marshal",
+      "limitation": "A short sample identifies active work; it is not a complete CPU profile or a performance qualification. No assertions or test fixtures were changed.",
+      "completed_test_seconds": 359.66
     }
   }
 }
