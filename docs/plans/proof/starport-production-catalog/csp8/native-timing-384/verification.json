@@ -1,11 +1,8 @@
 {
-  "state": "COMMITTED_REVIEW_RUNNING",
-  "head": "0a110339856b5cef3fac11da012e43b41482dab7",
-  "native_run": 36247789871,
-  "native_conclusion": "failure",
-  "passing_jobs": 13,
-  "failing_jobs": 1,
-  "skipped_jobs": 1,
+  "state": "PUBLISHED_NATIVE_RUNNING",
+  "head": "8170d65c3904279d4d219e57e3af95eced371d5a",
+  "native_run": 36249589317,
+  "native_conclusion": null,
   "native_failure": {
     "platform": "darwin/arm64",
     "package": "internal/providers/keyring",
@@ -22,12 +19,6 @@
     "Run concurrent account isolation inside synctest with real encryption and explicit material shutdown. Preserve production and deadline-test limits.",
     "Measure the unchanged zero-allocation assertion in production builds on every native platform. Keep destination behavior race tests."
   ],
-  "dirty_files": {
-    ".github/workflows/ci.yml": "f4faa96f787944bfbb6f81f71cf3198da926e84a54545a50e5407f35ee679d05",
-    "internal/providers/keyring/provider_keys_test.go": "d830b355309849d445cb04593b5569d24ca58436e60c3718dc3e1e081bef247c",
-    "internal/credentials/destination_template_test.go": "e0073f1b3196314b9c363434aaef903edf641d07a292d74753bab86198d67010",
-    "internal/credentials/destination_template_allocations_test.go": "b063d545b58bdd798b5b534192979b71b0841fab825b5015f53208c6fa11bb1b"
-  },
   "focused": {
     "keyring_race_passes": 9,
     "production_allocation_passes": 30,
@@ -44,8 +35,8 @@
     "commands": 34
   },
   "remaining": [
-    "Finish all 34 commands, commit the four intended files, review the complete branch, and update PR #384.",
-    "Qualify native CI and all 63 CSP8 subcases before the consumer merge."
+    "Qualify six native platforms, including the separate production allocation check.",
+    "Pass all 63 CSP8 subcases, then merge the consumer after its producer."
   ],
   "secret_scan": {
     "exit_code": 0,
@@ -53,10 +44,19 @@
   },
   "repair_commit": "8170d65c3904279d4d219e57e3af95eced371d5a",
   "review": {
-    "session": 75876,
-    "status": "RUNNING",
-    "log": "/tmp/starport-384-native-timing-review.log",
-    "max_passes": 32,
-    "scope": "Entire integration branch diff."
+    "status": "PASS",
+    "chunks": 9,
+    "threshold": "P0",
+    "findings": 0,
+    "secret_scan": "PASS",
+    "log": "autoreview.log.gz"
+  },
+  "prior_native": {
+    "head": "0a110339856b5cef3fac11da012e43b41482dab7",
+    "native_run": 36247789871,
+    "native_conclusion": "failure",
+    "passing_jobs": 13,
+    "failing_jobs": 1,
+    "skipped_jobs": 1
   }
 }

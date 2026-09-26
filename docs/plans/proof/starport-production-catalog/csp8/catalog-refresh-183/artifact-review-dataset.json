@@ -1,0 +1,47 @@
+{
+  "owner_approval": "2026-09-26: full source review plus automated generated-file verification",
+  "source_commit": "a6559d533ee2632378ece7b3ea6bc57826ea625e",
+  "base_commit": "7d1a6d0c1e136150e70c2e6052c2e36b708757b9",
+  "review_snapshot": "8050ac263f87b67e2e47624dadefcda9bfaa7357",
+  "review_scope": "Complete source diff; only the generated gzip is absent from the review snapshot. The shipping commit and working files are unchanged.",
+  "source_diff_sha256": "4a9075dcf840686633d3689dc718b95ad2be9735a37ffc78f04c8a351e7d559f",
+  "excluded_file": "internal/embedded/catalog/generation-payload.json.gz",
+  "compressed_bytes": 1157877,
+  "compressed_sha256": "d3a9d86a300df5040196aad078b5f7c4a6fe5f48b764da95cab2c16b5e40c298",
+  "payload_bytes": 26422969,
+  "payload_sha256": "4c37cb4f7195bc58184d39a9d0e3fa5954469f7843205b262952f45d9c12e222",
+  "regeneration": "Exact byte equality with generated output from authored YAML",
+  "manifest": "Byte-identical to accepted main catalog",
+  "endpoints": "Byte-identical to accepted main catalog",
+  "generator_report": {
+    "status": "PASS",
+    "base": "7d1a6d0c1e136150e70c2e6052c2e36b708757b9",
+    "generator_source": "e042cf6e5017194d78c442c43dbe07031eaae8cd",
+    "source_inputs_unchanged": 1278,
+    "payload_bytes": 1157877,
+    "payload_sha256": "d3a9d86a300df5040196aad078b5f7c4a6fe5f48b764da95cab2c16b5e40c298",
+    "command": [
+      "go",
+      "run",
+      "./cmd/starmap-bootstrap-manifest",
+      "--catalog-dir",
+      "/tmp/starmap-184-bootstrap-regeneration/internal/embedded/catalog",
+      "--output",
+      "/tmp/starmap-184-bootstrap-regeneration/internal/embedded/catalog/generation.json",
+      "--endpoints-output",
+      "/tmp/starmap-184-bootstrap-regeneration/internal/embedded/catalog/endpoints.yaml"
+    ],
+    "time": "2026-09-26T14:37:58.286609+00:00",
+    "repeated_generation_byte_identical": true,
+    "raw_bytes": 26422969,
+    "raw_sha256": "4c37cb4f7195bc58184d39a9d0e3fa5954469f7843205b262952f45d9c12e222",
+    "semantic_checksum": "sha256:d074ab2f8957fb485258bf9ad29c12644e902afe20eed9a0b81488e843814680",
+    "generation_id": "bindings-ef621d8535ac238019ebeb041073148d2cfdb9bd67c552e87ed9b4eaf489b8bb.local.1db692c87a21"
+  },
+  "review_snapshot_tree_difference": [
+    "internal/embedded/catalog/generation-payload.json.gz"
+  ],
+  "artifact_regeneration_source_commit": "e042cf6e5017194d78c442c43dbe07031eaae8cd",
+  "unchanged_artifact_inputs": "All 1278 accepted main catalog inputs remain byte-identical. Two generator runs produced identical payload bytes. The complete textual source diff is unchanged from the previous reviewed head.",
+  "accepted_catalog_base": "7d1a6d0c1e136150e70c2e6052c2e36b708757b9"
+}
