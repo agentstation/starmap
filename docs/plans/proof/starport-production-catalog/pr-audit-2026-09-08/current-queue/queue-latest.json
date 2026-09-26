@@ -1,7 +1,31 @@
 {
-  "checked_at": "2026-09-26T06:13:12.457723+00:00",
-  "starmap": [],
-  "starport": [],
+  "checked_at": "2026-09-26T06:19:16.800919+00:00",
+  "starmap": [
+    {
+      "pr": 182,
+      "head": "d464980961d87b6b24e40c7275c93e4114f2b643",
+      "branch": "codex/catalog-native-consumer-qualification",
+      "state": "OPEN",
+      "draft": true,
+      "owner": "CSP8",
+      "checks_run": 36223296385,
+      "disposition": "Keep. Reviewed implementation has active native CI.",
+      "next_action": "Capture successful native evidence, qualify all 63 task subcases, and merge in producer then consumer order."
+    }
+  ],
+  "starport": [
+    {
+      "pr": 384,
+      "head": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+      "branch": "codex/starport-native-catalog",
+      "state": "OPEN",
+      "draft": true,
+      "owner": "CSP8",
+      "checks_run": 36223300692,
+      "disposition": "Keep. Reviewed implementation has active native CI.",
+      "next_action": "Capture successful native evidence, qualify all 63 task subcases, and merge in producer then consumer order."
+    }
+  ],
   "completed_merges": [
     {
       "repo": "starmap",
@@ -97,13 +121,13 @@
     "retained_inventory": {
       "starmap": {
         "worktrees": 37,
-        "dirty": 34,
-        "remote_heads": 4
+        "dirty": 35,
+        "remote_heads": 5
       },
       "starport": {
         "worktrees": 4,
         "dirty": 0,
-        "remote_heads": 1
+        "remote_heads": 2
       }
     },
     "final_pass_proof": "worktree-cleanup-final-pass.json",
@@ -116,7 +140,7 @@
     "preserved_pass_proof": "worktree-cleanup-preserved.json",
     "archive_verification": "PASS: eight additional archive and bundle digests match, all eight worktree paths and branch refs are absent.",
     "additional_proven_branches_removed": 8,
-    "total_local_branches_removed": 75,
+    "total_local_branches_removed": 76,
     "additional_pass_proof": "worktree-cleanup-additional.json",
     "remote_additional_proof": "remote-cleanup-additional.json",
     "automatic_superseded_remote_branch_deletions": 5
@@ -178,7 +202,7 @@
     "local_links": "94 unique local links resolve.",
     "diff_check": "PASS",
     "writing_log": {
-      "path": "../../csp6/promotion-181/plan-writing-completion.log.gz",
+      "path": "publication-plan-writing.log.gz",
       "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
     }
   },
@@ -199,16 +223,27 @@
     "owner": "CSP8",
     "pre_pr_checks": "PASS: 733 task race tests with real Valkey and PostgreSQL, zero skips; ordinary suite 4,139 passes and 61 skips; lint zero issues.",
     "review": "PASS at 65a3cb3: nine complete review passes, zero actionable findings at configured P0 threshold, clean secret scan.",
-    "disposition": "Publish reviewed integration and qualify native CI for CSP8.",
-    "proof": "../../csp8/race-suite-bound-2026-09-26/after.json"
+    "disposition": "Qualify native CI and CSP8 task acceptance before merge.",
+    "proof": "../../csp8/race-suite-bound-2026-09-26/after.json",
+    "pr": 384,
+    "checks_run": 36223300692,
+    "status": "Published draft. Native CI is active."
   },
   "starmap_preparation": {
     "owner": "CSP8",
     "branch": "codex/catalog-native-consumer-qualification",
     "base": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
     "worktree": "starmap-host-files",
-    "status": "Repository checks and pre-PR review pass. Ready to publish supporting draft PR.",
+    "status": "Published draft. Native CI is active.",
     "proof": "../../csp8/native-producer-181/preparation.json",
-    "head": "d464980961d87b6b24e40c7275c93e4114f2b643"
+    "head": "d464980961d87b6b24e40c7275c93e4114f2b643",
+    "pr": 182,
+    "checks_run": 36223296385
+  },
+  "csp8_acceptance": {
+    "status": "running",
+    "session": 40997,
+    "directory": "/tmp/csp8-task-qualification-182",
+    "note": "Uses isolated real Valkey and PostgreSQL. Native qualification remains pending until both workflows succeed."
   }
 }

@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T05:27:57.537586+00:00",
+  "checked_at": "2026-09-26T06:18:05.358824+00:00",
   "removed": [
     {
       "repo": "starmap",
@@ -48,6 +48,15 @@
       "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-branch-audit/starmap-codex-catalog-pr137-security.bundle",
       "bundle_sha256": "bc0398b81854b59acc134830748fda01336f816e9910a02b0ea3404dc540512c",
       "disposition": "Removed merge-only branch after both parents, automatic merge tree, current dependency, and recovery bundle verification."
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/starmap-host-files",
+      "sha": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3",
+      "matching_main_tree": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-branch-audit/starmap-codex-starmap-host-files.bundle",
+      "bundle_sha256": "955d6dadba6100c8c64590e65665bc2e4c72eeddfe51be4735efb3d9a5a34823",
+      "disposition": "Removed after merged tree equality and recovery bundle verification. The active verifier branch reuses its checkout."
     }
   ],
   "retained_unattached": [
