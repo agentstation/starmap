@@ -1538,6 +1538,24 @@
       "exact_previous_match": true,
       "log": "review-pending-plan-writing.log.gz",
       "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
+    },
+    "blocked_audit": {
+      "checked_at": "2026-09-26T12:46:08.861178+00:00",
+      "consecutive_goal_turns": 3,
+      "previous_turn": "PROGRESS_CONSUMER_COMMIT_24feb551",
+      "condition": "PRE_PR_HELPER_REJECTS_GENERATED_BINARY_OWNER_DECISION_PENDING",
+      "producer_head": "0e53e6f9cbdaa5038d2b249bdcdd8a5b60c97edf",
+      "consumer_head": "24feb55198d3a8aaa585fed874adbb172313ad8f",
+      "producer_worktree": "CLEAN",
+      "consumer_worktree": "CLEAN",
+      "full_producer_gate": "PASS",
+      "consumer_preparation": "COMMITTED_CHECKS_BOUND_TO_EXACT_FILE_HASHES",
+      "live_jobs": [],
+      "next_available_task": "CSP8_REVIEW",
+      "remaining_task_dependencies": "ALL_TODO_TASKS_DEPEND_TRANSITIVELY_ON_CSP8",
+      "publication": "NOT_ATTEMPTED",
+      "decision_request": "PENDING",
+      "completion": "UNPROVEN_16_OF_40_TASKS_DONE"
     }
   }
 }
