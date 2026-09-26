@@ -837,9 +837,9 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Resolve the pending deployment-wide baseline/policy transition. Then complete branch reviews, publish the producer, update the consumer module pin, qualify exact-head CI, and merge in dependency order.",
+    "next_action": "Apply the owner decision to the transition contract. Implement and qualify it, complete final branch reviews, publish in dependency order, and merge the exact passing heads.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
-    "blocked_task": null,
+    "blocked_task": "CSP11",
     "owner_question": "Require an explicit deployment-wide transition when the embedded baseline or acquisition policy changes? Owner answer pending.",
     "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
     "contract_audit": "../../csp11/contract-audit-2026-09-26.md",
@@ -894,7 +894,8 @@
     "retention_proof": "../../csp11/retention-checkpoint-2026-09-26/verification.json",
     "retention_policy_proof": "../../csp11/retention-policy-2026-09-26/verification.json",
     "transition_contract": "../../csp11/upgrade-contract-2026-09-26/CONTRACT.md",
-    "transition_audit": "../../csp11/upgrade-contract-2026-09-26/verification.json"
+    "transition_audit": "../../csp11/upgrade-contract-2026-09-26/verification.json",
+    "blocked_audit": "../../csp11/upgrade-contract-2026-09-26/blocked-audit.json"
   },
   "local_consumer_checkpoint": {
     "head": "ac679bf6464e448b63576deed54dbdbd0f7696e6",
@@ -917,5 +918,5 @@
       "scope": "kvconnection, config, storage, cache with race detection and real Valkey. Full CSP12 is incomplete."
     }
   },
-  "local_updated_at": "2026-09-26T21:46:36.780776+00:00"
+  "local_updated_at": "2026-09-26T21:49:01.573776+00:00"
 }

@@ -1,0 +1,48 @@
+{
+  "status": "BLOCKED_OWNER_DECISION",
+  "checked_at": "2026-09-26T21:49:01.573776+00:00",
+  "task": "CSP11",
+  "reason": "The fleet upgrade adoption policy remains unresolved. An explicit transition for both baseline and policy is recommended. The alternative automatically adopts newer baselines and needs trusted ordering and downgrade protection.",
+  "consecutive_goal_turns": 3,
+  "turns": [
+    {
+      "work": "Canonical retention implementation and native qualification",
+      "decision": "pending"
+    },
+    {
+      "work": "Upgrade source audit and transition contract",
+      "decision": "pending"
+    },
+    {
+      "work": "Dependency audit against the current ledger",
+      "decision": "pending"
+    }
+  ],
+  "independent_eligible_tasks": [],
+  "completed_task_checked": "CSP14 is already done at Starmap merge e7a6abdf7 and was not reopened.",
+  "downstream": [
+    "CSP12",
+    "CSP12.1",
+    "CSP12.2",
+    "CSP13",
+    "CSP15",
+    "CSP16",
+    "CSP16.1",
+    "CSP17",
+    "CSP18",
+    "CSP19",
+    "CSP20",
+    "CSP21",
+    "CSP22",
+    "CSP23",
+    "CSP24",
+    "CSP99"
+  ],
+  "running_task_checks": [],
+  "preserved_work": {
+    "producer": "75e84878d8520a9c5f456643f929bc776d52fa3e",
+    "consumer": "ac679bf6464e448b63576deed54dbdbd0f7696e6",
+    "unrelated_dirty_files": "Existing plan-worktree files and native proof captures remain unchanged."
+  },
+  "resume": "Apply the owner decision to the transition contract. Implement and qualify it, complete final branch reviews, publish in dependency order, and merge the exact passing heads."
+}
