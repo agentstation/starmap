@@ -176,6 +176,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(r \*Runtime\) CompleteDirectoryMigration\(ctx context.Context, request DirectoryMigrationRequest\) \(DirectoryMigrationPublication, error\)](<#Runtime.CompleteDirectoryMigration>)
   - [func \(r \*Runtime\) ModelsDevGitCommit\(\) \(string, bool\)](<#Runtime.ModelsDevGitCommit>)
   - [func \(r \*Runtime\) ObservationInputs\(ctx context.Context\) \(ObservationInputs, error\)](<#Runtime.ObservationInputs>)
+  - [func \(r \*Runtime\) PermissionClock\(\) permission.ClockReading](<#Runtime.PermissionClock>)
   - [func \(r \*Runtime\) PermissionClockStatus\(\) permission.ClockMonitorStatus](<#Runtime.PermissionClockStatus>)
   - [func \(r \*Runtime\) PinAcceptance\(\) \(GenerationPinAcceptance, bool\)](<#Runtime.PinAcceptance>)
   - [func \(r \*Runtime\) PreviewAcquisition\(ctx context.Context, prepare func\(context.Context, ObservationInputs\) \(ObservationUpdate, error\), requestedSources ...sources.ID\) \(starmap.CatalogState, error\)](<#Runtime.PreviewAcquisition>)
@@ -1771,6 +1772,15 @@ func (r *Runtime) ObservationInputs(ctx context.Context) (ObservationInputs, err
 ```
 
 ObservationInputs returns the current catalog and its selected baseline. It reads retained memory, starts no acquisition, and writes no files. A later update reads new snapshots under runtime operation ownership.
+
+<a name="Runtime.PermissionClock"></a>
+### func \(\*Runtime\) [PermissionClock](<https://github.com/agentstation/starmap/blob/main/runtime/authority_clock.go#L54>)
+
+```go
+func (r *Runtime) PermissionClock() permission.ClockReading
+```
+
+PermissionClock returns the current permission time and its uncertainty from cached evidence. It starts no observation or I/O. An absent runtime or clock returns unknown time. Hosts must reject unknown time and uncertainty outside their admission bounds.
 
 <a name="Runtime.PermissionClockStatus"></a>
 ### func \(\*Runtime\) [PermissionClockStatus](<https://github.com/agentstation/starmap/blob/main/runtime/clock_monitor.go#L53>)
