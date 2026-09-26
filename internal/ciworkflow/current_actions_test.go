@@ -15,6 +15,7 @@ func TestActiveWorkflowsUseReviewedCurrentActions(t *testing.T) {
 		"actions/setup-go":                "b7ad1dad31e06c5925ef5d2fc7ad053ef454303e", // v7.0.0
 		"actions/attest-build-provenance": "4d101475d8b20a2381f78447822ac1eab6504dd8", // v4.2.2
 		"actions/upload-artifact":         "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a", // v7.0.1
+		"actions/download-artifact":       "37930b1c2abaa49bbe596cd826c3c89aef350131", // v7.0.0
 		"actions/create-github-app-token": "bcd2ba49218906704ab6c1aa796996da409d3eb1", // v3.2.0
 
 		"anchore/sbom-action/download-syft": "3ad7283483fc7af8ff2b4ea19663c2d5ca935e26", // v0.24.2

@@ -85,7 +85,7 @@ func TestVerificationMatrixPreservesPackageGroupsWithoutCompilerDuplicates(t *te
 	if len(matrix.Group) != 0 || len(matrix.Go) != 0 || len(matrix.Suite) != 0 || job.Env["TEST_SUITE"] != "race" {
 		t.Fatal("the matrix must run one complete race suite without compiler duplicates")
 	}
-	want := map[string]bool{"runtime/1": true, "runtime/2": true, "runtime/3": true, "client/0": true, "application/0": true, "contracts/0": true}
+	want := map[string]bool{"runtime/1": true, "runtime/2": true, "runtime/3": true, "client/0": true, "application/1": true, "application/2": true, "application/3": true, "contracts/0": true}
 	labels := make(map[string]bool)
 	for _, entry := range matrix.Include {
 		key := entry["group"] + "/" + entry["shard"]
