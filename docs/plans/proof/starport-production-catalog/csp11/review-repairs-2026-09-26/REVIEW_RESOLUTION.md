@@ -33,6 +33,10 @@ The latest local producer pair also passes those checks. Review and merge remain
 | Starport fleet initialization | Supply an explicit operation for fresh deployment approval before enabling shared startup. | A fresh Valkey/PostgreSQL deployment starts through the documented operation. Existing, replaced, or uncertain state refuses fresh initialization. Concurrent attempts cannot approve different backends. |
 | Starport fleet retention | Bound staged chunks, committed publications, generation indexes, and retry receipts. Protect current, accepted, retained rollback, and pinned generations. Apply canonical retention configuration. | Repeated publication and rejected staging remain bounded. Interrupted collection recovers. Concurrent publication, acceptance, reads, and collection preserve selected data. Disabled automatic cleanup and explicit collection retain their declared behavior. |
 
+Fresh initialization and canonical retention now have local implementations and passing native checks.
+The [retention proof](../retention-policy-2026-09-26/verification.json) records 45 fleet and startup race results with no failures or skips.
+Complete branch review and final-head qualification remain open for both repairs.
+
 The upgrade decision remains pending with the owner.
 The recommendation requires one explicit deployment-wide transition for a changed baseline or acquisition policy.
 Ordinary source refresh remains automatic.
@@ -92,3 +96,16 @@ Keep abandoned-upload recovery independent of that switch. Hard storage bounds m
 Report public catalog generations separately from publication receipts and private recovery bytes.
 Do not reinterpret the existing generation-count and manifest/payload-byte fields as publication counts or total snapshot bytes.
 Verify disabled scheduling, explicit collection, configured limits, safe refusal, and operator-visible capacity state before the final branch review.
+
+## Canonical retention integration
+
+Producer `75e84878d` exposes coordinated collection and copies publication accounting into memory status.
+Consumer `ac679bf64` implements explicit collection with canonical limits. Publication and acceptance no longer collect committed data.
+Dry runs preserve pending cleanup. Required generations, current and accepted heads, rollback history, and reader claims remain protected.
+
+Public generations count once. Separate publication metrics report receipts, encoded bytes, private recovery bytes, and reader claims.
+Oversized scans and cleanup reads refuse before deletion. Interrupted deletion resumes from its durable record.
+
+These local changes repair the policy integration gap. This does not complete CSP11.
+The tests used a temporary Go workspace to connect the unpublished producer API.
+The consumer module pin, complete branch review, native CI, and ordered merges remain required.

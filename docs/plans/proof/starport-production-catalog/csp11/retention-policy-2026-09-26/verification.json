@@ -1,0 +1,161 @@
+{
+  "status": "PASS_LOCAL_PAIR",
+  "task": "CSP11",
+  "recorded_at": "2026-09-26T21:39:24.794037+00:00",
+  "producer": "75e84878d8520a9c5f456643f929bc776d52fa3e",
+  "consumer": "ac679bf6464e448b63576deed54dbdbd0f7696e6",
+  "toolchain": "go1.27.1",
+  "consumer_module_pin": "v0.16.6-0.20260926185237-a2d66bd259a1",
+  "integration": "Preparation uses /tmp/csp11-pair.work. The consumer pin has not advanced to the unpublished producer API.",
+  "behavior": [
+    "Publication and acceptance preserve committed data until explicit or scheduled collection.",
+    "Canonical retention enablement and limits reach the coordinated fleet collector.",
+    "Current, accepted, rollback, required, and reader-protected bytes remain available.",
+    "Dry runs preserve pending recovery and committed data.",
+    "Catalog generation usage is separate from receipt and private recovery usage.",
+    "Interrupted collection resumes through the native maintenance lease and durable pending record.",
+    "Storage and input bounds refuse unsafe or oversized work without moving the selected head."
+  ],
+  "fail_before": {
+    "producer": "Both enabled and disabled dispatch cases failed because the fleet collector reported shared_coordination_required.",
+    "consumer": {
+      "named_pass": 0,
+      "named_fail": 1,
+      "named_skip": 0
+    },
+    "consumer_exit": 1
+  },
+  "checks": {
+    "focused_real_storage": {
+      "named_pass": 24,
+      "named_fail": 0,
+      "named_skip": 0
+    },
+    "fleet_and_startup_real_storage": {
+      "named_pass": 45,
+      "named_fail": 0,
+      "named_skip": 0
+    },
+    "storage_contracts": {
+      "named_pass": 89,
+      "named_fail": 0,
+      "named_skip": 0
+    },
+    "producer_dispatch": {
+      "parent_tests": 1,
+      "subtests": 2,
+      "exit_code": 0,
+      "seconds": 21.101
+    },
+    "fleet_and_startup_runner": {
+      "started": "2026-09-26T21:33:35.498136+00:00",
+      "images": [
+        "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94"
+      ],
+      "source_sha256": {
+        "internal/catalog/fleet_acceptance.go": "d74b7d4a9e4a5eca27062ea7560c8c11fde317721f7b7a908c69b51d12dbefac",
+        "internal/catalog/fleet_collection.go": "405e85b23245b23dc1683e5f31fb21f6d9a0115ba13f4fea6aa7e6fead6bb0bb",
+        "internal/catalog/fleet_collection_test.go": "cd3a9a94ab9377d0eb5296497d3cba1aafe92c165d164d071099b15e1f7eb841",
+        "internal/catalog/fleet_lease.go": "c1bdbe7f018557f711b6ecbfaa46098932229b0d97b84b495baddb8b8b98d9df",
+        "internal/catalog/fleet_payload.go": "c062fe846fcf54f59cd2e20ad8a90e01e4b51ec49dd309b58a5a64310d745142",
+        "internal/catalog/fleet_process_test.go": "8a0e83cfd9d8d673d70047cd5edd2931921622c59b4d14f03626d3cea56d0bd4",
+        "internal/catalog/fleet_retention.go": "d3ff475e2ea0e12158fb9efe15448d7d9422e3fa53f1f4ae3a5c73cc59327bff",
+        "internal/catalog/fleet_retention_record.go": "8281a74df7f01f003bf4837ced7f0dcdcf8310cdb581b02aae18632eaddb859d",
+        "internal/catalog/fleet_retention_test.go": "3b48dc66c14963ab95b8a03d610304527eff72cd1d3a9a2977e0b77c5df17139",
+        "internal/catalog/fleet_store.go": "516139598884acad08b1e3a9e98cb809622eb1662e7279c037122cd438175f08",
+        "internal/catalog/fleet_store_test.go": "7d278b292d90a2e0ae8e37d8bb24fac528416495022ddc98f7186d6be7fb1054"
+      },
+      "environment": {
+        "GOTOOLCHAIN": "go1.27.1",
+        "GOWORK": "/tmp/csp11-pair.work"
+      },
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=6m",
+        "-json",
+        "-run",
+        "^Test(Fleet|InitializeFleet)",
+        "./internal/catalog",
+        "./internal/app"
+      ],
+      "exit_code": 0,
+      "cleanup": [
+        0,
+        0,
+        0
+      ],
+      "finished": "2026-09-26T21:36:51.668896+00:00"
+    },
+    "goago": {
+      "exit_code": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    "starport_lint": {
+      "exit_code": 0,
+      "issues": 0
+    },
+    "vet": {
+      "producer_exit": 0,
+      "consumer_exit": 0
+    },
+    "external_consumers": {
+      "exit_code": 0,
+      "compositions": 6,
+      "platform": "darwin/arm64",
+      "read_only_dependencies": "37/37"
+    },
+    "writing": {
+      "producer_files": 1868,
+      "producer_diagnostics": 0,
+      "changed_starport_files": 5,
+      "changed_starport_diagnostics": 0
+    }
+  },
+  "post_test_source_changes": "Comment wording and import grouping only. Native final-head CI and complete branch review remain required.",
+  "not_complete": [
+    "Deployment-wide baseline/policy transition awaits the owner decision.",
+    "Final branch review, module publication/pin, exact-head CI, and both merges remain open.",
+    "These checks do not qualify the complete production catalog plan."
+  ],
+  "artifacts": {
+    "csp11-policy-before/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "csp11-policy-before/runner.json": "54173d575dc3ca907cfc1bbd585e335f9e9fbd00097310444223567b3215dfbe",
+    "csp11-policy-before/tests.jsonl": "02877b7a3a9ea3db2ac9d0abc7ee6520bd659e76e2511eae7670f94b4a43c42c",
+    "csp11-policy-after/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "csp11-policy-after/runner.json": "e1e59109fa8d972912ea8b0e71e73d162ec6bd37b809c6f81788e90ae23a63b2",
+    "csp11-policy-after/tests.jsonl": "cc526e7108e311165627b067bf83e862bc6f35054b230903278c57c81ee3f578",
+    "csp11-policy-full/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "csp11-policy-full/runner.json": "e93edc0a1b86a86aa7be45d27628dc5df421dd5d7cff9d7799e492b315179dff",
+    "csp11-policy-full/tests.jsonl": "2be09eed2a091736b7bba02568d5dc0d97285f088189ac702006c8505770eab6",
+    "fleet-policy-producer-before.log": "35a82d34049b724073f7ef6b015af41a087d756e535d17c680c6ce384e6af8af",
+    "fleet-policy-producer-final.log": "97937c765153ac573a6227143336e528d6aeebea0b319ff7d153491da1a5239c",
+    "csp11-policy-storage-tests.jsonl": "c922f996d0ba0698bd9fe0973507ca2cc04ed335ceef067fa9d312eb09c72075",
+    "csp11-policy-goago.log": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+    "csp11-policy-lint.log": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+    "csp11-policy-vet-starport.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "csp11-policy-vet-starmap.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "csp11-policy-consumer-deps.log": "df7d21232923171a57694418b859f9c15797c7d77884f2c336c3ae7b2fd1c054",
+    "csp11-policy-writing-full.log": "1a8c7e210beefa58d7a9d27ae4eb96be047bf8f3c5284fe6dbc577c6361b175a",
+    "csp11-policy-writing-starport.log": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668",
+    "csp11-policy-writing-starmap.log": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+    "run-csp11-policy-before.py": "fd852e808b7bcecd1497af490fa7648a9aa33f95f35a7628c8295a3ff5b7186f",
+    "run-csp11-policy-after.py": "d32677e020440f92f7468cfe3729c8df6b5e58b5ecc6f37c35d861d6764032ce",
+    "run-csp11-policy-full.py": "c9fd2db5c56221fc38c32b81fc6bd7831e81a6b708fc49680ecc27f2b1649aab"
+  },
+  "archive_sha256": "da93350e3b6f01b584f541b49f55bbcb13ebed1ffd552efebb46b6400aa5e39a",
+  "plan_validation": {
+    "rows": 40,
+    "done": 23,
+    "active": "CSP11",
+    "local_links": "PASS",
+    "unique_ids": 97,
+    "writing": "PASS: 2 files, zero diagnostics"
+  }
+}
