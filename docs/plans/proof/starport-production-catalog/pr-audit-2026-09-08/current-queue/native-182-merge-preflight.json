@@ -1,0 +1,81 @@
+{
+  "checked_at": "2026-09-26T08:30:03.164109+00:00",
+  "pull_request": {
+    "data": {
+      "repository": {
+        "pullRequest": {
+          "headRefOid": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+          "baseRefOid": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+          "isDraft": false,
+          "mergeable": "MERGEABLE",
+          "reviewDecision": null,
+          "reviewThreads": {
+            "nodes": [],
+            "pageInfo": {
+              "hasNextPage": false
+            }
+          }
+        }
+      }
+    }
+  },
+  "protection": {
+    "url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection",
+    "required_status_checks": {
+      "url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_status_checks",
+      "strict": true,
+      "contexts": [
+        "Security & Reliability",
+        "Verification Gate"
+      ],
+      "contexts_url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_status_checks/contexts",
+      "checks": [
+        {
+          "context": "Security & Reliability",
+          "app_id": 15368
+        },
+        {
+          "context": "Verification Gate",
+          "app_id": 15368
+        }
+      ]
+    },
+    "required_pull_request_reviews": {
+      "url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_pull_request_reviews",
+      "dismiss_stale_reviews": true,
+      "require_code_owner_reviews": false,
+      "require_last_push_approval": false,
+      "required_approving_review_count": 0
+    },
+    "required_signatures": {
+      "url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_signatures",
+      "enabled": true
+    },
+    "enforce_admins": {
+      "url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/enforce_admins",
+      "enabled": true
+    },
+    "required_linear_history": {
+      "enabled": false
+    },
+    "allow_force_pushes": {
+      "enabled": false
+    },
+    "allow_deletions": {
+      "enabled": false
+    },
+    "block_creations": {
+      "enabled": false
+    },
+    "required_conversation_resolution": {
+      "enabled": true
+    },
+    "lock_branch": {
+      "enabled": false
+    },
+    "allow_fork_syncing": {
+      "enabled": false
+    }
+  },
+  "qualification": "PENDING: run 36228899978 remains active. No merge is authorized by this partial check alone."
+}

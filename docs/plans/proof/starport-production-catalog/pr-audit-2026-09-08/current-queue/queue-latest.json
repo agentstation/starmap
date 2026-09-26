@@ -1,15 +1,15 @@
 {
-  "checked_at": "2026-09-26T08:28:02.158151+00:00",
+  "checked_at": "2026-09-26T08:30:03.163189+00:00",
   "starmap": [
     {
       "pr": 182,
       "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
       "branch": "codex/catalog-native-consumer-qualification",
       "state": "OPEN",
-      "draft": true,
+      "draft": false,
       "owner": "CSP8",
       "checks_run": 36228899978,
-      "disposition": "Keep. Reviewed recovery scheduling repair is published. Native CI runs against the current head.",
+      "disposition": "Keep. Ready for review at the reviewed exact head; native and race qualification remain active.",
       "next_action": "Capture successful native evidence, verify current head and base, then merge the producer before updating the consumer module."
     }
   ],
@@ -196,13 +196,13 @@
     }
   ],
   "plan_validation": {
-    "changed_plan_strict_lint": "PASS: plan and repository findings; two files, zero diagnostics.",
+    "changed_plan_strict_lint": "PASS: one file, zero diagnostics.",
     "repository_technical_writing_check": "FAIL: 1698 files, 69 unchanged historical diagnostics.",
     "ledger": "40 rows, 16 terminal, CSP8 only in_progress.",
     "local_links": "PASS: all 114 local links resolve.",
     "diff_check": "PASS",
     "writing_log": {
-      "path": "../../csp9/issued-material/plan-writing.log.gz",
+      "path": "native-182-ready-writing.log.gz",
       "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
     }
   },
@@ -268,10 +268,21 @@
       "run": 36228899978,
       "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
       "status": "in_progress",
-      "passing_jobs": 18,
+      "passing_jobs": 20,
       "failed_jobs": 0
     },
-    "native_timing_proof": "../../csp8/native-182/current-timing/verification.json"
+    "native_timing_proof": "../../csp8/native-182/current-timing/verification.json",
+    "merge_preflight": {
+      "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+      "base": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+      "unresolved_review_threads": 0,
+      "strict_checks": [
+        "Security & Reliability",
+        "Verification Gate"
+      ],
+      "admin_enforcement": true,
+      "proof": "native-182-merge-preflight.json"
+    }
   },
   "csp8_acceptance": {
     "status": "interrupted for security repair",
