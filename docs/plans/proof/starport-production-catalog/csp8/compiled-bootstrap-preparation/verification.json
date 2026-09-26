@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-09-26T10:37:42.016114+00:00",
-  "state": "COMMITTED_LOCAL_QUALIFICATION_PENDING",
+  "checked_at": "2026-09-26T13:08:11.331424+00:00",
+  "state": "PUBLISHED_NATIVE_CI_PENDING",
   "sources": {
     "starmap-object-ci-repair": {
       "head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
@@ -271,7 +271,7 @@
     "The full producer gate failed on stale internal/embedded/README.md. Regenerate it before restarting the gate.",
     "Full checks, review, publication, native qualification, task acceptance, and merge remain open."
   ],
-  "next_action": "Await the owner decision on generated-binary review. All local gates pass at commit 0e53e6f9c. Do not publish without the required source review.",
+  "next_action": "Qualify producer PR #183 native CI, then merge under branch protection and update consumer PR #384.",
   "continuation": {
     "updated_at": "2026-09-26T10:51:25.146239+00:00",
     "generated_document": "internal/embedded/README.md regenerated with go generate ./internal/embedded. docs-check now passes.",
@@ -1521,13 +1521,13 @@
     }
   },
   "review": {
-    "session": 33485,
-    "status": "REFUSED_BINARY_INPUT_BEFORE_REVIEW",
-    "exit_code": 1,
-    "log": "autoreview-binary-refusal.log.gz",
+    "session": 77958,
+    "status": "PASS_APPROVED_GENERATED_ARTIFACT_SCOPE",
+    "exit_code": 0,
+    "log": "approved-source-review.log.gz",
     "commit": "0e53e6f9cbdaa5038d2b249bdcdd8a5b60c97edf",
     "selected_reviewer": "Claude Opus 5.5 high",
-    "model_invoked": false,
+    "model_invoked": true,
     "trufflehog": "PASS",
     "reason": "The helper rejects any binary change in the full branch diff. No supported generated-file exception exists.",
     "owner_question": "Allow complete source review plus deterministic generated-payload verification, or first repair binary support in the review helper.",
@@ -1556,6 +1556,47 @@
       "publication": "NOT_ATTEMPTED",
       "decision_request": "PENDING",
       "completion": "UNPROVEN_16_OF_40_TASKS_DONE"
+    },
+    "initial_refusal": {
+      "status": "REFUSED_BINARY_INPUT_BEFORE_REVIEW",
+      "exit_code": 1,
+      "log": "autoreview-binary-refusal.log.gz",
+      "model_invoked": false,
+      "trufflehog": "PASS",
+      "reason": "The helper rejects any binary change in the full branch diff. No supported generated-file exception exists."
+    },
+    "owner_decision": "Approved complete source review plus independent deterministic generated-file verification on 2026-09-26.",
+    "source_review_snapshot": "07fd2621bb72d4b3d86273126a467b6e842405c1",
+    "artifact_verification": "approved-artifact-verification.json",
+    "review_passes": 1,
+    "threshold": "P0",
+    "findings": 0,
+    "payload_tests": {
+      "named_results": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0,
+      "log": "approved-payload-race.jsonl.gz"
+    },
+    "approved_plan_validation": {
+      "writing_exit_code": 2,
+      "historical_diagnostics": 69,
+      "new_diagnostics": 0,
+      "exact_previous_match": true,
+      "log": "approved-review-plan-writing.log.gz"
     }
+  },
+  "publication": {
+    "url": "https://github.com/agentstation/starmap/pull/183",
+    "head": "0e53e6f9cbdaa5038d2b249bdcdd8a5b60c97edf",
+    "base": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+    "native_run": 36244159069,
+    "signature_verified": true,
+    "watch_session": 40342,
+    "watch_log": "/tmp/starmap-183-native-watch.log",
+    "capture_command": "python3 scripts/native_catalog.py --run 36244159069 --output /tmp/starmap-183-native-final",
+    "qualification_command": "python3 /tmp/qualify-starmap-183-native.py /tmp/starmap-183-native-final"
   }
 }

@@ -1,6 +1,20 @@
 {
-  "checked_at": "2026-09-26T12:44:09.656742+00:00",
-  "starmap": [],
+  "checked_at": "2026-09-26T13:08:54.867775+00:00",
+  "starmap": [
+    {
+      "pr": 183,
+      "head": "0e53e6f9cbdaa5038d2b249bdcdd8a5b60c97edf",
+      "branch": "codex/catalog-bootstrap-payload",
+      "base": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+      "state": "OPEN",
+      "draft": true,
+      "owner": "CSP8",
+      "checks_run": 36244159069,
+      "watch_session": 40342,
+      "disposition": "Keep. Reviewed compiled catalog repair awaits native CI.",
+      "next_action": "Verify exact-head checks and review threads, then merge under branch protection."
+    }
+  ],
   "starport": [
     {
       "pr": 384,
@@ -11,7 +25,7 @@
       "owner": "CSP8",
       "checks_run": 36234492082,
       "disposition": "Keep. Native CI failed on both macOS jobs and Windows ARM64.",
-      "next_action": "Resolve producer review, publish and qualify the producer, then pin its module. Complete final consumer qualification and full branch review before updating this PR.",
+      "next_action": "Qualify and merge producer PR #183, then pin its module. Complete final consumer qualification and full branch review before updating this PR.",
       "local_head": "24feb55198d3a8aaa585fed874adbb172313ad8f",
       "native_failure_proof": "../../csp8/native-schedule-384/native-failure-current.json",
       "local_changes": [],
@@ -745,12 +759,16 @@
   "producer_preparation": {
     "branch": "codex/catalog-bootstrap-payload",
     "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
-    "state": "committed",
+    "state": "published_native_ci_pending",
     "proof": "../../csp8/compiled-bootstrap-preparation/verification.json",
-    "next_action": "Await owner decision on the generated-binary review restriction. Complete source review before publication.",
+    "next_action": "Qualify producer PR #183 native CI, then merge under branch protection and update consumer PR #384.",
     "gate_session": 93064,
     "gate_status": "PASS",
     "head": "0e53e6f9cbdaa5038d2b249bdcdd8a5b60c97edf",
-    "gate_exit_code": 0
+    "gate_exit_code": 0,
+    "review_status": "PASS_APPROVED_GENERATED_ARTIFACT_SCOPE",
+    "pr": 183,
+    "url": "https://github.com/agentstation/starmap/pull/183",
+    "native_run": 36244159069
   }
 }
