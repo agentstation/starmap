@@ -12,8 +12,8 @@
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Platform-policy changes committed locally; review and native qualification pending",
-      "next_action": "Complete review and required final-head checks before merge. Merge Starmap before Starport."
+      "disposition": "Local platform update verified; fleet review findings prevent publication and merge",
+      "next_action": "Resolve producer upgrade/admission and consumer retention/startup/standalone findings. Preserve the completed D39 changes. Review and qualify final heads before publication and dependency-ordered merges."
     }
   ],
   "starport": [
@@ -28,8 +28,8 @@
       "title": "catalog: fence fleet publication and recover shared acquisition state",
       "url": "https://github.com/agentstation/starport/pull/385",
       "owner": "CSP11",
-      "disposition": "Platform-policy changes committed locally; review and native qualification pending",
-      "next_action": "Resolve the verified fleet review findings, then review and qualify the final head before publication and merge."
+      "disposition": "Local platform update verified; fleet review findings prevent publication and merge",
+      "next_action": "Resolve producer upgrade/admission and consumer retention/startup/standalone findings. Preserve the completed D39 changes. Review and qualify final heads before publication and dependency-ordered merges."
     }
   ],
   "completed_merges": [
@@ -836,7 +836,7 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Resolve the verified fleet review findings, then review and qualify the final head before publication and merge.",
+    "next_action": "Resolve producer upgrade/admission and consumer retention/startup/standalone findings. Preserve the completed D39 changes. Review and qualify final heads before publication and dependency-ordered merges.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "blocked_task": "CSP10.2",
     "owner_question": "Native suspend qualification remains open. The owner has not changed this contract.",
@@ -875,7 +875,7 @@
     "consumer_base": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
     "proof": "../../csp11/isolation-scope-2026-09-26/verification.json",
     "owner": "CSP11",
-    "next_action": "Resolve the verified fleet review findings, then review and qualify the final head before publication and merge.",
+    "next_action": "Resolve producer upgrade/admission and consumer retention/startup/standalone findings. Preserve the completed D39 changes. Review and qualify final heads before publication and dependency-ordered merges.",
     "consumer": "527eeafd096a3567f330dd54d0d7c3745a71a572",
     "consumer_pr": 385,
     "ci": {
@@ -884,7 +884,9 @@
       "consumer_timeout_fix": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
       "consumer_status": "failure on 7068380bd; Intel managed-credential test depended on wall time; local deterministic repair passes."
     },
-    "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json"
+    "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json",
+    "review_status": "FINDINGS, no push or merge",
+    "running_sessions": []
   },
   "local_consumer_checkpoint": {
     "head": "527eeafd096a3567f330dd54d0d7c3745a71a572",

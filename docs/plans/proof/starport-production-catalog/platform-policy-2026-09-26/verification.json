@@ -55,7 +55,8 @@
     "New-head native CI and release archive qualification are pending. Local builds verify five Go 1.27.1 binaries for each product.",
     "Full Starmap actionlint reports pre-existing SC2024 for redirecting output from a sudo-run test. Syntax-only validation passes.",
     "Whole Starport document lint reports pre-existing diagnostics outside the changed passages. Changed prose passes.",
-    "Consumer full-branch review reports five findings across four issues. No consumer merge is authorized by these results."
+    "Consumer full-branch review reports five findings across four issues. No consumer merge is authorized by these results.",
+    "Producer pre-PR review did not pass. Two fleet findings require disposition and repair; no push or merge occurred."
   ],
   "review_disposition": {
     "recovery_initialization": "Confirmed absent. CSP12 owns fresh initialization; CSP13 owns populated recovery. Shared startup integration must not merge without a supported procedure or an approved scope arrangement.",
@@ -64,5 +65,23 @@
     "standalone_epoch_error": "Confirmed candidateFromState returns the epoch read error. Verify existing acceptance re-fencing before restoring previous behavior."
   },
   "task_status": "CSP11 remains in_progress; neither PR is merged.",
-  "branch_protection": "Inspected both main branches. Required aggregate checks remain unchanged; neither requires a retired Intel Mac job by name."
+  "branch_protection": "Inspected both main branches. Required aggregate checks remain unchanged; neither requires a retired Intel Mac job by name.",
+  "reviews": {
+    "producer": {
+      "status": "FINDINGS",
+      "findings": 2,
+      "reviewers": [
+        "gpt-6-sol high",
+        "claude-opus-5-5 high"
+      ],
+      "report": "producer-review.md",
+      "disposition": "Code inspection confirms baseline identity enters replay compatibility and implicit acquisition checks only retained provider layers. Define the upgrade transition and initial acquisition requirements before implementation."
+    },
+    "consumer": {
+      "status": "FINDINGS",
+      "findings": 5,
+      "report": "consumer-review.md",
+      "disposition": "See review_disposition. The claimed missing follower poll is rejected against the selected Starmap scheduler."
+    }
+  }
 }
