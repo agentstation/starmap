@@ -5854,6 +5854,12 @@
           "repository": "starmap",
           "package": "./runtime",
           "test": "TestFleetRuntimeRefusesUnacceptedPinOnFollower"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetCapabilityRetainsProviderMetadataAcrossPin"
         }
       ]
     },

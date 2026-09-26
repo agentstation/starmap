@@ -6,15 +6,17 @@ import (
 	"slices"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
 type fleetCapabilityProbe struct {
-	mu      sync.Mutex
-	denied  bool
-	request FleetAcquisitionRequirements
+	mu                      sync.Mutex
+	denied                  bool
+	request                 FleetAcquisitionRequirements
+	requireProviderMetadata bool
 }
 
 func (p *fleetCapabilityProbe) AcquireProviders(context.Context, AcquisitionRequest) (AcquisitionResult, error) {
@@ -24,6 +26,13 @@ func (p *fleetCapabilityProbe) CheckFleetAcquisition(_ context.Context, request 
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	p.request = request
+	if p.requireProviderMetadata {
+		for _, id := range request.Providers {
+			if _, err := request.Catalog.Provider(id); err != nil {
+				return err
+			}
+		}
+	}
 	if p.denied {
 		return errors.New("private credential location must not escape")
 	}
@@ -136,5 +145,58 @@ func TestFleetCapabilityChecksUnobservedProvidersBeforeGrant(t *testing.T) {
 	}
 	if connected.lease.status() != leaseHeld {
 		t.Fatal("replica did not recover ownership after capability recovery")
+	}
+}
+
+func TestFleetCapabilityRetainsProviderMetadataAcrossPin(t *testing.T) {
+	probe := &fleetCapabilityProbe{requireProviderMetadata: true}
+	backend := newFleetRuntimeBackend(t, WithAcquirer(probe))
+	open := func(id, pin string) *Runtime {
+		return openFleetRuntime(t, backend, id, privateRuntimeDirectory(t), WithAcquirer(probe), WithGenerationPin(pin))
+	}
+	leader := open("metadata-leader", "")
+	selected := leader.State().GenerationID
+	layer := testProviderLayer(t, "later-provider", "model", "Later Model", time.Now().UTC())
+	source := leader.source.(*stubSource)
+	source.mu.Lock()
+	source.replies = []SourceRead{testSourceRead(t, "later-source", layer.Payload, time.Now().UTC())}
+	source.mu.Unlock()
+	if _, err := leader.RefreshSource(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	_, err := leader.execute(t.Context(), runKindAcquisition, func(ctx context.Context, _ *RefreshReport, epoch uint64) error {
+		_, err := leader.publishInputChanges(ctx, nil, []ProviderLayer{layer}, epoch)
+		return err
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := leader.Close(); err != nil {
+		t.Fatal(err)
+	}
+	pinned := open("metadata-pin-owner", selected)
+	if _, err := pinned.Catalog().Provider(layer.ProviderID); err == nil {
+		t.Fatal("pin served a provider from a later generation")
+	}
+	if err := pinned.lease.renewOnce(t.Context()); err != nil {
+		t.Fatal("pin lost ownership while retained acquisition access remained available:", err)
+	}
+	probe.mu.Lock()
+	metadata, err := probe.request.Catalog.Provider(layer.ProviderID)
+	probe.mu.Unlock()
+	if err != nil || len(metadata.Models) != 0 {
+		t.Fatal("capability metadata retained model payloads:", err)
+	}
+	if err := pinned.Close(); err != nil {
+		t.Fatal(err)
+	}
+	unpin := open("metadata-unpin-owner", "")
+	status, _ := unpin.FleetStatus()
+	if !status.AcquisitionReady || unpin.lease.status() != leaseHeld {
+		t.Fatal("unpin could not acquire refresh ownership")
+	}
+	provider, err := unpin.Catalog().Provider(layer.ProviderID)
+	if err != nil || provider.Models["model"] == nil {
+		t.Fatal("unpin lost the retained provider model:", err)
 	}
 }

@@ -60,17 +60,18 @@ type layerSet struct {
 	embedded         starmap.CatalogState
 	embeddedManifest *catalogs.GenerationManifest
 	// fleetBaseline retains immutable bytes for replay without repeated catalog encoding.
-	fleetBaseline       *catalogs.Generation
-	source              *sourceLayer
-	providers           map[providerEvidenceKey]ProviderLayer
-	manual              *manualBatch
-	removals            *catalogs.CatalogRemovalPolicy
-	sequence            uint64
-	providerBindings    *providerBindingPolicy
-	acquisitionSources  *acquisitionSourcePolicy
-	buildEvidence       starmap.CandidateEvidence
-	acceptedSources     []sources.ID
-	sourceConfiguration []sources.SourceActivity
+	fleetBaseline           *catalogs.Generation
+	fleetAcquisitionCatalog *catalogs.Catalog
+	source                  *sourceLayer
+	providers               map[providerEvidenceKey]ProviderLayer
+	manual                  *manualBatch
+	removals                *catalogs.CatalogRemovalPolicy
+	sequence                uint64
+	providerBindings        *providerBindingPolicy
+	acquisitionSources      *acquisitionSourcePolicy
+	buildEvidence           starmap.CandidateEvidence
+	acceptedSources         []sources.ID
+	sourceConfiguration     []sources.SourceActivity
 }
 
 // empty reports whether any retained layer sits above the embedded baseline.
@@ -114,7 +115,7 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 		return starmap.CatalogState{}, err
 	}
 	if l.requireAuthority {
-		return l.buildAuthorityCatalog(baseline)
+		return l.buildAuthorityCatalog(ctx, baseline)
 	}
 	selected, err := l.selectedBaseline(baseline)
 	if err != nil {
@@ -160,6 +161,9 @@ func (l *layerSet) buildOnBaseline(ctx context.Context, selected starmap.Catalog
 			return starmap.CatalogState{}, errors.WrapResource(
 				"publish", "effective catalog", state.GenerationID, err)
 		}
+	}
+	if err := l.retainFleetAcquisitionCatalog(ctx, catalog); err != nil {
+		return starmap.CatalogState{}, err
 	}
 	catalog, err = l.applyRemovalPolicy(catalog)
 	if err != nil {

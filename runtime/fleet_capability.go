@@ -12,6 +12,7 @@ import (
 // Bindings declare scopes. Unbound providers retain the deployment's implicit acquisition policy.
 // No credential value or credential digest belongs in this record.
 type FleetAcquisitionRequirements struct {
+	// Catalog contains reconciled provider metadata and need not match the serving catalog.
 	Catalog   *catalogs.Catalog
 	Providers []catalogs.ProviderID
 	Bindings  []sources.ProviderAcquisitionBinding
@@ -31,7 +32,11 @@ func (r *Runtime) checkFleetAcquisition(ctx context.Context) error {
 	if replayErr != nil {
 		return replayErr
 	}
-	request := FleetAcquisitionRequirements{Catalog: r.client.CurrentCatalogState().Catalog}
+	catalog := layers.fleetAcquisitionCatalog
+	if catalog == nil {
+		catalog = r.client.CurrentCatalogState().Catalog
+	}
+	request := FleetAcquisitionRequirements{Catalog: catalog}
 	if layers.acquisitionSources.permits(sources.ProvidersID) {
 		if layers.providerBindings != nil {
 			request.Bindings, _ = layers.providerBindings.selected(nil)
@@ -70,4 +75,27 @@ func (r *Runtime) checkFleetAcquisition(ctx context.Context) error {
 	r.fleetCapabilityError = err
 	r.mu.Unlock()
 	return err
+}
+
+// retainFleetAcquisitionCatalog keeps credential metadata independent of serving pins and removals.
+func (l *layerSet) retainFleetAcquisitionCatalog(ctx context.Context, catalog *catalogs.Catalog) error {
+	if l.fleetBaseline == nil {
+		return nil
+	}
+	builder := catalogs.NewEmpty()
+	for _, provider := range catalog.Providers().List() {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
+		provider.Models = nil
+		if err := builder.SetProvider(provider); err != nil {
+			return err
+		}
+	}
+	metadata, err := builder.Build()
+	if err != nil {
+		return err
+	}
+	l.fleetAcquisitionCatalog = metadata
+	return nil
 }

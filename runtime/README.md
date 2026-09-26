@@ -763,7 +763,7 @@ func (o DirectoryOwner) Validate() error
 Validate checks the ownership identity without creating files.
 
 <a name="FleetAcquisitionChecker"></a>
-## type [FleetAcquisitionChecker](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_capability.go#L22-L24>)
+## type [FleetAcquisitionChecker](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_capability.go#L23-L25>)
 
 FleetAcquisitionChecker verifies access before grant acquisition or renewal. It must use acquisition credentials and must not fetch provider inventories.
 
@@ -774,12 +774,13 @@ type FleetAcquisitionChecker interface {
 ```
 
 <a name="FleetAcquisitionRequirements"></a>
-## type [FleetAcquisitionRequirements](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_capability.go#L14-L18>)
+## type [FleetAcquisitionRequirements](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_capability.go#L14-L19>)
 
 FleetAcquisitionRequirements identifies the acquisition access a refresh owner must retain. Bindings declare scopes. Unbound providers retain the deployment's implicit acquisition policy. No credential value or credential digest belongs in this record.
 
 ```go
 type FleetAcquisitionRequirements struct {
+    // Catalog contains reconciled provider metadata and need not match the serving catalog.
     Catalog   *catalogs.Catalog
     Providers []catalogs.ProviderID
     Bindings  []sources.ProviderAcquisitionBinding
