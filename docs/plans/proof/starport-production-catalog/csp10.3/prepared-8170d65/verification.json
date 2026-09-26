@@ -1,0 +1,67 @@
+{
+  "status": "PREPARATION_PASS",
+  "task": "CSP10.3",
+  "producer": "a6559d533ee2632378ece7b3ea6bc57826ea625e",
+  "consumer": "8170d65c3904279d4d219e57e3af95eced371d5a",
+  "selected_subcases": 7,
+  "gate": "PASS",
+  "commands": 3,
+  "test_events": {
+    "pass": 39
+  },
+  "measurements": [],
+  "services": [
+    {
+      "role": "durable",
+      "id": "6301f03e32ee654682ba26e50e01a45d73edde3ad96fedd3b4415a88d53f2b6d",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:51480"
+    },
+    {
+      "role": "cache",
+      "id": "62069e3fcb7c9b82cf052f83071b75f441eb83660f2f582854ddc51098913474",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:51481"
+    },
+    {
+      "role": "sql",
+      "id": "aa2ea48f18ec5622fad7987c6ffa8eaedb2a43d879a84b93fdf3186ed91176ad",
+      "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+      "address": "127.0.0.1:51482"
+    }
+  ],
+  "cleanup": [
+    {
+      "id": "6301f03e32ee654682ba26e50e01a45d73edde3ad96fedd3b4415a88d53f2b6d",
+      "exit_code": 0
+    },
+    {
+      "id": "62069e3fcb7c9b82cf052f83071b75f441eb83660f2f582854ddc51098913474",
+      "exit_code": 0
+    },
+    {
+      "id": "aa2ea48f18ec5622fad7987c6ffa8eaedb2a43d879a84b93fdf3186ed91176ad",
+      "exit_code": 0
+    }
+  ],
+  "scope": "Current source preparation. Dependency completion, complete task checks, and actual merge remain required. No task status changes.",
+  "artifacts": [
+    {
+      "path": "CSP10.3.json.gz",
+      "sha256": "b71278e202b982a13442795e947fe133bd862e285cf8e3ce58ff3e67d9c0402d"
+    },
+    {
+      "path": "CSP10.3.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "runner.json.gz",
+      "sha256": "939937d47f9db95e9694bf87b52e4650e8ba15104c84acd5c006ceacf62217ef"
+    }
+  ],
+  "time": "2026-09-26T14:55:25.571082+00:00",
+  "secret_scan": {
+    "status": "PASS",
+    "findings": 0
+  }
+}

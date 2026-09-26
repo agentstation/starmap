@@ -809,5 +809,21 @@
     "unverified": 1,
     "proof": "../../csp10.2/prepared-0a11033/verification.json",
     "remaining": "A46.validity_skew_withdrawal requires its registered clock contract."
+  },
+  "advisory_preparation": {
+    "consumer": "8170d65c3904279d4d219e57e3af95eced371d5a",
+    "status": "PASS",
+    "subcases": 7,
+    "test_events": 39,
+    "proof": "../../csp10.3/prepared-8170d65/verification.json",
+    "task_completed": false
+  },
+  "cache_preparation": {
+    "consumer": "8170d65c3904279d4d219e57e3af95eced371d5a",
+    "status": "PASS",
+    "subcases": 17,
+    "test_events": 139,
+    "proof": "../../csp12.1/prepared-8170d65/verification.json",
+    "task_completed": false
   }
 }

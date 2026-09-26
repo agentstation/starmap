@@ -1,0 +1,73 @@
+{
+  "status": "PREPARATION_PASS",
+  "task": "CSP12.1",
+  "producer": "a6559d533ee2632378ece7b3ea6bc57826ea625e",
+  "consumer": "8170d65c3904279d4d219e57e3af95eced371d5a",
+  "selected_subcases": 17,
+  "gate": "PASS",
+  "commands": 7,
+  "test_events": {
+    "pass": 139
+  },
+  "measurements": [
+    "capacity_test.go:77: 32 callers, 4096 keys per cache: retained heap delta=8604640 bytes; total allocations=89493720 bytes; response/model drops=5314; extraction drops=2611",
+    "default_capacity_test.go:64: default budgets: filled heap delta=317889768 churned heap delta=317475008 churn allocations=541951584",
+    "default_capacity_test.go:70: after close heap delta=15437448",
+    "shared_outage_test.go:78: paused service: 32 concurrent read+fill calls, p50=2.3285ms p95=2.537209ms max=2.582ms"
+  ],
+  "services": [
+    {
+      "role": "durable",
+      "id": "79aa4f2f9e4376b0172e6b830cbff26e85271a199af1eb4b194f85481b76dd28",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:51552"
+    },
+    {
+      "role": "cache",
+      "id": "7ac0e8b4113dab84c9f6bb5d6ae129a32c1180a231037b8125cb0eeb5c96ba17",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "address": "127.0.0.1:51553"
+    },
+    {
+      "role": "sql",
+      "id": "1c15a66e235cf0b8478dac86a3c9c327032431ae2d6938647d0e47e0ca05b69f",
+      "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+      "address": "127.0.0.1:51555"
+    }
+  ],
+  "cleanup": [
+    {
+      "id": "79aa4f2f9e4376b0172e6b830cbff26e85271a199af1eb4b194f85481b76dd28",
+      "exit_code": 0
+    },
+    {
+      "id": "7ac0e8b4113dab84c9f6bb5d6ae129a32c1180a231037b8125cb0eeb5c96ba17",
+      "exit_code": 0
+    },
+    {
+      "id": "1c15a66e235cf0b8478dac86a3c9c327032431ae2d6938647d0e47e0ca05b69f",
+      "exit_code": 0
+    }
+  ],
+  "scope": "Current source preparation. Dependency completion, complete task checks, and actual merge remain required. No task status changes.",
+  "artifacts": [
+    {
+      "path": "CSP12.1.json.gz",
+      "sha256": "bb9b59ce1b33fde9ed60b9071fe14a7cf8b4e7a8a949b68798fdf9000f06baa2"
+    },
+    {
+      "path": "CSP12.1.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "runner.json.gz",
+      "sha256": "7d767cee792db834a1f8761126fcbb6b047d07d70811d8ae0ae3ea473662f9d6"
+    }
+  ],
+  "time": "2026-09-26T14:55:25.602678+00:00",
+  "prior_run": "14 passing subcases and three UNVERIFIED because default-capacity and service-pause options were absent. Final run explicitly enables both against disposable services.",
+  "secret_scan": {
+    "status": "PASS",
+    "findings": 0
+  }
+}
