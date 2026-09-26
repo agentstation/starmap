@@ -128,7 +128,10 @@ class CatalogVerifierTests(unittest.TestCase):
         self.assertEqual(result['status'], 'UNVERIFIED', result)
 
     def test_skipped_child_cannot_pass_parent(self):
-        events = [{'Test': 'TestBudget/subcase', 'Action': 'skip'}, {'Test': 'TestBudget', 'Action': 'pass'}]
+        events = [dict(event, Package='github.com/agentstation/starmap/pkg/errors') for event in [
+            {'Test': 'TestBudget', 'Action': 'run'},
+            {'Test': 'TestBudget/subcase', 'Action': 'skip'},
+            {'Test': 'TestBudget', 'Action': 'pass'}, {'Action': 'pass'}]]
         output = subprocess.CompletedProcess([], 0, '\n'.join(map(json.dumps, events)), '')
         entry = {'kind': 'go_test', 'repository': 'starmap', 'package': './pkg/errors', 'test': 'TestBudget'}
         with patch.object(verifier.subprocess, 'run', return_value=output):
@@ -146,7 +149,9 @@ class CatalogVerifierTests(unittest.TestCase):
         entry = {'kind': 'go_test', 'repository': 'starmap', 'package': './pkg/errors', 'test': 'TestBudget'}
         roots = {'starmap': verifier.ROOT}
         for action, expected in [('pass', 'PASS'), ('skip', 'UNVERIFIED')]:
-            output = subprocess.CompletedProcess([], 0, json.dumps({'Test': 'TestBudget', 'Action': action}), '')
+            events = [dict(event, Package='github.com/agentstation/starmap/pkg/errors') for event in [
+                {'Test': 'TestBudget', 'Action': 'run'}, {'Test': 'TestBudget', 'Action': action}, {'Action': 'pass'}]]
+            output = subprocess.CompletedProcess([], 0, '\n'.join(map(json.dumps, events)), '')
             evidence = {}
             with patch.object(verifier.subprocess, 'run', return_value=output) as run:
                 first = verifier.run_check('first', entry, roots, evidence)
@@ -728,6 +733,28 @@ class NativeCatalogTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 self.validate()
 
+    def test_unselected_skips_are_reported_without_qualifying_them(self):
+        name = "native-runtime-windows-2025/tests.jsonl"
+        original = (self.root / name).read_text()
+        skipped = [
+            {"Package": self.test["package"], "Test": self.test["test"] + "Extra/child", "Action": "skip"},
+            {"Package": "github.com/agentstation/starmap/other", "Test": self.test["test"], "Action": "skip"},
+        ]
+        self.write(name, original + "\n" + "\n".join(map(json.dumps, skipped)))
+        result = next(item for item in self.validate() if item["architecture"] == "amd64")
+        self.assertEqual(result["unselected_skips"], skipped)
+        self.assertEqual(result["unprivileged_skips"], 0)
+
+    def test_required_parent_skip_and_unselected_failure_refuse(self):
+        name = "native-runtime-windows-2025/tests.jsonl"
+        original = (self.root / name).read_text()
+        for action, test in [("skip", self.test["test"]), ("fail", "TestOtherContract")]:
+            with self.subTest(action=action, test=test):
+                event = {"Package": self.test["package"], "Test": test, "Action": action}
+                self.write(name, original + "\n" + json.dumps(event))
+                with self.assertRaises(ValueError):
+                    self.validate()
+
     def test_absent_capture_is_unverified(self):
         self.assertEqual(native_catalog.verify(self.root, {"platform": "windows", "tests": [self.test]})["status"], "UNVERIFIED")
 
@@ -770,6 +797,123 @@ class NativeCatalogTests(unittest.TestCase):
         (repository / "new_test.go").write_text("package main\n")
         with self.assertRaises(ValueError):
             native_catalog.unchanged_source(repository, revision)
+
+
+class CatalogGoBatchTests(unittest.TestCase):
+    package = 'github.com/agentstation/starmap/pkg/errors'
+
+    def entry(self, name):
+        return {'kind': 'go_test', 'repository': 'starmap', 'package': './pkg/errors', 'test': name}
+
+    def events(self, names):
+        events = []
+        for name in names:
+            events.extend([{'Package': self.package, 'Test': name, 'Action': action} for action in ['run', 'pass']])
+        events.append({'Package': self.package, 'Action': 'pass'})
+        return events
+
+    def result(self, events):
+        return subprocess.CompletedProcess([], 0, '\n'.join(map(json.dumps, events)), '')
+
+    def test_selected_names_share_one_process_and_duplicates_reuse_evidence(self):
+        entries = [self.entry('TestAlpha'), {'kind': 'all', 'checks': [self.entry('TestBravo'), self.entry('TestAlpha')]}]
+        roots = {'starmap': verifier.ROOT}
+        with patch.object(verifier.subprocess, 'run', return_value=self.result(self.events(['TestAlpha', 'TestBravo']))) as run:
+            evidence = verifier.GoEvidence(entries, roots)
+            self.assertEqual(run.call_count, 0)
+            for name in ['TestAlpha', 'TestBravo', 'TestAlpha']:
+                self.assertEqual(verifier.run_check(name, self.entry(name), roots, evidence)['status'], 'PASS')
+            self.assertEqual(run.call_count, 1)
+            self.assertIn('^(TestAlpha|TestBravo)$', run.call_args.args[0])
+            self.assertIn('-count=1', run.call_args.args[0])
+            self.assertIn('-race', run.call_args.args[0])
+            self.assertIn('5m', run.call_args.args[0])
+
+    def test_skip_is_bound_to_its_named_parent(self):
+        entries = [self.entry('TestAlpha'), self.entry('TestBravo')]
+        roots = {'starmap': verifier.ROOT}
+        events = self.events(['TestAlpha', 'TestBravo'])
+        events.insert(2, {'Package': self.package, 'Test': 'TestBravo/required', 'Action': 'skip'})
+        with patch.object(verifier.subprocess, 'run', return_value=self.result(events)):
+            evidence = verifier.GoEvidence(entries, roots)
+            self.assertEqual(verifier.run_check('alpha', entries[0], roots, evidence)['status'], 'PASS')
+            self.assertEqual(verifier.run_check('bravo', entries[1], roots, evidence)['status'], 'UNVERIFIED')
+
+    def test_partial_duplicate_corrupt_or_wrong_package_stream_never_passes(self):
+        good = self.events(['TestAlpha'])
+        variants = [good[1:], good[:-1], good + [good[0]], good + [good[1]],
+                    [dict(e, Package='example.test/other') for e in good],
+                    good + [[]], good + [{'Action': 'skip', 'Test': None}]]
+        for events in variants:
+            with self.subTest(events=events), patch.object(verifier.subprocess, 'run', return_value=self.result(events)):
+                result = verifier.run_check('alpha', self.entry('TestAlpha'), {'starmap': verifier.ROOT})
+                self.assertEqual(result['status'], 'UNVERIFIED')
+        output = self.result(good)
+        output.stdout += '\nnot JSON'
+        with patch.object(verifier.subprocess, 'run', return_value=output):
+            self.assertEqual(verifier.run_check('alpha', self.entry('TestAlpha'), {'starmap': verifier.ROOT})['status'], 'UNVERIFIED')
+
+    def test_failed_event_refuses_successful_exit_code(self):
+        events = self.events(['TestAlpha']) + [{'Package': self.package, 'Test': 'TestAlpha/child', 'Action': 'fail'}]
+        with patch.object(verifier.subprocess, 'run', return_value=self.result(events)):
+            self.assertEqual(verifier.run_check('alpha', self.entry('TestAlpha'), {'starmap': verifier.ROOT})['status'], 'FAIL')
+
+    def test_roots_do_not_share_process_results(self):
+        with tempfile.TemporaryDirectory() as directory:
+            other = Path(directory)
+            (other / 'go.mod').write_text('module github.com/agentstation/starmap\n\ngo 1.27.1\n')
+            roots = {'starmap': verifier.ROOT, 'other': other}
+            entries = [self.entry('TestAlpha'), dict(self.entry('TestAlpha'), repository='other')]
+            with patch.object(verifier.subprocess, 'run', return_value=self.result(self.events(['TestAlpha']))) as run:
+                evidence = verifier.GoEvidence(entries, roots)
+                for entry in entries:
+                    self.assertEqual(verifier.run_check('alpha', entry, roots, evidence)['status'], 'PASS')
+                self.assertEqual(run.call_count, 2)
+
+    def test_batch_policy_requires_a_boolean(self):
+        for value in [None, 0, 1, 'false', [], {}]:
+            with self.subTest(value=value), patch.object(verifier.subprocess, 'run') as run:
+                entry = dict(self.entry('TestAlpha'), batch=value)
+                result = verifier.run_check('alpha', entry, {'starmap': verifier.ROOT})
+                self.assertEqual(result['status'], 'FAIL')
+                run.assert_not_called()
+
+    def test_real_go_selection_skip_and_invocation_lifetime(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'go.mod').write_text('module example.test/cohort\n\ngo 1.27.1\n')
+            (root / 'cohort_test.go').write_text(r'''package cohort
+import ("os"; "testing")
+func TestMain(m *testing.M) {
+ f, err := os.OpenFile("processes", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
+ if err != nil { os.Exit(2) }
+ if _, err = f.WriteString("run\n"); err != nil { os.Exit(2) }
+ if err = f.Close(); err != nil { os.Exit(2) }
+ os.Exit(m.Run())
+}
+func TestAlpha(t *testing.T) { t.Run("child", func(t *testing.T) {}) }
+func TestBravo(t *testing.T) {}
+func TestSkipped(t *testing.T) { t.Skip("fixture skip") }
+''')
+            roots = {'starmap': root}
+            entries = [dict(self.entry(name), package='./') for name in ['TestAlpha', 'TestBravo']]
+            for invocation in range(1, 3):
+                evidence = verifier.GoEvidence(entries, roots)
+                for entry in entries:
+                    result = verifier.run_check(entry['test'], entry, roots, evidence)
+                    self.assertEqual(result['status'], 'PASS', result)
+                self.assertEqual((root / 'processes').read_text().splitlines(), ['run'] * invocation)
+            skipped = dict(self.entry('TestSkipped'), package='./')
+            evidence = verifier.GoEvidence([entries[0], skipped], roots)
+            self.assertEqual(verifier.run_check('alpha', entries[0], roots, evidence)['status'], 'PASS')
+            self.assertEqual(verifier.run_check('skipped', skipped, roots, evidence)['status'], 'UNVERIFIED')
+            self.assertEqual((root / 'processes').read_text().splitlines(), ['run'] * 3)
+            isolated = dict(entries[1], batch=False)
+            evidence = verifier.GoEvidence([entries[0], isolated, entries[1]], roots)
+            for entry in [entries[0], isolated, entries[1]]:
+                result = verifier.run_check(entry['test'], entry, roots, evidence)
+                self.assertEqual(result['status'], 'PASS', result)
+            self.assertEqual((root / 'processes').read_text().splitlines(), ['run'] * 5)
 
 
 if __name__ == '__main__':
