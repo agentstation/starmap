@@ -36,12 +36,7 @@ func fleetLayerCompatibility(layers layerSet) (string, error) {
 	return fleetRecoveryChecksum(data), nil
 }
 
-// recoverFleetLayers rejects incompatible replay before replacing any local inputs.
-func recoverFleetLayers(ctx context.Context, snapshot FleetSnapshot, local layerSet) (layerSet, error) {
-	layers, _, err := recoverFleetState(ctx, snapshot, local)
-	return layers, err
-}
-
+// recoverFleetState rejects incompatible replay before replacing any local inputs.
 func recoverFleetState(ctx context.Context, snapshot FleetSnapshot, local layerSet) (layerSet, *generationPinRecord, error) {
 	if err := ctx.Err(); err != nil {
 		return layerSet{}, nil, err

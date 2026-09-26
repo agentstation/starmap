@@ -62,10 +62,6 @@ func validFleetChecksum(value string) bool {
 	return err == nil && len(digest) == sha256.Size && hex.EncodeToString(digest) == value
 }
 
-func encodeFleetRecovery(ctx context.Context, layers layerSet) ([]byte, error) {
-	return encodeFleetRecoveryWithPin(ctx, layers, nil)
-}
-
 func encodeFleetRecoveryWithPin(ctx context.Context, layers layerSet, pin *generationPinRecord) ([]byte, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
@@ -110,14 +106,6 @@ func encodeFleetRecoveryWithPin(ctx context.Context, layers layerSet, pin *gener
 		return nil, invalidInputPublication("fleet recovery exceeds the input byte bound")
 	}
 	return data, nil
-}
-
-func decodeFleetRecovery(ctx context.Context, data []byte) (layerSet, error) {
-	record, err := readFleetRecovery(ctx, data)
-	if err != nil {
-		return layerSet{}, err
-	}
-	return decodeFleetRecoveryRecord(ctx, record)
 }
 
 func readFleetRecovery(ctx context.Context, data []byte) (fleetRecoveryRecord, error) {

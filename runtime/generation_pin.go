@@ -105,19 +105,10 @@ func (r *Runtime) initializeGenerationPin(ctx context.Context) error {
 // The private capability does not reach acquisition callbacks or callers of Client.
 func (r *Runtime) publishGenerationPin(ctx context.Context) error {
 	target := catalogs.Generation{Manifest: r.pinnedSource.Manifest.Copy(), Payload: r.pinnedSource.Payload}
-	record := r.pinRecord
-	if record != nil && (record.Phase == pinReleased || record.Receipt.SelectedGenerationID != r.config.generationPin) {
-		record = nil
-	}
 	current := r.client.CurrentCatalogState()
-	if record != nil && record.Receipt.PayloadChecksum != target.Manifest.Payload.Checksum {
-		return pinRecordConflict("the selected payload differs from its acceptance record")
-	}
-	if record != nil && record.Phase == pinAccepted && current.GenerationID != record.Receipt.AcceptedGenerationID {
-		return pinRecordConflict("the catalog changed after pin acceptance")
-	}
-	if record != nil && current.GenerationID != record.Receipt.PreviousGenerationID && current.GenerationID != record.Receipt.AcceptedGenerationID {
-		return pinRecordConflict("the catalog differs from both recorded publication states")
+	record, err := r.selectPinAcceptance(target, current)
+	if err != nil {
+		return err
 	}
 	generation, err := r.preparePinGeneration(ctx, target, record)
 	if err != nil {
@@ -191,4 +182,22 @@ func (r *Runtime) selectedAuthoritySource() *sourceLayer {
 		return r.pinnedSource
 	}
 	return r.layers.source
+}
+
+// selectPinAcceptance validates any retained receipt against the selected and current generations.
+func (r *Runtime) selectPinAcceptance(target catalogs.Generation, current starmap.CatalogState) (*generationPinRecord, error) {
+	record := r.pinRecord
+	if record != nil && (record.Phase == pinReleased || record.Receipt.SelectedGenerationID != r.config.generationPin) {
+		record = nil
+	}
+	if record != nil && record.Receipt.PayloadChecksum != target.Manifest.Payload.Checksum {
+		return nil, pinRecordConflict("the selected payload differs from its acceptance record")
+	}
+	if record != nil && record.Phase == pinAccepted && current.GenerationID != record.Receipt.AcceptedGenerationID {
+		return nil, pinRecordConflict("the catalog changed after pin acceptance")
+	}
+	if record != nil && current.GenerationID != record.Receipt.PreviousGenerationID && current.GenerationID != record.Receipt.AcceptedGenerationID {
+		return nil, pinRecordConflict("the catalog differs from both recorded publication states")
+	}
+	return record, nil
 }

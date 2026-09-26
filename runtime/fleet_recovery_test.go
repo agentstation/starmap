@@ -31,7 +31,7 @@ func TestFleetRecoveryPreservesNextPartialMerge(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	raw, err := encodeFleetRecovery(t.Context(), layers)
+	raw, err := encodeFleetRecoveryWithPin(t.Context(), layers, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -180,7 +180,7 @@ func TestFleetRecoveryPreservesSourceResetsAndRemovals(t *testing.T) {
 	}
 	layers := layerSet{publisherID: "deployment", source: source, manual: history,
 		removals: &catalogs.CatalogRemovalPolicy{PublisherID: "deployment", Targets: []catalogs.CatalogRemovalTarget{target}}}
-	raw, err := encodeFleetRecovery(t.Context(), layers)
+	raw, err := encodeFleetRecoveryWithPin(t.Context(), layers, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -199,4 +199,12 @@ func TestFleetRecoveryPreservesSourceResetsAndRemovals(t *testing.T) {
 	if recovered.manual.reference != "" || recovered.manual.parent != nil {
 		t.Fatal("recovery depends on a former leader filesystem reference")
 	}
+}
+
+func decodeFleetRecovery(ctx context.Context, data []byte) (layerSet, error) {
+	record, err := readFleetRecovery(ctx, data)
+	if err != nil {
+		return layerSet{}, err
+	}
+	return decodeFleetRecoveryRecord(ctx, record)
 }

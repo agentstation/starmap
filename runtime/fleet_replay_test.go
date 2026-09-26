@@ -17,7 +17,7 @@ func fleetReplayFixture(t *testing.T) (FleetSnapshot, layerSet) {
 	}
 	local := layerSet{publisherID: "deployment", embedded: starmap.CatalogState{GenerationID: p.Generation.Manifest.GenerationID,
 		PayloadChecksum: p.Generation.Manifest.Payload.Checksum, Catalog: catalog, GeneratedAt: p.Generation.Manifest.GeneratedAt}}
-	p.Recovery.Data, err = encodeFleetRecovery(t.Context(), local)
+	p.Recovery.Data, err = encodeFleetRecoveryWithPin(t.Context(), local, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,7 +27,7 @@ func fleetReplayFixture(t *testing.T) (FleetSnapshot, layerSet) {
 
 func TestFleetReplayRequiresEquivalentBaselineAndPolicy(t *testing.T) {
 	snapshot, local := fleetReplayFixture(t)
-	if _, err := recoverFleetLayers(t.Context(), snapshot, local); err != nil {
+	if _, _, err := recoverFleetState(t.Context(), snapshot, local); err != nil {
 		t.Fatal(err)
 	}
 	for _, scenario := range []struct {
@@ -49,7 +49,7 @@ func TestFleetReplayRequiresEquivalentBaselineAndPolicy(t *testing.T) {
 		t.Run(scenario.name, func(t *testing.T) {
 			incompatible := local
 			scenario.change(&incompatible)
-			if _, err := recoverFleetLayers(t.Context(), snapshot, incompatible); err == nil {
+			if _, _, err := recoverFleetState(t.Context(), snapshot, incompatible); err == nil {
 				t.Fatal("recovery accepted different acquisition semantics")
 			}
 		})
@@ -65,7 +65,7 @@ func TestFleetReplayRejectsInputsThatDoNotReproduceCatalog(t *testing.T) {
 	}
 	changed := local
 	changed.manual = &manualBatch{observations: prepared}
-	data, err := encodeFleetRecovery(t.Context(), changed)
+	data, err := encodeFleetRecoveryWithPin(t.Context(), changed, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -75,7 +75,7 @@ func TestFleetReplayRejectsInputsThatDoNotReproduceCatalog(t *testing.T) {
 	if err := snapshot.Validate(); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := recoverFleetLayers(t.Context(), snapshot, local); err == nil {
+	if _, _, err := recoverFleetState(t.Context(), snapshot, local); err == nil {
 		t.Fatal("recovery accepted valid inputs for a different effective catalog")
 	}
 	if local.manual != nil {

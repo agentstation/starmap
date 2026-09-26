@@ -55,3 +55,12 @@ func (c inputChanges) complete(ctx context.Context, store *layerStore, record in
 	}
 	return store.completeInputPublication(ctx, record, c.source, c.providers)
 }
+
+// preparePublication stages local inputs and records their pending catalog publication.
+func (c inputChanges) preparePublication(ctx context.Context, store *layerStore, record inputPublication) (inputPublication, error) {
+	record, err := c.stage(ctx, store, record)
+	if err != nil {
+		return record, err
+	}
+	return record, store.writeInputPublication(ctx, record)
+}

@@ -98,7 +98,7 @@ func TestFleetCommitPreservesOriginalGrantAndInputsOnRetry(t *testing.T) {
 	backend := &fleetRecordingStore{err: stderrors.New("ambiguous backend response")}
 	store := &fleetCommitStore{FleetStore: backend}
 	p := fleetTestPublication(t)
-	ctx, attempt, err := store.prepare(t.Context(), p.Grant, p.Expected, layerSet{publisherID: "deployment"})
+	ctx, attempt, err := store.prepareWithPin(t.Context(), p.Grant, p.Expected, layerSet{publisherID: "deployment"}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -128,7 +128,7 @@ func TestFleetCommitRefusesUnownedContextsAndWrongPredecessor(t *testing.T) {
 	backend := &fleetRecordingStore{}
 	store := &fleetCommitStore{FleetStore: backend}
 	p := fleetTestPublication(t)
-	ctx, _, err := store.prepare(t.Context(), p.Grant, p.Expected, layerSet{publisherID: "deployment"})
+	ctx, _, err := store.prepareWithPin(t.Context(), p.Grant, p.Expected, layerSet{publisherID: "deployment"}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -156,7 +156,7 @@ func TestFleetCommitRejectsMismatchedBackendReceipt(t *testing.T) {
 	backend := &fleetRecordingStore{wrongHead: true}
 	store := &fleetCommitStore{FleetStore: backend}
 	p := fleetTestPublication(t)
-	ctx, attempt, err := store.prepare(t.Context(), p.Grant, p.Expected, layerSet{publisherID: "deployment"})
+	ctx, attempt, err := store.prepareWithPin(t.Context(), p.Grant, p.Expected, layerSet{publisherID: "deployment"}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

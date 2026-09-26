@@ -219,18 +219,8 @@ func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 	if err != nil {
 		return nil, errors.WrapResource("prepare", "runtime instance seed", "", err)
 	}
-	clientContext, initialFleet, err := config.readFleetBootstrap(ctx)
+	client, initialFleet, err := config.openServingClient(ctx)
 	if err != nil {
-		return nil, err
-	}
-	client, err := starmap.NewContext(clientContext, config.acquisitionPolicyClientOptions()...)
-	if err != nil {
-		return nil, err
-	}
-	if err := config.validateStoredAuthoritySelection(client.CurrentCatalogState().AuthorityHead); err != nil {
-		return nil, err
-	}
-	if err := repairWorkspaceForStartup(ctx, client); err != nil {
 		return nil, err
 	}
 
@@ -254,20 +244,9 @@ func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 	if err := runtime.initializeRetainedState(ctx, initialFleet); err != nil {
 		return nil, err
 	}
-	runtime.adoptSourceIdentity()
-	runtime.lease = newLeaseKeeper(
-		runtime.config.leaseStore,
-		runtime.schedule.identity.Instance,
-		runtime.config.now,
-	)
-	if err := runtime.lease.start(runtime.ctx, &runtime.work, runtime.onLeaseLost, !runtime.originFollowed && runtime.fleetReplayError == nil); err != nil {
+	ctx, err = runtime.initializeRefreshOwnership(ctx)
+	if err != nil {
 		return nil, err
-	}
-	if config.fleetStore != nil && runtime.lease.status() == leaseHeld {
-		ctx, err = runtime.captureFleetGrant(ctx, runtime.lease.epoch())
-		if err != nil {
-			return nil, err
-		}
 	}
 
 	if err := runtime.publishAcquisitionPolicyStartup(ctx); err != nil {

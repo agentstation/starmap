@@ -49,7 +49,7 @@ func newFleetRuntimeBackend(t *testing.T) *fleetTestBackend {
 	if err != nil {
 		t.Fatal(err)
 	}
-	p.Recovery.Data, err = encodeFleetRecovery(t.Context(), layers)
+	p.Recovery.Data, err = encodeFleetRecoveryWithPin(t.Context(), layers, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

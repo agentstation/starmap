@@ -104,11 +104,8 @@ func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceL
 	}
 	changed := r.config.fleetStore == nil && !changes.empty()
 	if changed {
-		record, err = changes.stage(ctx, r.store, record)
+		record, err = changes.preparePublication(ctx, r.store, record)
 		if err != nil {
-			return starmap.CatalogState{}, err
-		}
-		if err := r.store.writeInputPublication(ctx, record); err != nil {
 			return starmap.CatalogState{}, err
 		}
 	}

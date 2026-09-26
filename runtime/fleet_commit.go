@@ -53,10 +53,6 @@ type fleetCommit struct {
 	attemptChecksum string
 }
 
-func (s *fleetCommitStore) prepare(ctx context.Context, grant Lease, expected FleetHead, layers layerSet) (context.Context, *fleetCommit, error) {
-	return s.prepareWithPin(ctx, grant, expected, layers, nil)
-}
-
 func (s *fleetCommitStore) prepareWithPin(ctx context.Context, grant Lease, expected FleetHead, layers layerSet, pin *generationPinRecord) (context.Context, *fleetCommit, error) {
 	if err := grant.validateFleet(); err != nil {
 		return nil, nil, err
