@@ -1,0 +1,58 @@
+[
+  {
+    "repository": "starmap-object-ci-repair",
+    "command": [
+      "goreleaser",
+      "check"
+    ],
+    "exit_code": 0,
+    "output": "  \u2022 checking                                  path=.goreleaser.yaml\n  \u2022 1 configuration file(s) validated\n  \u2022 thanks for using GoReleaser!\n"
+  },
+  {
+    "repository": "starmap-object-ci-repair",
+    "command": [
+      "actionlint",
+      "-shellcheck="
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "repository": "starmap-object-ci-repair",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "repository": "starport-native-catalog",
+    "command": [
+      "goreleaser",
+      "check"
+    ],
+    "exit_code": 0,
+    "output": "  \u2022 checking                                  path=.goreleaser.yaml\n  \u2022 1 configuration file(s) validated\n  \u2022 thanks for using GoReleaser!\n"
+  },
+  {
+    "repository": "starport-native-catalog",
+    "command": [
+      "actionlint",
+      "-shellcheck="
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "repository": "starport-native-catalog",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  }
+]

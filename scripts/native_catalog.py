@@ -11,7 +11,7 @@ from pathlib import Path
 REPOSITORY = "agentstation/starmap"
 RUNNERS = {
     "linux": {"amd64": "ubuntu-24.04", "arm64": "ubuntu-24.04-arm"},
-    "darwin": {"amd64": "macos-15-intel", "arm64": "macos-15"},
+    "darwin": {"arm64": "macos-15"},
     "windows": {"amd64": "windows-2025", "arm64": "windows-11-arm"},
 }
 PROOF = "docs/plans/proof/starport-production-catalog/csp2/native-qualification"
@@ -106,7 +106,7 @@ def verify(root, entry):
         validate_run(proof["run"])
         unchanged_source(root, proof["run"]["headSha"])
         observations = validate_platform(directory, proof, entry.get("platform"), entry.get("tests"))
-        return {"status": "PASS", "scope": "Recorded native component tests on both supported architectures.",
+        return {"status": "PASS", "scope": "Recorded native component tests on the supported architectures.",
                 "run": proof["run"]["url"], "source_commit": proof["run"]["headSha"], "observations": observations}
     except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
         return {"status": "UNVERIFIED", "reason": str(error)}

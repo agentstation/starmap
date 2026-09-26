@@ -1,0 +1,11 @@
+{
+  "baseRefName": "main",
+  "baseRefOid": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
+  "headRefName": "codex/catalog-fleet-adapter",
+  "headRefOid": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
+  "isDraft": true,
+  "mergeStateStatus": "UNSTABLE",
+  "number": 385,
+  "title": "catalog: fence fleet publication and recover shared acquisition state",
+  "url": "https://github.com/agentstation/starport/pull/385"
+}

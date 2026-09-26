@@ -34,6 +34,24 @@ Earlier toolchain results remain historical evidence. They do not qualify Go 1.2
 Dependency budgets count product and third-party packages. The compiler owns standard-library package counts.
 Forbidden-import checks must still inspect the complete dependency graph, including standard-library database adapters.
 
+## Supported operating systems and processors
+
+D39 defines five targets for both products:
+
+| Operating system | Supported processors |
+|---|---|
+| macOS | Apple silicon (`arm64`) |
+| Linux | x86-64 (`amd64`) and ARM64 (`arm64`) |
+| Windows | x86-64 (`amd64`) and ARM64 (`arm64`) |
+
+CI, native qualification, release archives, and installers must use this matrix.
+New releases must omit `darwin/amd64`. Homebrew must reject Intel Macs without excluding Linux x86-64.
+The catalog publisher must not require a retired Intel Mac check.
+Keep race detection on supported targets where Go provides it. Preserve all distinct storage, recovery, pure-Go, capacity, and performance checks.
+
+Historical Intel Mac releases and test evidence remain available. They do not define the current support boundary.
+Go 1.27.1 remains the exact toolchain for every supported target.
+
 ## 1. Ownership and composition
 
 ```mermaid

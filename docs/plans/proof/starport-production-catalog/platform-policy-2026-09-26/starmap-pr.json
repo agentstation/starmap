@@ -1,0 +1,11 @@
+{
+  "baseRefName": "main",
+  "baseRefOid": "8122081e0494648fb1e356647053dd870a05fb1c",
+  "headRefName": "codex/catalog-fleet-contract",
+  "headRefOid": "1135eb46f2d2bd54e775770325bf2f3a38e4e3a7",
+  "isDraft": true,
+  "mergeStateStatus": "UNSTABLE",
+  "number": 185,
+  "title": "runtime: fence fleet publication and retain recovery inputs",
+  "url": "https://github.com/agentstation/starmap/pull/185"
+}

@@ -85,6 +85,9 @@ Starmap provides:
 
 ## Installation
 
+Supported targets are macOS on Apple silicon, Linux on x86-64 and ARM64, and Windows on x86-64 and ARM64.
+New releases do not support Intel Macs. Historical Intel Mac archives remain available.
+
 ### CLI Tool
 
 ```bash

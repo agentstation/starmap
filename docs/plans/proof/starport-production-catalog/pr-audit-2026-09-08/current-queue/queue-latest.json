@@ -1,19 +1,19 @@
 {
-  "checked_at": "2026-09-26T19:22:34.535480+00:00",
+  "checked_at": "2026-09-26T20:01:10.586480+00:00",
   "starmap": [
     {
       "baseRefName": "main",
       "baseRefOid": "8122081e0494648fb1e356647053dd870a05fb1c",
       "headRefName": "codex/catalog-fleet-contract",
-      "headRefOid": "a2d66bd259a10caa751d34c99294918431ff7100",
+      "headRefOid": "1135eb46f2d2bd54e775770325bf2f3a38e4e3a7",
       "isDraft": true,
-      "mergeStateStatus": "BLOCKED",
+      "mergeStateStatus": "UNSTABLE",
       "number": 185,
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Published code unchanged; local acceptance-scope correction awaits review",
-      "next_action": "Finish the corrected task verifier and required review, update producer PR185, preserve consumer PR385 head, then merge in order only after exact-head CI passes."
+      "disposition": "Platform-policy changes committed locally; review and native qualification pending",
+      "next_action": "Complete review and required final-head checks before merge. Merge Starmap before Starport."
     }
   ],
   "starport": [
@@ -21,15 +21,15 @@
       "baseRefName": "main",
       "baseRefOid": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
       "headRefName": "codex/catalog-fleet-adapter",
-      "headRefOid": "09ed740cb06c0243b8603255ee376baa0913b485",
+      "headRefOid": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
       "isDraft": true,
-      "mergeStateStatus": "BLOCKED",
+      "mergeStateStatus": "UNSTABLE",
       "number": 385,
       "title": "catalog: fence fleet publication and recover shared acquisition state",
       "url": "https://github.com/agentstation/starport/pull/385",
       "owner": "CSP11",
-      "disposition": "Reviewed published head; exact-head CI running",
-      "next_action": "Complete exact-head CI, verify bases and review threads, merge Starmap #185 before Starport #385, and record actual merge commits."
+      "disposition": "Platform-policy changes committed locally; review and native qualification pending",
+      "next_action": "Resolve the verified fleet review findings, then review and qualify the final head before publication and merge."
     }
   ],
   "completed_merges": [
@@ -836,7 +836,7 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Monitor PR185 exact-head native qualification. Wire the Starport runtime and diagnostics to the adapter; add credential-capability preflight and complete eleven real-process subcases.",
+    "next_action": "Resolve the verified fleet review findings, then review and qualify the final head before publication and merge.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "blocked_task": "CSP10.2",
     "owner_question": "Native suspend qualification remains open. The owner has not changed this contract.",
@@ -869,23 +869,25 @@
     "checked_at": "2026-09-26T16:38:49.460723+00:00"
   },
   "fleet_preparation": {
-    "producer": "1135eb46f2d2bd54e775770325bf2f3a38e4e3a7",
+    "producer": "37c01101257c06c065a51c93ed7bcca987c58da4",
     "producer_pr": 185,
     "consumer_branch": "codex/catalog-fleet-adapter",
     "consumer_base": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
     "proof": "../../csp11/isolation-scope-2026-09-26/verification.json",
     "owner": "CSP11",
-    "next_action": "Wait for exact-head CI on Starmap #185 and Starport #385. Merge Starmap first, then record both actual merge commits.",
-    "consumer": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
+    "next_action": "Resolve the verified fleet review findings, then review and qualify the final head before publication and merge.",
+    "consumer": "2de185399f1deadec4d1ce9753aa3cf79e985a54",
     "consumer_pr": 385,
     "ci": {
       "producer": 36265771789,
       "consumer": 36265779872,
-      "consumer_timeout_fix": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff"
-    }
+      "consumer_timeout_fix": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
+      "consumer_status": "failure on 7068380bd; Intel managed-credential test depended on wall time; local deterministic repair passes."
+    },
+    "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json"
   },
   "local_consumer_checkpoint": {
-    "head": "16d176ba3b528aa7b99cc1c99a9adb0609128d97",
+    "head": "2de185399f1deadec4d1ce9753aa3cf79e985a54",
     "branch": "codex/catalog-fleet-adapter",
     "published": false
   },
@@ -895,6 +897,14 @@
     "worktree": "/tmp/starport-fleet-review-20260926",
     "commit": "16aacc6c2d4a5bad73028f2dd7a569b9ecb7e0c1",
     "published": false,
-    "next_action": "Finish the complete CSP12 storage contract, then run final checks and review before publication. Keep PR385 at reviewed 7068380bd while CI and merges complete."
+    "next_action": "Preserve the uncommitted connection work. Finish CSP12 storage contracts after resolving CSP11 review findings. Fresh initialization must precede supported shared startup.",
+    "connection_checks": {
+      "source": "Uncommitted /tmp/starport-fleet-review-20260926",
+      "evidence": "/tmp/csp12-connection-qualified/runner.json",
+      "named_pass": 625,
+      "named_skip": 3,
+      "named_fail": 0,
+      "scope": "kvconnection, config, storage, cache with race detection and real Valkey. Full CSP12 is incomplete."
+    }
   }
 }

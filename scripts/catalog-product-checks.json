@@ -458,7 +458,6 @@
         "homebrew-linux",
         "homebrew-macos",
         "archive-darwin-arm64",
-        "archive-darwin-x86_64",
         "archive-linux-arm64",
         "archive-linux-x86_64",
         "archive-windows-arm64",

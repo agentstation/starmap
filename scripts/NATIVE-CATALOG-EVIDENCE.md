@@ -11,7 +11,7 @@ python3 scripts/native_catalog.py --run RUN_ID --output docs/plans/proof/starpor
 ```
 
 The destination must be absent. Preserve an earlier capture in its historical proof directory before replacing it.
-The command uses `gh` to read workflow metadata and download all six native artifacts.
+The command uses `gh` to read workflow metadata and download all five native artifacts.
 It retains raw test events, toolchain reports, job identities, source revision, and file digests.
 Linux also requires the administrator-owned configuration read check.
 The unprivileged suite can skip that specific check only when the separate privileged invocation runs and passes it.

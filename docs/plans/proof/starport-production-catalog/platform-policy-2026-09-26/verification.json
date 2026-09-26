@@ -1,0 +1,42 @@
+{
+  "decision": "D39",
+  "approved_at": "2026-09-26",
+  "supported_targets": [
+    "darwin/arm64",
+    "linux/amd64",
+    "linux/arm64",
+    "windows/amd64",
+    "windows/arm64"
+  ],
+  "preserved": "Historical releases and native evidence; all distinct behavioral checks and remaining architectures.",
+  "commits": {
+    "starmap": "37c01101257c06c065a51c93ed7bcca987c58da4",
+    "starport": "2de185399f1deadec4d1ce9753aa3cf79e985a54"
+  },
+  "checks": {
+    "starmap_catalog_verifier_tests": 99,
+    "starmap_publication_tests": 27,
+    "starport_native_release_tests": 10,
+    "starport_native_catalog_tests": 10,
+    "starport_release_contracts": 16,
+    "homebrew_cask_regressions": "PASS, including Intel Mac rejection and scoped architecture requirement",
+    "homebrew_audit_fixture": "PASS",
+    "homebrew_publication_fixture": "PASS",
+    "goreleaser_check": "PASS in both repositories",
+    "actionlint_syntax": "PASS in both repositories",
+    "changed_prose_lint": "PASS, zero diagnostics"
+  },
+  "limitations": [
+    "New-head native CI and release snapshots are pending.",
+    "Full Starmap actionlint reports pre-existing SC2024 for redirecting output from a sudo-run test. Syntax-only validation passes.",
+    "Whole Starport document lint reports pre-existing diagnostics outside the changed passages. Changed prose passes.",
+    "Consumer full-branch review reports five findings across four issues. No consumer merge is authorized by these results."
+  ],
+  "review_disposition": {
+    "recovery_initialization": "Confirmed absent. CSP12 owns fresh initialization; CSP13 owns populated recovery. Shared startup integration must not merge without a supported procedure or an approved scope arrangement.",
+    "follower_refresh": "Reject the missing-poll claim: the selected Starmap runtime starts controllerAccepted in runtime/scheduler.go:143. It calls RefreshFleet for lease-lost followers. runtime/runtime.go:267 starts this scheduler. Starport need not duplicate it.",
+    "publication_retention": "Confirmed no pruning in the fleet adapter; CSP11 must bound durable publication data.",
+    "standalone_epoch_error": "Confirmed candidateFromState returns the epoch read error. Verify existing acceptance re-fencing before restoring previous behavior."
+  },
+  "task_status": "CSP11 remains in_progress; neither PR is merged."
+}
