@@ -2522,7 +2522,8 @@ Do not discard unknown-budget work as an exhausted-budget failure.
 Diagnostics distinguish policy lookup, usage lookup, exhausted budget, and recovery restriction.
 The production recipe has no implicit fail-open fallback.
 
-CSP12 owns the migration from today's deliberately permissive failure behavior.
+CSP12 owns complete refusal behavior and its qualification across online requests, batch work, and retries.
+The current focused checks prove refusal for unknown usage and team policy. They do not qualify every retry path.
 CSP12.2 owns atomic admission and reservation recovery under section 8.9.
 
 ### 8.8 Durable KV, connection settings, and caches

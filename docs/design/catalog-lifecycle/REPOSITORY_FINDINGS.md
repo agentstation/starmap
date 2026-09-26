@@ -3686,3 +3686,20 @@ The [scope audit](../../plans/proof/starport-production-catalog/csp11/isolation-
 CSP12 owns all gateway namespace enforcement and explicit fresh-fleet initialization. CSP13 owns populated-state recovery.
 The acceptance map retains every original A41 requirement and adds two catalog-specific cases.
 The original broad labels must not turn catalog evidence into a deployment-wide qualification claim.
+
+
+### Fleet recipe preparation: September 26, 2026
+
+The configuration loader accepts Valkey with local SQLite and filesystem blobs.
+It also accepts Valkey with PostgreSQL and filesystem blobs.
+The [recipe audit](../../plans/proof/starport-production-catalog/csp12/recipe-audit-2026-09-26/verification.json) records both failures and unpublished configuration guards.
+Those guards reject incomplete fleet recipes before storage access.
+Focused checks pass 16 named events across 12 leaf cases. Full qualification remains open.
+
+Existing budget checks already refuse unknown required usage and team policy.
+The native baseline passes 20 named events across 15 leaf cases, including real Valkey, with no skips.
+Full retry and reservation coverage remains open. CSP12 must preserve these existing refusals.
+
+The durable Valkey adapter still strips URI prefixes instead of applying the complete validated connection contract.
+Its client options omit several declared connection settings. The optional cache has a separate validated endpoint implementation.
+CSP12 must apply effective settings and preserve the separate cache service and credential boundary.

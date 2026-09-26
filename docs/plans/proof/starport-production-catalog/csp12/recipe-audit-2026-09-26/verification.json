@@ -46,6 +46,10 @@
   },
   "artifacts": [
     {
+      "path": "before-storage-access.jsonl.gz",
+      "sha256": "78eeba64cfec646932aa6ce063d49e28d803f9e3c45cbabd37e817669625ba14"
+    },
+    {
       "path": "budget-initial-with-skip.jsonl.gz",
       "sha256": "cb17bd08445803d64ee789aa1f3b3d44460a49a01b2838dacdb1bed7b5f1dabe"
     },
@@ -64,6 +68,44 @@
     {
       "path": "budget-tests.jsonl.gz",
       "sha256": "290388fe360f1de673d0c1f1e3827cd2859dd787e41048f738dca17616c14c5d"
+    },
+    {
+      "path": "initial-config-app.jsonl.gz",
+      "sha256": "40414a556b298641888f1527bbc71717bcf51cb4b0021b1734f513e7b49f8915"
+    },
+    {
+      "path": "recipe-focused.jsonl.gz",
+      "sha256": "262537f094bddda288c743f28fa572903a2f5354c6b5d0841c9f34c4ddb28100"
     }
-  ]
+  ],
+  "local_preparation": {
+    "worktree": "/tmp/starport-fleet-review-20260926",
+    "branch": "codex/storage-recipe-contract",
+    "parent": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
+    "commit": null,
+    "state": "UNCOMMITTED_UNPUBLISHED",
+    "implemented": "Reject incomplete distributed SQL and file recipes, unqualified MySQL and cluster combinations, before storage access. Preserve inspection redaction for unsupported selections.",
+    "focused_tests": {
+      "named_passes": 16,
+      "leaf_passes": 12,
+      "failures": 0,
+      "skips": 0
+    },
+    "initial_broad_run": "487 passing named events, four expected failure events from fixtures using newly refused configurations, four shared-service skips. Updated fixtures pass focused checks. The full final run remains required.",
+    "native_startup": "Original foreground run interrupted. Its two containers were removed. A detached bounded runner is now verified live by PID.",
+    "native_runner": "/tmp/run-csp12-recipe-startup.py",
+    "native_pid": 49633,
+    "native_report": "/tmp/csp12-recipe-startup-native/runner.json",
+    "remaining": "Complete connection security, effective settings, deployment namespaces, fresh initialization, legacy migration, recipes, and budget retry qualification before a CSP12 PR.",
+    "source_sha256": {
+      "internal/app/authorization_test.go": "d0f04924e2b86b2634c2ab8fb7dbe4d81fbe79228f982ad77bc34ebea28d3e79",
+      "internal/app/readiness_test.go": "5d384464cf4f2c15666d98b870c5b7cfa0721ad4dc54853a37b853d583943807",
+      "internal/app/storage_recipe_test.go": "b0cce36b8db7276cd85a3023aeb5e236593fc4bbaf9c583c815a92eab826db83",
+      "internal/app/valkey_integration_test.go": "32033dae333ee90b1b96471e322dc23ea410243d8715d0fa92c25b50b5a1c051",
+      "internal/config/config.go": "fc24e4db8fb4485312095150286e1d97eda8eacb283f2fc22929a06935ad0d37",
+      "internal/config/file_manifest_test.go": "500e3c2622b604103652c678cc3edd486a44c3f98ec29b2ea3df596b085cf204",
+      "internal/config/storage_recipe.go": "3b492a030b463a982344c3591e0642bf41ebf8c0aaa483ff647ad61a5d799bed",
+      "internal/config/storage_recipe_test.go": "c3e2853b1932c3a0be87383d6ff5de109621409c38b184ac43ce68c364e0a439"
+    }
+  }
 }
