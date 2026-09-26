@@ -102,6 +102,9 @@ func run(args []string, output io.Writer, now time.Time) error {
 			}
 		}
 	}
+	if err := writeBootstrapPayload(*manifestPath, catalog); err != nil {
+		return err
+	}
 	return json.NewEncoder(output).Encode(report)
 }
 

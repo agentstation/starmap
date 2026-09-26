@@ -2,6 +2,7 @@
 """Coordinate public catalog preparation, promotion, and channel recovery."""
 
 import argparse
+import base64
 from datetime import datetime
 import hashlib
 import json
@@ -624,9 +625,12 @@ class Publisher:
         return all(checks.get(name, {}).get("conclusion") == "success"
                    and checks[name]["status"] == "completed" for name in REQUIRED_CHECKS)
 
-    def verify_embedding(self, checkout):
-        return command([self.release_tool, "--verify-promotion-dir", checkout / "internal/embedded/catalog",
-                        "--promotion-release-dir", self.assets], check=False).returncode == 0
+    def verify_embedding(self, checkout, *, historical=False):
+        args = [self.release_tool, "--verify-promotion-dir", checkout / "internal/embedded/catalog",
+                "--promotion-release-dir", self.assets]
+        if historical:
+            args.append("--historical-promotion")
+        return command(args, check=False).returncode == 0
 
     def promotion_rules(self):
         rules = self.api("branches/main/protection")
@@ -644,6 +648,7 @@ class Publisher:
         base_tree = self.git("rev-parse", base + "^{tree}").stdout.strip()
         paths = command(["git", "diff", "--name-only", "--no-renames", "-z", base, tree], cwd=checkout).stdout.split("\0")
         entries = []
+        binary_blobs = []
         for path in filter(None, paths):
             if not path.startswith("internal/embedded/catalog/"):
                 raise PublicationError("signed promotion changes files outside the embedded catalog")
@@ -651,11 +656,22 @@ class Publisher:
             if not entry:
                 entries.append({"path": path, "mode": "100644", "type": "blob", "sha": None})
                 continue
-            mode, kind, _ = entry.split("\t", 1)[0].split()
+            mode, kind, blob = entry.split("\t", 1)[0].split()
             if mode != "100644" or kind != "blob":
                 raise PublicationError("signed promotion requires regular catalog files")
-            content = command(["git", "show", tree + ":" + path], cwd=checkout, text=False).stdout.decode("utf-8")
-            entries.append({"path": path, "mode": mode, "type": kind, "content": content})
+            content = command(["git", "show", tree + ":" + path], cwd=checkout, text=False).stdout
+            try:
+                text = content.decode("utf-8")
+            except UnicodeDecodeError:
+                binary_blobs.append((blob, content))
+                entries.append({"path": path, "mode": mode, "type": kind, "sha": blob})
+            else:
+                entries.append({"path": path, "mode": mode, "type": kind, "content": text})
+        for blob, content in binary_blobs:
+            created_blob = self.api("git/blobs", method="POST", body={
+                "encoding": "base64", "content": base64.b64encode(content).decode("ascii")})
+            if created_blob.get("sha") != blob:
+                raise PublicationError("GitHub promotion blob differs from the checked local blob")
         created_tree = self.api("git/trees", method="POST", body={"base_tree": base_tree, "tree": entries})
         if created_tree.get("sha") != tree:
             raise PublicationError("GitHub promotion tree differs from the checked local tree")
@@ -686,6 +702,18 @@ class Publisher:
         self.promotion_rules()
         self.git("fetch", "--no-tags", "origin", "main")
         main = self.git("rev-parse", "FETCH_HEAD").stdout.strip()
+        if completed(record, control["channels"]):
+            merged = control["channels"]["catalog/v2"]["document"]["publication"]["source_commit"]
+            if not COMMIT.fullmatch(merged):
+                raise PublicationError("accepted promotion has an invalid source commit")
+            self.git("fetch", "--no-tags", "origin", merged)
+            if self.git("merge-base", "--is-ancestor", merged, main, check=False).returncode:
+                raise PublicationError("accepted promotion is not on the default branch")
+            checkout = self.promotion_checkout(merged, "accepted-promotion")
+            if not self.verify_embedding(checkout, historical=True):
+                raise PublicationError("accepted promotion differs from its admitted artifact")
+            self.outputs(ready=True, source_commit=merged, checkout=checkout)
+            return
         checkout = self.promotion_checkout(main, "promotion")
         branch = "catalog/promotion/" + digest_hex(record["receipt_checksum"])
         fields = "number,state,headRefOid,mergeCommit,reviewDecision,url"

@@ -109,7 +109,7 @@ func stageChannelDocument(options channelOptions) (channelReport, error) {
 	var next artifact.Channel
 	var kind artifact.AdvanceKind
 	if options.publication.requested() {
-		promotion, verifyErr := verifyChannelPublication(options.publication, verified)
+		promotion, verifyErr := verifyChannelPublication(options.publication, verified, current)
 		if verifyErr != nil {
 			return channelReport{}, verifyErr
 		}

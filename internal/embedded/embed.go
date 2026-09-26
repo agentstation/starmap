@@ -4,8 +4,8 @@ import (
 	"embed"
 )
 
-// FS embeds the canonical provider-model YAML catalog, author metadata, logos,
-// and external source data used for offline bootstrap.
+// FS embeds the authored YAML catalog, generated bootstrap payload, metadata, logos,
+// and external source data for offline operation.
 //
 //go:embed catalog sources
 var FS embed.FS

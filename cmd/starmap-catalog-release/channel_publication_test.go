@@ -191,3 +191,50 @@ func optionValue(t *testing.T, args []string, name string) string {
 	t.Fatal("missing fixture option", name)
 	return ""
 }
+
+func TestPublicationChannelRetriesHistoricalInput(t *testing.T) {
+	args, releasePath, repo := publicationCommandFixture(t)
+	acceptedPath := filepath.Join(t.TempDir(), "accepted.json")
+	args = append(args, "--channel-out", acceptedPath)
+	if err := run(args, io.Discard); err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(acceptedPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	accepted, err := artifact.DecodeChannel(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	payload := filepath.Join(repo, "internal", "embedded", "catalog", "generation-payload.json.gz")
+	publicationGit(t, repo, "rm", payload)
+	publicationGit(t, repo, "commit", "--quiet", "-m", "Historical catalog fixture")
+	accepted.Publication.SourceCommit = publicationGit(t, repo, "rev-parse", "HEAD")
+	args = append(args, "--channel-source-commit", accepted.Publication.SourceCommit)
+	if err := run(args, io.Discard); err == nil {
+		t.Fatal("new publication accepted a missing compiled payload")
+	}
+	data, err = artifact.EncodeChannel(accepted)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writePromotionFile(t, acceptedPath, data)
+	retryPath := filepath.Join(t.TempDir(), "retry.json")
+	args = append(args, "--channel-current", acceptedPath, "--previous-release-dir", releasePath, "--channel-out", retryPath)
+	if err := run(args, io.Discard); err != nil {
+		t.Fatalf("retry historical receipt: %v", err)
+	}
+	retried, err := os.ReadFile(retryPath)
+	if err != nil || !bytes.Equal(data, retried) {
+		t.Fatalf("historical retry changed channel bytes: %v", err)
+	}
+	for _, flag := range []string{"--channel-source-commit", "--channel-receipt-checksum", "--channel-checkpoint-checksum"} {
+		t.Run(flag, func(t *testing.T) {
+			changed := append(append([]string(nil), args...), flag, strings.Repeat("0", 40))
+			if err := run(changed, io.Discard); err == nil {
+				t.Fatal("historical retry accepted changed publication identity")
+			}
+		})
+	}
+}

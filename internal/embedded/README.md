@@ -19,7 +19,7 @@ import "github.com/agentstation/starmap/internal/embedded"
 
 ## Variables
 
-<a name="FS"></a>FS embeds the canonical provider\-model YAML catalog, author metadata, logos, and external source data used for offline bootstrap.
+<a name="FS"></a>FS embeds the authored YAML catalog, generated bootstrap payload, metadata, logos, and external source data for offline operation.
 
 ```go
 var FS embed.FS

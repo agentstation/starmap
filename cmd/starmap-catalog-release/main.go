@@ -54,6 +54,7 @@ func run(args []string, output io.Writer) error {
 	outputDir := flags.String("output-dir", "dist/catalog-release", "immutable catalog release staging root")
 	verifyDir := flags.String("verify-dir", "", "verify an existing catalog release asset directory")
 	promotionDir := flags.String("verify-promotion-dir", "", "verify embedded catalog input against an exact published generation")
+	historicalPromotion := flags.Bool("historical-promotion", false, "verify an accepted historical catalog without requiring a compiled payload")
 	stagePromotionDir := flags.String("stage-promotion-dir", "", "stage an exact published generation in a new catalog directory")
 	promotionReleaseDir := flags.String("promotion-release-dir", "", "verified release assets required by promotion verification or staging")
 	inspectDir := flags.String(
@@ -123,6 +124,9 @@ func run(args []string, output io.Writer) error {
 	if err := validatePromotionMode(mode, *promotionReleaseDir); err != nil {
 		return err
 	}
+	if *historicalPromotion && mode != "verify-promotion-dir" {
+		return channelFlagError("historical_promotion", "requires verify-promotion-dir")
+	}
 	if channelPublication.requested() && mode != "channel-release-dir" {
 		return channelFlagError("publication", "requires channel-release-dir")
 	}
@@ -141,7 +145,7 @@ func run(args []string, output io.Writer) error {
 		}
 		return json.NewEncoder(output).Encode(report)
 	case "verify-promotion-dir":
-		report, err := verifyPromotionDirectory(strings.TrimSpace(*promotionDir), strings.TrimSpace(*promotionReleaseDir))
+		report, err := verifyPromotionInput(strings.TrimSpace(*promotionDir), strings.TrimSpace(*promotionReleaseDir), *historicalPromotion)
 		if err != nil {
 			return err
 		}

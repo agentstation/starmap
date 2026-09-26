@@ -4,6 +4,7 @@
 import base64
 import copy
 from datetime import datetime, timezone
+import gzip
 import json
 import os
 from pathlib import Path
@@ -111,6 +112,16 @@ class PromotionFixture(ReleaseFixture):
         self.emitted.update(values)
 
     def api(self, endpoint, **options):
+        if endpoint == "git/blobs":
+            body = options["body"]
+            if body["encoding"] != "base64":
+                raise AssertionError("binary catalog blobs require base64 transport")
+            data = base64.b64decode(body["content"], validate=True)
+            remote = self.git("remote", "get-url", "origin").stdout.strip()
+            blob = publication.command(["git", "--git-dir", remote, "hash-object", "-w", "--stdin"],
+                                       input=data, text=False).stdout.decode("ascii").strip()
+            self.platform.setdefault("blob_uploads", []).append(data)
+            return {"sha": blob}
         if endpoint == "git/trees":
             body = options["body"]
             remote = self.git("remote", "get-url", "origin").stdout.strip()
@@ -121,9 +132,10 @@ class PromotionFixture(ReleaseFixture):
             server("read-tree", body["base_tree"])
             for entry in body["tree"]:
                 if "sha" in entry:
-                    if entry["sha"] is not None:
-                        raise AssertionError("unexpected blob identity")
-                    server("update-index", "--index-info", input="0 " + "0" * 40 + "\t" + entry["path"] + "\n")
+                    if entry["sha"] is None:
+                        server("update-index", "--index-info", input="0 " + "0" * 40 + "\t" + entry["path"] + "\n")
+                    else:
+                        server("update-index", "--add", "--cacheinfo", entry["mode"], entry["sha"], entry["path"])
                 else:
                     blob = server("hash-object", "-w", "--stdin", input=entry["content"])
                     server("update-index", "--add", "--cacheinfo", entry["mode"], blob, entry["path"])
@@ -208,6 +220,8 @@ class SignedPromotionTests(unittest.TestCase):
                                           self.checkout, self.platform)
         (self.catalog / "old.yaml").unlink()
         (self.catalog / "new.yaml").write_text("name: catalog\n")
+        self.payload = gzip.compress(b"compiled catalog fixture\x00\xff", mtime=0)
+        (self.catalog / "generation-payload.json.gz").write_bytes(self.payload)
         self.git("add", ".")
 
     def git(self, *args):
@@ -230,6 +244,22 @@ class SignedPromotionTests(unittest.TestCase):
         self.assertEqual(expected, self.git("rev-parse", updated + "^{tree}"))
         self.assertEqual(first + " " + main, self.git("show", "-s", "--format=%P", updated))
         self.publisher.require_signed_promotion_history(main, updated)
+        self.assertEqual([self.payload, self.payload], self.platform["blob_uploads"])
+
+    def test_refuses_wrong_binary_blob_before_creating_tree(self):
+        actual_api = self.publisher.api
+        endpoints = []
+        def altered(endpoint, **options):
+            endpoints.append(endpoint)
+            value = actual_api(endpoint, **options)
+            if endpoint == "git/blobs":
+                value["sha"] = "0" * 40
+            return value
+        with patch.object(self.publisher, "api", side_effect=altered):
+            with self.assertRaisesRegex(publication.PublicationError, "blob differs"):
+                self.publisher.signed_promotion_commit(self.checkout, [self.base], "refused")
+        self.assertEqual(["git/blobs"], endpoints)
+        self.assertEqual(self.base, self.git("ls-remote", "origin", "refs/heads/main").split()[0])
 
     def test_refuses_wrong_tree_signature_or_parents(self):
         actual_api = self.publisher.api
@@ -843,12 +873,29 @@ scopes:
             self.assertEqual(1, platform["creates"])
             self.assertEqual(1, platform["merges"])
 
+            # Retain a historical accepted source that predates the compiled payload.
+            historical = Path(checked.emitted["checkout"])
+            publication.command(["git", "rm", "internal/embedded/catalog/generation-payload.json.gz"], cwd=historical)
+            publication.command(["git", "commit", "--quiet", "-m", "Historical accepted catalog"], cwd=historical)
+            historical_commit = publication.command(["git", "rev-parse", "HEAD"], cwd=historical).stdout.strip()
+            publication.command(["git", "push", "origin", "HEAD:refs/heads/main"], cwd=historical)
+            historical_channel = checked.root / "historical-channel.json"
+            modern = final["catalog/v2"]["document"]
+            original_commit = modern["publication"]["source_commit"].encode("ascii")
+            canonical_channel = Path(final["catalog/v2"]["path"]).read_bytes()
+            self.assertEqual(1, canonical_channel.count(original_commit))
+            historical_channel.write_bytes(canonical_channel.replace(original_commit, historical_commit.encode("ascii")))
+            checked.fixture["accepted_digests"].add(publication.checksum(historical_channel))
+            checked.push_document("catalog/v2", "channel.json", historical_channel, final["catalog/v2"]["commit"])
+            final["catalog/v2"] = checked.read_branch("catalog/v2", "channel.json")
+
             retry = resume("completed-retry")
             retry.fixture["accepted_digests"].update(checked.fixture["accepted_digests"])
             publication.write_json(retry.control, {"pending": record, "pending_head": "", "channels": final})
             before = {name: Path(state["path"]).read_bytes() for name, state in final.items()}
             retry.publish()
             retry.promote()
+            self.assertEqual(historical_commit, retry.emitted["source_commit"])
             with patch.dict(os.environ, {
                 "CATALOG_PROMOTED_COMMIT": retry.emitted["source_commit"],
                 "CATALOG_PROMOTED_CHECKOUT": str(retry.emitted["checkout"]),

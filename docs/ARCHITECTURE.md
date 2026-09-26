@@ -973,6 +973,22 @@ The embedded bootstrap manifest binds these fields:
 
 The `New` constructor verifies both identities offline before publication.
 
+Runtime bootstrap reads `generation-payload.json.gz`, a generated copy of the
+canonical JSON bytes. Decompression enforces the manifest size and the catalog
+payload limit. Startup rejects missing files, corrupt gzip data, trailing data,
+invalid records, and mismatched catalog identities.
+
+The YAML catalog remains the authoring source. The manifest generator and
+release promotion write deterministic compressed payloads. The catalog generation
+gate compares the payload with the authored YAML. An unchanged generation keeps
+its identity, timestamps, and payload bytes.
+
+Completed publication retries retain their accepted receipt, checkpoint, and
+source commit. Historical verification permits a missing compiled payload at
+that source commit. It still verifies the YAML catalog, manifest, endpoint
+projection, and publication evidence. A compiled payload, when present, must
+pass all integrity checks. New publication staging always requires the payload.
+
 `Client.Readiness` reports the generation metadata and age.
 `WithEmbeddedBootstrapMaxAge` and `WithEmbeddedBootstrapMaxSizeBytes` make the
 HTTP readiness endpoint fail with stable reason codes while an out-of-budget
@@ -1092,8 +1108,9 @@ Catalog-only implementation policy lives below `pkg/catalogs/internal`.
 - `pkg/sources/payload` owns bounded source decoding and partial-result errors.
 - `pkg/catalogs/internal/resourcepolicy` owns catalog limits, file modes, the
   store lock delay, and the remote client timeout.
-- `internal/bootstrap` composes `embedded.FS` with `catalogs.WithFS`. The
-  catalog package does not select a repository-owned filesystem or write path.
+- `internal/bootstrap` verifies the generated payload in `embedded.FS` for runtime startup.
+  Its authoring builder reads YAML through `catalogs.WithFS`.
+  The catalog package does not select a repository-owned filesystem or write path.
 
 `scripts/verify-catalog-dependency-direction.sh` enforces conditions `SM-D01`
 through `SM-D08`. Its mutation test proves that each prohibited edge fails

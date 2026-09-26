@@ -1175,6 +1175,12 @@ const CatalogRemovalSchemaVersion uint64 = 8
 const CurrentBootstrapManifestVersion uint64 = 2
 ```
 
+<a name="MaxCatalogPayloadBytes"></a>MaxCatalogPayloadBytes bounds one canonical catalog JSON payload before decoding.
+
+```go
+const MaxCatalogPayloadBytes = resourcepolicy.MaxPayloadBytes
+```
+
 <a name="RecognitionBillingSchemaVersion"></a>RecognitionBillingSchemaVersion adds explicit provider billing units.
 
 ```go
@@ -1182,7 +1188,7 @@ const RecognitionBillingSchemaVersion uint64 = 10
 ```
 
 <a name="CatalogPayloadSchemaVersion"></a>
-## func [CatalogPayloadSchemaVersion](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L128>)
+## func [CatalogPayloadSchemaVersion](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L131>)
 
 ```go
 func CatalogPayloadSchemaVersion(reader Reader) uint64
@@ -1191,7 +1197,7 @@ func CatalogPayloadSchemaVersion(reader Reader) uint64
 CatalogPayloadSchemaVersion reports the schema used when encoding this reader. Immutable decoded catalogs retain their validated schema and signed identity.
 
 <a name="CatalogSemanticChecksum"></a>
-## func [CatalogSemanticChecksum](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L56>)
+## func [CatalogSemanticChecksum](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L59>)
 
 ```go
 func CatalogSemanticChecksum(reader Reader) (string, error)
@@ -1218,7 +1224,7 @@ func DerivedCredentialEnvironmentName(product string, providerID ProviderID, fie
 DerivedCredentialEnvironmentName derives a product\-specific ambient name. It validates all components before it replaces ID separators with underscores.
 
 <a name="EncodeCatalogPayload"></a>
-## func [EncodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L31>)
+## func [EncodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L34>)
 
 ```go
 func EncodeCatalogPayload(reader Reader) ([]byte, error)
@@ -1254,7 +1260,7 @@ func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model
 ShallowCopyProviderModels copies a provider's Models map while sharing its Model pointers. It returns nil for a nil input map.
 
 <a name="SupportsCatalogSchema"></a>
-## func [SupportsCatalogSchema](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L122>)
+## func [SupportsCatalogSchema](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L125>)
 
 ```go
 func SupportsCatalogSchema(version uint64) bool
@@ -2710,7 +2716,7 @@ func (r CatalogAuthorityRecord) Validate() error
 Validate checks the record format and publication identity without reading catalog data.
 
 <a name="CatalogPayload"></a>
-## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L18-L28>)
+## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L21-L31>)
 
 CatalogPayload is the canonical construction\-record JSON representation. Author models own provider\-independent facts. Provider models own serving facts and link to author models through Model.ModelRef.
 

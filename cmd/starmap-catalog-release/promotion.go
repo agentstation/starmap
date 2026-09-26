@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/bootstrap/manifest"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -28,6 +29,10 @@ type promotionReport struct {
 // verifyPromotionDirectory checks local integrity and exact embedded input.
 // The publisher must separately verify provenance and the merged source revision.
 func verifyPromotionDirectory(catalogPath, releasePath string) (promotionReport, error) {
+	return verifyPromotionInput(catalogPath, releasePath, false)
+}
+
+func verifyPromotionInput(catalogPath, releasePath string, historical bool) (promotionReport, error) {
 	if catalogPath == "" || releasePath == "" {
 		return promotionReport{}, &errors.ValidationError{
 			Field: "catalog_release.promotion", Message: "catalog and release directories are required",
@@ -58,7 +63,7 @@ func verifyPromotionDirectory(catalogPath, releasePath string) (promotionReport,
 		if err != nil {
 			return err
 		}
-		if err := verifyPromotionMetadata(catalogPath, catalog, expected); err != nil {
+		if err := verifyPromotionMetadata(catalogPath, catalog, expected, historical); err != nil {
 			return err
 		}
 		return verifyPromotionEvidence(catalogPath, generation, expected)
@@ -97,7 +102,7 @@ func verifyPromotionEvidence(path string, expected catalogs.Generation, bootstra
 	return nil
 }
 
-func verifyPromotionMetadata(path string, catalog *catalogs.Catalog, expected catalogs.BootstrapManifest) error {
+func verifyPromotionMetadata(path string, catalog *catalogs.Catalog, expected catalogs.BootstrapManifest, historical bool) error {
 	manifestPath := filepath.Join(path, "generation.json")
 	data, err := os.ReadFile(manifestPath) //nolint:gosec // Explicit repository input under the workspace read guard.
 	if err != nil {
@@ -130,6 +135,17 @@ func verifyPromotionMetadata(path string, catalog *catalogs.Catalog, expected ca
 			Field:   "catalog_release.promotion_endpoints",
 			Message: fmt.Sprintf("endpoint projection does not match published generation %s", expected.GenerationID),
 		}
+	}
+	payloadPath := filepath.Join(path, bootstrap.PayloadFilename)
+	data, err = os.ReadFile(payloadPath) //nolint:gosec // Explicit repository input under the workspace read guard.
+	if historical && os.IsNotExist(err) {
+		return nil
+	}
+	if err != nil {
+		return errors.WrapIO("read", payloadPath, err)
+	}
+	if _, err := bootstrap.DecodePayload(data, expected.Payload); err != nil {
+		return err
 	}
 	return nil
 }

@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	compiledbootstrap "github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -40,7 +41,7 @@ func TestArtifactReleaseCommandVerifiesExactPromotion(t *testing.T) {
 }
 
 func TestArtifactReleaseCommandRejectsPromotionMismatch(t *testing.T) {
-	for _, kind := range []string{"generation", "timestamp", "semantic", "payload", "schema", "manifest_missing", "evidence_missing", "evidence_changed", "facts", "endpoints", "endpoints_missing", "release"} {
+	for _, kind := range []string{"generation", "timestamp", "semantic", "payload", "schema", "manifest_missing", "evidence_missing", "evidence_changed", "facts", "endpoints", "endpoints_missing", "compiled_missing", "compiled_changed", "release"} {
 		t.Run(kind, func(t *testing.T) {
 			catalogPath, releasePath, _ := promotionFixture(t)
 			manifestPath := filepath.Join(catalogPath, "generation.json")
@@ -53,6 +54,12 @@ func TestArtifactReleaseCommandRejectsPromotionMismatch(t *testing.T) {
 				t.Fatal(err)
 			}
 			switch kind {
+			case "compiled_missing":
+				if err := os.Remove(filepath.Join(catalogPath, compiledbootstrap.PayloadFilename)); err != nil {
+					t.Fatal(err)
+				}
+			case "compiled_changed":
+				writePromotionFile(t, filepath.Join(catalogPath, compiledbootstrap.PayloadFilename), []byte("invalid"))
 			case "generation":
 				bootstrap.GenerationID = "different-generation"
 			case "timestamp":
@@ -237,6 +244,11 @@ func promotionFixture(t *testing.T) (string, string, catalogs.Generation) {
 		t.Fatal(err)
 	}
 	writePromotionFile(t, filepath.Join(catalogPath, catalogs.BootstrapGenerationManifestFilename), data)
+	compressed, err := compiledbootstrap.EncodePayload(generation.Payload)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writePromotionFile(t, filepath.Join(catalogPath, compiledbootstrap.PayloadFilename), compressed)
 	return catalogPath, assets.Directory, generation
 }
 
@@ -244,5 +256,33 @@ func writePromotionFile(t *testing.T, path string, data []byte) {
 	t.Helper()
 	if err := os.WriteFile(path, data, constants.FilePermissions); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestArtifactReleaseCommandVerifiesHistoricalPromotion(t *testing.T) {
+	catalogPath, releasePath, _ := promotionFixture(t)
+	payload := filepath.Join(catalogPath, compiledbootstrap.PayloadFilename)
+	if err := os.Remove(payload); err != nil {
+		t.Fatal(err)
+	}
+	args := []string{"--verify-promotion-dir", catalogPath, "--promotion-release-dir", releasePath, "--historical-promotion"}
+	if err := run(args, io.Discard); err != nil {
+		t.Fatalf("historical promotion without compiled payload: %v", err)
+	}
+	writePromotionFile(t, payload, []byte("invalid"))
+	if err := run(args, io.Discard); err == nil {
+		t.Fatal("historical promotion accepted a corrupt compiled payload")
+	}
+}
+
+func TestArtifactReleaseCommandRestrictsHistoricalMode(t *testing.T) {
+	for _, args := range [][]string{
+		{"--historical-promotion"},
+		{"--historical-promotion", "--stage-promotion-dir", "unused", "--promotion-release-dir", "unused"},
+		{"--historical-promotion", "--channel-release-dir", "unused"},
+	} {
+		if err := run(args, io.Discard); err == nil {
+			t.Fatalf("accepted historical mode outside verification: %v", args)
+		}
 	}
 }
