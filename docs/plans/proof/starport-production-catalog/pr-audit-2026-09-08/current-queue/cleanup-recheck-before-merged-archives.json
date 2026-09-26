@@ -1,0 +1,59 @@
+{
+  "checked_at": "2026-09-26T09:22:46.627602+00:00",
+  "scope": "Local and remote branches and worktrees in Starmap and Starport.",
+  "removed_this_recheck": {
+    "worktrees": 1,
+    "local_branches": 1,
+    "remote_heads": 0,
+    "stale_remote_tracking_refs": [
+      "starmap:origin/codex/catalog-native-consumer-qualification"
+    ]
+  },
+  "cumulative_totals": {
+    "worktrees": 34,
+    "local_branches": 84,
+    "remote_heads": 15
+  },
+  "retained": {
+    "starmap": {
+      "worktrees": 37,
+      "dirty_worktrees": 35,
+      "local_branches": 39,
+      "remote_heads": 4
+    },
+    "starport": {
+      "worktrees": 3,
+      "dirty_worktrees": 0,
+      "local_branches": 3,
+      "remote_heads": 2
+    }
+  },
+  "retention_reasons": [
+    "Preserve uncommitted changes in 35 Starmap worktrees.",
+    "Keep the clean producer checkout available for reuse.",
+    "Keep the active Starport PR worktree and both primary checkouts.",
+    "Retain clean historical branches until their distinct changes have verified integration.",
+    "Keep main and all catalog publication channels."
+  ],
+  "next_action": "Reuse active checkouts. After PR #384 merges, verify historical integration before further cleanup.",
+  "recovery_manifest": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-lifecycle-successor/manifest.json",
+  "successor_comparison": "lifecycle-successor-cleanup.json",
+  "verification": {
+    "plan_lint": "PASS: 1 file, 0 diagnostics.",
+    "plan_ledger": "40 tasks, 16 done, CSP8 is the sole active task.",
+    "local_proof_links": "All links resolve.",
+    "successor_comparison": "Every tracked file outside the five reviewed metadata and dependency files is identical.",
+    "archives": "Bundle verification and six local evidence file hashes pass.",
+    "worktree_removal": "The checkout and local branch no longer exist.",
+    "source_changes": "None.",
+    "full_writing_check": {
+      "status": "FAIL",
+      "files": 1698,
+      "diagnostics": 69,
+      "new_diagnostics": 0,
+      "comparison": "Identical diagnostics to the prior final-pin writing check.",
+      "log": "cleanup-recheck-writing.log.gz",
+      "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
+    }
+  }
+}

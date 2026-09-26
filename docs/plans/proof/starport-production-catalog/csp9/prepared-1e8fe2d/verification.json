@@ -1,0 +1,59 @@
+{
+  "status": "PREPARED_NOT_TASK_COMPLETE",
+  "checked_at": "2026-09-26T10:08:53.985857+00:00",
+  "producer": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+  "consumer": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
+  "module": "github.com/agentstation/starmap v0.16.6-0.20260926085409-71c5c8c72333",
+  "command": [
+    "bash",
+    "scripts/verify-catalog-product.sh",
+    "--starport-root",
+    "/Users/jack/src/github.com/agentstation/starport-native-catalog",
+    "--case",
+    "A11",
+    "--case",
+    "A12",
+    "--case",
+    "A45",
+    "--case",
+    "A44",
+    "--json"
+  ],
+  "seconds": 222.01118741597747,
+  "selected_subcases": 29,
+  "selected_primary_cases": [
+    "A11",
+    "A12",
+    "A44",
+    "A45"
+  ],
+  "selected_result": "PASS",
+  "unselected_primary_cases": 46,
+  "scope_note": "The 46 unselected primary cases are not failures of this selected-case run.",
+  "tasks": {
+    "CSP9": 12,
+    "CSP9.1": 9,
+    "CSP10.1": 8
+  },
+  "race_evidence": "../../csp8/native-schedule-384/verification.json",
+  "cleanup": [
+    {
+      "id": "274bdbe37e18c9306a12ab65216a7e5a9227e627c6ab10fdcd41000ed3160399",
+      "exit_code": 0
+    },
+    {
+      "id": "f9951be87b66e4999b269e77ad513ec19469b17fcae4cbe81a7f34823d0c8521",
+      "exit_code": 0
+    },
+    {
+      "id": "d13d2ee5ae82c4f4337c7073b15dab829c52a01632a926594c39ff71ab81f662",
+      "exit_code": 0
+    }
+  ],
+  "files_sha256": {
+    "runner.json.gz": "31cbd98f3f0ff66afb804d6e269d744bb8ea1b07c21375f463e3f7eb1628e649",
+    "acceptance.json.gz": "38dd40243ea7a712753f83190d1c8bb1c22fa9925a66f0234c318a5b95831f99"
+  },
+  "limitation": "CSP8 native qualification, task acceptance, and merge remain open. The manual CSP9.1 audit found an untested transient-refresh retention gap. Passing registered cases do not close that task.",
+  "gap_proof": "../../csp9.1/transient-refresh-preparation/verification.json"
+}

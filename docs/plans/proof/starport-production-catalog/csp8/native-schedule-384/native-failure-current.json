@@ -1,0 +1,100 @@
+{
+  "checked_at": "2026-09-26T10:18:12.750149+00:00",
+  "run": 36234492082,
+  "head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
+  "status": "in_progress",
+  "conclusion": "",
+  "jobs": [
+    {
+      "name": "Authorization Capacity",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Release Contract",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "OpenRouter SDK Compatibility",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Lint",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Release Snapshot",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Test (windows-11-arm)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Test (ubuntu-24.04-arm)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Action Pin Provenance",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Shared Storage Startup",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Test (macos-15)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Test (macos-15-intel)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Test (ubuntu-24.04)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Security Scan",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Test (windows-2025)",
+      "status": "in_progress",
+      "conclusion": ""
+    }
+  ],
+  "failures": [
+    {
+      "name": "Test (windows-11-arm)",
+      "id": 108383690352,
+      "log": "failed-job-108383690352.log.gz",
+      "sha256": "feb6a4540d580344e0561c7a1bf6a8fe1832c95534a280c715962c25b516cd18"
+    },
+    {
+      "name": "Test (macos-15)",
+      "id": 108383690375,
+      "log": "failed-job-108383690375.log.gz",
+      "sha256": "77bfe88187da60f295edadd7045b0fcc690d3c19b59c7bf4ed2bd740317c20b9"
+    },
+    {
+      "name": "Test (macos-15-intel)",
+      "id": 108383690385,
+      "log": "failed-job-108383690385.log.gz",
+      "sha256": "b600ab886cc1b3450c37488868efdbf36a14e9e9b589b732db0832a537d31eba"
+    }
+  ],
+  "next_action": "Repair cold bootstrap cost and replace the nanosecond document deadline assumption with a deterministic test. Preserve native coverage and recovery assertions."
+}

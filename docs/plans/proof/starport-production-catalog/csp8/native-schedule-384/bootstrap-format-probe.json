@@ -1,0 +1,15 @@
+{
+  "producer_head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
+  "branch": "codex/catalog-bootstrap-payload",
+  "source_changes": "None. Probe uses a temporary Go overlay.",
+  "observations": [
+    "bootstrap_test.go:480: verified_yaml_bootstrap_seconds=30.142812",
+    "bootstrap_test.go:490: verified_json_bootstrap_seconds=11.477764 payload_bytes=26420583"
+  ],
+  "named_passes": 1,
+  "failures": 0,
+  "log": "bootstrap-format-probe.jsonl.gz",
+  "sha256": "37dd6bb20a448b6ed2156cf4200c3c54bc1efc69a87d3fc2000d71a3867faf60",
+  "next_action": "Evaluate a generated compressed JSON bootstrap payload. Preserve manifest, semantic, YAML parity, corruption, and size validation."
+}

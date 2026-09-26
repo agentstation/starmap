@@ -1,0 +1,34 @@
+{
+  "status": "CORRECTION_PREPARED_NOT_APPLIED",
+  "source": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
+  "owner": "CSP9.1",
+  "contract": "ENGINEERING_SPEC.md sections 7.3 and 8.9.2: extend the operator lifecycle to account and shared material; preserve fixed validity and known revocation.",
+  "finding": "Stored-material refresh revokes still-valid issued handles on a transient repository error. The operator resolver retains them. The registered outage check covers reads after expiry but misses proactive refresh failure.",
+  "failed_probe": {
+    "name": "TestManagedMaterialTransientRefreshPreservesFixedValidity",
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -count=1 -timeout 2m -json -overlay /tmp/managed-refresh-retention-before/overlay.json ./internal/providers/keyring -run ^TestManagedMaterialTransientRefreshPreservesFixedValidity$",
+    "named_failures": 1,
+    "actual_error": "provider inference credential material was revoked",
+    "package_seconds": 0.748
+  },
+  "prepared_change": "Reuse credentials.MayRetainMaterial for a still-valid entry. Keep its fixed deadline. Delay its next refresh so other due scopes can progress. All other failures remove and revoke material.",
+  "overlay_check": {
+    "named_passes": 6,
+    "named_failures": 0,
+    "named_skips": 0,
+    "tests": [
+      "TestManagedMaterialOutageCannotExtendValidity",
+      "TestManagedMaterialTransientRefreshPreservesFixedValidity",
+      "TestManagedMaterialRefreshRejectsExternalGrantWithdrawal",
+      "TestManagedMaterialRefreshCannotRestoreInvalidatedEntry",
+      "TestManagedMaterialMutationRevokesPreviouslyReturnedHandles",
+      "TestManagedMaterialRefreshServesOldestScopesWithoutStarvation"
+    ]
+  },
+  "implementation_source_changed": false,
+  "files_sha256": {
+    "before.tar.gz": "4663d74c698b7771d691c676abfa78c37341ecd1fe4cd8cd33bebd3c27456843",
+    "prepared.tar.gz": "cbb7468f53bfc0018ce37117b2b88aba2526b8d57c8fb318a23a80572581af25"
+  },
+  "next_action": "Apply and extend the regression tests when CSP9.1 starts. Cover each transient and terminal error class, expired or revoked prior material, repeated refresh failure, and fair refresh scheduling. Run required task checks and review before publication."
+}

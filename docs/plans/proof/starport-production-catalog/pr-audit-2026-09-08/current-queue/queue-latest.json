@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T10:02:04.947367+00:00",
+  "checked_at": "2026-09-26T10:19:33.931120+00:00",
   "starmap": [],
   "starport": [
     {
@@ -10,10 +10,10 @@
       "draft": true,
       "owner": "CSP8",
       "checks_run": 36234492082,
-      "disposition": "Keep. Reviewed test scheduling repair is published; native CI is active.",
-      "next_action": "Capture successful native CI, run all 63 CSP8 subcases with real storage, verify exact merge inputs, and merge PR #384.",
+      "disposition": "Keep. Native CI failed on both macOS jobs and Windows ARM64.",
+      "next_action": "Repair cold bootstrap cost and deterministic document deadlines. Requalify native CI and all 63 CSP8 subcases before merge.",
       "local_head": "1e8fe2da0931eef4bc2ccc99e7b3aa6a19f09793",
-      "native_failure_proof": "../../csp8/native-384/failure.json",
+      "native_failure_proof": "../../csp8/native-schedule-384/native-failure-current.json",
       "local_changes": [],
       "local_qualification": "All 68 packages: 4227 passing named tests, six optional skips, zero failures. All 733 CSP8 tests pass without skips.",
       "local_qualification_proof": "../../csp8/native-schedule-384/verification.json",
@@ -347,26 +347,22 @@
     "current_pass": "cleanup-recheck-latest.json"
   },
   "cleanup_recheck": {
-    "checked_at": "2026-09-26T09:22:46.627602+00:00",
-    "scope": "Local and remote branches and worktrees in Starmap and Starport.",
+    "checked_at": "2026-09-26T10:19:33.931120+00:00",
     "removed_this_recheck": {
-      "worktrees": 1,
-      "local_branches": 1,
-      "remote_heads": 0,
-      "stale_remote_tracking_refs": [
-        "starmap:origin/codex/catalog-native-consumer-qualification"
-      ]
+      "worktrees": 15,
+      "local_branches": 16,
+      "remote_heads": 0
     },
     "cumulative_totals": {
-      "worktrees": 34,
-      "local_branches": 84,
+      "worktrees": 49,
+      "local_branches": 100,
       "remote_heads": 15
     },
     "retained": {
       "starmap": {
-        "worktrees": 37,
-        "dirty_worktrees": 35,
-        "local_branches": 39,
+        "worktrees": 22,
+        "dirty_worktrees": 20,
+        "local_branches": 24,
         "remote_heads": 4
       },
       "starport": {
@@ -376,16 +372,232 @@
         "remote_heads": 2
       }
     },
-    "retention_reasons": [
-      "Preserve uncommitted changes in 35 Starmap worktrees.",
-      "Keep the clean producer checkout available for reuse.",
-      "Keep the active Starport PR worktree and both primary checkouts.",
-      "Retain clean historical branches until their distinct changes have verified integration.",
-      "Keep main and all catalog publication channels."
+    "recovery_manifest": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/manifest.json",
+    "bundle_sha256": "10e4a832dc89a5b1e563790d835952e860d7b47e5f163feaa2a64743ee6fc982",
+    "verified_archive_entries": 77900,
+    "archive_bytes": 1032427213,
+    "verification": [
+      "All 15 branch tips are ancestors of Starmap main at 71c5c8c723334bdfc4e1b04dc85e748211fe5071.",
+      "All file bytes, symlink targets, and modes match verified recovery archives.",
+      "No open files reference the retired worktrees.",
+      "All 15 worktree paths and branch refs are absent.",
+      "The additional local branch has the same tree as merged PR #182."
     ],
-    "next_action": "Reuse active checkouts. After PR #384 merges, verify historical integration before further cleanup.",
-    "recovery_manifest": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-lifecycle-successor/manifest.json",
-    "successor_comparison": "lifecycle-successor-cleanup.json"
+    "retention_reasons": [
+      "Keep active producer, consumer, and plan checkouts.",
+      "Keep primary checkouts and unverified local changes.",
+      "Keep historical branches until their distinct work has verified integration.",
+      "Keep main, the active Starport PR branch, and catalog publication channels."
+    ],
+    "next_action": "Reuse retained active checkouts. Reassess remaining historical branches after integration qualification.",
+    "retired": [
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer",
+        "branch": "refs/heads/codex/catalog-authority-issuer",
+        "head": "717ba9148a75ad74ca1758aa51cbb121b0f5fd18",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-authority-issuer.tar.gz",
+        "archive_sha256": "2d5b63e025c6db0388be6e9839c844f4666de99d74216b5cb1b83b67953ea19d",
+        "entries": 5449,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-authority-issuer:refs/heads/codex/catalog-authority-issuer",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer codex/catalog-authority-issuer",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-authority-issuer.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot",
+        "branch": "refs/heads/codex/catalog-authority-snapshot",
+        "head": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-authority-snapshot.tar.gz",
+        "archive_sha256": "8e19e3f177d756b97d4399d4a67fa2eb8fc79ae0f0caa9d049c7303b8557cc67",
+        "entries": 5422,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-authority-snapshot:refs/heads/codex/catalog-authority-snapshot",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot codex/catalog-authority-snapshot",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-authority-snapshot.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle",
+        "branch": "refs/heads/codex/catalog-clock-lifecycle",
+        "head": "e97d7fc3e0e393c5d829e234b7a96a97845268f5",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-clock-lifecycle.tar.gz",
+        "archive_sha256": "bbf31839165761e3c4650e7911c98788da540adfcede3d5ba404607075de109a",
+        "entries": 5503,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-clock-lifecycle:refs/heads/codex/catalog-clock-lifecycle",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle codex/catalog-clock-lifecycle",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-clock-lifecycle.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission",
+        "branch": "refs/heads/codex/catalog-consumer-permission",
+        "head": "20b1ee4186bd2fbc647209f280ad10ddefd7bb36",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-consumer-permission.tar.gz",
+        "archive_sha256": "5f77a48fb00de2f79028e7e786f927a296e99a6ba5f69581cc03ecc4d66fef93",
+        "entries": 5384,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-consumer-permission:refs/heads/codex/catalog-consumer-permission",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission codex/catalog-consumer-permission",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-consumer-permission.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-evidence",
+        "branch": "refs/heads/codex/catalog-evidence",
+        "head": "d8d12a26069f34442860cbcf8bb840dd073177fc",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-evidence.tar.gz",
+        "archive_sha256": "ddf999cba98fbc1b75bc3f724ec9c95c4197fcf9208ff2b38009839edcf965cf",
+        "entries": 4199,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-evidence:refs/heads/codex/catalog-evidence",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-evidence codex/catalog-evidence",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-evidence.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-evidence"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-followup-evidence",
+        "branch": "refs/heads/codex/catalog-followup-evidence",
+        "head": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-followup-evidence.tar.gz",
+        "archive_sha256": "e9d37877e854418538136ca7239fb65099392ec83af7f4c7d95a957b6d93feda",
+        "entries": 4741,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-followup-evidence:refs/heads/codex/catalog-followup-evidence",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-followup-evidence codex/catalog-followup-evidence",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-followup-evidence.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-followup-evidence"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-foundation",
+        "branch": "refs/heads/codex/catalog-foundation",
+        "head": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-foundation.tar.gz",
+        "archive_sha256": "e44187973e733f76e6fe900184f1d3d2aebf8aa80a137601b5915834bb99a17d",
+        "entries": 4564,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-foundation:refs/heads/codex/catalog-foundation",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-foundation codex/catalog-foundation",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-foundation.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-foundation"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
+        "branch": "refs/heads/codex/catalog-host-clock",
+        "head": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-host-clock.tar.gz",
+        "archive_sha256": "06c629eb6b800b5957215f93a8db8555156e23946dc0e4ac658c1568b817502b",
+        "entries": 6034,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-host-clock:refs/heads/codex/catalog-host-clock",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-host-clock codex/catalog-host-clock",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-host-clock.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-host-clock"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock",
+        "branch": "refs/heads/codex/catalog-native-clock",
+        "head": "7641eaea2b98f9ffbefb2807f67253919227b234",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-native-clock.tar.gz",
+        "archive_sha256": "e00329a7d04484ee29ee9d64a196799dadbc79e44cb7fb2ee61f53e9fc00f608",
+        "entries": 5398,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-native-clock:refs/heads/codex/catalog-native-clock",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-native-clock codex/catalog-native-clock",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-native-clock.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-native-clock"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+        "branch": "refs/heads/codex/catalog-origin-settings",
+        "head": "33118919dc18e1f824ea618502f23b756e50813a",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-origin-settings.tar.gz",
+        "archive_sha256": "a54df38d2e4b87376b0c0f9f537c4904b73e074489e3480474cce268d73ddcca",
+        "entries": 5706,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-origin-settings:refs/heads/codex/catalog-origin-settings",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings codex/catalog-origin-settings",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-origin-settings.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock",
+        "branch": "refs/heads/codex/catalog-permission-clock",
+        "head": "7239f4b76ee4d079479ae1703ac6e0ac55683925",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-permission-clock.tar.gz",
+        "archive_sha256": "6ce42731b860cbf90bcf0c058496d80df7dc9376980cbb7f680170da9896a1c9",
+        "entries": 5388,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-permission-clock:refs/heads/codex/catalog-permission-clock",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock codex/catalog-permission-clock",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-permission-clock.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-plan",
+        "branch": "refs/heads/codex/catalog-plan",
+        "head": "b58a9df6f2da7fe95297e30d97604c9232e83a43",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-plan.tar.gz",
+        "archive_sha256": "93406a55bfc2bcd8b093ba4f5ce3a425e9abbb6966ae8d6e7ecd09be8a064fa1",
+        "entries": 4238,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-plan:refs/heads/codex/catalog-plan",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-plan codex/catalog-plan",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-plan.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-plan"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs",
+        "branch": "refs/heads/codex/catalog-provider-docs",
+        "head": "b81b827067aa860096bed208e541dd84e31274ab",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-provider-docs.tar.gz",
+        "archive_sha256": "919f00e8675a949d3efb94d9c5876bbe3242bd685a2ea325d880cff692cec8aa",
+        "entries": 5360,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-provider-docs:refs/heads/codex/catalog-provider-docs",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs codex/catalog-provider-docs",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-provider-docs.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
+        "branch": "refs/heads/codex/catalog-public-acceptance",
+        "head": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-public-acceptance.tar.gz",
+        "archive_sha256": "c52210a5ce68f2045c42fb7cb07010221ec1e7d938c877a1c158d1d9a1c6d973",
+        "entries": 5495,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-public-acceptance:refs/heads/codex/catalog-public-acceptance",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance codex/catalog-public-acceptance",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-public-acceptance.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance"
+        ]
+      },
+      {
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-qualification-evidence",
+        "branch": "refs/heads/codex/catalog-qualification-evidence",
+        "head": "aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
+        "archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-qualification-evidence.tar.gz",
+        "archive_sha256": "766580c1c44b374cb15060afcbf075e872edc90835bfbccb46c981aaf173cfc9",
+        "entries": 5019,
+        "restore": [
+          "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/history.bundle refs/heads/codex/catalog-qualification-evidence:refs/heads/codex/catalog-qualification-evidence",
+          "git -C /Users/jack/src/github.com/agentstation/starmap worktree add /Users/jack/src/github.com/agentstation/starmap-catalog-qualification-evidence codex/catalog-qualification-evidence",
+          "tar -xzf /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/starmap-catalog-qualification-evidence.tar.gz -C /Users/jack/src/github.com/agentstation/starmap-catalog-qualification-evidence"
+        ]
+      }
+    ],
+    "additional_branch": {
+      "branch": "codex/catalog-batched-verification",
+      "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+      "merged_head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+      "identical_tree": "507c2a66f9ddc873a085fdc6d94178fe3495e963",
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/batched-verification.bundle",
+      "bundle_sha256": "32a18b7aea2454478cf9ece1b25d4952a88648a6092f35d0706b920738ef69a3",
+      "bundle_verified": true,
+      "restore": "git -C /Users/jack/src/github.com/agentstation/starmap fetch /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-merged-worktrees/batched-verification.bundle refs/heads/codex/catalog-batched-verification:refs/heads/codex/catalog-batched-verification",
+      "ref_absent": true
+    }
   },
   "merged_branch_cleanup": {
     "proof": "../../csp8/native-182/merged/branch-cleanup.json",
@@ -516,5 +728,12 @@
     "race_named_passes": 535,
     "skips": 0,
     "merge_qualification": "pending"
+  },
+  "producer_preparation": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
+    "branch": "codex/catalog-bootstrap-payload",
+    "head": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+    "source_changes": false,
+    "proof": "../../csp8/native-schedule-384/bootstrap-format-probe.json"
   }
 }
