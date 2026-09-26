@@ -3507,3 +3507,25 @@ The earlier oversized model finding now has a passing allocation control and a l
 Typed decoding preserves large integer values. Named scalar types, JSON compatibility, pointer cycles, and queue capacity have regression coverage.
 The [model encoding proof](../../plans/proof/starport-production-catalog/csp12.1/model-encoding.md) owns the results and their limits.
 Aggregate heap, supported custom serialization methods, and full-request latency still need qualification.
+
+
+## September 25 paid-operation admission audit
+
+The [paid-operation matrix](PAID_OPERATION_MATRIX.md) covers eleven served operation names and their internal, streaming, and background callers.
+The audit pins Starport source to `ca2d2057d60c07ad0bd6668023af8ae8647534c1`.
+CSP12.2 owns implementation and A47 qualification. No matrix entry claims completed reservation support.
+
+The source audit found a required accounting gap in `internal/jobs/accounting.go`.
+`Service.settle` marks the job accounted before calling `RecordJob` and discards that call's error.
+A later settlement skips the accounted job. Required budget settlement therefore needs its own recoverable transition.
+The current job-slot reservation only bounds outstanding jobs. It does not reserve spend or token capacity.
+
+`TestAFailedJobDrawsNoCost` and `TestACancelledJobDrawsNoCost` assert a false chargeable flag from terminal state alone.
+That flag cannot prove no provider charge under the accepted reservation contract.
+CSP12.2 must replace this assumption with per-attempt usage evidence or retained uncertain capacity.
+Optional reporting failure cannot release capacity or close required reconciliation.
+
+Video submission, poll, cancel, and content currently share `videos-generations`.
+Admission needs the call purpose and billing evidence to distinguish new work from observation or retrieval.
+Semantic-cache embeddings and guardrail moderation call the gateway internally and need independent child reservations.
+The [audit record](../../plans/proof/starport-production-catalog/csp12.2/operation-inventory.json) binds these findings to exact source hashes.

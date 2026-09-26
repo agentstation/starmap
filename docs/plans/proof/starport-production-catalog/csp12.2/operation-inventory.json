@@ -1,0 +1,151 @@
+{
+  "checked_at": "2026-09-26T01:59:48.730624+00:00",
+  "source_root": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
+  "source_head": "ca2d2057d60c07ad0bd6668023af8ae8647534c1",
+  "source_status": "",
+  "method": "Read dispatch, internal caller, allowance, batch, and terminal accounting code. Compare all served operation literals against the matrix. This is source audit evidence, not runtime qualification.",
+  "served_operations": [
+    "chat-completions",
+    "embeddings",
+    "images-generations",
+    "images-edits",
+    "audio-speech",
+    "audio-transcriptions",
+    "audio-translations",
+    "videos-generations",
+    "documents-recognition",
+    "rerank",
+    "moderations"
+  ],
+  "operation_count": 11,
+  "all_operations_in_matrix": true,
+  "files": [
+    {
+      "path": "internal/routing/operations.go",
+      "sha256": "2bd66b730eb689d664a7d2314858b687ed77bc73ce73ea02fba53bb4a1430eb5"
+    },
+    {
+      "path": "internal/router/router.go",
+      "sha256": "3d2df30c2ef0f408cd95a4e84b09cc29addfa443ab7415d51bf6d080e10eda66"
+    },
+    {
+      "path": "internal/router/execution_adapter.go",
+      "sha256": "157af8445e2989987adbc1cc6ba9896ca9ce14f8d6a21787bf06fdfe1d9c3523"
+    },
+    {
+      "path": "internal/router/embeddings.go",
+      "sha256": "7043a1dc52a87553e9abda0f37b8c7a44e0952c7702bd9cc94e3124600937147"
+    },
+    {
+      "path": "internal/router/operation.go",
+      "sha256": "a390dd2cd74695435fe6c8ae928ba349fb0bd6e6f0b7d62912f6e1abc14af6a5"
+    },
+    {
+      "path": "internal/router/recognition.go",
+      "sha256": "656f81d0e6929f7cff7edca1293e185b7b5d3955d4a4b87381cc1b8cc4895dfb"
+    },
+    {
+      "path": "internal/router/rerank.go",
+      "sha256": "e7821b9e861238d14437780763280c7d3365cf492b239d8061d8f56d6f37f133"
+    },
+    {
+      "path": "internal/router/moderations.go",
+      "sha256": "549dec026cfc369efa18a5a2382aba0980d769e286f5d386da30cfd496c009cd"
+    },
+    {
+      "path": "internal/router/media.go",
+      "sha256": "ed641396fcd10d810e266d48fd384db48a553fa61a8b518b318a500d41ca8cfb"
+    },
+    {
+      "path": "internal/router/video_jobs.go",
+      "sha256": "eb3bd5fbc9700aaf2fd97a58462686143f92986d65ac4162ef2ed7e8c89ad444"
+    },
+    {
+      "path": "internal/proxy/semantic_cache.go",
+      "sha256": "49a909aa22ebeaa0fb111bd3db26cb9924715f076ae651a022572700267aae6b"
+    },
+    {
+      "path": "internal/proxy/guardrail_moderation.go",
+      "sha256": "74a488920617c4eed4f85de965b5d87869e4387f7afe396f3f9825dbb27b5cb3"
+    },
+    {
+      "path": "internal/proxy/parser.go",
+      "sha256": "cbf866a87a763bdf2cf0388269b144fc5c6ff6f09e6992776169c7fc36361ce0"
+    },
+    {
+      "path": "internal/proxy/rerank.go",
+      "sha256": "21080819ecf378da2ad6ab7f0e6257347b5b0eb390b79d80895196e63086e804"
+    },
+    {
+      "path": "internal/proxy/video_jobs.go",
+      "sha256": "59ce5efc37121171c4130dea361e810aa65acde172900ee937ba7413b508f10e"
+    },
+    {
+      "path": "internal/server/controllers/responses.go",
+      "sha256": "4b84a784907b53bf7fbd6fce15260c6cb2cf8e2f6a47ff29fad2e569dbca80d3"
+    },
+    {
+      "path": "internal/server/controllers/batches.go",
+      "sha256": "b59bcd15e37cbcc40d38420ab2924afe612d1e29cd99e3f9de2ffd3f03c8016c"
+    },
+    {
+      "path": "internal/server/batch_governor.go",
+      "sha256": "274c2f2cb8228d998dad2f07ff6ff63b6eda006634dfaeecaa2d71f0f10f5b25"
+    },
+    {
+      "path": "internal/server/budget.go",
+      "sha256": "1b204446fb94f64b6f9db00817d6930a4a1e47e57404afba4f69064765dfa13a"
+    },
+    {
+      "path": "internal/execution/executor.go",
+      "sha256": "b56488e7235c63016e7841a1d765ffb56eabc59186754c2ff2fdb05fdb63ec62"
+    },
+    {
+      "path": "internal/limits/spend.go",
+      "sha256": "ec0c758e6be311e1ca84c0fd854af0ec072e5e3c062cdfed3900b2cf2d41ee51"
+    },
+    {
+      "path": "internal/jobs/accounting.go",
+      "sha256": "c6cedeee41b7f90e018ad106737bfbfebccb0b6ea0626cc052e598fdf254c22e"
+    },
+    {
+      "path": "internal/jobs/accounting_test.go",
+      "sha256": "fe41838e8d59c8b3244ac8beec61ae748b88a85c2e67f618c33068c5db032063"
+    }
+  ],
+  "findings": [
+    {
+      "id": "required-job-settlement",
+      "owner": "CSP12.2",
+      "source": "internal/jobs/accounting.go",
+      "function": "Service.settle",
+      "observation": "Marks accounted before RecordJob and discards its error; later settlement skips an accounted job."
+    },
+    {
+      "id": "terminal-state-cost-assumption",
+      "owner": "CSP12.2",
+      "source": "internal/jobs/accounting_test.go",
+      "tests": [
+        "TestAFailedJobDrawsNoCost",
+        "TestACancelledJobDrawsNoCost"
+      ],
+      "observation": "Terminal state yields a false chargeable flag without per-attempt provider evidence."
+    },
+    {
+      "id": "video-call-purpose",
+      "owner": "CSP12.2",
+      "source": "internal/router/video_jobs.go",
+      "observation": "Submission, poll, cancel, and asset retrieval all use OperationVideosGenerations."
+    }
+  ],
+  "runtime_qualification": "UNVERIFIED",
+  "task_complete": false,
+  "checks": {
+    "matrix_served_operations": 11,
+    "source_files_hashed": 23,
+    "strict_prose_files": 4,
+    "strict_prose_diagnostics": 0,
+    "matrix_local_references": "pass",
+    "runtime_tests": "not run for this source audit"
+  }
+}

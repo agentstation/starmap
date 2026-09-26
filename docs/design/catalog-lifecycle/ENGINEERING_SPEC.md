@@ -2807,6 +2807,8 @@ Cache delivery retains its documented admission semantics without inventing a ch
 CSP12.2 owns reservation semantics. CSP15 repeats their real-backend failure tests.
 
 Each supported operation must appear in a chargeable-operation matrix before its acceptance test can pass.
+The [paid-operation matrix](PAID_OPERATION_MATRIX.md) records current dispatch paths, required bounds, and missing qualification evidence.
+
 Include chat, responses, embeddings, recognition, reranking, applicable moderation, image, audio, video, and asynchronous operations.
 Internal gateway calls use the same admission owner as external calls.
 Recognition before chat and semantic embeddings before a cache hit require separate reservations when they incur separate charges.
