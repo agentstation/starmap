@@ -1,5 +1,5 @@
 {
-  "status": "Repairs committed. Final local task tests pass. Full branch review is running; native qualification remains open.",
+  "status": "Repairs committed and reviewed. Local task tests pass. Producer native CI and final consumer module qualification remain open.",
   "source": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
   "run": 36223300692,
   "job": 108352484199,
@@ -357,10 +357,22 @@
     }
   },
   "review": {
-    "session": 32670,
-    "status": "running",
+    "status": "PASS",
+    "exit_code": 0,
+    "head": "527aac7c570143e77db951fd6796d7333b924488",
+    "profile": "auto",
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "P0",
+    "passes": 9,
+    "findings": 0,
+    "bundle_bytes": 1826482,
+    "secret_scan": "clean",
     "command": "autoreview --gate pre-pr --mode auto --max-passes 32",
-    "reason": "Retain complete branch scope for the prepared integration."
+    "log": {
+      "path": "fixtures-review.log.gz",
+      "sha256": "9762852f64febd1e82c8b80a38eea74218963a3eb5a8d3372f6fc376cd2b9d68"
+    }
   },
   "plan_validation": {
     "changed_plan": "PASS: one file, zero diagnostics.",

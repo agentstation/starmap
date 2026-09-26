@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T06:52:09.633322+00:00",
+  "checked_at": "2026-09-26T06:55:17.472067+00:00",
   "starmap": [
     {
       "pr": 182,
@@ -23,7 +23,7 @@
       "owner": "CSP8",
       "checks_run": 36223300692,
       "disposition": "Keep. Published head has diagnosed failures; local repairs pass focused and task tests.",
-      "next_action": "Complete review of 527aac7, pin the corrected producer after its merge, then push the existing PR for native qualification."
+      "next_action": "Pin the corrected producer after its merge, verify the published pair, then push the existing PR for native qualification."
     }
   ],
   "completed_merges": [
@@ -222,12 +222,12 @@
     "head": "527aac7c570143e77db951fd6796d7333b924488",
     "owner": "CSP8",
     "pre_pr_checks": "PASS: 733 task race tests with real Valkey and PostgreSQL, zero skips; ordinary suite 4,139 passes and 61 skips; lint zero issues.",
-    "review": "Required pre-PR review running in session 32670.",
+    "review": "PASS at 527aac7: nine complete passes, zero findings at configured P0 threshold, clean secret scan.",
     "disposition": "Qualify native CI and CSP8 task acceptance before merge.",
     "proof": "../../csp8/linux-migration-384/verification.json",
     "pr": 384,
     "checks_run": 36223300692,
-    "status": "Local repair passes 733 task race tests and 21 focused instrumented tests, without skips. Complete branch review is running.",
+    "status": "Reviewed local repair passes 733 task race tests and 21 focused instrumented tests, without skips. Await producer merge for final module pin.",
     "linux_migration_proof": "../../csp8/linux-migration-384/verification.json"
   },
   "starmap_preparation": {
