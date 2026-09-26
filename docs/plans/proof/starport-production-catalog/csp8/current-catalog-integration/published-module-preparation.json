@@ -20,9 +20,9 @@
   "tested_package_dependency_graph_matches": true,
   "tested_dependency_differences": [],
   "tested_dependency_modules": 183,
-  "checked_at": "2026-09-26T04:50:14.340732+00:00",
+  "checked_at": "2026-09-26T04:58:24.390935+00:00",
   "starport_base": "ca2d2057d60c07ad0bd6668023af8ae8647534c1",
-  "status": "local_tests_and_lint_pass",
+  "status": "pre_pr_checks_and_review_pass",
   "changes": [
     "go.mod",
     "go.sum"
@@ -631,39 +631,361 @@
       "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go vet ./...",
       "exit_code": 0,
       "log": "/tmp/starport-published-module-vet.log"
-    }
-  },
-  "qualification_limit": "Preparation only. CSP6 publication qualification, remaining consumer gates, review, native CI, acceptance, and merge remain open.",
-  "pending_checks": {
-    "repository_guards": {
-      "session": 72611,
-      "result_file": "/tmp/starport-published-module-gates/results.json",
-      "completed": [
-        {
-          "command": "bash scripts/verify-starmap-ownership.sh",
-          "exit_code": 0,
-          "seconds": 91.04,
-          "log": "/tmp/starport-published-module-gates/verify-starmap-ownership.sh.log"
-        }
-      ]
     },
     "build_and_smoke": {
-      "result_file": "/tmp/starport-published-module-build/results.json",
-      "session": 84416,
-      "completed": [
+      "status": "PASS",
+      "commands": [
         {
           "command": "pnpm -C console check",
           "exit_code": 0,
           "seconds": 36.94,
-          "log": "/tmp/starport-published-module-build/0.log"
+          "log": "/tmp/starport-published-module-build/0.log",
+          "retained_log": {
+            "path": "published-module-build-0.log.gz",
+            "sha256": "5cbed97b52f39defbd9a60e9b7488a34df1db05a89e0efc18c3a78d10703c744"
+          }
         },
         {
           "command": "make build",
           "exit_code": 0,
           "seconds": 45.81,
-          "log": "/tmp/starport-published-module-build/1.log"
+          "log": "/tmp/starport-published-module-build/1.log",
+          "retained_log": {
+            "path": "published-module-build-1.log.gz",
+            "sha256": "710cb19eed9b6602f76dcc4585c78c896d593e5601fca6b7dea7476776bcf1da"
+          }
+        },
+        {
+          "command": "bash scripts/benchmark-overhead.sh",
+          "exit_code": 0,
+          "seconds": 7.86,
+          "log": "/tmp/starport-published-module-build/2.log",
+          "retained_log": {
+            "path": "published-module-build-2.log.gz",
+            "sha256": "d9a68cd0bce94739bec97cbaf8eb49a3664b8e3cd33ed26641f177ad51d32198"
+          }
+        },
+        {
+          "command": "bash scripts/smoke-first-run.sh",
+          "exit_code": 0,
+          "seconds": 75.53,
+          "log": "/tmp/starport-published-module-build/3.log",
+          "retained_log": {
+            "path": "published-module-build-3.log.gz",
+            "sha256": "ee03cc4ae3025cbd09477d8fab46cdc671992dd351594efb542ad099898400d8"
+          }
+        },
+        {
+          "command": "bash scripts/smoke-openrouter-sdks.sh",
+          "exit_code": 0,
+          "seconds": 62.65,
+          "log": "/tmp/starport-published-module-build/4.log",
+          "retained_log": {
+            "path": "published-module-build-4.log.gz",
+            "sha256": "4cf5eb00311f9e38f8db6a53a540616054e03824285833c9db9bc50aca3ed8e1"
+          }
+        }
+      ],
+      "console_tests": {
+        "files": 74,
+        "tests": 460,
+        "skips": 0
+      },
+      "benchmark_limit": "The controller benchmark reports whole milliseconds. It does not qualify complete request overhead.",
+      "sdk_scope": "Loopback fixture server plus Python, TypeScript, and Go SDKs. Includes canonical removal after successful inference."
+    },
+    "repository_guards": {
+      "status": "PASS",
+      "count": 26,
+      "commands": [
+        {
+          "command": "bash scripts/verify-starmap-ownership.sh",
+          "exit_code": 0,
+          "seconds": 91.04,
+          "log": "/tmp/starport-published-module-gates/verify-starmap-ownership.sh.log",
+          "retained_log": {
+            "path": "verify-starmap-ownership.sh.log.gz",
+            "sha256": "46e8e0ed9b18c66eea5dc36c6aa8d7e0f4f7d6c70ff27d3e43863f4d2230c840"
+          }
+        },
+        {
+          "command": "bash scripts/verify-v1-architecture.sh",
+          "exit_code": 0,
+          "seconds": 244.09,
+          "log": "/tmp/starport-published-module-gates/verify-v1-architecture.sh.log",
+          "retained_log": {
+            "path": "verify-v1-architecture.sh.log.gz",
+            "sha256": "f37f2642dc2fb82562e0e4665d810a187e5e779c8dd5624a53ed141ab6f192b0"
+          }
+        },
+        {
+          "command": "bash scripts/test-dependency-direction-verifier.sh",
+          "exit_code": 0,
+          "seconds": 0.71,
+          "log": "/tmp/starport-published-module-gates/test-dependency-direction-verifier.sh.log",
+          "retained_log": {
+            "path": "test-dependency-direction-verifier.sh.log.gz",
+            "sha256": "0aed97008fa3c8756b60097a2877ab66ccafbc6056862b283f361a29967b9d5b"
+          }
+        },
+        {
+          "command": "bash scripts/verify-dependency-direction.sh",
+          "exit_code": 0,
+          "seconds": 0.61,
+          "log": "/tmp/starport-published-module-gates/verify-dependency-direction.sh.log",
+          "retained_log": {
+            "path": "verify-dependency-direction.sh.log.gz",
+            "sha256": "0431f20ac146e63fe89f3da53582bfc6e6f3d07dba9fa5ee105b8b2c486c0d1d"
+          }
+        },
+        {
+          "command": "bash scripts/verify-catalog-driven-providers.sh",
+          "exit_code": 0,
+          "seconds": 154.69,
+          "log": "/tmp/starport-published-module-gates/verify-catalog-driven-providers.sh.log",
+          "retained_log": {
+            "path": "verify-catalog-driven-providers.sh.log.gz",
+            "sha256": "8a5d4a9663aff421b09cf24f7e2c8796c80c8a57e096afc4ef32e6ae0cb86fba"
+          }
+        },
+        {
+          "command": "bash scripts/verify-package-layout.sh",
+          "exit_code": 0,
+          "seconds": 6.51,
+          "log": "/tmp/starport-published-module-gates/verify-package-layout.sh.log",
+          "retained_log": {
+            "path": "verify-package-layout.sh.log.gz",
+            "sha256": "8b1e258fd3ae75cdcbd5cd3b425af7e7c8bb72cf99cf266dad65e8ec4890e263"
+          }
+        },
+        {
+          "command": "bash scripts/verify-readme-quickstart.sh",
+          "exit_code": 0,
+          "seconds": 0.07,
+          "log": "/tmp/starport-published-module-gates/verify-readme-quickstart.sh.log",
+          "retained_log": {
+            "path": "verify-readme-quickstart.sh.log.gz",
+            "sha256": "413ed18b1047317820bc41107e3d91bd5f6079cace3632baa4d2ddfb05411891"
+          }
+        },
+        {
+          "command": "bash scripts/verify-v1-release.sh",
+          "exit_code": 0,
+          "seconds": 0.08,
+          "log": "/tmp/starport-published-module-gates/verify-v1-release.sh.log",
+          "retained_log": {
+            "path": "verify-v1-release.sh.log.gz",
+            "sha256": "f7643e38d2fe54d712bf3f33f4ee5ad56a9b8435a2f511df066758c48a201654"
+          }
+        },
+        {
+          "command": "bash scripts/verify-release-workflow.sh",
+          "exit_code": 0,
+          "seconds": 6.59,
+          "log": "/tmp/starport-published-module-gates/verify-release-workflow.sh.log",
+          "retained_log": {
+            "path": "verify-release-workflow.sh.log.gz",
+            "sha256": "a3943afccbe0dab464b05a47d018e402aeb04c2d2203cdb433ca54122e2ebd76"
+          }
+        },
+        {
+          "command": "bash scripts/verify-developer-experience.sh",
+          "exit_code": 0,
+          "seconds": 2.81,
+          "log": "/tmp/starport-published-module-gates/verify-developer-experience.sh.log",
+          "retained_log": {
+            "path": "verify-developer-experience.sh.log.gz",
+            "sha256": "2272b4f4a60ffe2948412e68afc72d8a93ef06f2202879a08385e6bb86ade2b5"
+          }
+        },
+        {
+          "command": "bash scripts/verify-doc-links.sh",
+          "exit_code": 0,
+          "seconds": 0.34,
+          "log": "/tmp/starport-published-module-gates/verify-doc-links.sh.log",
+          "retained_log": {
+            "path": "verify-doc-links.sh.log.gz",
+            "sha256": "8a4be495d8d8c9755091f3a36fb838976cd1ff9d18eeef775ccb1bd94b032d28"
+          }
+        },
+        {
+          "command": "bash scripts/test-doc-link-verifier.sh",
+          "exit_code": 0,
+          "seconds": 0.28,
+          "log": "/tmp/starport-published-module-gates/test-doc-link-verifier.sh.log",
+          "retained_log": {
+            "path": "test-doc-link-verifier.sh.log.gz",
+            "sha256": "cf8c10dd2b30dc13c4d38d2722be5475ba294e9cfe70590ee973713e2baf1898"
+          }
+        },
+        {
+          "command": "bash scripts/verify-openrouter-parity.sh",
+          "exit_code": 0,
+          "seconds": 0.13,
+          "log": "/tmp/starport-published-module-gates/verify-openrouter-parity.sh.log",
+          "retained_log": {
+            "path": "verify-openrouter-parity.sh.log.gz",
+            "sha256": "b447b8e749f58c15046ee7d5398c7505418996177cbe02b690f4140ccbbd1a9d"
+          }
+        },
+        {
+          "command": "bash scripts/verify-console-modernization.sh",
+          "exit_code": 0,
+          "seconds": 0.04,
+          "log": "/tmp/starport-published-module-gates/verify-console-modernization.sh.log",
+          "retained_log": {
+            "path": "verify-console-modernization.sh.log.gz",
+            "sha256": "ae43e470f7bbdccfb710aec98162efde009f433ed6c7bbb5802bea7247ce1c4b"
+          }
+        },
+        {
+          "command": "bash scripts/verify-auth-onboarding.sh",
+          "exit_code": 0,
+          "seconds": 0.07,
+          "log": "/tmp/starport-published-module-gates/verify-auth-onboarding.sh.log",
+          "retained_log": {
+            "path": "verify-auth-onboarding.sh.log.gz",
+            "sha256": "6ef95c7e8d5ea6fcf1028190ed16f89359493e43b6f7af654fb67aa50745b910"
+          }
+        },
+        {
+          "command": "bash scripts/verify-console-session-grants.sh",
+          "exit_code": 0,
+          "seconds": 0.4,
+          "log": "/tmp/starport-published-module-gates/verify-console-session-grants.sh.log",
+          "retained_log": {
+            "path": "verify-console-session-grants.sh.log.gz",
+            "sha256": "d434ee80b7ae57af98c97fcc18c4e642bfaf018179033039e8064d26b4ca0ccd"
+          }
+        },
+        {
+          "command": "bash scripts/verify-model-modalities.sh",
+          "exit_code": 0,
+          "seconds": 0.24,
+          "log": "/tmp/starport-published-module-gates/verify-model-modalities.sh.log",
+          "retained_log": {
+            "path": "verify-model-modalities.sh.log.gz",
+            "sha256": "36d4d98810c71ff9d908daf7f98914b424f2b1cbc66a93b0211d41c8fbc16c7e"
+          }
+        },
+        {
+          "command": "bash scripts/verify-files-api.sh",
+          "exit_code": 0,
+          "seconds": 0.13,
+          "log": "/tmp/starport-published-module-gates/verify-files-api.sh.log",
+          "retained_log": {
+            "path": "verify-files-api.sh.log.gz",
+            "sha256": "d7b42d622d983902fa31d2b18430d094354523284615a4b83b9a2bc1183fdf2d"
+          }
+        },
+        {
+          "command": "bash scripts/verify-async-media-jobs.sh",
+          "exit_code": 0,
+          "seconds": 0.13,
+          "log": "/tmp/starport-published-module-gates/verify-async-media-jobs.sh.log",
+          "retained_log": {
+            "path": "verify-async-media-jobs.sh.log.gz",
+            "sha256": "125eb13f068fde953308d770711fe5737df127f9fbc191a358e5357c51e99fa5"
+          }
+        },
+        {
+          "command": "bash scripts/verify-document-parser.sh",
+          "exit_code": 0,
+          "seconds": 0.24,
+          "log": "/tmp/starport-published-module-gates/verify-document-parser.sh.log",
+          "retained_log": {
+            "path": "verify-document-parser.sh.log.gz",
+            "sha256": "42c6bceedb79450597c6900669aa14ef21871bc88086be3bbc21d553d5378edb"
+          }
+        },
+        {
+          "command": "bash scripts/verify-reranking.sh",
+          "exit_code": 0,
+          "seconds": 0.34,
+          "log": "/tmp/starport-published-module-gates/verify-reranking.sh.log",
+          "retained_log": {
+            "path": "verify-reranking.sh.log.gz",
+            "sha256": "d95d093c6941bedfb15e284a74a61eba71df4d9dfadda6fa03b137ed24605fc0"
+          }
+        },
+        {
+          "command": "bash scripts/verify-catalog-performance.sh",
+          "exit_code": 0,
+          "seconds": 0.24,
+          "log": "/tmp/starport-published-module-gates/verify-catalog-performance.sh.log",
+          "retained_log": {
+            "path": "verify-catalog-performance.sh.log.gz",
+            "sha256": "607a7c060590d6b1bfe06ac82189a9e99b3c000d1e4fd985e6f7a528f2dd8e77"
+          }
+        },
+        {
+          "command": "bash scripts/verify-credential-sharing.sh",
+          "exit_code": 0,
+          "seconds": 0.19,
+          "log": "/tmp/starport-published-module-gates/verify-credential-sharing.sh.log",
+          "retained_log": {
+            "path": "verify-credential-sharing.sh.log.gz",
+            "sha256": "8c22d0ea0ed029eb65c9c36e65ff29685d28881561bde8b0e199361f7c0ce042"
+          }
+        },
+        {
+          "command": "bash scripts/verify-enterprise-readiness.sh",
+          "exit_code": 0,
+          "seconds": 0.72,
+          "log": "/tmp/starport-published-module-gates/verify-enterprise-readiness.sh.log",
+          "retained_log": {
+            "path": "verify-enterprise-readiness.sh.log.gz",
+            "sha256": "2db6a11d548087712fb0524d0101751966d24fa4098edbc3ba433b7b63905988"
+          }
+        },
+        {
+          "command": "bash scripts/verify-console-polish.sh",
+          "exit_code": 0,
+          "seconds": 0.18,
+          "log": "/tmp/starport-published-module-gates/verify-console-polish.sh.log",
+          "retained_log": {
+            "path": "verify-console-polish.sh.log.gz",
+            "sha256": "09c7ccea729b2486b07a366f31b29c881aab675f42bf817e5f6e38e48f1f7e9e"
+          }
+        },
+        {
+          "command": "bash scripts/verify-action-pins.sh",
+          "exit_code": 0,
+          "seconds": 4.79,
+          "log": "/tmp/starport-published-module-gates/verify-action-pins.sh.log",
+          "retained_log": {
+            "path": "verify-action-pins.sh.log.gz",
+            "sha256": "b52834f4373084147f72a67192215cd2a887870d8669b1eb3728fafed44e8dc5"
+          }
         }
       ]
     }
+  },
+  "qualification_limit": "Preparation only. CSP6 publication qualification, remaining consumer gates, review, native CI, acceptance, and merge remain open.",
+  "starport_head": "9b60991b6fcce2a37c625339c23beb8b2e267e44",
+  "review": {
+    "command": "/Users/jack/.agents/skills/autoreview/scripts/autoreview --gate pre-pr --mode auto --max-passes 32",
+    "log": "/tmp/starport-published-module-autoreview-complete.log",
+    "status": "PASS",
+    "initial_result": "The default eight-pass budget refused the complete bundle before review. Secret scan passed.",
+    "budget_reason": "Keep the prepared cross-module integration intact. Permit up to 32 bounded passes without truncation or changes to the review threshold.",
+    "exit_code": 0,
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "configured P0",
+    "actual_passes": 9,
+    "bundle_bytes": 1823983,
+    "actionable_findings": 0,
+    "secret_scan": "clean",
+    "retained_logs": [
+      {
+        "path": "starport-published-module-autoreview.log.gz",
+        "sha256": "ea3ebda591dafa70ec19afd56fc1b107800fc2f6deace63d100f0cd940684ff9"
+      },
+      {
+        "path": "starport-published-module-autoreview-complete.log.gz",
+        "sha256": "817dda7a7d5e2749ffbde92b2b57cf807e03d10d1bfe0174d82f6c1807539cd4"
+      }
+    ]
   }
 }

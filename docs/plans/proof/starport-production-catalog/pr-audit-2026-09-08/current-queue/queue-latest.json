@@ -1,6 +1,18 @@
 {
-  "checked_at": "2026-09-26T04:33:46.045642+00:00",
-  "starmap": [],
+  "checked_at": "2026-09-26T05:06:30.504484+00:00",
+  "starmap": [
+    {
+      "number": 181,
+      "head": "36cb3ecd1756ad46294edd9dcdbf645bdfa56073",
+      "base": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
+      "owner": "CSP6",
+      "disposition": "qualify and merge after exact-head checks",
+      "next_action": "After exact-head checks pass, verify merge and both-channel publication. Capture before, retry the exact completed receipt, capture after, and run CSP6 acceptance.",
+      "checks_run": 36219211223,
+      "proof": "../../csp6/promotion-181/verification.json",
+      "native_status": "in_progress"
+    }
+  ],
   "starport": [],
   "completed_merges": [
     {
@@ -82,7 +94,7 @@
       "starmap": {
         "worktrees": 37,
         "dirty": 34,
-        "remote_heads": 4
+        "remote_heads": 5
       },
       "starport": {
         "worktrees": 4,
@@ -100,7 +112,7 @@
     "preserved_pass_proof": "worktree-cleanup-preserved.json",
     "archive_verification": "PASS: eight additional archive and bundle digests match, all eight worktree paths and branch refs are absent.",
     "additional_proven_branches_removed": 8,
-    "total_local_branches_removed": 73,
+    "total_local_branches_removed": 74,
     "additional_pass_proof": "worktree-cleanup-additional.json",
     "remote_additional_proof": "remote-cleanup-additional.json",
     "automatic_superseded_remote_branch_deletions": 5
@@ -159,15 +171,24 @@
     "changed_plan_strict_lint": "PASS: 1 file, zero diagnostics.",
     "repository_technical_writing_check": "1698 files, 69 unchanged historical diagnostics.",
     "ledger": "40 rows, 15 terminal, CSP6 only in_progress.",
-    "local_links": "115 local links resolve.",
+    "local_links": "88 unique local links resolve.",
     "diff_check": "PASS"
   },
   "active_publication": {
     "run": 36218156255,
     "source": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
-    "status": "in_progress",
+    "status": "completed",
+    "conclusion": "success",
     "owner": "CSP6",
-    "observed_step": "Refresh candidate catalog",
-    "checked_at": "2026-09-26T04:35:36.499362+00:00"
+    "result": "awaiting promotion PR #181 checks",
+    "checked_at": "2026-09-26T04:58:24.390935+00:00"
+  },
+  "starport_preparation": {
+    "head": "9b60991",
+    "owner": "CSP8",
+    "pre_pr_checks": "PASS",
+    "review": "PASS: nine bounded passes, no actionable findings at configured P0 threshold",
+    "disposition": "retain reviewed unpublished integration until CSP6 qualification",
+    "proof": "../../csp8/current-catalog-integration/published-module-preparation.json"
   }
 }
