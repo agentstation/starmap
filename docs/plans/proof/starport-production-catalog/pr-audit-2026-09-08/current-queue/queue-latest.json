@@ -1,16 +1,16 @@
 {
-  "checked_at": "2026-09-26T07:27:11.200416+00:00",
+  "checked_at": "2026-09-26T07:36:48.984200+00:00",
   "starmap": [
     {
       "pr": 182,
-      "head": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
+      "head": "e8a9a485c3e83fe02237d80b6134053bc9d4bd97",
       "branch": "codex/catalog-native-consumer-qualification",
       "state": "OPEN",
       "draft": true,
       "owner": "CSP8",
-      "checks_run": 36224141186,
-      "disposition": "Keep. Native CI completed with 28 passing jobs and two Windows failures.",
-      "next_action": "Correct the stale Windows CLI expectation. Qualify acceptance batching, complete review, and update this PR before native qualification and merge."
+      "checks_run": 36227245093,
+      "disposition": "Keep. Reviewed Windows test correction and acceptance batching are published. Fresh native CI is active.",
+      "next_action": "Verify native CI at the exact published head, then merge before the consumer module pin."
     }
   ],
   "starport": [
@@ -235,11 +235,11 @@
     "branch": "codex/catalog-native-consumer-qualification",
     "base": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
     "worktree": "starmap-host-files",
-    "status": "Native run failed on the stale Windows CLI owner-binding expectation. Adapter tests passed. Repair and fresh qualification remain required.",
-    "proof": "../../csp8/native-producer-181/preparation.json",
-    "head": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
+    "status": "Repository checks, 56 selected CLI tests, and full-branch review pass. Fresh native CI is active.",
+    "proof": "../../csp8/acceptance-batching/preparation.json",
+    "head": "e8a9a485c3e83fe02237d80b6134053bc9d4bd97",
     "pr": 182,
-    "checks_run": 36224141186,
+    "checks_run": 36227245093,
     "windows_proof": "../../csp8/windows-owner-182/verification.json",
     "superseded_run": {
       "id": 36223296385,

@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T07:27:11.200416+00:00",
+  "checked_at": "2026-09-26T07:36:48.984905+00:00",
   "repositories": {
     "starmap": {
       "worktrees": [
@@ -338,7 +338,7 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
-          "HEAD": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
+          "HEAD": "e8a9a485c3e83fe02237d80b6134053bc9d4bd97",
           "branch": "refs/heads/codex/catalog-native-consumer-qualification",
           "dirty_paths": [],
           "dirty_count": 0,
@@ -346,14 +346,11 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
-          "HEAD": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
-          "branch": "refs/heads/codex/catalog-batched-verification",
-          "dirty_paths": [
-            "scripts/catalog_product_verify.py",
-            "scripts/test_catalog_product_verify.py"
-          ],
-          "dirty_count": 2,
-          "disposition": "Active CSP8 verifier batching. Preserve both uncommitted Python changes."
+          "HEAD": "e8a9a485c3e83fe02237d80b6134053bc9d4bd97",
+          "branch": null,
+          "dirty_paths": [],
+          "dirty_count": 0,
+          "disposition": "Clean detached checkout, available for reuse. Staging changes are committed in PR #182."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair",
@@ -569,7 +566,7 @@
         "codex/catalog-foundation 205dd041fb2d0267a2643c0d6af8d9f45e34842d",
         "codex/catalog-host-clock 2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
         "codex/catalog-native-clock 7641eaea2b98f9ffbefb2807f67253919227b234",
-        "codex/catalog-native-consumer-qualification ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
+        "codex/catalog-native-consumer-qualification e8a9a485c3e83fe02237d80b6134053bc9d4bd97",
         "codex/catalog-origin-settings 33118919dc18e1f824ea618502f23b756e50813a",
         "codex/catalog-partial-retention fa5954a6b598bc1ab7fcd5e24da15a136fbe8cd8",
         "codex/catalog-permission-clock 7239f4b76ee4d079479ae1703ac6e0ac55683925",
@@ -579,7 +576,7 @@
         "codex/catalog-public-acceptance 0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
         "codex/catalog-publication-promotion 644ffc88450dd7c29b6edea658a401e3b7380c71",
         "codex/catalog-publisher-cat99 7994fced889a29530c6811582d2af97ae18f71b9",
-        "codex/catalog-qualification a30372d98de26c83e0573ca0737b0685a238d613",
+        "codex/catalog-qualification 0690004350b1b772cfa288077d68a2ca9d17dac1",
         "codex/catalog-qualification-evidence aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
         "codex/catalog-source-inventory 66e3ed4d848c7423e234ce0374af1bb5fde110e6",
         "codex/catalog-token-cost-presence 0e115004857bfc13dd9f76046d5c6bca019f4c0f",

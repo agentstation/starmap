@@ -1,12 +1,9 @@
 {
-  "checked_at": "2026-09-26T07:27:11.200416+00:00",
+  "checked_at": "2026-09-26T07:35:13.261791+00:00",
   "source_head": "ddafc5a4cc567e13eaf38858f21afb53f94c7f9c",
-  "branch": "codex/catalog-batched-verification",
-  "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
-  "dirty_files": [
-    "scripts/catalog_product_verify.py",
-    "scripts/test_catalog_product_verify.py"
-  ],
+  "branch": "codex/catalog-native-consumer-qualification",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+  "dirty_files": [],
   "patch_sha256": "59b1b5e30135bcf76f1f2fdc5d41c1b6ba2d226c45798bd0f4d3ca474e080428",
   "tests": {
     "focused": 6,
@@ -19,8 +16,74 @@
     "seconds": 165.2375819160079,
     "result": "PASS"
   },
-  "after_measurement": "UNVERIFIED",
-  "commit_and_review": "Pending",
+  "commit_and_review": "PASS: committed, reviewed, and pushed to existing PR #182.",
   "checkout_reuse_archive": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-verifier-checkout-reuse/manifest.json",
-  "next_action": "Measure the same three tests with batching. Complete checks and review. Consolidate with the Windows test correction in existing PR #182."
+  "next_action": "Verify native CI at the published head, then merge before the consumer module pin.",
+  "work_commit": "e8a9a485c3e83fe02237d80b6134053bc9d4bd97",
+  "after": {
+    "named_tests": 3,
+    "processes": 1,
+    "seconds": 84.13269495801069,
+    "reduction_percent": 49.08380164944784,
+    "result": "PASS"
+  },
+  "selected_cli": {
+    "selected_tests": 56,
+    "named_pass_events": 134,
+    "skips": 0,
+    "failures": 0,
+    "seconds": 233.95562591598718,
+    "result": "PASS"
+  },
+  "repository_checks": {
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off make verify-checks",
+    "exit_code": 0,
+    "writing_files": 1855,
+    "writing_diagnostics": 0,
+    "verifier_tests": 97
+  },
+  "goago": {
+    "findings": 0,
+    "stale_ignores": 0,
+    "errors": 0
+  },
+  "review": {
+    "command": "autoreview --gate pre-pr --mode auto",
+    "exit_code": 0,
+    "profile": "auto",
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "P0",
+    "passes": 1,
+    "bundle_bytes": 61197,
+    "findings": 0,
+    "secret_scan": "clean",
+    "log": "review.log.gz"
+  },
+  "staging_checkout": {
+    "path": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
+    "state": "Clean and detached at work_commit. Available for reuse.",
+    "preservation": "All three staging files matched the committed producer bytes before restoration and checkout."
+  },
+  "native_ci": {
+    "run": 36227245093,
+    "status": "in_progress",
+    "head": "e8a9a485c3e83fe02237d80b6134053bc9d4bd97",
+    "watch_session": 37163,
+    "watch_log": "/tmp/starmap-182-batching-ci-watch.log"
+  },
+  "committed_patch_sha256": "ed1a255391bd27b343d0c77af9db832022bf991b071d6858611feba60a015dd5",
+  "source_binding": "Checks ran on the four-file change before commit. Commit e8a9a485c preserves those tested bytes. Full branch review ran after commit.",
+  "plan_validation": {
+    "changed_html": "PASS: 1 file, zero diagnostics",
+    "repository_writing_exit": 2,
+    "repository_writing_files": 1698,
+    "historical_diagnostics": 69,
+    "historical_diagnostics_unchanged": true,
+    "ledger_rows": 40,
+    "terminal_rows": 16,
+    "active_task": "CSP8",
+    "local_links": 101,
+    "diff_check": "PASS"
+  }
 }
