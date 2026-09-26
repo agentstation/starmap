@@ -781,6 +781,18 @@
         {
           "package": "github.com/agentstation/starmap/internal/cli/app",
           "test": "TestApplicationUsesExplicitDeploymentRootsWithoutHome"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOwnerInspectionSupportedPlatforms"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOwnerInspectionPreservesActiveRuntime"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOwnerInspectionBindingAndInvalidRecords"
         }
       ]
     },
@@ -851,6 +863,18 @@
         {
           "package": "github.com/agentstation/starmap/internal/cli/app",
           "test": "TestApplicationUsesExplicitDeploymentRootsWithoutHome"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOwnerInspectionSupportedPlatforms"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOwnerInspectionPreservesActiveRuntime"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOwnerInspectionBindingAndInvalidRecords"
         }
       ]
     },
@@ -921,6 +945,18 @@
         {
           "package": "github.com/agentstation/starmap/internal/cli/app",
           "test": "TestApplicationUsesExplicitDeploymentRootsWithoutHome"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOwnerInspectionSupportedPlatforms"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOwnerInspectionPreservesActiveRuntime"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestOwnerInspectionBindingAndInvalidRecords"
         }
       ]
     },

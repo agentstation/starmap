@@ -234,7 +234,8 @@ The command never repairs permissions or deletes files. Existing startup permiss
 
 The runtime owner observation also compares a bounded `owner.json` record against the configured product, deployment, instance, and identity override.
 This comparison reads at most 4,097 bytes separately from the metadata budget. It reports `matches`, `absent`, `conflict`, `unavailable`, or `unverified`.
-The Windows owner comparison currently reports `unverified`. A match does not verify the instance seed, live directory lock, or fleet identity fencing.
+Windows compares the owner record through a read-only directory handle and rejects reparse points. Native qualification remains pending.
+A match does not verify the instance seed, live directory lock, or fleet identity fencing.
 
 Inspection skips observed symbolic-link targets and does not read catalog payloads or credential files.
 Ordinary configuration resolution still reads the selected configuration and explicit dotenv inputs before inspection.
