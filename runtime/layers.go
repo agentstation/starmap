@@ -54,11 +54,13 @@ type sourceLayer struct {
 // layerSet holds the inputs that produce the effective catalog: the embedded
 // baseline, selected upstream source, provider observations, and manual history.
 type layerSet struct {
-	requireAuthority    bool
-	publisherID         string
-	publisherAliases    []string
-	embedded            starmap.CatalogState
-	embeddedManifest    *catalogs.GenerationManifest
+	requireAuthority bool
+	publisherID      string
+	publisherAliases []string
+	embedded         starmap.CatalogState
+	embeddedManifest *catalogs.GenerationManifest
+	// fleetBaseline retains immutable bytes for replay without repeated catalog encoding.
+	fleetBaseline       *catalogs.Generation
 	source              *sourceLayer
 	providers           map[providerEvidenceKey]ProviderLayer
 	manual              *manualBatch

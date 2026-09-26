@@ -5765,16 +5765,56 @@
       "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
     },
     "A14.follower_restart": {
-      "kind": "go_test",
-      "repository": "starport",
-      "package": "./internal/catalog",
-      "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetReplayRetainsBaselineAcrossBinaryUpgrade"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRecoveryRejectsMissingOrCorruptBaseline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRecoveryCodecBoundsAndIntegrity"
+        }
+      ]
     },
     "A14.leader_loss_with_local_files_removed": {
-      "kind": "go_test",
-      "repository": "starport",
-      "package": "./internal/catalog",
-      "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetStoreLostHeadCannotBootstrapAgain"
+        }
+      ]
     },
     "A14.equivalent_acquisition_capability": {
       "kind": "all",

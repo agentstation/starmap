@@ -1,19 +1,22 @@
 package runtime
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json/v2"
+	"reflect"
 	"strings"
 
+	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
-const fleetRecoveryVersion = 1
+const fleetRecoveryVersion = 2
 
-// MaxFleetRecoveryBytes bounds the private inputs attached to one fleet publication.
+// MaxFleetRecoveryBytes bounds both encoded and decoded private inputs for one fleet publication.
 const MaxFleetRecoveryBytes = storage.DefaultRetentionInputMaxBytes
 
 // FleetRecovery binds private acquisition inputs to one immutable generation.
@@ -42,6 +45,7 @@ func (r FleetRecovery) Validate(generation catalogs.Generation) error {
 // fleetRecoveryRecord retains semantic inputs without private filesystem references.
 type fleetRecoveryRecord struct {
 	Version        int                            `json:"version"`
+	Baseline       catalogs.Generation            `json:"baseline"`
 	PublisherID    string                         `json:"publisher_id"`
 	Compatibility  string                         `json:"compatibility"`
 	Pin            *generationPinRecord           `json:"pin,omitempty"`
@@ -69,12 +73,16 @@ func encodeFleetRecoveryWithPin(ctx context.Context, layers layerSet, pin *gener
 	if layers.publisherID == "" {
 		return nil, invalidInputPublication("fleet recovery requires a publisher identity")
 	}
+	baseline, err := fleetBaseline(layers)
+	if err != nil {
+		return nil, err
+	}
 	compatibility, err := fleetLayerCompatibility(layers)
 	if err != nil {
 		return nil, err
 	}
 	record := fleetRecoveryRecord{Version: fleetRecoveryVersion, PublisherID: layers.publisherID, Compatibility: compatibility,
-		Source: layers.source, Removals: layers.removals}
+		Baseline: baseline, Source: layers.source, Removals: layers.removals}
 	if pin != nil {
 		if err := pin.validate(); err != nil {
 			return nil, err
@@ -102,10 +110,7 @@ func encodeFleetRecoveryWithPin(ctx context.Context, layers layerSet, pin *gener
 	if err != nil {
 		return nil, err
 	}
-	if len(data) > MaxFleetRecoveryBytes {
-		return nil, invalidInputPublication("fleet recovery exceeds the input byte bound")
-	}
-	return data, nil
+	return compressFleetRecovery(data)
 }
 
 func readFleetRecovery(ctx context.Context, data []byte) (fleetRecoveryRecord, error) {
@@ -113,10 +118,11 @@ func readFleetRecovery(ctx context.Context, data []byte) (fleetRecoveryRecord, e
 	if err := ctx.Err(); err != nil {
 		return record, err
 	}
-	if len(data) == 0 || len(data) > MaxFleetRecoveryBytes {
-		return record, invalidInputPublication("fleet recovery exceeds the input byte bound")
+	decoded, err := decompressFleetRecovery(ctx, data, MaxFleetRecoveryBytes)
+	if err != nil {
+		return record, err
 	}
-	if err := json.Unmarshal(data, &record, json.RejectUnknownMembers(true)); err != nil {
+	if err := json.Unmarshal(decoded, &record, json.RejectUnknownMembers(true)); err != nil {
 		return record, err
 	}
 	if record.Version != fleetRecoveryVersion || record.PublisherID == "" || !validFleetChecksum(record.Compatibility) {
@@ -135,8 +141,21 @@ func readFleetRecovery(ctx context.Context, data []byte) (fleetRecoveryRecord, e
 	return record, nil
 }
 
-func decodeFleetRecoveryRecord(ctx context.Context, record fleetRecoveryRecord) (layerSet, error) {
+func decodeFleetRecoveryRecord(ctx context.Context, record fleetRecoveryRecord, prior layerSet) (layerSet, error) {
 	var layers layerSet
+	baseline := prior.embedded.Catalog
+	if baseline == nil || prior.fleetBaseline == nil || !reflect.DeepEqual(prior.fleetBaseline.Manifest, record.Baseline.Manifest) || !bytes.Equal(prior.fleetBaseline.Payload, record.Baseline.Payload) {
+		var err error
+		baseline, err = catalogs.DecodeCatalogGeneration(record.Baseline)
+		if err != nil {
+			return layers, err
+		}
+	}
+	layers.fleetBaseline = &record.Baseline
+	manifest := record.Baseline.Manifest.Copy()
+	layers.embedded = starmap.CatalogState{Catalog: baseline, GenerationID: manifest.GenerationID,
+		PayloadChecksum: manifest.Payload.Checksum, GeneratedAt: manifest.GeneratedAt}
+	layers.embeddedManifest = &manifest
 	if record.Source != nil {
 		if err := validateSourceInput(record.Source); err != nil {
 			return layers, err
@@ -174,4 +193,30 @@ func decodeFleetRecoveryRecord(ctx context.Context, record fleetRecoveryRecord) 
 		layers.removals = policy
 	}
 	return layers, nil
+}
+
+// fleetBaseline retains the complete reconstruction baseline independently of the binary.
+func fleetBaseline(layers layerSet) (catalogs.Generation, error) {
+	if layers.embeddedManifest == nil || layers.embedded.Catalog == nil {
+		return catalogs.Generation{}, invalidInputPublication("fleet recovery requires the complete baseline")
+	}
+	manifest := layers.embeddedManifest.Copy()
+	if manifest.GenerationID != layers.embedded.GenerationID || manifest.Payload.Checksum != layers.embedded.PayloadChecksum || !manifest.GeneratedAt.Equal(layers.embedded.GeneratedAt) {
+		return catalogs.Generation{}, invalidInputPublication("fleet baseline state differs from its manifest")
+	}
+	if layers.fleetBaseline != nil {
+		if !reflect.DeepEqual(manifest, layers.fleetBaseline.Manifest) {
+			return catalogs.Generation{}, invalidInputPublication("fleet baseline manifest differs from its retained bytes")
+		}
+		return *layers.fleetBaseline, nil
+	}
+	payload, err := catalogs.EncodeCatalogPayload(layers.embedded.Catalog)
+	if err != nil {
+		return catalogs.Generation{}, err
+	}
+	generation := catalogs.Generation{Manifest: manifest, Payload: payload}
+	if err := generation.Validate(); err != nil {
+		return catalogs.Generation{}, err
+	}
+	return generation, nil
 }

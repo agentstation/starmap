@@ -15,7 +15,7 @@ func fleetReplayFixture(t *testing.T) (FleetSnapshot, layerSet) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	local := layerSet{publisherID: "deployment", embedded: starmap.CatalogState{GenerationID: p.Generation.Manifest.GenerationID,
+	local := layerSet{publisherID: "deployment", embeddedManifest: &p.Generation.Manifest, embedded: starmap.CatalogState{GenerationID: p.Generation.Manifest.GenerationID,
 		PayloadChecksum: p.Generation.Manifest.Payload.Checksum, Catalog: catalog, GeneratedAt: p.Generation.Manifest.GeneratedAt}}
 	p.Recovery.Data, err = encodeFleetRecoveryWithPin(t.Context(), local, nil)
 	if err != nil {
@@ -25,7 +25,7 @@ func fleetReplayFixture(t *testing.T) (FleetSnapshot, layerSet) {
 	return FleetSnapshot{Head: p.nextHead(), Publication: p}, local
 }
 
-func TestFleetReplayRequiresEquivalentBaselineAndPolicy(t *testing.T) {
+func TestFleetReplayRequiresEquivalentPolicy(t *testing.T) {
 	snapshot, local := fleetReplayFixture(t)
 	if _, _, err := recoverFleetState(t.Context(), snapshot, local); err != nil {
 		t.Fatal(err)
@@ -34,8 +34,6 @@ func TestFleetReplayRequiresEquivalentBaselineAndPolicy(t *testing.T) {
 		name   string
 		change func(*layerSet)
 	}{
-		{"baseline-id", func(l *layerSet) { l.embedded.GenerationID = "other" }},
-		{"baseline-bytes", func(l *layerSet) { l.embedded.PayloadChecksum = "other" }},
 		{"authority", func(l *layerSet) { l.requireAuthority = true }},
 		{"explicit-no-providers", func(l *layerSet) {
 			l.providerBindings = &providerBindingPolicy{bindings: map[string]sources.ProviderAcquisitionBinding{}}
@@ -80,5 +78,43 @@ func TestFleetReplayRejectsInputsThatDoNotReproduceCatalog(t *testing.T) {
 	}
 	if local.manual != nil {
 		t.Fatal("failed recovery changed local inputs")
+	}
+}
+
+func TestFleetReplayRetainsBaselineAcrossBinaryUpgrade(t *testing.T) {
+	snapshot, original := fleetReplayFixture(t)
+	for _, name := range []string{"embedded-only", "configured-upstream"} {
+		t.Run(name, func(t *testing.T) {
+			snapshot, original := snapshot, original
+			if name == "configured-upstream" {
+				g := snapshot.Publication.Generation
+				original.source = &sourceLayer{Identity: "upstream", GenerationID: g.Manifest.GenerationID, Checksum: g.Manifest.Payload.Checksum, Payload: g.Payload, Manifest: &g.Manifest, PublishedAt: g.Manifest.GeneratedAt}
+				raw, err := encodeFleetRecoveryWithPin(t.Context(), original, nil)
+				if err != nil {
+					t.Fatal(err)
+				}
+				snapshot.Publication.Recovery.Data = raw
+				snapshot.Publication.Recovery.Checksum = fleetRecoveryChecksum(raw)
+				snapshot.Head = snapshot.Publication.nextHead()
+			}
+			upgraded := original
+			next := aliasGeneration(t, "new-binary")
+			decoded, err := catalogs.DecodeCatalogGeneration(next)
+			if err != nil {
+				t.Fatal(err)
+			}
+			upgraded.embedded = starmap.CatalogState{Catalog: decoded, GenerationID: next.Manifest.GenerationID, PayloadChecksum: next.Manifest.Payload.Checksum, GeneratedAt: next.Manifest.GeneratedAt}
+			upgraded.embeddedManifest = &next.Manifest
+			restored, _, err := recoverFleetState(t.Context(), snapshot, upgraded)
+			if err != nil {
+				t.Fatalf("binary upgrade cannot replay retained baseline: %v", err)
+			}
+			if restored.embedded.GenerationID != original.embedded.GenerationID || restored.embedded.PayloadChecksum != original.embedded.PayloadChecksum {
+				t.Fatal("binary replaced the fleet baseline")
+			}
+			if restored.embeddedManifest == nil || restored.embeddedManifest.GenerationID != original.embedded.GenerationID {
+				t.Fatal("recovery lost baseline manifest")
+			}
+		})
 	}
 }

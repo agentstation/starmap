@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -36,15 +35,11 @@ type fleetTestSession struct {
 func newFleetRuntimeBackend(t *testing.T, options ...Option) *fleetTestBackend {
 	t.Helper()
 	p := fleetTestPublication(t)
-	embedded, manifest, err := bootstrap.Embedded()
-	if err != nil {
-		t.Fatal(err)
-	}
-	layers := layerSet{publisherID: "deployment", embedded: starmap.CatalogState{Catalog: embedded,
-		GenerationID: manifest.GenerationID, PayloadChecksum: manifest.Payload.Checksum, GeneratedAt: manifest.GeneratedAt},
-		source: &sourceLayer{Identity: "fleet-source", GenerationID: p.Generation.Manifest.GenerationID,
-			Payload: p.Generation.Payload, Checksum: p.Generation.Manifest.Payload.Checksum, Manifest: &p.Generation.Manifest,
-			PublishedAt: p.Generation.Manifest.GeneratedAt}}
+	layers := fleetTestLayers(t)
+	layers.source = &sourceLayer{Identity: "fleet-source", GenerationID: p.Generation.Manifest.GenerationID,
+		Payload: p.Generation.Payload, Checksum: p.Generation.Manifest.Payload.Checksum, Manifest: &p.Generation.Manifest,
+		PublishedAt: p.Generation.Manifest.GeneratedAt}
+	var err error
 	config := defaults()
 	for _, option := range options {
 		if err := option(config); err != nil {
@@ -597,5 +592,35 @@ func TestFleetRuntimeUnchangedRefreshRebindsAfterTakeover(t *testing.T) {
 	backend.mu.Unlock()
 	if !sameLeaseGrant(committed.Publication.Grant, active) || final.Head.Revision <= after.Head.Revision || final.Head.GenerationID != after.Head.GenerationID {
 		t.Fatal("an empty validated update did not bind the recovered catalog to its new owner")
+	}
+}
+
+func TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates(t *testing.T) {
+	backend := newFleetRuntimeBackend(t)
+	source := newStubSource("fleet-source")
+	generation := aliasGeneration(t, "updated-source")
+	source.replies = []SourceRead{{Changed: true, Generation: generation, PublishedAt: generation.Manifest.GeneratedAt, Health: HealthOK}}
+	connected := openFleetRuntime(t, backend, "upgraded", privateRuntimeDirectory(t), WithSource(source))
+	if connected.layers.embedded.GenerationID != "baseline" || connected.layers.embeddedManifest.GenerationID != "baseline" {
+		t.Fatal("startup replaced the retained baseline with the packaged baseline")
+	}
+	if connected.layers.embedded.GenerationID == connected.Client().EmbeddedCatalogState().GenerationID {
+		t.Fatal("test requires different retained and packaged baselines")
+	}
+	if _, err := connected.RefreshSource(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	if connected.State().GenerationID != generation.Manifest.GenerationID {
+		t.Fatal("configured upstream update did not advance")
+	}
+	if connected.layers.embedded.GenerationID != "baseline" {
+		t.Fatal("source update replaced the retained fallback")
+	}
+	if err := connected.Close(); err != nil {
+		t.Fatal(err)
+	}
+	replacement := openFleetRuntime(t, backend, "rollback", privateRuntimeDirectory(t))
+	if replacement.layers.embedded.GenerationID != "baseline" || replacement.State().GenerationID != generation.Manifest.GenerationID {
+		t.Fatal("replacement lost retained inputs or selected source")
 	}
 }

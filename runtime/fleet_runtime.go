@@ -81,12 +81,12 @@ func (r *Runtime) initializeFleetLayers(ctx context.Context, snapshot *FleetSnap
 	if err != nil {
 		return err
 	}
-	manifest, err := bootstrap.GenerationManifest()
+	baseline, err := bootstrap.Generation()
 	if err != nil {
 		return err
 	}
 	r.layers = layerSet{publisherID: publisher, publisherAliases: slices.Clone(r.config.source.Aliases),
-		embedded: r.client.EmbeddedCatalogState(), embeddedManifest: &manifest, requireAuthority: r.requiresAuthority(),
+		embedded: r.client.EmbeddedCatalogState(), embeddedManifest: &baseline.Manifest, fleetBaseline: &baseline, requireAuthority: r.requiresAuthority(),
 		providerBindings: r.config.providerBindings, acquisitionSources: r.config.acquisitionSources}
 	r.layers.sourceConfiguration = slices.Clone(r.config.sourceConfiguration)
 	if snapshot == nil {

@@ -369,8 +369,12 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	r.layers.embedded = baseline
-	r.layers.embeddedManifest = &manifest
+	if r.config.fleetStore == nil {
+		r.layers.embedded = baseline
+		r.layers.embeddedManifest = &manifest
+	} else {
+		baseline = r.layers.embedded
+	}
 	r.layers.requireAuthority = r.requiresAuthority()
 	r.layers.providerBindings = r.config.providerBindings
 	r.layers.acquisitionSources = r.config.acquisitionSources

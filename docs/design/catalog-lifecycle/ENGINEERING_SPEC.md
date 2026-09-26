@@ -1670,6 +1670,26 @@ hash slot. The implementation must prove this layout before advertising
 cluster support for catalog and lease transactions.
 [Valkey cluster transactions](https://valkey.io/topics/cluster-spec/)
 
+#### Fleet binary upgrades and policy changes
+
+D41 separates binary upgrades, catalog updates, and acquisition-policy changes.
+An established fleet retains its baseline, manifest, and reconstruction inputs independently of each binary.
+A compatible new or rollback binary uses that retained baseline, regardless of its packaged baseline.
+Missing or uncertain shared state requires recovery. It cannot authorize fresh initialization.
+An independently approved fresh deployment may start from its permitted baseline.
+
+Configured GitHub and Starmap updates remain automatic under existing source settings, pins, and authority rules.
+An embedded-only fleet promotes a packaged baseline through an explicit operation.
+An acquisition-policy change requires one coordinated configuration apply that fences the previous policy.
+Credential rotation within the same declared identity and scope does not change that policy.
+Unsupported retained formats refuse acquisition without inventing catalog permissions.
+Software rollback and catalog rollback remain separate operations.
+
+The [approved transition contract](../../plans/proof/starport-production-catalog/csp11/upgrade-contract-2026-09-26/CONTRACT.md) defines required validation, native fencing, and retry evidence.
+CSP11 owns retained baseline recovery. CSP16 owns coordinated policy apply, including native fencing.
+CSP16.1 owns explicit baseline promotion. The transition contract assigns every acceptance condition to its owning task.
+These operations must not add storage calls to inference requests.
+
 ### 8.3 SQLite, migration, and recovery
 
 The current SQLite backend uses WAL, foreign keys, a five-second busy timeout,

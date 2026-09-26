@@ -48,16 +48,18 @@ func recoverFleetState(ctx context.Context, snapshot FleetSnapshot, local layerS
 	if err != nil {
 		return layerSet{}, nil, err
 	}
+	recovered, err := decodeFleetRecoveryRecord(ctx, record, local)
+	if err != nil {
+		return layerSet{}, nil, err
+	}
+	// The packaged baseline is a candidate for explicit promotion, not replay input.
+	local.embedded, local.embeddedManifest, local.fleetBaseline = recovered.embedded, recovered.embeddedManifest, recovered.fleetBaseline
 	compatibility, err := fleetLayerCompatibility(local)
 	if err != nil {
 		return layerSet{}, nil, err
 	}
 	if record.Compatibility != compatibility {
 		return layerSet{}, nil, fleetConflict("recovery requires the same baseline and acquisition policy")
-	}
-	recovered, err := decodeFleetRecoveryRecord(ctx, record)
-	if err != nil {
-		return layerSet{}, nil, err
 	}
 	if err := local.providerBindings.validateRetained(recovered.providers); err != nil {
 		return layerSet{}, nil, err

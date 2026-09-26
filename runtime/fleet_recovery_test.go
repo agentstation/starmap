@@ -16,17 +16,14 @@ import (
 
 func TestFleetRecoveryPreservesNextPartialMerge(t *testing.T) {
 	at := time.Date(2026, 9, 26, 0, 0, 0, 0, time.UTC)
-	baseline, err := catalogs.DecodeCatalogPayload(testCatalogPayload(t, "baseline", "base", "Base"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	embedded := starmap.CatalogState{GenerationID: "baseline", Catalog: baseline, GeneratedAt: at}
+	layers := fleetTestLayers(t)
+	embedded := layers.embedded
 	first := manualTestObservation(t, "first", at.Add(time.Minute), false)
 	prepared, err := prepareManualObservations(t.Context(), []sources.Observation{first})
 	if err != nil {
 		t.Fatal(err)
 	}
-	layers := layerSet{publisherID: "deployment", embedded: embedded, manual: &manualBatch{observations: prepared}}
+	layers.manual = &manualBatch{observations: prepared}
 	before, err := layers.build(t.Context(), embedded)
 	if err != nil {
 		t.Fatal(err)
@@ -39,8 +36,7 @@ func TestFleetRecoveryPreservesNextPartialMerge(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	restored.embedded = embedded
-	current, err := restored.build(t.Context(), embedded)
+	current, err := restored.build(t.Context(), restored.embedded)
 	if err != nil || current.GenerationID != before.GenerationID || current.PayloadChecksum != before.PayloadChecksum {
 		t.Fatalf("recovery changed the accepted state: %v", err)
 	}
@@ -52,7 +48,7 @@ func TestFleetRecoveryPreservesNextPartialMerge(t *testing.T) {
 	if _, err := restored.prepareManualInputs(t.Context(), incoming, nil, nil); err != nil {
 		t.Fatal(err)
 	}
-	next, err := restored.build(t.Context(), embedded)
+	next, err := restored.build(t.Context(), restored.embedded)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -99,28 +95,39 @@ func TestFleetRecoveryBindsExactGenerationAndBytes(t *testing.T) {
 }
 
 func TestFleetRecoveryRejectsAmbiguousAndInvalidInputs(t *testing.T) {
-	compatibility, err := fleetLayerCompatibility(layerSet{})
+	layers := fleetTestLayers(t)
+	raw, err := encodeFleetRecoveryWithPin(t.Context(), layers, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, raw := range []string{
-		`{"version":2,"publisher_id":"deployment"}`,
-		`{"version":1}`,
-		`{"version":1,"publisher_id":"deployment","unknown":true}`,
-		`{"version":1,"version":1,"publisher_id":"deployment"}`,
-		`{"version":1,"publisher_id":"deployment"}{}`,
-		`{"version":1,"publisher_id":"deployment","source":{"generation_id":"x"}}`,
-		`{"version":1,"publisher_id":"deployment","manual":{}}`,
-		`{"version":1,"publisher_id":"deployment","providers":[{"provider_id":"x"}]}`,
+	raw, err = decompressFleetRecovery(t.Context(), raw, MaxFleetRecoveryBytes)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, scenario := range []struct {
+		name   string
+		change func(string) string
+	}{
+		{"version", func(s string) string { return strings.Replace(s, `"version":2`, `"version":1`, 1) }},
+		{"publisher", func(s string) string {
+			return strings.Replace(s, `"publisher_id":"deployment"`, `"publisher_id":""`, 1)
+		}},
+		{"unknown", func(s string) string { return strings.Replace(s, `"version":2`, `"version":2,"unknown":true`, 1) }},
+		{"duplicate", func(s string) string { return strings.Replace(s, `"version":2`, `"version":2,"version":2`, 1) }},
+		{"trailing", func(s string) string { return s + "{}" }},
+		{"source", func(s string) string { return strings.TrimSuffix(s, "}") + `,"source":{"generation_id":"x"}}` }},
+		{"manual", func(s string) string { return strings.TrimSuffix(s, "}") + `,"manual":{}}` }},
+		{"provider", func(s string) string { return strings.TrimSuffix(s, "}") + `,"providers":[{"provider_id":"x"}]}` }},
 	} {
-		raw = strings.ReplaceAll(raw, `"publisher_id":"deployment"`, `"publisher_id":"deployment","compatibility":"`+compatibility+`"`)
-		if _, err := decodeFleetRecovery(t.Context(), []byte(raw)); err == nil {
-			t.Errorf("accepted invalid recovery: %s", raw)
-		}
+		t.Run(scenario.name, func(t *testing.T) {
+			if _, err := decodeFleetRecovery(t.Context(), fleetCompressedTest(t, []byte(scenario.change(string(raw))))); err == nil {
+				t.Fatal("accepted invalid recovery")
+			}
+		})
 	}
 	ctx, cancel := context.WithCancel(t.Context())
 	cancel()
-	if _, err := decodeFleetRecovery(ctx, []byte(`{"version":1,"publisher_id":"deployment"}`)); err == nil {
+	if _, err := decodeFleetRecovery(ctx, raw); err == nil {
 		t.Fatal("recovery ignored cancellation")
 	}
 }
@@ -133,12 +140,16 @@ func TestFleetRecoveryRetainsProviderScopesAndRejectsDuplicates(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	record := fleetRecoveryRecord{Version: fleetRecoveryVersion, PublisherID: "deployment", Compatibility: compatibility, Providers: []ProviderLayer{layer, peer}}
+	baseline, err := fleetBaseline(fleetTestLayers(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	record := fleetRecoveryRecord{Version: fleetRecoveryVersion, Baseline: baseline, PublisherID: "deployment", Compatibility: compatibility, Providers: []ProviderLayer{layer, peer}}
 	raw, err := json.Marshal(record)
 	if err != nil {
 		t.Fatal(err)
 	}
-	restored, err := decodeFleetRecovery(t.Context(), raw)
+	restored, err := decodeFleetRecovery(t.Context(), fleetCompressedTest(t, raw))
 	if err != nil || len(restored.providers) != 2 {
 		t.Fatalf("recovery lost provider evidence: %v", err)
 	}
@@ -152,7 +163,7 @@ func TestFleetRecoveryRetainsProviderScopesAndRejectsDuplicates(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := decodeFleetRecovery(t.Context(), raw); err == nil {
+	if _, err := decodeFleetRecovery(t.Context(), fleetCompressedTest(t, raw)); err == nil {
 		t.Fatal("recovery accepted a duplicate provider scope")
 	}
 }
@@ -178,8 +189,9 @@ func TestFleetRecoveryPreservesSourceResetsAndRemovals(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	layers := layerSet{publisherID: "deployment", source: source, manual: history,
-		removals: &catalogs.CatalogRemovalPolicy{PublisherID: "deployment", Targets: []catalogs.CatalogRemovalTarget{target}}}
+	layers := fleetTestLayers(t)
+	layers.source, layers.manual = source, history
+	layers.removals = &catalogs.CatalogRemovalPolicy{PublisherID: "deployment", Targets: []catalogs.CatalogRemovalTarget{target}}
 	raw, err := encodeFleetRecoveryWithPin(t.Context(), layers, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -206,5 +218,58 @@ func decodeFleetRecovery(ctx context.Context, data []byte) (layerSet, error) {
 	if err != nil {
 		return layerSet{}, err
 	}
-	return decodeFleetRecoveryRecord(ctx, record)
+	return decodeFleetRecoveryRecord(ctx, record, layerSet{})
+}
+
+func fleetTestLayers(t *testing.T) layerSet {
+	t.Helper()
+	generation := aliasGeneration(t, "baseline")
+	baseline, err := catalogs.DecodeCatalogGeneration(generation)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return layerSet{publisherID: "deployment", embeddedManifest: &generation.Manifest,
+		embedded: starmap.CatalogState{Catalog: baseline, GenerationID: generation.Manifest.GenerationID, PayloadChecksum: generation.Manifest.Payload.Checksum, GeneratedAt: generation.Manifest.GeneratedAt}}
+}
+
+func TestFleetRecoveryRejectsMissingOrCorruptBaseline(t *testing.T) {
+	raw, err := encodeFleetRecoveryWithPin(t.Context(), fleetTestLayers(t), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	original, err := readFleetRecovery(t.Context(), raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, scenario := range []struct {
+		name   string
+		change func(*catalogs.Generation)
+	}{
+		{"missing", func(g *catalogs.Generation) { *g = catalogs.Generation{} }},
+		{"manifest", func(g *catalogs.Generation) { g.Manifest.GenerationID = "" }},
+		{"payload", func(g *catalogs.Generation) { g.Payload = append(g.Payload, ' ') }},
+		{"schema", func(g *catalogs.Generation) { g.Manifest.SchemaVersion++ }},
+	} {
+		t.Run(scenario.name, func(t *testing.T) {
+			record := original
+			record.Baseline = original.Baseline.Copy()
+			scenario.change(&record.Baseline)
+			raw, err := json.Marshal(record)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := decodeFleetRecovery(t.Context(), fleetCompressedTest(t, raw)); err == nil {
+				t.Fatal("accepted an unusable baseline")
+			}
+		})
+	}
+}
+
+func fleetCompressedTest(t *testing.T, data []byte) []byte {
+	t.Helper()
+	compressed, err := compressFleetRecovery(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return compressed
 }
