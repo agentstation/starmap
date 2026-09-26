@@ -1,0 +1,125 @@
+{
+  "checked_at": "2026-09-26T03:47:37.842091+00:00",
+  "repo": "agentstation/starmap",
+  "pr": 171,
+  "head": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3",
+  "base": "2337de79d567e7858a522a0f032a0c5ef004a553",
+  "native_run": 36215845749,
+  "status": "published; native CI in progress",
+  "review": {
+    "profile": "auto",
+    "engine": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "P0",
+    "result": "clean",
+    "passes": 1,
+    "bundle_bytes": 224549,
+    "exit": 0
+  },
+  "repository_checks": {
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off make GOCMD=go verify-checks",
+    "exit": 0,
+    "scope": "Final source, tests, documentation, and module pins were present throughout this invocation."
+  },
+  "focused_race": {
+    "named_results": 339,
+    "packages": 7,
+    "skipped": 0,
+    "failed": 0,
+    "source": "075dc8f49759d01e9c41f56de44178ed7b8f723f",
+    "go_inputs_identical_to_final": true
+  },
+  "acquisition_roles": {
+    "named_results": 18,
+    "packages": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "publication_tests": {
+    "count": 52,
+    "exit": 0,
+    "recovery_proof": "../../csp6/receipt-last-recovery/verification.json"
+  },
+  "dependency_proposals": [
+    {
+      "pr": 175,
+      "head": "1709f8a334d69e643f715b29c352a2cc80a0682d",
+      "branch": "dependabot/go_modules/go_modules-7142bd41e8",
+      "required_added_lines": {
+        "go.mod": 1,
+        "go.sum": 2
+      },
+      "ancestry": false,
+      "all_changed_files_verified": [
+        "go.mod",
+        "go.sum"
+      ]
+    },
+    {
+      "pr": 176,
+      "head": "e1d4e93628a31d327bb1186472b19973d698eca4",
+      "branch": "dependabot/go_modules/go_modules-bd6f588006",
+      "required_added_lines": {
+        "go.mod": 3,
+        "go.sum": 6
+      },
+      "ancestry": true,
+      "all_changed_files_verified": [
+        "go.mod",
+        "go.sum"
+      ]
+    },
+    {
+      "pr": 177,
+      "head": "da3dcafa7670d6e1248c2a52ba1d589823844cc3",
+      "branch": "dependabot/go_modules/go_modules-bdbecc7a40",
+      "required_added_lines": {
+        "go.mod": 2,
+        "go.sum": 4
+      },
+      "ancestry": false,
+      "all_changed_files_verified": [
+        "go.mod",
+        "go.sum"
+      ]
+    },
+    {
+      "pr": 178,
+      "head": "917acfeff1371b994f7a0cb79fdd5b6d9327743a",
+      "branch": "dependabot/go_modules/go_modules-e2253a62a5",
+      "required_added_lines": {
+        "go.mod": 1,
+        "go.sum": 2,
+        "testdata/consumers/server-storage/go.mod": 1,
+        "testdata/consumers/server-storage/go.sum": 2
+      },
+      "ancestry": false,
+      "all_changed_files_verified": [
+        "go.mod",
+        "go.sum",
+        "testdata/consumers/server-storage/go.mod",
+        "testdata/consumers/server-storage/go.sum"
+      ]
+    },
+    {
+      "pr": 179,
+      "head": "9b70391b08a208bd85dbc82198f35c14a883741a",
+      "branch": "dependabot/go_modules/go_modules-aad2612d56",
+      "required_added_lines": {
+        "go.mod": 1,
+        "go.sum": 2
+      },
+      "ancestry": false,
+      "all_changed_files_verified": [
+        "go.mod",
+        "go.sum"
+      ]
+    }
+  ],
+  "supersession": "Keep #175\u2013#179 open until the exact successor qualifies and merges. All changed module files and added lines were checked against each current PR head. PR #176 history is retained.",
+  "next_action": "Verify native CI, reviews, exact head, and strict base before merging. Record its actual merge. Close preserved dependency proposals only after that merge. Use a fresh bot promotion containing the repaired publisher for CSP6 hosted qualification.",
+  "logs": {
+    "starmap-final-catalog-bundle-review.log.gz": "f2d30cd1e2c97bf972537c3dea5dbc4b2de3ca408150a7bf8be4126972403254",
+    "starmap-final-catalog-bundle-checks.log.gz": "d970293851277db1e048c4c501015bac32ee07b8d8db9d1df9fd822ca587df15"
+  }
+}

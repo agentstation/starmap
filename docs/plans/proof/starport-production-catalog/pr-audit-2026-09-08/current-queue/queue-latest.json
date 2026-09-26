@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T03:32:18.678302+00:00",
+  "checked_at": "2026-09-26T03:47:37.842091+00:00",
   "starmap": [
     {
       "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
@@ -9,9 +9,9 @@
       "number": 179,
       "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/secretsmanager in /",
       "updatedAt": "2026-09-21T14:42:55Z",
-      "owner": "dependency maintenance",
-      "disposition": "retain pending verified successor #176",
-      "next_action": "Preserve until #176 includes and qualifies every requested pin and checksum change. Close only after successor verification. See dependency-consolidation.json.",
+      "owner": "production catalog plan / PR queue",
+      "disposition": "Preserved in reviewed successor PR #171; retain until its verified merge.",
+      "next_action": "After #171 merges, verify these module updates against its actual merge and close this superseded proposal.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -209,7 +209,9 @@
           "detailsUrl": "https://github.com/agentstation/starmap/runs/106379974533",
           "workflowName": ""
         }
-      ]
+      ],
+      "successor_pr": 171,
+      "successor_head": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3"
     },
     {
       "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
@@ -219,9 +221,9 @@
       "number": 178,
       "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/s3 in /",
       "updatedAt": "2026-09-21T14:41:27Z",
-      "owner": "dependency maintenance",
-      "disposition": "retain pending verified successor #176",
-      "next_action": "Preserve until #176 includes and qualifies every requested pin and checksum change. Close only after successor verification. See dependency-consolidation.json.",
+      "owner": "production catalog plan / PR queue",
+      "disposition": "Preserved in reviewed successor PR #171; retain until its verified merge.",
+      "next_action": "After #171 merges, verify these module updates against its actual merge and close this superseded proposal.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -419,7 +421,9 @@
           "detailsUrl": "https://github.com/agentstation/starmap/runs/106379416528",
           "workflowName": ""
         }
-      ]
+      ],
+      "successor_pr": 171,
+      "successor_head": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3"
     },
     {
       "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
@@ -429,9 +433,9 @@
       "number": 177,
       "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/credentials in /",
       "updatedAt": "2026-09-21T14:38:50Z",
-      "owner": "dependency maintenance",
-      "disposition": "retain pending verified successor #176",
-      "next_action": "Preserve until #176 includes and qualifies every requested pin and checksum change. Close only after successor verification. See dependency-consolidation.json.",
+      "owner": "production catalog plan / PR queue",
+      "disposition": "Preserved in reviewed successor PR #171; retain until its verified merge.",
+      "next_action": "After #171 merges, verify these module updates against its actual merge and close this superseded proposal.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -629,7 +633,9 @@
           "detailsUrl": "https://github.com/agentstation/starmap/runs/106378421021",
           "workflowName": ""
         }
-      ]
+      ],
+      "successor_pr": 171,
+      "successor_head": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3"
     },
     {
       "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
@@ -639,9 +645,9 @@
       "number": 176,
       "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
       "updatedAt": "2026-09-21T14:37:28Z",
-      "owner": "dependency maintenance",
-      "disposition": "selected for compatible dependency consolidation",
-      "next_action": "After catalog publication, refresh dependency consolidation 0d2ba93b5, complete final review, and publish to this existing PR. Retain the other dependency PRs until successor qualification.",
+      "owner": "production catalog plan / PR queue",
+      "disposition": "Preserved in reviewed successor PR #171; retain until its verified merge.",
+      "next_action": "After #171 merges, verify these module updates against its actual merge and close this superseded proposal.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -840,7 +846,9 @@
           "workflowName": ""
         }
       ],
-      "local_head": "0d2ba93b561b7f4216a2f206baadb59646b311e1"
+      "local_head": "0d2ba93b561b7f4216a2f206baadb59646b311e1",
+      "successor_pr": 171,
+      "successor_head": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3"
     },
     {
       "baseRefOid": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
@@ -850,9 +858,9 @@
       "number": 175,
       "title": "build(deps): bump cloud.google.com/go/auth in /",
       "updatedAt": "2026-09-21T14:36:01Z",
-      "owner": "dependency maintenance",
-      "disposition": "retain pending verified successor #176",
-      "next_action": "Preserve until #176 includes and qualifies every requested pin and checksum change. Close only after successor verification. See dependency-consolidation.json.",
+      "owner": "production catalog plan / PR queue",
+      "disposition": "Preserved in reviewed successor PR #171; retain until its verified merge.",
+      "next_action": "After #171 merges, verify these module updates against its actual merge and close this superseded proposal.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -1050,23 +1058,25 @@
           "detailsUrl": "https://github.com/agentstation/starmap/runs/106377367272",
           "workflowName": ""
         }
-      ]
+      ],
+      "successor_pr": 171,
+      "successor_head": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3"
     },
     {
       "baseRefOid": "2337de79d567e7858a522a0f032a0c5ef004a553",
-      "headRefOid": "2fc2ec46f5e654315ce94b8762a6bd2cce17150c",
+      "headRefOid": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3",
       "isDraft": false,
-      "mergeStateStatus": "BEHIND",
+      "mergeStateStatus": "BLOCKED",
       "number": 171,
       "title": "feat: complete catalog host APIs and preserve publication retries",
       "updatedAt": "2026-09-19T03:33:36Z",
       "owner": "production catalog plan / CSP6",
-      "disposition": "reviewed and published; native CI running",
-      "next_action": "Verify run 36214804333, merge the exact reviewed head when required checks pass, then qualify the completed publication retry.",
+      "disposition": "Complete reviewed integration, retry repairs, and dependency proposals published; native CI running.",
+      "next_action": "Verify native CI, reviews, exact head, and strict base before merging. Record its actual merge. Close preserved dependency proposals only after that merge. Use a fresh bot promotion containing the repaired publisher for CSP6 hosted qualification.",
       "checks": [],
-      "local_head": "2fc2ec46f5e654315ce94b8762a6bd2cce17150c",
-      "checks_run": 36214804333,
-      "proof": "host-api-171-published.json"
+      "local_head": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3",
+      "checks_run": 36215845749,
+      "proof": "host-api-171-complete-bundle.json"
     }
   ],
   "starport": [],
@@ -1125,10 +1135,10 @@
     "workflow_result": "success",
     "qualification_result": "failed",
     "reason": "Completed retry changed catalog/v1 sequence from 40 to 41 and advanced channel_updated_at. catalog/v2 remained unchanged.",
-    "repair_head": "2fc2ec46f5e654315ce94b8762a6bd2cce17150c",
+    "repair_head": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3",
     "repair_pr": 171,
     "proof": "../../csp6/retry-174-failure/verification.json",
-    "next_action": "Merge reviewed repair #171 after native checks. Capture the accepted sequence 41 state, repeat the exact receipt retry with the fixed publisher, and verify unchanged channels and assets."
+    "next_action": "Merge reviewed #171 after native checks. Inspect the scheduled publisher and reuse its pending proposal. Qualify a fresh promotion that contains the repaired source, then retry its exact receipt."
   },
   "cleanup": {
     "stale_worktree_registrations_pruned": 31,
@@ -1174,11 +1184,11 @@
   ],
   "plan_validation": {
     "changed_plan_strict_lint": "PASS: 1 file, 0 diagnostics",
-    "repository_technical_writing_check": "FAIL: 1697 files, 69 existing diagnostics in unchanged historical proof files. Changed plan passes strict lint.",
+    "repository_technical_writing_check": "FAIL: 1697 files, 69 existing diagnostics in unchanged historical evidence. Log: complete-bundle-plan-writing.log.gz",
     "json": "PASS: 16 changed or new JSON files parse",
-    "ledger": "PASS: 40 rows, 15 terminal, CSP6 is the sole in_progress row",
+    "ledger": "PASS: 40 rows, 15 terminal, CSP6 only in_progress",
     "diff_check": "PASS",
     "cleanup": "PASS: eight archives and Git bundles verified; eight paths and branch refs absent; merged remote ref absent",
-    "local_links": "PASS: every local plan link resolves"
+    "local_links": "PASS: all local links resolve"
   }
 }

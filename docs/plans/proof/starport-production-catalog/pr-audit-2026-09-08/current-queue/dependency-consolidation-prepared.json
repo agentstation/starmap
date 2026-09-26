@@ -2,7 +2,7 @@
   "checked_at": "2026-09-26T01:33:12.484554+00:00",
   "prepared_head": "104c81de820a61f8a63f29d556ff0da1e27fb15c",
   "branch": "codex/dependency-consolidation",
-  "publication_target": "Existing Starmap PR #176, after catalog publication and refresh onto current main. Do not create another PR.",
+  "publication_target": "Existing Starmap PR #171. The final integration includes all five dependency proposals and preserves PR #176 history. Close #175\u2013#179 only after the successor qualifies and merges.",
   "diff_scope": [
     "go.mod",
     "go.sum",
@@ -135,5 +135,119 @@
       "diff_check": "pass"
     },
     "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair"
+  },
+  "refresh_after_publication": {
+    "checked_at": "2026-09-26T03:35:04.031800+00:00",
+    "prepared_head": "8299cebe71caaa8485668499225b80b35dd2cc2b",
+    "main": "2337de79d567e7858a522a0f032a0c5ef004a553",
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
+    "only_merge_changes": "Five embedded catalog metadata files. Dependency diff remains four module files.",
+    "checks": {
+      "race_named_results": 185,
+      "consumer_contracts": 6,
+      "module_verify": "pass",
+      "pre_pr_review": "exit 0: helper skipped the module-only diff",
+      "target_changed": "Merge the four-file module diff into host integration before final checks to avoid a separate strict-base CI cycle.",
+      "focused_race_log": "/tmp/starmap-dependency-final-race.jsonl",
+      "consumer_log": "/tmp/starmap-dependency-final-consumers.log"
+    },
+    "captured_failure_preserved": "Committed before-capture remains in csp6/retry-174-failure. Original eight capture files moved to /Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-additional/failed-174-before-capture after exact digest comparison."
+  },
+  "combined_host_head": "075dc8f49759d01e9c41f56de44178ed7b8f723f",
+  "exact_current_proposals": [
+    {
+      "pr": 175,
+      "head": "1709f8a334d69e643f715b29c352a2cc80a0682d",
+      "branch": "dependabot/go_modules/go_modules-7142bd41e8",
+      "required_added_lines": {
+        "go.mod": 1,
+        "go.sum": 2
+      },
+      "ancestry": false,
+      "all_changed_files_verified": [
+        "go.mod",
+        "go.sum"
+      ]
+    },
+    {
+      "pr": 176,
+      "head": "e1d4e93628a31d327bb1186472b19973d698eca4",
+      "branch": "dependabot/go_modules/go_modules-bd6f588006",
+      "required_added_lines": {
+        "go.mod": 3,
+        "go.sum": 6
+      },
+      "ancestry": true,
+      "all_changed_files_verified": [
+        "go.mod",
+        "go.sum"
+      ]
+    },
+    {
+      "pr": 177,
+      "head": "da3dcafa7670d6e1248c2a52ba1d589823844cc3",
+      "branch": "dependabot/go_modules/go_modules-bdbecc7a40",
+      "required_added_lines": {
+        "go.mod": 2,
+        "go.sum": 4
+      },
+      "ancestry": false,
+      "all_changed_files_verified": [
+        "go.mod",
+        "go.sum"
+      ]
+    },
+    {
+      "pr": 178,
+      "head": "917acfeff1371b994f7a0cb79fdd5b6d9327743a",
+      "branch": "dependabot/go_modules/go_modules-e2253a62a5",
+      "required_added_lines": {
+        "go.mod": 1,
+        "go.sum": 2,
+        "testdata/consumers/server-storage/go.mod": 1,
+        "testdata/consumers/server-storage/go.sum": 2
+      },
+      "ancestry": false,
+      "all_changed_files_verified": [
+        "go.mod",
+        "go.sum",
+        "testdata/consumers/server-storage/go.mod",
+        "testdata/consumers/server-storage/go.sum"
+      ]
+    },
+    {
+      "pr": 179,
+      "head": "9b70391b08a208bd85dbc82198f35c14a883741a",
+      "branch": "dependabot/go_modules/go_modules-aad2612d56",
+      "required_added_lines": {
+        "go.mod": 1,
+        "go.sum": 2
+      },
+      "ancestry": false,
+      "all_changed_files_verified": [
+        "go.mod",
+        "go.sum"
+      ]
+    }
+  ],
+  "final_preparation_logs": {
+    "starmap-dependency-final-race.jsonl.gz": "be518278214099d3754cfadc96de36c0e21661fa7751ffbc2713c509ed1d9cea",
+    "starmap-dependency-final-consumers.log.gz": "a5cd44165c843666303165de7415bcdc361efe9f7e2cb7075d9ecce0cf5c1700",
+    "starmap-dependency-final-autoreview.log.gz": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4",
+    "starmap-complete-bundle-race.jsonl.gz": "d66905d6a262416e086869670c2f33728d9de2b470bf18266231a1a281081c04",
+    "starmap-complete-bundle-roles.jsonl.gz": "daf759040c6ad37d2fd090be19b372b4decd2edb30c5d8315f099957bd7236bb"
+  },
+  "combined_race": {
+    "head": "075dc8f49759d01e9c41f56de44178ed7b8f723f",
+    "named_tests": 339,
+    "packages": 7,
+    "skipped_tests": 0,
+    "failed": 0
+  },
+  "combined_acquisition_roles": {
+    "named_tests": 18,
+    "packages": 1,
+    "skipped_tests": 0,
+    "failed": 0
   }
 }
