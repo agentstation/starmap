@@ -15,7 +15,7 @@
 
 <p>PR #174's coordinated-storage jobs stop before tests because the pinned MinIO image is unavailable. LocalStack started but failed deletion and restart checks. PR #180 head <code>b52744ae12bff6323823ebd235b48079f5801764</code> builds a MinIO test fixture from pinned source once for both storage jobs. Its prior head passed both storage jobs. The current head adds the reviewed artifact pin and object readiness check.</p>
 
-<p>Qualify PR #180's full native gate, review it, and merge its exact head. Then refresh PR #174 onto that merge and qualify its current receipt. Do not mark CSP6 complete from PR #173 alone.</p>
+<p>Follow PR #180 run <code>36205063056</code>. Qualify its full native gate, review it, and merge its exact head. Then refresh PR #174 onto that merge and qualify its current receipt. Do not mark CSP6 complete from PR #173 alone.</p>
 
 <p>Starmap PR #165 is an older catalog proposal. The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/catalog-successor-comparison.json">successor comparison</a> finds the same 1,278 embedded paths in PR #174 and 354 changed files. Keep #165 until the successor passes and its content changes receive acceptance. PR #171 is a draft host API change. Local integration at <code>87bed00f3</code> passed review. Rebase it onto PR #173 merge and update the existing PR after CSP6 publication passes.</p>
 
