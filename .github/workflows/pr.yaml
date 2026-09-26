@@ -61,7 +61,7 @@ jobs:
             -p 127.0.0.1:9000:4566 \
             -v "$RUNNER_TEMP/starmap-object-data:/var/lib/localstack" \
             -e SERVICES=s3 -e PERSISTENCE=1 \
-            localstack/localstack@sha256:03bde1974f8bb7a7b6d4128228cf9048c7bdb8249deb998d1b80af73926c0017
+            localstack/localstack@sha256:6b6172cfceb04b4fbc35097a55f717c365a35fafa572be49f7341771cf9023ed
           for attempt in {1..60}; do
             if docker exec "$STARMAP_TEST_COORDINATION_CONTAINER" "$COORDINATION_CLI" ping && \
                curl --fail --silent "$STARMAP_TEST_S3_ENDPOINT/_localstack/health"; then
@@ -70,6 +70,8 @@ jobs:
             sleep 1
           done
           echo "storage services did not become ready after $attempt attempts" >&2
+          docker logs "$STARMAP_TEST_OBJECT_CONTAINER" >&2 || true
+          docker inspect "$STARMAP_TEST_OBJECT_CONTAINER" --format '{{.State.Status}}: {{.State.ExitCode}}' >&2 || true
           exit 1
       - name: Qualify native storage and process recovery
         run: go test -race -json -count=1 -timeout=5m ./pkg/catalogs/storage/valkey > "$RUNNER_TEMP/coordinated-storage.jsonl"
