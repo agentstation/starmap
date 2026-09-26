@@ -1,0 +1,59 @@
+{
+  "checked_at": "2026-09-26T08:37:36.458504+00:00",
+  "scope": "Local branches, remote heads, and worktrees in both repositories.",
+  "additional_deletions": 0,
+  "prior_cleanup_totals": {
+    "worktrees": 33,
+    "local_branches": 82,
+    "remote_heads": 14
+  },
+  "retained": {
+    "starmap": {
+      "worktrees": 37,
+      "dirty_worktrees": 34,
+      "local_branches": 40,
+      "remote_heads": 5
+    },
+    "starport": {
+      "worktrees": 4,
+      "dirty_worktrees": 0,
+      "local_branches": 4,
+      "remote_heads": 2
+    }
+  },
+  "recovery_checks": [
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-final-publication",
+      "bundle_sha256": "42dcddb5229a9ed9bb5bdef80438ae897f635580dc624919924ab06f4314b18c"
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-git-qualification",
+      "bundle_sha256": "c8bb7641af1ee86600eafa7a7bc3af8056517928466a5803e40e375c5a81cfcc"
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-record-presence",
+      "bundle_sha256": "fcd219ffad39e6a638d8a36890ba9454bed0aaa4755130f18df463656b6eabd9"
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-source-diagnostics",
+      "bundle_sha256": "a02f6c7d18457977f91ba28f2c937863c490deefc75237380f834acbe128091f"
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-source-revocation",
+      "bundle_sha256": "f31fd76389b0b1cae07e4473f0943e6cbd71f1a837431eb4ba9ddc998377fcd3"
+    },
+    {
+      "repo": "starport",
+      "branch": "codex/csp9-credential-revocation",
+      "bundle_sha256": "d207fc7be74360fba016b4efed041172cdf422e9f51fd3ef3cfce6f26a0ca773"
+    }
+  ],
+  "remote_prune_dry_run": "No stale remote references in either repository.",
+  "retention_reason": "Preserve active checkouts, uncommitted edits, catalog distribution branches, and historical changes without verified integration.",
+  "next_action": "Resolve the historical changes before further deletion. Reuse the clean producer checkout. Complete native qualification before either active PR merges."
+}

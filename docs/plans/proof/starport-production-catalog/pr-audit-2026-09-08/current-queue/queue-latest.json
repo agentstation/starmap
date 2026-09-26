@@ -404,5 +404,11 @@
     "worktrees_removed_total": 33,
     "remote_branches_removed_total": 14,
     "current_pass": "contained-branch-cleanup.json"
+  },
+  "cleanup_recheck": {
+    "checked_at": "2026-09-26T08:37:36.458504+00:00",
+    "proof": "cleanup-recheck-latest.json",
+    "inventory": "workspace-current.json",
+    "additional_deletions": 0
   }
 }

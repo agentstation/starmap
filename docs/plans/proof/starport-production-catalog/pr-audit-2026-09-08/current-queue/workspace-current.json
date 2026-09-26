@@ -1,11 +1,12 @@
 {
-  "checked_at": "2026-09-26T08:22:34.625323+00:00",
+  "checked_at": "2026-09-26T08:37:36.458504+00:00",
   "repositories": {
     "starmap": {
       "worktrees": [
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap",
           "HEAD": "fa7c26bbd57c829be30a861ce8dc7eb8a70fca50",
+          "branch": "refs/heads/codex/security-baseline",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -14,20 +15,20 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/security-baseline"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-advisory-exchange",
           "HEAD": "ffecd9eb890adfd424d21b92638dc5d702c92553",
+          "branch": "refs/heads/codex/starmap-advisory-exchange",
           "dirty_paths": [],
           "dirty_count": 0,
-          "disposition": "retain active or unpublished work",
-          "branch": "refs/heads/codex/starmap-advisory-exchange"
+          "disposition": "Retain active or unverified historical work."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer",
           "HEAD": "717ba9148a75ad74ca1758aa51cbb121b0f5fd18",
+          "branch": "refs/heads/codex/catalog-authority-issuer",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -36,12 +37,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-authority-issuer"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot",
           "HEAD": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+          "branch": "refs/heads/codex/catalog-authority-snapshot",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -50,12 +51,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-authority-snapshot"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle",
           "HEAD": "e97d7fc3e0e393c5d829e234b7a96a97845268f5",
+          "branch": "refs/heads/codex/catalog-clock-lifecycle",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -64,12 +65,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-clock-lifecycle"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission",
           "HEAD": "20b1ee4186bd2fbc647209f280ad10ddefd7bb36",
+          "branch": "refs/heads/codex/catalog-consumer-permission",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -78,12 +79,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-consumer-permission"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-dependency-qualification",
           "HEAD": "e2343509c3007919f5f83c07c4654cb24270508f",
+          "branch": "refs/heads/codex/catalog-dependency-qualification",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -92,12 +93,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-dependency-qualification"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-evidence",
           "HEAD": "d8d12a26069f34442860cbcf8bb840dd073177fc",
+          "branch": "refs/heads/codex/catalog-evidence",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -106,12 +107,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-evidence"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-followup-evidence",
           "HEAD": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+          "branch": "refs/heads/codex/catalog-followup-evidence",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -120,12 +121,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-followup-evidence"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-foundation",
           "HEAD": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+          "branch": "refs/heads/codex/catalog-foundation",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -134,12 +135,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-foundation"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
           "HEAD": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+          "branch": "refs/heads/codex/catalog-host-clock",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -148,12 +149,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-host-clock"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock",
           "HEAD": "7641eaea2b98f9ffbefb2807f67253919227b234",
+          "branch": "refs/heads/codex/catalog-native-clock",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -162,12 +163,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-native-clock"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
           "HEAD": "33118919dc18e1f824ea618502f23b756e50813a",
+          "branch": "refs/heads/codex/catalog-origin-settings",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -176,12 +177,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-origin-settings"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-partial-retention",
           "HEAD": "fa5954a6b598bc1ab7fcd5e24da15a136fbe8cd8",
+          "branch": "refs/heads/codex/catalog-partial-retention",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -190,12 +191,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-partial-retention"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock",
           "HEAD": "7239f4b76ee4d079479ae1703ac6e0ac55683925",
+          "branch": "refs/heads/codex/catalog-permission-clock",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -204,12 +205,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-permission-clock"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-plan",
           "HEAD": "b58a9df6f2da7fe95297e30d97604c9232e83a43",
+          "branch": "refs/heads/codex/catalog-plan",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -218,12 +219,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-plan"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs",
           "HEAD": "b81b827067aa860096bed208e541dd84e31274ab",
+          "branch": "refs/heads/codex/catalog-provider-docs",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -232,12 +233,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-provider-docs"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
           "HEAD": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
+          "branch": "refs/heads/codex/catalog-public-acceptance",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -246,12 +247,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-public-acceptance"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publisher",
           "HEAD": "7994fced889a29530c6811582d2af97ae18f71b9",
+          "branch": "refs/heads/codex/catalog-publisher-cat99",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -260,12 +261,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-publisher-cat99"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-qualification-evidence",
           "HEAD": "aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
+          "branch": "refs/heads/codex/catalog-qualification-evidence",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -274,32 +275,26 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-qualification-evidence"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
-          "HEAD": "8f3b79f78be16467ed6e42a5bff88908a2985af2",
+          "HEAD": "90b2297b65f3317ae573b90762a04fd64b7de0ca",
+          "branch": "refs/heads/codex/catalog-qualification",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
-            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-latest.json",
-            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/workspace-current.json",
-            "docs/plans/starport-production-catalog-plan.html",
             "go.mod",
             "go.sum",
-            "scripts/verify.sh",
-            "docs/plans/proof/starport-production-catalog/csp8/acceptance-batching/candidate-audit.json",
-            "docs/plans/proof/starport-production-catalog/csp8/acceptance-batching/isolation-verification.json",
-            "docs/plans/proof/starport-production-catalog/csp8/acceptance-batching/superseded-native-run.json"
+            "scripts/verify.sh"
           ],
-          "dirty_count": 11,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-qualification"
+          "dirty_count": 5,
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
           "HEAD": "8683287dfcd5fc17268d501e70f9b6753aea1c67",
+          "branch": "refs/heads/codex/catalog-update-controls",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -308,8 +303,7 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/catalog-update-controls"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-coalescing-candidate",
@@ -323,11 +317,12 @@
             "scripts/verification_tests.py"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-homebrew-fix",
           "HEAD": "dfcfb97b4bb0cb73f2285fa032c9b4298da7924e",
+          "branch": "refs/heads/codex/homebrew-install-fixes",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -336,24 +331,23 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/codex/homebrew-install-fixes"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
           "HEAD": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+          "branch": "refs/heads/codex/catalog-native-consumer-qualification",
           "dirty_paths": [],
           "dirty_count": 0,
-          "disposition": "retain active or unpublished work",
-          "branch": "refs/heads/codex/catalog-native-consumer-qualification"
+          "disposition": "Retain active or unverified historical work."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
           "HEAD": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+          "branch": "refs/heads/codex/catalog-batched-verification",
           "dirty_paths": [],
           "dirty_count": 0,
-          "disposition": "Retain clean checkout of reviewed scheduling repair. Reuse when needed.",
-          "branch": "refs/heads/codex/catalog-batched-verification"
+          "disposition": "Retain one clean checkout for reuse at the active producer head."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair",
@@ -377,7 +371,7 @@
             "acquisition/fixture_evidence_test.go"
           ],
           "dirty_count": 15,
-          "disposition": "retain uncommitted changes"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-reproduction",
@@ -404,11 +398,12 @@
             "pkg/provenance/decode_test.go"
           ],
           "dirty_count": 18,
-          "disposition": "retain uncommitted changes"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-a2833928ec887009d",
           "HEAD": "02c56750b90a4ee97d7b2c39ea5bd45dac6f4620",
+          "branch": "refs/heads/worktree-agent-a2833928ec887009d",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -417,12 +412,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/worktree-agent-a2833928ec887009d"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-a3b4423c29ae16758",
           "HEAD": "09d29035328dd6a94a398fce59dd79d590162965",
+          "branch": "refs/heads/worktree-agent-a3b4423c29ae16758",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -431,12 +426,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/worktree-agent-a3b4423c29ae16758"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-a5bb2ba1c077f62f8",
           "HEAD": "6b5247635e44951aeaffe36da13c53fccdfba36b",
+          "branch": "refs/heads/worktree-agent-a5bb2ba1c077f62f8",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -445,12 +440,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/worktree-agent-a5bb2ba1c077f62f8"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-a691cd5dfd6445af6",
           "HEAD": "d4b883a1635672f61005fbc63bcbdf5f080a1d74",
+          "branch": "refs/heads/worktree-agent-a691cd5dfd6445af6",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -459,12 +454,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/worktree-agent-a691cd5dfd6445af6"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-a9480ac6db5e6874b",
           "HEAD": "074f5221d43fcd4db5d4b4b40f71104c884fd389",
+          "branch": "refs/heads/worktree-agent-a9480ac6db5e6874b",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -473,12 +468,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/worktree-agent-a9480ac6db5e6874b"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-ade948274d900ed83",
           "HEAD": "093006be7a3917ca3fdeb2dc5c1e9172ca86d91a",
+          "branch": "refs/heads/worktree-agent-ade948274d900ed83",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -487,12 +482,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/worktree-agent-ade948274d900ed83"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-aecb46be749547b1f",
           "HEAD": "a7ca6f33a51e4d5a0fbc13be5fe37221599e52d0",
+          "branch": "refs/heads/worktree-agent-aecb46be749547b1f",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -501,12 +496,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/worktree-agent-aecb46be749547b1f"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-af475d8f5d3e5ae88",
           "HEAD": "351c8a81e11832adc48724272f7fae56d6b626b7",
+          "branch": "refs/heads/worktree-agent-af475d8f5d3e5ae88",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -515,12 +510,12 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/worktree-agent-af475d8f5d3e5ae88"
+          "disposition": "Retain uncommitted changes."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap/.claude/worktrees/agent-afb8363e5a8a081c3",
           "HEAD": "ed0335f268fb708a757f106b7b2ec85a3b1cdff4",
+          "branch": "refs/heads/worktree-agent-afb8363e5a8a081c3",
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
@@ -529,30 +524,7 @@
             "scripts/verify.sh"
           ],
           "dirty_count": 5,
-          "disposition": "retain uncommitted changes",
-          "branch": "refs/heads/worktree-agent-afb8363e5a8a081c3"
-        }
-      ],
-      "remote_heads": [
-        {
-          "head": "dfbcbe671dc43a23fa2a0a75a9ca7ea2614733bd",
-          "ref": "refs/heads/catalog/publication"
-        },
-        {
-          "head": "450b6728de69035042dd9c2cf401d765b39b52d5",
-          "ref": "refs/heads/catalog/v1"
-        },
-        {
-          "head": "2a1bb2d8de1875c3fef0e671b4c97de257c8a9e0",
-          "ref": "refs/heads/catalog/v2"
-        },
-        {
-          "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
-          "ref": "refs/heads/codex/catalog-native-consumer-qualification"
-        },
-        {
-          "head": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
-          "ref": "refs/heads/main"
+          "disposition": "Retain uncommitted changes."
         }
       ],
       "local_branches": [
@@ -577,7 +549,7 @@
         "codex/catalog-public-acceptance 0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
         "codex/catalog-publication-promotion 644ffc88450dd7c29b6edea658a401e3b7380c71",
         "codex/catalog-publisher-cat99 7994fced889a29530c6811582d2af97ae18f71b9",
-        "codex/catalog-qualification 8f3b79f78be16467ed6e42a5bff88908a2985af2",
+        "codex/catalog-qualification 90b2297b65f3317ae573b90762a04fd64b7de0ca",
         "codex/catalog-qualification-evidence aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
         "codex/catalog-source-inventory 66e3ed4d848c7423e234ce0374af1bb5fde110e6",
         "codex/catalog-token-cost-presence 0e115004857bfc13dd9f76046d5c6bca019f4c0f",
@@ -596,42 +568,86 @@
         "worktree-agent-aecb46be749547b1f a7ca6f33a51e4d5a0fbc13be5fe37221599e52d0",
         "worktree-agent-af475d8f5d3e5ae88 351c8a81e11832adc48724272f7fae56d6b626b7",
         "worktree-agent-afb8363e5a8a081c3 ed0335f268fb708a757f106b7b2ec85a3b1cdff4"
-      ]
+      ],
+      "remote_heads": [
+        {
+          "head": "dfbcbe671dc43a23fa2a0a75a9ca7ea2614733bd",
+          "ref": "refs/heads/catalog/publication"
+        },
+        {
+          "head": "450b6728de69035042dd9c2cf401d765b39b52d5",
+          "ref": "refs/heads/catalog/v1"
+        },
+        {
+          "head": "2a1bb2d8de1875c3fef0e671b4c97de257c8a9e0",
+          "ref": "refs/heads/catalog/v2"
+        },
+        {
+          "head": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+          "ref": "refs/heads/codex/catalog-native-consumer-qualification"
+        },
+        {
+          "head": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
+          "ref": "refs/heads/main"
+        }
+      ],
+      "open_prs": [
+        {
+          "baseRefName": "main",
+          "headRefName": "codex/catalog-native-consumer-qualification",
+          "headRefOid": "854129199ef2f13c865d18a6ba54cbf514c34f8d",
+          "isDraft": false,
+          "number": 182,
+          "title": "fix: qualify native catalog ownership and batch acceptance checks"
+        }
+      ],
+      "counts": {
+        "worktrees": 37,
+        "dirty_worktrees": 34,
+        "local_branches": 40,
+        "remote_heads": 5
+      }
     },
     "starport": {
       "worktrees": [
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport",
           "HEAD": "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e",
+          "branch": "refs/heads/main",
           "dirty_paths": [],
           "dirty_count": 0,
-          "disposition": "retain active or unpublished work",
-          "branch": "refs/heads/main"
+          "disposition": "Retain active or unverified historical work."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
           "HEAD": "69b5affb3b75ab911e167e92b4418f141212921d",
+          "branch": "refs/heads/codex/catalog-lifecycle",
           "dirty_paths": [],
           "dirty_count": 0,
-          "disposition": "retain active or unpublished work",
-          "branch": "refs/heads/codex/catalog-lifecycle"
+          "disposition": "Retain active or unverified historical work."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-starmap-main",
           "HEAD": "d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
+          "branch": "refs/heads/codex/catalog-starmap-main",
           "dirty_paths": [],
           "dirty_count": 0,
-          "disposition": "retain active or unpublished work",
-          "branch": "refs/heads/codex/catalog-starmap-main"
+          "disposition": "Retain active or unverified historical work."
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
           "HEAD": "b769aa514fea99856d3c37d426ee2709b8529ae0",
+          "branch": "refs/heads/codex/starport-native-catalog",
           "dirty_paths": [],
           "dirty_count": 0,
-          "disposition": "Retain active integration and unpublished native and credential repairs.",
-          "branch": "refs/heads/codex/starport-native-catalog"
+          "disposition": "Retain active or unverified historical work."
         }
+      ],
+      "local_branches": [
+        "codex/catalog-lifecycle 69b5affb3b75ab911e167e92b4418f141212921d",
+        "codex/catalog-starmap-main d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
+        "codex/starport-native-catalog b769aa514fea99856d3c37d426ee2709b8529ae0",
+        "main bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e"
       ],
       "remote_heads": [
         {
@@ -643,12 +659,22 @@
           "ref": "refs/heads/main"
         }
       ],
-      "local_branches": [
-        "codex/catalog-lifecycle 69b5affb3b75ab911e167e92b4418f141212921d",
-        "codex/catalog-starmap-main d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
-        "codex/starport-native-catalog b769aa514fea99856d3c37d426ee2709b8529ae0",
-        "main bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e"
-      ]
+      "open_prs": [
+        {
+          "baseRefName": "main",
+          "headRefName": "codex/starport-native-catalog",
+          "headRefOid": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+          "isDraft": true,
+          "number": 384,
+          "title": "feat: integrate catalog lifecycle, memory authorization, and isolated caches"
+        }
+      ],
+      "counts": {
+        "worktrees": 4,
+        "dirty_worktrees": 0,
+        "local_branches": 4,
+        "remote_heads": 2
+      }
     }
   }
 }
