@@ -46,6 +46,9 @@ builds:
     goarch:
       - amd64
       - arm64
+    ignore:
+      - goos: darwin
+        goarch: amd64
 
 archives:
   - id: starmap
@@ -259,6 +262,9 @@ homebrew_casks:
     
     # Post-install hook for unsigned binaries (macOS)
     custom_block: |
+      on_macos do
+        depends_on arch: :arm64
+      end
       postflight_steps do
         on_macos do
           run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{ "{{staged_path}}" }}/starmap"], sudo: false

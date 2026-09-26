@@ -409,9 +409,8 @@ build-windows: ## Build for Windows
 build-darwin: ## Build for macOS
 	@echo "$(BLUE)Building for macOS...$(NC)"
 	@mkdir -p $(BUILD_DIR)
-	GOOS=darwin GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME)-darwin-amd64 $(MAIN_PATH)
 	GOOS=darwin GOARCH=arm64 $(GOBUILD) $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME)-darwin-arm64 $(MAIN_PATH)
-	@echo "$(GREEN)Built $(BUILD_DIR)/$(BINARY_NAME)-darwin-amd64 and $(BINARY_NAME)-darwin-arm64$(NC)"
+	@echo "$(GREEN)Built $(BUILD_DIR)/$(BINARY_NAME)-darwin-arm64$(NC)"
 
 build-all: build-linux build-windows build-darwin ## Build for all platforms
 

@@ -1,5 +1,16 @@
 # Catalog lifecycle repository findings
 
+## Apple silicon support decision, September 26
+
+D39 removes Intel Mac support from both products. The previous release matrices included six targets, including `darwin/amd64`.
+The revised matrices retain five targets. Linux and Windows retain both x86-64 and ARM64.
+The implementation changes CI, release verification, native evidence selection, Homebrew requirements, and publisher promotion checks.
+
+Historical six-target qualification remains evidence for its recorded commits. It does not require future Intel Mac runs.
+The current plan records pending review, CI, and merge evidence.
+
+
+
 The current repositories implement most catalog distribution infrastructure.
 They do not yet satisfy every requested bootstrap, directory, credential, and
 authority behavior. The [PRD](PRD.md) defines the product requirements.

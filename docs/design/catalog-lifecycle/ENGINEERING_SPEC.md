@@ -15,6 +15,24 @@ The [storage revision](../../plans/proof/starport-production-catalog/storage-rev
 The accepted [latency target](LATENCY_REVIEW.md) adds the request-path contracts in section 8.9.
 The [latency revision](../../plans/proof/starport-production-catalog/latency-revision-2026-09-05/REVIEW_RESOLUTION.md) maps each finding to implementation tasks and tests.
 
+## Supported operating systems and processors
+
+D39 defines five targets for both products:
+
+| Operating system | Supported processors |
+|---|---|
+| macOS | Apple silicon (`arm64`) |
+| Linux | x86-64 (`amd64`) and ARM64 (`arm64`) |
+| Windows | x86-64 (`amd64`) and ARM64 (`arm64`) |
+
+CI, native qualification, release archives, and installers must use this matrix.
+New releases must omit `darwin/amd64`. Homebrew must reject Intel Macs without excluding Linux x86-64.
+The catalog publisher must not require a retired Intel Mac check.
+Keep race detection on supported targets where Go provides it. Preserve all distinct storage, recovery, pure-Go, capacity, and performance checks.
+
+Historical Intel Mac releases and test evidence remain available. They do not define the current support boundary.
+Go 1.27.1 remains the exact toolchain for every supported target.
+
 ## 1. Ownership and composition
 
 ```mermaid
