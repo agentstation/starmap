@@ -1,0 +1,38 @@
+{
+  "state": "LOCAL_MERGE_QUALIFICATION",
+  "head": "e042cf6e5017194d78c442c43dbe07031eaae8cd",
+  "native_run": 36246440599,
+  "native_status": "PASS",
+  "native_jobs": 30,
+  "required_native_test_occurrences": 104,
+  "pr_checks": 34,
+  "unresolved_review_threads": 0,
+  "merge_attempt": "Protected merge refused because the head was behind current main. No protection bypass.",
+  "former_base": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+  "new_base": "7d1a6d0c1e136150e70c2e6052c2e36b708757b9",
+  "incoming_pr": 184,
+  "incoming_merge_time": "2026-09-26T14:29:24Z",
+  "incoming_scope": "Five catalog metadata and provenance files. No production source change.",
+  "payload_preparation": "regeneration.json",
+  "remaining": [
+    "Finish bootstrap race checks, then commit the ordinary merge and regenerated payload.",
+    "Apply approved full-source review plus separate exact artifact verification.",
+    "Publish and qualify the updated head before merging PR #183."
+  ],
+  "secret_scan": {
+    "exit_code": 0,
+    "findings": 0
+  },
+  "bootstrap_verification": {
+    "session": 73125,
+    "status": "RUNNING",
+    "log": "/tmp/starmap-183-base-refresh-bootstrap-race.jsonl"
+  },
+  "budget": {
+    "status": "PASS_WITH_REVIEW_THRESHOLD",
+    "raw_bytes": 26422969,
+    "prior_raw_bytes": 26420583,
+    "increase_bytes": 2386,
+    "finding": "Existing 16 MiB advisory threshold remains exceeded. The accepted source catalog grew by 2,386 bytes. No hard budget failed."
+  }
+}

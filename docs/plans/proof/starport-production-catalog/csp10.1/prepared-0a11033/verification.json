@@ -1,0 +1,26 @@
+{
+  "status": "PASS_PREPARATION_ONLY",
+  "consumer": "0a110339856b5cef3fac11da012e43b41482dab7",
+  "go": "1.27.1",
+  "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -run '^$' -bench . -benchmem ./internal/router",
+  "exit_code": 0,
+  "benchmark_results": [
+    "BenchmarkCatalogExactModel/routes-10-12 \t  665329\t      1737 ns/op\t    2688 B/op\t      28 allocs/op",
+    "BenchmarkCatalogExactModel/routes-1000-12         \t  702560\t      1653 ns/op\t    2688 B/op\t      28 allocs/op",
+    "BenchmarkCatalogExactModel/routes-10000-12        \t  757135\t      1531 ns/op\t    2688 B/op\t      28 allocs/op",
+    "BenchmarkEmbeddedCatalogSelection-12              \t  734772\t      1725 ns/op\t       507.0 catalog-routes\t    3008 B/op\t      34 allocs/op",
+    "BenchmarkSelectModel/SimpleModelSelection-12      \t 2341822\t       516.8 ns/op\t     904 B/op\t      12 allocs/op",
+    "BenchmarkSelectModel/WithProviderPreferences-12   \t  720310\t      1477 ns/op\t    3024 B/op\t      27 allocs/op",
+    "BenchmarkRouteWithFallback/SingleModel-12         \t  324774\t      3541 ns/op\t    7888 B/op\t      57 allocs/op",
+    "BenchmarkRouteWithFallback/ModelArray-12          \t  308956\t      3758 ns/op\t    8640 B/op\t      60 allocs/op",
+    "BenchmarkLatencyTracking/RecordLatency-12         \t47554257\t        25.05 ns/op\t       0 B/op\t       0 allocs/op",
+    "BenchmarkLatencyTracking/GetLatency-12            \t83564731\t        14.79 ns/op\t       0 B/op\t       0 allocs/op",
+    "BenchmarkConcurrentRouting-12                     \t 3156471\t       379.4 ns/op\t     904 B/op\t      12 allocs/op"
+  ],
+  "benchmark_count": 11,
+  "package_seconds": 15.813,
+  "host": "darwin/arm64, Apple M2 Max",
+  "raw_log": "router-benchmarks.log.gz",
+  "raw_sha256": "476c83b69d160c7ce0d2ec24f9c63de7845435790c68f1d124b688ef1e40b384",
+  "scope": "Route-selection microbenchmarks. These results do not qualify end-to-end gateway latency or close CSP10.1."
+}

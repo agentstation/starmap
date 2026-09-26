@@ -1,19 +1,20 @@
 {
-  "checked_at": "2026-09-26T14:18:35.552655+00:00",
+  "checked_at": "2026-09-26T14:39:05.157742+00:00",
   "starmap": [
     {
       "pr": 183,
       "head": "e042cf6e5017194d78c442c43dbe07031eaae8cd",
       "branch": "codex/catalog-bootstrap-payload",
-      "base": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
+      "base": "7d1a6d0c1e136150e70c2e6052c2e36b708757b9",
       "state": "OPEN",
-      "draft": true,
+      "draft": false,
       "owner": "CSP8",
       "checks_run": 36246440599,
-      "watch_session": 3478,
-      "disposition": "Keep. Reviewed test-only timer repair awaits exact-head native CI.",
-      "next_action": "Qualify corrected native run, inspect review threads and protections, then merge producer first.",
-      "failure_proof": "../../csp8/follower-schedule-183/verification.json"
+      "watch_session": null,
+      "disposition": "Keep. Native qualification passes, but scheduled catalog PR #184 advanced main.",
+      "next_action": "Integrate current main and regenerate the compiled payload. Review and qualify the updated head before merge.",
+      "failure_proof": "../../csp8/follower-schedule-183/verification.json",
+      "current_proof": "../../csp8/catalog-refresh-183/verification.json"
     }
   ],
   "starport": [
@@ -25,21 +26,27 @@
       "draft": true,
       "owner": "CSP8",
       "checks_run": 36247789871,
-      "disposition": "Keep. Reviewed native DACL fixture repair awaits exact-head native CI.",
-      "next_action": "Qualify native run 36247789871 without required skips. Merge producer first and pass all 63 CSP8 subcases before consumer merge.",
+      "disposition": "Keep. Native macOS failure and local allocation failure require test scheduling repairs.",
+      "next_action": "Finish session 88113, commit and review the four test/workflow files, then update existing PR #384.",
       "local_head": "0a110339856b5cef3fac11da012e43b41482dab7",
       "native_failure_proof": "../../csp8/access-manifest-384/verification.json",
-      "local_changes": [],
+      "local_changes": [
+        ".github/workflows/ci.yml",
+        "internal/providers/keyring/provider_keys_test.go",
+        "internal/credentials/destination_template_test.go",
+        "internal/credentials/destination_template_allocations_test.go"
+      ],
       "local_qualification": "All 34 commands and 12 focused race tests pass. Preceding production source passed 733 real-storage task race tests without skips.",
       "local_qualification_proof": "../../csp8/native-schedule-384/verification.json",
       "prepr": "PASS: all 34 required commands",
       "review": "PASS: nine chunks, no findings at P0",
-      "native_watch_session": 24040,
-      "native_watch_status": "in_progress",
+      "native_watch_session": null,
+      "native_watch_status": "Terminal failure: 13 passing jobs, one failed job, one skipped job.",
       "local_preparation_proof": "../../csp8/access-manifest-384/verification.json",
       "terminal_native_proof": "../../csp8/native-schedule-384/terminal-run.json",
       "unpublished_commits": [],
-      "candidate_module": "v0.16.6-0.20260926123426-0e53e6f9cbda"
+      "candidate_module": "v0.16.6-0.20260926123426-0e53e6f9cbda",
+      "current_proof": "../../csp8/native-timing-384/verification.json"
     }
   ],
   "completed_merges": [
@@ -259,7 +266,7 @@
     "proof": "../../csp8/linux-migration-384/verification.json",
     "pr": 384,
     "checks_run": 36232078722,
-    "status": "Reviewed native ACL test repair published. Native qualification is active.",
+    "status": "Keep. Native macOS failure and local allocation failure require test scheduling repairs.",
     "linux_migration_proof": "../../csp8/linux-migration-384/verification.json",
     "issued_material_proof": "../../csp9/issued-material/verification.json",
     "active_review": {
@@ -298,18 +305,23 @@
     "native_watch": {
       "run": 36247789871,
       "session": 24040,
-      "status": "in_progress",
+      "status": "completed",
       "url": "https://github.com/agentstation/starport/actions/runs/36247789871",
-      "watch_log": "/tmp/starport-384-access-native-watch.log"
+      "watch_log": "/tmp/starport-384-access-native-watch.log",
+      "exit_code": 1
     },
     "active_verification": {
-      "session": 11742,
-      "status": "PASS",
-      "runner": "/tmp/starport-384-access-prepr.py",
-      "report": "/tmp/starport-384-access-prepr/verification.json",
-      "exit_code": 0
+      "session": 88113,
+      "status": "RUNNING",
+      "report": "/tmp/starport-384-native-timing-prepr/verification.json"
     },
-    "local_head": "0a110339856b5cef3fac11da012e43b41482dab7"
+    "local_head": "0a110339856b5cef3fac11da012e43b41482dab7",
+    "local_changes": [
+      ".github/workflows/ci.yml",
+      "internal/providers/keyring/provider_keys_test.go",
+      "internal/credentials/destination_template_test.go",
+      "internal/credentials/destination_template_allocations_test.go"
+    ]
   },
   "starmap_preparation": {
     "owner": "CSP8",
@@ -765,9 +777,9 @@
   "producer_preparation": {
     "branch": "codex/catalog-bootstrap-payload",
     "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
-    "state": "published_native_ci_pending",
+    "state": "base_refresh_required",
     "proof": "../../csp8/compiled-bootstrap-preparation/verification.json",
-    "next_action": "Qualify corrected native run, inspect review threads and protections, then merge producer first.",
+    "next_action": "Integrate current main and regenerate the compiled payload. Review and qualify the updated head before merge.",
     "gate_session": 93064,
     "gate_status": "PASS",
     "head": "e042cf6e5017194d78c442c43dbe07031eaae8cd",

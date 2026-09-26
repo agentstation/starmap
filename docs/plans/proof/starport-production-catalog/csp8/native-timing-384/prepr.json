@@ -1,0 +1,320 @@
+{
+  "started_at": "2026-09-26T14:35:11.829351+00:00",
+  "status": "PASS",
+  "head": "0a110339856b5cef3fac11da012e43b41482dab7",
+  "module_files": {
+    "go.mod": "6df61da43f69a6f01a49f7ba44f7b04b3ca60235f8d1b8a783127c4fd2064a85",
+    "go.sum": "3349f61d0d2dab3755fd22308c560055f5a1a88bba557232481ee15b73deb5af"
+  },
+  "command_count": 34,
+  "results": [
+    {
+      "index": 29,
+      "command": "pnpm -C console check",
+      "log": "29.log",
+      "exit_code": 0,
+      "seconds": 29.272058375005145,
+      "status": "PASS",
+      "sha256": "af4532e42551e2842bcdbfa6882247ed25c22d819c64d25e37fc9f73a06e6c59"
+    },
+    {
+      "index": 30,
+      "command": "go test ./...",
+      "log": "30.log",
+      "exit_code": 0,
+      "seconds": 43.24834529098007,
+      "status": "PASS",
+      "sha256": "d5f6a239b4f64e8dd2a1225a43ff75c126e34b188f241493d551caa447096a47"
+    },
+    {
+      "index": 31,
+      "command": "go vet ./...",
+      "log": "31.log",
+      "exit_code": 0,
+      "seconds": 1.199320165993413,
+      "status": "PASS",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 32,
+      "command": "make lint",
+      "log": "32.log",
+      "exit_code": 0,
+      "seconds": 2.9136809159826953,
+      "status": "PASS",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "index": 1,
+      "command": "bash scripts/verify-starmap-ownership.sh",
+      "log": "01.log",
+      "exit_code": 0,
+      "seconds": 76.86298875001376,
+      "status": "PASS",
+      "sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    {
+      "index": 33,
+      "command": "make build",
+      "log": "33.log",
+      "exit_code": 0,
+      "seconds": 12.570227459014859,
+      "status": "PASS",
+      "sha256": "a456956117cf6b16858ef7286ffb66157fba5725908f1b845cd7ea0ddf729f04"
+    },
+    {
+      "index": 2,
+      "command": "bash scripts/verify-v1-architecture.sh",
+      "log": "02.log",
+      "exit_code": 0,
+      "seconds": 63.143512083013775,
+      "status": "PASS",
+      "sha256": "e9b6ddfc0de00807939e53e9f973558ffa4f9b1cfa8ed540d49a73ce94a8cc06"
+    },
+    {
+      "index": 3,
+      "command": "bash scripts/test-dependency-direction-verifier.sh",
+      "log": "03.log",
+      "exit_code": 0,
+      "seconds": 0.6566039159952197,
+      "status": "PASS",
+      "sha256": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651"
+    },
+    {
+      "index": 4,
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "log": "04.log",
+      "exit_code": 0,
+      "seconds": 0.5975564999971539,
+      "status": "PASS",
+      "sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "index": 5,
+      "command": "bash scripts/verify-catalog-driven-providers.sh",
+      "log": "05.log",
+      "exit_code": 0,
+      "seconds": 136.48332899998059,
+      "status": "PASS",
+      "sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19"
+    },
+    {
+      "index": 6,
+      "command": "bash scripts/verify-package-layout.sh",
+      "log": "06.log",
+      "exit_code": 0,
+      "seconds": 5.860430833010469,
+      "status": "PASS",
+      "sha256": "ebaa62e656ed699b69b4f01ac7a05c761ac85ee875eff8c407bfed5ce68a2382"
+    },
+    {
+      "index": 7,
+      "command": "bash scripts/verify-readme-quickstart.sh",
+      "log": "07.log",
+      "exit_code": 0,
+      "seconds": 0.07159129099454731,
+      "status": "PASS",
+      "sha256": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0"
+    },
+    {
+      "index": 8,
+      "command": "bash scripts/verify-v1-release.sh",
+      "log": "08.log",
+      "exit_code": 0,
+      "seconds": 0.04037266600062139,
+      "status": "PASS",
+      "sha256": "75074e58905a5ca1cb126c5686d11dc26445ae78dade9e1333a6429781ca7d81"
+    },
+    {
+      "index": 9,
+      "command": "bash scripts/verify-release-workflow.sh",
+      "log": "09.log",
+      "exit_code": 0,
+      "seconds": 5.395490334019996,
+      "status": "PASS",
+      "sha256": "e618fd1e394a3af57b28e267a2c42944db635d378032db14b98d74cdd27910e0"
+    },
+    {
+      "index": 10,
+      "command": "bash scripts/verify-developer-experience.sh",
+      "log": "10.log",
+      "exit_code": 0,
+      "seconds": 2.554451165982755,
+      "status": "PASS",
+      "sha256": "7cb65076680b3c4990ad7c1243742a83d0dad81227e39d885f8715b5da9c2072"
+    },
+    {
+      "index": 11,
+      "command": "bash scripts/verify-doc-links.sh",
+      "log": "11.log",
+      "exit_code": 0,
+      "seconds": 0.12866774998838082,
+      "status": "PASS",
+      "sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324"
+    },
+    {
+      "index": 12,
+      "command": "bash scripts/test-doc-link-verifier.sh",
+      "log": "12.log",
+      "exit_code": 0,
+      "seconds": 0.18338304199278355,
+      "status": "PASS",
+      "sha256": "69ea9d7375bbb4907e620ae48e022bb88f04aae68545a8942d01ddcf6744f9ec"
+    },
+    {
+      "index": 13,
+      "command": "bash scripts/verify-openrouter-parity.sh",
+      "log": "13.log",
+      "exit_code": 0,
+      "seconds": 0.07735462498385459,
+      "status": "PASS",
+      "sha256": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd"
+    },
+    {
+      "index": 14,
+      "command": "bash scripts/verify-console-modernization.sh",
+      "log": "14.log",
+      "exit_code": 0,
+      "seconds": 0.0401650829880964,
+      "status": "PASS",
+      "sha256": "185cebeb477b2b21b6a132c98b99abd3d13ee8aacf9346c35de5eb139e00e518"
+    },
+    {
+      "index": 15,
+      "command": "bash scripts/verify-auth-onboarding.sh",
+      "log": "15.log",
+      "exit_code": 0,
+      "seconds": 0.0771500830014702,
+      "status": "PASS",
+      "sha256": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0"
+    },
+    {
+      "index": 16,
+      "command": "bash scripts/verify-console-session-grants.sh",
+      "log": "16.log",
+      "exit_code": 0,
+      "seconds": 0.35003283398691565,
+      "status": "PASS",
+      "sha256": "2ca175ead00523a30b79eef397b9c4405addfd7282e54eba83bbaa9b458cfcb0"
+    },
+    {
+      "index": 17,
+      "command": "bash scripts/verify-model-modalities.sh",
+      "log": "17.log",
+      "exit_code": 0,
+      "seconds": 0.24160108400974423,
+      "status": "PASS",
+      "sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a"
+    },
+    {
+      "index": 18,
+      "command": "bash scripts/verify-files-api.sh",
+      "log": "18.log",
+      "exit_code": 0,
+      "seconds": 0.13039512498653494,
+      "status": "PASS",
+      "sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986"
+    },
+    {
+      "index": 19,
+      "command": "bash scripts/verify-async-media-jobs.sh",
+      "log": "19.log",
+      "exit_code": 0,
+      "seconds": 0.13216850001481362,
+      "status": "PASS",
+      "sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb"
+    },
+    {
+      "index": 20,
+      "command": "bash scripts/verify-document-parser.sh",
+      "log": "20.log",
+      "exit_code": 0,
+      "seconds": 0.18349450000096112,
+      "status": "PASS",
+      "sha256": "9102e2e6af83927ed3051459833af3605153fe54ab9f830e479a843ed783a7e7"
+    },
+    {
+      "index": 21,
+      "command": "bash scripts/verify-reranking.sh",
+      "log": "21.log",
+      "exit_code": 0,
+      "seconds": 0.2938314579951111,
+      "status": "PASS",
+      "sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c"
+    },
+    {
+      "index": 22,
+      "command": "bash scripts/verify-catalog-performance.sh",
+      "log": "22.log",
+      "exit_code": 0,
+      "seconds": 0.23828645798494108,
+      "status": "PASS",
+      "sha256": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be"
+    },
+    {
+      "index": 23,
+      "command": "bash scripts/verify-credential-sharing.sh",
+      "log": "23.log",
+      "exit_code": 0,
+      "seconds": 0.18760670800111257,
+      "status": "PASS",
+      "sha256": "c74926b4e4352f4c6e5f688d628e76d44bb7d84f422900408de977ca33a4bec2"
+    },
+    {
+      "index": 24,
+      "command": "bash scripts/verify-enterprise-readiness.sh",
+      "log": "24.log",
+      "exit_code": 0,
+      "seconds": 0.6794254170090426,
+      "status": "PASS",
+      "sha256": "466350440fbde6b80d1f91c8d8bdfac58d3af69453ff4d5696862584e5a4207b"
+    },
+    {
+      "index": 25,
+      "command": "bash scripts/verify-console-polish.sh",
+      "log": "25.log",
+      "exit_code": 0,
+      "seconds": 0.13098754102247767,
+      "status": "PASS",
+      "sha256": "664858a2c06adebacd61ca8ce09a3cec33b5c758fe7f7d7635dc428db7f1556e"
+    },
+    {
+      "index": 26,
+      "command": "bash scripts/verify-action-pins.sh",
+      "log": "26.log",
+      "exit_code": 0,
+      "seconds": 5.052023374999408,
+      "status": "PASS",
+      "sha256": "a94bb5c32787cc4e2b807b0bd116b26755f3ba2b7cdfa5354a1dc15b66506eac"
+    },
+    {
+      "index": 27,
+      "command": "bash scripts/benchmark-overhead.sh",
+      "log": "27.log",
+      "exit_code": 0,
+      "seconds": 0.9849631669931114,
+      "status": "PASS",
+      "sha256": "b1eacbf35f0bbbf4e0af2780a810ccc05d9ecc5045f56999efec22ddfabbe655"
+    },
+    {
+      "index": 28,
+      "command": "bash scripts/smoke-first-run.sh",
+      "log": "28.log",
+      "exit_code": 0,
+      "seconds": 14.556510833004722,
+      "status": "PASS",
+      "sha256": "13df9cf24049e80dbd789601314d6896dc1a5674feff1997aab89e9fff49ff03"
+    },
+    {
+      "index": 34,
+      "command": "bash scripts/smoke-openrouter-sdks.sh",
+      "log": "34.log",
+      "exit_code": 0,
+      "seconds": 21.54508804201032,
+      "status": "PASS",
+      "sha256": "8a363e7c38df32d9bbf88393eba8e8069f385080ee7cde1e3dcdbf8dcd862fdb"
+    }
+  ],
+  "finished_at": "2026-09-26T14:40:48.734869+00:00",
+  "inputs_unchanged": true
+}
