@@ -1,0 +1,219 @@
+{
+  "checked_at": "2026-09-26T05:29:27.695934+00:00",
+  "source": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+  "change": "Run the three migration recovery subtests in parallel. One line added. No cases, assertions, or timeouts removed.",
+  "manual_review": [
+    "Each phase owns its temporary tree, Badger directory, child process, and migration request.",
+    "The subprocess receives its phase through its own environment. The parent does not mutate process environment.",
+    "Parallel subtests retain their cleanup, process exit checks, byte preservation checks, and instance identity assertions."
+  ],
+  "focused": {
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -json -count=1 -timeout 3m ./internal/catalog -run ^TestMigrationPhaseProcessRecovery$",
+    "exit_code": 0,
+    "results": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starport/internal/catalog",
+        "Test": "TestMigrationPhaseProcessRecovery/complete",
+        "Elapsed": 77.99
+      },
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starport/internal/catalog",
+        "Test": "TestMigrationPhaseProcessRecovery/publish",
+        "Elapsed": 77.99
+      },
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starport/internal/catalog",
+        "Test": "TestMigrationPhaseProcessRecovery/stage",
+        "Elapsed": 78.24
+      },
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starport/internal/catalog",
+        "Test": "TestMigrationPhaseProcessRecovery",
+        "Elapsed": 0
+      },
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starport/internal/catalog",
+        "Elapsed": 79.965
+      }
+    ]
+  },
+  "full_task": {
+    "root": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
+    "source": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+    "producer": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
+    "toolchain": "go1.27.1",
+    "docker_initially_running": true,
+    "services": [
+      {
+        "role": "durable",
+        "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "id": "cf38bb27fa1edd8f7149dc210c9c2d4f95eef8c0c46b736b70693eef6ffc17d5",
+        "address": "127.0.0.1:53261"
+      },
+      {
+        "role": "cache",
+        "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "id": "29d72e1d247328b418f37b7a4c97568d999eef8fc649e5477fe4687a59053ddf",
+        "address": "127.0.0.1:53263"
+      },
+      {
+        "role": "sql",
+        "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+        "id": "f9a1ef3ffad3e2f8215a9da374d98c92cde45497af1a445101973ec43871d0e8",
+        "address": "127.0.0.1:53264"
+      }
+    ],
+    "status": "PASS",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout",
+      "5m",
+      "-json",
+      "./internal/config",
+      "./internal/catalog",
+      "./internal/app"
+    ],
+    "exit_code": 0,
+    "cleanup": [
+      {
+        "id": "cf38bb27fa1edd8f7149dc210c9c2d4f95eef8c0c46b736b70693eef6ffc17d5",
+        "exit_code": 0
+      },
+      {
+        "id": "29d72e1d247328b418f37b7a4c97568d999eef8fc649e5477fe4687a59053ddf",
+        "exit_code": 0
+      },
+      {
+        "id": "f9a1ef3ffad3e2f8215a9da374d98c92cde45497af1a445101973ec43871d0e8",
+        "exit_code": 0
+      }
+    ],
+    "named_results": {
+      "pass": 733
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/config",
+        "Action": "pass",
+        "Elapsed": 109.407
+      },
+      {
+        "Package": "github.com/agentstation/starport/internal/app",
+        "Action": "pass",
+        "Elapsed": 238.428
+      },
+      {
+        "Package": "github.com/agentstation/starport/internal/catalog",
+        "Action": "pass",
+        "Elapsed": 251.537
+      }
+    ],
+    "migration_phases": [
+      {
+        "Test": "TestMigrationPhaseProcessRecovery/complete",
+        "Elapsed": 42.18
+      },
+      {
+        "Test": "TestMigrationPhaseProcessRecovery/publish",
+        "Elapsed": 42.22
+      },
+      {
+        "Test": "TestMigrationPhaseProcessRecovery/stage",
+        "Elapsed": 42.26
+      }
+    ]
+  },
+  "lint": {
+    "session": 45708,
+    "log": "/tmp/csp8-parallel-recovery-lint.log",
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "review": {
+    "source": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+    "command": "autoreview --gate pre-pr --mode auto --max-passes 32",
+    "exit_code": 0,
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "profile": "auto",
+    "priority_threshold": "P0",
+    "bundle_bytes": 1824000,
+    "passes": 9,
+    "findings": 0,
+    "secret_scan": "clean",
+    "reason_for_pass_cap": "Keep the complete prepared integration in one review. The cap changes only allowed pass count, not scope or finding threshold."
+  },
+  "logs": [
+    {
+      "path": "csp8-parallel-recovery-events.jsonl.gz",
+      "sha256": "d4c3233760cb640d6a1fd64b45edcf8ddf5416004cf203e4b47ccf2e3396c1fc"
+    },
+    {
+      "path": "csp8-parallel-recovery-stderr.log.gz",
+      "sha256": "20257a438dba7894ca87d1f07b34509113733f006b0273efdc5b21ae473152b7"
+    },
+    {
+      "path": "after-events.jsonl.gz",
+      "sha256": "ab95eddd0d9d78afac6255b9864db6d55d97b2e495803369fab8c0d0b1e11de7"
+    },
+    {
+      "path": "after-stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "ordinary-events.jsonl.gz",
+      "sha256": "8ed918f9675c2bf067398fabc18b119c0379170786fc0b1a3c9e2cac66f38942"
+    },
+    {
+      "path": "ordinary-stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "autoreview.log.gz",
+      "sha256": "5785f9ee4f25668d4937cb1a759692c6bf086124c47a00c1753cf2020c8573c0"
+    },
+    {
+      "path": "plan-writing.log.gz",
+      "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
+    }
+  ],
+  "ordinary_suite": {
+    "source": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -json ./...",
+    "exit_code": 0,
+    "named_results": {
+      "pass": 4139,
+      "skip": 61
+    },
+    "package_results": {
+      "skip": 8,
+      "pass": 60
+    },
+    "note": "Uses normal Go cache. The changed catalog package executes again."
+  },
+  "unchanged_evidence": {
+    "source": "9b60991b6fcce2a37c625339c23beb8b2e267e44",
+    "proof": "../current-catalog-integration/published-module-preparation.json",
+    "checks": "26 repository guards, vet, console, build, controller benchmark, first-run smoke, SDK smoke",
+    "reason": "The sole later source change adds t.Parallel to isolated crash-recovery subtests. Relevant Go suite, real-storage race task, lint, and full-branch review ran again."
+  },
+  "plan_checks": {
+    "changed_html": "PASS: 1 file, zero diagnostics",
+    "repository_writing": "Exit 2: 1,698 files, 69 unchanged historical diagnostics",
+    "ledger": "40 tasks, 15 terminal, CSP6 only active",
+    "links": "89 unique local targets resolve",
+    "diff": "PASS"
+  }
+}

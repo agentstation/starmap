@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T05:06:30.504484+00:00",
+  "checked_at": "2026-09-26T05:31:18.040626+00:00",
   "starmap": [
     {
       "number": 181,
@@ -10,7 +10,8 @@
       "next_action": "After exact-head checks pass, verify merge and both-channel publication. Capture before, retry the exact completed receipt, capture after, and run CSP6 acceptance.",
       "checks_run": 36219211223,
       "proof": "../../csp6/promotion-181/verification.json",
-      "native_status": "in_progress"
+      "native_status": "in_progress",
+      "passing_jobs": 25
     }
   ],
   "starport": [],
@@ -89,7 +90,7 @@
     "clean_merged_worktrees_removed": 12,
     "local_exact_ancestor_branches_removed": 63,
     "live_remote_branches_deleted": 14,
-    "note": "Eight additional worktrees and local branches removed after exact ancestry, squash-tree equality, or patch equivalence checks. Verified private archives preserve ignored evidence and Git bundles preserve unique history. One merged Starport remote branch deleted with an exact-head lease. Uncommitted and unpublished work remains.",
+    "note": "Private archives preserve removed worktrees and Git bundles preserve unique history. The latest pass removed one automatic merge commit whose parents and dependency update are present in main. Uncommitted and unpublished work remains.",
     "retained_inventory": {
       "starmap": {
         "worktrees": 37,
@@ -112,7 +113,7 @@
     "preserved_pass_proof": "worktree-cleanup-preserved.json",
     "archive_verification": "PASS: eight additional archive and bundle digests match, all eight worktree paths and branch refs are absent.",
     "additional_proven_branches_removed": 8,
-    "total_local_branches_removed": 74,
+    "total_local_branches_removed": 75,
     "additional_pass_proof": "worktree-cleanup-additional.json",
     "remote_additional_proof": "remote-cleanup-additional.json",
     "automatic_superseded_remote_branch_deletions": 5
@@ -171,7 +172,7 @@
     "changed_plan_strict_lint": "PASS: 1 file, zero diagnostics.",
     "repository_technical_writing_check": "1698 files, 69 unchanged historical diagnostics.",
     "ledger": "40 rows, 15 terminal, CSP6 only in_progress.",
-    "local_links": "88 unique local links resolve.",
+    "local_links": "89 unique local links resolve.",
     "diff_check": "PASS"
   },
   "active_publication": {
@@ -184,11 +185,11 @@
     "checked_at": "2026-09-26T04:58:24.390935+00:00"
   },
   "starport_preparation": {
-    "head": "9b60991",
+    "head": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
     "owner": "CSP8",
-    "pre_pr_checks": "PASS",
-    "review": "PASS: nine bounded passes, no actionable findings at configured P0 threshold",
+    "pre_pr_checks": "PASS: 733 task race tests with real Valkey and PostgreSQL, zero skips; ordinary suite 4,139 passes and 61 skips; lint zero issues.",
+    "review": "PASS at 65a3cb3: nine complete review passes, zero actionable findings at configured P0 threshold, clean secret scan.",
     "disposition": "retain reviewed unpublished integration until CSP6 qualification",
-    "proof": "../../csp8/current-catalog-integration/published-module-preparation.json"
+    "proof": "../../csp8/race-suite-bound-2026-09-26/after.json"
   }
 }

@@ -1,0 +1,91 @@
+{
+  "root": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
+  "source": "9b60991b6fcce2a37c625339c23beb8b2e267e44",
+  "producer": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
+  "toolchain": "go1.27.1",
+  "docker_initially_running": true,
+  "services": [
+    {
+      "role": "durable",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "id": "fbb76c60c072409b18755ddaf3433f004bccde71f350577a190ea7e26b231e1d",
+      "address": "127.0.0.1:65043"
+    },
+    {
+      "role": "cache",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "id": "1f9323eed5ec066a4ad76f9a37ac02d2471960d0d68f0305ea0886b3bdbe20cd",
+      "address": "127.0.0.1:65045"
+    },
+    {
+      "role": "sql",
+      "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+      "id": "c1fc59e6b96efffb1d8a1ace41bb7ddaf62bcc0330a13002a1ead10c54678e07",
+      "address": "127.0.0.1:65046"
+    }
+  ],
+  "status": "FAIL",
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "5m",
+    "-json",
+    "./internal/config",
+    "./internal/catalog",
+    "./internal/app"
+  ],
+  "exit_code": 1,
+  "cleanup": [
+    {
+      "id": "fbb76c60c072409b18755ddaf3433f004bccde71f350577a190ea7e26b231e1d",
+      "exit_code": 0
+    },
+    {
+      "id": "1f9323eed5ec066a4ad76f9a37ac02d2471960d0d68f0305ea0886b3bdbe20cd",
+      "exit_code": 0
+    },
+    {
+      "id": "c1fc59e6b96efffb1d8a1ace41bb7ddaf62bcc0330a13002a1ead10c54678e07",
+      "exit_code": 0
+    }
+  ],
+  "checked_at": "2026-09-26T05:16:04.991667+00:00",
+  "named_results": {
+    "pass": 710
+  },
+  "packages": [
+    {
+      "package": "github.com/agentstation/starport/internal/config",
+      "status": "pass",
+      "seconds": 106.143
+    },
+    {
+      "package": "github.com/agentstation/starport/internal/app",
+      "status": "pass",
+      "seconds": 226.583
+    },
+    {
+      "package": "github.com/agentstation/starport/internal/catalog",
+      "status": "fail",
+      "seconds": 301.53
+    }
+  ],
+  "timeouts": [
+    "panic: test timed out after 5m0s"
+  ],
+  "interpretation": "The five-minute catalog package timer expired during metadata source restoration. No named assertion failed before the timeout.",
+  "next_change": "Run the three isolated process-recovery subtests in parallel. Preserve their separate real stores, processes, assertions, and deadlines.",
+  "logs": [
+    {
+      "path": "before-events.jsonl.gz",
+      "sha256": "fd8c8d86f647d5f53ed128ae12e2f3dded9ab5da52fb67285cdc59fa5769c87d"
+    },
+    {
+      "path": "before-stderr.log.gz",
+      "sha256": "87bbbf7873d710fb8b783544a8cecad4025b7afdcd58f2ca49095583ef71135d"
+    }
+  ]
+}

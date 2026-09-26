@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T04:49:14.480929+00:00",
+  "checked_at": "2026-09-26T05:27:57.537586+00:00",
   "removed": [
     {
       "repo": "starmap",
@@ -33,6 +33,21 @@
       "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-branch-audit/starmap-codex-dependency-consolidation.bundle",
       "bundle_sha256": "e3119376addb3b9687d0c6c00a28eb04de890f984d1c6a1b5960eb978e2940f3",
       "disposition": "removed after verified recovery bundle"
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/catalog-pr137-security",
+      "sha": "c827c64d9048f2bd3b882cf8e88b53e4dbf6f081",
+      "parents_preserved_in_main": [
+        "907b055c4378fa6e61a775f327c02fdd2a13d48b",
+        "6f299ccea5ace222f0c7647616e4296bb775f713"
+      ],
+      "main": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
+      "automatic_merge_tree_verified": true,
+      "grpc_in_main": "v1.83.2",
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-branch-audit/starmap-codex-catalog-pr137-security.bundle",
+      "bundle_sha256": "bc0398b81854b59acc134830748fda01336f816e9910a02b0ea3404dc540512c",
+      "disposition": "Removed merge-only branch after both parents, automatic merge tree, current dependency, and recovery bundle verification."
     }
   ],
   "retained_unattached": [
@@ -40,13 +55,6 @@
       "repo": "starmap",
       "branch": "codex/catalog-git-qualification",
       "sha": "3da0e489bcdfba21f6ecfbbd6518d662b04f2ad0",
-      "retained_ancestors": [],
-      "matching_main_tree": null
-    },
-    {
-      "repo": "starmap",
-      "branch": "codex/catalog-pr137-security",
-      "sha": "c827c64d9048f2bd3b882cf8e88b53e4dbf6f081",
       "retained_ancestors": [],
       "matching_main_tree": null
     },
@@ -119,8 +127,8 @@
   "reason_retained": "Preserve active checkouts, uncommitted edits, and history without verified integration.",
   "restore": "Verify the bundle digest, then fetch its recorded branch into a new local branch.",
   "verification": {
-    "bundle_verification": "All three Git bundles verified; SHA-256 digests match.",
-    "branch_verification": "All three removed refs are absent.",
+    "bundle_verification": "All four Git bundles verified; SHA-256 digests match.",
+    "branch_verification": "All four removed refs are absent.",
     "plan_ledger": "40 rows; CSP6 is the only active row.",
     "changed_html_prose": "PASS: 1 file, 0 diagnostics.",
     "git_diff_check": "PASS",
