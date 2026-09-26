@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T05:31:18.040626+00:00",
+  "checked_at": "2026-09-26T05:45:54.464194+00:00",
   "starmap": [
     {
       "number": 181,
@@ -7,11 +7,12 @@
       "base": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
       "owner": "CSP6",
       "disposition": "qualify and merge after exact-head checks",
-      "next_action": "After exact-head checks pass, verify merge and both-channel publication. Capture before, retry the exact completed receipt, capture after, and run CSP6 acceptance.",
+      "next_action": "Follow publisher run 36221483290. Verify the actual merge and both-channel completion, then capture and retry the exact receipt.",
       "checks_run": 36219211223,
       "proof": "../../csp6/promotion-181/verification.json",
-      "native_status": "in_progress",
-      "passing_jobs": 25
+      "native_status": "completed",
+      "passing_jobs": 30,
+      "native_conclusion": "success"
     }
   ],
   "starport": [],
@@ -172,17 +173,19 @@
     "changed_plan_strict_lint": "PASS: 1 file, zero diagnostics.",
     "repository_technical_writing_check": "1698 files, 69 unchanged historical diagnostics.",
     "ledger": "40 rows, 15 terminal, CSP6 only in_progress.",
-    "local_links": "89 unique local links resolve.",
-    "diff_check": "PASS"
+    "local_links": "90 unique local links resolve.",
+    "diff_check": "PASS",
+    "writing_log": {
+      "path": "../../csp6/promotion-181/plan-writing-native.log.gz",
+      "sha256": "8f58c8d3510f9a27b1cf12fad67670014f86284e3d044846aee3edfe4cdff7de"
+    }
   },
   "active_publication": {
-    "run": 36218156255,
+    "run": 36221483290,
     "source": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
-    "status": "completed",
-    "conclusion": "success",
+    "status": "in_progress",
     "owner": "CSP6",
-    "result": "awaiting promotion PR #181 checks",
-    "checked_at": "2026-09-26T04:58:24.390935+00:00"
+    "result": "Completing checked promotion after native CI success."
   },
   "starport_preparation": {
     "head": "65a3cb3b08961d17d99efcc752b1be98ec15e94f",
