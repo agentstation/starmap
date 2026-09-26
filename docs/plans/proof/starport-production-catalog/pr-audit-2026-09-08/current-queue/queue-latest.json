@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T01:36:51.538749+00:00",
+  "checked_at": "2026-09-26T01:50:08.073604+00:00",
   "starmap": [
     {
       "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
@@ -1121,7 +1121,7 @@
       "updatedAt": "2026-09-26T00:35:00Z",
       "owner": "CSP6",
       "disposition": "reviewed repair in native qualification",
-      "next_action": "Qualify run 36208494218 on the exact current head, then merge before refreshing #174. See application-race-timeout.json.",
+      "next_action": "Guarded merge process is live in exec session 23874. Inspect /tmp/starmap-180-guarded-merge-result.json and verify GitHub state before another merge attempt. It requires exact head/base, full workflow success, no unresolved review threads, and unchanged strict protection. On merge, record its commit and refresh #174.",
       "previous_head_checks": [
         {
           "name": "Action Pin Provenance",
@@ -1366,7 +1366,16 @@
           "conclusion": "SUCCESS"
         }
       ],
-      "run_id": 36208494218
+      "run_id": 36208494218,
+      "guard": {
+        "session_id": 23874,
+        "script": "/tmp/starmap-180-guarded-merge.py",
+        "result": "/tmp/starmap-180-guarded-merge-result.json",
+        "workflow": 36208494218,
+        "expected_head": "3458eed202676ef343fa5512c5e142c8abf0888c",
+        "expected_base": "19c85ad84293acba4ae9514fa5f68276e92d2461",
+        "maximum_wait_seconds": 3600
+      }
     }
   ],
   "starport": [],

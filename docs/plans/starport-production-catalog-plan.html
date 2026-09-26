@@ -19,6 +19,8 @@
 
 <p>PR #180 head <code>3458eed202676ef343fa5512c5e142c8abf0888c</code> partitions all 390 application tests into three disjoint groups. Follow native run <code>36208494218</code>. Qualify its full native gate and merge its exact head. Then refresh PR #174 onto that merge and qualify its current receipt. Do not mark CSP6 complete from PR #173 alone.</p>
 
+<p>A guarded merge process watches run <code>36208494218</code> in exec session <code>23874</code>. Its result path is <code>/tmp/starmap-180-guarded-merge-result.json</code>. It requires the reviewed head, unchanged base, full workflow success, resolved review threads, and strict branch protection. Inspect its result and current GitHub state before another merge attempt.</p>
+
 <p>PR #174 head <code>208783174</code> passes <a href="proof/starport-production-catalog/csp6/pending-174-artifact-verification.json">artifact verification</a>. Four attestations match the publisher and preparation run. The embedded tree matches the archive. Checkpoint replay preserves all three release files byte for byte. Hosted publication and retry remain unverified.</p>
 
 <p>We closed Starmap PR #165 after verifying that merged PR #168 preserves its required work. The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/catalog-165-supersession.json">supersession proof</a> accounts for every model change. All 1,278 embedded paths remain. We deleted its stale promotion branch.</p>
