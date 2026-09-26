@@ -298,7 +298,7 @@
         "container smoke",
         "all critical coverage thresholds"
       ],
-      "current": "runtime race suites",
+      "current": "Third runtime race shard. First and second shards passed. Two public-fixture skips require the recorded follow-up.",
       "staged_diff_sha256": "edc98fe4026b1e5f6413b22c881195013690a76e375aee336b443ec2dd6b1f73",
       "source_commit": "71c5c8c723334bdfc4e1b04dc85e748211fe5071",
       "next_action": "Revalidate session 93064 and wait for this exact gate. Do not restart on an observation timeout. Diagnose a terminal failure, or commit and run pre-PR autoreview after success.",
@@ -311,6 +311,60 @@
           "size_bytes": 411974
         },
         "next_action": "Install the verified fixture at runtime/testdata/public-catalog-20260908/starmap-catalog.tar.gz after the current gate finishes. Run all tests that use newPublicCatalogFixture with STARMAP_PUBLIC_FIXTURE_REQUIRED=1."
+      },
+      "progress": {
+        "checked_at": "2026-09-26T11:12:18.659303+00:00",
+        "session": 93064,
+        "state": "RUNNING",
+        "suites": [
+          {
+            "suite": 0,
+            "tests": {
+              "pass": 56
+            },
+            "finished": [
+              {
+                "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+                "Action": "pass",
+                "Elapsed": 1.983
+              }
+            ]
+          },
+          {
+            "suite": 1,
+            "tests": {
+              "pass": 311,
+              "skip": 2
+            },
+            "finished": [
+              {
+                "Package": "github.com/agentstation/starmap/runtime",
+                "Action": "pass",
+                "Elapsed": 509.299
+              }
+            ]
+          },
+          {
+            "suite": 2,
+            "tests": {
+              "pass": 481
+            },
+            "finished": [
+              {
+                "Package": "github.com/agentstation/starmap/runtime",
+                "Action": "pass",
+                "Elapsed": 1057.331
+              }
+            ]
+          },
+          {
+            "suite": 3,
+            "tests": {
+              "pass": 84
+            },
+            "finished": []
+          }
+        ]
       }
     },
     "consumer_checks": {
