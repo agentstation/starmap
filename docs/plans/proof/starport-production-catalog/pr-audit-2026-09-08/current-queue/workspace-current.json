@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T03:54:01.020453+00:00",
+  "checked_at": "2026-09-26T04:34:25.325154+00:00",
   "repositories": {
     "starmap": {
       "worktrees": [
@@ -279,16 +279,22 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
-          "HEAD": "dd1d9467d604bbf2fb3413fc3de3f4a788371d42",
+          "HEAD": "e58d0bb5d38396e2993d60fad8727ad081ac7448",
           "branch": "refs/heads/codex/catalog-qualification",
-          "dirty_count": 6,
+          "dirty_count": 12,
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
+            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/host-api-171-native-current.json",
+            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-latest.json",
+            "docs/plans/starport-production-catalog-plan.html",
             "go.mod",
             "go.sum",
             "scripts/verify.sh",
-            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/branch-cleanup-audit.json"
+            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/dependency-supersession-171.json",
+            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/host-api-171-merge-guard.json",
+            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/host-api-171-merged.json",
+            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-before-171-merge.json"
           ],
           "disposition": "retain uncommitted changes"
         },
@@ -344,8 +350,8 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-object-ci-repair",
-          "HEAD": "8299cebe71caaa8485668499225b80b35dd2cc2b",
-          "branch": "refs/heads/codex/dependency-consolidation",
+          "HEAD": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
+          "branch": "refs/heads/codex/catalog-final-publication",
           "dirty_count": 0,
           "dirty_paths": [],
           "disposition": "retain active or unpublished work"
@@ -542,31 +548,7 @@
           "ref": "refs/heads/catalog/v2"
         },
         {
-          "sha": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3",
-          "ref": "refs/heads/codex/starmap-host-files"
-        },
-        {
-          "sha": "1709f8a334d69e643f715b29c352a2cc80a0682d",
-          "ref": "refs/heads/dependabot/go_modules/go_modules-7142bd41e8"
-        },
-        {
-          "sha": "9b70391b08a208bd85dbc82198f35c14a883741a",
-          "ref": "refs/heads/dependabot/go_modules/go_modules-aad2612d56"
-        },
-        {
-          "sha": "e1d4e93628a31d327bb1186472b19973d698eca4",
-          "ref": "refs/heads/dependabot/go_modules/go_modules-bd6f588006"
-        },
-        {
-          "sha": "da3dcafa7670d6e1248c2a52ba1d589823844cc3",
-          "ref": "refs/heads/dependabot/go_modules/go_modules-bdbecc7a40"
-        },
-        {
-          "sha": "917acfeff1371b994f7a0cb79fdd5b6d9327743a",
-          "ref": "refs/heads/dependabot/go_modules/go_modules-e2253a62a5"
-        },
-        {
-          "sha": "2337de79d567e7858a522a0f032a0c5ef004a553",
+          "sha": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
           "ref": "refs/heads/main"
         }
       ],
@@ -594,6 +576,10 @@
         {
           "branch": "codex/catalog-evidence",
           "sha": "d8d12a26069f34442860cbcf8bb840dd073177fc"
+        },
+        {
+          "branch": "codex/catalog-final-publication",
+          "sha": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c"
         },
         {
           "branch": "codex/catalog-followup-evidence",
@@ -657,7 +643,7 @@
         },
         {
           "branch": "codex/catalog-qualification",
-          "sha": "dd1d9467d604bbf2fb3413fc3de3f4a788371d42"
+          "sha": "e58d0bb5d38396e2993d60fad8727ad081ac7448"
         },
         {
           "branch": "codex/catalog-qualification-evidence",

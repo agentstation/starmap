@@ -1,0 +1,110 @@
+{
+  "checked_at": "2026-09-26T04:32:28.856599+00:00",
+  "records": [
+    {
+      "pr": 175,
+      "head": "1709f8a334d69e643f715b29c352a2cc80a0682d",
+      "branch": "dependabot/go_modules/go_modules-7142bd41e8",
+      "successor_merge": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
+      "files": [
+        {
+          "file": "go.mod",
+          "preserved_added_lines": 1
+        },
+        {
+          "file": "go.sum",
+          "preserved_added_lines": 2
+        }
+      ],
+      "disposition": "closed as superseded by merged PR #171",
+      "state": "CLOSED"
+    },
+    {
+      "pr": 176,
+      "head": "e1d4e93628a31d327bb1186472b19973d698eca4",
+      "branch": "dependabot/go_modules/go_modules-bd6f588006",
+      "successor_merge": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
+      "files": [
+        {
+          "file": "go.mod",
+          "preserved_added_lines": 3
+        },
+        {
+          "file": "go.sum",
+          "preserved_added_lines": 6
+        }
+      ],
+      "disposition": "closed as superseded by merged PR #171",
+      "state": "CLOSED"
+    },
+    {
+      "pr": 177,
+      "head": "da3dcafa7670d6e1248c2a52ba1d589823844cc3",
+      "branch": "dependabot/go_modules/go_modules-bdbecc7a40",
+      "successor_merge": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
+      "files": [
+        {
+          "file": "go.mod",
+          "preserved_added_lines": 2
+        },
+        {
+          "file": "go.sum",
+          "preserved_added_lines": 4
+        }
+      ],
+      "disposition": "closed as superseded by merged PR #171",
+      "state": "CLOSED"
+    },
+    {
+      "pr": 178,
+      "head": "917acfeff1371b994f7a0cb79fdd5b6d9327743a",
+      "branch": "dependabot/go_modules/go_modules-e2253a62a5",
+      "successor_merge": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
+      "files": [
+        {
+          "file": "go.mod",
+          "preserved_added_lines": 1
+        },
+        {
+          "file": "go.sum",
+          "preserved_added_lines": 2
+        },
+        {
+          "file": "testdata/consumers/server-storage/go.mod",
+          "preserved_added_lines": 1
+        },
+        {
+          "file": "testdata/consumers/server-storage/go.sum",
+          "preserved_added_lines": 2
+        }
+      ],
+      "disposition": "closed as superseded by merged PR #171",
+      "state": "CLOSED"
+    },
+    {
+      "pr": 179,
+      "head": "9b70391b08a208bd85dbc82198f35c14a883741a",
+      "branch": "dependabot/go_modules/go_modules-aad2612d56",
+      "successor_merge": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c",
+      "files": [
+        {
+          "file": "go.mod",
+          "preserved_added_lines": 1
+        },
+        {
+          "file": "go.sum",
+          "preserved_added_lines": 2
+        }
+      ],
+      "disposition": "closed as superseded by merged PR #171",
+      "state": "CLOSED"
+    }
+  ],
+  "remote_heads_after": [
+    "256810caee8b565bf59da1b81846a1a7222ea49a\trefs/heads/catalog/publication",
+    "ebe4fdb485b972c3682a26537164b271b9a9b109\trefs/heads/catalog/v1",
+    "fa025944bda6cb33a4d639bff0fa1420165bf683\trefs/heads/catalog/v2",
+    "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c\trefs/heads/main"
+  ],
+  "remote_branch_cleanup": "GitHub removed the five dependency branches after closure. The merged host branch was also removed automatically."
+}
