@@ -20,7 +20,7 @@
 
 <p>Active producer checkout: <code>starmap-object-ci-repair</code> on <code>codex/catalog-bootstrap-payload</code> at the same merge. Local edits add a compressed canonical bootstrap payload and validation tests. The <a href="proof/starport-production-catalog/csp8/compiled-bootstrap-preparation/verification.json">preparation evidence</a> records cold race-test times of 30.10 seconds before and 11.83 seconds after. These single-host observations do not qualify native platforms or production latency.</p>
 
-<p>Generated documentation now matches the source. Verification session <code>93064</code> is active at <code>/tmp/starmap-compiled-bootstrap-verify-final.log</code>. Structural, lint, pure-Go, performance, container, and coverage checks pass. All three runtime race suites pass with three recorded fixture skips. Client race tests remain active. Source changes remain uncommitted.</p>
+<p>Generated documentation now matches the source. Verification session <code>93064</code> is active at <code>/tmp/starmap-compiled-bootstrap-verify-final.log</code>. Structural, lint, pure-Go, performance, container, and coverage checks pass. All three runtime race suites pass with three recorded fixture skips. The client race group passes without skips, and remaining Go checks are active. Source changes remain uncommitted.</p>
 
 <p>The publisher now supports the compressed catalog file. Its regression test first failed on UTF-8 decoding. All 53 publication and evidence tests pass after the repair. Exact blob, tree, and signature checks remain required. The preparation evidence records these results and the unchanged Go source.</p>
 
