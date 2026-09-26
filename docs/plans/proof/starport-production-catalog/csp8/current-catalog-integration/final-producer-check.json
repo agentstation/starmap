@@ -1,11 +1,90 @@
 {
-  "checked_at": "2026-09-26T04:00:35.749832+00:00",
+  "checked_at": "2026-09-26T04:06:00.759634+00:00",
   "starport_commit": "ca2d2057d60c07ad0bd6668023af8ae8647534c1",
   "starmap_commit": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3",
   "command": "GOTOOLCHAIN=go1.27.1 GOWORK=<temporary paired workspace> GOFLAGS=-mod=readonly go test -race -json -count=1 -timeout=20m ./internal/catalog ./internal/app",
   "session_id": 42512,
   "directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-final-producer-5r696pbr",
-  "status": "running",
+  "status": "PASS",
   "reason": "Final producer includes a newer embedded catalog and dependency pins than the preceding paired check.",
-  "qualification_limit": "Local component check; module pin, full checks, required review, native CI, and merge remain open."
+  "qualification_limit": "Local component check; module pin, full checks, required review, native CI, and merge remain open.",
+  "shared_services": {
+    "exit_code": 0,
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "-count=1",
+      "-timeout=5m",
+      "./internal/app",
+      "-run",
+      "^(TestSharedCacheCompositionUsesSeparateService|TestSharedCacheCanonicalDeploymentIsolation|TestAppWithValkey|TestSharedStartupDoesNotCreateLocalDatabases)$"
+    ],
+    "services": [
+      {
+        "name": "starport-final-valkey",
+        "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "id": "40af3a189409bce60052484fbcea20998c42949156562968cf8ef34d87b2661a",
+        "address": "127.0.0.1:57500"
+      },
+      {
+        "name": "starport-final-postgres",
+        "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+        "id": "dc10010f4928e3208723c166cefbcea22e5a1c3df5da8748def0c55387187e26",
+        "address": "127.0.0.1:57502"
+      }
+    ],
+    "named_passes": [
+      "TestSharedCacheCompositionUsesSeparateService",
+      "TestSharedCacheCanonicalDeploymentIsolation",
+      "TestAppWithValkey",
+      "TestSharedStartupDoesNotCreateLocalDatabases"
+    ],
+    "skips": [],
+    "failures": [],
+    "cleanup": "Both disposable containers removed.",
+    "shared-events.jsonl": {
+      "file": "final-producer-shared-events.jsonl.gz",
+      "sha256": "ccb5ee3d81f1880e161f5a614cb509a62f44d43a8be08412357fb545edf88a11"
+    },
+    "shared-stderr.log": {
+      "file": "final-producer-shared-stderr.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docker_desktop_restored_to_stopped": true
+  },
+  "exit_code": 0,
+  "named_results": {
+    "pass": 402,
+    "skip": 4
+  },
+  "packages": [
+    "github.com/agentstation/starport/internal/app",
+    "github.com/agentstation/starport/internal/catalog"
+  ],
+  "initial_skips": [
+    "TestSharedCacheCompositionUsesSeparateService",
+    "TestSharedCacheCanonicalDeploymentIsolation",
+    "TestAppWithValkey",
+    "TestSharedStartupDoesNotCreateLocalDatabases"
+  ],
+  "recovered_skips": 4,
+  "raw_files": {
+    "events.jsonl": {
+      "file": "final-producer-events.jsonl.gz",
+      "sha256": "5b318cab7a8ffbd09bf3ab90d1332c38cbe22f0c8c2b871b7e05640ddf940fa4"
+    },
+    "stderr.log": {
+      "file": "final-producer-stderr.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "checks": {
+    "changed_html": "PASS: 1 file, zero diagnostics.",
+    "repository_writing": "1698 files, 69 unchanged historical proof diagnostics; no new diagnostic.",
+    "diff_check": "PASS",
+    "source_worktrees": "Both clean after qualification."
+  },
+  "pr_body_updated": "https://github.com/agentstation/starmap/pull/171"
 }
