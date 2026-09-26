@@ -64,3 +64,8 @@ func (c inputChanges) preparePublication(ctx context.Context, store *layerStore,
 	}
 	return record, store.writeInputPublication(ctx, record)
 }
+
+// duplicateManualInput identifies a manual retry with no replacement source or provider evidence.
+func duplicateManualInput(requested bool, manual []manualObservation, source *sourceLayer, providers []ProviderLayer) bool {
+	return requested && len(manual) == 0 && source == nil && len(providers) == 0
+}

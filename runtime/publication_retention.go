@@ -81,7 +81,7 @@ func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceL
 	for _, layer := range selected {
 		candidate.setProvider(layer)
 	}
-	if manualRequested && len(manual) == 0 && source == nil && len(selected) == 0 {
+	if duplicateManualInput(manualRequested, manual, source, selected) && !r.needsFleetOwnershipPublication(ctx) {
 		return r.State(), nil
 	}
 	state, err := candidate.build(ctx, candidate.embedded)

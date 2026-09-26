@@ -117,6 +117,7 @@ type Runtime struct {
 	mu                    sync.RWMutex
 	layers                layerSet
 	fleetHead             FleetHead
+	fleetPublicationGrant Lease
 	fleetReplayError      error
 	effective             starmap.CatalogState
 	report                statusState

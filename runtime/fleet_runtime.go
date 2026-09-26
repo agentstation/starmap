@@ -96,6 +96,7 @@ func (r *Runtime) initializeFleetLayers(ctx context.Context, snapshot *FleetSnap
 		return err
 	}
 	r.fleetHead, r.fleetReplayError = snapshot.Head, replayErr
+	r.fleetPublicationGrant = snapshot.Publication.Grant
 	if replayErr == nil {
 		r.layers = layers
 		r.pinRecord = pin
@@ -168,6 +169,20 @@ func (r *Runtime) prepareFleetCommitWithPin(ctx context.Context, epoch uint64, l
 	return r.config.fleetStore.prepareWithPin(ctx, original, head, layers, pin)
 }
 
+// needsFleetOwnershipPublication keeps a new owner from reusing the former owner's publication grant.
+func (r *Runtime) needsFleetOwnershipPublication(ctx context.Context) bool {
+	if r.config.fleetStore == nil {
+		return false
+	}
+	original, ok := ctx.Value(fleetGrantContextKey{}).(Lease)
+	if !ok {
+		return true
+	}
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	return r.fleetHead == (FleetHead{}) || !sameLeaseGrant(r.fleetPublicationGrant, original)
+}
+
 func (r *Runtime) finishFleetCommit(ctx context.Context, attempt *fleetCommit) error {
 	if attempt == nil {
 		return nil
@@ -175,7 +190,10 @@ func (r *Runtime) finishFleetCommit(ctx context.Context, attempt *fleetCommit) e
 	head := attempt.result()
 	if head == (FleetHead{}) {
 		current := r.client.CurrentCatalogState()
-		if attempt.expected.GenerationID == current.GenerationID && attempt.expected.RecoveryChecksum == attempt.checksum {
+		r.mu.RLock()
+		sameOwner := r.fleetHead == attempt.expected && sameLeaseGrant(r.fleetPublicationGrant, attempt.grant)
+		r.mu.RUnlock()
+		if sameOwner && attempt.expected.GenerationID == current.GenerationID && attempt.expected.RecoveryChecksum == attempt.checksum {
 			return nil
 		}
 		generation, err := r.client.CurrentGeneration(ctx)
@@ -192,6 +210,7 @@ func (r *Runtime) finishFleetCommit(ctx context.Context, attempt *fleetCommit) e
 	}
 	r.mu.Lock()
 	r.fleetHead = head
+	r.fleetPublicationGrant = attempt.grant
 	r.mu.Unlock()
 	return nil
 }
@@ -257,6 +276,7 @@ func (r *Runtime) refreshFleetInputs(ctx context.Context, requireReplay bool) er
 	}
 	r.mu.Lock()
 	r.fleetHead, r.fleetReplayError = snapshot.Head, replayErr
+	r.fleetPublicationGrant = snapshot.Publication.Grant
 	if replayErr == nil {
 		r.layers = layers
 		r.pinRecord = pin

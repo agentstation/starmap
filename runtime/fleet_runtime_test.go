@@ -532,3 +532,53 @@ func TestFleetRuntimeRefusesUnacceptedPinOnFollower(t *testing.T) {
 		t.Fatal("refused follower changed the shared head")
 	}
 }
+
+func TestFleetRuntimeUnchangedRefreshRebindsAfterTakeover(t *testing.T) {
+	backend := newFleetRuntimeBackend(t)
+	leader := openFleetRuntime(t, backend, "first-owner", privateRuntimeDirectory(t))
+	observation := manualTestObservation(t, "first", time.Date(2026, 9, 26, 0, 0, 0, 0, time.UTC), false)
+	if _, err := leader.PublishObservations(t.Context(), observation); err != nil {
+		t.Fatal(err)
+	}
+	before, _ := leader.FleetStatus()
+	if err := leader.Close(); err != nil {
+		t.Fatal(err)
+	}
+	replacement := openFleetRuntime(t, backend, "replacement", privateRuntimeDirectory(t))
+	if _, err := replacement.PublishObservations(t.Context(), observation); err != nil {
+		t.Fatal(err)
+	}
+	after, _ := replacement.FleetStatus()
+	backend.mu.Lock()
+	committed := backend.snapshots[after.Head]
+	active := backend.lease
+	backend.mu.Unlock()
+	if after.Head.GenerationID != before.Head.GenerationID {
+		t.Fatal("identical observations changed the catalog")
+	}
+	if !sameLeaseGrant(committed.Publication.Grant, active) || after.Head.Revision <= before.Head.Revision {
+		t.Fatal("the recovered publication retains the former owner's grant and cannot pass route acceptance")
+	}
+	if _, err := replacement.PublishObservations(t.Context(), observation); err != nil {
+		t.Fatal(err)
+	}
+	repeated, _ := replacement.FleetStatus()
+	if repeated.Head != after.Head {
+		t.Fatal("an identical retry under the same owner changed the publication")
+	}
+	if err := replacement.Close(); err != nil {
+		t.Fatal(err)
+	}
+	third := openFleetRuntime(t, backend, "empty-update-owner", privateRuntimeDirectory(t))
+	if _, err := third.UpdateAcquisition(t.Context(), func(context.Context, ObservationInputs) (ObservationUpdate, error) { return ObservationUpdate{}, nil }); err != nil {
+		t.Fatal(err)
+	}
+	final, _ := third.FleetStatus()
+	backend.mu.Lock()
+	committed = backend.snapshots[final.Head]
+	active = backend.lease
+	backend.mu.Unlock()
+	if !sameLeaseGrant(committed.Publication.Grant, active) || final.Head.Revision <= after.Head.Revision || final.Head.GenerationID != after.Head.GenerationID {
+		t.Fatal("an empty validated update did not bind the recovered catalog to its new owner")
+	}
+}
