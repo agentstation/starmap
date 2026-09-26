@@ -57,7 +57,9 @@ class TestVerification(unittest.TestCase):
                 verification.summarize(path, suite, packages or [verification.CAPACITY_PACKAGE], expected_tests)
 
     def test_shards_cover_tests_examples_and_fuzz_seeds_exactly_once(self):
-        packages = [verification.MODULE + "/runtime", verification.MODULE + "/runtime/future"]
+        packages = [verification.MODULE + suffix for suffix in (
+            "/runtime", "/runtime/future", "/cmd/example", "/internal/cli/app", "/internal/server",
+        )]
         names = [prefix + str(i) for prefix in ("TestCase", "ExampleCase", "FuzzCase") for i in range(20)]
         names += ["Test日本語", "ExampleÉ", "FuzzΩ"]
         inventory = {(package, name) for package in packages for name in names}

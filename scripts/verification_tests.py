@@ -62,7 +62,7 @@ def test_command(suite, packages):
 def select_tests(events, packages, shard):
     """Partition top-level tests, examples, and fuzz seeds without omissions."""
     if shard not in (1, 2, 3):
-        raise ValueError("runtime shard must be 1, 2, or 3")
+        raise ValueError("test shard must be 1, 2, or 3")
     inventory = set()
     completed = set()
     for event in events:
@@ -85,7 +85,7 @@ def select_tests(events, packages, shard):
     selected = {key for key in inventory
                 if int.from_bytes(hashlib.sha256(key[1].encode()).digest()[:8], "big") % 3 == shard - 1}
     if not selected:
-        raise ValueError("selected runtime shard is empty")
+        raise ValueError("selected test shard is empty")
     return selected
 
 
@@ -144,8 +144,8 @@ def main():
     args = parser.parse_args()
     if args.suite == "capacity" and args.group != "all":
         parser.error("capacity runs as one complete test")
-    if args.shard and (args.group != "runtime" or args.suite != "race"):
-        parser.error("shards apply only to the runtime race group")
+    if args.shard and (args.group not in ("runtime", "application") or args.suite != "race"):
+        parser.error("shards apply only to the runtime and application race groups")
     inventory = subprocess.run(["go", "list", "./..."], cwd=ROOT, check=True,
                                capture_output=True, text=True, timeout=120).stdout.splitlines()
     packages = select_packages(inventory, args.group)
