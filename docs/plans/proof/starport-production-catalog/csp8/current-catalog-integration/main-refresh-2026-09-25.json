@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T01:01:51.334420+00:00",
+  "checked_at": "2026-09-26T01:10:54.783685+00:00",
   "owner": "CSP8",
   "consumer": {
     "worktree": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
@@ -50,12 +50,72 @@
     "session_id": 61858,
     "events": "/tmp/starport-native-main-integration-full-producer.jsonl",
     "stderr": "/tmp/starport-native-main-integration-full-producer.err",
-    "status": "running"
+    "status": "PASS",
+    "exit_code": 0,
+    "named_passes": 402,
+    "initial_skips": 4,
+    "recovered_skips": 4
   },
   "limitations": [
     "No module replacement was committed.",
     "No consumer publication or released-pair qualification has occurred.",
     "Complete pre-PR checks, review, native hosted qualification, and merge remain required."
   ],
-  "goago": "The consumer module declares neither goago nor ago; no tool was added."
+  "goago": "The consumer module declares neither goago nor ago; no tool was added.",
+  "producer_prerequisites": {
+    "command": "GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout=10m ./acquisition ./internal/auth ./pkg/productfiles ./pkg/productpaths",
+    "named_passes": 308,
+    "packages": 4,
+    "skips": 0,
+    "exit_code": 0
+  },
+  "producer_host_contracts": {
+    "command": "GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout=5m . ./runtime -run '^(TestPublicPermissionClockPreservesQualifiedSample|TestExportEmbeddedBaselineUsesOnlyTheSelectedDirectory|TestExportEmbeddedBaselineCancellationLeavesNoFiles)$'",
+    "named_passes": 3,
+    "packages": 2,
+    "skips": 0,
+    "exit_code": 0
+  },
+  "shared_services": {
+    "services": [
+      {
+        "kind": "valkey",
+        "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+        "container": "b76a42ad703c83b328151291e1d562f65a7a47c67fcbc966b65f9daecaf83ebb",
+        "address": "127.0.0.1:53443"
+      },
+      {
+        "kind": "postgres",
+        "image": "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+        "container": "42d05e65903cddb6064f849c39395ba746c2193d61c6e052f7eb15125d1c4556",
+        "address": "127.0.0.1:53445"
+      }
+    ],
+    "exit_code": 0,
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "-count=1",
+      "-timeout=5m",
+      "./internal/app",
+      "-run",
+      "^(TestSharedCacheCompositionUsesSeparateService|TestSharedCacheCanonicalDeploymentIsolation|TestAppWithValkey|TestSharedStartupDoesNotCreateLocalDatabases)$"
+    ],
+    "cleanup": [
+      {
+        "name": "starport-csp8-valkey-7af0bcb8",
+        "exit_code": 0
+      },
+      {
+        "name": "starport-csp8-postgres-7af0bcb8",
+        "exit_code": 0
+      }
+    ],
+    "named_passes": 4,
+    "skips": 0,
+    "docker_desktop_restored_to_stopped": true
+  },
+  "event_evidence": "main-refresh-test-events.json"
 }

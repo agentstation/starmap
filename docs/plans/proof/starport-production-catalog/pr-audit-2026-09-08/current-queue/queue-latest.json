@@ -348,8 +348,8 @@
       "title": "build(deps): bump cloud.google.com/go/auth in /",
       "updatedAt": "2026-09-21T14:36:01Z",
       "owner": "dependency maintenance",
-      "disposition": "triaged; refresh after fixture repair and catalog publication",
-      "next_action": "Refresh onto the repaired main, qualify all checks, and review the exact dependency diff. Prior failures and the migration repair are recorded in dependency-triage-2026-09-25.json.",
+      "disposition": "retain pending verified successor #176",
+      "next_action": "Preserve until #176 includes and qualifies every requested pin and checksum change. Close only after successor verification. See dependency-consolidation.json.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -502,8 +502,8 @@
       "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
       "updatedAt": "2026-09-21T14:37:28Z",
       "owner": "dependency maintenance",
-      "disposition": "triaged; refresh after fixture repair and catalog publication",
-      "next_action": "Refresh onto the repaired main, qualify all checks, and review the exact dependency diff. Prior failures and the migration repair are recorded in dependency-triage-2026-09-25.json.",
+      "disposition": "selected for compatible dependency consolidation",
+      "next_action": "After fixture repair and catalog publication, include compatible changes from #175 and #177\u2013179, including the nested consumer module. Qualify one combined exact head with all existing coverage. See dependency-consolidation.json.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -656,8 +656,8 @@
       "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/credentials in /",
       "updatedAt": "2026-09-21T14:38:50Z",
       "owner": "dependency maintenance",
-      "disposition": "triaged; refresh after fixture repair and catalog publication",
-      "next_action": "Refresh onto the repaired main, qualify all checks, and review the exact dependency diff. Prior failures and the migration repair are recorded in dependency-triage-2026-09-25.json.",
+      "disposition": "retain pending verified successor #176",
+      "next_action": "Preserve until #176 includes and qualifies every requested pin and checksum change. Close only after successor verification. See dependency-consolidation.json.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -810,8 +810,8 @@
       "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/s3 in /",
       "updatedAt": "2026-09-21T14:41:27Z",
       "owner": "dependency maintenance",
-      "disposition": "triaged; refresh after fixture repair and catalog publication",
-      "next_action": "Refresh onto the repaired main, qualify all checks, and review the exact dependency diff. Prior failures and the migration repair are recorded in dependency-triage-2026-09-25.json.",
+      "disposition": "retain pending verified successor #176",
+      "next_action": "Preserve until #176 includes and qualifies every requested pin and checksum change. Close only after successor verification. See dependency-consolidation.json.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
@@ -964,8 +964,8 @@
       "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/secretsmanager in /",
       "updatedAt": "2026-09-21T14:42:55Z",
       "owner": "dependency maintenance",
-      "disposition": "triaged; refresh after fixture repair and catalog publication",
-      "next_action": "Refresh onto the repaired main, qualify all checks, and review the exact dependency diff. Prior failures and the migration repair are recorded in dependency-triage-2026-09-25.json.",
+      "disposition": "retain pending verified successor #176",
+      "next_action": "Preserve until #176 includes and qualifies every requested pin and checksum change. Close only after successor verification. See dependency-consolidation.json.",
       "checks": [
         {
           "name": "Coordinated Storage valkey",
