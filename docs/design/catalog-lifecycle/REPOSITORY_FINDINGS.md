@@ -1,5 +1,16 @@
 # Catalog lifecycle repository findings
 
+## Shared runtime and diagnostics checkpoint, September 26
+
+Consumer `ee563ce61` connects fleet publication to the gateway runtime and its accepted-store diagnostics.
+Shared startup requires an approved PostgreSQL recovery record and the selected Valkey process identity.
+A read-only probe retains identity checks and cannot mutate the shared store.
+
+Producer `4cd0db603` revalidates retained startup under the new owner grant.
+The [checkpoint](../../plans/proof/starport-production-catalog/csp11/consumer-runtime-2026-09-26/verification.json) records focused passing tests and review.
+Shared migration handling, acquisition-capability preflight, concurrent gateway qualification, and both merges remain open.
+
+
 ## Native fleet adapter checkpoint, September 26
 
 Starport commit `01ca416dc` adds native Valkey expiry checks, process identity checks, shared recovery inputs, and atomic route acceptance.

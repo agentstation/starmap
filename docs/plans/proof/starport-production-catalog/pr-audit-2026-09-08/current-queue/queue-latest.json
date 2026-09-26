@@ -1,18 +1,18 @@
 {
-  "checked_at": "2026-09-26T18:07:06.449536+00:00",
+  "checked_at": "2026-09-26T18:23:08.962581+00:00",
   "starmap": [
     {
       "baseRefName": "main",
       "headRefName": "codex/catalog-fleet-contract",
-      "headRefOid": "d56e6e73c04241f05790b62f9d774bbd5969be9a",
+      "headRefOid": "4cd0db603db55dfb310d671a9fc5126e2426046d",
       "isDraft": true,
       "number": 185,
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "updatedAt": "2026-09-26T17:39:48Z",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Reviewed repair published; native CI pending",
-      "next_action": "Monitor PR185 exact-head native qualification. Wire the Starport runtime and diagnostics to the adapter; add credential-capability preflight and complete eleven real-process subcases."
+      "disposition": "Reviewed startup repair pushed; exact-head CI pending",
+      "next_action": "Complete consumer capability and migration integration, then qualify both runtime processes. Preserve exact-head CI and dependency-ordered merges."
     }
   ],
   "starport": [],
@@ -861,5 +861,10 @@
     "owner": "CSP11",
     "next_action": "Monitor PR185 exact-head native qualification. Wire the Starport runtime and diagnostics to the adapter; add credential-capability preflight and complete eleven real-process subcases.",
     "consumer": "01ca416dc935412b52660b156bce4c0eb5f511e8"
+  },
+  "local_consumer_checkpoint": {
+    "head": "ee563ce610c3d1d4272e413018510ba96230e7f2",
+    "branch": "codex/catalog-fleet-adapter",
+    "published": false
   }
 }
