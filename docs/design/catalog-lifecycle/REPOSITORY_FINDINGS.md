@@ -3543,3 +3543,24 @@ The race-enabled probe fails its provider-dispatch bound in 38.19 seconds withou
 The overlay changes only the test fixture. Application code and both source worktrees remain unchanged.
 This proves the current local token-budget failure. It does not qualify reservation correctness, shared storage, other scopes, other operations, or recovery.
 CSP12.2 must repair the production admission boundary and retain this failure evidence.
+
+
+### Storage admission probe, September 26
+
+The [storage contract proof](../../plans/proof/starport-production-catalog/csp12.2/storage-contract/verification.json) compares real Badger and Valkey at Starport `ca2d2057`.
+The race-enabled overlay leaves product source unchanged.
+Badger rejects a wrong expected value and a write that becomes stale before commit.
+Valkey's `Transaction.CompareAndSwap` accepts both writes and overwrites the stored value.
+Its implementation discards the expected argument.
+
+No production caller currently uses `BeginTransaction`. The remaining caller is the repository test harness.
+
+The separate `KVStore.CompareAndSwapBatch` passes the component probe on both backends.
+Two concurrent candidates compete for the same account, key, and team records.
+Exactly one succeeds. A stale team value rejects all three mutations without partial changes.
+This probe uses one process and one Valkey node. Cluster, failover, crash recovery, and complete budget admission remain unqualified.
+
+CSP12.2 must use a qualified atomic batch operation for its reservation ledger.
+The current Valkey transaction API cannot provide that contract.
+The usage repository also cannot serve as that ledger: `Put` updates each scope counter separately and repeated calls accumulate usage again.
+Required settlement must retain its own idempotent state and recovery evidence.

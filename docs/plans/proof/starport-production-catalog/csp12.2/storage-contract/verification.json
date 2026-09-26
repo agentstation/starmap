@@ -1,0 +1,81 @@
+{
+  "checked_at": "2026-09-26T03:58:38.511795+00:00",
+  "starport_commit": "ca2d2057d60c07ad0bd6668023af8ae8647534c1",
+  "starmap_commit": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3",
+  "toolchain": "go1.27.1",
+  "owner": "CSP12.2",
+  "status": "transaction defect confirmed; batch CAS component contract passes",
+  "before": {
+    "exit_code": 1,
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout=2m",
+      "-json",
+      "-overlay",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-budget-storage-probe-dq6b7fzi/overlay.json",
+      "./internal/storage",
+      "-run",
+      "^TestBudgetTransactionCASContract$"
+    ],
+    "address": "127.0.0.1:56863"
+  },
+  "batch": {
+    "exit_code": 0,
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout=2m",
+      "-json",
+      "-overlay",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-budget-storage-probe-dq6b7fzi/overlay.json",
+      "./internal/storage",
+      "-run",
+      "^TestBudgetBatchCASContract$"
+    ]
+  },
+  "backends": {
+    "badger": "Real temporary files, SyncWrites=true",
+    "valkey_image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f"
+  },
+  "raw_files": {
+    "before.jsonl": {
+      "sha256": "10c3a1a8d66635d423e000d93286d77e189f7922795560ddc1ba19e52c2657db",
+      "compressed": "before.jsonl.gz"
+    },
+    "before.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed": "before.stderr.gz"
+    },
+    "batch.jsonl": {
+      "sha256": "45a9ab70733886556de134622f225ee9ad7bfc0baf3436dbe0c29972169eabc4",
+      "compressed": "batch.jsonl.gz"
+    },
+    "batch.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed": "batch.stderr.gz"
+    }
+  },
+  "source_hashes": {
+    "internal/storage/valkey.go": "922defa03187073ffcb2ff4354c1ed3d39322447e85168960340905c896ef1e3",
+    "internal/storage/badger_transaction.go": "57419953523e58c367821a43fae65faf14c01a08671935ec89e5dd7f4df2fe0c",
+    "internal/storage/interface.go": "bf20c452bbed2b6c80435ca3234051715ceaef297e75fc98370910a59706837e"
+  },
+  "limits": [
+    "No production call site uses BeginTransaction; internal/repotest is a test harness.",
+    "The batch probe uses one process and one Valkey node. It does not qualify Cluster, failover, durability, budget settlement, or end-to-end admission.",
+    "Usage aggregate writes remain unsuitable as the reservation ledger: Put is not idempotent and scope counters update separately."
+  ],
+  "decision": "Use a qualified atomic batch operation for the reservation ledger. Do not route budget writes through the current ValkeyTransaction API.",
+  "next_action": "CSP12.2 must prove atomic admission across real processes and recover uncertain results with reservation identity.",
+  "cleanup": "Disposable Valkey container removed. Docker Desktop returned to its initial stopped state.",
+  "verification": {
+    "changed_prose": "PASS: 3 files, zero diagnostics after paragraph repair.",
+    "repository_prose": "Exit 2: 1698 files, 70 diagnostics. One new paragraph diagnostic was repaired and the final focused check passes. The other 69 diagnostics are in unchanged historical proof.",
+    "diff_check": "PASS"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-09-26T04:00:35.749832+00:00",
+  "starport_commit": "ca2d2057d60c07ad0bd6668023af8ae8647534c1",
+  "starmap_commit": "03f3978da03cd49db98ddac836b2b32dbf9b7cc3",
+  "command": "GOTOOLCHAIN=go1.27.1 GOWORK=<temporary paired workspace> GOFLAGS=-mod=readonly go test -race -json -count=1 -timeout=20m ./internal/catalog ./internal/app",
+  "session_id": 42512,
+  "directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-final-producer-5r696pbr",
+  "status": "running",
+  "reason": "Final producer includes a newer embedded catalog and dependency pins than the preceding paired check.",
+  "qualification_limit": "Local component check; module pin, full checks, required review, native CI, and merge remain open."
+}
