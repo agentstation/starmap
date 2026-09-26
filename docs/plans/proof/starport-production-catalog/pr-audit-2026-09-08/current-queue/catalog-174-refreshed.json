@@ -1,0 +1,22 @@
+{
+  "checked_at": "2026-09-26T02:12:26.915207+00:00",
+  "pull": 174,
+  "previous_head": "208783174f950d1591ecec0dcb4df1a440411eb5",
+  "head": "109f102e17e0d7d367218bf9a0b9e8ef9693fd69",
+  "base": "58154b3e6faa3771cf6ef21e0d911cc0d76f7f70",
+  "commit": {
+    "parents": [
+      "208783174f950d1591ecec0dcb4df1a440411eb5",
+      "58154b3e6faa3771cf6ef21e0d911cc0d76f7f70"
+    ],
+    "sha": "109f102e17e0d7d367218bf9a0b9e8ef9693fd69",
+    "verification": {
+      "reason": "valid",
+      "verified": true
+    }
+  },
+  "checks_run": 36210896546,
+  "status": "in_progress",
+  "catalog_bytes_unchanged": true,
+  "previous_head_and_repair_are_ancestors": true
+}
