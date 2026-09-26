@@ -73,17 +73,17 @@ without race instrumentation. Smaller publication and ownership tests still
 exercise those contracts under the race detector.
 
 `scripts/verification_tests.py` assigns each package from `go list ./...` to
-exactly one group. New packages enter a group automatically. The race suite uses six hosted runners after the verification checks job:
+exactly one group. New packages enter a group automatically. The race suite uses eight hosted runners after the verification checks job:
 
 | Group | Packages |
 | --- | --- |
 | `checks` | CI workflow contracts, executed early inside the verification checks job |
 | `runtime-1`, `runtime-2`, `runtime-3` | Disjoint runtime test groups, including child packages |
 | `client` | Root library, acquisition, and embedded bootstrap |
-| `application` | Commands, CLI composition, and HTTP server |
+| `application-1`, `application-2`, `application-3` | Disjoint command, CLI composition, and HTTP server tests |
 | `contracts` | All remaining packages |
 
-Runtime runners discover top-level tests, examples, and fuzz seeds with `go test -race -json -list .`.
+Runtime and application runners discover top-level tests, examples, and fuzz seeds with `go test -race -json -list .`.
 A stable hash of each name selects one of three groups. New tests enter a group automatically.
 Each runner verifies that its completed tests exactly match its selected inventory.
 Missing, unexpected, and duplicate results fail verification. CI retains the selected inventory beside the test events.
@@ -106,6 +106,7 @@ Run one fresh group with retained JSON evidence:
 ```bash
 make verify-tests TEST_SUITE=race TEST_GROUP=runtime
 python3 scripts/verification_tests.py race --group runtime --shard 1
+python3 scripts/verification_tests.py race --group application --shard 1
 make verify-tests TEST_SUITE=race TEST_GROUP=contracts
 make verify-tests TEST_SUITE=capacity
 ```

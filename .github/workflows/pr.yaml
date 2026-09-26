@@ -235,7 +235,9 @@ jobs:
           - {group: runtime, shard: 2, label: runtime-2}
           - {group: runtime, shard: 3, label: runtime-3}
           - {group: client, shard: 0, label: client}
-          - {group: application, shard: 0, label: application}
+          - {group: application, shard: 1, label: application-1}
+          - {group: application, shard: 2, label: application-2}
+          - {group: application, shard: 3, label: application-3}
           - {group: contracts, shard: 0, label: contracts}
     env:
       GOTOOLCHAIN: local
