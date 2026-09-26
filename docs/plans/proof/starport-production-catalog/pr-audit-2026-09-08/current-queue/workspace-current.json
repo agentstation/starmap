@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T04:34:25.325154+00:00",
+  "checked_at": "2026-09-26T04:46:54.576714+00:00",
   "repositories": {
     "starmap": {
       "worktrees": [
@@ -279,22 +279,18 @@
         },
         {
           "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
-          "HEAD": "e58d0bb5d38396e2993d60fad8727ad081ac7448",
+          "HEAD": "91269b36ea1e4e999cf082dc9d49fabeaa860c99",
           "branch": "refs/heads/codex/catalog-qualification",
-          "dirty_count": 12,
+          "dirty_count": 8,
           "dirty_paths": [
             "AGENTS.md",
             "Makefile",
-            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/host-api-171-native-current.json",
-            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-latest.json",
+            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/branch-cleanup-audit.json",
             "docs/plans/starport-production-catalog-plan.html",
             "go.mod",
             "go.sum",
             "scripts/verify.sh",
-            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/dependency-supersession-171.json",
-            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/host-api-171-merge-guard.json",
-            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/host-api-171-merged.json",
-            "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-before-171-merge.json"
+            "docs/plans/proof/starport-production-catalog/csp8/current-catalog-integration/published-module-preparation.json"
           ],
           "disposition": "retain uncommitted changes"
         },
@@ -737,7 +733,8 @@
           "branch": "worktree-agent-afb8363e5a8a081c3",
           "sha": "ed0335f268fb708a757f106b7b2ec85a3b1cdff4"
         }
-      ]
+      ],
+      "local_branch_count": 45
     },
     "starport": {
       "worktrees": [
@@ -769,9 +766,12 @@
           "worktree": "/Users/jack/src/github.com/agentstation/starport-native-catalog",
           "HEAD": "ca2d2057d60c07ad0bd6668023af8ae8647534c1",
           "branch": "refs/heads/codex/starport-native-catalog",
-          "dirty_count": 0,
-          "dirty_paths": [],
-          "disposition": "retain active or unpublished work"
+          "dirty_count": 2,
+          "dirty_paths": [
+            "go.mod",
+            "go.sum"
+          ],
+          "disposition": "retain uncommitted changes"
         }
       ],
       "remote_heads": [
@@ -801,7 +801,8 @@
           "branch": "main",
           "sha": "bc10fef1fa67ec9c3c8ea7e17a8b4dc5d9e4913e"
         }
-      ]
+      ],
+      "local_branch_count": 5
     }
   }
 }

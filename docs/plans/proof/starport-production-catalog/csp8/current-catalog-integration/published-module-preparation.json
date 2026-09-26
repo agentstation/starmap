@@ -1,0 +1,647 @@
+{
+  "module": {
+    "Path": "github.com/agentstation/starmap",
+    "Version": "v0.16.6-0.20260926043135-d5b9eba0e15a",
+    "Info": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260926043135-d5b9eba0e15a.info",
+    "GoMod": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260926043135-d5b9eba0e15a.mod",
+    "Zip": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260926043135-d5b9eba0e15a.zip",
+    "Dir": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260926043135-d5b9eba0e15a",
+    "Sum": "h1:RO21SdUEW5VW9GP9vQz2qdM4oLWhbwfN+dthAira48U=",
+    "GoModSum": "h1:AdrgfZxWhCLcd1jgQmhXvXA0yRJR2pwi8aOJA5cGL40=",
+    "Origin": {
+      "VCS": "git",
+      "URL": "https://github.com/agentstation/starmap",
+      "Hash": "d5b9eba0e15aa421ea7e920b25aa0f9e1cd18a6c"
+    }
+  },
+  "embedded_files_matching_reviewed_source": 1278,
+  "full_module_graph_matches": false,
+  "full_graph_difference": "The workspace includes Starmap development tools and their dependencies.",
+  "tested_package_dependency_graph_matches": true,
+  "tested_dependency_differences": [],
+  "tested_dependency_modules": 183,
+  "checked_at": "2026-09-26T04:46:54.521699+00:00",
+  "starport_base": "ca2d2057d60c07ad0bd6668023af8ae8647534c1",
+  "status": "local_tests_and_lint_pass",
+  "changes": [
+    "go.mod",
+    "go.sum"
+  ],
+  "module_verify": "PASS",
+  "checks": {
+    "tests": {
+      "session": 56047,
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -json -count=1 -timeout=20m ./...",
+      "events": "/tmp/starport-published-module-tests.jsonl",
+      "stderr": "/tmp/starport-published-module-tests.stderr",
+      "exit_code": 0,
+      "counts": {
+        "package_skip": 8,
+        "test_pass": 4139,
+        "test_skip": 61,
+        "package_pass": 60
+      },
+      "skipped_tests": [
+        {
+          "package": "github.com/agentstation/starport/internal/apikey",
+          "test": "TestAPIKeyRepositoryRecordBounds/valkey",
+          "output": "=== RUN   TestAPIKeyRepositoryRecordBounds/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestAPIKeyRepositoryRecordBounds/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/apikey",
+          "test": "TestAPIKeyRepositoryContract/valkey",
+          "output": "=== RUN   TestAPIKeyRepositoryContract/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestAPIKeyRepositoryContract/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/account",
+          "test": "TestAccountRepositoryRecordBounds/valkey",
+          "output": "=== RUN   TestAccountRepositoryRecordBounds/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestAccountRepositoryRecordBounds/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/account",
+          "test": "TestAccountRepositoryContract/valkey",
+          "output": "=== RUN   TestAccountRepositoryContract/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestAccountRepositoryContract/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/account",
+          "test": "TestEnsureDefaultIsIdempotent/valkey",
+          "output": "=== RUN   TestEnsureDefaultIsIdempotent/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestEnsureDefaultIsIdempotent/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/account",
+          "test": "TestEnsureDefaultUnderConcurrentBoot/valkey",
+          "output": "=== RUN   TestEnsureDefaultUnderConcurrentBoot/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestEnsureDefaultUnderConcurrentBoot/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/account",
+          "test": "TestDefaultAccountCannotBeDeleted/valkey",
+          "output": "=== RUN   TestDefaultAccountCannotBeDeleted/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestDefaultAccountCannotBeDeleted/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/account",
+          "test": "TestRepositoryRejectsInvalidAccounts/valkey",
+          "output": "=== RUN   TestRepositoryRejectsInvalidAccounts/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestRepositoryRejectsInvalidAccounts/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "test": "TestDefaultCacheMemoryBudget",
+          "output": "=== RUN   TestDefaultCacheMemoryBudget\n    default_capacity_test.go:16: UNVERIFIED: set TEST_DEFAULT_CACHE_CAPACITY=1 for default-capacity qualification\n--- SKIP: TestDefaultCacheMemoryBudget (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "test": "TestSharedCachePausedServiceDeadlineAndRecovery",
+          "output": "=== RUN   TestSharedCachePausedServiceDeadlineAndRecovery\n    shared_outage_test.go:20: UNVERIFIED: TEST_SHARED_CACHE_FAULT_URL is not set\n--- SKIP: TestSharedCachePausedServiceDeadlineAndRecovery (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "test": "TestSharedCacheRealService",
+          "output": "=== RUN   TestSharedCacheRealService\n    shared_test.go:73: UNVERIFIED: TEST_SHARED_CACHE_URL is not set\n--- SKIP: TestSharedCacheRealService (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "test": "TestSharedCacheURIAuthenticationAndDatabase",
+          "output": "=== RUN   TestSharedCacheURIAuthenticationAndDatabase\n    shared_test.go:141: UNVERIFIED: TEST_SHARED_CACHE_URL is not set\n--- SKIP: TestSharedCacheURIAuthenticationAndDatabase (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "test": "TestSharedCacheTLSWithRealService",
+          "output": "=== RUN   TestSharedCacheTLSWithRealService\n    shared_tls_test.go:99: UNVERIFIED: TEST_SHARED_CACHE_URL is not set\n--- SKIP: TestSharedCacheTLSWithRealService (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/authmode",
+          "test": "TestRepositoryContract/valkey",
+          "output": "=== RUN   TestRepositoryContract/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestRepositoryContract/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/authorization/revision",
+          "test": "TestKVRevisionCommitsWithMutation/valkey",
+          "output": "=== RUN   TestKVRevisionCommitsWithMutation/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestKVRevisionCommitsWithMutation/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/authorization/revision",
+          "test": "TestKVRevisionConcurrentIndependentMutations/valkey",
+          "output": "=== RUN   TestKVRevisionConcurrentIndependentMutations/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestKVRevisionConcurrentIndependentMutations/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/authorization/revision",
+          "test": "TestRepositoriesPublishEveryAuthorizationMutation/valkey",
+          "output": "=== RUN   TestRepositoriesPublishEveryAuthorizationMutation/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestRepositoriesPublishEveryAuthorizationMutation/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/authorization",
+          "test": "TestAuthorizationTenantChurnCapacity",
+          "output": "=== RUN   TestAuthorizationTenantChurnCapacity\n    capacity_profile_test.go:15: UNVERIFIED: set TEST_AUTHORIZATION_CAPACITY=1 for the capacity profile\n--- SKIP: TestAuthorizationTenantChurnCapacity (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/authorization",
+          "test": "TestFleetDurableReceiptPrecedesReplicaEnforcement",
+          "output": "=== RUN   TestFleetDurableReceiptPrecedesReplicaEnforcement\n    fleet_test.go:39: UNVERIFIED: Valkey and PostgreSQL are required for separate-process authorization\n--- SKIP: TestFleetDurableReceiptPrecedesReplicaEnforcement (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/authorization",
+          "test": "TestRepositorySourceRealStoresAndLocalMutation/valkey",
+          "output": "=== RUN   TestRepositorySourceRealStoresAndLocalMutation/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestRepositorySourceRealStoresAndLocalMutation/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/credentials",
+          "test": "TestProviderCredentialRepositoryContract/valkey",
+          "output": "=== RUN   TestProviderCredentialRepositoryContract/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestProviderCredentialRepositoryContract/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestSharedCacheCompositionUsesSeparateService",
+          "output": "=== RUN   TestSharedCacheCompositionUsesSeparateService\n    cache_isolation_test.go:75: UNVERIFIED: TEST_SHARED_CACHE_URL is not set\n--- SKIP: TestSharedCacheCompositionUsesSeparateService (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestSharedCacheCanonicalDeploymentIsolation",
+          "output": "=== RUN   TestSharedCacheCanonicalDeploymentIsolation\n    cache_isolation_test.go:99: UNVERIFIED: TEST_SHARED_CACHE_URL is not set\n--- SKIP: TestSharedCacheCanonicalDeploymentIsolation (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/presets",
+          "test": "TestPresetRepositoryContract/valkey",
+          "output": "=== RUN   TestPresetRepositoryContract/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestPresetRepositoryContract/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/presets",
+          "test": "TestPresetRevisionHistoryAndRollback/valkey",
+          "output": "=== RUN   TestPresetRevisionHistoryAndRollback/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestPresetRevisionHistoryAndRollback/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/presets",
+          "test": "TestPresetRollbackNeedsATarget/valkey",
+          "output": "=== RUN   TestPresetRollbackNeedsATarget/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestPresetRollbackNeedsATarget/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers/keyring",
+          "test": "TestManagedMaterialValkeyOutageAndRecovery",
+          "output": "=== RUN   TestManagedMaterialValkeyOutageAndRecovery\n    managed_outage_test.go:22: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestManagedMaterialValkeyOutageAndRecovery (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/ratelimit",
+          "test": "TestRateLimitRepositoryContract/valkey",
+          "output": "=== RUN   TestRateLimitRepositoryContract/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestRateLimitRepositoryContract/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers/keyring",
+          "test": "TestManagedMaterialStorageRotationRevocationAndRecreation/valkey",
+          "output": "=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestManagedMaterialStorageRotationRevocationAndRecreation/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "test": "TestAuthorizationWarmRequestsAvoidStableReads/valkey",
+          "output": "=== RUN   TestAuthorizationWarmRequestsAvoidStableReads/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestAuthorizationWarmRequestsAvoidStableReads/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "test": "TestAuthorizationUnknownAccountRefusesAdmission/valkey",
+          "output": "=== RUN   TestAuthorizationUnknownAccountRefusesAdmission/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestAuthorizationUnknownAccountRefusesAdmission/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "test": "TestGatewayOverheadBenchmark",
+          "output": "=== RUN   TestGatewayOverheadBenchmark\n    overhead_benchmark_test.go:68: set STARPORT_OVERHEAD_BENCH=1 to run the overhead benchmark harness\n--- SKIP: TestGatewayOverheadBenchmark (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "test": "TestSDKCanonicalRemovalAfterSuccessfulInference",
+          "output": "=== RUN   TestSDKCanonicalRemovalAfterSuccessfulInference\n    catalog_model_removal_test.go:30: SDK qualification requires STARPORT_CATALOG_SDK_PYTHON\n--- SKIP: TestSDKCanonicalRemovalAfterSuccessfulInference (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestARecognizedDocumentCountsAgainstTheSpendBudget/valkey",
+          "output": "=== RUN   TestARecognizedDocumentCountsAgainstTheSpendBudget/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestARecognizedDocumentCountsAgainstTheSpendBudget/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/storage",
+          "test": "TestValueLifetimeSnapshot/valkey",
+          "output": "=== RUN   TestValueLifetimeSnapshot/valkey\n    lifetime_test.go:22: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestValueLifetimeSnapshot/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestARecognizedDocumentReportsItsPagesAndItsCost/valkey",
+          "output": "=== RUN   TestARecognizedDocumentReportsItsPagesAndItsCost/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestARecognizedDocumentReportsItsPagesAndItsCost/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestANativelyReadDocumentCostsNothing/valkey",
+          "output": "=== RUN   TestANativelyReadDocumentCostsNothing/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestANativelyReadDocumentCostsNothing/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestACachedReadIsRecordedAsCachedRatherThanFree/valkey",
+          "output": "=== RUN   TestACachedReadIsRecordedAsCachedRatherThanFree/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestACachedReadIsRecordedAsCachedRatherThanFree/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestTheExtractionDurationSurvivesTheRoundTrip/valkey",
+          "output": "=== RUN   TestTheExtractionDurationSurvivesTheRoundTrip/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestTheExtractionDurationSurvivesTheRoundTrip/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestATurnThatAttachedNoDocumentReportsNoExtraction/valkey",
+          "output": "=== RUN   TestATurnThatAttachedNoDocumentReportsNoExtraction/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestATurnThatAttachedNoDocumentReportsNoExtraction/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestRecognitionMeasurementsPersistWithUnknownTotal/valkey",
+          "output": "=== RUN   TestRecognitionMeasurementsPersistWithUnknownTotal/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestRecognitionMeasurementsPersistWithUnknownTotal/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestAPricedMediaTurnCountsAgainstTheSpendBudget/valkey",
+          "output": "=== RUN   TestAPricedMediaTurnCountsAgainstTheSpendBudget/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestAPricedMediaTurnCountsAgainstTheSpendBudget/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/storage",
+          "test": "TestValkeyStore",
+          "output": "=== RUN   TestValkeyStore\n    valkey_test.go:18: Skipping Valkey integration tests: TEST_VALKEY_URL not set\n--- SKIP: TestValkeyStore (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/storage",
+          "test": "TestValkeyPubSub",
+          "output": "=== RUN   TestValkeyPubSub\n    valkey_test.go:332: Skipping Valkey pub/sub tests: TEST_VALKEY_URL not set\n--- SKIP: TestValkeyPubSub (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/storage",
+          "test": "TestBoundedStorageRead/valkey",
+          "output": "=== RUN   TestBoundedStorageRead/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestBoundedStorageRead/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/valkey",
+          "output": "=== RUN   TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestMediaUnitsSurviveTheRoundTrip/valkey",
+          "output": "=== RUN   TestMediaUnitsSurviveTheRoundTrip/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestMediaUnitsSurviveTheRoundTrip/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestATextRecordReadsBackWithoutMedia/valkey",
+          "output": "=== RUN   TestATextRecordReadsBackWithoutMedia/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestATextRecordReadsBackWithoutMedia/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestRepositoryPutAndListByKey/valkey",
+          "output": "=== RUN   TestRepositoryPutAndListByKey/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestRepositoryPutAndListByKey/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestListByKeyOrdersNewestFirstAcrossBackends/valkey",
+          "output": "=== RUN   TestListByKeyOrdersNewestFirstAcrossBackends/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestListByKeyOrdersNewestFirstAcrossBackends/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestListFiltersAndCursorPagination/valkey",
+          "output": "=== RUN   TestListFiltersAndCursorPagination/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestListFiltersAndCursorPagination/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestAdminListSpansKeys/valkey",
+          "output": "=== RUN   TestAdminListSpansKeys/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestAdminListSpansKeys/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestAggregateCountersAccumulate/valkey",
+          "output": "=== RUN   TestAggregateCountersAccumulate/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestAggregateCountersAccumulate/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestCostlessRecordCarriesReasonNotZero/valkey",
+          "output": "=== RUN   TestCostlessRecordCarriesReasonNotZero/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestCostlessRecordCarriesReasonNotZero/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestRetentionTTLApplied/valkey",
+          "output": "=== RUN   TestRetentionTTLApplied/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestRetentionTTLApplied/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestAccountCounterSumsEveryKeyItHolds/valkey",
+          "output": "=== RUN   TestAccountCounterSumsEveryKeyItHolds/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestAccountCounterSumsEveryKeyItHolds/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestTeamCounterSumsEveryAttributedKey/valkey",
+          "output": "=== RUN   TestTeamCounterSumsEveryAttributedKey/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestTeamCounterSumsEveryAttributedKey/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestListByAccountSpansEveryKey/valkey",
+          "output": "=== RUN   TestListByAccountSpansEveryKey/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestListByAccountSpansEveryKey/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "test": "TestListFiltersByGuardrailVerdictAndKeepsCacheFields/valkey",
+          "output": "=== RUN   TestListFiltersByGuardrailVerdictAndKeepsCacheFields/valkey\n    backends.go:41: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestListFiltersByGuardrailVerdictAndKeepsCacheFields/valkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestAppWithValkey",
+          "output": "=== RUN   TestAppWithValkey\n    valkey_integration_test.go:22: UNVERIFIED: TEST_VALKEY_URL is not set\n--- SKIP: TestAppWithValkey (0.00s)\n"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestSharedStartupDoesNotCreateLocalDatabases",
+          "output": "=== RUN   TestSharedStartupDoesNotCreateLocalDatabases\n    valkey_integration_test.go:67: UNVERIFIED: TEST_VALKEY_URL and TEST_POSTGRES_URL are required\n--- SKIP: TestSharedStartupDoesNotCreateLocalDatabases (0.00s)\n"
+        }
+      ],
+      "passed_packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/apikey",
+          "elapsed_seconds": 0.516
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/account",
+          "elapsed_seconds": 1.782
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/audit",
+          "elapsed_seconds": 1.1400000000000001
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/blob",
+          "elapsed_seconds": 1.384
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/availability",
+          "elapsed_seconds": 1.512
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cache/connection",
+          "elapsed_seconds": 1.778
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "elapsed_seconds": 2.27
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/authmode",
+          "elapsed_seconds": 2.507
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/authorization/revision",
+          "elapsed_seconds": 2.958
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/authorization",
+          "elapsed_seconds": 3.632
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog/logos",
+          "elapsed_seconds": 2.544
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/architecture",
+          "elapsed_seconds": 3.9459999999999997
+        },
+        {
+          "package": "github.com/agentstation/starport/cmd/starport",
+          "elapsed_seconds": 7.735
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "elapsed_seconds": 3.5869999999999997
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/console",
+          "elapsed_seconds": 3.305
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/credentials/cloudchain",
+          "elapsed_seconds": 3.248
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/deployment",
+          "elapsed_seconds": 2.732
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/doclinks",
+          "elapsed_seconds": 3.24
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/document",
+          "elapsed_seconds": 2.331
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/failure",
+          "elapsed_seconds": 1.808
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/execution",
+          "elapsed_seconds": 2.527
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/guardrails",
+          "elapsed_seconds": 1.262
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/files",
+          "elapsed_seconds": 2.094
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/identity",
+          "elapsed_seconds": 1.355
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/inference",
+          "elapsed_seconds": 0.933
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/credentials",
+          "elapsed_seconds": 6.506
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/events",
+          "elapsed_seconds": 3.951
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog/view",
+          "elapsed_seconds": 7.729
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "elapsed_seconds": 1.114
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits",
+          "elapsed_seconds": 0.871
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/policyrecord",
+          "elapsed_seconds": 0.874
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/protocol/openai",
+          "elapsed_seconds": 1.133
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/presets",
+          "elapsed_seconds": 1.223
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/protocol/openrouter",
+          "elapsed_seconds": 1.171
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/localauth",
+          "elapsed_seconds": 2.676
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers/auth",
+          "elapsed_seconds": 2.161
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers/statuspage",
+          "elapsed_seconds": 3.513
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/ratelimit",
+          "elapsed_seconds": 3.656
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers/connectors",
+          "elapsed_seconds": 5.704
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/repotest",
+          "elapsed_seconds": 1.768
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/response/cache",
+          "elapsed_seconds": 0.851
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/routing",
+          "elapsed_seconds": 1.188
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/registry",
+          "elapsed_seconds": 13.333
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/diagnosis",
+          "elapsed_seconds": 23.887
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/sqlstore",
+          "elapsed_seconds": 0.781
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "elapsed_seconds": 11.87
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/router",
+          "elapsed_seconds": 13.644
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/telemetry",
+          "elapsed_seconds": 0.489
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/tokenize",
+          "elapsed_seconds": 0.738
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers/keyring",
+          "elapsed_seconds": 19.8
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "elapsed_seconds": 28.545
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "elapsed_seconds": 21.413
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "elapsed_seconds": 17.844
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "elapsed_seconds": 4.71
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers",
+          "elapsed_seconds": 24.717
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/storage",
+          "elapsed_seconds": 10.109
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers/state",
+          "elapsed_seconds": 50.752
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "elapsed_seconds": 66.144
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/setup",
+          "elapsed_seconds": 44.384
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "elapsed_seconds": 85.814
+        }
+      ],
+      "coverage_limit": "Service, capacity, benchmark, and SDK tests skipped by this command remain UNVERIFIED in this run.",
+      "retained_logs": [
+        {
+          "path": "starport-published-module-tests.jsonl.gz",
+          "sha256": "31fe0ea7a9c74e2fa0460ac2225b0d1b043026caef8986e5d7364ef9440c449c"
+        },
+        {
+          "path": "starport-published-module-tests.stderr.gz",
+          "sha256": "f125e6a22cbcba6846d73f5459058ce08bd03ef1d957949214790cca897b93b9"
+        }
+      ]
+    },
+    "lint": {
+      "session": 18028,
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off make lint",
+      "log": "/tmp/starport-published-module-lint.log",
+      "exit_code": 0,
+      "issues": 0,
+      "retained_logs": [
+        {
+          "path": "starport-published-module-lint.log.gz",
+          "sha256": "55ed607839fc02df7359a6d158ea09db0ccc559cd5ed0a7211eebf3907ed13f8"
+        }
+      ]
+    },
+    "writing": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "files": 1698,
+      "historical_diagnostics": 69,
+      "retained_logs": [
+        {
+          "path": "catalog-module-preparation-writing.log.gz",
+          "sha256": "91dc5b18dafd1b54fe34848a725100477edaad924b0b93efc466a96e26f8fd81"
+        }
+      ]
+    },
+    "vet": {
+      "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go vet ./...",
+      "exit_code": 0,
+      "log": "/tmp/starport-published-module-vet.log"
+    }
+  },
+  "qualification_limit": "Preparation only. CSP6 publication qualification, remaining consumer gates, review, native CI, acceptance, and merge remain open.",
+  "pending_checks": {
+    "repository_guards": {
+      "session": 72611,
+      "result_file": "/tmp/starport-published-module-gates/results.json"
+    },
+    "build_and_smoke": {
+      "result_file": "/tmp/starport-published-module-build/results.json",
+      "session": 84416
+    }
+  }
+}

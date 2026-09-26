@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T03:53:15.865860+00:00",
+  "checked_at": "2026-09-26T04:46:24.762093+00:00",
   "removed": [
     {
       "repo": "starmap",
@@ -21,6 +21,17 @@
       "matching_main_tree": "71cd24e6dd9b440a5933f0754fed4ca3567befa9",
       "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-branch-audit/starport-aon3-work-backup.bundle",
       "bundle_sha256": "a90c18be7fdb73e338356e3dbfdd04c7e5ed19bbde5a048ba047f90dfd9e30b5",
+      "disposition": "removed after verified recovery bundle"
+    },
+    {
+      "repo": "starmap",
+      "branch": "codex/dependency-consolidation",
+      "sha": "8299cebe71caaa8485668499225b80b35dd2cc2b",
+      "retained_ancestors": [
+        "03f3978da03cd49db98ddac836b2b32dbf9b7cc3"
+      ],
+      "bundle": "/Users/jack/.local/state/agentstation/worktree-archives/2026-09-26-branch-audit/starmap-codex-dependency-consolidation.bundle",
+      "bundle_sha256": "e3119376addb3b9687d0c6c00a28eb04de890f984d1c6a1b5960eb978e2940f3",
       "disposition": "removed after verified recovery bundle"
     }
   ],
@@ -108,12 +119,16 @@
   "reason_retained": "Preserve active checkouts, uncommitted edits, and history without verified integration.",
   "restore": "Verify the bundle digest, then fetch its recorded branch into a new local branch.",
   "verification": {
-    "bundle_verification": "Both Git bundles verified; SHA-256 digests match.",
-    "branch_verification": "Both removed refs are absent.",
+    "bundle_verification": "All three Git bundles verified; SHA-256 digests match.",
+    "branch_verification": "All three removed refs are absent.",
     "plan_ledger": "40 rows; CSP6 is the only active row.",
     "changed_html_prose": "PASS: 1 file, 0 diagnostics.",
     "git_diff_check": "PASS",
-    "plan_links": "PASS: 107 local links resolve.",
-    "repository_prose": "Exit 2; unchanged historical proof diagnostics remain. See /tmp/catalog-branch-cleanup-writing.log. Changed HTML passes."
+    "plan_links": "PASS: 87 local links resolve.",
+    "repository_prose": "Exit 2; 69 unchanged historical proof diagnostics across 1698 files. Changed HTML passes.",
+    "repository_prose_log": {
+      "path": "cleanup-final-writing.log.gz",
+      "sha256": "bdfdeb2a2f8b1a0d9299ed424c7968f04d8cf2a1a780abcee70073a9d791bf02"
+    }
   }
 }
