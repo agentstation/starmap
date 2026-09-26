@@ -3,6 +3,7 @@ package runtime
 import (
 	"context"
 	"errors"
+	"slices"
 	"sync"
 	"testing"
 
@@ -98,5 +99,42 @@ func TestFleetCapabilityChecksActiveBindings(t *testing.T) {
 	missing := &Runtime{client: connected.client, layers: connected.layers}
 	if err := missing.checkFleetAcquisition(t.Context()); err == nil {
 		t.Fatal("accepted a missing capability checker")
+	}
+}
+
+func TestFleetCapabilityChecksUnobservedProvidersBeforeGrant(t *testing.T) {
+	probe := &fleetCapabilityProbe{denied: true}
+	backend := newFleetRuntimeBackend(t, WithAcquirer(probe))
+	backend.head = FleetHead{}
+	connected := openFleetRuntime(t, backend, "unobserved", privateRuntimeDirectory(t), WithAcquirer(probe))
+	if len(connected.layers.providers) != 0 {
+		t.Fatal("fixture already has retained provider observations")
+	}
+	providers := connected.Catalog().Providers().List()
+	if len(providers) == 0 {
+		t.Fatal("fixture has no eligible providers")
+	}
+	if connected.lease.status() != leaseLost {
+		t.Fatal("replica took ownership without access to an unobserved provider")
+	}
+	backend.mu.Lock()
+	attempts := backend.acquisitions
+	backend.mu.Unlock()
+	if attempts != 0 {
+		t.Fatal("capability refusal reached lease acquisition")
+	}
+	probe.mu.Lock()
+	for _, provider := range providers {
+		if !slices.Contains(probe.request.Providers, provider.ID) {
+			t.Errorf("unobserved provider %q is missing from the capability check", provider.ID)
+		}
+	}
+	probe.denied = false
+	probe.mu.Unlock()
+	if err := connected.lease.ensureHeld(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	if connected.lease.status() != leaseHeld {
+		t.Fatal("replica did not recover ownership after capability recovery")
 	}
 }

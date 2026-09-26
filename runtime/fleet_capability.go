@@ -36,6 +36,13 @@ func (r *Runtime) checkFleetAcquisition(ctx context.Context) error {
 		if layers.providerBindings != nil {
 			request.Bindings, _ = layers.providerBindings.selected(nil)
 		} else {
+			// Implicit acquisition visits every catalog provider, including providers
+			// with no retained observation. Check that access before taking the lease.
+			if r.config.acquirer != nil && request.Catalog != nil {
+				for _, provider := range request.Catalog.Providers().List() {
+					request.Providers = append(request.Providers, provider.ID)
+				}
+			}
 			for _, key := range layers.activeProviderOrder() {
 				id := layers.providers[key].ProviderID
 				if !slices.Contains(request.Providers, id) {
@@ -44,6 +51,7 @@ func (r *Runtime) checkFleetAcquisition(ctx context.Context) error {
 			}
 		}
 	}
+	slices.Sort(request.Providers)
 	var err error
 	if len(request.Providers)+len(request.Bindings) > 0 {
 		checker, ok := r.config.acquirer.(FleetAcquisitionChecker)

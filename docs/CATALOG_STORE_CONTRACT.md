@@ -64,6 +64,15 @@ An explicit empty binding set, selected with `runtime.WithProviderBindings()`, r
 Unscoped store-only catalogs retain their existing startup behavior.
 These checks belong to the connected runtime. The offline library still permits explicit caller-supplied store reads.
 
+## Fleet acquisition access
+
+A fleet refresh owner must resolve the acquisition credentials for its configured provider scopes before lease acquisition and renewal.
+Explicit provider bindings limit that requirement to the selected bindings.
+Without bindings, provider acquisition checks every current catalog provider and every retained provider scope, including providers without a prior observation.
+Configure explicit bindings when the deployment queries only a provider subset.
+Disabling the providers source removes this credential requirement.
+The access check does not fetch provider inventories or use inference credentials.
+
 ## Generation invariants
 
 Every accepted generation must pass `Generation.Validate()` before any durable
