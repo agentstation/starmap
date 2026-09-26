@@ -1,0 +1,31 @@
+{
+  "checked_at": "2026-09-26T00:52:04.746754+00:00",
+  "removed": [
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starport-dependency-pr374",
+      "head": "b05bdfedc5bfa7df8558f14c6375ec9f1c535a51",
+      "merged_pr": 374,
+      "merge_commit": "2355823aa78972c12df70207a1bbe8b36ad6f03c",
+      "removed_local_branch": null,
+      "ignored_generated_paths": [],
+      "active_process_paths": []
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starport-review",
+      "head": "116b9b779118ff55addc33cce931d8bf46fbc847",
+      "merged_pr": 365,
+      "merge_commit": "25c1196bcaa4f957b027be4e9f5baa59a6c4b05d",
+      "removed_local_branch": "codex/responsive-shell-tiers",
+      "ignored_generated_paths": [
+        "console/.tanstack/",
+        "console/.tanstack/tmp/",
+        "console/node_modules/",
+        "console/src/routeTree.gen.ts",
+        "internal/console/dist/assets/",
+        "internal/console/dist/index.html",
+        "starport"
+      ],
+      "active_process_paths": []
+    }
+  ]
+}

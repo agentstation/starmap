@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T00:47:16.239705+00:00",
+  "checked_at": "2026-09-26T00:52:21.506466+00:00",
   "starmap": [
     {
       "baseRefOid": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
@@ -174,7 +174,7 @@
       "baseRefOid": "19c85ad84293acba4ae9514fa5f68276e92d2461",
       "headRefOid": "208783174f950d1591ecec0dcb4df1a440411eb5",
       "isDraft": false,
-      "mergeStateStatus": "BLOCKED",
+      "mergeStateStatus": "UNSTABLE",
       "number": 174,
       "title": "catalog: embed bindings-4e61b06110e35f6ba62a8237ec26408272ee815efedefb351e5f7f4e528b0213.local.1682a8241ee7",
       "updatedAt": "2026-09-25T23:56:08Z",
@@ -234,13 +234,13 @@
         },
         {
           "name": "Runtime windows-2025",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Runtime windows-11-arm",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Runtime ubuntu-24.04",
@@ -254,8 +254,8 @@
         },
         {
           "name": "Runtime macos-15-intel",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Runtime macos-15",
@@ -294,36 +294,41 @@
         },
         {
           "name": "Go 1.27.1 race runtime-1",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Go 1.27.1 race runtime-2",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Go 1.27.1 race runtime-3",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Go 1.27.1 race client",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Go 1.27.1 race application",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Go 1.27.1 race contracts",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Full Catalog Capacity",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Verification Gate",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
         },
@@ -1148,8 +1153,8 @@
         },
         {
           "name": "Verification Checks",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Security & Reliability",
@@ -1173,13 +1178,13 @@
         },
         {
           "name": "Runtime ubuntu-24.04",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Runtime ubuntu-24.04-arm",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Runtime macos-15-intel",
@@ -1188,18 +1193,18 @@
         },
         {
           "name": "Runtime macos-15",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Publication windows-2025",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Publication windows-11-arm",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Publication ubuntu-24.04",
@@ -1213,8 +1218,8 @@
         },
         {
           "name": "Publication macos-15-intel",
-          "status": "IN_PROGRESS",
-          "conclusion": ""
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
         },
         {
           "name": "Publication macos-15",
@@ -1228,6 +1233,41 @@
         },
         {
           "name": "Coordinated Storage redis",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-1",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Go 1.27.1 race client",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Go 1.27.1 race application",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Go 1.27.1 race contracts",
+          "status": "IN_PROGRESS",
+          "conclusion": ""
+        },
+        {
+          "name": "Full Catalog Capacity",
           "status": "COMPLETED",
           "conclusion": "SUCCESS"
         },
@@ -1273,8 +1313,8 @@
   },
   "cleanup": {
     "stale_worktree_registrations_pruned": 31,
-    "clean_merged_worktrees_removed": 10,
-    "local_exact_ancestor_branches_removed": 48,
+    "clean_merged_worktrees_removed": 12,
+    "local_exact_ancestor_branches_removed": 49,
     "live_remote_branches_deleted": 13,
     "note": "Remote deletions used exact-head leases. Twelve Starport branches matched merged PR heads; Starmap #165 was verified superseded by merged #168. Three removed worktrees held only regenerable ignored caches or test data. Dirty worktrees, .tmp proof files, and diverged local branches remain.",
     "retained_inventory": {
@@ -1284,13 +1324,14 @@
         "clean_not_main_ancestor": 10
       },
       "starport": {
-        "worktrees": 20,
+        "worktrees": 18,
         "dirty": 0,
         "primary_main_checkout": 1,
-        "clean_not_main_ancestor": 19
+        "clean_not_main_ancestor": 17
       },
       "criterion": "No remaining secondary checkout has a clean tracked tree whose head is an ancestor of origin/main. Squash-merged or superseded histories require separate proof."
-    }
+    },
+    "final_pass_proof": "worktree-cleanup-final-pass.json"
   },
   "closed_superseded": [
     {
