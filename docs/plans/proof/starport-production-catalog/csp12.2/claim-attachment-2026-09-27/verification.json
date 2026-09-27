@@ -1,0 +1,498 @@
+{
+  "task": "CSP12.2",
+  "status": "COMPONENT_PASS_TASK_IN_PROGRESS",
+  "recorded_at": "2026-09-27T17:37:58.176668+00:00",
+  "consumer": {
+    "head": "a8137780c1f833bb564a14413a2a8d06462e3773",
+    "branch": "codex/atomic-budget-admission",
+    "worktree": "/private/tmp/starport-fleet-review-20260926",
+    "published": false,
+    "files": {
+      "internal/app/app.go": "954d75ea1a0f09b16b825ed733439a9a392bf040559bc1d63eeba5862bbda829",
+      "internal/app/job_recovery_test.go": "9448dd8e0bbf42372443efc0b7348cbeb5771e9b6dbad7d930a7b4eb89ec891c",
+      "internal/app/job_submission_test.go": "e8f587752f81e5babe726ba136d080330823e8aab8a7872b2276d044e5faeadd",
+      "internal/jobs/accounting.go": "2e0e0894d2d87a80697bc3d03a8a8c4c3e6d1175412419a32387ab9796528b86",
+      "internal/jobs/accounting_test.go": "c2f1c53246c7cee60cca7fd274f06187006d218c61aac67a08635746d9272abe",
+      "internal/jobs/batch_repository.go": "d653e99bd711a2d1ec158c8bc6869e138a89b0476f55872f0baedc9dd094973e",
+      "internal/jobs/batch_service.go": "32cceef6acd8a9d4b1ca7994669e0cb9964aad78521b5536c999b74f39c69bb4",
+      "internal/jobs/batch_service_test.go": "e465243ccff19b958e1d741253b9e6f18c5b6289471ffef7853079943d7d36b7",
+      "internal/jobs/claim_attachment.go": "0060fdc2750a582a62401b93645387cd8efec28a9163d04647284eb390747d02",
+      "internal/jobs/claim_attachment_test.go": "83cdb8e701808c0aca6813fb5d659f65f3c8df42415c99b4e4a3464acca444dd",
+      "internal/jobs/recovery_scan_test.go": "f2dd411dd35fbfb9daeb915f4b1e27a422193837b15bc2e82c935a1fb90c6e89",
+      "internal/jobs/repository.go": "526b6fa71edec90891c77f916003ca89b9504a6e094ab8f7b7c19b7304382703",
+      "internal/jobs/repository_store.go": "439340d50875a007d15fe19f1a34dd186758faee33fee9ac13bee021ef9e963e",
+      "internal/jobs/slot_recovery_test.go": "04cbd5eca84482c6038ee7c2f92b3131ac52c818064e199552ae5bf92bf3d5d8",
+      "internal/jobs/submission.go": "cdab882b1c7e4ebdaa26244ff57cf68133571c0a69e331c8482e17f9acee0145",
+      "internal/limits/jobslots/attachment.go": "b9fb490a15272dab3af1bfe695a28ca2b7691e3875b58778471eeabde768dd5d",
+      "internal/limits/jobslots/attachment_test.go": "b40a4a4a12f08289d0294ea493fed89c3b4561a9f2e72e9f97ecc9dde9f7710e",
+      "internal/limits/jobslots/recovery.go": "e566145de5eff64b30fd5df539c6b74372fb9b09a0578b2ccfdcc388c51516d7",
+      "internal/limits/jobslots/store.go": "84e59ef168bd2a4820f9f37651a592dae0b0976714eeef2d534ae221b4421094",
+      "internal/server/controllers/batches.go": "78a3b9cb059dd4fb2d8f973e34125b559917911744aca4a454faabdbd2ebeae6",
+      "internal/server/controllers/videos.go": "c62abe7131f219981dbc2f596bec1d5035f8f84194a604e93cac36953b10e910"
+    }
+  },
+  "producer": {
+    "head": "fb7f8ae2165d9644f6ff832d128ff87b1c5adc69",
+    "worktree": "/private/tmp/starmap-fleet-review-20260926",
+    "published": false,
+    "files": {}
+  },
+  "environment": {
+    "toolchain": "go1.27.1",
+    "platform": "darwin/arm64",
+    "GOWORK": "/tmp/csp122-billing.work",
+    "TEST_VALKEY_URL": "redis://127.0.0.1:51487",
+    "container": "starport-csp122-async-usage",
+    "digest": "sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "services": "Badger with synchronous writes; native Valkey with AOF and appendfsync always; production fixtures use real Badger and SQLite."
+  },
+  "checks": [
+    {
+      "name": "before",
+      "command": "go test -json -count=1 -timeout=2m ./internal/jobs -run '^TestReleasedClaimCannotPublishJob$'",
+      "exit_code": 1,
+      "source_timing": "Parent 3d14fb65 with regression only. Plain record creation accepted a released claim.",
+      "artifact": "csp122-claim-attachment-before.jsonl.gz",
+      "test_results": {
+        "fail": 4
+      },
+      "package_results": {
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/jobs/TestReleasedClaimCannotPublishJob/memory",
+        "github.com/agentstation/starport/internal/jobs/TestReleasedClaimCannotPublishJob/badger",
+        "github.com/agentstation/starport/internal/jobs/TestReleasedClaimCannotPublishJob/valkey",
+        "github.com/agentstation/starport/internal/jobs/TestReleasedClaimCannotPublishJob",
+        "github.com/agentstation/starport/internal/jobs/"
+      ],
+      "skipped_tests": [],
+      "build_errors": []
+    },
+    {
+      "name": "initial",
+      "command": "go test -json -count=1 -timeout=3m ./internal/jobs ./internal/limits/jobslots",
+      "exit_code": 1,
+      "source_timing": "Interface transition: countingMeter lacked Attachment. Updated this service-behavior fixture; native storage contracts use the real claim store.",
+      "artifact": "csp122-claim-attachment-initial.jsonl.gz",
+      "test_results": {
+        "pass": 26
+      },
+      "package_results": {
+        "fail": 1,
+        "pass": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/jobs/"
+      ],
+      "skipped_tests": [],
+      "build_errors": [
+        "# github.com/agentstation/starport/internal/jobs_test [github.com/agentstation/starport/internal/jobs.test]\n",
+        "internal/jobs/accounting_test.go:93:81: cannot use meter (variable of type *countingMeter) as jobs.Meter value in argument to jobs.WithJobMeter: *countingMeter does not implement jobs.Meter (missing method Attachment)\n",
+        "internal/jobs/accounting_test.go:217:87: cannot use meter (variable of type *countingMeter) as jobs.Meter value in argument to jobs.WithJobMeter: *countingMeter does not implement jobs.Meter (missing method Attachment)\n",
+        "internal/jobs/accounting_test.go:250:21: cannot use meter (variable of type *countingMeter) as jobs.Meter value in argument to jobs.WithJobMeter: *countingMeter does not implement jobs.Meter (missing method Attachment)\n",
+        "internal/jobs/submission_recovery_test.go:39:62: cannot use meter (variable of type *countingMeter) as jobs.Meter value in argument to jobs.WithJobMeter: *countingMeter does not implement jobs.Meter (missing method Attachment)\n",
+        "internal/jobs/submission_recovery_test.go:49:63: cannot use meter (variable of type *countingMeter) as jobs.Meter value in argument to jobs.WithJobMeter: *countingMeter does not implement jobs.Meter (missing method Attachment)\n"
+      ]
+    },
+    {
+      "name": "integrated",
+      "command": "go test -json -count=1 -timeout=3m ./internal/jobs ./internal/limits/jobslots",
+      "exit_code": 1,
+      "source_timing": "The old batch fixture used different stores for claims and job records. Updated it to use one backend, matching production atomicity.",
+      "artifact": "csp122-claim-attachment-integrated.jsonl.gz",
+      "test_results": {
+        "pass": 169,
+        "fail": 1
+      },
+      "package_results": {
+        "pass": 1,
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/jobs/TestABatchHoldsOneOutstandingJobSlot",
+        "github.com/agentstation/starport/internal/jobs/"
+      ],
+      "skipped_tests": [],
+      "build_errors": []
+    },
+    {
+      "name": "race",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/jobs ./internal/limits/jobslots",
+      "exit_code": 0,
+      "source_timing": "Before strengthening production ownership assertions and final lost-recovery-acknowledgement/migration tests.",
+      "artifact": "csp122-claim-attachment-race.jsonl.gz",
+      "test_results": {
+        "pass": 187
+      },
+      "package_results": {
+        "pass": 2
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "build_errors": []
+    },
+    {
+      "name": "qualified-race",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/jobs ./internal/limits/jobslots ./internal/app -run 'Attachment|Claim|ProductionVideo|ProductionSweep'",
+      "exit_code": 0,
+      "source_timing": "Final production source, before final recovery acknowledgement and migration tests.",
+      "artifact": "csp122-claim-attachment-qualified-race.jsonl.gz",
+      "test_results": {
+        "pass": 59
+      },
+      "package_results": {
+        "pass": 3
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "build_errors": []
+    },
+    {
+      "name": "final-race",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/jobs ./internal/limits/jobslots",
+      "exit_code": 0,
+      "source_timing": "Final source.",
+      "artifact": "csp122-claim-attachment-final-race.jsonl.gz",
+      "test_results": {
+        "pass": 200
+      },
+      "package_results": {
+        "pass": 2
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "build_errors": []
+    },
+    {
+      "name": "purego",
+      "command": "CGO_ENABLED=0 go test -json -count=1 -timeout=3m ./internal/jobs ./internal/limits/jobslots -run 'Claim|Attachment|PendingRecovery|RecoveryRetains'",
+      "exit_code": 0,
+      "source_timing": "Final source.",
+      "artifact": "csp122-claim-attachment-purego.jsonl.gz",
+      "test_results": {
+        "pass": 60
+      },
+      "package_results": {
+        "pass": 2
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "build_errors": []
+    },
+    {
+      "name": "full",
+      "command": "go test -json -count=1 -timeout=5m ./...",
+      "exit_code": 0,
+      "source_timing": "Final production source, before final recovery acknowledgement and migration tests.",
+      "artifact": "csp122-claim-attachment-full.jsonl.gz",
+      "test_results": {
+        "pass": 4918,
+        "skip": 71
+      },
+      "package_results": {
+        "skip": 8,
+        "pass": 65
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "github.com/agentstation/starport/examples/",
+        "github.com/agentstation/starport/internal/catalog/disclosure/",
+        "github.com/agentstation/starport/internal/cache/TestDefaultCacheMemoryBudget",
+        "github.com/agentstation/starport/internal/cache/TestSharedCachePausedServiceDeadlineAndRecovery",
+        "github.com/agentstation/starport/internal/authorization/TestAuthorizationTenantChurnCapacity",
+        "github.com/agentstation/starport/internal/authorization/TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheRealService",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheURIAuthenticationAndDatabase",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheTLSWithRealService",
+        "github.com/agentstation/starport/internal/config/TestContainerRecipePersistence",
+        "github.com/agentstation/starport/internal/kvconnection/kvtest/",
+        "github.com/agentstation/starport/internal/protocol/mediaform/",
+        "github.com/agentstation/starport/internal/limits/reservation/TestTeamBudgetHistoryHandoff/postgres-valkey",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityRequiresBothApprovals",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityFencesDelayedWrites/before-native-write",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityFencesDelayedWrites/after-native-write",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityClosedAndChangedEpoch",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetBootstrapPermission",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetInitialization",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/kv",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/sql",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/approval",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/closed-approval",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/row-security",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/unknown-table",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetInterruptedClaim",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetConcurrentInitialization",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesChangedIncarnation",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetSQLFailureRetainsOnlyRetryClaim",
+        "github.com/agentstation/starport/internal/server/dto/",
+        "github.com/agentstation/starport/scripts/doclinks/",
+        "github.com/agentstation/starport/scripts/sdk-smoke-server/",
+        "github.com/agentstation/starport/skills/starport/",
+        "github.com/agentstation/starport/internal/server/controllers/TestGatewayOverheadBenchmark",
+        "github.com/agentstation/starport/internal/server/TestSDKCanonicalRemovalAfterSuccessfulInference",
+        "github.com/agentstation/starport/internal/storage/TestValkeyIncarnationRejectsReplacementBackend",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapConcurrentExactPublication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/before-sql",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/after-sql",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/before-kv",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/after-kv",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRequiresExplicitCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionHonorsLimitsAndRequiredGenerations",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCountsGenerationsSeparatelyFromReceipts",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionDryRunPreservesPendingRecovery",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionResumesInterruptedCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRefusesUnownedStaging",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionBoundsCommittedSnapshots",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionProtectsPinnedGeneration",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRecoversInterruptedUploadAndDeletion",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionFencesExpiredMaintenance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionConcurrentReadersAndCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCapacityRefusesWithoutMovingHead",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRejectsOverlappingDeletionRecord",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/current",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/accepted",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/rollback",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/inventory-missing",
+        "github.com/agentstation/starport/internal/catalog/TestFleetAcceptanceRetainsDistinctRollbackGenerations",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreCompleteKeyLossRequiresRecovery",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreNativePublication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreRefusesExpiredGrant",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreSeparateProcessTakeover",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreMissingSelectedPublicationIsNotAnEmptyStore",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreAcceptanceUsesOriginalGrant",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreNamespaceAndMalformedDescriptor",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLeaseExpiresDuringSelection/publication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLeaseExpiresDuringSelection/acceptance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLostHeadCannotBootstrapAgain",
+        "github.com/agentstation/starport/internal/catalog/TestFleetMigrationRequiresSameRecoveryIdentity",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeRejectsUnapprovedBackend",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimePreservesOriginalGrantThroughAcceptance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeLiveTakeoverAcceptance",
+        "github.com/agentstation/starport/internal/app/TestSharedCacheCompositionUsesSeparateService",
+        "github.com/agentstation/starport/internal/app/TestSharedCacheCanonicalDeploymentIsolation",
+        "github.com/agentstation/starport/internal/app/TestInitializeFleetFreshStartup",
+        "github.com/agentstation/starport/internal/app/TestAppWithValkey",
+        "github.com/agentstation/starport/internal/app/TestSharedStartupDoesNotCreateLocalDatabases"
+      ],
+      "build_errors": []
+    },
+    {
+      "name": "lint",
+      "command": "make lint",
+      "exit_code": 0,
+      "source_timing": "Before final test additions.",
+      "artifact": "csp122-claim-attachment-lint.txt.gz"
+    },
+    {
+      "name": "final-lint",
+      "command": "make lint",
+      "exit_code": 0,
+      "source_timing": "Final source.",
+      "artifact": "csp122-claim-attachment-final-lint.txt.gz"
+    },
+    {
+      "name": "vet",
+      "command": "go vet ./internal/jobs ./internal/limits/jobslots ./internal/app ./internal/server/controllers",
+      "exit_code": 0,
+      "source_timing": "Final source.",
+      "artifact": "csp122-claim-attachment-vet.txt.gz"
+    },
+    {
+      "name": "prose",
+      "command": "technical-writing lint <six changed claim files> --format text",
+      "exit_code": 0,
+      "source_timing": "Before final test additions.",
+      "artifact": "csp122-claim-attachment-prose.txt.gz"
+    },
+    {
+      "name": "prose-final",
+      "command": "technical-writing lint <six changed claim files> --format text",
+      "exit_code": 0,
+      "source_timing": "Final source.",
+      "artifact": "csp122-claim-attachment-prose-final.txt.gz"
+    },
+    {
+      "name": "guard",
+      "command": "bash scripts/verify-async-media-jobs.sh",
+      "exit_code": 0,
+      "source_timing": "Final production source.",
+      "artifact": "csp122-claim-attachment-guard.txt.gz"
+    },
+    {
+      "name": "direction",
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit_code": 0,
+      "source_timing": "Final production dependency graph.",
+      "artifact": "csp122-claim-attachment-direction.txt.gz"
+    },
+    {
+      "name": "docs-prose",
+      "command": "technical-writing lint <four edited documents> --format text",
+      "exit_code": 1,
+      "artifact": "csp122-attachment-docs-prose.txt.gz",
+      "notes": "One paragraph exceeded the sentence limit before repair."
+    },
+    {
+      "name": "docs-prose-final",
+      "command": "technical-writing lint <four edited documents> --format text",
+      "exit_code": 0,
+      "artifact": "csp122-attachment-docs-prose-final.txt.gz",
+      "notes": "All four edited documents pass after paragraph repair."
+    },
+    {
+      "name": "global-prose",
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "artifact": "csp122-attachment-global-prose.txt.gz",
+      "notes": "1765 files, 138 diagnostics: 137 existing findings outside edited documents and the paragraph finding repaired by the final scoped check. This run began before that final repair; it is not a green gate."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "csp122-claim-attachment-before.jsonl.gz",
+      "raw_sha256": "6ad17da62cf453200967add5196ac3b0be1e7eb27b9c34b5997d86f584ad53de",
+      "compressed_sha256": "ad3c2e25073ad9a4558ac7c4747b63c5d27de7e238089e8c0fa1e10ca5a0b21a"
+    },
+    {
+      "path": "csp122-claim-attachment-initial.jsonl.gz",
+      "raw_sha256": "a51b71736f3dec265d939888dc76e754922d6f26a17639283b6504aa5a8921f6",
+      "compressed_sha256": "d6570f4edd9610472a59aaf42b777344f9c5d4610ac351aaa2efa8e682358c7f"
+    },
+    {
+      "path": "csp122-claim-attachment-integrated.jsonl.gz",
+      "raw_sha256": "167a139f2ccc9f2e8c827cb7cbe55cb94b2457b070a9e7b3ae37e07d6a140aa1",
+      "compressed_sha256": "104f5ed3571ca07fd18d60f1668cdada7657d8da4c453bc3fa798f97837bf152"
+    },
+    {
+      "path": "csp122-claim-attachment-race.jsonl.gz",
+      "raw_sha256": "91e044723d7e2e259e35462ec8160c7d264fa063df0700f4f4c53aa0de38b123",
+      "compressed_sha256": "ab43d96078f946df3d509ab7ccd8e8371f550f5b43b54840982cfa1896c11cab"
+    },
+    {
+      "path": "csp122-claim-attachment-qualified-race.jsonl.gz",
+      "raw_sha256": "40d4ee4489951d8779d706085a37c2dd3e27cbd7afd56894844740924659bbe6",
+      "compressed_sha256": "31841768a0ed8347db1f51fdfb85c363e64c5a5643bd2765c565fd22d29f9cd7"
+    },
+    {
+      "path": "csp122-claim-attachment-final-race.jsonl.gz",
+      "raw_sha256": "03b847e4d599831cbb0ceacbcb850dd49960439aeccdc2095906d69a4cc92cee",
+      "compressed_sha256": "942809b70ca0cfeae87b6511594f43f2a53f07a36a585a3006fea6f0ea387582"
+    },
+    {
+      "path": "csp122-claim-attachment-purego.jsonl.gz",
+      "raw_sha256": "a3688272e94b3ea7c7b0e97e9c3fbc8fb84b063f77c228979f6fbcc3bf2c2e47",
+      "compressed_sha256": "b62a8d55c7a2d28f15e0210a51cada3cfef8461b16c74ab023079e81e20a3b8c"
+    },
+    {
+      "path": "csp122-claim-attachment-full.jsonl.gz",
+      "raw_sha256": "b79571fc54985fd73877009ca2cfffab207067db2087d52c05a93d7af8bcba37",
+      "compressed_sha256": "2e2b69ac7d57c1595f8db0d341c5e86a6e24a5bcdd1985ebd5122d4d9a87b44c"
+    },
+    {
+      "path": "csp122-claim-attachment-lint.txt.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "compressed_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "csp122-claim-attachment-final-lint.txt.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "compressed_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "csp122-claim-attachment-vet.txt.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-claim-attachment-prose.txt.gz",
+      "raw_sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087",
+      "compressed_sha256": "64831690ac5141b2b28f093403ddbc2140ff3c485ebb18aa39bb4443808ee3be"
+    },
+    {
+      "path": "csp122-claim-attachment-prose-final.txt.gz",
+      "raw_sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087",
+      "compressed_sha256": "64831690ac5141b2b28f093403ddbc2140ff3c485ebb18aa39bb4443808ee3be"
+    },
+    {
+      "path": "csp122-claim-attachment-guard.txt.gz",
+      "raw_sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb",
+      "compressed_sha256": "9bcb3a6a34098bbeb762592013637ba21d678f07360d23f02be3ebcfa8d3c1b0"
+    },
+    {
+      "path": "csp122-claim-attachment-direction.txt.gz",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027",
+      "compressed_sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9"
+    },
+    {
+      "path": "csp122-attachment-docs-prose.txt.gz",
+      "raw_sha256": "a69faaa11ccef697dfbf80f20b1c4e87f22e0725994402192aedc91488aaad34",
+      "compressed_sha256": "d7f9f955bfd40e55e47725c892d52c611f9a13d1ebcd2673f55acb34ff83ca5e"
+    },
+    {
+      "path": "csp122-attachment-docs-prose-final.txt.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "compressed_sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    },
+    {
+      "path": "csp122-attachment-global-prose.txt.gz",
+      "raw_sha256": "085264eafe5ecd29c9be431def300151b73e29509a326210fc628df16451e484",
+      "compressed_sha256": "a7a063e10832500ef99db5dce1eff5dd9f65409dd3d334a9c114f103ebdbbb52"
+    }
+  ],
+  "behavior": [
+    "Version 3 claims retain immutable creation time and an attachment marker. Counter and retained history records also require version 3. Namespace keys stay unchanged.",
+    "Video and batch repositories commit claim attachment and job creation in one native conditional batch. Plain Create refuses a nonempty slot ID.",
+    "Attachment binds account, claim ID, job ID, and work kind. It refuses released or attached claims. A stale prepared mutation loses to recovery.",
+    "The production job-maintenance loop scans pending claims with native cursor continuation. It closes only unattached claims at least ten minutes old.",
+    "Age selects recovery candidates; the atomic claim preimage provides safety. A wall-clock error can interrupt preparation but cannot release attached work.",
+    "Recovery and publication have one winner. Interrupted publication before commit permits later recovery. A committed publication retains capacity after a lost acknowledgement.",
+    "Recovery retries preserve another attached job after lost acknowledgements before or after the recovery commit. Released claim tombstones remain durable.",
+    "Conditional publication refusal becomes a retryable HTTP 503. Unknown publication outcomes retain their claim and possible job.",
+    "Production provider fixtures inspect the attached claim and durable pending job before any HTTP provider response."
+  ],
+  "manual_review": {
+    "status": "PASS_WITH_LIMITS",
+    "scope": [
+      "Claim-to-job atomic handoff",
+      "Recovery and delayed publication interleavings",
+      "Lost publication and recovery acknowledgements",
+      "Typed definite refusal versus uncertainty",
+      "Shared account bounds for both work kinds",
+      "Creation timestamp preservation through retries",
+      "Production dispatch ownership and concept import boundaries",
+      "Old format refusal without inferred migration"
+    ],
+    "pre_pr_autoreview": "Required before final task PR; not run for this local component."
+  },
+  "qualification_limits": [
+    "Ten minutes is a preparation grace, not provider permission, authorization-cache expiry, a spending refund, or tombstone retention. It adds no separate qualified-clock requirement.",
+    "This change requires claim/counter/history format migration under CSP13. Existing schema 2 job and batch records remain schema 2. No populated-state or mixed-version upgrade is qualified.",
+    "Clock jumps can make pending work eligible early or late. Atomic attachment refusal preserves safety; stable wall time and enabled maintenance provide eventual cleanup.",
+    "Attached unconfirmed provider submissions remain held. Provider reconciliation, interrupted running batches, pinned valuation, and durable required settlement remain open.",
+    "Recovery still depends on the existing job-maintenance schedule. Disabling that schedule disables this automatic pending-claim sweep.",
+    "Released claims have no TTL or collector. Safe recovery/replay horizons remain required.",
+    "Same-store markers cannot prove total KV loss. Independent PostgreSQL witness, real process loss and failover qualification remain required.",
+    "Full suite skips 71 test results and eight packages. Those checks remain unverified.",
+    "Native platform qualification, remaining billing contracts, A47, exact published dependency, final review, and protected merges remain required.",
+    "Tests use local fixture providers and no paid calls. Unpublished producer remains connected through GOWORK.",
+    "Unrelated CSP18 documentation and plan-checkout changes remain untouched."
+  ],
+  "goal_turn": "Progress: reproduced publication under a released claim, implemented atomic attachment and pending-claim recovery, and qualified native contention and lost acknowledgements.",
+  "plan_maintenance": {
+    "ledger_rows": 40,
+    "done": 26,
+    "in_progress": [
+      "CSP12.2"
+    ],
+    "unique_ids": 97,
+    "links_checked": 159,
+    "artifacts_verified": 18,
+    "resume_words": 263,
+    "ledger_and_ids_preserved": true,
+    "cold_resume": "PASS: current source, task, next action, running state, remaining criteria, and authorization boundaries are explicit.",
+    "plan_bytes": 133629,
+    "size_exception": "The existing plan retains forty task contracts and historical execution entries. This component refresh replaces the resume state, preserves all task rows and IDs, and does not compact historical evidence."
+  }
+}

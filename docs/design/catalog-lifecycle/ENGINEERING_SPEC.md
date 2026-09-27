@@ -4398,3 +4398,26 @@ The scan covers continuously present records. Concurrent additions can require a
 The [recovery proof](../../plans/proof/starport-production-catalog/csp12.2/recovery-scans-2026-09-27/verification.json) qualifies Badger, Valkey, cancellation, corruption, and production batch recovery.
 Disabled job maintenance still requires reads or explicit sweeps. This change adds no independent scheduler.
 Orphan claims, running batches after process loss, pinned valuation, required settlement, and safe collection remain open.
+
+
+### Atomic claim attachment and pending recovery
+
+Consumer `a8137780` binds job publication to its outstanding-work claim.
+Video and batch repositories commit claim attachment and the new record in one native conditional batch.
+Plain record creation refuses a claim ID. A released or attached claim cannot authorize another publication.
+
+The existing job-maintenance loop closes unattached claims after a ten-minute preparation grace.
+Recovery and publication compare the same claim preimage. Only one can win.
+A delayed submitter cannot publish after recovery releases its capacity.
+Attached claims remain held, including submissions whose provider acceptance is uncertain.
+
+The grace controls recovery eligibility. It does not extend permission, refund spending, or delete a claim.
+A wall-clock jump can interrupt preparation early or delay recovery. Atomic attachment refusal preserves safety in either case.
+Creation timestamps remain fixed across reservation retries. Released claims remain durable until a qualified collection policy exists.
+
+Claim, counter, and history payloads now require version 3. Their storage keys remain unchanged.
+Job and batch payloads remain schema 2. CSP13 must qualify populated-state migration before deployment across these formats.
+Older records cannot imply zero ownership. Mixed-version operation remains unqualified.
+
+The [attachment proof](../../plans/proof/starport-production-catalog/csp12.2/claim-attachment-2026-09-27/verification.json) covers lost writes, competing publication and recovery, restart of service objects, and native Badger and Valkey operations.
+Required asynchronous settlement, provider reconciliation, running batches after process loss, and safe collection remain open.

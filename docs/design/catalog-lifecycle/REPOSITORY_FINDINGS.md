@@ -4094,3 +4094,19 @@ Pure-Go checks pass 25 results without skips. The full suite passes 4,896 result
 
 Lint and affected-package vet pass. Native platform, process-loss, and failover qualification remain required.
 Orphan claims and required spending settlement remain incomplete. CSP12.2 stays in progress.
+
+
+## September 27 pending claim recovery
+
+Consumer `a8137780` repairs publication after claim release. The regression failed on memory, Badger, and Valkey before the change.
+Job creation and claim attachment now commit together. Recovery closes old unattached claims and prevents delayed publication against them.
+The application runs this recovery through its existing job-maintenance loop.
+
+The [attachment proof](../../plans/proof/starport-production-catalog/csp12.2/claim-attachment-2026-09-27/verification.json) retains failed builds and the repaired fixture that used separate claim and record stores.
+Final jobs and claim race suites pass 200 results without skips. Pure-Go checks pass 60 results without skips.
+The production ownership checks pass within a separate 59-result race run. They inspect attachment before provider dispatch.
+
+The full suite passes 4,918 results and skips 71. Eight packages skip. Lint and affected-package vet pass.
+
+Claim, counter, and history version 3 requires CSP13 migration. Job and batch schema versions remain 2.
+Attached uncertain submissions still require provider reconciliation. Required settlement and remaining native qualification keep CSP12.2 in progress.

@@ -375,3 +375,14 @@ Final focused race checks pass 29 results. Pure-Go checks pass 25 results. Both 
 
 This work does not establish asynchronous billing or required settlement.
 Claims without job records, interrupted running batches, pinned valuation, and required settlement remain open.
+
+
+## Atomic claim attachment component
+
+Consumer `a8137780` commits each job record with its claim attachment.
+The background recovery pass closes old unattached claims. Delayed publishers cannot use capacity that recovery released.
+Attached uncertain submissions retain their claims.
+
+The [attachment proof](../../plans/proof/starport-production-catalog/csp12.2/claim-attachment-2026-09-27/verification.json) records 200 final race results and 60 pure-Go results without skips.
+A separate production race run confirms attachment before dispatch. This work does not settle required spending or establish provider billing.
+Pinned asynchronous valuation, durable settlement, provider reconciliation, interrupted batch recovery, and safe collection remain required.
