@@ -4491,3 +4491,23 @@ The embedded correction changes twelve DeepInfra records while preserving their 
 Eleven have matching current fixture evidence. The retained FastVideo record uses historical acquisition evidence and does not claim current availability.
 The OCR identity supplement preserves the historical identity map. Unverified Boolean capabilities remain explicit `null` values.
 Fixed-page recognition uses the decoded request page count without inventing an undocumented provider page ceiling.
+
+### Required job settlement boundary
+
+Before dispatch, the reservation ledger binds one attempt to one gateway job.
+Validate its account, gateway key, selected offering, catalog generation, and operation against the durable job.
+Another job cannot reuse that reservation, including after settlement. Binding changes no balances and grants no dispatch permission.
+
+A terminal job can release its concurrency slot while its spending reservation remains unresolved.
+The job service must confirm required settlement before it marks optional accounting complete.
+A previous optional mark cannot bypass this check. Recovery reports unresolved settlement and preserves capacity until reliable charge evidence permits reconciliation.
+
+Shared settlement requires the original independent approval, including when the reservation already contains a final charge.
+A closed or changed approval refuses the old owner. A new owner must open the explicitly approved recovery state.
+
+Reservation attempts use payload version 2. Window and history records remain version 1.
+Older attempt records require explicit migration. CSP13 owns that procedure and mixed-version refusal.
+Job and batch records remain schema 2. Claim payloads remain version 3.
+
+The [job settlement proof](../../plans/proof/starport-production-catalog/csp12.2/job-settlement-boundary-2026-09-27/verification.json) qualifies this boundary only.
+Complete video billing, pinned optional reports, provider reconciliation, interrupted batches, and production fleet qualification remain required under CSP12.2.

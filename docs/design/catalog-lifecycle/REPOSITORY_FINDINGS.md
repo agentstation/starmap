@@ -4220,3 +4220,20 @@ Full-history traversal adds background reads. Capacity qualification must measur
 
 The [recovery proof](../../plans/proof/starport-production-catalog/csp12.2/retained-settlement-recovery-2026-09-27/verification.json) records exact results and source hashes.
 Missing provider evidence remains unresolved. Complete asynchronous billing, interrupted batches, and full CSP12.2 qualification remain open.
+
+## September 27 required job settlement boundary
+
+The job service previously marked accounting complete without reading its required reservation.
+The regression reproduces that defect on memory, Badger, and Valkey storage.
+The new boundary requires durable settlement evidence before the optional mark. Job completion alone cannot settle a spending reservation.
+
+Reservation attempts now bind one job identity. Concurrent bindings select one winner, and exact retries preserve that selection after a lost response.
+The application verifies account, key, offering, generation, and operation before binding or confirming settlement.
+Required settlement retries separately from concurrency-slot release. A prior optional mark cannot bypass the required check during recovery.
+
+The shared-authority test uses SQLite and Valkey. It rejects closed approval and prevents an old owner from adopting a new recovery epoch.
+This result does not qualify PostgreSQL, process loss, failover, or provider billing.
+Attempt payload version 2 requires the CSP13 migration procedure before use with populated older state.
+
+The [job settlement proof](../../plans/proof/starport-production-catalog/csp12.2/job-settlement-boundary-2026-09-27/verification.json) preserves the regression, results, and limits.
+Optional reports still price from the current catalog and mark before delivery. Pinned measured reporting and retry remain required under CSP12.2.

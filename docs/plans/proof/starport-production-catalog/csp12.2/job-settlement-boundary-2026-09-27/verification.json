@@ -1,0 +1,326 @@
+{
+  "task": "CSP12.2",
+  "status": "component qualification only; task remains in_progress",
+  "date": "2026-09-27",
+  "source": {
+    "producer": "cf5b62f172cd12abef4bc347c5c3fb56743d612c",
+    "consumer_base": "5ef8e57955d8ce69f287ab9062f83f346ced46f5",
+    "consumer": "667bde3b8225f0c22bf29a205beb747b8c9849af",
+    "files": {
+      "internal/app/app.go": "04889ab092d5c759347bc27fb3de4a52a50b338f9ffc6e56ec6b65d916695fbb",
+      "internal/app/budget_jobs.go": "0b19cde34605ba8d67848a0886da591c32932b45834b37afdb5b1006c927cc59",
+      "internal/app/budget_jobs_test.go": "913eeaf6001b975638ab27136b89eea3945bfa72714c92139fcb094431d07bc4",
+      "internal/jobs/accounting.go": "16688ae8a1a1256eeb9fb2c349daaadc1edabc6b0102e06bc74bc1e5d7d52350",
+      "internal/jobs/asset.go": "ff9425f4bcad97a47283eb4f6f2879b6018a2782bd4daae9f4fa9a6cfef7c204",
+      "internal/jobs/service.go": "cb43d5609f10ce539498e5416003b441dbe2e646af56e1bca0dbcb22880dbb42",
+      "internal/jobs/submission.go": "8a305cd2646ad90f94acfe64018d504e57dc47b4078d6f4a6ef8ba8f4db12833",
+      "internal/jobs/required_settlement.go": "cd9c07c0aee8f034dd687877d43ad645d06daa25119f8c9204d98675674f5769",
+      "internal/jobs/required_settlement_test.go": "c23b5f3af26a5aa250832d0a7eb3873e57c95522f9f6b2122f0a3a31f4b33f1e",
+      "internal/limits/reservation/model.go": "96eab55a34e1a8ef7b67a7692d003924aa0857fdf7a8e0c4ab43d37a397a7026",
+      "internal/limits/reservation/repository.go": "7e87535093e7b1764d195d5b9e993224d8fc97a826015924fd2c8af81466b2d2",
+      "internal/limits/reservation/job.go": "7605af0d94347e52fa8d6c7fec449f8163b32ffdef3801d3ff5884d2a9f67b6a",
+      "internal/limits/reservation/job_test.go": "ec830e19ca7330bfe514d0f6f7377e39eb891d4bac7b6079ebd427ed2298c101"
+    }
+  },
+  "environment": {
+    "go": "1.27.1",
+    "native_platform": "darwin/arm64",
+    "GOWORK": "/tmp/csp122-billing.work",
+    "TEST_VALKEY_URL": "redis://127.0.0.1:51487",
+    "independent_approval": "SQLite with native Valkey",
+    "common_command_environment": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=redis://127.0.0.1:51487"
+  },
+  "commands": {
+    "before": "go test -json ./internal/jobs -run ^TestRequiredReservationCannotUseOptionalAccounting$ -count=1",
+    "race": "go test -race -json ./internal/jobs ./internal/limits/reservation -count=1",
+    "app-race": "go test -race -json ./internal/app -run Test(ProductionJobsRequireSettledReservation|JobReservationChecksOriginalIdentity|RunRecoversRetainedBudgetEvidence)$ -count=1",
+    "approval-race": "go test -race -json ./internal/app -run ^TestSettledJobRequiresOriginalSharedApproval$ -count=1",
+    "purego": "CGO_ENABLED=0 go test -json ./internal/jobs ./internal/limits/reservation ./internal/app -run Test(Required|JobBinding|ProductionJobsRequireSettledReservation|JobReservationChecksOriginalIdentity|SettledJobRequiresOriginalSharedApproval) -count=1",
+    "vet": "go vet ./internal/jobs ./internal/limits/reservation ./internal/app",
+    "lint": "make lint",
+    "direction": "bash scripts/verify-dependency-direction.sh",
+    "app-full": "go test -race -json ./internal/app -count=1 -timeout=5m",
+    "initial": "go test -json ./internal/jobs ./internal/limits/reservation -count=1",
+    "app": "go test -json ./internal/app -run Test(ProductionJobsRequireSettledReservation|JobReservationChecksOriginalIdentity)$ -count=1",
+    "doc-lint": "technical-writing lint docs/design/catalog-lifecycle/ENGINEERING_SPEC.md docs/design/catalog-lifecycle/PAID_OPERATION_MATRIX.md docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md --format text",
+    "lifecycle-race": "go test -race -json ./internal/app -run Test(ProductionComposition|NewBuildsReadyProductionDependencies|NewMapsExternalServerConfigurationOnce|LifecycleClosesInReverseOrderOnce|RunCancellationStopsHTTPAndDependencies|DevRepeatedClosePreservesReusedScratchPath) -count=1 -timeout=2m",
+    "doc-lint-complete": "technical-writing lint docs/plans/starport-production-catalog-plan.html docs/design/catalog-lifecycle/ENGINEERING_SPEC.md docs/design/catalog-lifecycle/PAID_OPERATION_MATRIX.md docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md --format text"
+  },
+  "checks": [
+    {
+      "name": "before",
+      "exit_status": 1,
+      "artifact": "before.jsonl.gz",
+      "sha256": "f4389751baac495f0a4cd2ea84a564e01ba3571b6949473ca0b7d2e902a94e7b",
+      "test_results": {
+        "fail": 4
+      },
+      "failures": [
+        "TestRequiredReservationCannotUseOptionalAccounting/memory",
+        "TestRequiredReservationCannotUseOptionalAccounting/badger",
+        "TestRequiredReservationCannotUseOptionalAccounting/valkey",
+        "TestRequiredReservationCannotUseOptionalAccounting"
+      ],
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "action": "fail",
+          "elapsed": 0.391
+        }
+      ]
+    },
+    {
+      "name": "initial",
+      "exit_status": 0,
+      "artifact": "initial.jsonl.gz",
+      "sha256": "af865651c1cef07b7b18c880472987255d7e12ae9bd02d66436974127ca8af92",
+      "test_results": {
+        "pass": 266,
+        "skip": 1
+      },
+      "failures": [],
+      "skips": [
+        "TestTeamBudgetHistoryHandoff/postgres-valkey"
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "action": "pass",
+          "elapsed": 4.807
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "action": "pass",
+          "elapsed": 50.407
+        }
+      ]
+    },
+    {
+      "name": "app",
+      "exit_status": 1,
+      "artifact": "app.jsonl.gz",
+      "sha256": "4bc729af7e52dedaf427635313035f10f66974000b9cee9920e17bef2d2cd468",
+      "test_results": {
+        "fail": 1,
+        "pass": 7
+      },
+      "failures": [
+        "TestProductionJobsRequireSettledReservation"
+      ],
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "action": "fail",
+          "elapsed": 2.6959999999999997
+        }
+      ]
+    },
+    {
+      "name": "race",
+      "exit_status": 0,
+      "artifact": "race.jsonl.gz",
+      "sha256": "b6db60cf7e96b8cbf2c19897ad40374035dee6c8c781d08ea50a949caeb99663",
+      "test_results": {
+        "pass": 286,
+        "skip": 1
+      },
+      "failures": [],
+      "skips": [
+        "TestTeamBudgetHistoryHandoff/postgres-valkey"
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "action": "pass",
+          "elapsed": 9.943999999999999
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "action": "pass",
+          "elapsed": 59.015
+        }
+      ]
+    },
+    {
+      "name": "app-race",
+      "exit_status": 0,
+      "artifact": "app-race.jsonl.gz",
+      "sha256": "3c0e45b6fac06280b9b29e6b4ea3048b2a250ec44f243e15228c83ca95c108c0",
+      "test_results": {
+        "pass": 9
+      },
+      "failures": [],
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "action": "pass",
+          "elapsed": 25.672
+        }
+      ]
+    },
+    {
+      "name": "approval-race",
+      "exit_status": 0,
+      "artifact": "approval-race.jsonl.gz",
+      "sha256": "336588b5eca272de95b7b121cca8aac38c3e83b6cb686792a3cb156e49099a30",
+      "test_results": {
+        "pass": 1
+      },
+      "failures": [],
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "action": "pass",
+          "elapsed": 2.266
+        }
+      ]
+    },
+    {
+      "name": "purego",
+      "exit_status": 0,
+      "artifact": "purego.jsonl.gz",
+      "sha256": "c245e75a3a39cb50cc450406a3bff7282b4065c9020fd4361ccb192c36eb204c",
+      "test_results": {
+        "pass": 33
+      },
+      "failures": [],
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "action": "pass",
+          "elapsed": 0.946
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "action": "pass",
+          "elapsed": 3.26
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "action": "pass",
+          "elapsed": 2.931
+        }
+      ]
+    },
+    {
+      "name": "vet",
+      "exit_status": 0,
+      "artifact": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "name": "lint",
+      "exit_status": 0,
+      "artifact": "lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "name": "direction",
+      "exit_status": 0,
+      "artifact": "direction.log.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9"
+    },
+    {
+      "name": "doc-lint",
+      "exit_status": 0,
+      "artifact": "doc-lint.log.gz",
+      "sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b"
+    },
+    {
+      "name": "app-full",
+      "exit_status": 1,
+      "artifact": "app-full.jsonl.gz",
+      "sha256": "ceba0f3a19499cae0c1cbc6272583829a4cfe910e371fac45b938c5a051f71de",
+      "test_results": {
+        "pass": 232,
+        "skip": 2
+      },
+      "skips": [
+        "TestSharedCacheCompositionUsesSeparateService",
+        "TestSharedCacheCanonicalDeploymentIsolation"
+      ],
+      "outcome": "INCOMPLETE: package exceeded the explicit five-minute bound. No failed test assertion was reported before timeout. Running test TestDevRepeatedClosePreservesReusedScratchPath had run for one second."
+    },
+    {
+      "name": "lifecycle-race",
+      "exit_status": 0,
+      "artifact": "lifecycle-race.jsonl.gz",
+      "sha256": "e95f63faad65918608f9af5ff9d50a9a03de4c85d615047e60f56e48a5ee4bbc",
+      "test_results": {
+        "pass": 13
+      },
+      "failures": [],
+      "skips": []
+    },
+    {
+      "name": "doc-lint-final",
+      "exit_status": 1,
+      "artifact": "doc-lint-final.log.gz",
+      "sha256": "823dea90b42a434dc67c8bb46bc0b8b149a542a9af72396aad7116a055c46549",
+      "files": 4
+    },
+    {
+      "name": "doc-lint-qualified",
+      "exit_status": 1,
+      "artifact": "doc-lint-qualified.log.gz",
+      "sha256": "6bfa98847278f952b21cbef1eb7b30dfb85b6b0d01a16085a219aac25dc45297",
+      "files": 4
+    },
+    {
+      "name": "doc-lint-complete",
+      "exit_status": 0,
+      "artifact": "doc-lint-complete.log.gz",
+      "sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7",
+      "files": 4
+    }
+  ],
+  "interpretation": {
+    "before": "Original behavior marked required jobs without checking their reservations on all three backends. Four failure events include the parent.",
+    "initial": "Initial package checks before all added contract tests.",
+    "app": "Initial fixture used Transition(Failed), which correctly refuses without a failure reason. Fixed fixture uses Fail(reason). No assertion weakened.",
+    "required_job_binding": "One attempt binds one gateway job after Begin. Another job refuses. Binding grants no dispatch and changes no meters.",
+    "terminal_behavior": "Slot release is independent. Unresolved budget evidence prevents a new accounting mark. Sweeps recheck required evidence even when an optional mark exists.",
+    "schema": "Attempt payload 2; window/history payload 1; job/batch schema 2; claim payload 3. Older attempts require CSP13 migration."
+  },
+  "review": {
+    "mode": "manual repository-grounded component audit",
+    "checks": [
+      "Submission binding precedes durable job publication and provider dispatch.",
+      "Exact reservation identity includes account, key, offering, generation, operation, and unique gateway job.",
+      "Shared confirmation checks original SQL approval before and after reconciliation.",
+      "Optional errors cannot release reserved spending.",
+      "New attempt version prevents old writers from discarding JobID."
+    ],
+    "required_later": "Pre-PR structured review and complete paired qualification"
+  },
+  "limits": [
+    "No complete video billing contract or provider usage acquisition in this component.",
+    "Strict-budget video dispatch remains refused pending complete billing.",
+    "Optional reporting still uses current catalog and stamp-before-delivery; pinned measured reporting and recovery remain required.",
+    "No paid provider call or invoice validation.",
+    "SQLite approval evidence does not qualify PostgreSQL.",
+    "Process-loss, failover, collection, capacity, and Linux/Windows native CI remain unverified.",
+    "No new PR or merge. One final paired PR sequence remains required.",
+    "The complete application race suite exceeded five minutes after 232 passing results and two skipped tests. It is not qualified by the component checks.",
+    "Terminal notification still shares the accounting mark. The complete asynchronous workflow must separate job-completion notification from unresolved billing before strict-budget video dispatch is enabled."
+  ],
+  "plan_validation": {
+    "ledger_unchanged": true,
+    "task_count": 40,
+    "status_counts": {
+      "done": 26,
+      "in_progress": 1,
+      "todo": 13
+    },
+    "unique_anchors": 97,
+    "links_checked": 128,
+    "source_hashes_match": true,
+    "resume_words": 364,
+    "cold_resume": "Pass: current source, next action, remaining contracts, no running checks, and authorization limits are explicit."
+  }
+}

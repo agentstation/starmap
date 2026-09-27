@@ -423,3 +423,17 @@ The [recovery proof](../../plans/proof/starport-production-catalog/csp12.2/retai
 This worker consumes evidence already in the reservation ledger. It does not query providers or reconstruct missing usage.
 Required asynchronous settlement still needs complete billing contracts, pinned valuation, and durable provider evidence.
 Process-loss, failover, capacity, PostgreSQL, and final production-path qualification remain required under CSP12.2 and CSP15.
+
+## Required job settlement boundary
+
+The job service now checks its required reservation before the optional accounting mark.
+The ledger binds one attempt to one job before dispatch. The application checks the account, key, offering, generation, and operation.
+An unresolved charge retains reserved spending after a terminal job releases its concurrency slot.
+Recovery can settle retained evidence under the original valuation and independent approval.
+
+The [job settlement proof](../../plans/proof/starport-production-catalog/csp12.2/job-settlement-boundary-2026-09-27/verification.json) records the regression and component checks.
+Attempt payload version 2 prevents older writers from silently discarding job ownership. CSP13 owns populated-state migration.
+
+This boundary does not qualify video dispatch. Optional reports still need pinned measured charges and recoverable delivery.
+Terminal notifications must not wait for unresolved billing. Their current accounting-mark dependency requires separation before strict-budget video dispatch.
+Provider evidence acquisition, uncertain submissions, interrupted batches, and full task qualification remain open.
