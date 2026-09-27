@@ -1,0 +1,18 @@
+{
+  "baseRefOid": "8122081e0494648fb1e356647053dd870a05fb1c",
+  "headRefOid": "47991a5649f2e0363fb8c1b117ec327689fabd02",
+  "mergeCommit": {
+    "oid": "2b98ab2606653d896201a2abe16ef2b5fb114290"
+  },
+  "mergedAt": "2026-09-27T02:35:58Z",
+  "state": "MERGED",
+  "repository": "agentstation/starmap",
+  "pr": 185,
+  "premerge_checks": 32,
+  "all_checks": "SUCCESS",
+  "review_threads": 0,
+  "merge_method": "protected normal merge, exact-head match",
+  "head_is_merge_ancestor": true,
+  "merge_tree_equals_reviewed_head": true,
+  "consumer": "PENDING: CI and merge required; CSP11 remains in_progress"
+}
