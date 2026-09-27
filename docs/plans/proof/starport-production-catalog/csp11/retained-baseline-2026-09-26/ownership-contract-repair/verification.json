@@ -21,6 +21,14 @@
   },
   "native_test": "TestFleetRuntimeLiveTakeoverAcceptance",
   "consumer_test_sha256": "cd2fa2644d80843a0616b215e354615e0883c7d654020506e3def906f733e5cb",
-  "review": "running",
+  "review": {
+    "status": "complete with one consciously rejected advisory finding",
+    "accepted": 0,
+    "rejected": 1,
+    "resolution": "REVIEW_RESOLUTION.md",
+    "additional_pin_tests": {
+      "pass": 13
+    }
+  },
   "publication": "not started"
 }
