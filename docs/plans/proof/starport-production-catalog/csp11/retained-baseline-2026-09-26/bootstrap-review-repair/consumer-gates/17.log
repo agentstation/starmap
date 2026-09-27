@@ -1,0 +1,23 @@
+PASS FIL-V01 one blob contract stores opaque bytes over streams
+PASS FIL-V02 a key holding a path separator fails before any write
+PASS FIL-V03 the import graph test names the package and bounds its imports
+PASS FIL-V04 one contract test table runs against both backends
+PASS FIL-V05 an absent configuration selects the filesystem backend
+PASS FIL-V06 an incomplete object store configuration refuses startup
+PASS FIL-V07 a read for another account returns a not-found result
+PASS FIL-V08 a crash before the commit leaves no reachable file
+PASS FIL-V09 the record exposes no blob key through a public accessor
+PASS FIL-V10 a route test walks the router and names the five file paths
+PASS FIL-V11 a key holding only files:read cannot upload
+PASS FIL-V12 an upload past the bound writes no partial blob
+PASS FIL-V13 the encoded file object carries every recorded field
+PASS FIL-V14 a delete removes both the record and the bytes
+PASS FIL-V15 an expired file reads as not found before the sweep runs
+PASS FIL-V16 the limit vocabulary bounds stored bytes
+PASS FIL-V17 two concurrent uploads cannot both pass a bound that admits one
+PASS FIL-V18 a document content part can name a stored file identifier
+PASS FIL-V19 a stored file reference reaches the cache key
+PASS FIL-V20 the console lists, uploads, and deletes a stored file
+PASS FIL-V21 CI runs this gate
+PASS FIL-V22 the required evidence list names this gate and its terminal count
+Summary: 22 passed, 0 failed

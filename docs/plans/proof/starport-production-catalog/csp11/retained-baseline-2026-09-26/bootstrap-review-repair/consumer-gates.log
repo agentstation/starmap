@@ -1,0 +1,68 @@
+RUN bash scripts/verify-starmap-ownership.sh
+RESULT 0
+RUN bash scripts/verify-v1-architecture.sh
+RESULT 0
+RUN bash scripts/test-dependency-direction-verifier.sh
+RESULT 0
+RUN bash scripts/verify-dependency-direction.sh
+RESULT 0
+RUN bash scripts/verify-catalog-driven-providers.sh
+RESULT 0
+RUN bash scripts/verify-package-layout.sh
+RESULT 0
+RUN bash scripts/verify-readme-quickstart.sh
+RESULT 0
+RUN bash scripts/verify-v1-release.sh
+RESULT 0
+RUN bash scripts/verify-release-workflow.sh
+RESULT 0
+RUN bash scripts/verify-developer-experience.sh
+RESULT 0
+RUN bash scripts/verify-doc-links.sh
+RESULT 0
+RUN bash scripts/test-doc-link-verifier.sh
+RESULT 0
+RUN bash scripts/verify-openrouter-parity.sh
+RESULT 0
+RUN bash scripts/verify-console-modernization.sh
+RESULT 0
+RUN bash scripts/verify-auth-onboarding.sh
+RESULT 0
+RUN bash scripts/verify-console-session-grants.sh
+RESULT 0
+RUN bash scripts/verify-model-modalities.sh
+RESULT 0
+RUN bash scripts/verify-files-api.sh
+RESULT 0
+RUN bash scripts/verify-async-media-jobs.sh
+RESULT 0
+RUN bash scripts/verify-document-parser.sh
+RESULT 0
+RUN bash scripts/verify-reranking.sh
+RESULT 0
+RUN bash scripts/verify-catalog-performance.sh
+RESULT 0
+RUN bash scripts/verify-credential-sharing.sh
+RESULT 0
+RUN bash scripts/verify-enterprise-readiness.sh
+RESULT 0
+RUN bash scripts/verify-console-polish.sh
+RESULT 0
+RUN bash scripts/verify-action-pins.sh
+RESULT 0
+RUN bash scripts/benchmark-overhead.sh
+RESULT 0
+RUN bash scripts/smoke-first-run.sh
+RESULT 0
+RUN pnpm -C console check
+RESULT 0
+RUN go test ./...
+RESULT 0
+RUN go vet ./...
+RESULT 0
+RUN make lint
+RESULT 0
+RUN make build
+RESULT 0
+RUN bash scripts/smoke-openrouter-sdks.sh
+RESULT 0

@@ -1,0 +1,13 @@
+PASS O01 active providers are the catalog and compiled primitive intersection
+PASS O02 primitive registries own inference transport and authentication dispatch
+PASS O03 catalog-acquisition and inference credential planes are isolated
+PASS O04 Google inference credentials never enter a URL
+PASS O05 model and endpoint discovery use one routable snapshot
+PASS O06 embedding routes require catalog and adapter capabilities
+PASS O07 provider model IDs stay exact and opaque
+PASS O08 connectors and current architecture contain no duplicate catalog ownership
+PASS O09 prompt cache and price behavior use exact offerings
+PASS O10 Starport has no provider-wide cache or sample-price tables
+PASS O11 Starmap owns provider acquisition auth and service facts
+PASS O12 catalog fact mutations flow without new Starport conditionals
+Summary: 12 passed, 0 failed

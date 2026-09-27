@@ -1,0 +1,17 @@
+PASS .goreleaser.yaml exists
+PASS .github/workflows/release.yaml exists
+PASS .env.example exists
+PASS SECURITY.md exists
+PASS stale docs/PLAN.md is absent
+PASS architecture has no stale active-plan claim
+PASS README has no pre-release status
+PASS workflow actions use reviewed commit pins
+PASS Starport uses a published Starmap version without replacement
+PASS release smoke requires all official OpenRouter SDKs
+PASS CI invokes the v1 release verifier
+PASS CI and release publication use the reviewed Syft version
+PASS release configuration covers the v1 platform matrix
+PASS release binaries use reproducible commit-time metadata
+PASS release binaries preserve Go VCS provenance
+PASS release workflow verifies provenance before immutable publication
+Summary: 16 passed, 0 failed
