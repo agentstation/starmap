@@ -1,0 +1,145 @@
+{
+  "status": "LOCAL_PASS_REVIEWED_CI_PENDING",
+  "base_commit": "b5763dd6a0be7081984b151365d892f38af2e97d",
+  "recorded_at": "2026-09-27T04:22:10.354773+00:00",
+  "failure": {
+    "ci_job": "https://github.com/agentstation/starmap/actions/runs/36292744998/job/108545828057",
+    "observation": "Cold boot passes. Restart is OOM-killed inside the unchanged 512 MiB container. Local reproduction confirms it. The previous published module passes.",
+    "diagnosis": "Persisting the previously uncommitted baseline lets restart enter optional workspace repair, which creates the full unused YAML tree. Diagnostic phase markers locate the growth before runtime layer initialization, after client construction.",
+    "rejected_partial_repairs": [
+      "Skipping a redundant baseline commit is correct but does not stop eager workspace creation.",
+      "Reusing verified embedded facts avoids duplicate decoding but does not stop eager workspace creation."
+    ]
+  },
+  "repair": [
+    "Commit the unchanged embedded baseline only while the client uses an uncommitted bootstrap.",
+    "Reuse immutable embedded facts for verified stored bytes with the same digest; still validate schema and membership evidence and retain stored identity.",
+    "For the exact compiled baseline, skip automatic workspace creation only when neither the tree nor projection/replacement records exist. Explicit projection and existing-state recovery retain their contracts."
+  ],
+  "checks": {
+    "root_regressions": "7 named PASS, 0 FAIL/SKIP",
+    "runtime_and_workspace_regressions": "10 named PASS, 0 FAIL/SKIP",
+    "offline_container": "PASS: two fresh network-isolated processes, 512 MiB, same private saved/served catalog and instance identity, cleanup complete",
+    "lint": "PASS: 0 issues",
+    "goago": "PASS",
+    "verifier_unit": "PASS: 99 tests",
+    "lease_regressions": "8 named PASS, 0 FAIL/SKIP",
+    "technical_writing": "PASS: 1884 files, 0 diagnostics",
+    "review": "Clean Opus pre-PR review at configured P0 threshold. Final generated-link change reuses the substantive review."
+  },
+  "limits": [
+    "No claim of native CI success on the repaired head yet.",
+    "Diagnostic overlay runs are failure evidence, not qualification.",
+    "Full catalog YAML projection remains a separate explicit operation."
+  ],
+  "source_sha256": {
+    "baseline.go": "a317a13b293ff9bb0d926eb8d48438bea8e8ac35c18e9c54164ff6f35e3ce13b",
+    "client.go": "ba19d6f8a263ab7da8eaa9d12754ae1628a4168333349ad689e120b2cd9001ed",
+    "docs/CATALOG_STORE_CONTRACT.md": "7500f05b405a3ea565d7e5a5f2b960a2b6fe1447511608888ee4a92536d98d66",
+    "runtime/embedded_retention.go": "3267fd6b4bdba678d2bc87b1740024cd828ed80f1ce4b41c463a50315ee9981b",
+    "runtime/embedded_retention_test.go": "0cc9e614dc686415e1bcccbbd16c902576c26119b89528a96d4117010b51535a",
+    "runtime/workspace.go": "2973ce996ea492b859d49ffc25ba290983e6bc69c8a43f930bb1eb15b2a316c7",
+    "scripts/catalog-product-checks.json": "7db279cd13f80f8a48a27011f1d8d2c6be631c714d5f31ecafdd6f1e37373cde",
+    "internal/catalog/workspace/presence.go": "027fd05f1915d97c758858d85e3e6cec0b4f9c9669d3e60315b26a5f30de1dbc",
+    "internal/catalog/workspace/presence_test.go": "c569d5894c1a0d91b8ba2a0c9ebb894834f54690c9ca2d5835345d269cbec4f8",
+    "stored_baseline_test.go": "8316bc3a651f9d171344da9900f594e1c45b20816c4b8f2511534d35fe5cf35f"
+  },
+  "evidence": {
+    "cold-server.json": {
+      "archive": "cold-server.json.gz",
+      "sha256": "5b4b17968b821845493177cf5e8dbdc858f7ed51f0817b0c6f52af6dea47bcf8"
+    },
+    "csp12-cold-server-local.json": {
+      "archive": "csp12-cold-server-local.json.gz",
+      "sha256": "e2535f7bae378230ec9cfbf887dda0fa9737611391d06deb1351e17d90ef9af9"
+    },
+    "csp12-cold-server-parent.json": {
+      "archive": "csp12-cold-server-parent.json.gz",
+      "sha256": "4b81150418a7239f6ab2ab6771bf6d14a289cb6dfc4482a63c60f3165911a027"
+    },
+    "csp12-cold-server-restart-after.json": {
+      "archive": "csp12-cold-server-restart-after.json.gz",
+      "sha256": "4f8674e3246738ea8f4de32f97c3345468d9a1be2a89d0d6a329d852d34d2036"
+    },
+    "csp12-cold-server-reuse-after.json": {
+      "archive": "csp12-cold-server-reuse-after.json.gz",
+      "sha256": "fca972ed78bc7b7e24d063499447cb5d9a006f6f8042c212f275f8a8fbc5f8e0"
+    },
+    "csp12-phase-diagnostic.json": {
+      "archive": "csp12-phase-diagnostic.json.gz",
+      "sha256": "b620a89671aa425659bdbde730ba906b7f8cda52c6e49e4aff250a6fce32b88d"
+    },
+    "csp12-cold-server-workspace-after.json": {
+      "archive": "csp12-cold-server-workspace-after.json.gz",
+      "sha256": "98c5aaa417366e491cd300668fb43149ab2a1b5ad2fb2a14678d637776b64bbb"
+    },
+    "csp12-baseline-restart-before.jsonl": {
+      "archive": "csp12-baseline-restart-before.jsonl.gz",
+      "sha256": "8eac467f9d68088658ca1e151e4505cfb9afc55e4fb4d7af119f57351a64fac5"
+    },
+    "csp12-baseline-restart-after.jsonl": {
+      "archive": "csp12-baseline-restart-after.jsonl.gz",
+      "sha256": "371cb01c5c80ebd0c0d3e6c157488d74b2c927d8ebc3387885b8af0e994a8a41"
+    },
+    "csp12-stored-baseline-before.jsonl": {
+      "archive": "csp12-stored-baseline-before.jsonl.gz",
+      "sha256": "5c1c0d6cdd14a85f33bbbe81c3d56574a8921cb53dfd88d54a293accbb74c182"
+    },
+    "csp12-stored-baseline-after.jsonl": {
+      "archive": "csp12-stored-baseline-after.jsonl.gz",
+      "sha256": "a35eea50d0924b468f1ae74653a0a1e9e270473ef47928e8f15b88304bbf8505"
+    },
+    "csp12-optional-workspace-after.jsonl": {
+      "archive": "csp12-optional-workspace-after.jsonl.gz",
+      "sha256": "bb1c4ed814ac385ca05b9734c7d6524aae06c6c703c8599c84714015523d6cb0"
+    },
+    "csp12-starmap-lint-workspace.log": {
+      "archive": "csp12-starmap-lint-workspace.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "csp12-starmap-goago-workspace.json": {
+      "archive": "csp12-starmap-goago-workspace.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    "csp12-verifier-workspace.log": {
+      "archive": "csp12-verifier-workspace.log.gz",
+      "sha256": "5da85c1aded3dd77f2d9a607c24846ef43f461a9695d15b4d1f300a0c4d08189"
+    },
+    "csp12-baseline-lease-after.jsonl": {
+      "archive": "csp12-baseline-lease-after.jsonl.gz",
+      "sha256": "b22614d626cc68e7384d7158fd0457be680ef5ddeaf9829f8313df54eb5f0c30"
+    },
+    "csp12-native-linux-old.log": {
+      "archive": "csp12-native-linux-old.log.gz",
+      "sha256": "1b2e64b581ee3e2b989f9c2f96f21da95fce1d0d62e7419202b2bbc6e1a67958"
+    },
+    "csp12-starmap-writing-lease.log": {
+      "archive": "csp12-starmap-writing-lease.log.gz",
+      "sha256": "4f515a3f79f8b4ca0934ab1f5701b6f38deec59b56a31c94c5908d5c0c8c0b2b"
+    },
+    "csp12-starmap-autoreview-lease.log": {
+      "archive": "csp12-starmap-autoreview-lease.log.gz",
+      "sha256": "e85376c66ec9c6a692030b56a5880a1213d4f12a821bdc3498a389847691ce64"
+    },
+    "csp12-starmap-lint-lease.log": {
+      "archive": "csp12-starmap-lint-lease.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "csp12-starmap-goago-lease.json": {
+      "archive": "csp12-starmap-goago-lease.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    "csp12-verification-ci-failure.log": {
+      "archive": "csp12-verification-ci-failure.log.gz",
+      "sha256": "d96fed072cf7313354dcea4dbefae75c3f0e6cec4565224640fcf5b17dafb788"
+    }
+  },
+  "restart_repair_commit": "cd6a158ba162e05a406de38ce38e91c9cacf85de",
+  "follower_repair_commit": "6be619f6ca486a5fd0836fbb61c1513d061b37b5",
+  "producer_head": "8fa31111716b17b9e8d89232af51d2fc49b499bd",
+  "lease_failure": {
+    "job": "https://github.com/agentstation/starmap/actions/runs/36292744998/job/108545828034",
+    "failed_test": "TestManualRunByANonOwnerReturnsAConflict",
+    "repair": "An ordinary follower with no refresh lease can start without committing the embedded baseline. An owner still checks the original lease fence before activation."
+  }
+}

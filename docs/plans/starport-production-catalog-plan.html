@@ -11,7 +11,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated September 27, 2026 UTC. CSP12 is in progress. 24 of 40 tasks are complete.</p>
 
-<p id="next-action">Qualify and merge Starmap #186 at <code>b5763dd6a</code>. Use <code>/tmp/starmap-fleet-review-20260926</code> on <code>codex/offline-baseline-persistence</code> and the active Starport preparation checkout. Then qualify recreation, restore, and the complete CSP12 contract before review and merge.</p>
+<p id="next-action">Qualify and merge Starmap #186 at <code>8fa311117</code>. Use <code>/tmp/starmap-fleet-review-20260926</code> on <code>codex/offline-baseline-persistence</code> and the active Starport preparation checkout. Then qualify recreation, restore, and the complete CSP12 contract before review and merge.</p>
 
 <p>CSP11 merged through Starmap #185 at <code>2b98ab260</code> and Starport #385 at <code>6bd7fcf4</code>. Both merge trees match the tested heads. All 52 CI checks and eleven combined task subcases pass. The <a href="proof/starport-production-catalog/csp11/merged-pair-2026-09-27/verification.json">completion proof</a> records source hashes, protected merges, and exact results.</p>
 
@@ -21,9 +21,11 @@
 
 <p>The <a href="proof/starport-production-catalog/csp12/namespace-and-badger-2026-09-27/verification.json">storage progress proof</a> records five failing repository isolation cases before repair and fifteen passing results afterward. The broader suite passes 613 named results, with three explicit skips and one failing fixture plus its parent. Its corrected focused checks pass.</p>
 
-<p>Eleven Badger profile results and 145 real adapter results pass. Compose configuration tests pass, and lint reports zero issues. The <a href="proof/starport-production-catalog/csp12/recipe-startup-2026-09-27/verification.json">paired repair proof</a> records the offline failure and passing container recreation and restore checks. The local pair uses a temporary module override. Published-module qualification remains open.</p>
+<p>Eleven Badger profile results and 145 real adapter results pass. Compose configuration tests pass, and lint reports zero issues. The <a href="proof/starport-production-catalog/csp12/recipe-startup-2026-09-27/verification.json">paired repair proof</a> records the offline failure and passing container recreation and restore checks. Earlier pair evidence uses a temporary module override. Final qualification must use the published producer module.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp12/producer-review-2026-09-27/verification.json">producer review proof</a> records clean autoreview and 99 passing verifier tests. Starmap #186 awaits required CI. The first unsharded runtime run timed out after 555 passing results and one obsolete assertion. The corrected assertion passes. Consumer repository checks run with the temporary module override.</p>
+<p>The <a href="proof/starport-production-catalog/csp12/producer-review-2026-09-27/verification.json">producer review proof</a> records clean autoreview and 99 passing verifier tests. Starmap #186 awaits required CI. The first unsharded runtime run timed out after 555 passing results and one obsolete assertion. The corrected assertion passes. Published-module architecture, ownership, provider, lint, and SDK checks pass. Final recipe qualification remains open.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp12/restart-repair-2026-09-27/verification.json">restart repair proof</a> records the CI memory and lease failures. Local repairs pass 25 named results. The offline container passes at the unchanged 512 MiB limit. Existing YAML workspaces still recover. Ordinary followers start without committing a baseline. Final native CI remains open.</p>
 
 <p>Use the <a href="proof/starport-production-catalog/csp12/prepared-lint-repair-2026-09-27/NAMESPACE_CONTRACT.md">namespace contract</a> for the active repair. Keep fresh initialization restricted to an empty dedicated KV database and SQL schema. CSP13 owns populated migration and controlled backend recovery. Existing unprefixed records must never trigger automatic copy or fallback.</p>
 
@@ -687,4 +689,5 @@
 <tr><td>2026-09-27</td><td>CSP11 complete; CSP12 active</td><td>Merge the approved fleet baseline contract and consumer adapter. Preserve downstream release blockers.</td><td>Starmap #185: <code>2b98ab260</code>. Starport #385: <code>6bd7fcf4</code>. The <a href="proof/starport-production-catalog/csp11/merged-pair-2026-09-27/verification.json">completion proof</a> records 52 passing checks, eleven passing task subcases, and exact tree equality.</td></tr>
 <tr><td>2026-09-27</td><td>CSP12 acceptance ownership</td><td>Register storage recipe checks. Retain current producer registrations in the plan checkout.</td><td>CSP13 retains populated namespace migration. CSP12.2 now selects per-attempt budget refusal. CSP15 and final qualification retain both requirements.</td></tr>
 <tr><td>2026-09-27</td><td>CSP12 producer repair reviewed</td><td>Publish draft Starmap #186 at <code>b5763dd6a</code>.</td><td>Clean autoreview, focused race checks, lint, compile, structure, and 99 verifier tests pass. The 15-minute unsharded run remains failed evidence. Required CI owns full qualification.</td></tr>
+<tr><td>2026-09-27</td><td>CSP12 startup qualification repairs</td><td>Retain optional workspace and ordinary follower contracts in Starmap #186.</td><td>The restart repair proof records 25 passing local results, a passing 512 MiB container check, and clean review. Native CI and consumer publication remain open.</td></tr>
 </tbody></table></section></main></body></html>

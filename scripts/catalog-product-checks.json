@@ -6386,6 +6386,30 @@
           "repository": "starport",
           "package": "./internal/app",
           "test": "TestMatchingCandidateStillRequiresDurableAcceptance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./",
+          "test": "TestStoredBaselineReusesVerifiedCatalog"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./",
+          "test": "TestStoredBaselineReuseStillValidatesGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/workspace",
+          "test": "TestProjectionPresencePreservesRecoverySelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestManualRunByANonOwnerReturnsAConflict"
         }
       ]
     }

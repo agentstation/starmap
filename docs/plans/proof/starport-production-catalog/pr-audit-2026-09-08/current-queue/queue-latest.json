@@ -960,7 +960,7 @@
     "worktree": "/tmp/starport-fleet-review-20260926",
     "commit": "3c6bab49b55ac7d2e1a76f0f4fdbf459da0259f7",
     "published": false,
-    "next_action": "Finish the ordinary offline baseline repair and full runtime regression. Qualify producer publication, pin the consumer, rerun complete recipe acceptance, review, and merge.",
+    "next_action": "Qualify final producer CI and the published-module consumer storage contract. Review consumer preparation, then merge in dependency order.",
     "connection_checks": {
       "source": "committed preparation 63c763b",
       "evidence": "../../csp12/prepared-lint-repair-2026-09-27/retired-transactions/runner.json",
@@ -990,7 +990,7 @@
       "producer_worktree": "/tmp/starmap-fleet-review-20260926",
       "producer_branch": "codex/offline-baseline-persistence",
       "producer_base": "2b98ab2606653d896201a2abe16ef2b5fb114290",
-      "status": "UNCOMMITTED",
+      "status": "PRODUCER_REVIEWED_CI_PENDING",
       "local_pair_module_override": "/tmp/csp12-pair.mod",
       "proof": "../../csp12/recipe-startup-2026-09-27/verification.json"
     },
@@ -1002,12 +1002,13 @@
     "container_result": "Local patched pair passes configuration, fresh startup, container recreation, and cold restore. Published-module qualification remains pending.",
     "producer_pull_request": {
       "url": "https://github.com/agentstation/starmap/pull/186",
-      "head": "b5763dd6a0be7081984b151365d892f38af2e97d",
-      "disposition": "reviewed draft; await required native CI",
+      "head": "8fa31111716b17b9e8d89232af51d2fc49b499bd",
+      "disposition": "reviewed draft; final native CI pending",
       "owner": "production catalog plan CSP12",
       "next_action": "Inspect exact head checks, then mark ready and protected merge. Pin Starport to published producer and qualify CSP12."
     },
-    "producer_review_proof": "docs/plans/proof/starport-production-catalog/csp12/producer-review-2026-09-27/verification.json"
+    "producer_review_proof": "docs/plans/proof/starport-production-catalog/csp12/producer-review-2026-09-27/verification.json",
+    "restart_repair_proof": "../../csp12/restart-repair-2026-09-27/verification.json"
   },
   "local_updated_at": "2026-09-27T02:56:15.239140+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
