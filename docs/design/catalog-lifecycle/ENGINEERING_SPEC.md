@@ -2990,6 +2990,17 @@ Recognition before chat and semantic embeddings before a cache hit require separ
 When an outer request stops, retain charged or uncertain inner operations.
 An operation with unsupported billing units must refuse strict-budget dispatch before contacting its provider.
 
+Embedding admission requires a complete `billing.embeddings` declaration for monetary budgets.
+The `input_tokens` basis charges all measured input tokens at the ordinary input rate.
+An explicit `request_charge` decision states whether a per-call charge also applies.
+The contract covers synchronous text and token-ID inputs. It excludes media inputs and provider-side batch discounts.
+
+Reserve the declared provider input limit for every input item, with checked multiplication.
+Local estimates cannot reduce this bound or authorize settlement.
+Missing, null, negative, or inconsistent provider counts retain uncertain capacity.
+Explicit complete zeros can settle a token-only charge at zero.
+Semantic-cache embeddings retain caller routing policy and reserve independently against the same budget meters.
+
 Budget amounts mean Starport-accounted usage under the reservation's pinned catalog prices, expressed in integer nano-USD.
 They do not guarantee the provider's eventual invoice. Report that distinction in budget setup and usage exports.
 

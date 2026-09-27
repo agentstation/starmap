@@ -3791,3 +3791,28 @@ Final focused race checks pass 35 results. Broader component and repository evid
 
 The audit also found estimated Vertex embedding counts and zero Ollama embedding counts without measurement.
 CSP12.2 must preserve these as unknown during required settlement. Current strict-budget embedding dispatch remains unsupported.
+
+
+## September 27 embedding admission
+
+The prior production path refused embedding calls with required budgets because no quote existed.
+Six public-route regression subcases returned HTTP 503 before implementation.
+The [embedding proof](../../plans/proof/starport-production-catalog/csp12.2/embedding-billing-2026-09-27/verification.json) preserves those failures and the repaired behavior.
+
+Schema 12 retains complete embedding billing declarations independently of prices.
+The OpenAI serving record now declares the verified input basis and 8,192-token input limit.
+Its legacy zero per-token placeholder already resolves as missing beside a nonzero per-million rate. No price-presence repair was necessary.
+
+Starport reserves per-item limits and settles complete measured input counts.
+Missing or inconsistent counts remain uncertain, including native absent usage and Vertex estimates.
+The semantic-cache adapter previously omitted the caller's routing configuration. Child calls now retain that configuration and separate reservation identity.
+
+All eleven production race results pass. The full consumer suite passes 4,403 results and skips 133.
+The producer catalog package passes 1,335 race results. Final focused producer checks pass 23 results.
+Consumer package race checks pass 1,048 results and skip 38. Forty-five pure-Go results pass.
+These checks use the unpublished producer through the candidate workspace.
+Full A47, shared-backend operation coverage, native CI, exact dependency qualification, and required reviews remain open.
+
+The Vertex adapter still assumes a scalar string input. A non-string input can panic at its type assertion.
+CSP12.2 must repair and qualify its input shapes before claiming complete embedding coverage.
+Legacy display estimates also need explicit provenance before they can represent measured usage outside strict settlement.

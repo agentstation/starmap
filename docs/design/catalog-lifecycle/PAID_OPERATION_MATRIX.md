@@ -149,6 +149,26 @@ The producer dependency still resolves through the candidate workspace.
 Vertex embedding conversion currently estimates tokens from whitespace. Ollama embedding conversion reports zero without provider usage.
 Neither value can authorize a strict-budget refund. Embedding support needs measured usage or retained uncertain capacity.
 
+## September 27 embedding admission
+
+The [embedding proof](../../plans/proof/starport-production-catalog/csp12.2/embedding-billing-2026-09-27/verification.json) records schema 12 and the first embedding projection.
+The OpenAI `text-embedding-3-small` offering declares input-token billing and no separate request charge.
+Its declared input limit is 8,192 tokens per item.
+The gateway reserves that full limit for each text or token-ID item with checked multiplication.
+Other offerings still require complete verified monetary declarations.
+
+The real application tests use Badger, SQLite, and a local HTTP provider through the production OpenAI connector.
+They cover measured settlement, complete zero usage, missing or inconsistent usage, insufficient capacity, and unknown billing.
+Refused calls reach no provider. Unknown usage retains the full reservation.
+Native Google, Vertex, and Ollama usage cannot authorize refunds from absent or estimated counts.
+
+A semantic-cache child call receives a separate attempt identity and the parent's budget meters.
+It retains the caller's model and credential-routing restrictions.
+Eleven production race results pass. The repository suite passes 4,403 results and skips 133.
+The exact released dependency and native CI remain unqualified.
+Real shared-backend qualification, remaining operation contracts, and settlement recovery remain open.
+This evidence does not complete A47 or CSP12.2.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:
