@@ -21,10 +21,10 @@ func (c *Client) EmbeddedCatalogState() CatalogState {
 	}
 }
 
-// decodeStoredCatalog reuses verified embedded facts when validated stored bytes
+// decodeValidatedCatalog reuses verified embedded facts when validated stored bytes
 // have the same digest. The caller validates the stored manifest and bytes first.
 // Stored schema and membership evidence still require their own checks.
-func decodeStoredCatalog(stored catalogs.Generation, embedded *catalogs.Catalog, baseline catalogs.BootstrapManifest) (*catalogs.Catalog, error) {
+func decodeValidatedCatalog(stored catalogs.Generation, embedded *catalogs.Catalog, baseline catalogs.BootstrapManifest) (*catalogs.Catalog, error) {
 	if stored.Manifest.Payload.Checksum != baseline.Payload.Checksum {
 		return catalogs.DecodeCatalogGeneration(stored)
 	}

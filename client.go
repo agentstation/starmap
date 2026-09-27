@@ -202,7 +202,7 @@ func newClient(ctx context.Context, options *options) (*Client, error) {
 			if err := stored.Validate(); err != nil {
 				return nil, errors.WrapResource("validate", "stored current catalog generation", stored.Manifest.GenerationID, err)
 			}
-			initial, err = decodeStoredCatalog(stored, embeddedCatalog, bootstrapManifest)
+			initial, err = decodeValidatedCatalog(stored, embeddedCatalog, bootstrapManifest)
 			if err != nil {
 				return nil, errors.WrapResource("decode", "stored current catalog generation", stored.Manifest.GenerationID, err)
 			}
