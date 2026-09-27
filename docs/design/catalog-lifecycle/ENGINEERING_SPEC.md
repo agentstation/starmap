@@ -4295,3 +4295,27 @@ Optional usage preserves requested dimensions, the edit distinction, and unknown
 Four DeepInfra generation offerings declare these contracts. Twenty-four embedded image-unit prices preserve their numerical values under the explicit unit field.
 Public documentation supplies the billing formulas and defaults. Fixed iterations through the compatible endpoint follow those documented defaults.
 Provider invoice verification remains absent. Token-priced images, image edits, other media, and asynchronous settlement remain required under CSP12.2.
+
+
+### Usage replay and concurrent job updates
+
+Optional usage reporting commits each immutable record and its aggregate changes in one native conditional batch.
+The identity contains the gateway key, event timestamp, and request ID. An exact replay changes no totals or expiration.
+Different contents for that identity refuse. Counter corruption and arithmetic overflow refuse the complete batch.
+All account, key, team, and deployment counters participate in that batch.
+
+The event timestamp fixes the retention deadline at whole-second precision. An absent record after that deadline refuses replay.
+The receipt TTL rounds up to milliseconds so storage precision cannot open an early replay gap.
+These analytics rules do not approve budget capacity or settle a required reservation.
+An asynchronous reporter must preserve its original event timestamp and valuation across retries.
+The new write contract does not repair historical partial records or inflated totals.
+
+Job replacement binds the caller's complete observed record through compare-and-swap.
+A concurrent asset, state, or accounting change requires a new read before another update.
+An ambiguous asset-publication result retains the bytes. A read that confirms the stored asset resolves the lost acknowledgement.
+Only a definite conflict or missing job permits immediate candidate deletion.
+Unreferenced assets after an unresolved publication still require bounded recovery and collection evidence.
+
+Durable submission, pinned valuation, required settlement, and idempotent slot release remain mandatory. CSP12.2 owns those contracts.
+
+The existing terminal stamp still precedes optional accounting and slot release. These foundational repairs do not qualify that recovery sequence.

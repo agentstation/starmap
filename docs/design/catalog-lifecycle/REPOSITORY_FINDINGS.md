@@ -3995,3 +3995,28 @@ The source review date is September 27, 2026.
 The new fixture test initially compared exact floating-point representations. Existing acquisition normalization removes representational noise.
 The corrected assertion permits two adjacent floating-point steps and still detects unit conversion.
 The provider-decoding function exceeded the lint complexity limit. Billing-schema validation now has its own function with unchanged version refusals.
+
+
+## September 27 accounting retry foundations
+
+Starport `3fb9c131` repairs three reproduced defects before asynchronous settlement integration.
+Usage replay previously increased counters again. Job replacement could erase a newer accounting stamp during a same-state update.
+A lost asset-publication acknowledgement could also delete bytes that the committed job referenced.
+Each regression failed before its repair. Job regressions reproduced on memory, Badger, and Valkey.
+
+The [component proof](../../plans/proof/starport-production-catalog/csp12.2/accounting-retries-2026-09-27/verification.json) records the source commit, commands, test names, and raw output.
+Optional usage now commits its record and aggregate changes in one native conditional batch.
+Exact replay preserves totals. Conflicting contents, expired absent receipts, counter corruption, and overflow refuse.
+The tests cover concurrent distinct events, repeated events, lost acknowledgements, expiration precision, and Badger close/reopen.
+
+Job replacement now binds the caller's observed record. Concurrent updates must read the accepted record before another change.
+A definite asset-publication conflict discards the candidate. An uncertain result preserves its bytes and attempts a confirming read.
+An unresolved result can leave unreferenced bytes. Bounded recovery and collection remain required.
+
+The final usage and job race suite passes 211 results without skips. Earlier caller race checks pass 872 results and skip one.
+The complete suite passes 4,793 results and skips 71. Eight packages skip independently.
+Lint and affected-package vet pass. The tests use Go 1.27.1, real Badger, and a task-owned Valkey container.
+
+Required budget settlement remains separate from optional analytics. The job terminal stamp still precedes reporting and slot release.
+Durable submission, pinned valuation, settlement retries, idempotent slot release, and complete recovery enumeration remain open.
+Shared-process failure, failover, the PostgreSQL witness, and released-pair qualification remain unverified. This component does not complete CSP12.2.

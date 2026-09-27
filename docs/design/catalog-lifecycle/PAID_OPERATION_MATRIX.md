@@ -301,6 +301,18 @@ No paid inference or provider invoice verification occurred. Those failures and 
 Image edits, token-priced images, other speech units, transcription, video, recognition variants, and search-unit admission remain incomplete.
 Asynchronous recovery, shared-backend qualification, A47, the published dependency, review, native CI, and merges remain required.
 
+## Asynchronous accounting foundations
+
+Optional usage now commits each record and all aggregates atomically. Exact retries preserve totals and TTLs.
+Conflicting contents and replay after the event's retention deadline refuse. Corrupt or overflowing counters leave the complete write unchanged.
+
+Job replacement now compares the caller's observed record. A stale same-state update cannot erase accounting or asset progress.
+An ambiguous asset commit retains its bytes until the stored record resolves the result.
+
+These repairs support later settlement recovery. They do not bind a provider submission to a durable reservation.
+Pinned asynchronous valuation, idempotent slot release, recovery enumeration, and unreferenced asset collection remain incomplete.
+The terminal stamp still precedes optional accounting. Retrying that sequence requires its own repair and qualification.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:
