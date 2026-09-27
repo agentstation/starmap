@@ -191,11 +191,16 @@ func TestManualRunByANonOwnerReturnsAConflict(t *testing.T) {
 		testSourceRead(t, "generation-owner", payload, time.Now().UTC()),
 	}
 
+	store := &countingStore{Store: storage.NewMemory()}
 	runtime := openTestRuntime(t,
-		WithClientOptions(starmap.WithCatalogStore(storage.NewMemory())),
+		WithClientOptions(starmap.WithCatalogStore(store)),
 		WithSource(source),
 		WithLeaseStore(leases),
 	)
+
+	if got := store.commitCount(); got != 0 {
+		t.Fatalf("non-owner committed the baseline: %d commits", got)
+	}
 
 	_, err := runtime.RefreshSource(context.Background())
 	if err == nil {

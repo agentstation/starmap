@@ -690,7 +690,8 @@ Its identity, checksum, and timestamp remain independent of application storage,
 The getter uses the catalog already verified during construction. It reads no storage and decodes no payload.
 `EmbeddedGeneration` remains the constructor-free accessor for a complete manifest and payload.
 
-With an explicit writable store, ordinary runtime startup commits an uncommitted embedded baseline before returning.
+With an explicit writable store, an ordinary refresh owner commits an uncommitted embedded baseline before returning.
+An ordinary follower can serve its baseline without a storage write.
 A failed commit prevents startup. Restart retains the same generation without another commit.
 Library construction remains read-only. Fleet, authority, origin, and pin publication retain their separate contracts.
 

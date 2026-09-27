@@ -6404,6 +6404,12 @@
           "repository": "starmap",
           "package": "./internal/catalog/workspace",
           "test": "TestProjectionPresencePreservesRecoverySelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestManualRunByANonOwnerReturnsAConflict"
         }
       ]
     }
