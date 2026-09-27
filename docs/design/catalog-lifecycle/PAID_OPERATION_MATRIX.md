@@ -86,6 +86,23 @@ Required budget settlement needs a recoverable state transition separate from op
 A job's terminal state alone cannot establish zero provider cost.
 Current terminal accounting and a final `Chargeable` flag cannot prove that every provider attempt settled.
 
+## September 27 dispatch integration
+
+Unpublished Starport `3a292316` installs admission in production routing.
+Chat has a conservative token-only projection from declared offering limits.
+The shared operation path and embeddings refuse required budgets without a supported projection. Confirmed absent budgets retain provider access.
+Spend projections and the remaining operation-specific bounds are incomplete.
+
+The production tests use the OpenAI connector, local HTTP provider, Badger, and SQLite.
+They verify concurrent refusal, measured settlement, absent budgets, unknown spend bounds, and stream completion or interruption.
+OpenAI-compatible settlement requires the protocol's completion marker. A truncated body retains its full reservation despite partial usage.
+Other stream protocols still need their completion contracts and qualification.
+
+The broader application race run has four failures because existing spend-budget fixtures reach the missing monetary projection.
+These failures block publication. Preserve their budgets and assertions while implementing complete Starmap billing contracts and consumer projections.
+The [dispatch proof](../../plans/proof/starport-production-catalog/csp12.2/provider-integration-2026-09-27/verification.json) retains failures, repairs, source hashes, and check limits.
+This work does not establish A47 or complete this matrix.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:

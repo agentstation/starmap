@@ -2937,9 +2937,22 @@ If Starport cannot establish the required bound, refuse the attempt under D14.
 An approximation without a defensible bound does not prove strict budget enforcement.
 Unsupported billing units must receive explicit refusal or unsupported status.
 
+Starmap owns the complete billing-unit contract for each provider call purpose. Prices alone do not identify every applicable charge.
+Starport must bind that contract to the prepared request, selected mode, catalog generation, and all required rates.
+The contract must distinguish generation submission from independently charged follow-up calls.
+A partial price record cannot establish a complete monetary bound.
+
+Declared provider token limits can supply a conservative bound when they cover the complete request.
+A narrower bound requires qualified request limits or tokenization evidence. A local estimate cannot replace that evidence.
+
 Reconcile provider usage once. Release capacity only after reconciliation establishes that the provider did not consume it.
 Retries, fallback, cancellation, and stream termination must preserve the cost of any attempt that can incur provider charges.
 A timeout or expired reservation cannot prove that the provider did no work.
+
+A transport EOF cannot prove that a provider stream completed.
+Each connector must identify its protocol completion evidence before partial usage can authorize a refund.
+Missing completion evidence retains uncertain capacity, including when the last received chunk contains usage.
+
 Quarantine uncertain capacity until authoritative evidence or operator reconciliation resolves it.
 Other requests may use verified remaining capacity while the full uncertain reservation stays deducted.
 

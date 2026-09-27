@@ -1,0 +1,713 @@
+{
+  "task": "CSP12.2",
+  "status": "IN_PROGRESS_UNPUBLISHED_WITH_KNOWN_FAILURES",
+  "recorded_at": "2026-09-27T11:01:39.214852+00:00",
+  "consumer": {
+    "commit": "3a2923167a821497acc7a9175da39eb133ae7245",
+    "base": "537da713e920158734db935606587566b9e9f7fe",
+    "branch": "codex/atomic-budget-admission",
+    "source": [
+      {
+        "path": "internal/app/app.go",
+        "sha256": "7dd192144196784b44db02dd79ef11e0e3519dc5b908ad33df56e56b222b3d9a"
+      },
+      {
+        "path": "internal/app/budget_dispatch_test.go",
+        "sha256": "91e038e497a4af2f450ac5d90a7526cd9c02fc51aaa2ecbda5acfff4fa21357d"
+      },
+      {
+        "path": "internal/app/performance_test.go",
+        "sha256": "28202e5e90eda799168f764a93d5f347c2fc6ea5486948c711ac0f02c1c0c7bf"
+      },
+      {
+        "path": "internal/limits/admission/admission.go",
+        "sha256": "472df8d38960b0383fb273b6c641e5c27135664965b3676f9095aa0d7a3136f7"
+      },
+      {
+        "path": "internal/providers/connectors/chat_usage_test.go",
+        "sha256": "f94302872e01f21728d7137d0bf5fbdf37f3e460107772f0257a4c52b3d91422"
+      },
+      {
+        "path": "internal/providers/connectors/interface.go",
+        "sha256": "f3fc70c9f95b92dc71403c7483c7469ced34a6ef6387c6bb28177a9c32c362a1"
+      },
+      {
+        "path": "internal/providers/connectors/openai_common.go",
+        "sha256": "f1995ad611745643b0595fe8d89c8158d831431ca11302d8bb9bd0de408da125"
+      },
+      {
+        "path": "internal/providers/connectors/types.go",
+        "sha256": "8da4ac178f9f58cb2183bb76c22984538669f702a230ee4cab6588180e0b1c35"
+      },
+      {
+        "path": "internal/router/budget.go",
+        "sha256": "d1b0efd57e3c301324c104e0528c4b45872cf25a1d8fa85c36329c7a08bd80ff"
+      },
+      {
+        "path": "internal/router/budget_stream.go",
+        "sha256": "4f94e93838c05ea269626162ec410a9a68260ed6c1b4330254adffa7deba350f"
+      },
+      {
+        "path": "internal/router/budget_test.go",
+        "sha256": "39b8163a69639f7428f0f82112f7671759907d019df9027b5bfdbdcfe456acf3"
+      },
+      {
+        "path": "internal/router/embeddings.go",
+        "sha256": "1a122b81a967a55863c1492caa778a55f977a705766d23e924af1e18146ae7ce"
+      },
+      {
+        "path": "internal/router/execution_adapter.go",
+        "sha256": "a21f1d1ca2f19486f16071da6bdef5a7bd23042b200267f2e073cf3c5ac36203"
+      },
+      {
+        "path": "internal/router/operation.go",
+        "sha256": "070d21725934383cd6fb8803cc5a6bef6ed11d397f90f1dfb3e8e62cc8ddac4e"
+      },
+      {
+        "path": "internal/router/router.go",
+        "sha256": "a70fa47adddfa3b3a30a7b34b28abf5c139b5ae3ca25e1be3937e5a732075ed6"
+      },
+      {
+        "path": "internal/router/video_jobs.go",
+        "sha256": "1501cf360badbe3f56f6e68ad3a80094828190511de017c1a90e4b3bb45a44d6"
+      }
+    ],
+    "preserved_dirty": [
+      "docs/ARCHITECTURE.md",
+      "internal/cache/README.md"
+    ],
+    "published": false
+  },
+  "producer": {
+    "commit": "a594aa70372b60791c8b912d06bc5603d0c49de7",
+    "branch": "codex/budget-qualification",
+    "scope": "Mechanical verifier relocation only. Complete billing contracts remain to implement."
+  },
+  "implementation": [
+    "Production application always installs the router budget boundary. Isolated router compositions can omit accounting.",
+    "Every routing entry checks policy before a provider attempt. Unsupported required projections refuse without dispatch.",
+    "Token-only chat uses declared maximum input and output. A known context window bounds input when a separate positive limit is absent. Candidate multiplication and overflow are checked.",
+    "Raw chat usage reaches required settlement before canonical content conversion.",
+    "Streaming settlement requires the OpenAI-compatible DONE marker. Bare EOF, disconnect, and absent usage retain uncertain capacity.",
+    "Video poll, cancel, and content use distinct typed call purposes."
+  ],
+  "qualification": {
+    "toolchain": "go1.27.1",
+    "host": "darwin/arm64",
+    "storage": "Real on-disk Badger and SQLite through production App.New",
+    "provider": "Loopback HTTP service through the production OpenAI connector. No paid external inference.",
+    "final_focused_race": {
+      "command": "go test -race -count=1 -timeout=3m -json ./internal/router ./internal/limits/admission ./internal/providers/connectors ./internal/app -run '^(TestProductionBudgetDispatch|TestDeclaredChatTokenBounds|TestChatReportedUsage|TestAbsentBudgetsStayLocal|TestAdmission)'",
+      "exit_code": 0,
+      "pass": 29,
+      "fail": 0,
+      "skip": 0,
+      "source": "Final committed source"
+    },
+    "earlier_packages": {
+      "command": "go test -race -count=1 -timeout=3m -json ./internal/router ./internal/limits/admission ./internal/providers/connectors",
+      "exit_code": 0,
+      "pass": 481,
+      "fail": 0,
+      "skip": 0,
+      "source": "Before the explicit stream completion repair, typed video purposes, and final request-test helper."
+    },
+    "application_audit": {
+      "command": "go test -race -count=1 -timeout=4m -json ./internal/app",
+      "exit_code": 1,
+      "pass": 170,
+      "fail": 4,
+      "skip": 6,
+      "source": "Before the explicit stream completion repair, typed video purposes, and final request-test helper. Spend projection remains unimplemented in final source."
+    },
+    "architecture": {
+      "command": "go test -count=1 -timeout=1m -json ./internal/architecture",
+      "exit_code": 0,
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "vet": {
+      "command": "go vet ./internal/router ./internal/providers/connectors ./internal/limits/admission ./internal/app",
+      "exit_code": 0
+    },
+    "lint": {
+      "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/router ./internal/limits/admission ./internal/providers/connectors ./internal/app",
+      "exit_code": 0,
+      "issues": 0
+    },
+    "dependency_direction": {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit_code": 0
+    },
+    "native_ci": "UNVERIFIED",
+    "required_review": "Not run. Required before PR publication.",
+    "A47": "UNVERIFIED",
+    "focused_prose": {
+      "command": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint docs/design/catalog-lifecycle/ENGINEERING_SPEC.md docs/design/catalog-lifecycle/PAID_OPERATION_MATRIX.md docs/plans/starport-production-catalog-plan.html --format text",
+      "exit_code": 0,
+      "files": 3,
+      "diagnostics": 0
+    },
+    "repository_prose": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "files": 1765,
+      "diagnostics": 137,
+      "scope": "Preexisting findings outside the three changed prose files. The earlier 138-diagnostic run includes the repaired paragraph."
+    },
+    "plan_integrity": {
+      "exit_code": 0,
+      "ledger_rows": 40,
+      "done": 26,
+      "in_progress": 1,
+      "todo": 13,
+      "checks": [
+        "Unique HTML IDs",
+        "Existing local links",
+        "16 committed consumer source hashes",
+        "Matching producer and canonical acceptance registries",
+        "Compressed and uncompressed artifact hashes"
+      ]
+    }
+  },
+  "regressions": {
+    "production_before": {
+      "base": "537da713e920158734db935606587566b9e9f7fe",
+      "test_source": "3a2923167a821497acc7a9175da39eb133ae7245",
+      "overlay": "csp122-dispatch-final-before/overlay.json.gz",
+      "command": "go test -race -count=1 -timeout=2m -json -overlay /tmp/csp122-dispatch-final-before/overlay.json ./internal/app -run ^TestProductionBudgetDispatch(ReservesConcurrentCapacity|UnknownCostAndAbsentBudgets)$",
+      "result": "Two provider calls occurred while capacity was contested. Unknown monetary projection reached the provider. The assertions failed.",
+      "exit_code": 1,
+      "pass_count": 1,
+      "fail_count": 3,
+      "skip_count": 0
+    },
+    "truncated_before": {
+      "overlay": "csp122-dispatch-truncated-before/overlay.json.gz",
+      "result": "Replacing completion validation with raw EOF acceptance settled partial usage. Expected uncertain, observed settled. Two named results failed."
+    },
+    "input_limit_repair": "The real offering declares context_window=128000, input_tokens=0, output_tokens=16384. The first projection refused it. The repair uses the positive declared context window for input."
+  },
+  "known_failures": [
+    "TestOfflineCatalogAllowsInferenceEgress",
+    "TestApplicationUsesExplicitCredentialDestinationApproval",
+    "TestFullPathMeasurementIncludesAuthentication",
+    "TestFullPathMeasurementBaseline"
+  ],
+  "failure_disposition": "Keep every fixture budget and success assertion. Implement complete monetary projection before publication. The temporary unknown-spend projection test must use an actually incomplete billing fixture once monetary support exists.",
+  "manual_review": {
+    "findings_repaired": [
+      "Bare EOF could refund from partial streaming usage. Require explicit completion evidence.",
+      "Initial projection rejected an offering with no separate positive input limit despite its known context bound.",
+      "Test worker used fatal assertions. Return its error through the result channel.",
+      "Lint rejected a local variable named copy. Rename it."
+    ],
+    "remaining": [
+      "Monetary projection and per-operation bounds",
+      "All provider completion contracts",
+      "Required async submission and settlement recovery",
+      "Logical request and job correlation beyond per-attempt fallback identity",
+      "Shared-backend and multi-process qualification",
+      "Complete operation counts and latency measurements",
+      "All required checks, review, native CI, and protected merges"
+    ]
+  },
+  "task_complete": false,
+  "running_checks": [],
+  "runs": [
+    {
+      "raw": "csp122-dispatch-app-audit.jsonl.gz",
+      "named_counts": {
+        "pass": 170,
+        "skip": 6,
+        "fail": 4
+      },
+      "failed_tests": [
+        "TestOfflineCatalogAllowsInferenceEgress",
+        "TestApplicationUsesExplicitCredentialDestinationApproval",
+        "TestFullPathMeasurementIncludesAuthentication",
+        "TestFullPathMeasurementBaseline"
+      ],
+      "skipped_tests": [
+        "TestSharedCacheCompositionUsesSeparateService",
+        "TestSharedCacheCanonicalDeploymentIsolation",
+        "TestDeploymentIsolationIncludesGatewayRecords",
+        "TestInitializeFleetFreshStartup",
+        "TestAppWithValkey",
+        "TestSharedStartupDoesNotCreateLocalDatabases"
+      ]
+    },
+    {
+      "raw": "csp122-dispatch-architecture.jsonl.gz",
+      "named_counts": {
+        "pass": 8
+      },
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "raw": "csp122-dispatch-before.jsonl.gz",
+      "named_counts": {
+        "fail": 3,
+        "pass": 1
+      },
+      "failed_tests": [
+        "TestProductionBudgetDispatchReservesConcurrentCapacity",
+        "TestProductionBudgetDispatchUnknownCostAndAbsentPolicy/unknown-spend-bound",
+        "TestProductionBudgetDispatchUnknownCostAndAbsentPolicy"
+      ],
+      "skipped_tests": []
+    },
+    {
+      "raw": "csp122-dispatch-diagnosis.jsonl.gz",
+      "named_counts": {
+        "fail": 1
+      },
+      "failed_tests": [
+        "TestProductionBudgetDispatchReservesConcurrentCapacity"
+      ],
+      "skipped_tests": []
+    },
+    {
+      "raw": "csp122-dispatch-final-before.jsonl.gz",
+      "named_counts": {
+        "fail": 3,
+        "pass": 1
+      },
+      "failed_tests": [
+        "TestProductionBudgetDispatchReservesConcurrentCapacity",
+        "TestProductionBudgetDispatchUnknownCostAndAbsentBudgets/unknown-spend-bound",
+        "TestProductionBudgetDispatchUnknownCostAndAbsentBudgets"
+      ],
+      "skipped_tests": []
+    },
+    {
+      "raw": "csp122-dispatch-final-production.jsonl.gz",
+      "named_counts": {
+        "pass": 8
+      },
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "raw": "csp122-dispatch-final-race.jsonl.gz",
+      "named_counts": {
+        "pass": 29
+      },
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "raw": "csp122-dispatch-initial.jsonl.gz",
+      "named_counts": {
+        "pass": 470
+      },
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "raw": "csp122-dispatch-probe.jsonl.gz",
+      "named_counts": {
+        "fail": 1
+      },
+      "failed_tests": [
+        "TestCSP122ProviderDispatchRespectsExclusiveTokenCapacity"
+      ],
+      "skipped_tests": []
+    },
+    {
+      "raw": "csp122-dispatch-production-fixed.jsonl.gz",
+      "named_counts": {
+        "pass": 4
+      },
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "raw": "csp122-dispatch-production.jsonl.gz",
+      "named_counts": {
+        "fail": 1,
+        "pass": 3
+      },
+      "failed_tests": [
+        "TestProductionBudgetDispatchReservesConcurrentCapacity"
+      ],
+      "skipped_tests": []
+    },
+    {
+      "raw": "csp122-dispatch-race.jsonl.gz",
+      "named_counts": {
+        "pass": 481
+      },
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "raw": "csp122-dispatch-stream.jsonl.gz",
+      "named_counts": {
+        "pass": 3
+      },
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "raw": "csp122-dispatch-truncated-before.jsonl.gz",
+      "named_counts": {
+        "fail": 2
+      },
+      "failed_tests": [
+        "TestProductionBudgetDispatchStreamCompletionAndCancellation/truncated",
+        "TestProductionBudgetDispatchStreamCompletionAndCancellation"
+      ],
+      "skipped_tests": []
+    }
+  ],
+  "raw_artifacts": [
+    {
+      "path": "csp122-dispatch-app-audit.jsonl.gz",
+      "sha256": "0e2345d33d82065be5e1c9841363616c43a9cc4002d08ddac20cf8de17964974",
+      "gzip_sha256": "6e67c624a2ff91d2ef7a1f77d007b368814949b27bfc51d5a4fef4a51ccb2fdc"
+    },
+    {
+      "path": "csp122-dispatch-app-audit.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-architecture.jsonl.gz",
+      "sha256": "980e5a2a9176059ded6013b67c9e2ce7b157808cb310b9fb53a974afa6f1e675",
+      "gzip_sha256": "3ccd5fad3e7d05dcda7871fc78d95fa5c3151ffcdde7d13839c3ba3c15e5ccff"
+    },
+    {
+      "path": "csp122-dispatch-architecture.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-before.jsonl.gz",
+      "sha256": "14839b3c60af3e7d78cd7f8b5dbf0539236c9bdc59ca3f09b30725f5a55a5dac",
+      "gzip_sha256": "e035a40f738cf41c54b927ce898f2ccbbbfa531afd5546beb9aba1fa63135e50"
+    },
+    {
+      "path": "csp122-dispatch-before.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-before/empty_router.go.gz",
+      "sha256": "962a6b63f9af214c7db751d2d071ad0fe90929b82172f2dd7cf8676ab033b35f",
+      "gzip_sha256": "a165b004dcf1968db3f4bceb52a77842ba31582eaf2f6090a5bcf6ec9cb7de93"
+    },
+    {
+      "path": "csp122-dispatch-before/internal_app_app.go.gz",
+      "sha256": "77094fad465ff89e3375dae444b44cea95e91b24e33f23c6f9c1287aa13345e0",
+      "gzip_sha256": "32ac681d6390915855ee54ae3277a6e495e62639d0e31fc8894eb38f1d89ff62"
+    },
+    {
+      "path": "csp122-dispatch-before/internal_limits_admission_admission.go.gz",
+      "sha256": "71bc1c4f30272aa64cd35ebe871b7c4b7dc398f4ce2b981b6158ec84e7ca251f",
+      "gzip_sha256": "e3f8ec585160e02a6d026fea311e9474da5a856d58dc6cbd7dacf3a880dce9db"
+    },
+    {
+      "path": "csp122-dispatch-before/internal_providers_connectors_types.go.gz",
+      "sha256": "810701ad0ec559c47b205f13e6a715d04120eb563c5cc63b8e403792d48412e4",
+      "gzip_sha256": "60bf8655dc2ca92387e583205f618c686bd9b1013a38eb2c4da16f6efb31926e"
+    },
+    {
+      "path": "csp122-dispatch-before/internal_router_embeddings.go.gz",
+      "sha256": "7043a1dc52a87553e9abda0f37b8c7a44e0952c7702bd9cc94e3124600937147",
+      "gzip_sha256": "cf8db8a1c46ee17f5fe8ca84acc45b3fb929cbdb428317df93115716ff915904"
+    },
+    {
+      "path": "csp122-dispatch-before/internal_router_execution_adapter.go.gz",
+      "sha256": "157af8445e2989987adbc1cc6ba9896ca9ce14f8d6a21787bf06fdfe1d9c3523",
+      "gzip_sha256": "7fcbb8e03ab71148c07407a5b175f70c80a4249eb34344d14c3eba4dfa1f0d8e"
+    },
+    {
+      "path": "csp122-dispatch-before/internal_router_operation.go.gz",
+      "sha256": "a390dd2cd74695435fe6c8ae928ba349fb0bd6e6f0b7d62912f6e1abc14af6a5",
+      "gzip_sha256": "456e3a0c81df57554ae24d61610327cff783daa737db01bbf524fa0b89d48f50"
+    },
+    {
+      "path": "csp122-dispatch-before/internal_router_router.go.gz",
+      "sha256": "3d2df30c2ef0f408cd95a4e84b09cc29addfa443ab7415d51bf6d080e10eda66",
+      "gzip_sha256": "1d6b7968a5503737e5fa8eb45d3aeb2e178c3891feace67e6e2ddd29daef0908"
+    },
+    {
+      "path": "csp122-dispatch-before/internal_router_video_jobs.go.gz",
+      "sha256": "eb3bd5fbc9700aaf2fd97a58462686143f92986d65ac4162ef2ed7e8c89ad444",
+      "gzip_sha256": "d47347ddf8271bdb3d2ff6c3247635cf60fd8edb9ef83656fa3395c536cd56ce"
+    },
+    {
+      "path": "csp122-dispatch-before/overlay.json.gz",
+      "sha256": "1abde269ef2f62e83a4977dad2fa7e4a1a8f64662ad25d4a82503ca08bbdefc0",
+      "gzip_sha256": "e1900a874cde6e81997fb49b67b10c1a03ea433efcbb640d66dcedf193e3d12c"
+    },
+    {
+      "path": "csp122-dispatch-budget-probe_test.go.gz",
+      "sha256": "247e4772da96251b4c96f5ba198ec2b0d9834b523b68cfaab70ade7b78db0ff9",
+      "gzip_sha256": "4c5cadaea0e01042e0bf5bbbe31895f0d1a2369c120444ee8e2da7421d18f531"
+    },
+    {
+      "path": "csp122-dispatch-diagnosis.jsonl.gz",
+      "sha256": "f19217364abec79c4a5097926f795cc57c7d628d63293ce884ce1f92d0543a17",
+      "gzip_sha256": "94257ff1504866561562a8c868b09691d2420f6120d4aae3146ceb422caadcd0"
+    },
+    {
+      "path": "csp122-dispatch-diagnosis.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-direction.log.gz",
+      "sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027",
+      "gzip_sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9"
+    },
+    {
+      "path": "csp122-dispatch-final-before.jsonl.gz",
+      "sha256": "f2f02df1942d5df5f4eb0cb69d1d46927ad05bb4a416390cfdddb16d2812d4a1",
+      "gzip_sha256": "427ec72007e7c6deb0868037f2aefa6c76a49df54c347532cfe12f057873b666"
+    },
+    {
+      "path": "csp122-dispatch-final-before.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-final-before/base.json.gz",
+      "sha256": "b018d7542ca7e2bfc33a4ce2e2ad3aebb3ced350b7acef33d53c60b7696dd093",
+      "gzip_sha256": "fb1f6b8d4d36ad0a9a36bb3c593550d159dfe4026de8a0c1b971cc4c9f8109e4"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_app_app.go.gz",
+      "sha256": "77094fad465ff89e3375dae444b44cea95e91b24e33f23c6f9c1287aa13345e0",
+      "gzip_sha256": "32ac681d6390915855ee54ae3277a6e495e62639d0e31fc8894eb38f1d89ff62"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_app_budget_dispatch_test.go.gz",
+      "sha256": "91e038e497a4af2f450ac5d90a7526cd9c02fc51aaa2ecbda5acfff4fa21357d",
+      "gzip_sha256": "850d5e7828369a4ee57dd4ea3b4cede870e6f1b80eba4b9713ae21f39c508e7b"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_app_performance_test.go.gz",
+      "sha256": "28202e5e90eda799168f764a93d5f347c2fc6ea5486948c711ac0f02c1c0c7bf",
+      "gzip_sha256": "c40ca9ecd029d4d55a960cb0e16434835e96648499db8f8b6b1c51cd5e872f67"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_limits_admission_admission.go.gz",
+      "sha256": "71bc1c4f30272aa64cd35ebe871b7c4b7dc398f4ce2b981b6158ec84e7ca251f",
+      "gzip_sha256": "e3f8ec585160e02a6d026fea311e9474da5a856d58dc6cbd7dacf3a880dce9db"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_providers_connectors_interface.go.gz",
+      "sha256": "d7a1f978e5e32bd019cbf87af66fa7afa87c8d215a668c99cd708a4763c0a26d",
+      "gzip_sha256": "80e7fa55ae130102db5e5a03f0ebb901c1270bff1731577f88d478b1de7536ae"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_providers_connectors_openai_common.go.gz",
+      "sha256": "e82569bcde4e77d0e61a5af37fcd7ab2fec7ff5d38472f27287a322721d38253",
+      "gzip_sha256": "c20ac4f2e0ca6361e1d7f982ee637b22ab5b437946d2c5e46a194815e61db369"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_providers_connectors_types.go.gz",
+      "sha256": "810701ad0ec559c47b205f13e6a715d04120eb563c5cc63b8e403792d48412e4",
+      "gzip_sha256": "60bf8655dc2ca92387e583205f618c686bd9b1013a38eb2c4da16f6efb31926e"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_router_budget.go.gz",
+      "sha256": "962a6b63f9af214c7db751d2d071ad0fe90929b82172f2dd7cf8676ab033b35f",
+      "gzip_sha256": "a165b004dcf1968db3f4bceb52a77842ba31582eaf2f6090a5bcf6ec9cb7de93"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_router_budget_stream.go.gz",
+      "sha256": "962a6b63f9af214c7db751d2d071ad0fe90929b82172f2dd7cf8676ab033b35f",
+      "gzip_sha256": "a165b004dcf1968db3f4bceb52a77842ba31582eaf2f6090a5bcf6ec9cb7de93"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_router_embeddings.go.gz",
+      "sha256": "7043a1dc52a87553e9abda0f37b8c7a44e0952c7702bd9cc94e3124600937147",
+      "gzip_sha256": "cf8db8a1c46ee17f5fe8ca84acc45b3fb929cbdb428317df93115716ff915904"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_router_execution_adapter.go.gz",
+      "sha256": "157af8445e2989987adbc1cc6ba9896ca9ce14f8d6a21787bf06fdfe1d9c3523",
+      "gzip_sha256": "7fcbb8e03ab71148c07407a5b175f70c80a4249eb34344d14c3eba4dfa1f0d8e"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_router_operation.go.gz",
+      "sha256": "a390dd2cd74695435fe6c8ae928ba349fb0bd6e6f0b7d62912f6e1abc14af6a5",
+      "gzip_sha256": "456e3a0c81df57554ae24d61610327cff783daa737db01bbf524fa0b89d48f50"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_router_router.go.gz",
+      "sha256": "3d2df30c2ef0f408cd95a4e84b09cc29addfa443ab7415d51bf6d080e10eda66",
+      "gzip_sha256": "1d6b7968a5503737e5fa8eb45d3aeb2e178c3891feace67e6e2ddd29daef0908"
+    },
+    {
+      "path": "csp122-dispatch-final-before/internal_router_video_jobs.go.gz",
+      "sha256": "eb3bd5fbc9700aaf2fd97a58462686143f92986d65ac4162ef2ed7e8c89ad444",
+      "gzip_sha256": "d47347ddf8271bdb3d2ff6c3247635cf60fd8edb9ef83656fa3395c536cd56ce"
+    },
+    {
+      "path": "csp122-dispatch-final-before/overlay.json.gz",
+      "sha256": "d78b210aa9a793b02b1784cbcbfd2e7969a9598e1425c17a26e0f030ea66bb68",
+      "gzip_sha256": "85bca35fe458cfdc92307bb776487bc59bcd4fc19ea7464821088ff807c82918"
+    },
+    {
+      "path": "csp122-dispatch-final-production.jsonl.gz",
+      "sha256": "407eb73cd3dddf2790519c1c72c33aabb370fa9c84a1a325f35d51223122dbda",
+      "gzip_sha256": "3415172b6552bdb8990222bc33f7cf78de6bf4acfe7d21ebd435a961ef9ec736"
+    },
+    {
+      "path": "csp122-dispatch-final-production.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-final-race.jsonl.gz",
+      "sha256": "cbe99895c7e4f2942ac9793fc9921d440ab015b6f2b68ada96510dffb8608061",
+      "gzip_sha256": "6129bb6bc59701a17c4b0f8988143d45e2acbe337596ca58e3cecf51e07b9154"
+    },
+    {
+      "path": "csp122-dispatch-final-race.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-fixture.patch.gz",
+      "sha256": "6f7231a7bbd625487c3fb024270c3ad32825655681d27caf13a0cfc43e37cf01",
+      "gzip_sha256": "038c5371a5d792746e6f3fceab033aa91cc94dd95cc4be4835c1f5fa73af7552"
+    },
+    {
+      "path": "csp122-dispatch-initial.jsonl.gz",
+      "sha256": "9ce01dee63a4901d6f13999be043821059df1cc5f318eea00a56e18c01149cbd",
+      "gzip_sha256": "074fd3174c5a3cce314dab4d1f487f58afb7ae1ca61f4d260f87c6e070aff190"
+    },
+    {
+      "path": "csp122-dispatch-initial.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-lint-final.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "csp122-dispatch-lint.log.gz",
+      "sha256": "6b3a10d0de30082378c97f9bc4e068399217668e986f6f1dc5235a52c18ed846",
+      "gzip_sha256": "45934979147220bb2dc7c9d4418de9923d2c9218099fe6f5ccfc22c71b6f9b1f"
+    },
+    {
+      "path": "csp122-dispatch-overlay.json.gz",
+      "sha256": "2e3f6bf163b480101c96ce570d50d0141879eabb55d2365b3c1be15d6dc8f50c",
+      "gzip_sha256": "9e39cf677e3acf230cadfc340f425c7c1b0527059e70477e2dbb85935a3860b0"
+    },
+    {
+      "path": "csp122-dispatch-performance_test.go.gz",
+      "sha256": "2b5a628ba645d883ff6cbd5b88277562afac6edb49c567ae9bcf562697bb8acb",
+      "gzip_sha256": "77c5cd45cc56193b73fcd024813fd981b2f959d75adb848e3929ddd1333cc43a"
+    },
+    {
+      "path": "csp122-dispatch-plan-validation.log.gz",
+      "sha256": "297baab0943f8b5595d8b5118a70d4e482885ae72ccc6558d3ce54941a417d76",
+      "gzip_sha256": "b9fca149036eb81522c49a5c1fe54cb92efa80692eee1e470c599ad2d190a1da"
+    },
+    {
+      "path": "csp122-dispatch-probe.err.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-probe.jsonl.gz",
+      "sha256": "13f163a6fa4038c904a3a6603d417c0bd4fe3baa07b4f7d6523e5891e16e8967",
+      "gzip_sha256": "9ab5ab93b0604237cb6ed4bb57226d05a67885de1102c3e497e48096b917a5df"
+    },
+    {
+      "path": "csp122-dispatch-production-fixed.jsonl.gz",
+      "sha256": "17d191c06f86d3e9659dd62f0cdad619f9ba180dc0b713c5057d2ae1bb61c9ef",
+      "gzip_sha256": "ceac79ab064df588a427c5a361e394295f5441282b3398aec1df80275bda6d78"
+    },
+    {
+      "path": "csp122-dispatch-production-fixed.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-production.jsonl.gz",
+      "sha256": "d06f0d004cef5f417099c3b3283fd12da2baa751f21e741063b92dfdd1fdf67c",
+      "gzip_sha256": "4dbbdc1b5ca58f4a45d6354c2517217b517fb2a854ec5ebe87444895743fcd8f"
+    },
+    {
+      "path": "csp122-dispatch-production.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-race.jsonl.gz",
+      "sha256": "996f6a88af2caa9d796f99cbdf2f546542f1eb076885326171114a06f9fd6d3e",
+      "gzip_sha256": "ca22a1a27fbc6fe7aec4d611242e17cdb7cbc96027be6075e02e89fbd90caf72"
+    },
+    {
+      "path": "csp122-dispatch-race.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-stream.jsonl.gz",
+      "sha256": "6b72e925d6853480c1a20dc2234607db2d47ef4408c9631b1f454f7a26764e65",
+      "gzip_sha256": "6cb48ac4beeada58d909b18749b6d73f84098f55369fabd302a8848094f647cc"
+    },
+    {
+      "path": "csp122-dispatch-stream.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-truncated-before.jsonl.gz",
+      "sha256": "7199234921b718f7e4782d3dae9e623dec4bb7ac7b89dbea27be09ea8a220855",
+      "gzip_sha256": "6994d7a533a25981b65c690c9001083e55679c7c8edb731741f831741d6cd0d7"
+    },
+    {
+      "path": "csp122-dispatch-truncated-before.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-truncated-before/budget_stream.go.gz",
+      "sha256": "9678175b7c2cb18cb97503064163a787de31b6d13cd670dd147c25eb395402ee",
+      "gzip_sha256": "b6857c3b6f9f9fc8942d83cabfe9ae129e14fd6938f35f800e8ee344ccfcee56"
+    },
+    {
+      "path": "csp122-dispatch-truncated-before/overlay.json.gz",
+      "sha256": "033c378b40d364627ad864396200766ef048407fff73abf186fae056037622d6",
+      "gzip_sha256": "1f629f0184d367ee401aa387b2715eeb1bc68996251ad0acdff2e713a3897a5d"
+    },
+    {
+      "path": "csp122-dispatch-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-dispatch-writing-final.log.gz",
+      "sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618",
+      "gzip_sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b"
+    },
+    {
+      "path": "csp122-dispatch-writing-repository-final.log.gz",
+      "sha256": "9407be473809590228cb558895c9d30c529698698f399b9efe9f72b9b26aa4b1",
+      "gzip_sha256": "20c630c7c15818b9936821d5017dc28004f9067b41571761422e45cb58ce5d82"
+    },
+    {
+      "path": "csp122-dispatch-writing-repository.log.gz",
+      "sha256": "88a08dd5e373ebea7a02a3b83b723e573cdf2629d54f787fb1c8f1f0345b2761",
+      "gzip_sha256": "20991a6d6ef5145c732e975d2aecd2e3b365179833ff919a8c7f7d7be7436b37"
+    },
+    {
+      "path": "csp122-dispatch-writing.log.gz",
+      "sha256": "004885c73cc4900f237013b72c16fe776777888714ef8685b4890ae00f53499e",
+      "gzip_sha256": "fec8b5cb3fd665621338efd08128c915f83229a51bb0098192e57841294578d2"
+    }
+  ]
+}
