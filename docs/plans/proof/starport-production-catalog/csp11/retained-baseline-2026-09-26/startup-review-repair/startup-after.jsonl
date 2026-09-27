@@ -1,0 +1,10 @@
+{"Time":"2026-09-26T19:25:04.845663-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-26T19:25:05.472512-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetRuntimeStartupRefreshesAfterOwnership"}
+{"Time":"2026-09-26T19:25:05.472592-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetRuntimeStartupRefreshesAfterOwnership","Output":"=== RUN   TestFleetRuntimeStartupRefreshesAfterOwnership\n","OutputType":"frame"}
+{"Time":"2026-09-26T19:25:26.56175-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetRuntimeStartupRefreshesAfterOwnership","Output":"{\"level\":\"info\",\"provider_count\":1,\"time\":\"2026-09-26T19:25:26-05:00\",\"message\":\"Filtered providers by primary source\"}\n"}
+{"Time":"2026-09-26T19:25:26.611406-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetRuntimeStartupRefreshesAfterOwnership","Output":"{\"level\":\"info\",\"provider_count\":1,\"time\":\"2026-09-26T19:25:26-05:00\",\"message\":\"Filtered providers by primary source\"}\n"}
+{"Time":"2026-09-26T19:25:26.621973-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetRuntimeStartupRefreshesAfterOwnership","Output":"--- PASS: TestFleetRuntimeStartupRefreshesAfterOwnership (21.15s)\n","OutputType":"frame"}
+{"Time":"2026-09-26T19:25:26.622011-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestFleetRuntimeStartupRefreshesAfterOwnership","Elapsed":21.15}
+{"Time":"2026-09-26T19:25:26.62247-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-09-26T19:25:27.648594-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"ok  \tgithub.com/agentstation/starmap/runtime\t22.802s\n"}
+{"Time":"2026-09-26T19:25:27.648646-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Elapsed":22.803}

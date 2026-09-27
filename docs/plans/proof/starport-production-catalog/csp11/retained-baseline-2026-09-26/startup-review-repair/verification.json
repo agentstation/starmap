@@ -1,0 +1,27 @@
+{
+  "reviewed_head": "e7710f16fc2e1a7595739eaf8dcd70423b57a70b",
+  "finding": "P2 startup predecessor race",
+  "disposition": "accepted",
+  "regression": "TestFleetRuntimeStartupRefreshesAfterOwnership",
+  "before": {
+    "fail": 1
+  },
+  "after": {
+    "pass": 1
+  },
+  "final_checks": "PASS",
+  "merged": false,
+  "race_tests": {
+    "pass": 122,
+    "fail": 0,
+    "skip": 0
+  },
+  "regression_command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -race -count=1 -json ./runtime ./acquisition -run 'TestFleet|TestGenerationPinBlocksEveryCatalogMutation|TestGenerationPinKeepsPermissionWithdrawalEffective'",
+  "repair_head": "b46c077a70396de6eb31039b678ff754594f1d02",
+  "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off make HAS_DEVBOX= GOCMD=go verify-checks",
+  "review": {
+    "status": "running",
+    "session": 30982,
+    "log": "/tmp/d41-startup-producer-review.log"
+  }
+}

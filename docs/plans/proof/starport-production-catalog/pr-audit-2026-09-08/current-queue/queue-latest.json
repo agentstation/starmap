@@ -12,8 +12,8 @@
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Reviewed producer published; exact-head native CI is running",
-      "next_action": "Wait for run 36281444461 and verify current head and review threads before protected merge."
+      "disposition": "Local startup race repair passes full verification; revised review is running",
+      "next_action": "Review and publish b46c077a7, then qualify exact-head CI."
     }
   ],
   "starport": [
@@ -28,8 +28,8 @@
       "title": "catalog: fence fleet publication and recover shared acquisition state",
       "url": "https://github.com/agentstation/starport/pull/385",
       "owner": "CSP11",
-      "disposition": "Local pin selects the published reviewed producer; GOWORK=off qualification is running",
-      "next_action": "Finish required checks, commit module pin, review, publish, and run native CI. Merge after Starmap PR185."
+      "disposition": "All 34 repository commands and eleven CSP11 subcases pass on published dff93d12e; final producer pin remains pending",
+      "next_action": "Update the final published producer pin, qualify it, review and publish the existing branch. Merge after Starmap PR185."
     }
   ],
   "completed_merges": [
@@ -837,7 +837,7 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Finish published-pair qualification, consumer review and publication, then protected merges.",
+    "next_action": "Finish producer startup repair review, publish and qualify the final pair, then merge both PRs in order.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
     "contract_audit": "../../csp11/contract-audit-2026-09-26.md",
@@ -870,14 +870,14 @@
     "checked_at": "2026-09-26T16:38:49.460723+00:00"
   },
   "fleet_preparation": {
-    "producer": "95320e13b5667c060df82f9960dfd5a24b3d766e",
+    "producer": "b46c077a70396de6eb31039b678ff754594f1d02",
     "producer_pr": 185,
     "consumer_branch": "codex/catalog-fleet-adapter",
     "consumer_base": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
     "proof": "../../csp11/isolation-scope-2026-09-26/verification.json",
     "owner": "CSP11",
-    "next_action": "Qualify and review D41 retained baseline recovery, publish the producer, update the consumer module pin, and merge in order. CSP16 owns coordinated policy apply. CSP16.1 owns explicit baseline promotion.",
-    "consumer": "509044a005323d75ce46830cf46494b04c0c0fc9",
+    "next_action": "Finish producer startup repair review, publish and qualify the final pair, then merge both PRs in order.",
+    "consumer": "658c8993042b9f35d5019c835bcdcb19151962fc",
     "consumer_pr": 385,
     "ci": {
       "producer": 36265771789,
@@ -886,8 +886,10 @@
       "consumer_status": "failure on 7068380bd; Intel managed-credential test depended on wall time; local deterministic repair passes."
     },
     "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json",
-    "review_status": "Pinned follower repair passes all eleven CSP11 subcases. Second complete producer review runs on 95320e13b.",
-    "running_sessions": [],
+    "review_status": "Revised Sol/Opus review active after startup race regression and full verification pass.",
+    "running_sessions": [
+      30982
+    ],
     "repair_proof": "../../csp11/review-repairs-2026-09-26/verification.json",
     "initialization_proof": "../../csp11/fresh-initialization-2026-09-26/verification.json",
     "retention_proof": "../../csp11/retention-checkpoint-2026-09-26/verification.json",
@@ -907,12 +909,14 @@
       "subcases": 11,
       "proof": "../../csp11/retained-baseline-2026-09-26/pin-review-repair/task-gate/task-report.json"
     },
-    "pin_review_repair": "../../csp11/retained-baseline-2026-09-26/pin-review-repair/verification.json"
+    "pin_review_repair": "../../csp11/retained-baseline-2026-09-26/pin-review-repair/verification.json",
+    "startup_repair_proof": "../../csp11/retained-baseline-2026-09-26/startup-review-repair/verification.json"
   },
   "local_consumer_checkpoint": {
-    "head": "509044a005323d75ce46830cf46494b04c0c0fc9",
+    "head": "658c8993042b9f35d5019c835bcdcb19151962fc",
     "branch": "codex/catalog-fleet-adapter",
-    "published": false
+    "published": false,
+    "uncommitted_module_pin": "v0.16.6-0.20260926235631-dff93d12ec93"
   },
   "storage_recipe_preparation": {
     "owner": "CSP12",
@@ -930,5 +934,5 @@
       "scope": "kvconnection, config, storage, cache with race detection and real Valkey. Full CSP12 is incomplete."
     }
   },
-  "local_updated_at": "2026-09-26T22:54:07.247662+00:00"
+  "local_updated_at": "2026-09-27T00:30:34.072169+00:00"
 }
