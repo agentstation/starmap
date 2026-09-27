@@ -2944,7 +2944,9 @@ A partial price record cannot establish a complete monetary bound.
 
 Text-chat billing declares every input and output charge class and an explicit per-request charge decision.
 Each group partitions its measured token total. A missing declaration cannot establish a free or supported operation.
-Missing usage detail cannot mean zero cached or reasoning tokens.
+Missing usage counts cannot mean zero prompt, completion, cached, or reasoning tokens.
+
+Retain count presence through protocol normalization and serialization. Reject negative components and overflow before deriving totals.
 Retain the exact declaration and rates until settlement, including across catalog refresh.
 A supported declaration does not grant model capability or permit media and provider extensions outside its declared scope.
 

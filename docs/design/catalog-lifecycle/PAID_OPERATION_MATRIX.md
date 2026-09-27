@@ -136,6 +136,19 @@ Required job settlement must use retained reservation evidence.
 The current optional usage writer increments counters after a separate record write. Retrying that writer alone cannot provide idempotent accounting.
 Durable job association and asynchronous settlement recovery remain open.
 
+## September 27 usage presence repair
+
+Consumer `0ea27f36` prevents missing token counts from authorizing refunds.
+Ordinary and streamed chat retain full capacity when required counts are absent or null.
+Complete explicit zeros remain valid evidence. Native conversion rejects missing counts, negative components, and overflow before settlement.
+
+The [usage presence proof](../../plans/proof/starport-production-catalog/csp12.2/usage-presence-2026-09-27/verification.json) retains the failing production regression.
+Final focused race checks pass 35 results. The repository suite passes 4,357 results and skips 133.
+The producer dependency still resolves through the candidate workspace.
+
+Vertex embedding conversion currently estimates tokens from whitespace. Ollama embedding conversion reports zero without provider usage.
+Neither value can authorize a strict-budget refund. Embedding support needs measured usage or retained uncertain capacity.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:

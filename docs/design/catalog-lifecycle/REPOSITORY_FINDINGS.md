@@ -3778,3 +3778,16 @@ Producer `0f45bbae2` registers the new acceptance checks. Consumer qualification
 Producer review passes. Consumer review confirms three known production adoption/recovery gaps.
 Their existing CSP12, CSP13, and CSP15 requirements remain release blockers. The consumer review is not clean.
 Both PRs contain the reviewed commits. Exact-head CI and protected merges remain open.
+
+## September 27 incomplete usage settlement
+
+Starport `a189b8dc` treated missing or null prompt and completion counts as zero.
+A partial report could satisfy the sum check and release budget capacity without complete monetary evidence.
+The [production regression](../../plans/proof/starport-production-catalog/csp12.2/usage-presence-2026-09-27/verification.json) fails for three partial reports before repair.
+
+Consumer `0ea27f36` retains usage presence through decoding, copying, and serialization.
+Required settlement rejects incomplete totals. Complete explicit zeros remain valid.
+Final focused race checks pass 35 results. Broader component and repository evidence remains in the same proof.
+
+The audit also found estimated Vertex embedding counts and zero Ollama embedding counts without measurement.
+CSP12.2 must preserve these as unknown during required settlement. Current strict-budget embedding dispatch remains unsupported.
