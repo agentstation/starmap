@@ -456,6 +456,12 @@ Caller disconnection must preserve work that already owns a durable dispatch rec
 Operators can bound workers and execution time. Saturation refuses new work before provider dispatch.
 Timeouts and restarts must retain uncertainty without repeating a paid request.
 
+External video downloads require explicit operator grants. Provider references cannot grant their own network access.
+The gateway must preserve measured charges when an asset download fails.
+Asset status must distinguish blocked downloads, retryable failures, invalid content, stored output, and expiry without exposing private references.
+A spent budget must not prevent the owner from retrieving or reconciling existing work.
+New paid work still requires sufficient budget capacity.
+
 ## Execution activation
 
 The user activated the whole-plan goal on 2026-09-05.

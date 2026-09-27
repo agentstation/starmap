@@ -1,0 +1,638 @@
+{
+  "task": "CSP12.2",
+  "status": "in_progress",
+  "recorded_at": "2026-09-27T21:38:13.745669+00:00",
+  "producer_commit": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+  "consumer_commit": "fa42a9c7e01529e0b197c9c18e4e962ca796aa70",
+  "consumer_parent": "2e3c7733233be9b08a3e4be6619862c364c02302",
+  "environment": {
+    "GOWORK": "/tmp/csp122-billing.work",
+    "GOTOOLCHAIN": "go1.27.1",
+    "TEST_VALKEY_URL": "redis://127.0.0.1:51487"
+  },
+  "checks": [
+    {
+      "output": "fail-before.jsonl.gz",
+      "command": "go test -json -count=1 ./internal/jobs -run ^TestNativeExternalAssetExpiresWithoutDownload$",
+      "exit_code": 1,
+      "notes": "Baseline 2e3c7733 plus the regression test: expiry returned not-found.",
+      "results": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "skips": []
+    },
+    {
+      "output": "initial.jsonl.gz",
+      "command": "go test -json -count=1 ./internal/jobs ./internal/jobs/assetfetch ./internal/providers/connectors -run TestNative|TestDeepInfra",
+      "exit_code": 0,
+      "notes": "Early implementation; seven Valkey subtests skipped without TEST_VALKEY_URL.",
+      "results": {
+        "pass": 67,
+        "fail": 0,
+        "skip": 7
+      },
+      "skips": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs/assetfetch",
+          "test": null
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "test": "TestNativeReceiptRecoversWithoutProviderReplay/none/valkey"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "test": "TestNativeReceiptRecoversWithoutProviderReplay/record_before_commit/valkey"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "test": "TestNativeReceiptRecoversWithoutProviderReplay/record_after_commit/valkey"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "test": "TestNativeReceiptRecoversWithoutProviderReplay/receipt_after_commit/valkey"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "test": "TestNativeReceiptRecoversWithoutProviderReplay/asset_before_commit/valkey"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "test": "TestNativeReceiptRecoversWithoutProviderReplay/asset_after_commit/valkey"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "test": "TestNativeLostResponseRetainsUncertainJob/valkey"
+        }
+      ]
+    },
+    {
+      "output": "jobs-race.jsonl.gz",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/jobs ./internal/jobs/assetfetch",
+      "exit_code": 0,
+      "notes": "Intermediate code before concurrent publication and production route fixes.",
+      "results": {
+        "pass": 284,
+        "fail": 0,
+        "skip": 0
+      },
+      "skips": []
+    },
+    {
+      "output": "app-external.jsonl.gz",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/app -run ^TestProductionNativeExternalVideoAsset$",
+      "exit_code": 1,
+      "notes": "Initial fixture used a literal-loopback HTTP asset. The parser rejected that reference. Local explicit origin support now handles it.",
+      "results": {
+        "pass": 0,
+        "fail": 3,
+        "skip": 0
+      },
+      "skips": []
+    },
+    {
+      "output": "app-external-final.jsonl.gz",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/app -run ^TestProductionNativeExternalVideoAsset$",
+      "exit_code": 1,
+      "notes": "Production GET returned 402 after exact budget exhaustion. This reproduces the global budget middleware defect.",
+      "results": {
+        "pass": 0,
+        "fail": 3,
+        "skip": 0
+      },
+      "skips": []
+    },
+    {
+      "output": "app-corrected.jsonl.gz",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/app -run ^TestProductionNative(ExternalVideoAsset|VideoBudget)$",
+      "exit_code": 0,
+      "notes": "Targeted production repair before expanded route assertions.",
+      "results": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "skips": []
+    },
+    {
+      "output": "integration.jsonl.gz",
+      "command": "go test -race -json -count=1 -timeout=4m ./internal/jobs/... ./internal/app -run TestNative|TestFetch|TestOrigin|TestProductionNative",
+      "exit_code": 1,
+      "notes": "Concurrent diagnostics prevented asset publication on memory, Badger, and Valkey. A separate capacity fixture reused a fixed job ID.",
+      "results": {
+        "pass": 68,
+        "fail": 5,
+        "skip": 0
+      },
+      "skips": []
+    },
+    {
+      "output": "concurrent-repaired.jsonl.gz",
+      "command": "go test -race -json -count=1 -timeout=2m ./internal/jobs -run TestNativeConcurrentReplicas|TestNativeRecoveryBounds",
+      "exit_code": 1,
+      "notes": "Publication race passes. Cancellation assertion exercised storage instead of the occupied recovery gate.",
+      "results": {
+        "pass": 4,
+        "fail": 1,
+        "skip": 0
+      },
+      "skips": []
+    },
+    {
+      "output": "concurrent-final.jsonl.gz",
+      "command": "go test -race -json -count=1 -timeout=2m ./internal/jobs -run TestNativeConcurrentReplicas|TestNativeRecoveryBounds",
+      "exit_code": 0,
+      "notes": "Corrected fixture cancels after the record read while another transfer occupies the recovery gate.",
+      "results": {
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "skips": []
+    },
+    {
+      "output": "final-race.jsonl.gz",
+      "command": "go test -race -json -count=1 -timeout=5m ./internal/jobs/... ./internal/server/... ./internal/providers/connectors ./internal/protocol/openai ./internal/protocol/openrouter ./internal/architecture ./internal/config",
+      "exit_code": 0,
+      "notes": "Final behavior except the later controller expiry text/projection repair; final-video-http covers that repair.",
+      "results": {
+        "pass": 1852,
+        "fail": 0,
+        "skip": 3
+      },
+      "skips": [
+        {
+          "package": "github.com/agentstation/starport/internal/server/dto",
+          "test": null
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestContainerRecipePersistence"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "test": "TestGatewayOverheadBenchmark"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "test": "TestSDKCanonicalRemovalAfterSuccessfulInference"
+        }
+      ]
+    },
+    {
+      "output": "final-app.jsonl.gz",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/app -run TestProductionNative|TestProductionJobsRequireSettledReservation|TestJobReservationChecksOriginalIdentity|TestSettledJobRequiresOriginalSharedApproval",
+      "exit_code": 0,
+      "notes": "One shared-authority test skipped because this invocation omitted TEST_VALKEY_URL. The separate real-Valkey run qualifies it.",
+      "results": {
+        "pass": 16,
+        "fail": 0,
+        "skip": 1
+      },
+      "skips": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestSettledJobRequiresOriginalSharedApproval"
+        }
+      ]
+    },
+    {
+      "output": "final-shared-app.jsonl.gz",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/app -run ^TestSettledJobRequiresOriginalSharedApproval$",
+      "exit_code": 0,
+      "notes": "TEST_VALKEY_URL=redis://127.0.0.1:51487",
+      "results": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "skips": []
+    },
+    {
+      "output": "purego.jsonl.gz",
+      "command": "CGO_ENABLED=0 go test -json -count=1 -timeout=3m ./internal/jobs/... ./internal/providers/connectors ./internal/app -run TestNative|TestFetch|TestOrigin|TestProductionNative",
+      "exit_code": 0,
+      "notes": "Final behavior except the later controller expiry text/projection repair.",
+      "results": {
+        "pass": 111,
+        "fail": 0,
+        "skip": 0
+      },
+      "skips": []
+    },
+    {
+      "output": "final-video-http.jsonl.gz",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/server ./internal/server/controllers -run Video|Asset",
+      "exit_code": 0,
+      "notes": "Final controller expiry text and response projection included.",
+      "results": {
+        "pass": 20,
+        "fail": 0,
+        "skip": 0
+      },
+      "skips": []
+    }
+  ],
+  "scripts": [
+    {
+      "command": "bash scripts/verify-async-media-jobs.sh",
+      "exit_code": 0,
+      "output": "/tmp/csp122-external-assets/verify-async-media-jobs.sh.txt"
+    },
+    {
+      "command": "bash scripts/verify-model-modalities.sh",
+      "exit_code": 0,
+      "output": "/tmp/csp122-external-assets/verify-model-modalities.sh.txt"
+    },
+    {
+      "command": "bash scripts/verify-files-api.sh",
+      "exit_code": 0,
+      "output": "/tmp/csp122-external-assets/verify-files-api.sh.txt"
+    },
+    {
+      "command": "bash scripts/verify-reranking.sh",
+      "exit_code": 0,
+      "output": "/tmp/csp122-external-assets/verify-reranking.sh.txt"
+    },
+    {
+      "command": "bash scripts/verify-openrouter-parity.sh",
+      "exit_code": 0,
+      "output": "/tmp/csp122-external-assets/verify-openrouter-parity.sh.txt"
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "exit_code": 0,
+      "output": "/tmp/csp122-external-assets/verify-package-layout.sh.txt"
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit_code": 0,
+      "output": "/tmp/csp122-external-assets/verify-dependency-direction.sh.txt"
+    }
+  ],
+  "goago": {
+    "command": "go tool goago -stale-ignores -format json ./...",
+    "output": "goago-final.json.gz",
+    "exit_code": 0,
+    "findings": 0,
+    "errors": 0
+  },
+  "vet": {
+    "command": "go vet ./internal/jobs/... ./internal/app ./internal/server/... ./internal/providers/connectors ./internal/protocol/openai ./internal/protocol/openrouter ./internal/config",
+    "output": "vet.txt.gz",
+    "exit_code": 0,
+    "note": "Before the final controller expiry text/projection change, which compiled in final-video-http."
+  },
+  "prose": {
+    "new_source": "new-source-prose-final.txt.gz",
+    "operator_additions": "operator-prose-final.txt.gz",
+    "exit_code": 0
+  },
+  "source_manifest": [
+    {
+      "path": ".env.example",
+      "sha256": "78a9394b8eb32d5e5e073bebf05974f59842a88714b4f682c9aa15b8d3684934"
+    },
+    {
+      "path": "docs/OPERATOR-GUIDE.md",
+      "sha256": "18c64c877d6cf8ec7076758328ac1c8dbc4cd774517bda5e57263786e089a2f1"
+    },
+    {
+      "path": "internal/app/app.go",
+      "sha256": "58f72cd1bc67d85089ae84b27363c1172336315184ee509691e34f62f1e815e6"
+    },
+    {
+      "path": "internal/app/budget_video_test.go",
+      "sha256": "317862988e5295d470a1961eb3f8fdad524d1217e5fe5da95c615431940f4848"
+    },
+    {
+      "path": "internal/architecture/import_graph_test.go",
+      "sha256": "b2871dad543484c4fba86be647ad1ae306f33e8f6e822cd5acc49c153da2dcfa"
+    },
+    {
+      "path": "internal/config/jobs.go",
+      "sha256": "cb2170254d767d9ecb113df6b0bf6f2fc4a45d16d8d3b971ea5f8b65cd126aff"
+    },
+    {
+      "path": "internal/inference/video_jobs.go",
+      "sha256": "6cf9368a1cca4a910cb7fd51d34281b5f9c6736545e4ae61d2b1c8c45242974d"
+    },
+    {
+      "path": "internal/jobs/asset.go",
+      "sha256": "064a9f0ec2d16078ab858fa03a880fc98d1fe0fed11a23dfd642dfbd5f72ab5c"
+    },
+    {
+      "path": "internal/jobs/assetfetch/client.go",
+      "sha256": "3ea0ab8239a7495dce3167e979a37691059dbce4d1828d9f4074893483662073"
+    },
+    {
+      "path": "internal/jobs/assetfetch/client_test.go",
+      "sha256": "dfbb9329148855863f757ebff789e0347bfbc430a470f91bb5ad8d9688c25f56"
+    },
+    {
+      "path": "internal/jobs/job.go",
+      "sha256": "a24641db4dfb922e10b5c5dc2cae250f6529b1862527b37205829d45ebf05020"
+    },
+    {
+      "path": "internal/jobs/native_asset.go",
+      "sha256": "df8ef7833f90e9f6146700916a162a0fc9d3e3ff5a752c5463b96c294a22797f"
+    },
+    {
+      "path": "internal/jobs/native_asset_test.go",
+      "sha256": "027db7167247919dcf538b89af29f3b133195efb1a80254e21049f5061ae5372"
+    },
+    {
+      "path": "internal/jobs/native_billing.go",
+      "sha256": "5bc9d53ff15a1327124bd75df5a43126e142f272c5db70efb1319c1700e7cf20"
+    },
+    {
+      "path": "internal/jobs/native_receipt.go",
+      "sha256": "8764d0196934effe834ea3a8c5508ebeb10459674b59e67d31bcecba69bb3e8f"
+    },
+    {
+      "path": "internal/jobs/native_receipt_test.go",
+      "sha256": "09bf7061f8e0168cad83e7b77690302b8985f58ed8f9a37ab327f4ad86103d4e"
+    },
+    {
+      "path": "internal/jobs/repository_store.go",
+      "sha256": "fd218740d12b945025955c23a3e6e51d434e6443ec4cca99905d1b68d7a78df9"
+    },
+    {
+      "path": "internal/jobs/service.go",
+      "sha256": "bc6eb325f37e028f88b92479cecf0a9d713880f7480168d2bbd7d88c18edafe5"
+    },
+    {
+      "path": "internal/protocol/openai/video_jobs.go",
+      "sha256": "51519838a0e7ff2a349aa691a94f32bfe60f90cc6e1016ab6ddce3c5ef867295"
+    },
+    {
+      "path": "internal/protocol/openrouter/video_jobs.go",
+      "sha256": "942c5f68af5c9c0934f760fb6312c6bb9498ddd26a2121925f5d3bda4ea3d472"
+    },
+    {
+      "path": "internal/providers/connectors/deepinfra_video.go",
+      "sha256": "c20073deca4208ef2742740f61496a58dc6895798a75e2c3b27a07260f16d71b"
+    },
+    {
+      "path": "internal/providers/connectors/deepinfra_video_test.go",
+      "sha256": "669a468b87a618e31e6908096bca73afa32f2a1b0cb7100ade66f2f009c9bb4e"
+    },
+    {
+      "path": "internal/server/controllers/videos.go",
+      "sha256": "7b80a966056647196f22526c3dd1abd74e3e32ccaf038f572bde964f374fbd5c"
+    },
+    {
+      "path": "internal/server/routes.go",
+      "sha256": "e79dec72b1b0bf64c15c10e05d1a5d603847373862397510d152064361b1ce73"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "app-corrected.jsonl.gz",
+      "sha256": "c7772e315e6191a056726fe1fa054fe1880d425ce04497dc4adbb409010a2e20",
+      "raw_sha256": "6ed9fc90b0749b0682089aa9d136db818654a59cf58f3c33e6c7d940ab00fe1c"
+    },
+    {
+      "file": "app-external-final.jsonl.gz",
+      "sha256": "e774b9c186aa3ab6899e29e392ec68b6e2cf55e05d2662b203105b88c3637f78",
+      "raw_sha256": "c8df6b8527cdcef952b5aea77770268c1eb6ad7c1d5565bb6d63d45ce4665926"
+    },
+    {
+      "file": "app-external.jsonl.gz",
+      "sha256": "095f0af136bbede7a13bd498408d60fa1f7aa9ee481d603c2d9ac729fb88e169",
+      "raw_sha256": "741a590eb36cebbfe26020c2364a264810f37cd16bc56fad23da913de02be237"
+    },
+    {
+      "file": "concurrent-final.jsonl.gz",
+      "sha256": "07111b00126f6c7feb87de8cfdbd0dbcc51235451607922408681064b9da5266",
+      "raw_sha256": "b1e91e7d31804eef75e1866de31eec3ecb4704fa0e82eb80b1a96020a53ef181"
+    },
+    {
+      "file": "concurrent-repaired.jsonl.gz",
+      "sha256": "4099750bafe16e2751668892262e8d8193fa200f49b521c9a5f58ebaff7380a2",
+      "raw_sha256": "860ff9a8bc05aaa14c66da36c57bf28b41d6818734f804f457c26968e69f91f1"
+    },
+    {
+      "file": "fail-before.jsonl.gz",
+      "sha256": "3d728d6b3d7750f223b08e4c70824c0feefefc7fe56dd140398ac7a76d858b2d",
+      "raw_sha256": "4022b85f157402f8933ea5056fe39805d94a64124f0536fab2d5c0362cab3899"
+    },
+    {
+      "file": "final-app.jsonl.gz",
+      "sha256": "9816ef1b17c7fdc1b263cfeec4db55c8d8525095fc881b1fd875afb5d8710a68",
+      "raw_sha256": "e24ed24511cc6b559516a5e9981815953b6cfba6474168bc646dbd401ca20dd2"
+    },
+    {
+      "file": "final-race.jsonl.gz",
+      "sha256": "70059a4cd9d05120b2d86835050ddf4899d63d03296937473b2517af33cd14ae",
+      "raw_sha256": "fedb28f557f2a60ba10dfef29697b8fb1bbd4e067a9722382ace981ff2340981"
+    },
+    {
+      "file": "final-shared-app.jsonl.gz",
+      "sha256": "797fdf347266f8dacdc0ccba54b99047362401a1a53e3448f8cd8a3ebb2fc1cd",
+      "raw_sha256": "92444a89b05f1369dce6ca68a774d46a7182df59df4ddb93170fba1117925f4c"
+    },
+    {
+      "file": "final-video-http.jsonl.gz",
+      "sha256": "d49ff1f949dd29593f88bc9b1c76f26edb053820b7e6e318ec8c84e6634325e6",
+      "raw_sha256": "1dd4278fff7fd69f8cd3effea6c6de7f8e0c43bd0834c278fb7bc87b48ed12a3"
+    },
+    {
+      "file": "goago-final.json.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "file": "goago.json.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "file": "initial.jsonl.gz",
+      "sha256": "b6e0ce088647d03839b73d537e620eaee92c7504860621a41a7f5b0856a7d83a",
+      "raw_sha256": "076a9a03565b2aad5491bc2e93b69bbd912fd57cb219b46b36dc73e39d352eb1"
+    },
+    {
+      "file": "integration.jsonl.gz",
+      "sha256": "f21e57fdc412cd397c53dd1bfaaadf318d3d83361e1fbe3790d35d23760a753d",
+      "raw_sha256": "10532a37789439e857815bef2e64de4ec4030a7a9f14499e437cc87094d6eff2"
+    },
+    {
+      "file": "jobs-race.jsonl.gz",
+      "sha256": "2e6b1658ecd07b6bd815ac8a56083327522acd6060b4672a261487bb61defa47",
+      "raw_sha256": "a59bf0aecaddb010b0d262004dd7100acf15390647d7ccedb35d618eabe8e43c"
+    },
+    {
+      "file": "new-source-prose-final.txt.gz",
+      "sha256": "3a8a4461ab82bcabf697e5461b5c91a9d9b762e9b528b2e8ce4797850849e7fb",
+      "raw_sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    {
+      "file": "new-source-prose.txt.gz",
+      "sha256": "1f27e3761ebb13a39d28d08e8d7ff3c9d648eda4b7873a3b8d1219613bc4ea20",
+      "raw_sha256": "2d74e10eaf81d52654699c58e407f90ed2a54a780a9a65f373ab3189342c7315"
+    },
+    {
+      "file": "operator-additions.md.gz",
+      "sha256": "72a1f4a2eb0a2d11ee1169a959ec1130e82312e699c48aa16b85bb1d8ec49d13",
+      "raw_sha256": "7a77eb6305fd5b52422f3af86fb388aaa240c929f4b091ecaac085e5cb269393"
+    },
+    {
+      "file": "operator-prose-final.txt.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "raw_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66"
+    },
+    {
+      "file": "operator-prose.txt.gz",
+      "sha256": "35b796b6fd5657f26955ac5c281ca8c250033e6e3cf8fe2e692c1cdf68973199",
+      "raw_sha256": "d7a4b39e5698b36a68608052abba079ef88130bf148e05a39e0ba2fd8f553574"
+    },
+    {
+      "file": "purego.jsonl.gz",
+      "sha256": "85a194fe2067cd109eb271bf99049611a120a42edb6611a4c352e92e27ee6068",
+      "raw_sha256": "2a0c2551264a81f421b2cd9afe6499d98768ad80b4aa661e1801176c35d57b68"
+    },
+    {
+      "file": "script-results.json.gz",
+      "sha256": "859c56749055860110af028f414d1e75ceef6c2f909967ffeacbf2d9c32030e0",
+      "raw_sha256": "cb24618bee8ce977c33827c6362b4daca554ce7b812cdc2e34e164e0b080707c"
+    },
+    {
+      "file": "verify-async-media-jobs.sh.txt.gz",
+      "sha256": "6d6c9b7c72a002478f74e1c1d62915ed2b6caebd448f8388f2f2a40af447e33c",
+      "raw_sha256": "2e320c6c7a59d3ce3e3736f1918c22033814cc4647f54233f1de03ac2948951d"
+    },
+    {
+      "file": "verify-dependency-direction.sh.txt.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "file": "verify-files-api.sh.txt.gz",
+      "sha256": "9c6c662407490bef317cfb3e2c57aa66b7f2da180dad489172f8a168c59841f0",
+      "raw_sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986"
+    },
+    {
+      "file": "verify-model-modalities.sh.txt.gz",
+      "sha256": "3738b2d3c25d14e3da51f208030a04c8450ad39d5ccfba1461f9ad2b4c7d6be1",
+      "raw_sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a"
+    },
+    {
+      "file": "verify-openrouter-parity.sh.txt.gz",
+      "sha256": "1310b938dc434b2558b9f6cd4139ad9cdda706c10d20c82b5540f14a827e10f4",
+      "raw_sha256": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd"
+    },
+    {
+      "file": "verify-package-layout.sh.txt.gz",
+      "sha256": "0f2b49edd1c59532b06054610e30526f8be691ccb501fc5be7caed1525c95384",
+      "raw_sha256": "bbe4fed22307009c173503e1917e6eb4cab23ee6e282daf514c2f225b9f6fc6b"
+    },
+    {
+      "file": "verify-reranking.sh.txt.gz",
+      "sha256": "bd3044b6cc5ce3ae1f99d444db24c19d0c427c982c69980d6ea5f2ca98b24e29",
+      "raw_sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c"
+    },
+    {
+      "file": "vet.txt.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "csp122-external-plan-prose.txt.gz",
+      "sha256": "78c91d7d60680fbd57e1200df06106cbf6dd6c6d1f617b20bd879ccfbaffbf8b",
+      "raw_sha256": "bb1fc624c1ef516ae205724640fa489cb41e3e2f9e38ea45375dcb72ebfd9290"
+    },
+    {
+      "file": "csp122-external-plan-prose-final.txt.gz",
+      "sha256": "03ac755e03fb41d530185275e4afde066bd01a05131a816cc20a3963cb9db778",
+      "raw_sha256": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668"
+    },
+    {
+      "file": "csp122-external-plan-writing-gate.txt.gz",
+      "sha256": "5aff6b4dc6ee04062f17c9198cb95bb6a53757eed987799173f8cb114b642944",
+      "raw_sha256": "9332e12dc0613ace935038a9efddeb78585268ed54d7b7e4e7ffd9c2baf9f389"
+    }
+  ],
+  "counts_note": "Test result counts include parent tests and subtests. They are not acceptance-case counts.",
+  "manual_audit": [
+    "The download client uses explicit exact origins, a separate transport, TLS validation, no credentials, no redirects, and no ambient proxies.",
+    "Native recovery pins content identity before writing final bytes and preserves concurrent record updates.",
+    "Expiry remains terminal and bounds retries by the submitted retention window.",
+    "All 19 paid HTTP routes reject further work after exact budget exhaustion. Both API families retain job reads, content, cancel refusal, and reconciliation.",
+    "Raw evidence contains none of the configured credential values scanned from local dotenv files."
+  ],
+  "limitations": [
+    "No further paid provider generation ran. Fixtures do not prove final provider invoice reconciliation.",
+    "CSP12.2 remains incomplete and unpublished. Required pre-PR review, native CI, final dependency pin, and paired merges remain open.",
+    "Missing-response operator recovery, remaining billing cases, interrupted batches, PostgreSQL, process loss, failover, capacity, and A47 remain open.",
+    "The broad race run skipped container recipe persistence, gateway overhead benchmark, and the optional SDK canonical-removal scenario. The DTO package has no tests.",
+    "The full operator guide retains earlier prose defects. Only changed operator prose was qualified here.",
+    "The complete planning-repository prose gate failed with 146 findings in unchanged historical evidence. All five changed documents pass."
+  ],
+  "plan_maintenance": {
+    "rows": 40,
+    "done": 26,
+    "in_progress": [
+      "CSP12.2"
+    ],
+    "anchors": 97,
+    "links": 130,
+    "resume_words": 208,
+    "artifacts_verified": 33,
+    "source_files_verified": 24,
+    "ledger_and_anchors_preserved": true
+  },
+  "plan_prose": {
+    "targeted_documents": 5,
+    "exit_code": 0,
+    "full_repository_command": "make technical-writing-check",
+    "full_repository_exit_code": 2,
+    "full_repository_file_count": 1767,
+    "full_repository_diagnostics": 146,
+    "all_finding_files_unchanged_from_prior_plan_commit": [
+      "docs/plans/proof/starport-production-catalog/csp11/acquisition-capability-2026-09-26/review.md",
+      "docs/plans/proof/starport-production-catalog/csp11/consumer-runtime-2026-09-26/producer-review.md",
+      "docs/plans/proof/starport-production-catalog/csp11/isolation-scope-2026-09-26/deployment_isolation_probe_test.go.txt",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/bootstrap-review-repair/STATUS.md",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/bootstrap-review-repair/consumer-review.md",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/bootstrap-review-repair/producer-review.md",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/capability-review-repair/d41-producer-review-final.md",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/consumer-review-rescope/review.md",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/final-review-rescope/review.md",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/keyring-ci-repair/review.md",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/native-ci-repair/d41-native-consumer-review.md",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/native-ci-repair/d41-native-producer-panel.md",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/ownership-contract-repair/review.md",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/pin-review-repair/d41-producer-review.md",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/startup-review-repair/final-producer-review.md",
+      "docs/plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/startup-review-repair/repair-review.md",
+      "docs/plans/proof/starport-production-catalog/csp12.1/cache_contract_test.go.txt",
+      "docs/plans/proof/starport-production-catalog/csp12.2/concurrent-budget-probe.go.txt",
+      "docs/plans/proof/starport-production-catalog/csp12.2/retained-settlement-recovery-2026-09-27/transitions-before.go.txt",
+      "docs/plans/proof/starport-production-catalog/csp12/prepared-lint-repair-2026-09-27/transaction-probe/probe_test.go.txt",
+      "docs/plans/proof/starport-production-catalog/csp6.1/verification-speed-2026-09-16/go127-startup-repair-review.txt",
+      "docs/plans/proof/starport-production-catalog/csp6.2/baseline-boundary-prior-execution.html",
+      "docs/plans/proof/starport-production-catalog/csp6.2/date-field-prior-execution.html",
+      "docs/plans/proof/starport-production-catalog/csp6.2/origin-repair-prior-execution.html",
+      "docs/plans/proof/starport-production-catalog/csp6.2/paired-merge-prior-execution.html",
+      "docs/plans/proof/starport-production-catalog/csp6.2/replay-source-prior-execution.html",
+      "docs/plans/proof/starport-production-catalog/csp6.2/starmap-merge-prior-execution.html",
+      "docs/plans/proof/starport-production-catalog/csp6/membership-promotion-2026-09-16/pre-pr-review.txt",
+      "docs/plans/proof/starport-production-catalog/csp6/rejection-recovery/pre-ciworkflow-qualified-execution.html",
+      "docs/plans/proof/starport-production-catalog/csp6/rejection-recovery/pre-publication-execution.html",
+      "docs/plans/proof/starport-production-catalog/csp6/rejection-recovery/pre-repair-170-merge-execution.html",
+      "docs/plans/proof/starport-production-catalog/csp6/rejection-recovery/prior-execution.html",
+      "docs/plans/proof/starport-production-catalog/csp8/sdk-and-review/review-result.txt",
+      "docs/plans/proof/starport-production-catalog/csp8/settings-2026-09-16/raw/baseline-task.txt",
+      "docs/plans/proof/starport-production-catalog/csp9/acquisition-integration/before-acquisition_reference_test.go.txt",
+      "docs/plans/proof/starport-production-catalog/csp9/acquisition-integration/before-acquisition_resolver.go.txt",
+      "docs/plans/proof/starport-production-catalog/csp9/acquisition-integration/existing-writing.txt",
+      "docs/plans/proof/starport-production-catalog/csp9/acquisition-integration/producer-writing-final.txt",
+      "docs/plans/proof/starport-production-catalog/csp9/shared-resolver/writing.txt",
+      "docs/plans/proof/starport-production-catalog/platform-policy-2026-09-26/consumer-review.md",
+      "docs/plans/proof/starport-production-catalog/platform-policy-2026-09-26/producer-review.md"
+    ]
+  }
+}

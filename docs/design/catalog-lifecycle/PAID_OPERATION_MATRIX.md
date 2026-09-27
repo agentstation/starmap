@@ -469,6 +469,12 @@ Optional reports use retained rates and measured duration. Missing usage remains
 The production HTTP fixture proves early job return, measured settlement, missing-usage retention, and insufficient-budget refusal before dispatch.
 The [native job proof](../../plans/proof/starport-production-catalog/csp12.2/native-job-flow-2026-09-27/verification.json) records exact checks and earlier failures.
 
-The current adapter parses external asset references but does not download them.
+Consumer `fa42a9c7` adds separately approved external downloads and bounded recovery.
+The first accepted digest prevents changed asset bytes from replacing an interrupted result.
+
+The production fixture spends the exact allowance, then retrieves the job through both API families.
+All 19 paid routes reject further work. Job reads, content retrieval, cancellation, and reconciliation retain authentication without requiring new capacity.
+The [external asset proof](../../plans/proof/starport-production-catalog/csp12.2/external-assets-2026-09-27/verification.json) records checks, failures, and remaining scope.
+
 Uncertain native responses still need an operator recovery contract. No additional paid generation ran.
 Complete the remaining matrix, interrupted batches, CSP12.2 qualification, A47, and paired merges.

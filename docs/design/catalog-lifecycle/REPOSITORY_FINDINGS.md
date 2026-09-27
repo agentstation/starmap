@@ -4306,3 +4306,24 @@ Application checks pass 14 results. Pure-Go checks pass 81 results. Nine final r
 These counts include parent tests and subtests. They do not count independent acceptance cases.
 
 No further paid generation ran. External asset downloads, uncertain-response recovery, PostgreSQL, process loss, failover, capacity, and full task qualification remain open.
+
+
+## September 27 external assets and budget-independent retrieval
+
+Consumer `fa42a9c7` adds explicit asset origins, bounded credential-free downloads, retained content digests, and safe retrieval status.
+The first regression showed that external-only output never expired. The repair ends recovery at the submitted retention deadline.
+A production fixture then found HTTP 402 on a completed job after its charge exhausted the budget.
+Budget prechecks now apply to the 19 routes that start paid work. Both API families still enforce authentication and account ownership.
+
+Concurrent recovery exposed a publication conflict between asset writes and diagnostic updates on memory, Badger, and Valkey.
+Publication now preserves concurrent record updates. It cannot replace the first accepted asset bytes with a changed download.
+
+A separate test fixture reused a fixed job identifier. Another cancellation assertion stopped at the storage boundary.
+Both fixture errors remain in the proof with their corrections. They do not establish product defects.
+
+The [external asset proof](../../plans/proof/starport-production-catalog/csp12.2/external-assets-2026-09-27/verification.json) records 1,852 broad race results and three opt-in skips.
+Seventeen application results, 111 pure-Go results, and 20 final HTTP results pass.
+Seven repository scripts, Go policy checks, targeted vet, and changed prose pass.
+
+The source manifest binds 24 committed files. These results do not qualify missing-response recovery or the full paid-operation matrix.
+No additional paid generation ran. PostgreSQL, process loss, failover, capacity, review, native CI, and paired merges remain required.

@@ -4569,4 +4569,20 @@ Credential grants include exact-model endpoint overrides from the approved contr
 These grants cannot authorize other model paths or invent polling operations for native inference.
 
 The [native job proof](../../plans/proof/starport-production-catalog/csp12.2/native-job-flow-2026-09-27/verification.json) qualifies the inline response flow with local provider fixtures.
-External asset downloads, missing-response recovery, PostgreSQL, process loss, failover, capacity, and final paired qualification remain required.
+External downloads use `STARPORT_JOBS_ASSET_DOWNLOAD_ORIGINS`. Empty configuration denies downloads.
+
+Grants name exact HTTPS origins. Explicit literal-loopback HTTP origins support local development.
+The separate client follows no redirects and uses no environment proxy. It sends no inference credentials, cookies, or referrer.
+
+Each transfer has a 30-second deadline and the submitted byte bound. Replica worker capacity also bounds native recovery concurrency.
+
+The first accepted asset digest and media type bind subsequent publication. Recovery refuses changed bytes after an interrupted write.
+Publication preserves concurrent accounting and diagnostic updates. Asset failures cannot prevent required settlement from retained usage.
+The original retention deadline bounds every download retry. Expiry removes the retained URL receipt and any interrupted asset write.
+
+Both API families expose safe `asset_status` values. Neither exposes the provider URL, query, or request identifier.
+Budget exhaustion cannot prevent job reads, content retrieval, cancellation, or reconciliation. Authentication and ownership checks remain mandatory.
+Keep budget prechecks on every route that starts paid work. Atomic admission remains mandatory for every paid dispatch.
+
+The [external asset proof](../../plans/proof/starport-production-catalog/csp12.2/external-assets-2026-09-27/verification.json) records local transport, concurrent recovery, and production HTTP checks.
+Missing-response recovery, PostgreSQL, process loss, failover, capacity, and final paired qualification remain required.
