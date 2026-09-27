@@ -1,5 +1,5 @@
 {
-  "status": "COMPONENT_PASS_FINAL_REVIEW_AND_CI_PENDING",
+  "status": "REVIEWED_CI_AND_MERGES_PENDING",
   "recorded_at": "2026-09-27T04:30:30.142344+00:00",
   "producer_commit": "8fa31111716b17b9e8d89232af51d2fc49b499bd",
   "consumer_base_commit": "3c6bab49b55ac7d2e1a76f0f4fdbf459da0259f7",
@@ -20,7 +20,13 @@
     "container": "Real built image passes fresh startup, recreation, cold restore, and path checks. Docker fixtures cleaned.",
     "lifecycle_regression": "2 named PASS, 0 FAIL/SKIP under race detection. Catalog dependency uses the existing runtime factory seam. Both two-second lifecycle limits remain. The test also checks catalog closure and cleans up after failure.",
     "architecture": "PASS: 12 conditions, including full Go suite, on final source",
-    "lint": "PASS: 0 issues"
+    "lint": "PASS: 0 issues",
+    "review": "PASS: Opus high, configured P0 threshold, complete substantive branch, no accepted findings",
+    "fleet_local_credential": "Fail-before reproduced lost rotation with tmpfs. Four recipe test results pass after per-project private volumes. Two new observations prove retained rotation and replica isolation.",
+    "synthetic_dsn": "1 named race result passes. The synthetic credential remains present for redaction assertions. No static password URI is stored.",
+    "provider_contract": "PASS: 19 conditions",
+    "ownership": "PASS: 12 conditions",
+    "sdk": "PASS: twelve smoke headlines and Python/TypeScript/Go catalog-removal scenarios"
   },
   "limits": [
     "The task gate is component qualification. It does not qualify all 50 final acceptance cases.",
@@ -236,6 +242,42 @@
     "csp12-consumer-final-ownership.log": {
       "archive": "csp12-consumer-final-ownership.log.gz",
       "sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    "csp12-fleet-token-before.log": {
+      "archive": "csp12-fleet-token-before.log.gz",
+      "sha256": "bf0530ebee587436b732454cf213ce78ef203875cbb79029b5f2d0039d2d479d"
+    },
+    "csp12-fleet-token-after.jsonl": {
+      "archive": "csp12-fleet-token-after.jsonl.gz",
+      "sha256": "24be9047806b9115c2ec7b04355a9e198b6c5a8179fbf9e316e31f646d237b6a"
+    },
+    "csp12-consumer-final-recipe-lint.log": {
+      "archive": "csp12-consumer-final-recipe-lint.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "csp12-consumer-final-providers.log": {
+      "archive": "csp12-consumer-final-providers.log.gz",
+      "sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19"
+    },
+    "csp12-consumer-final-sdk.log": {
+      "archive": "csp12-consumer-final-sdk.log.gz",
+      "sha256": "a14cac791909156ee205202d4b163a66a2bf5254a8b69e54148c8d1e71346e20"
+    },
+    "csp12-synthetic-dsn-after.jsonl": {
+      "archive": "csp12-synthetic-dsn-after.jsonl.gz",
+      "sha256": "b0d07a30cb92fe77f8d0d68a19d495b58e9a83782ee4134bddb2d5fb632d6b4f"
+    },
+    "csp12-synthetic-dsn-lint.log": {
+      "archive": "csp12-synthetic-dsn-lint.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "csp12-consumer-autoreview.log": {
+      "archive": "csp12-consumer-autoreview.log.gz",
+      "sha256": "ada36915e7578813f799d2548da70f6c94703a8826a36eabef6832c3ba701c63"
+    },
+    "csp12-consumer-autoreview-final.log": {
+      "archive": "csp12-consumer-autoreview-final.log.gz",
+      "sha256": "bc0be618569235838cbb10645b4e77662fe1bc26f31ca6f657cd76eac92e8e4a"
     }
   },
   "repository_checks_history": {
@@ -244,5 +286,10 @@
     "initial_failure": 5,
     "note": "Initial pass used an explicit local module override. Five harness configuration failures have separate published-module reruns. Final architecture, lifecycle and lint reruns bind the final consumer source."
   },
-  "consumer_commit": "2d0a90aab6e9cb8bc3af134a35b6d1fd31c94175"
+  "consumer_commit": "cd46ea2612f5bc80dcd3747d511a8ecccfd16c46",
+  "pull_request": "https://github.com/agentstation/starport/pull/386",
+  "credential_scan": {
+    "initial": "Two unverified synthetic PostgreSQL password URLs produced unknown detector results. No verified credential found.",
+    "repair": "Leave deployment PostgreSQL URL empty for explicit configuration. Construct the test credential with net/url. The final required scan is clean."
+  }
 }

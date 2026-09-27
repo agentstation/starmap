@@ -958,9 +958,9 @@
     "owner": "CSP12",
     "branch": "codex/storage-recipe-contract",
     "worktree": "/tmp/starport-fleet-review-20260926",
-    "commit": "2d0a90aab6e9cb8bc3af134a35b6d1fd31c94175",
-    "published": false,
-    "next_action": "Complete final consumer review and publish its draft PR. Merge producer and consumer in dependency order after required checks.",
+    "commit": "cd46ea2612f5bc80dcd3747d511a8ecccfd16c46",
+    "published": true,
+    "next_action": "Wait for required checks on Starmap #186 and Starport #386. Verify exact heads, review threads, and protected merges in dependency order.",
     "connection_checks": {
       "source": "committed preparation 63c763b",
       "evidence": "../../csp12/prepared-lint-repair-2026-09-27/retired-transactions/runner.json",
@@ -1009,7 +1009,14 @@
     },
     "producer_review_proof": "docs/plans/proof/starport-production-catalog/csp12/producer-review-2026-09-27/verification.json",
     "restart_repair_proof": "../../csp12/restart-repair-2026-09-27/verification.json",
-    "published_pair_proof": "../../csp12/published-pair-2026-09-27/verification.json"
+    "published_pair_proof": "../../csp12/published-pair-2026-09-27/verification.json",
+    "consumer_pull_request": {
+      "url": "https://github.com/agentstation/starport/pull/386",
+      "head": "cd46ea2612f5bc80dcd3747d511a8ecccfd16c46",
+      "disposition": "reviewed draft; native CI pending",
+      "owner": "production catalog plan CSP12",
+      "next_action": "Merge after Starmap #186 and all required checks pass."
+    }
   },
   "local_updated_at": "2026-09-27T02:56:15.239140+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
