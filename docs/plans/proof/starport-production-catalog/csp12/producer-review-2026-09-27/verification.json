@@ -1,0 +1,81 @@
+{
+  "status": "IN_PROGRESS",
+  "producer_commit": "b5763dd6a0be7081984b151365d892f38af2e97d",
+  "captured_at": "2026-09-27T03:54:31.612377+00:00",
+  "full_runtime_attempt": {
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off go test -json -race -count=1 -timeout 15m ./runtime",
+    "named_counts": {
+      "pass": 555,
+      "fail": 1,
+      "skip": 0
+    },
+    "result": "FAIL: obsolete startup commit-count assertion and unsharded 15-minute timeout",
+    "qualification": "UNVERIFIED until required native CI passes"
+  },
+  "corrected_test": {
+    "name": "TestSourcelessDurableRestartKeepsOneDerivedIdentity",
+    "result": "PASS",
+    "meaning": "One baseline startup commit, one derived commit, no new commits on restart or unchanged sync."
+  },
+  "other_checks": {
+    "all_package_compile": "PASS",
+    "runtime_vet": "PASS",
+    "lint": "PASS: 0 issues",
+    "goago": "PASS",
+    "structure": "PASS",
+    "technical_writing": "PASS",
+    "verifier_unit": "PASS: 99 tests"
+  },
+  "review": {
+    "profile": "auto",
+    "reviewer": "claude-opus-5-5 high",
+    "threshold": "P0",
+    "result": "clean; no actionable findings",
+    "limitation": "Unchanged code unavailable to reviewer. Orchestrator inspected Activate, Commit CAS, and runtime authority paths."
+  },
+  "acceptance_ownership": {
+    "CSP12": "Fresh storage, adapter options, namespaces, initial online and batch budget refusal.",
+    "CSP12.2": "Atomic per-attempt admission, including required-budget refusal before retry.",
+    "CSP13": "Populated namespace migration.",
+    "preserved": "All required subcase IDs and CSP15/final qualification retained."
+  },
+  "evidence": {
+    "csp12-starmap-runtime-full.jsonl": {
+      "archive": "csp12-starmap-runtime-full.jsonl.gz",
+      "sha256": "cd14a1990d139e67ee56d931a6a1cb0b981aa303216000928dffab7b51cdbaed"
+    },
+    "csp12-sourceless-after.jsonl": {
+      "archive": "csp12-sourceless-after.jsonl.gz",
+      "sha256": "fe0ab3d239d9802ef3e35083ec5c77b132a009c2958dce9bd6c03354fe6515ee"
+    },
+    "csp12-starmap-goago-final.json": {
+      "archive": "csp12-starmap-goago-final.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    "csp12-starmap-lint.log": {
+      "archive": "csp12-starmap-lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "csp12-starmap-writing.log": {
+      "archive": "csp12-starmap-writing.log.gz",
+      "sha256": "8d996ba3255666215d799165bfcd6b51fc350c7c06e68d397969ee0fc07e1680"
+    },
+    "csp12-starmap-structure.log": {
+      "archive": "csp12-starmap-structure.log.gz",
+      "sha256": "82fc7b09b069e7a599120482834257d872646bca6f836a79946f0afb6d79a897"
+    },
+    "csp12-starmap-compile.log": {
+      "archive": "csp12-starmap-compile.log.gz",
+      "sha256": "2bfdb48b3e69af3ea36e96243b792d96f344f5e493650be005a323ac774268ca"
+    },
+    "csp12-verifier-unit.log": {
+      "archive": "csp12-verifier-unit.log.gz",
+      "sha256": "3465e2e847a5e11f5b3ce5b29722405bbd63dda4d66d54822ab02a950363cccb"
+    },
+    "csp12-starmap-autoreview.log": {
+      "archive": "csp12-starmap-autoreview.log.gz",
+      "sha256": "a2084a38507126d4d7a5526eb417fdcd0fc91f5aef83813bf4c1204a4fab3e59"
+    }
+  },
+  "pull_request": "https://github.com/agentstation/starmap/pull/186"
+}
