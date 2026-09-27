@@ -1,0 +1,29 @@
+{
+  "date": "2026-09-27T05:31:58.991373+00:00",
+  "moved_rows": 44,
+  "retained_rows": 10,
+  "archive": "execution-history-2026-09-27-storage-qualification.html",
+  "protected": {
+    "contracts": {
+      "count": 40,
+      "sha256": "91f2451d9d3f9f5ed2a0100681e011649a4ab371db0c53378b2dad7109bbe7f3"
+    },
+    "ledger": {
+      "count": 40,
+      "sha256": "86b0d6ddbff74b54c40f7bf876f04df44a319a543e6eee4ba707b827406b7cda"
+    },
+    "goal": {
+      "count": 1,
+      "sha256": "050e2701a3c7cfa03a3a6863c9097ca31bdf858871025b6330074251e089525b"
+    },
+    "invariants": {
+      "count": 1,
+      "sha256": "13d5772c68bf9205af5c6a6d7cf22188fcb45f7a2652b3f293fb2019cc690d19"
+    }
+  },
+  "size_before": 140967,
+  "size_after": 121680,
+  "resume_words": 328,
+  "size_exception": "The plan retains 40 complete task contracts and all acceptance conditions. Read current resume, ledger, invariants, CSP12 contract, and current qualification proof. Read history only for a named evidence question.",
+  "cold_resume": "PASS: current resume names active task, both worktrees/heads, exact CI runs, required merges, authority boundaries, and remaining production gates."
+}
