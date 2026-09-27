@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "ledger_rows": 40,
+  "statuses": {
+    "done": 26,
+    "in_progress": 1,
+    "todo": 13
+  },
+  "ledger_statuses_unchanged": true,
+  "unique_ids": 97,
+  "nonfragment_local_links": 115,
+  "broken_links": [],
+  "plan_bytes": 135479,
+  "resume_words": 272,
+  "size_exception": "The existing plan retains forty task contracts and historical acceptance obligations. This update does not compact or remove them. Resume uses current-resume, task-CSP12.2, the paid-operation matrix, and the current linked proof. Historical logs are read only for a named evidence question.",
+  "cold_resume": "PASS: active task, next action, source commits, retained changes, evidence limits, running-process state and authorization boundaries remain explicit."
+}

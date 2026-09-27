@@ -4158,3 +4158,17 @@ Background provider recovery and concrete replay horizons remain open. Required 
 The historical AMJ-V15 guard still assumes terminal-state charging. Its passing result does not qualify billing.
 Provider-specific video contracts, ambiguous submissions, process loss, failover, migration, and A47 remain unqualified.
 This component does not complete CSP12.2.
+
+
+### Live video pricing inventory
+
+The public OpenRouter video endpoint returns 29 models and 37 distinct SKU keys in the September 27 capture.
+The [public response](../../plans/proof/starport-production-catalog/csp12.2/video-contract-audit-2026-09-27/verification.json) requires no credential and requests model metadata only.
+Its names include seconds, video tokens, input images, minimum charges, and megapixel-seconds.
+Resolution, audio, input mode, continuation, and creativity can change price selection.
+Some names explicitly use cents. The documentation's simple per-second example does not define all live keys.
+
+A scalar per-second replacement cannot represent this inventory.
+CSP12.2 must verify quantity, currency scaling, selectors, additive charges, and minimum semantics before declaring a complete video quote.
+Unknown SKU semantics must remain unknown. A matching name alone cannot establish safe reservation or settlement.
+The audit does not qualify any new provider contract.

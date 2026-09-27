@@ -1,0 +1,83 @@
+{
+  "recorded_at": "2026-09-27T18:21:21.952380+00:00",
+  "source": "https://openrouter.ai/api/v1/videos/models",
+  "authentication": "none; public read only",
+  "paid_inference": false,
+  "model_count": 29,
+  "sku_key_count": 37,
+  "sku_keys": {
+    "cents_per_image_input": 2,
+    "cents_per_megapixel_second_creative": 1,
+    "cents_per_megapixel_second_precise": 1,
+    "cents_per_second_output": 4,
+    "cents_per_second_output_1080p": 1,
+    "cents_per_second_output_720p": 1,
+    "cents_per_second_video_continuation_1080p": 1,
+    "cents_per_second_video_continuation_720p": 1,
+    "cents_per_video_output_second_1080p": 1,
+    "cents_per_video_output_second_480p": 2,
+    "cents_per_video_output_second_720p": 2,
+    "duration_seconds": 8,
+    "duration_seconds_1024p": 1,
+    "duration_seconds_1080p": 5,
+    "duration_seconds_480p": 3,
+    "duration_seconds_720p": 5,
+    "duration_seconds_768p": 1,
+    "duration_seconds_with_audio": 5,
+    "duration_seconds_with_audio_4k": 2,
+    "duration_seconds_with_audio_720p": 2,
+    "duration_seconds_without_audio": 3,
+    "duration_seconds_without_audio_4k": 2,
+    "duration_seconds_without_audio_720p": 2,
+    "image_to_video_duration_seconds_1080p": 3,
+    "image_to_video_duration_seconds_720p": 3,
+    "minimum_cents_per_generation": 1,
+    "reference_images": 1,
+    "text_to_video_duration_seconds_1080p": 3,
+    "text_to_video_duration_seconds_480p": 3,
+    "text_to_video_duration_seconds_720p": 3,
+    "video_tokens": 5,
+    "video_tokens_1080p": 1,
+    "video_tokens_1080p_with_video_input": 1,
+    "video_tokens_4k": 1,
+    "video_tokens_4k_with_video_input": 1,
+    "video_tokens_with_video_input": 4,
+    "video_tokens_without_audio": 5
+  },
+  "raw_sha256": "647383d198fc021535e1a9fe8ebfcb87445403f6607f240c96aa5efbc145731a",
+  "raw_file": "openrouter-video-models.json.gz",
+  "source_code": "Starmap fb7f8ae2165d9644f6ff832d128ff87b1c5adc69; Starport 1143dfb06cf7f1eea6a68f50149ff5a2c60ac155",
+  "findings": [
+    "Live SKU names differ from the abbreviated documentation example.",
+    "Names include duration, video tokens, input images, minimum generation charges, and megapixel-seconds.",
+    "Some names explicitly use cents. Do not treat every value as USD per second.",
+    "Resolution, audio, video input, image input, continuation and creativity can affect price selection.",
+    "A complete contract needs proven quantity, scaling, selectors, additive and minimum semantics. Unknown SKU semantics must remain unknown."
+  ],
+  "unverified": [
+    "Authoritative semantics and combinations for each live SKU.",
+    "Provider defaults and any maximum settlement charge.",
+    "Cancellation endpoints, refund evidence and replay horizons.",
+    "Actual production video dispatch and final invoice."
+  ],
+  "primary_documents": [
+    "https://openrouter.ai/docs/guides/overview/multimodal/video-generation",
+    "https://deepinfra.com/Wan-AI/Wan2.2-T2V-A14B/api"
+  ],
+  "documentation_checks": {
+    "status": "PASS",
+    "files": 2,
+    "diagnostics": 0,
+    "maintenance": "maintenance.json"
+  },
+  "artifacts": [
+    {
+      "path": "csp122-video-audit-prose-final.txt.gz",
+      "raw_sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    {
+      "path": "csp122-video-audit-prose.txt.gz",
+      "raw_sha256": "e7e5534d37c43149cd45e42765094c2ebdbc8efbcd5a4ed17b49ddc91ef9e765"
+    }
+  ]
+}
