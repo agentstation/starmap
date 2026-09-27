@@ -1,0 +1,122 @@
+{
+  "recorded_at": "2026-09-27T19:57:39.045818+00:00",
+  "status": "PASS_OBSERVATION_ONLY",
+  "authorization": "One short DeepInfra video generation, up to USD 1. No automatic submission retry. Two explicit validation refusals preceded one accepted five-second generation. Duration increased only after the native validator rejected two seconds. Credential stored only in ignored Starport .env.",
+  "sources": [
+    "https://api.deepinfra.com/openapi.json",
+    "https://docs.deepinfra.com/apis/text-to-video.md",
+    "https://docs.deepinfra.com/api-reference/videos/get-video-generation.md",
+    "https://deepinfra.com/Wan-AI/Wan2.2-T2V-A14B/api"
+  ],
+  "artifacts": [
+    {
+      "path": "deepinfra-openapi.json.gz",
+      "raw_sha256": "c748548b7c6c004a8b9e55cbb26140e6be54815fdf1800133d0e6400a8ab91ef"
+    },
+    {
+      "path": "native-video-guide.md.gz",
+      "raw_sha256": "dc63b57a577368cfc65a7412cff5f31638883eb6ebe0863e89551bf99bdf414c"
+    },
+    {
+      "path": "async-video-guide.md.gz",
+      "raw_sha256": "adcfab83649c26dd40bca3f04b8b991f0dad0e559d5d79d499365a10e618e6a2"
+    }
+  ],
+  "findings": [
+    "OpenAPI declares asynchronous /v1/videos and /v1/openai/videos routes; native-only inference cannot be assumed for the provider.",
+    "Asynchronous request seconds is an integer; the current Starport request serializes a string.",
+    "Asynchronous response schema declares no measured duration or cost; it does not specify the status vocabulary.",
+    "OpenAPI declares no DELETE or cancellation route for these jobs.",
+    "A live POST for Wan-AI/Wan2.2-T2V-A14B returned HTTP 400 explicitly rejecting asynchronous jobs for this model and naming the native inference route.",
+    "A native request with two seconds returned HTTP 422 requiring five seconds, despite the model page advertising two or five seconds.",
+    "One native five-second generation returned HTTP 200 after 268.769 seconds.",
+    "The provider reported cost USD 0.375 and output_length 5. The response carried MP4 bytes as a base64 data URI.",
+    "A catalog entry must distinguish synchronous native generation from asynchronous job support for the selected offering.",
+    "ffprobe measured an H.264 1280x720 container at 16 fps and 5.062012 seconds. The provider billed output_length 5; container duration must not replace the provider billing quantity."
+  ],
+  "live_requests": [
+    {
+      "at": "2026-09-27T19:53:27.216577+00:00",
+      "method": "POST",
+      "status": 400,
+      "elapsed_seconds": 0.177,
+      "body": {
+        "error": {
+          "message": "Wan-AI/Wan2.2-T2V-A14B does not support asynchronous video jobs. Use POST /v1/inference/Wan-AI/Wan2.2-T2V-A14B, which returns the video in the response.",
+          "type": "invalid_request_error",
+          "param": "model",
+          "code": null
+        }
+      }
+    },
+    {
+      "at": "2026-09-27T19:53:58.607730+00:00",
+      "method": "POST",
+      "status": 422,
+      "elapsed_seconds": 0.15,
+      "body": {
+        "detail": [
+          {
+            "type": "literal_error",
+            "loc": [
+              "seconds"
+            ],
+            "msg": "Input should be 5",
+            "input": 2,
+            "ctx": {
+              "expected": "5"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-09-27T19:58:56.686522+00:00",
+      "method": "POST",
+      "status": 200,
+      "elapsed_seconds": 268.769,
+      "body": {
+        "request_id": "RppeDIz4jHaybcDkN9L8Bgif",
+        "inference_status": {
+          "runtime_ms": 268340,
+          "cost": 0.375,
+          "output_length": 5
+        },
+        "video_url": {
+          "format": "data:video/mp4;base64",
+          "bytes": 814123,
+          "sha256": "386ffc4756ad7b6ed5e7e80686bf75d0b19b61dd9fb269ff4a98e41b5e3950b0",
+          "content_omitted": true
+        },
+        "seed": null
+      }
+    }
+  ],
+  "limitations": [
+    "No assertion that every DeepInfra video model uses the same transport.",
+    "No inferred zero charge from validation failure. No accepted job or generated video in either rejection.",
+    "Complete catalog selection, billing, adapter, durable execution, cancellation and recovery remain unqualified.",
+    "Provider-reported cost is not an independently reconciled account invoice.",
+    "One model and request do not qualify every duration, price selector, model, cancellation state, or failure charge.",
+    "The direct probe bypassed Starport. It does not qualify Starport dispatch or recovery."
+  ],
+  "provider_reported_cost_usd": 0.375,
+  "provider_reported_output_seconds": 5,
+  "budget_usd": 1,
+  "media_inspection": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "16/1"
+      }
+    ],
+    "format": {
+      "duration": "5.062012",
+      "size": "814123"
+    }
+  }
+}

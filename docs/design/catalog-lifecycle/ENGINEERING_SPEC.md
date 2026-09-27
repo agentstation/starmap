@@ -4507,7 +4507,26 @@ A closed or changed approval refuses the old owner. A new owner must open the ex
 
 Reservation attempts use payload version 2. Window and history records remain version 1.
 Older attempt records require explicit migration. CSP13 owns that procedure and mixed-version refusal.
-Job and batch records remain schema 2. Claim payloads remain version 3.
+Job records now use schema 3. Batch records remain schema 2. Claim payloads remain version 3.
 
 The [job settlement proof](../../plans/proof/starport-production-catalog/csp12.2/job-settlement-boundary-2026-09-27/verification.json) qualifies this boundary only.
 Complete video billing, pinned optional reports, provider reconciliation, interrupted batches, and production fleet qualification remain required under CSP12.2.
+
+
+### Terminal job reporting and notification
+
+Required settlement, concurrency-slot release, optional reporting, and terminal notification have separate completion conditions.
+A failed optional report must remain pending. Store its acknowledgement only after the idempotent usage recipient accepts the report.
+Concurrent retries and a lost acknowledgement must preserve one usage contribution. Retries must retain the original timestamp, measured quantities, and pinned valuation.
+
+Changing catalog prices cannot change a retry. The current price projection still requires this repair before production qualification.
+
+Terminal notification must proceed while required settlement or optional reporting remains pending.
+The current webhook adapter accepts one best-effort notification attempt per job. It does not acknowledge durable recipient delivery.
+A crash after the attempt claim can lose the notification. The durable job remains available for polling.
+
+Do not describe this adapter as exactly-once delivery. A future guaranteed-delivery contract requires a durable outbox and recipient deduplication.
+
+Job schema 3 separates the notification claim from the reporting acknowledgement.
+Migration must not treat an older accounting mark as evidence that its optional report reached storage.
+CSP13 owns that migration. This component does not qualify complete video billing or released-pair operation.

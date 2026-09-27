@@ -4237,3 +4237,26 @@ Attempt payload version 2 requires the CSP13 migration procedure before use with
 
 The [job settlement proof](../../plans/proof/starport-production-catalog/csp12.2/job-settlement-boundary-2026-09-27/verification.json) preserves the regression, results, and limits.
 Optional reports still price from the current catalog and mark before delivery. Pinned measured reporting and retry remain required under CSP12.2.
+
+
+## September 27 job reporting and DeepInfra protocol correction
+
+The prior job accounting mark preceded optional delivery. A storage failure therefore prevented every later retry.
+Terminal notification also waited for required settlement. The new regression checks both failures on memory, Badger, and Valkey.
+The repair acknowledges optional reporting after delivery and claims the notification attempt independently.
+The real usage repository preserves one aggregate contribution through concurrent retries after a missing job acknowledgement.
+
+Notifications remain best-effort. A persisted attempt claim does not prove recipient delivery.
+
+Pinned measured reporting remains incomplete. The current reporting adapter still reads the current catalog.
+A price change can therefore conflict with an earlier usage receipt during recovery. CSP12.2 must remove that dependency before publication.
+
+DeepInfra's current [OpenAPI](https://api.deepinfra.com/openapi.json) declares asynchronous video endpoints alongside native inference.
+The earlier native-route observation did not establish a provider-wide transport rule.
+The [live probe](../../plans/proof/starport-production-catalog/csp12.2/deepinfra-video-probe-2026-09-27/verification.json) records a model-specific HTTP 400 response for asynchronous Wan2.2-T2V-A14B submission.
+The response requires native inference. The native endpoint then rejects two seconds and requires five.
+These replies contradict the provider-wide video endpoint assumption and the advertised two-second option.
+
+Model-specific transport selection, input constraints, complete billing, and crash recovery remain required.
+The corrected native request produced a five-second video. DeepInfra reported USD 0.375 and five output seconds.
+This direct provider test does not qualify Starport dispatch, final invoice reconciliation, or other video offerings.

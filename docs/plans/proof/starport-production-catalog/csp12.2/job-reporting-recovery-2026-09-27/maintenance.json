@@ -1,0 +1,19 @@
+{
+  "statuses": {
+    "done": 26,
+    "in_progress": 1,
+    "todo": 13
+  },
+  "anchors": 97,
+  "links": 129,
+  "resume_words": 298,
+  "source_hashes_verified": 12,
+  "prose": {
+    "diagnostics": 0,
+    "errors": 0,
+    "files": 4,
+    "max_warnings_per_100_words": 0.0,
+    "warning_rate_per_100_words": 0.0,
+    "warnings": 0
+  }
+}

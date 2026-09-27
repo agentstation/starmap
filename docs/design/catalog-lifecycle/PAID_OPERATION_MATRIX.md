@@ -434,6 +434,19 @@ Recovery can settle retained evidence under the original valuation and independe
 The [job settlement proof](../../plans/proof/starport-production-catalog/csp12.2/job-settlement-boundary-2026-09-27/verification.json) records the regression and component checks.
 Attempt payload version 2 prevents older writers from silently discarding job ownership. CSP13 owns populated-state migration.
 
-This boundary does not qualify video dispatch. Optional reports still need pinned measured charges and recoverable delivery.
-Terminal notifications must not wait for unresolved billing. Their current accounting-mark dependency requires separation before strict-budget video dispatch.
+This boundary does not qualify video dispatch. Optional reports still need pinned measured charges. Delivery now retries after an error or missing acknowledgement.
+Terminal notifications now claim an independent best-effort attempt. Required settlement remains mandatory before the reporting acknowledgement.
 Provider evidence acquisition, uncertain submissions, interrupted batches, and full task qualification remain open.
+
+
+## DeepInfra video transport qualification
+
+The public OpenAPI declares asynchronous video endpoints and numeric `seconds`.
+That declaration does not prove that every model supports those endpoints.
+The live Wan2.2-T2V-A14B request rejects asynchronous jobs and names its native inference route.
+Its native input validator requires five seconds, despite the public model page advertising two or five seconds.
+
+Provider-level operation routing must not apply one video protocol to every offering.
+Qualification must bind the selected offering to its protocol, duration constraints, measured usage, and complete billing contract.
+The [live probe](../../plans/proof/starport-production-catalog/csp12.2/deepinfra-video-probe-2026-09-27/verification.json) records the request outcomes.
+Do not infer cancellation, asynchronous state words, or a zero charge from these validation responses.

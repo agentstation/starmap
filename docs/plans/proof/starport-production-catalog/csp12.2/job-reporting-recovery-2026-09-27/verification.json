@@ -1,0 +1,2431 @@
+{
+  "recorded_at": "2026-09-27T20:03:54.491884+00:00",
+  "task": "CSP12.2",
+  "status": "PASS_COMPONENT_ONLY",
+  "source_commit": "ea150e46ff208173a778e14dc4ce3ace65e7b485",
+  "parent_commit": "667bde3b8225f0c22bf29a205beb747b8c9849af",
+  "producer_commit": "cf5b62f172cd12abef4bc347c5c3fb56743d612c",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "workspace": "/tmp/csp122-billing.work",
+  "native_kv": "Valkey at redis://127.0.0.1:51487; Badger in test temporary directories",
+  "source_hashes": {
+    "internal/catalog/planning_candidates.go": "9197fe1b9ab23c38bd6cd6bae64cb680df103c9338b2b1eb00e9fcb3d1b8bb17",
+    "internal/catalog/runtime_migration.go": "47c58f1a4d6b4bcc8a7e5955cb7d54cc01df7dfec90a01d62a0c0ee7ff01e31f",
+    "internal/jobs/accounting.go": "834dd1f5075f6a6eb5f5dc2bdf11ba9b2ab1b499859208de3b57dab0a7884f04",
+    "internal/jobs/job.go": "8a8da4b9f97e79af4d49d33d7558039bc01283dae67bbe0ccfc415158dcaaf0e",
+    "internal/jobs/reporting_recovery_test.go": "9dc1e2f90abbdbe0b7804555d9559a1fd92b40df3158b466d28330eb73e39ea4",
+    "internal/jobs/repository_store.go": "04ad10ea5df5becfc5192ad6d391100bd40afcdd19f3ffda6cec611bb08a90f5",
+    "internal/jobs/required_settlement_test.go": "77937859a4633b90ea5bfadf71ccf5982d5bf01b2f6423d757e2ba1455bfc111",
+    "internal/jobs/slot_recovery_test.go": "96a7f64da3f52081c36b0d13f0b296c2c4f9e155cb75844a614c1ffbe93fdbf2",
+    "internal/limits/reservation/token_only.go": "d44ae777da7744d030d7339089911e552a821b9632a05965a0f04d9c13058d0b",
+    "internal/providers/connectors/google_base.go": "c87dda52ca3943822208fc08342fa8c07c79efade7df88417fd505f7e4531d66",
+    "internal/response/cache/repository.go": "0faa865fed2c3109abfd66a5eb6733b4eaba82e33e4a8738ace4fae5b4a1b840",
+    "internal/router/budget_recognition.go": "70c568e2a3cc4c75bfdf62c230d5c67554f6862d07b01b66f9e4bfead750a652"
+  },
+  "behavior": [
+    "Optional reporting persists its acknowledgement after successful recipient delivery. Errors remain pending for poll or background retry.",
+    "The recipient must provide exact-retry idempotency. Real usage storage proves one aggregate contribution after a missing job marker and concurrent independent service recovery.",
+    "Terminal notification claims one independent best-effort attempt while required settlement or reporting remains unresolved. A process loss between claim and call can lose the event.",
+    "Required reservation confirmation still precedes reporting and still checks previously accounted jobs. Slot release remains independent.",
+    "Job schema 3 separates notification attempts and acknowledged reporting. CSP13 owns migration of older marks that did not prove delivery.",
+    "Nine pre-existing Go policy findings were repaired without changing the configured restrictions: explicit pointer values and explicit named returns."
+  ],
+  "checks": {
+    "race-final": {
+      "command_arguments": "-race -count=1 -timeout 3m ./internal/jobs ./internal/usage",
+      "exit_code": 0,
+      "counts_including_parents": {
+        "pass": 357
+      },
+      "named_results": [
+        {
+          "test": "TestRecoveryResumesUnprocessedPageAndReportsFailures",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecoveryBusyDoesNotWait",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAssetSurvivesLostRecordAcknowledgement/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAssetSurvivesLostRecordAcknowledgement/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAssetSurvivesLostRecordAcknowledgement/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAssetSurvivesLostRecordAcknowledgement",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAThreeLineBatchCompletesWithThreeResults",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAFailedLineLandsInTheErrorFileAndTheBatchStillCompletes",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestACancelMidRunStartsNoNewLines",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestALinePastTheByteBoundFailsTheWholeBatch",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestABatchHoldsOneOutstandingJobSlot",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestASubmissionWithoutARunnerLeavesNoRecord",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUnboundedBatchPreservesOutstandingVideoSlot/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUnboundedBatchPreservesOutstandingVideoSlot/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestARecognizedDocumentCountsAgainstTheSpendBudget/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestARecognizedDocumentCountsAgainstTheSpendBudget/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestARecognizedDocumentCountsAgainstTheSpendBudget/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestARecognizedDocumentCountsAgainstTheSpendBudget",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestARecognizedDocumentReportsItsPagesAndItsCost/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestARecognizedDocumentReportsItsPagesAndItsCost/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestARecognizedDocumentReportsItsPagesAndItsCost/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestARecognizedDocumentReportsItsPagesAndItsCost",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestANativelyReadDocumentCostsNothing/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestANativelyReadDocumentCostsNothing/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestANativelyReadDocumentCostsNothing/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestANativelyReadDocumentCostsNothing",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestACachedReadIsRecordedAsCachedRatherThanFree/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestACachedReadIsRecordedAsCachedRatherThanFree/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestACachedReadIsRecordedAsCachedRatherThanFree/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestACachedReadIsRecordedAsCachedRatherThanFree",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTheExtractionDurationSurvivesTheRoundTrip/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTheExtractionDurationSurvivesTheRoundTrip/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTheExtractionDurationSurvivesTheRoundTrip/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTheExtractionDurationSurvivesTheRoundTrip",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATurnThatAttachedNoDocumentReportsNoExtraction/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATurnThatAttachedNoDocumentReportsNoExtraction/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATurnThatAttachedNoDocumentReportsNoExtraction/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATurnThatAttachedNoDocumentReportsNoExtraction",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecognitionMeasurementsPersistWithUnknownTotal/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecognitionMeasurementsPersistWithUnknownTotal/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecognitionMeasurementsPersistWithUnknownTotal/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecognitionMeasurementsPersistWithUnknownTotal",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestKnownSpendDoesNotDoubleCountExtraction",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageReplayDoesNotIncreaseTotals/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageReplayDoesNotIncreaseTotals/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageReplayDoesNotIncreaseTotals/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageReplayDoesNotIncreaseTotals",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageAtomicWriteAndLostAcknowledgement/before_commit/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageAtomicWriteAndLostAcknowledgement/before_commit/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageAtomicWriteAndLostAcknowledgement/before_commit/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageAtomicWriteAndLostAcknowledgement/before_commit",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageAtomicWriteAndLostAcknowledgement/after_commit/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageAtomicWriteAndLostAcknowledgement/after_commit/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageAtomicWriteAndLostAcknowledgement/after_commit/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageAtomicWriteAndLostAcknowledgement/after_commit",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageAtomicWriteAndLostAcknowledgement",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageConcurrentReplayAndConflictingContents/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageConcurrentReplayAndConflictingContents/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageConcurrentReplayAndConflictingContents/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageConcurrentReplayAndConflictingContents",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageExpiredReplayCannotRecreateTotals/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageExpiredReplayCannotRecreateTotals/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageExpiredReplayCannotRecreateTotals/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageExpiredReplayCannotRecreateTotals",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged/not-an-integer/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged/not-an-integer/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged/not-an-integer/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged/not-an-integer",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged/-1/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged/-1/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged/-1/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged/-1",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged/9223372036854775807/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged/9223372036854775807/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged/9223372036854775807/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged/9223372036854775807",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageCounterFailureLeavesEveryWriteUnchanged",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageConcurrentEventsPreserveAllContributions/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageConcurrentEventsPreserveAllContributions/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageConcurrentEventsPreserveAllContributions/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageConcurrentEventsPreserveAllContributions",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageReceiptSurvivesExpirationPrecision",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUsageReplayAfterBadgerReopen",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAPricedMediaTurnCountsAgainstTheSpendBudget/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAPricedMediaTurnCountsAgainstTheSpendBudget/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAPricedMediaTurnCountsAgainstTheSpendBudget/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAPricedMediaTurnCountsAgainstTheSpendBudget",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAnUnpricedMediaTurnSpendsNothingAndSaysSo",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestMediaUnitsSurviveTheRoundTrip/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestMediaUnitsSurviveTheRoundTrip/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestMediaUnitsSurviveTheRoundTrip/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestMediaUnitsSurviveTheRoundTrip",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATextRecordReadsBackWithoutMedia/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATextRecordReadsBackWithoutMedia/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATextRecordReadsBackWithoutMedia/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATextRecordReadsBackWithoutMedia",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRepositoryPutAndListByKey/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRepositoryPutAndListByKey/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRepositoryPutAndListByKey/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRepositoryPutAndListByKey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListByKeyOrdersNewestFirstAcrossBackends/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListByKeyOrdersNewestFirstAcrossBackends/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListByKeyOrdersNewestFirstAcrossBackends/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListByKeyOrdersNewestFirstAcrossBackends",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListFiltersAndCursorPagination/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListFiltersAndCursorPagination/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListFiltersAndCursorPagination/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListFiltersAndCursorPagination",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAdminListSpansKeys/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAdminListSpansKeys/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAdminListSpansKeys/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAdminListSpansKeys",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAggregateCountersAccumulate/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAggregateCountersAccumulate/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAggregateCountersAccumulate/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAggregateCountersAccumulate",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCostlessRecordCarriesReasonNotZero/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCostlessRecordCarriesReasonNotZero/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCostlessRecordCarriesReasonNotZero/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCostlessRecordCarriesReasonNotZero",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRetentionTTLApplied/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRetentionTTLApplied/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRetentionTTLApplied/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRetentionTTLApplied",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPutRejectsInvalidRecords",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAccountCounterSumsEveryKeyItHolds/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAccountCounterSumsEveryKeyItHolds/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAccountCounterSumsEveryKeyItHolds/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAccountCounterSumsEveryKeyItHolds",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTeamCounterSumsEveryAttributedKey/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTeamCounterSumsEveryAttributedKey/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTeamCounterSumsEveryAttributedKey/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTeamCounterSumsEveryAttributedKey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListByAccountSpansEveryKey/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListByAccountSpansEveryKey/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListByAccountSpansEveryKey/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListByAccountSpansEveryKey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListFiltersByGuardrailVerdictAndKeepsCacheFields/memory",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListFiltersByGuardrailVerdictAndKeepsCacheFields/badger",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListFiltersByGuardrailVerdictAndKeepsCacheFields/valkey",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestListFiltersByGuardrailVerdictAndKeepsCacheFields",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestFileSinkAppendsOneNDJSONLinePerRecord",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUnboundedBatchPreservesOutstandingVideoSlot/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestUnboundedBatchPreservesOutstandingVideoSlot",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/queued/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/queued/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestHTTPSinkRetriesAFailedPost",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestHTTPSinkCountsDropsWhenTheTargetStaysDown",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSinkDropsOldestWhenTheBufferFills",
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/queued/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/queued",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/running/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/running/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/running/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/running",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/completed/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/completed/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/completed/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/completed",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/cancelled/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/cancelled/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/cancelled/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/cancelled",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/failed/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/failed/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/failed/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/failed",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/missing_state/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/missing_state/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/missing_state/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/missing_state",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/unknown_state/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/unknown_state/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/unknown_state/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/unknown_state",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/lost_response/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/lost_response/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/lost_response/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity/lost_response",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancellationRetainsProviderOutcomeAndCapacity",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestReleasedClaimCannotPublishJob/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestReleasedClaimCannotPublishJob/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestReleasedClaimCannotPublishJob/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestReleasedClaimCannotPublishJob",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestExplicitReconciliationPreservesAndResolvesCapacity/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestExplicitReconciliationPreservesAndResolvesCapacity/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestExplicitReconciliationPreservesAndResolvesCapacity/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestExplicitReconciliationPreservesAndResolvesCapacity",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPollingExhaustionRetainsProviderWork/read/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPollingExhaustionRetainsProviderWork/read/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPollingExhaustionRetainsProviderWork/read/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPollingExhaustionRetainsProviderWork/read",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPollingExhaustionRetainsProviderWork/sweep/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPollingExhaustionRetainsProviderWork/sweep/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPollingExhaustionRetainsProviderWork/sweep/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPollingExhaustionRetainsProviderWork/sweep",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPollingExhaustionRetainsProviderWork",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecoveryReachesBeyondFirstThousandRecords/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecoveryReachesBeyondFirstThousandRecords/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecoveryReachesBeyondFirstThousandRecords/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecoveryReachesBeyondFirstThousandRecords",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecoverySkipsCorruptionAndReleasesUnreadFinishedBatches/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecoverySkipsCorruptionAndReleasesUnreadFinishedBatches/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecoverySkipsCorruptionAndReleasesUnreadFinishedBatches/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecoverySkipsCorruptionAndReleasesUnreadFinishedBatches",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTerminalNotificationDoesNotWaitForSettlement/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTerminalNotificationDoesNotWaitForSettlement/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTerminalNotificationDoesNotWaitForSettlement/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTerminalNotificationDoesNotWaitForSettlement",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestOptionalJobAccountingRetriesAfterReopen/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestOptionalJobAccountingRetriesAfterReopen/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestOptionalJobAccountingRetriesAfterReopen/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestOptionalJobAccountingRetriesAfterReopen",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestConcurrentTerminalNotificationClaimsOneAttempt/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestConcurrentTerminalNotificationClaimsOneAttempt/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestConcurrentTerminalNotificationClaimsOneAttempt/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestConcurrentTerminalNotificationClaimsOneAttempt",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestStaleJobCannotEraseAccountingOrAssetState/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestStaleJobCannotEraseAccountingOrAssetState/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestStaleJobCannotEraseAccountingOrAssetState/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestStaleJobCannotEraseAccountingOrAssetState",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestConcurrentJobAccountingClaimsHaveOneWinner/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestConcurrentJobAccountingClaimsHaveOneWinner/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestConcurrentJobAccountingClaimsHaveOneWinner/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestConcurrentJobAccountingClaimsHaveOneWinner",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredReservationCannotUseOptionalAccounting/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredReservationCannotUseOptionalAccounting/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredReservationCannotUseOptionalAccounting/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredReservationCannotUseOptionalAccounting",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/missing_owner/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/missing_owner/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/missing_owner/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/missing_owner",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/binding_unavailable/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/binding_unavailable/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/binding_unavailable/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/binding_unavailable",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredSettlementDoesNotRetainTerminalSlot/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredSettlementDoesNotRetainTerminalSlot/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredSettlementDoesNotRetainTerminalSlot/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredSettlementDoesNotRetainTerminalSlot",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoSlotReleaseRecoversWhileReportingRemainsPending/before_commit/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoSlotReleaseRecoversWhileReportingRemainsPending/before_commit/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoSlotReleaseRecoversWhileReportingRemainsPending/before_commit/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoSlotReleaseRecoversWhileReportingRemainsPending/before_commit",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoSlotReleaseRecoversWhileReportingRemainsPending/after_commit/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoSlotReleaseRecoversWhileReportingRemainsPending/after_commit/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoSlotReleaseRecoversWhileReportingRemainsPending/after_commit/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoSlotReleaseRecoversWhileReportingRemainsPending/after_commit",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoSlotReleaseRecoversWhileReportingRemainsPending",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoReleaseSurvivesLostJobStamp/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoReleaseSurvivesLostJobStamp/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoReleaseSurvivesLostJobStamp/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestVideoReleaseSurvivesLostJobStamp",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancelledBatchRetainsItsSlotUntilLinesDrain/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancelledBatchRetainsItsSlotUntilLinesDrain/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancelledBatchRetainsItsSlotUntilLinesDrain/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancelledBatchRetainsItsSlotUntilLinesDrain",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestFinishedBatchSlotReleaseRecoversAfterRestart/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestFinishedBatchSlotReleaseRecoversAfterRestart/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestFinishedBatchSlotReleaseRecoversAfterRestart/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestFinishedBatchSlotReleaseRecoversAfterRestart",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestDuplicateVideoIdentityCannotReleaseExistingWork/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestDuplicateVideoIdentityCannotReleaseExistingWork/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestDuplicateVideoIdentityCannotReleaseExistingWork/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestDuplicateVideoIdentityCannotReleaseExistingWork",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestLegacyJobSchemasRequireMigration/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestLegacyJobSchemasRequireMigration/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestLegacyJobSchemasRequireMigration/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestLegacyJobSchemasRequireMigration",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionPersistenceFailurePreventsProviderCall/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionPersistenceFailurePreventsProviderCall/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionPersistenceFailurePreventsProviderCall/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionPersistenceFailurePreventsProviderCall",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAmbiguousSubmissionRetainsRecordAndSlot/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAmbiguousSubmissionRetainsRecordAndSlot/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAmbiguousSubmissionRetainsRecordAndSlot/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAmbiguousSubmissionRetainsRecordAndSlot",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceWriteRecovery/before_commit/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceWriteRecovery/before_commit/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceWriteRecovery/before_commit/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceWriteRecovery/before_commit",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceWriteRecovery/after_commit/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceWriteRecovery/after_commit/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceWriteRecovery/after_commit/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceWriteRecovery/after_commit",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceWriteRecovery",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceSurvivesCallerCancellation/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceSurvivesCallerCancellation/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceSurvivesCallerCancellation/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmissionAcceptanceSurvivesCallerCancellation",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestNewServiceRefusesAPolicyThatNeverTerminates",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmitRecordsWhatTheProviderAccepted",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestACorruptRecordReportsItselfRatherThanDecodingHalfway",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAListingKeepsItsOrderAcrossAReopen",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestGetRefusesAnEmptyAccountOrIdentifier",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTheServiceRefusesACallWithNoProviderSide",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestASpentJobRetainsStateWithoutAskingTheProvider",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATieOnTheSubmissionTimeStillOrdersStably",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancelStopsTheProviderAndTheRecord",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRefreshOfAnotherAccountsJobIsNotFound",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAJobIsUnreadableByAnotherAccount",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPollingBudgetDoesNotChangeProviderState",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRefreshOfAnUnchangedJobRewritesNothing",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCancelOfAFinishedJobIsAConflict",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestCreateRefusesAnIdentifierAlreadyInUse",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAdoptProviderJobRefusesAnEmptyAnswer",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAnUnknownStateWordTransitionsNowhere",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestReplaceAcceptsAChangeThatKeepsTheState",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestReplaceFindsNoRecordForAnUnknownJob",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAnIllegalStateWriteFailsAtTheRepository",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAStateNeverTransitionsToItself",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTheRecordHandsOutNoProviderJobIdentifier",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAFailedProviderAnswerAlwaysStatesAReason",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmitRefusesAJobThatNamesNoAccount",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestARepeatedDeleteIsSafe",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATerminalMoveStampsItsEndOnce",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestACompletedJobDrawsOneRecordHoweverOftenACallerPolls",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestASubmissionOverTheLimitReachesNoProvider",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAFailedJobDrawsNoCost",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAJobWithNoByteStoreCollectsNothing",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTheSweepRetainsUnconfirmedWork",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATerminalJobFreesOneSlot",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRefreshAdvancesTheRecordFromTheProviderAnswer",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAPolicyThatWouldNotTerminateIsRefused",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSubmitRetainsRecordWhenProviderReplyFails",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTheBackoffGrowsAndStops",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestNoTerminalStateAcceptsATransition",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATerminalJobIsNeverSpent",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPollingAFinishedJobReachesNoProvider",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTheTransitionTableAcceptsOnlyTheLegalPairs",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestOpenRepositoryRefusesAnAbsentStore",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestValidateRefusesARecordAStoreCannotAnswerWith/no_operation",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestValidateRefusesARecordAStoreCannotAnswerWith/running_state_with_an_end",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestValidateRefusesARecordAStoreCannotAnswerWith/no_created_at",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestValidateRefusesARecordAStoreCannotAnswerWith/no_account",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestACancelledJobDrawsNoCost",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestValidateRefusesARecordAStoreCannotAnswerWith/no_provider",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestValidateRefusesARecordAStoreCannotAnswerWith/no_identifier",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestValidateRefusesARecordAStoreCannotAnswerWith/unknown_state",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestValidateRefusesARecordAStoreCannotAnswerWith/no_model",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestValidateRefusesARecordAStoreCannotAnswerWith/terminal_state_with_no_end",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestValidateRefusesARecordAStoreCannotAnswerWith",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestATerminalJobNotifiesExactlyOnce",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAJobKeepsTheWindowItWasPromised",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAFinishedJobFetchesItsAssetOnce",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAFailedFetchLeavesACompletedJobAndRetries",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTheSweepDeletesAnAssetPastItsWindow",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestAnAssetPastItsWindowIsRefusedBeforeTheSweepRuns",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        }
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "outcome": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        }
+      ]
+    },
+    "purego": {
+      "command_arguments": "CGO_ENABLED=0 -count=1 -timeout 2m ./internal/jobs -run TestTerminalNotification|TestOptionalJobAccounting|TestJobReporting|TestConcurrentTerminal|TestRequired|TestLegacyJobSchemas",
+      "exit_code": 0,
+      "counts_including_parents": {
+        "pass": 37
+      },
+      "named_results": [
+        {
+          "test": "TestTerminalNotificationDoesNotWaitForSettlement/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTerminalNotificationDoesNotWaitForSettlement/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTerminalNotificationDoesNotWaitForSettlement/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestTerminalNotificationDoesNotWaitForSettlement",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestOptionalJobAccountingRetriesAfterReopen/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestOptionalJobAccountingRetriesAfterReopen/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestOptionalJobAccountingRetriesAfterReopen/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestOptionalJobAccountingRetriesAfterReopen",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestConcurrentTerminalNotificationClaimsOneAttempt/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestConcurrentTerminalNotificationClaimsOneAttempt/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestConcurrentTerminalNotificationClaimsOneAttempt/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestConcurrentTerminalNotificationClaimsOneAttempt",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredReservationCannotUseOptionalAccounting/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredReservationCannotUseOptionalAccounting/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredReservationCannotUseOptionalAccounting/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredReservationCannotUseOptionalAccounting",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/missing_owner/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/missing_owner/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/missing_owner/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/missing_owner",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/binding_unavailable/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/binding_unavailable/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/binding_unavailable/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch/binding_unavailable",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredJobBindingPrecedesDispatch",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredSettlementDoesNotRetainTerminalSlot/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredSettlementDoesNotRetainTerminalSlot/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredSettlementDoesNotRetainTerminalSlot/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRequiredSettlementDoesNotRetainTerminalSlot",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestLegacyJobSchemasRequireMigration/memory",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestLegacyJobSchemasRequireMigration/badger",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestLegacyJobSchemasRequireMigration/valkey",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestLegacyJobSchemasRequireMigration",
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        }
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "outcome": "pass"
+        }
+      ]
+    },
+    "app-final": {
+      "command_arguments": "-race -count=1 -timeout 3m ./internal/app -run TestProductionJobsRequireSettledReservation|TestJobReservationChecksOriginalIdentity|TestSettledJobRequiresOriginalSharedApproval",
+      "exit_code": 0,
+      "counts_including_parents": {
+        "pass": 9
+      },
+      "named_results": [
+        {
+          "test": "TestProductionJobsRequireSettledReservation",
+          "package": "github.com/agentstation/starport/internal/app",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReservationChecksOriginalIdentity/operation",
+          "package": "github.com/agentstation/starport/internal/app",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReservationChecksOriginalIdentity/account",
+          "package": "github.com/agentstation/starport/internal/app",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReservationChecksOriginalIdentity/key",
+          "package": "github.com/agentstation/starport/internal/app",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReservationChecksOriginalIdentity/model",
+          "package": "github.com/agentstation/starport/internal/app",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReservationChecksOriginalIdentity/provider",
+          "package": "github.com/agentstation/starport/internal/app",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReservationChecksOriginalIdentity/generation",
+          "package": "github.com/agentstation/starport/internal/app",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestJobReservationChecksOriginalIdentity",
+          "package": "github.com/agentstation/starport/internal/app",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestSettledJobRequiresOriginalSharedApproval",
+          "package": "github.com/agentstation/starport/internal/app",
+          "outcome": "pass"
+        }
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "outcome": "pass"
+        }
+      ]
+    },
+    "policy-race": {
+      "command_arguments": "-race -count=1 -timeout 3m ./internal/catalog ./internal/limits/reservation ./internal/providers/connectors ./internal/response/cache ./internal/router -run TestPlanningCandidatesOwnMutableValues|TestRuntimeDirectoryMigrationPreservesAcceptedCatalog|TestRuntimeMigrationRefusesUnpublishedTargetBeforeStorage|TestTokenOnlyCannotBypassSpendOrInventFreePricing|TestEmbeddingCacheUsageProvenance|TestRecognitionBoundEnforcesSelectedOffering|Test.*Google|Test.*Thought",
+      "exit_code": 0,
+      "counts_including_parents": {
+        "pass": 22
+      },
+      "named_results": [
+        {
+          "test": "TestTokenOnlyCannotBypassSpendOrInventFreePricing",
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestPlanningCandidatesOwnMutableValues",
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestEmbeddingCacheUsageProvenance/measured",
+          "package": "github.com/agentstation/starport/internal/response/cache",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestEmbeddingCacheUsageProvenance/unknown",
+          "package": "github.com/agentstation/starport/internal/response/cache",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestEmbeddingCacheUsageProvenance/legacy_counts_without_provenance",
+          "package": "github.com/agentstation/starport/internal/response/cache",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestEmbeddingCacheUsageProvenance",
+          "package": "github.com/agentstation/starport/internal/response/cache",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestNewGoogleAIStudioConnector/missing_catalog_base_URL",
+          "package": "github.com/agentstation/starport/internal/providers/connectors",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestNewGoogleAIStudioConnector/custom_base_URL",
+          "package": "github.com/agentstation/starport/internal/providers/connectors",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestNewGoogleAIStudioConnector/invalid_config_-_missing_timeout",
+          "package": "github.com/agentstation/starport/internal/providers/connectors",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestNewGoogleAIStudioConnector",
+          "package": "github.com/agentstation/starport/internal/providers/connectors",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestGoogleAPIKeyUsesInferenceHeader",
+          "package": "github.com/agentstation/starport/internal/providers/connectors",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestGoogleAIStudioConnector_ChatStream",
+          "package": "github.com/agentstation/starport/internal/providers/connectors",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestGoogleAIStudioConnector_EmbeddingsUsesOfferingEndpoint",
+          "package": "github.com/agentstation/starport/internal/providers/connectors",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestGoogleRecognitionRetainsUsageWithoutCandidates",
+          "package": "github.com/agentstation/starport/internal/providers/connectors",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecognitionBoundEnforcesSelectedOffering/tokens",
+          "package": "github.com/agentstation/starport/internal/router",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecognitionBoundEnforcesSelectedOffering/pages",
+          "package": "github.com/agentstation/starport/internal/router",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecognitionBoundEnforcesSelectedOffering/too_many_pages",
+          "package": "github.com/agentstation/starport/internal/router",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecognitionBoundEnforcesSelectedOffering/no_pages",
+          "package": "github.com/agentstation/starport/internal/router",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecognitionBoundEnforcesSelectedOffering/other_media",
+          "package": "github.com/agentstation/starport/internal/router",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRecognitionBoundEnforcesSelectedOffering",
+          "package": "github.com/agentstation/starport/internal/router",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRuntimeDirectoryMigrationPreservesAcceptedCatalog",
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "outcome": "pass"
+        },
+        {
+          "test": "TestRuntimeMigrationRefusesUnpublishedTargetBeforeStorage",
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "outcome": "pass"
+        }
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "outcome": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/response/cache",
+          "outcome": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers/connectors",
+          "outcome": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/router",
+          "outcome": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "outcome": "pass"
+        }
+      ]
+    },
+    "goago": {
+      "command": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0,
+      "initial_findings": 9
+    },
+    "vet": {
+      "command": "go vet ./internal/jobs ./internal/usage",
+      "exit_code": 0
+    },
+    "dependencies": {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit_code": 0
+    },
+    "new_comments": {
+      "status": "PASS",
+      "diagnostics": 0
+    },
+    "design_documents": {
+      "status": "PASS",
+      "files": 3,
+      "diagnostics": 0
+    },
+    "plan_documents": {
+      "status": "PASS",
+      "files": 4,
+      "diagnostics": 0
+    }
+  },
+  "artifacts": [
+    {
+      "path": "csp122-reporting-app-final.jsonl.gz",
+      "raw_sha256": "bec5ae76fee8db9632a15e03eb5b762b56cb46bf88a0fe9592b484c0bd9ef944"
+    },
+    {
+      "path": "csp122-reporting-app.jsonl.gz",
+      "raw_sha256": "feb770b96cf712ebf8816304ce05d521b2d6e956ad2502f8e0e15a335d5ed610"
+    },
+    {
+      "path": "csp122-reporting-dependencies.txt.gz",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "csp122-reporting-docs-final.json.gz",
+      "raw_sha256": "4e4598d20ff961466b212eafb7e79d452404252d30f7ed8f962eb74542132152"
+    },
+    {
+      "path": "csp122-reporting-docs.json.gz",
+      "raw_sha256": "c527dae8aafdc49d9f34aa4f0b6c9c827a82534bed7bdd104154c1adfdaeda0d"
+    },
+    {
+      "path": "csp122-reporting-fail-before-corrected.jsonl.gz",
+      "raw_sha256": "bda6c73295b00f32a509a2d4d8a077f24295a021d8742ff20d45eae1b16abe8f"
+    },
+    {
+      "path": "csp122-reporting-fail-before.jsonl.gz",
+      "raw_sha256": "2fb254e4e47f13865380bfdcf779cf49cf19b36ee5a1bdcd82efd177d41919f4"
+    },
+    {
+      "path": "csp122-reporting-goago-affected.json.gz",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "csp122-reporting-goago-final.json.gz",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "csp122-reporting-goago.json.gz",
+      "raw_sha256": "9b225fd8db4a29f2ec4b8b0bd1fd9996f16e5421f94320be64108187876ea133"
+    },
+    {
+      "path": "csp122-reporting-new-comments-final.json.gz",
+      "raw_sha256": "73658c45674127df70ea3963536a88750ce919fcc0bb08e5790543e21acb0dbf"
+    },
+    {
+      "path": "csp122-reporting-new-comments.json.gz",
+      "raw_sha256": "4866def2fd75e7ee1344d8946508ce64a543e7bc400057d45fe65cb196a6fd1b"
+    },
+    {
+      "path": "csp122-reporting-new-comments.md.gz",
+      "raw_sha256": "f5cf0e22fb3affdf8f105a30273f4c9d97a7fa8736d7b42acdbbcbf1324a9e3b"
+    },
+    {
+      "path": "csp122-reporting-policy-race.jsonl.gz",
+      "raw_sha256": "cb8c6c68a3513ad4a725af070117fbc3d6750968ae4474cbe33125dcfd2476a0"
+    },
+    {
+      "path": "csp122-reporting-prose.json.gz",
+      "raw_sha256": "4e028d0d3560f83d3f3b83e277277fc00f69f6ab42664bc80096579427f54abc"
+    },
+    {
+      "path": "csp122-reporting-purego.jsonl.gz",
+      "raw_sha256": "84f5fb4879010c09eb146d1c7a8f677963c049b440e7cfff5531df63a3866955"
+    },
+    {
+      "path": "csp122-reporting-race-final.jsonl.gz",
+      "raw_sha256": "a2a4fd360d05ca8d0259b8f8618a75a9d5e8c8ee1fd78a49f2612c6afc1ade78"
+    },
+    {
+      "path": "csp122-reporting-race.jsonl.gz",
+      "raw_sha256": "7364a3e9d5f46920a750870a4ce347ea7459a0093d58ccd9bab05929e98aaa3f"
+    },
+    {
+      "path": "csp122-reporting-vet.txt.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-reporting-plan-final.json.gz",
+      "raw_sha256": "1d3c6d16b9aeb0643325aec299d0e9a7320ecbc6c34f9762422aa74038f9b1e4"
+    },
+    {
+      "path": "csp122-reporting-plan-final2.json.gz",
+      "raw_sha256": "99afb04c733f9c6166bc793a7e948d26a4d1e282532e25e38a985dd78fe3e824"
+    },
+    {
+      "path": "csp122-reporting-plan-final3.json.gz",
+      "raw_sha256": "0247c90360d31fee3a129e08a520cd48c7451e6900bad654c60afcde87ab34a9"
+    }
+  ],
+  "limitations": [
+    "Full task, released pair, native Windows/Linux, process kill, PostgreSQL, failover and capacity remain unqualified.",
+    "The production JobAccountant still uses current catalog pricing. Immutable measured reporting remains required before publication; a changed price can conflict with an earlier idempotent usage receipt.",
+    "Complete video contract and asynchronous submission recovery remain open. The direct DeepInfra test is separate evidence.",
+    "Structured pre-PR review, published dependency pin, full required CI and paired merges remain required.",
+    "Full source prose lint reported 28 pre-existing diagnostics and one new passive construction. The new construction was corrected and all added production comments pass. Unrelated old prose was preserved."
+  ],
+  "manual_review": [
+    "Reviewed notification CAS, reporting ordering, required settlement refusal, schema serialization, unchanged unrelated files, and Go policy edits.",
+    "No claim that best-effort webhook delivery is durable or exactly once. No optional report is evidence for required budget settlement."
+  ],
+  "fail_before": {
+    "source": "Parent source through Go overlay, with corrected fixture; no worktree rollback.",
+    "exit_code": 1,
+    "counts_including_parents": {
+      "fail": 8
+    },
+    "named_results": [
+      {
+        "test": "TestTerminalNotificationDoesNotWaitForSettlement/memory",
+        "package": "github.com/agentstation/starport/internal/jobs",
+        "outcome": "fail"
+      },
+      {
+        "test": "TestTerminalNotificationDoesNotWaitForSettlement/badger",
+        "package": "github.com/agentstation/starport/internal/jobs",
+        "outcome": "fail"
+      },
+      {
+        "test": "TestTerminalNotificationDoesNotWaitForSettlement/valkey",
+        "package": "github.com/agentstation/starport/internal/jobs",
+        "outcome": "fail"
+      },
+      {
+        "test": "TestTerminalNotificationDoesNotWaitForSettlement",
+        "package": "github.com/agentstation/starport/internal/jobs",
+        "outcome": "fail"
+      },
+      {
+        "test": "TestOptionalJobAccountingRetriesAfterReopen/memory",
+        "package": "github.com/agentstation/starport/internal/jobs",
+        "outcome": "fail"
+      },
+      {
+        "test": "TestOptionalJobAccountingRetriesAfterReopen/badger",
+        "package": "github.com/agentstation/starport/internal/jobs",
+        "outcome": "fail"
+      },
+      {
+        "test": "TestOptionalJobAccountingRetriesAfterReopen/valkey",
+        "package": "github.com/agentstation/starport/internal/jobs",
+        "outcome": "fail"
+      },
+      {
+        "test": "TestOptionalJobAccountingRetriesAfterReopen",
+        "package": "github.com/agentstation/starport/internal/jobs",
+        "outcome": "fail"
+      }
+    ],
+    "packages": [
+      {
+        "package": "github.com/agentstation/starport/internal/jobs",
+        "outcome": "fail"
+      }
+    ]
+  },
+  "earlier_runs": {
+    "fail-before": "Initial notification fixture omitted the required provider handle. Its failure did not prove the notification defect. The corrected overlay run reproduces both defects.",
+    "race": "Initial suite retained that fixture error and six leaf expectations that optional delivery errors mark accounting complete. Corrected the fixture and changed those assertions to require pending reporting. All final cases pass.",
+    "app": "Initial test-name filter matched no tests. It is not qualification evidence. The corrected command passes nine results."
+  }
+}
