@@ -1,0 +1,29 @@
+review still running: codex elapsed=60s pid=38869 cpu=0.4s/60s(1%) rss=156M state=S
+review still running: claude elapsed=60s pid=38876 cpu=1.3s/60s(2%) rss=251M state=S
+autoreview target: branch
+branch: detached
+gate: pre-pr (configured cadence: pre-pr)
+profile: auto
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=6.85, opus5=8.43
+reviewers: codex model=gpt-6-sol thinking=high, claude model=claude-opus-5-5 thinking=high
+tools: on
+web_search: on
+ref: f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda
+trufflehog: clean (4.0s)
+bundle: 271525 bytes; review passes: 1
+autoreview panel findings: 1
+[P1] Upgrading any existing Valkey deployment makes it unable to start, with no way to fix it
+internal/catalog/runtime_fleet.go:70
+Reviewer: claude model=claude-opus-5-5 thinking=high
+
+Every shared Valkey store now goes through openRecoveryFleet at startup (OpenRuntimeWithRecovery), runtime migration and diagnosis. That requires a PostgreSQL witness, so Valkey paired with MySQL or SQLite is refused. It also requires an open catalog_recovery approval whose BackendID matches the live Valkey run_id:master_replid. There is no opt-out and no fallback to the old NewGenerationStore path.
+
+Two concrete consequences:
+(1) Upgrades fail. In an existing Valkey + PostgreSQL deployment, migration 0009 creates an empty catalog_recovery table, so New fails with recovery.ErrClosed, as TestSharedStartupDoesNotCreateLocalDatabases now asserts. The only command that can create approval is `starport fleet init`, and it refuses a PostgreSQL database with application rows and a non-empty Valkey database. docs/FLEET_INITIALIZATION.md confirms that adopting a populated deployment is left to CSP13.
+(2) Any Valkey restart stops the fleet. A restart for maintenance, an OOM kill, a managed-service patch or a failover changes run_id. BindIncarnation then fails with ErrIncarnationChanged, so every gateway start fails. Running gateways also fail catalog operations, because each FleetStore read and write re-checks the identity in its Lua script. The docs say this build cannot recover such a backend.
+
+So existing shared deployments are bricked on upgrade, and new ones are bricked after their first Valkey restart. Landing this safely needs one of: keep the old path unless the operator explicitly opts in to fleet recovery, or ship the adoption and recovery commands (CSP13) in the same release. Either option is a new operator or config contract rather than a one-line fix.
+
+overall: patch is incorrect (0.62)
+Panel review complete. claude model=claude-opus-5-5 thinking=high: 1 finding(s), codex model=gpt-6-sol thinking=high: 0 finding(s).

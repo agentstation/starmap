@@ -21,7 +21,16 @@
     "staleIgnores": [],
     "errors": []
   },
-  "native_after": "UNVERIFIED pending publication",
+  "native_after": {
+    "consumer": {
+      "status": "PASS",
+      "run": 36287431924,
+      "head": "95f2812b5bacda91464d6a77dba7197b1fac7bdc",
+      "platforms": 5,
+      "report": "starport-native-run.json"
+    },
+    "producer": "in_progress; final CI required"
+  },
   "review": {
     "status": "PASS",
     "reviewers": [
@@ -68,5 +77,24 @@
     "workspace": "off",
     "report": "consumer-gates/report.json"
   },
-  "consumer_review": "running"
+  "consumer_review": {
+    "status": "CONFIRMED_DOWNSTREAM_RELEASE_BLOCKER",
+    "findings": 1,
+    "reviewers": [
+      "gpt-6-sol high",
+      "claude-opus-5-5 high"
+    ],
+    "exit_code": 1,
+    "passes": 1,
+    "disposition": "REVIEW_DISPOSITION.md"
+  },
+  "plan_writing": {
+    "edited_prose": "PASS: plan, final review disposition, and storage review; 3 files, zero diagnostics",
+    "repository_command": "make technical-writing-check",
+    "repository_exit": 2,
+    "repository_files": 1758,
+    "repository_diagnostics": 126,
+    "scope": "All diagnostics are inside retained proof captures; preserve historical source and review output. Full repository writing check is not green.",
+    "log": "plan-writing-full.log"
+  }
 }

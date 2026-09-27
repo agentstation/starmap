@@ -12,7 +12,7 @@
 
 <p>Updated September 27, 2026 UTC. CSP11 is in progress under D41. 23 of 40 tasks are complete.</p>
 
-<p id="next-action">Finish the final Starport review, then push <code>95f2812b</code> to existing PR #385. Qualify native CI and merge both PRs in order.</p>
+<p id="next-action">Qualify native CI for published Starmap <code>47991a564</code> and Starport <code>95f2812b</code>. Merge the producer before the consumer and record actual merge commits.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/bootstrap-review-repair/verification.json">bootstrap repair proof</a> records 13 focused race results and 75 split broad results. No named test failed or skipped. The original broad command timed out after 74 passes. Its remaining test passes separately with unchanged assertions and timeout.</p>
 
@@ -20,23 +20,23 @@
 
 <p>Producer checkout: <code>starmap-object-ci-repair</code>, branch <code>codex/catalog-fleet-contract</code>, head <code>47991a564</code>. Consumer checkout: <code>starport-native-catalog</code>, branch <code>codex/catalog-fleet-adapter</code>, head <code>95f2812b5bacda91464d6a77dba7197b1fac7bdc</code>. Preserve unrelated native proof files.</p>
 
-<p>Both reviews and verification runners finished. Producer review passes. Consumer review confirms three known production adoption/recovery gaps. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/bootstrap-review-repair/REVIEW_DISPOSITION.md">disposition</a> retains them as release blockers under CSP12, CSP13, and CSP15. It permits staged integration and rejects an unfenced fallback. The consumer review is not clean.</p>
+<p>Both reviews and verification runners finished. Producer review passes. Final consumer review repeats one P1 finding about known production adoption/recovery gaps. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/native-ci-repair/REVIEW_DISPOSITION.md">disposition</a> retains them as release blockers under CSP12, CSP13, and CSP15. It permits staged integration and rejects an unfenced fallback. The consumer review is not clean for production release.</p>
 
-<p>Starmap <a href="https://github.com/agentstation/starmap/pull/185">#185</a> contains <code>47991a564</code>. Starport <a href="https://github.com/agentstation/starport/pull/385">#385</a> contains <code>aab7dd7c</code>. Local consumer pins <code>v0.16.6-0.20260927014455-47991a5649f2</code> with <code>GOWORK=off</code>. Its local scratch, verifier, and CI repair commit is <code>95f2812b</code>.</p>
+<p>Starmap <a href="https://github.com/agentstation/starmap/pull/185">#185</a> contains <code>47991a564</code>. Starport <a href="https://github.com/agentstation/starport/pull/385">#385</a> contains <code>95f2812b</code>. Local consumer pins <code>v0.16.6-0.20260927014455-47991a5649f2</code> with <code>GOWORK=off</code>. The PR includes its scratch, verifier, and CI repairs.</p>
 
 <p>Windows native run <code>36285454089</code> rejects inherited scratch ACLs. Producer run <code>36285374567</code> exposed an uncontrolled retention-test scheduler. Consumer run <code>36285454177</code> exposed a cask-verifier assumption and exhausted the fleet job time limit.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/bootstrap-review-repair/NATIVE_SCRATCH_REPAIR.md">native creation contract</a> preserves private access and scratch layout. Local private-file race tests pass 126 named cases. Consumer development tests pass 40 named cases with an explicit temporary workspace. Windows qualification and the final published-module checks remain open.</p>
+<p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/bootstrap-review-repair/NATIVE_SCRATCH_REPAIR.md">native creation contract</a> preserves private access and scratch layout. Local private-file race tests pass 126 named cases. Consumer development tests pass 40 named cases with the published module. Native CI qualification remains open.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/native-ci-repair/verification.json">native repair proof</a> records passing producer checks. The required Sol/Opus review passes with zero P0/P1 findings. Producer CI run <code>36286723503</code> qualifies the published repair.</p>
 
-<p>Final consumer checks pass all 34 required commands, eleven CSP11 subcases with real services, and 40 development race results. The module uses <code>GOWORK=off</code>. Consumer review runs in session <code>38418</code>, with output at <code>/tmp/d41-native-consumer-review.log</code>.</p>
+<p>Final consumer checks pass all 34 required commands, eleven CSP11 subcases with real services, and 40 development race results. The module uses <code>GOWORK=off</code>. No local runner remains active. Consumer CI runs <code>36287431900</code> and <code>36287431924</code> qualify the published head.</p>
 
 <p>D41 retains the fleet baseline independently of each binary. The <a href="proof/starport-production-catalog/csp11/upgrade-contract-2026-09-26/CONTRACT.md">transition contract</a> preserves seventeen conditions. CSP16 owns coordinated policy apply. CSP16.1 owns explicit baseline promotion. Configured source updates remain active under existing authority and pin rules.</p>
 
 <p>CSP13 owns populated adoption and recovery after Valkey restart, failover, or interrupted first publication. Those commands remain unavailable. Production fleet use requires their qualification. CSP12 owns recipe validation. CSP15 owns alternative backend qualification.</p>
 
-<p>Preserve CSP12 preparation in <code>/tmp/starport-fleet-review-20260926</code>, branch <code>codex/storage-recipe-contract</code>, head <code>16aacc6c2</code>, with dirty connection changes. CSP12.1 retains seventeen passing preparation subcases. Neither task is complete.</p>
+<p>Preserve CSP12 preparation in <code>/tmp/starport-fleet-review-20260926</code>, branch <code>codex/storage-recipe-contract</code>, head <code>16aacc6c2</code>, with dirty connection changes. The <a href="proof/starport-production-catalog/csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md">storage review</a> records remaining transaction, deadline, and namespace checks. CSP12.1 retains seventeen passing preparation subcases. Neither task is complete.</p>
 
 <p>The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-latest.json">queue</a> owns PR disposition. Preserve unrelated plan-checkout changes in <code>AGENTS.md</code>, <code>Makefile</code>, <code>go.mod</code>, <code>go.sum</code>, and <code>scripts/verify.sh</code>.</p>
 
