@@ -1,0 +1,139 @@
+{
+  "status": "in_progress",
+  "consumer_head": "3c6bab49b55ac7d2e1a76f0f4fdbf459da0259f7",
+  "working_diff_sha256": "83096b0d0c68d95c719c19042e0a290ee67a0831b9943c7d7cd8da3ac7278f4a",
+  "artifacts": {
+    "adapters-runner.json": {
+      "sha256": "59c40c3178d069e497577a0e7a096fe1dda00abf611d3eff63753e20bf7c16f7"
+    },
+    "adapters-tests.jsonl": {
+      "sha256": "7cdb9f7ba60b18b9af9145f85a325ea9efc3bd4b9fd9a448fa8b76d163c2ab57"
+    },
+    "compose-config.jsonl": {
+      "sha256": "afb05ad6fa3294bf042603a329dd7c8cd3bbee09c8dc55ccb5870e4b87d3a502"
+    },
+    "container-build.log": {
+      "sha256": "3744b618d2468bbf7e349f1fcb0348be6b00fd145b04808a3a49d4196b2f519a"
+    },
+    "container-failure.log": {
+      "sha256": "d52c5d6d2b523a2a3a2c00e9c11fa6006ed04c49d544e8c414129c773879aadb"
+    },
+    "embedded-candidate-before.jsonl": {
+      "sha256": "57727f6ab3c7dd83a514fb2fcf5294e726d4e73b8a1428594642bdf02beb0706"
+    },
+    "lint.log": {
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    }
+  },
+  "adapter_checks": {
+    "pass": 145,
+    "fail": 0,
+    "skip": 0,
+    "exit_code": 0,
+    "stores": [
+      "Valkey",
+      "PostgreSQL",
+      "Badger"
+    ]
+  },
+  "compose_configuration_checks": {
+    "pass": 12
+  },
+  "lint": "PASS: zero issues",
+  "container_result": "Local pair passes effective paths, fresh KV/SQL/file/catalog access, recreation, and cold restore into fresh volumes. The image replaces the binary in the tested image with the local paired build.",
+  "root_reproduction": "TestOfflineEmbeddedCandidateHasDurableGeneration fails: candidate bytes absent from generation storage.",
+  "next_action": "Repair ordinary embedded startup publication in Starmap and same-generation acceptance in Starport. Preserve fleet and authority contracts. Then qualify local recreation/restore and complete CSP12.",
+  "paired_results": {
+    "starmap-baseline-before-confirmed": {
+      "sha256": "5c6c4d87e6c8ece62be7ff5c82c232513032081e78c1bc44544533205c9238c6",
+      "named_results": {
+        "fail": 3
+      }
+    },
+    "starmap-baseline-after": {
+      "sha256": "ae68f2b4d3c659096375f6556c0f2f4daa60a8b35c46c2a7d67f35d617daec57",
+      "named_results": {
+        "pass": 7
+      }
+    },
+    "baseline-authority-boundaries": {
+      "sha256": "087b698067ae3f216bc67477f61ee52d00866c0f10db7a1fe7096b48cbaf16de",
+      "named_results": {
+        "pass": 3
+      }
+    },
+    "startup-acceptance-before": {
+      "sha256": "c5030c2613725af7fa946afa34f18497e305344185117c69f7809fb21a196d4f",
+      "named_results": {
+        "fail": 1
+      }
+    },
+    "pair-startup-after": {
+      "sha256": "002851eadeac8783ce795d4a6be34c8da2f2171314b1ad2087f430f8f2d23863",
+      "named_results": {
+        "pass": 4
+      }
+    },
+    "container-pair": {
+      "sha256": "80086d4d4ece07a06686cd805592221ea9496012f81fcfe49df2cd4f15cac60a",
+      "named_results": {
+        "pass": 4
+      }
+    }
+  },
+  "paired_module_override": "/tmp/csp12-pair.mod; local validation only; published module qualification pending",
+  "remaining": "Full Starmap runtime suite is running. Finish source review, producer publication and pin, final image qualification, CSP12 acceptance registration including retry-scope review, required checks, and merges.",
+  "paired_source_files": {
+    "starmap": {
+      "base": "2b98ab2606653d896201a2abe16ef2b5fb114290",
+      "files": {
+        "runtime/embedded_retention.go": "6be82fdab4a1c76bde508c3452cbc65381466e04b7fd94f72f7e5b57effdba26",
+        "runtime/embedded_retention_test.go": "d1342fd03ac2908237ce0ab69244222665e551f10e46601afb99c59a8a506641",
+        "runtime/acquisition_policy_publication.go": "77676eed81a3791723dc23f8a53b44a2727843933f28968913a8d65435086a55"
+      }
+    },
+    "starport": {
+      "base": "3c6bab49b55ac7d2e1a76f0f4fdbf459da0259f7",
+      "files": {
+        ".env.fleet.example": "0e8d0e5385cd6a07d0ee6a6702c994e504c334eab6593c7b0e84bac3f7dee942",
+        "docker-compose.fleet.yml": "ab9152c435dc7c4961d00c294a0d84bcf9e08fa7bc513498ef2c4e1e8b5d793c",
+        "internal/app/catalog_startup_acceptance_test.go": "7067a7eae3cefbe7dd481bec6d25960175d25e93d0864137f918e21584095845",
+        "internal/catalog/embedded_startup_test.go": "2757cbfaa66c125f1a14a6d70a8e68eead68035c76a6d71017f7b6515d43c385",
+        "internal/config/badger_profile_test.go": "129bd531ee6be78e5cee0efdebd17c31960723bb6355aa347bad507d20f27fef",
+        "internal/config/compose_recipe_test.go": "ae91cf35dd374ea826e3146a12a31eaa28c6016514b12fc182cc5f4e266f1374",
+        "internal/storage/badger_effective_options_test.go": "0a5c8a2b36d1f4bb8a22968b1eeb94b25cf950a8d266a75511e2736e188b1c10",
+        "internal/storage/badger_options.go": "d29eec3be18cfb5d9602e6294140822ac3b149e3040725916a1bb5ab33ba979d",
+        "scripts/test-storage-recipes.py": "751fea26fd948b6e4630395f62ac3d4504ed0a3ecd9eeef044906ed577f990a2",
+        ".dockerignore": "4b739bcccfc4e48ffac308af4eddcc768fab7ab8b27235ee4400e84fc8347f02",
+        ".env.example": "d80dbff02a61918a2b710a40eb64b73c7277629393242b48a1d581c993b46922",
+        ".github/workflows/ci.yml": "3930078b99ffb4975b9ea566f15441c59fcef128d93111135d992ac72406d452",
+        ".gitignore": "1f161c38ab305b920326904f85515bb77e5f18362907b6633b5e96c638d3a632",
+        "DEVELOPMENT.md": "9a5a77646d8d28d4d6f10f2ed15feaa022fe8d2e4f7fe489d2e73d63cf33c2d7",
+        "Dockerfile": "6f81c643f2c5310d1e60d60383b717e51ac4d17396620cacc5f0b4a95a620a27",
+        "Makefile": "6f150c65a7c8829385d885cc7939c26bc37080660d459dc9b3baeabf9a11f729",
+        "README.md": "ba9f0d4be499d026244e86c16626b6b331bc279a20f3ecd1329d7dfa1bc63ac2",
+        "docker-compose.integration.yml": "250f0a697b690c46c57ee681cd3c211cbfc30946f77ff63c3a2f38ed7da663e0",
+        "docker-compose.yml": "e52313eeef29dd438ad478af3892506c3f555ba27b5295330c9adce0d237ba57",
+        "docs/FLEET_INITIALIZATION.md": "ff2e4c570e13aa1c9a64f427d89c3416b431886207a2406147cacdb8123a7e4a",
+        "docs/OPERATOR-GUIDE.md": "a59d08e8689bd22f7476255e9166b68d69bc39deea48882330319bdbc1d55fac",
+        "internal/app/app.go": "cd03af0f0c9c7286eb589c42667b4b14d35fe435b2cd7ce1e05c86f7bb04e648",
+        "internal/app/remote_catalog_test.go": "9b6cd2c292a2b3fa24d081a219c185db2a47a08077bc261aed9af7997fddb46d",
+        "internal/config/config.go": "e5a249aec349d1ff837d1978692e1c00d54069557305ca80aa39949347b1b731",
+        "internal/config/loader.go": "fc6d62620e2ce849ee744135e54d54c5fdce91d2273d4675d1dea41dd33a85fc",
+        "internal/config/storage.go": "d224c0d70db87f0fe8a46be06f8806ee69226615a6815a4dc3a00ec9abe46d94",
+        "internal/config/storage_recipe.go": "d29b9b926485f7735aa9e43370bff4c5306770bcb0a7942335d302845f8cd5e6",
+        "internal/config/storage_test.go": "372ca56ef9d505dce4f9772ff15e09cb9439d0435b37d66fa36e5a8ed39fbc95",
+        "internal/config/validation.go": "7835f1ac535d8f7af4d2147ad1bb4d3eee5706a8fc7df1775c82abb217e34fca",
+        "internal/repotest/backends.go": "386ad43d38cd141808c1958655a22c615f656aa4adca357e12c0b799b0f05a9f",
+        "internal/setup/service.go": "4036b00799d385a17fa78d0e067f728ef201afcaad25e76ea0edd0923ca8c585",
+        "internal/storage/badger.go": "a30aae0533519662ecefa1a40e99e653baff0016de773b40720aab04efa9a879",
+        "internal/storage/badger_test.go": "6bcdff33b1c37810ce493c1c90e2b0cfe18841624d8beaec13e76a768b3f7cfe",
+        "internal/storage/benchmark_test.go": "e2dd47cd51e94ce57f2c39249e03021159bf6106b424798797c67db1610b0ee6",
+        "internal/storage/interface.go": "3d8c2997e58ac61762e33d0d32ffe22026c6f7ceb099842daa7b14ccc6e15fef",
+        "internal/storage/interface_test.go": "60b6b4b1b43c071a9c1128ef2cf858e407f17c42b40a9b4dfd516fb28de92ac0",
+        "internal/storage/kvstore_contract_test.go": "4b75f171dca299f2fa9def7ce4b3e5186acd928f74890c448e6982251b7ee0df",
+        "internal/storage/read_only_test.go": "5fb55157351495d9531fb36ae5fd0cfb2d7b5e3fe812bdd63155591a9de598b1"
+      }
+    }
+  }
+}

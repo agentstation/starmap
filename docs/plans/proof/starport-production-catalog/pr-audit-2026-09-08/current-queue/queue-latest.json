@@ -960,7 +960,7 @@
     "worktree": "/tmp/starport-fleet-review-20260926",
     "commit": "3c6bab49b55ac7d2e1a76f0f4fdbf459da0259f7",
     "published": false,
-    "next_action": "Complete native adapter qualification, Compose recipes, acceptance registration, required checks, review, and merge.",
+    "next_action": "Finish the ordinary offline baseline repair and full runtime regression. Qualify producer publication, pin the consumer, rerun complete recipe acceptance, review, and merge.",
     "connection_checks": {
       "source": "committed preparation 63c763b",
       "evidence": "../../csp12/prepared-lint-repair-2026-09-27/retired-transactions/runner.json",
@@ -985,7 +985,21 @@
     "credential_conflict_repair": "Prepared commit 63c763b rejects conflicting URI and explicit credentials. Fail-before and passing race evidence remain in the proof.",
     "parent": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d",
     "working_changes": "Badger engine options, configured GC, synchronous durable default, profile tests, operator documentation.",
-    "proof": "../../csp12/namespace-and-badger-2026-09-27/verification.json"
+    "proof": "../../csp12/namespace-and-badger-2026-09-27/verification.json",
+    "paired_work": {
+      "producer_worktree": "/tmp/starmap-fleet-review-20260926",
+      "producer_branch": "codex/offline-baseline-persistence",
+      "producer_base": "2b98ab2606653d896201a2abe16ef2b5fb114290",
+      "status": "UNCOMMITTED",
+      "local_pair_module_override": "/tmp/csp12-pair.mod",
+      "proof": "../../csp12/recipe-startup-2026-09-27/verification.json"
+    },
+    "adapter_results": {
+      "pass": 145,
+      "fail": 0,
+      "skip": 0
+    },
+    "container_result": "Local patched pair passes configuration, fresh startup, container recreation, and cold restore. Published-module qualification remains pending."
   },
   "local_updated_at": "2026-09-27T02:56:15.239140+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
