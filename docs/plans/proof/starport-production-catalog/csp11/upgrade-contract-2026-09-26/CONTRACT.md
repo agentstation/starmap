@@ -1,6 +1,12 @@
 # Fleet upgrade transition contract
 
-Status: approved third option under D41 on September 26, 2026. Implementation and qualification remain open.
+Status: approved third option under D41 on September 26, 2026.
+
+CSP11 baseline retention merged in Starmap #185 and Starport #385 on September 27.
+The [merged qualification](../merged-pair-2026-09-27/verification.json) records the exact commits and component evidence.
+
+Coordinated policy apply and explicit baseline promotion remain open under CSP16 and CSP16.1.
+
 Owners: CSP11 for retained baseline recovery, CSP16 for coordinated policy apply, and CSP16.1 for explicit baseline promotion.
 Inspected producer: `75e84878d8520a9c5f456643f929bc776d52fa3e`.
 Inspected consumer: `ac679bf6464e448b63576deed54dbdbd0f7696e6`.

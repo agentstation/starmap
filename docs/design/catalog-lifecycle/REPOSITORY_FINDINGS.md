@@ -3737,7 +3737,11 @@ That combination can prevent every upgraded replica from owning refresh.
 The [transition contract](../../plans/proof/starport-production-catalog/csp11/upgrade-contract-2026-09-26/CONTRACT.md) assigns seventeen acceptance conditions across CSP11, CSP16, and CSP16.1.
 
 Configured catalog updates remain automatic. Acquisition-policy apply and embedded-only promotion remain explicit.
-The owner decision is complete. Implementation, native qualification, review, and both merges remain open.
+The owner decision is complete. At the September 26 audit, implementation, native qualification, review, and both merges remained open.
+
+The [September 27 qualification](../../plans/proof/starport-production-catalog/csp11/merged-pair-2026-09-27/verification.json) records the completed CSP11 baseline repair.
+Starmap #185 merged at `2b98ab260`. Starport #385 merged at `6bd7fcf4`.
+Coordinated policy apply and explicit baseline promotion remain open under CSP16 and CSP16.1.
 
 ### Configuration ownership after D41
 
