@@ -866,11 +866,11 @@
   },
   "next_task": {
     "task": "CSP12.2",
-    "next_action": "Complete remaining billing contracts, starting with embeddings and their child calls. Preserve unknown provider usage. Complete durable job association, required settlement recovery, A47, and exact dependency qualification before review and publication.",
+    "next_action": "Complete recognition, media, moderation, rerank, and job billing contracts and bounds. Complete durable job association, settlement recovery, A47, and exact dependency qualification before review and publication.",
     "worktree": "/tmp/starport-fleet-review-20260926",
     "branch": "codex/atomic-budget-admission",
     "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
-    "head": "0ea27f36c3e73a78fc1ed54688206421163404a3"
+    "head": "0231ec7a2fd00881bbb9b159070bcd9b9419864d"
   },
   "merged_followups": {
     "tasks": [
@@ -1046,7 +1046,7 @@
     "status": "MERGED",
     "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-27T12:28:44.063804+00:00",
+  "local_updated_at": "2026-09-27T12:52:28.960991+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -1055,10 +1055,10 @@
   },
   "budget_preparation": {
     "owner": "CSP12.2",
-    "status": "unpublished_text_and_embedding_billing",
-    "commit": "252ff1630d2e9984caeff0c15fc646da31a6e7cb",
+    "status": "unpublished_embedding_usage_repair",
+    "commit": "0231ec7a2fd00881bbb9b159070bcd9b9419864d",
     "published": false,
-    "proof": "../../csp12.2/embedding-billing-2026-09-27/verification.json",
+    "proof": "../../csp12.2/vertex-usage-2026-09-27/verification.json",
     "native_ci": "UNVERIFIED",
     "required_review": "not yet run; required before final PR",
     "remaining_dirty_files": {
@@ -1080,7 +1080,8 @@
     "candidate_workspace": "/tmp/csp122-billing.work",
     "billing_proof": "../../csp12.2/text-billing-2026-09-27/verification.json",
     "identity_proof": "../../csp12.2/request-identity-2026-09-27/verification.json",
-    "usage_presence_proof": "../../csp12.2/usage-presence-2026-09-27/verification.json"
+    "usage_presence_proof": "../../csp12.2/usage-presence-2026-09-27/verification.json",
+    "embedding_billing_proof": "../../csp12.2/embedding-billing-2026-09-27/verification.json"
   },
   "remote_state_note": "This update checks local work and retained test output only. Prior remote check timestamps remain unchanged."
 }

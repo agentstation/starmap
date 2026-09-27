@@ -169,6 +169,22 @@ The exact released dependency and native CI remain unqualified.
 Real shared-backend qualification, remaining operation contracts, and settlement recovery remain open.
 This evidence does not complete A47 or CSP12.2.
 
+## September 27 embedding usage provenance
+
+Consumer `0231ec7a` repairs Vertex text batches and preserves every returned vector.
+It disables truncation, requests dimensions, and uses complete provider token statistics.
+Incomplete usage remains unknown through canonical responses, cached records, wire responses, and optional accounting.
+Legacy cached vectors remain reusable with unknown usage. Complete measured zeros remain valid.
+
+The [usage proof](../../plans/proof/starport-production-catalog/csp12.2/vertex-usage-2026-09-27/verification.json) retains failed regressions and final checks.
+The final package race run passes 900 results. Ten cache-matrix runs pass 110 results.
+The repository suite passes 4,440 results and skips 133. Pure-Go checks pass 58 results.
+The repository and pure-Go checks precede the final test-only changes. The final race run covers those changes.
+
+Vertex monetary billing remains undeclared. This adapter repair does not qualify strict spend admission for Vertex.
+Recognition and the remaining matrix rows still require complete bounds, declarations, and settlement recovery.
+A47, the exact dependency pin, review, native CI, and merges remain open.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:

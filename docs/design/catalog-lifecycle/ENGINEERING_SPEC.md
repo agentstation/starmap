@@ -3001,6 +3001,16 @@ Missing, null, negative, or inconsistent provider counts retain uncertain capaci
 Explicit complete zeros can settle a token-only charge at zero.
 Semantic-cache embeddings retain caller routing policy and reserve independently against the same budget meters.
 
+Preserve measured, estimated, and unknown token status through canonical responses and cache storage.
+Public embedding responses omit unmeasured usage. Optional reports expose unknown tokens and unavailable cost.
+Older cached vectors remain reusable, but absent provenance cannot establish measured usage.
+A cache hit reports zero incremental provider cost.
+
+Vertex text prediction preserves all input items and returned vectors. It disables truncation and requests the selected dimensions.
+Complete per-input statistics establish measured token totals. Partial counts, truncation, negative counts, and overflow remain unknown.
+Malformed vectors do not erase complete provider usage needed for settlement.
+Provider-specific monetary declarations remain required before strict spend admission.
+
 Budget amounts mean Starport-accounted usage under the reservation's pinned catalog prices, expressed in integer nano-USD.
 They do not guarantee the provider's eventual invoice. Report that distinction in budget setup and usage exports.
 

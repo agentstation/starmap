@@ -3816,3 +3816,23 @@ Full A47, shared-backend operation coverage, native CI, exact dependency qualifi
 The Vertex adapter still assumes a scalar string input. A non-string input can panic at its type assertion.
 CSP12.2 must repair and qualify its input shapes before claiming complete embedding coverage.
 Legacy display estimates also need explicit provenance before they can represent measured usage outside strict settlement.
+
+## September 27 embedding usage and cache repair
+
+Vertex accepted only scalar text through an unchecked type assertion and returned only the first vector.
+It estimated token usage by splitting words. Public responses and optional accounting could present unknown counts as measured zero.
+The [usage proof](../../plans/proof/starport-production-catalog/csp12.2/vertex-usage-2026-09-27/verification.json) retains the failed provider, wire, accounting, and legacy-cache regressions.
+
+Consumer `0231ec7a` preserves complete provider measurements across these boundaries.
+Legacy cached vectors remain usable, but their usage remains unknown without recorded provenance.
+Malformed vector output retains complete paid usage for required settlement.
+Optional embedding costs use the declared billing contract and exact arithmetic.
+
+The initial package race run failed the semantic streaming cache case.
+Its setup assumed that every optional fill succeeded. The repaired setup waits for actual production submissions to become readable.
+Hit and provider-call assertions remain unchanged. Ten matrix runs pass 110 results.
+
+The final package race run passes 900 results. The repository run passes 4,440 results and skips 133.
+
+All evidence uses the candidate producer through `GOWORK`.
+Vertex monetary declarations, remaining operation contracts, recovery, A47, review, native CI, and merges remain open.
