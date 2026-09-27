@@ -25,7 +25,8 @@
     "verifier_unit": "PASS: 99 tests",
     "lease_regressions": "8 named PASS, 0 FAIL/SKIP",
     "technical_writing": "PASS: 1884 files, 0 diagnostics",
-    "review": "Clean Opus pre-PR review at configured P0 threshold. Final generated-link change reuses the substantive review."
+    "review": "Clean Opus pre-PR review at configured P0 threshold. Final generated-link change reuses the substantive review.",
+    "verify_checks": "PASS: make verify-checks on 8fa31111716b17b9e8d89232af51d2fc49b499bd, including generated docs, verifier tests, architecture, lint, goago, writing, pure-Go, container smoke, and critical coverage"
   },
   "limits": [
     "No claim of native CI success on the repaired head yet.",
@@ -132,6 +133,14 @@
     "csp12-verification-ci-failure.log": {
       "archive": "csp12-verification-ci-failure.log.gz",
       "sha256": "d96fed072cf7313354dcea4dbefae75c3f0e6cec4565224640fcf5b17dafb788"
+    },
+    "csp12-starmap-verify-checks-final.log": {
+      "archive": "csp12-starmap-verify-checks-final.log.gz",
+      "sha256": "6f56a520c80784c9f022950b35cc374efe55dac6d794ca1065e7c45623c00b21"
+    },
+    "csp12-starmap-autoreview-final.log": {
+      "archive": "csp12-starmap-autoreview-final.log.gz",
+      "sha256": "4ca7b6897ca5ddd53210917657b57f6c99fa23b758c94e93f548c1f3d1578c30"
     }
   },
   "restart_repair_commit": "cd6a158ba162e05a406de38ce38e91c9cacf85de",

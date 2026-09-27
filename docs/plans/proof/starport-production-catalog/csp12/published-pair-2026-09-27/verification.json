@@ -1,0 +1,248 @@
+{
+  "status": "COMPONENT_PASS_FINAL_REVIEW_AND_CI_PENDING",
+  "recorded_at": "2026-09-27T04:30:30.142344+00:00",
+  "producer_commit": "8fa31111716b17b9e8d89232af51d2fc49b499bd",
+  "consumer_base_commit": "3c6bab49b55ac7d2e1a76f0f4fdbf459da0259f7",
+  "consumer_module": "v0.16.6-0.20260927042126-8fa31111716b",
+  "module_override": false,
+  "checks": {
+    "task": {
+      "gate_status": "PASS",
+      "selected_subcases": 15,
+      "qualification": "component checks only"
+    },
+    "packages": {
+      "command": "go test -json -race -count=1 -timeout 5m ./internal/config ./internal/storage ./internal/sqlstore ./internal/blob",
+      "pass": 645,
+      "fail": 0,
+      "skip": 0
+    },
+    "container": "Real built image passes fresh startup, recreation, cold restore, and path checks. Docker fixtures cleaned.",
+    "lifecycle_regression": "2 named PASS, 0 FAIL/SKIP under race detection. Catalog dependency uses the existing runtime factory seam. Both two-second lifecycle limits remain. The test also checks catalog closure and cleans up after failure.",
+    "architecture": "PASS: 12 conditions, including full Go suite, on final source",
+    "lint": "PASS: 0 issues"
+  },
+  "limits": [
+    "The task gate is component qualification. It does not qualify all 50 final acceptance cases.",
+    "Task source inventory precedes the app lifecycle test fixture repair. No production source changed during the run.",
+    "The lifecycle test uses a catalog fixture at the runtime factory seam. Both two-second limits remain, and the final full Go suite passes. Real startup and persistence remain separate passing container checks.",
+    "CSP13 owns populated migration and controlled recovery. CSP15 owns complete fleet failure qualification."
+  ],
+  "evidence": {
+    "runner.json": {
+      "archive": "runner.json.gz",
+      "sha256": "78725a1277b369bff119b9b563758a170386217506555666d2bf972f9fd180e5"
+    },
+    "task.json": {
+      "archive": "task.json.gz",
+      "sha256": "22bb617f17387d2811f5ab904fb866193b5f40ca222f576a50f19a9c5a7256a3"
+    },
+    "packages.jsonl": {
+      "archive": "packages.jsonl.gz",
+      "sha256": "8415cc3f1a85a1e1f9097982159941d41737a008e25da9fdaac015201642be65"
+    },
+    "packages-stderr.log": {
+      "archive": "packages-stderr.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr.log": {
+      "archive": "stderr.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source.diff": {
+      "archive": "source.diff.gz",
+      "sha256": "cacec406d9510e994096ab6ffdb4313b9d8d316a1b7f1cc1d7a0083d13538287"
+    },
+    "csp12-consumer-final-architecture.log": {
+      "archive": "csp12-consumer-final-architecture.log.gz",
+      "sha256": "90203f4d2e8003deff111352f33a8c2c36f8866d7ddaaf5f417c20be213aec95"
+    },
+    "csp12-cancellation-focused.jsonl": {
+      "archive": "csp12-cancellation-focused.jsonl.gz",
+      "sha256": "6f7e674d57cb8bf30b192589257d4d4d0ea341223ec6e2285ce7c96c72f4a2c9"
+    },
+    "csp12-startup-profile.log": {
+      "archive": "csp12-startup-profile.log.gz",
+      "sha256": "5ce3ca0b5b46d3dee51ab6fd30c641c2c1eb53b55784f6eb32566dae33ab35fc"
+    },
+    "csp12-cancellation-after.jsonl": {
+      "archive": "csp12-cancellation-after.jsonl.gz",
+      "sha256": "43dd2e771769a7cf87d0608b2b08e934c3a8d3b855f332e4e3059baccb2daa75"
+    },
+    "csp12-container-final-head-build.log": {
+      "archive": "csp12-container-final-head-build.log.gz",
+      "sha256": "6f032689b134bbb8e1bfa3b54f2f67c442d22f589b73386b38dda8b7c20e76ca"
+    },
+    "csp12-consumer-changed-prose.log": {
+      "archive": "csp12-consumer-changed-prose.log.gz",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66"
+    },
+    "csp12-cancellation-after2.jsonl": {
+      "archive": "csp12-cancellation-after2.jsonl.gz",
+      "sha256": "9538c90d593087b1f15a55a710540a546b3da0a6c8e990cbc21141ef44e6dc3e"
+    },
+    "csp12-consumer-final-architecture-after.log": {
+      "archive": "csp12-consumer-final-architecture-after.log.gz",
+      "sha256": "c8401734c1b560db0f79be76bbc71c7f77600c243b85f7d26f3e7b883bf39e44"
+    },
+    "initial-required-01-verify-starmap-ownership.sh.log": {
+      "archive": "initial-required-01-verify-starmap-ownership.sh.log.gz",
+      "sha256": "660e1e44493609fb9ff0f272512ded71e7a1e798e83fea8b01de9fb77d53a342"
+    },
+    "initial-required-02-verify-v1-architecture.sh.log": {
+      "archive": "initial-required-02-verify-v1-architecture.sh.log.gz",
+      "sha256": "ea5986efc9bd47630d3219f82c0195ef5bed2e2f843d61109a82f13f9a6e9bfd"
+    },
+    "initial-required-03-test-dependency-direction-verifier.sh.log": {
+      "archive": "initial-required-03-test-dependency-direction-verifier.sh.log.gz",
+      "sha256": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651"
+    },
+    "initial-required-04-verify-dependency-direction.sh.log": {
+      "archive": "initial-required-04-verify-dependency-direction.sh.log.gz",
+      "sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    "initial-required-05-verify-catalog-driven-providers.sh.log": {
+      "archive": "initial-required-05-verify-catalog-driven-providers.sh.log.gz",
+      "sha256": "2d9eea818b49a5cf28532e763bd475b2d2f628ee2790656c11cd0ad85c4e2414"
+    },
+    "initial-required-06-verify-package-layout.sh.log": {
+      "archive": "initial-required-06-verify-package-layout.sh.log.gz",
+      "sha256": "d02a1fb73d591ccaf0f4e4017f85a7ee38155634d13a707c1d466aafca26817c"
+    },
+    "initial-required-07-verify-readme-quickstart.sh.log": {
+      "archive": "initial-required-07-verify-readme-quickstart.sh.log.gz",
+      "sha256": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0"
+    },
+    "initial-required-08-verify-v1-release.sh.log": {
+      "archive": "initial-required-08-verify-v1-release.sh.log.gz",
+      "sha256": "75074e58905a5ca1cb126c5686d11dc26445ae78dade9e1333a6429781ca7d81"
+    },
+    "initial-required-09-verify-release-workflow.sh.log": {
+      "archive": "initial-required-09-verify-release-workflow.sh.log.gz",
+      "sha256": "7fc27a568deb2d0f8ce77c61896b5b7c275d80083310979655118a82235828b8"
+    },
+    "initial-required-10-verify-developer-experience.sh.log": {
+      "archive": "initial-required-10-verify-developer-experience.sh.log.gz",
+      "sha256": "98e39b7c11a665829fdcc8dc2bb31f0d035e2ee5a6e175492ab9ce23aee48d1e"
+    },
+    "initial-required-11-verify-doc-links.sh.log": {
+      "archive": "initial-required-11-verify-doc-links.sh.log.gz",
+      "sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324"
+    },
+    "initial-required-12-test-doc-link-verifier.sh.log": {
+      "archive": "initial-required-12-test-doc-link-verifier.sh.log.gz",
+      "sha256": "69ea9d7375bbb4907e620ae48e022bb88f04aae68545a8942d01ddcf6744f9ec"
+    },
+    "initial-required-13-verify-openrouter-parity.sh.log": {
+      "archive": "initial-required-13-verify-openrouter-parity.sh.log.gz",
+      "sha256": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd"
+    },
+    "initial-required-14-verify-console-modernization.sh.log": {
+      "archive": "initial-required-14-verify-console-modernization.sh.log.gz",
+      "sha256": "185cebeb477b2b21b6a132c98b99abd3d13ee8aacf9346c35de5eb139e00e518"
+    },
+    "initial-required-15-verify-auth-onboarding.sh.log": {
+      "archive": "initial-required-15-verify-auth-onboarding.sh.log.gz",
+      "sha256": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0"
+    },
+    "initial-required-16-verify-console-session-grants.sh.log": {
+      "archive": "initial-required-16-verify-console-session-grants.sh.log.gz",
+      "sha256": "2ca175ead00523a30b79eef397b9c4405addfd7282e54eba83bbaa9b458cfcb0"
+    },
+    "initial-required-17-verify-model-modalities.sh.log": {
+      "archive": "initial-required-17-verify-model-modalities.sh.log.gz",
+      "sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a"
+    },
+    "initial-required-18-verify-files-api.sh.log": {
+      "archive": "initial-required-18-verify-files-api.sh.log.gz",
+      "sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986"
+    },
+    "initial-required-19-verify-async-media-jobs.sh.log": {
+      "archive": "initial-required-19-verify-async-media-jobs.sh.log.gz",
+      "sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb"
+    },
+    "initial-required-20-verify-document-parser.sh.log": {
+      "archive": "initial-required-20-verify-document-parser.sh.log.gz",
+      "sha256": "9102e2e6af83927ed3051459833af3605153fe54ab9f830e479a843ed783a7e7"
+    },
+    "initial-required-21-verify-reranking.sh.log": {
+      "archive": "initial-required-21-verify-reranking.sh.log.gz",
+      "sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c"
+    },
+    "initial-required-22-verify-catalog-performance.sh.log": {
+      "archive": "initial-required-22-verify-catalog-performance.sh.log.gz",
+      "sha256": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be"
+    },
+    "initial-required-23-verify-credential-sharing.sh.log": {
+      "archive": "initial-required-23-verify-credential-sharing.sh.log.gz",
+      "sha256": "c74926b4e4352f4c6e5f688d628e76d44bb7d84f422900408de977ca33a4bec2"
+    },
+    "initial-required-24-verify-enterprise-readiness.sh.log": {
+      "archive": "initial-required-24-verify-enterprise-readiness.sh.log.gz",
+      "sha256": "466350440fbde6b80d1f91c8d8bdfac58d3af69453ff4d5696862584e5a4207b"
+    },
+    "initial-required-25-verify-console-polish.sh.log": {
+      "archive": "initial-required-25-verify-console-polish.sh.log.gz",
+      "sha256": "664858a2c06adebacd61ca8ce09a3cec33b5c758fe7f7d7635dc428db7f1556e"
+    },
+    "initial-required-26-verify-action-pins.sh.log": {
+      "archive": "initial-required-26-verify-action-pins.sh.log.gz",
+      "sha256": "a94bb5c32787cc4e2b807b0bd116b26755f3ba2b7cdfa5354a1dc15b66506eac"
+    },
+    "initial-required-27-benchmark-overhead.sh.log": {
+      "archive": "initial-required-27-benchmark-overhead.sh.log.gz",
+      "sha256": "562a05c55b777c6e5494a7ee03d165015d9a19d367a756734986d31bc80b8a03"
+    },
+    "initial-required-28-smoke-first-run.sh.log": {
+      "archive": "initial-required-28-smoke-first-run.sh.log.gz",
+      "sha256": "13df9cf24049e80dbd789601314d6896dc1a5674feff1997aab89e9fff49ff03"
+    },
+    "initial-required-29-check.log": {
+      "archive": "initial-required-29-check.log.gz",
+      "sha256": "33cb29181092c8738fe46ae5467092de1e35706e8b86253da41877626256ec1f"
+    },
+    "initial-required-30-all.log": {
+      "archive": "initial-required-30-all.log.gz",
+      "sha256": "7f403ff5a30f350d4ce92d3d4e0f457bad01f0ab5f7b36314d3744a4221ea549"
+    },
+    "initial-required-31-all.log": {
+      "archive": "initial-required-31-all.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "initial-required-32-csp12-pair.mod.log": {
+      "archive": "initial-required-32-csp12-pair.mod.log.gz",
+      "sha256": "823a39633ea706ad31c4c4b7ab5a8b44937baf4cf4d217fc538a2b81b9f15340"
+    },
+    "initial-required-33-csp12-pair.mod.log": {
+      "archive": "initial-required-33-csp12-pair.mod.log.gz",
+      "sha256": "2e8d42b55089dbff2cf684214988dc1116a50755de502f1579e693046e6335fd"
+    },
+    "initial-required-34-smoke-openrouter-sdks.sh.log": {
+      "archive": "initial-required-34-smoke-openrouter-sdks.sh.log.gz",
+      "sha256": "27c722e0a97340ac74e2634cf7e13c51e4599edd65d642bbeb02895db8cf9f9b"
+    },
+    "initial-required-results.json": {
+      "archive": "initial-required-results.json.gz",
+      "sha256": "2b3360f28589d374c0a01625e592314b07d6826e4f775d3664e8b11990a200a5"
+    },
+    "csp12-consumer-final-architecture-repaired.log": {
+      "archive": "csp12-consumer-final-architecture-repaired.log.gz",
+      "sha256": "e9b6ddfc0de00807939e53e9f973558ffa4f9b1cfa8ed540d49a73ce94a8cc06"
+    },
+    "csp12-consumer-final-lint-after.log": {
+      "archive": "csp12-consumer-final-lint-after.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "csp12-consumer-final-ownership.log": {
+      "archive": "csp12-consumer-final-ownership.log.gz",
+      "sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    }
+  },
+  "repository_checks_history": {
+    "commands": 34,
+    "initial_pass": 29,
+    "initial_failure": 5,
+    "note": "Initial pass used an explicit local module override. Five harness configuration failures have separate published-module reruns. Final architecture, lifecycle and lint reruns bind the final consumer source."
+  },
+  "consumer_commit": "2d0a90aab6e9cb8bc3af134a35b6d1fd31c94175"
+}
