@@ -16,7 +16,8 @@ Acceptance retains 32 distinct generation IDs independently from publication rec
 - The only unfinished test passes in a separate invocation with the same timeout and assertions. The split broad coverage totals 75 passing results.
 - Lint reports zero issues. All 99 acceptance-verifier regression tests pass.
 - All eleven required CSP11 task subcases pass with the new regressions included. All 34 consumer repository commands and the full producer checks pass.
-- Sol and Opus reviews run on the committed branches. Publication and merges remain open.
+- Producer review passes. Consumer review confirms three remaining production adoption/recovery findings assigned to later tasks.
+- Both branches are published in existing ready PRs. Exact-head CI and both merges remain open.
 
 ## Ownership and limits
 
@@ -29,4 +30,4 @@ CSP12 owns supported-recipe validation. CSP15 qualifies alternative backends.
 The source hash map includes catalog and SQL Go files and all three new migrations.
 Historical runner hash maps have narrower scope. They do not alone bind the new recovery and SQL source.
 The committed source is producer `0f45bbae239381bf6f674e5834409bd4cceec1ef` and consumer `aab7dd7c8bf52b2046e2284e480d81ce1d0b873c`.
-Final review evidence must complete the binding before publication.
+The review reports and disposition bind each result to those commits. The consumer review is not clean.

@@ -5,15 +5,15 @@
       "baseRefName": "main",
       "baseRefOid": "8122081e0494648fb1e356647053dd870a05fb1c",
       "headRefName": "codex/catalog-fleet-contract",
-      "headRefOid": "b46c077a70396de6eb31039b678ff754594f1d02",
+      "headRefOid": "0f45bbae239381bf6f674e5834409bd4cceec1ef",
       "isDraft": false,
       "mergeStateStatus": "BLOCKED",
       "number": 185,
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Reviewed producer published; native CI run 36282930189 active",
-      "next_action": "Qualify exact-head CI and verify review threads before merge."
+      "disposition": "Published after required review; exact-head CI running. Consumer downstream release blockers remain recorded.",
+      "next_action": "Qualify exact-head CI and merge Starmap before Starport; record merge commits before task completion."
     }
   ],
   "starport": [
@@ -21,15 +21,15 @@
       "baseRefName": "main",
       "baseRefOid": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
       "headRefName": "codex/catalog-fleet-adapter",
-      "headRefOid": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
-      "isDraft": true,
-      "mergeStateStatus": "UNSTABLE",
+      "headRefOid": "aab7dd7c8bf52b2046e2284e480d81ce1d0b873c",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
       "number": 385,
       "title": "catalog: fence fleet publication and recover shared acquisition state",
       "url": "https://github.com/agentstation/starport/pull/385",
       "owner": "CSP11",
-      "disposition": "Final review found two reproducible CSP11 defects; local regression tests remain uncommitted",
-      "next_action": "Re-scope the independent first-publication witness contract, repair rollback history and complete-key-loss refusal, then qualify and review before publication."
+      "disposition": "Published after required review; exact-head CI running. Consumer downstream release blockers remain recorded.",
+      "next_action": "Qualify exact-head CI and merge Starmap before Starport; record merge commits before task completion."
     }
   ],
   "completed_merges": [
@@ -837,7 +837,7 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Finish committed-branch reviews, publish existing PRs, then merge in dependency order after exact-head CI.",
+    "next_action": "Qualify exact-head CI and merge Starmap before Starport; record merge commits before task completion.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
     "contract_audit": "../../csp11/contract-audit-2026-09-26.md",
@@ -876,22 +876,22 @@
     "consumer_base": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
     "proof": "../../csp11/isolation-scope-2026-09-26/verification.json",
     "owner": "CSP11",
-    "next_action": "Finish committed-branch reviews, publish existing PRs, then merge in dependency order after exact-head CI.",
+    "next_action": "Qualify exact-head CI and merge Starmap before Starport; record merge commits before task completion.",
     "consumer": "aab7dd7c8bf52b2046e2284e480d81ce1d0b873c",
     "consumer_pr": 385,
     "ci": {
-      "producer": 36282930189,
-      "consumer": 36265779872,
+      "producer": 36285374567,
+      "consumer": 36285454177,
       "consumer_timeout_fix": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
-      "consumer_status": "failure on 7068380bd; Intel managed-credential test depended on wall time; local deterministic repair passes.",
-      "producer_prior_run": "36281444461 cancelled automatically after failing stale platform assertions"
+      "consumer_status": "in_progress on aab7dd7c",
+      "producer_prior_run": "36281444461 cancelled automatically after failing stale platform assertions",
+      "consumer_native": 36285454089,
+      "producer_status": "in_progress on 0f45bbae2",
+      "prior_producer_status": "36282930189 succeeded on b46c077a7"
     },
     "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json",
-    "review_status": "PASS: two review passes, no actionable findings",
-    "running_sessions": [
-      7396,
-      47259
-    ],
+    "review_status": "PASS: two bounded producer passes, zero findings",
+    "running_sessions": [],
     "repair_proof": "../../csp11/review-repairs-2026-09-26/verification.json",
     "initialization_proof": "../../csp11/fresh-initialization-2026-09-26/verification.json",
     "retention_proof": "../../csp11/retention-checkpoint-2026-09-26/verification.json",
@@ -919,11 +919,12 @@
     "pin_review_repair": "../../csp11/retained-baseline-2026-09-26/pin-review-repair/verification.json",
     "startup_repair_proof": "../../csp11/retained-baseline-2026-09-26/startup-review-repair/verification.json",
     "final_pair_proof": "../../csp11/retained-baseline-2026-09-26/final-pair/verification.json",
-    "consumer_review_status": "RUNNING_AFTER_REPAIR",
-    "consumer_review_findings": 4,
+    "consumer_review_status": "CONFIRMED_DOWNSTREAM_RELEASE_BLOCKERS",
+    "consumer_review_findings": 3,
     "accepted_csp11_defects": 2,
     "consumer_review_scope": "../../csp11/retained-baseline-2026-09-26/consumer-review-rescope/REVIEW_RESOLUTION.md",
-    "bootstrap_repair_proof": "../../csp11/retained-baseline-2026-09-26/bootstrap-review-repair/verification.json"
+    "bootstrap_repair_proof": "../../csp11/retained-baseline-2026-09-26/bootstrap-review-repair/verification.json",
+    "final_review_disposition": "../../csp11/retained-baseline-2026-09-26/bootstrap-review-repair/REVIEW_DISPOSITION.md"
   },
   "local_consumer_checkpoint": {
     "head": "76a5687c680899283e9cbf4c3d74659a9e4f5974",
@@ -950,5 +951,5 @@
       "scope": "kvconnection, config, storage, cache with race detection and real Valkey. Full CSP12 is incomplete."
     }
   },
-  "local_updated_at": "2026-09-27T01:19:59.511058+00:00"
+  "local_updated_at": "2026-09-27T01:26:48.774497+00:00"
 }

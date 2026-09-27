@@ -3770,4 +3770,7 @@ The initial broad command timed out after 74 passes. Its remaining test passed s
 
 All eleven required CSP11 subcases, 34 consumer commands, 99 verifier tests, and full producer checks pass.
 Producer `0f45bbae2` registers the new acceptance checks. Consumer qualification uses published producer module `b46c077a7`, whose Go source remains unchanged.
-Both committed-branch reviews, publication, and protected merges remain open.
+
+Producer review passes. Consumer review confirms three known production adoption/recovery gaps.
+Their existing CSP12, CSP13, and CSP15 requirements remain release blockers. The consumer review is not clean.
+Both PRs contain the reviewed commits. Exact-head CI and protected merges remain open.

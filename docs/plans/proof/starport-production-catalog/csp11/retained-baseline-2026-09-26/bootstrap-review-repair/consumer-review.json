@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "title": "All existing Valkey deployments lose startup: mandatory PostgreSQL witness and approval with no adoption or restart-recovery path",
+      "body": "Reviewer: claude model=claude-opus-5-5 thinking=high\n\n`openRecoveryFleet` now turns the fleet/witness path on for every store that implements `storage.IncarnationProvider`. Every Valkey KVStore does. `OpenRuntimeWithRecovery` is the only catalog factory the app uses.\n\nFor existing Valkey deployments this means:\n\n1. Valkey with SQLite or MySQL fails startup with \"requires the qualified PostgreSQL witness\". The previous `TestAppWithValkey` ran without Postgres and had to be changed.\n2. Valkey with Postgres fails with `recovery.ErrClosed` because no approval row exists.\n3. `starport fleet init` refuses any populated store (`ErrNotFresh` / `ErrDatabaseNotEmpty`), and the docs say this build has no adoption command.\n4. Even a freshly initialized fleet is bound to Valkey `run_id:master_replid`. Any routine Valkey restart or failover changes `run_id`, so `BindIncarnation` returns `ErrIncarnationChanged` and every gateway fails catalog startup and operations. The docs admit there is no recovery command.\n\nThe upgrade therefore hard-breaks every existing Valkey-backed gateway, and routine Valkey maintenance permanently bricks new ones. There is no migration, opt-in, or fallback.\n\nSmallest fix: gate the fleet/witness path behind an explicit opt-in, or enable it only when a recovery row already exists. Otherwise keep the previous Valkey catalog path. A complete fix needs the adoption/recovery commands the docs defer to CSP13.",
+      "priority": "P1",
+      "confidence": 0.4,
+      "category": "regression",
+      "code_location": {
+        "file_path": "internal/catalog/runtime_fleet.go",
+        "line": 72
+      }
+    },
+    {
+      "title": "Existing Valkey deployments cannot start after upgrading",
+      "body": "Reviewer: codex model=gpt-6-sol thinking=high\n\nShared startup now requires an approved `catalog_recovery` row, but previous deployments have no such row. `Approved` returns `ErrClosed`, while `fleet init` refuses the populated stores an existing deployment has. The patch provides no adoption or migration path, so upgrading an existing Valkey deployment prevents its gateways from starting. Add that path before enforcing this requirement on existing installations.",
+      "priority": "P1",
+      "confidence": 0.98,
+      "category": "regression",
+      "code_location": {
+        "file_path": "internal/catalog/fleet_store.go",
+        "line": 44
+      }
+    },
+    {
+      "title": "A Valkey restart leaves an initialized fleet unable to restart",
+      "body": "Reviewer: codex model=gpt-6-sol thinking=high\n\nApproval binds to Valkey's process run ID. A routine Valkey restart changes that ID, so `BindIncarnation` rejects the stored approval on every subsequent gateway startup. Fresh initialization refuses the prior approval, and this patch has no recovery operation for a changed backend. A controlled recovery procedure is needed before this becomes the required production startup path.",
+      "priority": "P1",
+      "confidence": 0.97,
+      "category": "bug",
+      "code_location": {
+        "file_path": "internal/catalog/fleet_store.go",
+        "line": 51
+      }
+    }
+  ],
+  "overall_correctness": "patch is incorrect",
+  "overall_explanation": "Panel review complete. claude model=claude-opus-5-5 thinking=high: 1 finding(s), codex model=gpt-6-sol thinking=high: 2 finding(s).",
+  "overall_confidence": 0.97
+}

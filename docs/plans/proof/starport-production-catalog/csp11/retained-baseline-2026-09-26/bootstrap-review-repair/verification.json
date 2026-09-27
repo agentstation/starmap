@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-09-27T01:19:59.511058+00:00",
+  "recorded_at": "2026-09-27T01:26:48.774497+00:00",
   "owner": "CSP11",
   "decision": "D41 approved; retained baseline independent of binary upgrade",
   "producer_commit": "0f45bbae239381bf6f674e5834409bd4cceec1ef",
@@ -42,12 +42,37 @@
     "passed": 99
   },
   "review": {
-    "producer": "running",
-    "producer_session": 7396,
-    "consumer": "running",
-    "consumer_session": 47259
+    "producer": {
+      "status": "PASS",
+      "passes": 2,
+      "findings": 0,
+      "exit_code": 0
+    },
+    "consumer": {
+      "status": "CONFIRMED_DOWNSTREAM_RELEASE_BLOCKERS",
+      "passes": 1,
+      "findings": 3,
+      "exit_code": 1,
+      "disposition": "REVIEW_DISPOSITION.md"
+    }
   },
-  "publication": "pending review",
+  "publication": {
+    "producer_pr": 185,
+    "producer_head": "0f45bbae239381bf6f674e5834409bd4cceec1ef",
+    "consumer_pr": 385,
+    "consumer_head": "aab7dd7c8bf52b2046e2284e480d81ce1d0b873c",
+    "both_ready": true
+  },
   "merges": "open",
-  "completion": "INCOMPLETE"
+  "completion": "INCOMPLETE",
+  "ci": {
+    "producer": 36285374567,
+    "consumer": 36285454177,
+    "consumer_native": 36285454089,
+    "prior_producer_native": {
+      "run": 36282930189,
+      "status": "success",
+      "head": "b46c077a70396de6eb31039b678ff754594f1d02"
+    }
+  }
 }
