@@ -304,6 +304,9 @@ A failed lookup is unknown, not proof that no budget applies.
 Distinguish exhausted budget, confirmed absence, and unavailable policy or usage.
 Only the last condition needs the retryable refusal from D14.
 
+Catalog prices must preserve their billing units. A per-second rate cannot imply a fixed charge for one video or audio item.
+Unknown quantities, price selectors, and additional charges remain unknown. Strict budget admission requires a complete contract before paid dispatch.
+
 Recovery cannot reconstruct revocations or spending absent from its backups.
 Use independent durable evidence, or keep affected access restricted until an operator reconciles the missing interval.
 Catalog publication does not independently authorize a new destination to receive inference credentials.

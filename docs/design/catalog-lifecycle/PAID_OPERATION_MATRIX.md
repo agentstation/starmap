@@ -397,6 +397,16 @@ This release concerns outstanding job count. It cannot refund a spending reserva
 
 The [repository audit](REPOSITORY_FINDINGS.md#september-27-cancellation-and-video-contract-audit) identifies current provider unit and transport differences.
 Replace the generic per-video assumption with each provider's actual billing contract before strict-budget video dispatch.
+
+## Media duration units
+
+Schema 18 preserves input and output prices per second without declaring a complete billing contract.
+Consumer `06982eb2` reports unknown video cost when duration quantities are absent, including data that also carries a per-video rate.
+The [duration proof](../../plans/proof/starport-production-catalog/csp12.2/media-duration-units-2026-09-27/verification.json) records conversion, schema, copy, and consumer accounting checks.
+
+Fixed-page OCR can reserve the decoded page count without an undocumented provider page ceiling.
+Unknown capabilities remain explicit. Historical identity review and historical test results remain intact.
+These changes do not qualify video dispatch, option-dependent charges, provider usage, or durable settlement.
 Retain the submission valuation and reliable usage through durable settlement. Failed or cancelled state alone cannot establish a zero charge.
 
 Consumer `1143dfb0` retains unresolved provider work after local polling exhaustion.

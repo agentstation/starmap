@@ -4172,3 +4172,28 @@ A scalar per-second replacement cannot represent this inventory.
 CSP12.2 must verify quantity, currency scaling, selectors, additive charges, and minimum semantics before declaring a complete video quote.
 Unknown SKU semantics must remain unknown. A matching name alone cannot establish safe reservation or settlement.
 The audit does not qualify any new provider contract.
+
+## September 27 media duration units
+
+The provider adapter previously mapped `input_seconds` to `audio_input` and `output_seconds` to a per-item generation field.
+That mapping lost the quantity unit. The original acquisition regression fails before the correction.
+Schema 18 preserves `input_second` and `output_second` through validation, copies, reconciliation, and serialization.
+The current fixture verifies duration conversion for thirteen DeepInfra models. Twelve embedded records receive unit corrections without numeric price changes.
+
+Eleven match current acquisition. The retained FastVideo record follows historical commit `0414a3cd1` and remains unverified for current availability.
+
+Consumer `06982eb2` refuses optional video valuation when duration quantities remain unknown, including data that also contains a per-video price.
+The mixed-rate regression previously returned a partial cost. Strict video budget admission remains unqualified and must refuse before dispatch.
+
+Broader checks found incomplete OCR catalog metadata from an earlier component.
+The correction adds a separate identity-review supplement and explicit unknown Boolean capabilities. The historical identity map remains unchanged.
+The media census now includes the two added speech offerings and the new OCR offering.
+
+Mistral's current model page identifies `mistral-ocr-4-0` and its fixed-page prices. [Model documentation](https://docs.mistral.ai/models/ocr-4-0)
+The inspected limits page specifies file-upload limits but no OCR page ceiling. [Known limitations](https://docs.mistral.ai/resources/known-limitations)
+The catalog leaves that page ceiling unknown. Fixed-page admission still requires a decoded positive page count and enforces a known ceiling when one exists.
+Token-billed recognition retains its bound checks. This correction does not add annotations or provider-native batch billing.
+
+The [duration proof](../../plans/proof/starport-production-catalog/csp12.2/media-duration-units-2026-09-27/verification.json) owns the source revisions, failed attempts, check counts, and remaining limits.
+Global live-provider qualification still fails outside DeepInfra. Missing credentials and stale fixtures remain recorded.
+Complete video billing, pinned asynchronous valuation, required settlement, and full task qualification remain open under CSP12.2.

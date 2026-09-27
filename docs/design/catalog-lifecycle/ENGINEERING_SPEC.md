@@ -4457,3 +4457,20 @@ The records retain schema 2 for jobs and batches, and payload version 3 for clai
 CSP13 must address older records that local timeout previously marked failed, including mixed-version deployment.
 An explicit check does not establish background recovery, provider billing, or a reconciliation horizon.
 Those contracts remain required under CSP12.2.
+
+### Media duration price facts
+
+Catalog schema 18 adds `pricing.operations.input_second` and `output_second`.
+Each rate names one second in the declared pricing currency. The fields do not declare a complete billing contract or grant an operation.
+The OpenAI-compatible acquisition adapter preserves the corresponding metadata units without deriving them from output modality.
+Copies, reconciliation, YAML, and payload encoding preserve these rates. Older schemas reject the new fields.
+
+Starport cannot price a generated-video count from a duration rate.
+If retained data also contains a per-video rate, optional accounting must report unknown cost until a complete contract resolves all components.
+Strict admission still requires verified quantity bounds, option selection, currency scaling, additional charges, and settlement evidence.
+One scalar duration rate does not represent the full OpenRouter SKU inventory.
+
+The embedded correction changes twelve DeepInfra records while preserving their numeric prices.
+Eleven have matching current fixture evidence. The retained FastVideo record uses historical acquisition evidence and does not claim current availability.
+The OCR identity supplement preserves the historical identity map. Unverified Boolean capabilities remain explicit `null` values.
+Fixed-page recognition uses the decoded request page count without inventing an undocumented provider page ceiling.

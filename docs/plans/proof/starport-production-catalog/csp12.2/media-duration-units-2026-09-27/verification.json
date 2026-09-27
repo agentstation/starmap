@@ -1,0 +1,737 @@
+{
+  "recorded_at": "2026-09-27T18:44:11.747414+00:00",
+  "task": "CSP12.2",
+  "status": "PASS component checks; task incomplete; global live-provider gates fail",
+  "producer_commit": "cf5b62f172cd12abef4bc347c5c3fb56743d612c",
+  "consumer_commit": "06982eb21083fdb7c3d19deba687202dfd611ba7",
+  "go_version": "1.27.1",
+  "work_file": "/tmp/csp122-billing.work",
+  "tests": {
+    "before": {
+      "counts": {
+        "test_fail": 4,
+        "package_fail": 1
+      },
+      "non_pass_outcomes": [
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starmap/internal/providers/openai",
+          "test": "TestMetadataDurationPricesKeepTheirUnits/video"
+        },
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starmap/internal/providers/openai",
+          "test": "TestMetadataDurationPricesKeepTheirUnits/audio"
+        },
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starmap/internal/providers/openai",
+          "test": "TestMetadataDurationPricesKeepTheirUnits/#00"
+        },
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starmap/internal/providers/openai",
+          "test": "TestMetadataDurationPricesKeepTheirUnits"
+        },
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starmap/internal/providers/openai",
+          "test": null
+        }
+      ],
+      "timing": {
+        "first_event": "2026-09-27T13:23:57.807793-05:00",
+        "last_event": "2026-09-27T13:23:58.358066-05:00"
+      }
+    },
+    "consumer-packages": {
+      "counts": {
+        "test_pass": 490,
+        "package_pass": 2
+      },
+      "non_pass_outcomes": [],
+      "timing": {
+        "first_event": "2026-09-27T13:42:08.955145-05:00",
+        "last_event": "2026-09-27T13:42:22.534422-05:00"
+      }
+    },
+    "consumer-page-race": {
+      "counts": {
+        "test_pass": 12,
+        "package_pass": 1
+      },
+      "non_pass_outcomes": [],
+      "timing": {
+        "first_event": "2026-09-27T13:38:23.525392-05:00",
+        "last_event": "2026-09-27T13:38:25.391766-05:00"
+      }
+    },
+    "consumer-race-final": {
+      "counts": {
+        "test_pass": 9,
+        "package_pass": 1
+      },
+      "non_pass_outcomes": [],
+      "timing": {
+        "first_event": "2026-09-27T13:40:02.005375-05:00",
+        "last_event": "2026-09-27T13:40:15.566378-05:00"
+      }
+    },
+    "consumer-race": {
+      "counts": {
+        "test_pass": 3,
+        "package_pass": 1
+      },
+      "non_pass_outcomes": [],
+      "timing": {
+        "first_event": "2026-09-27T13:35:38.872571-05:00",
+        "last_event": "2026-09-27T13:35:53.862882-05:00"
+      }
+    },
+    "contract": {
+      "counts": {
+        "test_pass": 23,
+        "package_pass": 3
+      },
+      "non_pass_outcomes": [],
+      "timing": {
+        "first_event": "2026-09-27T13:26:58.452642-05:00",
+        "last_event": "2026-09-27T13:27:00.697385-05:00"
+      }
+    },
+    "copy-final": {
+      "counts": {
+        "test_pass": 2,
+        "package_pass": 1
+      },
+      "non_pass_outcomes": [],
+      "timing": {
+        "first_event": "2026-09-27T13:38:56.104331-05:00",
+        "last_event": "2026-09-27T13:38:57.360448-05:00"
+      }
+    },
+    "focused": {
+      "counts": {
+        "test_pass": 5,
+        "package_pass": 1
+      },
+      "non_pass_outcomes": [],
+      "timing": {
+        "first_event": "2026-09-27T13:25:29.330791-05:00",
+        "last_event": "2026-09-27T13:25:30.972876-05:00"
+      }
+    },
+    "overlap-before": {
+      "counts": {
+        "test_fail": 1,
+        "package_fail": 1
+      },
+      "non_pass_outcomes": [
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "test": "TestVideoCountCannotIgnoreAdditionalDurationRates"
+        },
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "test": null
+        }
+      ],
+      "timing": {
+        "first_event": "2026-09-27T13:39:30.534089-05:00",
+        "last_event": "2026-09-27T13:39:31.19242-05:00"
+      }
+    },
+    "producer-race-final": {
+      "counts": {
+        "test_pass": 2270,
+        "test_skip": 3,
+        "package_pass": 5
+      },
+      "non_pass_outcomes": [
+        {
+          "action": "skip",
+          "package": "github.com/agentstation/starmap/internal/providers/openai",
+          "test": "TestClientErrors/missing_provider_configuration"
+        },
+        {
+          "action": "skip",
+          "package": "github.com/agentstation/starmap/internal/providers/openai",
+          "test": "TestRefreshOpenAICompatibleProviderFixture"
+        },
+        {
+          "action": "skip",
+          "package": "github.com/agentstation/starmap/internal/providers/openai",
+          "test": "TestOpenAICompatibleProviderFixtureCurrency"
+        }
+      ],
+      "timing": {
+        "first_event": "2026-09-27T13:38:19.829163-05:00",
+        "last_event": "2026-09-27T13:42:39.138857-05:00"
+      }
+    },
+    "producer-race": {
+      "counts": {
+        "test_pass": 2264,
+        "test_skip": 3,
+        "package_pass": 4,
+        "test_fail": 6,
+        "package_fail": 1
+      },
+      "non_pass_outcomes": [
+        {
+          "action": "skip",
+          "package": "github.com/agentstation/starmap/internal/providers/openai",
+          "test": "TestClientErrors/missing_provider_configuration"
+        },
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedCatalogCheckoutPreservesManifestInputs"
+        },
+        {
+          "action": "skip",
+          "package": "github.com/agentstation/starmap/internal/providers/openai",
+          "test": "TestRefreshOpenAICompatibleProviderFixture"
+        },
+        {
+          "action": "skip",
+          "package": "github.com/agentstation/starmap/internal/providers/openai",
+          "test": "TestOpenAICompatibleProviderFixtureCurrency"
+        },
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEveryPublishedMediaOperationMatchesItsDefinition"
+        },
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEveryRecognitionOfferingDeclaresActualBillingUnits"
+        },
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedProviderModelsMatchReviewedIdentityMap"
+        },
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedAuthoredModelsAreCoveredByHistoricalOrServingIdentityReview"
+        },
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedModelYAMLExposesCompleteBooleanCapabilitySurface"
+        },
+        {
+          "action": "fail",
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": null
+        }
+      ],
+      "timing": {
+        "first_event": "2026-09-27T13:30:21.540189-05:00",
+        "last_event": "2026-09-27T13:34:20.468641-05:00"
+      }
+    },
+    "pure-go": {
+      "counts": {
+        "test_pass": 9,
+        "package_pass": 3
+      },
+      "non_pass_outcomes": [],
+      "timing": {
+        "first_event": "2026-09-27T13:38:17.59262-05:00",
+        "last_event": "2026-09-27T13:38:27.969221-05:00"
+      }
+    }
+  },
+  "artifacts": [
+    {
+      "path": "before.jsonl.gz",
+      "uncompressed_sha256": "7a0b35bca918e1379b4ab8cf2e8a4e2215533bc9539767130dea4b8985a0af33"
+    },
+    {
+      "path": "consumer-packages.jsonl.gz",
+      "uncompressed_sha256": "294fc7293dfa6dee112348ff5bbee026f6f31e290f295c0cc880c190a9e1894a"
+    },
+    {
+      "path": "consumer-page-race.jsonl.gz",
+      "uncompressed_sha256": "9704d9d5162accece2c772b863eeb18f9fbc33a731d4697decc939b264b21598"
+    },
+    {
+      "path": "consumer-race-final.jsonl.gz",
+      "uncompressed_sha256": "d19391a1170cfb46675400f764cffeff419255047c59edfce451d13013f869c6"
+    },
+    {
+      "path": "consumer-race.jsonl.gz",
+      "uncompressed_sha256": "9a7bd0a9fb798f0c52867c6b8f1e2a66a2237ed95a2d3023f8f01a0800481df9"
+    },
+    {
+      "path": "contract.jsonl.gz",
+      "uncompressed_sha256": "89ae57426bfb373deb0befb49b7cfe91faa8ef2f0a79533ff7a73a949a67bf8e"
+    },
+    {
+      "path": "copy-final.jsonl.gz",
+      "uncompressed_sha256": "caeea7eadb7a08bc72300359e657db401c0bdb2bde6528ad6e0d7b8cff0a258e"
+    },
+    {
+      "path": "embedded-corrections.json.gz",
+      "uncompressed_sha256": "6e3a31078b12637e8d7dc52e5114fcb9c5545d8bb64dedcbfd70a0e2b98e22a1"
+    },
+    {
+      "path": "focused.jsonl.gz",
+      "uncompressed_sha256": "12c3b12d5fd855a7849b5e13654bb20a70604267710be29e924f0ff9c476a6a4"
+    },
+    {
+      "path": "goago-final.json.gz",
+      "uncompressed_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "goago.json.gz",
+      "uncompressed_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "overlap-before.jsonl.gz",
+      "uncompressed_sha256": "e3c7ecee70ddb21248fbc35ceedc8d1522f9705813a490d9a328c7109a5bf7d4"
+    },
+    {
+      "path": "producer-race-final.jsonl.gz",
+      "uncompressed_sha256": "6d0276bfbbc94b3ccad442f7695894d460d2bbbf4428cfac561e9cc2adb992ce"
+    },
+    {
+      "path": "producer-race.jsonl.gz",
+      "uncompressed_sha256": "2db645dc762b82b88f16d31b1f431470526c3c932c0fe3d5d00683773779909c"
+    },
+    {
+      "path": "producer-source.json.gz",
+      "uncompressed_sha256": "13bce45d1348cf4ef8af9798bbf281fda447117e8ddafffdb34c5f6ca4399a07"
+    },
+    {
+      "path": "pure-go.jsonl.gz",
+      "uncompressed_sha256": "a5fa288b6ab1f63548906effcc2c2f523362ed1dcea6587cecda809d4d04e14a"
+    },
+    {
+      "path": "regenerate.go.gz",
+      "uncompressed_sha256": "c23ec86d478cc098949f7487c2564cd923981cd768ee5297b5982f1e7d49d6fe"
+    },
+    {
+      "path": "docs-checked.txt.gz",
+      "uncompressed_sha256": "130d42fdcbddc81e07bd7d156a98f92ec7b517275f5d9e01f39ec8b8d304014a"
+    },
+    {
+      "path": "producer-lint.txt.gz",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "consumer-lint.txt.gz",
+      "uncompressed_sha256": "18385cd4318d7ba047fb5d01e786ed4686332d853bc6fe4edc9a1370ea92b6f0"
+    },
+    {
+      "path": "consumer-vet.txt.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs-final-repaired.txt.gz",
+      "uncompressed_sha256": "130d42fdcbddc81e07bd7d156a98f92ec7b517275f5d9e01f39ec8b8d304014a"
+    },
+    {
+      "path": "live-final.txt.gz",
+      "uncompressed_sha256": "7fb9b4c6946595c54464d1e0b9260547e8424c57bda6c11ddeabce6f5117d4e3"
+    },
+    {
+      "path": "generate-docs-final.txt.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "plan-writing-full.txt.gz",
+      "uncompressed_sha256": "26df18c1572f307e59d5d4561c8a3815820b46e6f555b6c3d48ca19e8061c9cb"
+    },
+    {
+      "path": "manifest.txt.gz",
+      "uncompressed_sha256": "b71535247ca05b270b8b409c5d9b86ed2fc3b3346fb3b04d52014a0e6df075e1"
+    },
+    {
+      "path": "docs-final-pass.txt.gz",
+      "uncompressed_sha256": "130d42fdcbddc81e07bd7d156a98f92ec7b517275f5d9e01f39ec8b8d304014a"
+    },
+    {
+      "path": "plan-writing.txt.gz",
+      "uncompressed_sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    {
+      "path": "generation.txt.gz",
+      "uncompressed_sha256": "e751e2854250d84c4ab6be22a7e0ca81a185cdbbb61ec4b5d4f53012eaa5ee60"
+    },
+    {
+      "path": "generate-docs.txt.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "drift.txt.gz",
+      "uncompressed_sha256": "2af767b2980142ff2499d45e31fd3ef68dc19014692bd90cd195d0d397e5c61d"
+    },
+    {
+      "path": "fixture-refresh.txt.gz",
+      "uncompressed_sha256": "f37c0e1bbd61e91682b29683c0e87cf9090e15d53b9892fdebc0561ef8b60ead"
+    },
+    {
+      "path": "writing.txt.gz",
+      "uncompressed_sha256": "50c68544519f6deb60c035d988da46783a5d541c9c45ba6ae337938f5aa803cd"
+    },
+    {
+      "path": "writing-final.txt.gz",
+      "uncompressed_sha256": "50c68544519f6deb60c035d988da46783a5d541c9c45ba6ae337938f5aa803cd"
+    },
+    {
+      "path": "generation-final.txt.gz",
+      "uncompressed_sha256": "f2e70aa2c7803a47559c19bafeb074da8d0524c13b4bd0f76cd176bbdd748f38"
+    },
+    {
+      "path": "consumer-lint-final.txt.gz",
+      "uncompressed_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "retained-fastvideo.txt.gz",
+      "uncompressed_sha256": "5c49af01ed7962e2f3f13cdb99bef83e440a6acf8f235296f859bc77579f9f3a"
+    },
+    {
+      "path": "manifest-final.txt.gz",
+      "uncompressed_sha256": "713948a8b29b578da9776da395d89f8b90794e849a9e29dec1314b5411a6656b"
+    },
+    {
+      "path": "docs-final.txt.gz",
+      "uncompressed_sha256": "37864d49c570f07e818c15b4b81dca36f0befd23c2bfbebbe68e109eb9415dd8"
+    },
+    {
+      "path": "live.txt.gz",
+      "uncompressed_sha256": "2f39750ff66933cc76ca9709b8fe904651ec79482d7653d1335bb002226e9e42"
+    },
+    {
+      "path": "docs-reviewed.txt.gz",
+      "uncompressed_sha256": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668"
+    },
+    {
+      "path": "vet.txt.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "commands": {
+    "producer_race": {
+      "command": "GOTOOLCHAIN=go1.27.1 go test -json -race -count=1 -timeout=5m ./pkg/catalogs ./internal/catalog/reconciler ./internal/providers/openai ./internal/bootstrap ./internal/bootstrap/manifest",
+      "exit_code": 0,
+      "log": "producer-race-final.jsonl.gz"
+    },
+    "producer_copy_final": {
+      "command": "GOTOOLCHAIN=go1.27.1 go test -json -race -count=1 ./pkg/catalogs -run ^TestMediaDuration",
+      "exit_code": 0,
+      "log": "copy-final.jsonl.gz"
+    },
+    "producer_pure_go": {
+      "command": "CGO_ENABLED=0 GOTOOLCHAIN=go1.27.1 go test -json -count=1 -timeout=3m ./pkg/catalogs ./internal/providers/openai ./internal/catalog/reconciler -run 'Test(MediaDuration|MetadataDuration|DeepInfraDuration|TheTopLevelOperationPrice)'",
+      "exit_code": 0,
+      "log": "pure-go.jsonl.gz"
+    },
+    "consumer_race": {
+      "command": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 go test -json -race -count=1 -timeout=3m ./internal/proxy -run 'Test(VideoCount|AVideo|AnOfferingThatPricesNoVideo|AFinishedJob|AFailedJob|ACancelledJob|AJobWithNoRecorder)'",
+      "exit_code": 0,
+      "log": "consumer-race-final.jsonl.gz"
+    },
+    "consumer_page_race": {
+      "command": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 go test -json -race -count=1 -timeout=3m ./internal/router -run 'Test(FixedPageBoundDoesNotInventProviderLimit|RecognitionBoundEnforcesSelectedOffering|RecognitionPageEvidenceRequiresMeasurement)'",
+      "exit_code": 0,
+      "log": "consumer-page-race.jsonl.gz"
+    },
+    "consumer_packages": {
+      "command": "CGO_ENABLED=0 GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 go test -json -count=1 -timeout=3m ./internal/proxy ./internal/router",
+      "exit_code": 0,
+      "log": "consumer-packages.jsonl.gz"
+    },
+    "producer_goago": {
+      "command": "GOTOOLCHAIN=go1.27.1 go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "log": "goago-final.json.gz"
+    },
+    "producer_lint": {
+      "command": "GOTOOLCHAIN=go1.27.1 golangci-lint run",
+      "exit_code": 0,
+      "log": "producer-lint.txt.gz"
+    },
+    "consumer_lint": {
+      "command": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 make lint",
+      "exit_code": 0,
+      "log": "consumer-lint-final.txt.gz"
+    },
+    "producer_vet": {
+      "command": "GOTOOLCHAIN=go1.27.1 go vet ./pkg/catalogs ./internal/catalog/reconciler ./internal/providers/openai ./internal/bootstrap/...",
+      "exit_code": 0,
+      "log": "vet.txt.gz"
+    },
+    "consumer_vet": {
+      "command": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 go vet ./internal/proxy ./internal/router",
+      "exit_code": 0,
+      "log": "consumer-vet.txt.gz"
+    },
+    "writing": {
+      "command": "GOTOOLCHAIN=go1.27.1 make technical-writing-check",
+      "exit_code": 0,
+      "log": "writing-final.txt.gz"
+    },
+    "fixture_refresh": {
+      "command": "GOTOOLCHAIN=go1.27.1 STARMAP_GO_TEST_BIN=go make testdata PROVIDER=deepinfra",
+      "exit_code": 0,
+      "log": "fixture-refresh.txt.gz"
+    },
+    "fixture_drift": {
+      "command": "GOTOOLCHAIN=go1.27.1 bash scripts/verify-provider-fixture-drift.sh",
+      "exit_code": 1,
+      "log": "drift.txt.gz"
+    },
+    "live_providers": {
+      "command": "GOTOOLCHAIN=go1.27.1 bash scripts/verify-live-providers.sh",
+      "exit_code": 1,
+      "log": "live-final.txt.gz"
+    },
+    "documentation_generation": {
+      "command": "GOTOOLCHAIN=go1.27.1 go generate ./pkg/catalogs",
+      "exit_code": 0,
+      "log": "generate-docs-final.txt.gz"
+    },
+    "plan_writing_full": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "log": "plan-writing-full.txt.gz",
+      "result": "140 diagnostics in the captured tree. Three affected-document diagnostics were repaired and the final five-file check passes. The remaining captured diagnostics lie outside the edited documents."
+    },
+    "plan_writing_final": {
+      "command": "technical-writing lint docs/design/catalog-lifecycle/{PRD,ENGINEERING_SPEC,REPOSITORY_FINDINGS,PAID_OPERATION_MATRIX}.md docs/plans/starport-production-catalog-plan.html --format text",
+      "exit_code": 0,
+      "log": "docs-reviewed.txt.gz"
+    },
+    "manifest_rebuild": {
+      "command": "GOTOOLCHAIN=go1.27.1 go run /tmp/csp122-duration-regenerate.go internal/embedded/catalog && GOTOOLCHAIN=go1.27.1 go run ./cmd/starmap-bootstrap-manifest --catalog-dir internal/embedded/catalog --output internal/embedded/catalog/generation.json --endpoints-output internal/embedded/catalog/endpoints.yaml",
+      "exit_code": 0,
+      "helper": "regenerate.go.gz",
+      "log": "manifest-final.txt.gz"
+    }
+  },
+  "limitations": [
+    "Complete video billing and asynchronous required settlement remain open. No paid video inference or invoice qualification occurred.",
+    "Global live-provider gates fail outside DeepInfra. Drift reports missing acquisition credentials and stale DeepSeek, Cerebras, and Groq fixtures. DeepInfra succeeds.",
+    "FastVideo is absent from current acquisition. Its retained unit correction follows historical commit 0414a3cd1, not current availability evidence. The inspected current API URL returns 404.",
+    "The first producer race run failed six tests: unstaged catalog bytes failed the index comparison; earlier billing additions lacked census and OCR identity/capability updates; a page ceiling was required without supporting facts.",
+    "The corrected OCR test retains page-rate and endpoint assertions. Fixed-page requests require positive decoded page counts and enforce known limits. Unknown provider page ceilings are not invented.",
+    "The producer race suite ran before the final copy assertion was strengthened against literal expected values. copy-final.jsonl.gz separately qualifies the final assertion. No production code changed after that race build.",
+    "The original conversion fail-before log contains three modality cases and their parent. The final function no longer consumes modality; the replacement table checks both rates, input-only, explicit zero, and unknown.",
+    "The initial manifest regeneration failed against old generation bytes. Reconstructed manifests retain prior source observations and validate each replacement payload.",
+    "The initial consumer lint failed because a producer golangci-lint process held its global lock. The sequential consumer rerun passes.",
+    "The consumer module still uses a temporary workspace for this unpublished producer. Published dependency, pre-PR review, full task qualification, native CI, and protected merges remain required.",
+    "Historical full-suite and storage evidence remains bound to earlier commits. These component tests do not qualify process loss, failover, PostgreSQL witness recovery, or A47.",
+    "The whole planning-checkout prose gate retains diagnostics outside the changed documents. Final targeted checks pass all five changed documents. The plan does not claim the complete planning checkout is lint-clean."
+  ],
+  "source_files": {
+    "producer": [
+      {
+        "path": "internal/bootstrap/media_operations_test.go",
+        "sha256": "05f95f0b4874bdf5e92c97ae015bcebd4fdba36decfd40b46008c33ba06d4b4a"
+      },
+      {
+        "path": "internal/bootstrap/provider_model_identity_test.go",
+        "sha256": "f3d50fa185dc153b1d97240cb0020242c90ff61adf01150adbd583b859ceff5e"
+      },
+      {
+        "path": "internal/bootstrap/testdata/provider_identity_additions.yaml",
+        "sha256": "29b241b942bbf3b8947a5cad7080fe7a0724002130a5e0e2652579a581d7c794"
+      },
+      {
+        "path": "internal/catalog/reconciler/merger.go",
+        "sha256": "90c6cb1f45a1b73bf846ab85abb5042f2d00ed1e9fd9447f78ccc66d7ae26d27"
+      },
+      {
+        "path": "internal/catalog/reconciler/speech_billing_test.go",
+        "sha256": "68d737e476fa6542ac87a724e0227276085ab5f17e5d42e5ce4105aba334cd74"
+      },
+      {
+        "path": "internal/embedded/catalog/authors/mistral/models/mistral-ocr-4-0.yaml",
+        "sha256": "938c1632a404fa40e32f201ff7bfb914a1781728ef0dc85bccb1afa92f226180"
+      },
+      {
+        "path": "internal/embedded/catalog/endpoints.yaml",
+        "sha256": "6efabcc5afc74efc350589f4ce6ae12fd0872c06a492dc4a746bb3a004693c79"
+      },
+      {
+        "path": "internal/embedded/catalog/generation-manifest.json",
+        "sha256": "e1b31fdc633d7cc1962b3dd2bb42c5334ce3d1c80343478ee84ccb79f56693dd"
+      },
+      {
+        "path": "internal/embedded/catalog/generation-payload.json.gz",
+        "sha256": "5774a2e277008f6b5ea2ac13a561fdf8f6e147d7f7ea8a1b7d35e1306f2ba53c"
+      },
+      {
+        "path": "internal/embedded/catalog/generation.json",
+        "sha256": "ac43a3beb0ba9091a90d704a1dbae46c89bc4ac613633b9ef26a44d6c9f8b58f"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/deepinfra/models/FastVideo/LTX-2.3-Distilled-Diffusers.yaml",
+        "sha256": "6ed53d67dc7020232b0fb8106c889ad851b9855c07e9b2fb492e961f72896424"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/deepinfra/models/Pixverse/Pixverse-6-T2V.yaml",
+        "sha256": "783dae04ae40e72046533a0ade3be4034d864890fc01934c2c6ebb99c9f0a6b6"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/deepinfra/models/PrunaAI/p-video.yaml",
+        "sha256": "b180b4724d1bb243a18f1a791f8dc78cfa45c84b62e00345d62a14ce13f7c56d"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/deepinfra/models/Wan-AI/Wan2.2-T2V-A14B.yaml",
+        "sha256": "506a24049e30353bc10c63ad8a45b6d9c7a5d972f6f8857c6a36fec3162499cf"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/deepinfra/models/Wan-AI/Wan2.6-T2V.yaml",
+        "sha256": "afa2727e607becf0f1b01ef62c6cd47584232d51823e2bc0a797e44c3264506d"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/deepinfra/models/google/veo-3.1-fast.yaml",
+        "sha256": "85b4cd671a0c7910d8e8adffc55330e9ae70af6ebc3e22d26e2449699bfe1950"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/deepinfra/models/google/veo-3.1.yaml",
+        "sha256": "10ac1adc88fc67eaa4e4df7561f6d05d6a469e6718d995cee1c286af3550a800"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/deepinfra/models/mistralai/Voxtral-Mini-3B-2507.yaml",
+        "sha256": "4dd77b4edae67f9a8e07c68fe3d19487f799f104a2fe2235387b11306a4960fd"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/deepinfra/models/mistralai/Voxtral-Small-24B-2507.yaml",
+        "sha256": "38db8183ac0be06be5edbe28b9b3340273df3fefb0861bd861ed09ce8c95e470"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/deepinfra/models/nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b.yaml",
+        "sha256": "968e34e650077d998c852d9a84a4753f6efd641b92fe2a61c4eee9879aa693c3"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/deepinfra/models/openai/whisper-large-v3-turbo.yaml",
+        "sha256": "d0fc50626e7c298edb0df9aa8bd5dd44ac4ad89ca8ff2d50082da5452ec00856"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/deepinfra/models/openai/whisper-large-v3.yaml",
+        "sha256": "79738e9703397066ce317ea2c859ca5de9035087459fd56aa08140a8463b9b5a"
+      },
+      {
+        "path": "internal/embedded/catalog/providers/mistral/models/mistral-ocr-4-0.yaml",
+        "sha256": "7e4c0eae81829dc802c3abc935c2e0bdc2ded4bf9326ba592c786e0144dc726d"
+      },
+      {
+        "path": "internal/providers/openai/client.go",
+        "sha256": "1fe12865819cff957d4420f5de9e03dfd8dee570cc23524e27daf82e7d6aa047"
+      },
+      {
+        "path": "internal/providers/openai/generated_second_price_test.go",
+        "sha256": "5cf135b930daf95902222a69d4cf5999aa5a85f60e6af28313d10d14d596c871"
+      },
+      {
+        "path": "internal/providers/openai/media_duration_fixture_test.go",
+        "sha256": "b2594c720dbd3f2478407bc473a73488384b4c0bb810a43433ed3d195cd5e19b"
+      },
+      {
+        "path": "internal/providers/openai/media_duration_price_test.go",
+        "sha256": "251efa0a613e99d9953347b1c0678a7e49242574e7a14b8fedef895ce940c094"
+      },
+      {
+        "path": "internal/providers/openai/testdata/providers/deepinfra/models_list.json",
+        "sha256": "7e4b360a160934bdaa82dbf2dd171803a93f1e5b720a58ef6d12d5ddbbed4934"
+      },
+      {
+        "path": "internal/providers/openai/testdata/providers/deepinfra/models_list.metadata.json",
+        "sha256": "3b40086a4fb8f7a404d549019382fd47e9044288af57a70892c52e0c3537cabe"
+      },
+      {
+        "path": "pkg/catalogs/README.md",
+        "sha256": "b8c919b3a99ce0477f3a7ae3bc2e1b3be6fb81b08b010f9b8e5eb823347f779a"
+      },
+      {
+        "path": "pkg/catalogs/copy.go",
+        "sha256": "a5f1edc7b46f9152ad87ccee5af766f2635d2bb82691f0bc36e42911b8c87ba6"
+      },
+      {
+        "path": "pkg/catalogs/generation_manifest.go",
+        "sha256": "5243dd7dbcba200768d24cae940c384b78f54780057ea13be5a81f9c0774136f"
+      },
+      {
+        "path": "pkg/catalogs/media_duration_pricing_test.go",
+        "sha256": "e1be2a3772c10813286c8dbb27c0a3e2d7c4e485afa1bf44e59bfafdc17b7b31"
+      },
+      {
+        "path": "pkg/catalogs/model_billing.go",
+        "sha256": "30ca21a9067dd167993583a347807a8719215dbf6a8fb520e1be689234154b1b"
+      },
+      {
+        "path": "pkg/catalogs/model_pricing.go",
+        "sha256": "4d71024260f1f3670eb409ba5e78ec4a1e42e23f8d42888d4bd00fa198bcbd9e"
+      },
+      {
+        "path": "pkg/catalogs/model_pricing_validation.go",
+        "sha256": "7a1f2a31b8b4f7aedb36578afe58de2c05654f34e4cd489466acfdd4a581b5c7"
+      },
+      {
+        "path": "pkg/catalogs/payload.go",
+        "sha256": "bf9cfdd278e12076ecf88708324def75181e073ea8b5a74e42505793d2eef682"
+      },
+      {
+        "path": "pkg/catalogs/payload_cache_test.go",
+        "sha256": "130d32a9f0fbcea409f21e5084177ff5bfbc8955afef8cb1f5d2611e88c18fef"
+      },
+      {
+        "path": "pkg/catalogs/payload_decode.go",
+        "sha256": "13a4404752bdefe5c6bee923bef5db6e0a41ae32c0d0efee2531ad82bd0da232"
+      }
+    ],
+    "consumer": [
+      {
+        "path": "internal/proxy/job_accounting_test.go",
+        "sha256": "1a44afafa9943255ab4605a8f6861bfe1b4eae7dd699850e5593ba549f693cec"
+      },
+      {
+        "path": "internal/proxy/usage_capture.go",
+        "sha256": "35c93bf11efae3e8e97137a8cc80283dc73d8b84eb194337f91aa4516b8ea819"
+      },
+      {
+        "path": "internal/router/budget_recognition_test.go",
+        "sha256": "d4abfb43e8050905c7ab90e870f577bd53807ed4931f1a0e5ae50144c92ed109"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://docs.mistral.ai/models/ocr-4-0",
+      "observed": "2026-09-27",
+      "fact": "Exact model identifier and standard price of USD 4 per 1000 pages."
+    },
+    {
+      "url": "https://docs.mistral.ai/resources/known-limitations",
+      "observed": "2026-09-27",
+      "fact": "Uploaded-file limit is documented. No OCR page ceiling is present in the inspected page."
+    },
+    {
+      "url": "https://deepinfra.com/FastVideo/LTX-2.3-Distilled-Diffusers/api",
+      "observed": "2026-09-27",
+      "result": "404"
+    }
+  ],
+  "plan_maintenance": {
+    "history_archive": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-27-billing-components.html",
+    "history_sha256": "2d5c232d43168f2122f8b49bddd943c4ebcae8215cd7d1e1edde3abcb059172c",
+    "history_preserved_exactly": true,
+    "statuses_preserved": true,
+    "before_bytes": 135479,
+    "after_bytes": 115599,
+    "resume_words": 289,
+    "size_reason": "The plan retains forty required task contracts. Resume reads current state, CSP12.2, invariants, and goal; historical logs are reference-only.",
+    "cold_resume": "PASS: active task, exact sources, commands, no running checks, pending acceptance, and authorization boundaries are explicit.",
+    "structural_check": "PASS: 40 ledger rows, one in_progress task, unique anchors, all relative plan paths exist, source hashes match."
+  }
+}
