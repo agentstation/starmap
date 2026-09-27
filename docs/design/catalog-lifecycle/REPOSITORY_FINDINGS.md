@@ -3862,3 +3862,22 @@ The earlier repository run passes 4,485 results and skips 133. It precedes the f
 Fixed-page evidence has component coverage but no qualified shipped provider connector.
 The consumer still uses the unpublished producer through `GOWORK`.
 A47, remaining operations, asynchronous recovery, exact dependency qualification, review, native CI, and merges remain open.
+
+## September 27 fixed-page recognition
+
+The page-billing projection initially lacked a shipped page-based provider transport.
+Starmap `9d81c4293` adds the Mistral OCR protocol and an exact offering with standard per-page pricing.
+Starport `1253668c` enforces explicit page selection and settles provider-reported page usage.
+A required token budget refuses this contract because page billing does not establish measured token bounds.
+
+The review found optional reports that priced native document pages without provider usage.
+The repair retains measured processed pages separately. Missing usage stays unpriced, and measured charges survive incomplete extraction.
+Three old fixtures now declare their measured pages. Their original cost assertions remain unchanged.
+
+The protocol roster includes OCR, and the catalog census verifies twelve recognition offerings.
+A missing provider page ceiling requires the protocol that enforces explicit page selection.
+
+The [qualification proof](../../plans/proof/starport-production-catalog/csp12.2/page-recognition-2026-09-27/verification.json) preserves failed regressions and final results.
+Final repository checks pass 4,513 results with 133 skips. Focused race checks pass 27 results.
+Producer race checks pass 1,350 results. Both commits remain unpublished.
+The exact dependency pin, remaining operation contracts, durable recovery, A47, review, native CI, and merges remain open.

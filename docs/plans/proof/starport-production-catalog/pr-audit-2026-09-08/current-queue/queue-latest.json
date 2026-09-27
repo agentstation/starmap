@@ -866,11 +866,11 @@
   },
   "next_task": {
     "task": "CSP12.2",
-    "next_action": "Qualify remaining recognition contracts, then media, moderation, rerank, and jobs. Complete durable job association, settlement recovery, A47, exact producer dependency, review, native CI, and protected merges.",
+    "next_action": "Implement moderation and guardrail admission, then media, rerank, recognition variants, and durable job settlement. Complete A47, exact dependency qualification, review, native CI, and protected merges.",
     "worktree": "/tmp/starport-fleet-review-20260926",
     "branch": "codex/atomic-budget-admission",
     "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
-    "head": "8b1dc0ebf8dfbe16f6b01b41f0cb5b75cd6fdd4a"
+    "head": "1253668c591dcaa11d270b3d81f5afe8ceab09d1"
   },
   "merged_followups": {
     "tasks": [
@@ -1055,10 +1055,10 @@
   },
   "budget_preparation": {
     "owner": "CSP12.2",
-    "status": "unpublished_recognition_admission",
-    "commit": "8b1dc0ebf8dfbe16f6b01b41f0cb5b75cd6fdd4a",
+    "status": "unpublished_page_recognition_admission",
+    "commit": "1253668c591dcaa11d270b3d81f5afe8ceab09d1",
     "published": false,
-    "proof": "../../csp12.2/recognition-billing-2026-09-27/verification.json",
+    "proof": "../../csp12.2/page-recognition-2026-09-27/verification.json",
     "native_ci": "UNVERIFIED",
     "required_review": "not yet run; required before final PR",
     "remaining_dirty_files": {
@@ -1069,9 +1069,9 @@
     "producer_companion": {
       "branch": "codex/budget-qualification",
       "worktree": "/tmp/starmap-fleet-review-20260926",
-      "head": "5790fb04e72028587c6fceebc30e8dbcd9480bfd",
+      "head": "9d81c42933a927614a6bffa79b112e1060a7fe3e",
       "published": false,
-      "scope": "Schema 13 retains complete recognition, text-chat, and embedding charge declarations and the regenerated embedded catalog.",
+      "scope": "Schema 13 billing contracts, Mistral OCR protocol, and exact fixed-page offering in the regenerated embedded catalog.",
       "next_action": "Complete remaining operation billing contracts in this task before the producer PR."
     },
     "known_failures": [],
@@ -1082,7 +1082,8 @@
     "identity_proof": "../../csp12.2/request-identity-2026-09-27/verification.json",
     "usage_presence_proof": "../../csp12.2/usage-presence-2026-09-27/verification.json",
     "embedding_billing_proof": "../../csp12.2/embedding-billing-2026-09-27/verification.json",
-    "embedding_usage_proof": "../../csp12.2/vertex-usage-2026-09-27/verification.json"
+    "embedding_usage_proof": "../../csp12.2/vertex-usage-2026-09-27/verification.json",
+    "recognition_billing_proof": "../../csp12.2/recognition-billing-2026-09-27/verification.json"
   },
   "remote_state_note": "This update checks local work and retained test output only. Prior remote check timestamps remain unchanged."
 }

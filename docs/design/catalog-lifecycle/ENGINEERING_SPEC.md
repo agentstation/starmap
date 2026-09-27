@@ -4182,6 +4182,13 @@ Missing or inconsistent evidence retains capacity. A later chat failure cannot r
 The provider must report the number of processed pages for page billing. Returned text length does not establish that measurement.
 A page contract without a token bound cannot satisfy a required token budget.
 
+The Mistral OCR transport sends an explicit page selection for the counted PDF.
+Its standard OCR contract excludes annotation and batch options. The exact catalog offering supplies its price.
+
+A missing provider page ceiling remains unknown. The request selection enforces the reserved page count.
+Optional reports retain document pages and measured processed pages separately. Missing processed-page usage cannot produce an exact cost.
+A measured zero remains valid. Partial extraction cannot erase a measured page charge.
+
 Token-only admission needs complete token totals. Monetary settlement also needs every declared billing dimension.
 Optional extraction records preserve missing totals and missing cached-token counts independently.
 Known totals remain visible when missing detail prevents exact pricing.

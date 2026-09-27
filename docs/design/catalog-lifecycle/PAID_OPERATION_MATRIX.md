@@ -206,6 +206,25 @@ Fixed-page valuation and processed-page evidence have component tests. These che
 Context tiers and service-specific charge variants still require qualification.
 The remaining operation contracts, durable settlement recovery, real shared-backend evidence, A47, exact dependency pin, review, native CI, and merges remain open.
 
+## September 27 fixed-page recognition
+
+Producer `9d81c4293` declares the Mistral OCR protocol and exact `mistral-ocr-4-0` offering.
+Consumer `1253668c` sends an explicit page selection and reserves its fixed page charge before dispatch.
+The request excludes annotations and provider-native batch options. Required token budgets refuse the page-only contract.
+
+The [page recognition proof](../../plans/proof/starport-production-catalog/csp12.2/page-recognition-2026-09-27/verification.json) records the protocol and production execution checks.
+Final checks pass 4,513 repository results with 133 skips, 27 focused race results, and 61 pure-Go results.
+Producer race checks pass 1,350 results. All nineteen provider-ownership conditions pass.
+These checks use the local producer workspace and loopback provider responses.
+
+Missing page usage retains uncertain capacity. Reported charges survive incomplete or invalid page text.
+Optional reports preserve measured page counts separately from local document counts.
+The earlier reporting path priced unmeasured pages. A failing regression and the repair remain in the proof.
+
+The provider documentation does not establish a fixed page ceiling for this offering. The catalog leaves that limit unknown.
+Production tests verify that explicit page selection enforces the reserved request count.
+The remaining operation contracts, recognition variants, durable recovery, shared-backend qualification, A47, dependency pin, review, native CI, and merges remain open.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:
