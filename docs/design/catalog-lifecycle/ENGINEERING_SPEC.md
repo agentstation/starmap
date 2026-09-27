@@ -4273,3 +4273,25 @@ TTS-1 and TTS-1-HD declare character pricing and a 4,096-character input limit.
 Their catalog output modality is audio. Their generated endpoints include speech and exclude chat.
 The code-point interpretation follows published character pricing and JSON string semantics. Provider invoice verification remains absent.
 Token-priced speech, other media contracts, and asynchronous settlement remain open under CSP12.2.
+
+
+### Image-count and pixel-iteration admission
+
+Schema 17 adds `billing.images` and `pricing.operations.image_unit`.
+The contract names its supported image operations, default image count, billing basis, and explicit request fee policy.
+Pixel billing also declares default dimensions, fixed iterations, and the reference pixels and iterations for one price unit.
+This contract excludes separate input charges and quality or style price changes. Other billing variants require a separate complete contract.
+
+A unit price without its billing declaration cannot imply a flat per-image charge.
+Starport derives each bound from the selected offering, submitted count, and requested dimensions.
+Omitted values use declared defaults. Invalid dimensions, multiplication overflow, or unknown token consumption refuse the affected required budget before dispatch.
+Generation and edit operations require separate declarations. A generation declaration cannot authorize edit pricing.
+
+Settlement uses returned image count and submitted dimensions after complete successful HTTP framing.
+Empty result entries, missing images, provider failures, truncated bodies, and trailing JSON retain uncertain capacity.
+Nonempty provider result fields establish count evidence. Starport does not inspect image pixels or claim provider-reported billing usage.
+Optional usage preserves requested dimensions, the edit distinction, and unknown token consumption.
+
+Four DeepInfra generation offerings declare these contracts. Twenty-four embedded image-unit prices preserve their numerical values under the explicit unit field.
+Public documentation supplies the billing formulas and defaults. Fixed iterations through the compatible endpoint follow those documented defaults.
+Provider invoice verification remains absent. Token-priced images, image edits, other media, and asynchronous settlement remain required under CSP12.2.

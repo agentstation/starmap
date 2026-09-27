@@ -1,0 +1,814 @@
+{
+  "recorded_at": "2026-09-27T15:40:58.785549+00:00",
+  "task": "CSP12.2",
+  "status": "COMPONENT_PASS_WITH_LIMITS",
+  "go_version": "go1.27.1",
+  "environment": {
+    "GOTOOLCHAIN": "go1.27.1",
+    "consumer_GOWORK": "/tmp/csp122-billing.work"
+  },
+  "checks": [
+    {
+      "name": "before",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=3m ./internal/app -run TestProductionImagesBudget",
+      "exit_code": 1,
+      "test_results": {
+        "fail": 3
+      },
+      "package_results": {
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/app/TestProductionImagesBudget/flat_images",
+        "github.com/agentstation/starport/internal/app/TestProductionImagesBudget/scaled_pixels",
+        "github.com/agentstation/starport/internal/app/TestProductionImagesBudget"
+      ],
+      "skipped_tests": [],
+      "source_timing": "Initial production probe before image admission.",
+      "artifact": "before.jsonl.gz"
+    },
+    {
+      "name": "consumer-initial",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=3m ./internal/catalog ./internal/router ./internal/proxy ./internal/providers/connectors -run Image",
+      "exit_code": 1,
+      "test_results": {
+        "pass": 12,
+        "fail": 1
+      },
+      "package_results": {
+        "pass": 3,
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/proxy/TestAGeneratedImageAgainstATextPriceHasNoCost"
+      ],
+      "skipped_tests": [],
+      "source_timing": "Ran before schema-17 embedded regeneration completed. Bootstrap schema mismatch is an intermediate source-ordering failure.",
+      "artifact": "consumer-initial.jsonl.gz"
+    },
+    {
+      "name": "first-after",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=3m ./internal/app ./internal/catalog ./internal/proxy ./internal/providers/connectors -run \"ProductionImagesBudget|GeneratedImage|Image\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 16
+      },
+      "package_results": {
+        "pass": 4
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Initial image implementation, before expanded tests and empty-item repair.",
+      "artifact": "first-after.jsonl.gz"
+    },
+    {
+      "name": "empty-before",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=3m ./internal/app -run TestProductionImagesBudget/empty_item",
+      "exit_code": 1,
+      "test_results": {
+        "fail": 2
+      },
+      "package_results": {
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/app/TestProductionImagesBudget/empty_item_retains_full_bound",
+        "github.com/agentstation/starport/internal/app/TestProductionImagesBudget"
+      ],
+      "skipped_tests": [],
+      "source_timing": "Empty response item incorrectly settles and releases half the reservation.",
+      "artifact": "empty-before.jsonl.gz"
+    },
+    {
+      "name": "race",
+      "owner": "consumer",
+      "command": "go test -race -json -count=1 -timeout=5m ./internal/app ./internal/catalog ./internal/proxy ./internal/providers/connectors ./internal/router -run \"Image|Images\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 38
+      },
+      "package_results": {
+        "pass": 5
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "After empty-item repair. Before added usage and edit-fee tests.",
+      "artifact": "race.jsonl.gz"
+    },
+    {
+      "name": "usage-race",
+      "owner": "consumer",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/proxy -run TestImageUsageCapture",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 6
+      },
+      "package_results": {
+        "pass": 1
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Final usage code. Before producer schema-check extraction.",
+      "artifact": "usage-race.jsonl.gz"
+    },
+    {
+      "name": "valuation-final",
+      "owner": "consumer",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/catalog -run ImageValuation",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 10
+      },
+      "package_results": {
+        "pass": 1
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Final valuation tests, including separate edit operation and request fee.",
+      "artifact": "valuation-final.jsonl.gz"
+    },
+    {
+      "name": "producer-race",
+      "owner": "producer",
+      "command": "go test -race -json -count=1 -timeout=5m ./pkg/catalogs ./internal/embedded ./internal/catalog/reconciler ./internal/providers/openai",
+      "exit_code": 1,
+      "test_results": {
+        "pass": 2156,
+        "skip": 3,
+        "fail": 1
+      },
+      "package_results": {
+        "pass": 3,
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starmap/internal/providers/openai/TestDeepInfraImageUnitFixture"
+      ],
+      "skipped_tests": [
+        "github.com/agentstation/starmap/internal/providers/openai/TestClientErrors/missing_provider_configuration",
+        "github.com/agentstation/starmap/internal/providers/openai/TestRefreshOpenAICompatibleProviderFixture",
+        "github.com/agentstation/starmap/internal/providers/openai/TestOpenAICompatibleProviderFixtureCurrency"
+      ],
+      "source_timing": "Three packages pass. New live-fixture test incorrectly expects exact float bits despite existing normalization. Corrected assertion allows only two ULPs, preserving unit-conversion detection.",
+      "artifact": "producer-race.jsonl.gz"
+    },
+    {
+      "name": "provider-final",
+      "owner": "producer",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/providers/openai",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 103,
+        "skip": 3
+      },
+      "package_results": {
+        "pass": 1
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "github.com/agentstation/starmap/internal/providers/openai/TestClientErrors/missing_provider_configuration",
+        "github.com/agentstation/starmap/internal/providers/openai/TestRefreshOpenAICompatibleProviderFixture",
+        "github.com/agentstation/starmap/internal/providers/openai/TestOpenAICompatibleProviderFixtureCurrency"
+      ],
+      "source_timing": "Final provider code and tests. Opt-in refresh/currency tests skip in this offline suite.",
+      "artifact": "provider-final.jsonl.gz"
+    },
+    {
+      "name": "schema-final",
+      "owner": "producer",
+      "command": "go test -race -json -count=1 -timeout=5m ./pkg/catalogs",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 1355
+      },
+      "package_results": {
+        "pass": 1
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Final schema checks after extracting billing-version validation from provider decoding.",
+      "artifact": "schema-final.jsonl.gz"
+    },
+    {
+      "name": "consumer-full",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=5m ./...",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 4629,
+        "skip": 133
+      },
+      "package_results": {
+        "skip": 8,
+        "pass": 64
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "github.com/agentstation/starport/internal/account/TestAccountRepositoryRecordBounds/valkey",
+        "github.com/agentstation/starport/internal/account/TestAccountRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/account/TestEnsureDefaultIsIdempotent/valkey",
+        "github.com/agentstation/starport/internal/apikey/TestAPIKeyRepositoryRecordBounds/valkey",
+        "github.com/agentstation/starport/internal/account/TestEnsureDefaultUnderConcurrentBoot/valkey",
+        "github.com/agentstation/starport/internal/apikey/TestAPIKeyRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/account/TestDefaultAccountCannotBeDeleted/valkey",
+        "github.com/agentstation/starport/internal/account/TestRepositoryRejectsInvalidAccounts/valkey",
+        "github.com/agentstation/starport/internal/authorization/TestAuthorizationTenantChurnCapacity",
+        "github.com/agentstation/starport/internal/authorization/TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "github.com/agentstation/starport/internal/authorization/TestRepositorySourceRealStoresAndLocalMutation/valkey",
+        "github.com/agentstation/starport/internal/authorization/revision/TestKVRevisionCommitsWithMutation/valkey",
+        "github.com/agentstation/starport/internal/authorization/revision/TestKVRevisionConcurrentIndependentMutations/valkey",
+        "github.com/agentstation/starport/internal/authorization/revision/TestRepositoriesPublishEveryAuthorizationMutation/valkey",
+        "github.com/agentstation/starport/internal/cache/TestDefaultCacheMemoryBudget",
+        "github.com/agentstation/starport/internal/cache/TestSharedCachePausedServiceDeadlineAndRecovery",
+        "github.com/agentstation/starport/internal/authmode/TestRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheRealService",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheURIAuthenticationAndDatabase",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheTLSWithRealService",
+        "github.com/agentstation/starport/internal/config/TestContainerRecipePersistence",
+        "github.com/agentstation/starport/internal/credentials/TestProviderCredentialRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestBudgetHistoryRollover/valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestBudgetHistoryDoesNotInventZero/valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestRetainedUsageCannotChangeEvidenceOrRefund/valkey",
+        "github.com/agentstation/starport/internal/presets/TestPresetRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/presets/TestPresetRevisionHistoryAndRollback/valkey",
+        "github.com/agentstation/starport/internal/presets/TestPresetRollbackNeedsATarget/valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestValkeyReservationAcrossProcesses",
+        "github.com/agentstation/starport/internal/limits/reservation/TestReservationContract/valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestTeamBudgetHistoryHandoff/postgres-valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestHolderCreationAndBudgetHistory/valkey",
+        "github.com/agentstation/starport/internal/providers/keyring/TestManagedMaterialValkeyOutageAndRecovery",
+        "github.com/agentstation/starport/internal/ratelimit/TestRateLimitRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityRequiresBothApprovals",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityFencesDelayedWrites/before-native-write",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityFencesDelayedWrites/after-native-write",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityClosedAndChangedEpoch",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetBootstrapPermission",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetInitialization",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/kv",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/sql",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/approval",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/closed-approval",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/row-security",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/unknown-table",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetInterruptedClaim",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetConcurrentInitialization",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesChangedIncarnation",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetSQLFailureRetainsOnlyRetryClaim",
+        "github.com/agentstation/starport/internal/server/TestAuthorizationWarmRequestsAvoidStableReads/valkey",
+        "github.com/agentstation/starport/internal/server/TestAuthorizationUnknownAccountRefusesAdmission/valkey",
+        "github.com/agentstation/starport/internal/storage/TestValueLifetimeSnapshot/valkey",
+        "github.com/agentstation/starport/internal/server/controllers/TestGatewayOverheadBenchmark",
+        "github.com/agentstation/starport/internal/usage/TestARecognizedDocumentCountsAgainstTheSpendBudget/valkey",
+        "github.com/agentstation/starport/internal/storage/TestTimeBoundStore/valkey",
+        "github.com/agentstation/starport/internal/storage/TestValkeyTLSIdentity",
+        "github.com/agentstation/starport/internal/storage/TestValkeyUsernamePassword",
+        "github.com/agentstation/starport/internal/storage/TestValkeyEffectiveConnectionOptions",
+        "github.com/agentstation/starport/internal/storage/TestValkeyURLDatabaseSelection",
+        "github.com/agentstation/starport/internal/storage/TestValkeyIncarnationAtomicContract",
+        "github.com/agentstation/starport/internal/storage/TestValkeyIncarnationRejectsReplacementBackend",
+        "github.com/agentstation/starport/internal/storage/TestValkeyDeploymentNamespace",
+        "github.com/agentstation/starport/internal/storage/TestValkeyDeploymentNotificationIsolation",
+        "github.com/agentstation/starport/internal/storage/TestValkeyStore",
+        "github.com/agentstation/starport/internal/storage/TestValkeyPubSub",
+        "github.com/agentstation/starport/internal/usage/TestARecognizedDocumentReportsItsPagesAndItsCost/valkey",
+        "github.com/agentstation/starport/internal/usage/TestANativelyReadDocumentCostsNothing/valkey",
+        "github.com/agentstation/starport/internal/storage/TestBoundedStorageRead/valkey",
+        "github.com/agentstation/starport/internal/usage/TestACachedReadIsRecordedAsCachedRatherThanFree/valkey",
+        "github.com/agentstation/starport/internal/usage/TestTheExtractionDurationSurvivesTheRoundTrip/valkey",
+        "github.com/agentstation/starport/internal/server/TestSDKCanonicalRemovalAfterSuccessfulInference",
+        "github.com/agentstation/starport/internal/usage/TestATurnThatAttachedNoDocumentReportsNoExtraction/valkey",
+        "github.com/agentstation/starport/internal/usage/TestRecognitionMeasurementsPersistWithUnknownTotal/valkey",
+        "github.com/agentstation/starport/internal/usage/TestAPricedMediaTurnCountsAgainstTheSpendBudget/valkey",
+        "github.com/agentstation/starport/internal/usage/TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/valkey",
+        "github.com/agentstation/starport/internal/usage/TestMediaUnitsSurviveTheRoundTrip/valkey",
+        "github.com/agentstation/starport/internal/usage/TestATextRecordReadsBackWithoutMedia/valkey",
+        "github.com/agentstation/starport/internal/usage/TestRepositoryPutAndListByKey/valkey",
+        "github.com/agentstation/starport/internal/usage/TestListByKeyOrdersNewestFirstAcrossBackends/valkey",
+        "github.com/agentstation/starport/internal/usage/TestListFiltersAndCursorPagination/valkey",
+        "github.com/agentstation/starport/internal/usage/TestAdminListSpansKeys/valkey",
+        "github.com/agentstation/starport/internal/usage/TestAggregateCountersAccumulate/valkey",
+        "github.com/agentstation/starport/internal/usage/TestCostlessRecordCarriesReasonNotZero/valkey",
+        "github.com/agentstation/starport/internal/usage/TestRetentionTTLApplied/valkey",
+        "github.com/agentstation/starport/internal/usage/TestAccountCounterSumsEveryKeyItHolds/valkey",
+        "github.com/agentstation/starport/internal/usage/TestTeamCounterSumsEveryAttributedKey/valkey",
+        "github.com/agentstation/starport/internal/usage/TestListByAccountSpansEveryKey/valkey",
+        "github.com/agentstation/starport/internal/usage/TestListFiltersByGuardrailVerdictAndKeepsCacheFields/valkey",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapConcurrentExactPublication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/before-sql",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/after-sql",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/before-kv",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/after-kv",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRequiresExplicitCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionHonorsLimitsAndRequiredGenerations",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCountsGenerationsSeparatelyFromReceipts",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionDryRunPreservesPendingRecovery",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionResumesInterruptedCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRefusesUnownedStaging",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionBoundsCommittedSnapshots",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionProtectsPinnedGeneration",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRecoversInterruptedUploadAndDeletion",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionFencesExpiredMaintenance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionConcurrentReadersAndCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCapacityRefusesWithoutMovingHead",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRejectsOverlappingDeletionRecord",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/current",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/accepted",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/rollback",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/inventory-missing",
+        "github.com/agentstation/starport/internal/catalog/TestFleetAcceptanceRetainsDistinctRollbackGenerations",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreCompleteKeyLossRequiresRecovery",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreNativePublication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreRefusesExpiredGrant",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreSeparateProcessTakeover",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreMissingSelectedPublicationIsNotAnEmptyStore",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreAcceptanceUsesOriginalGrant",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreNamespaceAndMalformedDescriptor",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLeaseExpiresDuringSelection/publication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLeaseExpiresDuringSelection/acceptance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLostHeadCannotBootstrapAgain",
+        "github.com/agentstation/starport/internal/catalog/TestFleetMigrationRequiresSameRecoveryIdentity",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeRejectsUnapprovedBackend",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimePreservesOriginalGrantThroughAcceptance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeLiveTakeoverAcceptance",
+        "github.com/agentstation/starport/internal/app/TestSharedCacheCompositionUsesSeparateService",
+        "github.com/agentstation/starport/internal/app/TestSharedCacheCanonicalDeploymentIsolation",
+        "github.com/agentstation/starport/internal/app/TestDeploymentIsolationIncludesGatewayRecords",
+        "github.com/agentstation/starport/internal/app/TestInitializeFleetFreshStartup",
+        "github.com/agentstation/starport/internal/app/TestAppWithValkey",
+        "github.com/agentstation/starport/internal/app/TestSharedStartupDoesNotCreateLocalDatabases"
+      ],
+      "source_timing": "Before the added edit-fee test and producer schema-check extraction. All consumer production code is final.",
+      "artifact": "consumer-full.jsonl.gz"
+    },
+    {
+      "name": "consumer-final",
+      "owner": "consumer",
+      "command": "go test -race -json -count=1 -timeout=4m ./internal/app ./internal/catalog ./internal/proxy ./internal/providers/connectors -run \"Image|Images\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 45
+      },
+      "package_results": {
+        "pass": 4
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Final pair source. Production app uses Badger and SQLite with local HTTP provider.",
+      "artifact": "consumer-final.jsonl.gz"
+    },
+    {
+      "name": "pure-go",
+      "owner": "consumer",
+      "command": "CGO_ENABLED=0 go test -json -count=1 -timeout=3m ./internal/catalog ./internal/router ./internal/proxy ./internal/providers/connectors -run \"Image|Images\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 28
+      },
+      "package_results": {
+        "pass": 4
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Before edit-fee test and producer schema-check extraction. Final consumer production code.",
+      "artifact": "pure-go.jsonl.gz"
+    },
+    {
+      "name": "live-deepinfra",
+      "owner": "producer",
+      "command": "STARMAP_PROVIDER_FIXTURE_CURRENCY=1 go test -json -count=1 -timeout=2m ./internal/providers/openai -run \"^TestOpenAICompatibleProviderFixtureCurrency$/^deepinfra$\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 2
+      },
+      "package_results": {
+        "pass": 1
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Public catalog fetch and governed-fixture wire drift comparison. No paid inference.",
+      "artifact": "live-deepinfra.jsonl.gz"
+    },
+    {
+      "name": "consumer-lint",
+      "owner": "consumer",
+      "command": "make lint",
+      "exit_code": 0,
+      "artifact": "consumer-lint.log.gz"
+    },
+    {
+      "name": "vet",
+      "owner": "consumer",
+      "command": "go vet ./...",
+      "exit_code": 0,
+      "artifact": "vet.log.gz"
+    },
+    {
+      "name": "goago",
+      "owner": "producer",
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "artifact": "goago.json.gz"
+    },
+    {
+      "name": "producer-lint",
+      "owner": "producer",
+      "command": "make lint",
+      "exit_code": 2,
+      "artifact": "producer-lint.log.gz"
+    },
+    {
+      "name": "producer-lint-final",
+      "owner": "producer",
+      "command": "make lint",
+      "exit_code": 2,
+      "artifact": "producer-lint-final.log.gz"
+    },
+    {
+      "name": "producer-lint-clean",
+      "owner": "producer",
+      "command": "make lint",
+      "exit_code": 0,
+      "artifact": "producer-lint-clean.log.gz"
+    },
+    {
+      "name": "ownership",
+      "owner": "consumer",
+      "command": "CATALOG_DRIVEN_STARMAP_ROOT=/private/tmp/starmap-fleet-review-20260926 bash scripts/verify-catalog-driven-providers.sh",
+      "exit_code": 0,
+      "artifact": "ownership.log.gz"
+    },
+    {
+      "name": "modalities",
+      "owner": "consumer",
+      "command": "bash scripts/verify-model-modalities.sh",
+      "exit_code": 0,
+      "artifact": "modalities.log.gz"
+    },
+    {
+      "name": "fixture-refresh",
+      "owner": "producer",
+      "command": "STARMAP_GO_TEST_BIN=go make testdata PROVIDER=deepinfra",
+      "exit_code": 0,
+      "artifact": "fixture-refresh.log.gz"
+    },
+    {
+      "name": "live-providers",
+      "owner": "producer",
+      "command": "bash scripts/verify-live-providers.sh",
+      "exit_code": 1,
+      "artifact": "live-providers.log.gz"
+    },
+    {
+      "name": "fixture-drift",
+      "owner": "producer",
+      "command": "bash scripts/verify-provider-fixture-drift.sh",
+      "exit_code": 1,
+      "artifact": "fixture-drift.log.gz"
+    },
+    {
+      "name": "docs-lint",
+      "owner": "plan",
+      "command": "technical-writing lint ENGINEERING_SPEC.md PAID_OPERATION_MATRIX.md REPOSITORY_FINDINGS.md starport-production-catalog-plan.html",
+      "exit_code": 1,
+      "artifact": "docs-lint.log.gz"
+    },
+    {
+      "name": "docs-lint-final",
+      "owner": "plan",
+      "command": "technical-writing lint ENGINEERING_SPEC.md PAID_OPERATION_MATRIX.md REPOSITORY_FINDINGS.md starport-production-catalog-plan.html",
+      "exit_code": 0,
+      "artifact": "docs-lint-final.log.gz"
+    },
+    {
+      "name": "plan-writing",
+      "owner": "plan",
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "artifact": "plan-writing.log.gz"
+    },
+    {
+      "name": "plan-writing-final",
+      "owner": "plan",
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "artifact": "plan-writing-final.log.gz"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "before.jsonl.gz",
+      "raw_sha256": "86c65f1297a68cb9d5930961ad5da8fcaa8a9e438421d53c46e5c336e58c8293",
+      "compressed_sha256": "380af866f7485ebfd3d11e64dc49bf9b9bdf55873ff213efb64ba089524ff35f"
+    },
+    {
+      "path": "consumer-initial.jsonl.gz",
+      "raw_sha256": "e9e4895f21c0d56a0d67c8520abbad095be7b8d2614cf221ac973b234d7f09f5",
+      "compressed_sha256": "1a1d14df39b6d276300d6d91eff595dbc0a341df54adc97484e1388005e7a8e8"
+    },
+    {
+      "path": "first-after.jsonl.gz",
+      "raw_sha256": "fa5c9f2544fb76e650b26f6ad392ad3ac32ad4132a041e6de0403f634b893307",
+      "compressed_sha256": "63d059129d191de1522ac3d36d971c8f331efa9ed9fa3eee02cd02a4aaa12d68"
+    },
+    {
+      "path": "empty-before.jsonl.gz",
+      "raw_sha256": "4bd5925081c59a2d4a62c88b7ea16ea87671a6eb3c2f6bc5b978c3f7c8ed61d2",
+      "compressed_sha256": "e34d8fb695701079c7550b87c5cc1d1db2fa13bf40d44b789a5941d4f72d880f"
+    },
+    {
+      "path": "race.jsonl.gz",
+      "raw_sha256": "66cbf6cb29901ba6e95950f10d788153d685814436ab454e12cb7f5964979d9d",
+      "compressed_sha256": "18736582d34fc78639a7f6536abafcddbe0ff2e343606b9b8d185742e3882cd9"
+    },
+    {
+      "path": "usage-race.jsonl.gz",
+      "raw_sha256": "99479686ba7bae6f94fc85868c156d3a90b83ffedc02ec3283d3214863795700",
+      "compressed_sha256": "cd5c59bab6119d13bc3e06d79f0ca8063ec057441014a5a9603e296fae67dbbe"
+    },
+    {
+      "path": "valuation-final.jsonl.gz",
+      "raw_sha256": "a1180a398d03f82f4fc1ce7801a9e196b0cfd4a790a7678d5f0a8fe6a01e811e",
+      "compressed_sha256": "a29fc8c1cd17a467ef262f61bc5b74762fc2e8abbd87548a64e80a03018216c8"
+    },
+    {
+      "path": "producer-race.jsonl.gz",
+      "raw_sha256": "05993feaa4a303ea4971f1a5ec7f88730a3e07583e52fab57ec16ccc07407e16",
+      "compressed_sha256": "70311df52365c98ce19b2c9a55f7fc69756ed916d6172fb804392ecb27c829d7"
+    },
+    {
+      "path": "provider-final.jsonl.gz",
+      "raw_sha256": "bc837d210a63e72314c4aa5e1346796be3b3a7fe61742b14433b53849d72258c",
+      "compressed_sha256": "bb98de1c586b8de898f0db7178a0df6e024392cff469442318f055fe87cff60a"
+    },
+    {
+      "path": "schema-final.jsonl.gz",
+      "raw_sha256": "67031ce9ac66fdeb93d5dc5cde9cd64c39064e546e1d605b3e70c034493cffa1",
+      "compressed_sha256": "211cc19486120e786c2687d54c1dca7e3fa75e37ef5acd1a3007cd01ec0e7ba4"
+    },
+    {
+      "path": "consumer-full.jsonl.gz",
+      "raw_sha256": "87f9bec1bb64432e0e937380c22a8d034bae887fedabfdf17289a5880ca8da34",
+      "compressed_sha256": "c045ee6ab0bfad6d1e57564ff5b0eca3b80b982c274ba25322d637308d4f3bef"
+    },
+    {
+      "path": "consumer-final.jsonl.gz",
+      "raw_sha256": "bbb86162b6af6d000ba422c20f84905f30d59dc1255677caa2b904f2dd07b2b7",
+      "compressed_sha256": "619c37bdf68e6de78c056a05bd2cd8e3d330f6d1671dddba32f43f39d95c6e3d"
+    },
+    {
+      "path": "pure-go.jsonl.gz",
+      "raw_sha256": "fd60b8f5bacee10b9d926c6084074920793cbb5fa6e4f064f79a9a4d1e7044e7",
+      "compressed_sha256": "9b61ea6120f31fb5e182c38ffac8ff88aae8b522a45117314b3188d4c0af80f6"
+    },
+    {
+      "path": "live-deepinfra.jsonl.gz",
+      "raw_sha256": "4a4641ac16189b4d2e99382d1be2a67fea458b79270cd4e4d85d8104d28f1f1c",
+      "compressed_sha256": "48132c1f338b745f476e280d0064f150348c46e5e60222a6a7f5547fc85a516d"
+    },
+    {
+      "path": "consumer-lint.log.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "compressed_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "vet.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "goago.json.gz",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "compressed_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    {
+      "path": "producer-lint.log.gz",
+      "raw_sha256": "c03b7ec9b859bf5a44dc7d11a520f16f17dd5bdb6e29ed560d0b650557f432d3",
+      "compressed_sha256": "120facad0cf68b0c9774bf4c5ee0bd8b031aaddd60da9799ddd67600e5b3963a"
+    },
+    {
+      "path": "producer-lint-final.log.gz",
+      "raw_sha256": "af2f60a1d5c4b564053cce898c6db2535824ce05ead10ce1712943f184133cdd",
+      "compressed_sha256": "9205e7ade1eea7c18a3fb98c754089f1ac42303454cdb987ba21e3248b3301bc"
+    },
+    {
+      "path": "producer-lint-clean.log.gz",
+      "raw_sha256": "8f3ff9718f85215725d5369705a332a792923114c9345913b9e30c3db38ec497",
+      "compressed_sha256": "fec1668f79ad3269ff6f0e50ef6ac8269a184476df84387fbb25e0f138080333"
+    },
+    {
+      "path": "ownership.log.gz",
+      "raw_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19",
+      "compressed_sha256": "622beb4f11d3ebd11a20b7a12a7b6658f30bd20db8d9cf07e35c32d2bf693d57"
+    },
+    {
+      "path": "modalities.log.gz",
+      "raw_sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a",
+      "compressed_sha256": "3738b2d3c25d14e3da51f208030a04c8450ad39d5ccfba1461f9ad2b4c7d6be1"
+    },
+    {
+      "path": "fixture-refresh.log.gz",
+      "raw_sha256": "cbb96999d49df0684d3b01694e2f425e4137f640cf0cbdfb9b0c33c5cf16d779",
+      "compressed_sha256": "1d83b190aa4a509389143bab308905b3e9924b73100a35cb26bbeadb8d1049d9"
+    },
+    {
+      "path": "live-providers.log.gz",
+      "raw_sha256": "7fb9b4c6946595c54464d1e0b9260547e8424c57bda6c11ddeabce6f5117d4e3",
+      "compressed_sha256": "744f2b3d41ffdc0764b24a0d40ddd5ed8a09aec19bdda79749c1eec72bcd4288"
+    },
+    {
+      "path": "fixture-drift.log.gz",
+      "raw_sha256": "59cf400a6f3fa078430369eb6f54853f09d509b682e49bbba35d055554edb0cb",
+      "compressed_sha256": "999b976ef493055f6953eab7eb711d4cf45ea15f8f1772b9c4b6eeb24f058ee8"
+    },
+    {
+      "path": "docs-lint.log.gz",
+      "raw_sha256": "210d5018427b046f08ea5de146629be34864d42aa059cc2624d0e23025f65233",
+      "compressed_sha256": "79e7775bdb3ed96e8cbb8840ad7128eb466e2723d4d19b1e66ed01b3d0de60a0"
+    },
+    {
+      "path": "docs-lint-final.log.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "compressed_sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    },
+    {
+      "path": "plan-writing.log.gz",
+      "raw_sha256": "245600524d98a13ff8aba4c2981eb3dba619460a9b189d12f7f527d2d939aeda",
+      "compressed_sha256": "248f154d41862e884cc734c8eaf2e8ac8c8e07566ad2134e52880bb032c1688f"
+    },
+    {
+      "path": "plan-writing-final.log.gz",
+      "raw_sha256": "9407be473809590228cb558895c9d30c529698698f399b9efe9f72b9b26aa4b1",
+      "compressed_sha256": "20c630c7c15818b9936821d5017dc28004f9067b41571761422e45cb58ce5d82"
+    }
+  ],
+  "producer": {
+    "worktree": "/private/tmp/starmap-fleet-review-20260926",
+    "branch": "codex/budget-qualification",
+    "head": "fb7f8ae2165d9644f6ff832d128ff87b1c5adc69",
+    "files": {
+      "internal/catalog/reconciler/merger.go": "1620b70a9048c030de166fe01b805c684cd843d0e263b10d497a6c19896f8eb5",
+      "internal/catalog/reconciler/speech_billing_test.go": "40ca363fc1a485587718a3fb38c0e65bf532fd9be5a853241f8fabfdb7d13a8d",
+      "internal/embedded/catalog/endpoints.yaml": "db2d0685624131feea682d73173fe6ec0be79095e809b23315af485161656f42",
+      "internal/embedded/catalog/generation-manifest.json": "a2aaff5fdefe96572645d9fbbfe83d126b59ea2cc39c52c6916b72fed6119b0b",
+      "internal/embedded/catalog/generation-payload.json.gz": "5eb45cd4b24cbbcc0b58c829034cc0acfee942c304ac1c1f89ede696ae4c8a75",
+      "internal/embedded/catalog/generation.json": "15fc286d63f773a9882581e4b3515dc2451923f9e38a1bc0e37cab8d8acf9eff",
+      "internal/embedded/catalog/providers/deepinfra/models/Bria/Bria-3.2-vector.yaml": "e45709ebe1dcd3a84ec376d4de196c4dddcb8da854f5b692514bbae1521f4111",
+      "internal/embedded/catalog/providers/deepinfra/models/Bria/Bria-3.2.yaml": "290804dc0d1201d3fb03ad9e5a6c2b335de987fe3a3b98d5f969b8fddbae6c2e",
+      "internal/embedded/catalog/providers/deepinfra/models/Bria/blur_background.yaml": "6db0c41c3a9f44676258784f2ec6a4f714654bbbcb86764ae4e623a3bf3b00dc",
+      "internal/embedded/catalog/providers/deepinfra/models/Bria/erase_foreground.yaml": "f43a4bea367c2d698eb34522b3ad872fb8faf202c89340cd8caf29d11cdac739",
+      "internal/embedded/catalog/providers/deepinfra/models/Bria/expand.yaml": "48ef05481470ad9a956e597e9cbd62428d1a3e736337ac26407b87ab5daa58c1",
+      "internal/embedded/catalog/providers/deepinfra/models/Bria/fibo.yaml": "c19a638fff579b7240660e17ba3edb6d50771098bac83a6e796b36768f70cdfb",
+      "internal/embedded/catalog/providers/deepinfra/models/Bria/fibo_edit.yaml": "89c8b9efcb6b5bb34a78e1dbe7471fd0017670037e2ff2ae5caf30c8aca77aae",
+      "internal/embedded/catalog/providers/deepinfra/models/Bria/remove_background.yaml": "2ba4c3c51199973b3ced2242e946be543f44ac80460ed0e0d3c59428b4eecf67",
+      "internal/embedded/catalog/providers/deepinfra/models/ByteDance/Seedream-4.yaml": "16d3ced8e822347b98c26cc81eea74851b97ce885bd97860d83c6b5f4162d5fe",
+      "internal/embedded/catalog/providers/deepinfra/models/PrunaAI/p-image.yaml": "85d46a83183a59bdb77a2597c1e8796054ed17119a67b2b576fef80375c8e610",
+      "internal/embedded/catalog/providers/deepinfra/models/Qwen/Qwen-Image-Edit.yaml": "d1dd3335af579a78640a02d27ef4558c2c6926e7ac2c5335cd520456e1fc568e",
+      "internal/embedded/catalog/providers/deepinfra/models/Qwen/Qwen-Image-Max.yaml": "bf331f0da957d19adac2deee552f0764e81169d08da6439295dc41d531f7c312",
+      "internal/embedded/catalog/providers/deepinfra/models/Wan-AI/Wan2.6-T2I.yaml": "f727c7094b25489b9178f710f3ddc2b244d3ae31b3d1ee8bb3ea6674a2e167a8",
+      "internal/embedded/catalog/providers/deepinfra/models/black-forest-labs/FLUX-1-Redux-dev.yaml": "b63438f0b0df485a72216012a14baca9f081dc760d1fe44042d2e3e0b5145124",
+      "internal/embedded/catalog/providers/deepinfra/models/black-forest-labs/FLUX-1-dev.yaml": "b4ef1a00b541fc68a6426df4f44997ae6a96db34d633a55a229c404fc5239b11",
+      "internal/embedded/catalog/providers/deepinfra/models/black-forest-labs/FLUX-1-schnell.yaml": "854cf2acd8c8ad98a37b729c18ee8ca244e8f1264f36fd552400b67519adc2c2",
+      "internal/embedded/catalog/providers/deepinfra/models/black-forest-labs/FLUX-1.1-pro.yaml": "8382f0d6d449a1d0445387cacb52bfbe03d44f437389f934cf2466a55c2d6483",
+      "internal/embedded/catalog/providers/deepinfra/models/black-forest-labs/FLUX-2-dev.yaml": "e95f686bd2a794b566fae335a2e492ac99b8ae3f8d52103a4ee180ba5de19c22",
+      "internal/embedded/catalog/providers/deepinfra/models/black-forest-labs/FLUX-2-klein-4b.yaml": "dde915d0926136d858d4f016aa8427cfbb2a0bfadd1d1d1fecbbb76ad6fef8f9",
+      "internal/embedded/catalog/providers/deepinfra/models/black-forest-labs/FLUX-2-klein-9b.yaml": "de3f096697c33110c750c8038f35c97852ddf296bc3f8a452bf37bb99df158af",
+      "internal/embedded/catalog/providers/deepinfra/models/black-forest-labs/FLUX-2-max.yaml": "6c22ce32e2262c9d07cd08fc4af4ffbe572db4e00508c8a86f28b95ba30c7166",
+      "internal/embedded/catalog/providers/deepinfra/models/black-forest-labs/FLUX-2-pro.yaml": "465bfc23e07d9defe0ca765b337ea9feec9f47aff60b6853d2d70ab0048e7fbf",
+      "internal/embedded/catalog/providers/deepinfra/models/black-forest-labs/FLUX.1-Kontext-dev.yaml": "fe7dfbe21b6860de89c92df3bc3166818b88615c43c02bee4f50a150f178bf48",
+      "internal/embedded/catalog/providers/deepinfra/models/stabilityai/sdxl-turbo.yaml": "b712b77816383bb1fb4f2ad80b095dfb830aa3b912d8349d50207c5c42a55862",
+      "internal/embedded/image_billing_test.go": "978524426f5bfeca8b44bf929a7b64a684d1a28d597f05783c3c5cf7178ef166",
+      "internal/providers/openai/client.go": "77fbbfcf51d719aa6dfcfd1a40d9bb07a37a26e43dcc4be21012d4a394bcfc4f",
+      "internal/providers/openai/client_test.go": "3d31930af979ba01065fe92c0a1a7745703b0aab4e97c99b00e1ae31eaae4ee5",
+      "internal/providers/openai/image_pricing_test.go": "0743a8dd2145c340cd2fa7068e1a11d656ea3327e90ea79a51a817f000dad853",
+      "internal/providers/openai/testdata/providers/deepinfra/models_list.json": "db566bde8fb541b2d0332a463591cdbd3649259241d712605fcf0c96cfdbdb4c",
+      "internal/providers/openai/testdata/providers/deepinfra/models_list.metadata.json": "9aefdccbd712f8003a5950ea22d1a27127b81ffed772f82886eecdc81b1c241f",
+      "pkg/catalogs/copy.go": "699364e4292ccaea311e7cbd1f7f13b71b75b0da9e2d7fb263e6e5fc11e446e4",
+      "pkg/catalogs/generation_manifest.go": "fc2354c57ea7d6b82fc4b4347f58d25cd1eaddd170fe8360e4558367617e12e8",
+      "pkg/catalogs/image_billing.go": "c0bd72e74262058002fbb646b34654245aa3d58cd906acdce997c36eb5597e96",
+      "pkg/catalogs/image_billing_test.go": "59ac1dedaf7991a9436a87cab2b75c7f745a65157e1869eb10a6e51f0a74c9ae",
+      "pkg/catalogs/model_billing.go": "6028bb9fec13395f605ac683bf9eaefb918a6f005b7a814d9bb2268ed37429fb",
+      "pkg/catalogs/model_pricing.go": "968ab7d09c2c3d7fec724dbaf2382161a215330cef415f613a24c097fd6d0f40",
+      "pkg/catalogs/model_pricing_validation.go": "660f9fbb377cdcfd145ef937a77419f29b8bf5b2febce306ed3d822069ea4b8e",
+      "pkg/catalogs/payload.go": "6cbc7b86cb186640269b424b8513b0def9fa6215bf4f97b0c7b90751ef0ba38f",
+      "pkg/catalogs/payload_cache_test.go": "64d11358d87179088248ab72163949bef322451a169c2ba14573b084afcd7e7d",
+      "pkg/catalogs/payload_decode.go": "d6b18b98492b566828ae7b8ffa7cc783cac5e5669b3b35a8cdee6fdd5c73301f"
+    },
+    "published": false
+  },
+  "consumer": {
+    "worktree": "/private/tmp/starport-fleet-review-20260926",
+    "branch": "codex/atomic-budget-admission",
+    "head": "2a2e8a5b05cd0ff8efe03ada4e7336003e07d008",
+    "files": {
+      "internal/app/budget_images_test.go": "329f6326ef42578f764e4c475ffa97a686c453a6b06acc3ad087c9e06d74782c",
+      "internal/catalog/image_billing.go": "758e67add76fc4975d5c816ac9478c569cfbd5c4bd4e4eac6aac15fa0e0d31ec",
+      "internal/catalog/image_billing_test.go": "bb40eabfed28c19510a6f6b17ef43e582ea71f7ae744e20dc8a0e0b779b158ea",
+      "internal/providers/connectors/media_adapter.go": "b525e9c567d8ef06c7ba1e7e6f4d1d7b671ed7fbede8636bbf2212204224e76f",
+      "internal/providers/connectors/openai_media.go": "b7f3edee13ec4ea69b1b835115df1af277d5636d9e6b5c91951b311646773f92",
+      "internal/proxy/image_cost.go": "996d4278b30d917164b6baed1f069a59846f3421062292b1a54e32c70f95ff00",
+      "internal/proxy/image_cost_test.go": "685b79e01e31943fe603c6f2f40e1d47ab70ec53666dbd652e325987ea9f80d7",
+      "internal/proxy/usage_capture.go": "f8100dc5f3dde1d5fe507eb3c885f83c3cf7d09681890731b59bc13c3b0b515d",
+      "internal/router/budget_images.go": "c47f476012e58c508274c54a0bd875882d2254240328cd237436c445f3ca62cf",
+      "internal/router/media.go": "ca6f7e4ece4ca00a07753cae7cd32f1812956240a9625d3bb7ea89cb904cd28e",
+      "internal/usage/model.go": "d6e122c6965aa24210ab8db8274a94ae89a6307e570c239ed2f4a87b8174e8f0"
+    },
+    "published": false
+  },
+  "sources": [
+    {
+      "url": "https://docs.deepinfra.com/apis/image-generation",
+      "fact": "OpenAI-compatible generation accepts size and n. Quality and style are compatibility parameters. Only b64_json output is supported.",
+      "verified_at": "2026-09-27"
+    },
+    {
+      "url": "https://deepinfra.com/black-forest-labs/FLUX-1.1-pro/api",
+      "fact": "USD 0.04 per image.",
+      "verified_at": "2026-09-27"
+    },
+    {
+      "url": "https://deepinfra.com/black-forest-labs/FLUX-1-schnell/api",
+      "fact": "USD 0.0005 times width/1024 times height/1024 times iterations.",
+      "verified_at": "2026-09-27"
+    },
+    {
+      "url": "https://deepinfra.com/black-forest-labs/FLUX-1-schnell",
+      "fact": "Input specification declares default dimensions 1024x1024 and default iteration count 1.",
+      "verified_at": "2026-09-27"
+    },
+    {
+      "url": "https://deepinfra.com/black-forest-labs/FLUX-2-klein-4b/api",
+      "fact": "USD 0.014 times width/1024 times height/1024.",
+      "verified_at": "2026-09-27"
+    },
+    {
+      "url": "https://deepinfra.com/black-forest-labs/FLUX-2-klein-9b",
+      "fact": "USD 0.015 times width/1024 times height/1024.",
+      "verified_at": "2026-09-27"
+    },
+    {
+      "url": "https://api.deepinfra.com/v1/openai/models",
+      "fact": "Public fixture captures 187 model records, including 26 image-unit prices. The four declared image prices agree within floating-point representation noise.",
+      "verified_at": "2026-09-27"
+    }
+  ],
+  "behavior": [
+    "Schema 17 separates an image-unit price from a flat image price. Four DeepInfra generation offerings declare complete image-count or pixel-iteration contracts.",
+    "Twenty-four embedded DeepInfra prices retain their values under image_unit. Other offerings retain unknown billing bases until verified.",
+    "Admission uses requested count, dimensions, fixed catalog iterations, and explicit request fees. Required token budgets refuse because these contracts do not establish token consumption.",
+    "Settlement uses returned image count and submitted dimensions after complete successful HTTP framing. Empty entries, missing results, failures, truncation, and trailing JSON retain uncertain capacity.",
+    "Optional usage stores dimensions and the generation/edit distinction with unknown token consumption. Pricing uses the retained catalog snapshot.",
+    "Binary response content is not decoded as an image during settlement. Nonempty provider result fields supply count evidence, without an invoice or per-call billing counter.",
+    "A live public provider fixture verifies acquisition mapping. Existing float normalization removes representational noise without changing the billing unit."
+  ],
+  "manual_audit": {
+    "status": "PASS_WITH_LIMITS",
+    "scope": [
+      "catalog ownership",
+      "schema and copy isolation",
+      "production dispatch and persistent reservations",
+      "incomplete response retention",
+      "optional usage quantities and operation selection",
+      "provider fixture wire mapping",
+      "unrelated CSP18 changes preserved"
+    ],
+    "pre_pr_review": false
+  },
+  "qualification_limits": [
+    "Image edits, token-priced images, tiered image variants, other speech, transcription, video, recognition variants, and search-unit billing remain open.",
+    "Provider pricing and defaults use public documentation. Fixed iterations through the compatible endpoint follow the documented defaults. No paid invoice or per-call usage counter was verified.",
+    "Global live-provider and fixture-drift gates fail for unrelated missing acquisition credentials and stale fixtures. DeepInfra live fetch, refresh, drift, and offline conversion pass.",
+    "Full consumer skips and producer opt-in skips remain unqualified. No shared-backend process/failover or asynchronous settlement result is claimed.",
+    "The local producer dependency is unpublished. Final exact dependency, A47, structured review, native CI, and protected merges remain required."
+  ],
+  "generation": "image-billing-7e01e9ea6f908898f68dc9ae94911af9c9f863aa930bcab991d3ef89fc664ec1",
+  "plan_maintenance": {
+    "ledger_rows": 40,
+    "done": 26,
+    "in_progress": [
+      "CSP12.2"
+    ],
+    "unique_ids": 97,
+    "links_checked": 156,
+    "artifacts_verified": 29,
+    "resume_words": 301,
+    "ledger_and_ids_preserved": true,
+    "cold_resume": "PASS: current source, task, next action, running state, remaining criteria, and authorization boundaries are explicit.",
+    "plan_bytes": 131334,
+    "size_exception": "The existing plan retains forty task contracts and historical execution entries. This component refresh replaces the resume state, preserves all task rows and IDs, and does not compact historical evidence."
+  },
+  "source_timing_note": "Final race checks precede comment-paragraph formatting only. The final producer lint checks the committed source. Full consumer results precede the added edit-fee test and schema-check extraction; final focused pair checks follow both.",
+  "remaining_work_audit": {
+    "jobs/accounting.go": "Terminal accounting still stamps before RecordJob and discards its error. Required settlement recovery remains open.",
+    "proxy/job_accounting.go": "Job accounting still consults the current catalog and treats non-chargeable terminal states as having no measured usage. Pinned submission valuation and provider-specific complete settlement evidence remain required."
+  },
+  "documentation": {
+    "changed_files_lint": "PASS: 4 files, 0 diagnostics",
+    "repository_lint": "FAIL: 137 diagnostics outside changed documents",
+    "human_conformance": "PASS: facts, unknowns, evidence scope, terminology, and conditions checked against source and test records."
+  }
+}

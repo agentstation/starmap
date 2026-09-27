@@ -279,6 +279,28 @@ No live paid provider call or shared-service qualification occurred in this comp
 Other speech billing units, images, transcription, video, recognition variants, and search-unit admission remain required.
 Asynchronous recovery, shared-backend qualification, A47, the published dependency, review, native CI, and merges remain open.
 
+
+## Image billing component
+
+Starmap `fb7f8ae21` adds schema 17 with image-count and pixel-iteration contracts.
+Starport `2a2e8a5b` reserves declared image charges before provider dispatch.
+The production cases use Badger, SQLite, and a local HTTP provider through the actual gateway and connector.
+An empty image entry retains the complete reservation as uncertain. The regression failed before this repair.
+
+The [image proof](../../plans/proof/starport-production-catalog/csp12.2/image-billing-2026-09-27/verification.json) records fifteen production cases and their parent result.
+Final consumer race checks pass 45 results. Final catalog race checks pass 1,355 results.
+Reconciler checks pass 690 results. Provider checks pass 103 results and skip three opt-in cases.
+
+The full consumer suite passes 4,629 results and skips 133. Pure-Go checks pass 28 results.
+The proof identifies source timing, failed attempts, source hashes, and remaining qualification limits.
+
+DeepInfra public acquisition, fixture refresh, and wire drift checks pass. Its fixture contains 187 records and 26 image-unit prices.
+The broader live-provider gates fail for missing credentials and stale fixtures outside DeepInfra.
+No paid inference or provider invoice verification occurred. Those failures and all skips remain recorded.
+
+Image edits, token-priced images, other speech units, transcription, video, recognition variants, and search-unit admission remain incomplete.
+Asynchronous recovery, shared-backend qualification, A47, the published dependency, review, native CI, and merges remain required.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:

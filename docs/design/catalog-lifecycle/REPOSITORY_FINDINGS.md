@@ -3965,3 +3965,33 @@ The source review date is September 27, 2026.
 
 The code-point interpretation follows public character pricing and JSON string semantics. It is an inference without provider invoice verification.
 No live paid call occurred. The unpublished workspace dependency and remaining CSP12.2 contracts still require qualification.
+
+## September 27 image billing admission
+
+Starmap `fb7f8ae21` adds schema 17 with image-count and pixel-iteration contracts.
+Starport `2a2e8a5b` reserves declared image charges before provider dispatch.
+The production cases use Badger, SQLite, and a local HTTP provider through the actual gateway and connector.
+An empty image entry retains the complete reservation as uncertain. The regression failed before this repair.
+
+The [image proof](../../plans/proof/starport-production-catalog/csp12.2/image-billing-2026-09-27/verification.json) records fifteen production cases and their parent result.
+Final consumer race checks pass 45 results. Final catalog race checks pass 1,355 results.
+Reconciler checks pass 690 results. Provider checks pass 103 results and skip three opt-in cases.
+
+The full consumer suite passes 4,629 results and skips 133. Pure-Go checks pass 28 results.
+The proof identifies source timing, failed attempts, source hashes, and remaining qualification limits.
+
+DeepInfra public acquisition, fixture refresh, and wire drift checks pass. Its fixture contains 187 records and 26 image-unit prices.
+The broader live-provider gates fail for missing credentials and stale fixtures outside DeepInfra.
+No paid inference or provider invoice verification occurred. Those failures and all skips remain recorded.
+
+Image edits, token-priced images, other speech units, transcription, video, recognition variants, and search-unit admission remain incomplete.
+Asynchronous recovery, shared-backend qualification, A47, the published dependency, review, native CI, and merges remain required.
+
+The [DeepInfra image API](https://docs.deepinfra.com/apis/image-generation) documents count, size, and compatibility-only quality and style parameters.
+The [Schnell API page](https://deepinfra.com/black-forest-labs/FLUX-1-schnell/api) prices pixels and iterations.
+The [FLUX-1.1-pro API page](https://deepinfra.com/black-forest-labs/FLUX-1.1-pro/api) states a flat image price.
+The source review date is September 27, 2026.
+
+The new fixture test initially compared exact floating-point representations. Existing acquisition normalization removes representational noise.
+The corrected assertion permits two adjacent floating-point steps and still detects unit conversion.
+The provider-decoding function exceeded the lint complexity limit. Billing-schema validation now has its own function with unchanged version refusals.
