@@ -90,6 +90,8 @@ construction-record collections. Schema version 4 adds provider credential
 profiles and plane references. The current reader accepts schemas 6 through 10. It rejects earlier schemas.
 Schema 10 adds [provider recognition billing units](CATALOG_RECOGNITION_BILLING.md).
 
+Schema 11 adds [complete text-chat charge declarations](CATALOG_TEXT_BILLING.md).
+
 
 ## Canonical rename history
 
