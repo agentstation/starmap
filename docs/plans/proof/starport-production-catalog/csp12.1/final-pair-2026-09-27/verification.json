@@ -1,6 +1,6 @@
 {
-  "status": "PREPARATION_ONLY",
-  "recorded_at": "2026-09-27T05:39:24.571406+00:00",
+  "status": "PASS",
+  "recorded_at": "2026-09-27T05:59:12.788634+00:00",
   "task": "CSP12.1",
   "producer": "ae218c074c7a4f2cbfd56e11d88abcc5108c566e",
   "consumer": "d9faa352179e05d2bbc5616b223025f8189499ea",
@@ -41,11 +41,7 @@
   ],
   "services": "Separate disposable Valkey services for durable storage, response caching, and paused-cache fault injection. PostgreSQL is independent. Every container completed cleanup.",
   "capacity": "Default cache budget and concurrent bounded-queue checks enabled. Component evidence does not qualify full gateway overhead.",
-  "pending": [
-    "CSP12 prerequisite merge",
-    "Final exact-head native evidence",
-    "Verified implementation merge ancestry and task disposition"
-  ],
+  "pending": [],
   "prepared_docs": {
     "files": [
       "docs/ARCHITECTURE.md",
@@ -66,6 +62,13 @@
         "sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
         "path": "csp121-docs-final-links.log.gz"
       }
-    }
-  }
+    },
+    "owner": "CSP18"
+  },
+  "producer_merge": "024c24c2247841b537c98b42bdbfc21e3dc2a7a4",
+  "consumer_merge": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+  "merge_trees_equal_tested_heads": true,
+  "implementation_merge_evidence": "../../csp12/merged-pair-2026-09-27/verification.json",
+  "native_checks": "All 48 PR checks passed. All five consumer native platforms passed the authorization and production discovery cache regression.",
+  "next_task": "CSP12.2"
 }
