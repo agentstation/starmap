@@ -2,7 +2,7 @@
   "updated": "2026-09-27T01:45:30.101533+00:00",
   "producer": "47991a5649f2e0363fb8c1b117ec327689fabd02",
   "consumer_base": "aab7dd7c8bf52b2046e2284e480d81ce1d0b873c",
-  "consumer_source": "uncommitted scratch creation, cask verifier, CI job limit",
+  "consumer_source": "committed scratch, verifier, CI, and module repairs",
   "workspace": "/tmp/d41-scratch.work",
   "producer_checks_exit": 0,
   "goago": {
@@ -45,5 +45,28 @@
       "pass": 75
     }
   },
-  "producer_published": true
+  "producer_published": true,
+  "module_pin": "v0.16.6-0.20260927014455-47991a5649f2",
+  "consumer_development_final": {
+    "workspace": "off",
+    "exit_code": 0,
+    "named_pass": 40,
+    "named_fail": 0,
+    "named_skip": 0
+  },
+  "task_gate": {
+    "workspace": "off",
+    "exit_code": 0,
+    "status": "PASS",
+    "selected_subcases": 11,
+    "scope": "component checks only"
+  },
+  "consumer": "95f2812",
+  "consumer_required_checks": {
+    "pass": 34,
+    "fail": 0,
+    "workspace": "off",
+    "report": "consumer-gates/report.json"
+  },
+  "consumer_review": "running"
 }

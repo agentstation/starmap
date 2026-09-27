@@ -1,0 +1,20 @@
+PASS CDP-V01 credential schema preserves one strict contract
+PASS CDP-V02 acquisition and inference credential values stay isolated
+PASS CDP-V03 every provider YAML record uses the credential schema
+PASS CDP-V04 both products implement catalog-declared environment precedence
+PASS CDP-V05 alias collisions fail before reads or connector construction
+PASS CDP-V06 explicit references precede ambient sources and fail closed
+PASS CDP-V07 both products pass the same source-conformance vectors
+PASS CDP-V08 old Starport provider environment names are absent
+PASS CDP-V09 Starport production selection has no provider roster
+PASS CDP-V10 Starmap acquisition selection has no provider roster
+PASS CDP-V11 shared production zones contain no provider or model facts
+PASS CDP-V12 transport and authentication registries use primitives only
+PASS CDP-V13 connectors retain no credential and requests stay isolated
+PASS CDP-V14 synthetic provider inference and discovery use catalog facts
+PASS CDP-V15 synthetic provider operator surfaces use catalog facts
+PASS CDP-V16 unsupported catalog declarations fail closed
+PASS CDP-V17 verified remote provider generations activate without rebuilds
+PASS CDP-V18 runtime replacement is atomic and drains old connectors
+PASS CDP-V19 credential strategy source order is exact
+Summary: 19 passed, 0 failed

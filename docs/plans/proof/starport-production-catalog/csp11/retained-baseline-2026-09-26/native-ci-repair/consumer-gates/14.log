@@ -1,0 +1,27 @@
+PASS AON-V01 internal/account owns the account model
+PASS AON-V02 account storage namespace is versioned account:v1:
+PASS AON-V03 composition ensures the canonical default account
+PASS AON-V04 an account carries the credential strategy the operator governs
+PASS AON-V05 the limits vocabulary has its own owner, shared by key and account
+PASS AON-V06 identity.APIKey carries an account
+PASS AON-V07 the request context carries an account identity
+PASS AON-V08 no controller derives a credential scope from an API key ID
+PASS AON-V09 the provider credential package is named for all three sources
+PASS AON-V10 no package still calls the whole credential subsystem byok
+PASS AON-V11 the BYOK plane is scoped to an account, not to a key
+PASS AON-V12 the shared credential plane has a named scope
+PASS AON-V13 credential resolution consults the shared source
+PASS AON-V14 an operator applies a shared credential on the provider route
+PASS AON-V15 the account-brought credential route is named byok
+PASS AON-V16 the key-nested credential routes are gone
+PASS AON-V17 admin account routes are registered
+PASS AON-V18 the budget path resolves an account limit
+PASS AON-V19 config owns the gateway authentication mode
+PASS AON-V20 serve and dev accept --no-auth
+PASS AON-V21 startup validation holds the non-loopback tripwire
+PASS AON-V22 the admin authentication-mode route is registered
+PASS AON-V23 internal/localauth owns the local admin token
+PASS AON-V24 the starport auth command group exists
+PASS AON-V25 the launch route consumes a one-time ticket
+PASS AON-V26 no provider screen links to /keys for credentials
+Summary: 26 passed, 0 failed

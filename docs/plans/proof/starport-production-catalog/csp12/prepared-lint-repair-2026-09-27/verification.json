@@ -9,5 +9,25 @@
   "manifest_race_results": {
     "pass": 15
   },
-  "note": "goago is not a module tool in Starport; repository golangci-lint passes"
+  "note": "goago is not a module tool in Starport; repository golangci-lint passes",
+  "real_services": {
+    "exit_code": 0,
+    "cleanup_exit": 0,
+    "pass": 625,
+    "skip": 3,
+    "fail": 0,
+    "skip_names": [
+      "TestDefaultCacheMemoryBudget",
+      "TestSharedCachePausedServiceDeadlineAndRecovery",
+      "TestValkeyIncarnationRejectsReplacementBackend"
+    ],
+    "scope": "Prepared connection change only; full CSP12 remains incomplete."
+  },
+  "credential_conflict": {
+    "contract": "ENGINEERING_SPEC section 8.8 requires refusal of conflicting URI and explicit credentials",
+    "before": "two conflict subcases fail because explicit fields silently override the URI",
+    "after": "six named race results pass, including the config projection test",
+    "lint": "zero code issues",
+    "writing": "changed credential prose passes; 48 pre-existing operator guide findings remain outside the edited section"
+  }
 }
