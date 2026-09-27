@@ -14,10 +14,14 @@ const RecognitionBillingSchemaVersion uint64 = 10
 // TextChatBillingSchemaVersion adds complete text-chat charge declarations.
 const TextChatBillingSchemaVersion uint64 = 11
 
+// EmbeddingBillingSchemaVersion adds complete embedding charge declarations.
+const EmbeddingBillingSchemaVersion uint64 = 12
+
 // ModelBilling declares provider billing units independently of current prices.
 // A missing operation record means that its billing basis is unknown.
 type ModelBilling struct {
 	Recognition *RecognitionBilling `json:"recognition,omitempty" yaml:"recognition,omitempty"`
+	Embeddings  *EmbeddingBilling   `json:"embeddings,omitempty" yaml:"embeddings,omitempty"`
 	TextChat    *TextChatBilling    `json:"text_chat,omitempty" yaml:"text_chat,omitempty"`
 }
 
@@ -80,6 +84,35 @@ func (b *TextChatBilling) validate() error {
 	return nil
 }
 
+// EmbeddingBilling declares all charges for synchronous text or token-ID embeddings.
+// The input_tokens basis uses the complete input count and the ordinary input price.
+// RequestCharge declares whether Operations.Request also applies.
+// This contract excludes media inputs and provider-side batch discounts.
+// Vector dimensions do not change the declared token rate.
+type EmbeddingBilling struct {
+	Basis         EmbeddingBillingBasis `json:"basis" yaml:"basis"`
+	RequestCharge *bool                 `json:"request_charge" yaml:"request_charge"`
+}
+
+// EmbeddingBillingBasis identifies the units for embedding charges.
+type EmbeddingBillingBasis string
+
+// EmbeddingBillingInputTokens charges for all measured input tokens.
+const EmbeddingBillingInputTokens EmbeddingBillingBasis = "input_tokens"
+
+func (b *EmbeddingBilling) validate() error {
+	if b == nil {
+		return nil
+	}
+	if b.Basis != EmbeddingBillingInputTokens {
+		return billingValidationError("embeddings.basis", b.Basis, "must be input_tokens")
+	}
+	if b.RequestCharge == nil {
+		return billingValidationError("embeddings.request_charge", nil, "requires an explicit boolean")
+	}
+	return nil
+}
+
 // RecognitionBillingBasis identifies the units used to settle document recognition.
 type RecognitionBillingBasis string
 
@@ -112,6 +145,9 @@ type RecognitionInputPageEstimate struct {
 func (b *ModelBilling) Validate() error {
 	if b == nil {
 		return nil
+	}
+	if err := b.Embeddings.validate(); err != nil {
+		return err
 	}
 	if err := b.TextChat.validate(); err != nil {
 		return err
@@ -151,6 +187,10 @@ func deepCopyModelBilling(billing *ModelBilling) *ModelBilling {
 		return nil
 	}
 	copied.Recognition = copyPtr(billing.Recognition)
+	copied.Embeddings = copyPtr(billing.Embeddings)
+	if copied.Embeddings != nil {
+		copied.Embeddings.RequestCharge = copyPtr(billing.Embeddings.RequestCharge)
+	}
 	copied.TextChat = copyPtr(billing.TextChat)
 	if copied.TextChat != nil {
 		copied.TextChat.Input = slices.Clone(billing.TextChat.Input)

@@ -79,6 +79,11 @@ features:
   structured_outputs: false
   streaming: true
 
+billing:
+  embeddings:
+    basis: input_tokens
+    request_charge: false
+
 # Model pricing
 pricing:
   tokens:
@@ -92,8 +97,8 @@ pricing:
 
 # Model limits
 limits:
-  context_window: 8191
-  input_tokens: 0
+  context_window: 8192
+  input_tokens: 8192
   output_tokens: 1536
 extensions:
   openai:

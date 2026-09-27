@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: text-billing-b8d90e40b9e6cb5b6b96b089d7cc8b479d4af876c1c4db86247968c2eaba7062
-catalog_digest: sha256:b8d90e40b9e6cb5b6b96b089d7cc8b479d4af876c1c4db86247968c2eaba7062
+generation_id: embedding-billing-cdae981eb91353f2a9198b5be6ed0872ef6bc7aa18e369b4c8766f35f6d90b83
+catalog_digest: sha256:cdae981eb91353f2a9198b5be6ed0872ef6bc7aa18e369b4c8766f35f6d90b83
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -9762,8 +9762,8 @@ models:
               per_1m: 0.0
           currency: USD
         limits:
-          context_window: 8191
-          input_tokens: 0
+          context_window: 8192
+          input_tokens: 8192
           output_tokens: 1536
         availability: unknown
         lifecycle: unknown

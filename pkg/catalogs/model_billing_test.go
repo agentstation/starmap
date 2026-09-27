@@ -247,7 +247,7 @@ func TestTextChatBillingCopiesAndPayloadVersions(t *testing.T) {
 		t.Fatal("offering exposes catalog billing mutation")
 	}
 	for _, version := range []uint64{CanonicalAliasSchemaVersion, RecognitionBillingSchemaVersion} {
-		lowered := bytes.Replace(encoded, []byte(`"schema_version":11`), []byte(fmt.Sprintf(`"schema_version":%d`, version)), 1)
+		lowered := bytes.Replace(encoded, []byte(fmt.Sprintf(`"schema_version":%d`, CurrentCatalogSchemaVersion)), []byte(fmt.Sprintf(`"schema_version":%d`, version)), 1)
 		if _, err := DecodeCatalogPayload(lowered); err == nil {
 			t.Fatalf("schema %d accepted text billing", version)
 		}

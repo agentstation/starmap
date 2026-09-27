@@ -243,6 +243,9 @@ func decodePayloadProviders(
 		}
 		mergeRecordReport(&report, recordReport)
 		for _, model := range models {
+			if payload.SchemaVersion < EmbeddingBillingSchemaVersion && model.Billing != nil && model.Billing.Embeddings != nil {
+				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing.embeddings", Message: "requires catalog schema version 12"}
+			}
 			if payload.SchemaVersion < TextChatBillingSchemaVersion && model.Billing != nil && model.Billing.TextChat != nil {
 				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing.text_chat", Message: "requires catalog schema version 11"}
 			}
