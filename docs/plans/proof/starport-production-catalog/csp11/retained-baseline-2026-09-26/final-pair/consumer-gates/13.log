@@ -1,0 +1,22 @@
+PASS CM-V01 console workspace exists with a package manifest
+PASS CM-V02 package manifest pins pnpm via the packageManager field
+PASS CM-V03 design tokens live in a Tailwind @theme layer
+PASS CM-V04 TanStack Router file routes directory exists
+PASS CM-V05 token layer defines the raised-surface role token
+PASS CM-V06 app shell component exists
+PASS CM-V07 overview route renders its page components
+PASS CM-V08 models route exists
+PASS CM-V09 providers route exists
+PASS CM-V10 keys route exists
+PASS CM-V11 usage route exists
+PASS CM-V12 presets route exists
+PASS CM-V13 settings route exists
+PASS CM-V14 chat route exists
+PASS CM-V15 chat composer carries the model picker
+PASS CM-V16 chat renders streaming markdown through streamdown
+PASS CM-V17 chat has a comparison mode component
+PASS CM-V18 console embeds the SPA build and serves its page fallback
+PASS CM-V19 command palette component exists
+PASS CM-V20 DESIGN.md states the one-accent law
+PASS CM-V21 legacy static console is deleted
+Summary: 21 passed, 0 failed

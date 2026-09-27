@@ -10,6 +10,16 @@
     "unverified": 0
   },
   "task_report": "task-gate/task-report.json",
-  "consumer_checks": "running",
-  "merged": false
+  "consumer_checks": {
+    "pass": 34,
+    "fail": 0,
+    "report": "consumer-gates/report.json"
+  },
+  "merged": false,
+  "consumer_commit": "76a5687c680899283e9cbf4c3d74659a9e4f5974",
+  "consumer_review": {
+    "status": "running",
+    "session": 39239,
+    "log": "/tmp/d41-final-consumer-review.log"
+  }
 }

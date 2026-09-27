@@ -28,8 +28,8 @@
       "title": "catalog: fence fleet publication and recover shared acquisition state",
       "url": "https://github.com/agentstation/starport/pull/385",
       "owner": "CSP11",
-      "disposition": "All 34 repository commands and eleven CSP11 subcases pass on published dff93d12e; final producer pin remains pending",
-      "next_action": "Update the final published producer pin, qualify it, review and publish the existing branch. Merge after Starmap PR185."
+      "disposition": "Final module pin passes all 34 repository commands and eleven CSP11 subcases; consumer review is running",
+      "next_action": "Finish review of 76a5687c6, publish the existing branch, qualify CI, and merge after Starmap PR185."
     }
   ],
   "completed_merges": [
@@ -837,7 +837,7 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Finish producer startup repair review, publish and qualify the final pair, then merge both PRs in order.",
+    "next_action": "Finish review of 76a5687c6, publish the existing branch, qualify CI, and merge after Starmap PR185.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
     "contract_audit": "../../csp11/contract-audit-2026-09-26.md",
@@ -876,8 +876,8 @@
     "consumer_base": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
     "proof": "../../csp11/isolation-scope-2026-09-26/verification.json",
     "owner": "CSP11",
-    "next_action": "Finish producer startup repair review, publish and qualify the final pair, then merge both PRs in order.",
-    "consumer": "658c8993042b9f35d5019c835bcdcb19151962fc",
+    "next_action": "Finish review of 76a5687c6, publish the existing branch, qualify CI, and merge after Starmap PR185.",
+    "consumer": "76a5687c680899283e9cbf4c3d74659a9e4f5974",
     "consumer_pr": 385,
     "ci": {
       "producer": 36282930189,
@@ -889,8 +889,7 @@
     "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json",
     "review_status": "PASS: two review passes, no actionable findings",
     "running_sessions": [
-      38962,
-      91230
+      39239
     ],
     "repair_proof": "../../csp11/review-repairs-2026-09-26/verification.json",
     "initialization_proof": "../../csp11/fresh-initialization-2026-09-26/verification.json",
@@ -912,13 +911,14 @@
       "proof": "../../csp11/retained-baseline-2026-09-26/pin-review-repair/task-gate/task-report.json"
     },
     "pin_review_repair": "../../csp11/retained-baseline-2026-09-26/pin-review-repair/verification.json",
-    "startup_repair_proof": "../../csp11/retained-baseline-2026-09-26/startup-review-repair/verification.json"
+    "startup_repair_proof": "../../csp11/retained-baseline-2026-09-26/startup-review-repair/verification.json",
+    "final_pair_proof": "../../csp11/retained-baseline-2026-09-26/final-pair/verification.json"
   },
   "local_consumer_checkpoint": {
-    "head": "658c8993042b9f35d5019c835bcdcb19151962fc",
+    "head": "76a5687c680899283e9cbf4c3d74659a9e4f5974",
     "branch": "codex/catalog-fleet-adapter",
     "published": false,
-    "uncommitted_module_pin": "v0.16.6-0.20260927002942-b46c077a7039"
+    "module_pin": "v0.16.6-0.20260927002942-b46c077a7039"
   },
   "storage_recipe_preparation": {
     "owner": "CSP12",
@@ -936,5 +936,5 @@
       "scope": "kvconnection, config, storage, cache with race detection and real Valkey. Full CSP12 is incomplete."
     }
   },
-  "local_updated_at": "2026-09-27T00:39:06.656846+00:00"
+  "local_updated_at": "2026-09-27T00:45:43.390519+00:00"
 }

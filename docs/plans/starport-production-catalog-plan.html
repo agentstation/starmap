@@ -11,7 +11,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated September 26, 2026 UTC. CSP11 is in progress under D41. 23 of 40 tasks are complete.</p>
 
-<p id="next-action">Qualify the consumer module pin for reviewed producer <code>b46c077a7</code> with GOWORK=off. Complete consumer review and native CI, then merge in dependency order.</p>
+<p id="next-action">Complete consumer review at <code>76a5687c6</code>, then publish the existing branch. The final pair passes local qualification with GOWORK=off. Qualify native CI and merge in dependency order.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/final-review-rescope/REPAIR_SCOPE.md">final review repair scope</a> defines both operation contracts after the review pause. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/ownership-contract-repair/verification.json">new repair proof</a> records 108 passing race results, 99 verifier tests, and eleven passing task subcases. Producer review is complete with one rejected advisory finding and thirteen additional passing pin tests. D41 remains approved.</p>
 
@@ -21,11 +21,11 @@
 
 <p>CSP16 owns coordinated policy apply through shared configuration authority. CSP16.1 owns explicit baseline promotion. Incompatible acquisition policy still refuses refresh ownership until those operations ship.</p>
 
-<p>Producer checkout: <code>starmap-object-ci-repair</code>, branch <code>codex/catalog-fleet-contract</code>, local head <code>b46c077a70396de6eb31039b678ff754594f1d02</code>. Consumer checkout: <code>starport-native-catalog</code>, branch <code>codex/catalog-fleet-adapter</code>, local head <code>658c8993042b9f35d5019c835bcdcb19151962fc</code>. Preserve unrelated native evidence in both checkouts.</p>
+<p>Producer checkout: <code>starmap-object-ci-repair</code>, branch <code>codex/catalog-fleet-contract</code>, local head <code>b46c077a70396de6eb31039b678ff754594f1d02</code>. Consumer checkout: <code>starport-native-catalog</code>, branch <code>codex/catalog-fleet-adapter</code>, local head <code>76a5687c680899283e9cbf4c3d74659a9e4f5974</code>. Preserve unrelated native evidence in both checkouts.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/startup-review-repair/verification.json">startup repair proof</a> records one reproduced failure and 122 passing race results. Full producer verification and Sol/Opus review pass. All 34 consumer commands pass on the prior published module pin. That pair passes all eleven task subcases.</p>
 
-<p>Starport module files contain the uncommitted published pin <code>v0.16.6-0.20260927002942-b46c077a7039</code>. Required checks run through <code>/tmp/d41-final-consumer-gates.py</code>. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/final-pair/verification.json">final pair</a> passes all eleven native task subcases. Repository checks remain active. Both use <code>GOWORK=off</code>.</p>
+<p>Starport commit <code>76a5687c6</code> selects published module <code>v0.16.6-0.20260927002942-b46c077a7039</code>. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/final-pair/STATUS.md">final pair</a> passes all 34 repository commands and eleven native task subcases. Consumer review remains active. Native CI and both merges remain open.</p>
 
 <p>Starmap <a href="https://github.com/agentstation/starmap/pull/185">#185</a> now contains <code>b46c077a7</code>. Starport <a href="https://github.com/agentstation/starport/pull/385">#385</a> remains at <code>7068380bd</code>. The remote consumer branch still uses <code>v0.16.6-0.20260926185237-a2d66bd259a1</code>. Starmap must merge first.</p>
 
@@ -641,6 +641,7 @@
 <p><a href="proof/starport-production-catalog/execution-history-2026-09-12-verification-cache.html">Read the latest archived entries</a>. Their original text and evidence remain unchanged.</p>
 
 <p><a href="proof/starport-production-catalog/execution-history-2026-09-11-1143.html">Read earlier execution entries</a> for historical evidence. The current resume state owns the next action.</p><p><a href="proof/starport-production-catalog/execution-history-2026-09-26-qualification.html">Read the preserved qualification history</a> for prior resume state, CSP8 progress, and older execution entries.</p><p><a href="proof/starport-production-catalog/execution-history-2026-09-26-consumer-merge.html">Read earlier execution entries</a> for preserved qualification and merge history.</p><table><thead><tr><th>Date</th><th>Item</th><th>Action</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>2026-09-27</td><td>CSP11 final consumer pin qualified</td><td>Commit consumer <code>76a5687c6</code> against producer <code>b46c077a7</code>.</td><td>All 34 repository commands and eleven real-storage task subcases pass with GOWORK=off. Producer review passes. Consumer review remains active. Both merges remain open.</td></tr>
 <tr><td>2026-09-27</td><td>CSP11 startup race repaired</td><td>Commit producer <code>b46c077a7</code>.</td><td>Accept the reviewed startup predecessor race. One regression fails before repair. All 122 fleet and pin race results and full repository verification pass afterward. The revised review and both merges remain open.</td></tr>
 <tr><td>2026-09-27</td><td>CSP11 verification follow-up</td><td>Commit producer <code>e7710f16f</code>.</td><td>Fix two stale Intel macOS expectations and handle gzip close errors. All 56 workflow race tests and the full producer verification gate pass. All 34 consumer commands pass on published dependency <code>dff93d12e</code>. Review and final pin qualification remain open.</td></tr>
 <tr><td>2026-09-26</td><td>CSP11 ownership contracts repaired</td><td>Producer <code>dff93d12e</code> and consumer <code>658c89930</code>.</td><td>Two regressions fail before repair. All 108 producer race results and eleven native task subcases pass after repair. The author mapping regression also passes. Full review remains mandatory.</td></tr>

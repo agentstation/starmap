@@ -1,0 +1,212 @@
+{
+  "started": "2026-09-27T00:35:24.010730+00:00",
+  "source": "/Users/jack/src/github.com/agentstation/starport-native-catalog/AGENTS.md",
+  "workspace": "off",
+  "results": [
+    {
+      "command": "bash scripts/verify-starmap-ownership.sh",
+      "started": "2026-09-27T00:35:24.010880+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:36:52.432665+00:00"
+    },
+    {
+      "command": "bash scripts/verify-v1-architecture.sh",
+      "started": "2026-09-27T00:36:52.433268+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:39:28.999230+00:00"
+    },
+    {
+      "command": "bash scripts/test-dependency-direction-verifier.sh",
+      "started": "2026-09-27T00:39:28.999938+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:39:29.818971+00:00"
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "started": "2026-09-27T00:39:29.819298+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:39:30.572883+00:00"
+    },
+    {
+      "command": "bash scripts/verify-catalog-driven-providers.sh",
+      "started": "2026-09-27T00:39:30.573219+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:41:52.657255+00:00"
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "started": "2026-09-27T00:41:52.657684+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:41:59.153025+00:00"
+    },
+    {
+      "command": "bash scripts/verify-readme-quickstart.sh",
+      "started": "2026-09-27T00:41:59.153458+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:41:59.228597+00:00"
+    },
+    {
+      "command": "bash scripts/verify-v1-release.sh",
+      "started": "2026-09-27T00:41:59.228906+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:41:59.409494+00:00"
+    },
+    {
+      "command": "bash scripts/verify-release-workflow.sh",
+      "started": "2026-09-27T00:41:59.409884+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:05.278848+00:00"
+    },
+    {
+      "command": "bash scripts/verify-developer-experience.sh",
+      "started": "2026-09-27T00:42:05.279193+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:07.828821+00:00"
+    },
+    {
+      "command": "bash scripts/verify-doc-links.sh",
+      "started": "2026-09-27T00:42:07.829198+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:07.955718+00:00"
+    },
+    {
+      "command": "bash scripts/test-doc-link-verifier.sh",
+      "started": "2026-09-27T00:42:07.956129+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:08.135878+00:00"
+    },
+    {
+      "command": "bash scripts/verify-openrouter-parity.sh",
+      "started": "2026-09-27T00:42:08.136261+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:08.266698+00:00"
+    },
+    {
+      "command": "bash scripts/verify-console-modernization.sh",
+      "started": "2026-09-27T00:42:08.267106+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:08.307186+00:00"
+    },
+    {
+      "command": "bash scripts/verify-auth-onboarding.sh",
+      "started": "2026-09-27T00:42:08.307539+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:08.380939+00:00"
+    },
+    {
+      "command": "bash scripts/verify-console-session-grants.sh",
+      "started": "2026-09-27T00:42:08.381627+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:08.785907+00:00"
+    },
+    {
+      "command": "bash scripts/verify-model-modalities.sh",
+      "started": "2026-09-27T00:42:08.786271+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:09.027997+00:00"
+    },
+    {
+      "command": "bash scripts/verify-files-api.sh",
+      "started": "2026-09-27T00:42:09.028367+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:09.160827+00:00"
+    },
+    {
+      "command": "bash scripts/verify-async-media-jobs.sh",
+      "started": "2026-09-27T00:42:09.161163+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:09.341069+00:00"
+    },
+    {
+      "command": "bash scripts/verify-document-parser.sh",
+      "started": "2026-09-27T00:42:09.341557+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:09.525280+00:00"
+    },
+    {
+      "command": "bash scripts/verify-reranking.sh",
+      "started": "2026-09-27T00:42:09.525726+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:09.868172+00:00"
+    },
+    {
+      "command": "bash scripts/verify-catalog-performance.sh",
+      "started": "2026-09-27T00:42:09.868568+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:10.108240+00:00"
+    },
+    {
+      "command": "bash scripts/verify-credential-sharing.sh",
+      "started": "2026-09-27T00:42:10.108714+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:10.293398+00:00"
+    },
+    {
+      "command": "bash scripts/verify-enterprise-readiness.sh",
+      "started": "2026-09-27T00:42:10.293737+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:11.069587+00:00"
+    },
+    {
+      "command": "bash scripts/verify-console-polish.sh",
+      "started": "2026-09-27T00:42:11.069949+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:11.254599+00:00"
+    },
+    {
+      "command": "bash scripts/verify-action-pins.sh",
+      "started": "2026-09-27T00:42:11.255009+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:16.167142+00:00"
+    },
+    {
+      "command": "bash scripts/benchmark-overhead.sh",
+      "started": "2026-09-27T00:42:16.167468+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:23.131792+00:00"
+    },
+    {
+      "command": "bash scripts/smoke-first-run.sh",
+      "started": "2026-09-27T00:42:23.132192+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:42:41.787940+00:00"
+    },
+    {
+      "command": "pnpm -C console check",
+      "started": "2026-09-27T00:42:41.788353+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:43:08.503803+00:00"
+    },
+    {
+      "command": "go test ./...",
+      "started": "2026-09-27T00:43:08.504211+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:43:52.826064+00:00"
+    },
+    {
+      "command": "go vet ./...",
+      "started": "2026-09-27T00:43:52.826469+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:43:54.981645+00:00"
+    },
+    {
+      "command": "make lint",
+      "started": "2026-09-27T00:43:54.982091+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:44:05.825471+00:00"
+    },
+    {
+      "command": "make build",
+      "started": "2026-09-27T00:44:05.825890+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:44:16.254371+00:00"
+    },
+    {
+      "command": "bash scripts/smoke-openrouter-sdks.sh",
+      "started": "2026-09-27T00:44:16.254759+00:00",
+      "exit_code": 0,
+      "finished": "2026-09-27T00:44:42.012008+00:00"
+    }
+  ],
+  "finished": "2026-09-27T00:44:42.012375+00:00"
+}

@@ -1,0 +1,49 @@
+PASS CPL-V01 lib/queries.ts owns the query factories through queryOptions
+PASS CPL-V02 main.tsx sets the query client defaults
+PASS CPL-V03 the router preloads on intent
+PASS CPL-V04 the router owns a not-found component
+PASS CPL-V05 every factory in lib/queries.ts passes the query signal
+PASS CPL-V06 at least eleven route files validate search params
+PASS CPL-V07 the console holds a shadcn components manifest
+PASS CPL-V08 the console depends on Base UI
+PASS CPL-V09 index.html bootstraps the theme before paint
+PASS CPL-V10 the shell renders a skip link
+PASS CPL-V11 dialog.tsx is present and Modal.tsx is gone
+PASS CPL-V12 sheet.tsx is present and SidePanel.tsx is gone
+PASS CPL-V13 Form.tsx owns DestructiveButton
+PASS CPL-V14 the console depends on sonner for toasts
+PASS CPL-V15 lib/api.ts types the budget exhausted error
+PASS CPL-V16 no component keeps its own notice state
+PASS CPL-V17 tooltip and dropdown menu components exist
+PASS CPL-V18 the chat model picker sets aria-activedescendant
+PASS CPL-V19 a skeleton component exists
+PASS CPL-V20 Field sets aria-invalid on error
+PASS CPL-V21 chat messages carry a live region
+PASS CPL-V22 format.test.ts covers the price pair formatter
+PASS CPL-V23 format.ts exports formatPricePair
+PASS CPL-V24 components/ui owns a shared DataTable
+PASS CPL-V25 the audit route uses DataTable
+PASS CPL-V26 provider offerings use DataTable
+PASS CPL-V27 the seven plain tables carry column scopes
+PASS CPL-V28 the usage charts share a syncId
+PASS CPL-V29 the chart emphasizes the last point with ReferenceDot
+PASS CPL-V30 system info reports build provenance, held by tests
+PASS CPL-V31 the server mounts the admin webhook summary route
+PASS CPL-V32 settings panels render Observability and Guardrails sections
+PASS CPL-V33 components/ui owns a shared BudgetLine
+PASS CPL-V34 a team read includes budget usage, held by tests
+PASS CPL-V35 delete team and delete account dialogs exist
+PASS CPL-V36 the audit route and client filters carry until
+PASS CPL-V37 lib/api.ts types the guardrail verdict field
+PASS CPL-V38 the usage route offers an NDJSON export
+PASS CPL-V39 the console names the X-Semantic-Cache header
+PASS CPL-V40 a batches panel exists
+PASS CPL-V41 the shell navigation reads Audit log in sentence case
+PASS CPL-V42 the key form uses the model picker
+PASS CPL-V43 chat.test.tsx exists
+PASS CPL-V44 the docs cite the real health paths
+PASS CPL-V45 docs.test.tsx exists
+PASS CPL-V46 lib/useMediaQuery.ts exists
+PASS CPL-V47 CI runs this gate
+PASS CPL-V48 the AGENTS.md evidence list names this gate
+Summary: 48 passed, 0 failed
