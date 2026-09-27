@@ -5814,6 +5814,12 @@
           "repository": "starmap",
           "package": "./runtime",
           "test": "TestFleetRecoveryCodecBoundsAndIntegrity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetAcceptanceRetainsDistinctRollbackGenerations"
         }
       ]
     },
@@ -5831,6 +5837,30 @@
           "repository": "starport",
           "package": "./internal/catalog",
           "test": "TestFleetStoreLostHeadCannotBootstrapAgain"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetStoreCompleteKeyLossRequiresRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/recovery",
+          "test": "TestFreshFleetBootstrapPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/recovery",
+          "test": "TestRecoveryApprovalCannotInferBootstrap"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestCatalogBootstrapMigrationDefaultsToDenied"
         }
       ]
     },
@@ -5925,6 +5955,18 @@
           "repository": "starport",
           "package": "./internal/storage",
           "test": "TestValkeyIncarnationRejectsReplacementBackend"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetBootstrapWriteBoundaries"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetBootstrapConcurrentExactPublication"
         }
       ]
     },
