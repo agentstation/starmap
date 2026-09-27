@@ -1,0 +1,1172 @@
+{
+  "recorded_at": "2026-09-27T16:29:09.510623+00:00",
+  "task": "CSP12.2",
+  "status": "COMPONENT_PASS_WITH_LIMITS",
+  "go_version": "go1.27.1",
+  "platform": "darwin/arm64",
+  "environment": {
+    "GOTOOLCHAIN": "go1.27.1",
+    "GOWORK": "/tmp/csp122-billing.work",
+    "TEST_VALKEY_URL": "redis://127.0.0.1:51487"
+  },
+  "checks": [
+    {
+      "name": "before",
+      "command": "go test -json -count=1 -timeout=2m ./internal/jobs -run 'TestSubmissionPersistence|TestAmbiguousSubmission'",
+      "exit_code": 1,
+      "test_results": {
+        "fail": 8
+      },
+      "package_results": {
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/jobs/TestSubmissionPersistenceFailurePreventsProviderCall/memory",
+        "github.com/agentstation/starport/internal/jobs/TestSubmissionPersistenceFailurePreventsProviderCall/badger",
+        "github.com/agentstation/starport/internal/jobs/TestSubmissionPersistenceFailurePreventsProviderCall/valkey",
+        "github.com/agentstation/starport/internal/jobs/TestSubmissionPersistenceFailurePreventsProviderCall",
+        "github.com/agentstation/starport/internal/jobs/TestAmbiguousSubmissionRetainsRecordAndSlot/memory",
+        "github.com/agentstation/starport/internal/jobs/TestAmbiguousSubmissionRetainsRecordAndSlot/badger",
+        "github.com/agentstation/starport/internal/jobs/TestAmbiguousSubmissionRetainsRecordAndSlot/valkey",
+        "github.com/agentstation/starport/internal/jobs/TestAmbiguousSubmissionRetainsRecordAndSlot"
+      ],
+      "skipped_tests": [],
+      "source_timing": "Before repair. Persistence ordering and missing recovery records fail on memory, Badger, and Valkey.",
+      "artifact": "csp122-submission-before.jsonl.gz"
+    },
+    {
+      "name": "initial",
+      "command": "go test -json -count=1 -timeout=3m ./internal/jobs ./internal/proxy ./internal/router ./internal/server",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 970,
+        "skip": 1
+      },
+      "package_results": {
+        "pass": 4
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "github.com/agentstation/starport/internal/server/TestSDKCanonicalRemovalAfterSuccessfulInference"
+      ],
+      "source_timing": "Initial callback integration. Later permission and recovery cases absent.",
+      "artifact": "csp122-submission-initial.jsonl.gz"
+    },
+    {
+      "name": "production",
+      "command": "go test -json -count=1 -timeout=3m ./internal/app -run '^TestProductionVideoSubmissionPersistsBeforeDispatch$'",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 5
+      },
+      "package_results": {
+        "pass": 1
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Initial four HTTP cases for /v1.",
+      "artifact": "csp122-submission-production.jsonl.gz"
+    },
+    {
+      "name": "recovery-race",
+      "command": "go test -race -json -count=1 -timeout=4m ./internal/jobs ./internal/app -run 'Submission|ProductionVideo'",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 29
+      },
+      "package_results": {
+        "pass": 2
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Before final permission recheck and dual-protocol cases.",
+      "artifact": "csp122-submission-recovery-race.jsonl.gz"
+    },
+    {
+      "name": "final-race",
+      "command": "go test -race -json -count=1 -timeout=4m ./internal/jobs ./internal/router ./internal/app -run 'Submission|ProductionVideo'",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 34
+      },
+      "package_results": {
+        "pass": 3
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Before required-budget refusal case.",
+      "artifact": "csp122-submission-final-race.jsonl.gz"
+    },
+    {
+      "name": "qualified-race",
+      "command": "go test -race -json -count=1 -timeout=4m ./internal/jobs ./internal/router ./internal/proxy ./internal/server/... ./internal/app -run 'Submission|ProductionVideo|VideoJob|VideoContent|Video.*Expired'",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 39
+      },
+      "package_results": {
+        "pass": 7,
+        "skip": 1
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Final source and tests.",
+      "artifact": "csp122-submission-qualified-race.jsonl.gz"
+    },
+    {
+      "name": "purego",
+      "command": "CGO_ENABLED=0 go test -json -count=1 -timeout=3m ./internal/jobs ./internal/router -run 'Submission'",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 25
+      },
+      "package_results": {
+        "pass": 2
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Final source and tests.",
+      "artifact": "csp122-submission-purego.jsonl.gz"
+    },
+    {
+      "name": "full",
+      "command": "go test -json -count=1 -timeout=5m ./...",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 4825,
+        "skip": 71
+      },
+      "package_results": {
+        "skip": 8,
+        "pass": 64
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "github.com/agentstation/starport/internal/authorization/TestAuthorizationTenantChurnCapacity",
+        "github.com/agentstation/starport/internal/authorization/TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "github.com/agentstation/starport/internal/cache/TestDefaultCacheMemoryBudget",
+        "github.com/agentstation/starport/internal/cache/TestSharedCachePausedServiceDeadlineAndRecovery",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheRealService",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheURIAuthenticationAndDatabase",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheTLSWithRealService",
+        "github.com/agentstation/starport/internal/config/TestContainerRecipePersistence",
+        "github.com/agentstation/starport/internal/limits/reservation/TestTeamBudgetHistoryHandoff/postgres-valkey",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityRequiresBothApprovals",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityFencesDelayedWrites/before-native-write",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityFencesDelayedWrites/after-native-write",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityClosedAndChangedEpoch",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetBootstrapPermission",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetInitialization",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/kv",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/sql",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/approval",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/closed-approval",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/row-security",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/unknown-table",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetInterruptedClaim",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetConcurrentInitialization",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesChangedIncarnation",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetSQLFailureRetainsOnlyRetryClaim",
+        "github.com/agentstation/starport/internal/server/controllers/TestGatewayOverheadBenchmark",
+        "github.com/agentstation/starport/internal/server/TestSDKCanonicalRemovalAfterSuccessfulInference",
+        "github.com/agentstation/starport/internal/storage/TestValkeyIncarnationRejectsReplacementBackend",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapConcurrentExactPublication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/before-sql",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/after-sql",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/before-kv",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/after-kv",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRequiresExplicitCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionHonorsLimitsAndRequiredGenerations",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCountsGenerationsSeparatelyFromReceipts",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionDryRunPreservesPendingRecovery",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionResumesInterruptedCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRefusesUnownedStaging",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionBoundsCommittedSnapshots",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionProtectsPinnedGeneration",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRecoversInterruptedUploadAndDeletion",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionFencesExpiredMaintenance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionConcurrentReadersAndCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCapacityRefusesWithoutMovingHead",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRejectsOverlappingDeletionRecord",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/current",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/accepted",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/rollback",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/inventory-missing",
+        "github.com/agentstation/starport/internal/catalog/TestFleetAcceptanceRetainsDistinctRollbackGenerations",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreCompleteKeyLossRequiresRecovery",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreNativePublication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreRefusesExpiredGrant",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreSeparateProcessTakeover",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreMissingSelectedPublicationIsNotAnEmptyStore",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreAcceptanceUsesOriginalGrant",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreNamespaceAndMalformedDescriptor",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLeaseExpiresDuringSelection/publication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLeaseExpiresDuringSelection/acceptance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLostHeadCannotBootstrapAgain",
+        "github.com/agentstation/starport/internal/catalog/TestFleetMigrationRequiresSameRecoveryIdentity",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeRejectsUnapprovedBackend",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimePreservesOriginalGrantThroughAcceptance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeLiveTakeoverAcceptance",
+        "github.com/agentstation/starport/internal/app/TestSharedCacheCompositionUsesSeparateService",
+        "github.com/agentstation/starport/internal/app/TestSharedCacheCanonicalDeploymentIsolation",
+        "github.com/agentstation/starport/internal/app/TestInitializeFleetFreshStartup",
+        "github.com/agentstation/starport/internal/app/TestAppWithValkey",
+        "github.com/agentstation/starport/internal/app/TestSharedStartupDoesNotCreateLocalDatabases"
+      ],
+      "source_timing": "Final source and tests.",
+      "artifact": "csp122-submission-full.jsonl.gz"
+    },
+    {
+      "name": "lint",
+      "command": "make lint",
+      "exit_code": 2,
+      "artifact": "csp122-submission-lint.txt.gz"
+    },
+    {
+      "name": "lint-final",
+      "command": "make lint",
+      "exit_code": 0,
+      "artifact": "csp122-submission-lint-final.txt.gz"
+    },
+    {
+      "name": "vet",
+      "command": "go vet ./internal/jobs ./internal/router ./internal/proxy ./internal/server/... ./internal/app",
+      "exit_code": 0,
+      "artifact": "csp122-submission-vet.txt.gz"
+    },
+    {
+      "name": "source-prose",
+      "command": "technical-writing lint internal/jobs/submission.go internal/jobs/submission_recovery_test.go internal/router/job_submission_test.go internal/app/job_submission_test.go --format text",
+      "exit_code": 0,
+      "artifact": "csp122-submission-source-prose.txt.gz"
+    },
+    {
+      "name": "direction",
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit_code": 0,
+      "artifact": "csp122-submission-direction.txt.gz"
+    },
+    {
+      "name": "jobs-guard",
+      "command": "bash scripts/verify-async-media-jobs.sh",
+      "exit_code": 0,
+      "artifact": "csp122-submission-jobs-guard.txt.gz"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "csp122-submission-before.jsonl.gz",
+      "raw_sha256": "78170b95904228a31b5e1fdbadba4220057165096e737d34370dc96b2700ca62",
+      "compressed_sha256": "a4e6034c59702d28df85a7124a9894e3c43d088fa291e52841aabaae89a555f2"
+    },
+    {
+      "path": "csp122-submission-initial.jsonl.gz",
+      "raw_sha256": "aa636d3f33153981b1fec1c17505ba55303f5136a4eaa2764802b64c7cae58e9",
+      "compressed_sha256": "0e7fee42c44c5291056ce6461c6f9ff779fc7fd035fd74827043f49970d42b19"
+    },
+    {
+      "path": "csp122-submission-production.jsonl.gz",
+      "raw_sha256": "39415253e39950ea974222aabd0f2d44776e07b7b547849fba0234d3f01bae71",
+      "compressed_sha256": "6f2a5f557e271dce8d2b69ab4db551b7617f4f6f146e30a6337c9c2b30c9ea99"
+    },
+    {
+      "path": "csp122-submission-recovery-race.jsonl.gz",
+      "raw_sha256": "81d45545228def21d199d201c242ef3f910b53f0ea83f08344eabba50f4b69fc",
+      "compressed_sha256": "9a71c02e1be7a116a864793dfa3914f50392cc6b6bdc6dcd1251e1ba4448cd26"
+    },
+    {
+      "path": "csp122-submission-final-race.jsonl.gz",
+      "raw_sha256": "89d5d5bb52dd8d638fc666fa01300b1258ac64fb07d39e4aaec6ca41f90483b7",
+      "compressed_sha256": "2553396d317d26e681ab56542478f8f50ba1b8ce08ecd2c915d026c623875e55"
+    },
+    {
+      "path": "csp122-submission-qualified-race.jsonl.gz",
+      "raw_sha256": "f6153f5141a77de545b8c655a32a82c6ce9cae23e58921750be5ae528e8aed99",
+      "compressed_sha256": "5234532ac6178b480da1b750bfeb0ed7c1544b464638b2964dd079381951a52d"
+    },
+    {
+      "path": "csp122-submission-purego.jsonl.gz",
+      "raw_sha256": "f763996a5710515df94e2d21607fddeee25dfc166f4aa5fabcf17ab3e3d3e806",
+      "compressed_sha256": "9d858d6cb5efa2f431fe7653a13db93a30c8f6cd1c4b5b570b9cb953ea69c493"
+    },
+    {
+      "path": "csp122-submission-full.jsonl.gz",
+      "raw_sha256": "aac9b1254201436dc9078325075cce79c5652389c9b69fc9cb0c11d407dd7e75",
+      "compressed_sha256": "a6659bad9b775c98e63a5d05dfd88eda5e42e4fd3fce5a0b7b5e18e335dece1d"
+    },
+    {
+      "path": "csp122-submission-lint.txt.gz",
+      "raw_sha256": "a4cd36ebbac868eaf20a2aa610f5daace8738637f0aea9e8c9ab5a7e449a5803",
+      "compressed_sha256": "b93fbf7aeb1b2d875f20bcf038fbd2ab41146b01522ce5946bf4d12d981bf2bf"
+    },
+    {
+      "path": "csp122-submission-lint-final.txt.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "compressed_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "csp122-submission-vet.txt.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-submission-source-prose.txt.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "compressed_sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    },
+    {
+      "path": "csp122-submission-direction.txt.gz",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027",
+      "compressed_sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9"
+    },
+    {
+      "path": "csp122-submission-jobs-guard.txt.gz",
+      "raw_sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb",
+      "compressed_sha256": "9bcb3a6a34098bbeb762592013637ba21d678f07360d23f02be3ebcfa8d3c1b0"
+    },
+    {
+      "path": "csp122-batch-slot-before.jsonl.gz",
+      "raw_sha256": "7a74d0d2dbfd8d8c68e7deba795c29849fde50ddaf5bc676a9bf546f074324c4",
+      "compressed_sha256": "588a1d61d3a1021b3995e411b468a2cae1fd8e4ee202ac41f0f5281074851772"
+    },
+    {
+      "path": "csp122-batch-slot-race.jsonl.gz",
+      "raw_sha256": "e86651d606fb2ef8cdcdce4d6b5139d616c2f3dc040ce491bc642779d48f798a",
+      "compressed_sha256": "9d1d17fc924b1767f307ae9a6bc322c4ad801350e96ed02014fe1fef8b4e0b03"
+    },
+    {
+      "path": "csp122-batch-slot-packages.jsonl.gz",
+      "raw_sha256": "3ed760df5c37ca0b0652566f2d475bb9edd5cb1a65cdd13401a6fcf6f004d320",
+      "compressed_sha256": "6a161ec4832ee1687d125c0da1a4a36e7d760283a7a007a0d08b63be45b4bbd8"
+    },
+    {
+      "path": "csp122-batch-slot-lint.txt.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "compressed_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "csp122-batch-slot-vet.txt.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-batch-slot-purego.jsonl.gz",
+      "raw_sha256": "4a0ec779596192e1cd230db1a23203ea9bd1bdd2ff43ac9fa806fc7f381f49db",
+      "compressed_sha256": "ed6c023e0af6807d855cb1b4fe0f663acd15c6589f12f8d0e453ce3e9a1c1ea3"
+    },
+    {
+      "path": "csp122-submission-docs-prose.txt.gz",
+      "raw_sha256": "e4cd160d171deba0b085252173680d4019787ada9cd7937a660b7df917484108",
+      "compressed_sha256": "4507ec7ea487fe58c4457f43fc6ac83ea32f0b11dba7aec621a9f233e89bb625"
+    },
+    {
+      "path": "csp122-submission-docs-prose-reviewed.txt.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "compressed_sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    },
+    {
+      "path": "csp122-submission-global-prose-complete.txt.gz",
+      "raw_sha256": "9407be473809590228cb558895c9d30c529698698f399b9efe9f72b9b26aa4b1",
+      "compressed_sha256": "20c630c7c15818b9936821d5017dc28004f9067b41571761422e45cb58ce5d82"
+    }
+  ],
+  "producer": {
+    "worktree": "/private/tmp/starmap-fleet-review-20260926",
+    "branch": "codex/budget-qualification",
+    "head": "fb7f8ae2165d9644f6ff832d128ff87b1c5adc69",
+    "files": {},
+    "published": false
+  },
+  "consumer": {
+    "worktree": "/private/tmp/starport-fleet-review-20260926",
+    "branch": "codex/atomic-budget-admission",
+    "head": "c270de27387bb2fd79052fb5cb45371e8c555625",
+    "files": {
+      "internal/app/job_submission_test.go": "1766a963727eb0f9d602c65aaa2d75b2afe6bf825785cc8f78d5a81a22329736",
+      "internal/inference/video_jobs.go": "5f258c767e89d504828d357ba1077e7c86fcf271ed9197dabce16216e8fedb77",
+      "internal/jobs/accounting_test.go": "c5b7c70461edc6469f4978f37fddf838d1813ba48ce45be618b67ae798926664",
+      "internal/jobs/asset.go": "ee22639cadf0c385e6ebf4af4a5081a344f5577674793054993b45e33e0d613a",
+      "internal/jobs/job.go": "3c4e16e93b12631ec0937b7e6261124bb1cdffc2c3ff1c8c5ced3973042c5306",
+      "internal/jobs/repository_store.go": "66fb5f2414e412d6885ef01f63ecb5c133ddadcf35f443e0ca268eef9af9b5bc",
+      "internal/jobs/service.go": "7d461e3dcfdc7ca94d97ceb4570bb07ad66e13c61c6901a14d370fb91bc107a9",
+      "internal/jobs/service_test.go": "67e25d0e703aea63f95cc870568c17f1a2ba1de0b6f9c6b6f40b1f95e91ffac2",
+      "internal/jobs/submission.go": "9f88ab454327203e6a324b138428ea9a41720bb8ca33f44ffe489acd2e8aa5ca",
+      "internal/jobs/submission_recovery_test.go": "31c5428269f874813a4a9147ecef9014d6dd6dc7fcb60917f60568d718cf301a",
+      "internal/protocol/openai/video_jobs.go": "77da2843a50644eb397538f520a208f840cbbd9b29b44becc8cc8a3fd186f3c1",
+      "internal/protocol/openrouter/video_jobs.go": "0904b63d1fdc4ac9596014d4318b9a217429b414d16ee8cc7a2014c38f941039",
+      "internal/proxy/operation.go": "c0edc05e42ff9c2b47997714ccb6687f8497131d285c99ccd6bc6cc37648d838",
+      "internal/proxy/service.go": "477a9c4e6defede049024cf7314e63c1549bd00c69875644c04eba8fbaa9af65",
+      "internal/proxy/video_jobs.go": "7facac964477ccd7e993233fb5303445cf38481abd7a9a97c66a62bd087f6729",
+      "internal/router/job_submission_test.go": "c276274aa384964f7535006e5aa52f623724b943af173644d952f74c4814eb13",
+      "internal/router/operation.go": "2724d861219f1dc191bb45e7da6da40b1b226588c1fcbc91e521aa7e2dfa32bd",
+      "internal/router/video_jobs.go": "a05f515d47f0b55be7ad840bf61db6a335bc9db2f297a800960d676507d513df",
+      "internal/server/controllers/videos.go": "3a1d29c4027d53ace061d6a948f29f70ee1294f6637d88fc157823707a6fc84e"
+    },
+    "published": false
+  },
+  "behavior": [
+    "Durable job creation precedes provider dispatch and binds the selected generation, offering, and reservation ID.",
+    "The router checks current permission again after persistence and before dispatch.",
+    "Provider acceptance persists before success. Lost write acknowledgements use a confirming read. Client cancellation does not cancel the bounded acceptance write.",
+    "Any potentially dispatched submission stops automatic retry and fallback. Missing replies or handles retain an unconfirmed record and slot.",
+    "Restart, polling, cancellation, and elapsed polling windows cannot infer refusal or release unconfirmed capacity.",
+    "Both HTTP protocols return a gateway job ID and Location on unconfirmed submission. Listing exposes submission_status without the private provider handle.",
+    "Required video budgets remain refused before provider dispatch because no qualified quote exists."
+  ],
+  "manual_review": {
+    "status": "PASS_WITH_LIMITS",
+    "scope": [
+      "dispatch ordering and permission recheck",
+      "before and after commit failures",
+      "no retry after async dispatch",
+      "observed-record acceptance recovery",
+      "account-scoped diagnostics",
+      "unrelated CSP18 edits preserved"
+    ],
+    "pre_pr_autoreview": "Required before final task PR; not run for this local component.",
+    "additional_scope": [
+      "Shared batch/video counter ownership",
+      "Unbounded batch completion preserves active video capacity",
+      "Required durable claims cover both operations",
+      "Historical evidence unchanged",
+      "Final documentation matches committed behavior and unresolved gaps"
+    ]
+  },
+  "qualification_limits": [
+    "No video billing contract, pinned optional valuation, or required asynchronous settlement is qualified.",
+    "The terminal accounting stamp still precedes reporting and slot release. Idempotent slot claims, retryable settlement, complete enumeration, and orphan collection remain open.",
+    "An ambiguous Create may retain a slot without a confirmed record. Existing raw slot counters cannot recover that claim idempotently.",
+    "A crash after provider acceptance and before durable handle storage remains unconfirmed. Provider-specific idempotency or reconciliation is required before resubmission.",
+    "Production HTTP tests use local fixture providers through real Badger and SQLite. No paid inference or provider invoice qualification occurred.",
+    "Memory, Badger, and real Valkey component tests do not prove process loss, failover, or the PostgreSQL recovery witness.",
+    "71 full-suite test results and eight packages skip. Focused race has one package skip. Missing coverage remains UNVERIFIED.",
+    "Native Linux/Windows, published dependency, remaining operation contracts, A47, review, and protected merges remain required.",
+    "Initial lint found Job.Validate complexity 32. Extracting submission validation into its owning file repaired the finding without changing validation.",
+    "The old generic-provider-error refund test was replaced by real-backend uncertainty retention tests. A generic error cannot prove that the provider refused work."
+  ],
+  "goal_turn": "Progress: committed durable submission and captured terminal verification. CSP12.2 remains in progress.",
+  "plan_maintenance": {
+    "ledger_rows": 40,
+    "done": 26,
+    "in_progress": [
+      "CSP12.2"
+    ],
+    "unique_ids": 97,
+    "links_checked": 156,
+    "artifacts_verified": 23,
+    "resume_words": 283,
+    "ledger_and_ids_preserved": true,
+    "cold_resume": "PASS: current source, task, next action, running state, remaining criteria, and authorization boundaries are explicit.",
+    "plan_bytes": 132186,
+    "size_exception": "The existing plan retains forty task contracts and historical execution entries. This component refresh replaces the resume state, preserves all task rows and IDs, and does not compact historical evidence."
+  },
+  "batch_counter_followup": {
+    "head": "b71941351f1d9ca2528a674c55cd69dbb71e0bc3",
+    "published": false,
+    "files": {
+      "internal/jobs/batch_service.go": "3c9e39c13b9febc5fc362cbc74df960a0c0b8495c3510ba3b2e9a0b136c00671",
+      "internal/jobs/batch_slot_test.go": "c6b1a84631d460abd1162e0694c2bbfb76894dd3b196df208d0fc35ce12c5b12"
+    },
+    "checks": [
+      {
+        "command": "go test -json -count=1 -timeout=2m ./internal/jobs -run '^TestUnboundedBatchPreservesOutstandingVideoSlot$'",
+        "exit_code": 1,
+        "test_results": {
+          "fail": 4
+        },
+        "package_results": {
+          "fail": 1
+        },
+        "tests": [
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot/memory",
+            "result": "fail"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot/badger",
+            "result": "fail"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot/valkey",
+            "result": "fail"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot",
+            "result": "fail"
+          }
+        ],
+        "artifact": "csp122-batch-slot-before.jsonl.gz"
+      },
+      {
+        "command": "go test -race -json -count=1 -timeout=4m ./internal/jobs ./internal/limits ./internal/app -run 'Batch|Outstanding|ProductionVideo'",
+        "exit_code": 0,
+        "test_results": {
+          "pass": 20
+        },
+        "package_results": {
+          "pass": 3
+        },
+        "tests": [
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAThreeLineBatchCompletesWithThreeResults",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAFailedLineLandsInTheErrorFileAndTheBatchStillCompletes",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestALinePastTheByteBoundFailsTheWholeBatch",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestABatchHoldsOneOutstandingJobSlot",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot/memory",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot/badger",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot/valkey",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestOutstandingJobsJoinsTheLimitVocabulary",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/app/TestProductionVideoSubmissionPersistsBeforeDispatch//v1/accepted",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/app/TestProductionVideoSubmissionPersistsBeforeDispatch//v1/provider_unavailable",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/app/TestProductionVideoSubmissionPersistsBeforeDispatch//v1/missing_handle",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/app/TestProductionVideoSubmissionPersistsBeforeDispatch//v1/invalid_response",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/app/TestProductionVideoSubmissionPersistsBeforeDispatch//v1/required_budget_remains_unqualified",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/app/TestProductionVideoSubmissionPersistsBeforeDispatch//api/v1/accepted",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/app/TestProductionVideoSubmissionPersistsBeforeDispatch//api/v1/provider_unavailable",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/app/TestProductionVideoSubmissionPersistsBeforeDispatch//api/v1/missing_handle",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/app/TestProductionVideoSubmissionPersistsBeforeDispatch//api/v1/invalid_response",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/app/TestProductionVideoSubmissionPersistsBeforeDispatch//api/v1/required_budget_remains_unqualified",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/app/TestProductionVideoSubmissionPersistsBeforeDispatch",
+            "result": "pass"
+          }
+        ],
+        "artifact": "csp122-batch-slot-race.jsonl.gz"
+      },
+      {
+        "command": "go test -race -json -count=1 -timeout=3m ./internal/jobs ./internal/limits",
+        "exit_code": 0,
+        "test_results": {
+          "pass": 128
+        },
+        "package_results": {
+          "pass": 2
+        },
+        "tests": [
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestRequestRulesKeepBothMetersAndOrderAccountFirst",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestTheDeploymentWindowOnlyFillsInForAKeyThatSetsNone",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestBudgetRulesSelectOneDimensionPerHolder",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestTeamBudgetValidate",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestTeamBudgetRule",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestTeamBudgetClone",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestBudgetHistoryContinuity",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestBudgetPolicyKeepsEveryHolderAndRevision",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestBudgetPolicyDistinguishesAbsenceFromUnknown",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestStoredBytesJoinsTheLimitVocabulary",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestTheMeterNamesItsHolder",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestAnUnboundedHolderStillCountsItsBytes",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestReserveReportsACounterFailure",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestEachHolderCountsOnlyItsOwnBytes",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestWorkPastTheAllowanceIsRefused",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestEachAccountHoldsItsOwnSlots",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestAFinishedJobLetsTheNextOneIn",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestConcurrentSubmissionsCannotBothPassABoundThatAdmitsOne",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestTheRefusalStatesTheBound",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestReleaseLowersTheTotalByTheFileSize",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestTheAllowanceTravelsWithTheRequest",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestARequestThatPassedNoGateIsUnbounded",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestAHolderWithNoBudgetIsRefusedNothing",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestWorkInsideTheAllowanceIsPaidFor",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestOutstandingJobsJoinsTheLimitVocabulary",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestTheTighterOfTheTwoBoundsRefusesFirst",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/limits/TestConcurrentReservationsCannotBothPassABoundThatAdmitsOne",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAssetSurvivesLostRecordAcknowledgement/memory",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAssetSurvivesLostRecordAcknowledgement/badger",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAssetSurvivesLostRecordAcknowledgement/valkey",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAssetSurvivesLostRecordAcknowledgement",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAThreeLineBatchCompletesWithThreeResults",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAFailedLineLandsInTheErrorFileAndTheBatchStillCompletes",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestACancelMidRunStartsNoNewLines",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestALinePastTheByteBoundFailsTheWholeBatch",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestABatchHoldsOneOutstandingJobSlot",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestASubmissionWithoutARunnerLeavesNoRecord",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot/memory",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot/badger",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot/valkey",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestStaleJobCannotEraseAccountingOrAssetState/memory",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestStaleJobCannotEraseAccountingOrAssetState/badger",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestStaleJobCannotEraseAccountingOrAssetState/valkey",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestStaleJobCannotEraseAccountingOrAssetState",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestConcurrentJobAccountingClaimsHaveOneWinner/memory",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestConcurrentJobAccountingClaimsHaveOneWinner/badger",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestConcurrentJobAccountingClaimsHaveOneWinner/valkey",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestConcurrentJobAccountingClaimsHaveOneWinner",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionPersistenceFailurePreventsProviderCall/memory",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionPersistenceFailurePreventsProviderCall/badger",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionPersistenceFailurePreventsProviderCall/valkey",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionPersistenceFailurePreventsProviderCall",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAmbiguousSubmissionRetainsRecordAndSlot/memory",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAmbiguousSubmissionRetainsRecordAndSlot/badger",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAmbiguousSubmissionRetainsRecordAndSlot/valkey",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAmbiguousSubmissionRetainsRecordAndSlot",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceWriteRecovery/before_commit/memory",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceWriteRecovery/before_commit/badger",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceWriteRecovery/before_commit/valkey",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceWriteRecovery/before_commit",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceWriteRecovery/after_commit/memory",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceWriteRecovery/after_commit/badger",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceWriteRecovery/after_commit/valkey",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceWriteRecovery/after_commit",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceWriteRecovery",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceSurvivesCallerCancellation/memory",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceSurvivesCallerCancellation/badger",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceSurvivesCallerCancellation/valkey",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceSurvivesCallerCancellation",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestOpenRepositoryRefusesAnAbsentStore",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestASubmissionOverTheLimitReachesNoProvider",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestATerminalMoveStampsItsEndOnce",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAStateNeverTransitionsToItself",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAJobPastItsLifetimeReachesAFailedStateWithAReason",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestTheTransitionTableAcceptsOnlyTheLegalPairs",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestNewServiceRefusesAPolicyThatNeverTerminates",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAdoptProviderJobRefusesAnEmptyAnswer",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestNoTerminalStateAcceptsATransition",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestTheServiceRefusesACallWithNoProviderSide",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAnUnknownStateWordTransitionsNowhere",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestTheSweepClosesAJobNobodyCameBackFor",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAPolicyThatWouldNotTerminateIsRefused",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestACompletedJobDrawsOneRecordHoweverOftenACallerPolls",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestTheRecordHandsOutNoProviderJobIdentifier",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestRefreshOfAnotherAccountsJobIsNotFound",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestATerminalJobIsNeverSpent",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAFailedJobDrawsNoCost",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAJobWithNoByteStoreCollectsNothing",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestRefreshOfAnUnchangedJobRewritesNothing",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestACancelledJobDrawsNoCost",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestCancelOfAFinishedJobIsAConflict",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestASpentJobFailsWithoutAskingTheProvider",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestACorruptRecordReportsItselfRatherThanDecodingHalfway",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestTheBackoffGrowsAndStops",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestCancelStopsTheProviderAndTheRecord",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestATerminalJobFreesOneSlot",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAJobIsUnreadableByAnotherAccount",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestGetRefusesAnEmptyAccountOrIdentifier",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestARepeatedDeleteIsSafe",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmitRefusesAJobThatNamesNoAccount",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAListingKeepsItsOrderAcrossAReopen",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestATieOnTheSubmissionTimeStillOrdersStably",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestRefreshAdvancesTheRecordFromTheProviderAnswer",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmitRetainsRecordWhenProviderReplyFails",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestCreateRefusesAnIdentifierAlreadyInUse",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestReplaceFindsNoRecordForAnUnknownJob",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestReplaceAcceptsAChangeThatKeepsTheState",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestValidateRefusesARecordAStoreCannotAnswerWith/unknown_state",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAnIllegalStateWriteFailsAtTheRepository",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestValidateRefusesARecordAStoreCannotAnswerWith/no_created_at",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestSubmitRecordsWhatTheProviderAccepted",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestValidateRefusesARecordAStoreCannotAnswerWith/terminal_state_with_no_end",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestValidateRefusesARecordAStoreCannotAnswerWith/no_model",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestATerminalJobNotifiesExactlyOnce",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestValidateRefusesARecordAStoreCannotAnswerWith/no_provider",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestValidateRefusesARecordAStoreCannotAnswerWith/no_operation",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestValidateRefusesARecordAStoreCannotAnswerWith/no_account",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestValidateRefusesARecordAStoreCannotAnswerWith/no_identifier",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestValidateRefusesARecordAStoreCannotAnswerWith/running_state_with_an_end",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestPollingAFinishedJobReachesNoProvider",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestValidateRefusesARecordAStoreCannotAnswerWith",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAFailedProviderAnswerAlwaysStatesAReason",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAJobKeepsTheWindowItWasPromised",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAFailedFetchLeavesACompletedJobAndRetries",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestTheSweepDeletesAnAssetPastItsWindow",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAFinishedJobFetchesItsAssetOnce",
+            "result": "pass"
+          },
+          {
+            "test": "github.com/agentstation/starport/internal/jobs/TestAnAssetPastItsWindowIsRefusedBeforeTheSweepRuns",
+            "result": "pass"
+          }
+        ],
+        "artifact": "csp122-batch-slot-packages.jsonl.gz"
+      },
+      {
+        "command": "make lint",
+        "exit_code": 0,
+        "artifact": "csp122-batch-slot-lint.txt.gz"
+      },
+      {
+        "command": "go vet ./internal/jobs ./internal/limits ./internal/app",
+        "exit_code": 0,
+        "artifact": "csp122-batch-slot-vet.txt.gz"
+      },
+      {
+        "command": "CGO_ENABLED=0 go test -json -count=1 -timeout=2m ./internal/jobs -run '^TestUnboundedBatchPreservesOutstandingVideoSlot$'",
+        "exit_code": 0,
+        "test_results": {
+          "pass": 4
+        },
+        "package_results": {
+          "pass": 1
+        },
+        "artifact": "csp122-batch-slot-purego.jsonl.gz"
+      }
+    ],
+    "finding": "Unbounded batches skipped reservation but decremented the same account counter used by active video jobs.",
+    "repair": "Always count unbounded batch work before starting it. Completion releases its own counted slot.",
+    "limits": [
+      "Raw counters still lack durable claim identity and idempotent release.",
+      "The full-suite result belongs to c270de27. Follow-up qualification covers the complete jobs and limits packages plus production video paths."
+    ]
+  },
+  "test_service": {
+    "name": "starport-csp122-async-usage",
+    "state": "running",
+    "image": "sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "address": "127.0.0.1:51487",
+    "ownership": "task-owned, retained for remaining recovery checks"
+  },
+  "documentation_checks": [
+    {
+      "exit_code": 1,
+      "description": "Initial scoped documentation check: two diagnostics, repaired.",
+      "artifact": "csp122-submission-docs-prose.txt.gz"
+    },
+    {
+      "exit_code": 0,
+      "description": "Final four maintained documents: zero diagnostics.",
+      "artifact": "csp122-submission-docs-prose-reviewed.txt.gz"
+    },
+    {
+      "exit_code": 2,
+      "description": "Repository gate: 1765 files, 137 existing diagnostics outside the edited documents.",
+      "artifact": "csp122-submission-global-prose-complete.txt.gz"
+    }
+  ]
+}

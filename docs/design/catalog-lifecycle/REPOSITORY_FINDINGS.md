@@ -4020,3 +4020,41 @@ Lint and affected-package vet pass. The tests use Go 1.27.1, real Badger, and a 
 Required budget settlement remains separate from optional analytics. The job terminal stamp still precedes reporting and slot release.
 Durable submission, pinned valuation, settlement retries, idempotent slot release, and complete recovery enumeration remain open.
 Shared-process failure, failover, the PostgreSQL witness, and released-pair qualification remain unverified. This component does not complete CSP12.2.
+
+
+## September 27 durable submission repair
+
+Consumer `c270de27` repairs provider dispatch before durable job creation.
+The two regression contracts produced eight failing results across memory, Badger, and Valkey before the repair.
+The [component proof](../../plans/proof/starport-production-catalog/csp12.2/async-submission-2026-09-27/verification.json) preserves failed and passing runs, exact source hashes, commands, and skipped checks.
+
+The actual HTTP provider now observes the durable attempt before receiving work.
+Starport persists acceptance before success and rechecks permission after its initial durable write.
+A bounded acceptance write survives client cancellation. A confirming read resolves a lost commit acknowledgement.
+An ambiguous reply stops retries and retains the job and outstanding slot.
+Both protocol prefixes expose the gateway job ID and lookup location without exposing the provider handle.
+
+Final race checks pass 39 results. Pure-Go checks pass 25 results.
+The full suite passes 4,825 results and skips 71. Eight packages skip independently.
+Lint, affected-package vet, six dependency conditions, and eighteen asynchronous-job conditions pass.
+The initial lint failure led to a separate submission-validation method, without weaker validation.
+
+Required video budgets still refuse before dispatch. Current video pricing and terminal-state cost assumptions remain unqualified.
+The terminal accounting stamp still precedes reporting and slot release.
+Ambiguous job creation can retain an unresolved slot. Durable slot claims and settlement recovery remain required.
+Real storage tests do not qualify process loss, failover, or the PostgreSQL recovery witness.
+
+This component does not complete CSP12.2.
+
+
+### Shared batch and video counter repair
+
+Consumer `b7194135` repairs an unbounded batch that skipped reservation but still released a slot.
+That release reduced the counter for an active video.
+The regression produced four failing results across memory, Badger, and Valkey.
+Unbounded batches now reserve their own slots before dispatch. Completion preserves the active video's count.
+
+The [submission proof](../../plans/proof/starport-production-catalog/csp12.2/async-submission-2026-09-27/verification.json) includes this follow-up and its source hashes.
+The complete jobs and limits race suites pass 128 results without skips.
+The additional batch and production-video run passes 20 results without skips. Lint and affected-package vet pass.
+Durable claim identity, idempotent release, and settlement recovery remain open.

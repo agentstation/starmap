@@ -4319,3 +4319,36 @@ Unreferenced assets after an unresolved publication still require bounded recove
 Durable submission, pinned valuation, required settlement, and idempotent slot release remain mandatory. CSP12.2 owns those contracts.
 
 The existing terminal stamp still precedes optional accounting and slot release. These foundational repairs do not qualify that recovery sequence.
+
+
+### Durable asynchronous submission
+
+Before provider dispatch, persist the gateway job with its selected offering, catalog generation, and required reservation ID.
+Recheck current permission after this write. A failed durable write must prevent dispatch.
+A provider response must persist its accepted handle before Starport returns success.
+That bounded write survives caller cancellation and resolves a lost acknowledgement through a confirming read.
+
+After attempted dispatch, an uncertain response must not trigger automatic retry or fallback.
+Keep the job and its capacity until provider evidence resolves the outcome.
+Polling, cancellation, restart, and an expired polling window cannot infer provider refusal.
+Both HTTP protocols report the gateway job ID and lookup location. Listings expose an unconfirmed submission without its private provider handle.
+
+Consumer `c270de27` implements this submission boundary. The [component proof](../../plans/proof/starport-production-catalog/csp12.2/async-submission-2026-09-27/verification.json) records production HTTP and real-storage checks.
+Required video budgets still refuse before dispatch because their billing contract remains unqualified.
+Pinned valuation, recoverable required settlement, idempotent slot release, and complete enumeration remain CSP12.2 requirements.
+
+
+### Outstanding job ownership
+
+Video jobs and batches share one account-level outstanding-work bound.
+Unbounded work must still reserve and release its own slot. Otherwise, its completion can reduce another job's count.
+
+CSP12.2 must replace anonymous increments and decrements with durable claims bound to the account, operation, and gateway job ID.
+Claim creation and count changes require one atomic operation. Exact retries must preserve the original result.
+A released claim cannot become active through a delayed reserve retry.
+Unknown write outcomes require reconciliation against the same claim identity. They cannot authorize another decrement.
+
+Release must remain recoverable after process loss and must not depend on optional analytics.
+A batch and a video must retain their common account bound through this change.
+Existing counters cannot prove which jobs own their values. Populated-state migration must use the recovery rules before enabling new admission.
+The required evidence includes lost acknowledgements, concurrent release, restart, and an unbounded batch beside an active video.

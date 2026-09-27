@@ -336,3 +336,18 @@ Those values remain unqualified. Unknown horizons cannot justify deleting unreso
 Tests must exercise production dispatch and real storage, including failures between durable transitions.
 Ambiguous submission cannot trigger an unverified resubmission after restart.
 Mocked billing or middleware entry counts alone cannot establish A47 acceptance.
+
+
+## Durable asynchronous submission component
+
+Consumer `c270de27` records the selected attempt before provider dispatch.
+Its record binds the offering, catalog generation, and required reservation ID.
+Acceptance persists before success. Uncertain submissions retain their records and slots without automatic retries.
+Polling and elapsed polling windows cannot resolve an unknown provider outcome.
+
+The [submission proof](../../plans/proof/starport-production-catalog/csp12.2/async-submission-2026-09-27/verification.json) records 39 focused race results and 25 pure-Go results.
+Production HTTP cases cover both protocol prefixes, accepted work, malformed responses, missing handles, provider failures, and required-budget refusal.
+The full suite passes 4,825 results and skips 71. Eight packages skip.
+
+These tests do not qualify video billing or required settlement.
+Pinned valuation, durable settlement, idempotent slot release, recovery enumeration, and provider reconciliation remain required.
