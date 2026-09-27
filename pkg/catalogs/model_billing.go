@@ -20,12 +20,36 @@ const EmbeddingBillingSchemaVersion uint64 = 12
 // RecognitionChargesSchemaVersion adds complete recognition charge declarations.
 const RecognitionChargesSchemaVersion uint64 = 13
 
+// ModerationBillingSchemaVersion adds complete moderation charge declarations.
+const ModerationBillingSchemaVersion uint64 = 14
+
 // ModelBilling declares provider billing units independently of current prices.
 // A missing operation record means that its billing basis is unknown.
 type ModelBilling struct {
+	Moderations *ModerationBilling  `json:"moderations,omitempty" yaml:"moderations,omitempty"`
 	Recognition *RecognitionBilling `json:"recognition,omitempty" yaml:"recognition,omitempty"`
 	Embeddings  *EmbeddingBilling   `json:"embeddings,omitempty" yaml:"embeddings,omitempty"`
 	TextChat    *TextChatBilling    `json:"text_chat,omitempty" yaml:"text_chat,omitempty"`
+}
+
+// ModerationBilling declares all charges for one synchronous text moderation request.
+// The requests basis uses Operations.Request, including an explicit zero price.
+// It does not declare token consumption or grant moderation capability.
+type ModerationBilling struct {
+	Basis ModerationBillingBasis `json:"basis" yaml:"basis"`
+}
+
+// ModerationBillingBasis identifies the units for moderation charges.
+type ModerationBillingBasis string
+
+// ModerationBillingRequests charges once per HTTP request, independent of input count.
+const ModerationBillingRequests ModerationBillingBasis = "requests"
+
+func (b *ModerationBilling) validate() error {
+	if b != nil && b.Basis != ModerationBillingRequests {
+		return billingValidationError("moderations.basis", b.Basis, "must be requests")
+	}
+	return nil
 }
 
 // TokenBillingClass names a disjoint token class and its ModelTokenPricing field.
@@ -158,6 +182,9 @@ func (b *ModelBilling) Validate() error {
 	if b == nil {
 		return nil
 	}
+	if err := b.Moderations.validate(); err != nil {
+		return err
+	}
 	if err := b.Embeddings.validate(); err != nil {
 		return err
 	}
@@ -210,6 +237,7 @@ func deepCopyModelBilling(billing *ModelBilling) *ModelBilling {
 	if copied == nil {
 		return nil
 	}
+	copied.Moderations = copyPtr(billing.Moderations)
 	copied.Recognition = copyPtr(billing.Recognition)
 	copied.Embeddings = copyPtr(billing.Embeddings)
 	if copied.Embeddings != nil {

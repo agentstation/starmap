@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: page-recognition-ee0a63327a44cbb303028e2ebc22c36de5b67f8ab2aeb0a53794eb14a309b85b
-catalog_digest: sha256:ee0a63327a44cbb303028e2ebc22c36de5b67f8ab2aeb0a53794eb14a309b85b
+generation_id: moderation-billing-68e2b21522c0641ee86dccc18f57fee8c775656e623de3d5d7604a1dba6ad944
+catalog_digest: sha256:68e2b21522c0641ee86dccc18f57fee8c775656e623de3d5d7604a1dba6ad944
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -9691,6 +9691,10 @@ models:
     endpoints:
       - provider: openai
         provider_model_id: omni-moderation-2024-09-26
+        pricing:
+          operations:
+            request: 0.0
+          currency: USD
         availability: unknown
         lifecycle: unknown
         service:
@@ -9704,6 +9708,10 @@ models:
     endpoints:
       - provider: openai
         provider_model_id: omni-moderation-latest
+        pricing:
+          operations:
+            request: 0.0
+          currency: USD
         availability: unknown
         lifecycle: unknown
         service:

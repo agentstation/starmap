@@ -55,7 +55,7 @@ func TestImmutablePayloadCachePreservesDecodedSchema(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, version := range []uint64{legacyCatalogSchemaVersion, membershipCatalogSchemaVersion, CatalogRemovalSchemaVersion, CanonicalAliasSchemaVersion, RecognitionBillingSchemaVersion, TextChatBillingSchemaVersion, EmbeddingBillingSchemaVersion, CurrentCatalogSchemaVersion} {
+	for _, version := range []uint64{legacyCatalogSchemaVersion, membershipCatalogSchemaVersion, CatalogRemovalSchemaVersion, CanonicalAliasSchemaVersion, RecognitionBillingSchemaVersion, TextChatBillingSchemaVersion, EmbeddingBillingSchemaVersion, RecognitionChargesSchemaVersion, CurrentCatalogSchemaVersion} {
 		t.Run(fmt.Sprint(version), func(t *testing.T) {
 			before := []byte(fmt.Sprintf(`"schema_version":%d`, CurrentCatalogSchemaVersion))
 			after := []byte(fmt.Sprintf(`"schema_version":%d`, version))
