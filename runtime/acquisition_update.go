@@ -51,13 +51,16 @@ func (r *Runtime) updateAcquisition(ctx context.Context, prepare func(context.Co
 		if err != nil {
 			return err
 		}
-		if len(update.Observations) == 0 && len(resets) == 0 {
+		if len(update.Observations) == 0 && len(resets) == 0 && !r.needsFleetOwnershipPublication(runCtx) {
 			state = inputs.Current
 			return nil
 		}
-		observations, err := prepareManualObservations(runCtx, update.Observations)
-		if err != nil {
-			return err
+		var observations []manualObservation
+		if len(update.Observations) != 0 {
+			observations, err = prepareManualObservations(runCtx, update.Observations)
+			if err != nil {
+				return err
+			}
 		}
 		state, err = r.publishInputs(runCtx, nil, nil, observations, epoch, resets)
 		return err

@@ -73,9 +73,12 @@ Package storage provides durable generation\-oriented catalog storage.
 - [type ObjectReaderClaim](<#ObjectReaderClaim>)
 - [type ObjectReaderClaims](<#ObjectReaderClaims>)
 - [type ObjectValue](<#ObjectValue>)
+- [type PublicationRetentionReport](<#PublicationRetentionReport>)
+- [type PublicationRetentionUsage](<#PublicationRetentionUsage>)
 - [type RetainingStore](<#RetainingStore>)
 - [type RetentionReport](<#RetentionReport>)
 - [type RetentionRequest](<#RetentionRequest>)
+  - [func \(r RetentionRequest\) Validate\(\) error](<#RetentionRequest.Validate>)
 - [type RetentionUsage](<#RetentionUsage>)
 - [type Store](<#Store>)
 
@@ -730,6 +733,36 @@ type ObjectValue struct {
 }
 ```
 
+<a name="PublicationRetentionReport"></a>
+## type [PublicationRetentionReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L122-L129>)
+
+PublicationRetentionReport describes receipt cleanup and fixed adapter capacity bounds. Dry runs retain Before in After and report the proposed usage in Projected.
+
+```go
+type PublicationRetentionReport struct {
+    Before          PublicationRetentionUsage
+    After           PublicationRetentionUsage
+    Projected       PublicationRetentionUsage
+    Protected       PublicationRetentionUsage
+    MaxReceipts     int
+    MaxEncodedBytes int64
+}
+```
+
+<a name="PublicationRetentionUsage"></a>
+## type [PublicationRetentionUsage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L113-L118>)
+
+PublicationRetentionUsage counts fleet storage separately from public catalog generations. EncodedBytes includes pending reservations, but excludes metadata and backend replication. RecoveryBytes counts unencoded acquisition recovery inputs across those reservations.
+
+```go
+type PublicationRetentionUsage struct {
+    Receipts      int
+    EncodedBytes  int64
+    RecoveryBytes int64
+    ReaderClaims  int
+}
+```
+
 <a name="RetainingStore"></a>
 ## type [RetainingStore](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L25-L29>)
 
@@ -744,7 +777,7 @@ type RetainingStore interface {
 ```
 
 <a name="RetentionReport"></a>
-## type [RetentionReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L98-L106>)
+## type [RetentionReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L98-L108>)
 
 RetentionReport describes a complete collection decision and its applied changes. Candidates names generations in eviction order. Removed names actual deletions. Dry runs leave After equal to Before. Projected describes the proposed result. OverLimit means protected content alone exceeds at least one requested limit.
 
@@ -757,6 +790,8 @@ type RetentionReport struct {
     Candidates []string
     Removed    []string
     OverLimit  bool
+    // Publications separates fleet receipts and private recovery inputs from catalog usage.
+    Publications *PublicationRetentionReport
 }
 ```
 
@@ -777,6 +812,15 @@ type RetentionRequest struct {
     DryRun        bool
 }
 ```
+
+<a name="RetentionRequest.Validate"></a>
+### func \(RetentionRequest\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L132>)
+
+```go
+func (r RetentionRequest) Validate() error
+```
+
+Validate checks the common retention limits before an adapter reads storage.
 
 <a name="RetentionUsage"></a>
 ## type [RetentionUsage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L89-L92>)

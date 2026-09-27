@@ -103,6 +103,35 @@ type RetentionReport struct {
 	Candidates []string
 	Removed    []string
 	OverLimit  bool
+	// Publications separates fleet receipts and private recovery inputs from catalog usage.
+	Publications *PublicationRetentionReport
+}
+
+// PublicationRetentionUsage counts fleet storage separately from public catalog generations.
+// EncodedBytes includes pending reservations, but excludes metadata and backend replication.
+// RecoveryBytes counts unencoded acquisition recovery inputs across those reservations.
+type PublicationRetentionUsage struct {
+	Receipts      int
+	EncodedBytes  int64
+	RecoveryBytes int64
+	ReaderClaims  int
+}
+
+// PublicationRetentionReport describes receipt cleanup and fixed adapter capacity bounds.
+// Dry runs retain Before in After and report the proposed usage in Projected.
+type PublicationRetentionReport struct {
+	Before          PublicationRetentionUsage
+	After           PublicationRetentionUsage
+	Projected       PublicationRetentionUsage
+	Protected       PublicationRetentionUsage
+	MaxReceipts     int
+	MaxEncodedBytes int64
+}
+
+// Validate checks the common retention limits before an adapter reads storage.
+func (r RetentionRequest) Validate() error {
+	_, err := r.scanLimit()
+	return err
 }
 
 func (r RetentionRequest) scanLimit() (int, error) {

@@ -84,7 +84,7 @@ The repository token handles public releases, pending records, and discovery cha
 [GitHub App token action](https://github.com/actions/create-github-app-token)
 
 Main must require strict `Security & Reliability` and `Verification Gate` checks from the GitHub Actions app.
-Promotion also requires successful native jobs for Ubuntu x64 and ARM, macOS ARM and Intel, and Windows x64 and ARM.
+Promotion also requires successful native jobs for Ubuntu x64 and ARM, macOS ARM, and Windows x64 and ARM.
 A newer incomplete check prevents an older successful result from qualifying its name.
 The publisher never bypasses protection, supplies its own approval, or force-pushes a publication branch.
 Required review appears as `awaiting_review` in the job summary with the PR link.

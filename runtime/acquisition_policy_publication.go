@@ -12,10 +12,13 @@ import (
 // acquisitionPolicyClientOptions gives an explicit policy a writable memory default.
 // A caller-supplied store takes precedence over this process-local store.
 func (o options) acquisitionPolicyClientOptions() []starmap.Option {
-	if o.generationPin == "" && o.originStore == nil && o.source.StartupPolicy != StartupRequireAuthority && o.providerBindings == nil && o.acquisitionSources == nil {
+	if o.fleetStore == nil && o.generationPin == "" && o.originStore == nil && o.source.StartupPolicy != StartupRequireAuthority && o.providerBindings == nil && o.acquisitionSources == nil {
 		return o.client
 	}
 	selected := append([]starmap.Option{starmap.WithCatalogStore(storage.NewMemory())}, o.client...)
+	if o.fleetStore != nil {
+		selected = append(selected, starmap.WithCatalogStore(o.fleetStore), starmap.WithPublicationGuard(o.fleetStore.guard))
+	}
 	if o.originStore != nil {
 		selected = append(selected, starmap.WithCatalogStore(o.originStore))
 	}
@@ -34,6 +37,17 @@ func (o options) acquisitionPolicyClientOptions() []starmap.Option {
 // publishAcquisitionPolicyStartup applies retained inputs and active declarations.
 // It aligns the client and runtime before either can serve.
 func (r *Runtime) publishAcquisitionPolicyStartup(ctx context.Context) error {
+	if r.config.fleetStore != nil && r.lease.status() == leaseLost {
+		if r.config.generationPin != "" && (r.pinRecord == nil || r.pinRecord.Phase != pinAccepted ||
+			r.pinRecord.Receipt.SelectedGenerationID != r.config.generationPin ||
+			r.pinRecord.Receipt.AcceptedGenerationID != r.client.CurrentGenerationID()) {
+			return pinRecordConflict("the refresh owner must publish the configured pin before this follower starts")
+		}
+		r.mu.Lock()
+		r.effective = r.client.CurrentCatalogState()
+		r.mu.Unlock()
+		return nil
+	}
 	if r.config.generationPin != "" {
 		return r.publishGenerationPin(ctx)
 	}
@@ -48,7 +62,7 @@ func (r *Runtime) publishAcquisitionPolicyStartup(ctx context.Context) error {
 	evidence := r.layers.buildEvidence
 	r.mu.RUnlock()
 	current := r.client.CurrentCatalogState()
-	if current.GenerationID == state.GenerationID && current.PayloadChecksum == state.PayloadChecksum {
+	if current.GenerationID == state.GenerationID && current.PayloadChecksum == state.PayloadChecksum && !r.needsFleetOwnershipPublication(ctx) {
 		return nil
 	}
 	committed, err := r.commit(ctx, state, r.lease.epoch(), evidence, nil)

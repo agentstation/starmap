@@ -90,7 +90,7 @@ Missing, unexpected, and duplicate results fail verification. CI retains the sel
 
 The package timeout remains 30 minutes. Native jobs retain their complete runtime suites.
 
-Publication recovery, ingestion, and real Git acquisition run in separate native jobs on all six platforms.
+Publication recovery, ingestion, and real Git acquisition run in separate native jobs on all five supported targets.
 The required verification gate also requires every native publication job to pass.
 This separates sequential job costs without changing test selection or timeout limits.
 
@@ -203,7 +203,7 @@ with two pinned revisions and a dependency-free lockfile. The production collect
 clones these repositories and builds their metadata with Bun. Tests check changed
 catalog facts and exact commit and lockfile receipts.
 
-The verification job and all six native jobs require these tools. The
+The verification job and all five native jobs require these tools. The
 fixture checks the Bun version, operating system, and architecture against the
 native Go test process. A missing tool fails required qualification. A local run reports a skip when
 a tool is absent. A skip does not qualify Git acquisition.

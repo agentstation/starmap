@@ -13,9 +13,12 @@ import (
 
 // buildAuthorityCatalog preserves the authority's complete permitted catalog.
 // Retained local observations cannot expand it when the source policy changes.
-func (l *layerSet) buildAuthorityCatalog(baseline starmap.CatalogState) (starmap.CatalogState, error) {
+func (l *layerSet) buildAuthorityCatalog(ctx context.Context, baseline starmap.CatalogState) (starmap.CatalogState, error) {
 	state, err := l.selectedBaseline(baseline)
 	if err != nil {
+		return starmap.CatalogState{}, err
+	}
+	if err := l.retainFleetAcquisitionCatalog(ctx, state.Catalog); err != nil {
 		return starmap.CatalogState{}, err
 	}
 	l.buildEvidence = starmap.CandidateEvidence{}

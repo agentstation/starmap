@@ -458,7 +458,6 @@
         "homebrew-linux",
         "homebrew-macos",
         "archive-darwin-arm64",
-        "archive-darwin-x86_64",
         "archive-linux-arm64",
         "archive-linux-x86_64",
         "archive-windows-arm64",
@@ -5716,6 +5715,413 @@
           "repository": "starport",
           "package": "./internal/config",
           "test": "TestDevelopmentRejectsPersistentEnvironmentSelections"
+        }
+      ]
+    },
+    "A13.two_real_processes": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetStoreSeparateProcessTakeover"
+        }
+      ]
+    },
+    "A13.lease_expiry_during_commit": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestFleetStoreLeaseExpiresDuringSelection"
+    },
+    "A13.stale_epoch_rejection": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetStoreSeparateProcessTakeover"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetStoreAcceptanceUsesOriginalGrant"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimeUnchangedSourceTakeover"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimeStartupRefreshesAfterOwnership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetRuntimeLiveTakeoverAcceptance"
+        }
+      ]
+    },
+    "A14.missed_events": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+    },
+    "A14.follower_restart": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetReplayRetainsBaselineAcrossBinaryUpgrade"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRecoveryRejectsMissingOrCorruptBaseline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRecoveryCodecBoundsAndIntegrity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetAcceptanceRetainsDistinctRollbackGenerations"
+        }
+      ]
+    },
+    "A14.leader_loss_with_local_files_removed": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetStoreLostHeadCannotBootstrapAgain"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetStoreCompleteKeyLossRequiresRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/recovery",
+          "test": "TestFreshFleetBootstrapPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/recovery",
+          "test": "TestRecoveryApprovalCannotInferBootstrap"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestCatalogBootstrapMigrationDefaultsToDenied"
+        }
+      ]
+    },
+    "A14.equivalent_acquisition_capability": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetCapabilityRefusesOwnershipAndRecovers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetCapabilityChecksActiveBindings"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimeIncompatibleReplayRemainsFollower"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestFleetCapabilityResolvesAcquisitionWithoutProviderCalls"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimePinSurvivesLostDirectoriesAndUnpin"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimeRefusesUnacceptedPinOnFollower"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetCapabilityRetainsProviderMetadataAcrossPin"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetCapabilityClassifiesDiscoveryCandidates"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestFleetCapabilityOptionalCandidates"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetCapabilityPreservesAuthorMappingTargets"
+        }
+      ]
+    },
+    "A41.catalog_fleet_deployment_isolation": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestFleetStoreNamespaceAndMalformedDescriptor"
+    },
+    "A41.catalog_fleet_atomic_layout": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetStoreNativePublication"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyIncarnationAtomicContract"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyIncarnationRejectsReplacementBackend"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetBootstrapWriteBoundaries"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetBootstrapConcurrentExactPublication"
+        }
+      ]
+    },
+    "A46.validity_skew_withdrawal": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestReceiptBoundsValidityAndClockHealth"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMutationRevokesCopiesAndInFlightLoads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestReceiptRejectsUnverifiedEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestConcurrentChecksObserveWithdrawal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestElapsedPermissionExpiresAcrossSuspend"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestElapsedPermissionRejectsUnknownAndRollback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestElapsedPermissionCountsSourceDelay"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestElapsedClockFailureRefusesColdLoadsAndReadiness"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestKeyExpiryPreservesMonotonicCacheDeadline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestInvalidReceiptCannotReviveAfterClockRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorCatchesMissedChangeDuringOtherAuthorityOutage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorObservationsDoNotRenewPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorEpochChangeCannotRecoverUnderOldEpoch"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorRejectsRevisionRollback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorRetainsKnownWithdrawalAfterReadDeadline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorPropagationIncludesReadLatency"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestReadinessDoesNotLoadOrRenewPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestFleetDurableReceiptPrecedesReplicaEnforcement"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestStandaloneAuthorizationNeedsNoNativeClock"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestSharedAuthorizationDoesNotRequireCatalogClock"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestStandaloneAuthorizationCannotReplaceCatalogAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestReadinessTracksAdmissionWithoutBlockingLiveness"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestOperatorDiagnosticAllowlist"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestOperatorDiagnosticsVerifySessionAndCredentialPriority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCachedPermissionKeepsOriginalDeadline"
         }
       ]
     }

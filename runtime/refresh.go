@@ -311,8 +311,10 @@ func (r *Runtime) execute(
 	if err := ctx.Err(); err != nil {
 		return RefreshReport{}, err
 	}
-	if err := r.validateGenerationMutation(); err != nil {
-		return RefreshReport{}, err
+	if kind != runKindAccepted || r.config.fleetStore == nil {
+		if err := r.validateGenerationMutation(); err != nil {
+			return RefreshReport{}, err
+		}
 	}
 	id, err := r.client.NextID()
 	if err != nil {
@@ -344,14 +346,25 @@ func (r *Runtime) execute(
 	// Directory ownership covers lease acquisition and all publication work.
 	var workErr error
 	if kind != runKindAccepted {
-		workErr = r.validateOriginTakeover(runCtx)
+		workErr = r.refreshFleetInputs(runCtx, true)
+		if workErr == nil {
+			workErr = r.validateOriginTakeover(runCtx)
+		}
 		if workErr == nil {
 			workErr = r.lease.ensureHeld(runCtx)
 		}
 	}
 	if workErr == nil {
 		run.epoch = r.lease.epoch()
-		workErr = work(runCtx, &report, run.epoch)
+		if kind != runKindAccepted {
+			runCtx, workErr = r.captureFleetGrant(runCtx, run.epoch)
+		}
+		if workErr == nil {
+			workErr = work(runCtx, &report, run.epoch)
+		}
+		if workErr == nil && kind != runKindAccepted {
+			workErr = r.completeFleetOwnershipPublication(runCtx, run.epoch)
+		}
 	}
 	report.CompletedAt = r.config.now()
 

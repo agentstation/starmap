@@ -29,7 +29,7 @@ MAX_ACQUISITION_CORRECTIONS = 20000
 MAX_CORRECTION_ID_LENGTH = 4096
 REQUIRED_CHECKS = (
     "Security & Reliability", "Verification Gate", "Runtime ubuntu-24.04",
-    "Runtime ubuntu-24.04-arm", "Runtime macos-15", "Runtime macos-15-intel",
+    "Runtime ubuntu-24.04-arm", "Runtime macos-15",
     "Runtime windows-2025", "Runtime windows-11-arm",
 )
 

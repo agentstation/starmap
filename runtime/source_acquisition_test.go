@@ -277,9 +277,13 @@ func TestSourceAcquisitionLeaseLossRefusesPublication(t *testing.T) {
 	case <-time.After(30 * time.Second):
 		t.Fatal("source did not start")
 	}
+	originalEpoch := connected.lease.epoch()
 	leases.bumpEpoch()
-	if err := connected.lease.renewOnce(t.Context()); err != nil {
-		t.Fatal(err)
+	if err := connected.lease.renewOnce(t.Context()); err == nil {
+		t.Fatal("renewal accepted a different lease epoch")
+	}
+	if connected.lease.status() != leaseLost || connected.lease.epoch() != originalEpoch {
+		t.Fatal("failed renewal changed the original grant or retained ownership")
 	}
 	unblock.Do(func() { close(release) })
 	select {

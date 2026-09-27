@@ -55,3 +55,17 @@ func (c inputChanges) complete(ctx context.Context, store *layerStore, record in
 	}
 	return store.completeInputPublication(ctx, record, c.source, c.providers)
 }
+
+// preparePublication stages local inputs and records their pending catalog publication.
+func (c inputChanges) preparePublication(ctx context.Context, store *layerStore, record inputPublication) (inputPublication, error) {
+	record, err := c.stage(ctx, store, record)
+	if err != nil {
+		return record, err
+	}
+	return record, store.writeInputPublication(ctx, record)
+}
+
+// duplicateManualInput identifies a manual retry with no replacement source or provider evidence.
+func duplicateManualInput(requested bool, manual []manualObservation, source *sourceLayer, providers []ProviderLayer) bool {
+	return requested && len(manual) == 0 && source == nil && len(providers) == 0
+}

@@ -1,5 +1,16 @@
 # Catalog lifecycle repository findings
 
+## Apple silicon support decision, September 26
+
+D39 removes Intel Mac support from both products. The previous release matrices included six targets, including `darwin/amd64`.
+The revised matrices retain five targets. Linux and Windows retain both x86-64 and ARM64.
+The implementation changes CI, release verification, native evidence selection, Homebrew requirements, and publisher promotion checks.
+
+Historical six-target qualification remains evidence for its recorded commits. It does not require future Intel Mac runs.
+The current plan records pending review, CI, and merge evidence.
+
+
+
 The current repositories implement most catalog distribution infrastructure.
 They do not yet satisfy every requested bootstrap, directory, credential, and
 authority behavior. The [PRD](PRD.md) defines the product requirements.
@@ -1541,3 +1552,20 @@ The existing residual-operation test detects this change. Keep its behavioral pr
 
 CSP6.2 owns both production contracts. CSP6 retains the failed publication evidence and must prepare a corrected catalog after those contracts pass.
 No failed candidate may advance discovery channels or count as completed qualification.
+
+
+## September 26 retained fleet baseline repair
+
+D41 separates binary upgrades from acquisition-policy changes.
+The old replay contract compared the packaged baseline and omitted the prior baseline bytes.
+That combination could prevent every upgraded replica from acquiring refresh ownership.
+Startup also replaced a recovered baseline with the current packaged baseline.
+
+The runtime now retains and validates the complete baseline in private recovery data.
+Replay and startup use it across binary upgrades. Incompatible acquisition policy still refuses ownership.
+The focused producer suite passes 94 named race results. The paired native fleet suite passes 46, with no failures or skips.
+These results use Go 1.27.1, real Valkey and PostgreSQL, and a temporary workspace for the unpublished pair.
+
+CSP16 owns coordinated policy apply. CSP16.1 owns explicit baseline promotion.
+The [D41 contract](../../plans/proof/starport-production-catalog/csp11/upgrade-contract-2026-09-26/CONTRACT.md) retains every transition acceptance condition.
+Review, publication, native CI, and both merges remain open.

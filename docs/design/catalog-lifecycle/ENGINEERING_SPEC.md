@@ -15,6 +15,24 @@ The [storage revision](../../plans/proof/starport-production-catalog/storage-rev
 The accepted [latency target](LATENCY_REVIEW.md) adds the request-path contracts in section 8.9.
 The [latency revision](../../plans/proof/starport-production-catalog/latency-revision-2026-09-05/REVIEW_RESOLUTION.md) maps each finding to implementation tasks and tests.
 
+## Supported operating systems and processors
+
+D39 defines five targets for both products:
+
+| Operating system | Supported processors |
+|---|---|
+| macOS | Apple silicon (`arm64`) |
+| Linux | x86-64 (`amd64`) and ARM64 (`arm64`) |
+| Windows | x86-64 (`amd64`) and ARM64 (`arm64`) |
+
+CI, native qualification, release archives, and installers must use this matrix.
+New releases must omit `darwin/amd64`. Homebrew must reject Intel Macs without excluding Linux x86-64.
+The catalog publisher must not require a retired Intel Mac check.
+Keep race detection on supported targets where Go provides it. Preserve all distinct storage, recovery, pure-Go, capacity, and performance checks.
+
+Historical Intel Mac releases and test evidence remain available. They do not define the current support boundary.
+Go 1.27.1 remains the exact toolchain for every supported target.
+
 ## 1. Ownership and composition
 
 ```mermaid
@@ -1652,6 +1670,26 @@ hash slot. The implementation must prove this layout before advertising
 cluster support for catalog and lease transactions.
 [Valkey cluster transactions](https://valkey.io/topics/cluster-spec/)
 
+#### Fleet binary upgrades and policy changes
+
+D41 separates binary upgrades, catalog updates, and acquisition-policy changes.
+An established fleet retains its baseline, manifest, and reconstruction inputs independently of each binary.
+A compatible new or rollback binary uses that retained baseline, regardless of its packaged baseline.
+Missing or uncertain shared state requires recovery. It cannot authorize fresh initialization.
+An independently approved fresh deployment may start from its permitted baseline.
+
+Configured GitHub and Starmap updates remain automatic under existing source settings, pins, and authority rules.
+An embedded-only fleet promotes a packaged baseline through an explicit operation.
+An acquisition-policy change requires one coordinated configuration apply that fences the previous policy.
+Credential rotation within the same declared identity and scope does not change that policy.
+Unsupported retained formats refuse acquisition without inventing catalog permissions.
+Software rollback and catalog rollback remain separate operations.
+
+The [approved transition contract](../../plans/proof/starport-production-catalog/csp11/upgrade-contract-2026-09-26/CONTRACT.md) defines required validation, native fencing, and retry evidence.
+CSP11 owns retained baseline recovery. CSP16 owns coordinated policy apply, including native fencing.
+CSP16.1 owns explicit baseline promotion. The transition contract assigns every acceptance condition to its owning task.
+These operations must not add storage calls to inference requests.
+
 ### 8.3 SQLite, migration, and recovery
 
 The current SQLite backend uses WAL, foreign keys, a five-second busy timeout,
@@ -1740,6 +1778,18 @@ exist in deployment-owned durable storage under the refresh contract.
 Every replica eligible for acquisition ownership needs equivalent source policy
 and access to the required acquisition credentials. A follower-only role must
 not hold the lease until its capability checks pass.
+
+Required acquisition credentials belong to retained provider scopes and explicit
+bindings. Catalog membership alone does not make a provider a required scope.
+An unobserved provider with no configured credentials remains optional. Invalid
+selected credentials and lost required credentials refuse ownership.
+Capability checks retain provider metadata and its referenced authors independently
+of serving pins. They retain no model payloads and make no provider inventory requests.
+
+A successful refresh under a new ownership grant must publish retained content
+under that grant, even when the source reports no changes. Native acceptance
+continues to check the original grant and exact predecessor. This publication
+cannot extend permission or restore a withdrawal.
 
 ### 8.6 Recipe format, migration, and disaster recovery
 

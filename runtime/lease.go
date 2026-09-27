@@ -31,6 +31,14 @@ type Lease struct {
 	// Epoch increases on every fresh acquisition.
 	Epoch uint64
 
+	// SessionID identifies the process that acquired a fleet grant.
+	// A restart uses a new session even when the configured holder name stays unchanged.
+	SessionID string
+
+	// Identity binds a fleet grant to the independently approved backend incarnation.
+	// Legacy standalone lease adapters leave this identity empty.
+	Identity FleetIdentity
+
 	// ExpiresAt is when the lease lapses without a renewal.
 	ExpiresAt time.Time
 }
@@ -45,7 +53,8 @@ type LeaseStore interface {
 	// catalog and tries again at the next run. Every other error fails Open.
 	AcquireLease(ctx context.Context, holder string, ttl time.Duration) (Lease, error)
 
-	// Renew extends a held lease. It fails when another holder took the lease.
+	// Renew extends a held lease without changing its holder, epoch, session, or recovery identity.
+	// It fails when that grant expired or another holder took the lease.
 	Renew(ctx context.Context, lease Lease, ttl time.Duration) (Lease, error)
 
 	// Release returns the lease early.
@@ -70,9 +79,10 @@ const (
 // fences every durable commit with the epoch of the acquisition that the
 // commit started under.
 type leaseKeeper struct {
-	store  LeaseStore
-	holder string
-	now    func() time.Time
+	checkCapability func(context.Context) error
+	store           LeaseStore
+	holder          string
+	now             func() time.Time
 
 	// base is the runtime context. Renewal runs under it, so Close stops
 	// renewal even when a later run took the lease again.
@@ -149,6 +159,11 @@ func (k *leaseKeeper) ensureHeld(ctx context.Context) error {
 // take takes the lease and restarts renewal. A refusal leaves the keeper in
 // the lost state and returns the typed conflict.
 func (k *leaseKeeper) take(ctx context.Context) error {
+	if k.checkCapability != nil {
+		if err := k.checkCapability(ctx); err != nil {
+			return err
+		}
+	}
 	lease, err := k.store.AcquireLease(ctx, k.holder, LeaseTTL)
 	if err != nil {
 		k.mu.Lock()
@@ -226,22 +241,44 @@ func (k *leaseKeeper) renewOnce(ctx context.Context) error {
 	current := k.lease
 	k.mu.RUnlock()
 
-	renewed, err := k.store.Renew(ctx, current, LeaseTTL)
+	var renewed Lease
+	var err error
+	if k.checkCapability != nil {
+		err = k.checkCapability(ctx)
+	}
+	capabilityLost := err != nil
+	if err == nil {
+		renewed, err = k.store.Renew(ctx, current, LeaseTTL)
+	}
+	k.mu.Lock()
+	if k.stopped || k.state != leaseHeld || !sameLeaseGrant(k.lease, current) {
+		k.mu.Unlock()
+		return fleetConflict("renewal completed after its local grant ended")
+	}
+	if err == nil && !sameLeaseGrant(renewed, current) {
+		err = fleetConflict("renewal returned different ownership evidence")
+	}
 	if err != nil {
-		k.mu.Lock()
 		k.state = leaseLost
 		k.mu.Unlock()
+		if capabilityLost {
+			k.release(current)
+		}
 		logging.Warn().
 			Err(err).
 			Str("holder", k.holder).
 			Msg("Runtime lease renewal failed")
 		return errors.WrapResource("renew", "runtime lease", k.holder, err)
 	}
-	k.mu.Lock()
 	k.lease = renewed
 	k.state = leaseHeld
 	k.mu.Unlock()
 	return nil
+}
+
+func sameLeaseGrant(left, right Lease) bool {
+	return left.Holder == right.Holder && left.Epoch == right.Epoch &&
+		left.SessionID == right.SessionID && left.Identity == right.Identity
 }
 
 // epoch returns the epoch a commit must carry. It returns zero when the
@@ -258,16 +295,23 @@ func (k *leaseKeeper) epoch() uint64 {
 // fence rejects a durable commit that started under an older lease epoch, or
 // that runs after this instance lost the lease.
 func (k *leaseKeeper) fence(epoch uint64) error {
+	_, err := k.grant(epoch)
+	return err
+}
+
+// grant captures the complete ownership evidence for the epoch that started a publication.
+func (k *leaseKeeper) grant(epoch uint64) (Lease, error) {
 	if k == nil || k.store == nil {
-		return nil
+		return Lease{}, nil
 	}
 	k.mu.RLock()
 	state := k.state
 	current := k.lease
+	stopped := k.stopped
 	k.mu.RUnlock()
 
-	if state != leaseHeld {
-		return &errors.ConflictError{
+	if state != leaseHeld || stopped {
+		return Lease{}, &errors.ConflictError{
 			Resource: "runtime lease",
 			Expected: string(leaseHeld),
 			Actual:   string(state),
@@ -275,7 +319,7 @@ func (k *leaseKeeper) fence(epoch uint64) error {
 		}
 	}
 	if current.Epoch != epoch {
-		return &errors.ConflictError{
+		return Lease{}, &errors.ConflictError{
 			Resource: "runtime lease",
 			Expected: strconv.FormatUint(epoch, 10),
 			Actual:   strconv.FormatUint(current.Epoch, 10),
@@ -283,14 +327,14 @@ func (k *leaseKeeper) fence(epoch uint64) error {
 		}
 	}
 	if !current.ExpiresAt.IsZero() && !k.now().Before(current.ExpiresAt) {
-		return &errors.ConflictError{
+		return Lease{}, &errors.ConflictError{
 			Resource: "runtime lease",
 			Expected: string(leaseHeld),
 			Actual:   string(leaseLost),
 			Message:  "the runtime lease expired before the commit",
 		}
 	}
-	return nil
+	return current, nil
 }
 
 // status reports the current lease state.

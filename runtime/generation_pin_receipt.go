@@ -45,7 +45,7 @@ type generationPinRecord struct {
 	ReleasedAt time.Time               `json:"released_at,omitzero"`
 }
 
-// PinAcceptance returns the current acceptance and whether the runtime retained it on disk.
+// PinAcceptance returns the current acceptance and whether durable storage retains it.
 // A missing acceptance returns a zero record and false. This method reads memory only.
 func (r *Runtime) PinAcceptance() (GenerationPinAcceptance, bool) {
 	if r == nil {
@@ -56,7 +56,7 @@ func (r *Runtime) PinAcceptance() (GenerationPinAcceptance, bool) {
 	if r.pinRecord == nil || r.pinRecord.Phase != pinAccepted || r.config.generationPin == "" {
 		return GenerationPinAcceptance{}, false
 	}
-	return r.pinRecord.Receipt, r.store.durable()
+	return r.pinRecord.Receipt, r.config.fleetStore != nil || r.store.durable()
 }
 
 // pinBinding excludes credentials and schedule settings from the authority identity.
@@ -83,9 +83,13 @@ func (r *Runtime) pinBinding() string {
 }
 
 func (r *Runtime) initializePinRecord() error {
-	record, err := r.store.loadPinRecord()
-	if err != nil {
-		return err
+	record := r.pinRecord
+	if r.config.fleetStore == nil {
+		var err error
+		record, err = r.store.loadPinRecord()
+		if err != nil {
+			return err
+		}
 	}
 	r.pinRecord = record
 	if record == nil || record.Phase == pinReleased {

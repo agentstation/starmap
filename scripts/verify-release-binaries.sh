@@ -4,7 +4,6 @@ set -euo pipefail
 DIST="${1:-dist}"
 EXPECTED_TARGETS="$(
 	cat <<'EOF'
-darwin/amd64
 darwin/arm64
 linux/amd64
 linux/arm64
@@ -81,8 +80,8 @@ while IFS= read -r binary; do
 	verified=$((verified + 1))
 done < <(find "$DIST" -type f \( -name starmap -o -name starmap.exe \) | LC_ALL=C sort)
 
-if [ "$verified" -ne 6 ]; then
-	printf 'verified %s release binaries; want exactly 6\n' "$verified" >&2
+if [ "$verified" -ne 5 ]; then
+	printf 'verified %s release binaries; want exactly 5\n' "$verified" >&2
 	exit 1
 fi
 
@@ -91,4 +90,4 @@ if ! diff -u <(printf '%s\n' "$EXPECTED_TARGETS") <(LC_ALL=C sort -u "$ACTUAL_TA
 	exit 1
 fi
 
-printf 'verified 6 cgo-disabled release binaries; Linux is static and Windows imports no C/C++ runtime\n'
+printf 'verified 5 cgo-disabled release binaries; Linux is static and Windows imports no C/C++ runtime\n'

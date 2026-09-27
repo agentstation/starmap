@@ -24,9 +24,8 @@ Application releases use GoReleaser v2.17.0 and a tag of the form `vX.Y.Z` or
 workflow:
 
 1. runs repository and release verification with Go 1.27.1.
-2. builds Linux, macOS, and Windows archives for amd64 and arm64 with
-   `CGO_ENABLED=0`.
-3. verifies cgo-disabled build metadata for all six binaries. It also verifies
+2. builds Linux and Windows archives for amd64 and arm64, plus macOS archives for arm64, with `CGO_ENABLED=0`.
+3. verifies cgo-disabled build metadata for all five binaries. It also verifies
    static ELF linkage on Linux and no Windows C/C++ runtime imports. Darwin
    binaries may use only system dynamic linkage.
 4. publishes SBOMs, SHA-256 checksums, and a detached checksum signature.

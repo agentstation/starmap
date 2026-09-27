@@ -79,6 +79,21 @@ func (r *Runtime) initializeGenerationPin(ctx context.Context) error {
 	r.pinnedSource = &sourceLayer{GenerationID: generation.Manifest.GenerationID, Payload: generation.Payload,
 		Manifest: &generation.Manifest, PublishedAt: generation.Manifest.GeneratedAt}
 	current := r.client.CurrentCatalogState()
+	if r.config.fleetStore != nil && r.pinRecord != nil && r.pinRecord.Phase == pinAccepted &&
+		r.pinRecord.Receipt.SelectedGenerationID == r.config.generationPin && r.pinRecord.Receipt.AcceptedGenerationID == current.GenerationID {
+		accepted, err := r.client.CurrentGeneration(ctx)
+		if err != nil {
+			return err
+		}
+		if !pinRecordMatches(*r.pinRecord, accepted) || accepted.Manifest.Payload.Checksum != generation.Manifest.Payload.Checksum {
+			return pinRecordConflict("the shared pin receipt does not match the requested artifact")
+		}
+		r.pinnedSource = &sourceLayer{GenerationID: accepted.Manifest.GenerationID, Payload: accepted.Payload,
+			Manifest: &accepted.Manifest, PublishedAt: accepted.Manifest.GeneratedAt}
+		r.effective = current
+		r.report.startedAt = r.config.now()
+		return nil
+	}
 	r.effective = starmap.CatalogState{Catalog: catalog, GenerationID: generation.Manifest.GenerationID,
 		PayloadChecksum: generation.Manifest.Payload.Checksum, GeneratedAt: generation.Manifest.GeneratedAt,
 		AuthorityHead: head, Sequence: current.Sequence}
@@ -90,19 +105,10 @@ func (r *Runtime) initializeGenerationPin(ctx context.Context) error {
 // The private capability does not reach acquisition callbacks or callers of Client.
 func (r *Runtime) publishGenerationPin(ctx context.Context) error {
 	target := catalogs.Generation{Manifest: r.pinnedSource.Manifest.Copy(), Payload: r.pinnedSource.Payload}
-	record := r.pinRecord
-	if record != nil && (record.Phase == pinReleased || record.Receipt.SelectedGenerationID != r.config.generationPin) {
-		record = nil
-	}
 	current := r.client.CurrentCatalogState()
-	if record != nil && record.Receipt.PayloadChecksum != target.Manifest.Payload.Checksum {
-		return pinRecordConflict("the selected payload differs from its acceptance record")
-	}
-	if record != nil && record.Phase == pinAccepted && current.GenerationID != record.Receipt.AcceptedGenerationID {
-		return pinRecordConflict("the catalog changed after pin acceptance")
-	}
-	if record != nil && current.GenerationID != record.Receipt.PreviousGenerationID && current.GenerationID != record.Receipt.AcceptedGenerationID {
-		return pinRecordConflict("the catalog differs from both recorded publication states")
+	record, err := r.selectPinAcceptance(target, current)
+	if err != nil {
+		return err
 	}
 	generation, err := r.preparePinGeneration(ctx, target, record)
 	if err != nil {
@@ -125,11 +131,15 @@ func (r *Runtime) publishGenerationPin(ctx context.Context) error {
 		}
 	}
 	pendingPublication := record.Phase == pinPrepared && record.Receipt.PreviousGenerationID != record.Receipt.AcceptedGenerationID
+	ctx, attempt, err := r.prepareFleetCommitWithPin(ctx, r.lease.epoch(), r.layers, record)
+	if err != nil {
+		return err
+	}
+	pinContext := context.WithValue(r.authorityPublicationContext(ctx), generationPinContextKey{}, r.config.pinCapability)
 	if current.GenerationID != generation.Manifest.GenerationID || pendingPublication {
 		if err := r.lease.fence(r.lease.epoch()); err != nil {
 			return err
 		}
-		pinContext := context.WithValue(r.authorityPublicationContext(ctx), generationPinContextKey{}, r.config.pinCapability)
 		if r.config.origin != nil {
 			if _, err := r.client.Activate(pinContext, generation); err != nil {
 				return err
@@ -137,6 +147,12 @@ func (r *Runtime) publishGenerationPin(ctx context.Context) error {
 		} else if _, err := r.client.Rollback(pinContext, generation.Manifest.GenerationID); err != nil {
 			return err
 		}
+	}
+	if err := r.finishFleetCommit(pinContext, attempt); err != nil {
+		return err
+	}
+	if attempt != nil {
+		record = attempt.pin
 	}
 	active := r.client.CurrentCatalogState()
 	if active.GenerationID != record.Receipt.AcceptedGenerationID || active.PayloadChecksum != record.Receipt.PayloadChecksum || active.AuthorityHead != record.Receipt.AuthorityHead {
@@ -166,4 +182,22 @@ func (r *Runtime) selectedAuthoritySource() *sourceLayer {
 		return r.pinnedSource
 	}
 	return r.layers.source
+}
+
+// selectPinAcceptance validates any retained receipt against the selected and current generations.
+func (r *Runtime) selectPinAcceptance(target catalogs.Generation, current starmap.CatalogState) (*generationPinRecord, error) {
+	record := r.pinRecord
+	if record != nil && (record.Phase == pinReleased || record.Receipt.SelectedGenerationID != r.config.generationPin) {
+		record = nil
+	}
+	if record != nil && record.Receipt.PayloadChecksum != target.Manifest.Payload.Checksum {
+		return nil, pinRecordConflict("the selected payload differs from its acceptance record")
+	}
+	if record != nil && record.Phase == pinAccepted && current.GenerationID != record.Receipt.AcceptedGenerationID {
+		return nil, pinRecordConflict("the catalog changed after pin acceptance")
+	}
+	if record != nil && current.GenerationID != record.Receipt.PreviousGenerationID && current.GenerationID != record.Receipt.AcceptedGenerationID {
+		return nil, pinRecordConflict("the catalog differs from both recorded publication states")
+	}
+	return record, nil
 }
