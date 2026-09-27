@@ -1,0 +1,6 @@
+internal/limits/reservation/repository.go:154:1: cyclomatic complexity 32 of func `(*Repository).readRecord` is high (> 30) (gocyclo)
+func (r *Repository) readRecord(ctx context.Context, id string) (*Record, []byte, error) {
+^
+1 issues:
+* gocyclo: 1
+exit status 1

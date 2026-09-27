@@ -1,0 +1,165 @@
+{
+  "recorded_at": "2026-09-27T08:57:09.296208+00:00",
+  "status": "PARTIAL_COMPONENT_PASS",
+  "task": "CSP12.2",
+  "task_complete": false,
+  "work_commit": "8b4d50e7f2a29e2dd3e97a4cb297af72f9e079f3",
+  "published": false,
+  "merge_commit": null,
+  "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+  "go": "go1.27.1",
+  "GOWORK": "off",
+  "fail_before": {
+    "source": "provider-dispatch-runner.json",
+    "raw": "provider-dispatch-before.jsonl.gz",
+    "exit_code": 1,
+    "provider_dispatches": 2,
+    "durable_tokens": 1202,
+    "token_limit": 1000,
+    "http_statuses": [
+      200,
+      200
+    ],
+    "invalid_initial_harness": "The first run used /tmp symlink overlay keys. Go loaded no matching tests and exited zero. That run is invalid evidence. The corrected run resolves the checkout to /private/tmp and confirms a named test failure."
+  },
+  "qualification": {
+    "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=redis://127.0.0.1:16383 go test -race -json -count=1 -timeout=2m ./internal/limits/reservation ./internal/storage -run '^(TestReservation.*|TestLateSettlement.*|TestDelayedDispatch.*|TestAggregateOverflow.*|TestValkeyReservationAcrossProcesses|TestFixedUTCWindows|TestValuation|TestTimeBoundStore|TestValkeyIncarnationAtomicContract|TestKVStoreContract)$'",
+    "exit_code": 0,
+    "named_pass": 54,
+    "named_fail": 0,
+    "named_skip": 0,
+    "names": [
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationRestart",
+      "github.com/agentstation/starport/internal/limits/reservation::TestLateSettlementKeepsOriginalWindowAndValuation",
+      "github.com/agentstation/starport/internal/limits/reservation::TestDelayedDispatchCannotUseAClosedWindow",
+      "github.com/agentstation/starport/internal/limits/reservation::TestAggregateOverflowPreservesDebtAndBlocksAdmission",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/mock/basic_operations",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/mock/ttl_operations",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/mock/atomic_operations",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/mock/batch_operations",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/mock",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/badger/basic_operations",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/badger/ttl_operations",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/badger/atomic_operations",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/badger/batch_operations",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/badger",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/valkey/basic_operations",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/valkey/ttl_operations",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/valkey/atomic_operations",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/valkey/batch_operations",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract/valkey",
+      "github.com/agentstation/starport/internal/storage::TestKVStoreContract",
+      "github.com/agentstation/starport/internal/storage::TestTimeBoundStore/badger",
+      "github.com/agentstation/starport/internal/storage::TestTimeBoundStore/valkey",
+      "github.com/agentstation/starport/internal/storage::TestTimeBoundStore",
+      "github.com/agentstation/starport/internal/storage::TestValkeyIncarnationAtomicContract/live_lease_and_atomic_head",
+      "github.com/agentstation/starport/internal/storage::TestValkeyIncarnationAtomicContract/expired_native_lease",
+      "github.com/agentstation/starport/internal/storage::TestValkeyIncarnationAtomicContract/released_native_lease",
+      "github.com/agentstation/starport/internal/storage::TestValkeyIncarnationAtomicContract/matching_value_without_native_expiry",
+      "github.com/agentstation/starport/internal/storage::TestValkeyIncarnationAtomicContract/mismatch_changes_no_key",
+      "github.com/agentstation/starport/internal/storage::TestValkeyIncarnationAtomicContract/bounded_reads_and_invalid_mutations",
+      "github.com/agentstation/starport/internal/storage::TestValkeyIncarnationAtomicContract/one_concurrent_winner",
+      "github.com/agentstation/starport/internal/storage::TestValkeyIncarnationAtomicContract/unapproved_identity",
+      "github.com/agentstation/starport/internal/storage::TestValkeyIncarnationAtomicContract",
+      "github.com/agentstation/starport/internal/limits/reservation::TestValkeyReservationAcrossProcesses",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/badger/concurrent_admission_reserves_all_populations_once",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/badger/idempotency_dispatch_uncertainty_and_settlement",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/badger/cancellation_wins_only_before_dispatch",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/badger/unknown_history_and_exhausted_team_change_no_other_meter",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/badger/policy_revisions_and_provider_overruns_preserve_spending",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/badger/lost_dispatch_and_settlement_acknowledgements_cannot_repeat_spending",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/badger/unrepresentable_charges_retain_evidence_and_block_every_meter",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/badger/expiring_and_corrupt_records_cannot_grant_capacity",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/badger",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/valkey/concurrent_admission_reserves_all_populations_once",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/valkey/idempotency_dispatch_uncertainty_and_settlement",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/valkey/cancellation_wins_only_before_dispatch",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/valkey/unknown_history_and_exhausted_team_change_no_other_meter",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/valkey/policy_revisions_and_provider_overruns_preserve_spending",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/valkey/lost_dispatch_and_settlement_acknowledgements_cannot_repeat_spending",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/valkey/unrepresentable_charges_retain_evidence_and_block_every_meter",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/valkey/expiring_and_corrupt_records_cannot_grant_capacity",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract/valkey",
+      "github.com/agentstation/starport/internal/limits/reservation::TestReservationContract",
+      "github.com/agentstation/starport/internal/limits/reservation::TestFixedUTCWindows",
+      "github.com/agentstation/starport/internal/limits/reservation::TestValuation"
+    ],
+    "raw": "core-race.jsonl.gz",
+    "packages": [
+      {
+        "Time": "2026-09-27T03:54:48.276246-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starport/internal/storage",
+        "Elapsed": 1.567
+      },
+      {
+        "Time": "2026-09-27T03:54:48.891384-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starport/internal/limits/reservation",
+        "Elapsed": 2.7640000000000002
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "go vet ./internal/limits/reservation ./internal/storage",
+      "exit_code": 0
+    },
+    {
+      "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/limits/reservation ./internal/storage",
+      "exit_code": 0,
+      "issues": 0,
+      "raw": "lint-after.txt"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "failure_retained": {
+    "raw": "lint-before.txt",
+    "reason": "Stored-record validation exceeded the existing cyclomatic complexity limit. Split binding validation from settlement validation without changing assertions."
+  },
+  "backend": {
+    "badger": "real persistent Badger with SyncWrites=true",
+    "valkey_image": "sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "valkey_command": [
+      "valkey-server",
+      "--appendonly",
+      "yes",
+      "--appendfsync",
+      "always"
+    ],
+    "multiprocess": "Four independent test processes compete in one provisioned deployment namespace. Exactly one reserves 600 of 1000 units. This is a ledger test, not a production provider dispatch test.",
+    "cleanup": {
+      "container": "starport-csp122-valkey",
+      "stop_exit": 0,
+      "remove_exit": 0
+    }
+  },
+  "source_sha256": {
+    "internal/limits/reservation/model.go": "eb8b8cabf72c2244ab6de6366a0b7b9f4e49c1d1f0879afcc87ff44bcb237815",
+    "internal/limits/reservation/recovery_test.go": "4ead77480cf27a34c19047157e8e5459dc6a0619abfa866e9fd4ba84b253c023",
+    "internal/limits/reservation/repository.go": "e6c1a1cf67e35e62ce721d8f4e500946586718cb67e9aab9f30138e7536176f9",
+    "internal/limits/reservation/repository_test.go": "1770ced0ed73ddc98cd0a0501660f91acbac2ee37cdee4ca397d3f3839b64f0f",
+    "internal/limits/reservation/transitions.go": "ae35b15a5aab7420bc8598b676468cafd46df99cd7a29da3ea1c1c2c4214fee0",
+    "internal/limits/reservation/validation.go": "480f540d894d86999226c983661a0c519f311910552fb9ff0cea22206957b4fc",
+    "internal/limits/reservation/valuation.go": "66aaa406642e174794049304df282371b3675185cf9ac12b89a0fdd279ecc986",
+    "internal/limits/reservation/valuation_test.go": "74d12ba6db986578fbae788eeb40f0ed590f47b30c80afd2cc0fbb39bf11ecda",
+    "internal/storage/badger.go": "f0c71b35d70332779b602892e8d393631eacec28337152b7d9aa4af9d5ff1930",
+    "internal/storage/time_window.go": "e6f1149081e7c7ef14ac3a61c7c3c8cfef6b45c2f08570c42e59937099a923a1",
+    "internal/storage/time_window_test.go": "93d21c9c92f193a83753378e229e319274af242cd44fd05d92ee9a7f747b585c",
+    "internal/storage/valkey_incarnation.go": "d9b809744012ed79dfabf49188132f3c4f0046ccd383980106d21b4c693d6aea",
+    "internal/storage/valkey_time_window.go": "6c9f3f9fd5cfaa7d94113c41af95b660c394c274776c39c197c9b76155454bf3"
+  },
+  "limitations": [
+    "No production provider path uses this repository yet. The existing HTTP budget defect remains.",
+    "No native CI, full A47, full suite, independent pre-PR review, PR, or merge qualifies this work.",
+    "Policy evidence, safe history initialization and rollover, applied-budget changes, catalog bound projection, every operation, internal child calls, stream settlement, asynchronous jobs, and production dispatch tests remain.",
+    "Production composition must enforce persistent store settings and bind the independently approved Valkey incarnation. Observing an identity is not recovery approval.",
+    "No automatic record expiry exists. Retention horizons and populated restoration remain unqualified.",
+    "Reservations require complete explicit valuation. Token-only unknown-pricing behavior needs the operation integration contract.",
+    "Optional local quota leases are not implemented."
+  ],
+  "next_action": "Design and implement admitted budget policy plus verified history lifecycle, then attach selected-offering bounds and reservation transitions to every paid operation. Keep this component in the same implementation PR as integration."
+}

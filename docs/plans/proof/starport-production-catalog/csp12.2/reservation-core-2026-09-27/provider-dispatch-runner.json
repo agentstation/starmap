@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-09-27T06:04:00.453681+00:00",
+  "head": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout=2m",
+    "-json",
+    "-overlay",
+    "/tmp/csp122-current-probe/overlay.json",
+    "./internal/app",
+    "-run",
+    "^TestCSP122ProviderDispatchRespectsExclusiveTokenCapacity$"
+  ],
+  "exit_code": 1,
+  "fixture_changes": "Only loopback provider synchronization, one key token limit, result-channel capacity, and access to the real store. Production source remains unchanged.",
+  "files": {
+    "/tmp/csp122-current-probe/probe_test.go": "247e4772da96251b4c96f5ba198ec2b0d9834b523b68cfaab70ade7b78db0ff9",
+    "/tmp/csp122-current-probe/performance_test.go": "4cea0693604e186438c1fd62083fa9206b5addf0b50d1d80f6afb0633dd65105",
+    "/private/tmp/starport-fleet-review-20260926/internal/app/performance_test.go": "e7759da3c3697b4e8cce566ed866e80d646b60f7d63b126f091a468dceaace4f"
+  }
+}
