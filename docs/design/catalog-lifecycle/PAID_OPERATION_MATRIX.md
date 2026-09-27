@@ -476,5 +476,6 @@ The production fixture spends the exact allowance, then retrieves the job throug
 All 19 paid routes reject further work. Job reads, content retrieval, cancellation, and reconciliation retain authentication without requiring new capacity.
 The [external asset proof](../../plans/proof/starport-production-catalog/csp12.2/external-assets-2026-09-27/verification.json) records checks, failures, and remaining scope.
 
-Uncertain native responses still need an operator recovery contract. No additional paid generation ran.
+The owner approved audited administrator reconciliation for uncertain native responses. The specification defines its identity, evidence, and replay boundaries.
+Its implementation and qualification remain open. No additional paid generation ran.
 Complete the remaining matrix, interrupted batches, CSP12.2 qualification, A47, and paired merges.

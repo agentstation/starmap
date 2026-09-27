@@ -462,6 +462,10 @@ Asset status must distinguish blocked downloads, retryable failures, invalid con
 A spent budget must not prevent the owner from retrieving or reconciling existing work.
 New paid work still requires sufficient budget capacity.
 
+Administrators may resolve uncertain native jobs from provider usage or explicit no-charge evidence.
+Each decision requires an immutable audit record. Only administrators can submit a manual decision.
+Without sufficient evidence, Starport retains the uncertain reservation and never submits the request again automatically.
+
 ## Execution activation
 
 The user activated the whole-plan goal on 2026-09-05.

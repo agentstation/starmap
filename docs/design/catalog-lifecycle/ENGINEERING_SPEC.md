@@ -4586,3 +4586,24 @@ Keep budget prechecks on every route that starts paid work. Atomic admission rem
 
 The [external asset proof](../../plans/proof/starport-production-catalog/csp12.2/external-assets-2026-09-27/verification.json) records local transport, concurrent recovery, and production HTTP checks.
 Missing-response recovery, PostgreSQL, process loss, failover, capacity, and final paired qualification remain required.
+
+
+### Administrator reconciliation of uncertain native jobs
+
+On September 27, 2026, the owner approved administrator reconciliation from provider usage or explicit no-charge evidence.
+The action must preserve an immutable audit record. It must never submit generation again.
+Without sufficient evidence, retain the uncertain reservation.
+
+Expose this action through an administrator-only API, separate from caller-requested provider reconciliation.
+Bind each decision to the account, job, original reservation, provider, model, catalog generation, and submitted valuation.
+Record the authenticated actor, decision identity, evidence reference, reason, disposition, and decision time before releasing capacity.
+The ordinary job response must not disclose private evidence or provider identifiers.
+
+Treat a no-charge decision as an explicit billing disposition. Do not fabricate provider-measured output duration to represent it.
+A usage decision must state the actual units required by the pinned valuation.
+Neither decision may infer completion or a charge from elapsed time, job state, or a cost estimate.
+
+Exact retries must return the accepted decision without another release. Conflicting evidence must require explicit correction rather than silently replacing prior evidence.
+Preserve independent provider evidence that arrives after a manual decision. Report a conflict instead of discarding it or silently changing the audit record.
+Qualification must cover authorization, replay, conflicting decisions, late responses, storage failures, restart, and concurrent replicas.
+This owner-approved contract remains unimplemented at consumer `fa42a9c7`.
