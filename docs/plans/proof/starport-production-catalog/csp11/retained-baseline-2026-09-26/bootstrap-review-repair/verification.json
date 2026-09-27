@@ -1,0 +1,53 @@
+{
+  "recorded_at": "2026-09-27T01:19:59.511058+00:00",
+  "owner": "CSP11",
+  "decision": "D41 approved; retained baseline independent of binary upgrade",
+  "producer_commit": "0f45bbae239381bf6f674e5834409bd4cceec1ef",
+  "consumer_commit": "aab7dd7c8bf52b2046e2284e480d81ce1d0b873c",
+  "published_starmap_module": "v0.16.6-0.20260927002942-b46c077a7039",
+  "environment": {
+    "GOTOOLCHAIN": "go1.27.1",
+    "GOWORK": "off"
+  },
+  "focused": {
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0
+  },
+  "broad": {
+    "passed_before_timeout": 74,
+    "command_exit_code": 1,
+    "timeout": "5m package budget",
+    "remaining_test": "TestFleetRuntimeLiveTakeoverAcceptance",
+    "separate_run_passed": 1,
+    "separate_run_exit_code": 0,
+    "combined_passed": 75
+  },
+  "task_gate": {
+    "status": "PASS",
+    "subcases": 11,
+    "failed": 0,
+    "unverified": 0
+  },
+  "consumer_required_commands": {
+    "passed": 34,
+    "failed": 0,
+    "source": "consumer-gates/report.json"
+  },
+  "producer_checks": {
+    "command": "make HAS_DEVBOX= GOCMD=go verify-checks",
+    "exit_code": 0
+  },
+  "verifier_tests": {
+    "passed": 99
+  },
+  "review": {
+    "producer": "running",
+    "producer_session": 7396,
+    "consumer": "running",
+    "consumer_session": 47259
+  },
+  "publication": "pending review",
+  "merges": "open",
+  "completion": "INCOMPLETE"
+}

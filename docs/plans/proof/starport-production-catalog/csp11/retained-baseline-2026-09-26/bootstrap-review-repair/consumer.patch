@@ -1,0 +1,646 @@
+commit aab7dd7c
+Author:     jackspirou <jack.spirou@me.com>
+AuthorDate: Sat Sep 26 20:18:06 2026 -0500
+Commit:     jackspirou <jack.spirou@me.com>
+CommitDate: Sat Sep 26 20:18:06 2026 -0500
+
+    catalog: fence first publication with independent SQL permission
+
+diff --git a/docs/FLEET_INITIALIZATION.md b/docs/FLEET_INITIALIZATION.md
+index 5e3e9284..2c4fd038 100644
+--- a/docs/FLEET_INITIALIZATION.md
++++ b/docs/FLEET_INITIALIZATION.md
+@@ -5,6 +5,9 @@ It starts no gateway, provider acquisition, or source refresh.
+ The command does not migrate existing data or approve a restored backend.
+ Complete fleet storage qualification remains part of the production catalog plan.
+ 
++This build has no operator command for populated deployment adoption or recovery after a Valkey restart or failover.
++CSP13 owns those commands and their qualification. Production fleet use requires that work first.
++
+ ## Preconditions
+ 
+ Stop every gateway and schema writer that can reach these stores.
+@@ -53,7 +56,7 @@ starport serve
+ The initialization result identifies the deployment, recovery epoch, backend identity, and audit reference.
+ Approval binds to the observed Valkey process and replication history.
+ Normal startup reads approval and cannot create it.
+-A changed backend requires the separate recovery procedure.
++A changed backend requires controlled recovery. This build cannot recover that backend.
+ 
+ ## Failure and retry
+ 
+@@ -72,3 +75,20 @@ A different operation, backend, or additional record prevents retry.
+ A completed initialization refuses another fresh initialization, including one with the same operation ID.
+ Existing or uncertain state requires investigation and the migration or recovery procedure.
+ The command never clears existing records, reopens a closed recovery epoch, or accepts a replacement backend automatically.
++
++## First publication
++
++Fresh initialization grants one bootstrap permission in PostgreSQL.
++Starport consumes it before the first native catalog publication in Valkey.
++The final Valkey transaction still checks the original grant, native expiry, and exact predecessor.
++A normal restart cannot grant another bootstrap permission.
++
++If a crash occurs before consumption, an unused deployment can retry its first publication.
++After consumption, a missing head requires controlled recovery, including when the initial publication never completed.
++An uncertain SQL response stops publication. Do not clear SQL approval or catalog keys to force a retry.
++A completed native publication retains its exact retry receipt even if its response was lost.
++CSP13 owns the recovery procedure for an interrupted first publication and populated deployments.
++
++The independent permission survives complete catalog KV loss while the same Valkey process remains live.
++Schema migration treats existing approval rows as consumed. An empty catalog under such approval requires recovery.
++These checks run during startup and catalog operations, outside inference requests.
+diff --git a/docs/FLEET_RETENTION.md b/docs/FLEET_RETENTION.md
+index ab72dd9b..76060ba7 100644
+--- a/docs/FLEET_RETENTION.md
++++ b/docs/FLEET_RETENTION.md
+@@ -24,7 +24,9 @@ The pending descriptor remains durable until every chunk deletion completes.
+ No catalog chunk expires by time. An outage cannot expire the selected catalog bytes.
+ 
+ Collection protects the current publication, accepted publication, accepted rollback history, and active generation readers.
+-It also retains the most recent 32 publication receipts for exact retries. Explicit required generation IDs receive the same protection.
++Accepted history retains up to 32 distinct generation IDs in most-recent-acceptance order.
++An input-only publication does not consume another generation slot.
++The adapter also retains the most recent 32 publication receipts for exact retries. Explicit required generation IDs receive the same protection.
+ 
+ Configured generation and byte limits control other retained generations. Limits cannot remove protected content.
+ When protected content exceeds a limit, collection reports `OverLimit`.
+diff --git a/internal/app/valkey_integration_test.go b/internal/app/valkey_integration_test.go
+index 70ff2ada..580167d6 100644
+--- a/internal/app/valkey_integration_test.go
++++ b/internal/app/valkey_integration_test.go
+@@ -163,4 +163,7 @@ func approveTestFleet(t *testing.T, cfg *config.Config, store storage.KVStore) {
+ 	require.NoError(t, err)
+ 	_, err = witness.Approve(t.Context(), closed, identity, "isolated-app-test-backend")
+ 	require.NoError(t, err)
++	// This isolated fixture explicitly starts unused. Real initialization has its own native tests.
++	_, err = db.ExecContext(t.Context(), db.Bind("UPDATE catalog_recovery SET bootstrap_allowed = 1 WHERE deployment_id = ?"), cfg.EffectivePaths().DeploymentID)
++	require.NoError(t, err)
+ }
+diff --git a/internal/catalog/fleet_acceptance.go b/internal/catalog/fleet_acceptance.go
+index 875c85ab..495db165 100644
+--- a/internal/catalog/fleet_acceptance.go
++++ b/internal/catalog/fleet_acceptance.go
+@@ -4,6 +4,7 @@ import (
+ 	"context"
+ 	"encoding/json"
+ 	"errors"
++	"slices"
+ 
+ 	"github.com/agentstation/starmap/pkg/catalogs"
+ 	starmaperrors "github.com/agentstation/starmap/pkg/errors"
+@@ -85,7 +86,10 @@ func (s *FleetStore) AcceptPublication(ctx context.Context, selected, expected r
+ 	if err != nil {
+ 		return err
+ 	}
+-	history := append(current.History, entry)
++	history := slices.DeleteFunc(slices.Clone(current.History), func(prior GenerationIndexEntry) bool {
++		return prior.GenerationID == entry.GenerationID
++	})
++	history = append(history, entry)
+ 	if len(history) > catalogGenerationIndexCap {
+ 		history = history[len(history)-catalogGenerationIndexCap:]
+ 	}
+diff --git a/internal/catalog/fleet_bootstrap_test.go b/internal/catalog/fleet_bootstrap_test.go
+new file mode 100644
+index 00000000..93a7d140
+--- /dev/null
++++ b/internal/catalog/fleet_bootstrap_test.go
+@@ -0,0 +1,120 @@
++package catalog
++
++import (
++	"context"
++	"errors"
++	"strings"
++	"sync"
++	"testing"
++	"time"
++
++	"github.com/agentstation/starmap/runtime"
++	"github.com/agentstation/starport/internal/catalog/recovery"
++	"github.com/agentstation/starport/internal/storage"
++	"github.com/stretchr/testify/require"
++)
++
++var errBootstrapResponseLost = errors.New("test transport lost the write response")
++
++type bootstrapReplyFault struct {
++	*recovery.Witness
++	before bool
++	failed bool
++}
++
++func TestFleetBootstrapConcurrentExactPublication(t *testing.T) {
++	fleet, _, witness := fleetTestStore(t)
++	grant, err := fleet.AcquireLease(t.Context(), "publisher", time.Minute)
++	require.NoError(t, err)
++	publication := fleetTestPublication(t, grant, runtime.FleetHead{}, "first")
++	type result struct {
++		head runtime.FleetHead
++		err  error
++	}
++	results := make(chan result, 2)
++	var work sync.WaitGroup
++	for range 2 {
++		work.Go(func() {
++			head, err := fleet.CommitPublication(t.Context(), publication)
++			results <- result{head: head, err: err}
++		})
++	}
++	work.Wait()
++	first, second := <-results, <-results
++	require.NoError(t, first.err)
++	require.NoError(t, second.err)
++	require.Equal(t, first.head, second.head)
++	require.Equal(t, uint64(1), first.head.Revision)
++	require.ErrorIs(t, witness.CheckBootstrap(t.Context(), fleet.approval), recovery.ErrBootstrapConsumed)
++}
++
++func (w *bootstrapReplyFault) ConsumeBootstrap(ctx context.Context, expected recovery.Record) error {
++	if w.failed {
++		return w.Witness.ConsumeBootstrap(ctx, expected)
++	}
++	w.failed = true
++	if !w.before {
++		if err := w.Witness.ConsumeBootstrap(ctx, expected); err != nil {
++			return err
++		}
++	}
++	return errBootstrapResponseLost
++}
++
++type firstHeadReplyFault struct {
++	storage.IncarnationStore
++	before bool
++	failed bool
++}
++
++func (s *firstHeadReplyFault) CompareAndSwap(ctx context.Context, changes []storage.CompareAndSwapMutation, live ...string) error {
++	for _, change := range changes {
++		if !s.failed && strings.HasSuffix(change.Key, ":head") && change.NewValue != nil && change.ExpectedValue == nil {
++			s.failed = true
++			if !s.before {
++				if err := s.IncarnationStore.CompareAndSwap(ctx, changes, live...); err != nil {
++					return err
++				}
++			}
++			return errBootstrapResponseLost
++		}
++	}
++	return s.IncarnationStore.CompareAndSwap(ctx, changes, live...)
++}
++
++func TestFleetBootstrapWriteBoundaries(t *testing.T) {
++	for _, scenario := range []string{"before-sql", "after-sql", "before-kv", "after-kv"} {
++		t.Run(scenario, func(t *testing.T) {
++			fleet, _, witness := fleetTestStore(t)
++			ctx := t.Context()
++			grant, err := fleet.AcquireLease(ctx, "publisher", time.Minute)
++			require.NoError(t, err)
++			publication := fleetTestPublication(t, grant, runtime.FleetHead{}, "first")
++			if strings.HasSuffix(scenario, "sql") {
++				fleet.witness = &bootstrapReplyFault{Witness: witness, before: scenario == "before-sql"}
++			} else {
++				fleet.store = &firstHeadReplyFault{IncarnationStore: fleet.store, before: scenario == "before-kv"}
++			}
++			_, err = fleet.CommitPublication(ctx, publication)
++			require.ErrorIs(t, err, errBootstrapResponseLost)
++			approval, err := witness.Approved(ctx, fleet.identity.DeploymentID)
++			require.NoError(t, err)
++			require.Equal(t, fleet.approval, approval, "consumption cannot change recovery identity")
++			switch scenario {
++			case "before-sql", "after-kv":
++				head, err := fleet.CommitPublication(ctx, publication)
++				require.NoError(t, err, "retry must recover the unconsumed attempt or completed exact receipt")
++				require.Equal(t, uint64(1), head.Revision)
++				current, err := fleet.CurrentHead(ctx)
++				require.NoError(t, err)
++				require.Equal(t, head, current)
++				require.ErrorIs(t, witness.CheckBootstrap(ctx, approval), recovery.ErrBootstrapConsumed)
++			case "after-sql", "before-kv":
++				_, err := fleet.CurrentHead(ctx)
++				require.ErrorIs(t, err, recovery.ErrBootstrapConsumed)
++				_, err = fleet.CommitPublication(ctx, publication)
++				require.ErrorIs(t, err, recovery.ErrBootstrapConsumed, "an uncertain first publication requires controlled recovery")
++			}
++		})
++	}
++}
+diff --git a/internal/catalog/fleet_retention.go b/internal/catalog/fleet_retention.go
+index 6642c5de..6a6e3e7a 100644
+--- a/internal/catalog/fleet_retention.go
++++ b/internal/catalog/fleet_retention.go
+@@ -112,6 +112,9 @@ func (m *fleetMaintenance) close() error {
+ func (m *fleetMaintenance) load(ctx context.Context) error {
+ 	encoded, _, err := m.owner.store.ReadWithLifetime(ctx, m.owner.prefix+"inventory", fleetRetentionRecordBytes)
+ 	if errors.Is(err, storage.ErrNotFound) {
++		if err := m.owner.witness.CheckBootstrap(ctx, m.owner.approval); err != nil {
++			return err
++		}
+ 		_, _, guardErr := m.owner.store.ReadWithLifetime(ctx, m.owner.prefix+"inventory-initialized", 64)
+ 		if !errors.Is(guardErr, storage.ErrNotFound) {
+ 			return errors.New("initialized fleet storage lost its inventory or its state is uncertain")
+diff --git a/internal/catalog/fleet_review_regression_test.go b/internal/catalog/fleet_review_regression_test.go
+new file mode 100644
+index 00000000..3afa5d41
+--- /dev/null
++++ b/internal/catalog/fleet_review_regression_test.go
+@@ -0,0 +1,65 @@
++package catalog
++
++import (
++	"fmt"
++	"testing"
++	"time"
++
++	catalogstorage "github.com/agentstation/starmap/pkg/catalogs/storage"
++	starmaperrors "github.com/agentstation/starmap/pkg/errors"
++	"github.com/agentstation/starmap/runtime"
++	"github.com/agentstation/starport/internal/storage"
++	"github.com/stretchr/testify/require"
++)
++
++func TestFleetAcceptanceRetainsDistinctRollbackGenerations(t *testing.T) {
++	fleet, _, _ := fleetTestStore(t)
++	ctx := t.Context()
++	grant, err := fleet.AcquireLease(ctx, "publisher", time.Minute)
++	require.NoError(t, err)
++	first, err := fleet.CommitPublication(ctx, fleetTestPublication(t, grant, runtime.FleetHead{}, "rollback"))
++	require.NoError(t, err)
++	require.NoError(t, fleet.AcceptPublication(ctx, first, runtime.FleetHead{}))
++	publication := fleetTestPublication(t, grant, first, "current")
++	head, err := fleet.CommitPublication(ctx, publication)
++	require.NoError(t, err)
++	require.NoError(t, fleet.AcceptPublication(ctx, head, first))
++	for i := range catalogGenerationIndexCap + 1 {
++		previous := head
++		publication.Expected = previous
++		publication.Recovery.Data = []byte(fmt.Sprintf(`{"revision":%d}`, i))
++		publication.Recovery.Checksum = payloadDigest(publication.Recovery.Data)
++		head, err = fleet.CommitPublication(ctx, publication)
++		require.NoError(t, err)
++		require.NoError(t, fleet.AcceptPublication(ctx, head, previous))
++	}
++	history, err := fleet.AcceptedHistory(ctx)
++	require.NoError(t, err)
++	require.Len(t, history, 2, "input-only revisions must not consume distinct rollback slots")
++	require.Equal(t, first.GenerationID, history[0].GenerationID)
++	report, err := fleet.Collect(ctx, catalogstorage.RetentionRequest{ExpectedGenerationID: head.GenerationID, MaxGenerations: 1, MaxBytes: 1 << 30})
++	require.NoError(t, err)
++	require.Equal(t, 2, report.After.Generations, "the smaller requested limit cannot remove protected rollback content")
++	_, err = fleet.Get(ctx, first.GenerationID)
++	require.NoError(t, err, "collection must preserve the distinct accepted rollback generation")
++}
++
++func TestFleetStoreCompleteKeyLossRequiresRecovery(t *testing.T) {
++	fleet, kv, witness := fleetTestStore(t)
++	ctx := t.Context()
++	grant, err := fleet.AcquireLease(ctx, "publisher", time.Minute)
++	require.NoError(t, err)
++	head, err := fleet.CommitPublication(ctx, fleetTestPublication(t, grant, runtime.FleetHead{}, "established"))
++	require.NoError(t, err)
++	require.NoError(t, fleet.AcceptPublication(ctx, head, runtime.FleetHead{}))
++	keys, err := kv.ScanWithPrefix(ctx, fleet.prefix, 10000)
++	require.NoError(t, err)
++	require.NoError(t, kv.BatchDelete(ctx, keys))
++	restarted, err := NewFleetStore(ctx, kv.(storage.IncarnationProvider), witness, fleet.identity.DeploymentID)
++	if err != nil {
++		return
++	}
++	_, err = restarted.CurrentHead(ctx)
++	require.Error(t, err)
++	require.NotErrorIs(t, err, starmaperrors.ErrNotFound, "complete loss must not look like an unused fleet")
++}
+diff --git a/internal/catalog/fleet_store.go b/internal/catalog/fleet_store.go
+index 07b65131..a2be59b9 100644
+--- a/internal/catalog/fleet_store.go
++++ b/internal/catalog/fleet_store.go
+@@ -18,11 +18,17 @@ import (
+ 
+ const fleetPublicationResource = "fleet publication"
+ 
++type fleetRecoveryWitness interface {
++	Approved(context.Context, string) (recovery.Record, error)
++	CheckBootstrap(context.Context, recovery.Record) error
++	ConsumeBootstrap(context.Context, recovery.Record) error
++}
++
+ // FleetStore binds shared catalog publication to an independent recovery approval.
+ // It uses native backend expiry and retains complete acquisition inputs outside local directories.
+ type FleetStore struct {
+ 	store    storage.IncarnationStore
+-	witness  *recovery.Witness
++	witness  fleetRecoveryWitness
+ 	approval recovery.Record
+ 	identity runtime.FleetIdentity
+ 	prefix   string
+@@ -245,6 +251,8 @@ func (s *FleetStore) CommitPublication(ctx context.Context, publication runtime.
+ 	var initialized []byte
+ 	if publication.Expected != (runtime.FleetHead{}) {
+ 		initialized = []byte("fleet-head/1")
++	} else if err := s.witness.ConsumeBootstrap(ctx, s.approval); err != nil {
++		return runtime.FleetHead{}, err
+ 	}
+ 	err = m.mutate(ctx, []storage.CompareAndSwapMutation{
+ 		{Key: s.prefix + "lease", ExpectedValue: grant, NewValue: grant},
+@@ -282,6 +290,9 @@ var _ runtime.FleetStore = (*FleetStore)(nil)
+ 
+ // checkEmptyHead distinguishes an unused publication store from lost or uncertain state.
+ func (s *FleetStore) checkEmptyHead(ctx context.Context) error {
++	if err := s.witness.CheckBootstrap(ctx, s.approval); err != nil {
++		return err
++	}
+ 	_, _, err := s.store.ReadWithLifetime(ctx, s.prefix+"head-initialized", 64)
+ 	if !errors.Is(err, storage.ErrNotFound) {
+ 		return fleetStoreConflict("initialized catalog head is missing or uncertain; recovery is required")
+diff --git a/internal/catalog/fleet_store_test.go b/internal/catalog/fleet_store_test.go
+index e5689037..558e5157 100644
+--- a/internal/catalog/fleet_store_test.go
++++ b/internal/catalog/fleet_store_test.go
+@@ -53,6 +53,9 @@ func fleetTestStore(t *testing.T) (*FleetStore, storage.KVStore, *recovery.Witne
+ 	require.NoError(t, err)
+ 	_, err = witness.Approve(t.Context(), closed, identity, "isolated-test-backend")
+ 	require.NoError(t, err)
++	// This isolated fixture explicitly starts unused. Real initialization has its own native tests.
++	_, err = db.ExecContext(t.Context(), db.Bind("UPDATE catalog_recovery SET bootstrap_allowed = 1 WHERE deployment_id = ?"), deployment)
++	require.NoError(t, err)
+ 	fleet, err := NewFleetStore(t.Context(), provider, witness, deployment)
+ 	require.NoError(t, err)
+ 	t.Cleanup(func() {
+diff --git a/internal/catalog/migration_fleet_test.go b/internal/catalog/migration_fleet_test.go
+index ce9240f1..57b3387f 100644
+--- a/internal/catalog/migration_fleet_test.go
++++ b/internal/catalog/migration_fleet_test.go
+@@ -22,6 +22,9 @@ func TestFleetMigrationRequiresSameRecoveryIdentity(t *testing.T) {
+ 	require.NoError(t, err)
+ 	approved, err := witness.Approve(t.Context(), closed, backend, "isolated-migration-test")
+ 	require.NoError(t, err)
++	// This isolated fixture explicitly starts unused. Real initialization has its own native tests.
++	_, err = db.ExecContext(t.Context(), db.Bind("UPDATE catalog_recovery SET bootstrap_allowed = 1 WHERE deployment_id = ?"), deployment)
++	require.NoError(t, err)
+ 	fleet, err := NewFleetStore(t.Context(), provider, witness, deployment)
+ 	require.NoError(t, err)
+ 	grant, err := fleet.AcquireLease(t.Context(), "owner", time.Minute)
+diff --git a/internal/catalog/recovery/bootstrap.go b/internal/catalog/recovery/bootstrap.go
+new file mode 100644
+index 00000000..cef2bff7
+--- /dev/null
++++ b/internal/catalog/recovery/bootstrap.go
+@@ -0,0 +1,61 @@
++package recovery
++
++import (
++	"context"
++	"database/sql"
++	"errors"
++	"fmt"
++)
++
++// ErrBootstrapConsumed requires controlled recovery when an initial publication is uncertain or missing.
++var ErrBootstrapConsumed = errors.New("catalog bootstrap permission is consumed; recovery is required")
++
++// CheckBootstrap requires unused first-publication permission from fresh initialization.
++// The independent SQL record survives loss of all catalog keys in the KV backend.
++func (w *Witness) CheckBootstrap(ctx context.Context, expected Record) error {
++	if err := validDeployment(expected.DeploymentID); err != nil {
++		return err
++	}
++	if !expected.Open || expected.Epoch <= 0 {
++		return ErrClosed
++	}
++	var allowed int
++	err := w.db.QueryRowContext(ctx, w.db.Bind(`SELECT bootstrap_allowed FROM catalog_recovery
++WHERE deployment_id = ? AND epoch = ? AND gate_open = 1 AND backend_id = ? AND evidence = ?`),
++		expected.DeploymentID, expected.Epoch, expected.BackendID, expected.Evidence).Scan(&allowed)
++	if errors.Is(err, sql.ErrNoRows) {
++		return ErrConflict
++	}
++	if err != nil {
++		return fmt.Errorf("read catalog bootstrap permission: %w", err)
++	}
++	if allowed != 1 {
++		return ErrBootstrapConsumed
++	}
++	return nil
++}
++
++// ConsumeBootstrap durably closes first-use permission before the native KV publication.
++// An uncertain result must stop publication. This operation does not prove a KV commit.
++func (w *Witness) ConsumeBootstrap(ctx context.Context, expected Record) error {
++	if err := validDeployment(expected.DeploymentID); err != nil {
++		return err
++	}
++	if !expected.Open || expected.Epoch <= 0 {
++		return ErrClosed
++	}
++	result, err := w.db.ExecContext(ctx, w.db.Bind(`UPDATE catalog_recovery SET bootstrap_allowed = 0
++WHERE deployment_id = ? AND epoch = ? AND gate_open = 1 AND backend_id = ? AND evidence = ? AND bootstrap_allowed = 1`),
++		expected.DeploymentID, expected.Epoch, expected.BackendID, expected.Evidence)
++	if err != nil {
++		return fmt.Errorf("consume catalog bootstrap permission: %w", err)
++	}
++	count, err := result.RowsAffected()
++	if err != nil {
++		return err
++	}
++	if count != 1 {
++		return ErrConflict
++	}
++	return nil
++}
+diff --git a/internal/catalog/recovery/bootstrap_test.go b/internal/catalog/recovery/bootstrap_test.go
+new file mode 100644
+index 00000000..02ba0e7e
+--- /dev/null
++++ b/internal/catalog/recovery/bootstrap_test.go
+@@ -0,0 +1,78 @@
++package recovery
++
++import (
++	"context"
++	"sync"
++	"testing"
++
++	"github.com/agentstation/starport/internal/sqlstore"
++	"github.com/stretchr/testify/require"
++)
++
++func TestFreshFleetBootstrapPermission(t *testing.T) {
++	w, _, backend := freshTestStores(t)
++	record, err := w.InitializeFresh(t.Context(), backend, "bootstrap", FreshRequest{OperationID: "first", Evidence: "test/fresh"})
++	require.NoError(t, err)
++	require.NoError(t, w.CheckBootstrap(t.Context(), record))
++	for _, field := range []string{"deployment", "epoch", "backend", "evidence"} {
++		other := record
++		switch field {
++		case "deployment":
++			other.DeploymentID += "-other"
++		case "epoch":
++			other.Epoch++
++		case "backend":
++			other.BackendID += "-other"
++		case "evidence":
++			other.Evidence += "-other"
++		}
++		require.ErrorIs(t, w.CheckBootstrap(t.Context(), other), ErrConflict)
++		require.ErrorIs(t, w.ConsumeBootstrap(t.Context(), other), ErrConflict)
++	}
++	canceled, cancel := context.WithCancel(t.Context())
++	cancel()
++	require.Error(t, w.ConsumeBootstrap(canceled, record))
++	require.NoError(t, w.CheckBootstrap(t.Context(), record))
++	const callers = 8
++	results := make(chan error, callers)
++	var work sync.WaitGroup
++	for range callers {
++		work.Go(func() { results <- w.ConsumeBootstrap(t.Context(), record) })
++	}
++	work.Wait()
++	close(results)
++	winners := 0
++	for err := range results {
++		if err == nil {
++			winners++
++		} else {
++			require.ErrorIs(t, err, ErrConflict)
++		}
++	}
++	require.Equal(t, 1, winners)
++	require.ErrorIs(t, w.CheckBootstrap(t.Context(), record), ErrBootstrapConsumed)
++	_, err = w.InitializeFresh(t.Context(), backend, "bootstrap", FreshRequest{OperationID: "first", Evidence: "test/fresh"})
++	require.ErrorIs(t, err, sqlstore.ErrNotFresh)
++	require.ErrorIs(t, w.CheckBootstrap(t.Context(), record), ErrBootstrapConsumed)
++	closed, err := w.Close(t.Context(), record)
++	require.NoError(t, err)
++	require.ErrorIs(t, w.CheckBootstrap(t.Context(), closed), ErrClosed)
++	approved, err := w.Approve(t.Context(), closed, record.BackendID, "reconciled")
++	require.NoError(t, err)
++	require.ErrorIs(t, w.CheckBootstrap(t.Context(), approved), ErrBootstrapConsumed)
++}
++
++func TestRecoveryApprovalCannotInferBootstrap(t *testing.T) {
++	db, err := sqlstore.Open(sqlstore.Config{Type: sqlstore.TypeSQLite})
++	require.NoError(t, err)
++	t.Cleanup(func() { require.NoError(t, db.Close()) })
++	require.NoError(t, db.Migrate(t.Context()))
++	w, err := New(db)
++	require.NoError(t, err)
++	closed, err := w.Initialize(t.Context(), "existing")
++	require.NoError(t, err)
++	approved, err := w.Approve(t.Context(), closed, "backend", "recovery")
++	require.NoError(t, err)
++	require.ErrorIs(t, w.CheckBootstrap(t.Context(), approved), ErrBootstrapConsumed)
++	require.ErrorIs(t, w.ConsumeBootstrap(t.Context(), approved), ErrConflict)
++}
+diff --git a/internal/catalog/recovery/fresh.go b/internal/catalog/recovery/fresh.go
+index 1b0bdaa8..a30dc578 100644
+--- a/internal/catalog/recovery/fresh.go
++++ b/internal/catalog/recovery/fresh.go
+@@ -55,7 +55,7 @@ func (w *Witness) InitializeFresh(ctx context.Context, backend storage.FreshData
+ 		if err := backend.ClaimEmptyDatabase(ctx, identity, "catalog:bootstrap:v1", claim); err != nil {
+ 			return err
+ 		}
+-		_, err := tx.ExecContext(ctx, w.db.Bind(`INSERT INTO catalog_recovery (deployment_id, epoch, gate_open, backend_id, evidence) VALUES (?, 1, 1, ?, ?)`), deployment, identity, request.Evidence)
++		_, err := tx.ExecContext(ctx, w.db.Bind(`INSERT INTO catalog_recovery (deployment_id, epoch, gate_open, backend_id, evidence, bootstrap_allowed) VALUES (?, 1, 1, ?, ?, 1)`), deployment, identity, request.Evidence)
+ 		return err
+ 	})
+ 	if err != nil {
+diff --git a/internal/catalog/recovery/witness.go b/internal/catalog/recovery/witness.go
+index 8e72acd5..f1afad9b 100644
+--- a/internal/catalog/recovery/witness.go
++++ b/internal/catalog/recovery/witness.go
+@@ -125,7 +125,7 @@ func (w *Witness) replace(ctx context.Context, expected, next Record) (Record, e
+ 		return Record{}, err
+ 	}
+ 	result, err := w.db.ExecContext(ctx, w.db.Bind(`UPDATE catalog_recovery
+-SET epoch = ?, gate_open = ?, backend_id = ?, evidence = ?
++SET epoch = ?, gate_open = ?, backend_id = ?, evidence = ?, bootstrap_allowed = 0
+ WHERE deployment_id = ? AND epoch = ? AND gate_open = ? AND backend_id = ? AND evidence = ?`),
+ 		next.Epoch, gateValue(next.Open), next.BackendID, next.Evidence,
+ 		expected.DeploymentID, expected.Epoch, gateValue(expected.Open), expected.BackendID, expected.Evidence)
+diff --git a/internal/catalog/runtime_fleet_test.go b/internal/catalog/runtime_fleet_test.go
+index 2f1df950..ff39ccc3 100644
+--- a/internal/catalog/runtime_fleet_test.go
++++ b/internal/catalog/runtime_fleet_test.go
+@@ -34,6 +34,9 @@ func TestFleetRuntimeRejectsUnapprovedBackend(t *testing.T) {
+ 	require.NoError(t, err)
+ 	_, err = witness.Approve(t.Context(), closed, identity, "isolated-runtime-test")
+ 	require.NoError(t, err)
++	// This isolated fixture explicitly starts unused. Real initialization has its own native tests.
++	_, err = db.ExecContext(t.Context(), db.Bind("UPDATE catalog_recovery SET bootstrap_allowed = 1 WHERE deployment_id = ?"), settings.DeploymentID)
++	require.NoError(t, err)
+ 	fleet, err := NewFleetStore(t.Context(), provider, witness, settings.DeploymentID)
+ 	require.NoError(t, err)
+ 	grant, err := fleet.AcquireLease(t.Context(), "publisher", time.Minute)
+diff --git a/internal/sqlstore/bootstrap_migration_test.go b/internal/sqlstore/bootstrap_migration_test.go
+new file mode 100644
+index 00000000..1b01810e
+--- /dev/null
++++ b/internal/sqlstore/bootstrap_migration_test.go
+@@ -0,0 +1,44 @@
++package sqlstore
++
++import (
++	"io/fs"
++	"os"
++	"strings"
++	"testing"
++	"testing/fstest"
++
++	"github.com/stretchr/testify/require"
++)
++
++func TestCatalogBootstrapMigrationDefaultsToDenied(t *testing.T) {
++	configs := map[string]Config{"sqlite": {Type: TypeSQLite}}
++	if address := os.Getenv("TEST_POSTGRES_URL"); address != "" {
++		configs["postgres"] = isolatedContractConfig(t, Config{Type: TypePostgres, Postgres: PostgresConfig{URL: address}})
++	}
++	for name, config := range configs {
++		t.Run(name, func(t *testing.T) {
++			db, err := Open(config)
++			require.NoError(t, err)
++			t.Cleanup(func() { require.NoError(t, db.Close()) })
++			previous := fstest.MapFS{}
++			err = fs.WalkDir(migrations, "migrations", func(path string, entry fs.DirEntry, err error) error {
++				if err != nil || entry.IsDir() || strings.HasSuffix(path, "0010_catalog_bootstrap.sql") {
++					return err
++				}
++				data, err := fs.ReadFile(migrations, path)
++				previous[path] = &fstest.MapFile{Data: data}
++				return err
++			})
++			require.NoError(t, err)
++			require.NoError(t, db.migrate(t.Context(), previous))
++			_, err = db.ExecContext(t.Context(), "INSERT INTO catalog_recovery (deployment_id, epoch, gate_open, backend_id, evidence) VALUES ('existing', 1, 1, 'backend', 'prior-approval')")
++			require.NoError(t, err)
++			require.NoError(t, db.Migrate(t.Context()))
++			require.NoError(t, db.Migrate(t.Context()))
++			var allowed int
++			err = db.QueryRowContext(t.Context(), "SELECT bootstrap_allowed FROM catalog_recovery WHERE deployment_id = 'existing'").Scan(&allowed)
++			require.NoError(t, err)
++			require.Zero(t, allowed, "migration must not infer fresh permission from pre-existing approval")
++		})
++	}
++}
+diff --git a/internal/sqlstore/migrations/mysql/0010_catalog_bootstrap.sql b/internal/sqlstore/migrations/mysql/0010_catalog_bootstrap.sql
+new file mode 100644
+index 00000000..310b5798
+--- /dev/null
++++ b/internal/sqlstore/migrations/mysql/0010_catalog_bootstrap.sql
+@@ -0,0 +1 @@
++ALTER TABLE catalog_recovery ADD COLUMN bootstrap_allowed INTEGER NOT NULL DEFAULT 0 CHECK (bootstrap_allowed IN (0, 1));
+diff --git a/internal/sqlstore/migrations/postgres/0010_catalog_bootstrap.sql b/internal/sqlstore/migrations/postgres/0010_catalog_bootstrap.sql
+new file mode 100644
+index 00000000..310b5798
+--- /dev/null
++++ b/internal/sqlstore/migrations/postgres/0010_catalog_bootstrap.sql
+@@ -0,0 +1 @@
++ALTER TABLE catalog_recovery ADD COLUMN bootstrap_allowed INTEGER NOT NULL DEFAULT 0 CHECK (bootstrap_allowed IN (0, 1));
+diff --git a/internal/sqlstore/migrations/sqlite/0010_catalog_bootstrap.sql b/internal/sqlstore/migrations/sqlite/0010_catalog_bootstrap.sql
+new file mode 100644
+index 00000000..310b5798
+--- /dev/null
++++ b/internal/sqlstore/migrations/sqlite/0010_catalog_bootstrap.sql
+@@ -0,0 +1 @@
++ALTER TABLE catalog_recovery ADD COLUMN bootstrap_allowed INTEGER NOT NULL DEFAULT 0 CHECK (bootstrap_allowed IN (0, 1));
