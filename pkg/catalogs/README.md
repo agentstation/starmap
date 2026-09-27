@@ -1021,6 +1021,7 @@ func main() {
   - [func \(i \*ProviderInference\) Endpoint\(operation ProviderOperation\) \(ProviderInferenceEndpoint, bool\)](<#ProviderInference.Endpoint>)
   - [func \(i \*ProviderInference\) EndpointURL\(endpoint ProviderInferenceEndpoint, baseURLOverride string\) string](<#ProviderInference.EndpointURL>)
 - [type ProviderInferenceEndpoint](<#ProviderInferenceEndpoint>)
+- [type ProviderInferenceModelEndpoint](<#ProviderInferenceModelEndpoint>)
 - [type ProviderMembershipScope](<#ProviderMembershipScope>)
   - [func \(s ProviderMembershipScope\) Membership\(modelID string\) \(present, known bool\)](<#ProviderMembershipScope.Membership>)
   - [func \(s ProviderMembershipScope\) Validate\(\) error](<#ProviderMembershipScope.Validate>)
@@ -1107,6 +1108,8 @@ func main() {
 - [type ToolChoice](<#ToolChoice>)
   - [func \(tc ToolChoice\) String\(\) string](<#ToolChoice.String>)
 - [type ValuePresence](<#ValuePresence>)
+- [type VideoBilling](<#VideoBilling>)
+- [type VideoBillingBasis](<#VideoBillingBasis>)
 
 
 ## Constants
@@ -1124,7 +1127,7 @@ const (
 
     // CurrentCatalogSchemaVersion identifies the canonical catalog payload
     // schema emitted by this release.
-    CurrentCatalogSchemaVersion uint64 = 18
+    CurrentCatalogSchemaVersion uint64 = 19
 
     // CatalogPayloadMediaType identifies the canonical JSON catalog payload.
     CatalogPayloadMediaType = "application/vnd.agentstation.starmap.catalog+json"
@@ -1247,8 +1250,14 @@ const SpeechBillingSchemaVersion uint64 = 16
 const TextChatBillingSchemaVersion uint64 = 11
 ```
 
+<a name="VideoContractSchemaVersion"></a>VideoContractSchemaVersion adds complete video billing and exact\-model endpoints.
+
+```go
+const VideoContractSchemaVersion uint64 = 19
+```
+
 <a name="CatalogPayloadSchemaVersion"></a>
-## func [CatalogPayloadSchemaVersion](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L138>)
+## func [CatalogPayloadSchemaVersion](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L139>)
 
 ```go
 func CatalogPayloadSchemaVersion(reader Reader) uint64
@@ -1311,7 +1320,7 @@ func NormalizeExtensionFields(fields map[string]any) map[string]any
 NormalizeExtensionFields returns a copy with maps, slices, and numbers normalized to stable dynamic types after JSON/YAML round trips.
 
 <a name="ShallowCopyProviderModels"></a>
-## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L489>)
+## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L490>)
 
 ```go
 func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model
@@ -1320,7 +1329,7 @@ func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model
 ShallowCopyProviderModels copies a provider's Models map while sharing its Model pointers. It returns nil for a nil input map.
 
 <a name="SupportsCatalogSchema"></a>
-## func [SupportsCatalogSchema](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L132>)
+## func [SupportsCatalogSchema](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L133>)
 
 ```go
 func SupportsCatalogSchema(version uint64) bool
@@ -1328,7 +1337,7 @@ func SupportsCatalogSchema(version uint64) bool
 
 SupportsCatalogSchema reports the formats this release can read and enforce. Versions 7 through 9 add scopes, removals, and aliases. Version 10 adds billing units. Versions 11 and 12 add complete text\-chat and embedding charge declarations. Versions 13 and 14 add complete recognition and moderation charge declarations.
 
-Version 15 adds complete rerank charge declarations. Version 16 adds character\-priced speech declarations. Version 17 adds image charge units. Version 18 adds input and output duration prices.
+Version 15 adds complete rerank charge declarations. Version 16 adds character\-priced speech declarations. Version 17 adds image charge units. Version 18 adds input and output duration prices. Version 19 adds video billing and exact\-model inference endpoints.
 
 <a name="ValidateCatalogAuthorityIdentity"></a>
 ## func [ValidateCatalogAuthorityIdentity](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L74>)
@@ -1630,7 +1639,7 @@ func (id AuthorID) String() string
 String returns text for AuthorID.
 
 <a name="AuthorMapping"></a>
-## type [AuthorMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L106-L109>)
+## type [AuthorMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L108-L111>)
 
 AuthorMapping defines how to extract and normalize authors.
 
@@ -2445,7 +2454,7 @@ const (
 ```
 
 <a name="CapabilityMapping"></a>
-## type [CapabilityMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L98-L103>)
+## type [CapabilityMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L100-L105>)
 
 CapabilityMapping maps one typed provider predicate to each canonical fact that the cited provider contract entails.
 
@@ -3035,7 +3044,7 @@ func (c ConsumerCompatibility) SupportsSchema(schemaVersion uint64) bool
 SupportsSchema reports whether a consumer catalog schema is compatible.
 
 <a name="EmbeddingBilling"></a>
-## type [EmbeddingBilling](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L138-L141>)
+## type [EmbeddingBilling](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L139-L142>)
 
 EmbeddingBilling declares all charges for synchronous text or token\-ID embeddings. The input\_tokens basis uses the complete input count and the ordinary input price. RequestCharge declares whether Operations.Request also applies. This contract excludes media inputs and provider\-side batch discounts. Vector dimensions do not change the declared token rate.
 
@@ -3047,7 +3056,7 @@ type EmbeddingBilling struct {
 ```
 
 <a name="EmbeddingBillingBasis"></a>
-## type [EmbeddingBillingBasis](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L144>)
+## type [EmbeddingBillingBasis](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L145>)
 
 EmbeddingBillingBasis identifies the units for embedding charges.
 
@@ -3093,11 +3102,13 @@ const (
     EndpointTypeVoyage EndpointType = "voyage"
     // EndpointTypeMistralOCR represents the Mistral document recognition protocol.
     EndpointTypeMistralOCR EndpointType = "mistral-ocr"
+    // EndpointTypeDeepInfraVideo returns video bytes and measured duration in one response.
+    EndpointTypeDeepInfraVideo EndpointType = "deepinfra-video"
 )
 ```
 
 <a name="FieldMapping"></a>
-## type [FieldMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L76-L79>)
+## type [FieldMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L78-L81>)
 
 FieldMapping defines how to map API response fields to model fields. Type conversion is automatic based on the destination field type.
 
@@ -4203,12 +4214,13 @@ type ModelAttachments struct {
 ```
 
 <a name="ModelBilling"></a>
-## type [ModelBilling](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L40-L48>)
+## type [ModelBilling](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L40-L49>)
 
 ModelBilling declares provider billing units independently of current prices. A missing operation record means that its billing basis is unknown.
 
 ```go
 type ModelBilling struct {
+    Videos      *VideoBilling       `json:"videos,omitempty" yaml:"videos,omitempty"`
     Images      *ImageBilling       `json:"images,omitempty" yaml:"images,omitempty"`
     Speech      *SpeechBilling      `json:"speech,omitempty" yaml:"speech,omitempty"`
     Rerank      *RerankBilling      `json:"rerank,omitempty" yaml:"rerank,omitempty"`
@@ -4220,7 +4232,7 @@ type ModelBilling struct {
 ```
 
 <a name="ModelBilling.Validate"></a>
-### func \(\*ModelBilling\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L196>)
+### func \(\*ModelBilling\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L197>)
 
 ```go
 func (b *ModelBilling) Validate() error
@@ -5808,7 +5820,7 @@ type ModelsReader interface {
 ```
 
 <a name="ModerationBilling"></a>
-## type [ModerationBilling](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L53-L55>)
+## type [ModerationBilling](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L54-L56>)
 
 ModerationBilling declares all charges for one synchronous text moderation request. The requests basis uses Operations.Request, including an explicit zero price. It does not declare token consumption or grant moderation capability.
 
@@ -5819,7 +5831,7 @@ type ModerationBilling struct {
 ```
 
 <a name="ModerationBillingBasis"></a>
-## type [ModerationBillingBasis](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L58>)
+## type [ModerationBillingBasis](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L59>)
 
 ModerationBillingBasis identifies the units for moderation charges.
 
@@ -6204,7 +6216,7 @@ func DeepCopyProvider(provider Provider) Provider
 DeepCopyProvider creates a deep copy of a Provider including its Models map.
 
 <a name="Provider.BindCatalogEndpoint"></a>
-### func \(\*Provider\) [BindCatalogEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L459>)
+### func \(\*Provider\) [BindCatalogEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L468>)
 
 ```go
 func (p *Provider) BindCatalogEndpoint(bindings map[string]string) (string, error)
@@ -6213,7 +6225,7 @@ func (p *Provider) BindCatalogEndpoint(bindings map[string]string) (string, erro
 BindCatalogEndpoint resolves catalog\-declared endpoint variables.
 
 <a name="Provider.CatalogEndpointURL"></a>
-### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L451>)
+### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L460>)
 
 ```go
 func (p *Provider) CatalogEndpointURL() string
@@ -6222,7 +6234,7 @@ func (p *Provider) CatalogEndpointURL() string
 CatalogEndpointURL returns the resolved model catalog endpoint URL.
 
 <a name="Provider.IsCatalogAuthRequired"></a>
-### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L446>)
+### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L455>)
 
 ```go
 func (p *Provider) IsCatalogAuthRequired() bool
@@ -6231,7 +6243,7 @@ func (p *Provider) IsCatalogAuthRequired() bool
 IsCatalogAuthRequired reports whether catalog acquisition requires credentials.
 
 <a name="Provider.Model"></a>
-### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L496>)
+### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L505>)
 
 ```go
 func (p *Provider) Model(modelID string) (*Model, error)
@@ -6261,7 +6273,7 @@ type ProviderAWSDefaultProtocolOptions struct {
 ```
 
 <a name="ProviderAnthropicCatalogProtocolOptions"></a>
-## type [ProviderAnthropicCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L145-L147>)
+## type [ProviderAnthropicCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L147-L149>)
 
 ProviderAnthropicCatalogProtocolOptions defines Anthropic wire\-version facts.
 
@@ -6312,7 +6324,7 @@ type ProviderAuthenticationProtocolOptions struct {
 ```
 
 <a name="ProviderCapabilityCombination"></a>
-## type [ProviderCapabilityCombination](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L83>)
+## type [ProviderCapabilityCombination](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L85>)
 
 ProviderCapabilityCombination defines how multiple source predicates prove one canonical capability.
 
@@ -6336,7 +6348,7 @@ const (
 ```
 
 <a name="ProviderCatalog"></a>
-## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L150-L153>)
+## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L152-L155>)
 
 ProviderCatalog represents information about a provider's models.
 
@@ -6348,7 +6360,7 @@ type ProviderCatalog struct {
 ```
 
 <a name="ProviderCatalogProtocolOptions"></a>
-## type [ProviderCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L122-L125>)
+## type [ProviderCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L124-L127>)
 
 ProviderCatalogProtocolOptions is a typed union of catalog\-transport facts.
 
@@ -6561,7 +6573,7 @@ type ProviderCredentials struct {
 ```
 
 <a name="ProviderEndpoint"></a>
-## type [ProviderEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L112-L119>)
+## type [ProviderEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L114-L121>)
 
 ProviderEndpoint configures how to access the provider's model catalog.
 
@@ -6589,7 +6601,7 @@ type ProviderGoogleDefaultProtocolOptions struct {
 ```
 
 <a name="ProviderGovernancePolicy"></a>
-## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L402-L406>)
+## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L411-L415>)
 
 ProviderGovernancePolicy represents oversight and moderation practices.
 
@@ -6602,7 +6614,7 @@ type ProviderGovernancePolicy struct {
 ```
 
 <a name="ProviderHealthComponent"></a>
-## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L319-L322>)
+## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L328-L331>)
 
 ProviderHealthComponent represents a specific component to monitor in a provider's health API. The ID is the identifier the health API uses for the component: a Statuspage component id, a Hyperping service publicId, or a Google Cloud product id.
 
@@ -6614,7 +6626,7 @@ type ProviderHealthComponent struct {
 ```
 
 <a name="ProviderID"></a>
-## type [ProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L325>)
+## type [ProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L334>)
 
 ProviderID represents a provider identifier type for compile\-time safety.
 
@@ -6664,7 +6676,7 @@ const (
 ```
 
 <a name="ProviderID.String"></a>
-### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L328>)
+### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L337>)
 
 ```go
 func (pid ProviderID) String() string
@@ -6688,7 +6700,7 @@ type ProviderInference struct {
 ```
 
 <a name="ProviderInference.BindOfferingEndpoint"></a>
-### func \(\*ProviderInference\) [BindOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L263-L267>)
+### func \(\*ProviderInference\) [BindOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L272-L276>)
 
 ```go
 func (i *ProviderInference) BindOfferingEndpoint(endpoint ProviderOfferingEndpoint, baseURLOverride string, bindings map[string]string) (ProviderOfferingEndpoint, error)
@@ -6697,7 +6709,7 @@ func (i *ProviderInference) BindOfferingEndpoint(endpoint ProviderOfferingEndpoi
 BindOfferingEndpoint applies runtime endpoint bindings to one immutable offering endpoint. Catalog data owns URL templates. Consumers supply only tenant\-specific values and an optional base URL override.
 
 <a name="ProviderInference.Endpoint"></a>
-### func \(\*ProviderInference\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L234>)
+### func \(\*ProviderInference\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L243>)
 
 ```go
 func (i *ProviderInference) Endpoint(operation ProviderOperation) (ProviderInferenceEndpoint, bool)
@@ -6706,7 +6718,7 @@ func (i *ProviderInference) Endpoint(operation ProviderOperation) (ProviderInfer
 Endpoint returns the endpoint for an exact inference operation.
 
 <a name="ProviderInference.EndpointURL"></a>
-### func \(\*ProviderInference\) [EndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L247>)
+### func \(\*ProviderInference\) [EndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L256>)
 
 ```go
 func (i *ProviderInference) EndpointURL(endpoint ProviderInferenceEndpoint, baseURLOverride string) string
@@ -6715,19 +6727,33 @@ func (i *ProviderInference) EndpointURL(endpoint ProviderInferenceEndpoint, base
 EndpointURL resolves an endpoint against a runtime base URL override.
 
 <a name="ProviderInferenceEndpoint"></a>
-## type [ProviderInferenceEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L223-L231>)
+## type [ProviderInferenceEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L231-L240>)
 
 ProviderInferenceEndpoint defines one operation path and wire protocol.
 
 ```go
 type ProviderInferenceEndpoint struct {
-    Operation           ProviderOperation         `json:"operation" yaml:"operation"`
-    Type                EndpointType              `json:"type" yaml:"type"`
-    Path                string                    `json:"path" yaml:"path"`
-    StreamPath          string                    `json:"stream_path,omitempty" yaml:"stream_path,omitempty"`
-    ProtocolsByAuthor   map[AuthorID]EndpointType `json:"protocols_by_author,omitempty" yaml:"protocols_by_author,omitempty"`
-    PathsByAuthor       map[AuthorID]string       `json:"paths_by_author,omitempty" yaml:"paths_by_author,omitempty"`
-    StreamPathsByAuthor map[AuthorID]string       `json:"stream_paths_by_author,omitempty" yaml:"stream_paths_by_author,omitempty"`
+    OverridesByModel    map[ProviderModelID]ProviderInferenceModelEndpoint `json:"overrides_by_model,omitempty" yaml:"overrides_by_model,omitempty"`
+    Operation           ProviderOperation                                  `json:"operation" yaml:"operation"`
+    Type                EndpointType                                       `json:"type" yaml:"type"`
+    Path                string                                             `json:"path" yaml:"path"`
+    StreamPath          string                                             `json:"stream_path,omitempty" yaml:"stream_path,omitempty"`
+    ProtocolsByAuthor   map[AuthorID]EndpointType                          `json:"protocols_by_author,omitempty" yaml:"protocols_by_author,omitempty"`
+    PathsByAuthor       map[AuthorID]string                                `json:"paths_by_author,omitempty" yaml:"paths_by_author,omitempty"`
+    StreamPathsByAuthor map[AuthorID]string                                `json:"stream_paths_by_author,omitempty" yaml:"stream_paths_by_author,omitempty"`
+}
+```
+
+<a name="ProviderInferenceModelEndpoint"></a>
+## type [ProviderInferenceModelEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L224-L228>)
+
+ProviderInferenceModelEndpoint replaces the complete endpoint for an exact model ID. An override takes precedence over provider and author defaults.
+
+```go
+type ProviderInferenceModelEndpoint struct {
+    Type       EndpointType `json:"type" yaml:"type"`
+    Path       string       `json:"path" yaml:"path"`
+    StreamPath string       `json:"stream_path,omitempty" yaml:"stream_path,omitempty"`
 }
 ```
 
@@ -6781,7 +6807,7 @@ type ProviderModelID string
 ```
 
 <a name="ProviderModerator"></a>
-## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L409>)
+## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L418>)
 
 ProviderModerator represents a moderator for a provider.
 
@@ -6822,7 +6848,7 @@ const (
 ```
 
 <a name="ProviderModerator.String"></a>
-### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L412>)
+### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L421>)
 
 ```go
 func (pm ProviderModerator) String() string
@@ -6975,7 +7001,7 @@ type ProviderOfferingServiceCapabilities struct {
 ```
 
 <a name="ProviderOpenAICatalogProtocolOptions"></a>
-## type [ProviderOpenAICatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L140-L142>)
+## type [ProviderOpenAICatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L142-L144>)
 
 ProviderOpenAICatalogProtocolOptions defines OpenAI\-compatible payload facts.
 
@@ -6986,7 +7012,7 @@ type ProviderOpenAICatalogProtocolOptions struct {
 ```
 
 <a name="ProviderOperation"></a>
-## type [ProviderOperation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L156>)
+## type [ProviderOperation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L158>)
 
 ProviderOperation identifies one provider inference operation.
 
@@ -7012,9 +7038,7 @@ const (
     ProviderOperationAudioTranscriptions ProviderOperation = "audio-transcriptions"
     // ProviderOperationAudioTranslations transcribes speech into English.
     ProviderOperationAudioTranslations ProviderOperation = "audio-translations"
-    // ProviderOperationVideosGenerations generates a video from a prompt. The
-    // provider answers with a job rather than a video, so a consumer submits,
-    // polls, and collects.
+    // ProviderOperationVideosGenerations generates video through the selected endpoint protocol.
     ProviderOperationVideosGenerations ProviderOperation = "videos-generations"
     // ProviderOperationDocumentsRecognition reads the text off a document that
     // carries none. A document with a text layer needs no model at all, so this
@@ -7033,7 +7057,7 @@ const (
 ```
 
 <a name="ProviderPrivacyPolicy"></a>
-## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L387-L392>)
+## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L396-L401>)
 
 ProviderPrivacyPolicy represents data collection and usage practices.
 
@@ -7059,7 +7083,7 @@ type ProviderRequestOverrides struct {
 ```
 
 <a name="ProviderRetentionPolicy"></a>
-## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L395-L399>)
+## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L404-L408>)
 
 ProviderRetentionPolicy describes data retention duration and deletion practices.
 
@@ -7072,7 +7096,7 @@ type ProviderRetentionPolicy struct {
 ```
 
 <a name="ProviderRetentionType"></a>
-## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L371>)
+## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L380>)
 
 ProviderRetentionType represents different types of data retention policies.
 
@@ -7092,7 +7116,7 @@ const (
 ```
 
 <a name="ProviderRetentionType.String"></a>
-### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L374>)
+### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L383>)
 
 ```go
 func (prt ProviderRetentionType) String() string
@@ -7101,7 +7125,7 @@ func (prt ProviderRetentionType) String() string
 String returns text for ProviderRetentionType.
 
 <a name="ProviderTokenPriceUnit"></a>
-## type [ProviderTokenPriceUnit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L128>)
+## type [ProviderTokenPriceUnit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L130>)
 
 ProviderTokenPriceUnit identifies the unit used by one provider payload.
 
@@ -7428,7 +7452,7 @@ type Reader interface {
 ```
 
 <a name="RecognitionBilling"></a>
-## type [RecognitionBilling](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L174-L182>)
+## type [RecognitionBilling](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L175-L183>)
 
 RecognitionBilling declares actual units and optional display assumptions. It does not grant recognition capability or supply a price.
 
@@ -7445,7 +7469,7 @@ type RecognitionBilling struct {
 ```
 
 <a name="RecognitionBillingBasis"></a>
-## type [RecognitionBillingBasis](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L163>)
+## type [RecognitionBillingBasis](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L164>)
 
 RecognitionBillingBasis identifies the units used to settle document recognition.
 
@@ -7465,7 +7489,7 @@ const (
 ```
 
 <a name="RecognitionInputPageEstimate"></a>
-## type [RecognitionInputPageEstimate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L188-L192>)
+## type [RecognitionInputPageEstimate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L189-L193>)
 
 RecognitionInputPageEstimate describes an estimated input token count per page. Consumers must label a derived price as an estimate, retain its assumptions, and use the selected input rate and currency. It excludes output and must never replace measured usage for settlement.
 
@@ -7710,7 +7734,7 @@ const SpeechBillingCodePoints SpeechBillingBasis = "unicode_code_points"
 ```
 
 <a name="TextChatBilling"></a>
-## type [TextChatBilling](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L95-L99>)
+## type [TextChatBilling](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L96-L100>)
 
 TextChatBilling declares every charge for online text chat at the default service level. Input and Output partition the complete token totals into disjoint price classes. Each list must include its ordinary class. A class absent from the list has no separate charge. Reasoning uses the output rate unless Output explicitly declares a separate reasoning class.
 
@@ -7725,7 +7749,7 @@ type TextChatBilling struct {
 ```
 
 <a name="TokenBillingClass"></a>
-## type [TokenBillingClass](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L71>)
+## type [TokenBillingClass](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_billing.go#L72>)
 
 TokenBillingClass names a disjoint token class and its ModelTokenPricing field.
 
@@ -7861,6 +7885,37 @@ const (
     // ValueKnown means a field has a supplied value, including its zero value.
     ValueKnown
 )
+```
+
+<a name="VideoBilling"></a>
+## type [VideoBilling](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/video_billing.go#L18-L25>)
+
+VideoBilling declares complete output\-duration charges for the permitted inputs. OutputSecond supplies USD per provider\-reported output second. Seconds and Sizes delimit this price contract, not all possible model inputs. There are no separate token, image, audio, quality, seed, or input charges. RequestCharge explicitly declares whether Operations.Request also applies. A missing contract is unknown and cannot authorize budgeted dispatch.
+
+```go
+type VideoBilling struct {
+    Basis          VideoBillingBasis `json:"basis" yaml:"basis"`
+    DefaultSeconds int64             `json:"default_seconds" yaml:"default_seconds"`
+    Seconds        []int64           `json:"seconds" yaml:"seconds"`
+    DefaultSize    string            `json:"default_size" yaml:"default_size"`
+    Sizes          []string          `json:"sizes" yaml:"sizes"`
+    RequestCharge  *bool             `json:"request_charge" yaml:"request_charge"`
+}
+```
+
+<a name="VideoBillingBasis"></a>
+## type [VideoBillingBasis](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/video_billing.go#L28>)
+
+VideoBillingBasis identifies the measured video charge unit.
+
+```go
+type VideoBillingBasis string
+```
+
+<a name="VideoBillingOutputSeconds"></a>VideoBillingOutputSeconds charges measured output duration, including zero.
+
+```go
+const VideoBillingOutputSeconds VideoBillingBasis = "output_seconds"
 ```
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)

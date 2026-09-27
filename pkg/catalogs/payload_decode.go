@@ -211,6 +211,17 @@ func decodePayloadProviders(
 				Field: "providers.id", Value: provider.ID, Message: "must be unique",
 			}
 		}
+		if payload.SchemaVersion < VideoContractSchemaVersion && provider.Inference != nil {
+			for _, endpoint := range provider.Inference.Endpoints {
+				requiresVideoSchema := len(endpoint.OverridesByModel) != 0 || endpoint.Type == EndpointTypeDeepInfraVideo
+				for _, protocol := range endpoint.ProtocolsByAuthor {
+					requiresVideoSchema = requiresVideoSchema || protocol == EndpointTypeDeepInfraVideo
+				}
+				if requiresVideoSchema {
+					return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "provider.inference", Message: "requires catalog schema version 19"}
+				}
+			}
+		}
 		provider.Models = nil
 		if err := builder.SetProvider(provider); err != nil {
 			return sourcepayload.RecordReport{}, errors.WrapResource("decode", "provider", string(provider.ID), err)
@@ -267,6 +278,9 @@ func validatePayloadBillingSchema(model Model, version uint64) error {
 	operations := &ModelOperationPricing{}
 	if model.Pricing != nil && model.Pricing.Operations != nil {
 		operations = model.Pricing.Operations
+	}
+	if version < VideoContractSchemaVersion && billing.Videos != nil {
+		return &errors.ValidationError{Field: "billing.videos", Message: "requires catalog schema version 19"}
 	}
 	if version < MediaDurationPricingSchemaVersion && (operations.InputSecond != nil || operations.OutputSecond != nil) {
 		return &errors.ValidationError{Field: "pricing.operations", Message: "duration prices require catalog schema version 18"}

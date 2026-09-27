@@ -132,6 +132,15 @@ func (p Provider) ValidateContract() error {
 				}
 			}
 		}
+		for modelID, override := range endpoint.OverridesByModel {
+			if err := validateProviderModelPathID(string(modelID)); err != nil {
+				return providerContractError("provider.inference.overrides_by_model", modelID, "requires an exact provider model ID")
+			}
+			if !validEndpointType(override.Type) || !strings.HasPrefix(override.Path, "/") ||
+				(override.StreamPath != "" && !strings.HasPrefix(override.StreamPath, "/")) {
+				return providerContractError("provider.inference.overrides_by_model", modelID, "requires a supported protocol and absolute paths")
+			}
+		}
 		seen[endpoint.Operation] = struct{}{}
 	}
 	if err := validateHealthAPI(p.Inference); err != nil {
@@ -271,7 +280,7 @@ func validateCatalogProtocolOptions(endpoint ProviderEndpoint) error {
 				"is required",
 			)
 		}
-	case EndpointTypeOllama, EndpointTypeCohere, EndpointTypeVoyage, EndpointTypeMistralOCR:
+	case EndpointTypeOllama, EndpointTypeCohere, EndpointTypeVoyage, EndpointTypeMistralOCR, EndpointTypeDeepInfraVideo:
 		return providerContractError(
 			"provider.catalog.endpoint.type",
 			endpoint.Type,
@@ -298,7 +307,7 @@ func validEndpointType(endpointType EndpointType) bool {
 		EndpointTypeOllama,
 		EndpointTypeCohere,
 		EndpointTypeVoyage,
-		EndpointTypeMistralOCR:
+		EndpointTypeMistralOCR, EndpointTypeDeepInfraVideo:
 		return true
 	default:
 		return false

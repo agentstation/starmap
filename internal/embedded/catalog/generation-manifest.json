@@ -1,16 +1,16 @@
 {
   "manifest_version": 2,
-  "schema_version": 18,
-  "generation_id": "media-duration-pricing-6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1",
-  "generated_at": "2026-09-27T18:37:34.547756Z",
+  "schema_version": 19,
+  "generation_id": "video-billing-contract-669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf",
+  "generated_at": "2026-09-27T20:20:42.870634Z",
   "payload": {
-    "checksum": "sha256:6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1",
-    "size_bytes": 26427664,
+    "checksum": "sha256:669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf",
+    "size_bytes": 26427881,
     "media_type": "application/vnd.agentstation.starmap.catalog+json"
   },
   "validation": {
-    "validator_version": "starmap-media-duration-pricing-v1",
-    "validated_at": "2026-09-27T18:37:34.547756Z",
+    "validator_version": "starmap-video-billing-contract-v1",
+    "validated_at": "2026-09-27T20:20:42.870634Z",
     "status": "passed",
     "error_count": 0,
     "warning_count": 0,
@@ -21,7 +21,7 @@
       }
     ]
   },
-  "sync_run_id": "media-duration-pricing-6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1",
+  "sync_run_id": "video-billing-contract-669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf",
   "source_observations": [
     {
       "source": "models_dev_http",
@@ -394,6 +394,18 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "video-billing-contract-669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf",
+      "observed_at": "2026-09-27T20:20:42.870634Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf"
     }
   ],
   "review_candidates": [
@@ -4433,7 +4445,7 @@
   "completeness": "complete",
   "degraded": false,
   "consumer_compatibility": {
-    "min_schema_version": 18,
-    "max_schema_version": 18
+    "min_schema_version": 19,
+    "max_schema_version": 19
   }
 }

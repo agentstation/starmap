@@ -473,32 +473,36 @@
           zai-org/*: zhipu-ai
   status_page_url: https://status.deepinfra.com
   inference:
-    base_url: https://api.deepinfra.com/v1/openai
+    base_url: https://api.deepinfra.com/v1
     endpoints:
     - operation: chat-completions
       type: openai
-      path: /chat/completions
+      path: /openai/chat/completions
     - operation: embeddings
       type: openai
-      path: /embeddings
+      path: /openai/embeddings
     - operation: images-generations
       type: openai
-      path: /images/generations
+      path: /openai/images/generations
     - operation: images-edits
       type: openai
-      path: /images/edits
+      path: /openai/images/edits
     - operation: audio-speech
       type: openai
-      path: /audio/speech
+      path: /openai/audio/speech
     - operation: audio-transcriptions
       type: openai
-      path: /audio/transcriptions
+      path: /openai/audio/transcriptions
     - operation: audio-translations
       type: openai
-      path: /audio/translations
+      path: /openai/audio/translations
     - operation: videos-generations
       type: openai
-      path: /videos
+      path: /openai/videos
+      overrides_by_model:
+        Wan-AI/Wan2.2-T2V-A14B:
+          type: deepinfra-video
+          path: /inference/{provider_model_id}
     health_api_url: https://status.deepinfra.com/status.json
     health_api_kind: hyperping
     health_components:

@@ -38,6 +38,7 @@ const MediaDurationPricingSchemaVersion uint64 = 18
 // ModelBilling declares provider billing units independently of current prices.
 // A missing operation record means that its billing basis is unknown.
 type ModelBilling struct {
+	Videos      *VideoBilling       `json:"videos,omitempty" yaml:"videos,omitempty"`
 	Images      *ImageBilling       `json:"images,omitempty" yaml:"images,omitempty"`
 	Speech      *SpeechBilling      `json:"speech,omitempty" yaml:"speech,omitempty"`
 	Rerank      *RerankBilling      `json:"rerank,omitempty" yaml:"rerank,omitempty"`
@@ -197,6 +198,9 @@ func (b *ModelBilling) Validate() error {
 	if b == nil {
 		return nil
 	}
+	if err := b.Videos.validate(); err != nil {
+		return err
+	}
 	if err := b.Images.validate(); err != nil {
 		return err
 	}
@@ -260,6 +264,12 @@ func deepCopyModelBilling(billing *ModelBilling) *ModelBilling {
 	copied := copyPtr(billing)
 	if copied == nil {
 		return nil
+	}
+	copied.Videos = copyPtr(billing.Videos)
+	if copied.Videos != nil {
+		copied.Videos.RequestCharge = copyPtr(billing.Videos.RequestCharge)
+		copied.Videos.Seconds = slices.Clone(billing.Videos.Seconds)
+		copied.Videos.Sizes = slices.Clone(billing.Videos.Sizes)
 	}
 	copied.Images = copyPtr(billing.Images)
 	if copied.Images != nil {

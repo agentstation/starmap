@@ -423,6 +423,7 @@ func deepCopyProviderInference(inference *ProviderInference) *ProviderInference 
 	copied := *inference
 	copied.Endpoints = append([]ProviderInferenceEndpoint(nil), inference.Endpoints...)
 	for index := range copied.Endpoints {
+		copied.Endpoints[index].OverridesByModel = copyMap(inference.Endpoints[index].OverridesByModel)
 		copied.Endpoints[index].ProtocolsByAuthor = copyMap(inference.Endpoints[index].ProtocolsByAuthor)
 		copied.Endpoints[index].PathsByAuthor = copyMap(inference.Endpoints[index].PathsByAuthor)
 		copied.Endpoints[index].StreamPathsByAuthor = copyMap(inference.Endpoints[index].StreamPathsByAuthor)

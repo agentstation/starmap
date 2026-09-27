@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: media-duration-pricing-6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1
-catalog_digest: sha256:6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1
+generation_id: video-billing-contract-669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf
+catalog_digest: sha256:669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -99,8 +99,8 @@ models:
             - videos-generations
         service_endpoints:
           - operation: videos-generations
-            type: openai
-            url: https://api.deepinfra.com/v1/openai/videos
+            type: deepinfra-video
+            url: https://api.deepinfra.com/v1/inference/Wan-AI/Wan2.2-T2V-A14B
   - model: alibaba/wan2.6-image
     endpoints:
       - provider: alibaba
