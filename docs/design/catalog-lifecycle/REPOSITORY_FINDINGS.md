@@ -4197,3 +4197,26 @@ Token-billed recognition retains its bound checks. This correction does not add 
 The [duration proof](../../plans/proof/starport-production-catalog/csp12.2/media-duration-units-2026-09-27/verification.json) owns the source revisions, failed attempts, check counts, and remaining limits.
 Global live-provider qualification still fails outside DeepInfra. Missing credentials and stale fixtures remain recorded.
 Complete video billing, pinned asynchronous valuation, required settlement, and full task qualification remain open under CSP12.2.
+
+## September 27 retained settlement recovery
+
+The ledger retained measured usage after a settlement failure, but application startup did not retry it.
+The startup regression reproduced an unchanged uncertain reservation before the worker existed.
+The new worker uses the original storage authority and starts only with the application runtime.
+Shutdown waits for it before storage closes. Each pass limits work and elapsed time.
+
+Native scans retain their continuation and unread entries between passes. Corrupt records do not prevent unrelated settlement.
+Badger and Valkey tests cover concurrent workers, lost acknowledgements, missing usage, and more than one thousand records.
+A Badger reopen test recovers retained evidence. Process-loss qualification remains open.
+
+The pure-Go check exposed a concurrent settlement defect.
+A worker could read an old attempt followed by newly settled balances and report unavailable state.
+The repair retries only when the attempt changed between reads. Unchanged inconsistent balances still refuse settlement.
+A deterministic regression reproduces this race on both native backends.
+
+The independent approval test uses SQLite with Valkey. A closed or changed approval prevents old-worker settlement.
+It does not qualify the primary PostgreSQL fleet recipe or failover.
+Full-history traversal adds background reads. Capacity qualification must measure recovery delay and request interference before production acceptance.
+
+The [recovery proof](../../plans/proof/starport-production-catalog/csp12.2/retained-settlement-recovery-2026-09-27/verification.json) records exact results and source hashes.
+Missing provider evidence remains unresolved. Complete asynchronous billing, interrupted batches, and full CSP12.2 qualification remain open.

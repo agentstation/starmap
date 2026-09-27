@@ -413,3 +413,13 @@ Consumer `1143dfb0` retains unresolved provider work after local polling exhaust
 An explicit provider check can recover a confirmed handle without resubmitting generation.
 The [polling proof](../../plans/proof/starport-production-catalog/csp12.2/polling-recovery-2026-09-27/verification.json) covers both HTTP families and native storage.
 Background reconciliation, uncertain handles, billing settlement, and retention horizons remain required.
+
+## Retained settlement recovery
+
+The reservation worker now retries durable measured usage through its original authority.
+It preserves selected prices and windows, missing usage, and independent recovery approval.
+The [recovery proof](../../plans/proof/starport-production-catalog/csp12.2/retained-settlement-recovery-2026-09-27/verification.json) records startup, native storage, pagination, concurrency, and restart checks.
+
+This worker consumes evidence already in the reservation ledger. It does not query providers or reconstruct missing usage.
+Required asynchronous settlement still needs complete billing contracts, pinned valuation, and durable provider evidence.
+Process-loss, failover, capacity, PostgreSQL, and final production-path qualification remain required under CSP12.2 and CSP15.

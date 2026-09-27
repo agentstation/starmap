@@ -1,0 +1,285 @@
+{
+  "recorded_at": "2026-09-27T19:08:53.571312+00:00",
+  "task": "CSP12.2",
+  "status": "in_progress",
+  "component": "retained measured-usage settlement recovery",
+  "producer": {
+    "path": "/private/tmp/starmap-fleet-review-20260926",
+    "commit": "cf5b62f172cd12abef4bc347c5c3fb56743d612c"
+  },
+  "consumer": {
+    "path": "/private/tmp/starport-fleet-review-20260926",
+    "commit": "5ef8e57955d8ce69f287ab9062f83f346ced46f5",
+    "parent": "06982eb21083fdb7c3d19deba687202dfd611ba7",
+    "source_sha256": {
+      "internal/app/app.go": "609ce0e16515b43721cebbe4293b93f15fda10a0ec1d1c7998c24df0f72412b9",
+      "internal/app/budget.go": "b4d3f1036db1461ff14dab0453ec0add8687fa6b95c4a9c40e2180663f3b525c",
+      "internal/app/budget_recovery_test.go": "d4f3f9cfaab01d896c69acb58b2ac1a846a51c207b3c39c87f474e67874e7f66",
+      "internal/limits/reservation/pending_test.go": "1984fc41ca837ceea5ede901131f475c762094fef1cb44f02d12c67b3fe3a15b",
+      "internal/limits/reservation/recovery.go": "b47a23f053870fae122e54ef8200366a0f2dddfed124bcd9fa1014479af9bad2",
+      "internal/limits/reservation/repository.go": "82d9fb7f104e8a16e00c0a49e415eb0f106d47413b9bdda1d705f04d26b7475e",
+      "internal/limits/reservation/retained_recovery_test.go": "bfb579457f42e8a16b9eaa9e620c98a6eabd18e1cb42dac30d9a06f515a8051f",
+      "internal/limits/reservation/transitions.go": "93d793ed2de1ac468013712e3864993f318b032e9919bef07c3e30e1c45ff16c"
+    }
+  },
+  "environment": {
+    "go": "1.27.1",
+    "GOWORK": "/tmp/csp122-billing.work",
+    "TEST_VALKEY_URL": "redis://127.0.0.1:51487",
+    "native_platform": "darwin/arm64",
+    "sql_approval_test": "SQLite with native Valkey"
+  },
+  "commands": {
+    "ledger-qualified": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -race -json -count=1 -timeout 3m ./internal/limits/reservation",
+    "purego-qualified": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -json -count=1 -timeout 3m ./internal/limits/reservation -run '^TestRecovery|^TestRetainedUsageSurvivesRestart$'",
+    "app-regression": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -race -json -count=1 -timeout 5m ./internal/app -run 'TestRun|Test.*Budget|TestApplicationOwnsAuthorization'",
+    "startup-qualified": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout 2m ./internal/app -run '^TestRunRecoversRetainedBudgetEvidence$'",
+    "lint-qualified": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 make lint",
+    "vet-qualified": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 go vet ./internal/limits/reservation ./internal/app",
+    "concurrency-fail-before": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -overlay /tmp/csp122-recovery-before-overlay.json -json -count=1 -timeout 2m ./internal/limits/reservation -run '^TestRecoveryHandlesConcurrentSettlementBetweenReads$'"
+  },
+  "checks": [
+    {
+      "name": "fail-before",
+      "description": "Startup regression before application recovery wiring",
+      "exit_status": 1,
+      "artifact": "fail-before.jsonl.gz",
+      "sha256": "5043cf406aa418ca10bdd7b291a0004c392d05063d0a5d3187d92c0741827513",
+      "test_results": {
+        "fail": 1
+      },
+      "failures": [
+        "TestRunRecoversRetainedBudgetEvidence"
+      ],
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "action": "fail",
+          "elapsed": 4.99
+        }
+      ]
+    },
+    {
+      "name": "concurrency-fail-before",
+      "description": "Deterministic read race with HEAD-before-work transitions.go overlay",
+      "exit_status": 1,
+      "artifact": "concurrency-fail-before.jsonl.gz",
+      "sha256": "19f995ab936630f99ec915d7b7d9ad00bd3b3078adfb1496e1ef0412fd3e2250",
+      "test_results": {
+        "fail": 3
+      },
+      "failures": [
+        "TestRecoveryHandlesConcurrentSettlementBetweenReads/badger",
+        "TestRecoveryHandlesConcurrentSettlementBetweenReads/valkey",
+        "TestRecoveryHandlesConcurrentSettlementBetweenReads"
+      ],
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "action": "fail",
+          "elapsed": 0.627
+        }
+      ]
+    },
+    {
+      "name": "purego",
+      "description": "Initial pure-Go run exposed the concurrent settlement defect",
+      "exit_status": 1,
+      "artifact": "purego.jsonl.gz",
+      "sha256": "c78c1ec40baed6c449c7a1ab25138e6842fa6c68a6f6903b5a00c29b97f3abd3",
+      "test_results": {
+        "pass": 14,
+        "fail": 2
+      },
+      "failures": [
+        "TestRecoveryConcurrentWorkersSettleOnce/badger",
+        "TestRecoveryConcurrentWorkersSettleOnce"
+      ],
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "action": "fail",
+          "elapsed": 2.831
+        }
+      ]
+    },
+    {
+      "name": "ledger-all",
+      "description": "Initial full reservation race suite before the concurrency repair",
+      "exit_status": 0,
+      "artifact": "ledger-all.jsonl.gz",
+      "sha256": "af05835ab2d1ee8c005697517453b9c2a011f8d06b94f41a5acf5d6acb0b5f06",
+      "test_results": {
+        "pass": 68,
+        "skip": 1
+      },
+      "failures": [],
+      "skips": [
+        "TestTeamBudgetHistoryHandoff/postgres-valkey"
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "action": "pass",
+          "elapsed": 8.406
+        }
+      ]
+    },
+    {
+      "name": "app-regression",
+      "description": "Application regression suite before the concurrency repair",
+      "exit_status": 0,
+      "artifact": "app-regression.jsonl.gz",
+      "sha256": "7c13360dde54467467c1606576b85a43f8374225b23ff05390a1f6e40053966c",
+      "test_results": {
+        "pass": 94
+      },
+      "failures": [],
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "action": "pass",
+          "elapsed": 183.411
+        }
+      ]
+    },
+    {
+      "name": "ledger-qualified",
+      "description": "Final full reservation race suite",
+      "exit_status": 0,
+      "artifact": "ledger-qualified.jsonl.gz",
+      "sha256": "5f1588dc0d6723f16e59fd6c5dc04ea35c9b9954d2640acc7dee601e17464235",
+      "test_results": {
+        "pass": 72,
+        "skip": 1
+      },
+      "failures": [],
+      "skips": [
+        "TestTeamBudgetHistoryHandoff/postgres-valkey"
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "action": "pass",
+          "elapsed": 9.837
+        }
+      ]
+    },
+    {
+      "name": "purego-qualified",
+      "description": "Final pure-Go recovery and controlled-restart suite",
+      "exit_status": 0,
+      "artifact": "purego-qualified.jsonl.gz",
+      "sha256": "eb08ee4aa9b15ef687cc080c551f55a72d6884571f6f2885294918c9615dcb54",
+      "test_results": {
+        "pass": 20
+      },
+      "failures": [],
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "action": "pass",
+          "elapsed": 4.198
+        }
+      ]
+    },
+    {
+      "name": "startup-qualified",
+      "description": "Final application startup recovery race test",
+      "exit_status": 0,
+      "artifact": "startup-qualified.jsonl.gz",
+      "sha256": "25bbfe0614e1a1e9f3cfc062c4d9956c633dcee8501e6a6fc23f5ef89682114c",
+      "test_results": {
+        "pass": 1
+      },
+      "failures": [],
+      "skips": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "action": "pass",
+          "elapsed": 14.403
+        }
+      ]
+    },
+    {
+      "name": "lint-final",
+      "exit_status": 2,
+      "artifact": "lint-final.log.gz",
+      "sha256": "76989d3c9151652a237726c0fa846da875ef73e91f72280db1ece7f4ec4f7476"
+    },
+    {
+      "name": "lint-qualified",
+      "exit_status": 0,
+      "artifact": "lint-qualified.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "name": "vet-qualified",
+      "exit_status": 0,
+      "artifact": "vet-qualified.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "name": "doc-lint",
+      "exit_status": 1,
+      "artifact": "doc-lint.log.gz",
+      "sha256": "f2e979bb01f56a94d886a6707ef6ffa95d4f1871868967f6c6335979ac5f029b"
+    },
+    {
+      "name": "doc-lint-qualified",
+      "exit_status": 0,
+      "artifact": "doc-lint-qualified.log.gz",
+      "sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7",
+      "files": 4
+    }
+  ],
+  "review": {
+    "mode": "manual local source and contract audit",
+    "findings_fixed": [
+      "Concurrent settlement read race: reread attempt before rejecting insufficient reserved balance",
+      "Function complexity: keep consistent settlement-window reads in the reservation owner"
+    ],
+    "remaining": [
+      "Pre-PR structured review and complete paired qualification remain required"
+    ]
+  },
+  "limits": [
+    "A controlled Badger close/reopen is not process-loss qualification",
+    "Independent approval test uses SQLite, not PostgreSQL",
+    "Full-history scan recovery delay and request interference need capacity qualification",
+    "No provider call or invoice verification in this component",
+    "No missing usage is reconstructed; provider reconciliation and complete asynchronous billing remain open",
+    "No new native Linux or Windows CI",
+    "No PR, publication, or merge for this component; the task permits one final paired PR sequence"
+  ],
+  "semantics": {
+    "work_per_pass": 512,
+    "pass_timeout_seconds": 5,
+    "incomplete_scan_delay_seconds": 1,
+    "complete_scan_delay_seconds": 30,
+    "request_path_scans_added": 0,
+    "new_schema_version": false,
+    "known_approval_changes": "old worker remains fenced",
+    "unknown_usage": "retain full capacity"
+  },
+  "plan_validation": {
+    "ledger_unchanged": true,
+    "task_count": 40,
+    "status_counts": {
+      "done": 26,
+      "in_progress": 1,
+      "todo": 13
+    },
+    "unique_anchors": 97,
+    "links_checked": 126,
+    "source_hashes_match": true,
+    "resume_words": 311,
+    "cold_resume": "Pass: current source, next action, constraints, no active commands, remaining acceptance, and authorization limits are explicit."
+  }
+}

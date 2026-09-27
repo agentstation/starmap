@@ -2967,6 +2967,23 @@ Other requests may use verified remaining capacity while the full uncertain rese
 Crash recovery and storage failover must preserve reservation identity and prevent duplicate releases or spending.
 Apply section 8.6 restrictions when recovery lacks required evidence.
 
+Retained measured usage needs background settlement through the original storage authority, independently of optional reporting and job maintenance.
+Start recovery explicitly with the application runtime. Join its worker before storage closes.
+Construction must start no scan or worker. Recovery must add no request-path scan.
+
+Bound each pass by work and elapsed time. Preserve native scan continuation, unread page entries, and exact retry identities.
+Corrupt records must not prevent unrelated settlement. Missing usage must retain the full reservation.
+An expired request, completed job, or cancelled job cannot supply billing evidence.
+
+Recovery must use the original prices and budget windows. A closed or changed independent approval must refuse mutations.
+Concurrent settlement can change an attempt between its record and meter reads.
+Retry that observation only after verifying the attempt changed. Unchanged inconsistent balances must remain an error.
+
+The current worker permits 512 scan or record operations within a five-second pass.
+Incomplete scans continue after one second. Complete scans restart after thirty seconds.
+These intervals do not guarantee a fleet recovery deadline. Capacity qualification must measure full traversal with retained history and concurrent traffic.
+Logs report pass counts without storage connection details or record contents.
+
 Previously reserved local quota leases are an optional optimization after the same correctness tests pass.
 The authority must deduct capacity before granting a lease.
 Leases need fencing, expiry, bounded capacity, replica identity, and safe recovery without duplicate reallocation.
