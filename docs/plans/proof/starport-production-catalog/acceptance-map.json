@@ -717,7 +717,6 @@
       "A15.budget_usage_unknown",
       "A15.team_policy_unknown",
       "A15.confirmed_no_budget",
-      "A15.online_batch_retry",
       "A31.recipe_configuration_guards",
       "A41.valkey_url_contract",
       "A41.valkey_tls_identity",
@@ -727,7 +726,6 @@
       "A41.badger_write_sync_profile",
       "A41.deployment_key_channel_isolation",
       "A41.namespace_atomic_layout",
-      "A41.unprefixed_record_migration",
       "A41.unsupported_modes_refused",
       "A31.compose_complete_storage",
       "A43.persistent_selectors_rejected"
@@ -1632,7 +1630,8 @@
       "A47.late_usage_pinned_valuation",
       "A47.policy_edit_preserves_spend",
       "A47.clock_and_window_authority",
-      "A47.reconciliation_retention"
+      "A47.reconciliation_retention",
+      "A15.online_batch_retry"
     ],
     "CSP10.3": [
       "A49.callback_no_remote_io",
@@ -1787,8 +1786,9 @@
     "CSP10.1": "Own static candidates and generation indexes. Dynamic authorization and advisory health retain separate owners.",
     "CSP10.2": "Own bounded authorization records and validity. Applied configuration memory remains with CSP16.",
     "CSP10.3": "Own background advisory exchange and local callback behavior. Authority and admission are separate.",
-    "CSP12.2": "Own atomic per-attempt reservation and uncertain-capacity recovery. Optional local quota leases require the same contract or explicit unsupported status.",
-    "CSP1": "Publish the shared settings contract and standalone descriptor reference. ER01 leaves cross-product primary-file selection, bootstrap location, and generated path inventory under their existing CSP8 gate after CSP2 path implementation."
+    "CSP12.2": "Own atomic per-attempt reservation, required-budget refusal for online, batch, and retry dispatch, and uncertain-capacity recovery. Optional local quota leases require the same contract or explicit unsupported status.",
+    "CSP1": "Publish the shared settings contract and standalone descriptor reference. ER01 leaves cross-product primary-file selection, bootstrap location, and generated path inventory under their existing CSP8 gate after CSP2 path implementation.",
+    "CSP12": "Own fresh storage recipes and initial online and batch budget refusals. CSP13 owns populated namespace migration. CSP12.2 owns required-budget checks for each paid retry."
   },
   "rehearsal_checks": {
     "R01": {

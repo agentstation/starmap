@@ -344,6 +344,9 @@ func TestSourcelessDurableRestartKeepsOneDerivedIdentity(t *testing.T) {
 
 	first, firstStore := open()
 	root := first.Client().CurrentGenerationID()
+	if got := firstStore.commitCount(); got != 1 {
+		t.Fatalf("baseline commits at startup = %d, want 1", got)
+	}
 	if _, err := first.Sync(context.Background()); err != nil {
 		t.Fatalf("Sync: %v", err)
 	}
@@ -351,8 +354,8 @@ func TestSourcelessDurableRestartKeepsOneDerivedIdentity(t *testing.T) {
 	if !strings.HasPrefix(derived, root+effectiveGenerationLocalSuffix) {
 		t.Fatalf("generation = %q, want %q with a local suffix", derived, root)
 	}
-	if got := firstStore.commitCount(); got != 1 {
-		t.Fatalf("commits before the restart = %d, want 1", got)
+	if got := firstStore.commitCount(); got != 2 {
+		t.Fatalf("baseline and derived commits before the restart = %d, want 2", got)
 	}
 	if err := first.Close(); err != nil {
 		t.Fatalf("Close: %v", err)
