@@ -870,7 +870,8 @@
     "worktree": "/tmp/starport-fleet-review-20260926",
     "branch": "codex/atomic-budget-admission",
     "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
-    "head": "1253668c591dcaa11d270b3d81f5afe8ceab09d1"
+    "head": "9e54be6ae854999242d9a0cc61619248c1f80122",
+    "action": "Complete rerank and media admission, remaining operation contracts, asynchronous recovery, A47, exact dependency qualification, review, native CI, and protected merges."
   },
   "merged_followups": {
     "tasks": [
@@ -1046,7 +1047,7 @@
     "status": "MERGED",
     "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-27T13:30:11.497781+00:00",
+  "local_updated_at": "2026-09-27T14:19:35.164158+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -1055,10 +1056,10 @@
   },
   "budget_preparation": {
     "owner": "CSP12.2",
-    "status": "unpublished_page_recognition_admission",
-    "commit": "1253668c591dcaa11d270b3d81f5afe8ceab09d1",
+    "status": "unpublished_moderation_admission",
+    "commit": "9e54be6ae854999242d9a0cc61619248c1f80122",
     "published": false,
-    "proof": "../../csp12.2/page-recognition-2026-09-27/verification.json",
+    "proof": "../../csp12.2/moderation-billing-2026-09-27/verification.json",
     "native_ci": "UNVERIFIED",
     "required_review": "not yet run; required before final PR",
     "remaining_dirty_files": {
@@ -1069,9 +1070,9 @@
     "producer_companion": {
       "branch": "codex/budget-qualification",
       "worktree": "/tmp/starmap-fleet-review-20260926",
-      "head": "9d81c42933a927614a6bffa79b112e1060a7fe3e",
+      "head": "5cef96251af62c78c0cb3aea8a90e43a8b3def96",
       "published": false,
-      "scope": "Schema 13 billing contracts, Mistral OCR protocol, and exact fixed-page offering in the regenerated embedded catalog.",
+      "scope": "Schema 14 billing contracts, explicit moderation request prices, and prior text, embedding, and recognition contracts.",
       "next_action": "Complete remaining operation billing contracts in this task before the producer PR."
     },
     "known_failures": [],
@@ -1083,7 +1084,8 @@
     "usage_presence_proof": "../../csp12.2/usage-presence-2026-09-27/verification.json",
     "embedding_billing_proof": "../../csp12.2/embedding-billing-2026-09-27/verification.json",
     "embedding_usage_proof": "../../csp12.2/vertex-usage-2026-09-27/verification.json",
-    "recognition_billing_proof": "../../csp12.2/recognition-billing-2026-09-27/verification.json"
+    "recognition_billing_proof": "../../csp12.2/recognition-billing-2026-09-27/verification.json",
+    "page_recognition_proof": "../../csp12.2/page-recognition-2026-09-27/verification.json"
   },
   "remote_state_note": "This update checks local work and retained test output only. Prior remote check timestamps remain unchanged."
 }

@@ -4207,3 +4207,20 @@ Billed thinking tokens count within output once, with a separate reasoning rate 
 Empty or absent usage remains unknown. Explicit zero measurements remain distinct from missing measurements.
 Known extraction charges survive partial recognition, later chat failure, stream completion, and cancellation.
 A known subtotal does not prove complete settlement. CSP12.2 owns admission, retries, and uncertain provider work.
+
+
+### Moderation admission and guardrail identity
+
+Schema 14 adds `billing.moderations` with the `requests` basis.
+The declaration covers every charge for one synchronous text moderation request, independent of its input count.
+`pricing.operations.request` supplies the USD rate. An explicit zero rate establishes free service. An absent price remains unknown.
+
+A completed provider call supplies one request unit. A provider failure retains uncertain capacity.
+The reservation keeps its selected generation and valuation. Optional reporting uses the same charge declaration.
+Neither a request rate nor a free price establishes token consumption.
+A required token budget refuses dispatch when the contract cannot establish a token bound.
+
+Guardrail child calls preserve the caller's routing restrictions and admitted account, key, and team budget identity.
+Each classification receives a separate reservation, including request and response checks around one chat call.
+An unavailable budget bound remains a retryable admission failure through the guardrail pipeline.
+A content refusal remains a policy refusal. Known zero cost and unknown token usage remain distinct in optional reports.

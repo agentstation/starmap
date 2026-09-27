@@ -3881,3 +3881,28 @@ The [qualification proof](../../plans/proof/starport-production-catalog/csp12.2/
 Final repository checks pass 4,513 results with 133 skips. Focused race checks pass 27 results.
 Producer race checks pass 1,350 results. Both commits remain unpublished.
 The exact dependency pin, remaining operation contracts, durable recovery, A47, review, native CI, and merges remain open.
+
+
+## September 27 moderation and guardrail admission
+
+Starmap `5cef96251` declares complete moderation request billing in schema 14.
+Starport `9e54be6a` admits and settles direct and guardrail moderation from the selected catalog contract.
+The [qualification proof](../../plans/proof/starport-production-catalog/csp12.2/moderation-billing-2026-09-27/verification.json) retains failures, source hashes, commands, and raw test events.
+
+The initial production regression returned HTTP 503 for free moderation under a spend budget.
+The operation lacked a quote. The repair requires an explicit complete contract and request price.
+Free pricing does not establish token consumption. Required token budgets still refuse before dispatch.
+
+The guardrail adapter dropped the caller's routing restrictions when it created its child request.
+The repair preserves those restrictions. Production tests confirm that forbidden models reach no provider.
+The pipeline also discarded underlying errors. It now preserves typed admission causes and their retryable HTTP status.
+
+The old optional-report test expected unknown cost because the provider reports no tokens.
+The catalog now supplies an explicit request price. The revised test verifies known zero cost and unknown tokens independently.
+Provider failures retain uncertain reservations. Separate child attempts retain the parent's budget rules and identity.
+
+Producer race checks pass 1,354 results. Consumer repository checks pass 4,531 results and skip 133.
+Focused race checks pass 42 results. The final application race check passes nine results.
+Pure-Go checks pass 34 results. Lint, vet, and goago pass.
+
+These checks use an unpublished producer through `GOWORK`. The remaining CSP12.2 requirements remain open.

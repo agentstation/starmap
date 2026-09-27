@@ -225,6 +225,24 @@ The provider documentation does not establish a fixed page ceiling for this offe
 Production tests verify that explicit page selection enforces the reserved request count.
 The remaining operation contracts, recognition variants, durable recovery, shared-backend qualification, A47, dependency pin, review, native CI, and merges remain open.
 
+## September 27 moderation admission
+
+Producer `5cef96251` adds schema 14 and explicit zero request prices for two OpenAI moderation offerings.
+Consumer `9e54be6a` reserves direct and guardrail moderation through the shared operation admission path.
+Missing declarations and prices remain unknown. Required token budgets refuse the request-based contract before dispatch.
+
+Guardrail calls preserve routing restrictions and budget identity. Request and response classifications receive separate durable reservations.
+Failed provider calls retain uncertain reservations. Optional reports preserve unknown tokens beside known free cost.
+The guardrail pipeline preserves admission failures, so an unavailable token bound returns HTTP 503.
+A forbidden moderation model returns HTTP 400 and reaches no provider.
+
+The [moderation proof](../../plans/proof/starport-production-catalog/csp12.2/moderation-billing-2026-09-27/verification.json) records 1,354 producer race results and 4,531 consumer repository results with 133 skips.
+Focused race checks pass 42 results. Pure-Go checks pass 34 results.
+The final application race check passes nine results, including the added provider-failure case.
+The proof records check timing, earlier failures, and the local workspace dependency.
+
+Media, rerank, recognition variants, asynchronous recovery, shared-backend qualification, A47, dependency pin, review, native CI, and merges remain open.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:

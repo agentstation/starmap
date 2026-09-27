@@ -1,0 +1,424 @@
+{
+  "recorded_at": "2026-09-27T14:17:59.021606+00:00",
+  "task": "CSP12.2",
+  "status": "COMPONENT_PASS",
+  "go_version": "go1.27.1",
+  "workspace": "/tmp/csp122-billing.work",
+  "environment": {
+    "GOTOOLCHAIN": "go1.27.1",
+    "consumer_GOWORK": "/tmp/csp122-billing.work"
+  },
+  "checks": [
+    {
+      "name": "before",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=2m ./internal/app ./internal/proxy -run \"TestProductionModerationBudget|TestModerationGuardrailRidesTheAccountIdentity\"",
+      "exit_code": 1,
+      "test_results": {
+        "fail": 3,
+        "pass": 2
+      },
+      "package_results": {
+        "fail": 2
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/proxy/TestModerationGuardrailRidesTheAccountIdentity",
+        "github.com/agentstation/starport/internal/app/TestProductionModerationBudget/explicit_free_request",
+        "github.com/agentstation/starport/internal/app/TestProductionModerationBudget"
+      ],
+      "named_results_artifact": "before.jsonl.gz"
+    },
+    {
+      "name": "producer-focused",
+      "owner": "producer",
+      "command": "go test -json -count=1 ./pkg/catalogs -run \"ModerationBilling|Payload.*Cache\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 12
+      },
+      "package_results": {
+        "pass": 1
+      },
+      "failed_tests": [],
+      "named_results_artifact": "producer-focused.jsonl.gz"
+    },
+    {
+      "name": "after",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=2m ./internal/app ./internal/proxy ./internal/catalog ./internal/router -run \"TestProductionModerationBudget|TestModerationGuardrailRidesTheAccountIdentity\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 5
+      },
+      "package_results": {
+        "pass": 4
+      },
+      "failed_tests": [],
+      "named_results_artifact": "after.jsonl.gz"
+    },
+    {
+      "name": "expanded",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=3m ./internal/app ./internal/catalog ./internal/proxy ./internal/guardrails ./internal/providers/connectors -run \"Moderation|Moderations|Guardrail\"",
+      "exit_code": 1,
+      "test_results": {
+        "pass": 38,
+        "fail": 3
+      },
+      "package_results": {
+        "pass": 3,
+        "fail": 2
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/proxy/TestAModerationTurnRecordsItsOperationWithoutInventingACost",
+        "github.com/agentstation/starport/internal/app/TestProductionGuardrailModerationAdmission/moderation_model_forbidden",
+        "github.com/agentstation/starport/internal/app/TestProductionGuardrailModerationAdmission"
+      ],
+      "named_results_artifact": "expanded.jsonl.gz"
+    },
+    {
+      "name": "producer-race",
+      "owner": "producer",
+      "command": "go test -race -json -count=1 -timeout=5m ./pkg/catalogs ./internal/embedded",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 1354
+      },
+      "package_results": {
+        "pass": 2
+      },
+      "failed_tests": [],
+      "named_results_artifact": "producer-race.jsonl.gz"
+    },
+    {
+      "name": "race",
+      "owner": "consumer",
+      "command": "go test -race -json -count=1 -timeout=4m ./internal/app ./internal/catalog ./internal/router ./internal/proxy ./internal/guardrails ./internal/providers/connectors -run \"Moderation|Moderations|Guardrail\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 42
+      },
+      "package_results": {
+        "pass": 6
+      },
+      "failed_tests": [],
+      "named_results_artifact": "race.jsonl.gz"
+    },
+    {
+      "name": "full",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=5m ./...",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 4531,
+        "skip": 133
+      },
+      "package_results": {
+        "skip": 8,
+        "pass": 64
+      },
+      "failed_tests": [],
+      "named_results_artifact": "full.jsonl.gz"
+    },
+    {
+      "name": "purego",
+      "owner": "consumer",
+      "command": "CGO_ENABLED=0 go test -json -count=1 -timeout=3m ./internal/catalog ./internal/router ./internal/proxy ./internal/guardrails ./internal/providers/connectors -run \"Moderation|Moderations|Guardrail\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 34
+      },
+      "package_results": {
+        "pass": 5
+      },
+      "failed_tests": [],
+      "named_results_artifact": "purego.jsonl.gz"
+    },
+    {
+      "name": "final-app",
+      "owner": "consumer",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/app -run Moderation",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 9
+      },
+      "package_results": {
+        "pass": 1
+      },
+      "failed_tests": [],
+      "named_results_artifact": "final-app.jsonl.gz"
+    },
+    {
+      "name": "lint",
+      "owner": "consumer",
+      "command": "make lint",
+      "exit_code": 2,
+      "artifact": "lint.log.gz"
+    },
+    {
+      "name": "lint-final",
+      "owner": "consumer",
+      "command": "make lint",
+      "exit_code": 0,
+      "artifact": "lint-final.log.gz"
+    },
+    {
+      "name": "vet",
+      "owner": "consumer",
+      "command": "go vet ./internal/catalog ./internal/router ./internal/proxy ./internal/guardrails ./internal/providers/connectors ./internal/app",
+      "exit_code": 0,
+      "artifact": "vet.log.gz"
+    },
+    {
+      "name": "goago",
+      "owner": "producer",
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "artifact": "goago.json.gz"
+    },
+    {
+      "name": "provider-ownership",
+      "owner": "consumer",
+      "command": "CATALOG_DRIVEN_STARMAP_ROOT=/private/tmp/starmap-fleet-review-20260926 GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 bash scripts/verify-catalog-driven-providers.sh",
+      "exit_code": 0,
+      "passed_conditions": 19,
+      "failed_conditions": 0,
+      "artifact": "ownership.log.gz"
+    },
+    {
+      "name": "docs-lint",
+      "owner": "plan",
+      "command": "technical-writing lint four edited documents",
+      "exit_code": 1,
+      "artifact": "docs-lint.log.gz"
+    },
+    {
+      "name": "docs-lint-final",
+      "owner": "plan",
+      "command": "technical-writing lint four edited documents",
+      "exit_code": 0,
+      "artifact": "docs-lint-final.log.gz"
+    },
+    {
+      "name": "prose-all",
+      "owner": "plan",
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "artifact": "prose-all.log.gz"
+    },
+    {
+      "name": "docs-lint-final2",
+      "owner": "plan",
+      "command": "technical-writing lint four edited documents",
+      "exit_code": 0,
+      "artifact": "docs-lint-final2.log.gz"
+    },
+    {
+      "name": "prose-all-final",
+      "owner": "plan",
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "artifact": "prose-all-final.log.gz"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "before.jsonl.gz",
+      "raw_sha256": "10bfe50b88b302bcbb0c61d283f463be39b90168b3aa562c1335293ada46b2f5",
+      "compressed_sha256": "2c01445f6f04d63981f34816c60f77875444c243d081d7b79a1a29463efa4d65"
+    },
+    {
+      "path": "producer-focused.jsonl.gz",
+      "raw_sha256": "27c8925b7ed1c9efe8a29ed398094df1eac5957277f4682908db7779e52cd55c",
+      "compressed_sha256": "6019e1e302ede5eb2215dad4f7d61c188b7f2502e93b8ca841c9473510289343"
+    },
+    {
+      "path": "after.jsonl.gz",
+      "raw_sha256": "1b1b6f9d3806aff618d8e0815ed29d89cc8df3f5b0aaf91d03d1eac25b26db1f",
+      "compressed_sha256": "347badc23b579fe5a3e3cb5a86cdb17a39c7442de6451ab6b4fd6e0010eb60c8"
+    },
+    {
+      "path": "expanded.jsonl.gz",
+      "raw_sha256": "2ca230d67220e678b67fe3d00824ec46e533eadfacabdae29986389a2bea13f7",
+      "compressed_sha256": "9e030ec99cb65cfbf4e722a42a939c0d50c168016107ea30477a7230d66e60e1"
+    },
+    {
+      "path": "producer-race.jsonl.gz",
+      "raw_sha256": "d16de1252be871c41cdce042c3bcdbbbd5415a350aee5c4699734ef58d1989d3",
+      "compressed_sha256": "bb932de8908503c5d551f827949471933e38b73b9e305106a402cbe15a6e9b9c"
+    },
+    {
+      "path": "race.jsonl.gz",
+      "raw_sha256": "f9596435f77e9389745a60d3cac78d261e68c6e5379fb880a23909992272522b",
+      "compressed_sha256": "29383ef742457c8f0d9a445c33062086ce6e4beee9b4f5a5e53f81b4181f9947"
+    },
+    {
+      "path": "full.jsonl.gz",
+      "raw_sha256": "cb4a31a8376f0a81b1cbc8d7fc4b075240e7966c1530e99b2a56d3d9a778e95f",
+      "compressed_sha256": "8af352b575f041fdf8448978f8a1956bc0a31e80e024e86dc5706b595e6fe218"
+    },
+    {
+      "path": "purego.jsonl.gz",
+      "raw_sha256": "d46bfe710f37fa40e48d3622d186523aeb6005ca9d0d8cacf060d1598a0a934b",
+      "compressed_sha256": "b82091d5ac6b74306901bba352fe2698874bbc1753a1bcd696521425e72a76b0"
+    },
+    {
+      "path": "final-app.jsonl.gz",
+      "raw_sha256": "ee9855fd92a0b0cfd89aa043f1fcd39399e2e6a7f85537ce2d7b05cd2b5e34fd",
+      "compressed_sha256": "b4353da591c1ec1c8b6cca663978a7c8190e890a8fa019b3dfbffcffa72d85f3"
+    },
+    {
+      "path": "lint.log.gz",
+      "raw_sha256": "6b965806726f7c5dd724af40937ac2dcd314c060e08330989b37208656588f3b",
+      "compressed_sha256": "88abf60e154691fedaa485d2b7aaca879388559570818bd52cefb057fb8b9cf5"
+    },
+    {
+      "path": "lint-final.log.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "compressed_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "vet.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "goago.json.gz",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "compressed_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    {
+      "path": "ownership.log.gz",
+      "raw_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19",
+      "compressed_sha256": "622beb4f11d3ebd11a20b7a12a7b6658f30bd20db8d9cf07e35c32d2bf693d57"
+    },
+    {
+      "path": "docs-lint.log.gz",
+      "raw_sha256": "99e92cb5507904e6ad617f07992bab450c16db2629586009c771c4e1d96fe10f",
+      "compressed_sha256": "aa35b351719f90e9fed3a17520d187326edd2beee061b2668c2a552b9f11e95e"
+    },
+    {
+      "path": "docs-lint-final.log.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "compressed_sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    },
+    {
+      "path": "prose-all.log.gz",
+      "raw_sha256": "bb11498d68147dc79f0490f79775aadd7f40ba6c2996d6de1710f0bfa3f8628a",
+      "compressed_sha256": "cd3051256e3a2d1d6ad640bcaa0c33b30a44ad7489aaa020f0df93cdb8d235b3"
+    },
+    {
+      "path": "docs-lint-final2.log.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "compressed_sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    },
+    {
+      "path": "prose-all-final.log.gz",
+      "raw_sha256": "9407be473809590228cb558895c9d30c529698698f399b9efe9f72b9b26aa4b1",
+      "compressed_sha256": "20c630c7c15818b9936821d5017dc28004f9067b41571761422e45cb58ce5d82"
+    }
+  ],
+  "producer": {
+    "worktree": "/private/tmp/starmap-fleet-review-20260926",
+    "branch": "codex/budget-qualification",
+    "head": "5cef96251af62c78c0cb3aea8a90e43a8b3def96",
+    "files": {
+      "internal/embedded/catalog/endpoints.yaml": "02e5d8b1e7a1ab249b826094fc44acb7432b53188f3dd54af87eec8f27f64026",
+      "internal/embedded/catalog/generation-manifest.json": "383c1bf666c336e6fb90a49528e4886c62f328f429eb2d3dd19660b095a48f6c",
+      "internal/embedded/catalog/generation-payload.json.gz": "d38dfb2e75478c40222071ee969d7b09517ccedfffe0de0cb34b5e33b0b1ee07",
+      "internal/embedded/catalog/generation.json": "581106c678c14a084538e769cf480094d4e95e8fcf5be9adf286347a887a9d96",
+      "internal/embedded/catalog/providers/openai/models/omni-moderation-2024-09-26.yaml": "9ef681078f56693e9e8cc5a4d5d7b889d3c573d1a22d5705612eddbf10fc8cf3",
+      "internal/embedded/catalog/providers/openai/models/omni-moderation-latest.yaml": "204193191b93abd3b902f25ea0da1fe90a22fc75d1040fac9549de2e08596690",
+      "internal/embedded/moderation_billing_test.go": "3a8dcf9678b19141882a46ab924174de06be921f59a92da09c5ebbf282be7a8a",
+      "pkg/catalogs/generation_manifest.go": "2a6320bdafb5f420fed3dea9996c91e7cb251835a67c77873210d6012cd596cb",
+      "pkg/catalogs/model_billing.go": "e02ddc32d41563f3c54fcb102b204abc8aace890812b062c35df42f810d57b21",
+      "pkg/catalogs/moderation_billing_test.go": "95e56ba2e837639a224d0361bc9d9cfe1a901f2547cf0f7705445d60be88d78a",
+      "pkg/catalogs/payload.go": "dfc4ab77dbe393016d324f474fd85b82ccbd7208991cbe45f52290a894900af2",
+      "pkg/catalogs/payload_cache_test.go": "35b1a8453e0b2e1c948806c900d5a613894a6c142907d280f10886782c4262d6",
+      "pkg/catalogs/payload_decode.go": "a074a7db31b4d23d2994e62546a62dd4eb907d08203e0d8bd39fc566ad345cca"
+    },
+    "published": false
+  },
+  "consumer": {
+    "worktree": "/private/tmp/starport-fleet-review-20260926",
+    "branch": "codex/atomic-budget-admission",
+    "head": "9e54be6ae854999242d9a0cc61619248c1f80122",
+    "files": {
+      "internal/app/budget_moderation_test.go": "b4183692e5971df9b1c5ad8324371622fbc00fa5a759939324fd479ca919897d",
+      "internal/catalog/moderation_billing.go": "b060ab57ac3d3116b9e7d88c9feff51ab58b5fbe5db969e4c96461abf614f4bb",
+      "internal/catalog/moderation_billing_test.go": "ab74b27f859942c27dbd2f587ba522416b18988bab6160ec7e495cda87ec0fa4",
+      "internal/guardrails/guardrails.go": "2c75d017f026d09e88afe88b6db2bc8ed1deeaccd65b80fb1ac33689f6d33049",
+      "internal/providers/connectors/moderation_adapter.go": "e1cfca2700adea95c19c2e63c06bb9bafcd1ce2ec4361250675d3c2616befd98",
+      "internal/proxy/guardrail_moderation.go": "29c2c8128037302302876707e198c246f856efbbe47418ee5bd022a7cec3d6a3",
+      "internal/proxy/guardrail_moderation_test.go": "fd8622cfed6978f9fe760ef2c9c778ee5f8ca0f4886554c3b8006680b1f16cdd",
+      "internal/proxy/guardrails.go": "157c7975266492806b6b9a913006acaf9f63508272c78794379083f444a6dbcb",
+      "internal/proxy/moderation_accounting_test.go": "0b268012bc88fe9d38d80cd2a45a76302b5103c3d431e39d949a7bdc0e7115e2",
+      "internal/proxy/moderation_cost.go": "1cca71dab904b3eaced20268857806c49209406060f1c9e96673ce6246996c03",
+      "internal/proxy/usage_capture.go": "c4dbf60cfdb92f107ec4dc34764ecf6c931b7331c779f06761e1ad201fbb8ac2",
+      "internal/router/budget_moderations.go": "48c1f00a4eb6eec915e2432ebddee04876f1ed4d7bcd547f2b6e816e739b13d8",
+      "internal/router/budget_moderations_test.go": "5a7483a3a5601276cb97646e2db8274c92b48bac09509e12ac79302db0ed8492",
+      "internal/router/moderations.go": "263ad05cfec87fcc3efabf661aa1379580f4cfba5fa28f6d305beb5546f74e5d"
+    },
+    "published": false
+  },
+  "sources": [
+    {
+      "url": "https://developers.openai.com/api/docs/guides/moderation",
+      "verified_at": "2026-09-27",
+      "fact": "Moderation endpoint is free; response schema contains classifications without measured token usage."
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/omni-moderation-latest",
+      "verified_at": "2026-09-27",
+      "fact": "Omni moderation models are free. Rate limits remain separate."
+    }
+  ],
+  "behavior": [
+    "Schema 14 adds complete per-request text moderation billing without inferring token consumption.",
+    "Two OpenAI moderation offerings declare an explicit zero USD request price. Other missing contracts stay unknown.",
+    "Spend admission reserves and settles every direct or guardrail child attempt. Required token budgets refuse before dispatch.",
+    "Guardrail child requests preserve routing restrictions and admitted account, key, and team budget identity.",
+    "Guardrail failures preserve typed admission causes; unknown required token bounds return HTTP 503.",
+    "Confirmed absent budgets avoid reservation storage; optional reports preserve unknown tokens alongside known free cost.",
+    "Failed provider calls retain uncertain reservations, including explicitly free calls."
+  ],
+  "retained_failures": [
+    "Initial spend-budget moderation returned 503 because its operation had no quote.",
+    "Initial guardrail request lost APIKeyConfig.",
+    "Old optional-report test expected unknown cost for an offering now explicitly priced free. Updated contract test retains unknown tokens and asserts known zero cost.",
+    "Forbidden guardrail model returns HTTP 400 as a policy refusal, not retryable HTTP 503. The zero-dispatch assertion remains.",
+    "Initial lint reported duplicate request literals; the owning pricing unit now has a named constant.",
+    "Initial documentation checks found two long paragraphs in changed files; both paragraphs now pass the four-document check."
+  ],
+  "verification_scope": "Repository and broad race runs precede the final added provider-failure test and a literal-to-constant refactor. The final application race run includes that test. Pure-Go, lint, and vet include the constant repair. Native CI and released-pair qualification remain UNVERIFIED.",
+  "remaining": [
+    "Media and rerank billing contracts and remaining recognition variants",
+    "Durable asynchronous submission association and settlement recovery",
+    "Real shared backend and independent-process qualification, A47",
+    "Exact published producer dependency pin",
+    "Final review, native CI, protected merges and full released-pair acceptance"
+  ],
+  "review": "Manual repository-grounded audit completed. Structured pre-PR review remains required for final task PRs.",
+  "plan_maintenance": {
+    "ledger_rows": 40,
+    "done": 26,
+    "in_progress": [
+      "CSP12.2"
+    ],
+    "unique_ids": 97,
+    "links_checked": 150,
+    "artifacts_verified": 19,
+    "resume_words": 274,
+    "ledger_and_ids_preserved": true,
+    "cold_resume": "PASS: current source, task, next action, running state, remaining criteria, and authorization boundaries are explicit.",
+    "plan_bytes": 128717,
+    "size_exception": "The existing plan retains forty task contracts and historical execution entries. This component refresh replaces the resume state, preserves all task rows and IDs, and does not compact historical evidence."
+  },
+  "documentation": {
+    "edited_documents": 4,
+    "edited_diagnostics": 0,
+    "repository_diagnostics_outside_edited_documents": 137,
+    "repository_gate": "FAIL; historical unrelated diagnostics remain",
+    "processes": []
+  }
+}
