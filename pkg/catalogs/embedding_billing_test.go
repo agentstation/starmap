@@ -3,6 +3,7 @@ package catalogs
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/goccy/go-yaml"
 	"reflect"
 	"testing"
@@ -92,7 +93,7 @@ func TestEmbeddingBillingValidationAndCopies(t *testing.T) {
 	if *again.Billing.Embeddings.RequestCharge {
 		t.Fatal("offering exposes mutable billing")
 	}
-	old := bytes.Replace(payload, []byte(`"schema_version":12`), []byte(`"schema_version":11`), 1)
+	old := bytes.Replace(payload, []byte(fmt.Sprintf(`"schema_version":%d`, CurrentCatalogSchemaVersion)), []byte(`"schema_version":11`), 1)
 	if _, err := DecodeCatalogPayload(old); err == nil {
 		t.Fatal("schema 11 accepted embedding billing")
 	}

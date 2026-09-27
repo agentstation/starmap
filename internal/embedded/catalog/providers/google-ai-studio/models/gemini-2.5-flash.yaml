@@ -100,6 +100,9 @@ response:
 billing:
   recognition:
     basis: tokens
+    request_charge: false
+    input: [input, cache_read]
+    output: [output]
 
 # Model pricing
 pricing:

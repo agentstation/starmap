@@ -243,6 +243,9 @@ func decodePayloadProviders(
 		}
 		mergeRecordReport(&report, recordReport)
 		for _, model := range models {
+			if payload.SchemaVersion < RecognitionChargesSchemaVersion && model.Billing != nil && model.Billing.Recognition.hasCharges() {
+				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing.recognition", Message: "complete charges require catalog schema version 13"}
+			}
 			if payload.SchemaVersion < EmbeddingBillingSchemaVersion && model.Billing != nil && model.Billing.Embeddings != nil {
 				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing.embeddings", Message: "requires catalog schema version 12"}
 			}

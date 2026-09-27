@@ -124,7 +124,7 @@ const membershipCatalogSchemaVersion uint64 = 7
 // Versions 7 through 9 add scopes, removals, and aliases. Version 10 adds billing units.
 // Versions 11 and 12 add complete text-chat and embedding charge declarations.
 func SupportsCatalogSchema(version uint64) bool {
-	return version == legacyCatalogSchemaVersion || version == membershipCatalogSchemaVersion || version == CatalogRemovalSchemaVersion || version == CanonicalAliasSchemaVersion || version == RecognitionBillingSchemaVersion || version == TextChatBillingSchemaVersion || version == CurrentCatalogSchemaVersion
+	return version == legacyCatalogSchemaVersion || version == membershipCatalogSchemaVersion || version == CatalogRemovalSchemaVersion || version == CanonicalAliasSchemaVersion || version == RecognitionBillingSchemaVersion || version == TextChatBillingSchemaVersion || version == EmbeddingBillingSchemaVersion || version == CurrentCatalogSchemaVersion
 }
 
 // CatalogPayloadSchemaVersion reports the schema used when encoding this reader.

@@ -17,6 +17,9 @@ const TextChatBillingSchemaVersion uint64 = 11
 // EmbeddingBillingSchemaVersion adds complete embedding charge declarations.
 const EmbeddingBillingSchemaVersion uint64 = 12
 
+// RecognitionChargesSchemaVersion adds complete recognition charge declarations.
+const RecognitionChargesSchemaVersion uint64 = 13
+
 // ModelBilling declares provider billing units independently of current prices.
 // A missing operation record means that its billing basis is unknown.
 type ModelBilling struct {
@@ -60,8 +63,12 @@ func (b *TextChatBilling) validate() error {
 	if b == nil {
 		return nil
 	}
-	if b.RequestCharge == nil {
-		return billingValidationError("text_chat.request_charge", nil, "requires an explicit boolean")
+	return validateTokenCharges("text_chat", b.Input, b.Output, b.RequestCharge)
+}
+
+func validateTokenCharges(field string, input, output []TokenBillingClass, requestCharge *bool) error {
+	if requestCharge == nil {
+		return billingValidationError(field+".request_charge", nil, "requires an explicit boolean")
 	}
 	for _, group := range []struct {
 		name     string
@@ -69,15 +76,15 @@ func (b *TextChatBilling) validate() error {
 		required TokenBillingClass
 		allowed  []TokenBillingClass
 	}{
-		{"input", b.Input, TokenBillingInput, []TokenBillingClass{TokenBillingInput, TokenBillingCacheRead, TokenBillingCacheWrite}},
-		{"output", b.Output, TokenBillingOutput, []TokenBillingClass{TokenBillingOutput, TokenBillingReasoning}},
+		{"input", input, TokenBillingInput, []TokenBillingClass{TokenBillingInput, TokenBillingCacheRead, TokenBillingCacheWrite}},
+		{"output", output, TokenBillingOutput, []TokenBillingClass{TokenBillingOutput, TokenBillingReasoning}},
 	} {
 		if !slices.Contains(group.classes, group.required) {
-			return billingValidationError("text_chat."+group.name, group.classes, "requires the ordinary token class")
+			return billingValidationError(field+"."+group.name, group.classes, "requires the ordinary token class")
 		}
 		for i, class := range group.classes {
 			if !slices.Contains(group.allowed, class) || slices.Contains(group.classes[:i], class) {
-				return billingValidationError("text_chat."+group.name, class, "contains an unsupported or repeated token class")
+				return billingValidationError(field+"."+group.name, class, "contains an unsupported or repeated token class")
 			}
 		}
 	}
@@ -126,6 +133,11 @@ const (
 // RecognitionBilling declares actual units and optional display assumptions.
 // It does not grant recognition capability or supply a price.
 type RecognitionBilling struct {
+	// RequestCharge completes the charge declaration. Nil retains an unknown contract.
+	RequestCharge *bool `json:"request_charge,omitempty" yaml:"request_charge,omitempty"`
+	// Input and Output partition token billing. Page billing leaves both absent.
+	Input             []TokenBillingClass           `json:"input,omitempty" yaml:"input,omitempty"`
+	Output            []TokenBillingClass           `json:"output,omitempty" yaml:"output,omitempty"`
 	Basis             RecognitionBillingBasis       `json:"basis" yaml:"basis"`
 	InputPageEstimate *RecognitionInputPageEstimate `json:"input_page_estimate,omitempty" yaml:"input_page_estimate,omitempty"`
 }
@@ -160,6 +172,18 @@ func (b *ModelBilling) Validate() error {
 	case RecognitionBillingPages, RecognitionBillingTokens:
 	default:
 		return billingValidationError("recognition.basis", recognition.Basis, "must be pages or tokens")
+	}
+	if recognition.hasCharges() {
+		if recognition.RequestCharge == nil {
+			return billingValidationError("recognition.request_charge", nil, "requires an explicit boolean")
+		}
+		if recognition.Basis == RecognitionBillingPages {
+			if len(recognition.Input) != 0 || len(recognition.Output) != 0 {
+				return billingValidationError("recognition", recognition, "page billing cannot contain token classes")
+			}
+		} else if err := validateTokenCharges("recognition", recognition.Input, recognition.Output, recognition.RequestCharge); err != nil {
+			return err
+		}
 	}
 	estimate := recognition.InputPageEstimate
 	if estimate == nil {
@@ -199,6 +223,13 @@ func deepCopyModelBilling(billing *ModelBilling) *ModelBilling {
 	}
 	if copied.Recognition != nil {
 		copied.Recognition.InputPageEstimate = copyPtr(billing.Recognition.InputPageEstimate)
+		copied.Recognition.RequestCharge = copyPtr(billing.Recognition.RequestCharge)
+		copied.Recognition.Input = slices.Clone(billing.Recognition.Input)
+		copied.Recognition.Output = slices.Clone(billing.Recognition.Output)
 	}
 	return copied
+}
+
+func (b *RecognitionBilling) hasCharges() bool {
+	return b != nil && (b.RequestCharge != nil || len(b.Input) != 0 || len(b.Output) != 0)
 }
