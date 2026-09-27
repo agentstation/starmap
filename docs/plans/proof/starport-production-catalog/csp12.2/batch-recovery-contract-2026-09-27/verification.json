@@ -1,0 +1,60 @@
+{
+  "task": "CSP12.2",
+  "status": "in_progress",
+  "recorded_at": "2026-09-27T22:35:36.152118+00:00",
+  "consumer_commit": "7551e8d49ebe71521f700dfc1f617468bf0c593f",
+  "probe": {
+    "source": "batch_remote_probe_test.go.txt",
+    "sha256": "922c2c722273f8b5ddf69dd24b0df897e0bd96fd5927553b8df0330fbd7c5e55",
+    "applied_path": "internal/jobs/batch_remote_probe_test.go",
+    "removed_after_capture": true
+  },
+  "check": {
+    "command": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -race -json -count=1 -timeout=45s ./internal/jobs -run '^TestBatchCancellationAcrossWorkersPreventsNextLine$'",
+    "exit_code": 1,
+    "results": {
+      "pass": 0,
+      "fail": 4,
+      "skip": 0
+    },
+    "failed_tests": [
+      "TestBatchCancellationAcrossWorkersPreventsNextLine/memory",
+      "TestBatchCancellationAcrossWorkersPreventsNextLine/badger",
+      "TestBatchCancellationAcrossWorkersPreventsNextLine/valkey",
+      "TestBatchCancellationAcrossWorkersPreventsNextLine"
+    ],
+    "observation": "On memory, Badger, and Valkey, worker one dispatches lines 1, 2, and 3 after worker two acknowledges cancellation while line 1 is still active. The required outcome permits only line 1.",
+    "output": "remote-cancellation-before.jsonl.gz",
+    "sha256": "8e1bbb7416bba8722db0e673fc9a399ff164062b7c130405144871cf18d13cd4",
+    "raw_sha256": "67a9a10ff6ad47873b88f6f30bd66ee4570c874a09a4303f04ab187a6391dc68"
+  },
+  "source_findings": [
+    {
+      "path": "internal/jobs/batch_service.go",
+      "contract": "Cancel changes durable batch state but reaches only a process-local cancel function. runLines checks its local context; it does not atomically claim a line against current batch state."
+    },
+    {
+      "path": "internal/jobs/batch_service.go",
+      "contract": "Line results stream through process-local pipes. Persistent result file identifiers and counts are attached only at finish."
+    },
+    {
+      "path": "internal/jobs/recovery.go",
+      "contract": "Batch Sweep only releases RunFinished claims. It does not recover interrupted runs."
+    },
+    {
+      "path": "internal/server/controllers/batches.go",
+      "contract": "RunLine creates a fresh random request identity for each invocation. A retry must not silently rerun a possibly dispatched line."
+    }
+  ],
+  "required_owner_decision": {
+    "question": "After worker interruption, continue only proven unstarted lines, or stop the batch and require explicit new submission?",
+    "recommendation": "Continue proven unstarted lines; preserve completed results; never automatically repeat uncertain dispatch.",
+    "answer": "pending"
+  },
+  "contract": "CONTRACT.md",
+  "limitations": [
+    "This is a two-worker repository test, not a multi-process production HTTP or kill/restart qualification.",
+    "No repair is implemented by this proof. Keep the failure visible until the owning contract and production integration pass.",
+    "Current administrator recovery proof remains valid; the probe adds no production code."
+  ]
+}

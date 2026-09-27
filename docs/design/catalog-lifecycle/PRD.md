@@ -466,6 +466,9 @@ Administrators may resolve uncertain native jobs from provider usage or explicit
 Each decision requires an immutable audit record. Only administrators can submit a manual decision.
 Without sufficient evidence, Starport retains the uncertain reservation and never submits the request again automatically.
 
+Late provider evidence cannot silently change an accepted administrator charge. Conflicts block the original budget windows and require explicit correction.
+Matching evidence preserves the accepted charge. Unrelated accounts remain available.
+
 ## Execution activation
 
 The user activated the whole-plan goal on 2026-09-05.

@@ -477,5 +477,9 @@ All 19 paid routes reject further work. Job reads, content retrieval, cancellati
 The [external asset proof](../../plans/proof/starport-production-catalog/csp12.2/external-assets-2026-09-27/verification.json) records checks, failures, and remaining scope.
 
 The owner approved audited administrator reconciliation for uncertain native responses. The specification defines its identity, evidence, and replay boundaries.
-Its implementation and qualification remain open. No additional paid generation ran.
-Complete the remaining matrix, interrupted batches, CSP12.2 qualification, A47, and paired merges.
+Consumer `7551e8d4` implements administrator inspection, immutable decisions, explicit no-charge settlement, replay, and restart recovery.
+Late conflicting evidence blocks original budget windows without changing the accepted charge. Matching evidence permits normal operation.
+
+The [administrator recovery proof](../../plans/proof/starport-production-catalog/csp12.2/administrator-reconciliation-2026-09-27/verification.json) records 1,622 broad race results, 44 application results, and 45 pure-Go results.
+Two optional broad checks skipped. No additional paid generation ran.
+Complete audited correction, interrupted batches, the remaining matrix, full CSP12.2 qualification, A47, and paired merges.

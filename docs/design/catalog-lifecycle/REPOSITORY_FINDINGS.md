@@ -4327,3 +4327,43 @@ Seven repository scripts, Go policy checks, targeted vet, and changed prose pass
 
 The source manifest binds 24 committed files. These results do not qualify missing-response recovery or the full paid-operation matrix.
 No additional paid generation ran. PostgreSQL, process loss, failover, capacity, review, native CI, and paired merges remain required.
+
+
+## CSP12.2 administrator recovery and late evidence: September 27, 2026
+
+Consumer `7551e8d4` implements the approved administrator recovery contract.
+Authenticated administrators can resolve uncertain native responses using actual usage or explicit no-charge evidence.
+The job record retains the immutable identity, actor, reason, evidence reference, disposition, and decision time before releasing capacity.
+Ordinary job responses expose safe status. They do not expose private audit evidence.
+
+Review found that a late charged response could contradict a manually accepted no-charge decision.
+The repair preserves both records and atomically blocks the original budget windows before publishing the conflict.
+It grants no refund and changes no accepted charge. Matching late evidence does not block normal operation.
+An audited correction procedure remains open. The first decision cannot be overwritten through the current endpoint.
+
+The application checks exposed stale asynchronous fixtures after native offering selection changed.
+Those fixtures now select the declared generic asynchronous offering and its paths. They do not prove live asynchronous provider support.
+The polling fixture seeds an old record without weakening immutable production identity checks.
+A separate failed run used an incorrect PostgreSQL hostname. Final checks use the isolated local service.
+
+The [administrator recovery proof](../../plans/proof/starport-production-catalog/csp12.2/administrator-reconciliation-2026-09-27/verification.json) records 1,622 broad race results, 44 application results, and 45 pure-Go results.
+Two optional broad checks skipped. Go policy, targeted vet, four repository scripts, and changed prose pass.
+The proof preserves earlier failures and binds 36 committed files. Counts include parent tests and subtests.
+
+These results cover memory, Badger, Valkey, and SQLite/PostgreSQL ownership checks in the selected suites.
+They do not qualify full process loss, failover, capacity, A47, native CI, or the remaining operation matrix.
+No additional paid generation ran. CSP12.2 remains in progress pending complete qualification, review, dependency publication, and paired merges.
+
+
+## CSP12.2 interrupted batch ownership: September 27, 2026
+
+The current batch runner retains line progress and result streams in memory.
+A second worker changes durable cancellation state but cannot reach the first worker's local cancellation function.
+The [batch probe](../../plans/proof/starport-production-catalog/csp12.2/batch-recovery-contract-2026-09-27/verification.json) fails on memory, Badger, and Valkey.
+Each backend dispatches all three lines after cancellation, where only the already admitted first line should run.
+Four test results fail, including the parent test. No production repair accompanies this probe.
+
+`BatchService.Sweep` releases finished claims but cannot recover interrupted runs.
+A durable line contract must own claim, dispatch identity, result references, cancellation, and restart state.
+The [repair contract](../../plans/proof/starport-production-catalog/csp12.2/batch-recovery-contract-2026-09-27/CONTRACT.md) defines the required boundaries and evidence.
+CSP12.2 owns this repair. The owner decision about continuing untouched lines after interruption remains pending.

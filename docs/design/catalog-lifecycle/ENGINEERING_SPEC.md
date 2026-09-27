@@ -4606,4 +4606,24 @@ Neither decision may infer completion or a charge from elapsed time, job state, 
 Exact retries must return the accepted decision without another release. Conflicting evidence must require explicit correction rather than silently replacing prior evidence.
 Preserve independent provider evidence that arrives after a manual decision. Report a conflict instead of discarding it or silently changing the audit record.
 Qualification must cover authorization, replay, conflicting decisions, late responses, storage failures, restart, and concurrent replicas.
-This owner-approved contract remains unimplemented at consumer `fa42a9c7`.
+
+Consumer `7551e8d4` implements inspection and reconciliation under `/api/v1/admin/accounts/{account_id}/videos/{video_id}/reconciliation`.
+GET inspects the bound identity and private evidence. POST records a usage or no-charge decision.
+
+Both require an authenticated administrator. Anonymous administrator scope does not establish an audit actor.
+The server assigns actor and decision time. Unknown request fields, duplicate fields, and trailing JSON fail validation.
+
+The job record owns the required audit in Badger or shared KV. Optional SQL audit storage cannot authorize capacity release.
+Repository mutation refuses changes to an accepted decision. Deletion refuses any job with an administrator decision.
+Usage reports carry `administrator_usage` or `administrator_no_charge`. Provider measurements remain separate.
+
+Late provider evidence remains private. A conflicting or incomplete response requires review against the accepted decision.
+Before publishing that conflict, atomically flag the original reservation and its budget windows.
+New admission in those windows returns a retryable error. Preserve accepted charges, reserved amounts, and the first administrator decision.
+
+Matching provider evidence leaves normal operation available. Unrelated budget populations remain available.
+
+Retain the private response through its original asset deadline. Retain its billing summary and administrator audit after asset expiry.
+An audited correction procedure remains required. The current endpoint cannot overwrite a decision or remove a dispute fence.
+The [administrator recovery proof](../../plans/proof/starport-production-catalog/csp12.2/administrator-reconciliation-2026-09-27/verification.json) records local qualification and remaining work.
+It does not complete CSP12.2, A47, or fleet qualification.
