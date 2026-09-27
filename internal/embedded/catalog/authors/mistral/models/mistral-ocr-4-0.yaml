@@ -1,0 +1,14 @@
+id: mistral-ocr-4-0
+name: Mistral OCR 4.0
+authors:
+- id: mistral
+  name: Mistral AI
+description: Document recognition with structured page text.
+metadata:
+  release_date: 2026-06-23
+  open_weights: false
+  tags: [ocr]
+features:
+  modalities:
+    input: [pdf, image]
+    output: [text]

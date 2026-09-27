@@ -46,7 +46,7 @@ type Provider struct {
 	Extensions SourceExtensions `json:"extensions,omitempty" yaml:"extensions,omitempty"`
 }
 
-// EndpointType specifies the API style for model listing.
+// EndpointType specifies a provider wire protocol.
 type EndpointType string
 
 const (
@@ -67,6 +67,8 @@ const (
 	// result count and the response envelope differently from Cohere's, so it
 	// cannot share that style.
 	EndpointTypeVoyage EndpointType = "voyage"
+	// EndpointTypeMistralOCR represents the Mistral document recognition protocol.
+	EndpointTypeMistralOCR EndpointType = "mistral-ocr"
 )
 
 // FieldMapping defines how to map API response fields to model fields.

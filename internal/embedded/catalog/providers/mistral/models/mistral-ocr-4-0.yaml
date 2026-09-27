@@ -1,0 +1,24 @@
+# Standard OCR only. Annotations and provider-native batches use different rates.
+# https://docs.mistral.ai/models/ocr-4-0 (verified 2026-09-27)
+id: mistral-ocr-4-0
+model: mistral/mistral-ocr-4-0
+name: Mistral OCR 4.0
+authors:
+- id: mistral
+  name: Mistral AI
+metadata:
+  release_date: 2026-06-23
+  open_weights: false
+  tags: [ocr]
+features:
+  modalities:
+    input: [pdf, image]
+    output: [text]
+billing:
+  recognition:
+    basis: pages
+    request_charge: false
+pricing:
+  currency: USD
+  operations:
+    page_input: 0.004

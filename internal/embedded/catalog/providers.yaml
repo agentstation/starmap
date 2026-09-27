@@ -1090,6 +1090,9 @@
     - operation: embeddings
       type: openai
       path: /v1/embeddings
+    - operation: documents-recognition
+      type: mistral-ocr
+      path: /v1/ocr
     health_api_url: https://status.mistral.ai/feed.rss
     health_api_kind: rss
   extensions:
