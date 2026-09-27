@@ -1,0 +1,603 @@
+{
+  "recorded_at": "2026-09-27T18:15:57.486627+00:00",
+  "task": "CSP12.2",
+  "status": "PASS component checks; task incomplete",
+  "consumer_commit": "1143dfb06cf7f1eea6a68f50149ff5a2c60ac155",
+  "producer_commit": "fb7f8ae2165d9644f6ff832d128ff87b1c5adc69",
+  "work_file": "/tmp/csp122-billing.work",
+  "go_version": "1.27.1",
+  "tests": {
+    "before": {
+      "counts": {
+        "test_fail": 9,
+        "package_fail": 1
+      },
+      "skips": []
+    },
+    "focused": {
+      "counts": {
+        "test_pass": 54,
+        "package_pass": 5
+      },
+      "skips": []
+    },
+    "full": {
+      "counts": {
+        "package_skip": 8,
+        "test_pass": 5004,
+        "package_pass": 65,
+        "test_skip": 71
+      },
+      "skips": [
+        {
+          "package": "github.com/agentstation/starport/examples",
+          "test": null
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog/disclosure",
+          "test": null
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "test": "TestDefaultCacheMemoryBudget"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "test": "TestSharedCachePausedServiceDeadlineAndRecovery"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/authorization",
+          "test": "TestAuthorizationTenantChurnCapacity"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/authorization",
+          "test": "TestFleetDurableReceiptPrecedesReplicaEnforcement"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "test": "TestSharedCacheRealService"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "test": "TestSharedCacheURIAuthenticationAndDatabase"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "test": "TestSharedCacheTLSWithRealService"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestContainerRecipePersistence"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/kvconnection/kvtest",
+          "test": null
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/protocol/mediaform",
+          "test": null
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "test": "TestTeamBudgetHistoryHandoff/postgres-valkey"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestBudgetAuthorityRequiresBothApprovals"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestBudgetAuthorityFencesDelayedWrites/before-native-write"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestBudgetAuthorityFencesDelayedWrites/after-native-write"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestBudgetAuthorityClosedAndChangedEpoch"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetBootstrapPermission"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetInitialization"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesExistingState/kv"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesExistingState/sql"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesExistingState/approval"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesExistingState/closed-approval"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesExistingState/row-security"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesExistingState/unknown-table"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetInterruptedClaim"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetConcurrentInitialization"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesChangedIncarnation"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetSQLFailureRetainsOnlyRetryClaim"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/dto",
+          "test": null
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "test": "TestGatewayOverheadBenchmark"
+        },
+        {
+          "package": "github.com/agentstation/starport/scripts/doclinks",
+          "test": null
+        },
+        {
+          "package": "github.com/agentstation/starport/scripts/sdk-smoke-server",
+          "test": null
+        },
+        {
+          "package": "github.com/agentstation/starport/skills/starport",
+          "test": null
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "test": "TestSDKCanonicalRemovalAfterSuccessfulInference"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/storage",
+          "test": "TestValkeyIncarnationRejectsReplacementBackend"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetBootstrapConcurrentExactPublication"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetBootstrapWriteBoundaries/before-sql"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetBootstrapWriteBoundaries/after-sql"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetBootstrapWriteBoundaries/before-kv"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetBootstrapWriteBoundaries/after-kv"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionRequiresExplicitCollection"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionHonorsLimitsAndRequiredGenerations"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionCountsGenerationsSeparatelyFromReceipts"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionDryRunPreservesPendingRecovery"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionResumesInterruptedCollection"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionRefusesUnownedStaging"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionBoundsCommittedSnapshots"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionProtectsPinnedGeneration"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionRecoversInterruptedUploadAndDeletion"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionFencesExpiredMaintenance"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionConcurrentReadersAndCollection"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionCapacityRefusesWithoutMovingHead"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionRejectsOverlappingDeletionRecord"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/current"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/accepted"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/rollback"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/inventory-missing"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetAcceptanceRetainsDistinctRollbackGenerations"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreCompleteKeyLossRequiresRecovery"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreNativePublication"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreRefusesExpiredGrant"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreSeparateProcessTakeover"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreMissingSelectedPublicationIsNotAnEmptyStore"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreAcceptanceUsesOriginalGrant"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreNamespaceAndMalformedDescriptor"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreLeaseExpiresDuringSelection/publication"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreLeaseExpiresDuringSelection/acceptance"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreLostHeadCannotBootstrapAgain"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetMigrationRequiresSameRecoveryIdentity"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRuntimeRejectsUnapprovedBackend"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRuntimePreservesOriginalGrantThroughAcceptance"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRuntimeLiveTakeoverAcceptance"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestSharedCacheCompositionUsesSeparateService"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestSharedCacheCanonicalDeploymentIsolation"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestInitializeFleetFreshStartup"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestAppWithValkey"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestSharedStartupDoesNotCreateLocalDatabases"
+        }
+      ]
+    },
+    "initial": {
+      "counts": {
+        "test_pass": 31,
+        "package_pass": 4
+      },
+      "skips": []
+    },
+    "jobs-race": {
+      "counts": {
+        "test_pass": 190,
+        "package_pass": 1
+      },
+      "skips": []
+    },
+    "purego": {
+      "counts": {
+        "test_pass": 32,
+        "package_pass": 2
+      },
+      "skips": []
+    }
+  },
+  "commands": [
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -json -count=1 -timeout=3m ./internal/jobs -run ^TestPollingExhaustionRetainsProviderWork$",
+      "result": "before.jsonl.gz",
+      "exit_code": 1,
+      "source": "parent e0b4b237 plus initial regression"
+    },
+    {
+      "command": "go test -json -count=1 -timeout=3m ./internal/jobs ./internal/server/controllers ./internal/protocol/openai ./internal/protocol/openrouter -run 'Poll|Spent|Reconciliation|Sweep|VideoJob|Video.*Scope'",
+      "result": "initial.jsonl.gz",
+      "exit_code": 0,
+      "source": "initial repair before expanded service, route and UI tests"
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -json -race -count=1 -timeout=4m ./internal/jobs ./internal/server ./internal/app ./internal/protocol/openai ./internal/protocol/openrouter -run 'Poll|Spent|Reconciliation|Sweep|VideoJob|Video.*Scope|VideoPaths'",
+      "result": "focused.jsonl.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -json -race -count=1 -timeout=4m ./internal/jobs",
+      "result": "jobs-race.jsonl.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -json -count=1 -timeout=6m ./...",
+      "result": "full.jsonl.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "CGO_ENABLED=0 TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -json -count=1 -timeout=3m ./internal/jobs ./internal/server -run 'Poll|Spent|Reconciliation|Video.*Scope|VideoPaths'",
+      "result": "purego.jsonl.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "make lint",
+      "result": "lint.txt.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "go vet ./internal/jobs ./internal/server/... ./internal/app ./internal/protocol/openai ./internal/protocol/openrouter",
+      "result": "vet.txt.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "pnpm -C console lint",
+      "result": "console-lint.txt.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "pnpm -C console test src/components/jobs/JobsPanel.test.tsx",
+      "result": "console-focused.txt.gz",
+      "exit_code": 0,
+      "tests_passed": 10
+    },
+    {
+      "command": "pnpm -C console check",
+      "result": "console-check.txt.gz",
+      "exit_code": 0,
+      "test_files_passed": 74,
+      "tests_passed": 464
+    },
+    {
+      "command": "bash scripts/verify-async-media-jobs.sh",
+      "result": "guard.txt.gz",
+      "exit_code": 0,
+      "conditions_passed": 18
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "result": "direction.txt.gz",
+      "exit_code": 0,
+      "conditions_passed": 6
+    },
+    {
+      "command": "technical-writing lint internal/jobs/poll_recovery.go internal/jobs/poll_recovery_test.go internal/app/job_poll_recovery_test.go --format text",
+      "result": "new-prose-final.txt.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "technical-writing lint docs/OPERATOR-GUIDE.md --format text",
+      "result": "guide-prose-final.txt.gz",
+      "exit_code": 1,
+      "diagnostics": 48,
+      "scope": "pre-existing lines before edited Video Jobs section"
+    }
+  ],
+  "source_note": "Go commands use GOWORK=/tmp/csp122-billing.work and GOTOOLCHAIN=go1.27.1. Final source differs from behavior checks only in comments, operator prose, and strengthened route-name presence checks. Console code matches full check. Historical failed prose checks remain attached.",
+  "source_sha256": {
+    "AGENTS.md": "8f3a7e21bec39cbc1db7b5b32769513cc613b1dc19103b4f04454e339a984d00",
+    "console/src/components/jobs/JobsPanel.test.tsx": "11658de8ca18b194b30f05f004d0d807b94aef7a530a6766eaf93870854a2269",
+    "console/src/components/jobs/JobsPanel.tsx": "7387e198967d65a989b2ac3cf0f1d6c4e6e6f3859b2a6879e917ae2155650f53",
+    "console/src/lib/api.ts": "2af12a3956b18ac9572454c5005295c491eaaac5b8a4514b453efd02921a5110",
+    "docs/OPERATOR-GUIDE.md": "b3796ff262028fd02237f9121f4837c3c8b7dad891c1d258c9469c2c6dfd8d4c",
+    "internal/app/app.go": "310f7d178fefab9ad10ccb6d1bfd1cb2dec999357e97f6ae553430914b6f6a96",
+    "internal/app/job_poll_recovery_test.go": "450d8aeae2c5d3c4bb2be7588ae6a9ffda6e90ad8fc04e671ab04063a68291a9",
+    "internal/inference/video_jobs.go": "ca9d44c3444477171dec039192faed255e58fa07346b241dad70f8a70c108a81",
+    "internal/jobs/accounting_test.go": "b47d23d20c782d0813ec488e0b415a4267b0d7bcc7780c6755e85799dc571b0e",
+    "internal/jobs/asset.go": "0a20a2383a7e7ca05b1e469c3a1f4137f2e69b6a5f3b6274af222485f26e71e3",
+    "internal/jobs/job.go": "30c95cbf30f1a7ab3537c8a20abe7ef8ed4cc5dbdf5f4cf166c86b8d8a4620cf",
+    "internal/jobs/poll_policy.go": "10e6ca39755ccc16df59e87748b4d5b246014b00e21306db6b31fb2e32eb1bf1",
+    "internal/jobs/poll_policy_test.go": "c283b491a5aa1dd5c38ba78eb92e1cae18cd777893c564e26b315494786df6e1",
+    "internal/jobs/poll_recovery.go": "8ebf024779c395074b32d8bf518ec02be30a8bceab431528fead554b5143fad0",
+    "internal/jobs/poll_recovery_test.go": "74db3fc309feef0502db31d27e27a7dddc860f9a3cfddc53cf83a0a2d8ff7247",
+    "internal/jobs/service.go": "d17976db8864dfccbf2c6f71b0ce3296246bafdd11d05cf791580d0a747a6c7f",
+    "internal/jobs/service_test.go": "7c32aa54debf6fb2b17a4dc822334a4edc198515067757a978f1e186ba9d2bb9",
+    "internal/jobs/submission_recovery_test.go": "8e38cc850a6b5bbbb9826cb109186ef2f8893a002bdfed440c9e9b0f3fcdff50",
+    "internal/protocol/openai/video_jobs.go": "e5365889d3b9e2ce82ccee1cf6dfe0b4e6923dc21fa740c7d1cbea60c6a84889",
+    "internal/protocol/openrouter/video_jobs.go": "50c55fcb72e0d0f5005c20b20bd0994c9cf6b98a190476b674d8bc895dce0e9f",
+    "internal/server/controllers/videos.go": "cb1d97916018e7768d9b17003b1ae95b176be6ba7b0b0a2a7ac8186d54fdcb7e",
+    "internal/server/routes.go": "e64b01ab56de40824a6dcc60443c53ed8b2747ed2239441d0813667623667ecf",
+    "internal/server/video_routes_test.go": "0cab60825d4033ea1dda93a6f98d61e61824318a02c70bfdf95c226097adfb48",
+    "scripts/verify-async-media-jobs.sh": "ba66762cec7c4b3c4ca96adceebf6edd0d69c38887e83eb8203a01cc4b04d166"
+  },
+  "artifacts": [
+    {
+      "path": "before.jsonl.gz",
+      "raw_sha256": "eccbef7ad3dce4a5b01fc6747bb5f5b3655e49acb78eedd70d9301a109733e25"
+    },
+    {
+      "path": "console-check.txt.gz",
+      "raw_sha256": "d326934d6fc52abb6c0e1321968292eb68f7cce3b21329226be16a71aa956f76"
+    },
+    {
+      "path": "console-focused.txt.gz",
+      "raw_sha256": "23f1e00766f94535085d57fb9a1475f820390967355af0d2c2707b5ecec3dc80"
+    },
+    {
+      "path": "console-lint.txt.gz",
+      "raw_sha256": "fe82195262b09727902d8ea57ceb3e12a09e5df0c6f26157db77f5c51b45d9f5"
+    },
+    {
+      "path": "direction.txt.gz",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "focused.jsonl.gz",
+      "raw_sha256": "ef1a5de0d49d6fcccb1b27ecc0e5bc43b60972ba54ac6b83649f46b0dc6bb409"
+    },
+    {
+      "path": "full.jsonl.gz",
+      "raw_sha256": "338d6dcc246cd1cc2d0eb3c8330e72377aea07de0860d6bf4290e5b4115d7f0e"
+    },
+    {
+      "path": "guard.txt.gz",
+      "raw_sha256": "2e320c6c7a59d3ce3e3736f1918c22033814cc4647f54233f1de03ac2948951d"
+    },
+    {
+      "path": "guide-prose-final.txt.gz",
+      "raw_sha256": "002f74b7525f64227c004e643453f9156e4c043cbd827e41a5e69371880f43f4"
+    },
+    {
+      "path": "guide-prose.txt.gz",
+      "raw_sha256": "5169f8fac6922102efcbf1d99bf0b17a7eb5de808b29669d5a93c9adfc6fe998"
+    },
+    {
+      "path": "initial.jsonl.gz",
+      "raw_sha256": "afc7eaa53565f37caee6722daf9e8adc4d6370281f3117876fb4e2c685e6c9f5"
+    },
+    {
+      "path": "jobs-race.jsonl.gz",
+      "raw_sha256": "52995ca60c2df9ed661e7ed7c83074de4acc90df101f7ee9ffa35c26d09516cc"
+    },
+    {
+      "path": "lint.txt.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "new-prose-final.txt.gz",
+      "raw_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    },
+    {
+      "path": "new-prose.txt.gz",
+      "raw_sha256": "0dc976bb1d24ce215025552bef7a82854dadc6c4aedd7f151d64ba3ec0f750dd"
+    },
+    {
+      "path": "purego.jsonl.gz",
+      "raw_sha256": "8ece45544c501b21d2f8bca4fffbb063195e9b270bce57f89fc3f280da089dc8"
+    },
+    {
+      "path": "vet.txt.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "plan-prose-final2.txt.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7"
+    },
+    {
+      "path": "plan-prose.txt.gz",
+      "raw_sha256": "3afb346770ad518576dde60784f1cc56624170693d5e57cdf6d894e9f100a778"
+    },
+    {
+      "path": "plan-prose-final.txt.gz",
+      "raw_sha256": "c503a77256e291ff34bc25831c890d9dc4ef62912c39f5da794c4c5dcac34370"
+    }
+  ],
+  "scope": [
+    "Local polling exhaustion retains provider state, outstanding claim, and unaccounted status.",
+    "Explicit account-scoped reconciliation checks one existing provider handle under current request policy and a 30-second timeout.",
+    "Both HTTP families expose paused status in reads and listings. Failed provider checks retain capacity. Confirmed terminal outcomes release only the outstanding slot.",
+    "Console action reports actual provider state and preserves failure diagnostics.",
+    "Memory, Badger and native Valkey regression evidence. No live paid inference."
+  ],
+  "unverified": [
+    "Provider-specific video submission, cancellation, usage and billing contracts.",
+    "Pinned valuation and durable required asynchronous settlement.",
+    "Unknown submission reconciliation without a confirmed provider handle.",
+    "Background provider reconciliation, concrete replay horizons and safe collection.",
+    "Native Linux and Windows for final pair, multi-process failures, failover and PostgreSQL witness.",
+    "CSP13 migration from older timeout-failed records and mixed-version behavior.",
+    "A47 and released-pair production qualification."
+  ],
+  "guard_limit": "AMJ-V15 still asserts historical terminal-state charging assumptions. Its green result is not video billing evidence; CSP12.2 owns replacement.",
+  "documentation_checks": {
+    "final_prose_exit_code": 0,
+    "files": 4,
+    "result": "plan-prose-final2.txt.gz",
+    "maintenance": "maintenance.json"
+  },
+  "preserved_changes": {
+    "consumer": [
+      "docs/ARCHITECTURE.md",
+      "internal/cache/README.md"
+    ],
+    "plan": [
+      "AGENTS.md",
+      "Makefile",
+      "go.mod",
+      "go.sum",
+      "scripts/verify.sh"
+    ]
+  }
+}

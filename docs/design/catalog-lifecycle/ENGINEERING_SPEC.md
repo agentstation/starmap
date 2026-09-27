@@ -4435,5 +4435,25 @@ Each provider contract must separately declare submission, polling, cancellation
 A generic DELETE route cannot prove cancellation support. A deletion acknowledgement cannot prove that execution stopped.
 
 Local polling exhaustion is also insufficient to prove provider completion.
-The current timeout path still closes the job and releases its claim. CSP12.2 must separate local polling limits from confirmed provider outcomes.
+Consumer `1143dfb0` retains the last provider state and outstanding claim after the local polling window.
+The sweep reports unresolved accepted work without synthesizing failure or accounting.
 Uncertain provider work must retain capacity until reconciliation establishes the result.
+
+### Explicit reconciliation after polling pauses
+
+The job API separates `polling_status: "paused"` from the last provider state.
+Single-job GET stops provider checks after the polling window. Listings remain storage reads.
+`POST /v1/videos/{video_id}/reconcile` explicitly checks the existing provider handle.
+The OpenRouter family exposes the same Starport extension under `/api/v1/videos`.
+Both routes require `videos:write` and enforce the current account and provider access policy.
+
+Each reconciliation operation has a 30-second timeout. It never resubmits generation or restarts the original polling window.
+Provider errors retain capacity. Confirmed terminal outcomes permit outstanding-slot release, separately from spending settlement.
+Unconfirmed submissions refuse reconciliation until separate evidence establishes a provider handle.
+The Jobs page exposes **Check provider** and reports the provider's actual response.
+
+The [polling proof](../../plans/proof/starport-production-catalog/csp12.2/polling-recovery-2026-09-27/verification.json) records the failed timeout regression and repaired storage and HTTP behavior.
+The records retain schema 2 for jobs and batches, and payload version 3 for claims.
+CSP13 must address older records that local timeout previously marked failed, including mixed-version deployment.
+An explicit check does not establish background recovery, provider billing, or a reconciliation horizon.
+Those contracts remain required under CSP12.2.

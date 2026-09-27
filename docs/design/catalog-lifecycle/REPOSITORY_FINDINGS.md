@@ -4132,3 +4132,29 @@ The current Starmap video price field says per video. Starport also prices compl
 Both defects remain under CSP12.2. Provider-specific route selection and billing qualification must precede strict-budget video support.
 The local timeout path still releases a slot without confirmed provider completion. That recovery defect also remains under CSP12.2.
 No live video inference or invoice check occurred. This component does not complete the task.
+
+
+## September 27 polling recovery
+
+Consumer `1143dfb0` repairs local timeout that previously failed a job and released capacity without provider completion evidence.
+The regression failed on memory, Badger, and Valkey. Nine failing results include the parent tests.
+The [polling proof](../../plans/proof/starport-production-catalog/csp12.2/polling-recovery-2026-09-27/verification.json) binds the source and raw verification logs.
+
+A paused job retains its last provider state, claim, and unaccounted status.
+Both API families publish `polling_status: "paused"` and an account-scoped reconciliation extension.
+The explicit check never resubmits generation or extends automatic polling. Errors retain capacity, and confirmed terminal responses permit outstanding-slot release.
+The console reports paused work and exposes **Check provider**. Cancellation feedback now reports the actual provider outcome.
+
+The jobs race suite passes 190 results. Focused race checks pass 54 results, including both production HTTP families.
+Pure-Go checks pass 32 results. Those runs have no skips.
+The full Go suite passes 5,004 results and skips 71. Eight packages skip.
+
+All 464 console tests pass across 74 files. Console lint, build, type checks, Go lint, and affected-package vet pass.
+The operator guide retains 48 pre-existing prose diagnostics outside the changed section.
+
+The current Jobs page refreshes listings, which do not poll providers. Explicit reconciliation supplies manual recovery for accepted handles.
+Background provider recovery and concrete replay horizons remain open. Required settlement must retain the submission valuation and authoritative billing evidence.
+
+The historical AMJ-V15 guard still assumes terminal-state charging. Its passing result does not qualify billing.
+Provider-specific video contracts, ambiguous submissions, process loss, failover, migration, and A47 remain unqualified.
+This component does not complete CSP12.2.

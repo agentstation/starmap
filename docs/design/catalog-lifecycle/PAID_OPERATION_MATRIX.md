@@ -398,4 +398,8 @@ This release concerns outstanding job count. It cannot refund a spending reserva
 The [repository audit](REPOSITORY_FINDINGS.md#september-27-cancellation-and-video-contract-audit) identifies current provider unit and transport differences.
 Replace the generic per-video assumption with each provider's actual billing contract before strict-budget video dispatch.
 Retain the submission valuation and reliable usage through durable settlement. Failed or cancelled state alone cannot establish a zero charge.
-Local polling exhaustion must not release unresolved provider work. Provider reconciliation and its retention horizon remain required.
+
+Consumer `1143dfb0` retains unresolved provider work after local polling exhaustion.
+An explicit provider check can recover a confirmed handle without resubmitting generation.
+The [polling proof](../../plans/proof/starport-production-catalog/csp12.2/polling-recovery-2026-09-27/verification.json) covers both HTTP families and native storage.
+Background reconciliation, uncertain handles, billing settlement, and retention horizons remain required.
