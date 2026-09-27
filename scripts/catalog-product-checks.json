@@ -5847,13 +5847,13 @@
         {
           "kind": "go_test",
           "repository": "starport",
-          "package": "./internal/catalog/recovery",
+          "package": "./internal/recovery",
           "test": "TestFreshFleetBootstrapPermission"
         },
         {
           "kind": "go_test",
           "repository": "starport",
-          "package": "./internal/catalog/recovery",
+          "package": "./internal/recovery",
           "test": "TestRecoveryApprovalCannotInferBootstrap"
         },
         {
