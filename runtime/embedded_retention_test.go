@@ -3,6 +3,8 @@ package runtime
 import (
 	"context"
 	"errors"
+	"os"
+	"path/filepath"
 
 	"testing"
 
@@ -14,13 +16,17 @@ import (
 func TestOfflineStartupRetainsEmbeddedGeneration(t *testing.T) {
 	for _, source := range []string{"embedded", "public"} {
 		t.Run(source, func(t *testing.T) {
-			store := storage.NewMemory()
+			store := &countingStore{Store: storage.NewMemory()}
 			directory := privateRuntimeDirectory(t)
+			workspace := filepath.Join(t.TempDir(), "unused-workspace")
 			options := []Option{WithStateDirectory(directory), WithCatalogSource(source),
 				WithCatalogNetworkMode("offline"), WithAcquisitionEnabled(false), WithSourcePollInterval(0),
-				WithClientOptions(starmap.WithCatalogStore(store))}
+				WithClientOptions(starmap.WithCatalogStore(store), starmap.WithCatalogPath(workspace))}
 			first := openTestRuntime(t, options...)
 			state := first.State()
+			if got := store.commitCount(); got != 1 {
+				t.Fatalf("cold baseline commits = %d, want 1", got)
+			}
 			generation, err := store.Current(t.Context())
 			if err != nil {
 				t.Fatalf("offline startup did not retain the embedded generation: %v", err)
@@ -32,6 +38,12 @@ func TestOfflineStartupRetainsEmbeddedGeneration(t *testing.T) {
 				t.Fatal(err)
 			}
 			second := openTestRuntime(t, options...)
+			if got := store.commitCount(); got != 1 {
+				t.Fatalf("restart recommitted the retained baseline: %d commits", got)
+			}
+			if _, err := os.Lstat(workspace); !os.IsNotExist(err) {
+				t.Fatalf("baseline retention initialized an unused authoring workspace: %v", err)
+			}
 			if second.State().GenerationID != state.GenerationID || second.State().PayloadChecksum != state.PayloadChecksum {
 				t.Fatal("offline restart changed the retained baseline")
 			}

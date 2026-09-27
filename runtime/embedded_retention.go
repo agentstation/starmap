@@ -10,7 +10,7 @@ import (
 // runtime startup. Root client construction remains read-only. Fleet, authority,
 // origin, and pin publication retain their separate authorization contracts.
 func (r *Runtime) retainEmbeddedStartup(ctx context.Context, state starmap.CatalogState) error {
-	if r.config.fleetStore != nil || !r.client.PublishesDurably() {
+	if r.config.fleetStore != nil || !r.client.PublishesDurably() || !r.client.Readiness().Embedded.Active {
 		return nil
 	}
 	baseline := r.client.EmbeddedCatalogState()
