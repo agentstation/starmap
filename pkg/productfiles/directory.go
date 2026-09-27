@@ -27,6 +27,13 @@ func NewDirectory(path string) (*Directory, error) {
 	return bind(directory, err)
 }
 
+// CreateDirectory exclusively creates one private directory beneath an existing trusted parent.
+// The path must be clean and absolute. Existing targets retain their contents and permissions.
+func CreateDirectory(path string) (*Directory, error) {
+	directory, err := privatefiles.NewExclusiveDirectory(path)
+	return bind(directory, err)
+}
+
 // ExistingDirectory checks an existing private directory without creating paths.
 func ExistingDirectory(path string) (*Directory, error) {
 	directory, err := privatefiles.ExistingDirectory(path)

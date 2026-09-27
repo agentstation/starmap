@@ -4,6 +4,7 @@ import (
 	"context"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
@@ -28,7 +29,12 @@ func TestFleetRetentionUsesCanonicalPolicyAndExplicitCollection(t *testing.T) {
 			session := &fleetCollectSession{fleetTestSession: &fleetTestSession{backend: newFleetRuntimeBackend(t), session: "collector-process"}}
 			r := openTestRuntime(t, WithFleetStore(session), WithSchedulerIdentity("collector"), WithStateDirectory(privateRuntimeDirectory(t)),
 				WithSource(newStubSource("fleet-source")), withScheduleTimer(newStubScheduleTimer().after),
+				WithStartupSpread(time.Hour),
 				WithRetentionEnabled(enabled), WithRetentionMaxGenerations(7), WithRetentionMaxBytes(123456))
+			// Keep automatic collection behind the non-firing timer throughout this test.
+			if r.schedule.retentionOffset <= 0 {
+				t.Fatal("retention startup must wait before its automatic pass")
+			}
 			if got := r.RetentionSnapshot(); got.GenerationCollection != "supported" || got.Enabled != enabled {
 				t.Fatalf("coordinated fleet collection not exposed: %+v", got)
 			}
