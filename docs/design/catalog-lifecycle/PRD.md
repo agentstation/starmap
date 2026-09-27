@@ -451,6 +451,11 @@ Budget admission must use the permitted inputs and complete prices from the subm
 Recovery and reporting must retain that valuation. Measured usage remains charge evidence when output delivery fails.
 A provider cost estimate must stay labeled as an estimate. Missing usage must remain unknown.
 
+Native jobs must return a durable gateway identifier before the provider finishes generation.
+Caller disconnection must preserve work that already owns a durable dispatch record.
+Operators can bound workers and execution time. Saturation refuses new work before provider dispatch.
+Timeouts and restarts must retain uncertainty without repeating a paid request.
+
 ## Execution activation
 
 The user activated the whole-plan goal on 2026-09-05.

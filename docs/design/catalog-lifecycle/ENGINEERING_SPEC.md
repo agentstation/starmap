@@ -4507,7 +4507,7 @@ A closed or changed approval refuses the old owner. A new owner must open the ex
 
 Reservation attempts use payload version 2. Window and history records remain version 1.
 Older attempt records require explicit migration. CSP13 owns that procedure and mixed-version refusal.
-Job records now use schema 3. Batch records remain schema 2. Claim payloads remain version 3.
+Job records now use schema 4. Batch records remain schema 2. Claim payloads remain version 3.
 
 The [job settlement proof](../../plans/proof/starport-production-catalog/csp12.2/job-settlement-boundary-2026-09-27/verification.json) qualifies this boundary only.
 Complete video billing, pinned optional reports, provider reconciliation, interrupted batches, and production fleet qualification remain required under CSP12.2.
@@ -4519,7 +4519,7 @@ Required settlement, concurrency-slot release, optional reporting, and terminal 
 A failed optional report must remain pending. Store its acknowledgement only after the idempotent usage recipient accepts the report.
 Concurrent retries and a lost acknowledgement must preserve one usage contribution. Retries must retain the original timestamp, measured quantities, and pinned valuation.
 
-Changing catalog prices cannot change a retry. The current price projection still requires this repair before production qualification.
+Changing catalog prices cannot change a retry. The job reporter now reads retained valuation and measured quantities.
 
 Terminal notification must proceed while required settlement or optional reporting remains pending.
 The current webhook adapter accepts one best-effort notification attempt per job. It does not acknowledge durable recipient delivery.
@@ -4527,7 +4527,7 @@ A crash after the attempt claim can lose the notification. The durable job remai
 
 Do not describe this adapter as exactly-once delivery. A future guaranteed-delivery contract requires a durable outbox and recipient deduplication.
 
-Job schema 3 separates the notification claim from the reporting acknowledgement.
+Job schema 3 introduced separate notification claims and reporting acknowledgements. Schema 4 retains that separation and adds native receipts and pinned valuation.
 Migration must not treat an older accounting mark as evidence that its optional report reached storage.
 CSP13 owns that migration. This component does not qualify complete video billing or released-pair operation.
 
@@ -4551,5 +4551,22 @@ Retain uncertain dispatched work after interruption. Recovery must not submit it
 A provider asset URL grants no download permission. Authorize that destination separately and never forward inference credentials to it.
 Bound both the provider response and stored asset. Preserve usage even when asset validation or persistence fails.
 
-The current native adapter is under development and is not registered for production routing.
-Its local transport tests do not qualify the gateway job lifecycle, asset downloads, or shared-backend recovery.
+The native adapter now participates in production routing. Each replica defaults to two submission workers and a ten-minute execution deadline.
+`STARPORT_JOBS_MAX_WORKERS` and `STARPORT_JOBS_EXECUTION_TIMEOUT` configure those bounds.
+The ordinary request deadline remains unchanged. A saturated worker set refuses work before dispatch.
+
+Native submission returns a job after durable dispatch ownership. Caller disconnection cannot cancel that owned work.
+Shutdown cancels workers before closing provider and storage dependencies.
+
+The response receipt binds account, job, provider, model, generation, request identity, measured usage, and bounded asset bytes.
+Persist this receipt before terminal job publication. Persist usage before the separate final asset write.
+Recovery consumes retained bytes without another inference call. Corrupt receipts cannot establish completion or a charge.
+The submitted asset bound and retention window survive configuration changes.
+
+Missing provider usage remains unknown. Provider failure does not prove a zero charge.
+
+Credential grants include exact-model endpoint overrides from the approved contract.
+These grants cannot authorize other model paths or invent polling operations for native inference.
+
+The [native job proof](../../plans/proof/starport-production-catalog/csp12.2/native-job-flow-2026-09-27/verification.json) qualifies the inline response flow with local provider fixtures.
+External asset downloads, missing-response recovery, PostgreSQL, process loss, failover, capacity, and final paired qualification remain required.

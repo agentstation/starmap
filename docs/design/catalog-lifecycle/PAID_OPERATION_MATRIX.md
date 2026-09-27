@@ -464,6 +464,11 @@ They also verify zero usage, unknown usage, and measured overage.
 Native transport checks cover one dispatch, bounded assets, usage retention, and explicit provider failures.
 The [component proof](../../plans/proof/starport-production-catalog/csp12.2/video-contract-2026-09-27/verification.json) records their exact scope.
 
-Native transport registration, gateway background jobs, durable asset recovery, and pinned optional reports remain incomplete.
-The current adapter parses asset references but does not download them.
-No additional paid generation ran. Complete CSP12.2 qualification, A47, and paired merges remain required.
+Consumer `2e3c7733` registers native video execution with bounded gateway workers and durable inline receipts.
+Optional reports use retained rates and measured duration. Missing usage remains unknown in every terminal state.
+The production HTTP fixture proves early job return, measured settlement, missing-usage retention, and insufficient-budget refusal before dispatch.
+The [native job proof](../../plans/proof/starport-production-catalog/csp12.2/native-job-flow-2026-09-27/verification.json) records exact checks and earlier failures.
+
+The current adapter parses external asset references but does not download them.
+Uncertain native responses still need an operator recovery contract. No additional paid generation ran.
+Complete the remaining matrix, interrupted batches, CSP12.2 qualification, A47, and paired merges.

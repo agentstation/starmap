@@ -4282,3 +4282,27 @@ It does not treat a native request ID as an asynchronous job handle. Production 
 A new real-Badger regression reproduces lost usage after a failed acceptance write.
 The router repair settles valid measured usage before returning that persistence failure. Missing usage retains the full reservation.
 Both outcomes stop retries. The repair does not claim that the failed job write succeeded.
+
+
+## September 27 native gateway jobs and pinned reports
+
+Consumer `2e3c7733` connects native inference to production HTTP submission and durable gateway jobs.
+Each replica bounds concurrent workers and execution time. Shutdown stops workers before their dependencies close.
+A receipt retains measured usage and inline output before terminal publication. Recovery does not repeat inference.
+The submitted price, asset bound, and retention window remain stable after configuration changes.
+
+The production fixture found a credential-grant defect that component tests missed.
+Grant compilation omitted exact-model endpoint overrides, so the native request never left Starport.
+The repair includes the approved model path while rejecting other models and unsupported polling destinations.
+A corrected regression proves the earlier refusal. The first regression fixture selected the wrong credential profile and does not prove that defect.
+
+Optional reports now read retained valuation and measured duration. They never consult current catalog prices.
+Failed or cancelled jobs can carry measured charges. Missing usage remains unknown, including for completed jobs.
+Receipt corruption checks reject changed identities, invalid lengths, and altered asset bytes before completion.
+Job schema 4 requires CSP13 migration for older populated state.
+
+The [native job proof](../../plans/proof/starport-production-catalog/csp12.2/native-job-flow-2026-09-27/verification.json) records 1,898 race results with one container-recipe skip.
+Application checks pass 14 results. Pure-Go checks pass 81 results. Nine final recovery/deadline results pass.
+These counts include parent tests and subtests. They do not count independent acceptance cases.
+
+No further paid generation ran. External asset downloads, uncertain-response recovery, PostgreSQL, process loss, failover, capacity, and full task qualification remain open.

@@ -1,0 +1,372 @@
+{
+  "task": "CSP12.2",
+  "recorded_at": "2026-09-27T21:09:41.610072+00:00",
+  "status": "PASS native inline video flow; CSP12.2 remains incomplete",
+  "previous_goal_turn": "No progress toward implementation: the prior reply verified the existing ignored credential file. This turn resumed source work and produced new behavioral evidence.",
+  "consumer_commit": "2e3c7733233be9b08a3e4be6619862c364c02302",
+  "producer_commit": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+  "go_version": "1.27.1",
+  "work_file": "/tmp/csp122-billing.work",
+  "test_count_convention": "Counts include named parent tests and subtests. They do not count independent acceptance cases.",
+  "commands": {
+    "packages-final.jsonl": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -race -json -count=1 -timeout 4m ./internal/jobs ./internal/router ./internal/proxy ./internal/providers/... ./internal/execution ./internal/architecture ./internal/config ./internal/usage",
+    "app-final.jsonl": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -race -json -count=1 -timeout 3m ./internal/app -run 'TestProductionNativeVideoBudget|TestProductionJobsRequireSettledReservation|TestJobReservationChecksOriginalIdentity|TestSettledJobRequiresOriginalSharedApproval'",
+    "purego-final.jsonl": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -json -count=1 -timeout 2m ./internal/jobs ./internal/router ./internal/proxy ./internal/providers ./internal/providers/connectors ./internal/execution -run 'TestNative|TestBackgroundOpenFailure|TestJobReporting|TestDestinationContractIncludesOnlyDeclaredModelOverrides'",
+    "deadline-final.jsonl": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout 1m ./internal/execution ./internal/jobs -run 'TestOperationElapsedBudgetDoesNotChangeOtherRequests|TestNativeBackgroundSurvivesCallerDisconnect|TestNativeReceiptRejectsCorruptionBeforeCompletion'",
+    "destination-before-valid.jsonl": "With destination_contract.go restored to prior HEAD only, go test -json -count=1 ./internal/providers -run ^TestDestinationContractIncludesOnlyDeclaredModelOverrides$. Restore the repaired source after the check.",
+    "goago-final.json": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 go tool goago -stale-ignores -format json ./...",
+    "vet.txt": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 go vet ./internal/jobs ./internal/router ./internal/proxy ./internal/providers ./internal/providers/connectors ./internal/config ./internal/usage ./internal/execution ./internal/app ./internal/server/controllers"
+  },
+  "results": {
+    "compile.txt": {
+      "artifact": "compile.txt.gz",
+      "sha256": "416936e71742417b61e7be7a5a4cc60e4af70875638c87015b73e67cb80b330c",
+      "uncompressed_bytes": 232
+    },
+    "recovery-tests.jsonl": {
+      "artifact": "recovery-tests.jsonl.gz",
+      "sha256": "85a185ba8929551097d2f663d800aa28377c3ebeb2dd1b5bd4b56c71d9644fe4",
+      "uncompressed_bytes": 76893,
+      "counts": {
+        "package_fail": 1,
+        "test_pass": 37,
+        "package_pass": 1
+      },
+      "failures": [
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "test": null
+        }
+      ],
+      "skips": []
+    },
+    "flow-tests.jsonl": {
+      "artifact": "flow-tests.jsonl.gz",
+      "sha256": "e1c618d9fb777415cc02f0485a48593d3eb11e932c7bf4f5cecf43002011dc80",
+      "uncompressed_bytes": 115578,
+      "counts": {
+        "test_pass": 58,
+        "package_pass": 4
+      },
+      "failures": [],
+      "skips": []
+    },
+    "production-tests.jsonl": {
+      "artifact": "production-tests.jsonl.gz",
+      "sha256": "2b12ba7ae4da00e062f604b1a13538a581f75865f4821e7bf9bf1a3df4ec6b53",
+      "uncompressed_bytes": 51167,
+      "counts": {
+        "test_pass": 4,
+        "package_pass": 1,
+        "test_fail": 4,
+        "package_fail": 1
+      },
+      "failures": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestProductionNativeVideoBudget/measured"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestProductionNativeVideoBudget/missing_usage"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestProductionNativeVideoBudget/failed_with_usage"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestProductionNativeVideoBudget"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": null
+        }
+      ],
+      "skips": []
+    },
+    "production-debug.jsonl": {
+      "artifact": "production-debug.jsonl.gz",
+      "sha256": "2ab00c93e88c814de3ac52f57951eaa8b73f2e58123bcf46a051d576abd5362c",
+      "uncompressed_bytes": 599578,
+      "counts": {
+        "test_fail": 2,
+        "package_fail": 1
+      },
+      "failures": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestProductionNativeVideoBudget/measured"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": "TestProductionNativeVideoBudget"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "test": null
+        }
+      ],
+      "skips": []
+    },
+    "affected-tests.jsonl": {
+      "artifact": "affected-tests.jsonl.gz",
+      "sha256": "a6861b3c4c1982b47981cbe3dba920e0979cac3988cad0f09ac72216d6e75257",
+      "uncompressed_bytes": 1559839,
+      "counts": {
+        "test_pass": 1215,
+        "package_pass": 5,
+        "test_fail": 2,
+        "package_fail": 1
+      },
+      "failures": [
+        {
+          "package": "github.com/agentstation/starport/internal/architecture",
+          "test": "TestTransportAuthenticationRegistriesUsePrimitives"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/architecture",
+          "test": "TestProductionConnectorCallsUseExecutionDeadline"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/architecture",
+          "test": null
+        }
+      ],
+      "skips": []
+    },
+    "destination-before.jsonl": {
+      "artifact": "destination-before.jsonl.gz",
+      "sha256": "ab258194a003b3d516cd7a0ebf8bf8fac22dfcaccd8058f272624db4a95fef5d",
+      "uncompressed_bytes": 3185,
+      "counts": {
+        "test_fail": 1,
+        "package_fail": 1
+      },
+      "failures": [
+        {
+          "package": "github.com/agentstation/starport/internal/providers",
+          "test": "TestDestinationContractIncludesOnlyDeclaredModelOverrides"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers",
+          "test": null
+        }
+      ],
+      "skips": []
+    },
+    "destination-before-valid.jsonl": {
+      "artifact": "destination-before-valid.jsonl.gz",
+      "sha256": "7f2065e2eeaaed1bd57e2249f025e20b13f53fac13cdeaa56d30f8affc0df288",
+      "uncompressed_bytes": 3199,
+      "counts": {
+        "test_fail": 1,
+        "package_fail": 1
+      },
+      "failures": [
+        {
+          "package": "github.com/agentstation/starport/internal/providers",
+          "test": "TestDestinationContractIncludesOnlyDeclaredModelOverrides"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers",
+          "test": null
+        }
+      ],
+      "skips": []
+    },
+    "production-final.jsonl": {
+      "artifact": "production-final.jsonl.gz",
+      "sha256": "b928d62dc60a87d7958ae020acc0583b7d9c8773d724295fc4c5b28e32d2b3ef",
+      "uncompressed_bytes": 47622,
+      "counts": {
+        "test_pass": 5,
+        "test_fail": 1,
+        "package_fail": 1,
+        "package_pass": 1
+      },
+      "failures": [
+        {
+          "package": "github.com/agentstation/starport/internal/providers",
+          "test": "TestDestinationContractIncludesOnlyDeclaredModelOverrides"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers",
+          "test": null
+        }
+      ],
+      "skips": []
+    },
+    "packages-final.jsonl": {
+      "artifact": "packages-final.jsonl.gz",
+      "sha256": "ddeff665f433ba26cc56ccdb0671989a6466eb8d3b505bb82104441b60d94fe6",
+      "uncompressed_bytes": 2407757,
+      "counts": {
+        "test_pass": 1898,
+        "package_pass": 13,
+        "test_skip": 1
+      },
+      "failures": [],
+      "skips": [
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "test": "TestContainerRecipePersistence"
+        }
+      ]
+    },
+    "corruption-tests.jsonl": {
+      "artifact": "corruption-tests.jsonl.gz",
+      "sha256": "df791ba41b7907d4acc96c64b0daf7bb6d72d60c53834c5c375dcb889cf0c758",
+      "uncompressed_bytes": 5549,
+      "counts": {
+        "test_pass": 5,
+        "package_pass": 1
+      },
+      "failures": [],
+      "skips": []
+    },
+    "app-final.jsonl": {
+      "artifact": "app-final.jsonl.gz",
+      "sha256": "2338693aed0ecfdcec237a9ce9d3d6428a218a100f9ccc0b3f4dfbd878cf2d51",
+      "uncompressed_bytes": 63049,
+      "counts": {
+        "test_pass": 14,
+        "package_pass": 1
+      },
+      "failures": [],
+      "skips": []
+    },
+    "purego-final.jsonl": {
+      "artifact": "purego-final.jsonl.gz",
+      "sha256": "32c9a9ffbbcede98feba59783d4283e08b1a646cce9c40fa3697ab32b6a602f2",
+      "uncompressed_bytes": 126732,
+      "counts": {
+        "test_pass": 81,
+        "package_pass": 6
+      },
+      "failures": [],
+      "skips": []
+    },
+    "deadline-final.jsonl": {
+      "artifact": "deadline-final.jsonl.gz",
+      "sha256": "e5d0aa8c2e33a263d47e1fac0b330e0db50f1efba287a30d53111c94d1b71dd7",
+      "uncompressed_bytes": 10056,
+      "counts": {
+        "test_pass": 9,
+        "package_pass": 2
+      },
+      "failures": [],
+      "skips": []
+    },
+    "goago-final.json": {
+      "artifact": "goago-final.json.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "uncompressed_bytes": 289
+    },
+    "vet.txt": {
+      "artifact": "vet.txt.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_bytes": 0
+    },
+    "prose.txt": {
+      "artifact": "prose.txt.gz",
+      "sha256": "d5761f009cd79ac6754578aa59648a657014c29d1b6b05e7f98f1a28bb8b0cfb",
+      "uncompressed_bytes": 6591
+    },
+    "new-prose.md": {
+      "artifact": "new-prose.md.gz",
+      "sha256": "5ed97c7a8c0e7a90e77a2c7652996284ff86e88b4e2fa4c6ea3a15b4ada7870e",
+      "uncompressed_bytes": 2052
+    },
+    "new-prose-lint.txt": {
+      "artifact": "new-prose-lint.txt.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "uncompressed_bytes": 33
+    },
+    "code-prose-final.txt": {
+      "artifact": "code-prose-final.txt.gz",
+      "sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7",
+      "uncompressed_bytes": 33
+    },
+    "csp122-native-plan-prose-final.txt": {
+      "artifact": "csp122-native-plan-prose-final.txt.gz",
+      "sha256": "03ac755e03fb41d530185275e4afde066bd01a05131a816cc20a3963cb9db778"
+    },
+    "csp122-native-plan-prose.txt": {
+      "artifact": "csp122-native-plan-prose.txt.gz",
+      "sha256": "20a9873d0cdc92e66c4d654c1fee40a43ea948df038a88f1f4897e0632aca6c1"
+    }
+  },
+  "source_sha256": {
+    ".env.example": "bdbf1e4759fe51ddef9d1cb28ef799dbf08e3c7f2a28b26d3184ecc7c2cd294e",
+    "docs/OPERATOR-GUIDE.md": "b3d05f54ae59b76b9f348048d953cf42c57b8eef0946a2d3a4cb2c09cfbf9218",
+    "internal/app/app.go": "89aaf6081b493c79e6f57cdf1b5b741b0bf8a0b1ccb377eb1a29e5e2e2b61eec",
+    "internal/app/budget_jobs.go": "d7da34a2251c2b81d722114d39edf57fe0882fd0d1650cbc375a9459b670b1c3",
+    "internal/app/budget_video_test.go": "a2835db252dbf7f565ad8563b1734f6edf7aac66364be85d244358d12a784145",
+    "internal/architecture/catalog_runtime_test.go": "666387fc4a7a49723ff74c715d5f6a20e08217748cf3ba8ca6996f81672fc913",
+    "internal/architecture/import_graph_test.go": "a61a8eb87ffabca89e4ddec1d1a65cba99db30aa331d129dce0da27cf5cf0b76",
+    "internal/config/jobs.go": "a4a968616fd19453d42823fe66848d09b28276f8fd774431ea99c13443ab7b2c",
+    "internal/execution/executor.go": "bc843b07e51dd73d2de6ea9cf5486d3527df9a252892c0eab06858e91e6bf856",
+    "internal/execution/timing_test.go": "21f06732f51e3b461e32223e21dfa22e4dc5b304a325443f80d4d63da28da2ab",
+    "internal/jobs/accounting.go": "596df629c93c3454e21bd13694ab8967edbafce0dadb3d400cb115c602facc4b",
+    "internal/jobs/asset.go": "4d55ddcebd385cb6b1c78ecde68471852a6fa1352e3878b43d84a7d5660278b9",
+    "internal/jobs/job.go": "637a92303514ef03137930a005faf2e55d8b7e5dca6f1143102b7c7f8ede7922",
+    "internal/jobs/native_billing.go": "28ac2b0c767834ed12e3adb150d27eb4f664f778da5d1080ebdd12c6107d6884",
+    "internal/jobs/native_receipt.go": "26c8d797b216e86e8265f820a344731c571c42044605e7f871f67e6a59282e18",
+    "internal/jobs/native_receipt_test.go": "c99882ab681d7fedc77fc74dc2aaaa0cc9503f9a5bcb991d29099d4a09fdbc64",
+    "internal/jobs/poll_recovery.go": "e52a0419c8c61645fec192f32e83234dfd3203fb6726f91f17f24b54b0546fbb",
+    "internal/jobs/repository_store.go": "d41d90742d8561f2189fb4d1f20da923adf8bf966ad37501dbf96bb9e8d59b62",
+    "internal/jobs/service.go": "aad2bb863a0791e2ac7a0ad5dd2c03b3a4ba2afb393abf4654b47383186229d3",
+    "internal/jobs/slot_recovery_test.go": "63e75bbf8595f4c9c735201510b3ae8372c8905bb522fa8138fc0c8df9408af4",
+    "internal/jobs/submission.go": "87981f53d826fbbebb50f91116fc8739e5b68827fc80c6c223069278dc3182de",
+    "internal/jobs/workers.go": "0e582b72dcad0e43d12033f8f9ba37df74fca3f84a7a93d1647dfd980877cd61",
+    "internal/jobs/workers_test.go": "d07c074ca5277e051ea40f3502489413e49236ed83a295dbdb8fe4517bfe737b",
+    "internal/providers/connectors/deepinfra_video.go": "82a533c8d625631f065aef4a01881b8e7218142dca41f99f5145203254a48803",
+    "internal/providers/connectors/deepinfra_video_test.go": "177ab816aa1fad0a8997b76ccb9ac9a76961eae753845f3f64984ecad94063b1",
+    "internal/providers/connectors/job_transport.go": "cc22e49a9c4684f6281bfca1706e6ea5ec1736ca452e9d4477f843636c11774f",
+    "internal/providers/connectors/native_video.go": "bfef12e6bc4f15756fafcd717d46d6a245739f6c8f95701930e9f8e255922eea",
+    "internal/providers/connectors/transport_registry.go": "da7aa0e49686f7423465a26d530bbb6e1901d26d19266340bd471c10b8e3951e",
+    "internal/providers/destination_contract.go": "bb325ce9d789af39c41bff727a2a2341ae3c60ac7ba218e750af4bbb71283dd8",
+    "internal/providers/destination_contract_test.go": "9a8ce5d6ba096cfb6cbcd98e437c485bfeaebdeb8fb865ce81cd05b1b58e37b9",
+    "internal/proxy/job_accounting.go": "3f686526ba31ad821a4989f30e6c39d250a22f737aca362956c06b3e155513c4",
+    "internal/proxy/job_accounting_test.go": "26c99a35811b9a7adddd9c528a8468e5ee655ed0a39275e1e5d469fbea78ad12",
+    "internal/router/budget_video.go": "754c0fb54041ac00d58477ce2572f6a9e8fc82dc4dc3f0eba27124cf47febff8",
+    "internal/router/operation.go": "28ccce881804015c5c93338274737aa5a1185e4bd67994be1047165ba95c469d",
+    "internal/router/video_jobs.go": "fcfd3d2fe173a966ec8064dec0b875fd996776038503584ae7fee2179f7b250a",
+    "internal/server/controllers/videos.go": "2d2c6b6fb837d33997e44eebb4f9ea6dead9ac5fc0668d568185c89f21d24ad5",
+    "internal/usage/model.go": "602443a06f5f97f26324c782eb9824d50d133aba047e91137bbca870539c8bc2"
+  },
+  "interpretation": [
+    "Production HTTP tests hold the provider response until POST returns a durable job ID. They prove measured charges, missing-usage capacity retention, measured provider failures, and insufficient-budget refusal before dispatch.",
+    "A provider estimate of USD 0.99 cannot replace the pinned USD 0.375 charge for five measured output seconds.",
+    "Receipt recovery tests use memory, real synchronous Badger, real Valkey, and filesystem blobs. They recreate service objects after failed writes or lost acknowledgements. They do not kill operating-system processes.",
+    "Receipt corruption tests refuse changed account identity, measurement identity, invalid length, and altered asset bytes before job completion.",
+    "Background tests cover caller disconnect, worker saturation, shutdown, execution expiry, and valuation copy isolation. Expiry leaves unknown provider work unresolved.",
+    "Native operation deadlines preserve the ordinary executor deadline and its other policies.",
+    "Current code uses job schema 4. Batch schema 2, attempt payload 2, claim payload 3, and window/history payload 1 remain unchanged."
+  ],
+  "earlier_failures": [
+    "The first reporting check failed compilation because Cost requires usage.Cost rather than float64. The repair preserves integer nano-USD.",
+    "The first production run returned a job ID but sent zero provider calls. Credential destination compilation omitted exact-model overrides.",
+    "The first destination test selected an acquisition-only credential profile. This fixture failure does not prove the production defect. destination-before-valid.jsonl reproduces the endpoint refusal with the correct inference profile.",
+    "Architecture tests required registration of the ninth protocol and rejected connector-owned deadlines. The connector now requires the execution deadline. No deadline guard was weakened."
+  ],
+  "verification_limits": [
+    "The broad race run predates the final corruption and executor timing tests. Separate focused race and pure-Go runs cover those additions.",
+    "TestContainerRecipePersistence skipped because its opt-in condition was absent. This result does not qualify the replicated container recipe.",
+    "Full OPERATOR-GUIDE lint reports pre-existing findings. The changed prose and four new production source files pass their separate prose checks.",
+    "External video asset URLs remain references only. Separate destination approval and bounded recovery downloads remain required.",
+    "No further paid inference ran. The provider test uses local HTTP fixtures.",
+    "PostgreSQL, multiple-process loss, failover, capacity, A47, full paid-operation matrix, native CI, pre-PR review, exact published dependency pin, and paired merges remain unqualified.",
+    "This local commit is unpublished and does not complete CSP12.2 or any release gate."
+  ],
+  "document_verification": {
+    "anchors": 97,
+    "links": 129,
+    "rows": 40,
+    "in_progress": 1,
+    "done": 26,
+    "resume_words": 227,
+    "secret_scan": "no configured secret values found in raw evidence"
+  }
+}
