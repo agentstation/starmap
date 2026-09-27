@@ -1,16 +1,16 @@
 {
   "manifest_version": 2,
-  "schema_version": 17,
-  "generation_id": "image-billing-7e01e9ea6f908898f68dc9ae94911af9c9f863aa930bcab991d3ef89fc664ec1",
-  "generated_at": "2026-09-27T15:20:25.563103Z",
+  "schema_version": 18,
+  "generation_id": "media-duration-pricing-6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1",
+  "generated_at": "2026-09-27T18:37:34.547756Z",
   "payload": {
-    "checksum": "sha256:7e01e9ea6f908898f68dc9ae94911af9c9f863aa930bcab991d3ef89fc664ec1",
-    "size_bytes": 26425907,
+    "checksum": "sha256:6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1",
+    "size_bytes": 26427664,
     "media_type": "application/vnd.agentstation.starmap.catalog+json"
   },
   "validation": {
-    "validator_version": "starmap-image-billing-v1",
-    "validated_at": "2026-09-27T15:20:25.563103Z",
+    "validator_version": "starmap-media-duration-pricing-v1",
+    "validated_at": "2026-09-27T18:37:34.547756Z",
     "status": "passed",
     "error_count": 0,
     "warning_count": 0,
@@ -21,7 +21,7 @@
       }
     ]
   },
-  "sync_run_id": "image-billing-7e01e9ea6f908898f68dc9ae94911af9c9f863aa930bcab991d3ef89fc664ec1",
+  "sync_run_id": "media-duration-pricing-6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1",
   "source_observations": [
     {
       "source": "models_dev_http",
@@ -358,6 +358,42 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:7e01e9ea6f908898f68dc9ae94911af9c9f863aa930bcab991d3ef89fc664ec1"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "media-duration-pricing-db7f0f9f22386ecaffaf61f759d7f2f92355aff445733d3a935cc57945ca200e",
+      "observed_at": "2026-09-27T18:29:46.255318Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:db7f0f9f22386ecaffaf61f759d7f2f92355aff445733d3a935cc57945ca200e"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:db7f0f9f22386ecaffaf61f759d7f2f92355aff445733d3a935cc57945ca200e"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "media-duration-pricing-349df7fdc78650090fb1c8bec9bda77f71f2fc642975e6cbad83ae54e94e59c3",
+      "observed_at": "2026-09-27T18:34:47.350734Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:349df7fdc78650090fb1c8bec9bda77f71f2fc642975e6cbad83ae54e94e59c3"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:349df7fdc78650090fb1c8bec9bda77f71f2fc642975e6cbad83ae54e94e59c3"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "media-duration-pricing-6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1",
+      "observed_at": "2026-09-27T18:37:34.547756Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1"
     }
   ],
   "review_candidates": [
@@ -4397,7 +4433,7 @@
   "completeness": "complete",
   "degraded": false,
   "consumer_compatibility": {
-    "min_schema_version": 17,
-    "max_schema_version": 17
+    "min_schema_version": 18,
+    "max_schema_version": 18
   }
 }

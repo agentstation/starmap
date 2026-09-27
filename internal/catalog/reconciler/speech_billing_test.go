@@ -25,3 +25,14 @@ func TestImagePricingCopyIsolation(t *testing.T) {
 		t.Fatal("reconciled image unit shares source memory")
 	}
 }
+
+func TestMediaDurationPricingCopyIsolation(t *testing.T) {
+	input, output := 0.002, 0.075
+	source := &catalogs.ModelPricing{Operations: &catalogs.ModelOperationPricing{InputSecond: &input, OutputSecond: &output}}
+	copied := copyModelPricing(source)
+	*source.Operations.InputSecond = 1
+	*source.Operations.OutputSecond = 2
+	if *copied.Operations.InputSecond != 0.002 || *copied.Operations.OutputSecond != 0.075 {
+		t.Fatal("reconciled duration prices share source memory")
+	}
+}

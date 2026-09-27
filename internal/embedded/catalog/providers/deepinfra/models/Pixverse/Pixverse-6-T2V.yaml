@@ -77,7 +77,7 @@ features:
 # Model pricing
 pricing:
   operations:
-    video_gen: 0.045
+    output_second: 0.045
   currency: USD
 
 # Timestamps

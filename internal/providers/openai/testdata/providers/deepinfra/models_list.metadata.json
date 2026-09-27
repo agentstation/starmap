@@ -1,14 +1,14 @@
 {
   "version": 1,
   "provider": "deepinfra",
-  "fetched_at": "2026-09-27T15:29:24.837077Z",
+  "fetched_at": "2026-09-27T18:27:32.182155Z",
   "source_revision": {
     "kind": "content_digest",
-    "value": "sha256:db566bde8fb541b2d0332a463591cdbd3649259241d712605fcf0c96cfdbdb4c"
+    "value": "sha256:7e4b360a160934bdaa82dbf2dd171803a93f1e5b720a58ef6d12d5ddbbed4934"
   },
   "payload": {
     "path": "models_list.json",
-    "checksum": "sha256:db566bde8fb541b2d0332a463591cdbd3649259241d712605fcf0c96cfdbdb4c"
+    "checksum": "sha256:7e4b360a160934bdaa82dbf2dd171803a93f1e5b720a58ef6d12d5ddbbed4934"
   },
   "max_age": "8760h0m0s"
 }

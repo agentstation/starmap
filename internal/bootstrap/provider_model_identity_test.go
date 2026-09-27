@@ -33,8 +33,8 @@ func TestEmbeddedProviderModelsMatchReviewedIdentityMap(t *testing.T) {
 	if manifest.SchemaVersion != 1 {
 		t.Fatalf("manifest schema version = %d, want 1", manifest.SchemaVersion)
 	}
-	if len(manifest.Records) != 618 {
-		t.Fatalf("manifest records = %d, want 618", len(manifest.Records))
+	if len(manifest.Records) != 619 {
+		t.Fatalf("manifest records = %d, want 619", len(manifest.Records))
 	}
 
 	seen := make(map[string]struct{}, len(manifest.Records))
@@ -83,8 +83,8 @@ func TestEmbeddedProviderModelsMatchReviewedIdentityMap(t *testing.T) {
 			t.Fatalf("%s has unknown status %q", record.Path, record.Status)
 		}
 	}
-	if linked != 618 || unlinked != 0 {
-		t.Fatalf("identity disposition = %d linked, %d unlinked; want 618/0", linked, unlinked)
+	if linked != 619 || unlinked != 0 {
+		t.Fatalf("identity disposition = %d linked, %d unlinked; want 619/0", linked, unlinked)
 	}
 
 	providerFiles := 0
@@ -233,5 +233,17 @@ func loadProviderModelIdentityManifest(t testing.TB) providerModelIdentityManife
 	if err := yaml.Unmarshal(data, &manifest); err != nil {
 		t.Fatalf("decode provider identity manifest: %v", err)
 	}
+	data, err = os.ReadFile(filepath.Join("testdata", "provider_identity_additions.yaml"))
+	if err != nil {
+		t.Fatalf("read additional provider identities: %v", err)
+	}
+	var additions providerModelIdentityManifest
+	if err := yaml.Unmarshal(data, &additions); err != nil {
+		t.Fatalf("decode additional provider identities: %v", err)
+	}
+	if additions.SchemaVersion != manifest.SchemaVersion {
+		t.Fatalf("additional identity schema = %d, want %d", additions.SchemaVersion, manifest.SchemaVersion)
+	}
+	manifest.Records = append(manifest.Records, additions.Records...)
 	return manifest
 }

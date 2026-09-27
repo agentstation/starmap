@@ -81,7 +81,7 @@ features:
 # Model pricing
 pricing:
   operations:
-    audio_input: 1.66667e-05
+    input_second: 1.66667e-05
   currency: USD
 
 # Timestamps

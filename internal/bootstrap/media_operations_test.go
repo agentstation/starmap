@@ -65,15 +65,15 @@ func TestEveryPublishedMediaOperationMatchesItsDefinition(t *testing.T) {
 	if checked == 0 {
 		t.Fatal("the shipped catalog publishes no media operation")
 	}
-	// The census MOD12 records. A change here is a real catalog change, and the
-	// proof file states what each number means.
+	// CSP12.2 adds two speech offerings and one page-billed OCR offering to
+	// the MOD12 census. Each offering must still match its declared facts.
 	want := map[catalogs.ProviderOperation]int{
 		catalogs.ProviderOperationImagesGenerations:    26,
-		catalogs.ProviderOperationAudioSpeech:          14,
+		catalogs.ProviderOperationAudioSpeech:          16,
 		catalogs.ProviderOperationAudioTranscriptions:  7,
 		catalogs.ProviderOperationAudioTranslations:    7,
 		catalogs.ProviderOperationVideosGenerations:    13,
-		catalogs.ProviderOperationDocumentsRecognition: 11,
+		catalogs.ProviderOperationDocumentsRecognition: 12,
 	}
 	for operation, wantCount := range want {
 		if counts[operation] != wantCount {
@@ -163,7 +163,10 @@ func TestEveryRecognitionOfferingDeclaresActualBillingUnits(t *testing.T) {
 			default:
 				t.Fatalf("%s has unknown billing units", name)
 			}
-			if offering.Limits == nil || offering.Limits.DocumentPages <= 0 {
+			// Token-billed recognition retains the reviewed page bound. A
+			// fixed-page contract can price the decoded request page count
+			// without inventing an undocumented provider page ceiling.
+			if offering.Billing.Recognition.Basis == catalogs.RecognitionBillingTokens && (offering.Limits == nil || offering.Limits.DocumentPages <= 0) {
 				t.Fatalf("%s has no page limit", name)
 			}
 			if _, found := offering.Endpoint(catalogs.ProviderOperationDocumentsRecognition); !found {
@@ -171,7 +174,7 @@ func TestEveryRecognitionOfferingDeclaresActualBillingUnits(t *testing.T) {
 			}
 		}
 	}
-	if checked != 11 {
-		t.Fatalf("recognition offerings = %d, want 11", checked)
+	if checked != 12 {
+		t.Fatalf("recognition offerings = %d, want 12", checked)
 	}
 }

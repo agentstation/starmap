@@ -268,6 +268,9 @@ func validatePayloadBillingSchema(model Model, version uint64) error {
 	if model.Pricing != nil && model.Pricing.Operations != nil {
 		operations = model.Pricing.Operations
 	}
+	if version < MediaDurationPricingSchemaVersion && (operations.InputSecond != nil || operations.OutputSecond != nil) {
+		return &errors.ValidationError{Field: "pricing.operations", Message: "duration prices require catalog schema version 18"}
+	}
 	if version < ImageBillingSchemaVersion && ((billing.Images != nil) || (operations.ImageUnit != nil)) {
 		return &errors.ValidationError{Field: "billing.images", Message: "requires catalog schema version 17"}
 	}

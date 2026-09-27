@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: image-billing-7e01e9ea6f908898f68dc9ae94911af9c9f863aa930bcab991d3ef89fc664ec1
-catalog_digest: sha256:7e01e9ea6f908898f68dc9ae94911af9c9f863aa930bcab991d3ef89fc664ec1
+generation_id: media-duration-pricing-6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1
+catalog_digest: sha256:6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -90,7 +90,7 @@ models:
         provider_model_id: Wan-AI/Wan2.2-T2V-A14B
         pricing:
           operations:
-            video_gen: 0.075
+            output_second: 0.075
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -148,7 +148,7 @@ models:
         provider_model_id: Wan-AI/Wan2.6-T2V
         pricing:
           operations:
-            video_gen: 0.1
+            output_second: 0.1
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -5328,7 +5328,7 @@ models:
         provider_model_id: google/veo-3.1
         pricing:
           operations:
-            video_gen: 0.4
+            output_second: 0.4
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -5345,7 +5345,7 @@ models:
         provider_model_id: google/veo-3.1-fast
         pricing:
           operations:
-            video_gen: 0.15
+            output_second: 0.15
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -5746,7 +5746,7 @@ models:
         provider_model_id: FastVideo/LTX-2.3-Distilled-Diffusers
         pricing:
           operations:
-            video_gen: 0.035
+            output_second: 0.035
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -6339,7 +6339,7 @@ models:
         provider_model_id: mistralai/Voxtral-Mini-3B-2507
         pricing:
           operations:
-            audio_input: 1.66667e-05
+            input_second: 1.66667e-05
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -6360,7 +6360,7 @@ models:
         provider_model_id: mistralai/Voxtral-Small-24B-2507
         pricing:
           operations:
-            audio_input: 5e-05
+            input_second: 5e-05
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -6941,7 +6941,7 @@ models:
         provider_model_id: nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b
         pricing:
           operations:
-            audio_input: 3.33e-06
+            input_second: 3.33e-06
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -9904,7 +9904,7 @@ models:
         provider_model_id: openai/whisper-large-v3
         pricing:
           operations:
-            audio_input: 7.5e-06
+            input_second: 7.5e-06
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -9947,7 +9947,7 @@ models:
         provider_model_id: openai/whisper-large-v3-turbo
         pricing:
           operations:
-            audio_input: 3.33e-06
+            input_second: 3.33e-06
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -9994,7 +9994,7 @@ models:
         provider_model_id: Pixverse/Pixverse-6-T2V
         pricing:
           operations:
-            video_gen: 0.045
+            output_second: 0.045
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -10054,7 +10054,7 @@ models:
         provider_model_id: PrunaAI/p-video
         pricing:
           operations:
-            video_gen: 0.02
+            output_second: 0.02
           currency: USD
         availability: unknown
         lifecycle: unknown

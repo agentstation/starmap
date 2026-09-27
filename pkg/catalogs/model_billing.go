@@ -32,6 +32,9 @@ const SpeechBillingSchemaVersion uint64 = 16
 // ImageBillingSchemaVersion adds explicit image charge units.
 const ImageBillingSchemaVersion uint64 = 17
 
+// MediaDurationPricingSchemaVersion adds explicit input and output duration prices.
+const MediaDurationPricingSchemaVersion uint64 = 18
+
 // ModelBilling declares provider billing units independently of current prices.
 // A missing operation record means that its billing basis is unknown.
 type ModelBilling struct {
