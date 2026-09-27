@@ -1,0 +1,854 @@
+{
+  "task": "CSP12.2",
+  "status": "IN_PROGRESS_COMPONENT_EVIDENCE_ONLY",
+  "recorded_at": "2026-09-27T10:36:52.355652+00:00",
+  "consumer": {
+    "worktree": "/tmp/starport-fleet-review-20260926",
+    "branch": "codex/atomic-budget-admission",
+    "commit": "537da713e920158734db935606587566b9e9f7fe",
+    "base": "52b02c34861ea9abd7585f2650cff36b3dd4f25b",
+    "published": false,
+    "source": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "change": "M",
+        "sha256": "641b46f69d85dc545fee66414f7a613b2a1f4f0c49e90d6911383ddd0f7beab7"
+      },
+      {
+        "path": "internal/app/app.go",
+        "change": "M",
+        "sha256": "77094fad465ff89e3375dae444b44cea95e91b24e33f23c6f9c1287aa13345e0"
+      },
+      {
+        "path": "internal/app/app_test.go",
+        "change": "M",
+        "sha256": "a3651ba52166e14ba0498310d4bf531e1d15c5c0a775699558d35adc196ad0f4"
+      },
+      {
+        "path": "internal/app/authorization.go",
+        "change": "M",
+        "sha256": "6f2cc337932038659a7687cf5239c1097ab8d13bdb62fabd331ee343dd052eab"
+      },
+      {
+        "path": "internal/app/authorization_test.go",
+        "change": "M",
+        "sha256": "3a006a1039f854a6fcd57f8cafe5549949ebe1b0629b63d6efe8b5a142cf607c"
+      },
+      {
+        "path": "internal/app/blob_test.go",
+        "change": "M",
+        "sha256": "ab5487c717746a6ed78afc164fcef1ac3713782fc7184273369b5576278628e6"
+      },
+      {
+        "path": "internal/app/budget.go",
+        "change": "A",
+        "sha256": "ca1c2fa8408105dcf09a25edd8f70bc71b77e6ce75ecac208021ecad83c28a53"
+      },
+      {
+        "path": "internal/app/budget_test.go",
+        "change": "A",
+        "sha256": "080102a2de833429d5e7ed06acc36a0654642f52c4707e70071a4c6890d6d68a"
+      },
+      {
+        "path": "internal/app/cache_isolation_test.go",
+        "change": "M",
+        "sha256": "12a7b88e05c48c2ec74861a10901143fbcd192ea7598cacb576968fb08c93d03"
+      },
+      {
+        "path": "internal/app/catalog_contract_test.go",
+        "change": "M",
+        "sha256": "e18037804394eba1a9ea48164fe6246218ff6dc2adbb6274b5f63857bbd9d4db"
+      },
+      {
+        "path": "internal/app/fleet_initialization.go",
+        "change": "M",
+        "sha256": "228cf92faa82b4141f5168579c8764ae8df4d7f74cf951a65e58f7ccb5eea5f5"
+      },
+      {
+        "path": "internal/app/fleet_initialization_test.go",
+        "change": "M",
+        "sha256": "7796c79d5147036773c1a8b1f18b42486e178f17d3710603e921c2b6fee06932"
+      },
+      {
+        "path": "internal/app/inference_policy_test.go",
+        "change": "M",
+        "sha256": "8cacb76f94722b640c08218bf7d33dfe93aa5246065b6ac0ba202f637549ab9c"
+      },
+      {
+        "path": "internal/app/local_token_test.go",
+        "change": "M",
+        "sha256": "4bafa0f5df520ca75c8775a82e2d9edf6606cf9c3ab3f73df66cb36ab6060188"
+      },
+      {
+        "path": "internal/app/readiness_test.go",
+        "change": "M",
+        "sha256": "ef0f1eda5239d9449fdced42c996edefe49bf773759297895fad1b8a98aa4f66"
+      },
+      {
+        "path": "internal/app/standalone_clock_test.go",
+        "change": "M",
+        "sha256": "ae72191162f7bb272ce4cb7e01c0d631594530e2786077958997658780fa0328"
+      },
+      {
+        "path": "internal/app/storage_recipe_test.go",
+        "change": "M",
+        "sha256": "7939df6c921057f041f5b1e211f512939100412682975bd0d07a0a724bad7e51"
+      },
+      {
+        "path": "internal/app/valkey_integration_test.go",
+        "change": "M",
+        "sha256": "ef49a002359f99db808c173cca357321668d1235cfc9c4fbe6dbf1c31ade28a9"
+      },
+      {
+        "path": "internal/architecture/import_graph_test.go",
+        "change": "M",
+        "sha256": "9beb16ed925cbf1ed0f94a10599868d9aa1e7e856c5e4039baf0a7e1d6877231"
+      },
+      {
+        "path": "internal/authorization/source.go",
+        "change": "M",
+        "sha256": "095727928cf31de687426db8abf4ce0fc66b8ccbad5070aa19da441ea87c2648"
+      },
+      {
+        "path": "internal/catalog/fleet_bootstrap_test.go",
+        "change": "M",
+        "sha256": "9268d75d375b4d9c5f7ce96737b7fdbd4fbf87a2e1f5892a8d461fabc7c07726"
+      },
+      {
+        "path": "internal/catalog/fleet_store.go",
+        "change": "M",
+        "sha256": "d662a2c417efcb97970282c509e80d1f96e4c9486b2ce0b9fa247da6dc83ff52"
+      },
+      {
+        "path": "internal/catalog/fleet_store_test.go",
+        "change": "M",
+        "sha256": "35d770487f8e95274b1ad82b88070c858997336ef517d163b616f91e463979c1"
+      },
+      {
+        "path": "internal/catalog/migration_fleet_test.go",
+        "change": "M",
+        "sha256": "988a97ff95d795976905449c49fbf15ebc7af5f7852df23d628fb0edb525421c"
+      },
+      {
+        "path": "internal/catalog/recovery/bootstrap.go",
+        "change": "D"
+      },
+      {
+        "path": "internal/catalog/recovery/bootstrap_test.go",
+        "change": "D"
+      },
+      {
+        "path": "internal/catalog/recovery/fresh.go",
+        "change": "D"
+      },
+      {
+        "path": "internal/catalog/recovery/fresh_test.go",
+        "change": "D"
+      },
+      {
+        "path": "internal/catalog/recovery/witness.go",
+        "change": "D"
+      },
+      {
+        "path": "internal/catalog/recovery/witness_test.go",
+        "change": "D"
+      },
+      {
+        "path": "internal/catalog/runtime_fleet.go",
+        "change": "M",
+        "sha256": "6d83bc96522b96c95ca27ca46425c886d1b1bf59262a476b51d99460bb22c00a"
+      },
+      {
+        "path": "internal/catalog/runtime_fleet_test.go",
+        "change": "M",
+        "sha256": "9a395c7722559f7c603642cf51bf8c0a83aa40c0252fbc6cf80c9f983e9defb3"
+      },
+      {
+        "path": "internal/cli/fleet.go",
+        "change": "M",
+        "sha256": "bd52b0b30733ffd4f074d41c95b2890147af9c59f0805b4730ca6634b137b242"
+      },
+      {
+        "path": "internal/cli/fleet_test.go",
+        "change": "M",
+        "sha256": "bf470674464276dc47bad5c5a7e4cee977e0d35f61dc1d1b15bec899b13b5905"
+      },
+      {
+        "path": "internal/identity/budget_history.go",
+        "change": "M",
+        "sha256": "4d9c5dfc37273b5321adfb70f363f2bb480fda4da107e41b373486adde517c52"
+      },
+      {
+        "path": "internal/recovery/authority.go",
+        "change": "A",
+        "sha256": "3634ac3e37f4200de20121030c6f2307a2e00929273f2e190adb5efe0bbeed70"
+      },
+      {
+        "path": "internal/recovery/authority_test.go",
+        "change": "A",
+        "sha256": "94a09e54c4a7d29080a1e57e0ed75ac456912c18c537599f3ea453705b06eb7b"
+      },
+      {
+        "path": "internal/recovery/bootstrap.go",
+        "change": "A",
+        "sha256": "ec7340707ed937c5f62b48ac94cffed6ed1fe162727a4cebd3c955f3163f33cb"
+      },
+      {
+        "path": "internal/recovery/bootstrap_test.go",
+        "change": "A",
+        "sha256": "d3a8463e60a02ea6da0f710eaaae75f33ec9d38878f594ccc4ff108d902185cc"
+      },
+      {
+        "path": "internal/recovery/fresh.go",
+        "change": "A",
+        "sha256": "933c2ca09c9f1d8c3e2073a94e02ed4b1932cb16a25c0c370794e161b856a6c0"
+      },
+      {
+        "path": "internal/recovery/fresh_test.go",
+        "change": "A",
+        "sha256": "f6c778c3fef29f5099afc3920b51d1779d7eb6a808454875e5bb53e11a4a4e26"
+      },
+      {
+        "path": "internal/recovery/witness.go",
+        "change": "A",
+        "sha256": "70fe22b7dc019ebdab42e246e423d169a69aeddafaf8ce455dd5f3e9d4071cbb"
+      },
+      {
+        "path": "internal/recovery/witness_test.go",
+        "change": "A",
+        "sha256": "dd77e44c241249b0aafb0df69839e4b6fc89624eea05170bd3dcb875e71f6edf"
+      }
+    ],
+    "preserved_dirty": [
+      "docs/ARCHITECTURE.md",
+      "internal/cache/README.md"
+    ]
+  },
+  "producer": {
+    "worktree": "/tmp/starmap-fleet-review-20260926",
+    "branch": "codex/budget-qualification",
+    "commit": "a594aa70372b60791c8b912d06bc5603d0c49de7",
+    "published": false,
+    "scope": "Two test package selectors follow the recovery package relocation. No acceptance condition removed.",
+    "registry_sha256": "bab64681323159e45551d777cab2efc5290ca106cd3645118232a831fc3158f1"
+  },
+  "qualification": {
+    "toolchain": "go1.27.1",
+    "host": "darwin/arm64",
+    "services": [
+      "Valkey 7 container with AOF and appendfsync always",
+      "PostgreSQL 16 container"
+    ],
+    "service_pins_note": "Disposable local fixtures. Exact production recipe qualification remains CSP15.",
+    "full_suite": {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -count=1 -timeout=5m -json ./...",
+      "environment_profile": "TEST_VALKEY_URL, TEST_FRESH_VALKEY_URL, TEST_POSTGRES_URL point to isolated local fixtures. Fresh database 11.",
+      "exit_code": 0,
+      "source": "Final committed Go source, before commit",
+      "counts": {
+        "pass": 4462,
+        "fail": 0,
+        "skip": 13
+      }
+    },
+    "race": {
+      "native_recovery": {
+        "command": "go test -race -count=1 -timeout=3m -json ./internal/recovery",
+        "counts": {
+          "pass": 22,
+          "fail": 0,
+          "skip": 0
+        },
+        "source": "Final recovery source"
+      },
+      "application": {
+        "command": "go test -race -count=1 -timeout=4m -json ./internal/app",
+        "counts": {
+          "pass": 175,
+          "fail": 0,
+          "skip": 3
+        },
+        "source": "Before the final closure-capture simplification and missing-history assertions. Later focused race test and full suite cover those edits."
+      },
+      "final_policy_recovery": {
+        "command": "go test -race -count=1 -timeout=2m -json ./internal/app -run ^TestBudgetPolicyPreparationUsesProductionComposition$",
+        "counts": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "source": "Final source"
+      },
+      "fresh_startup": {
+        "command": "go test -race -count=1 -json ./internal/app -run ^TestInitializeFleetFreshStartup$",
+        "counts": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "source": "Final initializer source, before final closure-capture simplification. Fresh database 12."
+      }
+    },
+    "lint": {
+      "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/recovery ./internal/authorization ./internal/app ./internal/identity ./internal/catalog ./internal/cli ./internal/architecture",
+      "exit_code": 0,
+      "issues": 0,
+      "source": "Final source"
+    },
+    "architecture": {
+      "counts": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "source": "Final source"
+    },
+    "prose": {
+      "focused": {
+        "exit_code": 0,
+        "diagnostics": 0,
+        "raw": "csp122-authority-writing-repaired.log.gz"
+      },
+      "repository": {
+        "command": "make technical-writing-check",
+        "exit_code": 2,
+        "diagnostics": 137,
+        "scope": "Historical proof files outside the edited specification and plan",
+        "raw": "csp122-authority-writing-repository-final.log.gz"
+      }
+    },
+    "registry": {
+      "status": "PASS",
+      "primary_cases": 50,
+      "relocated_functions": 2,
+      "note": "Roster and registry validators pass. Future task checks remain unregistered. An initial extra completeness assertion failed because it included those future checks."
+    },
+    "plan_structure": {
+      "status": "PASS",
+      "rows": 40,
+      "done": 26,
+      "in_progress": 1,
+      "todo": 13,
+      "raw": "csp122-authority-plan-validation.log.gz"
+    }
+  },
+  "intermediate_failures": {
+    "initial": "Mock composition store lacked the required time-bound contract. Replaced it with real Badger.",
+    "app": "An 8 MiB Badger fixture could not hold the catalog transaction. Used the 64 MiB fixture contract.",
+    "policy": "Initial test referred to identity.TeamBudget instead of limits.TeamBudget.",
+    "policy-fixed": "API key name contained a space. Used the required key-name syntax.",
+    "integration": "One remaining invalid-key-name fixture failure. Final focused and full runs pass.",
+    "registry": "The local audit added an invalid all-future-checks assertion. Final audit uses repository validators and checks both relocated functions.",
+    "writing": "The first revised plan had two paragraphs over the six-sentence limit. Split both paragraphs without changing acceptance. Final focused check passes."
+  },
+  "manual_review": {
+    "status": "No unresolved finding in the prepared component diff. Required independent pre-PR review remains open.",
+    "notes": [
+      "Recovery approval never derives from observed backend identity.",
+      "Native epoch is checked in the accounting transaction. SQL approval is checked before and after.",
+      "An error after commit retains uncertainty and cannot authorize dispatch or refund.",
+      "Operator recovery still requires external fencing and history reconciliation. The API does not prove those prerequisites.",
+      "A consumed team grant returns without advancing the SQL policy revision.",
+      "Warm policy reads do not repeat history preparation."
+    ]
+  },
+  "operation_cost": {
+    "per_budget_mutation": {
+      "sql_reads": 2,
+      "native_transactions": 1
+    },
+    "additional": "Ledger reads and authority-time queries are separate operations. Complete admission latency is not measured."
+  },
+  "cleanup": {
+    "exit_code": 0,
+    "removed_containers": [
+      "starport-csp122-authority-valkey",
+      "starport-csp122-authority-postgres"
+    ],
+    "raw": "csp122-authority-cleanup.log.gz"
+  },
+  "remaining": [
+    "Production provider dispatch integration across the paid-operation matrix",
+    "Catalog-derived defensible charge bounds and pinned valuation",
+    "Required asynchronous settlement and recovery",
+    "A47 production-path and concurrent-process evidence",
+    "Complete admission round-trip measurements",
+    "Required review, native CI, and protected merge"
+  ],
+  "not_claimed": [
+    "A47 qualification",
+    "Production overspending repair",
+    "Task completion",
+    "Released-pair qualification"
+  ],
+  "runs": [
+    {
+      "raw": "csp122-authority-app-qualified.jsonl.gz",
+      "named_counts": {
+        "pass": 175,
+        "skip": 3
+      },
+      "skips": [
+        "TestSharedCacheCompositionUsesSeparateService",
+        "TestSharedCacheCanonicalDeploymentIsolation",
+        "TestInitializeFleetFreshStartup"
+      ],
+      "failures": [],
+      "build_errors": []
+    },
+    {
+      "raw": "csp122-authority-app.jsonl.gz",
+      "named_counts": {
+        "pass": 240,
+        "skip": 9,
+        "fail": 19
+      },
+      "skips": [
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "TestRepositorySourceRealStoresAndLocalMutation/valkey",
+        "TestSharedCacheCompositionUsesSeparateService",
+        "TestSharedCacheCanonicalDeploymentIsolation",
+        "TestDeploymentIsolationIncludesGatewayRecords",
+        "TestInitializeFleetFreshStartup",
+        "TestAppWithValkey",
+        "TestSharedStartupDoesNotCreateLocalDatabases"
+      ],
+      "failures": [
+        "TestRuntimeStartsWithoutOperatorCredentials",
+        "TestNewBuildsReadyProductionDependencies",
+        "TestNewMapsExternalServerConfigurationOnce",
+        "TestSharedAuthorizationDoesNotRequireCatalogClock",
+        "TestCompositionOpensTheConfiguredByteStore",
+        "TestObjectStoreCompositionReachesNoBucket",
+        "TestCatalogWideProviderActivation",
+        "TestInferencePolicyIsRecordedBeforeCatalogStartup/fresh",
+        "TestInferencePolicyIsRecordedBeforeCatalogStartup/retained",
+        "TestInferencePolicyIsRecordedBeforeCatalogStartup",
+        "TestStartupMintsTheTokenTheCLIReads",
+        "TestASecondStartKeepsTheFirstToken",
+        "TestANetworkBindRefusesAFirstBootToken",
+        "TestANetworkBindAcceptsARotatedToken",
+        "TestLoopbackAcceptsAFirstBootToken",
+        "TestCompositionRefusesAConfigurationWithNowhereToKeepTheToken",
+        "TestStartupRefusesAnUnreadableTokenRatherThanReplacingIt",
+        "TestReadinessTracksAdmissionWithoutBlockingLiveness",
+        "TestStandaloneAuthorizationNeedsNoNativeClock"
+      ],
+      "build_errors": []
+    },
+    {
+      "raw": "csp122-authority-architecture.jsonl.gz",
+      "named_counts": {
+        "pass": 8
+      },
+      "skips": [],
+      "failures": [],
+      "build_errors": []
+    },
+    {
+      "raw": "csp122-authority-fresh-startup.jsonl.gz",
+      "named_counts": {
+        "pass": 1
+      },
+      "skips": [],
+      "failures": [],
+      "build_errors": []
+    },
+    {
+      "raw": "csp122-authority-full.jsonl.gz",
+      "named_counts": {
+        "pass": 4462,
+        "skip": 13
+      },
+      "skips": [
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "TestDefaultCacheMemoryBudget",
+        "TestSharedCachePausedServiceDeadlineAndRecovery",
+        "TestSharedCacheRealService",
+        "TestSharedCacheURIAuthenticationAndDatabase",
+        "TestSharedCacheTLSWithRealService",
+        "TestSharedCacheCompositionUsesSeparateService",
+        "TestSharedCacheCanonicalDeploymentIsolation",
+        "TestContainerRecipePersistence",
+        "TestSDKCanonicalRemovalAfterSuccessfulInference",
+        "TestGatewayOverheadBenchmark",
+        "TestValkeyIncarnationRejectsReplacementBackend"
+      ],
+      "failures": [],
+      "build_errors": []
+    },
+    {
+      "raw": "csp122-authority-initial.jsonl.gz",
+      "named_counts": {
+        "skip": 21,
+        "pass": 240,
+        "fail": 20
+      },
+      "skips": [
+        "TestFreshFleetBootstrapPermission",
+        "TestFreshFleetInitialization",
+        "TestFreshFleetRefusesExistingState/kv",
+        "TestFreshFleetRefusesExistingState/sql",
+        "TestFreshFleetRefusesExistingState/approval",
+        "TestFreshFleetRefusesExistingState/closed-approval",
+        "TestFreshFleetRefusesExistingState/row-security",
+        "TestFreshFleetRefusesExistingState/unknown-table",
+        "TestFreshFleetInterruptedClaim",
+        "TestFreshFleetConcurrentInitialization",
+        "TestFreshFleetRefusesChangedIncarnation",
+        "TestFreshFleetSQLFailureRetainsOnlyRetryClaim",
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "TestRepositorySourceRealStoresAndLocalMutation/valkey",
+        "TestSharedCacheCompositionUsesSeparateService",
+        "TestSharedCacheCanonicalDeploymentIsolation",
+        "TestDeploymentIsolationIncludesGatewayRecords",
+        "TestInitializeFleetFreshStartup",
+        "TestAppWithValkey",
+        "TestSharedStartupDoesNotCreateLocalDatabases"
+      ],
+      "failures": [
+        "TestRuntimeStartsWithoutOperatorCredentials",
+        "TestCompositionPassesCatalogAcquisitionThrough",
+        "TestNewBuildsReadyProductionDependencies",
+        "TestNewMapsExternalServerConfigurationOnce",
+        "TestRunCancellationStopsHTTPAndDependencies",
+        "TestApplicationOwnsAuthorizationFencesAndCatchup",
+        "TestSharedAuthorizationDoesNotRequireCatalogClock",
+        "TestCompositionOpensTheConfiguredByteStore",
+        "TestObjectStoreCompositionReachesNoBucket",
+        "TestCatalogWideProviderActivation",
+        "TestInferencePolicyIsRecordedBeforeCatalogStartup/fresh",
+        "TestInferencePolicyIsRecordedBeforeCatalogStartup/retained",
+        "TestInferencePolicyIsRecordedBeforeCatalogStartup",
+        "TestStartupMintsTheTokenTheCLIReads",
+        "TestASecondStartKeepsTheFirstToken",
+        "TestANetworkBindAcceptsARotatedToken",
+        "TestLoopbackAcceptsAFirstBootToken",
+        "TestReadinessTracksAdmissionWithoutBlockingLiveness",
+        "TestStandaloneAuthorizationNeedsNoNativeClock",
+        "TestStandaloneAuthorizationCannotReplaceCatalogAuthority"
+      ],
+      "build_errors": []
+    },
+    {
+      "raw": "csp122-authority-integration.jsonl.gz",
+      "named_counts": {
+        "pass": 455,
+        "skip": 5,
+        "fail": 1
+      },
+      "skips": [
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "TestSharedCacheCompositionUsesSeparateService",
+        "TestSharedCacheCanonicalDeploymentIsolation",
+        "TestInitializeFleetFreshStartup"
+      ],
+      "failures": [
+        "TestBudgetPolicyPreparationUsesProductionComposition"
+      ],
+      "build_errors": []
+    },
+    {
+      "raw": "csp122-authority-native.jsonl.gz",
+      "named_counts": {
+        "pass": 22
+      },
+      "skips": [],
+      "failures": [],
+      "build_errors": []
+    },
+    {
+      "raw": "csp122-authority-policy-final.jsonl.gz",
+      "named_counts": {
+        "pass": 1
+      },
+      "skips": [],
+      "failures": [],
+      "build_errors": []
+    },
+    {
+      "raw": "csp122-authority-policy-fixed.jsonl.gz",
+      "named_counts": {
+        "fail": 1
+      },
+      "skips": [],
+      "failures": [
+        "TestBudgetPolicyPreparationUsesProductionComposition"
+      ],
+      "build_errors": []
+    },
+    {
+      "raw": "csp122-authority-policy-qualified.jsonl.gz",
+      "named_counts": {
+        "pass": 1
+      },
+      "skips": [],
+      "failures": [],
+      "build_errors": []
+    },
+    {
+      "raw": "csp122-authority-policy-recovery.jsonl.gz",
+      "named_counts": {
+        "pass": 1
+      },
+      "skips": [],
+      "failures": [],
+      "build_errors": []
+    },
+    {
+      "raw": "csp122-authority-policy.jsonl.gz",
+      "named_counts": {},
+      "skips": [],
+      "failures": [],
+      "build_errors": [
+        "internal/app/budget_test.go:31:135: undefined: identity.TeamBudget\n"
+      ]
+    }
+  ],
+  "raw_artifacts": [
+    {
+      "path": "csp122-authority-app-qualified.jsonl.gz",
+      "raw_sha256": "3526b8621cc7c4dd8c1f05f61a6a9b83eab0822b6170a72c2d7fc829765e4956",
+      "gzip_sha256": "7ab61220aee933c44e531a88270ac205b39b2bfc0d504dc49d750631601414a0",
+      "raw_bytes": 538739
+    },
+    {
+      "path": "csp122-authority-app-qualified.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-app.jsonl.gz",
+      "raw_sha256": "2985a77712a758a59301da20efc7c686ab00460a59551916f1efa4364e792197",
+      "gzip_sha256": "ab6c1f1e3883aa2bd6da5063514c6f9527d746e26bee9fb709fbce76fe44a6ec",
+      "raw_bytes": 628931
+    },
+    {
+      "path": "csp122-authority-app.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-architecture.jsonl.gz",
+      "raw_sha256": "6bc26ada32d47783783c7e98506eb558e5dcacf0cbe14d3a40d85bcde827f3c7",
+      "gzip_sha256": "3c61929cb401dff682779f2040aa84c2e5765b501b64b657868784e3b2967c98",
+      "raw_bytes": 8724
+    },
+    {
+      "path": "csp122-authority-architecture.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-cleanup.log.gz",
+      "raw_sha256": "cd56bb8549e75c310070af8f53f0da3dd60af9469d5ed6c97bb55a7ba90aa418",
+      "gzip_sha256": "95615bff6a2e3a0215e9b7c21e9b023daf81d83829a68d8518378f4623027605",
+      "raw_bytes": 68
+    },
+    {
+      "path": "csp122-authority-direction.log.gz",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027",
+      "gzip_sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "raw_bytes": 380
+    },
+    {
+      "path": "csp122-authority-fresh-startup.jsonl.gz",
+      "raw_sha256": "16846b42849b8e3109367998ff78e360631bd177068b46d779793dec652206c6",
+      "gzip_sha256": "3134cd0f0429f6c505861f4186a6a5131798caf3bfa116ea3ac5fbb69b1420e6",
+      "raw_bytes": 5507
+    },
+    {
+      "path": "csp122-authority-fresh-startup.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-full.jsonl.gz",
+      "raw_sha256": "8d1a73b819fd91ff787b0b32d2e3556a2863470a69b38af2a9a7eebce94d8c28",
+      "gzip_sha256": "f410299f2e407595cfebd6b707575bdc0fce27ed41fb420fb237c1d4a22a4713",
+      "raw_bytes": 6472384
+    },
+    {
+      "path": "csp122-authority-full.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-initial.jsonl.gz",
+      "raw_sha256": "0a3e683e86359b5062877b5ccd73ea777c3fdae64d1c1e973c475b8060072837",
+      "gzip_sha256": "182f7fe577b527049fc01866b3da54bc2e9402f5657198f6765c34d794b41954",
+      "raw_bytes": 529923
+    },
+    {
+      "path": "csp122-authority-initial.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-integration.jsonl.gz",
+      "raw_sha256": "e85140cc3208c631962a0207a8463b560ffb17ad1831c516c7cde73ce01eca8d",
+      "gzip_sha256": "27578ad5b846c683faa1c91aa1fbf2afad347a3c047d1a8a59f2221b0f46b1be",
+      "raw_bytes": 959306
+    },
+    {
+      "path": "csp122-authority-integration.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-layout.log.gz",
+      "raw_sha256": "0b24502664033dce4b510533f8cd5bf9f3bd679ced361588307afb02df97ab79",
+      "gzip_sha256": "50a6a662f1da00721325db82490de487ffc60adb33a1776b3ca979097c143603",
+      "raw_bytes": 102
+    },
+    {
+      "path": "csp122-authority-lint-final.log.gz",
+      "raw_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "raw_bytes": 10
+    },
+    {
+      "path": "csp122-authority-lint.log.gz",
+      "raw_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "raw_bytes": 10
+    },
+    {
+      "path": "csp122-authority-native.jsonl.gz",
+      "raw_sha256": "7f810be02782d7333ba42a267fea816a7173f4bf4855d082fdd4056709e4d7fb",
+      "gzip_sha256": "e5742020e01eb72711c5c558f9313daf3b76aaee2ace1ee97bbe3f5eb2ca36ce",
+      "raw_bytes": 29944
+    },
+    {
+      "path": "csp122-authority-native.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-policy-final.jsonl.gz",
+      "raw_sha256": "0a58110331f0ee7f154f240b9d7d53c1be335c7c7e858b9332c64d763e22f1ad",
+      "gzip_sha256": "7a1d41f7559a3b3d32bcfd57f8c8ad18b447b22e7a00aa81e254583ae0e9714b",
+      "raw_bytes": 6730
+    },
+    {
+      "path": "csp122-authority-policy-final.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-policy-fixed.jsonl.gz",
+      "raw_sha256": "2c613f3f8cf95b140d16c6d5e3ca56e55a3fecaf1dc6ddf45e57b6d4d9b19c70",
+      "gzip_sha256": "05b96d1758c7e2def81d567df97c45946e9fc6a431d2e17ae986a67c2a410f2f",
+      "raw_bytes": 8246
+    },
+    {
+      "path": "csp122-authority-policy-fixed.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-policy-qualified.jsonl.gz",
+      "raw_sha256": "0c7c32283de48862e390423ba5b2ecb6283d7732c2510403d9170ad6f74855a5",
+      "gzip_sha256": "173496f81fef47fb7b6236ad4140da63f7b1571ca40377b81822d288bb33fad8",
+      "raw_bytes": 6729
+    },
+    {
+      "path": "csp122-authority-policy-qualified.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-policy-recovery.jsonl.gz",
+      "raw_sha256": "36540ba46ad75c3f28743a3a6ea26fd9c526ec080c9477578a566bf81bee3c1e",
+      "gzip_sha256": "6f2dec728f63d8a6200f91b2edb6ada3127472c56d8db2c7a18c22294ae07b57",
+      "raw_bytes": 6724
+    },
+    {
+      "path": "csp122-authority-policy-recovery.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-policy.jsonl.gz",
+      "raw_sha256": "3725603788b4230c87a0895baaf5f58ccf2281446a77b32cfd8fe1efd85edde0",
+      "gzip_sha256": "a092e13c1ec491c30c3e4fa36452f9d098c9278c0ca1889ff7edf8f66dcb9129",
+      "raw_bytes": 1197
+    },
+    {
+      "path": "csp122-authority-policy.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-registry-final.log.gz",
+      "raw_sha256": "06567081d5058580be15ca403eb5c0a7d16430b3504ba93976ad3b764b5a940a",
+      "gzip_sha256": "62840bdb15f6552772958c65d9e4636f02a694bc7e03c04545274bd30cd8a3de",
+      "raw_bytes": 3757
+    },
+    {
+      "path": "csp122-authority-registry.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-vet.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "csp122-authority-writing-focused-final.log.gz",
+      "raw_sha256": "f465b2e5552352b8dfc997bf900c007188659c85a7dd837a7380bdfea3d91839",
+      "gzip_sha256": "001832f127673de172b9b1383996215c2d953181242ecd5233285245767394f1",
+      "raw_bytes": 402
+    },
+    {
+      "path": "csp122-authority-writing-focused.log.gz",
+      "raw_sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "gzip_sha256": "3a8a4461ab82bcabf697e5461b5c91a9d9b762e9b528b2e8ce4797850849e7fb",
+      "raw_bytes": 33
+    },
+    {
+      "path": "csp122-authority-writing-repository.log.gz",
+      "raw_sha256": "9407be473809590228cb558895c9d30c529698698f399b9efe9f72b9b26aa4b1",
+      "gzip_sha256": "20c630c7c15818b9936821d5017dc28004f9067b41571761422e45cb58ce5d82",
+      "raw_bytes": 33188
+    },
+    {
+      "path": "csp122-authority-plan-validation.log.gz",
+      "raw_sha256": "14e9820deea400a3670f55116c26566fbcf5f2fd325fc6274b14ea486d0c9678",
+      "gzip_sha256": "fa4719b04b0206544d6caf52e5552919416c010d8076aa8b913d35c5361e63fc",
+      "raw_bytes": 80
+    },
+    {
+      "path": "csp122-authority-writing-repaired.log.gz",
+      "raw_sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "gzip_sha256": "3a8a4461ab82bcabf697e5461b5c91a9d9b762e9b528b2e8ce4797850849e7fb",
+      "raw_bytes": 33
+    },
+    {
+      "path": "csp122-authority-writing-repository-final.log.gz",
+      "raw_sha256": "9407be473809590228cb558895c9d30c529698698f399b9efe9f72b9b26aa4b1",
+      "gzip_sha256": "20c630c7c15818b9936821d5017dc28004f9067b41571761422e45cb58ce5d82",
+      "raw_bytes": 33188
+    }
+  ]
+}

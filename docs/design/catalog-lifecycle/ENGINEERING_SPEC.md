@@ -2539,6 +2539,17 @@ The initial fleet recipe uses controlled Valkey restart and promotion. It does n
 PostgreSQL holds a deployment recovery record with a monotonic epoch, gate state, approved KV process identity, and reconciliation evidence.
 This record witnesses recovery authority. KV remains the owner of catalog, credential, budget, and reservation records.
 
+The shared recovery concept lives in `internal/recovery`.
+Fresh initialization also writes a persistent native record that binds the approved epoch and operation identity.
+Budget writes compare that record in the same native transaction as their accounting changes.
+They check the independent SQL approval before and after that transaction.
+An error after commit cannot authorize dispatch or a refund.
+
+Explicit recovery installs the reconciled native epoch before opening its SQL approval.
+An exact retry can finish the same operation. Another operation cannot replace a partially applied epoch.
+Startup never creates missing approval or reconstructs a missing native record.
+These operations do not replace external fencing or reconcile lost history themselves.
+
 Every gateway must verify the open recovery epoch and approved KV process identity before admitting its first request.
 Each new or recovered KV connection must validate the approved server incarnation before application operations use that connection.
 Backend process restart, role promotion, identity mismatch, or unknown connection identity invalidates admission on that connection.
@@ -2970,6 +2981,16 @@ Unknown monetary pricing remains null in that reservation. Starport can still en
 If any spend meter applies, the reservation requires the complete monetary valuation.
 The admission owner reads the original permission before reservation and checks it again around dispatch-permit consumption.
 Confirmed absent budgets skip both billing projection and budget storage.
+
+Application startup constructs the budget authority without starting a worker.
+Team-history preparation runs during bounded authorization loads, before accepting the policy bundle.
+The existing cache retry rereads all policy owners after a successful SQL grant changes its revision.
+Missing or consumed grants return without a SQL revision change. Unknown team history cannot repeatedly revoke unrelated callers.
+Warm policy reads do not repeat this preparation.
+
+The current shared adapter adds two SQL approval reads and one native transaction per budget write.
+The native epoch comparison shares that transaction. Ledger reads and authority-time queries add separate operations.
+CSP12.2 must measure the complete admission sequence. These component contracts do not establish gateway latency.
 
 Required settlement uses a bounded context after caller cancellation.
 If settlement fails, retain measured evidence durably when storage permits that write.
