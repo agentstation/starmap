@@ -866,11 +866,11 @@
   },
   "next_task": {
     "task": "CSP12.2",
-    "next_action": "Complete durable job settlement, remaining paid-operation billing contracts, bounds, and request correlation. Qualify A47 and the exact producer pin before review and publication.",
+    "next_action": "Complete durable job association and required settlement recovery. Complete remaining billing profiles and bounds, then qualify A47, the dependency pin, review, and native checks.",
     "worktree": "/tmp/starport-fleet-review-20260926",
     "branch": "codex/atomic-budget-admission",
     "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
-    "head": "e7a93be15a9067921b2d301b279e7501d16f7a51"
+    "head": "a189b8dc59194db43815b7055a6c64c47d68da4c"
   },
   "merged_followups": {
     "tasks": [
@@ -1046,7 +1046,7 @@
     "status": "MERGED",
     "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-27T11:38:37.239767+00:00",
+  "local_updated_at": "2026-09-27T11:49:16.487816+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -1055,10 +1055,10 @@
   },
   "budget_preparation": {
     "owner": "CSP12.2",
-    "status": "unpublished_text_chat_billing_and_settlement",
-    "commit": "e7a93be15a9067921b2d301b279e7501d16f7a51",
+    "status": "unpublished_text_billing_and_request_correlation",
+    "commit": "a189b8dc59194db43815b7055a6c64c47d68da4c",
     "published": false,
-    "proof": "../../csp12.2/text-billing-2026-09-27/verification.json",
+    "proof": "../../csp12.2/request-identity-2026-09-27/verification.json",
     "native_ci": "UNVERIFIED",
     "required_review": "not yet run; required before final PR",
     "remaining_dirty_files": {
@@ -1077,7 +1077,8 @@
     "known_failures": [],
     "publication": "Not ready. Remaining matrix, asynchronous recovery, A47, exact dependency pin, review, and native checks stay required.",
     "qualification_limits": "Consumer tests use an unpublished producer through GOWORK. The ordinary module dependency pin remains unqualified. This report does not establish A47 or task completion.",
-    "candidate_workspace": "/tmp/csp122-billing.work"
+    "candidate_workspace": "/tmp/csp122-billing.work",
+    "billing_proof": "../../csp12.2/text-billing-2026-09-27/verification.json"
   },
   "remote_state_note": "This update checks local work and retained test output only. Prior remote check timestamps remain unchanged."
 }

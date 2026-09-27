@@ -122,6 +122,20 @@ This replaces the provisional fixture-preservation instruction above. Product bu
 The current bound uses full declared provider limits. Narrower request bounds and the remaining operation contracts still require qualification.
 Asynchronous settlement, real shared-backend evidence, overhead measurement, and A47 remain open.
 
+## September 27 request identity
+
+Consumer `a189b8dc` preserves gateway request IDs through the proxy and router.
+Each provider attempt retains a separate reservation ID. Reusing an HTTP request ID cannot reuse a dispatch permit.
+Recognition retains the outer request ID. Semantic embeddings and guardrail moderation retain their existing child request IDs.
+
+The [identity proof](../../plans/proof/starport-production-catalog/csp12.2/request-identity-2026-09-27/verification.json) records three production regression results and 428 package race results.
+Six pure-Go results, lint, and vet pass. The production test covers fallback and repeated request IDs in ordinary and streamed chat.
+Other operations have identity-transfer checks. Their paid dispatch contracts remain unqualified.
+
+Required job settlement must use retained reservation evidence.
+The current optional usage writer increments counters after a separate record write. Retrying that writer alone cannot provide idempotent accounting.
+Durable job association and asynchronous settlement recovery remain open.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:
