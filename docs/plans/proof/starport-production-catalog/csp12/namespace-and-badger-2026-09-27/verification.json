@@ -1,0 +1,176 @@
+{
+  "recorded_at": "2026-09-27T03:09:18.857519+00:00",
+  "status": "PARTIAL_UNPUBLISHED",
+  "task": "CSP12",
+  "head": "3c6bab49b55ac7d2e1a76f0f4fdbf459da0259f7",
+  "base": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d",
+  "namespace": {
+    "original_commit": "a796721",
+    "rebased_tree_equal": true,
+    "before_source": "a819276e23a126c3eae159d5e2b2744db8bba619",
+    "before_named_failures": 6,
+    "before_leaf_failures": 5,
+    "after_adapter_passes": 9,
+    "after_application_passes": 6,
+    "after_skips": 0,
+    "broad_suite": {
+      "named_passes": 613,
+      "named_failures": 2,
+      "named_skips": 3,
+      "failure": "Old TestOpen fixture omitted newly required deployment identity. The corrected focused TestOpen and configuration projection checks pass.",
+      "skips": [
+        "TestDefaultCacheMemoryBudget",
+        "TestSharedCachePausedServiceDeadlineAndRecovery",
+        "TestValkeyIncarnationRejectsReplacementBackend"
+      ]
+    },
+    "lint": "zero issues",
+    "invalid_fixture": "Initial application fixture omitted positive connection count; no isolation claim from that run."
+  },
+  "badger": {
+    "status": "UNCOMMITTED",
+    "confirmed_before": "Engine selects Snappy despite Compression=false. Corrected real-engine probe fails its options assertion.",
+    "invalid_before": "Initial 4 MiB memtable fixture failed engine initialization. It is UNVERIFIED for compression. Corrected probe uses 64 MiB.",
+    "focused_named_passes": 11,
+    "focused_skips": 0,
+    "lint": "zero issues",
+    "compile_all": "PASS: go test -run ^$ ./...",
+    "fixture_repair": "Initial profile test attempted to convert loaded persistent paths to development. It now uses the development loader and preserves its selector refusal.",
+    "current_run": "/tmp/csp12-adapter-contracts/runner.json",
+    "scope": "compression, GC timing and discard ratio, default synchronous writes, explicit asynchronous override, in-memory distinction, options after restore"
+  },
+  "remaining": [
+    "Complete native adapter and application checks",
+    "Complete Compose recipes",
+    "Reconcile CSP12 migration selector with CSP13 ownership",
+    "Register full CSP12 acceptance checks",
+    "Run required repository checks and autoreview",
+    "Publish and merge"
+  ],
+  "artifacts": [
+    {
+      "path": "namespace-before/deployment_storage_test.go.txt.gz",
+      "raw_sha256": "d9d0e1f19ba1fe08e33ae79efec1701894a481d3b8486cdeaf6dca00d32ad33c"
+    },
+    {
+      "path": "namespace-before/stderr.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "namespace-before/overlay.json.gz",
+      "raw_sha256": "7a56d40300d58f166b764a985b693b06a447bdebb4ad98ec81a73e321b8023bd"
+    },
+    {
+      "path": "namespace-before/runner.json.gz",
+      "raw_sha256": "a6329efbfbf627b5026a5aaab0d4832a6195526b912ba94ae4f780841f095905"
+    },
+    {
+      "path": "namespace-before/tests.jsonl.gz",
+      "raw_sha256": "b732d2786f5adcc185cc72c717fcfb6d765068a0236333d08de5b26ab527eec8"
+    },
+    {
+      "path": "namespace-adapter/stderr.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "namespace-adapter/runner.json.gz",
+      "raw_sha256": "381ca988343281f9a73997eaee695040fff558c1f0f260c3e9fb96a165e62766"
+    },
+    {
+      "path": "namespace-adapter/tests.jsonl.gz",
+      "raw_sha256": "97daeaf6a029ab99faa3851ac479b3ab767e01d5521aad70d22ca32a9019fbbe"
+    },
+    {
+      "path": "namespace-app-invalid-fixture/stderr.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "namespace-app-invalid-fixture/runner.json.gz",
+      "raw_sha256": "8416d43e67983c0243d9e9197d76b49bd463aac9759104fe7c7427121b19cea7"
+    },
+    {
+      "path": "namespace-app-invalid-fixture/tests.jsonl.gz",
+      "raw_sha256": "1c1844dd2596dd3e2cba23f5a84bbb97ae9a15da537aeee7ee97e555c9dfbb17"
+    },
+    {
+      "path": "namespace-app/stderr.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "namespace-app/runner.json.gz",
+      "raw_sha256": "0a89877bb2239fb97bfb28f0d160449a4272156c11b0b2c6c5786de2148229fa"
+    },
+    {
+      "path": "namespace-app/tests.jsonl.gz",
+      "raw_sha256": "be2656a5718037a4953c297bde796754fce6e4cbc789a5c004ff0cc1a102c472"
+    },
+    {
+      "path": "namespace-suite/stderr.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "namespace-suite/runner.json.gz",
+      "raw_sha256": "4ff10db900f2a6a28f479f48cb0187463785da4c329a252a54b378317df8c535"
+    },
+    {
+      "path": "namespace-suite/tests.jsonl.gz",
+      "raw_sha256": "b70cbd134a035c1ca445c8f38a4bf0e6806b7a4d4a3adceb04fbed629372e7d0"
+    },
+    {
+      "path": "badger-before-confirmed/stderr.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "badger-before-confirmed/overlay.json.gz",
+      "raw_sha256": "eb822de8f206a1edb46a4159f319371583c49576b529864249ea6f6b7b7a72f9"
+    },
+    {
+      "path": "badger-before-confirmed/test.go.txt.gz",
+      "raw_sha256": "2151c1017b64ccdabd8b9ef831e3dfecc346546794aaa207a99fb42dddf3d66b"
+    },
+    {
+      "path": "badger-before-confirmed/tests.jsonl.gz",
+      "raw_sha256": "0b1308dbcf6168bc5ffe42651b8fe8bd8613c1d188847009979d52df3d97237d"
+    },
+    {
+      "path": "csp12-namespace-projection-final.log.gz",
+      "raw_sha256": "b9516f4c6b60016a8b9c76ce95ffab2f0432c65e0ea5ededeba8685abfd6bbe0"
+    },
+    {
+      "path": "csp12-namespace-lint.log.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "csp12-badger-options-before.jsonl.gz",
+      "raw_sha256": "817fceb061be045245a2f0b028f3c5313e8c27e75d74b6a427ee8d0f068dbc3b"
+    },
+    {
+      "path": "csp12-badger-options-before-test.go.txt.gz",
+      "raw_sha256": "04ed27e53a5353b7ce0d5b1aeb62804306e76bb0f31189cd49e59eb88051c80f"
+    },
+    {
+      "path": "csp12-badger-options-qualified.jsonl.gz",
+      "raw_sha256": "0763e1be6f1a96c822669c56ffeae6e7c1cae656bbf98cf41d2af322eacbf016"
+    },
+    {
+      "path": "csp12-badger-config-profile.jsonl.gz",
+      "raw_sha256": "91624870b3620a54cb4ca9e37547c70b916a5722a3b40952affdf06f3a62d94d"
+    },
+    {
+      "path": "csp12-badger-profile-final.jsonl.gz",
+      "raw_sha256": "0e048345b00b0eae4d59754f71106b8ba314da2a545f285045d04becc1ea559a"
+    },
+    {
+      "path": "csp12-badger-profile-final.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp12-badger-lint.log.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "csp12-badger-compile-all.log.gz",
+      "raw_sha256": "9cfba99383cd9e2d6028fdc86e195c06209bba826c94c92b31756937fa05a83b"
+    }
+  ]
+}
