@@ -1,0 +1,28 @@
+{
+  "producer_commit": "e7710f16fc2e1a7595739eaf8dcd70423b57a70b",
+  "producer_remote_head": "dff93d12ec9310a024d1f31a965e3b1c7434ecdb",
+  "producer_checks": {
+    "status": "PASS",
+    "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off make HAS_DEVBOX= GOCMD=go verify-checks",
+    "log": "producer-verify-checks.log"
+  },
+  "workflow_race_tests": 56,
+  "consumer_roster": {
+    "passed": 34,
+    "failed": 0,
+    "module": "v0.16.6-0.20260926235631-dff93d12ec93",
+    "GOWORK": "off",
+    "report": "consumer-dff93d12e-gates/report.json"
+  },
+  "published_task_gate": {
+    "passed": 11,
+    "failed": 0,
+    "module": "v0.16.6-0.20260926235631-dff93d12ec93"
+  },
+  "remaining": [
+    "producer follow-up review and publication",
+    "final consumer pin and qualification",
+    "consumer review and native CI",
+    "ordered merges"
+  ]
+}

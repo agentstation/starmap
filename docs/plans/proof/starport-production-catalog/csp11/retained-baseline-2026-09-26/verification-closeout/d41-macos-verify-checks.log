@@ -1,0 +1,244 @@
+
+==> make docs-check
+[0;34mChecking if documentation is up to date...[0m 
+Checking ./pkg/catalogs...
+Checking ./pkg/catalogs/evidence...
+Checking ./pkg/catalogs/storage...
+Checking ./pkg/catalogs/storage/s3...
+Checking ./pkg/catalogs/artifact...
+Checking ./pkg/catalogs/authority...
+Checking ./pkg/catalogs/permission...
+Checking ./pkg/catalogs/permission/hostclock...
+Checking ./pkg/catalogs/permission/hostclock/internal/w32timerpc...
+Checking ./pkg/catalogs/permission/hostclock/profile...
+Checking ./pkg/catalogs/projection...
+Checking ./pkg/catalogs/remote...
+Checking ./pkg/sources...
+Checking ./pkg/sources/payload...
+Checking ./pkg/errors...
+Checking ./pkg/logging...
+Checking ./internal/transport...
+Checking ./internal/providers/clients...
+Checking ./internal/catalog/reconciler...
+Checking ./internal/server...
+Checking ./internal/server/middleware...
+Checking ./internal/server/sse...
+Checking ./internal/server/response...
+Checking ./internal/server/cache...
+Checking ./internal/server/params...
+Checking ./internal/server/handlers...
+Checking ./internal/cli/convert...
+Checking ./internal/sources/providers...
+Checking ./internal/sources/local...
+Checking ./internal/sources/modelsdev...
+Checking ./internal/embedded...
+Checking ./internal/embedded/openapi...
+Checking ./server...
+Checking ./server/administration...
+Checking ./remote...
+Checking ./runtime...
+Checking ./runtime/source...
+Checking ./runtime/status...
+[0;32mAll documentation is up to date[0m 
+
+==> git diff --check
+
+==> make test-file-sizes
+1440	internal/catalog/reconciler/merger_test.go
+1071	internal/providers/openai/client_test.go
+1040	remote/subscriber_test.go
+Go file-size verification passed: review >1000, justify >1500, fail >=2000 lines
+
+==> ./scripts/verify-package-layout.sh
+ok  	github.com/agentstation/starmap/internal/architecture	0.211s
+package-layout verification passed
+
+==> ./scripts/test-package-layout-verifier.sh
+package-layout verifier regression tests passed
+
+==> ./scripts/verify-catalog-package-ownership.sh
+CPO-V01 PASS: the five approved catalog child packages exist
+CPO-V02 PASS: the four removed package trees are absent
+CPO-V03 PASS: catalogs owns Generation copy and validation
+CPO-V04 PASS: catalogs owns all canonical payload codecs
+CPO-V05 PASS: evidence is a standard-library-only leaf
+CPO-V06 PASS: projection is a standard-library-only leaf without aliases
+CPO-V07 PASS: storage accepts catalog generations and retains adapters
+CPO-V08 PASS: artifact is storage-independent and retains its byte test
+CPO-V09 PASS: remote is storage-independent and retains protocol tests
+CPO-V10 PASS: all six external consumer modules compile
+CPO-V11 PASS: current docs and the migration guide use approved paths
+CPO-V12 PASS: current authority passes the historical allowlist scan
+CPO-V13 PASS: the package graph resolves without a dependency change
+Summary: 13 passed, 0 failed
+
+==> ./scripts/test-catalog-package-ownership-verifier.sh
+catalog package ownership verifier regression tests passed
+
+==> ./scripts/verify-catalog-dependency-direction.sh
+SM-D01 PASS: catalogs does not import private authority policy
+SM-D02 PASS: catalogs does not import repository-wide constants
+SM-D03 PASS: catalogs does not import the private embedded filesystem
+SM-D04 PASS: catalogs does not import private source payload policy
+SM-D05 PASS: catalog artifacts do not import repository-wide constants
+SM-D06 PASS: catalog remote transport does not import repository-wide constants
+SM-D07 PASS: catalog storage does not import repository-wide constants
+SM-D08 PASS: catalog S3 storage does not import repository-wide constants
+Summary: 8 passed, 0 failed
+
+==> ./scripts/test-catalog-dependency-direction-verifier.sh
+catalog dependency direction verifier tests passed
+
+==> bash ./scripts/verify-canonical-alias-history.sh
+Canonical rename history preserves predecessor 6fefd6d422c214520342485b9da2141e441d8911
+
+==> python3 ./scripts/test_catalog_rejection.py
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.011s
+
+OK
+
+==> python3 ./scripts/test_catalog_product_verify.py
+test_batch_policy_requires_a_boolean (__main__.CatalogGoBatchTests.test_batch_policy_requires_a_boolean) ... ok
+test_failed_event_refuses_successful_exit_code (__main__.CatalogGoBatchTests.test_failed_event_refuses_successful_exit_code) ... ok
+test_partial_duplicate_corrupt_or_wrong_package_stream_never_passes (__main__.CatalogGoBatchTests.test_partial_duplicate_corrupt_or_wrong_package_stream_never_passes) ... ok
+test_real_go_selection_skip_and_invocation_lifetime (__main__.CatalogGoBatchTests.test_real_go_selection_skip_and_invocation_lifetime) ... ok
+test_roots_do_not_share_process_results (__main__.CatalogGoBatchTests.test_roots_do_not_share_process_results) ... ok
+test_selected_names_share_one_process_and_duplicates_reuse_evidence (__main__.CatalogGoBatchTests.test_selected_names_share_one_process_and_duplicates_reuse_evidence) ... ok
+test_skip_is_bound_to_its_named_parent (__main__.CatalogGoBatchTests.test_skip_is_bound_to_its_named_parent) ... ok
+test_complete_live_roster_passes (test_catalog_sdk.CatalogSDKTests.test_complete_live_roster_passes) ... ok
+test_empty_success_does_not_qualify (test_catalog_sdk.CatalogSDKTests.test_empty_success_does_not_qualify) ... ok
+test_exit_failure_overrides_pass_markers (test_catalog_sdk.CatalogSDKTests.test_exit_failure_overrides_pass_markers) ... ok
+test_missing_script_is_unverified (test_catalog_sdk.CatalogSDKTests.test_missing_script_is_unverified) ... ok
+test_missing_state_or_client_never_passes (test_catalog_sdk.CatalogSDKTests.test_missing_state_or_client_never_passes) ... ok
+test_skip_never_passes (test_catalog_sdk.CatalogSDKTests.test_skip_never_passes) ... ok
+test_timeout_is_unverified (test_catalog_sdk.CatalogSDKTests.test_timeout_is_unverified) ... ok
+test_baseline_cannot_claim_release_qualification (__main__.CatalogVerifierTests.test_baseline_cannot_claim_release_qualification) ... ok
+test_baseline_keeps_negative_paired_differences (__main__.CatalogVerifierTests.test_baseline_keeps_negative_paired_differences) ... ok
+test_baseline_refuses_lost_stream_events_and_wrong_milestones (__main__.CatalogVerifierTests.test_baseline_refuses_lost_stream_events_and_wrong_milestones) ... ok
+test_baseline_refuses_missing_variant_or_initial_evidence (__main__.CatalogVerifierTests.test_baseline_refuses_missing_variant_or_initial_evidence) ... ok
+test_baseline_refuses_partial_or_fabricated_timing (__main__.CatalogVerifierTests.test_baseline_refuses_partial_or_fabricated_timing) ... ok
+test_browser_review_requires_current_inputs_and_captures (__main__.CatalogVerifierTests.test_browser_review_requires_current_inputs_and_captures) ... ok
+test_catalog_isolation_does_not_qualify_all_gateway_records (__main__.CatalogVerifierTests.test_catalog_isolation_does_not_qualify_all_gateway_records) ... ok
+test_combined_check_needs_every_result (__main__.CatalogVerifierTests.test_combined_check_needs_every_result) ... ok
+test_command_failure_cannot_pass (__main__.CatalogVerifierTests.test_command_failure_cannot_pass) ... ok
+test_complete_red_report (__main__.CatalogVerifierTests.test_complete_red_report) ... ok
+test_console_checks_accept_typescript_and_reject_unsafe_paths (__main__.CatalogVerifierTests.test_console_checks_accept_typescript_and_reject_unsafe_paths) ... ok
+test_duplicate_subcase_refuses (__main__.CatalogVerifierTests.test_duplicate_subcase_refuses) ... ok
+test_empty_task_cannot_pass (__main__.CatalogVerifierTests.test_empty_task_cannot_pass) ... ok
+test_evidence_paths_cannot_escape_repository (__main__.CatalogVerifierTests.test_evidence_paths_cannot_escape_repository) ... ok
+test_final_roster_cannot_omit_a_case (__main__.CatalogVerifierTests.test_final_roster_cannot_omit_a_case) ... ok
+test_fresh_baseline_adapter_cannot_pass_skipped_test (__main__.CatalogVerifierTests.test_fresh_baseline_adapter_cannot_pass_skipped_test) ... ok
+test_go_evidence_reuse_is_limited_to_one_invocation (__main__.CatalogVerifierTests.test_go_evidence_reuse_is_limited_to_one_invocation) ... ok
+test_missing_candidate_local_check_refuses (__main__.CatalogVerifierTests.test_missing_candidate_local_check_refuses) ... ok
+test_missing_primary_refuses (__main__.CatalogVerifierTests.test_missing_primary_refuses) ... ok
+test_missing_registration_is_unverified (__main__.CatalogVerifierTests.test_missing_registration_is_unverified) ... ok
+test_numeric_profile_cannot_hide_workload_or_uncertainty (__main__.CatalogVerifierTests.test_numeric_profile_cannot_hide_workload_or_uncertainty) ... ok
+test_numeric_profile_cannot_relax_correctness_for_latency (__main__.CatalogVerifierTests.test_numeric_profile_cannot_relax_correctness_for_latency) ... ok
+test_numeric_profile_is_complete_but_unqualified (__main__.CatalogVerifierTests.test_numeric_profile_is_complete_but_unqualified) ... ok
+test_numeric_profile_refuses_contradictory_resources (__main__.CatalogVerifierTests.test_numeric_profile_refuses_contradictory_resources) ... ok
+test_numeric_profile_refuses_invalid_limits (__main__.CatalogVerifierTests.test_numeric_profile_refuses_invalid_limits) ... ok
+test_partial_parent_never_passes (__main__.CatalogVerifierTests.test_partial_parent_never_passes) ... ok
+test_performance_review_requires_current_targets_and_retained_evidence (__main__.CatalogVerifierTests.test_performance_review_requires_current_targets_and_retained_evidence) ... ok
+test_publication_hosted_without_repository_is_unverified (__main__.CatalogVerifierTests.test_publication_hosted_without_repository_is_unverified) ... ok
+test_publication_recovery_without_repository_is_unverified (__main__.CatalogVerifierTests.test_publication_recovery_without_repository_is_unverified) ... ok
+test_qualification_cannot_use_component_passes (__main__.CatalogVerifierTests.test_qualification_cannot_use_component_passes) ... ok
+test_real_go_missing_match_is_unverified (__main__.CatalogVerifierTests.test_real_go_missing_match_is_unverified) ... ok
+test_real_named_go_test_executes (__main__.CatalogVerifierTests.test_real_named_go_test_executes) ... ok
+test_retained_full_http_baseline_satisfies_measurement_contract (__main__.CatalogVerifierTests.test_retained_full_http_baseline_satisfies_measurement_contract) ... ok
+test_skipped_child_cannot_pass_parent (__main__.CatalogVerifierTests.test_skipped_child_cannot_pass_parent) ... ok
+test_unknown_case_refuses (__main__.CatalogVerifierTests.test_unknown_case_refuses) ... ok
+test_verifier_supports_isolated_document_import (__main__.CatalogVerifierTests.test_verifier_supports_isolated_document_import) ... ok
+test_abnormal_exit_and_resource_failure_are_distinct (__main__.ColdServerTests.test_abnormal_exit_and_resource_failure_are_distinct) ... ok
+test_both_observations_and_schema_validation_are_required (__main__.ColdServerTests.test_both_observations_and_schema_validation_are_required) ... ok
+test_build_failure_attempts_cleanup_and_cleanup_failure_fails (__main__.ColdServerTests.test_build_failure_attempts_cleanup_and_cleanup_failure_fails) ... ok
+test_complete_offline_restart_passes (__main__.ColdServerTests.test_complete_offline_restart_passes) ... ok
+test_external_network_or_credentials_cannot_qualify (__main__.ColdServerTests.test_external_network_or_credentials_cannot_qualify) ... ok
+test_failed_endpoints_and_invalid_bytes_fail (__main__.ColdServerTests.test_failed_endpoints_and_invalid_bytes_fail) ... ok
+test_missing_docker_is_unverified (__main__.ColdServerTests.test_missing_docker_is_unverified) ... ok
+test_missing_instance_identity_cannot_qualify (__main__.ColdServerTests.test_missing_instance_identity_cannot_qualify) ... ok
+test_registered_adapter_requires_probe_and_calls_verifier (__main__.ColdServerTests.test_registered_adapter_requires_probe_and_calls_verifier) ... ok
+test_restart_identity_and_manifest_changes_fail (__main__.ColdServerTests.test_restart_identity_and_manifest_changes_fail) ... ok
+test_component_registry_refuses_unapproved_task_or_case (test_catalog_component_checks.ComponentCheckBoundaryTests.test_component_registry_refuses_unapproved_task_or_case) ... ok
+test_component_results_cannot_make_primary_case_pass (test_catalog_component_checks.ComponentCheckBoundaryTests.test_component_results_cannot_make_primary_case_pass) ... ok
+test_consumer_and_qualification_commands_use_consumer_evidence (test_catalog_component_checks.ComponentCheckBoundaryTests.test_consumer_and_qualification_commands_use_consumer_evidence) ... ok
+test_missing_consumer_never_uses_producer_fallback (test_catalog_component_checks.ComponentCheckBoundaryTests.test_missing_consumer_never_uses_producer_fallback) ... ok
+test_producer_task_uses_its_component_without_qualifying_parent (test_catalog_component_checks.ComponentCheckBoundaryTests.test_producer_task_uses_its_component_without_qualifying_parent) ... ok
+test_both_controls_are_required (__main__.ConstructorNetworkTests.test_both_controls_are_required) ... ok
+test_constructor_socket_attempt_is_a_failure (__main__.ConstructorNetworkTests.test_constructor_socket_attempt_is_a_failure) ... ok
+test_control_must_reach_its_socket_attempt (__main__.ConstructorNetworkTests.test_control_must_reach_its_socket_attempt) ... ok
+test_incomplete_baseline_or_changed_platform_refuses (__main__.ConstructorNetworkTests.test_incomplete_baseline_or_changed_platform_refuses) ... ok
+test_missing_constructor_evidence_refuses (__main__.ConstructorNetworkTests.test_missing_constructor_evidence_refuses) ... ok
+test_missing_container_state_refuses (__main__.ConstructorNetworkTests.test_missing_container_state_refuses) ... ok
+test_missing_docker_is_unverified (__main__.ConstructorNetworkTests.test_missing_docker_is_unverified) ... ok
+test_resource_failure_cannot_prove_network_enforcement (__main__.ConstructorNetworkTests.test_resource_failure_cannot_prove_network_enforcement) ... ok
+test_coherent_review_passes (__main__.DemoReviewTests.test_coherent_review_passes) ... ok
+test_edits_cannot_intersect_inference (__main__.DemoReviewTests.test_edits_cannot_intersect_inference) ... ok
+test_false_gap_or_negative_duration_refuses (__main__.DemoReviewTests.test_false_gap_or_negative_duration_refuses) ... ok
+test_incomplete_stream_or_cleanup_refuses (__main__.DemoReviewTests.test_incomplete_stream_or_cleanup_refuses) ... ok
+test_unreadable_dimensions_or_changed_gif_refuses (__main__.DemoReviewTests.test_unreadable_dimensions_or_changed_gif_refuses) ... ok
+test_changed_or_missing_capture_refuses (__main__.FirstUseReviewTests.test_changed_or_missing_capture_refuses) ... ok
+test_changed_readme_requires_review (__main__.FirstUseReviewTests.test_changed_readme_requires_review) ... ok
+test_complete_review_passes (__main__.FirstUseReviewTests.test_complete_review_passes) ... ok
+test_evidence_cannot_escape_its_root (__main__.FirstUseReviewTests.test_evidence_cannot_escape_its_root) ... ok
+test_incomplete_inference_refuses_even_with_matching_capture_digest (__main__.FirstUseReviewTests.test_incomplete_inference_refuses_even_with_matching_capture_digest) ... ok
+test_missing_observation_refuses (__main__.FirstUseReviewTests.test_missing_observation_refuses) ... ok
+test_source_build_needs_exact_commit (__main__.FirstUseReviewTests.test_source_build_needs_exact_commit) ... ok
+test_unqualified_or_missing_method_refuses (__main__.FirstUseReviewTests.test_unqualified_or_missing_method_refuses) ... ok
+test_absent_capture_is_unverified (__main__.NativeCatalogTests.test_absent_capture_is_unverified) ... ok
+test_both_native_architectures_are_required (__main__.NativeCatalogTests.test_both_native_architectures_are_required) ... ok
+test_changed_evidence_bytes_refuse (__main__.NativeCatalogTests.test_changed_evidence_bytes_refuse) ... ok
+test_cross_compiled_or_changed_toolchain_refuses (__main__.NativeCatalogTests.test_cross_compiled_or_changed_toolchain_refuses) ... ok
+test_duplicate_native_jobs_refuse (__main__.NativeCatalogTests.test_duplicate_native_jobs_refuse) ... ok
+test_failed_or_incomplete_workflow_refuses (__main__.NativeCatalogTests.test_failed_or_incomplete_workflow_refuses) ... ok
+test_linux_requires_actual_administrator_owned_read (__main__.NativeCatalogTests.test_linux_requires_actual_administrator_owned_read) ... ok
+test_missing_test_or_package_completion_refuses (__main__.NativeCatalogTests.test_missing_test_or_package_completion_refuses) ... ok
+test_other_repository_refuses (__main__.NativeCatalogTests.test_other_repository_refuses) ... ok
+test_required_parent_skip_and_unselected_failure_refuse (__main__.NativeCatalogTests.test_required_parent_skip_and_unselected_failure_refuse) ... ok
+test_skipped_or_failed_child_refuses (__main__.NativeCatalogTests.test_skipped_or_failed_child_refuses) ... ok
+test_source_and_test_changes_invalidate_evidence (__main__.NativeCatalogTests.test_source_and_test_changes_invalidate_evidence) ... ok
+test_unselected_skips_are_reported_without_qualifying_them (__main__.NativeCatalogTests.test_unselected_skips_are_reported_without_qualifying_them) ... ok
+
+----------------------------------------------------------------------
+Ran 99 tests in 11.141s
+
+OK
+
+==> python3 ./scripts/test_prepare_public_catalog_fixture.py
+test_windows_checkout_preserves_captured_bytes (__main__.PublicCatalogCheckoutTests.test_windows_checkout_preserves_captured_bytes) ... ok
+test_corrupt_download_never_publishes (__main__.PublicCatalogFixtureTests.test_corrupt_download_never_publishes) ... ok
+test_failed_publication_removes_temporary_file (__main__.PublicCatalogFixtureTests.test_failed_publication_removes_temporary_file) ... ok
+test_invalid_cache_is_preserved (__main__.PublicCatalogFixtureTests.test_invalid_cache_is_preserved) ... ok
+test_large_download_never_publishes (__main__.PublicCatalogFixtureTests.test_large_download_never_publishes) ... ok
+test_short_download_never_publishes (__main__.PublicCatalogFixtureTests.test_short_download_never_publishes) ... ok
+test_valid_cache_requires_no_network (__main__.PublicCatalogFixtureTests.test_valid_cache_requires_no_network) ... ok
+test_valid_download_publishes_exact_bytes (__main__.PublicCatalogFixtureTests.test_valid_download_publishes_exact_bytes) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.046s
+
+OK
+
+==> python3 ./scripts/test_verification_tests.py
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.019s
+
+OK
+
+==> python3 ./scripts/verification_tests.py race --group checks --output /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.CmiCe7/go-check-events.jsonl
+Running: go test -json -count=1 -timeout=30m -p=1 -race -skip=^TestPublicPublicationProfileRetainsBoundedState$ github.com/agentstation/starmap/internal/ciworkflow
+Test events: /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.CmiCe7/go-check-events.jsonl
+{"tests": {"pass": 56, "fail": 0, "skip": 0}, "slowest": [[0.54, "github.com/agentstation/starmap/internal/ciworkflow", "TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure"], [0.14, "github.com/agentstation/starmap/internal/ciworkflow", "TestVerificationGateRequiresEverySuiteEvenAfterFailure"], [0.08, "github.com/agentstation/starmap/internal/ciworkflow", "TestGoFileSizeVerificationEnforcesReviewAndHardLimits"], [0.03, "github.com/agentstation/starmap/internal/ciworkflow", "TestWorkflowGoPinsMatchProductToolchain"], [0.02, "github.com/agentstation/starmap/internal/ciworkflow", "TestVerificationMatrixPreservesPackageGroupsWithoutCompilerDuplicates"], [0.01, "github.com/agentstation/starmap/internal/ciworkflow", "TestNativeRuntimeExercisesPublicHostFiles"], [0.01, "github.com/agentstation/starmap/internal/ciworkflow", "TestNativePublicationPreservesPlatformCoverage"], [0.01, "github.com/agentstation/starmap/internal/ciworkflow", "TestGitAcquisitionQualificationRequiresNativeTools"], [0.01, "github.com/agentstation/starmap/internal/ciworkflow", "TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion"], [0, "github.com/agentstation/starmap/internal/ciworkflow", "TestWorkspaceIgnoresHostedWorkflowCheckouts"], [0, "github.com/agentstation/starmap/internal/ciworkflow", "TestReleaseWorkflowPinsToolchainPublisherAndVerification"], [0, "github.com/agentstation/starmap/internal/ciworkflow", "TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets"], [0, "github.com/agentstation/starmap/internal/ciworkflow", "TestReleaseBinaryVerificationPinsPortableTargetMatrix"], [0, "github.com/agentstation/starmap/internal/ciworkflow", "TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent"], [0, "github.com/agentstation/starmap/internal/ciworkflow", "TestPureGoAndRaceVerificationHaveSeparateCgoModes"]], "events": "/private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.CmiCe7/go-check-events.jsonl"}
+
+==> go vet ./...
+
+==> go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run
+runtime/fleet_recovery_codec.go:44:20: Error return value of `reader.Close` is not checked (errcheck)
+	defer reader.Close()
+	                  ^
+1 issues:
+* errcheck: 1
+exit status 1
+make: *** [verify-checks] Error 1

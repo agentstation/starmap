@@ -1,0 +1,23 @@
+PASS RNK-V01 Starport reads the rerank operation from Starmap and declares none of its own
+PASS RNK-V02 a model that serves rerank alone stays out of the chat model list
+PASS RNK-V03 the shipped catalog holds a rerank offering that carries a search unit price
+PASS RNK-V04 every rerank offering states the document count it accepts
+PASS RNK-V05 the canonical rerank shape names a document by index and carries no wire word
+PASS RNK-V06 the transport registry accepts a rerank descriptor and still refuses an unknown operation
+PASS RNK-V07 a connector without the operation refuses, and a provider error normalizes
+PASS RNK-V08 the /v1 codec round-trips the published rerank request and response
+PASS RNK-V09 an echoed document comes from the request, and an out-of-range score fails decoding
+PASS RNK-V10 POST /v1/rerank is registered behind the rerank:write scope
+PASS RNK-V11 the anonymous identity carries rerank:write when an operator disables authentication
+PASS RNK-V12 an uncatalogued rerank model is refused before any provider call
+PASS RNK-V21 POST /api/v1/rerank mirrors the published OpenRouter rerank schema
+PASS RNK-V22 the parity gate counts the rerank route and states its terminal count
+PASS RNK-V13 the planner refuses a model that serves no rerank offering
+PASS RNK-V14 the refusal names the model and the operation rather than a provider error
+PASS RNK-V15 a rerank turn records a search unit count and a nonzero cost
+PASS RNK-V16 an account at its spend bound is refused before the provider call
+PASS RNK-V17 a turn on an unpriced rerank offering fails rather than reporting zero
+PASS RNK-V18 the console names the operation, the search unit price, and the document limit
+PASS RNK-V19 the operator guide and the README name the route, the scope, and the price owner
+PASS RNK-V20 CI runs this gate and the evidence list names its terminal count
+Summary: 22 passed, 0 failed

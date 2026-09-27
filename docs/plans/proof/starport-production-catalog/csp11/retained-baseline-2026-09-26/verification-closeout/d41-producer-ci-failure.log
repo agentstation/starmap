@@ -1,0 +1,1153 @@
+﻿2026-09-27T00:05:46.6172509Z Current runner version: '2.337.0'
+2026-09-27T00:05:46.6195235Z ##[group]Runner Image Provisioner
+2026-09-27T00:05:46.6196078Z Hosted Compute Agent
+2026-09-27T00:05:46.6196650Z Version: 20260828.587
+2026-09-27T00:05:46.6197216Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-27T00:05:46.6197920Z Build Date: 2026-08-28T16:44:25Z
+2026-09-27T00:05:46.6198526Z Worker ID: {c1789476-9b76-4991-8281-e41ee8b83e03}
+2026-09-27T00:05:46.6199215Z Azure Region: westus3
+2026-09-27T00:05:46.6199746Z ##[endgroup]
+2026-09-27T00:05:46.6201594Z ##[group]Operating System
+2026-09-27T00:05:46.6202230Z Ubuntu
+2026-09-27T00:05:46.6202693Z 24.04.5
+2026-09-27T00:05:46.6203170Z LTS
+2026-09-27T00:05:46.6203675Z ##[endgroup]
+2026-09-27T00:05:46.6204159Z ##[group]Runner Image
+2026-09-27T00:05:46.6204738Z Image: ubuntu-24.04
+2026-09-27T00:05:46.6205244Z Version: 20260920.314.1
+2026-09-27T00:05:46.6206430Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-27T00:05:46.6207841Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+2026-09-27T00:05:46.6208721Z ##[endgroup]
+2026-09-27T00:05:46.6209727Z ##[group]GITHUB_TOKEN Permissions
+2026-09-27T00:05:46.6211684Z Contents: read
+2026-09-27T00:05:46.6212274Z Metadata: read
+2026-09-27T00:05:46.6212809Z ##[endgroup]
+2026-09-27T00:05:46.6214791Z Secret source: Actions
+2026-09-27T00:05:46.6215597Z Cache mode: write
+2026-09-27T00:05:46.6216327Z Prepare workflow directory
+2026-09-27T00:05:46.6583700Z Prepare all required actions
+2026-09-27T00:05:46.6631975Z Getting action download info
+2026-09-27T00:05:46.9717468Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-09-27T00:05:47.0421381Z Download action repository 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e' (SHA:b7ad1dad31e06c5925ef5d2fc7ad053ef454303e)
+2026-09-27T00:05:47.7940516Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-27T00:05:47.9610975Z Complete job name: Verification Checks
+2026-09-27T00:05:48.0447219Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-09-27T00:05:48.0448376Z with:
+2026-09-27T00:05:48.0448871Z   fetch-depth: 2
+2026-09-27T00:05:48.0449408Z   persist-credentials: false
+2026-09-27T00:05:48.0450011Z   repository: agentstation/starmap
+2026-09-27T00:05:48.0454645Z   token: ***
+2026-09-27T00:05:48.0455131Z   ssh-strict: true
+2026-09-27T00:05:48.0455627Z   ssh-user: git
+2026-09-27T00:05:48.0456108Z   clean: true
+2026-09-27T00:05:48.0456619Z   sparse-checkout-cone-mode: true
+2026-09-27T00:05:48.0457209Z   fetch-tags: false
+2026-09-27T00:05:48.0457710Z   show-progress: true
+2026-09-27T00:05:48.0458226Z   lfs: false
+2026-09-27T00:05:48.0458701Z   submodules: false
+2026-09-27T00:05:48.0459213Z   set-safe-directory: true
+2026-09-27T00:05:48.0459796Z   allow-unsafe-pr-checkout: false
+2026-09-27T00:05:48.0460768Z env:
+2026-09-27T00:05:48.0461244Z   GOTOOLCHAIN: go1.27.1
+2026-09-27T00:05:48.0461768Z ##[endgroup]
+2026-09-27T00:05:48.1451535Z Syncing repository: agentstation/starmap
+2026-09-27T00:05:48.1454999Z ##[group]Getting Git version info
+2026-09-27T00:05:48.1456489Z Working directory is '/home/runner/work/starmap/starmap'
+2026-09-27T00:05:48.1458679Z [command]/usr/bin/git version
+2026-09-27T00:05:48.1536395Z git version 2.55.0
+2026-09-27T00:05:48.1557277Z ##[endgroup]
+2026-09-27T00:05:48.1568584Z Temporarily overriding HOME='/home/runner/work/_temp/e817493e-bb0c-4229-94d6-b465fc922457' before making global git config changes
+2026-09-27T00:05:48.1571676Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T00:05:48.1578739Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starmap/starmap
+2026-09-27T00:05:48.1623845Z Deleting the contents of '/home/runner/work/starmap/starmap'
+2026-09-27T00:05:48.1628098Z ##[group]Determining repository object format
+2026-09-27T00:05:48.1630420Z ##[endgroup]
+2026-09-27T00:05:48.1631548Z ##[group]Initializing the repository
+2026-09-27T00:05:48.1635978Z [command]/usr/bin/git init /home/runner/work/starmap/starmap
+2026-09-27T00:05:48.1725268Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-27T00:05:48.1727741Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-27T00:05:48.1729325Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-27T00:05:48.1730664Z hint: call:
+2026-09-27T00:05:48.1731605Z hint:
+2026-09-27T00:05:48.1732801Z hint: 	git config --global init.defaultBranch <name>
+2026-09-27T00:05:48.1733831Z hint:
+2026-09-27T00:05:48.1735160Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-27T00:05:48.1736915Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-27T00:05:48.1738211Z hint:
+2026-09-27T00:05:48.1739385Z hint: 	git branch -m <name>
+2026-09-27T00:05:48.1740399Z hint:
+2026-09-27T00:05:48.1741125Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-27T00:05:48.1742245Z Initialized empty Git repository in /home/runner/work/starmap/starmap/.git/
+2026-09-27T00:05:48.1744199Z [command]/usr/bin/git remote add origin https://github.com/agentstation/starmap
+2026-09-27T00:05:48.1781717Z ##[endgroup]
+2026-09-27T00:05:48.1783096Z ##[group]Disabling automatic garbage collection
+2026-09-27T00:05:48.1785450Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-27T00:05:48.1813224Z ##[endgroup]
+2026-09-27T00:05:48.1814157Z ##[group]Setting up auth
+2026-09-27T00:05:48.1815235Z Removing SSH command configuration
+2026-09-27T00:05:48.1819997Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T00:05:48.1849157Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T00:05:48.2166350Z Removing HTTP extra header
+2026-09-27T00:05:48.2171132Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T00:05:48.2203730Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T00:05:48.2387734Z Removing includeIf entries pointing to credentials config files
+2026-09-27T00:05:48.2393321Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T00:05:48.2429138Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T00:05:48.2608143Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-37b770bd-ec58-4335-bf36-0217336f3340.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-27T00:05:48.2642230Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starmap/starmap/.git.path /home/runner/work/_temp/git-credentials-37b770bd-ec58-4335-bf36-0217336f3340.config
+2026-09-27T00:05:48.2668371Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starmap/starmap/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-37b770bd-ec58-4335-bf36-0217336f3340.config
+2026-09-27T00:05:48.2698516Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-37b770bd-ec58-4335-bf36-0217336f3340.config
+2026-09-27T00:05:48.2725416Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-37b770bd-ec58-4335-bf36-0217336f3340.config
+2026-09-27T00:05:48.2749718Z ##[endgroup]
+2026-09-27T00:05:48.2751463Z ##[group]Fetching the repository
+2026-09-27T00:05:48.2758124Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=2 origin +d1b616c4308d8c9d3fd67f082fdf4ced0af9c77b:refs/remotes/pull/185/merge
+2026-09-27T00:05:53.7886335Z From https://github.com/agentstation/starmap
+2026-09-27T00:05:53.7889705Z  * [new ref]         d1b616c4308d8c9d3fd67f082fdf4ced0af9c77b -> pull/185/merge
+2026-09-27T00:05:53.7894092Z ##[endgroup]
+2026-09-27T00:05:53.7895375Z ##[group]Determining the checkout info
+2026-09-27T00:05:53.7896830Z ##[endgroup]
+2026-09-27T00:05:53.7897889Z [command]/usr/bin/git sparse-checkout disable
+2026-09-27T00:05:53.7936585Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-27T00:05:53.7965446Z ##[group]Checking out the ref
+2026-09-27T00:05:53.7969154Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/185/merge
+2026-09-27T00:05:54.4021407Z Note: switching to 'refs/remotes/pull/185/merge'.
+2026-09-27T00:05:54.4022181Z 
+2026-09-27T00:05:54.4022619Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-27T00:05:54.4023629Z changes and commit them, and you can discard any commits you make in this
+2026-09-27T00:05:54.4024609Z state without impacting any branches by switching back to a branch.
+2026-09-27T00:05:54.4025189Z 
+2026-09-27T00:05:54.4025592Z If you want to create a new branch to retain commits you create, you may
+2026-09-27T00:05:54.4026465Z do so (now or later) by using -c with the switch command. Example:
+2026-09-27T00:05:54.4026978Z 
+2026-09-27T00:05:54.4027202Z   git switch -c <new-branch-name>
+2026-09-27T00:05:54.4027574Z 
+2026-09-27T00:05:54.4027810Z Or undo this operation with:
+2026-09-27T00:05:54.4028147Z 
+2026-09-27T00:05:54.4028351Z   git switch -
+2026-09-27T00:05:54.4028624Z 
+2026-09-27T00:05:54.4029050Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-27T00:05:54.4029680Z 
+2026-09-27T00:05:54.4030469Z HEAD is now at d1b616c Merge dff93d12ec9310a024d1f31a965e3b1c7434ecdb into 8122081e0494648fb1e356647053dd870a05fb1c
+2026-09-27T00:05:54.4054714Z ##[endgroup]
+2026-09-27T00:05:54.4097767Z [command]/usr/bin/git log -1 --format=%H
+2026-09-27T00:05:54.4133381Z d1b616c4308d8c9d3fd67f082fdf4ced0af9c77b
+2026-09-27T00:05:54.4134747Z ##[group]Removing auth
+2026-09-27T00:05:54.4135034Z Removing SSH command configuration
+2026-09-27T00:05:54.4141028Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T00:05:54.4164899Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T00:05:54.4342237Z Removing HTTP extra header
+2026-09-27T00:05:54.4342822Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T00:05:54.4370991Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T00:05:54.4548472Z Removing includeIf entries pointing to credentials config files
+2026-09-27T00:05:54.4552706Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T00:05:54.4579409Z includeif.gitdir:/home/runner/work/starmap/starmap/.git.path
+2026-09-27T00:05:54.4580046Z includeif.gitdir:/home/runner/work/starmap/starmap/.git/worktrees/*.path
+2026-09-27T00:05:54.4580823Z includeif.gitdir:/github/workspace/.git.path
+2026-09-27T00:05:54.4581431Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-27T00:05:54.4586311Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starmap/starmap/.git.path
+2026-09-27T00:05:54.4606038Z /home/runner/work/_temp/git-credentials-37b770bd-ec58-4335-bf36-0217336f3340.config
+2026-09-27T00:05:54.4614264Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starmap/starmap/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-37b770bd\-ec58\-4335\-bf36\-0217336f3340\.config
+2026-09-27T00:05:54.4641999Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starmap/starmap/.git/worktrees/*.path
+2026-09-27T00:05:54.4659748Z /home/runner/work/_temp/git-credentials-37b770bd-ec58-4335-bf36-0217336f3340.config
+2026-09-27T00:05:54.4701421Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starmap/starmap/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-37b770bd\-ec58\-4335\-bf36\-0217336f3340\.config
+2026-09-27T00:05:54.4730098Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-27T00:05:54.4751063Z /github/runner_temp/git-credentials-37b770bd-ec58-4335-bf36-0217336f3340.config
+2026-09-27T00:05:54.4764706Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-37b770bd\-ec58\-4335\-bf36\-0217336f3340\.config
+2026-09-27T00:05:54.4787061Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-27T00:05:54.4808051Z /github/runner_temp/git-credentials-37b770bd-ec58-4335-bf36-0217336f3340.config
+2026-09-27T00:05:54.4820546Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-37b770bd\-ec58\-4335\-bf36\-0217336f3340\.config
+2026-09-27T00:05:54.4846693Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T00:05:54.5025935Z Removing credentials config '/home/runner/work/_temp/git-credentials-37b770bd-ec58-4335-bf36-0217336f3340.config'
+2026-09-27T00:05:54.5034600Z ##[endgroup]
+2026-09-27T00:05:54.5255131Z ##[group]Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+2026-09-27T00:05:54.5255531Z with:
+2026-09-27T00:05:54.5255736Z   go-version: 1.27.1
+2026-09-27T00:05:54.5255951Z   cache: true
+2026-09-27T00:05:54.5256168Z   check-latest: false
+2026-09-27T00:05:54.5258865Z   token: ***
+2026-09-27T00:05:54.5259066Z env:
+2026-09-27T00:05:54.5259261Z   GOTOOLCHAIN: go1.27.1
+2026-09-27T00:05:54.5259484Z ##[endgroup]
+2026-09-27T00:05:54.6348125Z Setup go version spec 1.27.1
+2026-09-27T00:05:54.6356011Z Attempting to download 1.27.1...
+2026-09-27T00:05:55.5207800Z matching 1.27.1...
+2026-09-27T00:05:55.5252889Z Acquiring 1.27.1 from https://github.com/actions/go-versions/releases/download/1.27.1-33583469715/go-1.27.1-linux-x64.tar.gz
+2026-09-27T00:05:56.1136717Z Extracting Go...
+2026-09-27T00:05:56.1239053Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/5bed1616-c9cd-4227-a45a-955a183f86df -f /home/runner/work/_temp/97a789f9-7c55-4e65-881e-4ea9426cc52c
+2026-09-27T00:05:57.6490448Z Successfully extracted go to /home/runner/work/_temp/5bed1616-c9cd-4227-a45a-955a183f86df
+2026-09-27T00:05:57.6491219Z Adding to the cache ...
+2026-09-27T00:06:01.7443207Z Successfully cached go to /opt/hostedtoolcache/go/1.27.1/x64
+2026-09-27T00:06:01.7444988Z Added go to the path
+2026-09-27T00:06:01.7446835Z Successfully set up Go version 1.27.1
+2026-09-27T00:06:01.7630117Z [command]/opt/hostedtoolcache/go/1.27.1/x64/bin/go env GOMODCACHE
+2026-09-27T00:06:01.7654036Z [command]/opt/hostedtoolcache/go/1.27.1/x64/bin/go env GOCACHE
+2026-09-27T00:06:01.7680797Z /home/runner/go/pkg/mod
+2026-09-27T00:06:01.7698482Z /home/runner/.cache/go-build
+2026-09-27T00:06:01.9702566Z Cache hit for: setup-go-Linux-x64-ubuntu24-go-1.27.1-7b155624c2d1406e24ffbc7ab749060c0f03082dbddbb9a363c6dbfe4b3d9db6
+2026-09-27T00:06:03.1919389Z Received 37748736 of 314236334 (12.0%), 36.0 MBs/sec
+2026-09-27T00:06:04.1951709Z Received 205520896 of 314236334 (65.4%), 97.9 MBs/sec
+2026-09-27T00:06:04.7455494Z Received 314236334 of 314236334 (100.0%), 117.3 MBs/sec
+2026-09-27T00:06:04.7456330Z Cache Size: ~300 MB (314236334 B)
+2026-09-27T00:06:04.7489644Z [command]/usr/bin/tar -xf /home/runner/work/_temp/30930ba9-83a1-4d33-a6b1-fc8a86d6dfa2/cache.tzst -P -C /home/runner/work/starmap/starmap --use-compress-program unzstd
+2026-09-27T00:06:06.6527854Z Cache restored successfully
+2026-09-27T00:06:06.7435627Z Cache restored from key: setup-go-Linux-x64-ubuntu24-go-1.27.1-7b155624c2d1406e24ffbc7ab749060c0f03082dbddbb9a363c6dbfe4b3d9db6
+2026-09-27T00:06:06.7462272Z go version go1.27.1 linux/amd64
+2026-09-27T00:06:06.7462485Z 
+2026-09-27T00:06:06.7462813Z ##[group]go env
+2026-09-27T00:06:06.8976831Z AR='ar'
+2026-09-27T00:06:06.8977309Z CC='gcc'
+2026-09-27T00:06:06.8977723Z CGO_CFLAGS='-O2 -g'
+2026-09-27T00:06:06.8978231Z CGO_CPPFLAGS=''
+2026-09-27T00:06:06.8978615Z CGO_CXXFLAGS='-O2 -g'
+2026-09-27T00:06:06.8979059Z CGO_ENABLED='1'
+2026-09-27T00:06:06.8979449Z CGO_FFLAGS='-O2 -g'
+2026-09-27T00:06:06.8979884Z CGO_LDFLAGS='-O2 -g'
+2026-09-27T00:06:06.8980342Z CXX='g++'
+2026-09-27T00:06:06.8980647Z GCCGO='gccgo'
+2026-09-27T00:06:06.8980956Z GO111MODULE=''
+2026-09-27T00:06:06.8981250Z GOAMD64='v1'
+2026-09-27T00:06:06.8981555Z GOARCH='amd64'
+2026-09-27T00:06:06.8981860Z GOAUTH='netrc'
+2026-09-27T00:06:06.8982208Z GOBIN='/home/runner/go/bin'
+2026-09-27T00:06:06.8982613Z GOCACHE='/home/runner/.cache/go-build'
+2026-09-27T00:06:06.8983040Z GOCACHEPROG=''
+2026-09-27T00:06:06.8983355Z GODEBUG=''
+2026-09-27T00:06:06.8983675Z GOENV='/home/runner/.config/go/env'
+2026-09-27T00:06:06.8984089Z GOEXE=''
+2026-09-27T00:06:06.8984390Z GOEXPERIMENT=''
+2026-09-27T00:06:06.8984712Z GOFIPS140='off'
+2026-09-27T00:06:06.8985034Z GOFLAGS=''
+2026-09-27T00:06:06.8986085Z GOGCCFLAGS='-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=/tmp/go-build2377128897=/tmp/go-build -gno-record-gcc-switches'
+2026-09-27T00:06:06.8987063Z GOHOSTARCH='amd64'
+2026-09-27T00:06:06.8987383Z GOHOSTOS='linux'
+2026-09-27T00:06:06.8987998Z GOINSECURE=''
+2026-09-27T00:06:06.8988542Z GOMOD='/home/runner/work/starmap/starmap/go.mod'
+2026-09-27T00:06:06.8989017Z GOMODCACHE='/home/runner/go/pkg/mod'
+2026-09-27T00:06:06.8989557Z GONOPROXY=''
+2026-09-27T00:06:06.8989887Z GONOSUMDB=''
+2026-09-27T00:06:06.8990178Z GOOS='linux'
+2026-09-27T00:06:06.8990656Z GOPACKAGESDRIVER=''
+2026-09-27T00:06:06.8991002Z GOPATH='/home/runner/go'
+2026-09-27T00:06:06.8991329Z GOPRIVATE=''
+2026-09-27T00:06:06.8991752Z GOPROXY='https://proxy.golang.org,direct'
+2026-09-27T00:06:06.8992310Z GOROOT='/opt/hostedtoolcache/go/1.27.1/x64'
+2026-09-27T00:06:06.8992762Z GOSUMDB='sum.golang.org'
+2026-09-27T00:06:06.8993117Z GOTELEMETRY='local'
+2026-09-27T00:06:06.8993522Z GOTELEMETRYDIR='/home/runner/.config/go/telemetry'
+2026-09-27T00:06:06.8993999Z GOTMPDIR=''
+2026-09-27T00:06:06.8994297Z GOTOOLCHAIN='local'
+2026-09-27T00:06:06.8994799Z GOTOOLDIR='/opt/hostedtoolcache/go/1.27.1/x64/pkg/tool/linux_amd64'
+2026-09-27T00:06:06.8995349Z GOVCS=''
+2026-09-27T00:06:06.8995668Z GOVERSION='go1.27.1'
+2026-09-27T00:06:06.8995984Z GOWORK=''
+2026-09-27T00:06:06.8996305Z PKG_CONFIG='pkg-config'
+2026-09-27T00:06:06.8996535Z 
+2026-09-27T00:06:06.8996996Z ##[endgroup]
+2026-09-27T00:06:06.9141597Z ##[group]Run go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2
+2026-09-27T00:06:06.9142389Z [36;1mgo install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2[0m
+2026-09-27T00:06:06.9142965Z [36;1mgo install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0[0m
+2026-09-27T00:06:07.8430974Z shell: /usr/bin/bash -e {0}
+2026-09-27T00:06:07.8431482Z env:
+2026-09-27T00:06:07.8431863Z   GOTOOLCHAIN: local
+2026-09-27T00:06:07.8432271Z ##[endgroup]
+2026-09-27T00:06:07.9561809Z go: downloading github.com/golangci/golangci-lint/v2 v2.13.2
+2026-09-27T00:06:08.4632350Z go: downloading charm.land/lipgloss/v2 v2.0.6
+2026-09-27T00:06:08.4641813Z go: downloading github.com/fatih/color v1.19.0
+2026-09-27T00:06:08.4656354Z go: downloading github.com/gofrs/flock v0.13.0
+2026-09-27T00:06:08.4674531Z go: downloading github.com/ldez/grignotin v0.10.1
+2026-09-27T00:06:08.5351124Z go: downloading github.com/pelletier/go-toml/v2 v2.4.3
+2026-09-27T00:06:08.5485174Z go: downloading github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
+2026-09-27T00:06:08.5552687Z go: downloading github.com/spf13/cobra v1.10.2
+2026-09-27T00:06:08.5587331Z go: downloading github.com/spf13/pflag v1.0.10
+2026-09-27T00:06:08.6311825Z go: downloading github.com/spf13/viper v1.12.0
+2026-09-27T00:06:08.6328682Z go: downloading github.com/pelletier/go-toml v1.9.5
+2026-09-27T00:06:08.7160765Z go: downloading golang.org/x/tools v0.49.0
+2026-09-27T00:06:08.7196457Z go: downloading github.com/hashicorp/go-version v1.9.0
+2026-09-27T00:06:08.7231818Z go: downloading github.com/mitchellh/go-homedir v1.1.0
+2026-09-27T00:06:08.7601158Z go: downloading github.com/alecthomas/chroma/v2 v2.27.0
+2026-09-27T00:06:08.7970550Z go: downloading github.com/rogpeppe/go-internal v1.16.0
+2026-09-27T00:06:08.8973550Z go: downloading github.com/golangci/plugin-module-register v0.1.2
+2026-09-27T00:06:08.9941474Z go: downloading github.com/sirupsen/logrus v1.10.1
+2026-09-27T00:06:09.0259484Z go: downloading github.com/stretchr/testify v1.12.1
+2026-09-27T00:06:09.0733499Z go: downloading github.com/go-xmlfmt/xmlfmt v1.1.3
+2026-09-27T00:06:09.0933465Z go: downloading github.com/golangci/revgrep v0.8.0
+2026-09-27T00:06:09.0939281Z go: downloading github.com/mattn/go-isatty v0.0.20
+2026-09-27T00:06:09.1229714Z go: downloading github.com/charmbracelet/colorprofile v0.4.3
+2026-09-27T00:06:09.1390124Z go: downloading github.com/charmbracelet/ultraviolet v0.0.0-20260811164956-006e29f97886
+2026-09-27T00:06:09.1441304Z go: downloading github.com/charmbracelet/x/ansi v0.11.8
+2026-09-27T00:06:09.1447770Z go: downloading github.com/charmbracelet/x/term v0.2.2
+2026-09-27T00:06:09.1884959Z go: downloading github.com/clipperhouse/displaywidth v0.11.0
+2026-09-27T00:06:09.2126853Z go: downloading github.com/lucasb-eyer/go-colorful v1.4.1
+2026-09-27T00:06:09.2138430Z go: downloading github.com/rivo/uniseg v0.4.7
+2026-09-27T00:06:09.2173460Z go: downloading golang.org/x/text v0.40.0
+2026-09-27T00:06:09.3351654Z go: downloading github.com/fsnotify/fsnotify v1.9.0
+2026-09-27T00:06:09.3579667Z go: downloading github.com/spf13/afero v1.15.0
+2026-09-27T00:06:09.3932778Z go: downloading github.com/spf13/cast v1.5.0
+2026-09-27T00:06:09.4279705Z go: downloading github.com/spf13/jwalterweatherman v1.1.0
+2026-09-27T00:06:09.4824883Z go: downloading github.com/daixiang0/gci v0.13.7
+2026-09-27T00:06:09.5341061Z go: downloading github.com/golangci/gofmt v0.0.0-20260820135601-e84e05053792
+2026-09-27T00:06:09.5341929Z go: downloading mvdan.cc/gofumpt v0.11.0
+2026-09-27T00:06:09.6396372Z go: downloading github.com/golangci/golines v0.15.0
+2026-09-27T00:06:09.6959696Z go: downloading github.com/sourcegraph/go-diff v0.8.0
+2026-09-27T00:06:09.7214988Z go: downloading github.com/golangci/swaggoswag v0.0.0-20250504205917-77f2aca3143e
+2026-09-27T00:06:09.7227255Z go: downloading go.augendre.info/arangolint v0.4.0
+2026-09-27T00:06:09.7227867Z go: downloading github.com/alingse/asasalint v0.0.11
+2026-09-27T00:06:09.7547038Z go: downloading github.com/golangci/asciicheck v0.5.0
+2026-09-27T00:06:09.7936028Z go: downloading github.com/breml/bidichk v0.3.3
+2026-09-27T00:06:09.7940579Z go: downloading github.com/timakin/bodyclose v0.0.0-20260129054331-73d1f95b84b4
+2026-09-27T00:06:09.7961103Z go: downloading github.com/golangci/canonicalheader v0.0.0-20260827115959-a25c71c521f6
+2026-09-27T00:06:09.8090826Z go: downloading github.com/ClickHouse/clickhouse-go-linter v1.2.1
+2026-09-27T00:06:09.8686208Z go: downloading github.com/sivchari/containedctx v1.0.3
+2026-09-27T00:06:09.9448514Z go: downloading github.com/kkHAIKE/contextcheck v1.1.6
+2026-09-27T00:06:10.0035981Z go: downloading github.com/karamaru-alpha/copyloopvar v1.2.2
+2026-09-27T00:06:10.0037283Z go: downloading github.com/bkielbasa/cyclop v1.2.3
+2026-09-27T00:06:10.0131092Z go: downloading gitlab.com/bosi/decorder v0.4.2
+2026-09-27T00:06:10.1033810Z go: downloading github.com/OpenPeeDeeP/depguard/v2 v2.2.1
+2026-09-27T00:06:10.1050614Z go: downloading github.com/golangci/dupl v0.0.0-20260401084720-c99c5cf5c202
+2026-09-27T00:06:10.1053968Z go: downloading github.com/Abirdcfly/dupword v0.1.8
+2026-09-27T00:06:10.1063603Z go: downloading github.com/charithe/durationcheck v0.0.11
+2026-09-27T00:06:10.1647297Z go: downloading github.com/manuelarte/embeddedstructfieldcheck v0.4.0
+2026-09-27T00:06:10.1705094Z go: downloading github.com/Djarvur/go-err113 v0.1.1
+2026-09-27T00:06:10.1895564Z go: downloading github.com/kisielk/errcheck v1.20.0
+2026-09-27T00:06:10.2183478Z go: downloading github.com/breml/errchkjson v0.4.1
+2026-09-27T00:06:10.2227354Z go: downloading github.com/Antonboom/errname v1.1.2
+2026-09-27T00:06:10.2422697Z go: downloading codeberg.org/polyfloyd/go-errorlint v1.9.0
+2026-09-27T00:06:10.2491250Z go: downloading github.com/nishanths/exhaustive v0.12.0
+2026-09-27T00:06:10.2574351Z go: downloading dev.gaijin.team/go/exhaustruct/v4 v4.0.0
+2026-09-27T00:06:10.2774315Z go: downloading dev.gaijin.team/go/exhaustruct/v5 v5.0.3
+2026-09-27T00:06:10.2973761Z go: downloading github.com/ldez/exptostd v0.4.5
+2026-09-27T00:06:10.3195609Z go: downloading go.augendre.info/fatcontext v0.10.0
+2026-09-27T00:06:10.3308631Z go: downloading github.com/ashanbrown/forbidigo/v2 v2.3.1
+2026-09-27T00:06:10.3496881Z go: downloading github.com/gostaticanalysis/forcetypeassert v0.2.0
+2026-09-27T00:06:10.3657070Z go: downloading github.com/manuelarte/funcorder v0.6.0
+2026-09-27T00:06:10.3815035Z go: downloading github.com/ultraware/funlen v0.2.0
+2026-09-27T00:06:10.4024265Z go: downloading github.com/nunnatsa/ginkgolinter v0.24.0
+2026-09-27T00:06:10.4277109Z go: downloading 4d63.com/gocheckcompilerdirectives v1.4.0
+2026-09-27T00:06:10.4949329Z go: downloading 4d63.com/gochecknoglobals v0.2.2
+2026-09-27T00:06:10.4976534Z go: downloading github.com/alecthomas/go-check-sumtype v0.3.1
+2026-09-27T00:06:10.5035932Z go: downloading github.com/uudashr/gocognit v1.2.1
+2026-09-27T00:06:10.5036958Z go: downloading github.com/jgautheron/goconst v1.11.0
+2026-09-27T00:06:10.5738966Z go: downloading github.com/go-critic/go-critic v0.14.4
+2026-09-27T00:06:10.5907794Z go: downloading github.com/quasilyte/go-ruleguard/dsl v0.3.23
+2026-09-27T00:06:10.5919681Z go: downloading github.com/fzipp/gocyclo v0.6.0
+2026-09-27T00:06:10.6379694Z go: downloading github.com/quasilyte/go-ruleguard v0.4.5
+2026-09-27T00:06:10.6862485Z go: downloading github.com/godoc-lint/godoc-lint v0.11.2
+2026-09-27T00:06:10.7165581Z go: downloading github.com/tetafro/godot v1.5.6
+2026-09-27T00:06:10.7818690Z go: downloading github.com/matoous/godox v1.1.0
+2026-09-27T00:06:10.8215119Z go: downloading github.com/denis-tingaikin/go-header v0.5.0
+2026-09-27T00:06:10.8219161Z go: downloading github.com/ldez/gomoddirectives v0.9.0
+2026-09-27T00:06:10.8220021Z go: downloading github.com/Masterminds/semver/v3 v3.5.0
+2026-09-27T00:06:10.8281556Z go: downloading github.com/ryancurrah/gomodguard v1.4.1
+2026-09-27T00:06:10.8777782Z go: downloading github.com/ryancurrah/gomodguard/v2 v2.1.3
+2026-09-27T00:06:10.8959966Z go: downloading github.com/golangci/go-printf-func-name v0.1.1
+2026-09-27T00:06:10.8969620Z go: downloading github.com/securego/gosec/v2 v2.28.0
+2026-09-27T00:06:10.9996935Z go: downloading github.com/xen0n/gosmopolitan v1.3.0
+2026-09-27T00:06:11.0003470Z go: downloading github.com/leonklingele/grouper v1.1.2
+2026-09-27T00:06:11.0003992Z go: downloading github.com/uudashr/iface v1.5.1
+2026-09-27T00:06:11.0762970Z go: downloading github.com/julz/importas v0.2.0
+2026-09-27T00:06:11.0764640Z go: downloading github.com/macabu/inamedparam v0.2.0
+2026-09-27T00:06:11.0765757Z go: downloading github.com/gordonklaus/ineffassign v0.2.0
+2026-09-27T00:06:11.0766577Z go: downloading github.com/sashamelentyev/interfacebloat v1.1.0
+2026-09-27T00:06:11.1512550Z go: downloading github.com/ckaznocha/intrange v0.3.1
+2026-09-27T00:06:11.1642528Z go: downloading github.com/AdminBenni/iota-mixing v1.0.0
+2026-09-27T00:06:11.1659308Z go: downloading github.com/butuzov/ireturn v0.4.1
+2026-09-27T00:06:11.1983466Z go: downloading github.com/timonwong/loggercheck v0.11.0
+2026-09-27T00:06:11.2305651Z go: downloading github.com/yagipy/maintidx v1.0.0
+2026-09-27T00:06:11.2444707Z go: downloading github.com/ashanbrown/makezero/v2 v2.2.1
+2026-09-27T00:06:11.2447366Z go: downloading github.com/butuzov/mirror v1.3.3
+2026-09-27T00:06:11.2633830Z go: downloading github.com/golangci/misspell v0.8.0
+2026-09-27T00:06:11.2836477Z go: downloading github.com/tommy-muehle/go-mnd/v2 v2.5.1
+2026-09-27T00:06:11.2938860Z go: downloading go-simpler.org/musttag v0.14.0
+2026-09-27T00:06:11.3203984Z go: downloading github.com/alexkohler/nakedret/v2 v2.0.6
+2026-09-27T00:06:11.3484708Z go: downloading github.com/nakabonne/nestif v0.3.1
+2026-09-27T00:06:11.3717212Z go: downloading github.com/gostaticanalysis/nilerr v0.1.2
+2026-09-27T00:06:11.3739228Z go: downloading github.com/alingse/nilnesserr v0.2.0
+2026-09-27T00:06:11.3957338Z go: downloading github.com/Antonboom/nilnil v1.1.2
+2026-09-27T00:06:11.4074299Z go: downloading github.com/ssgreg/nlreturn/v2 v2.2.1
+2026-09-27T00:06:11.4383120Z go: downloading github.com/sonatard/noctx v0.5.1
+2026-09-27T00:06:11.4411195Z go: downloading github.com/AlwxSin/noinlineerr v1.0.6
+2026-09-27T00:06:11.4533037Z go: downloading github.com/firefart/nonamedreturns v1.0.8
+2026-09-27T00:06:11.4563149Z go: downloading github.com/stbenjam/no-sprintf-host-port v0.3.1
+2026-09-27T00:06:11.4889191Z go: downloading github.com/kunwardeep/paralleltest v1.0.15
+2026-09-27T00:06:11.4924459Z go: downloading github.com/catenacyber/perfsprint v0.10.1
+2026-09-27T00:06:11.5170113Z go: downloading github.com/alexkohler/prealloc v1.1.0
+2026-09-27T00:06:11.5242112Z go: downloading github.com/nishanths/predeclared v0.2.2
+2026-09-27T00:06:11.5538650Z go: downloading github.com/yeya24/promlinter v0.3.0
+2026-09-27T00:06:11.5608251Z go: downloading github.com/ghostiam/protogetter v0.3.21
+2026-09-27T00:06:11.5776765Z go: downloading github.com/curioswitch/go-reassign v0.3.0
+2026-09-27T00:06:11.5845941Z go: downloading github.com/raeperd/recvcheck v0.3.0
+2026-09-27T00:06:11.6433155Z go: downloading github.com/BurntSushi/toml v1.6.0
+2026-09-27T00:06:11.6484601Z go: downloading github.com/mgechev/revive v1.15.0
+2026-09-27T00:06:11.7724391Z go: downloading github.com/golangci/rowserrcheck v0.0.0-20260419091836-c5f79b8a11ba
+2026-09-27T00:06:11.7873301Z go: downloading go-simpler.org/sloglint v0.12.0
+2026-09-27T00:06:11.7874028Z go: downloading github.com/jjti/go-spancheck v0.6.5
+2026-09-27T00:06:11.7877477Z go: downloading github.com/ryanrolds/sqlclosecheck v0.6.0
+2026-09-27T00:06:11.8337555Z go: downloading honnef.co/go/tools v0.8.1
+2026-09-27T00:06:12.0385896Z go: downloading github.com/4meepo/tagalign v1.4.3
+2026-09-27T00:06:12.0386741Z go: downloading github.com/ldez/tagliatelle v0.7.2
+2026-09-27T00:06:12.0388033Z go: downloading github.com/maratori/testableexamples v1.0.1
+2026-09-27T00:06:12.0389019Z go: downloading github.com/Antonboom/testifylint v1.6.4
+2026-09-27T00:06:12.1017283Z go: downloading github.com/maratori/testpackage v1.1.2
+2026-09-27T00:06:12.1019359Z go: downloading github.com/kulti/thelper v0.7.1
+2026-09-27T00:06:12.1038096Z go: downloading github.com/moricho/tparallel v0.3.2
+2026-09-27T00:06:12.1099825Z go: downloading github.com/golangci/unconvert v0.0.0-20250410112200-a129a6e6413e
+2026-09-27T00:06:12.1507866Z go: downloading mvdan.cc/unparam v0.0.0-20260823230713-2fa3d841b0c8
+2026-09-27T00:06:12.1619592Z go: downloading github.com/MirrexOne/unqueryvet v1.5.4
+2026-09-27T00:06:12.1665649Z go: downloading github.com/sashamelentyev/usestdlibvars v1.29.0
+2026-09-27T00:06:12.2092090Z go: downloading github.com/ldez/usetesting v0.5.0
+2026-09-27T00:06:12.2285920Z go: downloading github.com/blizzy78/varnamelen v0.8.0
+2026-09-27T00:06:12.2691471Z go: downloading github.com/sanposhiho/wastedassign/v2 v2.1.0
+2026-09-27T00:06:12.2830011Z go: downloading github.com/ultraware/whitespace v0.2.0
+2026-09-27T00:06:12.3168009Z go: downloading github.com/tomarrell/wrapcheck/v2 v2.12.0
+2026-09-27T00:06:12.3344360Z go: downloading github.com/bombsimon/wsl/v4 v4.7.0
+2026-09-27T00:06:12.3796985Z go: downloading github.com/bombsimon/wsl/v5 v5.9.0
+2026-09-27T00:06:12.3884116Z go: downloading github.com/ykadowak/zerologlint v0.1.5
+2026-09-27T00:06:12.4407976Z go: downloading github.com/stretchr/objx v0.5.3
+2026-09-27T00:06:12.4408771Z go: downloading github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e
+2026-09-27T00:06:12.5803931Z go: downloading github.com/clipperhouse/uax29/v2 v2.7.0
+2026-09-27T00:06:12.5821953Z go: downloading github.com/mattn/go-runewidth v0.0.24
+2026-09-27T00:06:12.6919113Z go: downloading github.com/charmbracelet/x/termios v0.1.1
+2026-09-27T00:06:12.6920040Z go: downloading github.com/charmbracelet/x/windows v0.2.2
+2026-09-27T00:06:12.7871183Z go: downloading github.com/muesli/cancelreader v0.2.2
+2026-09-27T00:06:12.7938458Z go: downloading github.com/subosito/gotenv v1.4.1
+2026-09-27T00:06:12.8826247Z go: downloading github.com/hashicorp/hcl v1.0.0
+2026-09-27T00:06:12.9446641Z go: downloading gopkg.in/ini.v1 v1.67.0
+2026-09-27T00:06:12.9447490Z go: downloading github.com/magiconair/properties v1.8.6
+2026-09-27T00:06:12.9971625Z go: downloading gopkg.in/yaml.v3 v3.0.1
+2026-09-27T00:06:13.0010993Z go: downloading go.uber.org/zap v1.27.0
+2026-09-27T00:06:13.0399145Z go: downloading github.com/hexops/gotextdiff v1.0.3
+2026-09-27T00:06:13.1827320Z go: downloading github.com/dave/dst v0.27.3
+2026-09-27T00:06:13.1830791Z go: downloading github.com/gostaticanalysis/analysisutil v0.7.1
+2026-09-27T00:06:13.1842494Z go: downloading github.com/go-toolsmith/astcast v1.1.0
+2026-09-27T00:06:13.2947365Z go: downloading github.com/gobwas/glob v0.2.3
+2026-09-27T00:06:13.2951618Z go: downloading dev.gaijin.team/go/golib v0.8.1
+2026-09-27T00:06:13.3461642Z go: downloading github.com/go-toolsmith/astcopy v1.1.0
+2026-09-27T00:06:13.4384909Z go: downloading github.com/go-toolsmith/astequal v1.2.0
+2026-09-27T00:06:13.4398910Z go: downloading github.com/go-toolsmith/astfmt v1.1.0
+2026-09-27T00:06:13.4400009Z go: downloading github.com/go-toolsmith/astp v1.1.0
+2026-09-27T00:06:13.4852974Z go: downloading github.com/go-toolsmith/strparse v1.1.0
+2026-09-27T00:06:13.6461957Z go: downloading github.com/go-toolsmith/typep v1.1.0
+2026-09-27T00:06:13.6463176Z go: downloading github.com/quasilyte/regex/syntax v0.0.0-20210819130434-b3f0c404a727
+2026-09-27T00:06:13.6505159Z go: downloading github.com/ccojocar/zxcvbn-go v1.0.4
+2026-09-27T00:06:13.6914242Z go: downloading github.com/gostaticanalysis/comment v1.5.0
+2026-09-27T00:06:13.7367007Z go: downloading github.com/prometheus/client_golang v1.12.1
+2026-09-27T00:06:13.8321666Z go: downloading github.com/prometheus/client_model v0.2.0
+2026-09-27T00:06:13.8322874Z go: downloading github.com/fatih/structtag v1.2.0
+2026-09-27T00:06:13.8325631Z go: downloading github.com/ettle/strcase v0.2.0
+2026-09-27T00:06:13.8345757Z go: downloading github.com/hashicorp/go-immutable-radix/v2 v2.1.0
+2026-09-27T00:06:13.9879799Z go: downloading github.com/alfatraining/structtag v1.0.0
+2026-09-27T00:06:13.9903351Z go: downloading github.com/dlclark/regexp2/v2 v2.2.1
+2026-09-27T00:06:14.0018890Z go: downloading go.uber.org/multierr v1.10.0
+2026-09-27T00:06:14.0843375Z go: downloading github.com/ldez/structtags v0.6.1
+2026-09-27T00:06:14.1327609Z go: downloading golang.org/x/exp/typeparams v0.0.0-20260811152304-ee035b5b010f
+2026-09-27T00:06:14.3065019Z go: downloading github.com/quasilyte/gogrep v0.5.0
+2026-09-27T00:06:14.3176439Z go: downloading github.com/dlclark/regexp2 v1.12.0
+2026-09-27T00:06:14.3852544Z go: downloading golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b
+2026-09-27T00:06:14.4931638Z go: downloading github.com/quasilyte/stdinfo v0.0.0-20220114132959-f7386bf02567
+2026-09-27T00:06:14.4932455Z go: downloading codeberg.org/chavacava/garif v0.2.0
+2026-09-27T00:06:14.4932828Z go: downloading github.com/beorn7/perks v1.0.1
+2026-09-27T00:06:14.6515531Z go: downloading github.com/golang/protobuf v1.5.3
+2026-09-27T00:06:14.6520741Z go: downloading github.com/prometheus/common v0.32.1
+2026-09-27T00:06:14.6642210Z go: downloading github.com/prometheus/procfs v0.7.3
+2026-09-27T00:06:14.7285556Z go: downloading github.com/hashicorp/golang-lru/v2 v2.0.7
+2026-09-27T00:06:14.7400978Z go: downloading github.com/matttproud/golang_protobuf_extensions v1.0.1
+2026-09-27T00:06:51.9469130Z go: downloading github.com/princjef/gomarkdoc v1.1.0
+2026-09-27T00:06:52.4002396Z go: downloading github.com/princjef/termdiff v0.1.0
+2026-09-27T00:06:52.4003552Z go: downloading github.com/spf13/viper v1.7.1
+2026-09-27T00:06:52.4004528Z go: downloading github.com/sergi/go-diff v1.3.1
+2026-09-27T00:06:52.4005372Z go: downloading github.com/spf13/cobra v1.1.3
+2026-09-27T00:06:52.4977121Z go: downloading github.com/sirupsen/logrus v1.8.1
+2026-09-27T00:06:52.5039084Z go: downloading github.com/x-cray/logrus-prefixed-formatter v0.5.2
+2026-09-27T00:06:52.5609543Z go: downloading github.com/go-git/go-git/v5 v5.3.0
+2026-09-27T00:06:52.5848521Z go: downloading github.com/fsnotify/fsnotify v1.4.9
+2026-09-27T00:06:52.6356993Z go: downloading github.com/magiconair/properties v1.8.5
+2026-09-27T00:06:52.6744106Z go: downloading github.com/mitchellh/mapstructure v1.4.1
+2026-09-27T00:06:52.7225102Z go: downloading github.com/pelletier/go-toml v1.9.1
+2026-09-27T00:06:52.7339421Z go: downloading github.com/spf13/afero v1.6.0
+2026-09-27T00:06:52.7988475Z go: downloading github.com/spf13/cast v1.3.1
+2026-09-27T00:06:52.8347192Z go: downloading github.com/spf13/pflag v1.0.5
+2026-09-27T00:06:52.8995623Z go: downloading github.com/subosito/gotenv v1.2.0
+2026-09-27T00:06:52.9484834Z go: downloading gopkg.in/ini.v1 v1.62.0
+2026-09-27T00:06:53.0007916Z go: downloading gopkg.in/yaml.v2 v2.4.0
+2026-09-27T00:06:53.0077371Z go: downloading github.com/russross/blackfriday/v2 v2.1.0
+2026-09-27T00:06:53.0129282Z go: downloading mvdan.cc/xurls/v2 v2.2.0
+2026-09-27T00:06:53.0613495Z go: downloading golang.org/x/sys v0.0.0-20210514084401-e8d321eab015
+2026-09-27T00:06:53.0729450Z go: downloading github.com/logrusorgru/aurora/v4 v4.0.0
+2026-09-27T00:06:53.0772866Z go: downloading github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d
+2026-09-27T00:06:53.1329741Z go: downloading golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
+2026-09-27T00:06:53.1377581Z go: downloading golang.org/x/text v0.3.6
+2026-09-27T00:06:53.3717808Z go: downloading github.com/go-git/go-billy/v5 v5.3.1
+2026-09-27T00:06:53.4262975Z go: downloading github.com/imdario/mergo v0.3.12
+2026-09-27T00:06:53.4280737Z go: downloading github.com/mattn/go-colorable v0.1.8
+2026-09-27T00:06:53.4839429Z go: downloading golang.org/x/term v0.0.0-20210503060354-a79de5458b56
+2026-09-27T00:06:53.4927879Z go: downloading github.com/emirpasic/gods v1.12.0
+2026-09-27T00:06:53.5609321Z go: downloading github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99
+2026-09-27T00:06:53.5930540Z go: downloading github.com/mattn/go-isatty v0.0.12
+2026-09-27T00:06:53.5979328Z go: downloading github.com/go-git/gcfg v1.5.0
+2026-09-27T00:06:53.6640458Z go: downloading github.com/kevinburke/ssh_config v1.1.0
+2026-09-27T00:06:53.6641823Z go: downloading github.com/xanzy/ssh-agent v0.3.0
+2026-09-27T00:06:53.7205655Z go: downloading golang.org/x/net v0.0.0-20210520170846-37e1c6afe023
+2026-09-27T00:06:53.7340590Z go: downloading gopkg.in/warnings.v0 v0.1.2
+2026-09-27T00:06:58.9507625Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-09-27T00:06:58.9508016Z with:
+2026-09-27T00:06:58.9508238Z   repository: agentstation/skills
+2026-09-27T00:06:58.9508524Z   ref: dc9948f59089426c7dd077e41469104ec788cf7f
+2026-09-27T00:06:58.9508823Z   path: .ci/agentstation-skills
+2026-09-27T00:06:58.9509091Z   persist-credentials: false
+2026-09-27T00:06:58.9512129Z   token: ***
+2026-09-27T00:06:58.9512336Z   ssh-strict: true
+2026-09-27T00:06:58.9512558Z   ssh-user: git
+2026-09-27T00:06:58.9512763Z   clean: true
+2026-09-27T00:06:58.9512986Z   sparse-checkout-cone-mode: true
+2026-09-27T00:06:58.9513241Z   fetch-depth: 1
+2026-09-27T00:06:58.9513456Z   fetch-tags: false
+2026-09-27T00:06:58.9513680Z   show-progress: true
+2026-09-27T00:06:58.9513892Z   lfs: false
+2026-09-27T00:06:58.9514088Z   submodules: false
+2026-09-27T00:06:58.9514304Z   set-safe-directory: true
+2026-09-27T00:06:58.9514559Z   allow-unsafe-pr-checkout: false
+2026-09-27T00:06:58.9514841Z env:
+2026-09-27T00:06:58.9515030Z   GOTOOLCHAIN: local
+2026-09-27T00:06:58.9515386Z ##[endgroup]
+2026-09-27T00:06:59.0295345Z Syncing repository: agentstation/skills
+2026-09-27T00:06:59.0296978Z ##[group]Getting Git version info
+2026-09-27T00:06:59.0298011Z Working directory is '/home/runner/work/starmap/starmap/.ci/agentstation-skills'
+2026-09-27T00:06:59.0347333Z [command]/usr/bin/git version
+2026-09-27T00:06:59.0392708Z git version 2.55.0
+2026-09-27T00:06:59.0416222Z ##[endgroup]
+2026-09-27T00:06:59.0427192Z Temporarily overriding HOME='/home/runner/work/_temp/131cd933-a442-46db-837a-fa87b2fb5971' before making global git config changes
+2026-09-27T00:06:59.0428311Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T00:06:59.0433267Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starmap/starmap/.ci/agentstation-skills
+2026-09-27T00:06:59.0463104Z ##[group]Determining repository object format
+2026-09-27T00:06:59.0464975Z ##[endgroup]
+2026-09-27T00:06:59.0465582Z ##[group]Initializing the repository
+2026-09-27T00:06:59.0470765Z [command]/usr/bin/git init /home/runner/work/starmap/starmap/.ci/agentstation-skills
+2026-09-27T00:06:59.0508134Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-27T00:06:59.0513084Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-27T00:06:59.0518646Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-27T00:06:59.0519488Z hint: call:
+2026-09-27T00:06:59.0519893Z hint:
+2026-09-27T00:06:59.0520541Z hint: 	git config --global init.defaultBranch <name>
+2026-09-27T00:06:59.0521110Z hint:
+2026-09-27T00:06:59.0521644Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-27T00:06:59.0522547Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-27T00:06:59.0523231Z hint:
+2026-09-27T00:06:59.0523714Z hint: 	git branch -m <name>
+2026-09-27T00:06:59.0524229Z hint:
+2026-09-27T00:06:59.0524833Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-27T00:06:59.0525978Z Initialized empty Git repository in /home/runner/work/starmap/starmap/.ci/agentstation-skills/.git/
+2026-09-27T00:06:59.0527690Z [command]/usr/bin/git remote add origin https://github.com/agentstation/skills
+2026-09-27T00:06:59.0556177Z ##[endgroup]
+2026-09-27T00:06:59.0556939Z ##[group]Disabling automatic garbage collection
+2026-09-27T00:06:59.0560142Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-27T00:06:59.0587993Z ##[endgroup]
+2026-09-27T00:06:59.0588651Z ##[group]Setting up auth
+2026-09-27T00:06:59.0589168Z Removing SSH command configuration
+2026-09-27T00:06:59.0594434Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T00:06:59.0622229Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T00:06:59.0810350Z Removing HTTP extra header
+2026-09-27T00:06:59.0825092Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T00:06:59.0850549Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T00:06:59.1041516Z Removing includeIf entries pointing to credentials config files
+2026-09-27T00:06:59.1047180Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T00:06:59.1078968Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T00:06:59.1285796Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-c164a6c9-6670-4329-a9a8-95b26dca1447.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-27T00:06:59.1321571Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git.path /home/runner/work/_temp/git-credentials-c164a6c9-6670-4329-a9a8-95b26dca1447.config
+2026-09-27T00:06:59.1353306Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-c164a6c9-6670-4329-a9a8-95b26dca1447.config
+2026-09-27T00:06:59.1380376Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.ci/agentstation-skills/.git.path /github/runner_temp/git-credentials-c164a6c9-6670-4329-a9a8-95b26dca1447.config
+2026-09-27T00:06:59.1407562Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.ci/agentstation-skills/.git/worktrees/*.path /github/runner_temp/git-credentials-c164a6c9-6670-4329-a9a8-95b26dca1447.config
+2026-09-27T00:06:59.1442506Z ##[endgroup]
+2026-09-27T00:06:59.1443107Z ##[group]Fetching the repository
+2026-09-27T00:06:59.1444286Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin dc9948f59089426c7dd077e41469104ec788cf7f
+2026-09-27T00:06:59.8685393Z From https://github.com/agentstation/skills
+2026-09-27T00:06:59.8686116Z  * branch            dc9948f59089426c7dd077e41469104ec788cf7f -> FETCH_HEAD
+2026-09-27T00:06:59.8694124Z [command]/usr/bin/git rev-parse --verify --quiet dc9948f59089426c7dd077e41469104ec788cf7f^{object}
+2026-09-27T00:06:59.8720632Z dc9948f59089426c7dd077e41469104ec788cf7f
+2026-09-27T00:06:59.8729333Z ##[endgroup]
+2026-09-27T00:06:59.8729723Z ##[group]Determining the checkout info
+2026-09-27T00:06:59.8730131Z ##[endgroup]
+2026-09-27T00:06:59.8731845Z [command]/usr/bin/git sparse-checkout disable
+2026-09-27T00:06:59.8769219Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-27T00:06:59.8797577Z ##[group]Checking out the ref
+2026-09-27T00:06:59.8803873Z [command]/usr/bin/git checkout --progress --force dc9948f59089426c7dd077e41469104ec788cf7f
+2026-09-27T00:06:59.8908703Z Note: switching to 'dc9948f59089426c7dd077e41469104ec788cf7f'.
+2026-09-27T00:06:59.8909199Z 
+2026-09-27T00:06:59.8909579Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-27T00:06:59.8910488Z changes and commit them, and you can discard any commits you make in this
+2026-09-27T00:06:59.8911024Z state without impacting any branches by switching back to a branch.
+2026-09-27T00:06:59.8911287Z 
+2026-09-27T00:06:59.8911510Z If you want to create a new branch to retain commits you create, you may
+2026-09-27T00:06:59.8911951Z do so (now or later) by using -c with the switch command. Example:
+2026-09-27T00:06:59.8912216Z 
+2026-09-27T00:06:59.8912346Z   git switch -c <new-branch-name>
+2026-09-27T00:06:59.8912523Z 
+2026-09-27T00:06:59.8912639Z Or undo this operation with:
+2026-09-27T00:06:59.8912798Z 
+2026-09-27T00:06:59.8912941Z   git switch -
+2026-09-27T00:06:59.8913112Z 
+2026-09-27T00:06:59.8913994Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-27T00:06:59.8914391Z 
+2026-09-27T00:06:59.8914720Z HEAD is now at dc9948f Merge pull request #10 from agentstation/codex/technical-writing-generated-docs
+2026-09-27T00:06:59.8915831Z ##[endgroup]
+2026-09-27T00:06:59.8956209Z [command]/usr/bin/git log -1 --format=%H
+2026-09-27T00:06:59.8980101Z dc9948f59089426c7dd077e41469104ec788cf7f
+2026-09-27T00:06:59.8988993Z ##[group]Removing auth
+2026-09-27T00:06:59.8989470Z Removing SSH command configuration
+2026-09-27T00:06:59.8992951Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T00:06:59.9021362Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T00:06:59.9199850Z Removing HTTP extra header
+2026-09-27T00:06:59.9205180Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T00:06:59.9239139Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T00:06:59.9410996Z Removing includeIf entries pointing to credentials config files
+2026-09-27T00:06:59.9414284Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T00:06:59.9436186Z includeif.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git.path
+2026-09-27T00:06:59.9436937Z includeif.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git/worktrees/*.path
+2026-09-27T00:06:59.9437654Z includeif.gitdir:/github/workspace/.ci/agentstation-skills/.git.path
+2026-09-27T00:06:59.9438466Z includeif.gitdir:/github/workspace/.ci/agentstation-skills/.git/worktrees/*.path
+2026-09-27T00:06:59.9443797Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git.path
+2026-09-27T00:06:59.9463229Z /home/runner/work/_temp/git-credentials-c164a6c9-6670-4329-a9a8-95b26dca1447.config
+2026-09-27T00:06:59.9470759Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-c164a6c9\-6670\-4329\-a9a8\-95b26dca1447\.config
+2026-09-27T00:06:59.9500654Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git/worktrees/*.path
+2026-09-27T00:06:59.9520521Z /home/runner/work/_temp/git-credentials-c164a6c9-6670-4329-a9a8-95b26dca1447.config
+2026-09-27T00:06:59.9529132Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-c164a6c9\-6670\-4329\-a9a8\-95b26dca1447\.config
+2026-09-27T00:06:59.9559789Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.ci/agentstation-skills/.git.path
+2026-09-27T00:06:59.9578751Z /github/runner_temp/git-credentials-c164a6c9-6670-4329-a9a8-95b26dca1447.config
+2026-09-27T00:06:59.9585366Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.ci/agentstation-skills/.git.path \/github\/runner_temp\/git\-credentials\-c164a6c9\-6670\-4329\-a9a8\-95b26dca1447\.config
+2026-09-27T00:06:59.9659352Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.ci/agentstation-skills/.git/worktrees/*.path
+2026-09-27T00:06:59.9695408Z /github/runner_temp/git-credentials-c164a6c9-6670-4329-a9a8-95b26dca1447.config
+2026-09-27T00:06:59.9698832Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.ci/agentstation-skills/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-c164a6c9\-6670\-4329\-a9a8\-95b26dca1447\.config
+2026-09-27T00:06:59.9729571Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T00:06:59.9902462Z Removing credentials config '/home/runner/work/_temp/git-credentials-c164a6c9-6670-4329-a9a8-95b26dca1447.config'
+2026-09-27T00:06:59.9912212Z ##[endgroup]
+2026-09-27T00:07:00.0030022Z ##[group]Run make verify-checks
+2026-09-27T00:07:00.0030553Z [36;1mmake verify-checks[0m
+2026-09-27T00:07:00.0067891Z shell: /usr/bin/bash -e {0}
+2026-09-27T00:07:00.0068178Z env:
+2026-09-27T00:07:00.0068383Z   GOTOOLCHAIN: local
+2026-09-27T00:07:00.0068893Z   TECHNICAL_WRITING: /home/runner/work/starmap/starmap/.ci/agentstation-skills/technical-writing/scripts/technical-writing
+2026-09-27T00:07:00.0069538Z   STARMAP_VERIFY_EVENTS_DIR: /home/runner/work/_temp/verification-events
+2026-09-27T00:07:00.0069900Z ##[endgroup]
+2026-09-27T00:07:00.0209049Z 
+2026-09-27T00:07:00.0209520Z ==> make docs-check
+2026-09-27T00:07:09.7427087Z [0;34mChecking if documentation is up to date...[0m 
+2026-09-27T00:07:09.8266225Z Checking ./pkg/catalogs/projection...
+2026-09-27T00:07:09.8339443Z Checking ./pkg/catalogs/authority...
+2026-09-27T00:07:09.8442477Z Checking ./pkg/catalogs/remote...
+2026-09-27T00:07:09.8744871Z Checking ./pkg/catalogs/storage/s3...
+2026-09-27T00:07:09.8865299Z Checking ./pkg/catalogs/storage...
+2026-09-27T00:07:09.9373502Z Checking ./pkg/catalogs/permission/hostclock/profile...
+2026-09-27T00:07:09.9460290Z Checking ./pkg/catalogs/permission/hostclock...
+2026-09-27T00:07:09.9578682Z Checking ./pkg/catalogs/permission/hostclock/internal/w32timerpc...
+2026-09-27T00:07:09.9692681Z Checking ./pkg/catalogs/permission...
+2026-09-27T00:07:10.0000907Z Checking ./pkg/catalogs/artifact...
+2026-09-27T00:07:10.0334317Z Checking ./pkg/catalogs...
+2026-09-27T00:07:10.2757933Z Checking ./pkg/catalogs/evidence...
+2026-09-27T00:07:10.2900512Z Checking ./pkg/errors...
+2026-09-27T00:07:10.3172159Z Checking ./pkg/logging...
+2026-09-27T00:07:10.3283126Z Checking ./pkg/sources...
+2026-09-27T00:07:10.3778639Z Checking ./pkg/sources/payload...
+2026-09-27T00:07:10.3893887Z Checking ./internal/embedded...
+2026-09-27T00:07:10.3959406Z Checking ./internal/embedded/openapi...
+2026-09-27T00:07:10.4032784Z Checking ./internal/transport...
+2026-09-27T00:07:10.4152193Z Checking ./internal/server/handlers...
+2026-09-27T00:07:10.4483276Z Checking ./internal/server/sse...
+2026-09-27T00:07:10.4618295Z Checking ./internal/server/middleware...
+2026-09-27T00:07:10.4776880Z Checking ./internal/server/params...
+2026-09-27T00:07:10.4848770Z Checking ./internal/server/response...
+2026-09-27T00:07:10.4956286Z Checking ./internal/server...
+2026-09-27T00:07:10.5158626Z Checking ./internal/server/cache...
+2026-09-27T00:07:10.5273003Z Checking ./internal/providers/clients...
+2026-09-27T00:07:10.5358880Z Checking ./internal/sources/local...
+2026-09-27T00:07:10.5456189Z Checking ./internal/sources/providers...
+2026-09-27T00:07:10.5623673Z Checking ./internal/sources/modelsdev...
+2026-09-27T00:07:10.6024692Z Checking ./internal/catalog/reconciler...
+2026-09-27T00:07:10.6512079Z Checking ./internal/cli/convert...
+2026-09-27T00:07:10.6618576Z Checking ./server/administration...
+2026-09-27T00:07:10.6834907Z Checking ./server...
+2026-09-27T00:07:10.7039203Z Checking ./remote...
+2026-09-27T00:07:10.7341358Z Checking ./runtime/source...
+2026-09-27T00:07:10.7447390Z Checking ./runtime/status...
+2026-09-27T00:07:10.7567712Z Checking ./runtime...
+2026-09-27T00:07:10.9260950Z [0;32mAll documentation is up to date[0m 
+2026-09-27T00:07:10.9262956Z 
+2026-09-27T00:07:10.9263194Z ==> git diff --check
+2026-09-27T00:07:11.4561210Z 
+2026-09-27T00:07:11.4561740Z ==> make test-file-sizes
+2026-09-27T00:07:12.2612120Z 1440	internal/catalog/reconciler/merger_test.go
+2026-09-27T00:07:13.4465415Z 1071	internal/providers/openai/client_test.go
+2026-09-27T00:07:15.3221468Z 1040	remote/subscriber_test.go
+2026-09-27T00:07:16.2791916Z Go file-size verification passed: review >1000, justify >1500, fail >=2000 lines
+2026-09-27T00:07:16.2795059Z 
+2026-09-27T00:07:16.2795449Z ==> ./scripts/verify-package-layout.sh
+2026-09-27T00:07:16.5073082Z ok  	github.com/agentstation/starmap/internal/architecture	0.045s
+2026-09-27T00:07:17.1516363Z package-layout verification passed
+2026-09-27T00:07:17.1518812Z 
+2026-09-27T00:07:17.1520406Z ==> ./scripts/test-package-layout-verifier.sh
+2026-09-27T00:07:18.0226596Z package-layout verifier regression tests passed
+2026-09-27T00:07:18.0237489Z 
+2026-09-27T00:07:18.0238540Z ==> ./scripts/verify-catalog-package-ownership.sh
+2026-09-27T00:07:18.0335511Z CPO-V01 PASS: the five approved catalog child packages exist
+2026-09-27T00:07:18.0342420Z CPO-V02 PASS: the four removed package trees are absent
+2026-09-27T00:07:18.2756757Z CPO-V03 PASS: catalogs owns Generation copy and validation
+2026-09-27T00:07:18.4828781Z CPO-V04 PASS: catalogs owns all canonical payload codecs
+2026-09-27T00:07:18.5274757Z CPO-V05 PASS: evidence is a standard-library-only leaf
+2026-09-27T00:07:18.5351043Z CPO-V06 PASS: projection is a standard-library-only leaf without aliases
+2026-09-27T00:07:18.5398279Z CPO-V07 PASS: storage accepts catalog generations and retains adapters
+2026-09-27T00:07:18.5705325Z CPO-V08 PASS: artifact is storage-independent and retains its byte test
+2026-09-27T00:07:18.6111333Z CPO-V09 PASS: remote is storage-independent and retains protocol tests
+2026-09-27T00:07:53.1986625Z CPO-V10 PASS: all six external consumer modules compile
+2026-09-27T00:07:53.2194078Z CPO-V11 PASS: current docs and the migration guide use approved paths
+2026-09-27T00:07:53.5044730Z CPO-V12 PASS: current authority passes the historical allowlist scan
+2026-09-27T00:07:57.0437441Z CPO-V13 PASS: the package graph resolves without a dependency change
+2026-09-27T00:07:57.0445888Z Summary: 13 passed, 0 failed
+2026-09-27T00:07:57.0451487Z 
+2026-09-27T00:07:57.0451853Z ==> ./scripts/test-catalog-package-ownership-verifier.sh
+2026-09-27T00:07:57.2997794Z catalog package ownership verifier regression tests passed
+2026-09-27T00:07:57.3011463Z 
+2026-09-27T00:07:57.3011905Z ==> ./scripts/verify-catalog-dependency-direction.sh
+2026-09-27T00:07:57.3369547Z SM-D01 PASS: catalogs does not import private authority policy
+2026-09-27T00:07:57.3701267Z SM-D02 PASS: catalogs does not import repository-wide constants
+2026-09-27T00:07:57.4027373Z SM-D03 PASS: catalogs does not import the private embedded filesystem
+2026-09-27T00:07:57.4355651Z SM-D04 PASS: catalogs does not import private source payload policy
+2026-09-27T00:07:57.4638565Z SM-D05 PASS: catalog artifacts do not import repository-wide constants
+2026-09-27T00:07:57.4975198Z SM-D06 PASS: catalog remote transport does not import repository-wide constants
+2026-09-27T00:07:57.5255638Z SM-D07 PASS: catalog storage does not import repository-wide constants
+2026-09-27T00:07:57.5688531Z SM-D08 PASS: catalog S3 storage does not import repository-wide constants
+2026-09-27T00:07:57.5689209Z Summary: 8 passed, 0 failed
+2026-09-27T00:07:57.5701401Z 
+2026-09-27T00:07:57.5702112Z ==> ./scripts/test-catalog-dependency-direction-verifier.sh
+2026-09-27T00:07:57.9882247Z catalog dependency direction verifier tests passed
+2026-09-27T00:07:57.9898854Z 
+2026-09-27T00:07:57.9899387Z ==> bash ./scripts/verify-canonical-alias-history.sh
+2026-09-27T00:08:09.9462154Z Canonical rename history preserves predecessor 8122081e0494648fb1e356647053dd870a05fb1c
+2026-09-27T00:08:09.9666902Z 
+2026-09-27T00:08:09.9667309Z ==> python3 ./scripts/test_catalog_rejection.py
+2026-09-27T00:08:10.0761289Z .........
+2026-09-27T00:08:10.0761957Z ----------------------------------------------------------------------
+2026-09-27T00:08:10.0762716Z Ran 9 tests in 0.011s
+2026-09-27T00:08:10.0763003Z 
+2026-09-27T00:08:10.0763164Z OK
+2026-09-27T00:08:10.0888903Z 
+2026-09-27T00:08:10.0889744Z ==> python3 ./scripts/test_catalog_product_verify.py
+2026-09-27T00:08:10.1891795Z test_batch_policy_requires_a_boolean (__main__.CatalogGoBatchTests.test_batch_policy_requires_a_boolean) ... ok
+2026-09-27T00:08:10.1896765Z test_failed_event_refuses_successful_exit_code (__main__.CatalogGoBatchTests.test_failed_event_refuses_successful_exit_code) ... ok
+2026-09-27T00:08:10.1917870Z test_partial_duplicate_corrupt_or_wrong_package_stream_never_passes (__main__.CatalogGoBatchTests.test_partial_duplicate_corrupt_or_wrong_package_stream_never_passes) ... ok
+2026-09-27T00:08:26.4253677Z test_real_go_selection_skip_and_invocation_lifetime (__main__.CatalogGoBatchTests.test_real_go_selection_skip_and_invocation_lifetime) ... ok
+2026-09-27T00:08:26.4263777Z test_roots_do_not_share_process_results (__main__.CatalogGoBatchTests.test_roots_do_not_share_process_results) ... ok
+2026-09-27T00:08:26.4273127Z test_selected_names_share_one_process_and_duplicates_reuse_evidence (__main__.CatalogGoBatchTests.test_selected_names_share_one_process_and_duplicates_reuse_evidence) ... ok
+2026-09-27T00:08:26.4280899Z test_skip_is_bound_to_its_named_parent (__main__.CatalogGoBatchTests.test_skip_is_bound_to_its_named_parent) ... ok
+2026-09-27T00:08:26.4296132Z test_complete_live_roster_passes (test_catalog_sdk.CatalogSDKTests.test_complete_live_roster_passes) ... ok
+2026-09-27T00:08:26.4302935Z test_empty_success_does_not_qualify (test_catalog_sdk.CatalogSDKTests.test_empty_success_does_not_qualify) ... ok
+2026-09-27T00:08:26.4309158Z test_exit_failure_overrides_pass_markers (test_catalog_sdk.CatalogSDKTests.test_exit_failure_overrides_pass_markers) ... ok
+2026-09-27T00:08:26.4313043Z test_missing_script_is_unverified (test_catalog_sdk.CatalogSDKTests.test_missing_script_is_unverified) ... ok
+2026-09-27T00:08:26.4335131Z test_missing_state_or_client_never_passes (test_catalog_sdk.CatalogSDKTests.test_missing_state_or_client_never_passes) ... ok
+2026-09-27T00:08:26.4340174Z test_skip_never_passes (test_catalog_sdk.CatalogSDKTests.test_skip_never_passes) ... ok
+2026-09-27T00:08:26.4345311Z test_timeout_is_unverified (test_catalog_sdk.CatalogSDKTests.test_timeout_is_unverified) ... ok
+2026-09-27T00:08:26.4367059Z test_baseline_cannot_claim_release_qualification (__main__.CatalogVerifierTests.test_baseline_cannot_claim_release_qualification) ... ok
+2026-09-27T00:08:26.4394044Z test_baseline_keeps_negative_paired_differences (__main__.CatalogVerifierTests.test_baseline_keeps_negative_paired_differences) ... ok
+2026-09-27T00:08:26.4438105Z test_baseline_refuses_lost_stream_events_and_wrong_milestones (__main__.CatalogVerifierTests.test_baseline_refuses_lost_stream_events_and_wrong_milestones) ... ok
+2026-09-27T00:08:26.4469484Z test_baseline_refuses_missing_variant_or_initial_evidence (__main__.CatalogVerifierTests.test_baseline_refuses_missing_variant_or_initial_evidence) ... ok
+2026-09-27T00:08:26.4560871Z test_baseline_refuses_partial_or_fabricated_timing (__main__.CatalogVerifierTests.test_baseline_refuses_partial_or_fabricated_timing) ... ok
+2026-09-27T00:08:26.4579727Z test_browser_review_requires_current_inputs_and_captures (__main__.CatalogVerifierTests.test_browser_review_requires_current_inputs_and_captures) ... ok
+2026-09-27T00:08:26.4586964Z test_catalog_isolation_does_not_qualify_all_gateway_records (__main__.CatalogVerifierTests.test_catalog_isolation_does_not_qualify_all_gateway_records) ... ok
+2026-09-27T00:08:26.4592199Z test_combined_check_needs_every_result (__main__.CatalogVerifierTests.test_combined_check_needs_every_result) ... ok
+2026-09-27T00:08:26.4601056Z test_command_failure_cannot_pass (__main__.CatalogVerifierTests.test_command_failure_cannot_pass) ... ok
+2026-09-27T00:08:26.4641259Z test_complete_red_report (__main__.CatalogVerifierTests.test_complete_red_report) ... ok
+2026-09-27T00:08:26.4660987Z test_console_checks_accept_typescript_and_reject_unsafe_paths (__main__.CatalogVerifierTests.test_console_checks_accept_typescript_and_reject_unsafe_paths) ... ok
+2026-09-27T00:08:26.4666307Z test_duplicate_subcase_refuses (__main__.CatalogVerifierTests.test_duplicate_subcase_refuses) ... ok
+2026-09-27T00:08:26.4671466Z test_empty_task_cannot_pass (__main__.CatalogVerifierTests.test_empty_task_cannot_pass) ... ok
+2026-09-27T00:08:26.4678371Z test_evidence_paths_cannot_escape_repository (__main__.CatalogVerifierTests.test_evidence_paths_cannot_escape_repository) ... ok
+2026-09-27T00:08:26.4686461Z test_final_roster_cannot_omit_a_case (__main__.CatalogVerifierTests.test_final_roster_cannot_omit_a_case) ... ok
+2026-09-27T00:08:26.4696996Z test_fresh_baseline_adapter_cannot_pass_skipped_test (__main__.CatalogVerifierTests.test_fresh_baseline_adapter_cannot_pass_skipped_test) ... ok
+2026-09-27T00:08:26.4710960Z test_go_evidence_reuse_is_limited_to_one_invocation (__main__.CatalogVerifierTests.test_go_evidence_reuse_is_limited_to_one_invocation) ... ok
+2026-09-27T00:08:26.4720561Z test_missing_candidate_local_check_refuses (__main__.CatalogVerifierTests.test_missing_candidate_local_check_refuses) ... ok
+2026-09-27T00:08:26.4724645Z test_missing_primary_refuses (__main__.CatalogVerifierTests.test_missing_primary_refuses) ... ok
+2026-09-27T00:08:26.4728507Z test_missing_registration_is_unverified (__main__.CatalogVerifierTests.test_missing_registration_is_unverified) ... ok
+2026-09-27T00:08:26.4740930Z test_numeric_profile_cannot_hide_workload_or_uncertainty (__main__.CatalogVerifierTests.test_numeric_profile_cannot_hide_workload_or_uncertainty) ... ok
+2026-09-27T00:08:26.4753804Z test_numeric_profile_cannot_relax_correctness_for_latency (__main__.CatalogVerifierTests.test_numeric_profile_cannot_relax_correctness_for_latency) ... ok
+2026-09-27T00:08:26.4758448Z test_numeric_profile_is_complete_but_unqualified (__main__.CatalogVerifierTests.test_numeric_profile_is_complete_but_unqualified) ... ok
+2026-09-27T00:08:26.4763421Z test_numeric_profile_refuses_contradictory_resources (__main__.CatalogVerifierTests.test_numeric_profile_refuses_contradictory_resources) ... ok
+2026-09-27T00:08:26.4770944Z test_numeric_profile_refuses_invalid_limits (__main__.CatalogVerifierTests.test_numeric_profile_refuses_invalid_limits) ... ok
+2026-09-27T00:08:26.4775723Z test_partial_parent_never_passes (__main__.CatalogVerifierTests.test_partial_parent_never_passes) ... ok
+2026-09-27T00:08:26.4828281Z test_performance_review_requires_current_targets_and_retained_evidence (__main__.CatalogVerifierTests.test_performance_review_requires_current_targets_and_retained_evidence) ... ok
+2026-09-27T00:08:26.4832011Z test_publication_hosted_without_repository_is_unverified (__main__.CatalogVerifierTests.test_publication_hosted_without_repository_is_unverified) ... ok
+2026-09-27T00:08:26.4835542Z test_publication_recovery_without_repository_is_unverified (__main__.CatalogVerifierTests.test_publication_recovery_without_repository_is_unverified) ... ok
+2026-09-27T00:08:26.4840832Z test_qualification_cannot_use_component_passes (__main__.CatalogVerifierTests.test_qualification_cannot_use_component_passes) ... ok
+2026-09-27T00:08:39.0817696Z test_real_go_missing_match_is_unverified (__main__.CatalogVerifierTests.test_real_go_missing_match_is_unverified) ... ok
+2026-09-27T00:08:40.4408175Z test_real_named_go_test_executes (__main__.CatalogVerifierTests.test_real_named_go_test_executes) ... ok
+2026-09-27T00:08:40.4458121Z test_retained_full_http_baseline_satisfies_measurement_contract (__main__.CatalogVerifierTests.test_retained_full_http_baseline_satisfies_measurement_contract) ... ok
+2026-09-27T00:08:40.4468737Z test_skipped_child_cannot_pass_parent (__main__.CatalogVerifierTests.test_skipped_child_cannot_pass_parent) ... ok
+2026-09-27T00:08:40.4473282Z test_unknown_case_refuses (__main__.CatalogVerifierTests.test_unknown_case_refuses) ... ok
+2026-09-27T00:08:40.4853944Z test_verifier_supports_isolated_document_import (__main__.CatalogVerifierTests.test_verifier_supports_isolated_document_import) ... ok
+2026-09-27T00:08:40.4854885Z test_abnormal_exit_and_resource_failure_are_distinct (__main__.ColdServerTests.test_abnormal_exit_and_resource_failure_are_distinct) ... ok
+2026-09-27T00:08:40.4855819Z test_both_observations_and_schema_validation_are_required (__main__.ColdServerTests.test_both_observations_and_schema_validation_are_required) ... ok
+2026-09-27T00:08:40.4873250Z test_build_failure_attempts_cleanup_and_cleanup_failure_fails (__main__.ColdServerTests.test_build_failure_attempts_cleanup_and_cleanup_failure_fails) ... ok
+2026-09-27T00:08:40.4874280Z test_complete_offline_restart_passes (__main__.ColdServerTests.test_complete_offline_restart_passes) ... ok
+2026-09-27T00:08:40.4879425Z test_external_network_or_credentials_cannot_qualify (__main__.ColdServerTests.test_external_network_or_credentials_cannot_qualify) ... ok
+2026-09-27T00:08:40.4885413Z test_failed_endpoints_and_invalid_bytes_fail (__main__.ColdServerTests.test_failed_endpoints_and_invalid_bytes_fail) ... ok
+2026-09-27T00:08:40.4888669Z test_missing_docker_is_unverified (__main__.ColdServerTests.test_missing_docker_is_unverified) ... ok
+2026-09-27T00:08:40.4892578Z test_missing_instance_identity_cannot_qualify (__main__.ColdServerTests.test_missing_instance_identity_cannot_qualify) ... ok
+2026-09-27T00:08:40.4902773Z test_registered_adapter_requires_probe_and_calls_verifier (__main__.ColdServerTests.test_registered_adapter_requires_probe_and_calls_verifier) ... ok
+2026-09-27T00:08:40.4906590Z test_restart_identity_and_manifest_changes_fail (__main__.ColdServerTests.test_restart_identity_and_manifest_changes_fail) ... ok
+2026-09-27T00:08:40.4966808Z test_component_registry_refuses_unapproved_task_or_case (test_catalog_component_checks.ComponentCheckBoundaryTests.test_component_registry_refuses_unapproved_task_or_case) ... ok
+2026-09-27T00:08:40.4971924Z test_component_results_cannot_make_primary_case_pass (test_catalog_component_checks.ComponentCheckBoundaryTests.test_component_results_cannot_make_primary_case_pass) ... ok
+2026-09-27T00:08:40.5213963Z test_consumer_and_qualification_commands_use_consumer_evidence (test_catalog_component_checks.ComponentCheckBoundaryTests.test_consumer_and_qualification_commands_use_consumer_evidence) ... ok
+2026-09-27T00:08:40.5346103Z test_missing_consumer_never_uses_producer_fallback (test_catalog_component_checks.ComponentCheckBoundaryTests.test_missing_consumer_never_uses_producer_fallback) ... ok
+2026-09-27T00:08:40.5368479Z test_producer_task_uses_its_component_without_qualifying_parent (test_catalog_component_checks.ComponentCheckBoundaryTests.test_producer_task_uses_its_component_without_qualifying_parent) ... ok
+2026-09-27T00:08:40.5370622Z test_both_controls_are_required (__main__.ConstructorNetworkTests.test_both_controls_are_required) ... ok
+2026-09-27T00:08:40.5372198Z test_constructor_socket_attempt_is_a_failure (__main__.ConstructorNetworkTests.test_constructor_socket_attempt_is_a_failure) ... ok
+2026-09-27T00:08:40.5373856Z test_control_must_reach_its_socket_attempt (__main__.ConstructorNetworkTests.test_control_must_reach_its_socket_attempt) ... ok
+2026-09-27T00:08:40.5375562Z test_incomplete_baseline_or_changed_platform_refuses (__main__.ConstructorNetworkTests.test_incomplete_baseline_or_changed_platform_refuses) ... ok
+2026-09-27T00:08:40.5377273Z test_missing_constructor_evidence_refuses (__main__.ConstructorNetworkTests.test_missing_constructor_evidence_refuses) ... ok
+2026-09-27T00:08:40.5378866Z test_missing_container_state_refuses (__main__.ConstructorNetworkTests.test_missing_container_state_refuses) ... ok
+2026-09-27T00:08:40.5383004Z test_missing_docker_is_unverified (__main__.ConstructorNetworkTests.test_missing_docker_is_unverified) ... ok
+2026-09-27T00:08:40.5384493Z test_resource_failure_cannot_prove_network_enforcement (__main__.ConstructorNetworkTests.test_resource_failure_cannot_prove_network_enforcement) ... ok
+2026-09-27T00:08:40.5399513Z test_coherent_review_passes (__main__.DemoReviewTests.test_coherent_review_passes) ... ok
+2026-09-27T00:08:40.5412662Z test_edits_cannot_intersect_inference (__main__.DemoReviewTests.test_edits_cannot_intersect_inference) ... ok
+2026-09-27T00:08:40.5431382Z test_false_gap_or_negative_duration_refuses (__main__.DemoReviewTests.test_false_gap_or_negative_duration_refuses) ... ok
+2026-09-27T00:08:40.5457471Z test_incomplete_stream_or_cleanup_refuses (__main__.DemoReviewTests.test_incomplete_stream_or_cleanup_refuses) ... ok
+2026-09-27T00:08:40.5487981Z test_unreadable_dimensions_or_changed_gif_refuses (__main__.DemoReviewTests.test_unreadable_dimensions_or_changed_gif_refuses) ... ok
+2026-09-27T00:08:40.5501389Z test_changed_or_missing_capture_refuses (__main__.FirstUseReviewTests.test_changed_or_missing_capture_refuses) ... ok
+2026-09-27T00:08:40.5509855Z test_changed_readme_requires_review (__main__.FirstUseReviewTests.test_changed_readme_requires_review) ... ok
+2026-09-27T00:08:40.5520135Z test_complete_review_passes (__main__.FirstUseReviewTests.test_complete_review_passes) ... ok
+2026-09-27T00:08:40.5527382Z test_evidence_cannot_escape_its_root (__main__.FirstUseReviewTests.test_evidence_cannot_escape_its_root) ... ok
+2026-09-27T00:08:40.5558707Z test_incomplete_inference_refuses_even_with_matching_capture_digest (__main__.FirstUseReviewTests.test_incomplete_inference_refuses_even_with_matching_capture_digest) ... ok
+2026-09-27T00:08:40.5564681Z test_missing_observation_refuses (__main__.FirstUseReviewTests.test_missing_observation_refuses) ... ok
+2026-09-27T00:08:40.5579525Z test_source_build_needs_exact_commit (__main__.FirstUseReviewTests.test_source_build_needs_exact_commit) ... ok
+2026-09-27T00:08:40.5620499Z test_unqualified_or_missing_method_refuses (__main__.FirstUseReviewTests.test_unqualified_or_missing_method_refuses) ... ok
+2026-09-27T00:08:40.5627202Z test_absent_capture_is_unverified (__main__.NativeCatalogTests.test_absent_capture_is_unverified) ... ok
+2026-09-27T00:08:40.5635926Z test_both_native_architectures_are_required (__main__.NativeCatalogTests.test_both_native_architectures_are_required) ... ok
+2026-09-27T00:08:40.5643816Z test_changed_evidence_bytes_refuse (__main__.NativeCatalogTests.test_changed_evidence_bytes_refuse) ... ok
+2026-09-27T00:08:40.5653823Z test_cross_compiled_or_changed_toolchain_refuses (__main__.NativeCatalogTests.test_cross_compiled_or_changed_toolchain_refuses) ... ok
+2026-09-27T00:08:40.5659886Z test_duplicate_native_jobs_refuse (__main__.NativeCatalogTests.test_duplicate_native_jobs_refuse) ... ok
+2026-09-27T00:08:40.5666445Z test_failed_or_incomplete_workflow_refuses (__main__.NativeCatalogTests.test_failed_or_incomplete_workflow_refuses) ... ok
+2026-09-27T00:08:40.5685883Z test_linux_requires_actual_administrator_owned_read (__main__.NativeCatalogTests.test_linux_requires_actual_administrator_owned_read) ... ok
+2026-09-27T00:08:40.5701550Z test_missing_test_or_package_completion_refuses (__main__.NativeCatalogTests.test_missing_test_or_package_completion_refuses) ... ok
+2026-09-27T00:08:40.5707504Z test_other_repository_refuses (__main__.NativeCatalogTests.test_other_repository_refuses) ... ok
+2026-09-27T00:08:40.5718739Z test_required_parent_skip_and_unselected_failure_refuse (__main__.NativeCatalogTests.test_required_parent_skip_and_unselected_failure_refuse) ... ok
+2026-09-27T00:08:40.5729092Z test_skipped_or_failed_child_refuses (__main__.NativeCatalogTests.test_skipped_or_failed_child_refuses) ... ok
+2026-09-27T00:08:40.5941718Z test_source_and_test_changes_invalidate_evidence (__main__.NativeCatalogTests.test_source_and_test_changes_invalidate_evidence) ... ok
+2026-09-27T00:08:40.5951397Z test_unselected_skips_are_reported_without_qualifying_them (__main__.NativeCatalogTests.test_unselected_skips_are_reported_without_qualifying_them) ... ok
+2026-09-27T00:08:40.5952217Z 
+2026-09-27T00:08:40.5952435Z ----------------------------------------------------------------------
+2026-09-27T00:08:40.5952910Z Ran 99 tests in 30.407s
+2026-09-27T00:08:40.5953082Z 
+2026-09-27T00:08:40.5953168Z OK
+2026-09-27T00:08:40.6103144Z 
+2026-09-27T00:08:40.6103596Z ==> python3 ./scripts/test_prepare_public_catalog_fixture.py
+2026-09-27T00:08:40.6978389Z test_windows_checkout_preserves_captured_bytes (__main__.PublicCatalogCheckoutTests.test_windows_checkout_preserves_captured_bytes) ... ok
+2026-09-27T00:08:40.6999582Z test_corrupt_download_never_publishes (__main__.PublicCatalogFixtureTests.test_corrupt_download_never_publishes) ... ok
+2026-09-27T00:08:40.7019818Z test_failed_publication_removes_temporary_file (__main__.PublicCatalogFixtureTests.test_failed_publication_removes_temporary_file) ... ok
+2026-09-27T00:08:40.7037239Z test_invalid_cache_is_preserved (__main__.PublicCatalogFixtureTests.test_invalid_cache_is_preserved) ... ok
+2026-09-27T00:08:40.7047891Z test_large_download_never_publishes (__main__.PublicCatalogFixtureTests.test_large_download_never_publishes) ... ok
+2026-09-27T00:08:40.7056872Z test_short_download_never_publishes (__main__.PublicCatalogFixtureTests.test_short_download_never_publishes) ... ok
+2026-09-27T00:08:40.7072210Z test_valid_cache_requires_no_network (__main__.PublicCatalogFixtureTests.test_valid_cache_requires_no_network) ... ok
+2026-09-27T00:08:40.7087372Z test_valid_download_publishes_exact_bytes (__main__.PublicCatalogFixtureTests.test_valid_download_publishes_exact_bytes) ... ok
+2026-09-27T00:08:40.7088078Z 
+2026-09-27T00:08:40.7088269Z ----------------------------------------------------------------------
+2026-09-27T00:08:40.7088621Z Ran 8 tests in 0.022s
+2026-09-27T00:08:40.7088762Z 
+2026-09-27T00:08:40.7088856Z OK
+2026-09-27T00:08:40.7231533Z 
+2026-09-27T00:08:40.7231951Z ==> python3 ./scripts/test_verification_tests.py
+2026-09-27T00:08:40.7818706Z .........
+2026-09-27T00:08:40.7819347Z ----------------------------------------------------------------------
+2026-09-27T00:08:40.7820395Z Ran 9 tests in 0.010s
+2026-09-27T00:08:40.7820589Z 
+2026-09-27T00:08:40.7820689Z OK
+2026-09-27T00:08:40.7898710Z 
+2026-09-27T00:08:40.7899533Z ==> python3 ./scripts/verification_tests.py race --group checks --output /home/runner/work/_temp/verification-events/go-check-events.jsonl
+2026-09-27T00:08:41.1644736Z Running: go test -json -count=1 -timeout=30m -p=1 -race -skip=^TestPublicPublicationProfileRetainsBoundedState$ github.com/agentstation/starmap/internal/ciworkflow
+2026-09-27T00:08:41.1645623Z Test events: /home/runner/work/_temp/verification-events/go-check-events.jsonl
+2026-09-27T00:08:43.6348667Z {"Time":"2026-09-27T00:08:43.413423007Z","Action":"start","Package":"github.com/agentstation/starmap/internal/ciworkflow"}
+2026-09-27T00:08:43.6351419Z {"Time":"2026-09-27T00:08:43.420203241Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowNestsTimeoutLimits"}
+2026-09-27T00:08:43.6353859Z {"Time":"2026-09-27T00:08:43.420275928Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowNestsTimeoutLimits","Output":"=== RUN   TestCatalogGenerationWorkflowNestsTimeoutLimits\n","OutputType":"frame"}
+2026-09-27T00:08:43.6356741Z {"Time":"2026-09-27T00:08:43.420312779Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowNestsTimeoutLimits","Output":"=== PAUSE TestCatalogGenerationWorkflowNestsTimeoutLimits\n","OutputType":"frame"}
+2026-09-27T00:08:43.6359189Z {"Time":"2026-09-27T00:08:43.420315652Z","Action":"pause","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowNestsTimeoutLimits"}
+2026-09-27T00:08:43.6361572Z {"Time":"2026-09-27T00:08:43.420319262Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowUsesFourHourAcquisitionCredentialScope"}
+2026-09-27T00:08:43.6365170Z {"Time":"2026-09-27T00:08:43.420322391Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowUsesFourHourAcquisitionCredentialScope","Output":"=== RUN   TestCatalogGenerationWorkflowUsesFourHourAcquisitionCredentialScope\n","OutputType":"frame"}
+2026-09-27T00:08:43.6374081Z {"Time":"2026-09-27T00:08:43.420473162Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowUsesFourHourAcquisitionCredentialScope","Output":"--- PASS: TestCatalogGenerationWorkflowUsesFourHourAcquisitionCredentialScope (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6377926Z {"Time":"2026-09-27T00:08:43.420482347Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowUsesFourHourAcquisitionCredentialScope","Elapsed":0}
+2026-09-27T00:08:43.6380782Z {"Time":"2026-09-27T00:08:43.420507784Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion"}
+2026-09-27T00:08:43.6384230Z {"Time":"2026-09-27T00:08:43.420513163Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion","Output":"=== RUN   TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion\n","OutputType":"frame"}
+2026-09-27T00:08:43.6388199Z {"Time":"2026-09-27T00:08:43.427762901Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion","Output":"--- PASS: TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion (0.01s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6391379Z {"Time":"2026-09-27T00:08:43.42779191Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion","Elapsed":0.01}
+2026-09-27T00:08:43.6393758Z {"Time":"2026-09-27T00:08:43.427799713Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestActiveWorkflowsUseReviewedCurrentActions"}
+2026-09-27T00:08:43.6396428Z {"Time":"2026-09-27T00:08:43.427802777Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestActiveWorkflowsUseReviewedCurrentActions","Output":"=== RUN   TestActiveWorkflowsUseReviewedCurrentActions\n","OutputType":"frame"}
+2026-09-27T00:08:43.6400008Z {"Time":"2026-09-27T00:08:43.429754257Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestActiveWorkflowsUseReviewedCurrentActions","Output":"--- PASS: TestActiveWorkflowsUseReviewedCurrentActions (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6403207Z {"Time":"2026-09-27T00:08:43.429762372Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestActiveWorkflowsUseReviewedCurrentActions","Elapsed":0}
+2026-09-27T00:08:43.6405608Z {"Time":"2026-09-27T00:08:43.429803495Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure"}
+2026-09-27T00:08:43.6408713Z {"Time":"2026-09-27T00:08:43.429820051Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure","Output":"=== RUN   TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure\n","OutputType":"frame"}
+2026-09-27T00:08:43.6412107Z {"Time":"2026-09-27T00:08:43.429914533Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure/openapi"}
+2026-09-27T00:08:43.6415166Z {"Time":"2026-09-27T00:08:43.4299186Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure/openapi","Output":"=== RUN   TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure/openapi\n","OutputType":"frame"}
+2026-09-27T00:08:43.6419102Z {"Time":"2026-09-27T00:08:43.437544408Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure/openapi","Output":"--- PASS: TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure/openapi (0.01s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6422442Z {"Time":"2026-09-27T00:08:43.437566378Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure/openapi","Elapsed":0.01}
+2026-09-27T00:08:43.6424793Z {"Time":"2026-09-27T00:08:43.43757135Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure/openapi-check"}
+2026-09-27T00:08:43.6428377Z {"Time":"2026-09-27T00:08:43.4375738Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure/openapi-check","Output":"=== RUN   TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure/openapi-check\n","OutputType":"frame"}
+2026-09-27T00:08:43.6430947Z {"Time":"2026-09-27T00:08:43.445575771Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure/openapi-check","Output":"--- PASS: TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure/openapi-check (0.01s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6432743Z {"Time":"2026-09-27T00:08:43.445597767Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure/openapi-check","Elapsed":0.01}
+2026-09-27T00:08:43.6434442Z {"Time":"2026-09-27T00:08:43.445629247Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure","Output":"--- PASS: TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure (0.02s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6436177Z {"Time":"2026-09-27T00:08:43.445635688Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure","Elapsed":0.02}
+2026-09-27T00:08:43.6437402Z {"Time":"2026-09-27T00:08:43.445670876Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGitAcquisitionQualificationRequiresNativeTools"}
+2026-09-27T00:08:43.6438898Z {"Time":"2026-09-27T00:08:43.44568005Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGitAcquisitionQualificationRequiresNativeTools","Output":"=== RUN   TestGitAcquisitionQualificationRequiresNativeTools\n","OutputType":"frame"}
+2026-09-27T00:08:43.6440974Z {"Time":"2026-09-27T00:08:43.46247943Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGitAcquisitionQualificationRequiresNativeTools","Output":"--- PASS: TestGitAcquisitionQualificationRequiresNativeTools (0.02s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6442945Z {"Time":"2026-09-27T00:08:43.462501239Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGitAcquisitionQualificationRequiresNativeTools","Elapsed":0.02}
+2026-09-27T00:08:43.6444589Z {"Time":"2026-09-27T00:08:43.462506502Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs"}
+2026-09-27T00:08:43.6446575Z {"Time":"2026-09-27T00:08:43.46251601Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs","Output":"=== RUN   TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs\n","OutputType":"frame"}
+2026-09-27T00:08:43.6448661Z {"Time":"2026-09-27T00:08:43.463065244Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs","Output":"--- PASS: TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6450866Z {"Time":"2026-09-27T00:08:43.463076424Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs","Elapsed":0}
+2026-09-27T00:08:43.6452648Z {"Time":"2026-09-27T00:08:43.463108253Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPullRequestWorkflowIsTheOnlyActivePRWorkflow"}
+2026-09-27T00:08:43.6454105Z {"Time":"2026-09-27T00:08:43.463113989Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPullRequestWorkflowIsTheOnlyActivePRWorkflow","Output":"=== RUN   TestPullRequestWorkflowIsTheOnlyActivePRWorkflow\n","OutputType":"frame"}
+2026-09-27T00:08:43.6456053Z {"Time":"2026-09-27T00:08:43.463350192Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPullRequestWorkflowIsTheOnlyActivePRWorkflow","Output":"--- PASS: TestPullRequestWorkflowIsTheOnlyActivePRWorkflow (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6457572Z {"Time":"2026-09-27T00:08:43.463355904Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPullRequestWorkflowIsTheOnlyActivePRWorkflow","Elapsed":0}
+2026-09-27T00:08:43.6458716Z {"Time":"2026-09-27T00:08:43.463385293Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestMakeVerifyUsesCanonicalVerificationScript"}
+2026-09-27T00:08:43.6460117Z {"Time":"2026-09-27T00:08:43.463390639Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestMakeVerifyUsesCanonicalVerificationScript","Output":"=== RUN   TestMakeVerifyUsesCanonicalVerificationScript\n","OutputType":"frame"}
+2026-09-27T00:08:43.6462125Z {"Time":"2026-09-27T00:08:43.46583267Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestMakeVerifyUsesCanonicalVerificationScript","Output":"--- PASS: TestMakeVerifyUsesCanonicalVerificationScript (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6463577Z {"Time":"2026-09-27T00:08:43.465846246Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestMakeVerifyUsesCanonicalVerificationScript","Elapsed":0}
+2026-09-27T00:08:43.6464745Z {"Time":"2026-09-27T00:08:43.465859306Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits"}
+2026-09-27T00:08:43.6466266Z {"Time":"2026-09-27T00:08:43.465861771Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits","Output":"=== RUN   TestGoFileSizeVerificationEnforcesReviewAndHardLimits\n","OutputType":"frame"}
+2026-09-27T00:08:43.6467777Z {"Time":"2026-09-27T00:08:43.465910729Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/normal"}
+2026-09-27T00:08:43.6469360Z {"Time":"2026-09-27T00:08:43.4659138Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/normal","Output":"=== RUN   TestGoFileSizeVerificationEnforcesReviewAndHardLimits/normal\n","OutputType":"frame"}
+2026-09-27T00:08:43.6471533Z {"Time":"2026-09-27T00:08:43.473112027Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/normal","Output":"--- PASS: TestGoFileSizeVerificationEnforcesReviewAndHardLimits/normal (0.01s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6473174Z {"Time":"2026-09-27T00:08:43.473147834Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/normal","Elapsed":0.01}
+2026-09-27T00:08:43.6474442Z {"Time":"2026-09-27T00:08:43.473159118Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/review"}
+2026-09-27T00:08:43.6476017Z {"Time":"2026-09-27T00:08:43.473161647Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/review","Output":"=== RUN   TestGoFileSizeVerificationEnforcesReviewAndHardLimits/review\n","OutputType":"frame"}
+2026-09-27T00:08:43.6477979Z {"Time":"2026-09-27T00:08:43.480037164Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/review","Output":"--- PASS: TestGoFileSizeVerificationEnforcesReviewAndHardLimits/review (0.01s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6479689Z {"Time":"2026-09-27T00:08:43.480066892Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/review","Elapsed":0.01}
+2026-09-27T00:08:43.6481110Z {"Time":"2026-09-27T00:08:43.480105959Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/missing_rationale"}
+2026-09-27T00:08:43.6482812Z {"Time":"2026-09-27T00:08:43.480109388Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/missing_rationale","Output":"=== RUN   TestGoFileSizeVerificationEnforcesReviewAndHardLimits/missing_rationale\n","OutputType":"frame"}
+2026-09-27T00:08:43.6484911Z {"Time":"2026-09-27T00:08:43.488653823Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/missing_rationale","Output":"--- PASS: TestGoFileSizeVerificationEnforcesReviewAndHardLimits/missing_rationale (0.01s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6486738Z {"Time":"2026-09-27T00:08:43.488681159Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/missing_rationale","Elapsed":0.01}
+2026-09-27T00:08:43.6488094Z {"Time":"2026-09-27T00:08:43.488689664Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/durable_rationale"}
+2026-09-27T00:08:43.6489786Z {"Time":"2026-09-27T00:08:43.488693317Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/durable_rationale","Output":"=== RUN   TestGoFileSizeVerificationEnforcesReviewAndHardLimits/durable_rationale\n","OutputType":"frame"}
+2026-09-27T00:08:43.6492055Z {"Time":"2026-09-27T00:08:43.496874961Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/durable_rationale","Output":"--- PASS: TestGoFileSizeVerificationEnforcesReviewAndHardLimits/durable_rationale (0.01s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6493801Z {"Time":"2026-09-27T00:08:43.496901635Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/durable_rationale","Elapsed":0.01}
+2026-09-27T00:08:43.6495172Z {"Time":"2026-09-27T00:08:43.496910404Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/hard_limit_ignores_rationale"}
+2026-09-27T00:08:43.6496962Z {"Time":"2026-09-27T00:08:43.496914106Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/hard_limit_ignores_rationale","Output":"=== RUN   TestGoFileSizeVerificationEnforcesReviewAndHardLimits/hard_limit_ignores_rationale\n","OutputType":"frame"}
+2026-09-27T00:08:43.6499218Z {"Time":"2026-09-27T00:08:43.503442741Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/hard_limit_ignores_rationale","Output":"--- PASS: TestGoFileSizeVerificationEnforcesReviewAndHardLimits/hard_limit_ignores_rationale (0.01s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6501209Z {"Time":"2026-09-27T00:08:43.503470738Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/hard_limit_ignores_rationale","Elapsed":0.01}
+2026-09-27T00:08:43.6502579Z {"Time":"2026-09-27T00:08:43.503481925Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/generated_excluded"}
+2026-09-27T00:08:43.6504353Z {"Time":"2026-09-27T00:08:43.503485762Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/generated_excluded","Output":"=== RUN   TestGoFileSizeVerificationEnforcesReviewAndHardLimits/generated_excluded\n","OutputType":"frame"}
+2026-09-27T00:08:43.6506482Z {"Time":"2026-09-27T00:08:43.508220033Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/generated_excluded","Output":"--- PASS: TestGoFileSizeVerificationEnforcesReviewAndHardLimits/generated_excluded (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6508231Z {"Time":"2026-09-27T00:08:43.508243596Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits/generated_excluded","Elapsed":0}
+2026-09-27T00:08:43.6509933Z {"Time":"2026-09-27T00:08:43.508252359Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits","Output":"--- PASS: TestGoFileSizeVerificationEnforcesReviewAndHardLimits (0.04s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6511770Z {"Time":"2026-09-27T00:08:43.50827233Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGoFileSizeVerificationEnforcesReviewAndHardLimits","Elapsed":0.04}
+2026-09-27T00:08:43.6512997Z {"Time":"2026-09-27T00:08:43.508326265Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestExternalReadOnlyConsumerUsesCanonicalCatalogDX"}
+2026-09-27T00:08:43.6514465Z {"Time":"2026-09-27T00:08:43.508332484Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestExternalReadOnlyConsumerUsesCanonicalCatalogDX","Output":"=== RUN   TestExternalReadOnlyConsumerUsesCanonicalCatalogDX\n","OutputType":"frame"}
+2026-09-27T00:08:43.6516298Z {"Time":"2026-09-27T00:08:43.508412151Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestExternalReadOnlyConsumerUsesCanonicalCatalogDX","Output":"--- PASS: TestExternalReadOnlyConsumerUsesCanonicalCatalogDX (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6517810Z {"Time":"2026-09-27T00:08:43.508420637Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestExternalReadOnlyConsumerUsesCanonicalCatalogDX","Elapsed":0}
+2026-09-27T00:08:43.6519017Z {"Time":"2026-09-27T00:08:43.508448752Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent"}
+2026-09-27T00:08:43.6520746Z {"Time":"2026-09-27T00:08:43.508453376Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent","Output":"=== RUN   TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent\n","OutputType":"frame"}
+2026-09-27T00:08:43.6522678Z {"Time":"2026-09-27T00:08:43.50854764Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent","Output":"--- PASS: TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6524293Z {"Time":"2026-09-27T00:08:43.508555639Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent","Elapsed":0}
+2026-09-27T00:08:43.6525487Z {"Time":"2026-09-27T00:08:43.508590012Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestExternalStoreConsumerUsesCallerOwnedAdapter"}
+2026-09-27T00:08:43.6526917Z {"Time":"2026-09-27T00:08:43.508594438Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestExternalStoreConsumerUsesCallerOwnedAdapter","Output":"=== RUN   TestExternalStoreConsumerUsesCallerOwnedAdapter\n","OutputType":"frame"}
+2026-09-27T00:08:43.6528780Z {"Time":"2026-09-27T00:08:43.508730832Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestExternalStoreConsumerUsesCallerOwnedAdapter","Output":"--- PASS: TestExternalStoreConsumerUsesCallerOwnedAdapter (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6530387Z {"Time":"2026-09-27T00:08:43.508739195Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestExternalStoreConsumerUsesCallerOwnedAdapter","Elapsed":0}
+2026-09-27T00:08:43.6531587Z {"Time":"2026-09-27T00:08:43.508766222Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPinnedArtifactConsumerIsOfflineAndDependencyBounded"}
+2026-09-27T00:08:43.6533125Z {"Time":"2026-09-27T00:08:43.508770749Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPinnedArtifactConsumerIsOfflineAndDependencyBounded","Output":"=== RUN   TestPinnedArtifactConsumerIsOfflineAndDependencyBounded\n","OutputType":"frame"}
+2026-09-27T00:08:43.6535198Z {"Time":"2026-09-27T00:08:43.508894923Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPinnedArtifactConsumerIsOfflineAndDependencyBounded","Output":"--- PASS: TestPinnedArtifactConsumerIsOfflineAndDependencyBounded (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6536811Z {"Time":"2026-09-27T00:08:43.508903552Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPinnedArtifactConsumerIsOfflineAndDependencyBounded","Elapsed":0}
+2026-09-27T00:08:43.6537983Z {"Time":"2026-09-27T00:08:43.508933451Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestExternalServerStorageMatrixStaysOptional"}
+2026-09-27T00:08:43.6539383Z {"Time":"2026-09-27T00:08:43.508939032Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestExternalServerStorageMatrixStaysOptional","Output":"=== RUN   TestExternalServerStorageMatrixStaysOptional\n","OutputType":"frame"}
+2026-09-27T00:08:43.6541223Z {"Time":"2026-09-27T00:08:43.509077853Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestExternalServerStorageMatrixStaysOptional","Output":"--- PASS: TestExternalServerStorageMatrixStaysOptional (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6542667Z {"Time":"2026-09-27T00:08:43.509095418Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestExternalServerStorageMatrixStaysOptional","Elapsed":0}
+2026-09-27T00:08:43.6543826Z {"Time":"2026-09-27T00:08:43.509100984Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPureGoAndRaceVerificationHaveSeparateCgoModes"}
+2026-09-27T00:08:43.6545283Z {"Time":"2026-09-27T00:08:43.509106616Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPureGoAndRaceVerificationHaveSeparateCgoModes","Output":"=== RUN   TestPureGoAndRaceVerificationHaveSeparateCgoModes\n","OutputType":"frame"}
+2026-09-27T00:08:43.6547084Z {"Time":"2026-09-27T00:08:43.509307855Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPureGoAndRaceVerificationHaveSeparateCgoModes","Output":"--- PASS: TestPureGoAndRaceVerificationHaveSeparateCgoModes (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6548607Z {"Time":"2026-09-27T00:08:43.509318753Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestPureGoAndRaceVerificationHaveSeparateCgoModes","Elapsed":0}
+2026-09-27T00:08:43.6549821Z {"Time":"2026-09-27T00:08:43.509325777Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces"}
+2026-09-27T00:08:43.6551813Z {"Time":"2026-09-27T00:08:43.50932939Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces","Output":"=== RUN   TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces\n","OutputType":"frame"}
+2026-09-27T00:08:43.6554065Z {"Time":"2026-09-27T00:08:43.509580633Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces","Output":"--- PASS: TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6555741Z {"Time":"2026-09-27T00:08:43.509597899Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces","Elapsed":0}
+2026-09-27T00:08:43.6556975Z {"Time":"2026-09-27T00:08:43.509603207Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestLocalBuildVersionIgnoresCatalogGenerationTags"}
+2026-09-27T00:08:43.6558493Z {"Time":"2026-09-27T00:08:43.509606785Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestLocalBuildVersionIgnoresCatalogGenerationTags","Output":"=== RUN   TestLocalBuildVersionIgnoresCatalogGenerationTags\n","OutputType":"frame"}
+2026-09-27T00:08:43.6560413Z {"Time":"2026-09-27T00:08:43.509745439Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestLocalBuildVersionIgnoresCatalogGenerationTags","Output":"--- PASS: TestLocalBuildVersionIgnoresCatalogGenerationTags (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6561923Z {"Time":"2026-09-27T00:08:43.509754037Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestLocalBuildVersionIgnoresCatalogGenerationTags","Elapsed":0}
+2026-09-27T00:08:43.6563053Z {"Time":"2026-09-27T00:08:43.509763396Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPICheckPinsSelfContainedGenerator"}
+2026-09-27T00:08:43.6564438Z {"Time":"2026-09-27T00:08:43.509767574Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPICheckPinsSelfContainedGenerator","Output":"=== RUN   TestOpenAPICheckPinsSelfContainedGenerator\n","OutputType":"frame"}
+2026-09-27T00:08:43.6566111Z {"Time":"2026-09-27T00:08:43.509918402Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPICheckPinsSelfContainedGenerator","Output":"--- PASS: TestOpenAPICheckPinsSelfContainedGenerator (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6567538Z {"Time":"2026-09-27T00:08:43.509926344Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestOpenAPICheckPinsSelfContainedGenerator","Elapsed":0}
+2026-09-27T00:08:43.6568721Z {"Time":"2026-09-27T00:08:43.509952284Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseWorkflowPinsToolchainPublisherAndVerification"}
+2026-09-27T00:08:43.6570390Z {"Time":"2026-09-27T00:08:43.509956898Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseWorkflowPinsToolchainPublisherAndVerification","Output":"=== RUN   TestReleaseWorkflowPinsToolchainPublisherAndVerification\n","OutputType":"frame"}
+2026-09-27T00:08:43.6572320Z {"Time":"2026-09-27T00:08:43.51084796Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseWorkflowPinsToolchainPublisherAndVerification","Output":"--- PASS: TestReleaseWorkflowPinsToolchainPublisherAndVerification (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6573916Z {"Time":"2026-09-27T00:08:43.51086493Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseWorkflowPinsToolchainPublisherAndVerification","Elapsed":0}
+2026-09-27T00:08:43.6575162Z {"Time":"2026-09-27T00:08:43.510870737Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets"}
+2026-09-27T00:08:43.6576831Z {"Time":"2026-09-27T00:08:43.510874466Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets","Output":"=== RUN   TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets\n","OutputType":"frame"}
+2026-09-27T00:08:43.6578805Z {"Time":"2026-09-27T00:08:43.511337901Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets","Output":"--- PASS: TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6580654Z {"Time":"2026-09-27T00:08:43.511353924Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets","Elapsed":0}
+2026-09-27T00:08:43.6581943Z {"Time":"2026-09-27T00:08:43.511359976Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseBinaryVerificationPinsPortableTargetMatrix"}
+2026-09-27T00:08:43.6583461Z {"Time":"2026-09-27T00:08:43.511369492Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseBinaryVerificationPinsPortableTargetMatrix","Output":"=== RUN   TestReleaseBinaryVerificationPinsPortableTargetMatrix\n","OutputType":"frame"}
+2026-09-27T00:08:43.6585528Z {"Time":"2026-09-27T00:08:43.511454023Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseBinaryVerificationPinsPortableTargetMatrix","Output":"    release_workflow_test.go:161: release binary verification is missing \"darwin/amd64\"\n","OutputType":"error"}
+2026-09-27T00:08:43.6587441Z {"Time":"2026-09-27T00:08:43.511492085Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseBinaryVerificationPinsPortableTargetMatrix","Output":"--- FAIL: TestReleaseBinaryVerificationPinsPortableTargetMatrix (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6589037Z {"Time":"2026-09-27T00:08:43.511510494Z","Action":"fail","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestReleaseBinaryVerificationPinsPortableTargetMatrix","Elapsed":0}
+2026-09-27T00:08:43.6590333Z {"Time":"2026-09-27T00:08:43.511544482Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure"}
+2026-09-27T00:08:43.6591856Z {"Time":"2026-09-27T00:08:43.51154911Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure\n","OutputType":"frame"}
+2026-09-27T00:08:43.6593409Z {"Time":"2026-09-27T00:08:43.52855293Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/success"}
+2026-09-27T00:08:43.6595088Z {"Time":"2026-09-27T00:08:43.528578131Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/success","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/success\n","OutputType":"frame"}
+2026-09-27T00:08:43.6597186Z {"Time":"2026-09-27T00:08:43.529329068Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/success","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/success (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6598903Z {"Time":"2026-09-27T00:08:43.529355639Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/success","Elapsed":0}
+2026-09-27T00:08:43.6600373Z {"Time":"2026-09-27T00:08:43.529361522Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/success"}
+2026-09-27T00:08:43.6602040Z {"Time":"2026-09-27T00:08:43.529365108Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/success","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/success\n","OutputType":"frame"}
+2026-09-27T00:08:43.6604093Z {"Time":"2026-09-27T00:08:43.529985103Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/success","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/success (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6605809Z {"Time":"2026-09-27T00:08:43.529997951Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/success","Elapsed":0}
+2026-09-27T00:08:43.6607182Z {"Time":"2026-09-27T00:08:43.530011062Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/success"}
+2026-09-27T00:08:43.6608875Z {"Time":"2026-09-27T00:08:43.530014578Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/success","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/success\n","OutputType":"frame"}
+2026-09-27T00:08:43.6611072Z {"Time":"2026-09-27T00:08:43.53060791Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/success","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/success (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6612823Z {"Time":"2026-09-27T00:08:43.530627954Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/success","Elapsed":0}
+2026-09-27T00:08:43.6614169Z {"Time":"2026-09-27T00:08:43.53064145Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/success"}
+2026-09-27T00:08:43.6615892Z {"Time":"2026-09-27T00:08:43.530644214Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/success","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/success\n","OutputType":"frame"}
+2026-09-27T00:08:43.6618051Z {"Time":"2026-09-27T00:08:43.53123329Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/success","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/success (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6619840Z {"Time":"2026-09-27T00:08:43.531248761Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/success","Elapsed":0}
+2026-09-27T00:08:43.6643052Z {"Time":"2026-09-27T00:08:43.531256014Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/failure"}
+2026-09-27T00:08:43.6645647Z {"Time":"2026-09-27T00:08:43.531258425Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/failure","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/failure\n","OutputType":"frame"}
+2026-09-27T00:08:43.6647997Z {"Time":"2026-09-27T00:08:43.531820204Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/failure","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/failure (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6649743Z {"Time":"2026-09-27T00:08:43.531832729Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/failure","Elapsed":0}
+2026-09-27T00:08:43.6651251Z {"Time":"2026-09-27T00:08:43.531862755Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/failure"}
+2026-09-27T00:08:43.6652937Z {"Time":"2026-09-27T00:08:43.531865928Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/failure","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/failure\n","OutputType":"frame"}
+2026-09-27T00:08:43.6655094Z {"Time":"2026-09-27T00:08:43.532424837Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/failure","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/failure (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6656799Z {"Time":"2026-09-27T00:08:43.532440641Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/failure","Elapsed":0}
+2026-09-27T00:08:43.6658120Z {"Time":"2026-09-27T00:08:43.532464977Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/failure"}
+2026-09-27T00:08:43.6659823Z {"Time":"2026-09-27T00:08:43.532472068Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/failure","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/failure\n","OutputType":"frame"}
+2026-09-27T00:08:43.6662070Z {"Time":"2026-09-27T00:08:43.53304636Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/failure","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/failure (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6663812Z {"Time":"2026-09-27T00:08:43.533060647Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/failure","Elapsed":0}
+2026-09-27T00:08:43.6665153Z {"Time":"2026-09-27T00:08:43.533087586Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/failure"}
+2026-09-27T00:08:43.6666892Z {"Time":"2026-09-27T00:08:43.533090474Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/failure","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/failure\n","OutputType":"frame"}
+2026-09-27T00:08:43.6669057Z {"Time":"2026-09-27T00:08:43.533664653Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/failure","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/failure (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6671062Z {"Time":"2026-09-27T00:08:43.53367515Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/failure","Elapsed":0}
+2026-09-27T00:08:43.6672483Z {"Time":"2026-09-27T00:08:43.533683136Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/cancelled"}
+2026-09-27T00:08:43.6674197Z {"Time":"2026-09-27T00:08:43.533685569Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/cancelled","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/cancelled\n","OutputType":"frame"}
+2026-09-27T00:08:43.6676310Z {"Time":"2026-09-27T00:08:43.534283658Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/cancelled","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/cancelled (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6678107Z {"Time":"2026-09-27T00:08:43.53430719Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/cancelled","Elapsed":0}
+2026-09-27T00:08:43.6679434Z {"Time":"2026-09-27T00:08:43.53431212Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/cancelled"}
+2026-09-27T00:08:43.6681257Z {"Time":"2026-09-27T00:08:43.534314543Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/cancelled","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/cancelled\n","OutputType":"frame"}
+2026-09-27T00:08:43.6683374Z {"Time":"2026-09-27T00:08:43.534901856Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/cancelled","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/cancelled (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6685110Z {"Time":"2026-09-27T00:08:43.534912578Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/cancelled","Elapsed":0}
+2026-09-27T00:08:43.6686441Z {"Time":"2026-09-27T00:08:43.534922511Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/cancelled"}
+2026-09-27T00:08:43.6688184Z {"Time":"2026-09-27T00:08:43.534931649Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/cancelled","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/cancelled\n","OutputType":"frame"}
+2026-09-27T00:08:43.6690499Z {"Time":"2026-09-27T00:08:43.535591524Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/cancelled","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/cancelled (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6692283Z {"Time":"2026-09-27T00:08:43.535609031Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/cancelled","Elapsed":0}
+2026-09-27T00:08:43.6693636Z {"Time":"2026-09-27T00:08:43.535631498Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/cancelled"}
+2026-09-27T00:08:43.6695386Z {"Time":"2026-09-27T00:08:43.535634276Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/cancelled","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/cancelled\n","OutputType":"frame"}
+2026-09-27T00:08:43.6697663Z {"Time":"2026-09-27T00:08:43.536228722Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/cancelled","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/cancelled (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6699458Z {"Time":"2026-09-27T00:08:43.536244332Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/cancelled","Elapsed":0}
+2026-09-27T00:08:43.6700968Z {"Time":"2026-09-27T00:08:43.53626496Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/skipped"}
+2026-09-27T00:08:43.6702648Z {"Time":"2026-09-27T00:08:43.536270974Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/skipped","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/skipped\n","OutputType":"frame"}
+2026-09-27T00:08:43.6704791Z {"Time":"2026-09-27T00:08:43.536857924Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/skipped","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/skipped (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6706498Z {"Time":"2026-09-27T00:08:43.536867872Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/skipped","Elapsed":0}
+2026-09-27T00:08:43.6707794Z {"Time":"2026-09-27T00:08:43.536884367Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/skipped"}
+2026-09-27T00:08:43.6709449Z {"Time":"2026-09-27T00:08:43.53688765Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/skipped","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/skipped\n","OutputType":"frame"}
+2026-09-27T00:08:43.6711687Z {"Time":"2026-09-27T00:08:43.537501616Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/skipped","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/skipped (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6713407Z {"Time":"2026-09-27T00:08:43.537529503Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/skipped","Elapsed":0}
+2026-09-27T00:08:43.6714719Z {"Time":"2026-09-27T00:08:43.537536362Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/skipped"}
+2026-09-27T00:08:43.6716420Z {"Time":"2026-09-27T00:08:43.537540236Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/skipped","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/skipped\n","OutputType":"frame"}
+2026-09-27T00:08:43.6718546Z {"Time":"2026-09-27T00:08:43.538187454Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/skipped","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/skipped (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6720461Z {"Time":"2026-09-27T00:08:43.538210485Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/skipped","Elapsed":0}
+2026-09-27T00:08:43.6721863Z {"Time":"2026-09-27T00:08:43.538213709Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/skipped"}
+2026-09-27T00:08:43.6723595Z {"Time":"2026-09-27T00:08:43.538216003Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/skipped","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/skipped\n","OutputType":"frame"}
+2026-09-27T00:08:43.6725756Z {"Time":"2026-09-27T00:08:43.538802546Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/skipped","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/skipped (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6727600Z {"Time":"2026-09-27T00:08:43.538814052Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/skipped","Elapsed":0}
+2026-09-27T00:08:43.6728904Z {"Time":"2026-09-27T00:08:43.538847941Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/"}
+2026-09-27T00:08:43.6730639Z {"Time":"2026-09-27T00:08:43.538851124Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/\n","OutputType":"frame"}
+2026-09-27T00:08:43.6732633Z {"Time":"2026-09-27T00:08:43.539467045Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/ (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6734281Z {"Time":"2026-09-27T00:08:43.539489288Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CHECKS/","Elapsed":0}
+2026-09-27T00:08:43.6735545Z {"Time":"2026-09-27T00:08:43.539494341Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/"}
+2026-09-27T00:08:43.6737136Z {"Time":"2026-09-27T00:08:43.539496679Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/\n","OutputType":"frame"}
+2026-09-27T00:08:43.6739115Z {"Time":"2026-09-27T00:08:43.540081473Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/ (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6740884Z {"Time":"2026-09-27T00:08:43.540108588Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/TESTS/","Elapsed":0}
+2026-09-27T00:08:43.6742145Z {"Time":"2026-09-27T00:08:43.540117083Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/"}
+2026-09-27T00:08:43.6743767Z {"Time":"2026-09-27T00:08:43.540119378Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/\n","OutputType":"frame"}
+2026-09-27T00:08:43.6745843Z {"Time":"2026-09-27T00:08:43.540721377Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/ (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6747522Z {"Time":"2026-09-27T00:08:43.540733675Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/CAPACITY/","Elapsed":0}
+2026-09-27T00:08:43.6748867Z {"Time":"2026-09-27T00:08:43.540738911Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/"}
+2026-09-27T00:08:43.6750674Z {"Time":"2026-09-27T00:08:43.540741233Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/","Output":"=== RUN   TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/\n","OutputType":"frame"}
+2026-09-27T00:08:43.6752813Z {"Time":"2026-09-27T00:08:43.541443933Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/ (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6754527Z {"Time":"2026-09-27T00:08:43.541467014Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure/PUBLICATION/","Elapsed":0}
+2026-09-27T00:08:43.6756177Z {"Time":"2026-09-27T00:08:43.541471636Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure","Output":"--- PASS: TestVerificationGateRequiresEverySuiteEvenAfterFailure (0.03s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6757775Z {"Time":"2026-09-27T00:08:43.541499676Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationGateRequiresEverySuiteEvenAfterFailure","Elapsed":0.03}
+2026-09-27T00:08:43.6759069Z {"Time":"2026-09-27T00:08:43.541511471Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationMatrixPreservesPackageGroupsWithoutCompilerDuplicates"}
+2026-09-27T00:08:43.6760941Z {"Time":"2026-09-27T00:08:43.541514106Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationMatrixPreservesPackageGroupsWithoutCompilerDuplicates","Output":"=== RUN   TestVerificationMatrixPreservesPackageGroupsWithoutCompilerDuplicates\n","OutputType":"frame"}
+2026-09-27T00:08:43.6763108Z {"Time":"2026-09-27T00:08:43.55825953Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationMatrixPreservesPackageGroupsWithoutCompilerDuplicates","Output":"--- PASS: TestVerificationMatrixPreservesPackageGroupsWithoutCompilerDuplicates (0.02s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6764898Z {"Time":"2026-09-27T00:08:43.5582834Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestVerificationMatrixPreservesPackageGroupsWithoutCompilerDuplicates","Elapsed":0.02}
+2026-09-27T00:08:43.6766133Z {"Time":"2026-09-27T00:08:43.558292371Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestWorkflowGoPinsMatchProductToolchain"}
+2026-09-27T00:08:43.6767462Z {"Time":"2026-09-27T00:08:43.558310356Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestWorkflowGoPinsMatchProductToolchain","Output":"=== RUN   TestWorkflowGoPinsMatchProductToolchain\n","OutputType":"frame"}
+2026-09-27T00:08:43.6769155Z {"Time":"2026-09-27T00:08:43.589729886Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestWorkflowGoPinsMatchProductToolchain","Output":"--- PASS: TestWorkflowGoPinsMatchProductToolchain (0.03s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6770703Z {"Time":"2026-09-27T00:08:43.58977052Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestWorkflowGoPinsMatchProductToolchain","Elapsed":0.03}
+2026-09-27T00:08:43.6771816Z {"Time":"2026-09-27T00:08:43.5897795Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestNativePublicationPreservesPlatformCoverage"}
+2026-09-27T00:08:43.6773233Z {"Time":"2026-09-27T00:08:43.58978501Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestNativePublicationPreservesPlatformCoverage","Output":"=== RUN   TestNativePublicationPreservesPlatformCoverage\n","OutputType":"frame"}
+2026-09-27T00:08:43.6775050Z {"Time":"2026-09-27T00:08:43.605460415Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestNativePublicationPreservesPlatformCoverage","Output":"    verification_gate_test.go:169: missing native platforms: map[darwin/amd64:true]\n","OutputType":"error"}
+2026-09-27T00:08:43.6776918Z {"Time":"2026-09-27T00:08:43.605501561Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestNativePublicationPreservesPlatformCoverage","Output":"--- FAIL: TestNativePublicationPreservesPlatformCoverage (0.02s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6778402Z {"Time":"2026-09-27T00:08:43.605505342Z","Action":"fail","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestNativePublicationPreservesPlatformCoverage","Elapsed":0.02}
+2026-09-27T00:08:43.6779527Z {"Time":"2026-09-27T00:08:43.605532617Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestNativeRuntimeExercisesPublicHostFiles"}
+2026-09-27T00:08:43.6781033Z {"Time":"2026-09-27T00:08:43.605538187Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestNativeRuntimeExercisesPublicHostFiles","Output":"=== RUN   TestNativeRuntimeExercisesPublicHostFiles\n","OutputType":"frame"}
+2026-09-27T00:08:43.6782693Z {"Time":"2026-09-27T00:08:43.620916968Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestNativeRuntimeExercisesPublicHostFiles","Output":"--- PASS: TestNativeRuntimeExercisesPublicHostFiles (0.02s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6784102Z {"Time":"2026-09-27T00:08:43.620935278Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestNativeRuntimeExercisesPublicHostFiles","Elapsed":0.02}
+2026-09-27T00:08:43.6785220Z {"Time":"2026-09-27T00:08:43.620972275Z","Action":"run","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestWorkspaceIgnoresHostedWorkflowCheckouts"}
+2026-09-27T00:08:43.6786606Z {"Time":"2026-09-27T00:08:43.62097647Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestWorkspaceIgnoresHostedWorkflowCheckouts","Output":"=== RUN   TestWorkspaceIgnoresHostedWorkflowCheckouts\n","OutputType":"frame"}
+2026-09-27T00:08:43.6788321Z {"Time":"2026-09-27T00:08:43.621470519Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestWorkspaceIgnoresHostedWorkflowCheckouts","Output":"--- PASS: TestWorkspaceIgnoresHostedWorkflowCheckouts (0.00s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6789755Z {"Time":"2026-09-27T00:08:43.621480486Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestWorkspaceIgnoresHostedWorkflowCheckouts","Elapsed":0}
+2026-09-27T00:08:43.6791097Z {"Time":"2026-09-27T00:08:43.621517909Z","Action":"cont","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowNestsTimeoutLimits"}
+2026-09-27T00:08:43.6792602Z {"Time":"2026-09-27T00:08:43.621522703Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowNestsTimeoutLimits","Output":"=== CONT  TestCatalogGenerationWorkflowNestsTimeoutLimits\n","OutputType":"frame"}
+2026-09-27T00:08:43.6794377Z {"Time":"2026-09-27T00:08:43.627288807Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowNestsTimeoutLimits","Output":"--- PASS: TestCatalogGenerationWorkflowNestsTimeoutLimits (0.01s)\n","OutputType":"frame"}
+2026-09-27T00:08:43.6795851Z {"Time":"2026-09-27T00:08:43.627333641Z","Action":"pass","Package":"github.com/agentstation/starmap/internal/ciworkflow","Test":"TestCatalogGenerationWorkflowNestsTimeoutLimits","Elapsed":0.01}
+2026-09-27T00:08:43.6796950Z {"Time":"2026-09-27T00:08:43.627338171Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Output":"FAIL\n","OutputType":"frame"}
+2026-09-27T00:08:43.6798123Z {"Time":"2026-09-27T00:08:43.629187591Z","Action":"output","Package":"github.com/agentstation/starmap/internal/ciworkflow","Output":"FAIL\tgithub.com/agentstation/starmap/internal/ciworkflow\t0.216s\n","OutputType":"frame"}
+2026-09-27T00:08:43.6799262Z {"Time":"2026-09-27T00:08:43.629211883Z","Action":"fail","Package":"github.com/agentstation/starmap/internal/ciworkflow","Elapsed":0.216}
+2026-09-27T00:08:43.6799706Z 
+2026-09-27T00:08:43.6799862Z make: *** [Makefile:232: verify-checks] Error 1
+2026-09-27T00:08:43.6809919Z ##[error]Process completed with exit code 2.
+2026-09-27T00:08:43.6874970Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-09-27T00:08:43.6875357Z with:
+2026-09-27T00:08:43.6875569Z   name: go-tests-race-checks
+2026-09-27T00:08:43.6875877Z   path: /home/runner/work/_temp/verification-events/
+2026-09-27T00:08:43.6876189Z   if-no-files-found: warn
+2026-09-27T00:08:43.6876426Z   compression-level: 6
+2026-09-27T00:08:43.6876643Z   overwrite: false
+2026-09-27T00:08:43.6876862Z   include-hidden-files: false
+2026-09-27T00:08:43.6877113Z   archive: true
+2026-09-27T00:08:43.6877309Z env:
+2026-09-27T00:08:43.6877498Z   GOTOOLCHAIN: local
+2026-09-27T00:08:43.6877709Z ##[endgroup]
+2026-09-27T00:08:43.8198396Z With the provided path, there will be 1 file uploaded
+2026-09-27T00:08:43.8203781Z Artifact name is valid!
+2026-09-27T00:08:43.8204212Z Root directory input is valid!
+2026-09-27T00:08:44.1569756Z Uploading artifact: go-tests-race-checks.zip
+2026-09-27T00:08:44.1610960Z Beginning upload of artifact content to blob storage
+2026-09-27T00:08:44.4136138Z Uploaded bytes 4487
+2026-09-27T00:08:44.4754511Z Finished uploading artifact content to blob storage!
+2026-09-27T00:08:44.4756140Z SHA256 digest of uploaded artifact is 706b29636edaf85b442f29989f6800c9eee5adeccaa21b31c117129ff4bb0932
+2026-09-27T00:08:44.4757442Z Finalizing artifact upload
+2026-09-27T00:08:44.8186122Z Artifact go-tests-race-checks successfully finalized. Artifact ID 10918758218
+2026-09-27T00:08:44.8187585Z Artifact go-tests-race-checks has been successfully uploaded! Final size is 4487 bytes. Artifact ID is 10918758218
+2026-09-27T00:08:44.8191628Z Artifact download URL: https://github.com/agentstation/starmap/actions/runs/36281444461/artifacts/10918758218
+2026-09-27T00:08:44.8351802Z Post job cleanup.
+2026-09-27T00:08:44.9192577Z [command]/usr/bin/git version
+2026-09-27T00:08:44.9239938Z git version 2.55.0
+2026-09-27T00:08:44.9282695Z Temporarily overriding HOME='/home/runner/work/_temp/d4671603-5f60-4367-bf5a-1118658e9df0' before making global git config changes
+2026-09-27T00:08:44.9284096Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T00:08:44.9289208Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starmap/starmap/.ci/agentstation-skills
+2026-09-27T00:08:44.9319588Z Removing SSH command configuration
+2026-09-27T00:08:44.9327093Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T00:08:44.9358262Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T00:08:44.9571117Z Removing HTTP extra header
+2026-09-27T00:08:44.9575962Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T00:08:44.9609096Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T00:08:44.9806873Z Removing includeIf entries pointing to credentials config files
+2026-09-27T00:08:44.9814792Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T00:08:44.9849506Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T00:08:45.0230697Z Post job cleanup.
+2026-09-27T00:08:45.1042073Z [command]/usr/bin/git version
+2026-09-27T00:08:45.1089007Z git version 2.55.0
+2026-09-27T00:08:45.1130730Z Temporarily overriding HOME='/home/runner/work/_temp/57bff7a1-39fd-4083-86c4-6d772d52ae4f' before making global git config changes
+2026-09-27T00:08:45.1132036Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T00:08:45.1137125Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starmap/starmap
+2026-09-27T00:08:45.1166384Z Removing SSH command configuration
+2026-09-27T00:08:45.1173973Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T00:08:45.1204958Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T00:08:45.1431718Z Removing HTTP extra header
+2026-09-27T00:08:45.1439487Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T00:08:45.1474381Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T00:08:45.1675738Z Removing includeIf entries pointing to credentials config files
+2026-09-27T00:08:45.1681178Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T00:08:45.1715552Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T00:08:45.2079368Z Cleaning up orphan processes
