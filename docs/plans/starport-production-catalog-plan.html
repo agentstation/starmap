@@ -13,9 +13,11 @@
 
 <p id="next-action">Check required CI for Starmap #186 and Starport #386. Merge the producer first, then the consumer, after exact-head checks pass. Record both merge commits before completing CSP12. No owner decision remains.</p>
 
-<p>Producer <code>ae218c074</code> uses <code>codex/offline-baseline-persistence</code> in <code>/tmp/starmap-fleet-review-20260926</code>. Consumer <code>d9faa3521</code> uses <code>codex/storage-recipe-contract</code> in <code>/tmp/starport-fleet-review-20260926</code>. Both branches are clean and published. Starmap run <code>36296567811</code> and Starport run <code>36297158543</code> own final native qualification.</p>
+<p>Producer <code>ae218c074</code> uses <code>codex/offline-baseline-persistence</code> in <code>/tmp/starmap-fleet-review-20260926</code>. Consumer <code>d9faa3521</code> uses <code>codex/storage-recipe-contract</code> in <code>/tmp/starport-fleet-review-20260926</code>. Both PRs contain these implementation heads. The consumer has two prepared documentation edits. Starmap run <code>36296567811</code> and Starport run <code>36297158543</code> own final native qualification.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp12/activation-repair-2026-09-27/verification.json">current qualification proof</a> records both reviewed commits and all preserved failures. Fifteen storage subcases, seventeen cache subcases, and 1,225 selected package race results pass. Final producer verification passes. Consumer lint and all twelve architecture conditions pass, including the full Go suite. Independent reviews pass. No local check remains active.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp12.1/final-pair-2026-09-27/verification.json">cache preparation proof</a> records all seventeen passing subcases and 139 named results. Two local documentation edits correct cache ownership, identity, and qualification claims. Prose and links pass. Preserve those edits when advancing the consumer branch.</p>
 
 <p>Producer activation reuses validated immutable baseline facts. The measured activation allocation falls from 343 MB to 28 MB. This startup benchmark does not measure request latency. Authorization worker tests retain their deadlines and use the existing catalog fixture. Container tests preserve full startup, recreation, and cold restore coverage.</p>
 

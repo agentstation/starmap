@@ -1,0 +1,71 @@
+{
+  "status": "PREPARATION_ONLY",
+  "recorded_at": "2026-09-27T05:39:24.571406+00:00",
+  "task": "CSP12.1",
+  "producer": "ae218c074c7a4f2cbfd56e11d88abcc5108c566e",
+  "consumer": "d9faa352179e05d2bbc5616b223025f8189499ea",
+  "module": "v0.16.6-0.20260927051157-ae218c074c7a",
+  "toolchain": "go1.27.1",
+  "workspace": "off",
+  "selected_subcases": {
+    "A42.memory_and_shared_cache_selection": "PASS",
+    "A42.expiry_preserving_refill": "PASS",
+    "A42.unknown_remaining_ttl": "PASS",
+    "A42.capacity_and_entry_limits": "PASS",
+    "A42.cache_only_cleanup": "PASS",
+    "A42.cache_outage_admission": "PASS",
+    "A42.generation_account_scope": "PASS",
+    "A42.enablement_by_cache_kind": "PASS",
+    "A42.memory_budget_measurement": "PASS",
+    "A48.bounded_cache_read_deadline": "PASS",
+    "A48.nonblocking_fill_visibility": "PASS",
+    "A48.fill_queue_byte_entry_bounds": "PASS",
+    "A48.worker_shutdown_ownership": "PASS",
+    "A48.stream_accumulation_bound": "PASS",
+    "A48.stream_forwarding_errors": "PASS",
+    "A48.cache_semantic_mode_matrix": "PASS",
+    "A48.admission_and_expiry_preserved": "PASS"
+  },
+  "unique_commands": 7,
+  "named_results": {
+    "pass": 139
+  },
+  "raw_report": "../../csp12/activation-repair-2026-09-27/final-CSP12.1.json.gz",
+  "broader_qualification": "../../csp12/activation-repair-2026-09-27/verification.json",
+  "required_discovery_contract": "../../discovery-readiness-2026-09-07/contracts.md#csp121",
+  "discovery_tests": [
+    "TestDiscoveryCacheTracksAdapterRevision",
+    "TestDiscoveryCacheLookupRechecksAuthority",
+    "TestDiscoveryCacheSeparatesDisclosureMembership",
+    "TestEndpointLookupDoesNotRevealDeniedMembership"
+  ],
+  "services": "Separate disposable Valkey services for durable storage, response caching, and paused-cache fault injection. PostgreSQL is independent. Every container completed cleanup.",
+  "capacity": "Default cache budget and concurrent bounded-queue checks enabled. Component evidence does not qualify full gateway overhead.",
+  "pending": [
+    "CSP12 prerequisite merge",
+    "Final exact-head native evidence",
+    "Verified implementation merge ancestry and task disposition"
+  ],
+  "prepared_docs": {
+    "files": [
+      "docs/ARCHITECTURE.md",
+      "internal/cache/README.md"
+    ],
+    "status": "Uncommitted in consumer checkout; prose and links pass. Docs preparation does not alter the CI head.",
+    "scope": "Correct separate cache storage, semantic identity v6, account scope, media eligibility, qualification boundaries, and obsolete transaction claim. Preserve full gateway qualification under CSP22.",
+    "artifacts": {
+      "csp121-docs-preparation.patch": {
+        "sha256": "1ef8c7c388c29ba29c941b28fbaf70f375c83edf8f5c7114de71ccc142c498f7",
+        "path": "csp121-docs-preparation.patch.gz"
+      },
+      "csp121-docs-final-lint.log": {
+        "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+        "path": "csp121-docs-final-lint.log.gz"
+      },
+      "csp121-docs-final-links.log": {
+        "sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
+        "path": "csp121-docs-final-links.log.gz"
+      }
+    }
+  }
+}
