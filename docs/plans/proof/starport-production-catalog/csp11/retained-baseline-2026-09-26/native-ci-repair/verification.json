@@ -22,7 +22,18 @@
     "errors": []
   },
   "native_after": "UNVERIFIED pending publication",
-  "review": "running",
+  "review": {
+    "status": "PASS",
+    "reviewers": [
+      "gpt-6-sol high",
+      "claude-opus-5-5 high"
+    ],
+    "threshold": "P1",
+    "findings": 0,
+    "passes": 1,
+    "exit_code": 0,
+    "prior_single_opus_P0": "PASS, insufficient panel for the owner policy"
+  },
   "tests": {
     "d41-scratch-producer-tests-after.jsonl": {
       "pass": 126
@@ -33,5 +44,6 @@
     "d41-retention-schedule-repair.jsonl": {
       "pass": 75
     }
-  }
+  },
+  "producer_published": true
 }

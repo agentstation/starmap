@@ -12,7 +12,7 @@
 
 <p>Updated September 27, 2026 UTC. CSP11 is in progress under D41. 23 of 40 tasks are complete.</p>
 
-<p id="next-action">Finish the native scratch-directory repair and CI verifier repairs. Publish the reviewed producer module, qualify the final consumer pin, then merge both PRs in order.</p>
+<p id="next-action">Finish Starport checks against published Starmap module <code>47991a564</code>. Review and push Starport, then qualify native CI and merge both PRs in order.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/bootstrap-review-repair/verification.json">bootstrap repair proof</a> records 13 focused race results and 75 split broad results. No named test failed or skipped. The original broad command timed out after 74 passes. Its remaining test passes separately with unchanged assertions and timeout.</p>
 
@@ -22,11 +22,15 @@
 
 <p>Both reviews and verification runners finished. Producer review passes. Consumer review confirms three known production adoption/recovery gaps. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/bootstrap-review-repair/REVIEW_DISPOSITION.md">disposition</a> retains them as release blockers under CSP12, CSP13, and CSP15. It permits staged integration and rejects an unfenced fallback. The consumer review is not clean.</p>
 
-<p>Starmap <a href="https://github.com/agentstation/starmap/pull/185">#185</a> contains <code>0f45bbae2</code>. Starport <a href="https://github.com/agentstation/starport/pull/385">#385</a> contains <code>aab7dd7c</code>. Local consumer uses published module <code>v0.16.6-0.20260927002942-b46c077a7039</code> with <code>GOWORK=off</code>. The producer adds only acceptance registration after that module commit.</p>
+<p>Starmap <a href="https://github.com/agentstation/starmap/pull/185">#185</a> contains <code>47991a564</code>. Starport <a href="https://github.com/agentstation/starport/pull/385">#385</a> contains <code>aab7dd7c</code>. Local consumer pins <code>v0.16.6-0.20260927014455-47991a5649f2</code> with <code>GOWORK=off</code>. Its scratch, verifier, and CI repairs remain uncommitted.</p>
 
 <p>Windows native run <code>36285454089</code> rejects inherited scratch ACLs. Producer run <code>36285374567</code> exposed an uncontrolled retention-test scheduler. Consumer run <code>36285454177</code> exposed a cask-verifier assumption and exhausted the fleet job time limit.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/bootstrap-review-repair/NATIVE_SCRATCH_REPAIR.md">native creation contract</a> preserves private access and scratch layout. Local private-file race tests pass 126 named cases. Consumer development tests pass 40 named cases with an explicit temporary workspace. Windows qualification and the final published-module checks remain open. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/native-ci-repair/verification.json">native repair proof</a> records passing producer checks. Producer review runs in session <code>64976</code> with output at <code>/tmp/d41-native-producer-review.log</code>.</p>
+<p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/bootstrap-review-repair/NATIVE_SCRATCH_REPAIR.md">native creation contract</a> preserves private access and scratch layout. Local private-file race tests pass 126 named cases. Consumer development tests pass 40 named cases with an explicit temporary workspace. Windows qualification and the final published-module checks remain open.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/native-ci-repair/verification.json">native repair proof</a> records passing producer checks. The required Sol/Opus review passes with zero P0/P1 findings. Producer CI run <code>36286723503</code> qualifies the published repair.</p>
+
+<p>Consumer sessions: repository checks <code>27677</code>, task gate <code>88998</code>, and development race tests <code>33199</code>. Results use <code>/tmp/d41-native-consumer-gates</code>, <code>/tmp/d41-native-task-gate</code>, and <code>/tmp/d41-scratch-consumer-final-tests.jsonl</code>.</p>
 
 <p>D41 retains the fleet baseline independently of each binary. The <a href="proof/starport-production-catalog/csp11/upgrade-contract-2026-09-26/CONTRACT.md">transition contract</a> preserves seventeen conditions. CSP16 owns coordinated policy apply. CSP16.1 owns explicit baseline promotion. Configured source updates remain active under existing authority and pin rules.</p>
 

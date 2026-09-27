@@ -1,0 +1,26 @@
+Linting code...
+internal/kvconnection/kvtest/tls.go:62:23: Error return value of `socket.Close` is not checked (errcheck)
+				defer socket.Close()
+				                  ^
+internal/kvconnection/kvtest/tls.go:80:23: Error return value of `target.Close` is not checked (errcheck)
+				defer target.Close()
+				                  ^
+internal/config/file_manifest.go:33:1: cyclomatic complexity 31 of func `(*Config).FileManifest` is high (> 30) (gocyclo)
+func (c *Config) FileManifest(version string) (productpaths.FileManifest, error) {
+^
+internal/kvconnection/kvtest/tls.go:49:29: net.Listen must not be called. use (*net.ListenConfig).Listen (noctx)
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	                           ^
+internal/kvconnection/kvtest/tls.go:26:1: exported: exported function Certificate should have comment or be unexported (revive)
+func Certificate(t *testing.T, expired bool) (tls.Certificate, string) {
+^
+internal/kvconnection/kvtest/tls.go:47:1: exported: exported function Relay should have comment or be unexported (revive)
+func Relay(t *testing.T, backend string, certificate tls.Certificate) (string, <-chan bool, *atomic.Int64) {
+^
+6 issues:
+* errcheck: 2
+* gocyclo: 1
+* noctx: 1
+* revive: 2
+exit status 1
+make: *** [lint] Error 1

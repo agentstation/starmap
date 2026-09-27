@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "source": "uncommitted prepared checkout",
+  "log": "/tmp/csp12-preparation-lint-after.log",
+  "files": [
+    "internal/config/file_manifest.go",
+    "internal/kvconnection/kvtest/tls.go"
+  ],
+  "manifest_race_results": {
+    "pass": 15
+  },
+  "note": "goago is not a module tool in Starport; repository golangci-lint passes"
+}

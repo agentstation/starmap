@@ -1,0 +1,18 @@
+review still running: codex elapsed=60s pid=78663 cpu=0.4s/60s(1%) rss=160M state=S
+review still running: claude elapsed=60s pid=78714 cpu=0.9s/60s(1%) rss=251M state=S
+review still running: claude elapsed=120s pid=78714 cpu=0.4s/60s(1%) rss=260M state=R
+autoreview target: branch
+branch: detached
+gate: pre-pr (configured cadence: pre-pr)
+profile: auto
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=6.85, opus5=8.43
+reviewers: codex model=gpt-6-sol thinking=high, claude model=claude-opus-5-5 thinking=high
+tools: on
+web_search: on
+ref: 8122081e0494648fb1e356647053dd870a05fb1c
+trufflehog: clean (3.9s)
+bundle: 274024 bytes; review passes: 1
+autoreview panel clean: no accepted/actionable findings reported
+overall: patch is correct (0.69)
+Panel review complete. claude model=claude-opus-5-5 thinking=high: 0 finding(s), codex model=gpt-6-sol thinking=high: 0 finding(s).
