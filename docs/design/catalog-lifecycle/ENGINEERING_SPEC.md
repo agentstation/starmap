@@ -4343,8 +4343,9 @@ Pinned valuation, recoverable required settlement, idempotent slot release, and 
 Video jobs and batches share one account-level outstanding-work bound.
 Unbounded work must still reserve and release its own slot. Otherwise, its completion can reduce another job's count.
 
-CSP12.2 must replace anonymous increments and decrements with durable claims bound to the account, operation, and gateway job ID.
+Durable claims replace anonymous increments and decrements. Each claim binds the account, work kind, and gateway job ID.
 Claim creation and count changes require one atomic operation. Exact retries must preserve the original result.
+
 A released claim cannot become active through a delayed reserve retry.
 Unknown write outcomes require reconciliation against the same claim identity. They cannot authorize another decrement.
 
@@ -4352,3 +4353,29 @@ Release must remain recoverable after process loss and must not depend on option
 A batch and a video must retain their common account bound through this change.
 Existing counters cannot prove which jobs own their values. Populated-state migration must use the recovery rules before enabling new admission.
 The required evidence includes lost acknowledgements, concurrent release, restart, and an unbounded batch beside an active video.
+
+
+### Durable slot implementation
+
+Consumer `f5788320` uses one claim repository for videos and batches.
+A native conditional batch commits each claim, account count, and history marker together.
+Exact reservation retries preserve capacity. Repeated releases cannot decrement another job's count.
+Released claims remain closed. Unknown claims cannot authorize a release.
+
+Job and batch records use schema version 2 and retain their claim IDs.
+The counter retains its existing key with a versioned value, which older scalar writers reject.
+Legacy scalar counters and schema 1 records require migration. CSP13 owns that populated-state procedure.
+Missing counts or history markers refuse admission when retained ownership exists. Complete storage loss still requires the independent recovery authority.
+
+Video polling and the existing sweep retry slot release independently of optional accounting.
+A batch records RunFinished only after its admitted lines drain and its final outcome persists.
+A cancelled state alone cannot release its slot. A later batch read retries release after a lost acknowledgement.
+Batch replacement binds the complete caller-observed record and preserves completed ownership fields.
+
+The [component proof](../../plans/proof/starport-production-catalog/csp12.2/slot-claims-2026-09-27/verification.json) records real-storage concurrency, interrupted writes, duplicate IDs, and Badger close/reopen.
+Claims have no automatic expiry. Safe collection still requires a qualified recovery and replay horizon.
+Unconfirmed claims without job records, complete recovery enumeration, and automatic recovery of unread finished batches remain open.
+Pinned valuation and required budget settlement also remain incomplete. Slot release does not refund required spending reservations.
+
+Claim retries use stored identities. Separate client submissions create new identities.
+This component does not deduplicate inbound Idempotency-Key values.

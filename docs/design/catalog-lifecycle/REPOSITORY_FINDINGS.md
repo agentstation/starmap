@@ -4058,3 +4058,24 @@ The [submission proof](../../plans/proof/starport-production-catalog/csp12.2/asy
 The complete jobs and limits race suites pass 128 results without skips.
 The additional batch and production-video run passes 20 results without skips. Lint and affected-package vet pass.
 Durable claim identity, idempotent release, and settlement recovery remain open.
+
+
+## September 27 durable outstanding-work claims
+
+Consumer `f5788320` replaces anonymous job counters with durable claims shared by videos and batches.
+Repeated release previously decremented another job's capacity. The regression failed on memory, Badger, and Valkey.
+A native conditional batch now commits the claim, count, and account marker together.
+
+The [claim proof](../../plans/proof/starport-production-catalog/csp12.2/slot-claims-2026-09-27/verification.json) retains the failing regressions and source hashes.
+It also records repaired read races during concurrent initialization and release.
+Final jobs and claim race checks pass 156 results. Pure-Go checks pass 77 results.
+Both runs have zero skips. The broader application race run exceeded its four-minute limit in existing speech tests.
+
+Video slot release retries after optional accounting and interrupted acknowledgements.
+Batch cancellation retains its slot until admitted lines finish. A later read can recover an interrupted release.
+Batch compare-and-swap now binds the complete observed record, so stale changes cannot erase ownership progress.
+Legacy counters and old record schemas require migration. The new format cannot claim a complete upgrade path before CSP13.
+
+Claims without confirmed job records still require recovery. The video sweep still has incomplete enumeration, and batch recovery still depends on access.
+Durable required settlement, pinned valuation, replay horizons, process loss, failover, and the PostgreSQL witness remain unqualified.
+This component does not complete CSP12.2.

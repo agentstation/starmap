@@ -351,3 +351,17 @@ The full suite passes 4,825 results and skips 71. Eight packages skip.
 
 These tests do not qualify video billing or required settlement.
 Pinned valuation, durable settlement, idempotent slot release, recovery enumeration, and provider reconciliation remain required.
+
+
+## Durable slot claims component
+
+Consumer `f5788320` binds video and batch slots to durable claim IDs.
+Repeated reserve and release operations preserve account counts. Released claims cannot become active through a delayed retry.
+Video release retries independently of optional reporting. Batch cancellation retains its slot until admitted lines finish.
+
+The [claim proof](../../plans/proof/starport-production-catalog/csp12.2/slot-claims-2026-09-27/verification.json) records 156 jobs and claim race results and 77 pure-Go results without skips.
+The broad race run remains incomplete because the application package exceeded four minutes in existing speech tests.
+The proof separates earlier broad results from final storage-format qualification.
+
+Slot claims do not settle spending reservations or supply missing provider usage.
+Pinned valuation, required settlement, orphan resolution, complete enumeration, retention, and populated-state migration remain required.
