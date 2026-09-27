@@ -3938,3 +3938,30 @@ The [Cohere pricing FAQ](https://cohere.com/pricing) counts billing chunks as do
 The [Cohere API reference](https://docs.cohere.com/v2/reference/rerank) describes document truncation.
 These facts do not yet establish the complete supported billing bound. Cohere strict admission remains required and incomplete.
 The local workspace dependency also remains unpublished. No result establishes final CSP12.2 or released-pair qualification.
+
+
+## September 27 speech budget admission
+
+Starmap `3635aa986` declares character-priced speech for TTS-1 and TTS-1-HD.
+The previous catalog marked their output as text. The initial production probe returned HTTP 400 before provider dispatch.
+The corrected modality produces speech endpoints and removes unsupported chat endpoints.
+Starport `7326c120` reserves catalog-defined character charges through the shared admission path.
+
+The [component proof](../../plans/proof/starport-production-catalog/csp12.2/speech-billing-2026-09-27/verification.json) records twelve production cases and their parent result.
+Cases cover Unicode, combining marks, whitespace, the maximum input, excess input, capacity refusal, absent budgets, token uncertainty, and response failures.
+Empty completed audio retains its charge. An interrupted download retains uncertain capacity.
+Usage capture preserves input characters, unknown tokens, measured zero, and invalid measurements.
+
+The audit found a shallow character-price copy in reconciliation. Its regression test failed before the copy repair.
+
+Producer catalog race checks pass 1,361 results. Reconciler race checks pass 689 results.
+Consumer race checks pass 63 results and skip four. Pure-Go checks pass 50 results and skip four.
+The complete consumer suite passes 4,598 results and skips 133. Skips remain unqualified.
+
+The [TTS-1 model page](https://developers.openai.com/api/docs/models/tts-1) supplies its price and modalities.
+The [TTS-1-HD model page](https://developers.openai.com/api/docs/models/tts-1-hd) supplies its character price.
+The [speech API](https://developers.openai.com/api/reference/cli/resources/audio/subresources/speech/methods/create) states the 4,096-character input limit.
+The source review date is September 27, 2026.
+
+The code-point interpretation follows public character pricing and JSON string semantics. It is an inference without provider invoice verification.
+No live paid call occurred. The unpublished workspace dependency and remaining CSP12.2 contracts still require qualification.

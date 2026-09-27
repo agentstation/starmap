@@ -262,6 +262,23 @@ Optional search-unit cost reports do not qualify this contract.
 
 Media, recognition variants, asynchronous recovery, shared-backend qualification, A47, the dependency pin, review, native CI, and merges remain open.
 
+## Character-priced speech component
+
+Starmap `3635aa986` adds schema 16 and character contracts for TTS-1 and TTS-1-HD.
+Starport `7326c120` reserves input characters before provider dispatch and retains charges independently of response conversion.
+Completed audio carries a request-derived count. Failed or truncated responses retain uncertain capacity.
+Required token budgets refuse this contract. Token consumption remains unknown.
+
+The [speech proof](../../plans/proof/starport-production-catalog/csp12.2/speech-billing-2026-09-27/verification.json) records 1,361 producer catalog race results and 689 reconciler race results.
+Consumer race checks pass 63 results and skip four Valkey cases. Pure-Go checks pass 50 results with the same four skips.
+The full consumer suite passes 4,598 results and skips 133. Lint, vet, goago, ownership, and modality checks pass.
+The proof preserves the routing failure, copy-isolation regression, fixture failure, source hashes, and raw test events.
+
+Public pricing names characters. The code-point interpretation follows JSON string semantics and remains an inference without invoice verification.
+No live paid provider call or shared-service qualification occurred in this component.
+Other speech billing units, images, transcription, video, recognition variants, and search-unit admission remain required.
+Asynchronous recovery, shared-backend qualification, A47, the published dependency, review, native CI, and merges remain open.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:

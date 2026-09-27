@@ -1,0 +1,701 @@
+{
+  "recorded_at": "2026-09-27T15:07:27.261232+00:00",
+  "task": "CSP12.2",
+  "status": "COMPONENT_PASS",
+  "go_version": "go1.27.1",
+  "environment": {
+    "GOTOOLCHAIN": "go1.27.1",
+    "consumer_GOWORK": "/tmp/csp122-billing.work"
+  },
+  "checks": [
+    {
+      "name": "before",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=3m ./internal/app -run TestProductionSpeechBudget",
+      "exit_code": 1,
+      "test_results": {
+        "fail": 7
+      },
+      "package_results": {
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/app/TestProductionSpeechBudget/measured_characters",
+        "github.com/agentstation/starport/internal/app/TestProductionSpeechBudget/unicode_code_points",
+        "github.com/agentstation/starport/internal/app/TestProductionSpeechBudget/HD_price",
+        "github.com/agentstation/starport/internal/app/TestProductionSpeechBudget/insufficient_capacity",
+        "github.com/agentstation/starport/internal/app/TestProductionSpeechBudget/unknown_tokens",
+        "github.com/agentstation/starport/internal/app/TestProductionSpeechBudget/provider_failure",
+        "github.com/agentstation/starport/internal/app/TestProductionSpeechBudget"
+      ],
+      "skipped_tests": [],
+      "source_timing": "Fail-before: wrong output modality prevents speech routing.",
+      "named_results_artifact": "before.jsonl.gz"
+    },
+    {
+      "name": "producer-focused",
+      "owner": "producer",
+      "command": "go test -json -count=1 -timeout=3m ./pkg/catalogs ./internal/embedded -run \"SpeechBilling|Payload.*Cache\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 14
+      },
+      "package_results": {
+        "pass": 2
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Before merge-isolation and price-only schema tests.",
+      "named_results_artifact": "producer-focused.jsonl.gz"
+    },
+    {
+      "name": "after",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=3m ./internal/app ./internal/catalog ./internal/proxy ./internal/providers/connectors -run Speech",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 12
+      },
+      "package_results": {
+        "pass": 4
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Initial six production cases and valuation tests.",
+      "named_results_artifact": "after.jsonl.gz"
+    },
+    {
+      "name": "boundaries",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=3m ./internal/app -run TestProductionSpeechBudget",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 13
+      },
+      "package_results": {
+        "pass": 1
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Final twelve production cases.",
+      "named_results_artifact": "boundaries.jsonl.gz"
+    },
+    {
+      "name": "report",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=3m ./internal/proxy -run Speech",
+      "exit_code": 1,
+      "test_results": {
+        "fail": 4,
+        "pass": 1
+      },
+      "package_results": {
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/proxy/TestSpeechUsageCapture/measured_input",
+        "github.com/agentstation/starport/internal/proxy/TestSpeechUsageCapture/measured_zero",
+        "github.com/agentstation/starport/internal/proxy/TestSpeechUsageCapture/invalid_input",
+        "github.com/agentstation/starport/internal/proxy/TestSpeechUsageCapture"
+      ],
+      "skipped_tests": [],
+      "source_timing": "Test fixture omitted adapter registration. Preserved as fixture failure.",
+      "named_results_artifact": "report.jsonl.gz"
+    },
+    {
+      "name": "producer-race",
+      "owner": "producer",
+      "command": "go test -race -json -count=1 -timeout=5m ./pkg/catalogs ./internal/embedded",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 1361
+      },
+      "package_results": {
+        "pass": 2
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Final source for these packages except a schema-version comment. Reconciler repair has its own final race check.",
+      "named_results_artifact": "producer-race.jsonl.gz"
+    },
+    {
+      "name": "consumer-race",
+      "owner": "consumer",
+      "command": "go test -race -json -count=1 -timeout=4m ./internal/app ./internal/catalog ./internal/router ./internal/proxy ./internal/providers/connectors ./internal/usage -run \"Speech|UsageCapture|Media\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 63,
+        "skip": 4
+      },
+      "package_results": {
+        "pass": 6
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "github.com/agentstation/starport/internal/usage/TestAPricedMediaTurnCountsAgainstTheSpendBudget/valkey",
+        "github.com/agentstation/starport/internal/usage/TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/valkey",
+        "github.com/agentstation/starport/internal/usage/TestMediaUnitsSurviveTheRoundTrip/valkey",
+        "github.com/agentstation/starport/internal/usage/TestATextRecordReadsBackWithoutMedia/valkey"
+      ],
+      "source_timing": "Final consumer source. Four Valkey cases skip without a configured service.",
+      "named_results_artifact": "consumer-race.jsonl.gz"
+    },
+    {
+      "name": "copy-before",
+      "owner": "producer",
+      "command": "go test -json -count=1 ./internal/catalog/reconciler -run TestSpeechPricingCopyIsolation",
+      "exit_code": 1,
+      "test_results": {
+        "fail": 1
+      },
+      "package_results": {
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starmap/internal/catalog/reconciler/TestSpeechPricingCopyIsolation"
+      ],
+      "skipped_tests": [],
+      "source_timing": "Regression reproduces a shared character-price pointer in reconciliation.",
+      "named_results_artifact": "copy-before.jsonl.gz"
+    },
+    {
+      "name": "reconciler-race",
+      "owner": "producer",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/catalog/reconciler",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 689
+      },
+      "package_results": {
+        "pass": 1
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "source_timing": "Final reconciler source after copy repair.",
+      "named_results_artifact": "reconciler-race.jsonl.gz"
+    },
+    {
+      "name": "pure-go",
+      "owner": "consumer",
+      "command": "CGO_ENABLED=0 go test -json -count=1 -timeout=3m ./internal/catalog ./internal/router ./internal/providers/connectors ./internal/proxy ./internal/usage -run \"Speech|UsageCapture|Media\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 50,
+        "skip": 4
+      },
+      "package_results": {
+        "pass": 5
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "github.com/agentstation/starport/internal/usage/TestAPricedMediaTurnCountsAgainstTheSpendBudget/valkey",
+        "github.com/agentstation/starport/internal/usage/TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/valkey",
+        "github.com/agentstation/starport/internal/usage/TestMediaUnitsSurviveTheRoundTrip/valkey",
+        "github.com/agentstation/starport/internal/usage/TestATextRecordReadsBackWithoutMedia/valkey"
+      ],
+      "source_timing": "Final consumer source. Four Valkey cases skip without a configured service.",
+      "named_results_artifact": "pure-go.jsonl.gz"
+    },
+    {
+      "name": "consumer-full",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=5m ./...",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 4598,
+        "skip": 133
+      },
+      "package_results": {
+        "skip": 8,
+        "pass": 64
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "github.com/agentstation/starport/internal/account/TestAccountRepositoryRecordBounds/valkey",
+        "github.com/agentstation/starport/internal/account/TestAccountRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/account/TestEnsureDefaultIsIdempotent/valkey",
+        "github.com/agentstation/starport/internal/account/TestEnsureDefaultUnderConcurrentBoot/valkey",
+        "github.com/agentstation/starport/internal/account/TestDefaultAccountCannotBeDeleted/valkey",
+        "github.com/agentstation/starport/internal/account/TestRepositoryRejectsInvalidAccounts/valkey",
+        "github.com/agentstation/starport/internal/apikey/TestAPIKeyRepositoryRecordBounds/valkey",
+        "github.com/agentstation/starport/internal/apikey/TestAPIKeyRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/authmode/TestRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/authorization/TestAuthorizationTenantChurnCapacity",
+        "github.com/agentstation/starport/internal/authorization/TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "github.com/agentstation/starport/internal/authorization/TestRepositorySourceRealStoresAndLocalMutation/valkey",
+        "github.com/agentstation/starport/internal/authorization/revision/TestKVRevisionCommitsWithMutation/valkey",
+        "github.com/agentstation/starport/internal/cache/TestDefaultCacheMemoryBudget",
+        "github.com/agentstation/starport/internal/authorization/revision/TestKVRevisionConcurrentIndependentMutations/valkey",
+        "github.com/agentstation/starport/internal/cache/TestSharedCachePausedServiceDeadlineAndRecovery",
+        "github.com/agentstation/starport/internal/authorization/revision/TestRepositoriesPublishEveryAuthorizationMutation/valkey",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheRealService",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheURIAuthenticationAndDatabase",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheTLSWithRealService",
+        "github.com/agentstation/starport/internal/config/TestContainerRecipePersistence",
+        "github.com/agentstation/starport/internal/credentials/TestProviderCredentialRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestBudgetHistoryRollover/valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestBudgetHistoryDoesNotInventZero/valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestRetainedUsageCannotChangeEvidenceOrRefund/valkey",
+        "github.com/agentstation/starport/internal/presets/TestPresetRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestValkeyReservationAcrossProcesses",
+        "github.com/agentstation/starport/internal/presets/TestPresetRevisionHistoryAndRollback/valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestReservationContract/valkey",
+        "github.com/agentstation/starport/internal/presets/TestPresetRollbackNeedsATarget/valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestTeamBudgetHistoryHandoff/postgres-valkey",
+        "github.com/agentstation/starport/internal/limits/reservation/TestHolderCreationAndBudgetHistory/valkey",
+        "github.com/agentstation/starport/internal/providers/keyring/TestManagedMaterialValkeyOutageAndRecovery",
+        "github.com/agentstation/starport/internal/ratelimit/TestRateLimitRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityRequiresBothApprovals",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityFencesDelayedWrites/before-native-write",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityFencesDelayedWrites/after-native-write",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityClosedAndChangedEpoch",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetBootstrapPermission",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetInitialization",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/kv",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/sql",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/approval",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/closed-approval",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/row-security",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/unknown-table",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetInterruptedClaim",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetConcurrentInitialization",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesChangedIncarnation",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetSQLFailureRetainsOnlyRetryClaim",
+        "github.com/agentstation/starport/internal/storage/TestValueLifetimeSnapshot/valkey",
+        "github.com/agentstation/starport/internal/storage/TestTimeBoundStore/valkey",
+        "github.com/agentstation/starport/internal/storage/TestValkeyTLSIdentity",
+        "github.com/agentstation/starport/internal/storage/TestValkeyUsernamePassword",
+        "github.com/agentstation/starport/internal/storage/TestValkeyEffectiveConnectionOptions",
+        "github.com/agentstation/starport/internal/storage/TestValkeyURLDatabaseSelection",
+        "github.com/agentstation/starport/internal/storage/TestValkeyIncarnationAtomicContract",
+        "github.com/agentstation/starport/internal/storage/TestValkeyIncarnationRejectsReplacementBackend",
+        "github.com/agentstation/starport/internal/storage/TestValkeyDeploymentNamespace",
+        "github.com/agentstation/starport/internal/storage/TestValkeyDeploymentNotificationIsolation",
+        "github.com/agentstation/starport/internal/storage/TestValkeyStore",
+        "github.com/agentstation/starport/internal/storage/TestValkeyPubSub",
+        "github.com/agentstation/starport/internal/storage/TestBoundedStorageRead/valkey",
+        "github.com/agentstation/starport/internal/server/TestAuthorizationWarmRequestsAvoidStableReads/valkey",
+        "github.com/agentstation/starport/internal/server/TestAuthorizationUnknownAccountRefusesAdmission/valkey",
+        "github.com/agentstation/starport/internal/server/controllers/TestGatewayOverheadBenchmark",
+        "github.com/agentstation/starport/internal/usage/TestARecognizedDocumentCountsAgainstTheSpendBudget/valkey",
+        "github.com/agentstation/starport/internal/usage/TestARecognizedDocumentReportsItsPagesAndItsCost/valkey",
+        "github.com/agentstation/starport/internal/usage/TestANativelyReadDocumentCostsNothing/valkey",
+        "github.com/agentstation/starport/internal/usage/TestACachedReadIsRecordedAsCachedRatherThanFree/valkey",
+        "github.com/agentstation/starport/internal/usage/TestTheExtractionDurationSurvivesTheRoundTrip/valkey",
+        "github.com/agentstation/starport/internal/usage/TestATurnThatAttachedNoDocumentReportsNoExtraction/valkey",
+        "github.com/agentstation/starport/internal/server/TestSDKCanonicalRemovalAfterSuccessfulInference",
+        "github.com/agentstation/starport/internal/usage/TestRecognitionMeasurementsPersistWithUnknownTotal/valkey",
+        "github.com/agentstation/starport/internal/usage/TestAPricedMediaTurnCountsAgainstTheSpendBudget/valkey",
+        "github.com/agentstation/starport/internal/usage/TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/valkey",
+        "github.com/agentstation/starport/internal/usage/TestMediaUnitsSurviveTheRoundTrip/valkey",
+        "github.com/agentstation/starport/internal/usage/TestATextRecordReadsBackWithoutMedia/valkey",
+        "github.com/agentstation/starport/internal/usage/TestRepositoryPutAndListByKey/valkey",
+        "github.com/agentstation/starport/internal/usage/TestListByKeyOrdersNewestFirstAcrossBackends/valkey",
+        "github.com/agentstation/starport/internal/usage/TestListFiltersAndCursorPagination/valkey",
+        "github.com/agentstation/starport/internal/usage/TestAdminListSpansKeys/valkey",
+        "github.com/agentstation/starport/internal/usage/TestAggregateCountersAccumulate/valkey",
+        "github.com/agentstation/starport/internal/usage/TestCostlessRecordCarriesReasonNotZero/valkey",
+        "github.com/agentstation/starport/internal/usage/TestRetentionTTLApplied/valkey",
+        "github.com/agentstation/starport/internal/usage/TestAccountCounterSumsEveryKeyItHolds/valkey",
+        "github.com/agentstation/starport/internal/usage/TestTeamCounterSumsEveryAttributedKey/valkey",
+        "github.com/agentstation/starport/internal/usage/TestListByAccountSpansEveryKey/valkey",
+        "github.com/agentstation/starport/internal/usage/TestListFiltersByGuardrailVerdictAndKeepsCacheFields/valkey",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapConcurrentExactPublication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/before-sql",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/after-sql",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/before-kv",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/after-kv",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRequiresExplicitCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionHonorsLimitsAndRequiredGenerations",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCountsGenerationsSeparatelyFromReceipts",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionDryRunPreservesPendingRecovery",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionResumesInterruptedCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRefusesUnownedStaging",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionBoundsCommittedSnapshots",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionProtectsPinnedGeneration",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRecoversInterruptedUploadAndDeletion",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionFencesExpiredMaintenance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionConcurrentReadersAndCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCapacityRefusesWithoutMovingHead",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRejectsOverlappingDeletionRecord",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/current",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/accepted",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/rollback",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/inventory-missing",
+        "github.com/agentstation/starport/internal/catalog/TestFleetAcceptanceRetainsDistinctRollbackGenerations",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreCompleteKeyLossRequiresRecovery",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreNativePublication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreRefusesExpiredGrant",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreSeparateProcessTakeover",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreMissingSelectedPublicationIsNotAnEmptyStore",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreAcceptanceUsesOriginalGrant",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreNamespaceAndMalformedDescriptor",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLeaseExpiresDuringSelection/publication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLeaseExpiresDuringSelection/acceptance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLostHeadCannotBootstrapAgain",
+        "github.com/agentstation/starport/internal/catalog/TestFleetMigrationRequiresSameRecoveryIdentity",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeRejectsUnapprovedBackend",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimePreservesOriginalGrantThroughAcceptance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeLiveTakeoverAcceptance",
+        "github.com/agentstation/starport/internal/app/TestSharedCacheCompositionUsesSeparateService",
+        "github.com/agentstation/starport/internal/app/TestSharedCacheCanonicalDeploymentIsolation",
+        "github.com/agentstation/starport/internal/app/TestDeploymentIsolationIncludesGatewayRecords",
+        "github.com/agentstation/starport/internal/app/TestInitializeFleetFreshStartup",
+        "github.com/agentstation/starport/internal/app/TestAppWithValkey",
+        "github.com/agentstation/starport/internal/app/TestSharedStartupDoesNotCreateLocalDatabases"
+      ],
+      "source_timing": "Final consumer source and final producer source.",
+      "named_results_artifact": "consumer-full.jsonl.gz"
+    },
+    {
+      "name": "lint",
+      "owner": "consumer",
+      "command": "make lint",
+      "exit_code": 0,
+      "source_timing": "Final source for checked packages",
+      "artifact": "lint.log.gz"
+    },
+    {
+      "name": "vet",
+      "owner": "consumer",
+      "command": "go vet ./...",
+      "exit_code": 0,
+      "source_timing": "Final source for checked packages",
+      "artifact": "vet.log.gz"
+    },
+    {
+      "name": "goago",
+      "owner": "producer",
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "source_timing": "Before reconciler repair",
+      "artifact": "goago.json.gz"
+    },
+    {
+      "name": "final-goago",
+      "owner": "producer",
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "source_timing": "Final source for checked packages",
+      "artifact": "final-goago.json.gz"
+    },
+    {
+      "name": "ownership",
+      "owner": "consumer",
+      "command": "CATALOG_DRIVEN_STARMAP_ROOT=/private/tmp/starmap-fleet-review-20260926 bash scripts/verify-catalog-driven-providers.sh",
+      "exit_code": 0,
+      "source_timing": "Final source for checked packages",
+      "artifact": "ownership.log.gz"
+    },
+    {
+      "name": "modalities",
+      "owner": "consumer",
+      "command": "bash scripts/verify-model-modalities.sh",
+      "exit_code": 0,
+      "source_timing": "Final source for checked packages",
+      "artifact": "modalities.log.gz"
+    },
+    {
+      "name": "doc-lint",
+      "owner": "plan",
+      "command": "technical-writing lint four edited documents --format text",
+      "exit_code": 1,
+      "artifact": "doc-lint.log.gz"
+    },
+    {
+      "name": "doc-lint-final",
+      "owner": "plan",
+      "command": "technical-writing lint four edited documents --format text",
+      "exit_code": 1,
+      "artifact": "doc-lint-final.log.gz"
+    },
+    {
+      "name": "doc-lint-verified",
+      "owner": "plan",
+      "command": "technical-writing lint four edited documents --format text",
+      "exit_code": 0,
+      "artifact": "doc-lint-verified.log.gz"
+    },
+    {
+      "name": "repository-prose",
+      "owner": "plan",
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "artifact": "repository-prose.log.gz"
+    },
+    {
+      "name": "repository-prose-final",
+      "owner": "plan",
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "artifact": "repository-prose-final.log.gz"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "before.jsonl.gz",
+      "raw_sha256": "a592641815a3f31563bc8fe75d3ba2cd7691181d6a9f89af244cd037ac4a3289",
+      "compressed_sha256": "d8a537c794ca9b4b22bbac13dd4eb714ccf0fe24ea43bc249d00c289a6002fc1"
+    },
+    {
+      "path": "producer-focused.jsonl.gz",
+      "raw_sha256": "109ddeea384759f8ca5b2fe489ef58576eda04f9b215ad3161fa55affb9a1498",
+      "compressed_sha256": "36ddc068b01d746b78f8f7d80c31f21d835a3e3c6b0d7b1b7b293616b3b46c54"
+    },
+    {
+      "path": "after.jsonl.gz",
+      "raw_sha256": "8bb9f648bc6fd0e67fa878abec1f5bfc491ef62ac4d2fe89d565ac560409f883",
+      "compressed_sha256": "d2d00d18c990ba3b886fbfb87f2f74f070b17d07c62a60abeec3a3b284c4700c"
+    },
+    {
+      "path": "boundaries.jsonl.gz",
+      "raw_sha256": "07aba6c555fefabc2784de1db669aebc1595b91afdc3a4899c83a9edd800f09b",
+      "compressed_sha256": "063dc2608d68c27d593db664fd803c06b58ba42290a2ac8da36aeeff96ebb0fe"
+    },
+    {
+      "path": "report.jsonl.gz",
+      "raw_sha256": "fc7ca1c5447b71a3a671fbd66e3c948000a3684f41cabec1f37fa2677d858193",
+      "compressed_sha256": "24b33884674f2d3d4f51896578c75066cde4dcb3427eac2ee7e7013a98613fd6"
+    },
+    {
+      "path": "producer-race.jsonl.gz",
+      "raw_sha256": "e4e728e949bffcb103b84979da9f66077bed8c09cbf98c4d8a78f621bd9f8775",
+      "compressed_sha256": "28aa8ada1e45feb4a11dc8a5d7e6854777e367dad1b361bb1c67b98d95bdb63a"
+    },
+    {
+      "path": "consumer-race.jsonl.gz",
+      "raw_sha256": "abf42315b13b277ff2208731855cc0500150cf6d6bcb2fe5f6ed0870f94be93f",
+      "compressed_sha256": "ad42ff4343025e80cb09f57a399519663d07e56855896148c5c003664b78bb3b"
+    },
+    {
+      "path": "copy-before.jsonl.gz",
+      "raw_sha256": "89a7bb560d9b2ebdee2466669df2f48fab534a1bad1c1800ab16532f4b684145",
+      "compressed_sha256": "d8f475f245c16454634c58ff192b58570fc9e36bef6866c3bd1e90e156282be6"
+    },
+    {
+      "path": "reconciler-race.jsonl.gz",
+      "raw_sha256": "c562b62eac1df631b8cee059037be6997d8ade81813ffdb7c3d7553ede30a63e",
+      "compressed_sha256": "886ae9010b183358c2d4cc2ebfc8e7ce5c2156b4de8cb00a910fc8c1ce857c04"
+    },
+    {
+      "path": "pure-go.jsonl.gz",
+      "raw_sha256": "2b26845b926ebb08df604d748db26fffabf4e20efaee0077ad1e7f3e45cab2e6",
+      "compressed_sha256": "14eafddf53368f2c76d2a40831b6136bf881a60cf3cefbaa9141d1fab5084323"
+    },
+    {
+      "path": "consumer-full.jsonl.gz",
+      "raw_sha256": "9ed269209fa558cd53f82e523a927a773a3e2e1be50db9759777c69b1806a8e3",
+      "compressed_sha256": "39ab49acb4898ba3b176340baa8555e9c275263a4368c79e5cd48b1df26db7d7"
+    },
+    {
+      "path": "lint.log.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "compressed_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "vet.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "goago.json.gz",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "compressed_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    {
+      "path": "final-goago.json.gz",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "compressed_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    {
+      "path": "ownership.log.gz",
+      "raw_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19",
+      "compressed_sha256": "622beb4f11d3ebd11a20b7a12a7b6658f30bd20db8d9cf07e35c32d2bf693d57"
+    },
+    {
+      "path": "modalities.log.gz",
+      "raw_sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a",
+      "compressed_sha256": "3738b2d3c25d14e3da51f208030a04c8450ad39d5ccfba1461f9ad2b4c7d6be1"
+    },
+    {
+      "path": "doc-lint.log.gz",
+      "raw_sha256": "d4092230cd7aece8ff81b4210c3c356965206fb855fa0858577917b4c6dd3804",
+      "compressed_sha256": "1762ff73dde756a841bbf8ed6296331c2381a5a6ceb4b09b1c7c545f3bcce08a"
+    },
+    {
+      "path": "doc-lint-final.log.gz",
+      "raw_sha256": "859da2865ad923e814bf11cc7702ed159f40ab4e95ab6944b36145d753a362f8",
+      "compressed_sha256": "be9be8089d3c389f251ae0b96a0b37eb55a7c1259655bbffdf28baf6d7c38e62"
+    },
+    {
+      "path": "doc-lint-verified.log.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "compressed_sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    },
+    {
+      "path": "repository-prose.log.gz",
+      "raw_sha256": "ed8e1b3a421ad6117d12e7d3d6cb8ae956fd9dacaf13d3d1cc38aaabe2cb59e7",
+      "compressed_sha256": "c095f9d74076a36feedad9c6b72aec1187f506f3c59d6f10db8b819baf59e404"
+    },
+    {
+      "path": "repository-prose-final.log.gz",
+      "raw_sha256": "9407be473809590228cb558895c9d30c529698698f399b9efe9f72b9b26aa4b1",
+      "compressed_sha256": "20c630c7c15818b9936821d5017dc28004f9067b41571761422e45cb58ce5d82"
+    }
+  ],
+  "producer": {
+    "worktree": "/private/tmp/starmap-fleet-review-20260926",
+    "branch": "codex/budget-qualification",
+    "head": "3635aa9868ccd84989ad634d1f7332055d0a3b71",
+    "files": {
+      "internal/catalog/reconciler/merger.go": "ad968d3de8fc98795e93655c0aac9e4bbaf4871aba531d42ca5c9ffee139d1f3",
+      "internal/catalog/reconciler/speech_billing_test.go": "ee29441fddd7e57fc0f5a7623e68e79e6aae1e5e2a713a9956e0691431465d85",
+      "internal/embedded/catalog/authors/openai/models/tts-1-hd.yaml": "111a198751b295b76b526c980bfe30db4833afe6a85a410e1591ea075e64e1db",
+      "internal/embedded/catalog/authors/openai/models/tts-1.yaml": "42991ff7cd8e0c4ea02f54eb3367042827cafa939c3fd6b84d4e5dd3f400d8f8",
+      "internal/embedded/catalog/endpoints.yaml": "e62d0b94c645137f4718de8bef89aaa1be00154d9811a5052a16ec67fee44ca6",
+      "internal/embedded/catalog/generation-manifest.json": "7527d227e0fdf27d72dd4eaa08d7c4f52c810ebc5dc40f52046dd29bc08e118e",
+      "internal/embedded/catalog/generation-payload.json.gz": "42c585f72a415c8c5aca4e4a9a25bfc2e314b9b369d7c8c77ce7c20f588033e3",
+      "internal/embedded/catalog/generation.json": "59577d9594c2f00a0be523ad6eb22edd620af4a9e6b60ab92b1973578f6aea65",
+      "internal/embedded/catalog/providers/openai/models/tts-1-hd.yaml": "65d0e912be5180b710293e77abc79c3870b9e91cc58ad43cdf04462823b49971",
+      "internal/embedded/catalog/providers/openai/models/tts-1.yaml": "a286af8b8f288cdb636d04a8c5fa0979210a3e151331a866a2ba8542c1810b51",
+      "internal/embedded/speech_billing_test.go": "f9def7ba553e67fd7c2e09b01c5c1d8bfc783c7e892aaf93080b57da536efe0c",
+      "pkg/catalogs/copy.go": "97022fbf99ef1d36046e5d9bfa1f9d309ab84bc6af7a8637a871350c802d90d7",
+      "pkg/catalogs/generation_manifest.go": "6ddd0d1eaf725f6f20a52941065e4732286f4064351f70cae021c5f8d0178bf5",
+      "pkg/catalogs/model_billing.go": "1c40dd0855a88c39a398d10a9ecb475d7c3e15eed1c6f742630aee7714019ca0",
+      "pkg/catalogs/model_pricing.go": "3410b8c8224120dd82f17479649b3fda3ffc0477356c646c3d72a4c80b305116",
+      "pkg/catalogs/model_pricing_validation.go": "4c336efc462549d5b510691bcabaf13e6918672c5d3ab33f1bc5b193ee3397a8",
+      "pkg/catalogs/payload.go": "2d0cb308756a583a9a6e17af2fd613885ff7359dae641df21949080f200a956c",
+      "pkg/catalogs/payload_cache_test.go": "1099d45f05fd2284e0ea7775a4ec48bdd1f8e13d03c9518374823325be2ee251",
+      "pkg/catalogs/payload_decode.go": "a0f2fc7eab7b9b4eaca0682358870c37c844a4f2f08808458100079942467f25",
+      "pkg/catalogs/speech_billing.go": "3c60b5e3ddeeaa393fe5c84b50396fc5aae1a87d770f0b0bd843b4d7fd9acf95",
+      "pkg/catalogs/speech_billing_test.go": "93877717975a22b39bb5c643ada406cb6dd00ecfa541080f16332b59ebbddc9e"
+    },
+    "published": false
+  },
+  "consumer": {
+    "worktree": "/private/tmp/starport-fleet-review-20260926",
+    "branch": "codex/atomic-budget-admission",
+    "head": "7326c1207f8a1deb5044a2d0878a01e8730bea53",
+    "files": {
+      "internal/app/budget_speech_test.go": "a00669430ad05cf8ca2b3a47887d6a6793f15c83cbcc41b14c45ace73f62e2c7",
+      "internal/catalog/speech_billing.go": "3cbf0c24425e702c004ebcc256f03c7bb19842dae7336701cf0d4b8684618b6f",
+      "internal/catalog/speech_billing_test.go": "6950bf65fb51879ac92140518fb4ac3d9192e58e15f390cd787a7a7688ac0e08",
+      "internal/inference/types.go": "ee91e22691d6efd1d1aae52afca5b0f47467d54bd421f4c01b92fe770eebe3ed",
+      "internal/providers/connectors/media_adapter.go": "8025091c815e1a37547cd156a7f7a2417b78a189064471cc7d3cd1a6b4b1c6b6",
+      "internal/providers/connectors/media_transport.go": "0ddda640be786f74e7b754971075caca0c0912ea6a7157bf0c3949e64579988d",
+      "internal/providers/connectors/openai_media.go": "756b0712c280260850d59379f5a64e3ba0eb1b870128732368708208763d9c45",
+      "internal/proxy/speech_cost.go": "18250dfb946759ee248803fca3af8db26d45e747059122e36a442bcb8e6eb84f",
+      "internal/proxy/speech_cost_test.go": "dea538ed8780f6869cabf6ad37c89a835226f64d4678b138ae51a6f2dec135b9",
+      "internal/proxy/usage_capture.go": "78693d24c1dfbb75c006df6bdb918255f2321962c221cd5063dbda78263a971b",
+      "internal/router/budget_speech.go": "024a6746af3f6d7c5b5848112fa6c04f76ae5ead2b3fbb3c0f0f3cdcbdd7e97b",
+      "internal/router/media.go": "e243f2c6d6ab6636edc5861f92c31e5dd33846b1b2fa9e4da5e448739ca4687e",
+      "internal/usage/model.go": "93282ce104591e8d5f88958cb104853dbf7cb4315ad2af071d27967de7ab65f8"
+    },
+    "published": false
+  },
+  "sources": [
+    {
+      "url": "https://developers.openai.com/api/docs/models/tts-1",
+      "verified_at": "2026-09-27",
+      "fact": "Text input, audio output, USD 15 per million input characters."
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/tts-1-hd",
+      "verified_at": "2026-09-27",
+      "fact": "USD 30 per million input characters."
+    },
+    {
+      "url": "https://developers.openai.com/api/reference/cli/resources/audio/subresources/speech/methods/create",
+      "verified_at": "2026-09-27",
+      "fact": "Maximum input length 4096 characters. Speech endpoint returns audio bytes."
+    },
+    {
+      "url": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "verified_at": "2026-09-27",
+      "fact": "JSON string instances are sequences of Unicode code points. The code-point billing interpretation is an inference from the advertised character unit and input schema, not an observed invoice counter."
+    }
+  ],
+  "behavior": [
+    "Schema 16 declares complete synchronous character billing, an explicit optional request fee, and maximum input characters.",
+    "TTS-1 and TTS-1-HD declare input-character prices and correct audio output modality. Generated endpoint projection no longer advertises chat for these offerings.",
+    "Starport reserves catalog-defined character charges before dispatch. The contract counts Unicode code points including whitespace and combining marks.",
+    "Required token budgets refuse because the character contract does not establish token consumption.",
+    "Completed successful HTTP responses carry a request-derived character count. No claim is made that the provider reported per-call billing usage.",
+    "Empty completed audio refuses the result but retains settlement. Failed and truncated responses retain uncertain capacity.",
+    "Optional usage reports preserve known character counts, unknown token consumption, and exact decimal valuation.",
+    "Producer copies, merges, payload round trips, schema rejection, and reconciler copies preserve the character contract without shared mutable price pointers."
+  ],
+  "manual_audit": {
+    "status": "PASS",
+    "scope": [
+      "catalog-owned prices and bounds",
+      "schema compatibility and copy isolation",
+      "production Badger/SQLite admission and provider dispatch",
+      "response failure and incomplete body retention",
+      "optional usage known/unknown distinction",
+      "no provider-specific branch in Starport valuation",
+      "unrelated CSP18 changes excluded"
+    ],
+    "not_a_pre_pr_review": true
+  },
+  "qualification_limits": [
+    "Local workspace uses unpublished producer source. Exact published dependency, native CI, structured review, and protected merges remain required.",
+    "Only the declared character-priced speech contract is covered. Token-priced speech and the other media, recognition, and search-unit contracts remain open.",
+    "Provider Unicode billing semantics are inferred from public character pricing and JSON input semantics. No provider invoice or per-call usage counter was verified.",
+    "No live paid calls occurred. The provider in production-path tests is a local HTTP server.",
+    "Valkey tests without service configuration remain skipped and unqualified. Shared-backend process/failover tests, asynchronous recovery, and A47 remain required.",
+    "Shell guards prove structural ownership and modality conditions. They do not replace runtime tests."
+  ],
+  "generation": "speech-billing-0de20d10ac7cead3475c3a1ffc403093486a3d57a8b4158bc4789058b835efaf",
+  "plan_maintenance": {
+    "ledger_rows": 40,
+    "done": 26,
+    "in_progress": [
+      "CSP12.2"
+    ],
+    "unique_ids": 97,
+    "links_checked": 154,
+    "artifacts_verified": 22,
+    "resume_words": 291,
+    "ledger_and_ids_preserved": true,
+    "cold_resume": "PASS: current source, task, next action, running state, remaining criteria, and authorization boundaries are explicit.",
+    "plan_bytes": 130367,
+    "size_exception": "The existing plan retains forty task contracts and historical execution entries. This component refresh replaces the resume state, preserves all task rows and IDs, and does not compact historical evidence."
+  },
+  "documentation": {
+    "edited_files": 4,
+    "final_diagnostics": 0,
+    "repository_gate_diagnostics": 137,
+    "repository_gate_scope": "Historical and unrelated prose outside the four edited documents. Preserved, not counted as a pass.",
+    "human_conformance": "PASS: quantities, units, source inference, skipped cases, task ownership, and remaining qualification preserved."
+  },
+  "next_media_review": {
+    "reviewed_at": "2026-09-27T15:13:05.326930+00:00",
+    "owner": "CSP12.2 image billing and optional cost reporting",
+    "source_facts": [
+      {
+        "url": "https://deepinfra.com/black-forest-labs/FLUX-1.1-pro/api",
+        "fact": "USD 0.04 per image. OpenAI-compatible generation example explicitly sends size and n."
+      },
+      {
+        "url": "https://deepinfra.com/black-forest-labs/FLUX-1-schnell/api",
+        "fact": "USD 0.0005 multiplied by width/1024, height/1024, and iterations. A flat per-image price alone is insufficient."
+      },
+      {
+        "url": "https://deepinfra.com/black-forest-labs/FLUX-2-klein-9b",
+        "fact": "USD 0.015 multiplied by width/1024 and height/1024. The documented native interface defaults dimensions to 1024 with bounds 128..1920."
+      }
+    ],
+    "local_evidence": [
+      "Starmap internal/providers/openai/client.go applyOpenAICompatibleMetadataPricing stores PerImageUnit directly in Operations.ImageGen.",
+      "Starmap preserves default_width, default_height, and default_iterations only as extension metadata.",
+      "Embedded DeepInfra FLUX-1-schnell stores ImageGen=0.0005 with defaults 1024,1024,1. Those defaults do not define a general flat image price.",
+      "Embedded DeepInfra FLUX-1.1-pro stores ImageGen=0.04, consistent with its documented flat unit.",
+      "Starport internal/providers/connectors/openai_media.go GenerateImages uses the OpenAI-compatible image endpoint. Image request and response contracts still lack required charge projection."
+    ],
+    "next_action": "Represent flat-image and resolution/iteration-dependent billing explicitly before enabling strict image admission. Verify defaults, count handling, request options, edits, and settlement evidence. Preserve unknown token consumption. OpenAI token-priced images require their own complete unit and bound contract.",
+    "implemented": false,
+    "qualification": "Source review only. No live provider or runtime image qualification."
+  }
+}

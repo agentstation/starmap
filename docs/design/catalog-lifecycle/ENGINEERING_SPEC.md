@@ -4250,3 +4250,26 @@ Unknown usage retains uncertain reserved capacity.
 The embedded catalog declares verified token contracts for Voyage rerank-2.5 and rerank-2.5-lite.
 Cohere search-unit admission still requires a complete charge and bound contract.
 Its optional usage reports do not establish strict admission support. Media and asynchronous recovery remain required under CSP12.2.
+
+
+### Character-priced speech admission
+
+Schema 16 adds `billing.speech` with the `unicode_code_points` basis, `max_input_characters`, and an explicit `request_charge` boolean.
+`pricing.operations.character_input` supplies the price per input character. This complete contract excludes audio-output charges.
+A provider with other billed units requires a separate complete contract. A character count does not establish token consumption.
+
+Starport counts the submitted Unicode code points, including whitespace, punctuation, and combining marks.
+Required spend admission reserves that count and any declared request fee before provider dispatch.
+Input beyond the catalog limit refuses strict admission. Required token budgets refuse this contract because token consumption remains unknown.
+Confirmed absence of required budgets preserves ordinary provider access.
+
+The connector records input length after a complete successful HTTP response. This measurement comes from the submitted request, not provider-reported usage.
+An empty completed audio response retains its charge and refuses delivery as a successful result.
+A failed or incomplete response retains uncertain reserved capacity. Response conversion cannot refund a provider attempt.
+
+Optional usage records preserve character counts and unknown token consumption. Their cost uses the request's catalog snapshot.
+
+TTS-1 and TTS-1-HD declare character pricing and a 4,096-character input limit.
+Their catalog output modality is audio. Their generated endpoints include speech and exclude chat.
+The code-point interpretation follows published character pricing and JSON string semantics. Provider invoice verification remains absent.
+Token-priced speech, other media contracts, and asynchronous settlement remain open under CSP12.2.
