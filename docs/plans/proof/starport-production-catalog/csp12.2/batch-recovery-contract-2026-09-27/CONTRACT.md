@@ -81,3 +81,14 @@ Add contract and production tests for these cases:
 Count provider calls and inspect durable reservations in production-path tests.
 Two services in one process do not replace the required process-loss and fleet qualification.
 CSP12.2 remains in progress until its complete matrix, A47, checks, review, dependency pin, and paired merges pass.
+
+
+## Claim implementation evidence
+
+Consumer `0683b733` implements the atomic claim and cancellation boundary.
+The original cancellation probe passes on memory, Badger, and Valkey. Claims retain input digests and request identities.
+Lost acknowledgment and concurrent claim checks pass without repeated dispatch.
+The [claim proof](../batch-line-claims-2026-09-27/verification.json) records exact scope and counts.
+
+The remaining contract still requires durable results, interrupted-run recovery, and process-loss qualification.
+The owner decision about untouched lines remains pending. Do not count the claim repair as complete batch recovery.

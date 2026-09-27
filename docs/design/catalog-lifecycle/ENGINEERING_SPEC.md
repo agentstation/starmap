@@ -4627,3 +4627,20 @@ Retain the private response through its original asset deadline. Retain its bill
 An audited correction procedure remains required. The current endpoint cannot overwrite a decision or remove a dispute fence.
 The [administrator recovery proof](../../plans/proof/starport-production-catalog/csp12.2/administrator-reconciliation-2026-09-27/verification.json) records local qualification and remaining work.
 It does not complete CSP12.2, A47, or fleet qualification.
+
+
+### Durable batch line claims
+
+Consumer `0683b733` adds batch schema 3 and line schema 1.
+
+Before invoking the line runner, atomically compare the current batch state and record the next sequential claim.
+The claim binds account, batch, ordinal, input digest, and request identity. The production runner uses that retained request identity.
+Batch updates cannot change the original caller, input file, endpoint, creation time, or claimed count.
+
+An acknowledged cancellation prevents subsequent claims across replicas. Previously admitted lines can finish.
+A failed or ambiguous claim acknowledgment permits no dispatch. A retained claim never grants permission to execute again.
+Claims do not expire automatically. Existing current-policy authorization and per-attempt budget admission remain mandatory.
+
+The [claim proof](../../plans/proof/starport-production-catalog/csp12.2/batch-line-claims-2026-09-27/verification.json) covers concurrent claim winners, cancellation through another worker, and failed write acknowledgments.
+Durable result references, interrupted-run recovery, and process-loss qualification remain incomplete.
+The restart-policy question about proven unstarted lines remains pending. CSP13 owns schema migration.

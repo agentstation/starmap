@@ -4367,3 +4367,20 @@ Four test results fail, including the parent test. No production repair accompan
 A durable line contract must own claim, dispatch identity, result references, cancellation, and restart state.
 The [repair contract](../../plans/proof/starport-production-catalog/csp12.2/batch-recovery-contract-2026-09-27/CONTRACT.md) defines the required boundaries and evidence.
 CSP12.2 owns this repair. The owner decision about continuing untouched lines after interruption remains pending.
+
+
+## CSP12.2 atomic batch claims: September 27, 2026
+
+Consumer `0683b733` repairs cancellation across workers through atomic batch-state and line-claim writes.
+The original failing probe now passes on memory, Badger, and Valkey without changing its expected dispatch count.
+Concurrent requests permit one claim winner. Failed or lost write acknowledgments permit no provider dispatch.
+The stored request identity survives repository reopen and cannot authorize another execution.
+
+The [claim proof](../../plans/proof/starport-production-catalog/csp12.2/batch-line-claims-2026-09-27/verification.json) records 540 package race results with one optional overhead skip.
+Production batch checks pass 18 results. Pure-Go checks pass 27 results, and the final race fault checks pass 18.
+Three repository scripts, targeted vet, Go policy, and changed prose pass.
+The first script attempt omitted the paired workspace and failed against the old producer dependency. Its corrected invocation passes.
+
+Batch schema 3 and line schema 1 preserve durable claims, not completed result recovery.
+Interrupted-run policy, durable results, process loss, fleet qualification, A47, and paired merges remain open.
+No additional paid generation ran.

@@ -483,3 +483,15 @@ Late conflicting evidence blocks original budget windows without changing the ac
 The [administrator recovery proof](../../plans/proof/starport-production-catalog/csp12.2/administrator-reconciliation-2026-09-27/verification.json) records 1,622 broad race results, 44 application results, and 45 pure-Go results.
 Two optional broad checks skipped. No additional paid generation ran.
 Complete audited correction, interrupted batches, the remaining matrix, full CSP12.2 qualification, A47, and paired merges.
+
+
+### Atomic batch claims
+
+Consumer `0683b733` persists each line claim before invoking the production runner.
+The same atomic write checks the current batch state. Cancellation through another replica prevents later claims.
+The retained claim binds input digest and request identity. It cannot authorize a second execution after restart or an ambiguous write acknowledgment.
+Current line authorization and per-attempt reservations remain mandatory.
+
+The [claim proof](../../plans/proof/starport-production-catalog/csp12.2/batch-line-claims-2026-09-27/verification.json) records native storage, production routes, fault handling, and pure-Go checks.
+Claims do not yet provide durable result recovery or automatic continuation after interruption.
+The owner decision about proven unstarted lines remains pending. Full matrix qualification remains required.
