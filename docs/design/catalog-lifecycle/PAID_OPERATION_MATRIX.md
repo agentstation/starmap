@@ -103,6 +103,25 @@ These failures block publication. Preserve their budgets and assertions while im
 The [dispatch proof](../../plans/proof/starport-production-catalog/csp12.2/provider-integration-2026-09-27/verification.json) retains failures, repairs, source hashes, and check limits.
 This work does not establish A47 or complete this matrix.
 
+## September 27 text billing integration
+
+Producer `d94b3cc63` adds schema 11 and an explicit text-chat billing contract for OpenAI `gpt-4o-mini`.
+Consumer `e7a93be1` reserves and settles its declared input, cached-input, and output charges.
+Missing usage detail retains uncertain capacity. Local budget exhaustion returns HTTP 402.
+Other offerings still need their own complete billing declarations.
+
+The [text billing proof](../../plans/proof/starport-production-catalog/csp12.2/text-billing-2026-09-27/verification.json) records 4,318 passing repository results and 133 skips.
+The repaired application race tests pass eighteen results. Final focused race tests pass 24 results.
+These checks use the local producer through `GOWORK`. The published dependency pin remains unqualified.
+
+The four earlier application failures no longer block this component.
+Their performance fixture now reserves against a $1 budget that covers its maximum sample count.
+A separate refusal test retains the original $0.001 budget and requires HTTP 402 with zero provider calls.
+This replaces the provisional fixture-preservation instruction above. Product budget policy and success assertions remain unchanged.
+
+The current bound uses full declared provider limits. Narrower request bounds and the remaining operation contracts still require qualification.
+Asynchronous settlement, real shared-backend evidence, overhead measurement, and A47 remain open.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:
