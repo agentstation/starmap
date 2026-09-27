@@ -2324,6 +2324,17 @@ A marker inside the same catalog KV namespace cannot establish prior use after t
 Unknown completion at a SQL/KV boundary requires recovery evidence, not a new embedded bootstrap.
 The protocol must not claim an atomic transaction across independent stores.
 
+The independent SQL row stores `bootstrap_allowed`, bound to the complete open recovery approval.
+Only explicit fresh initialization grants this permission. Schema migration defaults existing rows to denied.
+Closing or replacing approval clears the permission. Ordinary restart and approval cannot restore it.
+
+Stage the pending publication before consuming this permission through a conditional SQL update.
+Then publish through the native Valkey transaction with the original grant and exact predecessor.
+If consumption commits without a durable head, require controlled recovery. A completed native write retains its exact retry receipt.
+
+These operations remain outside inference requests. CSP13 owns recovery after an interrupted first publication and populated deployment adoption.
+The [bootstrap contract](../../plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/consumer-review-rescope/BOOTSTRAP_CONTRACT.md) defines each SQL/KV failure boundary.
+
 Accepted rollback history counts distinct generations. Input-only publications must not consume those history slots.
 Publication receipts retain their separate bounded retry window. Collection must protect both contracts.
 

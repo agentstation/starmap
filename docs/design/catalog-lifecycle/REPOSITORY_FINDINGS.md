@@ -3749,3 +3749,25 @@ D41 permits the binary-upgrade repair without that duplicate: replay uses the re
 CSP16 must bind the approved SQL revision to native Valkey publication and lease fencing before enabling policy writes.
 CSP16.1 must implement explicit baseline promotion through that operation contract.
 The transition contract retains all seventeen acceptance conditions. The baseline repair does not implement policy transitions.
+
+
+## September 27 fleet bootstrap repair
+
+Final consumer review reproduced two defects in `76a5687c`.
+Input-only publications displaced distinct rollback generations from accepted history.
+Complete catalog-key loss inside a live Valkey process could appear to be an unused deployment.
+Both real-store regressions failed before repair.
+
+Consumer `aab7dd7c` retains distinct rollback generations and consumes independent SQL permission before first publication.
+Only explicit fresh initialization grants that permission. Existing migrated approval rows default to denied.
+An interrupted first publication after consumption requires controlled recovery.
+
+CSP13 owns that procedure, populated deployment adoption, and recovery after Valkey restart or failover.
+The operator documentation states that those commands remain unavailable in this intermediate build.
+
+The [repair proof](../../plans/proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/bootstrap-review-repair/verification.json) records 13 focused race results and 75 split broad results.
+The initial broad command timed out after 74 passes. Its remaining test passed separately with unchanged assertions and timeout.
+
+All eleven required CSP11 subcases, 34 consumer commands, 99 verifier tests, and full producer checks pass.
+Producer `0f45bbae2` registers the new acceptance checks. Consumer qualification uses published producer module `b46c077a7`, whose Go source remains unchanged.
+Both committed-branch reviews, publication, and protected merges remain open.
