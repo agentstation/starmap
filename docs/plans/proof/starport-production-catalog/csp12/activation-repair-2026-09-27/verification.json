@@ -1,0 +1,106 @@
+{
+  "status": "REPAIR_IN_PROGRESS",
+  "recorded_at": "2026-09-27T05:09:05.046677+00:00",
+  "producer_base": "8fa31111716b17b9e8d89232af51d2fc49b499bd",
+  "consumer_base": "cd46ea2612f5bc80dcd3747d511a8ecccfd16c46",
+  "failures": {
+    "producer": "runtime-2 race shard hit the unchanged 30-minute package bound. No assertion failure preceded it.",
+    "consumer": "Authorization lifecycle test exceeded its ten-second HTTP startup deadline on Linux, macOS, and Windows amd64. Linux amd64 and macOS also reached the ten-minute package bound.",
+    "local_cache_preparation": "17 component subcases pass. The broad package run has an authorization failure and application five-minute timeout, so it is not task qualification.",
+    "interrupted_check": "The isolated application run ended at the turn interruption with no final package result. UNVERIFIED."
+  },
+  "repairs": {
+    "consumer": "Use existing catalog lifecycle fixture for authorization worker ownership, preserving real repositories, polling, all deadlines, and shutdown assertions. Fifteen named results pass across three repetitions. Lint and twelve architecture checks pass.",
+    "producer": "Reuse immutable verified embedded facts during Activate after manifest and exact payload validation. Schema, membership, publication authorization and store CAS remain enforced. Fifteen focused race results pass.",
+    "benchmark": {
+      "method": "Three iterations of fresh memory-store client activation after process bootstrap, Go 1.27.1 darwin/arm64. This is not request latency.",
+      "before": {
+        "ns_per_op": 401102222,
+        "bytes_per_op": 342642090,
+        "allocations_per_op": 1854109
+      },
+      "after": {
+        "ns_per_op": 36054194,
+        "bytes_per_op": 28363922,
+        "allocations_per_op": 22336
+      }
+    }
+  },
+  "artifacts": {
+    "csp12-starmap-runtime2-ci.log": {
+      "path": "csp12-starmap-runtime2-ci.log.gz",
+      "sha256": "d764d8d2ad6b5be379f0a963043500639270d4c30158e3f524e185dafa0efec1"
+    },
+    "csp12-starport-arm-ci.log": {
+      "path": "csp12-starport-arm-ci.log.gz",
+      "sha256": "31fad1d8bedaf3080a97487ec4b33d848ac98cd19637a1fa6291a040ce0a2c07"
+    },
+    "csp12-starport-ci-108552230169.log": {
+      "path": "csp12-starport-ci-108552230169.log.gz",
+      "sha256": "21412f76b170ce6d7f8642c852222db92f3687a941a63f98a03a00be027271f3"
+    },
+    "csp12-starport-ci-108552230196.log": {
+      "path": "csp12-starport-ci-108552230196.log.gz",
+      "sha256": "a5d5469e129d43cacff3006aacd77f7f0f40eb7cb7c08a9394d5adc9dc8a484c"
+    },
+    "csp12-starport-ci-108552230185.log": {
+      "path": "csp12-starport-ci-108552230185.log.gz",
+      "sha256": "00a1103628bbe16b426bb8eb578d498a024eddd36a7b5e76937df3a7160dd7fe"
+    },
+    "csp121-authorization-focused-before.jsonl": {
+      "path": "csp121-authorization-focused-before.jsonl.gz",
+      "sha256": "046211addfa2153154cf77f9b4806d7a65302ff4b9d6920a6b2698845ee55164"
+    },
+    "csp12-authorization-lifecycle-after.jsonl": {
+      "path": "csp12-authorization-lifecycle-after.jsonl.gz",
+      "sha256": "f55db9a5d761411e357eedf1041855b10ae8418ec8af8a61529416bdbdfbf3cd"
+    },
+    "csp12-authorization-lint.log": {
+      "path": "csp12-authorization-lint.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "csp12-authorization-architecture.log": {
+      "path": "csp12-authorization-architecture.log.gz",
+      "sha256": "e9b6ddfc0de00807939e53e9f973558ffa4f9b1cfa8ed540d49a73ce94a8cc06"
+    },
+    "csp12-activation-reuse-before.jsonl": {
+      "path": "csp12-activation-reuse-before.jsonl.gz",
+      "sha256": "7fbf4ca553923f9b44acd8755f918fc525f34bdc8e7a1ac24137c077cb37ad16"
+    },
+    "csp12-activation-before-bench.log": {
+      "path": "csp12-activation-before-bench.log.gz",
+      "sha256": "7890d16c80050177d196d1204155549a21fba7e0439af25195d5d4011005b883"
+    },
+    "csp12-activation-after-bench.log": {
+      "path": "csp12-activation-after-bench.log.gz",
+      "sha256": "72b3872026ed60292bb791a24dbbf128805c41076d6c45600449ab559a2b4edd"
+    },
+    "csp12-activation-after.jsonl": {
+      "path": "csp12-activation-after.jsonl.gz",
+      "sha256": "3cb5a699b452e8cae29dd2a9560679d623eb77f6e6ee55720701aa3aa5d3014b"
+    },
+    "csp12-activation-goago.json": {
+      "path": "csp12-activation-goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    "runner.json": {
+      "path": "runner.json.gz",
+      "sha256": "deff8e955bb97216f88b07ef55c9b63964a5ef199124297d6101f81c72cd159c"
+    },
+    "packages.jsonl": {
+      "path": "packages.jsonl.gz",
+      "sha256": "78923d9701b79d795589ea2c78927989768be4ccb862ae73bb3af29ec9102964"
+    },
+    "task.json": {
+      "path": "task.json.gz",
+      "sha256": "4e268ccb9618acf7748e1e1b264a2b6786355ae39db4329feb6a751b2e67e769"
+    }
+  },
+  "pending": [
+    "Full producer verification",
+    "Paired application race qualification",
+    "Final review and published module pin",
+    "Required native CI",
+    "Both protected merges"
+  ]
+}
