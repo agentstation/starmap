@@ -185,6 +185,27 @@ Vertex monetary billing remains undeclared. This adapter repair does not qualify
 Recognition and the remaining matrix rows still require complete bounds, declarations, and settlement recovery.
 A47, the exact dependency pin, review, native CI, and merges remain open.
 
+## September 27 recognition admission
+
+Producer `5790fb04e` adds schema 13 and complete recognition charges for Gemini 2.5 Flash.
+Consumer `8b1dc0eb` reserves declared token charges and enforces the selected output cap.
+Raw measured usage survives incomplete documents and later chat failures.
+Missing usage retains capacity. Token-only settlement preserves unknown monetary cost.
+
+The [recognition proof](../../plans/proof/starport-production-catalog/csp12.2/recognition-billing-2026-09-27/verification.json) records 1,349 producer race results and ten production recognition results.
+A separate token-only run passes two results. The repository run passes 4,485 results and skips 133.
+These consumer runs precede the final optional-report provenance repair.
+Final affected-package race checks pass 738 results and skip 22. Final lint and vet pass.
+
+The cache regression found missing runtime retention when settings disabled chat-response caching.
+The repair retains one generation through parsing and chat. Repeated documents reuse extraction without another recognition charge.
+Another regression found missing cached-token measurements reported as an exact price.
+The final repair retains known totals while reporting unavailable cost and the missing measurement.
+
+Fixed-page valuation and processed-page evidence have component tests. These checks do not qualify a shipped fixed-page connector.
+Context tiers and service-specific charge variants still require qualification.
+The remaining operation contracts, durable settlement recovery, real shared-backend evidence, A47, exact dependency pin, review, native CI, and merges remain open.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:

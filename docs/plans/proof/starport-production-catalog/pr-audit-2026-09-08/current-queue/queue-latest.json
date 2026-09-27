@@ -866,11 +866,11 @@
   },
   "next_task": {
     "task": "CSP12.2",
-    "next_action": "Complete recognition, media, moderation, rerank, and job billing contracts and bounds. Complete durable job association, settlement recovery, A47, and exact dependency qualification before review and publication.",
+    "next_action": "Qualify remaining recognition contracts, then media, moderation, rerank, and jobs. Complete durable job association, settlement recovery, A47, exact producer dependency, review, native CI, and protected merges.",
     "worktree": "/tmp/starport-fleet-review-20260926",
     "branch": "codex/atomic-budget-admission",
     "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
-    "head": "0231ec7a2fd00881bbb9b159070bcd9b9419864d"
+    "head": "8b1dc0ebf8dfbe16f6b01b41f0cb5b75cd6fdd4a"
   },
   "merged_followups": {
     "tasks": [
@@ -1046,7 +1046,7 @@
     "status": "MERGED",
     "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-27T12:52:28.960991+00:00",
+  "local_updated_at": "2026-09-27T13:30:11.497781+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -1055,10 +1055,10 @@
   },
   "budget_preparation": {
     "owner": "CSP12.2",
-    "status": "unpublished_embedding_usage_repair",
-    "commit": "0231ec7a2fd00881bbb9b159070bcd9b9419864d",
+    "status": "unpublished_recognition_admission",
+    "commit": "8b1dc0ebf8dfbe16f6b01b41f0cb5b75cd6fdd4a",
     "published": false,
-    "proof": "../../csp12.2/vertex-usage-2026-09-27/verification.json",
+    "proof": "../../csp12.2/recognition-billing-2026-09-27/verification.json",
     "native_ci": "UNVERIFIED",
     "required_review": "not yet run; required before final PR",
     "remaining_dirty_files": {
@@ -1069,9 +1069,9 @@
     "producer_companion": {
       "branch": "codex/budget-qualification",
       "worktree": "/tmp/starmap-fleet-review-20260926",
-      "head": "efe1bb0f7cd1d257f470af4bc47cb2d194310d67",
+      "head": "5790fb04e72028587c6fceebc30e8dbcd9480bfd",
       "published": false,
-      "scope": "Schema 12 retains text-chat and embedding billing declarations, verified initial offerings, and the regenerated catalog.",
+      "scope": "Schema 13 retains complete recognition, text-chat, and embedding charge declarations and the regenerated embedded catalog.",
       "next_action": "Complete remaining operation billing contracts in this task before the producer PR."
     },
     "known_failures": [],
@@ -1081,7 +1081,8 @@
     "billing_proof": "../../csp12.2/text-billing-2026-09-27/verification.json",
     "identity_proof": "../../csp12.2/request-identity-2026-09-27/verification.json",
     "usage_presence_proof": "../../csp12.2/usage-presence-2026-09-27/verification.json",
-    "embedding_billing_proof": "../../csp12.2/embedding-billing-2026-09-27/verification.json"
+    "embedding_billing_proof": "../../csp12.2/embedding-billing-2026-09-27/verification.json",
+    "embedding_usage_proof": "../../csp12.2/vertex-usage-2026-09-27/verification.json"
   },
   "remote_state_note": "This update checks local work and retained test output only. Prior remote check timestamps remain unchanged."
 }

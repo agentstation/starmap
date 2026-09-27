@@ -3836,3 +3836,29 @@ The final package race run passes 900 results. The repository run passes 4,440 r
 
 All evidence uses the candidate producer through `GOWORK`.
 Vertex monetary declarations, remaining operation contracts, recovery, A47, review, native CI, and merges remain open.
+
+## September 27 recognition admission and runtime retention
+
+Producer `5790fb04e` retains complete recognition charges in schema 13.
+Consumer `8b1dc0eb` reserves selected-route charges and settles raw provider usage before response processing.
+The production fixture uses the Gemini connector, HTTP gateway, Badger, and SQLite.
+It verifies measured and unknown usage, incomplete documents, later chat failure, budget refusal, and extraction-cache reuse.
+
+The [recognition proof](../../plans/proof/starport-production-catalog/csp12.2/recognition-billing-2026-09-27/verification.json) preserves failed regressions and qualification limits.
+The previous operation path refused required recognition budgets because it supplied no quote.
+Document parsing also wrapped gateway budget refusals as provider failures.
+Both failures now preserve the required admission behavior.
+
+With chat-response caching disabled, parsing previously had no retained runtime generation.
+Extraction-cache keys were incomplete. Two identical requests made four paid attempts instead of three.
+The repair retains the generation through parsing and chat, including stream closure.
+The production cache regression and lease-lifetime cases pass.
+
+Optional reports previously treated unknown tokens as free usage and omitted cached-token counts as measured zero.
+The repair preserves both unknown states. Complete totals remain visible when missing cache detail prevents exact pricing.
+Final affected-package race checks pass 738 results and skip 22. Lint and vet pass.
+The earlier repository run passes 4,485 results and skips 133. It precedes the final provenance repair.
+
+Fixed-page evidence has component coverage but no qualified shipped provider connector.
+The consumer still uses the unpublished producer through `GOWORK`.
+A47, remaining operations, asynchronous recovery, exact dependency qualification, review, native CI, and merges remain open.

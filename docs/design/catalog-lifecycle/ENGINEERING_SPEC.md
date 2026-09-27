@@ -4171,6 +4171,26 @@ An optional `input_page_estimate` carries `tokens`, `source`, and `assumptions`.
 This estimate describes input only and excludes output charges.
 Catalog and OpenRouter offering views retain these fields separately from fixed prices.
 
+Schema 13 adds complete recognition charge declarations.
+`request_charge` states whether a per-request charge applies. Token contracts declare disjoint `input` and `output` classes.
+Basis-only records retain an unknown complete contract. Estimates cannot establish a reservation or settle paid work.
+
+Recognition admission retains the selected valuation and enforces its declared output cap.
+The provider-call boundary settles raw measurements before response conversion or document completeness checks.
+Missing or inconsistent evidence retains capacity. A later chat failure cannot refund recognition work.
+
+The provider must report the number of processed pages for page billing. Returned text length does not establish that measurement.
+A page contract without a token bound cannot satisfy a required token budget.
+
+Token-only admission needs complete token totals. Monetary settlement also needs every declared billing dimension.
+Optional extraction records preserve missing totals and missing cached-token counts independently.
+Known totals remain visible when missing detail prevents exact pricing.
+
+Document parsing retains one runtime generation across recognition, cache identity, and the outer chat call.
+This ownership applies when settings disable chat-response caching. Streams retain ownership until closure or terminal read.
+A cached extraction cannot create a second provider reservation.
+Quota and gateway-admission failures retain their original error identities through document parsing.
+
 Starport records one `extractions` entry for each fresh recognition call.
 The entry retains its start time, offering, generation, billing basis, measured tokens, and known cost or failure reason.
 Rate validity uses the call start time. A selected context tier replaces the base tier's rates.
