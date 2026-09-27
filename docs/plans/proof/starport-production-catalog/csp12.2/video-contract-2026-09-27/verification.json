@@ -1,0 +1,708 @@
+{
+  "task": "CSP12.2",
+  "recorded_at": "2026-09-27T20:34:04.690117+00:00",
+  "status": "PASS component checks; CSP12.2 incomplete; native job integration remains required",
+  "previous_turn_classification": "The immediately preceding turn only verified existing credential configuration. This continuation resumed implementation and produced new source commits and regression evidence.",
+  "producer_commit": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+  "consumer_commit": "402bac5e5743a442a453bcc46373a66be5167d13",
+  "go_version": "1.27.1",
+  "work_file": "/tmp/csp122-billing.work",
+  "test_count_convention": "Counts include named parent tests and subtests. They are not counts of independent acceptance cases.",
+  "results": {
+    "endpoint-before.jsonl": {
+      "counts": {
+        "test_fail": 1,
+        "package_fail": 1
+      },
+      "failures": [
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestWanVideoUsesMeasuredNativeContract"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": null
+        }
+      ],
+      "skips": [],
+      "first_event": "2026-09-27T15:10:26.717103-05:00",
+      "last_event": "2026-09-27T15:10:27.829141-05:00"
+    },
+    "producer-initial.jsonl": {
+      "counts": {
+        "test_pass": 1392,
+        "test_fail": 62,
+        "package_fail": 1,
+        "package_pass": 1
+      },
+      "failures": [
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedBootstrapHasCompiledCanonicalPayload"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedBootstrapManifestMatchesCanonicalCatalog"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedReturnsOneVerifiedImmutableCatalog"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedBootstrapArtifactGenerationIsDeterministic"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedCatalogCheckoutPreservesManifestInputs"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/added_file/publication"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/added_file/cancellation"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/added_file"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/changed_file/publication"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/changed_file/cancellation"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/changed_file"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/changed_timestamp/publication"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/changed_timestamp/cancellation"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/changed_timestamp"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/replaced_file/publication"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/replaced_file/cancellation"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/replaced_file"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/replaced_directory/publication"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/replaced_directory/cancellation"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging/replaced_directory"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesChangedStaging"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesReusedStageNameAfterPublication"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/created"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/manifest-written"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/payload-written"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportCleansOnlyUnchangedOwnedStage"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportCancellationAfterStagingPreventsPublication"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryResumesInterruptedCollection/recovery-collecting"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryResumesInterruptedCollection/recovery-file-removed"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryResumesInterruptedCollection/recovery-stage-removed"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryResumesInterruptedCollection"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryPreservesUnrecognizedJournal/version"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryPreservesUnrecognizedJournal/truncated"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryPreservesUnrecognizedJournal/path"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryPreservesUnrecognizedJournal/unsealed_file"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryPreservesUnrecognizedJournal"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryScanLimitPreservesEveryStage"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryPreservesStagesAfterLockReplacement"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryWaitsForLiveWriter"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportPreservesDirectoryCreatedDuringStaging"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportIsIdempotentAndPreservesConflicts"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestConcurrentBaselineExportPublishesOneCompleteGeneration"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportRejectsSymlinksAndCancellation"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportRecoversAfterProcessInterruption/created"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportRecoversAfterProcessInterruption/manifest-written"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportRecoversAfterProcessInterruption/payload-written"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportRecoversAfterProcessInterruption/promoted"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineExportRecoversAfterProcessInterruption"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestBaselineRecoveryPreservesUnrecordedStage"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedGenerationOwnsEveryReturnedCopy"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEveryPublishedMediaOperationMatchesItsDefinition"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestTheResidualOfferingsAreRealtimeAlone"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEveryRecognitionOfferingDeclaresActualBillingUnits"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestShippedModerationOfferingsServeModerationsAlone"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestOfferedChatCompletionsAgreeWithCanonicalModelFacts"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestShippedRerankOfferingsCarryTheirCost"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestRerankProviderEndpointsResolve"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestWanVideoUsesMeasuredNativeContract"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": null
+        }
+      ],
+      "skips": [],
+      "first_event": "2026-09-27T15:13:05.593876-05:00",
+      "last_event": "2026-09-27T15:14:09.373569-05:00"
+    },
+    "producer-race.jsonl": {
+      "counts": {
+        "test_pass": 1482,
+        "test_fail": 1,
+        "package_pass": 1,
+        "package_fail": 2
+      },
+      "failures": [
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": "TestEmbeddedCatalogCheckoutPreservesManifestInputs"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "test": null
+        },
+        {
+          "package": "github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest",
+          "test": null
+        }
+      ],
+      "skips": [],
+      "first_event": "2026-09-27T15:21:17.342902-05:00",
+      "last_event": "2026-09-27T15:26:17.959843-05:00"
+    },
+    "bootstrap-final.jsonl": {
+      "counts": {
+        "test_pass": 2,
+        "package_pass": 1
+      },
+      "failures": [],
+      "skips": [],
+      "first_event": "2026-09-27T15:27:43.235282-05:00",
+      "last_event": "2026-09-27T15:27:57.147696-05:00"
+    },
+    "valuation-race.jsonl": {
+      "counts": {
+        "test_pass": 2,
+        "package_pass": 1
+      },
+      "failures": [],
+      "skips": [],
+      "first_event": "2026-09-27T15:21:22.906159-05:00",
+      "last_event": "2026-09-27T15:21:36.383988-05:00"
+    },
+    "valuation-compile-failure.jsonl": {
+      "counts": {
+        "package_fail": 1
+      },
+      "failures": [
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": null
+        }
+      ],
+      "skips": [],
+      "first_event": null,
+      "last_event": "2026-09-27T15:15:29.414373-05:00"
+    },
+    "native-video-race.jsonl": {
+      "counts": {
+        "test_pass": 20,
+        "package_pass": 1
+      },
+      "failures": [],
+      "skips": [],
+      "first_event": "2026-09-27T15:25:34.308477-05:00",
+      "last_event": "2026-09-27T15:25:36.065889-05:00"
+    },
+    "submission-usage-before.jsonl": {
+      "counts": {
+        "test_fail": 2,
+        "test_pass": 1,
+        "package_fail": 1
+      },
+      "failures": [
+        {
+          "package": "github.com/agentstation/starport/internal/router",
+          "test": "TestSubmissionWriteFailureRetainsMeasuredUsage/measured"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/router",
+          "test": "TestSubmissionWriteFailureRetainsMeasuredUsage"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/router",
+          "test": null
+        }
+      ],
+      "skips": [],
+      "first_event": "2026-09-27T15:29:05.446076-05:00",
+      "last_event": "2026-09-27T15:29:06.1188-05:00"
+    },
+    "router-admission-race.jsonl": {
+      "counts": {
+        "test_pass": 232,
+        "package_pass": 2
+      },
+      "failures": [],
+      "skips": [],
+      "first_event": "2026-09-27T15:29:34.129044-05:00",
+      "last_event": "2026-09-27T15:29:50.889636-05:00"
+    },
+    "consumer-pure-go.jsonl": {
+      "counts": {
+        "test_pass": 740,
+        "package_pass": 2,
+        "test_skip": 38
+      },
+      "failures": [],
+      "skips": [
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetBootstrapConcurrentExactPublication"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetBootstrapWriteBoundaries/before-sql"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetBootstrapWriteBoundaries/after-sql"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetBootstrapWriteBoundaries/before-kv"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetBootstrapWriteBoundaries/after-kv"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionRequiresExplicitCollection"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionHonorsLimitsAndRequiredGenerations"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionCountsGenerationsSeparatelyFromReceipts"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionDryRunPreservesPendingRecovery"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionResumesInterruptedCollection"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionRefusesUnownedStaging"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionBoundsCommittedSnapshots"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionProtectsPinnedGeneration"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionRecoversInterruptedUploadAndDeletion"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionFencesExpiredMaintenance"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionConcurrentReadersAndCollection"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionCapacityRefusesWithoutMovingHead"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionRejectsOverlappingDeletionRecord"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/current"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/accepted"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/rollback"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/inventory-missing"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetAcceptanceRetainsDistinctRollbackGenerations"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreCompleteKeyLossRequiresRecovery"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreNativePublication"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreRefusesExpiredGrant"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreSeparateProcessTakeover"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreMissingSelectedPublicationIsNotAnEmptyStore"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreAcceptanceUsesOriginalGrant"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreNamespaceAndMalformedDescriptor"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreLeaseExpiresDuringSelection/publication"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreLeaseExpiresDuringSelection/acceptance"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetStoreLostHeadCannotBootstrapAgain"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetMigrationRequiresSameRecoveryIdentity"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRuntimeRejectsUnapprovedBackend"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRuntimePreservesOriginalGrantThroughAcceptance"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "test": "TestFleetRuntimeLiveTakeoverAcceptance"
+        }
+      ],
+      "first_event": "2026-09-27T15:27:49.035436-05:00",
+      "last_event": "2026-09-27T15:28:30.17551-05:00"
+    },
+    "manifest-race-final.jsonl": {
+      "counts": {
+        "test_pass": 11,
+        "package_pass": 1
+      },
+      "failures": [],
+      "elapsed_seconds": 328.419
+    }
+  },
+  "artifacts": [
+    {
+      "path": "endpoint-before.jsonl.gz",
+      "raw_sha256": "6ebb4f49441b32101e1d26551e285c4a8de8b340f52c85e37c44fdd159c2829b"
+    },
+    {
+      "path": "producer-initial.jsonl.gz",
+      "raw_sha256": "c30e6c27a07265a0002574e97ff4b07feee145b1b86bcb908fd91ef7411e5379"
+    },
+    {
+      "path": "producer-race.jsonl.gz",
+      "raw_sha256": "ee803a74f500a393baf84a574b96709650c31e4451dd14dc6ddd4e9d8c1c301c"
+    },
+    {
+      "path": "bootstrap-final.jsonl.gz",
+      "raw_sha256": "d0563d074811b316331d40855efbdb0161af7678a880fe6484dd601239443f87"
+    },
+    {
+      "path": "valuation-race.jsonl.gz",
+      "raw_sha256": "93ccc60d013250232f9e2d4054e8a93a151e9ae4f069b978aa76f9365a64a77c"
+    },
+    {
+      "path": "valuation-compile-failure.jsonl.gz",
+      "raw_sha256": "2ada23d16d131933f90ab7d5c4082aaa6cbb0199e529ba629e4b656d23ed23a7"
+    },
+    {
+      "path": "native-video-race.jsonl.gz",
+      "raw_sha256": "f67818458d5306ebd4f3607379aff4cc2b79db493770cc8b30866fa8d84758ec"
+    },
+    {
+      "path": "submission-usage-before.jsonl.gz",
+      "raw_sha256": "98323e7eac9fd91fb8996b3dfbaf298d738753212948d1a2984d5713e7ed8b1f"
+    },
+    {
+      "path": "router-admission-race.jsonl.gz",
+      "raw_sha256": "e31135d79c61464a0b8e508a23304b4af52ca5114d735fcfb16ebae514f7cac7"
+    },
+    {
+      "path": "consumer-pure-go.jsonl.gz",
+      "raw_sha256": "0fd8921ef5818d11469aa9e269074a610dc06d83313eb2f3df673841e967f87a"
+    },
+    {
+      "path": "producer-goago.json.gz",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "consumer-goago.json.gz",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "producer-vet.txt.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "consumer-vet.txt.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs-prose.txt.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7"
+    },
+    {
+      "path": "wan-schema.json.gz",
+      "raw_sha256": "ade7b995f049144ba846408ff4ad33246a663d7f1ddc26e4fbfd86e399e33292"
+    },
+    {
+      "path": "generation.txt.gz",
+      "raw_sha256": "d521ba6c04b739e6dd33cd2c0859927468c4c4540c17cfa45d5dfd5edac9cdd3"
+    },
+    {
+      "path": "regenerate.go.gz",
+      "raw_sha256": "33f9b45612fbffdb7ad39291218f34ed2f27db4e1fbe5040c5d54adad7f09b30"
+    },
+    {
+      "path": "manifest-race-final.jsonl.gz",
+      "raw_sha256": "b78accf3f48d1b016a9f98908b59068dc7c626a1fad1bd51f5bbd7d64adfbf45"
+    }
+  ],
+  "commands": [
+    "SM: GOTOOLCHAIN=go1.27.1 go run /tmp/csp122-video-regenerate.go internal/embedded/catalog",
+    "SM: GOTOOLCHAIN=go1.27.1 go run ./cmd/starmap-bootstrap-manifest --catalog-dir internal/embedded/catalog --output internal/embedded/catalog/generation.json --endpoints-output internal/embedded/catalog/endpoints.yaml",
+    "SM: GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout 5m ./pkg/catalogs ./internal/bootstrap ./cmd/starmap-bootstrap-manifest",
+    "SM: GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout 2m ./internal/bootstrap -run 'TestEmbeddedCatalogCheckoutPreservesManifestInputs|TestWanVideoUsesMeasuredNativeContract'",
+    "SM: GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout 10m ./cmd/starmap-bootstrap-manifest",
+    "SP with GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1: go test -race -json -count=1 -timeout 3m ./internal/catalog -run TestVideo",
+    "SP with same workspace/toolchain: go test -race -json -count=1 -timeout 2m ./internal/providers/connectors -run TestNativeVideo",
+    "SP with same workspace/toolchain: go test -json -count=1 -timeout 2m ./internal/router -run TestSubmissionWriteFailureRetainsMeasuredUsage",
+    "SP with same workspace/toolchain: go test -race -json -count=1 -timeout 3m ./internal/router ./internal/limits/admission",
+    "SP with same workspace/toolchain: CGO_ENABLED=0 go test -json -count=1 -timeout 3m ./internal/catalog ./internal/providers/connectors",
+    "Each module: go tool goago -stale-ignores -format json ./...",
+    "SM: go vet ./pkg/catalogs ./internal/bootstrap ./cmd/starmap-bootstrap-manifest",
+    "SP: go vet ./internal/catalog ./internal/providers/connectors ./internal/router"
+  ],
+  "findings": [
+    "Fail-before endpoint test selected the OpenAI videos route for a model whose live response requires native inference.",
+    "Schema 19 now carries exact-model endpoint overrides and complete output-duration billing. A new validated catalog generation retains prior source observations.",
+    "The manifest command correctly rejected changed YAML paired with stale committed generation metadata. Regeneration used public validation APIs before the repository manifest command.",
+    "The broad producer run passed 1482 test results but failed the index-versus-worktree checkout test and timed out the manifest command suite at five minutes. The checkout test passed after the catalog commit. The unchanged manifest suite then passed all 11 tests in 328.419 seconds with a ten-minute package timeout.",
+    "An initial consumer test referenced an unexported copy operation. This fixture compile failure is not behavioral fail-before evidence.",
+    "Real Badger reproduces discarded usage when acceptance persistence fails. The repair preserves measured settlement and stops retries. Missing evidence preserves full reserved capacity.",
+    "The native adapter sends exactly one POST, carries numeric seconds and explicit dimensions, bounds its response and asset, and retains duration after asset or state failures.",
+    "The native adapter is not registered in the production transport registry. It does not implement JobRunner or invent a polling API.",
+    "Existing DeepInfra OpenAI endpoint URLs remain unchanged. Configured base-URL overrides must now point to the common /v1 root rather than /v1/openai."
+  ],
+  "schema_evidence": {
+    "url": "https://api.deepinfra.com/models/Wan-AI/Wan2.2-T2V-A14B/schema/default",
+    "retrieval": "Authenticated read-only GET before this continuation; response contains no credential.",
+    "facts": [
+      "seconds fixed at 5",
+      "resolution fixed at 720p",
+      "orientation fixed at landscape (1280x720)",
+      "seed supported",
+      "no streaming schema",
+      "inference_status.status defaults to succeeded",
+      "cost is explicitly an estimate",
+      "output_length is integer seconds"
+    ]
+  },
+  "limits": [
+    "No new paid generation ran. The one approved DeepInfra generation was already consumed.",
+    "Native job scheduling, registry activation, durable output recovery, authorized asset downloads, cancellation semantics and pinned optional reports are incomplete.",
+    "The tested Go workspace is local. No module dependency pin, paired PR, native CI, merge, release or production qualification is claimed.",
+    "CSP12.2 remains in progress. A47, all applicable paid operations, shared-backend process loss, failover, PostgreSQL, capacity and final release-pair qualification remain required.",
+    "Physical suspend remains optional and unverified under CSP22."
+  ],
+  "manual_review": "Checked endpoint precedence, opaque identifiers, schema gates, copy isolation, preserved source observations, existing endpoint URLs, price pinning, absent/zero usage, response bounds, credential placement, no retry, and settlement after persistence failure. Integration remains explicitly incomplete.",
+  "running_checks": [],
+  "plan_validation": {
+    "anchors": 97,
+    "links": 128,
+    "ledger_rows": 40,
+    "in_progress": 1,
+    "done": 26,
+    "resume_words": 253,
+    "artifact_digests_verified": 19
+  }
+}

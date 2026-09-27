@@ -4260,3 +4260,25 @@ These replies contradict the provider-wide video endpoint assumption and the adv
 Model-specific transport selection, input constraints, complete billing, and crash recovery remain required.
 The corrected native request produced a five-second video. DeepInfra reported USD 0.375 and five output seconds.
 This direct provider test does not qualify Starport dispatch, final invoice reconciliation, or other video offerings.
+
+
+## September 27 native video schema and usage retention
+
+The model schema fixes Wan2.2-T2V-A14B at five seconds, 720p, and landscape output.
+It permits a seed and provides no streaming schema. The provider response defaults an omitted status to succeeded.
+Its `cost` field explicitly describes an estimate. The earlier USD 0.375 observation is not final invoice evidence.
+The [video contract proof](../../plans/proof/starport-production-catalog/csp12.2/video-contract-2026-09-27/verification.json) records the schema and local checks.
+
+Producer `eb03c466c` adds exact-model endpoint overrides and output-duration billing under catalog schema 19.
+
+The selected native endpoint replaces the provider-wide OpenAI video route for this model alone.
+The existing DeepInfra OpenAI URLs remain unchanged. Operator base-URL overrides now name the common `/v1` root, without `/openai`.
+The regenerated payload retains earlier source observations and adds a custom-update observation for these changes.
+
+The new consumer valuation pins the declared rate and preserves measured zero and overage.
+The native adapter retains measured duration when an asset or explicit provider state fails validation.
+It does not treat a native request ID as an asynchronous job handle. Production registration and durable job execution remain incomplete.
+
+A new real-Badger regression reproduces lost usage after a failed acceptance write.
+The router repair settles valid measured usage before returning that persistence failure. Missing usage retains the full reservation.
+Both outcomes stop retries. The repair does not claim that the failed job write succeeded.

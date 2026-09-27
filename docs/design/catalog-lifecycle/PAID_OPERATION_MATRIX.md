@@ -450,3 +450,20 @@ Provider-level operation routing must not apply one video protocol to every offe
 Qualification must bind the selected offering to its protocol, duration constraints, measured usage, and complete billing contract.
 The [live probe](../../plans/proof/starport-production-catalog/csp12.2/deepinfra-video-probe-2026-09-27/verification.json) records the request outcomes.
 Do not infer cancellation, asynchronous state words, or a zero charge from these validation responses.
+
+
+### Native video contract and remaining execution work
+
+Catalog schema 19 pins output-duration billing and exact-model endpoint selection.
+For the qualified Wan input shape, five output seconds at USD 0.075 per second produce USD 0.375 under the catalog contract.
+The provider's `cost` field is an estimate. Settlement must use its measured `output_length` and the submitted valuation.
+Container duration (5.062012 seconds) cannot replace provider-reported output seconds.
+
+Local checks verify endpoint precedence, schema rejection, copy isolation, defaults, and request bounds.
+They also verify zero usage, unknown usage, and measured overage.
+Native transport checks cover one dispatch, bounded assets, usage retention, and explicit provider failures.
+The [component proof](../../plans/proof/starport-production-catalog/csp12.2/video-contract-2026-09-27/verification.json) records their exact scope.
+
+Native transport registration, gateway background jobs, durable asset recovery, and pinned optional reports remain incomplete.
+The current adapter parses asset references but does not download them.
+No additional paid generation ran. Complete CSP12.2 qualification, A47, and paired merges remain required.

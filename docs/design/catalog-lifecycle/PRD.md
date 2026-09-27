@@ -440,6 +440,17 @@ Normal metadata retention must not silently extend permission after a known with
 The two documents become implementation input after these choices settle.
 Existing implementation does not count as evidence that a new requirement passes.
 
+## Video generation and charge evidence
+
+Starport must select video execution from each offering's declared protocol.
+A provider can serve native inference and asynchronous jobs through different models.
+The gateway must present durable jobs for both forms, with an accurate state and retained output.
+It must not advertise provider polling or cancellation when the selected protocol has no such operation.
+
+Budget admission must use the permitted inputs and complete prices from the submitted catalog generation.
+Recovery and reporting must retain that valuation. Measured usage remains charge evidence when output delivery fails.
+A provider cost estimate must stay labeled as an estimate. Missing usage must remain unknown.
+
 ## Execution activation
 
 The user activated the whole-plan goal on 2026-09-05.

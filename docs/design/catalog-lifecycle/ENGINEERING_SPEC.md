@@ -4530,3 +4530,26 @@ Do not describe this adapter as exactly-once delivery. A future guaranteed-deliv
 Job schema 3 separates the notification claim from the reporting acknowledgement.
 Migration must not treat an older accounting mark as evidence that its optional report reached storage.
 CSP13 owns that migration. This component does not qualify complete video billing or released-pair operation.
+
+
+### Offering-specific native video execution
+
+The selected offering owns its video endpoint and complete billing contract.
+An exact provider-model endpoint override takes precedence over author and provider defaults. Model IDs remain exact and case-sensitive.
+Catalog schema 19 carries these overrides and the output-duration contract. Older schemas must reject those fields.
+
+Resolve permitted seconds and dimensions from the submitted catalog generation before dispatch.
+Reserve measured output seconds at the pinned rate, including any explicit request charge.
+An estimate from a provider cannot replace measured usage. Missing duration remains unknown, while explicit zero remains zero.
+A malformed asset or failed job write must not discard valid usage from the provider response.
+
+Native video inference and provider-managed asynchronous jobs have different transport contracts.
+The gateway job service must own background execution, durable dispatch identity, asset storage, and recovery for native inference.
+A native request ID does not establish a poll or cancellation API. Do not invent those operations.
+Retain uncertain dispatched work after interruption. Recovery must not submit it again without evidence that the first dispatch did not occur.
+
+A provider asset URL grants no download permission. Authorize that destination separately and never forward inference credentials to it.
+Bound both the provider response and stored asset. Preserve usage even when asset validation or persistence fails.
+
+The current native adapter is under development and is not registered for production routing.
+Its local transport tests do not qualify the gateway job lifecycle, asset downloads, or shared-backend recovery.
