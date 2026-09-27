@@ -1,0 +1,41 @@
+{
+  "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
+  "published": false,
+  "failure": {
+    "run": 36287431900,
+    "job": 108530732876,
+    "head": "95f2812b5bacda91464d6a77dba7197b1fac7bdc",
+    "tests": [
+      "TestStoredDestinationIdentityTracksSelectedCredential",
+      "TestManagedMaterialRefreshServesOldestScopesWithoutStarvation"
+    ],
+    "raw_log_sha256": "2700aaf96183e047a1f75e5ed96594186c3f5f7dc87160ae37663ca1ebb9631b",
+    "log": "macos-ci-failure.log.gz"
+  },
+  "change": "Two in-memory contract tests use testing/synctest. Default deadlines, production code, and assertions are unchanged. Close the test-owned material cache.",
+  "focused": {
+    "exit": 0,
+    "pass": 20,
+    "fail": 0,
+    "skip": 0,
+    "repetitions": 10
+  },
+  "package": {
+    "exit": 0,
+    "pass": 116,
+    "fail": 0,
+    "skip": 1,
+    "skip_name": "TestManagedMaterialValkeyOutageAndRecovery"
+  },
+  "real_service": {
+    "exit": 0,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0,
+    "cleanup": 0,
+    "proof": "real-service/runner.json"
+  },
+  "lint_exit": 0,
+  "review": "in_progress",
+  "native_after": "UNVERIFIED until reviewed push and CI"
+}

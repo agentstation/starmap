@@ -1,0 +1,32 @@
+package storage
+
+import (
+ "errors"
+ "os"
+ "testing"
+)
+
+func TestPreparedTransactionContract(t *testing.T) {
+ raw := os.Getenv("TEST_VALKEY_URL")
+ if raw == "" { t.Fatal("TEST_VALKEY_URL is required") }
+ store, err := OpenValkey(ValkeyConfig{URL:raw})
+ if err != nil { t.Fatal(err) }
+ t.Cleanup(func(){ if err:=store.Close(); err!=nil { t.Error(err) } })
+ t.Run("conditional write",func(t *testing.T){
+  key := "csp12-probe:conditional"
+  if err := store.Set(t.Context(),key,[]byte("accepted")); err!=nil { t.Fatal(err) }
+  tx,err:=store.BeginTransaction(t.Context()); if err!=nil {t.Fatal(err)}
+  err=tx.CompareAndSwap(key,[]byte("different"),[]byte("incorrect"))
+  if err==nil { err=tx.Commit(t.Context()) }
+  if !errors.Is(err,ErrConflict) { t.Errorf("conditional transaction = %v; want conflict",err) }
+  value,err:=store.Get(t.Context(),key); if err!=nil {t.Fatal(err)}
+  if string(value)!="accepted" { t.Errorf("rejected condition changed value to %q",value) }
+ })
+ t.Run("command error",func(t *testing.T){
+  key := "csp12-probe:command-error"
+  if err:=store.Set(t.Context(),key,[]byte("not an integer")); err!=nil {t.Fatal(err)}
+  tx,err:=store.BeginTransaction(t.Context()); if err!=nil {t.Fatal(err)}
+  if _,err:=tx.Increment(key,1); err!=nil {t.Fatal(err)}
+  if err:=tx.Commit(t.Context());err==nil {t.Fatal("transaction discarded the server command error")}
+ })
+}

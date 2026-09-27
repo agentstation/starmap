@@ -1,0 +1,5 @@
+{"Time":"2026-09-26T21:16:41.076869-05:00","Action":"start","Package":"github.com/agentstation/starport/internal/storage"}
+{"Time":"2026-09-26T21:16:41.351898-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/storage","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-09-26T21:16:41.352387-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/storage","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-09-26T21:16:42.358311-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/storage","Output":"ok  \tgithub.com/agentstation/starport/internal/storage\t1.281s [no tests to run]\n"}
+{"Time":"2026-09-26T21:16:42.358411-05:00","Action":"pass","Package":"github.com/agentstation/starport/internal/storage","Elapsed":1.2810000000000001}

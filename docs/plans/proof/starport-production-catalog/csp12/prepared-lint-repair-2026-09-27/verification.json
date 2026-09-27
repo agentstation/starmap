@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "source": "uncommitted prepared checkout",
+  "source": "committed unpublished CSP12 preparation",
   "log": "/tmp/csp12-preparation-lint-after.log",
   "files": [
     "internal/config/file_manifest.go",
@@ -29,5 +29,30 @@
     "after": "six named race results pass, including the config projection test",
     "lint": "zero code issues",
     "writing": "changed credential prose passes; 48 pre-existing operator guide findings remain outside the edited section"
+  },
+  "transaction_probe": {
+    "status": "CONFIRMED_DEFECTS",
+    "leaf_failures": 2,
+    "named_failures": 3,
+    "report": "transaction-probe/runner.json",
+    "first_attempt": "UNVERIFIED: no tests matched; corrected the temporary path in the overlay",
+    "disposition": "Prepared change retires unused internal transaction API. Atomic CompareAndSwapBatch remains required and tested."
+  },
+  "retired_transactions": {
+    "source": "prepared commit 63c763b",
+    "real_services_exit": 0,
+    "cleanup_exit": 0,
+    "named_pass": 604,
+    "named_skip": 3,
+    "named_fail": 0,
+    "lint_exit": 0,
+    "proof": "retired-transactions",
+    "scope": "No production BeginTransaction callers. Preserve conditional mutation coverage. No claim of complete CSP12 qualification."
+  },
+  "prepared_commit": "63c763b",
+  "all_packages_compile": {
+    "exit": 0,
+    "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -run '^$' ./...",
+    "scope": "Compilation only; no behavior tests claimed."
   }
 }

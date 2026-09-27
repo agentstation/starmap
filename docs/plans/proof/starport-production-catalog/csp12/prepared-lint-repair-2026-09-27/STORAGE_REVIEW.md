@@ -2,8 +2,8 @@
 
 CSP11 remains the active task. This review records CSP12 preparation and remaining work.
 The prepared checkout is `/tmp/starport-fleet-review-20260926` on `codex/storage-recipe-contract`.
-Its committed base is `16aacc6c2d4a5bad73028f2dd7a569b9ecb7e0c1`.
-Connection, configuration, test, and operator-guide changes remain uncommitted.
+Its prepared commit is `63c763b`.
+Connection, configuration, test, and operator-guide changes remain unpublished.
 
 The real-service race suite passes 625 named results with three explicit skips.
 The code linter passes after the TLS fixture and file-manifest repairs.
@@ -13,22 +13,33 @@ The changed credential prose passes its writing check. The full operator guide s
 
 ## Findings for the CSP12 contract
 
-The generic `storage.Transaction` contract needs review before final storage qualification.
+The generic `storage.Transaction` contract declared behavior that its adapters did not enforce.
 `ValkeyTransaction.CompareAndSwap` ignores its expected value and queues an unconditional set.
 
 `ValkeyTransaction.Commit` checks the outer EXEC error but does not inspect each returned command result.
 The adapter therefore cannot support its declared atomic conditional contract as written.
 
+A real Valkey probe confirms both defects with the race detector.
+The conditional write changes the value despite a mismatched expectation.
+The commit also discards a server command error. Both leaf cases fail.
+
+The first probe matched no tests because its overlay used a noncanonical temporary path.
+Treat that run as UNVERIFIED. The retained probe uses the resolved path and records three named failures, including its parent.
+
 A repository search finds no production caller of `BeginTransaction` outside storage implementations.
 The additional caller is the `internal/repotest` wrapper. Tests and the internal storage README also use it.
-CSP12 must determine whether to retire this unused contract or implement and qualify its complete semantics.
+The prepared CSP12 change removes this unused internal contract and its adapter implementations.
+Production callers retain `CompareAndSwapBatch` and its all-or-none contract tests.
 Do not count existing set/rollback tests as conditional transaction proof.
 
 The prepared transaction deadline wrapper bounds a semaphore before calling `valkey.Client.Dedicated`.
 Pinned valkey-go v1.0.78 calls its pool with `context.Background` inside that method.
 Cold connection acquisition therefore does not receive the caller deadline directly.
-Actual deadline failure remains UNVERIFIED. Test cold acquisition and cancellation before accepting the configured bounds.
-Ordinary commands use the context-aware client operation.
+
+Actual deadline failure remains UNVERIFIED. The prepared change removes this unused dedicated-client path.
+Ordinary commands and batches keep their context-aware client operations.
+After the change, 604 named real-service race results pass and three explicit cases skip.
+The code linter reports zero issues. Full CSP12 qualification remains open.
 
 Deployment-wide KV and notification namespacing remains incomplete.
 The current catalog namespace does not qualify isolation for credentials, accounts, budgets, jobs, or notification channels.

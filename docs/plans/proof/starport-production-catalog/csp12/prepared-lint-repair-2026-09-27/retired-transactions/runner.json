@@ -1,0 +1,19 @@
+{
+  "started": "2026-09-27T02:21:16.018564+00:00",
+  "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "-count=1",
+    "-timeout=5m",
+    "./internal/kvconnection/...",
+    "./internal/config",
+    "./internal/storage",
+    "./internal/cache"
+  ],
+  "exit_code": 0,
+  "cleanup": 0,
+  "finished": "2026-09-27T02:23:08.214535+00:00"
+}
