@@ -1,0 +1,33 @@
+{
+  "reviewed_consumer": "76a5687c680899283e9cbf4c3d74659a9e4f5974",
+  "reviewed_producer": "b46c077a70396de6eb31039b678ff754594f1d02",
+  "reviewers": [
+    "codex:gpt-6-sol:high",
+    "claude:claude-opus-5-5:high"
+  ],
+  "findings": 4,
+  "dispositions": {
+    "shared_restart_and_adoption": "confirmed known limitation; CSP13 owns recovery tooling; release blocker until qualified",
+    "sql_backend_pairings": "confirmed intentional support boundary; CSP12 owns config validation and complete recipes",
+    "duplicate_rollback_history": "accepted CSP11 defect",
+    "complete_fleet_key_loss": "accepted CSP11 defect; independent witness protocol needs re-scope"
+  },
+  "fail_before": {
+    "passed": 0,
+    "failed": 2,
+    "skipped": 0,
+    "real_backends": [
+      "Valkey",
+      "PostgreSQL"
+    ],
+    "tests": [
+      "TestFleetAcceptanceRetainsDistinctRollbackGenerations",
+      "TestFleetStoreCompleteKeyLossRequiresRecovery"
+    ]
+  },
+  "uncommitted_regression_file": "/Users/jack/src/github.com/agentstation/starport-native-catalog/internal/catalog/fleet_review_regression_test.go",
+  "regression_sha256": "aaa400ce469882ac2bab8d28951949a9492a1d3a76f6a1c9d92eebf9a57367b4",
+  "published_consumer_head": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
+  "merged": false,
+  "next_action": "Define the durable first-publication witness contract and crash behavior, implement both CSP11 repairs, then repeat exact-pair qualification and review."
+}

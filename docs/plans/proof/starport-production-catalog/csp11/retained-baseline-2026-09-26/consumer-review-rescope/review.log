@@ -1,0 +1,61 @@
+review still running: codex elapsed=60s pid=45820 cpu=0.4s/60s(1%) rss=158M state=S
+review still running: claude elapsed=60s pid=45909 cpu=1.0s/60s(2%) rss=277M state=S
+review still running: codex elapsed=120s pid=45820 cpu=0.0s/60s(0%) rss=159M state=S
+review still running: claude elapsed=120s pid=45909 cpu=0.4s/60s(1%) rss=282M state=S
+review still running: codex elapsed=180s pid=45820 cpu=0.0s/60s(0%) rss=160M state=S
+review still running: claude elapsed=180s pid=45909 cpu=0.4s/60s(1%) rss=283M state=S
+autoreview target: branch
+branch: detached
+gate: pre-pr (configured cadence: pre-pr)
+profile: auto
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=6.85, opus5=8.43
+reviewers: codex model=gpt-6-sol thinking=high, claude model=claude-opus-5-5 thinking=high
+tools: on
+web_search: on
+ref: f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda
+trufflehog: clean (4.1s)
+bundle: 247270 bytes; review passes: 1
+autoreview panel findings: 4
+[P1] Shared Valkey startup requires an approval only fresh-store init can create; no path for existing deployments or after Valkey restart
+internal/app/app.go:1323
+Reviewer: claude model=claude-opus-5-5 thinking=high
+
+Production startup now always goes through `OpenRuntimeWithRecovery` (app.go:1323). For any `IncarnationProvider` store (Valkey), that path requires an open `catalog_recovery` row whose `backend_id` equals the live `run_id:master_replid`.
+
+The only non-test code that creates such a row is `InitializeFresh` (`starport fleet init`). It refuses any non-empty SQL schema or Valkey database. `Witness.Initialize` and `Witness.Approve` are called only from tests.
+
+Consequences:
+1. An existing shared Valkey/PostgreSQL deployment upgraded to this build fails every gateway start, plus `doctor` and runtime migration, with `ErrClosed`. It cannot run `fleet init` because it already holds API keys and other data.
+2. `run_id` changes on every Valkey process restart, even with persistence, and `master_replid` changes on failover. After routine maintenance, every new gateway start fails with `ErrIncarnationChanged`, and running gateways lose all catalog refresh and acceptance.
+
+The docs point operators to a "migration or recovery procedure" that this change does not provide. Fix before landing: ship an operator re-approval/adoption command, or keep the witness requirement out of production startup until one exists.
+
+[P2] Valkey deployments using MySQL or SQLite for SQL now refuse to start
+internal/catalog/runtime_fleet.go:72
+Reviewer: claude model=claude-opus-5-5 thinking=high
+
+`openRecoveryFleet` returns an error for any `IncarnationProvider` store when the SQL handle is not PostgreSQL. It is reached from normal startup (`OpenRuntimeWithRecovery`), `OpenAcceptedStore` (doctor) and runtime migration.
+
+Before this change, `storage.mode=valkey` with `sql.mode=mysql` or `sqlite` opened the catalog with `NewGenerationStore`. Now it fails with "shared catalog recovery requires the qualified PostgreSQL witness". MySQL migrations are still shipped, including the new 0009 file. No config validation or release note tells operators this pairing was dropped, so upgrades of these deployments stop starting.
+
+Fix: validate and document this explicitly as an unsupported combination, or keep the previous non-fleet path for non-PostgreSQL SQL backends.
+
+[P2] Input-only revisions append duplicate generation IDs to accepted history, evicting real rollback generations
+internal/catalog/fleet_acceptance.go:88
+Reviewer: claude model=claude-opus-5-5 thinking=high
+
+`AcceptPublication` appends one `GenerationIndexEntry` per accepted head, even when the new head only changes recovery inputs and keeps the same generation ID. Examples are a lease takeover or restart that republishes, as in `TestFleetRuntimeLiveTakeoverAcceptance`.
+
+The history is capped at `catalogGenerationIndexCap` (32). After 32 such revisions it holds 32 copies of the current generation, as seen in `TestFleetRetentionCountsGenerationsSeparatelyFromReceipts`. Previously accepted, distinct generations then drop out of `History()`. `collectionProtection` protects only IDs still in that history, so the next `Collect` can delete the real rollback content.
+
+Fix: skip the append, or replace the last entry, when its `GenerationID` equals the newly accepted head's generation.
+
+[P2] [P2] Refuse an empty fleet store after a prior publication
+internal/catalog/fleet_retention.go:123
+Reviewer: codex model=gpt-6-sol thinking=high
+
+If an approved deployment loses its `catalog:fleet:*` keys while Valkey remains the same process, the SQL approval and Valkey incarnation still match. This branch treats the missing inventory and head markers as a fresh store, so startup can bootstrap a new catalog instead of requiring recovery. The Valkey markers cannot distinguish first use from loss of previously published data. Record that publication has occurred in the independent witness, or otherwise make the empty-head path fail closed after first publication.
+
+overall: patch is incorrect (0.93)
+Panel review complete. claude model=claude-opus-5-5 thinking=high: 3 finding(s), codex model=gpt-6-sol thinking=high: 1 finding(s).

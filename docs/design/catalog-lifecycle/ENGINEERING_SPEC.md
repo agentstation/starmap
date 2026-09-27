@@ -2317,6 +2317,16 @@ A compatible new or rollback binary uses that retained baseline, regardless of i
 Missing or uncertain shared state requires recovery. It cannot authorize fresh initialization.
 An independently approved fresh deployment may start from its permitted baseline.
 
+When all catalog KV keys disappear, the independent witness must still distinguish an established fleet from an unused deployment.
+An unchanged backend process identity does not prove that its catalog data remains.
+CSP11 must retain that evidence in the independent witness and define first-publication crash and retry behavior.
+A marker inside the same catalog KV namespace cannot establish prior use after that namespace disappears.
+Unknown completion at a SQL/KV boundary requires recovery evidence, not a new embedded bootstrap.
+The protocol must not claim an atomic transaction across independent stores.
+
+Accepted rollback history counts distinct generations. Input-only publications must not consume those history slots.
+Publication receipts retain their separate bounded retry window. Collection must protect both contracts.
+
 Configured GitHub and Starmap updates remain automatic under existing source settings, pins, and authority rules.
 An embedded-only fleet promotes a packaged baseline through an explicit operation.
 An acquisition-policy change requires one coordinated configuration apply that fences the previous policy.
@@ -2525,7 +2535,7 @@ An endpoint URL and records restored inside Valkey cannot establish process cont
 Use the backend's process identity and replication metadata under the tested adapter contract.
 [Valkey INFO fields](https://valkey.io/commands/info/)
 
-CSP12 must provide explicit operator initialization for a fresh deployment before its first shared startup.
+CSP11 provides explicit operator initialization for a fresh deployment before its first shared startup.
 Initialization must distinguish an empty deployment from existing, restored, or uncertain state.
 It must refuse those states and direct the operator to CSP13 recovery.
 Starting a gateway must never create its own missing approval.

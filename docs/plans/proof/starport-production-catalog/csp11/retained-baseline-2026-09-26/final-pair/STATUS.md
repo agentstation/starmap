@@ -10,8 +10,7 @@ All 34 repository commands pass with `GOWORK=off`.
 All eleven selected CSP11 subcases pass with real Valkey and PostgreSQL.
 This evidence does not qualify the other 48 primary plan cases.
 
-The complete consumer Sol/Opus review remains active in session 39239.
-After review, publish the existing consumer branch and qualify its exact-head CI.
-Merge Starmap PR185 before Starport PR385 after required checks pass.
-Record actual merge commits before marking CSP11 complete.
-Both PRs remain unmerged.
+The complete consumer review found two CSP11 defects beyond the prior acceptance coverage.
+Both now have failing real-store regressions. The earlier passes remain historical evidence and do not clear those defects.
+The consumer review disposition and repair scope are in `../consumer-review-rescope/REVIEW_RESOLUTION.md`.
+Both PRs remain unmerged. Consumer publication awaits the witness contract repair and renewed qualification.

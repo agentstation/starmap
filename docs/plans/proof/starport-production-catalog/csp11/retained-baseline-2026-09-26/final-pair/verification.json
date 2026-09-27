@@ -18,8 +18,10 @@
   "merged": false,
   "consumer_commit": "76a5687c680899283e9cbf4c3d74659a9e4f5974",
   "consumer_review": {
-    "status": "running",
-    "session": 39239,
-    "log": "/tmp/d41-final-consumer-review.log"
-  }
+    "status": "FINDINGS_REQUIRE_REPAIR",
+    "findings": 4,
+    "accepted_csp11_defects": 2,
+    "resolution": "../consumer-review-rescope/REVIEW_RESOLUTION.md"
+  },
+  "completion_status": "INCOMPLETE: two additional real-store regressions fail"
 }
