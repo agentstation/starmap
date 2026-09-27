@@ -20,8 +20,18 @@
   "repair_head": "b46c077a70396de6eb31039b678ff754594f1d02",
   "command": "GOTOOLCHAIN=go1.27.1 GOWORK=off make HAS_DEVBOX= GOCMD=go verify-checks",
   "review": {
-    "status": "running",
-    "session": 30982,
-    "log": "/tmp/d41-startup-producer-review.log"
+    "status": "PASS",
+    "reviewers": [
+      "codex:gpt-6-sol:high",
+      "claude:claude-opus-5-5:high"
+    ],
+    "passes": 2,
+    "findings": 0,
+    "report": "repair-review.json"
+  },
+  "publication": {
+    "head": "b46c077a70396de6eb31039b678ff754594f1d02",
+    "pr": 185,
+    "ci_run": 36282930189
   }
 }

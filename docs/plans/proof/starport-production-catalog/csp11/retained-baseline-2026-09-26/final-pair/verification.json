@@ -1,0 +1,15 @@
+{
+  "producer": "b46c077a70396de6eb31039b678ff754594f1d02",
+  "consumer_base_commit": "658c8993042b9f35d5019c835bcdcb19151962fc",
+  "module": "v0.16.6-0.20260927002942-b46c077a7039",
+  "GOWORK": "off",
+  "task": "CSP11",
+  "selected_subcases": {
+    "passed": 11,
+    "failed": 0,
+    "unverified": 0
+  },
+  "task_report": "task-gate/task-report.json",
+  "consumer_checks": "running",
+  "merged": false
+}

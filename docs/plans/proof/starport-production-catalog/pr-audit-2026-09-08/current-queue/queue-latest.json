@@ -5,15 +5,15 @@
       "baseRefName": "main",
       "baseRefOid": "8122081e0494648fb1e356647053dd870a05fb1c",
       "headRefName": "codex/catalog-fleet-contract",
-      "headRefOid": "dff93d12ec9310a024d1f31a965e3b1c7434ecdb",
+      "headRefOid": "b46c077a70396de6eb31039b678ff754594f1d02",
       "isDraft": false,
       "mergeStateStatus": "BLOCKED",
       "number": 185,
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Local startup race repair passes full verification; revised review is running",
-      "next_action": "Review and publish b46c077a7, then qualify exact-head CI."
+      "disposition": "Reviewed producer published; native CI run 36282930189 active",
+      "next_action": "Qualify exact-head CI and verify review threads before merge."
     }
   ],
   "starport": [
@@ -880,15 +880,17 @@
     "consumer": "658c8993042b9f35d5019c835bcdcb19151962fc",
     "consumer_pr": 385,
     "ci": {
-      "producer": 36265771789,
+      "producer": 36282930189,
       "consumer": 36265779872,
       "consumer_timeout_fix": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
-      "consumer_status": "failure on 7068380bd; Intel managed-credential test depended on wall time; local deterministic repair passes."
+      "consumer_status": "failure on 7068380bd; Intel managed-credential test depended on wall time; local deterministic repair passes.",
+      "producer_prior_run": "36281444461 cancelled automatically after failing stale platform assertions"
     },
     "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json",
-    "review_status": "Revised Sol/Opus review active after startup race regression and full verification pass.",
+    "review_status": "PASS: two review passes, no actionable findings",
     "running_sessions": [
-      30982
+      38962,
+      91230
     ],
     "repair_proof": "../../csp11/review-repairs-2026-09-26/verification.json",
     "initialization_proof": "../../csp11/fresh-initialization-2026-09-26/verification.json",
@@ -916,7 +918,7 @@
     "head": "658c8993042b9f35d5019c835bcdcb19151962fc",
     "branch": "codex/catalog-fleet-adapter",
     "published": false,
-    "uncommitted_module_pin": "v0.16.6-0.20260926235631-dff93d12ec93"
+    "uncommitted_module_pin": "v0.16.6-0.20260927002942-b46c077a7039"
   },
   "storage_recipe_preparation": {
     "owner": "CSP12",
@@ -934,5 +936,5 @@
       "scope": "kvconnection, config, storage, cache with race detection and real Valkey. Full CSP12 is incomplete."
     }
   },
-  "local_updated_at": "2026-09-27T00:30:34.072169+00:00"
+  "local_updated_at": "2026-09-27T00:39:06.656846+00:00"
 }

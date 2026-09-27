@@ -20,4 +20,5 @@ The test now belongs to the A13 stale-epoch acceptance group.
 
 All 122 fleet, acquisition, and pin race results pass with no failures or skips.
 Full repository verification passes. Commit `b46c077a7` contains the repair.
-The revised Sol/Opus review remains active. Both merges remain open.
+The revised Sol/Opus review passes across two bounded passes with no actionable findings.
+PR185 now contains the repaired commit. Both merges remain open.

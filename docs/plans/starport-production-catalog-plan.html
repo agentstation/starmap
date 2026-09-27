@@ -11,7 +11,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated September 26, 2026 UTC. CSP11 is in progress under D41. 23 of 40 tasks are complete.</p>
 
-<p id="next-action">Complete review of producer <code>b46c077a7</code>, then publish the existing branch. Update and qualify the consumer module pin with GOWORK=off. Complete consumer review and native CI, then merge in dependency order.</p>
+<p id="next-action">Qualify the consumer module pin for reviewed producer <code>b46c077a7</code> with GOWORK=off. Complete consumer review and native CI, then merge in dependency order.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/final-review-rescope/REPAIR_SCOPE.md">final review repair scope</a> defines both operation contracts after the review pause. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/ownership-contract-repair/verification.json">new repair proof</a> records 108 passing race results, 99 verifier tests, and eleven passing task subcases. Producer review is complete with one rejected advisory finding and thirteen additional passing pin tests. D41 remains approved.</p>
 
@@ -23,11 +23,11 @@
 
 <p>Producer checkout: <code>starmap-object-ci-repair</code>, branch <code>codex/catalog-fleet-contract</code>, local head <code>b46c077a70396de6eb31039b678ff754594f1d02</code>. Consumer checkout: <code>starport-native-catalog</code>, branch <code>codex/catalog-fleet-adapter</code>, local head <code>658c8993042b9f35d5019c835bcdcb19151962fc</code>. Preserve unrelated native evidence in both checkouts.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/startup-review-repair/verification.json">startup repair proof</a> records one reproduced failure and 122 passing race results. Full producer verification passes. Sol/Opus review remains active. All 34 consumer commands pass on the prior published module pin. That pair passes all eleven task subcases.</p>
+<p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/startup-review-repair/verification.json">startup repair proof</a> records one reproduced failure and 122 passing race results. Full producer verification and Sol/Opus review pass. All 34 consumer commands pass on the prior published module pin. That pair passes all eleven task subcases.</p>
 
-<p>Starport module files contain the uncommitted published pin <code>v0.16.6-0.20260926235631-dff93d12ec93</code>. Required checks run through <code>/tmp/d41-consumer-gates.py</code>. The native task runner is <code>/tmp/run-d41-published-task-gate.py</code>. Both use <code>GOWORK=off</code>.</p>
+<p>Starport module files contain the uncommitted published pin <code>v0.16.6-0.20260927002942-b46c077a7039</code>. Required checks run through <code>/tmp/d41-final-consumer-gates.py</code>. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/final-pair/verification.json">final pair</a> passes all eleven native task subcases. Repository checks remain active. Both use <code>GOWORK=off</code>.</p>
 
-<p>Starmap <a href="https://github.com/agentstation/starmap/pull/185">#185</a> now contains <code>dff93d12e</code>. Starport <a href="https://github.com/agentstation/starport/pull/385">#385</a> remains at <code>7068380bd</code>. The remote consumer branch still uses <code>v0.16.6-0.20260926185237-a2d66bd259a1</code>. Starmap must merge first.</p>
+<p>Starmap <a href="https://github.com/agentstation/starmap/pull/185">#185</a> now contains <code>b46c077a7</code>. Starport <a href="https://github.com/agentstation/starport/pull/385">#385</a> remains at <code>7068380bd</code>. The remote consumer branch still uses <code>v0.16.6-0.20260926185237-a2d66bd259a1</code>. Starmap must merge first.</p>
 
 <p>Reuse clean review checkouts <code>/tmp/starmap-fleet-review-20260926</code> and <code>/tmp/starport-clock-review-20260926</code>. The previous review found acquisition access, baseline replay, initialization, and retention defects. Local repairs now have passing behavior checks. Complete branch review remains mandatory.</p>
 
