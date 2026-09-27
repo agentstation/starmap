@@ -148,6 +148,18 @@
       "pr": 385,
       "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
       "merge_commit": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d"
+    },
+    {
+      "repo": "starmap",
+      "pr": 186,
+      "head": "ae218c074c7a4f2cbfd56e11d88abcc5108c566e",
+      "merge_commit": "024c24c2247841b537c98b42bdbfc21e3dc2a7a4"
+    },
+    {
+      "repo": "starport",
+      "pr": 386,
+      "head": "d9faa352179e05d2bbc5616b223025f8189499ea",
+      "merge_commit": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7"
     }
   ],
   "publication_replay": {
@@ -852,9 +864,9 @@
     "task_completed": false
   },
   "next_task": {
-    "task": "CSP12",
-    "next_action": "Check final exact-head native CI, then merge Starmap #186 followed by Starport #386. Record actual merge commits before task completion.",
-    "proof": "../../csp11/merged-pair-2026-09-27/verification.json"
+    "task": "CSP12.1",
+    "next_action": "Complete merged-source cache acceptance audit.",
+    "proof": "../../csp12.1/final-pair-2026-09-27/verification.json"
   },
   "merged_followups": {
     "tasks": [
@@ -960,7 +972,7 @@
     "worktree": "/tmp/starport-fleet-review-20260926",
     "commit": "d9faa352179e05d2bbc5616b223025f8189499ea",
     "published": true,
-    "next_action": "Check final exact-head native CI, then merge Starmap #186 followed by Starport #386. Record actual merge commits before task completion.",
+    "next_action": "CSP12 complete; close cache qualification, then atomic budget admission.",
     "connection_checks": {
       "source": "committed preparation 63c763b",
       "evidence": "../../csp12/prepared-lint-repair-2026-09-27/retired-transactions/runner.json",
@@ -984,13 +996,16 @@
     },
     "credential_conflict_repair": "Prepared commit 63c763b rejects conflicting URI and explicit credentials. Fail-before and passing race evidence remain in the proof.",
     "parent": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d",
-    "working_changes": [],
+    "working_changes": [
+      "docs/ARCHITECTURE.md",
+      "internal/cache/README.md"
+    ],
     "proof": "../../csp12/namespace-and-badger-2026-09-27/verification.json",
     "paired_work": {
       "producer_worktree": "/tmp/starmap-fleet-review-20260926",
       "producer_branch": "codex/offline-baseline-persistence",
       "producer_base": "2b98ab2606653d896201a2abe16ef2b5fb114290",
-      "status": "LOCAL_PASS_NATIVE_CI_PENDING",
+      "status": "MERGED",
       "local_pair_module_override": "/tmp/csp12-pair.mod",
       "proof": "../../csp12/recipe-startup-2026-09-27/verification.json",
       "producer_working_changes": [],
@@ -1005,10 +1020,11 @@
     "producer_pull_request": {
       "url": "https://github.com/agentstation/starmap/pull/186",
       "head": "ae218c074c7a4f2cbfd56e11d88abcc5108c566e",
-      "disposition": "reviewed and published; required native CI pending",
+      "disposition": "MERGED",
       "owner": "production catalog plan CSP12",
-      "next_action": "Check final exact-head native CI, then merge Starmap #186 followed by Starport #386. Record actual merge commits before task completion.",
-      "run": 36296567811
+      "next_action": "Preserve merged evidence. Follow the next ledger task.",
+      "run": 36296567811,
+      "merge_commit": "024c24c2247841b537c98b42bdbfc21e3dc2a7a4"
     },
     "producer_review_proof": "docs/plans/proof/starport-production-catalog/csp12/producer-review-2026-09-27/verification.json",
     "restart_repair_proof": "../../csp12/restart-repair-2026-09-27/verification.json",
@@ -1016,14 +1032,17 @@
     "consumer_pull_request": {
       "url": "https://github.com/agentstation/starport/pull/386",
       "head": "d9faa352179e05d2bbc5616b223025f8189499ea",
-      "disposition": "reviewed and published; required native CI pending",
+      "disposition": "MERGED",
       "owner": "production catalog plan CSP12",
-      "next_action": "Check final exact-head native CI, then merge Starmap #186 followed by Starport #386. Record actual merge commits before task completion.",
-      "run": 36297158543
+      "next_action": "Preserve merged evidence. Follow the next ledger task.",
+      "run": 36297158543,
+      "merge_commit": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7"
     },
-    "activation_repair_proof": "../../csp12/activation-repair-2026-09-27/verification.json"
+    "activation_repair_proof": "../../csp12/activation-repair-2026-09-27/verification.json",
+    "status": "MERGED",
+    "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-27T05:27:03.930776+00:00",
+  "local_updated_at": "2026-09-27T05:57:28.860747+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",

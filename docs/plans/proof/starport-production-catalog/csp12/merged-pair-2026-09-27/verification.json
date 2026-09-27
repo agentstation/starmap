@@ -1,0 +1,489 @@
+{
+  "task": "CSP12",
+  "status": "PASS",
+  "recorded_at": "2026-09-27T05:57:28.860747+00:00",
+  "producer_merge": "024c24c2247841b537c98b42bdbfc21e3dc2a7a4",
+  "consumer_merge": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+  "producer_tested_head": "ae218c074c7a4f2cbfd56e11d88abcc5108c566e",
+  "consumer_tested_head": "d9faa352179e05d2bbc5616b223025f8189499ea",
+  "merge_trees_equal_tested_heads": true,
+  "toolchain": "go1.27.1",
+  "module": "v0.16.6-0.20260927051157-ae218c074c7a",
+  "source_files_verified": {
+    "consumer": 1059,
+    "producer": 272
+  },
+  "task_subcases": {
+    "A15.budget_usage_unknown": "PASS",
+    "A15.team_policy_unknown": "PASS",
+    "A15.confirmed_no_budget": "PASS",
+    "A31.recipe_configuration_guards": "PASS",
+    "A41.valkey_url_contract": "PASS",
+    "A41.valkey_tls_identity": "PASS",
+    "A41.valkey_username_password": "PASS",
+    "A41.valkey_effective_connection_options": "PASS",
+    "A41.badger_effective_options": "PASS",
+    "A41.badger_write_sync_profile": "PASS",
+    "A41.deployment_key_channel_isolation": "PASS",
+    "A41.namespace_atomic_layout": "PASS",
+    "A41.unsupported_modes_refused": "PASS",
+    "A31.compose_complete_storage": "PASS",
+    "A43.persistent_selectors_rejected": "PASS"
+  },
+  "checks": {
+    "starmap": 32,
+    "starport": 16,
+    "all": "SUCCESS"
+  },
+  "local_proof": "../activation-repair-2026-09-27/verification.json",
+  "native_results": [
+    {
+      "product": "producer",
+      "artifact": "native-runtime-macos-15",
+      "named_results": {
+        "pass": 3504,
+        "skip": 1
+      },
+      "focus": [
+        {
+          "test": "TestAuthorityRuntimePermissionRefreshBypassesBlockedCatalogAndLease",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "product": "producer",
+      "artifact": "native-runtime-ubuntu-24.04",
+      "named_results": {
+        "pass": 3458,
+        "skip": 2
+      },
+      "focus": [
+        {
+          "test": "TestAuthorityRuntimePermissionRefreshBypassesBlockedCatalogAndLease",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "product": "producer",
+      "artifact": "native-runtime-ubuntu-24.04-arm",
+      "named_results": {
+        "pass": 3458,
+        "skip": 2
+      },
+      "focus": [
+        {
+          "test": "TestAuthorityRuntimePermissionRefreshBypassesBlockedCatalogAndLease",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "product": "producer",
+      "artifact": "native-runtime-windows-11-arm",
+      "named_results": {
+        "pass": 3485,
+        "skip": 7
+      },
+      "focus": [
+        {
+          "test": "TestAuthorityRuntimePermissionRefreshBypassesBlockedCatalogAndLease",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "product": "producer",
+      "artifact": "native-runtime-windows-2025",
+      "named_results": {
+        "pass": 3633,
+        "skip": 7
+      },
+      "focus": [
+        {
+          "test": "TestAuthorityRuntimePermissionRefreshBypassesBlockedCatalogAndLease",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "product": "consumer",
+      "artifact": "catalog-fleet-recovery",
+      "named_results": {
+        "pass": 81
+      },
+      "focus": []
+    },
+    {
+      "product": "consumer",
+      "artifact": "native-catalog-macos-15",
+      "named_results": {
+        "pass": 4203,
+        "skip": 122
+      },
+      "focus": [
+        {
+          "test": "TestContainerRecipePersistence",
+          "result": "skip"
+        },
+        {
+          "test": "TestApplicationOwnsAuthorizationFencesAndCatchup",
+          "result": "pass"
+        },
+        {
+          "test": "TestDiscoveryCacheTracksAdapterRevision",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "product": "consumer",
+      "artifact": "native-catalog-ubuntu-24.04",
+      "named_results": {
+        "pass": 4206,
+        "skip": 121
+      },
+      "focus": [
+        {
+          "test": "TestContainerRecipePersistence",
+          "result": "skip"
+        },
+        {
+          "test": "TestApplicationOwnsAuthorizationFencesAndCatchup",
+          "result": "pass"
+        },
+        {
+          "test": "TestDiscoveryCacheTracksAdapterRevision",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "product": "consumer",
+      "artifact": "native-catalog-ubuntu-24.04-arm",
+      "named_results": {
+        "pass": 4206,
+        "skip": 121
+      },
+      "focus": [
+        {
+          "test": "TestContainerRecipePersistence",
+          "result": "skip"
+        },
+        {
+          "test": "TestApplicationOwnsAuthorizationFencesAndCatchup",
+          "result": "pass"
+        },
+        {
+          "test": "TestDiscoveryCacheTracksAdapterRevision",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "product": "consumer",
+      "artifact": "native-catalog-windows-11-arm",
+      "named_results": {
+        "pass": 4199,
+        "skip": 126
+      },
+      "focus": [
+        {
+          "test": "TestApplicationOwnsAuthorizationFencesAndCatchup",
+          "result": "pass"
+        },
+        {
+          "test": "TestContainerRecipePersistence",
+          "result": "skip"
+        },
+        {
+          "test": "TestDiscoveryCacheTracksAdapterRevision",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "product": "consumer",
+      "artifact": "native-catalog-windows-2025",
+      "named_results": {
+        "pass": 4198,
+        "skip": 126
+      },
+      "focus": [
+        {
+          "test": "TestContainerRecipePersistence",
+          "result": "skip"
+        },
+        {
+          "test": "TestApplicationOwnsAuthorizationFencesAndCatchup",
+          "result": "pass"
+        },
+        {
+          "test": "TestDiscoveryCacheTracksAdapterRevision",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "product": "consumer",
+      "artifact": "shared-storage-startup",
+      "named_results": {
+        "pass": 54,
+        "skip": 1
+      },
+      "focus": []
+    },
+    {
+      "product": "consumer",
+      "artifact": "storage-recipes",
+      "named_results": {
+        "pass": 4
+      },
+      "focus": [
+        {
+          "test": "TestContainerRecipePersistence",
+          "result": "pass"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "producer-native-runtime-macos-15--filesystem-preflight.jsonl.gz",
+      "sha256": "5fc64a4d9a558212d9e5a46c646f54ffc60ae0d2e53e169ed3185b3800c95781"
+    },
+    {
+      "path": "producer-native-runtime-macos-15--tests.jsonl.gz",
+      "sha256": "82620c0a4c60b76b268947df806ace9fb8d98896b8338eccb42117ea2fba7d5f"
+    },
+    {
+      "path": "producer-native-runtime-macos-15--toolchain.txt.gz",
+      "sha256": "bd6912476815abe7799d5151a468b459ff557ff8c1cee943f59da6d3f74cbde3"
+    },
+    {
+      "path": "producer-native-runtime-ubuntu-24.04--filesystem-preflight.jsonl.gz",
+      "sha256": "7ba3ef1b76d82fdd1e7fddc9a5ea27a12b7d988878223ab92883d37ebedfe2d2"
+    },
+    {
+      "path": "producer-native-runtime-ubuntu-24.04--service-owner.txt.gz",
+      "sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68"
+    },
+    {
+      "path": "producer-native-runtime-ubuntu-24.04--tests.jsonl.gz",
+      "sha256": "aa1329f4b677faed617b77c82b8e3fc40242b1d12d1bf098d029270cbcf30588"
+    },
+    {
+      "path": "producer-native-runtime-ubuntu-24.04--toolchain.txt.gz",
+      "sha256": "9019a5d77dde6ec377ac457b0781b39e7066e10d84f3101c7b42d09bacff6fa0"
+    },
+    {
+      "path": "producer-native-runtime-ubuntu-24.04-arm--filesystem-preflight.jsonl.gz",
+      "sha256": "b57f6dc1fc5e2c46efdc2a4948a664ee6a3b0a17030d78cc2699042f8f93537a"
+    },
+    {
+      "path": "producer-native-runtime-ubuntu-24.04-arm--service-owner.txt.gz",
+      "sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68"
+    },
+    {
+      "path": "producer-native-runtime-ubuntu-24.04-arm--tests.jsonl.gz",
+      "sha256": "307c459e9d28466e782582f765845d62652c46113dc7672079baa5f0c7a027fe"
+    },
+    {
+      "path": "producer-native-runtime-ubuntu-24.04-arm--toolchain.txt.gz",
+      "sha256": "272f5bcd02190b64ac3d34eb7071973e38cc4c5246b757e17b6be8b93990ce58"
+    },
+    {
+      "path": "producer-native-runtime-windows-11-arm--native-runtime-windows-11-arm--filesystem-preflight.jsonl.gz",
+      "sha256": "1896e80eb4018d7cc5fdb55c455b5403b793bb9687d6026a7a40b2d31940a952"
+    },
+    {
+      "path": "producer-native-runtime-windows-11-arm--native-runtime-windows-11-arm--tests.jsonl.gz",
+      "sha256": "66b655d19f8a156012e83523390056c1207c2a7c818f04a63ea7174bc5d2dfd2"
+    },
+    {
+      "path": "producer-native-runtime-windows-11-arm--native-runtime-windows-11-arm--toolchain.txt.gz",
+      "sha256": "b3f5d419e25e24ddcdc67f96ff1acfc592a620446319ef63967cd923d8630a8b"
+    },
+    {
+      "path": "producer-native-runtime-windows-11-arm--native-runtime-windows-11-arm--windows-clock.jsonl.gz",
+      "sha256": "b9370bea7ff269f6f80a869beb1605442b56ae122a15e44d52d55c2da88744f0"
+    },
+    {
+      "path": "producer-native-runtime-windows-11-arm--native-runtime-windows-11-arm--windows-time-access.json.gz",
+      "sha256": "03666af60a70a347f04c6eb6d19e1294828db7b4baa5e10460c4e08957e9e3c7"
+    },
+    {
+      "path": "producer-native-runtime-windows-11-arm--native-runtime-windows-11-arm--windows-time-privileges.log.gz",
+      "sha256": "cda1d7b0e546f2a7ce49417c9bb9b11381302103634fa8ec0d76c9132f688ed8"
+    },
+    {
+      "path": "producer-native-runtime-windows-11-arm--native-runtime-windows-11-arm--windows-time-service.json.gz",
+      "sha256": "746f7adffaf0d899e21cf316418fb9af798343291b47b9449871c9a6363fe0d8"
+    },
+    {
+      "path": "producer-native-runtime-windows-11-arm--native-runtime-windows-11-arm--windows-time-status.log.gz",
+      "sha256": "7f158aa1a7df38fbc35be51791c484cb34865636117bde22304f560f69369266"
+    },
+    {
+      "path": "producer-native-runtime-windows-2025--native-runtime-windows-2025--filesystem-preflight.jsonl.gz",
+      "sha256": "ef40afd5253dbd0a210938d681014d866c44f1adebb7440e5f513bf9893a2520"
+    },
+    {
+      "path": "producer-native-runtime-windows-2025--native-runtime-windows-2025--filesystem-race.jsonl.gz",
+      "sha256": "b07340d8620bfa57fa4a286421acd434d4222d8e083a8629abc20d51fa13c37c"
+    },
+    {
+      "path": "producer-native-runtime-windows-2025--native-runtime-windows-2025--tests.jsonl.gz",
+      "sha256": "315d0083718a74e76b8619bd11143c2e42f67c67db065ba844a24c66462e49b1"
+    },
+    {
+      "path": "producer-native-runtime-windows-2025--native-runtime-windows-2025--toolchain.txt.gz",
+      "sha256": "f0bcc23df5afb670235b8dfd532d4a6048821a5c6fb61e9443fe2cc08d8ff343"
+    },
+    {
+      "path": "producer-native-runtime-windows-2025--native-runtime-windows-2025--windows-clock.jsonl.gz",
+      "sha256": "2161beb98d05646a70fbf7b58cd2f317a63fe9cea8b81b235071061b77139524"
+    },
+    {
+      "path": "producer-native-runtime-windows-2025--native-runtime-windows-2025--windows-time-access.json.gz",
+      "sha256": "6b62dbbfeb8b178867c9e59e44547b42dd117ad3a5fd0132927412c23815ab8a"
+    },
+    {
+      "path": "producer-native-runtime-windows-2025--native-runtime-windows-2025--windows-time-privileges.log.gz",
+      "sha256": "cda1d7b0e546f2a7ce49417c9bb9b11381302103634fa8ec0d76c9132f688ed8"
+    },
+    {
+      "path": "producer-native-runtime-windows-2025--native-runtime-windows-2025--windows-time-service.json.gz",
+      "sha256": "950c92c2ea2355d0af7fd683b4e71aec0dd5709b1c6d157905843de2f108b3d7"
+    },
+    {
+      "path": "producer-native-runtime-windows-2025--native-runtime-windows-2025--windows-time-status.log.gz",
+      "sha256": "c27f5817fb31a8527a8d98ea11e58cbd213efc3a7105ac502cbe5018aadbadaf"
+    },
+    {
+      "path": "consumer-catalog-fleet-recovery--fleet-catalog.jsonl.gz",
+      "sha256": "34880187f8d2766144dd3db46d3178a045799c0ade5412a9a771b956f784df52"
+    },
+    {
+      "path": "consumer-catalog-fleet-recovery--fleet-initialization.jsonl.gz",
+      "sha256": "d486f82a753148558dcc63d14db4a2aa6b560c32aa2eaa785de330e3ff230fd0"
+    },
+    {
+      "path": "consumer-native-catalog-macos-15--allocations.jsonl.gz",
+      "sha256": "f8e428a4f792badcf1bcfc6297a562290b4568d11cef4113684d1b859beeab9c"
+    },
+    {
+      "path": "consumer-native-catalog-macos-15--packages.txt.gz",
+      "sha256": "6c4cb2f04984a7d0451c9b881ce0039252c3d628d8184bcf0c64c1289a45674f"
+    },
+    {
+      "path": "consumer-native-catalog-macos-15--tests.jsonl.gz",
+      "sha256": "85b776d2f20566b7f6031138ff7568329e8072bf8e41a8ea04f347b42c9ec3f4"
+    },
+    {
+      "path": "consumer-native-catalog-macos-15--toolchain.txt.gz",
+      "sha256": "58851c565fad6114a77bd29552aa9d867ddb2aa1d20adfcf188621592456fe0f"
+    },
+    {
+      "path": "consumer-native-catalog-ubuntu-24.04--allocations.jsonl.gz",
+      "sha256": "b6ea00d463b98ea46da235b3df15b33867124b42312eb1afaed1a4e80ce56118"
+    },
+    {
+      "path": "consumer-native-catalog-ubuntu-24.04--catalog.coverage.txt.gz",
+      "sha256": "06dac435b179dd838f1bd0b57b323bbef91dbc1d28198e72d9b7fa6030199201"
+    },
+    {
+      "path": "consumer-native-catalog-ubuntu-24.04--packages.txt.gz",
+      "sha256": "6c4cb2f04984a7d0451c9b881ce0039252c3d628d8184bcf0c64c1289a45674f"
+    },
+    {
+      "path": "consumer-native-catalog-ubuntu-24.04--remaining.coverage.txt.gz",
+      "sha256": "a3f7f490a5bda49392acea2c07b3da6f710feff2ec9c170d93b47e947f921c33"
+    },
+    {
+      "path": "consumer-native-catalog-ubuntu-24.04--tests.jsonl.gz",
+      "sha256": "179fe56681e6728e2ee3743fe951bc19b7717165d00273815a8014ace893b870"
+    },
+    {
+      "path": "consumer-native-catalog-ubuntu-24.04--toolchain.txt.gz",
+      "sha256": "dc814bf7708cb2a202efaceed006aa2590374a13cdecd981df9073627483edbc"
+    },
+    {
+      "path": "consumer-native-catalog-ubuntu-24.04-arm--allocations.jsonl.gz",
+      "sha256": "f4f70d3b2bee76800db1d9783637c3b16a0d04f6c51e7b9727bb4d9c4512ff26"
+    },
+    {
+      "path": "consumer-native-catalog-ubuntu-24.04-arm--packages.txt.gz",
+      "sha256": "6c4cb2f04984a7d0451c9b881ce0039252c3d628d8184bcf0c64c1289a45674f"
+    },
+    {
+      "path": "consumer-native-catalog-ubuntu-24.04-arm--tests.jsonl.gz",
+      "sha256": "7ed387cadddbec497da90c807de0c0285fb3e88d083c7b767ed093ead4b1ab37"
+    },
+    {
+      "path": "consumer-native-catalog-ubuntu-24.04-arm--toolchain.txt.gz",
+      "sha256": "6e11103439930abb0f97fadcb7e27eb4c0356808ef8823b3869a9125d8c206bb"
+    },
+    {
+      "path": "consumer-native-catalog-windows-11-arm--allocations.jsonl.gz",
+      "sha256": "f35f5ba5040faba94b39a34c7f35f10b85a8f0353a855f182bd6814ca6f87fe5"
+    },
+    {
+      "path": "consumer-native-catalog-windows-11-arm--packages.txt.gz",
+      "sha256": "6c4cb2f04984a7d0451c9b881ce0039252c3d628d8184bcf0c64c1289a45674f"
+    },
+    {
+      "path": "consumer-native-catalog-windows-11-arm--tests.jsonl.gz",
+      "sha256": "4ad3bc752c8913a3f4a41d4a86b5bedc46299bea58a88d77f913c52864927834"
+    },
+    {
+      "path": "consumer-native-catalog-windows-11-arm--toolchain.txt.gz",
+      "sha256": "b3f5d419e25e24ddcdc67f96ff1acfc592a620446319ef63967cd923d8630a8b"
+    },
+    {
+      "path": "consumer-native-catalog-windows-2025--allocations.jsonl.gz",
+      "sha256": "fc3706cc5a2da2fbb131f3804eb5ff806ead5bbf43eaa7eff451a80f5d4837a2"
+    },
+    {
+      "path": "consumer-native-catalog-windows-2025--packages.txt.gz",
+      "sha256": "6c4cb2f04984a7d0451c9b881ce0039252c3d628d8184bcf0c64c1289a45674f"
+    },
+    {
+      "path": "consumer-native-catalog-windows-2025--tests.jsonl.gz",
+      "sha256": "cad28e616a91ef4ecb17ddd57ab3fac531f6b00b93d96584cb54b32577939d10"
+    },
+    {
+      "path": "consumer-native-catalog-windows-2025--toolchain.txt.gz",
+      "sha256": "7c7c991e11d8577e1a64f7715e46b43e8612dfa5c12e54d4a54176d2335ac55d"
+    },
+    {
+      "path": "consumer-shared-storage-startup--authorization-storage.jsonl.gz",
+      "sha256": "735420d6b5d46648152e5e7a161e63f2b7ddf0acfb107e297cac0273b44a2c3f"
+    },
+    {
+      "path": "consumer-shared-storage-startup--durable-adapters.jsonl.gz",
+      "sha256": "769e87c50b8bb5cfbd2f8d058e82167a025461cf500103d66741ca1f6454e001"
+    },
+    {
+      "path": "consumer-shared-storage-startup--shared-cache.jsonl.gz",
+      "sha256": "75bc2232ba138ac756a6339203ac5f3bd5e8aa6269c31fe1088709d2804f6bbd"
+    },
+    {
+      "path": "consumer-shared-storage-startup--shared-startup.jsonl.gz",
+      "sha256": "20d420e3c6b5963de42f5e2c78a8af43811e2f8ae251848cdf26bc954e7e0d29"
+    },
+    {
+      "path": "consumer-storage-recipes--storage-recipes.jsonl.gz",
+      "sha256": "7df66e92aad11d92af28b3f02d79bc84ce74ac6f6944d8e062889b9004807fff"
+    }
+  ],
+  "limitations": [
+    "Component completion does not establish released-pair qualification.",
+    "Native default suites skip service and opt-in tests. Dedicated CI jobs and final real-service local qualification retain their separate results.",
+    "CSP13 owns populated migration and controlled recovery. CSP15 owns complete shared-backend failure qualification. Existing production fleet upgrades remain unqualified.",
+    "Two uncommitted documentation files remain in the consumer checkout as CSP18 preparation. They do not change the merged implementation."
+  ],
+  "review": "Both final source reviews pass the configured P0 threshold. Prior downstream release blockers remain in the plan.",
+  "next_task": "CSP12.1"
+}

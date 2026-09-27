@@ -1,0 +1,15 @@
+{
+  "headRefOid": "ae218c074c7a4f2cbfd56e11d88abcc5108c566e",
+  "mergeCommit": {
+    "oid": "024c24c2247841b537c98b42bdbfc21e3dc2a7a4"
+  },
+  "mergedAt": "2026-09-27T05:55:17Z",
+  "state": "MERGED",
+  "url": "https://github.com/agentstation/starmap/pull/186",
+  "tested_head": "ae218c074c7a4f2cbfd56e11d88abcc5108c566e",
+  "base": "2b98ab2606653d896201a2abe16ef2b5fb114290",
+  "merge_tree_equals_tested_head": true,
+  "check_count": 32,
+  "method": "Protected squash with exact-head match; no bypass",
+  "review_threads": 0
+}

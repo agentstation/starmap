@@ -1,0 +1,15 @@
+{
+  "headRefOid": "d9faa352179e05d2bbc5616b223025f8189499ea",
+  "mergeCommit": {
+    "oid": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7"
+  },
+  "mergedAt": "2026-09-27T05:55:34Z",
+  "state": "MERGED",
+  "url": "https://github.com/agentstation/starport/pull/386",
+  "tested_head": "d9faa352179e05d2bbc5616b223025f8189499ea",
+  "base": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d",
+  "merge_tree_equals_tested_head": true,
+  "check_count": 16,
+  "method": "Protected squash with exact-head match; no bypass",
+  "review_threads": 0
+}
