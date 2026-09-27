@@ -866,11 +866,11 @@
   },
   "next_task": {
     "task": "CSP12.2",
-    "next_action": "Integrate admitted policy, verified history, selected-offering bounds, and durable settlement across every paid operation. The local reservation component is qualified only at its own seam.",
+    "next_action": "Compose an independently approved persistent budget authority; initialize team history during bounded policy refresh; integrate every paid dispatch and settlement path using the operation matrix.",
     "worktree": "/tmp/starport-fleet-review-20260926",
     "branch": "codex/atomic-budget-admission",
     "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
-    "head": "8b4d50e7f2a29e2dd3e97a4cb297af72f9e079f3"
+    "head": "3781aafe9fd99ae3834a8207af0e9c4165ab522f"
   },
   "merged_followups": {
     "tasks": [
@@ -1055,10 +1055,10 @@
   },
   "budget_preparation": {
     "owner": "CSP12.2",
-    "status": "local_component_only",
-    "commit": "8b4d50e7f2a29e2dd3e97a4cb297af72f9e079f3",
+    "status": "local_policy_and_history_components_only",
+    "commit": "3781aafe9fd99ae3834a8207af0e9c4165ab522f",
     "published": false,
-    "proof": "../../../csp12.2/reservation-core-2026-09-27/verification.json",
+    "proof": "../../../csp12.2/history-policy-2026-09-27/verification.json",
     "native_ci": "UNVERIFIED",
     "required_review": "not yet run; required before final PR",
     "remaining_dirty_files": {

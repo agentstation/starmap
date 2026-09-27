@@ -1,0 +1,238 @@
+{
+  "task": "CSP12.2",
+  "date": "2026-09-27",
+  "status": "partial_component_evidence",
+  "implementation_commit": "3781aafe9fd99ae3834a8207af0e9c4165ab522f",
+  "branch": "codex/atomic-budget-admission",
+  "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+  "published": false,
+  "source_manifest": "source-manifest.json",
+  "changes": [
+    "Immutable admitted budget policy, including child-request permission checks and zero-allocation warm reads.",
+    "Server-owned budget history identity; limit edits preserve continuity.",
+    "Atomic fresh account/key history; retained identities prevent recreation resets.",
+    "Authority-selected window rollover and original-window late settlement.",
+    "SQL-owned team origin grants and native KV receipts; consumed grants without receipts require recovery.",
+    "Existing-team migration denies fresh grants on SQLite, PostgreSQL, and MySQL."
+  ],
+  "runs": [
+    {
+      "name": "policy",
+      "raw": "csp122-policy.jsonl.gz",
+      "raw_sha256": "38a2ed4eba63c3a89cb967ca224ac382783188339dc99ec382de5c8ef9ab328c",
+      "pass": 119,
+      "fail": 0,
+      "skip": 3,
+      "skipped_tests": [
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "TestRepositorySourceRealStoresAndLocalMutation/valkey"
+      ],
+      "failed_tests": [],
+      "tested_source": "earlier working tree; supplemental history only"
+    },
+    {
+      "name": "policy-focused",
+      "raw": "csp122-policy-focused.jsonl.gz",
+      "raw_sha256": "7af6845608d4bb67afc77b64d8a0042005e6e92b3427879196ec9c47797c87fb",
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "skipped_tests": [],
+      "failed_tests": [],
+      "tested_source": "earlier working tree; supplemental history only"
+    },
+    {
+      "name": "history",
+      "raw": "csp122-history.jsonl.gz",
+      "raw_sha256": "e934102b5823e8f9d508590f6b8bb3d93ec7c5a2cf84c4f0a78e149a51fdaeda",
+      "pass": 33,
+      "fail": 0,
+      "skip": 0,
+      "skipped_tests": [],
+      "failed_tests": [],
+      "tested_source": "earlier working tree; supplemental history only"
+    },
+    {
+      "name": "history-policy-integration",
+      "raw": "csp122-history-policy-integration.jsonl.gz",
+      "raw_sha256": "c169c7b47e537dffe05b3849ed76355b2bb7a64f7a8b286a50af2a41062af38c",
+      "pass": 325,
+      "fail": 0,
+      "skip": 2,
+      "skipped_tests": [
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement"
+      ],
+      "failed_tests": [],
+      "tested_source": "earlier working tree; supplemental history only"
+    },
+    {
+      "name": "team-initial",
+      "raw": "csp122-team-initial.jsonl.gz",
+      "raw_sha256": "d208f9f57d5f9d45b78a5cac869d15622b784a1b1e473d99eba0feb9a11e29cb",
+      "pass": 121,
+      "fail": 0,
+      "skip": 1,
+      "skipped_tests": [
+        "TestTeamBudgetHistoryHandoff/postgres-valkey"
+      ],
+      "failed_tests": [],
+      "tested_source": "earlier working tree; supplemental history only"
+    },
+    {
+      "name": "team-stores",
+      "raw": "csp122-team-stores.jsonl.gz",
+      "raw_sha256": "50fec0f666af4d73516b7d18ae08a468eb3b7ce748e0584c6cf11ad5d4fac367",
+      "pass": 368,
+      "fail": 0,
+      "skip": 2,
+      "skipped_tests": [
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement"
+      ],
+      "failed_tests": [],
+      "tested_source": "earlier working tree; supplemental history only"
+    },
+    {
+      "name": "team-final",
+      "raw": "csp122-team-final.jsonl.gz",
+      "raw_sha256": "b358d4e16ae4296bc0ed625da4852c738318dcf493a098d51321845d40c32260",
+      "pass": 372,
+      "fail": 0,
+      "skip": 2,
+      "skipped_tests": [
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement"
+      ],
+      "failed_tests": [],
+      "tested_source": "3781aafe9fd99ae3834a8207af0e9c4165ab522f"
+    },
+    {
+      "name": "team-sql-dialects",
+      "raw": "csp122-team-sql-dialects.jsonl.gz",
+      "raw_sha256": "8189bcd4217a71082a648829aa37f995cec37e83a7f3af5a158ab016ec909d34",
+      "pass": 28,
+      "fail": 0,
+      "skip": 0,
+      "skipped_tests": [],
+      "failed_tests": [],
+      "tested_source": "3781aafe9fd99ae3834a8207af0e9c4165ab522f"
+    },
+    {
+      "name": "budget-policy-capacity",
+      "raw": "csp122-budget-policy-capacity.jsonl.gz",
+      "raw_sha256": "17552f3af728b46679659558f2ee00671aa8a5c614f47efddf660df93739cec7",
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "skipped_tests": [],
+      "failed_tests": [],
+      "tested_source": "3781aafe9fd99ae3834a8207af0e9c4165ab522f"
+    }
+  ],
+  "checks": [
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=<fixture> TEST_POSTGRES_URL=<fixture> go test -race -count=1 -timeout=3m -json ./internal/limits/... ./internal/account ./internal/apikey ./internal/identity ./internal/authorization ./internal/server/requestctx ./internal/sqlstore",
+      "record": "team-final",
+      "exit_code": 0
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 TEST_POSTGRES_URL=<fixture> TEST_MYSQL_DSN=<fixture> go test -race -count=1 -timeout=2m -json ./internal/sqlstore",
+      "record": "team-sql-dialects",
+      "exit_code": 0
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 TEST_AUTHORIZATION_CAPACITY=1 go test -race -count=1 -timeout=3m -run ^TestAuthorizationTenantChurnCapacity$ -json ./internal/authorization",
+      "record": "budget-policy-capacity",
+      "exit_code": 0
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./internal/limits/... ./internal/account ./internal/apikey ./internal/identity ./internal/authorization ./internal/server/requestctx ./internal/sqlstore",
+      "output": "csp122-team-vet.log.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/limits/... ./internal/account ./internal/apikey ./internal/identity ./internal/authorization ./internal/server/requestctx ./internal/sqlstore",
+      "output": "csp122-team-lint-final.log.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go build ./...",
+      "output": "csp122-team-build.log.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "output": "csp122-team-direction.log.gz",
+      "exit_code": 0,
+      "pass": 6,
+      "fail": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "earlier_failure": {
+    "output": "csp122-holder-initial.log.gz",
+    "test": "TestTeamRepositoryBudgetRoundTrip",
+    "cause": "The previous exact struct assertion omitted the new server-owned HistoryID.",
+    "repair": "Assert original budget values, nonempty server-owned identity, and unchanged caller value."
+  },
+  "qualification_limits": [
+    "Production provider dispatch does not yet use the reservation repository.",
+    "Team initialization is a tested repository contract, not connected to application policy refresh.",
+    "Test Valkey fixtures observe and bind their disposable incarnation; production must obtain independent approval.",
+    "No final task verifier, native CI, independent pre-PR review, PR, or merge for these commits.",
+    "No complete backend failover, populated migration, process restart at every cross-store boundary, or all-operation qualification.",
+    "Closed reservation replay horizons and garbage collection remain to be specified and qualified.",
+    "The broad suite skipped fleet receipt and capacity profiles; capacity ran separately, fleet receipt did not.",
+    "MySQL SQL contract evidence does not qualify a complete MySQL deployment recipe."
+  ],
+  "next_action": "Compose an independently approved persistent budget authority; initialize team history during bounded policy refresh; integrate every paid dispatch and settlement path using the operation matrix.",
+  "preserved_dirty_files": [
+    "docs/ARCHITECTURE.md",
+    "internal/cache/README.md"
+  ],
+  "cleanup": {
+    "containers": [
+      "starport-csp122-history",
+      "starport-csp122-teams-postgres",
+      "starport-csp122-teams-mysql"
+    ],
+    "status": "stopped and removed; docker ps -a filter returned no matches"
+  },
+  "document_checks": [
+    {
+      "command": "technical-writing lint <plan> <engineering-spec> --format text",
+      "exit_code": 0,
+      "files": 2,
+      "diagnostics": 0
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "files": 1765,
+      "diagnostics": 137,
+      "output": "csp122-history-prose-project.log.gz",
+      "scope": "Diagnostics are outside both changed documents. No unrelated prose changed."
+    },
+    {
+      "command": "local HTML ledger/link and source-manifest audit",
+      "ledger": {
+        "done": 26,
+        "in_progress": 1,
+        "todo": 13
+      },
+      "local_links": 93,
+      "missing_links": 0,
+      "source_files_verified": 29
+    }
+  ],
+  "document_initial_failure": {
+    "output": "csp122-history-prose.log.gz",
+    "diagnostics": 2,
+    "repair": "Split the seven-sentence paragraph and identify initialization as the actor."
+  }
+}

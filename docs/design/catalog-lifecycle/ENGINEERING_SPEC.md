@@ -2980,6 +2980,26 @@ Policy revisions and limit edits do not reset accumulated spending.
 Membership changes affect new admission but do not move an existing reservation to a different account, key, or team.
 Newly applied meters retain applicable consumption history. Missing history is unknown capacity and requires reconciliation.
 
+The policy owner assigns each budget a server-owned `history_id` and ignores caller-supplied values.
+Limit edits preserve this identity when the interval stays unchanged.
+Removing and restoring a budget, or changing its interval, requires reconciliation before new admission.
+Account and API key creation establish fresh history in the same KV transaction as their policy records.
+Retained holder identities prevent deletion and recreation from granting fresh capacity.
+
+SQL-owned teams use an independent, one-use initialization grant in `team_budget_origins`.
+The team creation transaction records this grant. Migration denies fresh grants to existing teams.
+
+Budget initialization consumes the grant before the native KV transaction creates the holder marker, history, and receipt.
+A verified receipt acknowledges an exact retry without resetting consumption.
+If initialization consumes the grant but cannot verify a receipt, require recovery.
+Do not claim an atomic transaction across SQL and KV.
+
+Retain team origins after deletion and restore them with the accounting state.
+Run initialization during bounded policy refresh, outside provider admission and warm requests.
+An intact history permits an atomic rollover to the next authority-selected window.
+A missing opened counter requires reconciliation. Late settlement updates the original window.
+These contracts remain subject to complete CSP12.2 integration and CSP13 recovery qualification.
+
 Keep unresolved reservation records until reconciliation closes them, regardless of the budget window's end.
 Retain closed reservation identity for at least the longest supported provider reconciliation horizon and usage replay horizon.
 The release profile must give those horizons concrete values for every supported asynchronous operation.
