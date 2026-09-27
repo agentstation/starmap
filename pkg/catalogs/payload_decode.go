@@ -243,6 +243,9 @@ func decodePayloadProviders(
 		}
 		mergeRecordReport(&report, recordReport)
 		for _, model := range models {
+			if payload.SchemaVersion < SpeechBillingSchemaVersion && ((model.Billing != nil && model.Billing.Speech != nil) || (model.Pricing != nil && model.Pricing.Operations != nil && model.Pricing.Operations.CharacterInput != nil)) {
+				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing.speech", Message: "requires catalog schema version 16"}
+			}
 			if payload.SchemaVersion < RerankBillingSchemaVersion && model.Billing != nil && model.Billing.Rerank != nil {
 				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing.rerank", Message: "requires catalog schema version 15"}
 			}

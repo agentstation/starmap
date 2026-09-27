@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: rerank-billing-9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3
-catalog_digest: sha256:9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3
+generation_id: speech-billing-0de20d10ac7cead3475c3a1ffc403093486a3d57a8b4158bc4789058b835efaf
+catalog_digest: sha256:0de20d10ac7cead3475c3a1ffc403093486a3d57a8b4158bc4789058b835efaf
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -9829,15 +9829,19 @@ models:
     endpoints:
       - provider: openai
         provider_model_id: tts-1
+        pricing:
+          operations:
+            character_input: 1.5e-05
+          currency: USD
         availability: unknown
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - audio-speech
         service_endpoints:
-          - operation: chat-completions
+          - operation: audio-speech
             type: openai
-            url: https://api.openai.com/v1/chat/completions
+            url: https://api.openai.com/v1/audio/speech
   - model: openai/tts-1-1106
     endpoints:
       - provider: openai
@@ -9855,15 +9859,19 @@ models:
     endpoints:
       - provider: openai
         provider_model_id: tts-1-hd
+        pricing:
+          operations:
+            character_input: 3e-05
+          currency: USD
         availability: unknown
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - audio-speech
         service_endpoints:
-          - operation: chat-completions
+          - operation: audio-speech
             type: openai
-            url: https://api.openai.com/v1/chat/completions
+            url: https://api.openai.com/v1/audio/speech
   - model: openai/tts-1-hd-1106
     endpoints:
       - provider: openai

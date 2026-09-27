@@ -172,6 +172,8 @@ type ModelTokenCost struct {
 
 // ModelOperationPricing represents fixed costs for operations.
 type ModelOperationPricing struct {
+	// CharacterInput is the cost per Unicode code point for a declared speech contract.
+	CharacterInput *float64 `json:"character_input,omitempty" yaml:"character_input,omitempty"`
 	// Core operations
 	Request *float64 `json:"request,omitempty" yaml:"request,omitempty"` // Cost per API request
 
