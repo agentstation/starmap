@@ -1,0 +1,541 @@
+{
+  "task": "CSP12.2",
+  "recorded_at": "2026-09-27T10:07:05.952857+00:00",
+  "status": "partial_component_evidence",
+  "implementation_commit": "52b02c34861ea9abd7585f2650cff36b3dd4f25b",
+  "component_commit": "826770cd4d4ce09ecd7d67fb8c12b8768ed004ab",
+  "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+  "branch": "codex/atomic-budget-admission",
+  "published": false,
+  "source_manifest": "source-manifest.json",
+  "changes": [
+    "Admission owner reads inherited policy and checks permission around consumption of a one-use dispatch permit.",
+    "Confirmed absent budgets avoid quotation and storage with zero allocations in the owner test.",
+    "Token-only budgets preserve unknown monetary cost as null and cannot bypass spend meters.",
+    "Required settlement uses a bounded context after cancellation and can retain measured evidence for restart recovery.",
+    "Exact evidence retries normalize absent and empty quantity maps.",
+    "Setup rollback verifies the exact retained holder marker and refuses unexpected budget state.",
+    "Storage and catalog tests use separate namespaces and verify cleanup.",
+    "Conflicting retry evidence cannot replace an unresolved overflow record."
+  ],
+  "runs": [
+    {
+      "name": "csp122-admission-architecture",
+      "raw": "csp122-admission-architecture.jsonl.gz",
+      "tested_source": "Earlier working tree; historical evidence only",
+      "pass": 8,
+      "fail": 0,
+      "skip": 0,
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "name": "csp122-admission-final-race",
+      "raw": "csp122-admission-final-race.jsonl.gz",
+      "tested_source": "Final limits, setup, and architecture source of 826770cd4d4ce09ecd7d67fb8c12b8768ed004ab; later fixture edits outside selected packages",
+      "pass": 186,
+      "fail": 0,
+      "skip": 0,
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "name": "csp122-admission-fleet-repeat",
+      "raw": "csp122-admission-fleet-repeat.jsonl.gz",
+      "tested_source": "Final selected package source of 826770cd4d4ce09ecd7d67fb8c12b8768ed004ab",
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "name": "csp122-admission-focused",
+      "raw": "csp122-admission-focused.jsonl.gz",
+      "tested_source": "Earlier working tree; historical evidence only",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "name": "csp122-admission-initial",
+      "raw": "csp122-admission-initial.jsonl.gz",
+      "tested_source": "Earlier working tree; historical evidence only",
+      "pass": 71,
+      "fail": 2,
+      "skip": 6,
+      "failed_tests": [
+        "TestAdmissionReservesExclusiveCapacity/tokens",
+        "TestAdmissionReservesExclusiveCapacity"
+      ],
+      "skipped_tests": [
+        "TestBudgetHistoryRollover/valkey",
+        "TestBudgetHistoryDoesNotInventZero/valkey",
+        "TestValkeyReservationAcrossProcesses",
+        "TestReservationContract/valkey",
+        "TestTeamBudgetHistoryHandoff/postgres-valkey",
+        "TestHolderCreationAndBudgetHistory/valkey"
+      ]
+    },
+    {
+      "name": "csp122-admission-overflow-before",
+      "raw": "csp122-admission-overflow-before.jsonl.gz",
+      "tested_source": "Invalid selector; no tests ran. Not qualification.",
+      "pass": 0,
+      "fail": 0,
+      "skip": 0,
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "name": "csp122-admission-overflow-qualified",
+      "raw": "csp122-admission-overflow-qualified.jsonl.gz",
+      "tested_source": "52b02c34861ea9abd7585f2650cff36b3dd4f25b",
+      "pass": 90,
+      "fail": 0,
+      "skip": 1,
+      "failed_tests": [],
+      "skipped_tests": [
+        "TestTeamBudgetHistoryHandoff/postgres-valkey"
+      ]
+    },
+    {
+      "name": "csp122-admission-overflow-red",
+      "raw": "csp122-admission-overflow-red.jsonl.gz",
+      "tested_source": "826770cd4d4ce09ecd7d67fb8c12b8768ed004ab with new regression assertion only",
+      "pass": 0,
+      "fail": 3,
+      "skip": 0,
+      "failed_tests": [
+        "TestReservationContract/badger/unrepresentable_charges_retain_evidence_and_block_every_meter",
+        "TestReservationContract/badger",
+        "TestReservationContract"
+      ],
+      "skipped_tests": []
+    },
+    {
+      "name": "csp122-admission-repository-final",
+      "raw": "csp122-admission-repository-final.jsonl.gz",
+      "tested_source": "Earlier working tree; historical evidence only",
+      "pass": 4452,
+      "fail": 3,
+      "skip": 14,
+      "failed_tests": [
+        "TestValkeyStore/Atomic_Operations",
+        "TestValkeyStore",
+        "TestFleetRuntimeRejectsUnapprovedBackend"
+      ],
+      "skipped_tests": [
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "TestDefaultCacheMemoryBudget",
+        "TestSharedCachePausedServiceDeadlineAndRecovery",
+        "TestSharedCacheRealService",
+        "TestSharedCacheURIAuthenticationAndDatabase",
+        "TestSharedCacheTLSWithRealService",
+        "TestContainerRecipePersistence",
+        "TestSharedCacheCompositionUsesSeparateService",
+        "TestSharedCacheCanonicalDeploymentIsolation",
+        "TestGatewayOverheadBenchmark",
+        "TestSDKCanonicalRemovalAfterSuccessfulInference",
+        "TestValkeyIncarnationRejectsReplacementBackend",
+        "TestInitializeFleetFreshStartup"
+      ]
+    },
+    {
+      "name": "csp122-admission-repository-qualified",
+      "raw": "csp122-admission-repository-qualified.jsonl.gz",
+      "tested_source": "826770cd4d4ce09ecd7d67fb8c12b8768ed004ab",
+      "pass": 4455,
+      "fail": 0,
+      "skip": 14,
+      "failed_tests": [],
+      "skipped_tests": [
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "TestDefaultCacheMemoryBudget",
+        "TestSharedCachePausedServiceDeadlineAndRecovery",
+        "TestSharedCacheRealService",
+        "TestSharedCacheURIAuthenticationAndDatabase",
+        "TestSharedCacheTLSWithRealService",
+        "TestSharedCacheCompositionUsesSeparateService",
+        "TestSharedCacheCanonicalDeploymentIsolation",
+        "TestContainerRecipePersistence",
+        "TestSDKCanonicalRemovalAfterSuccessfulInference",
+        "TestGatewayOverheadBenchmark",
+        "TestValkeyIncarnationRejectsReplacementBackend",
+        "TestInitializeFleetFreshStartup"
+      ]
+    },
+    {
+      "name": "csp122-admission-repository",
+      "raw": "csp122-admission-repository.jsonl.gz",
+      "tested_source": "Earlier working tree; historical evidence only",
+      "pass": 4430,
+      "fail": 21,
+      "skip": 14,
+      "failed_tests": [
+        "TestImportGraphArchitecture",
+        "TestRollbackSeparateProductRoots",
+        "TestSetupSelectedLeafPaths/external-leaves",
+        "TestSetupSelectedLeafPaths/nested-leaves",
+        "TestSetupSelectedLeafPaths/same-parent",
+        "TestSetupSelectedLeafPaths/nested-roots",
+        "TestSetupSelectedLeafPaths",
+        "TestSetupRecoversProcessTermination/preparing",
+        "TestSetupRecoversProcessTermination/prepared",
+        "TestSetupRecoversProcessTermination/data-published",
+        "TestSetupRecoversProcessTermination/configuration-published",
+        "TestSetupRecoversProcessTermination/rollback-isolated",
+        "TestSetupRecoversProcessTermination/rollback-verified",
+        "TestSetupRecoversProcessTermination/rollback-config-removed",
+        "TestSetupRecoversProcessTermination/rollback-file-removed",
+        "TestSetupRecoversProcessTermination/rollback-directory-removed",
+        "TestSetupRecoversProcessTermination/rollback-restored",
+        "TestSetupRecoversProcessTermination",
+        "TestRuntimeGuardExcludesSetupAndOtherRuntimes",
+        "TestRuntimeGuardRefusesPendingSetup",
+        "TestRollbackRemovesUnpublishedLocalState"
+      ],
+      "skipped_tests": [
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "TestDefaultCacheMemoryBudget",
+        "TestSharedCachePausedServiceDeadlineAndRecovery",
+        "TestSharedCacheRealService",
+        "TestSharedCacheURIAuthenticationAndDatabase",
+        "TestSharedCacheTLSWithRealService",
+        "TestSharedCacheCompositionUsesSeparateService",
+        "TestSharedCacheCanonicalDeploymentIsolation",
+        "TestContainerRecipePersistence",
+        "TestSDKCanonicalRemovalAfterSuccessfulInference",
+        "TestGatewayOverheadBenchmark",
+        "TestValkeyIncarnationRejectsReplacementBackend",
+        "TestInitializeFleetFreshStartup"
+      ]
+    },
+    {
+      "name": "csp122-admission-setup-final",
+      "raw": "csp122-admission-setup-final.jsonl.gz",
+      "tested_source": "Earlier working tree; historical evidence only",
+      "pass": 77,
+      "fail": 0,
+      "skip": 0,
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "name": "csp122-admission-setup",
+      "raw": "csp122-admission-setup.jsonl.gz",
+      "tested_source": "Earlier working tree; historical evidence only",
+      "pass": 0,
+      "fail": 0,
+      "skip": 0,
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "name": "csp122-admission-stores",
+      "raw": "csp122-admission-stores.jsonl.gz",
+      "tested_source": "Earlier working tree; historical evidence only",
+      "pass": 387,
+      "fail": 0,
+      "skip": 2,
+      "failed_tests": [],
+      "skipped_tests": [
+        "TestAuthorizationTenantChurnCapacity",
+        "TestFleetDurableReceiptPrecedesReplicaEnforcement"
+      ]
+    },
+    {
+      "name": "csp122-admission-valkey-repeat",
+      "raw": "csp122-admission-valkey-repeat.jsonl.gz",
+      "tested_source": "Final selected package source of 826770cd4d4ce09ecd7d67fb8c12b8768ed004ab",
+      "pass": 20,
+      "fail": 0,
+      "skip": 0,
+      "failed_tests": [],
+      "skipped_tests": []
+    }
+  ],
+  "checks": [
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=<fixture> TEST_POSTGRES_URL=<fixture> go test -count=1 -timeout=5m -json ./...",
+      "record": "csp122-admission-repository-qualified",
+      "exit_code": 0,
+      "commit": "826770cd4d4ce09ecd7d67fb8c12b8768ed004ab"
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=<fixture> TEST_POSTGRES_URL=<fixture> go test -race -count=1 -timeout=3m -json ./internal/limits/... ./internal/setup ./internal/architecture",
+      "record": "csp122-admission-final-race",
+      "exit_code": 0,
+      "commit": "826770cd4d4ce09ecd7d67fb8c12b8768ed004ab"
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=<fixture> go test -race -count=2 -run ^TestValkeyStore$ -json ./internal/storage",
+      "record": "csp122-admission-valkey-repeat",
+      "exit_code": 0,
+      "commit": "826770cd4d4ce09ecd7d67fb8c12b8768ed004ab"
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=<fixture> TEST_POSTGRES_URL=<fixture> go test -race -count=2 -run ^TestFleetRuntimeRejectsUnapprovedBackend$ -json ./internal/catalog",
+      "record": "csp122-admission-fleet-repeat",
+      "exit_code": 0,
+      "commit": "826770cd4d4ce09ecd7d67fb8c12b8768ed004ab"
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=<fixture> go test -race -count=1 -timeout=3m -json ./internal/limits/...",
+      "record": "csp122-admission-overflow-qualified",
+      "exit_code": 0,
+      "commit": "52b02c34861ea9abd7585f2650cff36b3dd4f25b"
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/limits/... ./internal/setup ./internal/architecture ./internal/storage ./internal/catalog",
+      "output": "csp122-admission-lint-qualified.log.gz",
+      "exit_code": 0,
+      "commit": "826770cd4d4ce09ecd7d67fb8c12b8768ed004ab"
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/limits/...",
+      "output": "csp122-admission-overflow-lint.log.gz",
+      "exit_code": 0,
+      "commit": "52b02c34861ea9abd7585f2650cff36b3dd4f25b"
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./internal/limits/... ./internal/setup ./internal/architecture",
+      "output": "csp122-admission-vet-final.log.gz",
+      "exit_code": 0,
+      "commit": "826770cd4d4ce09ecd7d67fb8c12b8768ed004ab"
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "output": "csp122-admission-direction.log.gz",
+      "exit_code": 0,
+      "pass": 6,
+      "fail": 0,
+      "commit": "826770cd4d4ce09ecd7d67fb8c12b8768ed004ab"
+    },
+    {
+      "command": "make technical-writing-check",
+      "output": "csp122-admission-prose-project.log.gz",
+      "exit_code": 2,
+      "diagnostics": 137,
+      "scope": "Canonical plan checkout; diagnostics outside the edited specification."
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "commit": "52b02c34861ea9abd7585f2650cff36b3dd4f25b"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "csp122-admission-architecture.jsonl.gz",
+      "raw_sha256": "eb062882c8e8db974752e9dd7c08cf8ad39b1d339e4d572759b8c5ff4272b889"
+    },
+    {
+      "path": "csp122-admission-architecture.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-direction.log.gz",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "csp122-admission-final-race.jsonl.gz",
+      "raw_sha256": "84626cfbe3e72f13812ac74e7a8aecd80a39cd119aca5d8a89f7cc6e9129ed58"
+    },
+    {
+      "path": "csp122-admission-final-race.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-fleet-repeat.jsonl.gz",
+      "raw_sha256": "30ea8e9342e99a98e2e438a1744ef86cc5dc7fbe16394ddbade7e83a4759ab5e"
+    },
+    {
+      "path": "csp122-admission-fleet-repeat.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-focused.jsonl.gz",
+      "raw_sha256": "cbfdb374c6cb17982bf261edc8ceb200c4855c29cbd31ab7175403eb0615017c"
+    },
+    {
+      "path": "csp122-admission-focused.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-initial.jsonl.gz",
+      "raw_sha256": "8a54eab2f29f1bbefe06f9c2ede9f2b10a8861802cd67602fb282fddb2182e39"
+    },
+    {
+      "path": "csp122-admission-initial.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-lint-final.log.gz",
+      "raw_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "csp122-admission-lint-qualified.log.gz",
+      "raw_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "csp122-admission-lint-repair.log.gz",
+      "raw_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "csp122-admission-lint.log.gz",
+      "raw_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "csp122-admission-overflow-before.jsonl.gz",
+      "raw_sha256": "2da29e0744bfa1124a9aba393fe78ce87439bf3b8d381103c80a375f7700d8de"
+    },
+    {
+      "path": "csp122-admission-overflow-before.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-overflow-lint.log.gz",
+      "raw_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "csp122-admission-overflow-qualified.jsonl.gz",
+      "raw_sha256": "a6a0b784bdb904d04b6b4c65bbc9fb3b18c145237218ed6b8849cefa7aa694e3"
+    },
+    {
+      "path": "csp122-admission-overflow-qualified.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-overflow-red.jsonl.gz",
+      "raw_sha256": "740253cddd1130ec79701ea9f92d4e29f52b40981a34b1ae2cf2840f38155cc9"
+    },
+    {
+      "path": "csp122-admission-overflow-red.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-prose-project.log.gz",
+      "raw_sha256": "9407be473809590228cb558895c9d30c529698698f399b9efe9f72b9b26aa4b1"
+    },
+    {
+      "path": "csp122-admission-repository-final.jsonl.gz",
+      "raw_sha256": "f53042a9970ddd2c2aa2f1d95ed1e644fa19cd166ff094ed95e57a6762a4353f"
+    },
+    {
+      "path": "csp122-admission-repository-final.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-repository-qualified.jsonl.gz",
+      "raw_sha256": "85bba853784263c744425c07735989dee5c069f6cbd89886eb75632a25360421"
+    },
+    {
+      "path": "csp122-admission-repository-qualified.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-repository.jsonl.gz",
+      "raw_sha256": "5e64488c1f7a151049cf304344f3d4cd62156b7164c986a325651f67685f83e1"
+    },
+    {
+      "path": "csp122-admission-repository.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-setup-final.jsonl.gz",
+      "raw_sha256": "083464be7838216db9038f330fc5de20cc067cd7235be884ebe83c3df3794ed2"
+    },
+    {
+      "path": "csp122-admission-setup-final.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-setup.jsonl.gz",
+      "raw_sha256": "bb9b400219b77723e63d9d6a309c7c311c357d34131cd528f9af074c04ef7249"
+    },
+    {
+      "path": "csp122-admission-setup.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-stores.jsonl.gz",
+      "raw_sha256": "b7c09aeaf9cd7e3b60305d86c3ec9bf2a36e695e17e6bdd3e61b468ad388fd28"
+    },
+    {
+      "path": "csp122-admission-stores.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-valkey-repeat.jsonl.gz",
+      "raw_sha256": "5bb27c2710f1cae9f49f7cc9213e4b2abb404a82441486e9eff0efaa54173427"
+    },
+    {
+      "path": "csp122-admission-valkey-repeat.stderr.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-vet-final.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "csp122-admission-vet.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "failures_and_repairs": [
+    {
+      "run": "csp122-admission-initial",
+      "cause": "JSON map normalization made an exact token-only settlement retry appear different.",
+      "repair": "Compare evidence identifiers, tokens, and map contents."
+    },
+    {
+      "run": "csp122-admission-repository",
+      "cause": "New concept imports required explicit architecture boundaries. Setup rollback did not recognize the retained budget identity.",
+      "repair": "Add narrow concept import guards and validate the exact fresh-holder record before rollback."
+    },
+    {
+      "run": "csp122-admission-repository-final",
+      "cause": "Reused Valkey keys and a retained SQL approval leaked between test runs.",
+      "repair": "Use unique namespaces and checked cleanup before store closure."
+    },
+    {
+      "run": "csp122-admission-overflow-red",
+      "cause": "Reconciliation accepted conflicting lower usage after recording unrepresentable charges.",
+      "repair": "Require matching retained overflow evidence; conflicting correction requires operator reconciliation."
+    },
+    {
+      "run": "csp122-admission-overflow-before",
+      "cause": "Incorrect test function selector ran no tests.",
+      "repair": "Run the actual TestReservationContract selector and record the failure."
+    }
+  ],
+  "qualification_limits": [
+    "Production provider dispatch still uses the old check-then-use budget path. A47 is not qualified.",
+    "The owner and settlement lifecycle are component contracts, not production app/router integration.",
+    "Independent shared recovery approval, native epoch fencing, and team preparation during bounded policy load remain to compose.",
+    "Billing projections, all paid-operation paths, async jobs, restart enumeration, and concrete replay horizons remain open.",
+    "Full native CI, final task verifier, second-model pre-PR review, PR, and merge remain open.",
+    "Final focused run skips the SQL-backed team test because its fixture was not enabled; unchanged SQL contract passed in the earlier component run.",
+    "The full repository suite and its 14 optional-profile skips apply to the component commit before the final three-line overflow repair.",
+    "No full-gateway latency claim follows from component zero-allocation checks."
+  ],
+  "preserved_dirty_files": [
+    "docs/ARCHITECTURE.md",
+    "internal/cache/README.md"
+  ],
+  "cleanup": {
+    "status": "removed",
+    "containers": [
+      "starport-csp122-admission-valkey",
+      "starport-csp122-admission-postgres",
+      "starport-csp122-overflow-valkey"
+    ]
+  },
+  "next_action": "Compose the approved budget authority and team policy preparation, then connect all provider dispatches and required settlements to the admission owner."
+}

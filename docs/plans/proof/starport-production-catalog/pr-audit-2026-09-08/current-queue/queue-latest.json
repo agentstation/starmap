@@ -870,7 +870,7 @@
     "worktree": "/tmp/starport-fleet-review-20260926",
     "branch": "codex/atomic-budget-admission",
     "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
-    "head": "3781aafe9fd99ae3834a8207af0e9c4165ab522f"
+    "head": "52b02c34861ea9abd7585f2650cff36b3dd4f25b"
   },
   "merged_followups": {
     "tasks": [
@@ -1055,10 +1055,10 @@
   },
   "budget_preparation": {
     "owner": "CSP12.2",
-    "status": "local_policy_and_history_components_only",
-    "commit": "3781aafe9fd99ae3834a8207af0e9c4165ab522f",
+    "status": "local_admission_and_settlement_components_only",
+    "commit": "52b02c34861ea9abd7585f2650cff36b3dd4f25b",
     "published": false,
-    "proof": "../../../csp12.2/history-policy-2026-09-27/verification.json",
+    "proof": "../../../csp12.2/admission-lifecycle-2026-09-27/verification.json",
     "native_ci": "UNVERIFIED",
     "required_review": "not yet run; required before final PR",
     "remaining_dirty_files": {

@@ -1,0 +1,22 @@
+{
+  "internal/architecture/import_graph_test.go": "bcd05a2264816835ec79d542efcf27a8ad2eeba819cb9090f6f70ead88985572",
+  "internal/catalog/runtime_fleet_test.go": "81b6a3f28d6a95f024cd27efb413a9479bb0bf239a9aae975013e8182945e956",
+  "internal/limits/admission/admission.go": "71bc1c4f30272aa64cd35ebe871b7c4b7dc398f4ce2b981b6158ec84e7ca251f",
+  "internal/limits/admission/admission_test.go": "8cdb9cc341b6807518ccf92bb6437f264a87c79db22ac8f101e00d5a6470d73a",
+  "internal/limits/admission/settlement.go": "3f29eabfad1374e359318c8d8e3a95251cac5d1836191410e2e4f1ec89056c9c",
+  "internal/limits/reservation/holder.go": "3a223b3ea7b75be0bfe75b2dbf82566b5c34bda799b47eeb1aaa7cfdfe7246ac",
+  "internal/limits/reservation/model.go": "f30165ce1008877a4f0d1c40786731358c0385765dfccf95e2ec64b84ea08eec",
+  "internal/limits/reservation/pending.go": "365acaf6249de799b785e14f1c672e266354b6ebb503431892b313020cde3dcc",
+  "internal/limits/reservation/pending_test.go": "2134eb5d76619769b739772d5967dec436f5b0b0770ab759d0c7f82faa4ce172",
+  "internal/limits/reservation/repository.go": "194874e1019f4bb81ab1347e708052fb9fab8defc77d51d30b62efc9bd06a4e8",
+  "internal/limits/reservation/repository_test.go": "00170b98ae80b1b520f998b434edcdc12efbe3d23b583e7f8f2ca43ea57e8798",
+  "internal/limits/reservation/team_history.go": "8df3d3840a305ab7b924090bb48a8f017cf646150c64bdbdb1b05fe12f7f5a40",
+  "internal/limits/reservation/token_only.go": "64373c950ceb44e994e1c0e2f6b00aff244254512b95a4be349660a7d0cf90d7",
+  "internal/limits/reservation/token_only_test.go": "b91a2591a9822156ea3cd77315187f7f3f351b9974fd21d1a11005550f27bdbd",
+  "internal/limits/reservation/transitions.go": "39def7bdbb1ab5abe3ef291c0d50477c2f95af42bc519afc4269a438914a8f42",
+  "internal/limits/reservation/validation.go": "a090cb9a00e6aef4f5f51af547059d79353dbfd1cc8ae69b20dd49518001c1c4",
+  "internal/setup/budget_rollback_test.go": "c361f43d1b9b0814814dbb2b06c743dd141f61b843eaf89e129f3176b49f208b",
+  "internal/setup/recovery_test.go": "62791528a081945bbee59ef7b097a2dc3f9feecf8042e19a3ec1453532975a7f",
+  "internal/setup/service.go": "4f3da267f105ce7770bc54e2269d97d5c4ae4c271c2020b2b29df48c1158658f",
+  "internal/storage/valkey_test.go": "b3b2845f47291371226e42a14eea39582b3bf090ef25dceeb6cc030894eaf150"
+}

@@ -2965,6 +2965,18 @@ Reserve with upward rounding. Reconcile nonnegative fractional nano-USD upward u
 Sum priced usage components with exact decimal arithmetic, then round once per attempt. Do not use binary floating-point for authoritative meter arithmetic.
 Unknown price or cost bounds cannot become zero. An observed overrun records the full debt and restricts further admission until policy permits it.
 
+A token-only budget requires a known token bound and measured token settlement.
+Unknown monetary pricing remains null in that reservation. Starport can still enforce the known token limit.
+If any spend meter applies, the reservation requires the complete monetary valuation.
+The admission owner reads the original permission before reservation and checks it again around dispatch-permit consumption.
+Confirmed absent budgets skip both billing projection and budget storage.
+
+Required settlement uses a bounded context after caller cancellation.
+If settlement fails, retain measured evidence durably when storage permits that write.
+Recovery retries retained evidence under the original valuation and windows.
+If storage cannot retain the evidence, preserve the reserved capacity and report unresolved accounting.
+An uncertain acknowledgement cannot authorize provider dispatch or a refund.
+
 Bind each reservation to the applicable meter identities and fixed UTC day, ISO week, and month windows at admission.
 The admission authority evaluates budget windows using its own time. Replicas cannot independently select conflicting windows.
 Atomic reservations do not require qualified UTC on each replica. Unknown budget authority state still refuses affected admission.
