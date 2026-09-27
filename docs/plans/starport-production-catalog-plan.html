@@ -11,9 +11,9 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated September 26, 2026 UTC. CSP11 is in progress under D41. 23 of 40 tasks are complete.</p>
 
-<p id="next-action">Complete review of the ownership contract repairs. Publish the producer, pin and qualify the consumer, then complete native CI and merge in dependency order.</p>
+<p id="next-action">Qualify the published consumer module pair with GOWORK=off. Producer CI run 36281444461 is active. Complete consumer review and native CI, then merge in dependency order.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/final-review-rescope/REPAIR_SCOPE.md">final review repair scope</a> defines both operation contracts after the review pause. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/ownership-contract-repair/verification.json">new repair proof</a> records 108 passing race results, 99 verifier tests, and eleven passing task subcases. Full review remains open. D41 remains approved.</p>
+<p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/final-review-rescope/REPAIR_SCOPE.md">final review repair scope</a> defines both operation contracts after the review pause. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/ownership-contract-repair/verification.json">new repair proof</a> records 108 passing race results, 99 verifier tests, and eleven passing task subcases. Producer review is complete with one rejected advisory finding and thirteen additional passing pin tests. D41 remains approved.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/verification.json">retained baseline proof</a> records 94 producer and 46 paired native race results. All pass with no skips. The verifier regression suite passes 99 tests. All eleven required CSP11 subcases pass with the complete native fixture.</p>
 
@@ -22,6 +22,8 @@
 <p>CSP16 owns coordinated policy apply through shared configuration authority. CSP16.1 owns explicit baseline promotion. Incompatible acquisition policy still refuses refresh ownership until those operations ship.</p>
 
 <p>Producer checkout: <code>starmap-object-ci-repair</code>, branch <code>codex/catalog-fleet-contract</code>, local head <code>dff93d12ec9310a024d1f31a965e3b1c7434ecdb</code>. Consumer checkout: <code>starport-native-catalog</code>, branch <code>codex/catalog-fleet-adapter</code>, local head <code>658c8993042b9f35d5019c835bcdcb19151962fc</code>. Preserve unrelated native evidence in both checkouts.</p>
+
+<p>Starport module files contain the uncommitted published pin <code>v0.16.6-0.20260926235631-dff93d12ec93</code>. Required checks run through <code>/tmp/d41-consumer-gates.py</code>. The native task runner is <code>/tmp/run-d41-published-task-gate.py</code>. Both use <code>GOWORK=off</code>.</p>
 
 <p>Starmap <a href="https://github.com/agentstation/starmap/pull/185">#185</a> remains published at <code>1135eb46f</code>. Starport <a href="https://github.com/agentstation/starport/pull/385">#385</a> remains at <code>7068380bd</code>. The consumer uses <code>v0.16.6-0.20260926185237-a2d66bd259a1</code>. Starmap must merge first.</p>
 

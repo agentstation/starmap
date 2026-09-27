@@ -5,15 +5,15 @@
       "baseRefName": "main",
       "baseRefOid": "8122081e0494648fb1e356647053dd870a05fb1c",
       "headRefName": "codex/catalog-fleet-contract",
-      "headRefOid": "1135eb46f2d2bd54e775770325bf2f3a38e4e3a7",
-      "isDraft": true,
-      "mergeStateStatus": "UNSTABLE",
+      "headRefOid": "dff93d12ec9310a024d1f31a965e3b1c7434ecdb",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
       "number": 185,
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Ownership contract repairs pass local qualification; final full review is running",
-      "next_action": "Complete producer review, publish producer, update consumer module pin, qualify and review consumer, and merge in dependency order after native CI."
+      "disposition": "Reviewed producer published; exact-head native CI is running",
+      "next_action": "Wait for run 36281444461 and verify current head and review threads before protected merge."
     }
   ],
   "starport": [
@@ -28,8 +28,8 @@
       "title": "catalog: fence fleet publication and recover shared acquisition state",
       "url": "https://github.com/agentstation/starport/pull/385",
       "owner": "CSP11",
-      "disposition": "Ownership contract repairs pass local qualification; final full review is running",
-      "next_action": "Complete producer review, publish producer, update consumer module pin, qualify and review consumer, and merge in dependency order after native CI."
+      "disposition": "Local pin selects the published reviewed producer; GOWORK=off qualification is running",
+      "next_action": "Finish required checks, commit module pin, review, publish, and run native CI. Merge after Starmap PR185."
     }
   ],
   "completed_merges": [
@@ -837,7 +837,7 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Complete full producer review for dff93d12e. Then publish producer and qualify the consumer module pair.",
+    "next_action": "Finish published-pair qualification, consumer review and publication, then protected merges.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
     "contract_audit": "../../csp11/contract-audit-2026-09-26.md",

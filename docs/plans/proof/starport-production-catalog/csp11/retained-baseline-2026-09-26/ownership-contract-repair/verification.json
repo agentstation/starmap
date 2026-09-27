@@ -30,5 +30,13 @@
       "pass": 13
     }
   },
-  "publication": "not started"
+  "publication": {
+    "producer_head": "dff93d12ec9310a024d1f31a965e3b1c7434ecdb",
+    "producer_run": 36281444461,
+    "consumer_pin": "v0.16.6-0.20260926235631-dff93d12ec93",
+    "consumer_pin_committed": false,
+    "consumer_checks": "running with GOWORK=off",
+    "consumer_gate_runner": "/tmp/d41-consumer-gates.py",
+    "native_gate_runner": "/tmp/run-d41-published-task-gate.py"
+  }
 }
