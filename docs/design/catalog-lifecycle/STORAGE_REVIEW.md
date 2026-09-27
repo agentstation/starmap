@@ -963,3 +963,18 @@ Attached records retain file lifecycle ownership. Missing or invalid accounting 
 File schema 2 and byte-accounting schema 2 need CSP13 migration qualification.
 The [storage proof](../../plans/proof/starport-production-catalog/csp12.2/storage-claims-2026-09-27/verification.json) covers filesystem blobs with memory, Badger, and Valkey metadata.
 Shared-object recovery and durable batch results remain unqualified.
+
+
+## Prepared batch outputs: September 27, 2026
+
+Consumer `d93432d0` assigns stable output identities and preserves their original expiry.
+File schema 3 and line schema 2 retain immutable result evidence. CSP13 owns migration.
+The file owner verifies content before marking output ready.
+
+Checkpoints and aggregates both count against storage while retained.
+Internal checkpoints stay out of ordinary listings. Native scan pages reach later records during listing and cleanup.
+
+The [qualification proof](../../plans/proof/starport-production-catalog/csp12.2/durable-results-2026-09-27/verification.json) retains a failed cleanup race.
+A delayed blob write can recreate bytes after metadata deletion and quota release.
+The [retirement contract](../../plans/proof/starport-production-catalog/csp12.2/durable-results-2026-09-27/RETIREMENT_CONTRACT.md) requires backing-store ordering before release.
+Backend retirement and shared-object qualification remain open.

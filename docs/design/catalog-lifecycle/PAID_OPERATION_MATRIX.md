@@ -511,3 +511,9 @@ Both failing probes require a production repair and passing qualification before
 The [storage-claim repair](../../plans/proof/starport-production-catalog/csp12.2/storage-claims-2026-09-27/verification.json) qualifies concurrent file retirement and ambiguous accounting acknowledgments at consumer `e2e85607`.
 The original byte-accounting probe now passes. The completed-output process-loss probe remains unresolved.
 Prepared result identities, retained output, aggregate reconstruction, and shared-object recovery remain required before batch qualification.
+
+
+The [durable-result proof](../../plans/proof/starport-production-catalog/csp12.2/durable-results-2026-09-27/verification.json) repairs the original completed-output process-loss failure at consumer `d93432d0`.
+It also proves that lost result acknowledgments stop further dispatch and retain the batch claim.
+A new delayed-publication retirement probe fails on all three metadata backends.
+The [retirement contract](../../plans/proof/starport-production-catalog/csp12.2/durable-results-2026-09-27/RETIREMENT_CONTRACT.md), aggregate reconstruction, and interrupted-run recovery remain required before full batch qualification.

@@ -4674,3 +4674,20 @@ CSP13 owns file schema 2 and byte-accounting schema 2 migration.
 
 The [storage proof](../../plans/proof/starport-production-catalog/csp12.2/storage-claims-2026-09-27/verification.json) passes the concurrent-retirement regression and lost-acknowledgment cases on memory, Badger, and Valkey.
 It does not qualify durable batch output, process loss, shared-object storage, or complete A47.
+
+
+### Durable line output and retirement boundary
+
+Consumer `d93432d0` retains each line's output identity before execution.
+It records result intent before the blob write and confirms stored bytes before releasing the worker slot.
+Conflicting results fail. Missing bytes cannot become a confirmed empty result.
+The [output proof](../../plans/proof/starport-production-catalog/csp12.2/durable-results-2026-09-27/verification.json) passes the original Badger process-loss assertion.
+
+File schema 3 retains output identity, digest, and storage bound. Line schema 2 retains file identity, expiry, result intent, and completion evidence.
+Internal checkpoints stay out of public file listings. File scans reach later pages.
+Storage failure stops new dispatch and retains the outstanding batch claim. CSP13 owns migration.
+
+The same proof fails delayed-publication retirement on all three metadata backends.
+A blob can reappear after cleanup deletes the file and releases its charge.
+The [retirement contract](../../plans/proof/starport-production-catalog/csp12.2/durable-results-2026-09-27/RETIREMENT_CONTRACT.md) requires a backend fence before quota release.
+Aggregate reconstruction, stable aggregate publication, and interrupted-run recovery remain incomplete.

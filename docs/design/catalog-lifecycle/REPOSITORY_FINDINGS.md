@@ -4421,3 +4421,18 @@ The broader race run predates final accounting validation. Final targeted checks
 
 File schema 2 and byte-accounting schema 2 require CSP13 migration qualification.
 Durable batch output and ordinary file-sweep pagination remain open. The commit remains local and does not complete CSP12.2.
+
+
+## CSP12.2 retained batch results and retirement race: September 27, 2026
+
+Consumer `d93432d0` retains completed line bytes before the worker admits another line.
+The original process-loss assertion now passes with Badger and filesystem storage.
+The [output proof](../../plans/proof/starport-production-catalog/csp12.2/durable-results-2026-09-27/verification.json) records 623 broad race results with one optional skip.
+File checks pass 72 results, production checks pass 16, and pure-Go checks pass seven.
+Final recovery checks pass nine results. Pagination and identity checks pass five.
+
+A separate probe pauses publication while another service expires the file.
+The paused writer later creates a blob after the file record and its quota charge are gone.
+Four results fail across memory, Badger, and Valkey. The probe remains required evidence.
+The [backend retirement repair](../../plans/proof/starport-production-catalog/csp12.2/durable-results-2026-09-27/RETIREMENT_CONTRACT.md) remains within CSP12.2.
+The commit is local and does not qualify full batch recovery or shared-object storage.

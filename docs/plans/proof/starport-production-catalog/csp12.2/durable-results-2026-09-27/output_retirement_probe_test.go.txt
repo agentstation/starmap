@@ -1,0 +1,67 @@
+package files
+
+import (
+	"context"
+	"io"
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/agentstation/starport/internal/blob"
+	"github.com/agentstation/starport/internal/limits"
+	"github.com/agentstation/starport/internal/repotest"
+	"github.com/agentstation/starport/internal/storage"
+	"github.com/stretchr/testify/require"
+)
+
+type delayedOutputPublication struct {
+	blob.Store
+	entered, release chan struct{}
+}
+
+func (b delayedOutputPublication) Put(ctx context.Context, key string, r io.Reader) (blob.Info, error) {
+	close(b.entered)
+	select {
+	case <-b.release:
+	case <-ctx.Done():
+		return blob.Info{}, ctx.Err()
+	}
+	return b.Store.Put(ctx, key, r)
+}
+func TestRetirementFencesDelayedOutputPublication(t *testing.T) {
+	repotest.Run(t, func(t *testing.T, store storage.KVStore) {
+		records, err := OpenRepository(store)
+		require.NoError(t, err)
+		meter, err := limits.NewStorageMeter(store)
+		require.NoError(t, err)
+		blobs, err := blob.NewFilesystem(t.TempDir())
+		require.NoError(t, err)
+		delayed := delayedOutputPublication{Store: blobs, entered: make(chan struct{}), release: make(chan struct{})}
+		now := time.Now().UTC()
+		writer, err := NewService(records, delayed, WithMeter(meter), WithClock(func() time.Time { return now }))
+		require.NoError(t, err)
+		file, err := writer.PrepareOutput(t.Context(), "a", "one", "result", 1)
+		require.NoError(t, err)
+		done := make(chan error, 1)
+		go func() {
+			_, err := writer.CommitOutput(t.Context(), "a", file.ID, 1, outputHash("x"), strings.NewReader("x"))
+			done <- err
+		}()
+		select {
+		case <-delayed.entered:
+		case <-time.After(5 * time.Second):
+			t.Fatal("writer did not reach publication")
+		}
+		cleaner, err := NewService(records, blobs, WithMeter(meter), WithClock(func() time.Time { return file.ExpiresAt.Add(time.Second) }))
+		require.NoError(t, err)
+		_, err = cleaner.Sweep(t.Context())
+		require.NoError(t, err)
+		close(delayed.release)
+		require.Error(t, <-done)
+		total, err := meter.Total(t.Context(), "a")
+		require.NoError(t, err)
+		require.Zero(t, total)
+		_, err = blobs.Stat(t.Context(), file.blobKey)
+		require.ErrorIs(t, err, blob.ErrNotFound, "retired output must not reappear after its charge and metadata are gone")
+	})
+}
