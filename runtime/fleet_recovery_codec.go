@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"context"
+	"errors"
 	"io"
 )
 
@@ -41,10 +42,9 @@ func decompressFleetRecovery(ctx context.Context, data []byte, limit int64) ([]b
 	if err != nil {
 		return nil, invalidInputPublication("fleet recovery has an invalid compression header")
 	}
-	defer reader.Close()
 	reader.Multistream(false)
 	decoded, err := io.ReadAll(io.LimitReader(reader, limit+1))
-	if err != nil {
+	if err := errors.Join(err, reader.Close()); err != nil {
 		return nil, err
 	}
 	if len(decoded) == 0 || int64(len(decoded)) > limit || input.Len() != 0 {

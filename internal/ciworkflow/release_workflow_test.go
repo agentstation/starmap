@@ -145,8 +145,10 @@ func TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets(t *testing.T) {
 
 func TestReleaseBinaryVerificationPinsPortableTargetMatrix(t *testing.T) {
 	script := readFixture(t, "../../scripts/verify-release-binaries.sh")
+	if strings.Contains(script, "darwin/amd64") {
+		t.Fatal("release verification includes unsupported Intel macOS")
+	}
 	for _, check := range []string{
-		"darwin/amd64",
 		"darwin/arm64",
 		"linux/amd64",
 		"linux/arm64",

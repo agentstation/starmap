@@ -157,7 +157,7 @@ func TestNativePublicationPreservesPlatformCoverage(t *testing.T) {
 	if !reflect.DeepEqual(runtime, publication) {
 		t.Fatal("native publication and runtime platform coverage differ")
 	}
-	want := map[string]bool{"linux/amd64": true, "linux/arm64": true, "darwin/amd64": true, "darwin/arm64": true, "windows/amd64": true, "windows/arm64": true}
+	want := map[string]bool{"linux/amd64": true, "linux/arm64": true, "darwin/arm64": true, "windows/amd64": true, "windows/arm64": true}
 	for _, entry := range publication {
 		key := entry["os"] + "/" + entry["arch"]
 		if !want[key] || entry["runner"] == "" {
