@@ -72,7 +72,24 @@ func (r *Runtime) initializeRefreshOwnership(ctx context.Context) (context.Conte
 		return nil, err
 	}
 	if r.config.fleetStore != nil && r.lease.status() == leaseHeld {
-		return r.captureFleetGrant(ctx, r.lease.epoch())
+		owned, err := r.captureFleetGrant(ctx, r.lease.epoch())
+		if err != nil {
+			return nil, err
+		}
+		// The former owner can publish after bootstrap but before lease acquisition.
+		// Reload under the original grant before preparing this owner's publication.
+		if err := r.refreshFleetInputs(owned, true); err != nil {
+			return nil, err
+		}
+		if err := r.checkFleetAcquisition(owned); err != nil {
+			return nil, err
+		}
+		if r.config.generationPin == "" {
+			if err := r.initializeEffective(owned); err != nil {
+				return nil, err
+			}
+		}
+		return owned, nil
 	}
 	return ctx, nil
 }

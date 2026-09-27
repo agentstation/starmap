@@ -5764,6 +5764,12 @@
         },
         {
           "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimeStartupRefreshesAfterOwnership"
+        },
+        {
+          "kind": "go_test",
           "repository": "starport",
           "package": "./internal/catalog",
           "test": "TestFleetRuntimeLiveTakeoverAcceptance"
