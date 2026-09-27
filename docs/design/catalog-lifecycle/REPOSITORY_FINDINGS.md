@@ -4079,3 +4079,18 @@ Legacy counters and old record schemas require migration. The new format cannot 
 Claims without confirmed job records still require recovery. The video sweep still has incomplete enumeration, and batch recovery still depends on access.
 Durable required settlement, pinned valuation, replay horizons, process loss, failover, and the PostgreSQL witness remain unqualified.
 This component does not complete CSP12.2.
+
+
+## September 27 recovery enumeration
+
+Consumer `3d14fb65` repairs another recovery defect. Repeated sweeps previously omitted one of 1,001 retained records on Badger and Valkey.
+Native cursor scans now reach those records. Finished batches can release slots without client reads.
+Corrupt records no longer prevent valid records from recovering. Interrupted invocations retain their unfinished page work.
+
+The [recovery proof](../../plans/proof/starport-production-catalog/csp12.2/recovery-scans-2026-09-27/verification.json) preserves the failing regression and exact source timing.
+The component race run passes 379 results and skips one backend-replacement test.
+Final focused race checks pass 29 results without skips. They include production composition, durable release, and zero provider dispatches.
+Pure-Go checks pass 25 results without skips. The full suite passes 4,896 results and skips 71. Eight packages skip.
+
+Lint and affected-package vet pass. Native platform, process-loss, and failover qualification remain required.
+Orphan claims and required spending settlement remain incomplete. CSP12.2 stays in progress.

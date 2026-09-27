@@ -365,3 +365,13 @@ The proof separates earlier broad results from final storage-format qualificatio
 
 Slot claims do not settle spending reservations or supply missing provider usage.
 Pinned valuation, required settlement, orphan resolution, complete enumeration, retention, and populated-state migration remain required.
+
+
+## Recovery enumeration component
+
+Consumer `3d14fb65` adds native cursor continuation and background release for finished batches.
+The [recovery proof](../../plans/proof/starport-production-catalog/csp12.2/recovery-scans-2026-09-27/verification.json) records Badger and Valkey regressions, cancellation, corruption, and production composition.
+Final focused race checks pass 29 results. Pure-Go checks pass 25 results. Both have no skips.
+
+This work does not establish asynchronous billing or required settlement.
+Claims without job records, interrupted running batches, pinned valuation, and required settlement remain open.

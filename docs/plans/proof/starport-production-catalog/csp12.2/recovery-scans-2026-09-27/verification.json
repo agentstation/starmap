@@ -1,0 +1,455 @@
+{
+  "task": "CSP12.2",
+  "status": "COMPONENT_PASS_TASK_IN_PROGRESS",
+  "recorded_at": "2026-09-27T17:21:29.705519+00:00",
+  "consumer": {
+    "head": "3d14fb65de44dcdcf491b9161052eba2e29a5667",
+    "branch": "codex/atomic-budget-admission",
+    "worktree": "/private/tmp/starport-fleet-review-20260926",
+    "published": false,
+    "files": {
+      "internal/app/app.go": "584642a264f12af527207acdc81ab41b9fc5ec33830c7ae8ce79109adf70fc4f",
+      "internal/app/job_recovery_test.go": "69af4b89d2c898e2bb2c950aed77f7142f248226623e2b30d78e49030aa6d5f3",
+      "internal/jobs/asset.go": "da337cdfd4a144534aa450ad91f6154d7e2e967ac271b6aac1ebd78e20a1155d",
+      "internal/jobs/batch_repository.go": "280955bf2153547b7dda4d2554e359446ecc976c86e46a56bc9c4d452efaeb28",
+      "internal/jobs/batch_service.go": "7597b5516bcf1661aefa11894d56625be85ab87a81704f649c4af5578545073d",
+      "internal/jobs/recovery.go": "ee5c5d8cb768d2ad7a7b97100929b3f530da674b07112344e6374b54c8d7d68b",
+      "internal/jobs/recovery_scan_test.go": "c1cc3bcd6685dc9dfacef3662d10cdd90b67e2eb727d047e370913c105a9faa6",
+      "internal/jobs/recovery_state_test.go": "84691b32b8120997463f44f04552327c9389e76c252f84cec9fbb24f68141bda",
+      "internal/jobs/repository.go": "eb9167be077293344090ce7cd7b7de6e6e9f1c264b2ed7ca3e70f1ec33ee0b96",
+      "internal/jobs/repository_store.go": "bbd16dd35b567901931a9c954822b258fc879e0a602449412dfe81ef5e86b5d0",
+      "internal/jobs/service.go": "9b1592fcd2a1dc3b86c7416cea36d0273b3e5d230e7d2f8cf040df470792aea6",
+      "internal/repotest/backends.go": "7f24f718fad0c25489532979a6dcd043372119b7c8cbf2f9f38c8de3f9c72614",
+      "internal/storage/interface.go": "bcdb42aea2a92700b000c025317b2be14cc3040a60d8dae05d99a92547e045df",
+      "internal/storage/scan_page.go": "b1c05ed2d19529f4b8a59ee938e91169a11b46a932e33174e3fd611cbf96bf86",
+      "internal/storage/scan_page_test.go": "122bc571547ead9f8f888a9e1b0084e1de3b943e587b07d597ced30af051c468",
+      "internal/storage/scan_page_valkey_test.go": "bda253374e2fc88d1c16d10d8ba853705b2dff6396638a487669a7e98c1b786f"
+    }
+  },
+  "producer": {
+    "head": "fb7f8ae2165d9644f6ff832d128ff87b1c5adc69",
+    "worktree": "/private/tmp/starmap-fleet-review-20260926",
+    "published": false,
+    "files": {}
+  },
+  "environment": {
+    "toolchain": "go1.27.1",
+    "platform": "darwin/arm64",
+    "GOWORK": "/tmp/csp122-billing.work",
+    "TEST_VALKEY_URL": "redis://127.0.0.1:51487",
+    "container": "starport-csp122-async-usage",
+    "digest": "sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "services": "Badger with synchronous writes; native Valkey with AOF and appendfsync always; isolated test namespaces."
+  },
+  "checks": [
+    {
+      "name": "before",
+      "command": "go test -json -count=1 -timeout=2m ./internal/jobs -run '^TestRecoveryReachesBeyondFirstThousandRecords$'",
+      "exit_code": 1,
+      "source_timing": "Parent f5788320 with the new regression only.",
+      "artifact": "csp122-recovery-scan-before.jsonl.gz",
+      "test_results": {
+        "pass": 1,
+        "fail": 3
+      },
+      "package_results": {
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/jobs/TestRecoveryReachesBeyondFirstThousandRecords/badger",
+        "github.com/agentstation/starport/internal/jobs/TestRecoveryReachesBeyondFirstThousandRecords/valkey",
+        "github.com/agentstation/starport/internal/jobs/TestRecoveryReachesBeyondFirstThousandRecords",
+        "github.com/agentstation/starport/internal/jobs/"
+      ],
+      "skipped_tests": []
+    },
+    {
+      "name": "after",
+      "command": "go test -json -count=1 -timeout=2m ./internal/jobs -run '^TestRecoveryReachesBeyondFirstThousandRecords$'",
+      "exit_code": 0,
+      "source_timing": "Initial cursor implementation before pending-page retention and application integration.",
+      "artifact": "csp122-recovery-scan-after.jsonl.gz",
+      "test_results": {
+        "pass": 4
+      },
+      "package_results": {
+        "pass": 1
+      },
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "name": "integration",
+      "command": "go test -json -count=1 -timeout=2m ./internal/jobs ./internal/storage ./internal/repotest",
+      "exit_code": 0,
+      "source_timing": "Before expanded native contracts, reporting counters, and final application composition.",
+      "artifact": "csp122-recovery-scan-integration.jsonl.gz",
+      "test_results": {
+        "pass": 368,
+        "skip": 1
+      },
+      "package_results": {
+        "pass": 3
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "github.com/agentstation/starport/internal/storage/TestValkeyIncarnationRejectsReplacementBackend"
+      ]
+    },
+    {
+      "name": "race",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/jobs ./internal/storage ./internal/repotest",
+      "exit_code": 0,
+      "source_timing": "Before diagnostic counters and final application composition.",
+      "artifact": "csp122-recovery-scan-race.jsonl.gz",
+      "test_results": {
+        "pass": 379,
+        "skip": 1
+      },
+      "package_results": {
+        "pass": 3
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "github.com/agentstation/starport/internal/storage/TestValkeyIncarnationRejectsReplacementBackend"
+      ]
+    },
+    {
+      "name": "final-race",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/jobs ./internal/storage ./internal/repotest ./internal/app -run 'Recovery|ScanPage|ProductionSweep'",
+      "exit_code": 0,
+      "source_timing": "Final executable source. Later changes clarify comments only.",
+      "artifact": "csp122-recovery-scan-final-race.jsonl.gz",
+      "test_results": {
+        "pass": 29
+      },
+      "package_results": {
+        "pass": 4
+      },
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "name": "full",
+      "command": "go test -json -count=1 -timeout=5m ./...",
+      "exit_code": 0,
+      "source_timing": "Final executable source before the production recovery test and comment clarifications.",
+      "artifact": "csp122-recovery-scan-full.jsonl.gz",
+      "test_results": {
+        "pass": 4896,
+        "skip": 71
+      },
+      "package_results": {
+        "skip": 8,
+        "pass": 65
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "github.com/agentstation/starport/examples/",
+        "github.com/agentstation/starport/internal/catalog/disclosure/",
+        "github.com/agentstation/starport/internal/authorization/TestAuthorizationTenantChurnCapacity",
+        "github.com/agentstation/starport/internal/authorization/TestFleetDurableReceiptPrecedesReplicaEnforcement",
+        "github.com/agentstation/starport/internal/cache/TestDefaultCacheMemoryBudget",
+        "github.com/agentstation/starport/internal/cache/TestSharedCachePausedServiceDeadlineAndRecovery",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheRealService",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheURIAuthenticationAndDatabase",
+        "github.com/agentstation/starport/internal/cache/TestSharedCacheTLSWithRealService",
+        "github.com/agentstation/starport/internal/config/TestContainerRecipePersistence",
+        "github.com/agentstation/starport/internal/kvconnection/kvtest/",
+        "github.com/agentstation/starport/internal/protocol/mediaform/",
+        "github.com/agentstation/starport/internal/limits/reservation/TestTeamBudgetHistoryHandoff/postgres-valkey",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityRequiresBothApprovals",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityFencesDelayedWrites/before-native-write",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityFencesDelayedWrites/after-native-write",
+        "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityClosedAndChangedEpoch",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetBootstrapPermission",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetInitialization",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/kv",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/sql",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/approval",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/closed-approval",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/row-security",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/unknown-table",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetInterruptedClaim",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetConcurrentInitialization",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesChangedIncarnation",
+        "github.com/agentstation/starport/internal/recovery/TestFreshFleetSQLFailureRetainsOnlyRetryClaim",
+        "github.com/agentstation/starport/internal/server/dto/",
+        "github.com/agentstation/starport/scripts/doclinks/",
+        "github.com/agentstation/starport/scripts/sdk-smoke-server/",
+        "github.com/agentstation/starport/skills/starport/",
+        "github.com/agentstation/starport/internal/server/controllers/TestGatewayOverheadBenchmark",
+        "github.com/agentstation/starport/internal/server/TestSDKCanonicalRemovalAfterSuccessfulInference",
+        "github.com/agentstation/starport/internal/storage/TestValkeyIncarnationRejectsReplacementBackend",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapConcurrentExactPublication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/before-sql",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/after-sql",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/before-kv",
+        "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/after-kv",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRequiresExplicitCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionHonorsLimitsAndRequiredGenerations",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCountsGenerationsSeparatelyFromReceipts",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionDryRunPreservesPendingRecovery",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionResumesInterruptedCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRefusesUnownedStaging",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionBoundsCommittedSnapshots",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionProtectsPinnedGeneration",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRecoversInterruptedUploadAndDeletion",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionFencesExpiredMaintenance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionConcurrentReadersAndCollection",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCapacityRefusesWithoutMovingHead",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRejectsOverlappingDeletionRecord",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/current",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/accepted",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/rollback",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/inventory-missing",
+        "github.com/agentstation/starport/internal/catalog/TestFleetAcceptanceRetainsDistinctRollbackGenerations",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreCompleteKeyLossRequiresRecovery",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreNativePublication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreRefusesExpiredGrant",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreSeparateProcessTakeover",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreMissingSelectedPublicationIsNotAnEmptyStore",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreAcceptanceUsesOriginalGrant",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreNamespaceAndMalformedDescriptor",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLeaseExpiresDuringSelection/publication",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLeaseExpiresDuringSelection/acceptance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetStoreLostHeadCannotBootstrapAgain",
+        "github.com/agentstation/starport/internal/catalog/TestFleetMigrationRequiresSameRecoveryIdentity",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeRejectsUnapprovedBackend",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimePreservesOriginalGrantThroughAcceptance",
+        "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeLiveTakeoverAcceptance",
+        "github.com/agentstation/starport/internal/app/TestSharedCacheCompositionUsesSeparateService",
+        "github.com/agentstation/starport/internal/app/TestSharedCacheCanonicalDeploymentIsolation",
+        "github.com/agentstation/starport/internal/app/TestInitializeFleetFreshStartup",
+        "github.com/agentstation/starport/internal/app/TestAppWithValkey",
+        "github.com/agentstation/starport/internal/app/TestSharedStartupDoesNotCreateLocalDatabases"
+      ]
+    },
+    {
+      "name": "purego",
+      "command": "CGO_ENABLED=0 go test -json -count=1 -timeout=2m ./internal/jobs ./internal/storage -run 'Recovery|ScanPage'",
+      "exit_code": 0,
+      "source_timing": "Final source.",
+      "artifact": "csp122-recovery-scan-purego.jsonl.gz",
+      "test_results": {
+        "pass": 25
+      },
+      "package_results": {
+        "pass": 2
+      },
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    {
+      "name": "lint",
+      "command": "make lint",
+      "exit_code": 2,
+      "source_timing": "Initial application wiring referenced an absent App field. Fixed by retaining the composed batch service on App.",
+      "artifact": "csp122-recovery-scan-lint.txt.gz"
+    },
+    {
+      "name": "lint-final",
+      "command": "make lint",
+      "exit_code": 0,
+      "source_timing": "Final executable source before the production recovery test.",
+      "artifact": "csp122-recovery-scan-lint-final.txt.gz"
+    },
+    {
+      "name": "terminal-lint",
+      "command": "make lint",
+      "exit_code": 0,
+      "source_timing": "Final source.",
+      "artifact": "csp122-recovery-scan-terminal-lint.txt.gz"
+    },
+    {
+      "name": "vet",
+      "command": "go vet ./internal/jobs ./internal/storage ./internal/repotest ./internal/app",
+      "exit_code": 0,
+      "source_timing": "Final executable source. Later comments only.",
+      "artifact": "csp122-recovery-scan-vet.txt.gz"
+    },
+    {
+      "name": "prose",
+      "command": "technical-writing lint <six new recovery files> --format text",
+      "exit_code": 1,
+      "source_timing": "One long comment paragraph before repair.",
+      "artifact": "csp122-recovery-scan-prose.txt.gz"
+    },
+    {
+      "name": "prose-final",
+      "command": "technical-writing lint <seven new recovery files> --format text",
+      "exit_code": 0,
+      "source_timing": "Final source.",
+      "artifact": "csp122-recovery-scan-prose-final.txt.gz"
+    },
+    {
+      "name": "guard",
+      "command": "bash scripts/verify-async-media-jobs.sh",
+      "exit_code": 0,
+      "source_timing": "Same guarded behavior; before final application field repair.",
+      "artifact": "csp122-recovery-scan-guard.txt.gz"
+    },
+    {
+      "name": "direction",
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit_code": 0,
+      "source_timing": "Final dependency graph.",
+      "artifact": "csp122-recovery-scan-direction.txt.gz"
+    },
+    {
+      "name": "docs-prose",
+      "command": "technical-writing lint <four edited documents> --format text",
+      "exit_code": 0,
+      "artifact": "csp122-recovery-docs-prose.txt.gz",
+      "notes": "Four edited documents pass."
+    },
+    {
+      "name": "global-prose",
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "artifact": "csp122-recovery-global-prose.txt.gz",
+      "notes": "1765 files, 137 existing diagnostics outside edited documents."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "csp122-recovery-scan-before.jsonl.gz",
+      "raw_sha256": "084e2cf722d9e442bbc3b1cbdc4a93a84593d1a8a730a47e40d9a9ad9fca06c3",
+      "compressed_sha256": "9e527ddcf3aa55aa5c29ae141feae7d2b20356d65c62198b731df3a4ac12490a"
+    },
+    {
+      "path": "csp122-recovery-scan-after.jsonl.gz",
+      "raw_sha256": "8a8e432fdadd67e80d33a78597ee4ddf075a0af4a599442aee32ab2145da0844",
+      "compressed_sha256": "986371c9dcc5e5188998fa37f9a6061df1134e10adbee0cfee0aa9c6b22613d5"
+    },
+    {
+      "path": "csp122-recovery-scan-integration.jsonl.gz",
+      "raw_sha256": "721b0ba142c42e66d72da2286c8fb15622fe305c597360c6796ce58322e1699e",
+      "compressed_sha256": "45b5ad5f8efbd64877f2fcdf794d2912f788927dd8a3a3595be9eb0fc0a1a257"
+    },
+    {
+      "path": "csp122-recovery-scan-race.jsonl.gz",
+      "raw_sha256": "3f4a73556c950a1fa73989759fefd11c8e718d3686458a1b0991e28b8f2cda10",
+      "compressed_sha256": "f950cdf8edf0c0c21de71c5353081b5c296bda816d06447a0265c3da0f86140a"
+    },
+    {
+      "path": "csp122-recovery-scan-final-race.jsonl.gz",
+      "raw_sha256": "027fa0970349687dcf7f5ec506b448fa1872b1b7284301327c883c9be186e1d4",
+      "compressed_sha256": "6f956cfc144b4dd4a5d53db141110e0a1b3447652354d7bae8ecf360d0387425"
+    },
+    {
+      "path": "csp122-recovery-scan-full.jsonl.gz",
+      "raw_sha256": "a411a265f858ee9eb52df9ba30f9415ad428166d79a8bae0bc3723ced4f0b057",
+      "compressed_sha256": "f3b8136f210b15d2a474741b451e8cb0a2f2db797b0b34219643882bd75d62a4"
+    },
+    {
+      "path": "csp122-recovery-scan-purego.jsonl.gz",
+      "raw_sha256": "dc50b9b4cc7eae264fdd609daadfe7058e61c581f140e00d89ad40f1b07ab949",
+      "compressed_sha256": "27e626a269391ad083ed478776bc7322f70dd9bc80e007b7ed1b214b2d596d15"
+    },
+    {
+      "path": "csp122-recovery-scan-lint.txt.gz",
+      "raw_sha256": "0c9f2cf00effbebb4934742cff9cc9fe8445aafb570cc32347a70521d4048990",
+      "compressed_sha256": "d53276784b1aac1081af0e21ec8c49f1aee1d8c10e188dcddff9f650832b785e"
+    },
+    {
+      "path": "csp122-recovery-scan-lint-final.txt.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "compressed_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "csp122-recovery-scan-terminal-lint.txt.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "compressed_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "csp122-recovery-scan-vet.txt.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "csp122-recovery-scan-prose.txt.gz",
+      "raw_sha256": "ec0f9342ca4e327f44824333f2813e8bc972059a7a5965ea3590e1265898710d",
+      "compressed_sha256": "7f8e04532344ba3cd4b788fdadac60a4f4d3d3c25b6d7c8ed0ca3462d989dec1"
+    },
+    {
+      "path": "csp122-recovery-scan-prose-final.txt.gz",
+      "raw_sha256": "69a2f872785e8dd440717978a1f909d4fa1ebecc317183d912c5e0b023383e46",
+      "compressed_sha256": "6ddd61f4d55922f3853e42785dcdd811b74768d45e8c099839a49dc53525ab4b"
+    },
+    {
+      "path": "csp122-recovery-scan-guard.txt.gz",
+      "raw_sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb",
+      "compressed_sha256": "9bcb3a6a34098bbeb762592013637ba21d678f07360d23f02be3ebcfa8d3c1b0"
+    },
+    {
+      "path": "csp122-recovery-scan-direction.txt.gz",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027",
+      "compressed_sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9"
+    },
+    {
+      "path": "csp122-recovery-docs-prose.txt.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "compressed_sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    },
+    {
+      "path": "csp122-recovery-global-prose.txt.gz",
+      "raw_sha256": "9407be473809590228cb558895c9d30c529698698f399b9efe9f72b9b26aa4b1",
+      "compressed_sha256": "20c630c7c15818b9936821d5017dc28004f9067b41571761422e45cb58ce5d82"
+    }
+  ],
+  "behavior": [
+    "Reproduced permanent omission beyond the first 1000 retained records on Badger and Valkey. Memory map iteration happened to cover all records.",
+    "Storage ScanPage follows native cursors and never truncates a Valkey response. Empty pages do not end a nonempty cursor. Literal prefixes escape glob syntax.",
+    "Recovery reads one native page at a time. A 30-second work budget preserves unprocessed records and continuation for the next invocation. An in-flight slot release retains its separate five-second cleanup bound.",
+    "Malformed records report a failure while valid records continue. Aggregate failures retain one sample error and a count instead of an unbounded error list.",
+    "Process restart replays the scan. Mutations remain conditional and slot release remains idempotent. Concurrent local sweeps refuse without waiting.",
+    "The composed application now retains its batch service and invokes recovery on the existing job-maintenance loop. Finished unread batches release slots; cancellation before drain does not.",
+    "Production composition test uses real Badger and SQLite, verifies the stored release marker and zero count, and observes zero provider dispatches."
+  ],
+  "references": [
+    {
+      "url": "https://valkey.io/commands/scan/",
+      "contract": "COUNT is a work hint, duplicates and empty intermediate pages are permitted, and a full iteration covers continuously present keys."
+    }
+  ],
+  "manual_review": {
+    "status": "PASS_WITH_LIMITS",
+    "scope": [
+      "Native continuation and namespace isolation",
+      "Cancellation with unprocessed records",
+      "Conditional replay and already released claims",
+      "Corruption and independent record progress",
+      "Application lifecycle composition",
+      "No request-path scan or new provider dispatch"
+    ],
+    "pre_pr_autoreview": "Required before the final task PR; not run for this local component."
+  },
+  "qualification_limits": [
+    "Valkey COUNT is not a strict byte or key count bound. This component avoids whole-keyspace buffering but does not claim a hard native response-size ceiling.",
+    "A scan is not a point-in-time snapshot. Concurrently added records may wait for another cycle. Duplicates can occur and recovery tolerates them.",
+    "Cursors are process-local and not recovery authority. Restart begins again; replacement-backend and failover qualification remain required. Durable KV cluster mode remains unsupported.",
+    "Claims with no confirmed job record, running batches after process loss, pinned valuation, required settlement, and safe claim collection remain open.",
+    "The job maintenance interval controls background batch recovery too. A disabled maintenance interval requires reads or an explicit sweep; this component adds no independent scheduler.",
+    "The broad component race run skips TestValkeyIncarnationRejectsReplacementBackend. Full-suite skips remain unverified, including optional backend and SDK qualification.",
+    "Native Windows/Linux checks, actual process loss, PostgreSQL witness/failover, remaining billing contracts, A47, exact published dependency, review, and protected merges remain required.",
+    "Tests use local providers and fixture data; no paid provider qualification occurred.",
+    "Unrelated CSP18 documentation changes remain untouched."
+  ],
+  "plan_maintenance": {
+    "ledger_rows": 40,
+    "done": 26,
+    "in_progress": [
+      "CSP12.2"
+    ],
+    "unique_ids": 97,
+    "links_checked": 158,
+    "artifacts_verified": 17,
+    "resume_words": 247,
+    "ledger_and_ids_preserved": true,
+    "cold_resume": "PASS: current source, task, next action, running state, remaining criteria, and authorization boundaries are explicit.",
+    "plan_bytes": 132895,
+    "size_exception": "The existing plan retains forty task contracts and historical execution entries. This component refresh replaces the resume state, preserves all task rows and IDs, and does not compact historical evidence."
+  }
+}

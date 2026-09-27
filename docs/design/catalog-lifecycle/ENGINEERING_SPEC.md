@@ -4379,3 +4379,22 @@ Pinned valuation and required budget settlement also remain incomplete. Slot rel
 
 Claim retries use stored identities. Separate client submissions create new identities.
 This component does not deduplicate inbound Idempotency-Key values.
+
+
+### Cursor-based asynchronous recovery
+
+Consumer `3d14fb65` replaces the limited video sweep with native cursor scans.
+The application also recovers finished batch claims through its existing job-maintenance loop.
+A cancelled batch retains its claim until its admitted lines finish.
+
+Each invocation has a 30-second work budget. An in-flight slot release can use its separate five-second cleanup bound.
+The service retains unprocessed records and continuation between invocations. Restart repeats earlier records through conditional writes and idempotent release.
+Corrupt records produce diagnostics without blocking valid records. Failure reports retain one sample and a count.
+
+Valkey can return empty intermediate pages and duplicate keys. Recovery follows the cursor and preserves every key in each native response.
+Its count argument controls work but does not impose a strict response-size limit.
+The scan covers continuously present records. Concurrent additions can require another cycle.
+
+The [recovery proof](../../plans/proof/starport-production-catalog/csp12.2/recovery-scans-2026-09-27/verification.json) qualifies Badger, Valkey, cancellation, corruption, and production batch recovery.
+Disabled job maintenance still requires reads or explicit sweeps. This change adds no independent scheduler.
+Orphan claims, running batches after process loss, pinned valuation, required settlement, and safe collection remain open.
