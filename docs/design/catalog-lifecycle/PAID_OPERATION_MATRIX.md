@@ -495,3 +495,14 @@ Current line authorization and per-attempt reservations remain mandatory.
 The [claim proof](../../plans/proof/starport-production-catalog/csp12.2/batch-line-claims-2026-09-27/verification.json) records native storage, production routes, fault handling, and pure-Go checks.
 Claims do not yet provide durable result recovery or automatic continuation after interruption.
 The owner decision about proven unstarted lines remains pending. Full matrix qualification remains required.
+
+
+### Batch output recovery prerequisites
+
+The [process-loss proof](../../plans/proof/starport-production-catalog/csp12.2/batch-output-recovery-2026-09-27/verification.json) shows that a completed line lacks readable output after its worker dies.
+A second probe shows duplicate storage release while retiring one file concurrently.
+Durable line claims alone do not satisfy batch recovery.
+
+The [output contract](../../plans/proof/starport-production-catalog/csp12.2/batch-output-recovery-2026-09-27/CONTRACT.md) requires stable result identities and recoverable byte accounting before checkpoint cleanup.
+It remains part of CSP12.2 acceptance. Migration stays with CSP13.
+Both failing probes require a production repair and passing qualification before the consumer PR can merge.

@@ -1,0 +1,126 @@
+{
+  "task": "CSP12.2",
+  "status": "in_progress",
+  "recorded_at": "2026-09-27T22:58:27.996089+00:00",
+  "consumer_commit": "0683b733886a6017825b46243e836174ef71f7ec",
+  "producer_commit": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout=30s ./internal/jobs -run '^TestCompletedBatchResultSurvivesProcessLoss$'",
+      "exit_code": 1,
+      "failed_tests": [
+        "TestCompletedBatchResultSurvivesProcessLoss"
+      ],
+      "failed_results": 1,
+      "output": "process-loss-before.jsonl.gz"
+    },
+    {
+      "command": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 TEST_VALKEY_URL=redis://127.0.0.1:51487 go test -race -json -count=1 -timeout=45s ./internal/files -run '^TestConcurrentFileRetirementPreservesOtherStoredBytes$'",
+      "exit_code": 1,
+      "failed_tests": [
+        "TestConcurrentFileRetirementPreservesOtherStoredBytes/memory",
+        "TestConcurrentFileRetirementPreservesOtherStoredBytes/badger",
+        "TestConcurrentFileRetirementPreservesOtherStoredBytes/valkey",
+        "TestConcurrentFileRetirementPreservesOtherStoredBytes"
+      ],
+      "failed_results": 4,
+      "output": "quota-confirmed-before.jsonl.gz"
+    }
+  ],
+  "probes": [
+    {
+      "applied_path": "internal/jobs/batch_result_loss_probe_test.go",
+      "file": "batch_result_loss_probe_test.go.txt",
+      "sha256": "9a7f4d09ce60d850ea01490bc20fb8300ea1e9ac262d5f13b5b5fc8dc016b997"
+    },
+    {
+      "applied_path": "internal/files/recovery_quota_probe_test.go",
+      "file": "recovery_quota_probe_test.go.txt",
+      "sha256": "60d79e925173415fb6c38a404437ab8649b9cef29262498d229e268b89465f63"
+    }
+  ],
+  "probe_files_removed_after_capture": true,
+  "artifacts": [
+    {
+      "file": "quota-before.jsonl.gz",
+      "sha256": "02ed3adb4a25ef69056350ba4b44e2625bbfba8f322e63eee1ca063a5f193009",
+      "raw_sha256": "2093469a4caf5d8a6b59a05b65547c5e6923f984ae57220d2a8d7d1db317f560"
+    },
+    {
+      "file": "process-loss-before.jsonl.gz",
+      "sha256": "7c4adce77cb6bfe5e0459bb2b4ba3bbdc8047b9b3b29b0d9c43e0f426d8bc16d",
+      "raw_sha256": "f399886b7f92d29f80d7db48451027d797f28c359dfd77b3ed177be6a1300519"
+    },
+    {
+      "file": "quota-confirmed-before.jsonl.gz",
+      "sha256": "d6f66d998b4f954153b2c9bd2142a01e3a93d886fd582762f5c6c40f3e3c7945",
+      "raw_sha256": "bd95d9fd1d2304354eb542ef4bdce3c524f3ead3ba151c974045c858d66dee68"
+    },
+    {
+      "file": "prose.log.gz",
+      "sha256": "03ac755e03fb41d530185275e4afde066bd01a05131a816cc20a3963cb9db778",
+      "raw_sha256": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668"
+    },
+    {
+      "file": "plan-validation.json.gz",
+      "sha256": "e4e294348928d752f285bb49ac7458e29567931e786abe401bc1eb8de558d5cd",
+      "raw_sha256": "3ab88eb328c9565b201428b57c85f23298c4b108aa7c573eab6cd076d0bce730"
+    }
+  ],
+  "observations": [
+    "A child process returns line one and starts line two. After the parent kills that process, Badger retains both claims, but the real file service has no readable result containing line one.",
+    "Two workers retire the same already-deleting file. One unrelated eight-byte file remains readable, but the real storage meter reports zero instead of eight bytes on memory, Badger, and Valkey."
+  ],
+  "source_findings": [
+    {
+      "path": "internal/jobs/batch_service.go",
+      "fact": "runLines streams results into an aggregate pipe; complete file identifiers are returned only after finish closes it."
+    },
+    {
+      "path": "internal/files/service.go",
+      "fact": "remove deletes the file record before releasing its bytes. Concurrent callers can each pass the idempotent repository deletion and decrement the same charge."
+    },
+    {
+      "path": "internal/files/service.go",
+      "fact": "Upload chooses the output identifier internally. A caller cannot bind that identity to its line claim before the write."
+    },
+    {
+      "path": "internal/limits/storage.go",
+      "fact": "Reserve and Release carry no durable file claim identity. Their counter operations cannot distinguish an exact retry from a second operation."
+    }
+  ],
+  "rejected_run": {
+    "output": "quota-before.jsonl.gz",
+    "reason": "The first fixture allowed both workers to race the ready-to-deleting transition. One transition could fail while the other waited at the blob barrier, causing a timeout. The final fixture starts in the persisted deleting state and reaches concurrent retirement on every backend."
+  },
+  "contract": "CONTRACT.md",
+  "required_repairs": [
+    "Recoverable prepared output identity and result checkpoint publication",
+    "Durable idempotent byte reservations and release",
+    "Aggregate reconstruction and checkpoint cleanup without provider replay"
+  ],
+  "limitations": [
+    "No production repair is included in this proof. The probes are preserved as text and removed from the implementation worktree.",
+    "The process-loss test qualifies the observed failure on this local macOS environment with Badger and filesystem blobs. It does not qualify other platforms or remote object storage.",
+    "The counter test uses the real storage meter and repositories. It does not use a mocked accounting contract.",
+    "No provider network request or paid inference ran.",
+    "The restart policy for proven unstarted lines remains pending; file recovery and accounting repair can proceed independently."
+  ],
+  "plan_maintenance": {
+    "ledger_rows": 40,
+    "done": 26,
+    "in_progress": [
+      "CSP12.2"
+    ],
+    "anchors": 97,
+    "links": 144,
+    "resume_words": 248,
+    "artifacts": 3,
+    "probes": 2,
+    "prose": {
+      "files": 5,
+      "diagnostics": 0,
+      "exit_code": 0
+    }
+  }
+}

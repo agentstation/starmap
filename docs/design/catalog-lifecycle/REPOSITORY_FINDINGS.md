@@ -4384,3 +4384,24 @@ The first script attempt omitted the paired workspace and failed against the old
 Batch schema 3 and line schema 1 preserve durable claims, not completed result recovery.
 Interrupted-run policy, durable results, process loss, fleet qualification, A47, and paired merges remain open.
 No additional paid generation ran.
+
+
+## CSP12.2 completed batch output and byte-accounting failures: September 27, 2026
+
+Two new probes use consumer `0683b733` without production changes.
+The [process-loss proof](../../plans/proof/starport-production-catalog/csp12.2/batch-output-recovery-2026-09-27/verification.json) kills a real child worker after its first line returns and its second line starts.
+Badger retains both claims, but the file service has no readable result for the completed first line.
+The aggregate output remains incomplete until the batch closes its pipe. Durable claims alone cannot preserve paid output.
+
+The second probe retires one already-deleting file from two workers using the real storage meter.
+An unrelated eight-byte file remains readable, but the meter reports zero instead of eight bytes.
+The failure reproduces on memory, Badger, and Valkey. Four test results fail, including the parent test.
+The initial fixture timed out during a competing state transition. The final fixture isolates retirement and fails on every backend.
+
+File removal deletes its record, then releases its byte charge without a durable claim identity.
+Two successful idempotent deletions can therefore produce two decrements. Checkpoint cleanup must not use that behavior.
+The [repair contract](../../plans/proof/starport-production-catalog/csp12.2/batch-output-recovery-2026-09-27/CONTRACT.md) assigns prepared output, retained results, and byte claims to their owning packages.
+CSP12.2 requires this repair before durable batch recovery. CSP13 retains migration ownership.
+
+Both probes remain failing evidence. No production repair or paid provider call accompanies this proof.
+The restart-policy decision about untouched lines remains pending. Storage-accounting and output recovery can proceed independently.

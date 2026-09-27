@@ -4644,3 +4644,15 @@ Claims do not expire automatically. Existing current-policy authorization and pe
 The [claim proof](../../plans/proof/starport-production-catalog/csp12.2/batch-line-claims-2026-09-27/verification.json) covers concurrent claim winners, cancellation through another worker, and failed write acknowledgments.
 Durable result references, interrupted-run recovery, and process-loss qualification remain incomplete.
 The restart-policy question about proven unstarted lines remains pending. CSP13 owns schema migration.
+
+
+### Recoverable batch output and byte claims
+
+CSP12.2 requires the [output recovery contract](../../plans/proof/starport-production-catalog/csp12.2/batch-output-recovery-2026-09-27/CONTRACT.md).
+It owns prepared output identities, retained result references, aggregate reconstruction, and exactly-once storage release.
+The file owner retains byte and expiry semantics. The limit owner retains durable storage claims shared by ordinary files and batch checkpoints.
+
+Consumer `0683b733` does not satisfy this contract.
+The [failing proof](../../plans/proof/starport-production-catalog/csp12.2/batch-output-recovery-2026-09-27/verification.json) shows completed output loss after process death and duplicate byte release during concurrent retirement.
+These failures block complete batch recovery qualification. They do not invalidate the separate claim and cancellation checks.
+The owner decision about untouched lines does not prevent this storage repair.

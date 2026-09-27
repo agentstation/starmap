@@ -1,0 +1,110 @@
+package jobs_test
+
+import (
+	"bytes"
+	"context"
+	"io"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/agentstation/starport/internal/blob"
+	"github.com/agentstation/starport/internal/files"
+	"github.com/agentstation/starport/internal/jobs"
+	"github.com/agentstation/starport/internal/storage"
+	"github.com/stretchr/testify/require"
+)
+
+type resultLossIO struct{ service *files.Service }
+
+func (b resultLossIO) OpenInput(context.Context) (io.ReadCloser, error) {
+	return io.NopCloser(strings.NewReader("{}\n{}\n")), nil
+}
+func (b resultLossIO) StoreOutput(ctx context.Context, name string, r io.Reader) (string, error) {
+	f, err := b.service.Upload(ctx, files.UploadRequest{Account: "account", Filename: name, Purpose: files.PurposeBatchOutput}, r)
+	return f.ID, err
+}
+
+type resultLossRunner struct{ marker string }
+
+func (r resultLossRunner) RunLine(_ context.Context, claim jobs.BatchLine, _ []byte) ([]byte, bool) {
+	if claim.Number == 1 {
+		return []byte(`{"result":"completed-line-one"}`), false
+	}
+	if err := os.WriteFile(r.marker, []byte("second line started"), 0600); err != nil {
+		panic(err)
+	}
+	select {}
+}
+func TestCompletedBatchResultSurvivesProcessLoss(t *testing.T) {
+	const childKey = "STARPORT_BATCH_RESULT_PROBE_CHILD"
+	open := func(t *testing.T, root string) (storage.KVStore, *files.Service, files.Repository) {
+		t.Helper()
+		store, err := storage.OpenBadger(storage.BadgerConfig{Path: filepath.Join(root, "kv"), SyncWrites: true, Compression: "snappy", NumVersions: 1, NumLevelZero: 5, MemTableSize: 64 << 20})
+		require.NoError(t, err)
+		t.Cleanup(func() { require.NoError(t, store.Close()) })
+		blobs, err := blob.NewFilesystem(filepath.Join(root, "blobs"))
+		require.NoError(t, err)
+		records, err := files.OpenRepository(store)
+		require.NoError(t, err)
+		service, err := files.NewService(records, blobs)
+		require.NoError(t, err)
+		return store, service, records
+	}
+	if root := os.Getenv(childKey); root != "" {
+		store, service, _ := open(t, root)
+		records, err := jobs.OpenBatchRepository(store)
+		require.NoError(t, err)
+		batches, err := jobs.NewBatchService(records, jobs.WithBatchConcurrency(1))
+		require.NoError(t, err)
+		_, err = batches.Submit(t.Context(), jobs.BatchSubmission{ID: "batch", Account: "account", Endpoint: "/v1/chat/completions", InputFileID: "input", IO: resultLossIO{service}, Runner: resultLossRunner{filepath.Join(root, "marker")}})
+		require.NoError(t, err)
+		select {}
+	}
+	root := t.TempDir()
+	var output bytes.Buffer
+	command := exec.Command(os.Args[0], "-test.run=^TestCompletedBatchResultSurvivesProcessLoss$", "-test.timeout=20s")
+	command.Env = append(os.Environ(), childKey+"="+root)
+	command.Stdout = &output
+	command.Stderr = &output
+	require.NoError(t, command.Start())
+	t.Cleanup(func() { _ = command.Process.Kill() })
+	deadline := time.Now().Add(10 * time.Second)
+	ready := false
+	for time.Now().Before(deadline) {
+		if _, err := os.Stat(filepath.Join(root, "marker")); err == nil {
+			ready = true
+			break
+		}
+		time.Sleep(5 * time.Millisecond)
+	}
+	require.NoError(t, command.Process.Kill())
+	require.Error(t, command.Wait())
+	require.True(t, ready, "child did not reach second line: %s", output.String())
+	store, service, records := open(t, root)
+	batches, err := jobs.OpenBatchRepository(store)
+	require.NoError(t, err)
+	batch, err := batches.Get(t.Context(), "account", "batch")
+	require.NoError(t, err)
+	require.Equal(t, 2, batch.ClaimedLines, "both claims survive process loss")
+	all, err := records.List(t.Context(), "account", 100)
+	require.NoError(t, err)
+	found := false
+	for _, record := range all {
+		if record.State != files.FileStateReady {
+			continue
+		}
+		_, reader, err := service.Open(t.Context(), "account", record.ID)
+		require.NoError(t, err)
+		data, err := io.ReadAll(reader)
+		require.NoError(t, err)
+		require.NoError(t, reader.Close())
+		if bytes.Contains(data, []byte("completed-line-one")) {
+			found = true
+		}
+	}
+	require.True(t, found, "the completed first line must have a readable durable result after the worker dies")
+}
