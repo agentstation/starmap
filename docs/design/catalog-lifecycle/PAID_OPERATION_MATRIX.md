@@ -506,3 +506,8 @@ Durable line claims alone do not satisfy batch recovery.
 The [output contract](../../plans/proof/starport-production-catalog/csp12.2/batch-output-recovery-2026-09-27/CONTRACT.md) requires stable result identities and recoverable byte accounting before checkpoint cleanup.
 It remains part of CSP12.2 acceptance. Migration stays with CSP13.
 Both failing probes require a production repair and passing qualification before the consumer PR can merge.
+
+
+The [storage-claim repair](../../plans/proof/starport-production-catalog/csp12.2/storage-claims-2026-09-27/verification.json) qualifies concurrent file retirement and ambiguous accounting acknowledgments at consumer `e2e85607`.
+The original byte-accounting probe now passes. The completed-output process-loss probe remains unresolved.
+Prepared result identities, retained output, aggregate reconstruction, and shared-object recovery remain required before batch qualification.

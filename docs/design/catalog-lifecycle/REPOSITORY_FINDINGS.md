@@ -4405,3 +4405,19 @@ CSP12.2 requires this repair before durable batch recovery. CSP13 retains migrat
 
 Both probes remain failing evidence. No production repair or paid provider call accompanies this proof.
 The restart-policy decision about untouched lines remains pending. Storage-accounting and output recovery can proceed independently.
+
+
+## CSP12.2 durable file quota repair: September 27, 2026
+
+Consumer `e2e85607` replaces anonymous increments and decrements with durable file claims.
+The original concurrent-retirement assertion now passes on memory, Badger, and Valkey.
+Lost acknowledgments during attachment, settlement, and release preserve unrelated capacity.
+A stale ready write cannot revive deleting metadata. Prepared-claim recovery reaches later pages and fences delayed attachment.
+
+The [storage proof](../../plans/proof/starport-production-catalog/csp12.2/storage-claims-2026-09-27/verification.json) records 633 broad race results with one optional skip.
+Final storage race and pure-Go checks each pass 101 results. Application checks pass three results.
+Vet, goago, three repository gates, and scoped prose checks pass.
+The broader race run predates final accounting validation. Final targeted checks cover that change.
+
+File schema 2 and byte-accounting schema 2 require CSP13 migration qualification.
+Durable batch output and ordinary file-sweep pagination remain open. The commit remains local and does not complete CSP12.2.

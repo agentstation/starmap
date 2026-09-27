@@ -4656,3 +4656,21 @@ Consumer `0683b733` does not satisfy this contract.
 The [failing proof](../../plans/proof/starport-production-catalog/csp12.2/batch-output-recovery-2026-09-27/verification.json) shows completed output loss after process death and duplicate byte release during concurrent retirement.
 These failures block complete batch recovery qualification. They do not invalidate the separate claim and cancellation checks.
 The owner decision about untouched lines does not prevent this storage repair.
+
+
+### Durable file byte accounting
+
+Consumer `e2e85607` implements the byte-accounting part of the output contract.
+Each file has a durable claim. Reservation and aggregate changes use atomic conditional writes.
+Pending metadata and claim attachment publish together.
+
+Settlement records one measured size.
+Deletion removes bytes, closes the claim once, then deletes metadata. A failed acknowledgment leaves recoverable state.
+
+Unattached preparation recovery uses native scan pages and a thirty-second work limit.
+It closes claims older than ten minutes through the same conditional write that fences attachment.
+Attached files retain their normal lifecycle. Missing or invalid accounting refuses new storage.
+CSP13 owns file schema 2 and byte-accounting schema 2 migration.
+
+The [storage proof](../../plans/proof/starport-production-catalog/csp12.2/storage-claims-2026-09-27/verification.json) passes the concurrent-retirement regression and lost-acknowledgment cases on memory, Badger, and Valkey.
+It does not qualify durable batch output, process loss, shared-object storage, or complete A47.

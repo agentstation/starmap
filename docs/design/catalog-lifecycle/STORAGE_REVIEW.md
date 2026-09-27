@@ -948,3 +948,18 @@ Valkey and in-memory development do not use this local guard.
 The [setup proof](../../plans/proof/starport-production-catalog/csp8/setup-recovery-2026-09-16/verification.json) records ten process-exit recovery boundaries and changed-state preservation.
 Its five package suites pass 475 race events, with one Valkey skip. Native Linux/Windows execution and released-pair qualification remain unverified.
 This component does not migrate existing deployments or change SQL and shared-KV authority.
+
+
+## File quota recovery update: September 27, 2026
+
+Consumer `e2e85607` stores one byte claim per file in the metadata KV store.
+Badger and Valkey use the same atomic claim and aggregate contract.
+The file owner deletes blob bytes before closing the claim and removing metadata.
+Duplicate cleanup cannot release unrelated storage. Lost acknowledgments retain recovery evidence.
+
+Unattached preparations have a ten-minute recovery grace. Recovery uses native scan pages with a thirty-second work limit.
+Attached records retain file lifecycle ownership. Missing or invalid accounting does not authorize a zero reset.
+
+File schema 2 and byte-accounting schema 2 need CSP13 migration qualification.
+The [storage proof](../../plans/proof/starport-production-catalog/csp12.2/storage-claims-2026-09-27/verification.json) covers filesystem blobs with memory, Badger, and Valkey metadata.
+Shared-object recovery and durable batch results remain unqualified.
