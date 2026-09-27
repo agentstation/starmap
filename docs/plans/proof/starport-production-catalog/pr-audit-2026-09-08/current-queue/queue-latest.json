@@ -5,15 +5,17 @@
       "baseRefName": "main",
       "baseRefOid": "8122081e0494648fb1e356647053dd870a05fb1c",
       "headRefName": "codex/catalog-fleet-contract",
-      "headRefOid": "0f45bbae239381bf6f674e5834409bd4cceec1ef",
+      "headRefOid": "47991a5649f2e0363fb8c1b117ec327689fabd02",
       "isDraft": false,
-      "mergeStateStatus": "BLOCKED",
+      "mergeStateStatus": "MERGED",
       "number": 185,
       "title": "runtime: fence fleet publication and retain recovery inputs",
       "url": "https://github.com/agentstation/starmap/pull/185",
       "owner": "CSP11",
-      "disposition": "Published after required review; exact-head CI running. Consumer downstream release blockers remain recorded.",
-      "next_action": "Qualify exact-head CI and merge Starmap before Starport; record merge commits before task completion."
+      "disposition": "Merged after required review disposition and passing exact-head checks.",
+      "next_action": "Complete downstream storage and recovery tasks before production fleet upgrades.",
+      "state": "MERGED",
+      "mergeCommit": "2b98ab2606653d896201a2abe16ef2b5fb114290"
     }
   ],
   "starport": [
@@ -21,15 +23,17 @@
       "baseRefName": "main",
       "baseRefOid": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
       "headRefName": "codex/catalog-fleet-adapter",
-      "headRefOid": "aab7dd7c8bf52b2046e2284e480d81ce1d0b873c",
+      "headRefOid": "a819276e23a126c3eae159d5e2b2744db8bba619",
       "isDraft": false,
-      "mergeStateStatus": "BLOCKED",
+      "mergeStateStatus": "MERGED",
       "number": 385,
       "title": "catalog: fence fleet publication and recover shared acquisition state",
       "url": "https://github.com/agentstation/starport/pull/385",
       "owner": "CSP11",
-      "disposition": "Published after required review; exact-head CI running. Consumer downstream release blockers remain recorded.",
-      "next_action": "Qualify exact-head CI and merge Starmap before Starport; record merge commits before task completion."
+      "disposition": "Merged after required review disposition and passing exact-head checks.",
+      "next_action": "Complete downstream storage and recovery tasks before production fleet upgrades.",
+      "state": "MERGED",
+      "mergeCommit": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d"
     }
   ],
   "completed_merges": [
@@ -132,6 +136,18 @@
       "proof": "../../csp8/merged-qualification-2026-09-26/consumer-merge.json",
       "checks_run": 36249589317,
       "passing_jobs": 15
+    },
+    {
+      "repo": "starmap",
+      "pr": 185,
+      "head": "47991a5649f2e0363fb8c1b117ec327689fabd02",
+      "merge_commit": "2b98ab2606653d896201a2abe16ef2b5fb114290"
+    },
+    {
+      "repo": "starport",
+      "pr": 385,
+      "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
+      "merge_commit": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d"
     }
   ],
   "publication_replay": {
@@ -238,7 +254,7 @@
   "plan_validation": {
     "changed_plan_strict_lint": "PASS: one file, zero diagnostics.",
     "repository_technical_writing_check": "FAIL: 1698 files, 69 unchanged historical diagnostics.",
-    "ledger": "40 rows, 16 terminal, CSP8 only in_progress.",
+    "ledger": "40 rows, 24 terminal, CSP12 only in_progress.",
     "local_links": "PASS: all 114 local links resolve.",
     "diff_check": "PASS",
     "writing_log": {
@@ -836,14 +852,9 @@
     "task_completed": false
   },
   "next_task": {
-    "task": "CSP11",
-    "next_action": "Qualify consumer a819276e CI, merge Starport #385, then verify the merged pair. Producer #185 merged.",
-    "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
-    "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
-    "contract_audit": "../../csp11/contract-audit-2026-09-26.md",
-    "recovery_failure_proof": "../../csp11/recovery-failure-2026-09-26/verification.json",
-    "decision": "D41 approved; no pending owner question",
-    "review_scope": "../../csp11/retained-baseline-2026-09-26/final-review-rescope/REPAIR_SCOPE.md"
+    "task": "CSP12",
+    "next_action": "Complete deployment namespaces and qualify full storage recipes.",
+    "proof": "../../csp11/merged-pair-2026-09-27/verification.json"
   },
   "merged_followups": {
     "tasks": [
@@ -876,7 +887,7 @@
     "consumer_base": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
     "proof": "../../csp11/isolation-scope-2026-09-26/verification.json",
     "owner": "CSP11",
-    "next_action": "Qualify consumer a819276e CI, merge Starport #385, then verify the merged pair. Producer #185 merged.",
+    "next_action": "CSP11 complete; CSP12 active.",
     "consumer": "a819276e23a126c3eae159d5e2b2744db8bba619",
     "consumer_pr": 385,
     "ci": {
@@ -932,7 +943,9 @@
     "native_repair_proof": "../../csp11/retained-baseline-2026-09-26/native-ci-repair/verification.json",
     "local_consumer": "a819276e23a126c3eae159d5e2b2744db8bba619",
     "producer_merge": "2b98ab2606653d896201a2abe16ef2b5fb114290",
-    "producer_merge_proof": "../../csp11/merged-pair-2026-09-27/producer.json"
+    "producer_merge_proof": "../../csp11/merged-pair-2026-09-27/producer.json",
+    "status": "MERGED",
+    "consumer_merge": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d"
   },
   "local_consumer_checkpoint": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -945,9 +958,9 @@
     "owner": "CSP12",
     "branch": "codex/storage-recipe-contract",
     "worktree": "/tmp/starport-fleet-review-20260926",
-    "commit": "63c763b",
+    "commit": "801bd246",
     "published": false,
-    "next_action": "Integrate after CSP11 merges and complete deployment namespaces before CSP12 qualification.",
+    "next_action": "Complete CSP12, qualify, review, publish and merge.",
     "connection_checks": {
       "source": "committed preparation 63c763b",
       "evidence": "../../csp12/prepared-lint-repair-2026-09-27/retired-transactions/runner.json",
@@ -969,9 +982,11 @@
       },
       "note": "goago is not a module tool in Starport; repository golangci-lint passes"
     },
-    "credential_conflict_repair": "Prepared commit 63c763b rejects conflicting URI and explicit credentials. Fail-before and passing race evidence remain in the proof."
+    "credential_conflict_repair": "Prepared commit 63c763b rejects conflicting URI and explicit credentials. Fail-before and passing race evidence remain in the proof.",
+    "parent": "a819276e23a126c3eae159d5e2b2744db8bba619",
+    "working_changes": "Canonical deployment namespace, root configuration projection, adapter and application tests."
   },
-  "local_updated_at": "2026-09-27T02:37:34.817208+00:00",
+  "local_updated_at": "2026-09-27T02:56:15.239140+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",

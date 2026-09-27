@@ -1,0 +1,222 @@
+{
+  "recorded_at": "2026-09-27T02:53:40.892836+00:00",
+  "pr": {
+    "baseRefOid": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
+    "headRefOid": "a819276e23a126c3eae159d5e2b2744db8bba619",
+    "isDraft": false,
+    "mergeStateStatus": "CLEAN",
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:33:52Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581897",
+        "name": "Lint",
+        "startedAt": "2026-09-27T02:31:28Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:34:08Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759063/job/108534582288",
+        "name": "Native windows x86_64",
+        "startedAt": "2026-09-27T02:31:28Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Release Verification"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:36:28Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759063/job/108534582264",
+        "name": "Native windows arm64",
+        "startedAt": "2026-09-27T02:31:29Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Release Verification"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:33:44Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759063/job/108534582276",
+        "name": "Native linux x86_64",
+        "startedAt": "2026-09-27T02:31:29Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Release Verification"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:32:24Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759063/job/108534582197",
+        "name": "Native linux arm64",
+        "startedAt": "2026-09-27T02:31:30Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Release Verification"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:33:34Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759063/job/108534582284",
+        "name": "Native darwin arm64",
+        "startedAt": "2026-09-27T02:31:32Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Release Verification"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:43:32Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581941",
+        "name": "Test (ubuntu-24.04)",
+        "startedAt": "2026-09-27T02:31:28Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:40:09Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581890",
+        "name": "Test (ubuntu-24.04-arm)",
+        "startedAt": "2026-09-27T02:31:30Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:47:53Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581860",
+        "name": "Test (macos-15)",
+        "startedAt": "2026-09-27T02:31:35Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:44:27Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581953",
+        "name": "Test (windows-2025)",
+        "startedAt": "2026-09-27T02:31:28Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:39:59Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581948",
+        "name": "Test (windows-11-arm)",
+        "startedAt": "2026-09-27T02:31:28Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:36:45Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581783",
+        "name": "Shared Storage Startup",
+        "startedAt": "2026-09-27T02:31:27Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:40:51Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581851",
+        "name": "Catalog Fleet Recovery",
+        "startedAt": "2026-09-27T02:31:29Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:32:16Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581999",
+        "name": "Authorization Capacity",
+        "startedAt": "2026-09-27T02:31:28Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:34:02Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581902",
+        "name": "Security Scan",
+        "startedAt": "2026-09-27T02:31:28Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:40:38Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581968",
+        "name": "Release Contract",
+        "startedAt": "2026-09-27T02:31:28Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:33:21Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581870",
+        "name": "OpenRouter SDK Compatibility",
+        "startedAt": "2026-09-27T02:31:27Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:41:41Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581893",
+        "name": "Release Snapshot",
+        "startedAt": "2026-09-27T02:31:29Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:31:36Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108534581926",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-27T02:31:28Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-27T02:52:57Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36288759035/job/108536878248",
+        "name": "Build",
+        "startedAt": "2026-09-27T02:47:57Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      }
+    ]
+  },
+  "review_threads": {
+    "headRefOid": "a819276e23a126c3eae159d5e2b2744db8bba619",
+    "baseRefOid": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
+    "mergeable": "MERGEABLE",
+    "mergeStateStatus": "CLEAN",
+    "reviewThreads": {
+      "totalCount": 0,
+      "nodes": []
+    }
+  }
+}

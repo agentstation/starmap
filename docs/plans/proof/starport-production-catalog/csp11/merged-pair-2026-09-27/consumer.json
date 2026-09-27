@@ -1,0 +1,16 @@
+{
+  "headRefOid": "a819276e23a126c3eae159d5e2b2744db8bba619",
+  "mergeCommit": {
+    "oid": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d"
+  },
+  "mergedAt": "2026-09-27T02:54:00Z",
+  "state": "MERGED",
+  "repository": "agentstation/starport",
+  "pr": 385,
+  "premerge_checks": 20,
+  "all_checks": "SUCCESS",
+  "review_threads": 0,
+  "merge_method": "protected squash with exact-head match",
+  "merge_tree_equals_reviewed_head": true,
+  "ordinary_merge_attempt": "Refused by branch policy; used permitted squash merge without bypass."
+}

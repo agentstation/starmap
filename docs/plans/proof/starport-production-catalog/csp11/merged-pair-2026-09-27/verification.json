@@ -1,0 +1,57 @@
+{
+  "recorded_at": "2026-09-27T02:56:15.239140+00:00",
+  "task": "CSP11",
+  "status": "PASS",
+  "producer_merge": "2b98ab2606653d896201a2abe16ef2b5fb114290",
+  "consumer_merge": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d",
+  "consumer_tested_head": "a819276e23a126c3eae159d5e2b2744db8bba619",
+  "consumer_module": "v0.16.6-0.20260927014455-47991a5649f2",
+  "merge_trees_equal_tested_heads": true,
+  "checks": {
+    "producer": 32,
+    "consumer": 20,
+    "all": "SUCCESS"
+  },
+  "task_gate": {
+    "selected_subcases": 11,
+    "status": "PASS",
+    "subcases": {
+      "A13.two_real_processes": "PASS",
+      "A13.lease_expiry_during_commit": "PASS",
+      "A13.stale_epoch_rejection": "PASS",
+      "A14.missed_events": "PASS",
+      "A14.follower_restart": "PASS",
+      "A14.leader_loss_with_local_files_removed": "PASS",
+      "A14.equivalent_acquisition_capability": "PASS",
+      "A03.two_instances_same_user": "PASS",
+      "A03.duplicate_owner_refusal": "PASS",
+      "A41.catalog_fleet_deployment_isolation": "PASS",
+      "A41.catalog_fleet_atomic_layout": "PASS"
+    },
+    "consumer_source_files_verified": 1043,
+    "producer_source_files_verified": 270,
+    "qualification": "component checks only; other product cases remain UNVERIFIED"
+  },
+  "review": {
+    "producer": "No findings at configured threshold",
+    "consumer": "Two known P1 release blockers remain under CSP12, CSP13, CSP15. Accepted staged integration only.",
+    "disposition": "../retained-baseline-2026-09-26/keyring-ci-repair/REVIEW_DISPOSITION.md"
+  },
+  "decision": "D41 retains fleet baselines across software upgrades. Configured refresh continues. CSP16 owns policy apply; CSP16.1 owns explicit baseline promotion.",
+  "artifacts": [
+    {
+      "path": "runner.json.gz",
+      "raw_sha256": "dd9b347075d6b1c517e46bf7606e8bf73c0ef2b65f52d594d386693a5149c1bb"
+    },
+    {
+      "path": "task-report.json.gz",
+      "raw_sha256": "f1eb4c2a06ef411abbd8a0adc4c16dd2059cba74a7d7c6e0bd832cd60667e023"
+    },
+    {
+      "path": "stderr.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "next_task": "CSP12",
+  "release_qualified": false
+}
