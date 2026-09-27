@@ -1,13 +1,14 @@
 {
-  "status": "REPAIR_IN_PROGRESS",
-  "recorded_at": "2026-09-27T05:09:05.046677+00:00",
+  "status": "LOCAL_PASS_NATIVE_CI_PENDING",
+  "recorded_at": "2026-09-27T05:27:03.930776+00:00",
   "producer_base": "8fa31111716b17b9e8d89232af51d2fc49b499bd",
   "consumer_base": "cd46ea2612f5bc80dcd3747d511a8ecccfd16c46",
   "failures": {
     "producer": "runtime-2 race shard hit the unchanged 30-minute package bound. No assertion failure preceded it.",
     "consumer": "Authorization lifecycle test exceeded its ten-second HTTP startup deadline on Linux, macOS, and Windows amd64. Linux amd64 and macOS also reached the ten-minute package bound.",
     "local_cache_preparation": "17 component subcases pass. The broad package run has an authorization failure and application five-minute timeout, so it is not task qualification.",
-    "interrupted_check": "The isolated application run ended at the turn interruption with no final package result. UNVERIFIED."
+    "interrupted_check": "The isolated application run ended at the turn interruption with no final package result. UNVERIFIED.",
+    "producer_windows": "Prior head 8fa311117: TestAuthorityRuntimePermissionRefreshBypassesBlockedCatalogAndLease failed with permission.json write context canceled at authority_runtime_test.go:250. Cause remains unconfirmed. Original deadline unchanged. New native run must qualify this behavior."
   },
   "repairs": {
     "consumer": "Use existing catalog lifecycle fixture for authorization worker ownership, preserving real repositories, polling, all deadlines, and shutdown assertions. Fifteen named results pass across three repetitions. Lint and twelve architecture checks pass.",
@@ -94,13 +95,158 @@
     "task.json": {
       "path": "task.json.gz",
       "sha256": "4e268ccb9618acf7748e1e1b264a2b6786355ae39db4329feb6a751b2e67e769"
+    },
+    "csp12-starmap-windows-ci.log": {
+      "path": "csp12-starmap-windows-ci.log.gz",
+      "sha256": "4d23eedf2a60e11f4156bd39bdeab5ff2d967271a79b4decdc6cabd3b9ee1f25"
+    },
+    "tests.jsonl": {
+      "path": "tests.jsonl.gz",
+      "sha256": "cd125ec5a2433b1d123272cbbc953abb69579958e1bc79d48692281c451b80cd"
+    },
+    "csp12-activation-runtime-after.jsonl": {
+      "path": "csp12-activation-runtime-after.jsonl.gz",
+      "sha256": "3e00e717fdc3cf88ac248cbe301fc42028886b870a54d63abfa218f97e6eb6a2"
+    },
+    "csp12-activation-verify-checks.log": {
+      "path": "csp12-activation-verify-checks.log.gz",
+      "sha256": "89b6282677f79714883071260562efd9797b0134cd822d15516fd3894ee897ab"
+    },
+    "csp12-activation-autoreview.log": {
+      "path": "csp12-activation-autoreview.log.gz",
+      "sha256": "6d20a29470bae276aa78327295cb40c5da90763a32ba22e5f1aa5a5e11683a74"
+    },
+    "csp12-app-activation-after2.jsonl": {
+      "path": "csp12-app-activation-after2.jsonl.gz",
+      "sha256": "eac4e8a3e0ab3c77ec2d00d44e9f0d1b5265385cee63c8b0157bea0883dc191f"
+    },
+    "csp12-app-isolated-after.jsonl": {
+      "path": "csp12-app-isolated-after.jsonl.gz",
+      "sha256": "101a831696c06a8fdb47200d32578cac5be36515b75b92bfc708c884fe9853ae"
+    },
+    "csp12-activation-container-build.log": {
+      "path": "csp12-activation-container-build.log.gz",
+      "sha256": "0bb666bfa5a10eaf279081e810d90e889616929222b479911ac2a6fc873d2cb8"
+    },
+    "csp12-activation-config-final.jsonl": {
+      "path": "csp12-activation-config-final.jsonl.gz",
+      "sha256": "90daec98f5992e4bb460ae6681ea47acc9b87cb1b3897620bdc1a210a9f76263"
+    },
+    "csp12-activation-config-final.stderr": {
+      "path": "csp12-activation-config-final.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "csp12-activation-consumer-lint.log": {
+      "path": "csp12-activation-consumer-lint.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "csp12-activation-consumer-architecture.log": {
+      "path": "csp12-activation-consumer-architecture.log.gz",
+      "sha256": "e9b6ddfc0de00807939e53e9f973558ffa4f9b1cfa8ed540d49a73ce94a8cc06"
+    },
+    "csp12-activation-consumer-autoreview.log": {
+      "path": "csp12-activation-consumer-autoreview.log.gz",
+      "sha256": "3f79fe29f7be4f0578c673875c7fd78d27bd7c75991ed55b97e674ebf2e3f89a"
+    },
+    "final-CSP12.1-stderr.log": {
+      "path": "final-CSP12.1-stderr.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-CSP12.1.json": {
+      "path": "final-CSP12.1.json.gz",
+      "sha256": "dcc2aa14e1925a79ff3fe7a251182bbbacf9cffdfa186b83bc6d2ff5456db8dc"
+    },
+    "final-runner.json": {
+      "path": "final-runner.json.gz",
+      "sha256": "eb1cdf12d5d6ca1f8a928f78a6e69f6fe36678ce71e92cb31ef9383bfad3ed7d"
+    },
+    "final-CSP12-stderr.log": {
+      "path": "final-CSP12-stderr.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-packages.jsonl": {
+      "path": "final-packages.jsonl.gz",
+      "sha256": "e3abef6a0e3a9873ea8aae21d28b730974d1a0573382c3178f649126c31f7f46"
+    },
+    "final-packages-stderr.log": {
+      "path": "final-packages-stderr.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-source.diff": {
+      "path": "final-source.diff.gz",
+      "sha256": "0e16b51363819b2a3abfb7a254221a8456f1ecfd4a1ed8c48818c52ddd243ff6"
+    },
+    "final-CSP12.json": {
+      "path": "final-CSP12.json.gz",
+      "sha256": "ae87433ad5fcf706921a51d1cac6d7755197427864fb10f83ab17f121c1c9e28"
     }
   },
   "pending": [
-    "Full producer verification",
-    "Paired application race qualification",
-    "Final review and published module pin",
-    "Required native CI",
-    "Both protected merges"
-  ]
+    "Required native CI at both final heads",
+    "Exact-head and review-thread checks",
+    "Protected producer merge followed by consumer merge"
+  ],
+  "producer_commit": "ae218c074c7a4f2cbfd56e11d88abcc5108c566e",
+  "consumer_commit": "d9faa352179e05d2bbc5616b223025f8189499ea",
+  "final_qualification": {
+    "source_binding": "All captured consumer source SHA-256 values match committed d9faa352. The runner started before that commit and records parent cd46ea261 plus the exact source diff. No source changed during qualification.",
+    "module": "v0.16.6-0.20260927051157-ae218c074c7a",
+    "environment": {
+      "GOTOOLCHAIN": "go1.27.1",
+      "GOWORK": "off"
+    },
+    "producer_verify_checks": "PASS",
+    "producer_focused_runtime": {
+      "pass": 7,
+      "fail": 0,
+      "skip": 0
+    },
+    "consumer_review": "PASS: Opus 5.5 high, configured P0 threshold, no accepted actionable findings",
+    "producer_review": "PASS: Opus 5.5 high, configured P0 threshold, no accepted actionable findings",
+    "consumer_lint": "0 issues",
+    "consumer_architecture": "12/12, including full Go suite",
+    "original_packages": {
+      "pass": 1224,
+      "fail": 1,
+      "skip": 0,
+      "failure": "TestContainerRecipePersistence ran before image build completion. Harness ordering error."
+    },
+    "configuration_rerun": {
+      "pass": 345,
+      "fail": 0,
+      "skip": 0,
+      "scope": "Complete configuration package after image build completion"
+    },
+    "combined_packages": {
+      "pass": 1225,
+      "fail": 0,
+      "skip": 0,
+      "method": "Replace every original configuration-package result with the complete passing configuration-package rerun. Other seven package results remain unchanged."
+    },
+    "application_seconds": 173.316,
+    "tasks": {
+      "CSP12": {
+        "pass": 15,
+        "fail": 0
+      },
+      "CSP12.1": {
+        "pass": 17,
+        "fail": 0
+      }
+    },
+    "limits": "Component qualification only. No release or whole-product acceptance claim. Original runner exit1 remains preserved.",
+    "fixture_cleanup": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "ci": {
+    "producer": 36296567811,
+    "consumer": 36297158543,
+    "state": "in_progress"
+  }
 }
