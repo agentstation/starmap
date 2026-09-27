@@ -243,6 +243,25 @@ The proof records check timing, earlier failures, and the local workspace depend
 
 Media, rerank, recognition variants, asynchronous recovery, shared-backend qualification, A47, dependency pin, review, native CI, and merges remain open.
 
+## Rerank token admission component
+
+Starmap `abd3475b3` adds schema 15 and complete token contracts for two Voyage offerings.
+Starport `17564bb4` reserves every submitted query-document pair before dispatch.
+A smaller requested result count does not reduce the bound. Invalid ranking results retain measured charges.
+Exact decimal decoding distinguishes missing or invalid counts from measured zero.
+
+The [rerank proof](../../plans/proof/starport-production-catalog/csp12.2/rerank-billing-2026-09-27/verification.json) records 1,358 producer race results and 4,575 consumer repository results with 133 skips.
+The shared valuation refactor passes 181 focused race results. Final decoder and wire checks pass 41 race results and 41 pure-Go results.
+Earlier pure-Go checks pass 145 results. The proof identifies each run's tested source and preserves failures.
+All nineteen provider-ownership conditions and twenty-two rerank structural conditions pass.
+
+Cohere search-unit admission remains open. Its billing chunks differ from inference chunks.
+A document-count limit alone cannot establish the search-unit charge bound.
+The complete contract must establish query repetition, truncation, billing chunks, rounding, applicable prices, and required token evidence.
+Optional search-unit cost reports do not qualify this contract.
+
+Media, recognition variants, asynchronous recovery, shared-backend qualification, A47, the dependency pin, review, native CI, and merges remain open.
+
 ## Acceptance evidence
 
 Each supported billing contract must provide these observations:

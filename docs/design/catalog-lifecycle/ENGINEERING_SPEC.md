@@ -4224,3 +4224,29 @@ Guardrail child calls preserve the caller's routing restrictions and admitted ac
 Each classification receives a separate reservation, including request and response checks around one chat call.
 An unavailable budget bound remains a retryable admission failure through the guardrail pipeline.
 A content refusal remains a policy refusal. Known zero cost and unknown token usage remain distinct in optional reports.
+
+
+### Rerank admission and measured usage
+
+Schema 15 adds `billing.rerank` with the `query_document_tokens` basis and an explicit `request_charge` boolean.
+The contract covers synchronous text reranking. Account credits and provider-native batch discounts remain outside this contract.
+`ContextWindow` bounds each query-document pair. `InputTokens` bounds the complete request. `MaxDocuments` bounds the submitted document count.
+
+Reserve the smaller of the complete request limit and the document count multiplied by the pair limit.
+The calculation saturates before multiplication can overflow. It counts the query for every submitted document.
+`top_n` changes the number of returned results. It cannot reduce the reservation.
+An unsupported document-token cap refuses strict admission before dispatch.
+
+Starmap supplies the billing declaration, limits, and prices. Starport reads them from the selected immutable generation.
+The valuation includes input tokens and any explicitly declared request fee. Missing or conflicting pricing evidence refuses required spend admission.
+The shared input-token calculation also serves embeddings. Each operation validates its own complete billing contract.
+
+Rerank decoders preserve exact whole measurements, including zero. Missing, null, negative, fractional, and excessive counts remain unknown.
+Bounded decimal parsing prevents fractional rounding and negative underflow. Both public API formats omit unknown usage and retain measured zero.
+
+An invalid ranking result does not discard measured provider usage. Required settlement retains the attempt's selected valuation.
+Unknown usage retains uncertain reserved capacity.
+
+The embedded catalog declares verified token contracts for Voyage rerank-2.5 and rerank-2.5-lite.
+Cohere search-unit admission still requires a complete charge and bound contract.
+Its optional usage reports do not establish strict admission support. Media and asynchronous recovery remain required under CSP12.2.

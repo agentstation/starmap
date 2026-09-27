@@ -1,0 +1,603 @@
+{
+  "recorded_at": "2026-09-27T14:42:17.760890+00:00",
+  "task": "CSP12.2",
+  "status": "COMPONENT_PASS",
+  "go_version": "go1.27.1",
+  "environment": {
+    "GOTOOLCHAIN": "go1.27.1",
+    "consumer_GOWORK": "/tmp/csp122-billing.work"
+  },
+  "checks": [
+    {
+      "name": "before",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=2m ./internal/app -run TestProductionRerankBudget",
+      "exit_code": 1,
+      "test_results": {},
+      "package_results": {
+        "fail": 1
+      },
+      "failed_tests": [],
+      "source_timing": "Fixture build failure: nonexistent record.Tokens field.",
+      "named_results_artifact": "before.jsonl.gz",
+      "command_provenance": "Reconstructed from retained task context. Exact original shell invocation is UNVERIFIED. Raw test events preserve observed outcomes."
+    },
+    {
+      "name": "before-runtime",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=2m ./internal/app -run TestProductionRerankBudget",
+      "exit_code": 1,
+      "test_results": {
+        "fail": 7
+      },
+      "package_results": {
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget/measured",
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget/zero",
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget/absent",
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget/null",
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget/negative",
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget/fraction",
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget"
+      ],
+      "source_timing": "Fail-before: required admission returns 503.",
+      "named_results_artifact": "before-runtime.jsonl.gz",
+      "command_provenance": "Reconstructed from retained task context. Exact original shell invocation is UNVERIFIED. Raw test events preserve observed outcomes."
+    },
+    {
+      "name": "first-after",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=3m ./internal/app ./internal/catalog ./internal/router ./internal/proxy ./internal/providers/connectors -run Rerank",
+      "exit_code": 1,
+      "test_results": {
+        "pass": 45,
+        "fail": 7
+      },
+      "package_results": {
+        "pass": 6,
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget/measured",
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget/zero",
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget/absent",
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget/null",
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget/negative",
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget/fraction",
+        "github.com/agentstation/starport/internal/app/TestProductionRerankBudget"
+      ],
+      "source_timing": "Fixture used missing JSON field tags.",
+      "named_results_artifact": "first-after.jsonl.gz",
+      "command_provenance": "Reconstructed from retained task context. Exact original shell invocation is UNVERIFIED. Raw test events preserve observed outcomes."
+    },
+    {
+      "name": "producer-focused",
+      "owner": "producer",
+      "command": "go test -json -count=1 ./pkg/catalogs -run \"RerankBilling|Payload.*Cache\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 13
+      },
+      "package_results": {
+        "pass": 1
+      },
+      "failed_tests": [],
+      "source_timing": "Producer final source.",
+      "named_results_artifact": "producer-focused.jsonl.gz",
+      "command_provenance": "Reconstructed from retained task context. Exact original shell invocation is UNVERIFIED. Raw test events preserve observed outcomes."
+    },
+    {
+      "name": "producer-race",
+      "owner": "producer",
+      "command": "go test -race -json -count=1 -timeout=5m ./pkg/catalogs ./internal/embedded",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 1358
+      },
+      "package_results": {
+        "pass": 2
+      },
+      "failed_tests": [],
+      "source_timing": "Producer final source.",
+      "named_results_artifact": "producer-race.jsonl.gz"
+    },
+    {
+      "name": "race",
+      "owner": "consumer",
+      "command": "go test -race -json -count=1 -timeout=4m ./internal/app ./internal/catalog ./internal/router ./internal/proxy ./internal/providers/connectors ./internal/protocol/openai ./internal/protocol/openrouter -run \"Rerank|SearchUnit\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 83
+      },
+      "package_results": {
+        "pass": 7
+      },
+      "failed_tests": [],
+      "source_timing": "Before conflicting legacy pricing check and shared valuation refactor.",
+      "named_results_artifact": "race.jsonl.gz"
+    },
+    {
+      "name": "full",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=5m ./...",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 4571,
+        "skip": 133
+      },
+      "package_results": {
+        "skip": 8,
+        "pass": 64
+      },
+      "failed_tests": [],
+      "source_timing": "Before shared valuation refactor and exact decimal decoding.",
+      "named_results_artifact": "full.jsonl.gz"
+    },
+    {
+      "name": "final-race",
+      "owner": "consumer",
+      "command": "go test -race -json -count=1 -timeout=4m ./internal/app ./internal/catalog ./internal/router ./internal/proxy ./internal/providers/connectors ./internal/protocol/openai ./internal/protocol/openrouter -run \"Rerank|SearchUnit|Embedding\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 181
+      },
+      "package_results": {
+        "pass": 7
+      },
+      "failed_tests": [],
+      "source_timing": "After shared valuation refactor, before exact decimal decoding and wire-presence tests.",
+      "named_results_artifact": "final-race.jsonl.gz"
+    },
+    {
+      "name": "pure-go",
+      "owner": "consumer",
+      "command": "CGO_ENABLED=0 go test -json -count=1 -timeout=4m ./internal/catalog ./internal/router ./internal/providers/connectors ./internal/protocol/openai ./internal/protocol/openrouter -run \"Rerank|SearchUnit|Embedding\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 145
+      },
+      "package_results": {
+        "pass": 5
+      },
+      "failed_tests": [],
+      "source_timing": "Before exact decimal decoding and wire-presence tests.",
+      "named_results_artifact": "pure-go.jsonl.gz"
+    },
+    {
+      "name": "precision-before",
+      "owner": "consumer",
+      "command": "go test -json -count=1 ./internal/providers/connectors -run TestRerankUsagePresence",
+      "exit_code": 1,
+      "test_results": {
+        "pass": 8,
+        "fail": 3
+      },
+      "package_results": {
+        "fail": 1
+      },
+      "failed_tests": [
+        "github.com/agentstation/starport/internal/providers/connectors/TestRerankUsagePresence/rounded_fraction",
+        "github.com/agentstation/starport/internal/providers/connectors/TestRerankUsagePresence/tiny_negative",
+        "github.com/agentstation/starport/internal/providers/connectors/TestRerankUsagePresence"
+      ],
+      "source_timing": "Fail-before: float conversion rounds a fraction and underflows a negative count.",
+      "named_results_artifact": "precision-before.jsonl.gz"
+    },
+    {
+      "name": "precision-after",
+      "owner": "consumer",
+      "command": "go test -race -json -count=1 -timeout=4m ./internal/providers/connectors ./internal/protocol/openai ./internal/protocol/openrouter -run \"Rerank|SearchUnit\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 41
+      },
+      "package_results": {
+        "pass": 3
+      },
+      "failed_tests": [],
+      "source_timing": "Final source for changed decoder and both wire codecs.",
+      "named_results_artifact": "precision-after.jsonl.gz"
+    },
+    {
+      "name": "precision-pure-go",
+      "owner": "consumer",
+      "command": "CGO_ENABLED=0 go test -json -count=1 -timeout=3m ./internal/providers/connectors ./internal/protocol/openai ./internal/protocol/openrouter -run \"Rerank|SearchUnit\"",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 41
+      },
+      "package_results": {
+        "pass": 3
+      },
+      "failed_tests": [],
+      "source_timing": "Final source for changed decoder and both wire codecs.",
+      "named_results_artifact": "precision-pure-go.jsonl.gz"
+    },
+    {
+      "name": "verified-full",
+      "owner": "consumer",
+      "command": "go test -json -count=1 -timeout=5m ./...",
+      "exit_code": 0,
+      "test_results": {
+        "pass": 4575,
+        "skip": 133
+      },
+      "package_results": {
+        "skip": 8,
+        "pass": 64
+      },
+      "failed_tests": [],
+      "source_timing": "Final source.",
+      "named_results_artifact": "verified-full.jsonl.gz"
+    },
+    {
+      "name": "lint",
+      "owner": "consumer",
+      "command": "make lint",
+      "exit_code": 2,
+      "artifact": "lint.log.gz"
+    },
+    {
+      "name": "final-lint",
+      "owner": "consumer",
+      "command": "make lint",
+      "exit_code": 0,
+      "artifact": "final-lint.log.gz"
+    },
+    {
+      "name": "verified-lint",
+      "owner": "consumer",
+      "command": "make lint",
+      "exit_code": 0,
+      "artifact": "verified-lint.log.gz"
+    },
+    {
+      "name": "vet",
+      "owner": "consumer",
+      "command": "go vet ./...",
+      "exit_code": 0,
+      "artifact": "vet.log.gz"
+    },
+    {
+      "name": "precision-vet",
+      "owner": "consumer",
+      "command": "go vet ./internal/providers/connectors ./internal/protocol/openai ./internal/protocol/openrouter",
+      "exit_code": 0,
+      "artifact": "precision-vet.log.gz"
+    },
+    {
+      "name": "goago",
+      "owner": "producer",
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "artifact": "goago.json.gz"
+    },
+    {
+      "name": "ownership",
+      "owner": "consumer",
+      "command": "CATALOG_DRIVEN_STARMAP_ROOT=/private/tmp/starmap-fleet-review-20260926 bash scripts/verify-catalog-driven-providers.sh",
+      "exit_code": 0,
+      "artifact": "ownership.log.gz"
+    },
+    {
+      "name": "contract",
+      "owner": "consumer",
+      "command": "bash scripts/verify-reranking.sh",
+      "exit_code": 0,
+      "artifact": "contract.log.gz"
+    },
+    {
+      "name": "prose",
+      "owner": "plan",
+      "command": "technical-writing lint ENGINEERING_SPEC.md PAID_OPERATION_MATRIX.md REPOSITORY_FINDINGS.md starport-production-catalog-plan.html --format text",
+      "exit_code": 1,
+      "artifact": "prose.log.gz"
+    },
+    {
+      "name": "final-prose",
+      "owner": "plan",
+      "command": "technical-writing lint ENGINEERING_SPEC.md PAID_OPERATION_MATRIX.md REPOSITORY_FINDINGS.md starport-production-catalog-plan.html --format text",
+      "exit_code": 0,
+      "artifact": "final-prose.log.gz"
+    },
+    {
+      "name": "repository-prose",
+      "owner": "plan",
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "artifact": "repository-prose.log.gz"
+    },
+    {
+      "name": "final-repository-prose",
+      "owner": "plan",
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "artifact": "final-repository-prose.log.gz",
+      "result": "137 existing diagnostics outside the four edited documents. Final four-document check passes with zero diagnostics."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "before.jsonl.gz",
+      "raw_sha256": "c9e0f0595545667ee2a7cb3bb9e5247f52a32fdccd4a437c48a0f98c6af2a6c4",
+      "compressed_sha256": "e99e0a314039794106e3b70c17f931822c80dfa210f353d86e6747b99fbc019b"
+    },
+    {
+      "path": "before-runtime.jsonl.gz",
+      "raw_sha256": "8a4d2f4b1bec99a846c77995d1d42582725bc844ea3eb0876636fa84afafacbb",
+      "compressed_sha256": "a8aeef74c12da9131dbf6e3f8505749f6766072673e13b0d3041f814fdbd6886"
+    },
+    {
+      "path": "first-after.jsonl.gz",
+      "raw_sha256": "91eda2f70cef6dd41d462a35e705603f0dd763202f2eb91bce62c0ce4c2b8bfe",
+      "compressed_sha256": "3165a95b06ea87cfbd70341413a6868041ae59ca860427eaf2caefd2fd7e7519"
+    },
+    {
+      "path": "producer-focused.jsonl.gz",
+      "raw_sha256": "6ae8dafe8288300f08a171b1e4352fa585e450ce37fae5fc60e8acae1413adf5",
+      "compressed_sha256": "59cd2e522e6b940f69c7f9cb6b7bdc0c991c3f7c107fda83bcba1d96219bbc94"
+    },
+    {
+      "path": "producer-race.jsonl.gz",
+      "raw_sha256": "8059f4bd7b436b1a6b9fe8f602c1b0334eb47c72c53e80638c66fa2459959cdf",
+      "compressed_sha256": "2237dc92fdd731195a4d20c6d8580716f5f357884e2c7ae3c07c2d7652d104dd"
+    },
+    {
+      "path": "race.jsonl.gz",
+      "raw_sha256": "f8284997d4c0a5264198bc5a7eaa1d00e2c562a664ebe4167c184f33ab7b82da",
+      "compressed_sha256": "0881b8ff8b2b1d12ba70922df54ff834cf698f942085df9c3807009a7b2269cb"
+    },
+    {
+      "path": "full.jsonl.gz",
+      "raw_sha256": "9166d244d0b0fec9608c1e5e647332f17e979b4e9c4820cdbcc72cea32fe5b74",
+      "compressed_sha256": "19deead8a12c5ee287bea91d1708c69225d9e0a1e226808b8405a77e6c93e3f4"
+    },
+    {
+      "path": "final-race.jsonl.gz",
+      "raw_sha256": "933664e304841b9c13c129eaff1c9cbd15fd31c05313cc5d1d943e80b48f1778",
+      "compressed_sha256": "bb21b00bb120f3bb0de3822d3857520dd5c75ca02bfb17263787818e57631120"
+    },
+    {
+      "path": "pure-go.jsonl.gz",
+      "raw_sha256": "5518e9e6730f83c9a13a8339d290cf897e91ce27ffee6bbf376cce7df86b441f",
+      "compressed_sha256": "96b3ff9089b0e0a9adb5323f1770e7a9ad24e9946c1bfffe309adbc7140eb3b2"
+    },
+    {
+      "path": "precision-before.jsonl.gz",
+      "raw_sha256": "f965bcd50897404ec17603818a37383aacd1e85cf10ce1cd5edaefd761349b00",
+      "compressed_sha256": "402f1742f75d8e437adb2bf093b0b38372b8304b6086d41e08370357d5a07e91"
+    },
+    {
+      "path": "precision-after.jsonl.gz",
+      "raw_sha256": "cecc5a7cfdcd26a16bf2ec5b79ff3014e1eae0e7a97800a6a9a3cca0d9ecb45f",
+      "compressed_sha256": "caa50aaf54eb03c4e8376905d3fff44ea375da1266760015e57cc27cdec9aa21"
+    },
+    {
+      "path": "precision-pure-go.jsonl.gz",
+      "raw_sha256": "026fd6936825c37694b9d0df6e44eb68593eb9c3e88e9b8d6e879e309f833ed3",
+      "compressed_sha256": "abc72c1bb6d4444fa1d95b53bed871d4375742d61293ab360d5cdc8194e19e42"
+    },
+    {
+      "path": "verified-full.jsonl.gz",
+      "raw_sha256": "d098f9734d52fb5f129aa052e1ff38ff0e0451fd9ca2a9eaeb8086a9dd449983",
+      "compressed_sha256": "aa129cf52000a933d375abde6b60e0cad34fcafdb22cbf7904d1ca6dd0800719"
+    },
+    {
+      "path": "lint.log.gz",
+      "raw_sha256": "35360180e7b78223aca11795ac7ae5fe03c0abc1969619b0399a5b9929f328d9",
+      "compressed_sha256": "2f622bc37011e9ee17ddc6e849670c63ded7eb1493f1f9ae77150b9ef92e757b"
+    },
+    {
+      "path": "final-lint.log.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "compressed_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "verified-lint.log.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "compressed_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "path": "vet.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "precision-vet.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "goago.json.gz",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "compressed_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    {
+      "path": "ownership.log.gz",
+      "raw_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19",
+      "compressed_sha256": "622beb4f11d3ebd11a20b7a12a7b6658f30bd20db8d9cf07e35c32d2bf693d57"
+    },
+    {
+      "path": "contract.log.gz",
+      "raw_sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c",
+      "compressed_sha256": "bd3044b6cc5ce3ae1f99d444db24c19d0c427c982c69980d6ea5f2ca98b24e29"
+    },
+    {
+      "path": "prose.log.gz",
+      "raw_sha256": "9107f7cbe083512b75b49b1c1e8dc59fb0037c89e1d0cc6ec5459ed2600f40c2",
+      "compressed_sha256": "1028b00e9cc5a82c6e61a1544874ab663f2aa46f8378254a988230bf0deb2d53"
+    },
+    {
+      "path": "final-prose.log.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "compressed_sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    },
+    {
+      "path": "repository-prose.log.gz",
+      "raw_sha256": "563aa00cf4589d6b466e299550c99d9f8eb1f91bc079cd87c2ebdb8221dced29",
+      "compressed_sha256": "080b9e0c8cf62f3c4e2c1feb1788e4a80f92d92ef0808ab59fd230ef521aca03"
+    },
+    {
+      "path": "final-repository-prose.log.gz",
+      "raw_sha256": "9407be473809590228cb558895c9d30c529698698f399b9efe9f72b9b26aa4b1",
+      "compressed_sha256": "20c630c7c15818b9936821d5017dc28004f9067b41571761422e45cb58ce5d82"
+    }
+  ],
+  "producer": {
+    "worktree": "/private/tmp/starmap-fleet-review-20260926",
+    "branch": "codex/budget-qualification",
+    "head": "abd3475b34501ea13808ca176cb49818c5d406bb",
+    "files": {
+      "internal/embedded/catalog/endpoints.yaml": "c260b2b431ef75d8b7ab44c57579dfed4fd79fca5428406256bab51ac2f3f71b",
+      "internal/embedded/catalog/generation-manifest.json": "70b1c83607259e5c6b5b4fd215ddcc9cc86517895248a1a0da54e77c3d4b9bff",
+      "internal/embedded/catalog/generation-payload.json.gz": "dd88b0df686d808cf6b4d9e46263e7f6109df2026a59ea5ecce97ec10558c163",
+      "internal/embedded/catalog/generation.json": "9c739503bde613de7e98506a51598d127dbc8a9b05066bf0a41af0e5a565528a",
+      "internal/embedded/catalog/providers/voyage/models/rerank-2.5-lite.yaml": "411ff12cd8a2047e51b424ed8dc6874844075316cf0bc28f4f4f97d64f288f83",
+      "internal/embedded/catalog/providers/voyage/models/rerank-2.5.yaml": "4f40fc545a1203780774a19b68599841eced1c19064cf3e41bff19afbb4c5106",
+      "internal/embedded/rerank_billing_test.go": "dfe3a2573be2588e645199e5b5732c60d0df9ad1994fd88c05cdb23d4b2a674a",
+      "pkg/catalogs/generation_manifest.go": "1b45903035f36fb2587fa2e299b693b54281208b5833cbc841049c8777c2b094",
+      "pkg/catalogs/model_billing.go": "e7a8c724a8345a77d0bd730fc3a851e3df3e06be8b90915bd840c11a62fdf4fc",
+      "pkg/catalogs/payload.go": "8cb519cdfc69fa20192905bd5caa7934ff789578416c9c365d16f8600c7665af",
+      "pkg/catalogs/payload_cache_test.go": "90b24115860aa8190aeb25d6fb5c0c923852182367cde30820cf655a5e55f0f3",
+      "pkg/catalogs/payload_decode.go": "c1876abf0fa67f130b97b9258f1c4ef957c0836d540f070fa5dd542966626ece",
+      "pkg/catalogs/rerank_billing.go": "4af0c801a4faddc0d2b486d8c538c31497e392641a623f0750738900bd1bc91b",
+      "pkg/catalogs/rerank_billing_test.go": "4be36742c753409e9ec41877078fadf37c4fa23cef25ce29c9e42c7412fd567c"
+    },
+    "published": false
+  },
+  "consumer": {
+    "worktree": "/private/tmp/starport-fleet-review-20260926",
+    "branch": "codex/atomic-budget-admission",
+    "head": "17564bb4cac2a94271d32444ea6addd70b499b4d",
+    "files": {
+      "internal/app/budget_rerank_test.go": "1ca24bb1d818dc40f21fdc166ad3c059e8cad9c3251e0af7dfc835a1ea322aa1",
+      "internal/catalog/embedding_billing.go": "f32dcbb72ad49bdd0f1db8ecaca6c8854f865a1a2b1914b79037a94fc6611a01",
+      "internal/catalog/input_token_billing.go": "5ab102fc65f445f4ea74baf83480e501e5c1c875c61adc742a5cfac792baf3ad",
+      "internal/catalog/rerank_billing.go": "4c159be9ebe7a6ee221fed99f2fbebe7d8b696023f07148987e0f0524dfd959b",
+      "internal/catalog/rerank_billing_test.go": "b5ef8711c6ce1460fd3cf5898b19200ce0711c717895cc48e00d80c777abbf8b",
+      "internal/inference/types.go": "e5a203744a7f1cb0b9164743932136358219d325de4156abb0e4953a213341c6",
+      "internal/protocol/openai/rerank.go": "2e6db3753d25318aaca1d9fcc799e7417b5330432d2f411e8f309ae420b19a29",
+      "internal/protocol/openai/rerank_test.go": "9c78e9c9164dd02a40c44ea0bc0799a90a85bc9f2a36ddf01f2a359e41380093",
+      "internal/protocol/openrouter/rerank.go": "3079134dac3a6efa5d7f9773d5e05e092eb4e5f15a9036c0e78723ce4ce466e3",
+      "internal/protocol/openrouter/rerank_test.go": "3792a7c4da97b16ccf05c93f858dd8e0eee784e43022cc296be9f89781600501",
+      "internal/providers/connectors/rerank.go": "c0fb3b0ffc55b4e561680999a57023aea83a2ce6d15f415c1638b5cc025c5100",
+      "internal/providers/connectors/rerank_adapter.go": "70b5f3c2f7a52211940242bce6152132e481a138124d73a26dbf4aa2d839ea94",
+      "internal/providers/connectors/rerank_evidence_test.go": "99e1095571a6be27fe30dab1534c741536427adbd77b9380986026bbb9b9ddac",
+      "internal/providers/connectors/rerank_transport.go": "011dea3fcb515bbb7075f445e8ac98df3b3ce9575a5b0342d5bfdad0679b9fee",
+      "internal/proxy/rerank_accounting_test.go": "0db68acccae02b17c2037074c1c24191353458d1d50de26f15c91b02bc940d10",
+      "internal/proxy/rerank_cost.go": "0af1cf23f797fbffc791d39d8b41f46f6afc093affa7480b47585edeb92542ab",
+      "internal/proxy/usage_capture.go": "b60ef5a14bd7c805f5dcc0b4112bba8ac258ac8e083133fd9e46bfa73c25c53c",
+      "internal/router/budget_rerank.go": "c0db5d3fb85efe0381304e3e73b697ab4bff11415a7667adda8402c17f8c57a7",
+      "internal/router/budget_rerank_test.go": "02a07b64de6049191be9b389fdfd6ec5129ac196dee27a0c229606e160b0b22a",
+      "internal/router/rerank.go": "43d742ac6d60cf574b25aa89a415e61b32a2a8b98babf908b022de4780db6401",
+      "internal/usage/model.go": "04d72af5cbd4c86db5c8edfba2a948a5dca1730730c301e54582302386255fe7"
+    },
+    "published": false
+  },
+  "sources": [
+    {
+      "url": "https://docs.voyageai.com/reference/reranker-api",
+      "verified_at": "2026-09-27",
+      "fact": "rerank-2.5 and lite: 1000 documents, 32000 tokens per query-document pair, 600000 per request; default truncation limits processed pairs."
+    },
+    {
+      "url": "https://docs.voyageai.com/docs/pricing",
+      "verified_at": "2026-09-27",
+      "fact": "Processed tokens repeat the query per document. Rates are 0.05 and 0.02 USD per million tokens. Account credits and native batch discounts are excluded."
+    },
+    {
+      "url": "https://cohere.com/pricing",
+      "verified_at": "2026-09-27",
+      "fact": "Search units group up to 100 documents. Billing chunks count as documents for inputs above 500 tokens including the query. Current extracted rates describe dedicated instances."
+    },
+    {
+      "url": "https://docs.cohere.com/v2/reference/rerank",
+      "verified_at": "2026-09-27",
+      "fact": "max_tokens_per_doc defaults to 4096 and truncates long documents. This alone does not establish the complete billing chunk bound."
+    }
+  ],
+  "behavior": [
+    "Schema 15 adds complete synchronous query-document token billing. Voyage rerank-2.5 and lite declare the contract.",
+    "Starport reserves every submitted pair, including repeated query tokens. TopN never reduces the reservation.",
+    "The upper bound is min(document count times pair limit, request limit), with overflow-safe saturation.",
+    "Required spend and token capacity refuse before provider dispatch. Actual measured usage settles the pinned valuation.",
+    "Missing, null, negative, fractional, oversized, or excessive-precision counts remain unknown. Explicit zero is measurable.",
+    "Exact bounded decimal parsing prevents fractional rounding and negative underflow. Invalid ranking results retain measured charge.",
+    "Both public wire codecs omit unknown usage and retain measured zero.",
+    "Embedding and rerank valuations share input-token and declared request-fee arithmetic. Each validates its own operation contract."
+  ],
+  "manual_audit": {
+    "status": "PASS",
+    "scope": [
+      "schema version rejection and immutable copies",
+      "catalog-only prices and limits",
+      "overflow-safe bounds and TopN independence",
+      "atomic pre-dispatch reservation and pinned settlement through production HTTP path",
+      "exact measurement presence and decimal validation",
+      "preservation of invalid-answer charge",
+      "unrelated CSP18 changes excluded"
+    ],
+    "not_a_pre_pr_review": true
+  },
+  "qualification_limits": [
+    "Local Go workspace uses an unpublished producer. Final module pin, native CI, structured review and protected merges remain required.",
+    "This component qualifies Voyage token reranking. Cohere search-unit admission remains open until its complete charge and bound contract is verified.",
+    "Optional search-unit reports preserve known counts and existing prices. They do not qualify strict search-unit admission.",
+    "Remaining media, recognition variants, asynchronous recovery, shared-backend process/failover checks and A47 remain required.",
+    "No live paid provider calls in this qualification.",
+    "Repository test skips are retained in the raw result artifact. They are not passes.",
+    "The reranking shell guard is structural evidence only. Runtime contract evidence comes from the named Go tests."
+  ],
+  "plan_maintenance": {
+    "ledger_rows": 40,
+    "done": 26,
+    "in_progress": [
+      "CSP12.2"
+    ],
+    "unique_ids": 97,
+    "links_checked": 152,
+    "artifacts_verified": 25,
+    "resume_words": 279,
+    "ledger_and_ids_preserved": true,
+    "cold_resume": "PASS: current source, task, next action, running state, remaining criteria, and authorization boundaries are explicit.",
+    "plan_bytes": 129507,
+    "size_exception": "The existing plan retains forty task contracts and historical execution entries. This component refresh replaces the resume state, preserves all task rows and IDs, and does not compact historical evidence."
+  },
+  "goal_turn_classification": {
+    "previous_turn": "no progress: confirmed existing D41 decision without changing execution state",
+    "current_turn": "progress: exact decimal regression, valuation refactor, final qualification, code commits and durable evidence"
+  },
+  "next_source_audit": {
+    "consumer": "17564bb4cac2a94271d32444ea6addd70b499b4d",
+    "findings": [
+      "internal/router/media.go still constructs image, speech, and transcription provider calls without operation charge adapters.",
+      "internal/jobs/accounting.go stamps Accounted before best-effort RecordJob and absorbs failure. Required durable settlement still needs a separate contract."
+    ],
+    "owner": "CSP12.2",
+    "status": "OPEN"
+  },
+  "consumer_skips_by_package": {
+    "github.com/agentstation/starport/internal/account": 6,
+    "github.com/agentstation/starport/internal/apikey": 2,
+    "github.com/agentstation/starport/internal/authmode": 1,
+    "github.com/agentstation/starport/internal/authorization": 3,
+    "github.com/agentstation/starport/internal/cache": 5,
+    "github.com/agentstation/starport/internal/authorization/revision": 3,
+    "github.com/agentstation/starport/internal/config": 1,
+    "github.com/agentstation/starport/internal/credentials": 1,
+    "github.com/agentstation/starport/internal/limits/reservation": 7,
+    "github.com/agentstation/starport/internal/presets": 3,
+    "github.com/agentstation/starport/internal/providers/keyring": 1,
+    "github.com/agentstation/starport/internal/ratelimit": 1,
+    "github.com/agentstation/starport/internal/recovery": 16,
+    "github.com/agentstation/starport/internal/server": 3,
+    "github.com/agentstation/starport/internal/server/controllers": 1,
+    "github.com/agentstation/starport/internal/usage": 22,
+    "github.com/agentstation/starport/internal/storage": 13,
+    "github.com/agentstation/starport/internal/catalog": 38,
+    "github.com/agentstation/starport/internal/app": 6
+  },
+  "running_checks": []
+}

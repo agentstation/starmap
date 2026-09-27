@@ -3906,3 +3906,35 @@ Focused race checks pass 42 results. The final application race check passes nin
 Pure-Go checks pass 34 results. Lint, vet, and goago pass.
 
 These checks use an unpublished producer through `GOWORK`. The remaining CSP12.2 requirements remain open.
+
+
+## September 27 rerank budget admission
+
+Starmap `abd3475b3` declares complete synchronous token billing for Voyage rerank-2.5 and rerank-2.5-lite.
+Starport `17564bb4` reserves every submitted pair, including repeated query tokens.
+The [component proof](../../plans/proof/starport-production-catalog/csp12.2/rerank-billing-2026-09-27/verification.json) records source hashes, commands, failures, and raw test events.
+
+The initial production test returned HTTP 503 because rerank lacked an admission quote.
+The implementation now reserves spend and token capacity before provider dispatch.
+Production tests use Badger, SQLite, the gateway HTTP handler, and a loopback provider.
+They verify insufficient-capacity refusal, measured settlement, unknown usage, and charges after an invalid ranking result.
+
+The previous decoder rounded provider counts. It also lost the distinction between absent usage and explicit zero.
+Two additional regressions reproduced fractional rounding and negative underflow.
+The repair validates bounded decimal literals exactly. Both public response codecs preserve measurement presence.
+The catalog projection shares input-token arithmetic with embeddings and independently validates each operation's billing declaration.
+
+The final consumer suite passes 4,575 results and skips 133. Producer race checks pass 1,358 results.
+Focused race checks pass 181 results before the final decimal repair. Final decoder and wire race checks pass 41 results.
+Final decoder and wire pure-Go checks pass 41 results. Lint, vet, and goago pass.
+
+The provider-ownership guard passes nineteen conditions. The rerank structural guard passes twenty-two conditions.
+
+The [Voyage API reference](https://docs.voyageai.com/reference/reranker-api) supplies the request and pair limits.
+Its [pricing documentation](https://docs.voyageai.com/docs/pricing) supplies token rates and repeated-query accounting.
+The source review date is September 27, 2026. The contract excludes account credits and native batch discounts.
+
+The [Cohere pricing FAQ](https://cohere.com/pricing) counts billing chunks as documents within search units.
+The [Cohere API reference](https://docs.cohere.com/v2/reference/rerank) describes document truncation.
+These facts do not yet establish the complete supported billing bound. Cohere strict admission remains required and incomplete.
+The local workspace dependency also remains unpublished. No result establishes final CSP12.2 or released-pair qualification.
