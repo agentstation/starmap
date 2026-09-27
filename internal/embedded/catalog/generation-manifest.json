@@ -1,16 +1,16 @@
 {
   "manifest_version": 2,
-  "schema_version": 14,
-  "generation_id": "moderation-billing-68e2b21522c0641ee86dccc18f57fee8c775656e623de3d5d7604a1dba6ad944",
-  "generated_at": "2026-09-27T14:08:41.129645Z",
+  "schema_version": 15,
+  "generation_id": "rerank-billing-9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3",
+  "generated_at": "2026-09-27T14:27:48.375262Z",
   "payload": {
-    "checksum": "sha256:68e2b21522c0641ee86dccc18f57fee8c775656e623de3d5d7604a1dba6ad944",
-    "size_bytes": 26424528,
+    "checksum": "sha256:9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3",
+    "size_bytes": 26424728,
     "media_type": "application/vnd.agentstation.starmap.catalog+json"
   },
   "validation": {
-    "validator_version": "starmap-moderation-billing-v1",
-    "validated_at": "2026-09-27T14:08:41.129645Z",
+    "validator_version": "starmap-rerank-billing-v1",
+    "validated_at": "2026-09-27T14:27:48.375262Z",
     "status": "passed",
     "error_count": 0,
     "warning_count": 0,
@@ -21,7 +21,7 @@
       }
     ]
   },
-  "sync_run_id": "moderation-billing-68e2b21522c0641ee86dccc18f57fee8c775656e623de3d5d7604a1dba6ad944",
+  "sync_run_id": "rerank-billing-9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3",
   "source_observations": [
     {
       "source": "models_dev_http",
@@ -322,6 +322,18 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:68e2b21522c0641ee86dccc18f57fee8c775656e623de3d5d7604a1dba6ad944"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "rerank-billing-9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3",
+      "observed_at": "2026-09-27T14:27:48.375262Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3"
     }
   ],
   "review_candidates": [
@@ -4361,7 +4373,7 @@
   "completeness": "complete",
   "degraded": false,
   "consumer_compatibility": {
-    "min_schema_version": 14,
-    "max_schema_version": 14
+    "min_schema_version": 15,
+    "max_schema_version": 15
   }
 }

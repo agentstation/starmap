@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: moderation-billing-68e2b21522c0641ee86dccc18f57fee8c775656e623de3d5d7604a1dba6ad944
-catalog_digest: sha256:68e2b21522c0641ee86dccc18f57fee8c775656e623de3d5d7604a1dba6ad944
+generation_id: rerank-billing-9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3
+catalog_digest: sha256:9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -12581,6 +12581,7 @@ models:
           currency: USD
         limits:
           context_window: 32000
+          input_tokens: 600000
           max_documents: 1000
         availability: unknown
         lifecycle: unknown
@@ -12604,6 +12605,7 @@ models:
           currency: USD
         limits:
           context_window: 32000
+          input_tokens: 600000
           max_documents: 1000
         availability: unknown
         lifecycle: unknown

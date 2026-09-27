@@ -23,9 +23,13 @@ const RecognitionChargesSchemaVersion uint64 = 13
 // ModerationBillingSchemaVersion adds complete moderation charge declarations.
 const ModerationBillingSchemaVersion uint64 = 14
 
+// RerankBillingSchemaVersion adds complete rerank charge declarations.
+const RerankBillingSchemaVersion uint64 = 15
+
 // ModelBilling declares provider billing units independently of current prices.
 // A missing operation record means that its billing basis is unknown.
 type ModelBilling struct {
+	Rerank      *RerankBilling      `json:"rerank,omitempty" yaml:"rerank,omitempty"`
 	Moderations *ModerationBilling  `json:"moderations,omitempty" yaml:"moderations,omitempty"`
 	Recognition *RecognitionBilling `json:"recognition,omitempty" yaml:"recognition,omitempty"`
 	Embeddings  *EmbeddingBilling   `json:"embeddings,omitempty" yaml:"embeddings,omitempty"`
@@ -182,6 +186,9 @@ func (b *ModelBilling) Validate() error {
 	if b == nil {
 		return nil
 	}
+	if err := b.Rerank.validate(); err != nil {
+		return err
+	}
 	if err := b.Moderations.validate(); err != nil {
 		return err
 	}
@@ -236,6 +243,10 @@ func deepCopyModelBilling(billing *ModelBilling) *ModelBilling {
 	copied := copyPtr(billing)
 	if copied == nil {
 		return nil
+	}
+	copied.Rerank = copyPtr(billing.Rerank)
+	if copied.Rerank != nil {
+		copied.Rerank.RequestCharge = copyPtr(billing.Rerank.RequestCharge)
 	}
 	copied.Moderations = copyPtr(billing.Moderations)
 	copied.Recognition = copyPtr(billing.Recognition)
