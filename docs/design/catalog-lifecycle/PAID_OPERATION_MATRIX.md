@@ -386,3 +386,16 @@ Attached uncertain submissions retain their claims.
 The [attachment proof](../../plans/proof/starport-production-catalog/csp12.2/claim-attachment-2026-09-27/verification.json) records 200 final race results and 60 pure-Go results without skips.
 A separate production race run confirms attachment before dispatch. This work does not settle required spending or establish provider billing.
 Pinned asynchronous valuation, durable settlement, provider reconciliation, interrupted batch recovery, and safe collection remain required.
+
+
+## Video cancellation and current provider contracts
+
+Consumer `e0b4b237` preserves cancellation outcomes and requires matching provider identifiers.
+Queued, running, missing, and mismatched outcomes retain outstanding capacity. A later confirmed terminal outcome can release that claim.
+The [cancellation proof](../../plans/proof/starport-production-catalog/csp12.2/cancellation-outcomes-2026-09-27/verification.json) includes native Badger and Valkey checks and production HTTP checks through both API families.
+This release concerns outstanding job count. It cannot refund a spending reservation.
+
+The [repository audit](REPOSITORY_FINDINGS.md#september-27-cancellation-and-video-contract-audit) identifies current provider unit and transport differences.
+Replace the generic per-video assumption with each provider's actual billing contract before strict-budget video dispatch.
+Retain the submission valuation and reliable usage through durable settlement. Failed or cancelled state alone cannot establish a zero charge.
+Local polling exhaustion must not release unresolved provider work. Provider reconciliation and its retention horizon remain required.

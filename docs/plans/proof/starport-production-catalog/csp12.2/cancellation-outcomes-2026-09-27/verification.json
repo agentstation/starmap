@@ -1,0 +1,229 @@
+{
+  "recorded_at": "2026-09-27T17:55:33.733035+00:00",
+  "task": "CSP12.2",
+  "status": "COMPONENT_PASS",
+  "consumer_commit": "e0b4b23748a808593f1a120ba5b35b0c00a12cbd",
+  "producer_commit": "fb7f8ae2165d9644f6ff832d128ff87b1c5adc69",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "workspace": "/tmp/csp122-billing.work",
+  "backends": [
+    "memory",
+    "Badger with SyncWrites",
+    "native Valkey at redis://127.0.0.1:51487"
+  ],
+  "sources": {
+    "docs/OPERATOR-GUIDE.md": "6c9894d5bbe20f1199084e956f4385fc3a4d469f3d7ac4d76d6ab82fa9f11618",
+    "internal/app/job_cancellation_test.go": "409eea73c23bc0606ed947d1a18c389e7a843cd47e0bfa602d414e6276517008",
+    "internal/jobs/cancellation_test.go": "19e7909987db62078fa7dfca680743da4e60e222ef8f9c0371c3b8b5068047ce",
+    "internal/jobs/service.go": "a4c56c3f3f19fc32058636ada06d88685c7f2281c2f88f1bd30d65ee9d6a3661",
+    "internal/jobs/service_test.go": "6a16fb2fd9bc3f6c6c71584925e8597f3b823641d24bcbb1846c9ef53499b3e8",
+    "internal/providers/connectors/job_outcome_test.go": "b2725812c642db110c2d5ba60eef315072d373def7aa7bdb82a0e210dc680cce",
+    "internal/providers/connectors/job_transport_test.go": "b7d7dd01228b8be913273872b14a9b1f84e73e46be1369f0c6457250d2bbec16",
+    "internal/providers/connectors/openai_jobs.go": "1009155caaaa29a241c58b97495fc43b1712d1115098fc06586c23c88c4e2136"
+  },
+  "checks": [
+    {
+      "name": "before",
+      "command": "go test -json -count=1 -timeout=3m ./internal/jobs ./internal/providers/connectors -run 'TestCancellationRetainsProviderOutcomeAndCapacity|TestJobCancellationRequiresProviderOutcome'",
+      "exit_code": 1,
+      "artifact": "before.jsonl.gz",
+      "raw_sha256": "f24420be9bceebfc62a8617fec9e484ae14e743c06ad16347ebd86ebd9c71803",
+      "test_results": {
+        "fail": 34,
+        "pass": 9
+      },
+      "package_results": {
+        "fail": 2
+      }
+    },
+    {
+      "name": "after",
+      "command": "go test -json -count=1 -timeout=3m ./internal/jobs ./internal/providers/connectors -run 'TestCancellationRetainsProviderOutcomeAndCapacity|TestJobCancellationRequiresProviderOutcome'",
+      "exit_code": 0,
+      "artifact": "after.jsonl.gz",
+      "raw_sha256": "d8d86582733e54100ce3be60fbe54389727b1fc57fdcac74f3f367c55ead8ea6",
+      "test_results": {
+        "pass": 43
+      },
+      "package_results": {
+        "pass": 2
+      }
+    },
+    {
+      "name": "race",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/jobs ./internal/providers/connectors ./internal/app -run 'Cancel|Job.*Outcome|AJobPoll|JobRequestsPreserve|AFailedJobAlways'",
+      "exit_code": 0,
+      "artifact": "race.jsonl.gz",
+      "raw_sha256": "bae7abf25b4a86872f8d7e93ff24bb6ded83cee33012c754e7bb7f99097614b1",
+      "test_results": {
+        "pass": 81
+      },
+      "package_results": {
+        "pass": 3
+      }
+    },
+    {
+      "name": "packages",
+      "command": "go test -race -json -count=1 -timeout=3m ./internal/jobs ./internal/providers/connectors",
+      "exit_code": 0,
+      "artifact": "packages.jsonl.gz",
+      "raw_sha256": "be03232c255358fb0dc6b06e9a8be6768258e489dcd184bf3174eb657bc30388",
+      "test_results": {
+        "pass": 585
+      },
+      "package_results": {
+        "pass": 2
+      }
+    },
+    {
+      "name": "purego",
+      "command": "CGO_ENABLED=0 go test -json -count=1 -timeout=3m ./internal/jobs ./internal/providers/connectors -run 'TestCancellationRetainsProviderOutcomeAndCapacity|TestJobCancellationRequiresProviderOutcome|TestJobPollRequiresMatchingIdentity'",
+      "exit_code": 0,
+      "artifact": "purego.jsonl.gz",
+      "raw_sha256": "a5a0e6a13700fd19487dfac960c35732fc82941706dbadd3d14014b248bcfa45",
+      "test_results": {
+        "pass": 46
+      },
+      "package_results": {
+        "pass": 2
+      }
+    },
+    {
+      "name": "full",
+      "command": "go test -json -count=1 -timeout=5m ./...",
+      "exit_code": 0,
+      "artifact": "full.jsonl.gz",
+      "raw_sha256": "fed82e752aabba2ccae8255df6599bfa04eb7cf72b6a6225a9a39c6bcb47a64f",
+      "test_results": {
+        "pass": 4986,
+        "skip": 71
+      },
+      "package_results": {
+        "skip": 8,
+        "pass": 65
+      }
+    },
+    {
+      "name": "lint",
+      "command": "make lint",
+      "exit_code": 0,
+      "artifact": "lint.txt.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "name": "vet",
+      "command": "go vet ./internal/jobs ./internal/providers/connectors ./internal/app",
+      "exit_code": 0,
+      "artifact": "vet.txt.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "guard",
+      "command": "bash scripts/verify-async-media-jobs.sh",
+      "exit_code": 0,
+      "artifact": "guard.txt.gz",
+      "raw_sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb"
+    },
+    {
+      "name": "direction",
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit_code": 0,
+      "artifact": "direction.txt.gz",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "name": "prose",
+      "command": "technical-writing lint internal/jobs/cancellation_test.go internal/providers/connectors/job_outcome_test.go internal/app/job_cancellation_test.go --format text",
+      "exit_code": 0,
+      "artifact": "prose.txt.gz",
+      "raw_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    },
+    {
+      "name": "operator-prose",
+      "command": "technical-writing lint docs/OPERATOR-GUIDE.md --format text",
+      "exit_code": 1,
+      "artifact": "operator-prose.txt.gz",
+      "raw_sha256": "002f74b7525f64227c004e643453f9156e4c043cbd827e41a5e69371880f43f4"
+    },
+    {
+      "name": "operator-prose-final",
+      "command": "technical-writing lint docs/OPERATOR-GUIDE.md --format text",
+      "exit_code": 1,
+      "artifact": "operator-prose-final.txt.gz",
+      "raw_sha256": "002f74b7525f64227c004e643453f9156e4c043cbd827e41a5e69371880f43f4"
+    },
+    {
+      "name": "docs-prose",
+      "command": "technical-writing lint ENGINEERING_SPEC.md REPOSITORY_FINDINGS.md PAID_OPERATION_MATRIX.md starport-production-catalog-plan.html --format text",
+      "exit_code": 0,
+      "artifact": "docs-prose.txt.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7"
+    },
+    {
+      "name": "docs-prose-final",
+      "command": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint docs/design/catalog-lifecycle/ENGINEERING_SPEC.md docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md docs/design/catalog-lifecycle/PAID_OPERATION_MATRIX.md docs/plans/starport-production-catalog-plan.html --format text",
+      "exit_code": 0,
+      "artifact": "docs-prose-final.txt.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7"
+    }
+  ],
+  "source_timing": {
+    "before": "a8137780 plus the first two regression files, before the implementation change",
+    "after": "fixed production source, before production and poll-identity tests",
+    "race": "final production source and HTTP tests, before two poll-identity test cases",
+    "packages": "final Go source and all tests",
+    "purego": "final Go source and all tests",
+    "full": "final Go source and all tests; later edits changed only operator documentation",
+    "operator-prose-final": "Final operator text. The preceding operator check and Go tests precede one paragraph clarification."
+  },
+  "manual_review": [
+    "Nonterminal or uncertain cancellation does not release outstanding capacity.",
+    "Confirmed completion and failure retain the reported outcome.",
+    "Poll and cancellation replies must name the exact provider job.",
+    "The existing compare-and-swap prevents a stale cancellation from overwriting a competing state update.",
+    "Required budget reservations are untouched by this component."
+  ],
+  "limitations": [
+    "No current provider API compatibility or paid video inference is qualified.",
+    "DELETE remains the legacy transport mapping; provider-specific cancellation contracts remain required.",
+    "The existing local polling timeout can still close a record without provider terminal evidence; recovery must separate that condition from confirmed completion.",
+    "Pinned video billing, required settlement, provider reconciliation, interrupted batches, and safe collection remain incomplete.",
+    "Service-object reopening is not process-loss or backend-failover qualification.",
+    "Operator guide prose check reports 48 pre-existing diagnostics outside the changed section.",
+    "Native platform CI, PostgreSQL witness, A47, published dependency, final review and merges remain open."
+  ],
+  "task_complete": false,
+  "release_qualified": false,
+  "provider_audit": [
+    {
+      "url": "https://deepinfra.com/Wan-AI/Wan2.2-T2V-A14B/api",
+      "finding": "The published rate is USD 0.075 per second. Its documented native inference route differs from the current generic asynchronous video route. The existing per-video interpretation is not valid evidence."
+    },
+    {
+      "url": "https://openrouter.ai/docs/guides/overview/multimodal/video-generation",
+      "finding": "The current API declares duration, model pricing SKUs, and terminal usage cost. The generic seconds request and terminal-state cost assumptions require a provider-specific contract."
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/deprecations",
+      "finding": "The deprecation page lists September 24, 2026 as the removal date for Videos API and Sora 2. Preserve historical evidence without using those models as new current production qualification."
+    }
+  ],
+  "plan_maintenance": {
+    "ledger_unchanged": true,
+    "rows": 40,
+    "done": 26,
+    "in_progress": [
+      "CSP12.2"
+    ],
+    "unique_ids": 97,
+    "existing_local_links": 112,
+    "resume_words": 257,
+    "plan_bytes": 134246,
+    "size_exception": "Existing full acceptance and historical ledger retained. Resume uses current state, CSP12.2 contract, paid-operation matrix contract, and current proof."
+  },
+  "environment": {
+    "GOWORK": "/tmp/csp122-billing.work",
+    "GOTOOLCHAIN": "go1.27.1",
+    "TEST_VALKEY_URL": "redis://127.0.0.1:51487"
+  }
+}

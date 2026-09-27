@@ -4421,3 +4421,19 @@ Older records cannot imply zero ownership. Mixed-version operation remains unqua
 
 The [attachment proof](../../plans/proof/starport-production-catalog/csp12.2/claim-attachment-2026-09-27/verification.json) covers lost writes, competing publication and recovery, restart of service objects, and native Badger and Valkey operations.
 Required asynchronous settlement, provider reconciliation, running batches after process loss, and safe collection remain open.
+
+
+### Confirmed asynchronous cancellation outcomes
+
+Consumer `e0b4b237` retains the provider state after a cancellation request.
+A queued or running response cannot release the outstanding claim. A missing or mismatched provider identifier cannot establish an outcome.
+A confirmed completion that races cancellation remains completed. A confirmed failure retains its failure reason.
+The [cancellation proof](../../plans/proof/starport-production-catalog/csp12.2/cancellation-outcomes-2026-09-27/verification.json) records native storage and production HTTP evidence.
+
+Cancellation state does not establish the provider charge. Required settlement still needs pinned valuation and authoritative billing evidence.
+Each provider contract must separately declare submission, polling, cancellation, content retrieval, billing units, and usage evidence.
+A generic DELETE route cannot prove cancellation support. A deletion acknowledgement cannot prove that execution stopped.
+
+Local polling exhaustion is also insufficient to prove provider completion.
+The current timeout path still closes the job and releases its claim. CSP12.2 must separate local polling limits from confirmed provider outcomes.
+Uncertain provider work must retain capacity until reconciliation establishes the result.

@@ -4110,3 +4110,25 @@ The full suite passes 4,918 results and skips 71. Eight packages skip. Lint and 
 
 Claim, counter, and history version 3 requires CSP13 migration. Job and batch schema versions remain 2.
 Attached uncertain submissions still require provider reconciliation. Required settlement and remaining native qualification keep CSP12.2 in progress.
+
+
+## September 27 cancellation and video contract audit
+
+Consumer `e0b4b237` repairs cancellation that previously discarded the provider state and released capacity.
+The regression failed on memory, Badger, and Valkey. The connector also synthesized cancellation from an HTTP deletion acknowledgement.
+The repair preserves reported outcomes and checks the provider identifier on polls and cancellation replies.
+
+The [component proof](../../plans/proof/starport-production-catalog/csp12.2/cancellation-outcomes-2026-09-27/verification.json) records 585 package race results and 81 focused race results, including both production API families.
+Pure-Go checks pass 46 results. The full suite passes 4,986 results and skips 71. Eight packages skip.
+Lint, affected-package vet, and both architecture checks pass. The operator guide retains 48 prose diagnostics outside the edited section.
+
+Provider research changes the next implementation action:
+
+- DeepInfra publishes USD 0.075 per second for Wan2.2-T2V-A14B. Its documented native route returns video output directly. [DeepInfra API](https://deepinfra.com/Wan-AI/Wan2.2-T2V-A14B/api)
+- OpenRouter declares duration, model pricing SKUs, and terminal usage cost. The current generic request and accounting code do not establish that contract. [OpenRouter video guide](https://openrouter.ai/docs/guides/overview/multimodal/video-generation)
+- OpenAI lists September 24, 2026 as the Videos API and Sora 2 removal date. Historical qualification cannot establish current availability. [OpenAI deprecations](https://developers.openai.com/api/docs/deprecations)
+
+The current Starmap video price field says per video. Starport also prices completed jobs from the current catalog instead of the submission valuation.
+Both defects remain under CSP12.2. Provider-specific route selection and billing qualification must precede strict-budget video support.
+The local timeout path still releases a slot without confirmed provider completion. That recovery defect also remains under CSP12.2.
+No live video inference or invoice check occurred. This component does not complete the task.
