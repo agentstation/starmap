@@ -11,13 +11,13 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated September 27, 2026 UTC. CSP11 is in progress under D41. 23 of 40 tasks are complete.</p>
 
-<p id="next-action">Finish consumer test-repair review, publish to existing PR #385, and qualify final CI. Merge Starmap #185 before Starport #385. Record actual merge commits before completion.</p>
+<p id="next-action">Qualify final CI for published producer <code>47991a564</code> and consumer <code>a819276e</code>. Merge Starmap #185 before Starport #385. Record actual merge commits before completion.</p>
 
-<p>Producer checkout: <code>starmap-object-ci-repair</code>, branch <code>codex/catalog-fleet-contract</code>, published head <code>47991a564</code>. Its required review and local checks pass. CI <code>36286723503</code> still runs Windows runtime and the client race group.</p>
+<p>Producer checkout: <code>starmap-object-ci-repair</code>, branch <code>codex/catalog-fleet-contract</code>, published head <code>47991a564</code>. Its required review and local checks pass. All race groups and four platform runtime jobs pass. CI <code>36286723503</code> still runs Windows x86-64.</p>
 
-<p>Consumer checkout: <code>starport-native-catalog</code>, branch <code>codex/catalog-fleet-adapter</code>. Published head <code>95f2812b</code> passes all five native release jobs. CI <code>36287431900</code> fails two macOS credential tests. Local test-only repair <code>a819276e</code> uses controlled time and preserves production deadlines and assertions.</p>
+<p>Consumer checkout: <code>starport-native-catalog</code>, branch <code>codex/catalog-fleet-adapter</code>. Published head <code>a819276e</code> contains the test-only repair. It uses controlled time and preserves production deadlines and assertions. Its CI runs are <code>36288759035</code> and <code>36288759063</code>. Prior head <code>95f2812b</code> passed all five native release jobs but failed two macOS credential tests.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/keyring-ci-repair/verification.json">test repair proof</a> records 20 repeated passes, 116 package passes, and one separately passing real-Valkey outage test. Lint passes. Required Sol/Opus review runs in <code>/tmp/starport-clock-review-20260926</code>. Its session is <code>34984</code>, with output at <code>/tmp/d41-keyring-final-review.log</code>.</p>
+<p>The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/keyring-ci-repair/verification.json">test repair proof</a> records 20 repeated passes, 116 package passes, and one separately passing real-Valkey outage test. Lint passes. Final Sol/Opus review reports two known downstream release blockers and no new test-repair defect. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/keyring-ci-repair/REVIEW_DISPOSITION.md">disposition</a> retains those blockers. No local process remains active.</p>
 
 <p>The module still pins <code>v0.16.6-0.20260927014455-47991a5649f2</code> with <code>GOWORK=off</code>. Before the test-only repair, all 34 consumer commands and eleven real-store CSP11 subcases passed. The <a href="proof/starport-production-catalog/csp11/retained-baseline-2026-09-26/native-ci-repair/verification.json">native repair proof</a> retains exact results and earlier failures.</p>
 

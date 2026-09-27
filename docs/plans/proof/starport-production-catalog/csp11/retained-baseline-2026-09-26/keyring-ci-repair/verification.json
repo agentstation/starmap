@@ -1,6 +1,6 @@
 {
   "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
-  "published": false,
+  "published": true,
   "failure": {
     "run": 36287431900,
     "job": 108530732876,
@@ -36,6 +36,21 @@
     "proof": "real-service/runner.json"
   },
   "lint_exit": 0,
-  "review": "in_progress",
-  "native_after": "UNVERIFIED until reviewed push and CI"
+  "review": {
+    "status": "CONFIRMED_DOWNSTREAM_RELEASE_BLOCKERS",
+    "findings": 2,
+    "reviewers": [
+      "gpt-6-sol high",
+      "claude-opus-5-5 high"
+    ],
+    "exit": 1,
+    "passes": 1,
+    "disposition": "REVIEW_DISPOSITION.md"
+  },
+  "native_after": "UNVERIFIED until reviewed push and CI",
+  "ci": {
+    "run": 36288759035,
+    "native_run": 36288759063,
+    "status": "in_progress"
+  }
 }

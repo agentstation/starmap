@@ -1,0 +1,32 @@
+review still running: codex elapsed=60s pid=53731 cpu=0.4s/60s(1%) rss=120M state=S
+review still running: claude elapsed=60s pid=53778 cpu=0.9s/60s(1%) rss=183M state=S
+review still running: codex elapsed=120s pid=53731 cpu=0.0s/60s(0%) rss=127M state=S
+review still running: claude elapsed=120s pid=53778 cpu=0.3s/60s(1%) rss=200M state=S
+review still running: claude elapsed=180s pid=53778 cpu=0.4s/60s(1%) rss=221M state=S
+autoreview target: branch
+branch: detached
+gate: pre-pr (configured cadence: pre-pr)
+profile: auto
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=6.85, opus5=8.43
+reviewers: codex model=gpt-6-sol thinking=high, claude model=claude-opus-5-5 thinking=high
+tools: on
+web_search: on
+ref: f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda
+trufflehog: clean (4.2s)
+bundle: 279199 bytes; review passes: 1
+autoreview panel findings: 2
+[P1] Provide an adoption path before requiring recovery approval on existing fleets
+internal/catalog/fleet_store.go:44
+Reviewer: codex model=gpt-6-sol thinking=high
+
+Every Valkey startup now requires an approved `catalog_recovery` row, but the migration creates no approval for existing deployments. `fleet init` refuses populated stores, so an existing Valkey deployment cannot start after upgrading. Ship a controlled adoption procedure or preserve the prior startup path until one exists.
+
+[P1] Provide recovery before binding approval to a Valkey process
+internal/storage/valkey_incarnation.go:65
+Reviewer: codex model=gpt-6-sol thinking=high
+
+The approved identity includes Valkey's process run ID, so an ordinary restart or failover changes it and `BindIncarnation` rejects the backend. The bundle explicitly provides no operator recovery command, leaving a freshly initialized production fleet unable to restart. The identity check needs a controlled recovery workflow in this release.
+
+overall: patch is incorrect (0.96)
+Panel review complete. claude model=claude-opus-5-5 thinking=high: 0 finding(s), codex model=gpt-6-sol thinking=high: 2 finding(s).

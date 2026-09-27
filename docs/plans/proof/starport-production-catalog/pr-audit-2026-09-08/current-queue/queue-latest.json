@@ -837,7 +837,7 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Review and publish test-only consumer repair a819276, qualify CI, then merge producer before consumer.",
+    "next_action": "Qualify exact-head CI on producer 47991a564 and consumer a819276e, then merge producer before consumer.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
     "contract_audit": "../../csp11/contract-audit-2026-09-26.md",
@@ -876,29 +876,24 @@
     "consumer_base": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
     "proof": "../../csp11/isolation-scope-2026-09-26/verification.json",
     "owner": "CSP11",
-    "next_action": "Review and publish test-only consumer repair a819276, qualify CI, then merge producer before consumer.",
-    "consumer": "95f2812b5bacda91464d6a77dba7197b1fac7bdc",
+    "next_action": "Qualify exact-head CI on producer 47991a564 and consumer a819276e, then merge producer before consumer.",
+    "consumer": "a819276e23a126c3eae159d5e2b2744db8bba619",
     "consumer_pr": 385,
     "ci": {
       "producer": 36286723503,
-      "consumer": 36287431900,
+      "consumer": 36288759035,
       "consumer_timeout_fix": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
-      "consumer_status": "FAIL: two macOS keyring wall-clock assertions",
+      "consumer_status": "in_progress on a819276e",
       "producer_prior_run": "36281444461 cancelled automatically after failing stale platform assertions",
-      "consumer_native": 36287431924,
+      "consumer_native": 36288759063,
       "producer_status": "in_progress on 47991a564",
       "prior_producer_status": "36285374567 cancelled automatically after new head; recorded macOS test failure",
-      "consumer_native_status": "PASS: five supported platforms"
+      "consumer_native_status": "in_progress on a819276e",
+      "consumer_prior_failed_run": 36287431900
     },
     "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json",
     "review_status": "PASS: Sol and Opus high, one bounded pass, zero P0/P1 findings",
-    "running_sessions": [
-      {
-        "id": 34984,
-        "owner": "consumer test-repair review",
-        "log": "/tmp/d41-keyring-final-review.log"
-      }
-    ],
+    "running_sessions": [],
     "repair_proof": "../../csp11/review-repairs-2026-09-26/verification.json",
     "initialization_proof": "../../csp11/fresh-initialization-2026-09-26/verification.json",
     "retention_proof": "../../csp11/retention-checkpoint-2026-09-26/verification.json",
@@ -926,12 +921,12 @@
     "pin_review_repair": "../../csp11/retained-baseline-2026-09-26/pin-review-repair/verification.json",
     "startup_repair_proof": "../../csp11/retained-baseline-2026-09-26/startup-review-repair/verification.json",
     "final_pair_proof": "../../csp11/retained-baseline-2026-09-26/final-pair/verification.json",
-    "consumer_review_status": "CONFIRMED_DOWNSTREAM_RELEASE_BLOCKER",
-    "consumer_review_findings": 1,
+    "consumer_review_status": "CONFIRMED_DOWNSTREAM_RELEASE_BLOCKERS",
+    "consumer_review_findings": 2,
     "accepted_csp11_defects": 2,
     "consumer_review_scope": "../../csp11/retained-baseline-2026-09-26/consumer-review-rescope/REVIEW_RESOLUTION.md",
     "bootstrap_repair_proof": "../../csp11/retained-baseline-2026-09-26/bootstrap-review-repair/verification.json",
-    "final_review_disposition": "../../csp11/retained-baseline-2026-09-26/native-ci-repair/REVIEW_DISPOSITION.md",
+    "final_review_disposition": "../../csp11/retained-baseline-2026-09-26/keyring-ci-repair/REVIEW_DISPOSITION.md",
     "native_scratch_contract": "../../csp11/retained-baseline-2026-09-26/bootstrap-review-repair/NATIVE_SCRATCH_REPAIR.md",
     "local_producer": "47991a564",
     "native_repair_proof": "../../csp11/retained-baseline-2026-09-26/native-ci-repair/verification.json",
@@ -940,7 +935,7 @@
   "local_consumer_checkpoint": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
     "branch": "codex/catalog-fleet-adapter",
-    "published": false,
+    "published": true,
     "module_pin": "v0.16.6-0.20260927014455-47991a5649f2",
     "uncommitted_files": []
   },
@@ -974,12 +969,11 @@
     },
     "credential_conflict_repair": "Prepared commit 63c763b rejects conflicting URI and explicit credentials. Fail-before and passing race evidence remain in the proof."
   },
-  "local_updated_at": "2026-09-27T02:28:43.730843+00:00",
+  "local_updated_at": "2026-09-27T02:33:59.049413+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
-    "published": false,
-    "proof": "../../csp11/retained-baseline-2026-09-26/keyring-ci-repair/verification.json",
-    "review_session": 34984
+    "published": true,
+    "proof": "../../csp11/retained-baseline-2026-09-26/keyring-ci-repair/verification.json"
   }
 }

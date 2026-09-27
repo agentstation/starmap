@@ -1,0 +1,29 @@
+{
+  "findings": [
+    {
+      "title": "Provide an adoption path before requiring recovery approval on existing fleets",
+      "body": "Reviewer: codex model=gpt-6-sol thinking=high\n\nEvery Valkey startup now requires an approved `catalog_recovery` row, but the migration creates no approval for existing deployments. `fleet init` refuses populated stores, so an existing Valkey deployment cannot start after upgrading. Ship a controlled adoption procedure or preserve the prior startup path until one exists.",
+      "priority": "P1",
+      "confidence": 0.97,
+      "category": "regression",
+      "code_location": {
+        "file_path": "internal/catalog/fleet_store.go",
+        "line": 44
+      }
+    },
+    {
+      "title": "Provide recovery before binding approval to a Valkey process",
+      "body": "Reviewer: codex model=gpt-6-sol thinking=high\n\nThe approved identity includes Valkey's process run ID, so an ordinary restart or failover changes it and `BindIncarnation` rejects the backend. The bundle explicitly provides no operator recovery command, leaving a freshly initialized production fleet unable to restart. The identity check needs a controlled recovery workflow in this release.",
+      "priority": "P1",
+      "confidence": 0.95,
+      "category": "bug",
+      "code_location": {
+        "file_path": "internal/storage/valkey_incarnation.go",
+        "line": 65
+      }
+    }
+  ],
+  "overall_correctness": "patch is incorrect",
+  "overall_explanation": "Panel review complete. claude model=claude-opus-5-5 thinking=high: 0 finding(s), codex model=gpt-6-sol thinking=high: 2 finding(s).",
+  "overall_confidence": 0.96
+}
