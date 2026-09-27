@@ -837,7 +837,7 @@
   },
   "next_task": {
     "task": "CSP11",
-    "next_action": "Qualify exact-head CI and merge Starmap before Starport; record merge commits before task completion.",
+    "next_action": "Finish native scratch creation and CI verifier repairs, review and publish updated heads, then qualify native CI.",
     "baseline": "../../csp11/merged-baseline-2026-09-26/verification.json",
     "failure_proof": "../../csp11/lease-failure-2026-09-26/verification.json",
     "contract_audit": "../../csp11/contract-audit-2026-09-26.md",
@@ -876,22 +876,29 @@
     "consumer_base": "f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda",
     "proof": "../../csp11/isolation-scope-2026-09-26/verification.json",
     "owner": "CSP11",
-    "next_action": "Qualify exact-head CI and merge Starmap before Starport; record merge commits before task completion.",
+    "next_action": "Finish native scratch creation and CI verifier repairs, review and publish updated heads, then qualify native CI.",
     "consumer": "aab7dd7c8bf52b2046e2284e480d81ce1d0b873c",
     "consumer_pr": 385,
     "ci": {
       "producer": 36285374567,
       "consumer": 36285454177,
       "consumer_timeout_fix": "7068380bd7a4a42afd18f10525d1d0ff0bc226ff",
-      "consumer_status": "in_progress on aab7dd7c",
+      "consumer_status": "FAIL release cask verifier; fleet job cancelled at 10-minute job limit",
       "producer_prior_run": "36281444461 cancelled automatically after failing stale platform assertions",
       "consumer_native": 36285454089,
-      "producer_status": "in_progress on 0f45bbae2",
-      "prior_producer_status": "36282930189 succeeded on b46c077a7"
+      "producer_status": "FAIL macOS retention test uncontrolled startup collection",
+      "prior_producer_status": "36282930189 succeeded on b46c077a7",
+      "consumer_native_status": "FAIL Windows amd64 and arm64: inherited scratch ACL"
     },
     "platform_policy_proof": "../../platform-policy-2026-09-26/verification.json",
     "review_status": "PASS: two bounded producer passes, zero findings",
-    "running_sessions": [],
+    "running_sessions": [
+      {
+        "id": 64976,
+        "owner": "producer review",
+        "log": "/tmp/d41-native-producer-review.log"
+      }
+    ],
     "repair_proof": "../../csp11/review-repairs-2026-09-26/verification.json",
     "initialization_proof": "../../csp11/fresh-initialization-2026-09-26/verification.json",
     "retention_proof": "../../csp11/retention-checkpoint-2026-09-26/verification.json",
@@ -924,7 +931,10 @@
     "accepted_csp11_defects": 2,
     "consumer_review_scope": "../../csp11/retained-baseline-2026-09-26/consumer-review-rescope/REVIEW_RESOLUTION.md",
     "bootstrap_repair_proof": "../../csp11/retained-baseline-2026-09-26/bootstrap-review-repair/verification.json",
-    "final_review_disposition": "../../csp11/retained-baseline-2026-09-26/bootstrap-review-repair/REVIEW_DISPOSITION.md"
+    "final_review_disposition": "../../csp11/retained-baseline-2026-09-26/bootstrap-review-repair/REVIEW_DISPOSITION.md",
+    "native_scratch_contract": "../../csp11/retained-baseline-2026-09-26/bootstrap-review-repair/NATIVE_SCRATCH_REPAIR.md",
+    "local_producer": "47991a564",
+    "native_repair_proof": "../../csp11/retained-baseline-2026-09-26/native-ci-repair/verification.json"
   },
   "local_consumer_checkpoint": {
     "head": "76a5687c680899283e9cbf4c3d74659a9e4f5974",
@@ -951,5 +961,5 @@
       "scope": "kvconnection, config, storage, cache with race detection and real Valkey. Full CSP12 is incomplete."
     }
   },
-  "local_updated_at": "2026-09-27T01:26:48.774497+00:00"
+  "local_updated_at": "2026-09-27T01:46:03.261644+00:00"
 }

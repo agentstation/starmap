@@ -1,0 +1,37 @@
+{
+  "updated": "2026-09-27T01:45:30.101533+00:00",
+  "producer": "47991a5649f2e0363fb8c1b117ec327689fabd02",
+  "consumer_base": "aab7dd7c8bf52b2046e2284e480d81ce1d0b873c",
+  "consumer_source": "uncommitted scratch creation, cask verifier, CI job limit",
+  "workspace": "/tmp/d41-scratch.work",
+  "producer_checks_exit": 0,
+  "goago": {
+    "schemaVersion": 1,
+    "version": "v0.3.0",
+    "rules": [
+      "no-dot-import",
+      "no-generic-methods",
+      "no-goto",
+      "no-invalid-ignore",
+      "no-naked-return",
+      "no-new-expr",
+      "no-self-referential-constraints"
+    ],
+    "findings": [],
+    "staleIgnores": [],
+    "errors": []
+  },
+  "native_after": "UNVERIFIED pending publication",
+  "review": "running",
+  "tests": {
+    "d41-scratch-producer-tests-after.jsonl": {
+      "pass": 126
+    },
+    "d41-scratch-consumer-tests.jsonl": {
+      "pass": 40
+    },
+    "d41-retention-schedule-repair.jsonl": {
+      "pass": 75
+    }
+  }
+}

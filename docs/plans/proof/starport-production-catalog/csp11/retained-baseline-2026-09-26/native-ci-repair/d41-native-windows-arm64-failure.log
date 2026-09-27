@@ -1,0 +1,1363 @@
+﻿2026-09-27T01:24:57.3146405Z Current runner version: '2.337.0'
+2026-09-27T01:24:57.3174800Z ##[group]Runner Image Provisioner
+2026-09-27T01:24:57.3175603Z Hosted Compute Agent
+2026-09-27T01:24:57.3176056Z Version: 20260828.587
+2026-09-27T01:24:57.3176559Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-27T01:24:57.3177143Z Build Date: 2026-08-28T16:44:25Z
+2026-09-27T01:24:57.3177682Z Worker ID: {6994f899-3f88-4ef4-8111-b7cd7d7d3b2e}
+2026-09-27T01:24:57.3178253Z Azure Region: westus2
+2026-09-27T01:24:57.3178698Z ##[endgroup]
+2026-09-27T01:24:57.3180110Z ##[group]Operating System
+2026-09-27T01:24:57.3180924Z Microsoft Windows 11
+2026-09-27T01:24:57.3181405Z 10.0.26200
+2026-09-27T01:24:57.3181811Z Enterprise
+2026-09-27T01:24:57.3182212Z ##[endgroup]
+2026-09-27T01:24:57.3182629Z ##[group]Runner Image
+2026-09-27T01:24:57.3183096Z Image: windows-11-vs2026-arm64
+2026-09-27T01:24:57.3183585Z Version: 20260920.164.1
+2026-09-27T01:24:57.3185136Z Included Software: https://github.com/actions/runner-images/blob/win11-vs2026-arm64/20260920.164/images/windows/Windows11-VS2026-Arm64-Readme.md
+2026-09-27T01:24:57.3186617Z Image Release: https://github.com/actions/runner-images/releases/tag/win11-vs2026-arm64%2F20260920.164
+2026-09-27T01:24:57.3187455Z ##[endgroup]
+2026-09-27T01:24:57.3188393Z ##[group]GITHUB_TOKEN Permissions
+2026-09-27T01:24:57.3190570Z Contents: read
+2026-09-27T01:24:57.3191046Z Metadata: read
+2026-09-27T01:24:57.3191476Z ##[endgroup]
+2026-09-27T01:24:57.3193759Z Secret source: Actions
+2026-09-27T01:24:57.3194506Z Cache mode: write
+2026-09-27T01:24:57.3195199Z Prepare workflow directory
+2026-09-27T01:24:57.3644844Z Prepare all required actions
+2026-09-27T01:24:57.3695233Z Getting action download info
+2026-09-27T01:24:57.7201085Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-09-27T01:24:58.0966696Z Download action repository 'actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97' (SHA:5fda3b95a4ea91299a34e894583c3862153e4b97)
+2026-09-27T01:24:58.5116849Z Download action repository 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e' (SHA:b7ad1dad31e06c5925ef5d2fc7ad053ef454303e)
+2026-09-27T01:24:58.9668493Z Download action repository 'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020' (SHA:820762786026740c76f36085b0efc47a31fe5020)
+2026-09-27T01:24:59.3004733Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-27T01:24:59.7974390Z Complete job name: Native windows arm64
+2026-09-27T01:24:59.9378918Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-09-27T01:24:59.9380306Z with:
+2026-09-27T01:24:59.9380604Z   persist-credentials: false
+2026-09-27T01:24:59.9380939Z   repository: agentstation/starport
+2026-09-27T01:24:59.9383591Z   token: ***
+2026-09-27T01:24:59.9383850Z   ssh-strict: true
+2026-09-27T01:24:59.9384102Z   ssh-user: git
+2026-09-27T01:24:59.9384393Z   clean: true
+2026-09-27T01:24:59.9384657Z   sparse-checkout-cone-mode: true
+2026-09-27T01:24:59.9384979Z   fetch-depth: 1
+2026-09-27T01:24:59.9385244Z   fetch-tags: false
+2026-09-27T01:24:59.9385521Z   show-progress: true
+2026-09-27T01:24:59.9385784Z   lfs: false
+2026-09-27T01:24:59.9386028Z   submodules: false
+2026-09-27T01:24:59.9386295Z   set-safe-directory: true
+2026-09-27T01:24:59.9386603Z   allow-unsafe-pr-checkout: false
+2026-09-27T01:24:59.9387349Z env:
+2026-09-27T01:24:59.9387628Z   GOTOOLCHAIN: go1.27.1
+2026-09-27T01:24:59.9387893Z ##[endgroup]
+2026-09-27T01:25:00.1857295Z Syncing repository: agentstation/starport
+2026-09-27T01:25:00.1859015Z ##[group]Getting Git version info
+2026-09-27T01:25:00.1859444Z Working directory is 'C:\a\starport\starport'
+2026-09-27T01:25:00.2786948Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-09-27T01:25:00.5842896Z git version 2.55.0.windows.5
+2026-09-27T01:25:00.5900872Z ##[endgroup]
+2026-09-27T01:25:00.5938487Z Temporarily overriding HOME='C:\a\_temp\d090deef-e162-4384-9738-e35eaa65e202' before making global git config changes
+2026-09-27T01:25:00.5941682Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T01:25:00.5947905Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory C:\a\starport\starport
+2026-09-27T01:25:00.6766609Z Deleting the contents of 'C:\a\starport\starport'
+2026-09-27T01:25:00.6774258Z ##[group]Determining repository object format
+2026-09-27T01:25:00.6777082Z ##[endgroup]
+2026-09-27T01:25:00.6777625Z ##[group]Initializing the repository
+2026-09-27T01:25:00.6788971Z [command]"C:\Program Files\Git\bin\git.exe" init C:\a\starport\starport
+2026-09-27T01:25:00.7971604Z Initialized empty Git repository in C:/a/starport/starport/.git/
+2026-09-27T01:25:00.8029788Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/agentstation/starport
+2026-09-27T01:25:00.8643373Z ##[endgroup]
+2026-09-27T01:25:00.8643883Z ##[group]Disabling automatic garbage collection
+2026-09-27T01:25:00.8652331Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-09-27T01:25:00.9149157Z ##[endgroup]
+2026-09-27T01:25:00.9149663Z ##[group]Setting up auth
+2026-09-27T01:25:00.9150096Z Removing SSH command configuration
+2026-09-27T01:25:00.9161147Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T01:25:00.9664708Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-09-27T01:25:03.0421924Z Removing HTTP extra header
+2026-09-27T01:25:03.0431566Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T01:25:03.0955404Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-09-27T01:25:04.2816257Z Removing includeIf entries pointing to credentials config files
+2026-09-27T01:25:04.2826762Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T01:25:04.3314534Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-09-27T01:25:05.5103329Z [command]"C:\Program Files\Git\bin\git.exe" config --file C:\a\_temp\git-credentials-11b21605-8b9a-4a92-ac15-f715dcbb6a94.config http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-09-27T01:25:05.5690495Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:C:/a/starport/starport/.git.path C:\a\_temp\git-credentials-11b21605-8b9a-4a92-ac15-f715dcbb6a94.config
+2026-09-27T01:25:05.6231623Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:C:/a/starport/starport/.git/worktrees/*.path C:\a\_temp\git-credentials-11b21605-8b9a-4a92-ac15-f715dcbb6a94.config
+2026-09-27T01:25:05.6879632Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-11b21605-8b9a-4a92-ac15-f715dcbb6a94.config
+2026-09-27T01:25:05.7455666Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-11b21605-8b9a-4a92-ac15-f715dcbb6a94.config
+2026-09-27T01:25:05.8023209Z ##[endgroup]
+2026-09-27T01:25:05.8023934Z ##[group]Fetching the repository
+2026-09-27T01:25:05.8033263Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +cedc965835f6ba061a851edb62f77dbb153f1289:refs/remotes/pull/385/merge
+2026-09-27T01:25:07.5380307Z From https://github.com/agentstation/starport
+2026-09-27T01:25:07.5433191Z  * [new ref]         cedc965835f6ba061a851edb62f77dbb153f1289 -> pull/385/merge
+2026-09-27T01:25:07.5434372Z ##[endgroup]
+2026-09-27T01:25:07.5434699Z ##[group]Determining the checkout info
+2026-09-27T01:25:07.5435163Z ##[endgroup]
+2026-09-27T01:25:07.5444366Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-09-27T01:25:07.6118641Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-09-27T01:25:07.6656641Z ##[group]Checking out the ref
+2026-09-27T01:25:07.6665599Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/385/merge
+2026-09-27T01:25:08.8351957Z Updating files:  68% (1105/1604)
+2026-09-27T01:25:08.8484363Z Updating files:  69% (1107/1604)
+2026-09-27T01:25:08.8654464Z Updating files:  70% (1123/1604)
+2026-09-27T01:25:08.8785010Z Updating files:  71% (1139/1604)
+2026-09-27T01:25:08.8894152Z Updating files:  72% (1155/1604)
+2026-09-27T01:25:08.9038203Z Updating files:  73% (1171/1604)
+2026-09-27T01:25:08.9190194Z Updating files:  74% (1187/1604)
+2026-09-27T01:25:08.9310277Z Updating files:  75% (1203/1604)
+2026-09-27T01:25:08.9450867Z Updating files:  76% (1220/1604)
+2026-09-27T01:25:08.9581508Z Updating files:  77% (1236/1604)
+2026-09-27T01:25:08.9723385Z Updating files:  78% (1252/1604)
+2026-09-27T01:25:08.9825954Z Updating files:  79% (1268/1604)
+2026-09-27T01:25:08.9971219Z Updating files:  80% (1284/1604)
+2026-09-27T01:25:09.0414890Z Updating files:  81% (1300/1604)
+2026-09-27T01:25:09.0555134Z Updating files:  82% (1316/1604)
+2026-09-27T01:25:09.0660244Z Updating files:  83% (1332/1604)
+2026-09-27T01:25:09.0780835Z Updating files:  84% (1348/1604)
+2026-09-27T01:25:09.0973922Z Updating files:  85% (1364/1604)
+2026-09-27T01:25:09.1174836Z Updating files:  86% (1380/1604)
+2026-09-27T01:25:09.1315422Z Updating files:  87% (1396/1604)
+2026-09-27T01:25:09.1466309Z Updating files:  88% (1412/1604)
+2026-09-27T01:25:09.1561537Z Updating files:  89% (1428/1604)
+2026-09-27T01:25:09.1714294Z Updating files:  90% (1444/1604)
+2026-09-27T01:25:09.1805228Z Updating files:  91% (1460/1604)
+2026-09-27T01:25:09.1936201Z Updating files:  92% (1476/1604)
+2026-09-27T01:25:09.2026289Z Updating files:  93% (1492/1604)
+2026-09-27T01:25:09.2436109Z Updating files:  94% (1508/1604)
+2026-09-27T01:25:09.2558241Z Updating files:  95% (1524/1604)
+2026-09-27T01:25:09.2724727Z Updating files:  96% (1540/1604)
+2026-09-27T01:25:09.2851182Z Updating files:  97% (1556/1604)
+2026-09-27T01:25:09.3018418Z Updating files:  98% (1572/1604)
+2026-09-27T01:25:09.3151223Z Updating files:  99% (1588/1604)
+2026-09-27T01:25:09.3151618Z Updating files: 100% (1604/1604)
+2026-09-27T01:25:09.3151846Z Updating files: 100% (1604/1604), done.
+2026-09-27T01:25:09.3280657Z Note: switching to 'refs/remotes/pull/385/merge'.
+2026-09-27T01:25:09.3280894Z 
+2026-09-27T01:25:09.3281067Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-27T01:25:09.3281575Z changes and commit them, and you can discard any commits you make in this
+2026-09-27T01:25:09.3282007Z state without impacting any branches by switching back to a branch.
+2026-09-27T01:25:09.3282259Z 
+2026-09-27T01:25:09.3282427Z If you want to create a new branch to retain commits you create, you may
+2026-09-27T01:25:09.3282832Z do so (now or later) by using -c with the switch command. Example:
+2026-09-27T01:25:09.3283132Z 
+2026-09-27T01:25:09.3283243Z   git switch -c <new-branch-name>
+2026-09-27T01:25:09.3283398Z 
+2026-09-27T01:25:09.3283487Z Or undo this operation with:
+2026-09-27T01:25:09.3283628Z 
+2026-09-27T01:25:09.3283692Z   git switch -
+2026-09-27T01:25:09.3283793Z 
+2026-09-27T01:25:09.3283977Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-27T01:25:09.3284256Z 
+2026-09-27T01:25:09.3284573Z HEAD is now at cedc965 Merge aab7dd7c8bf52b2046e2284e480d81ce1d0b873c into f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda
+2026-09-27T01:25:09.3418035Z ##[endgroup]
+2026-09-27T01:25:09.4015283Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-09-27T01:25:09.4474481Z cedc965835f6ba061a851edb62f77dbb153f1289
+2026-09-27T01:25:09.4528232Z ##[group]Removing auth
+2026-09-27T01:25:09.4528489Z Removing SSH command configuration
+2026-09-27T01:25:09.4538273Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T01:25:09.5014576Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-09-27T01:25:10.6829659Z Removing HTTP extra header
+2026-09-27T01:25:10.6838506Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T01:25:10.7323004Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-09-27T01:25:11.9497658Z Removing includeIf entries pointing to credentials config files
+2026-09-27T01:25:11.9506919Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T01:25:11.9934131Z includeif.gitdir:C:/a/starport/starport/.git.path
+2026-09-27T01:25:11.9934555Z includeif.gitdir:C:/a/starport/starport/.git/worktrees/*.path
+2026-09-27T01:25:11.9934927Z includeif.gitdir:/github/workspace/.git.path
+2026-09-27T01:25:11.9935543Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-27T01:25:11.9989696Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:C:/a/starport/starport/.git.path
+2026-09-27T01:25:12.0437128Z C:\a\_temp\git-credentials-11b21605-8b9a-4a92-ac15-f715dcbb6a94.config
+2026-09-27T01:25:12.0494934Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:C:/a/starport/starport/.git.path C\:\\a\\_temp\\git\-credentials\-11b21605\-8b9a\-4a92\-ac15\-f715dcbb6a94\.config
+2026-09-27T01:25:12.1041065Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:C:/a/starport/starport/.git/worktrees/*.path
+2026-09-27T01:25:12.1500893Z C:\a\_temp\git-credentials-11b21605-8b9a-4a92-ac15-f715dcbb6a94.config
+2026-09-27T01:25:12.1554543Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:C:/a/starport/starport/.git/worktrees/*.path C\:\\a\\_temp\\git\-credentials\-11b21605\-8b9a\-4a92\-ac15\-f715dcbb6a94\.config
+2026-09-27T01:25:12.2071602Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-27T01:25:12.2522030Z /github/runner_temp/git-credentials-11b21605-8b9a-4a92-ac15-f715dcbb6a94.config
+2026-09-27T01:25:12.2578880Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-11b21605\-8b9a\-4a92\-ac15\-f715dcbb6a94\.config
+2026-09-27T01:25:12.3092013Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-27T01:25:12.3552923Z /github/runner_temp/git-credentials-11b21605-8b9a-4a92-ac15-f715dcbb6a94.config
+2026-09-27T01:25:12.3606572Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-11b21605\-8b9a\-4a92\-ac15\-f715dcbb6a94\.config
+2026-09-27T01:25:12.4140558Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-09-27T01:25:13.6290976Z Removing credentials config 'C:\a\_temp\git-credentials-11b21605-8b9a-4a92-ac15-f715dcbb6a94.config'
+2026-09-27T01:25:13.6305079Z ##[endgroup]
+2026-09-27T01:25:13.6793897Z ##[group]Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+2026-09-27T01:25:13.6794676Z with:
+2026-09-27T01:25:13.6794858Z   python-version: 3.13
+2026-09-27T01:25:13.6795053Z   architecture: arm64
+2026-09-27T01:25:13.6795239Z   check-latest: false
+2026-09-27T01:25:13.6797691Z   token: ***
+2026-09-27T01:25:13.6797867Z   update-environment: true
+2026-09-27T01:25:13.6798079Z   allow-prereleases: false
+2026-09-27T01:25:13.6798278Z   freethreaded: false
+2026-09-27T01:25:13.6798449Z env:
+2026-09-27T01:25:13.6798610Z   GOTOOLCHAIN: go1.27.1
+2026-09-27T01:25:13.6798790Z ##[endgroup]
+2026-09-27T01:25:13.9131840Z ##[group]Installed versions
+2026-09-27T01:25:13.9301712Z Successfully set up CPython (3.13.15)
+2026-09-27T01:25:13.9302581Z ##[endgroup]
+2026-09-27T01:25:13.9711513Z ##[group]Run python scripts/test-native-release.py
+2026-09-27T01:25:13.9712072Z [36;1mpython scripts/test-native-release.py[0m
+2026-09-27T01:25:13.9712391Z [36;1mpython scripts/test-console-release.py[0m
+2026-09-27T01:25:13.9780305Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-09-27T01:25:13.9780639Z env:
+2026-09-27T01:25:13.9780811Z   GOTOOLCHAIN: go1.27.1
+2026-09-27T01:25:13.9781086Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:25:13.9781530Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.13.15\arm64/lib/pkgconfig
+2026-09-27T01:25:13.9781968Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:25:13.9782354Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:25:13.9782745Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:25:13.9783048Z ##[endgroup]
+2026-09-27T01:25:16.4775938Z ..........
+2026-09-27T01:25:16.4786110Z ----------------------------------------------------------------------
+2026-09-27T01:25:16.4786857Z Ran 10 tests in 0.316s
+2026-09-27T01:25:16.4787251Z 
+2026-09-27T01:25:16.4787436Z OK
+2026-09-27T01:25:20.0315584Z ..
+2026-09-27T01:25:20.0316236Z ----------------------------------------------------------------------
+2026-09-27T01:25:20.0316562Z Ran 2 tests in 3.362s
+2026-09-27T01:25:20.0316683Z 
+2026-09-27T01:25:20.0316746Z OK
+2026-09-27T01:25:20.2245789Z ##[group]Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+2026-09-27T01:25:20.2246265Z with:
+2026-09-27T01:25:20.2246433Z   go-version: 1.27.1
+2026-09-27T01:25:20.2246621Z   check-latest: false
+2026-09-27T01:25:20.2249014Z   token: ***
+2026-09-27T01:25:20.2249171Z   cache: true
+2026-09-27T01:25:20.2249323Z env:
+2026-09-27T01:25:20.2249473Z   GOTOOLCHAIN: go1.27.1
+2026-09-27T01:25:20.2249743Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:25:20.2250180Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.13.15\arm64/lib/pkgconfig
+2026-09-27T01:25:20.2250607Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:25:20.2250992Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:25:20.2251403Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:25:20.2251702Z ##[endgroup]
+2026-09-27T01:25:20.4495130Z Setup go version spec 1.27.1
+2026-09-27T01:25:20.4499101Z Attempting to download 1.27.1...
+2026-09-27T01:25:21.2342228Z matching 1.27.1...
+2026-09-27T01:25:21.2368532Z Acquiring 1.27.1 from https://github.com/actions/go-versions/releases/download/1.27.1-33583469715/go-1.27.1-win32-arm64.zip
+2026-09-27T01:25:22.4789619Z Extracting Go...
+2026-09-27T01:25:22.5871533Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command "$ErrorActionPreference = 'Stop' ; try { Add-Type -AssemblyName System.IO.Compression.ZipFile } catch { } ; try { [System.IO.Compression.ZipFile]::ExtractToDirectory('C:\a\_temp\go-1.27.1-win32-arm64.zip', 'C:\a\_temp\7489f83f-0163-46e5-9882-0598cfc614e3', $true) } catch { if (($_.Exception.GetType().FullName -eq 'System.Management.Automation.MethodException') -or ($_.Exception.GetType().FullName -eq 'System.Management.Automation.RuntimeException') ){ Expand-Archive -LiteralPath 'C:\a\_temp\go-1.27.1-win32-arm64.zip' -DestinationPath 'C:\a\_temp\7489f83f-0163-46e5-9882-0598cfc614e3' -Force } else { throw $_ } } ;"
+2026-09-27T01:25:38.3099600Z Successfully extracted go to C:\a\_temp\7489f83f-0163-46e5-9882-0598cfc614e3
+2026-09-27T01:25:38.3100026Z Adding to the cache ...
+2026-09-27T01:26:02.7265117Z Successfully cached go to C:\hostedtoolcache\windows\go\1.27.1\arm64
+2026-09-27T01:26:02.7272509Z Added go to the path
+2026-09-27T01:26:02.7276248Z Successfully set up Go version 1.27.1
+2026-09-27T01:26:03.1179780Z [command]C:\hostedtoolcache\windows\go\1.27.1\arm64\bin\go.exe env GOCACHE
+2026-09-27T01:26:03.1266217Z [command]C:\hostedtoolcache\windows\go\1.27.1\arm64\bin\go.exe env GOMODCACHE
+2026-09-27T01:26:03.1506492Z C:\Users\runneradmin\AppData\Local\go-build
+2026-09-27T01:26:03.1562751Z C:\Users\runneradmin\go\pkg\mod
+2026-09-27T01:26:03.5480731Z Cache is not found
+2026-09-27T01:26:03.5504005Z go version go1.27.1 windows/arm64
+2026-09-27T01:26:03.5504222Z 
+2026-09-27T01:26:03.5504551Z ##[group]go env
+2026-09-27T01:26:07.1339653Z set AR=ar
+2026-09-27T01:26:07.1340005Z set CC=gcc
+2026-09-27T01:26:07.1340371Z set CGO_CFLAGS=-O2 -g
+2026-09-27T01:26:07.1340633Z set CGO_CPPFLAGS=
+2026-09-27T01:26:07.1340876Z set CGO_CXXFLAGS=-O2 -g
+2026-09-27T01:26:07.1341125Z set CGO_ENABLED=1
+2026-09-27T01:26:07.1341355Z set CGO_FFLAGS=-O2 -g
+2026-09-27T01:26:07.1341603Z set CGO_LDFLAGS=-O2 -g
+2026-09-27T01:26:07.1341834Z set CXX=g++
+2026-09-27T01:26:07.1342052Z set GCCGO=gccgo
+2026-09-27T01:26:07.1342267Z set GO111MODULE=
+2026-09-27T01:26:07.1342482Z set GOARCH=arm64
+2026-09-27T01:26:07.1342723Z set GOARM64=v8.0
+2026-09-27T01:26:07.1342941Z set GOAUTH=netrc
+2026-09-27T01:26:07.1343199Z set GOBIN=C:\Users\runneradmin\go\bin
+2026-09-27T01:26:07.1343549Z set GOCACHE=C:\Users\runneradmin\AppData\Local\go-build
+2026-09-27T01:26:07.1343856Z set GOCACHEPROG=
+2026-09-27T01:26:07.1354679Z set GODEBUG=
+2026-09-27T01:26:07.1354934Z set GOENV=C:\Users\runneradmin\AppData\Roaming\go\env
+2026-09-27T01:26:07.1355214Z set GOEXE=.exe
+2026-09-27T01:26:07.1358886Z set GOEXPERIMENT=
+2026-09-27T01:26:07.1359308Z set GOFIPS140=off
+2026-09-27T01:26:07.1359489Z set GOFLAGS=
+2026-09-27T01:26:07.1360167Z set GOGCCFLAGS=-pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=C:\Users\RUNNER~1\AppData\Local\Temp\go-build1951953994=/tmp/go-build -gno-record-gcc-switches
+2026-09-27T01:26:07.1360850Z set GOHOSTARCH=arm64
+2026-09-27T01:26:07.1361036Z set GOHOSTOS=windows
+2026-09-27T01:26:07.1361213Z set GOINSECURE=
+2026-09-27T01:26:07.1361413Z set GOMOD=C:\a\starport\starport\go.mod
+2026-09-27T01:26:07.1361685Z set GOMODCACHE=C:\Users\runneradmin\go\pkg\mod
+2026-09-27T01:26:07.1361940Z set GONOPROXY=
+2026-09-27T01:26:07.1362104Z set GONOSUMDB=
+2026-09-27T01:26:07.1362269Z set GOOS=windows
+2026-09-27T01:26:07.1362475Z set GOPACKAGESDRIVER=
+2026-09-27T01:26:07.1362776Z set GOPATH=C:\Users\runneradmin\go
+2026-09-27T01:26:07.1363063Z set GOPRIVATE=
+2026-09-27T01:26:07.1363289Z set GOPROXY=https://proxy.golang.org,direct
+2026-09-27T01:26:07.1363605Z set GOROOT=C:\hostedtoolcache\windows\go\1.27.1\arm64
+2026-09-27T01:26:07.1364005Z set GOSUMDB=sum.golang.org
+2026-09-27T01:26:07.1364235Z set GOTELEMETRY=local
+2026-09-27T01:26:07.1364530Z set GOTELEMETRYDIR=C:\Users\runneradmin\AppData\Roaming\go\telemetry
+2026-09-27T01:26:07.1364867Z set GOTMPDIR=
+2026-09-27T01:26:07.1365037Z set GOTOOLCHAIN=local
+2026-09-27T01:26:07.1365359Z set GOTOOLDIR=C:\hostedtoolcache\windows\go\1.27.1\arm64\pkg\tool\windows_arm64
+2026-09-27T01:26:07.1365718Z set GOVCS=
+2026-09-27T01:26:07.1365891Z set GOVERSION=go1.27.1
+2026-09-27T01:26:07.1366088Z set GOWORK=
+2026-09-27T01:26:07.1366263Z set PKG_CONFIG=pkg-config
+2026-09-27T01:26:07.1366396Z 
+2026-09-27T01:26:07.1366702Z ##[endgroup]
+2026-09-27T01:26:07.1794895Z ##[group]Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+2026-09-27T01:26:07.1795685Z with:
+2026-09-27T01:26:07.1795848Z   node-version: 24
+2026-09-27T01:26:07.1796027Z   check-latest: false
+2026-09-27T01:26:07.1798642Z   token: ***
+2026-09-27T01:26:07.1798830Z   package-manager-cache: true
+2026-09-27T01:26:07.1799032Z env:
+2026-09-27T01:26:07.1799183Z   GOTOOLCHAIN: local
+2026-09-27T01:26:07.1799449Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:26:07.1799879Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.13.15\arm64/lib/pkgconfig
+2026-09-27T01:26:07.1800304Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:26:07.1800687Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:26:07.1801074Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:26:07.1801374Z ##[endgroup]
+2026-09-27T01:26:07.4284413Z Found in cache @ C:\hostedtoolcache\windows\node\24.21.0\arm64
+2026-09-27T01:26:07.4295072Z ##[group]Environment details
+2026-09-27T01:26:11.2603681Z node: v24.21.0
+2026-09-27T01:26:11.2603929Z npm: 11.19.0
+2026-09-27T01:26:11.2604232Z yarn: 1.22.22
+2026-09-27T01:26:11.2604642Z ##[endgroup]
+2026-09-27T01:26:11.2934090Z ##[group]Run npm install -g pnpm@11.22.0
+2026-09-27T01:26:11.2934506Z [36;1mnpm install -g pnpm@11.22.0[0m
+2026-09-27T01:26:11.2934751Z [36;1mbash scripts/build-console.sh[0m
+2026-09-27T01:26:11.2934998Z [36;1mbinary="native-starport"[0m
+2026-09-27T01:26:11.2935292Z [36;1mif [ "windows" = windows ]; then binary="$binary.exe"; fi[0m
+2026-09-27T01:26:11.2935642Z [36;1mgo build -trimpath -o "$binary" ./cmd/starport[0m
+2026-09-27T01:26:11.2936059Z [36;1mpython scripts/verify-embedded-console.py "$binary" internal/console/dist[0m
+2026-09-27T01:26:11.2936503Z [36;1mpython scripts/verify-console-binary.py "$binary"[0m
+2026-09-27T01:26:11.2958109Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-09-27T01:26:11.2958460Z env:
+2026-09-27T01:26:11.2958614Z   GOTOOLCHAIN: local
+2026-09-27T01:26:11.2958899Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:26:11.2959355Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.13.15\arm64/lib/pkgconfig
+2026-09-27T01:26:11.2959780Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:26:11.2960164Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:26:11.2960547Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\arm64
+2026-09-27T01:26:11.2960848Z   CGO_ENABLED: 0
+2026-09-27T01:26:11.2961009Z ##[endgroup]
+2026-09-27T01:26:21.9492459Z 
+2026-09-27T01:26:21.9500127Z added 1 package in 9s
+2026-09-27T01:26:21.9500409Z 
+2026-09-27T01:26:21.9500631Z 1 package is looking for funding
+2026-09-27T01:26:21.9500941Z   run `npm fund` for details
+2026-09-27T01:26:25.0845789Z ? Verifying lockfile against supply-chain policies (888 entries)...
+2026-09-27T01:26:25.0962282Z Lockfile is up to date, resolution step is skipped
+2026-09-27T01:26:25.2641552Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-09-27T01:26:25.3750536Z Packages: +787
+2026-09-27T01:26:25.3751121Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-09-27T01:26:26.4723310Z Progress: resolved 787, reused 0, downloaded 0, added 0
+2026-09-27T01:26:27.4739068Z Progress: resolved 787, reused 0, downloaded 6, added 0
+2026-09-27T01:26:28.4764193Z Progress: resolved 787, reused 0, downloaded 10, added 0
+2026-09-27T01:26:29.4785978Z Progress: resolved 787, reused 0, downloaded 19, added 0
+2026-09-27T01:26:30.4807952Z Progress: resolved 787, reused 0, downloaded 22, added 0
+2026-09-27T01:26:31.3469110Z ✓ Lockfile passes supply-chain policies (888 entries in 6.2s)
+2026-09-27T01:26:31.4905262Z Progress: resolved 787, reused 0, downloaded 23, added 0
+2026-09-27T01:26:33.8677955Z Progress: resolved 787, reused 0, downloaded 24, added 0
+2026-09-27T01:26:34.8688399Z Progress: resolved 787, reused 0, downloaded 37, added 0
+2026-09-27T01:26:35.8762183Z Progress: resolved 787, reused 0, downloaded 50, added 0
+2026-09-27T01:26:36.8858742Z Progress: resolved 787, reused 0, downloaded 61, added 0
+2026-09-27T01:26:37.8971045Z Progress: resolved 787, reused 0, downloaded 62, added 0
+2026-09-27T01:26:40.6152591Z Progress: resolved 787, reused 0, downloaded 63, added 0
+2026-09-27T01:26:40.6227100Z Packages are hard linked from the content-addressable store to the virtual store.
+2026-09-27T01:26:40.6228058Z   Content-addressable store is at: C:\Users\runneradmin\AppData\Local\pnpm\store\v11
+2026-09-27T01:26:40.6228550Z   Virtual store is at:             node_modules/.pnpm
+2026-09-27T01:26:41.6186570Z Progress: resolved 787, reused 0, downloaded 91, added 4
+2026-09-27T01:26:42.6258575Z Progress: resolved 787, reused 0, downloaded 125, added 5
+2026-09-27T01:26:43.6314602Z Progress: resolved 787, reused 0, downloaded 132, added 7
+2026-09-27T01:26:44.6360844Z Progress: resolved 787, reused 0, downloaded 153, added 8
+2026-09-27T01:26:46.6384872Z Progress: resolved 787, reused 0, downloaded 154, added 8
+2026-09-27T01:26:47.6616496Z Progress: resolved 787, reused 0, downloaded 248, added 12
+2026-09-27T01:26:48.6942164Z Progress: resolved 787, reused 0, downloaded 359, added 20
+2026-09-27T01:26:49.6850311Z Progress: resolved 787, reused 0, downloaded 398, added 22
+2026-09-27T01:26:50.6978377Z Progress: resolved 787, reused 0, downloaded 421, added 23
+2026-09-27T01:26:52.5070511Z Progress: resolved 787, reused 0, downloaded 422, added 23
+2026-09-27T01:26:53.5166593Z Progress: resolved 787, reused 0, downloaded 428, added 24
+2026-09-27T01:26:54.7803712Z Progress: resolved 787, reused 0, downloaded 429, added 24
+2026-09-27T01:26:55.7799979Z Progress: resolved 787, reused 0, downloaded 554, added 30
+2026-09-27T01:26:56.7798360Z Progress: resolved 787, reused 0, downloaded 700, added 36
+2026-09-27T01:26:57.7852904Z Progress: resolved 787, reused 0, downloaded 787, added 55
+2026-09-27T01:26:58.7984876Z Progress: resolved 787, reused 0, downloaded 787, added 60
+2026-09-27T01:27:02.6757726Z Progress: resolved 787, reused 0, downloaded 787, added 61
+2026-09-27T01:27:03.6775990Z Progress: resolved 787, reused 0, downloaded 787, added 102
+2026-09-27T01:27:04.6912860Z Progress: resolved 787, reused 0, downloaded 787, added 109
+2026-09-27T01:27:05.7049416Z Progress: resolved 787, reused 0, downloaded 787, added 120
+2026-09-27T01:27:06.7180756Z Progress: resolved 787, reused 0, downloaded 787, added 138
+2026-09-27T01:27:07.7321833Z Progress: resolved 787, reused 0, downloaded 787, added 147
+2026-09-27T01:27:08.7442492Z Progress: resolved 787, reused 0, downloaded 787, added 188
+2026-09-27T01:27:12.5922317Z Progress: resolved 787, reused 0, downloaded 787, added 189
+2026-09-27T01:27:13.5933792Z Progress: resolved 787, reused 0, downloaded 787, added 360
+2026-09-27T01:27:14.6057214Z Progress: resolved 787, reused 0, downloaded 787, added 370
+2026-09-27T01:27:18.2014272Z Progress: resolved 787, reused 0, downloaded 787, added 371
+2026-09-27T01:27:19.2036386Z Progress: resolved 787, reused 0, downloaded 787, added 535
+2026-09-27T01:27:20.2163265Z Progress: resolved 787, reused 0, downloaded 787, added 662
+2026-09-27T01:27:23.2441915Z Progress: resolved 787, reused 0, downloaded 787, added 663
+2026-09-27T01:27:24.2025551Z Progress: resolved 787, reused 0, downloaded 787, added 787, done
+2026-09-27T01:27:25.3719262Z 
+2026-09-27T01:27:25.3719734Z dependencies:
+2026-09-27T01:27:25.3722772Z + @base-ui/react 1.8.0
+2026-09-27T01:27:25.3723305Z + @streamdown/code 1.1.1
+2026-09-27T01:27:25.3723575Z + @streamdown/math 1.0.2
+2026-09-27T01:27:25.3723804Z + @streamdown/mermaid 1.0.2
+2026-09-27T01:27:25.3724055Z + @tanstack/react-query 5.103.1
+2026-09-27T01:27:25.3724316Z + @tanstack/react-router 1.170.38
+2026-09-27T01:27:25.3725349Z + @tanstack/react-table 9.2.4
+2026-09-27T01:27:25.3725635Z + @tanstack/react-virtual 3.14.13
+2026-09-27T01:27:25.3725909Z + class-variance-authority 0.7.1
+2026-09-27T01:27:25.3726135Z + cmdk 1.1.1
+2026-09-27T01:27:25.3727443Z + cn 0.3.2
+2026-09-27T01:27:25.3727611Z + katex 0.18.7
+2026-09-27T01:27:25.3727800Z + lucide-react 1.47.0
+2026-09-27T01:27:25.3727989Z + react 19.3.0
+2026-09-27T01:27:25.3728208Z + react-day-picker 10.0.1
+2026-09-27T01:27:25.3728430Z + react-dom 19.3.0
+2026-09-27T01:27:25.3728617Z + recharts 3.10.1
+2026-09-27T01:27:25.3728793Z + sonner 2.0.8
+2026-09-27T01:27:25.3728972Z + streamdown 2.6.0
+2026-09-27T01:27:25.3729088Z 
+2026-09-27T01:27:25.3729164Z devDependencies:
+2026-09-27T01:27:25.3729356Z + @shadcn/lint 0.1.5
+2026-09-27T01:27:25.3729564Z + @tailwindcss/vite 4.3.3
+2026-09-27T01:27:25.3729825Z + @tanstack/react-query-devtools 5.103.1
+2026-09-27T01:27:25.3730127Z + @tanstack/react-router-devtools 1.167.2
+2026-09-27T01:27:25.3730416Z + @tanstack/router-plugin 1.168.40
+2026-09-27T01:27:25.3730678Z + @testing-library/react 16.3.3
+2026-09-27T01:27:25.3730906Z + @types/react 19.3.0
+2026-09-27T01:27:25.3731118Z + @types/react-dom 19.3.0
+2026-09-27T01:27:25.3731343Z + @vitejs/plugin-react 6.1.1
+2026-09-27T01:27:25.3731561Z + jsdom 30.1.0
+2026-09-27T01:27:25.3731733Z + oxlint 1.85.0
+2026-09-27T01:27:25.3731906Z + shadcn 4.21.0
+2026-09-27T01:27:25.3732939Z + tailwindcss 4.3.3
+2026-09-27T01:27:25.3733271Z + tw-animate-css 1.4.0
+2026-09-27T01:27:25.3734534Z + typescript 7.0.2
+2026-09-27T01:27:25.3734903Z + vite 8.3.0
+2026-09-27T01:27:25.3735085Z + vitest 5.0.1
+2026-09-27T01:27:25.3735193Z 
+2026-09-27T01:27:25.4269811Z Done in 1m 1.5s using pnpm v11.22.0
+2026-09-27T01:27:26.5988029Z $ vite build && node -e "require('node:fs').writeFileSync('../internal/console/dist/.gitkeep','')"
+2026-09-27T01:27:28.0419021Z Warning: Route file "C:/a/starport/starport/console/src/routes/accounts.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0419845Z 
+2026-09-27T01:27:28.0426578Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0430297Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-accounts.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0430976Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0431257Z 
+2026-09-27T01:27:28.0431361Z Current configuration:
+2026-09-27T01:27:28.0432048Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0433022Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0442914Z Warning: Route file "C:/a/starport/starport/console/src/routes/audit.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0443484Z 
+2026-09-27T01:27:28.0443790Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0444437Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-audit.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0445320Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0445612Z 
+2026-09-27T01:27:28.0445736Z Current configuration:
+2026-09-27T01:27:28.0445996Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0446266Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0457322Z Warning: Route file "C:/a/starport/starport/console/src/routes/chat.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0457912Z 
+2026-09-27T01:27:28.0458228Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0458885Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-chat.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0459447Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0459703Z 
+2026-09-27T01:27:28.0459801Z Current configuration:
+2026-09-27T01:27:28.0460022Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0460287Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0465076Z Warning: Route file "C:/a/starport/starport/console/src/routes/compactScreen.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0467513Z 
+2026-09-27T01:27:28.0467872Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0468583Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-compactScreen.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0469180Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0469433Z 
+2026-09-27T01:27:28.0469528Z Current configuration:
+2026-09-27T01:27:28.0469756Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0470032Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0485141Z Warning: Route file "C:/a/starport/starport/console/src/routes/docs.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0493190Z 
+2026-09-27T01:27:28.0493628Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0494294Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-docs.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0495536Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0495841Z 
+2026-09-27T01:27:28.0495955Z Current configuration:
+2026-09-27T01:27:28.0496183Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0496448Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0512854Z Warning: Route file "C:/a/starport/starport/console/src/routes/firstContact.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0513950Z 
+2026-09-27T01:27:28.0520478Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0522089Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-firstContact.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0523222Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0523505Z 
+2026-09-27T01:27:28.0523647Z Current configuration:
+2026-09-27T01:27:28.0523883Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0524166Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0527443Z Warning: Route file "C:/a/starport/starport/console/src/routes/jobs.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0528009Z 
+2026-09-27T01:27:28.0528316Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0528969Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-jobs.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0529538Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0529797Z 
+2026-09-27T01:27:28.0529891Z Current configuration:
+2026-09-27T01:27:28.0530129Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0530393Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0541215Z Warning: Route file "C:/a/starport/starport/console/src/routes/keyDialog.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0541885Z 
+2026-09-27T01:27:28.0542222Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0542903Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-keyDialog.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0543483Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0543737Z 
+2026-09-27T01:27:28.0543834Z Current configuration:
+2026-09-27T01:27:28.0544059Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0544325Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0553522Z Warning: Route file "C:/a/starport/starport/console/src/routes/keys.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0554103Z 
+2026-09-27T01:27:28.0554422Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0555755Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-keys.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0556342Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0556601Z 
+2026-09-27T01:27:28.0556700Z Current configuration:
+2026-09-27T01:27:28.0556930Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0557198Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0565937Z Warning: Route file "C:/a/starport/starport/console/src/routes/listState.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0566499Z 
+2026-09-27T01:27:28.0566809Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0567533Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-listState.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0568117Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0568389Z 
+2026-09-27T01:27:28.0568481Z Current configuration:
+2026-09-27T01:27:28.0568706Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0569351Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0602854Z Warning: Route file "C:/a/starport/starport/console/src/routes/presets.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0603450Z 
+2026-09-27T01:27:28.0603754Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0604416Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-presets.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0604998Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0605251Z 
+2026-09-27T01:27:28.0605349Z Current configuration:
+2026-09-27T01:27:28.0605575Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0605846Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0616561Z Warning: Route file "C:/a/starport/starport/console/src/routes/router.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0617222Z 
+2026-09-27T01:27:28.0617545Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0618217Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-router.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0618788Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0619045Z 
+2026-09-27T01:27:28.0619145Z Current configuration:
+2026-09-27T01:27:28.0619371Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0619641Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0627052Z Warning: Route file "C:/a/starport/starport/console/src/routes/settings.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0627623Z 
+2026-09-27T01:27:28.0627927Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0628824Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-settings.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0713832Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0714130Z 
+2026-09-27T01:27:28.0714239Z Current configuration:
+2026-09-27T01:27:28.0714472Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0714744Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0767814Z Warning: Route file "C:/a/starport/starport/console/src/routes/smallScreen.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0768432Z 
+2026-09-27T01:27:28.0768743Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0769448Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-smallScreen.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0770036Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0770974Z 
+2026-09-27T01:27:28.0771082Z Current configuration:
+2026-09-27T01:27:28.0771333Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0771608Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0777426Z Warning: Route file "C:/a/starport/starport/console/src/routes/teams.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0778128Z 
+2026-09-27T01:27:28.0778554Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0779213Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-teams.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0779792Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0780048Z 
+2026-09-27T01:27:28.0780144Z Current configuration:
+2026-09-27T01:27:28.0780368Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0780633Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.0788374Z Warning: Route file "C:/a/starport/starport/console/src/routes/usage.test.tsx" does not export a Route. This file will not be included in the route tree.
+2026-09-27T01:27:28.0789356Z 
+2026-09-27T01:27:28.0796099Z If this file is not intended to be a route, you can exclude it using one of these options:
+2026-09-27T01:27:28.0796900Z   1. Rename the file to "C:\a\starport\starport\console\src\routes\-usage.test.tsx" (prefix with "-")
+2026-09-27T01:27:28.0797477Z   2. Use 'routeFileIgnorePattern' in your config to match this file
+2026-09-27T01:27:28.0797730Z 
+2026-09-27T01:27:28.0797827Z Current configuration:
+2026-09-27T01:27:28.0798054Z   routeFileIgnorePrefix: "-"
+2026-09-27T01:27:28.0798319Z   routeFileIgnorePattern: undefined
+2026-09-27T01:27:28.2149304Z [36mvite v8.3.0 [32mbuilding client environment for production...[36m[39m
+2026-09-27T01:27:28.2287484Z transforming...
+2026-09-27T01:27:30.4936231Z ✓ 6558 modules transformed.
+2026-09-27T01:27:30.8992974Z rendering chunks...
+2026-09-27T01:27:31.4190625Z computing gzip size...
+2026-09-27T01:27:31.4451078Z ../internal/console/dist/assets/favicon-CtFEwK-a.svg                        0.22 kB │ gzip:   0.19 kB
+2026-09-27T01:27:31.4451951Z ../internal/console/dist/index.html                                         2.44 kB │ gzip:   0.90 kB
+2026-09-27T01:27:31.4452561Z ../internal/console/dist/assets/KaTeX_Size3-Regular-CTq5MqoE.woff           4.42 kB
+2026-09-27T01:27:31.4453153Z ../internal/console/dist/assets/KaTeX_Size4-Regular-Dl5lxZxV.woff2          4.92 kB
+2026-09-27T01:27:31.4453737Z ../internal/console/dist/assets/KaTeX_Size2-Regular-Dy4dx90m.woff2          5.20 kB
+2026-09-27T01:27:31.4454336Z ../internal/console/dist/assets/KaTeX_Size1-Regular-mCD8mA8B.woff2          5.46 kB
+2026-09-27T01:27:31.4455083Z ../internal/console/dist/assets/KaTeX_Size4-Regular-BF-4gkZK.woff           5.98 kB
+2026-09-27T01:27:31.4456043Z ../internal/console/dist/assets/KaTeX_Size2-Regular-oD1tc_U0.woff           6.18 kB
+2026-09-27T01:27:31.4457123Z ../internal/console/dist/assets/KaTeX_Size1-Regular-C195tn64.woff           6.49 kB
+2026-09-27T01:27:31.4457809Z ../internal/console/dist/assets/KaTeX_Caligraphic-Regular-Di6jR-x-.woff2    6.90 kB
+2026-09-27T01:27:31.4458417Z ../internal/console/dist/assets/KaTeX_Caligraphic-Bold-Dq_IR9rO.woff2       6.91 kB
+2026-09-27T01:27:31.4459011Z ../internal/console/dist/assets/KaTeX_Size3-Regular-DgpXs0kz.ttf            7.58 kB
+2026-09-27T01:27:31.4459607Z ../internal/console/dist/assets/KaTeX_Caligraphic-Regular-CTRA-rTL.woff     7.65 kB
+2026-09-27T01:27:31.4460206Z ../internal/console/dist/assets/KaTeX_Caligraphic-Bold-BEiXGLvX.woff        7.71 kB
+2026-09-27T01:27:31.4460806Z ../internal/console/dist/assets/KaTeX_Script-Regular-D3wIWfF6.woff2         9.64 kB
+2026-09-27T01:27:31.4461397Z ../internal/console/dist/assets/KaTeX_SansSerif-Regular-DDBCnlJ7.woff2     10.34 kB
+2026-09-27T01:27:31.4461984Z ../internal/console/dist/assets/KaTeX_Size4-Regular-DWFBv043.ttf           10.36 kB
+2026-09-27T01:27:31.4463252Z ../internal/console/dist/assets/KaTeX_Script-Regular-D5yQViql.woff         10.58 kB
+2026-09-27T01:27:31.4463855Z ../internal/console/dist/assets/KaTeX_Fraktur-Regular-CTYiF6lA.woff2       11.31 kB
+2026-09-27T01:27:31.4464444Z ../internal/console/dist/assets/KaTeX_Fraktur-Bold-CL6g_b3V.woff2          11.34 kB
+2026-09-27T01:27:31.4465022Z ../internal/console/dist/assets/KaTeX_Size2-Regular-B7gKUWhC.ttf           11.50 kB
+2026-09-27T01:27:31.4465605Z ../internal/console/dist/assets/KaTeX_SansSerif-Italic-C3H0VqGB.woff2      12.02 kB
+2026-09-27T01:27:31.4466190Z ../internal/console/dist/assets/KaTeX_SansSerif-Bold-D1sUS0GD.woff2        12.21 kB
+2026-09-27T01:27:31.4466769Z ../internal/console/dist/assets/KaTeX_Size1-Regular-Dbsnue_I.ttf           12.22 kB
+2026-09-27T01:27:31.4467609Z ../internal/console/dist/assets/KaTeX_SansSerif-Regular-CS6fqUqJ.woff      12.31 kB
+2026-09-27T01:27:31.4468212Z ../internal/console/dist/assets/KaTeX_Caligraphic-Regular-wX97UBjC.ttf     12.34 kB
+2026-09-27T01:27:31.4468817Z ../internal/console/dist/assets/KaTeX_Caligraphic-Bold-ATXxdsX0.ttf        12.36 kB
+2026-09-27T01:27:31.4469715Z ../internal/console/dist/assets/KaTeX_Fraktur-Regular-Dxdc4cR9.woff        13.20 kB
+2026-09-27T01:27:31.4470409Z ../internal/console/dist/assets/KaTeX_Fraktur-Bold-BsDP51OF.woff           13.29 kB
+2026-09-27T01:27:31.4471008Z ../internal/console/dist/assets/KaTeX_Typewriter-Regular-CO6r4hn1.woff2    13.56 kB
+2026-09-27T01:27:31.4471603Z ../internal/console/dist/assets/KaTeX_SansSerif-Italic-DN2j7dab.woff       14.11 kB
+2026-09-27T01:27:31.4472193Z ../internal/console/dist/assets/KaTeX_SansSerif-Bold-DbIhKOiC.woff         14.40 kB
+2026-09-27T01:27:31.4472785Z ../internal/console/dist/assets/KaTeX_Typewriter-Regular-C0xS9mPB.woff     16.02 kB
+2026-09-27T01:27:31.4473392Z ../internal/console/dist/assets/KaTeX_Math-BoldItalic-CZnvNsCZ.woff2       16.40 kB
+2026-09-27T01:27:31.4473998Z ../internal/console/dist/assets/KaTeX_Math-Italic-t53AETM-.woff2           16.44 kB
+2026-09-27T01:27:31.4474589Z ../internal/console/dist/assets/KaTeX_Script-Regular-C5JkGWo-.ttf          16.64 kB
+2026-09-27T01:27:31.4475185Z ../internal/console/dist/assets/KaTeX_Main-BoldItalic-DxDJ3AOS.woff2       16.78 kB
+2026-09-27T01:27:31.4475771Z ../internal/console/dist/assets/KaTeX_Main-Italic-NWA7e6Wa.woff2           16.98 kB
+2026-09-27T01:27:31.4476352Z ../internal/console/dist/assets/KaTeX_Math-BoldItalic-iY-2wyZ7.woff        18.66 kB
+2026-09-27T01:27:31.4476937Z ../internal/console/dist/assets/KaTeX_Math-Italic-DA0__PXp.woff            18.74 kB
+2026-09-27T01:27:31.4477518Z ../internal/console/dist/assets/KaTeX_Main-BoldItalic-SpSLRI95.woff        19.41 kB
+2026-09-27T01:27:31.4478112Z ../internal/console/dist/assets/KaTeX_SansSerif-Regular-BNo7hRIc.ttf       19.43 kB
+2026-09-27T01:27:31.4478703Z ../internal/console/dist/assets/KaTeX_Fraktur-Regular-CB_wures.ttf         19.57 kB
+2026-09-27T01:27:31.4479285Z ../internal/console/dist/assets/KaTeX_Fraktur-Bold-BdnERNNW.ttf            19.58 kB
+2026-09-27T01:27:31.4479874Z ../internal/console/dist/assets/KaTeX_Main-Italic-BMLOBm91.woff            19.67 kB
+2026-09-27T01:27:31.4480462Z ../internal/console/dist/assets/KaTeX_SansSerif-Italic-YYjJ1zSn.ttf        22.36 kB
+2026-09-27T01:27:31.4481154Z ../internal/console/dist/assets/KaTeX_SansSerif-Bold-CFMepnvq.ttf          24.50 kB
+2026-09-27T01:27:31.4481737Z ../internal/console/dist/assets/KaTeX_Main-Bold-Cx986IdX.woff2             25.32 kB
+2026-09-27T01:27:31.4482316Z ../internal/console/dist/assets/KaTeX_Main-Regular-B22Nviop.woff2          26.27 kB
+2026-09-27T01:27:31.4483425Z ../internal/console/dist/assets/KaTeX_Typewriter-Regular-D3Ib7_Hf.ttf      27.55 kB
+2026-09-27T01:27:31.4484186Z ../internal/console/dist/assets/KaTeX_AMS-Regular-BQhdFMY1.woff2           28.07 kB
+2026-09-27T01:27:31.4484792Z ../internal/console/dist/assets/KaTeX_Main-Bold-Jm3AIy58.woff              29.91 kB
+2026-09-27T01:27:31.4485380Z ../internal/console/dist/assets/KaTeX_Main-Regular-Dr94JaBh.woff           30.77 kB
+2026-09-27T01:27:31.4496329Z ../internal/console/dist/assets/KaTeX_Math-BoldItalic-B3XSjfu4.ttf         31.19 kB
+2026-09-27T01:27:31.4496983Z ../internal/console/dist/assets/KaTeX_Math-Italic-flOr_0UB.ttf             31.30 kB
+2026-09-27T01:27:31.4497573Z ../internal/console/dist/assets/KaTeX_Main-BoldItalic-DzxPMmG6.ttf         32.96 kB
+2026-09-27T01:27:31.4498156Z ../internal/console/dist/assets/KaTeX_AMS-Regular-DMm9YOAa.woff            33.51 kB
+2026-09-27T01:27:31.4498735Z ../internal/console/dist/assets/KaTeX_Main-Italic-3WenGoN9.ttf             33.58 kB
+2026-09-27T01:27:31.4499313Z ../internal/console/dist/assets/Geist-Regular-rEkwi4hp.woff2               45.24 kB
+2026-09-27T01:27:31.4499909Z ../internal/console/dist/assets/Geist-Medium-DdmPy8f2.woff2                46.37 kB
+2026-09-27T01:27:31.4500493Z ../internal/console/dist/assets/Geist-SemiBold-Dgivxjvs.woff2              46.59 kB
+2026-09-27T01:27:31.4501079Z ../internal/console/dist/assets/GeistMono-Regular-DHEw6VMZ.woff2           50.35 kB
+2026-09-27T01:27:31.4501668Z ../internal/console/dist/assets/KaTeX_Main-Bold-waoOVXN0.ttf               51.33 kB
+2026-09-27T01:27:31.4502613Z ../internal/console/dist/assets/GeistMono-Medium-DceA7jXG.woff2            51.50 kB
+2026-09-27T01:27:31.4503309Z ../internal/console/dist/assets/GeistMono-SemiBold-BjOn4zvQ.woff2          51.60 kB
+2026-09-27T01:27:31.4503901Z ../internal/console/dist/assets/KaTeX_Main-Regular-ypZvNtVU.ttf            53.58 kB
+2026-09-27T01:27:31.4504480Z ../internal/console/dist/assets/KaTeX_AMS-Regular-DRggAlZN.ttf             63.63 kB
+2026-09-27T01:27:31.4505355Z ../internal/console/dist/assets/index-BDUs5Wy2.css                        118.50 kB │ gzip:  23.90 kB
+2026-09-27T01:27:31.4506340Z ../internal/console/dist/assets/katex-Boznu5Wf.js                           0.06 kB │ gzip:   0.07 kB
+2026-09-27T01:27:31.4507222Z ../internal/console/dist/assets/mermaid-HWGCJPDP-1yBTYuUU.js                0.06 kB │ gzip:   0.07 kB
+2026-09-27T01:27:31.4507997Z ../internal/console/dist/assets/channel-DaeQ9LA3.js                         0.11 kB │ gzip:   0.12 kB
+2026-09-27T01:27:31.4508771Z ../internal/console/dist/assets/pie-WAS4IAKB-hcXngyU1.js                    0.12 kB │ gzip:   0.12 kB
+2026-09-27T01:27:31.4509537Z ../internal/console/dist/assets/info-A6RAGUB7-CAb8MoVF.js                   0.12 kB │ gzip:   0.13 kB
+2026-09-27T01:27:31.4510315Z ../internal/console/dist/assets/radar-RG4KPBEZ-Lh5EPNjs.js                  0.12 kB │ gzip:   0.12 kB
+2026-09-27T01:27:31.4511139Z ../internal/console/dist/assets/packet-AYTQ26CC-DQdGpt6D.js                 0.12 kB │ gzip:   0.12 kB
+2026-09-27T01:27:31.4511912Z ../internal/console/dist/assets/cynefin-OW5HDTMX-CwmCFQjm.js                0.12 kB │ gzip:   0.13 kB
+2026-09-27T01:27:31.4512689Z ../internal/console/dist/assets/treemap-WGGIJYW6-BkADrruo.js                0.12 kB │ gzip:   0.12 kB
+2026-09-27T01:27:31.4513464Z ../internal/console/dist/assets/wardley-WFR3VGLG-Bb5L9CUZ.js                0.12 kB │ gzip:   0.13 kB
+2026-09-27T01:27:31.4514254Z ../internal/console/dist/assets/gitGraph-4MIJSDKK-CN5jFfFj.js               0.12 kB │ gzip:   0.13 kB
+2026-09-27T01:27:31.4515039Z ../internal/console/dist/assets/railroad-74A4TZTK-DuRHd6sg.js               0.12 kB │ gzip:   0.13 kB
+2026-09-27T01:27:31.4515815Z ../internal/console/dist/assets/treeView-Q6P3EWNA-BAMPC8Fo.js               0.12 kB │ gzip:   0.13 kB
+2026-09-27T01:27:31.4516602Z ../internal/console/dist/assets/railroad-peg-WCYAUIDC-YjGetOZq.js           0.13 kB │ gzip:   0.13 kB
+2026-09-27T01:27:31.4517402Z ../internal/console/dist/assets/architecture-7GRP2DOG-DuN2D3oa.js           0.13 kB │ gzip:   0.13 kB
+2026-09-27T01:27:31.4518193Z ../internal/console/dist/assets/railroad-abnf-HS5TGJTU-D65ckI_I.js          0.13 kB │ gzip:   0.13 kB
+2026-09-27T01:27:31.4519039Z ../internal/console/dist/assets/railroad-ebnf-LZEXJU2U-BwMHEgWQ.js          0.13 kB │ gzip:   0.13 kB
+2026-09-27T01:27:31.4519876Z ../internal/console/dist/assets/eventmodeling-NTZA5JFV-D4-EBEQv.js          0.13 kB │ gzip:   0.13 kB
+2026-09-27T01:27:31.4521147Z ../internal/console/dist/assets/chunk-Y2CYZVJY-DsF7k-Jl.js                  0.15 kB │ gzip:   0.14 kB
+2026-09-27T01:27:31.4521931Z ../internal/console/dist/assets/chevron-down-nX3qg6d-.js                    0.15 kB │ gzip:   0.15 kB
+2026-09-27T01:27:31.4522693Z ../internal/console/dist/assets/chevron-right-CB9jq707.js                   0.15 kB │ gzip:   0.15 kB
+2026-09-27T01:27:31.4523468Z ../internal/console/dist/assets/plus-BtElbKFE.js                            0.18 kB │ gzip:   0.16 kB
+2026-09-27T01:27:31.4524213Z ../internal/console/dist/assets/chunk-2Q5K7J3B-C1jixKkw.js                  0.19 kB │ gzip:   0.16 kB
+2026-09-27T01:27:31.4524967Z ../internal/console/dist/assets/useRouter-CvmHl-Py.js                       0.19 kB │ gzip:   0.16 kB
+2026-09-27T01:27:31.4525751Z ../internal/console/dist/assets/DirectionContext-BHJDGMvC.js                0.20 kB │ gzip:   0.17 kB
+2026-09-27T01:27:31.4526747Z ../internal/console/dist/assets/chunk-JWPE2WC7-DVXcaiue.js                  0.22 kB │ gzip:   0.17 kB
+2026-09-27T01:27:31.4527793Z ../internal/console/dist/assets/chunk-XXDRQBXY-DWOGIiTm.js                  0.25 kB │ gzip:   0.22 kB
+2026-09-27T01:27:31.4528722Z ../internal/console/dist/assets/download-CpkJVMUV.js                        0.26 kB │ gzip:   0.20 kB
+2026-09-27T01:27:31.4529474Z ../internal/console/dist/assets/globe-CIyMKnRa.js                           0.27 kB │ gzip:   0.20 kB
+2026-09-27T01:27:31.4530220Z ../internal/console/dist/assets/logoStyle-DdfjvNNZ.js                       0.27 kB │ gzip:   0.19 kB
+2026-09-27T01:27:31.4530958Z ../internal/console/dist/assets/eye-CkoGNKlD.js                             0.28 kB │ gzip:   0.22 kB
+2026-09-27T01:27:31.4531689Z ../internal/console/dist/assets/arrow-up-DIHoXCBr.js                        0.32 kB │ gzip:   0.22 kB
+2026-09-27T01:27:31.4532427Z ../internal/console/dist/assets/init-ZlXS9mIS.js                            0.35 kB │ gzip:   0.17 kB
+2026-09-27T01:27:31.4533321Z ../internal/console/dist/assets/chunk-5VM5RSS4-ZNzvKenW.js                  0.36 kB │ gzip:   0.27 kB
+2026-09-27T01:27:31.4534100Z ../internal/console/dist/assets/trash-BK6DmdfX.js                           0.37 kB │ gzip:   0.24 kB
+2026-09-27T01:27:31.4534847Z ../internal/console/dist/assets/useNavigate-DjqzlXGr.js                     0.43 kB │ gzip:   0.29 kB
+2026-09-27T01:27:31.4535606Z ../internal/console/dist/assets/codeowners-C8r90Shi.js                      0.54 kB │ gzip:   0.31 kB
+2026-09-27T01:27:31.4536349Z ../internal/console/dist/assets/Card-n15PChDJ.js                            0.54 kB │ gzip:   0.31 kB
+2026-09-27T01:27:31.4537108Z ../internal/console/dist/assets/flowDiagram-A5DVABFB-B-KX2GFB.js            0.56 kB │ gzip:   0.31 kB
+2026-09-27T01:27:31.4537886Z ../internal/console/dist/assets/chunk-POPQ4Y6H-CELeRd18.js                  0.57 kB │ gzip:   0.40 kB
+2026-09-27T01:27:31.4538669Z ../internal/console/dist/assets/highlighted-body-KPVGNVTW-DBzx6vYL.js       0.58 kB │ gzip:   0.37 kB
+2026-09-27T01:27:31.4539484Z ../internal/console/dist/assets/infoDiagram-RXCK75RN-kVAXxTs2.js            0.64 kB │ gzip:   0.41 kB
+2026-09-27T01:27:31.4540272Z ../internal/console/dist/assets/shellsession-CVsQGYfZ.js                    0.71 kB │ gzip:   0.43 kB
+2026-09-27T01:27:31.4541048Z ../internal/console/dist/assets/rolldown-runtime-hePW80VL.js                0.71 kB │ gzip:   0.42 kB
+2026-09-27T01:27:31.4541696Z [33m[plugin builtin:vite-reporter] 
+2026-09-27T01:27:31.4542079Z (!) Some chunks are larger than 500 kB after minification. Consider:
+2026-09-27T01:27:31.4542497Z - Using dynamic import() to code-split the application
+2026-09-27T01:27:31.4543211Z - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+2026-09-27T01:27:31.4544032Z - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+2026-09-27T01:27:31.4544722Z ../internal/console/dist/assets/tsv-sltzmVWM.js                             0.73 kB │ gzip:   0.33 kB
+2026-09-27T01:27:31.4545891Z ../internal/console/dist/assets/classDiagram-DTDB5LWJ-Bsr0McXH.js           0.77 kB │ gzip:   0.45 kB
+2026-09-27T01:27:31.4546927Z ../internal/console/dist/assets/classDiagram-v2-JRS7N3AN-Bsr0McXH.js        0.77 kB │ gzip:   0.45 kB
+2026-09-27T01:27:31.4547787Z ../internal/console/dist/assets/stateDiagram-v2-4QOOHH4V-DhC9AHLm.js        0.77 kB │ gzip:   0.45 kB
+2026-09-27T01:27:31.4548550Z ../internal/console/dist/assets/Select-DgpCIQ1p.js                          0.80 kB │ gzip:   0.50 kB
+2026-09-27T01:27:31.4549326Z ../internal/console/dist/assets/swimlanesDiagram-VK2B7HYN-8a5GnAS7.js       0.82 kB │ gzip:   0.48 kB
+2026-09-27T01:27:31.4550106Z ../internal/console/dist/assets/ConfirmDialog-D96vppD-.js                   0.83 kB │ gzip:   0.44 kB
+2026-09-27T01:27:31.4550872Z ../internal/console/dist/assets/ExternalLink-C7WYirEK.js                    0.83 kB │ gzip:   0.48 kB
+2026-09-27T01:27:31.4551640Z ../internal/console/dist/assets/html-derivative-CDfZYcul.js                 0.84 kB │ gzip:   0.45 kB
+2026-09-27T01:27:31.4553481Z ../internal/console/dist/assets/sizeCapture-X5ZJPWSS-3uHXrFqA.js            0.87 kB │ gzip:   0.51 kB
+2026-09-27T01:27:31.4554516Z ../internal/console/dist/assets/LoadFailed-BZCAycIF.js                      0.92 kB │ gzip:   0.52 kB
+2026-09-27T01:27:31.4555290Z ../internal/console/dist/assets/git-rebase-BDPpS8w6.js                      0.98 kB │ gzip:   0.44 kB
+2026-09-27T01:27:31.4556036Z ../internal/console/dist/assets/qmldir-DCQb3MpD.js                          0.99 kB │ gzip:   0.44 kB
+2026-09-27T01:27:31.4556774Z ../internal/console/dist/assets/IconButton-CbCO-FaD.js                      1.02 kB │ gzip:   0.54 kB
+2026-09-27T01:27:31.4562307Z ../internal/console/dist/assets/useInfiniteQuery-DxmkF6km.js                1.11 kB │ gzip:   0.47 kB
+2026-09-27T01:27:31.4563087Z ../internal/console/dist/assets/csv-Dx-8-gkx.js                             1.13 kB │ gzip:   0.36 kB
+2026-09-27T01:27:31.4563844Z ../internal/console/dist/assets/SmallScreenNav-DWIiiqDc.js                  1.14 kB │ gzip:   0.61 kB
+2026-09-27T01:27:31.4564642Z ../internal/console/dist/assets/ordinal-CPleeUAT.js                         1.18 kB │ gzip:   0.57 kB
+2026-09-27T01:27:31.4565393Z ../internal/console/dist/assets/git-commit-BSykSTBG.js                      1.22 kB │ gzip:   0.52 kB
+2026-09-27T01:27:31.4566152Z ../internal/console/dist/assets/BudgetLine-Bi93CdEA.js                      1.24 kB │ gzip:   0.65 kB
+2026-09-27T01:27:31.4567223Z ../internal/console/dist/assets/xsl-BOPS8gLt.js                             1.36 kB │ gzip:   0.49 kB
+2026-09-27T01:27:31.4567961Z ../internal/console/dist/assets/dotenv-_5a1GRtc.js                          1.41 kB │ gzip:   0.52 kB
+2026-09-27T01:27:31.4568712Z ../internal/console/dist/assets/chunk-OBVCFTLP-DfmLdfIw.js                  1.41 kB │ gzip:   0.79 kB
+2026-09-27T01:27:31.4569460Z ../internal/console/dist/assets/sparql-D_iOobhT.js                          1.47 kB │ gzip:   0.81 kB
+2026-09-27T01:27:31.4570202Z ../internal/console/dist/assets/ini-B5eOa1yu.js                             1.51 kB │ gzip:   0.49 kB
+2026-09-27T01:27:31.4570933Z ../internal/console/dist/assets/band-DZ4Jagyz.js                            1.53 kB │ gzip:   0.66 kB
+2026-09-27T01:27:31.4571693Z ../internal/console/dist/assets/railroadDiagram-O6MQD6OU-BjMMJGbt.js        1.65 kB │ gzip:   0.76 kB
+2026-09-27T01:27:31.4572479Z ../internal/console/dist/assets/fortran-fixed-form-DEKoE2YW.js              1.66 kB │ gzip:   0.68 kB
+2026-09-27T01:27:31.4573258Z ../internal/console/dist/assets/IdentityRequired-Dpmpi5hH.js                1.70 kB │ gzip:   0.82 kB
+2026-09-27T01:27:31.4574021Z ../internal/console/dist/assets/docker-IyjqRm3v.js                          1.73 kB │ gzip:   0.59 kB
+2026-09-27T01:27:31.4574752Z ../internal/console/dist/assets/hxml-B0Qn7Nwc.js                            1.74 kB │ gzip:   0.87 kB
+2026-09-27T01:27:31.4575490Z ../internal/console/dist/assets/EntityLogo-kv81Qqog.js                      1.81 kB │ gzip:   0.94 kB
+2026-09-27T01:27:31.4576621Z ../internal/console/dist/assets/desktop-Dlh5hvp9.js                         1.82 kB │ gzip:   0.75 kB
+2026-09-27T01:27:31.4577405Z ../internal/console/dist/assets/abnfDiagram-VCTEODGH-DC9ukiKD.js            1.83 kB │ gzip:   0.89 kB
+2026-09-27T01:27:31.4578189Z ../internal/console/dist/assets/useSelector-eKzEcQ9v.js                     1.92 kB │ gzip:   0.85 kB
+2026-09-27T01:27:31.4578954Z ../internal/console/dist/assets/chunk-P2QGCYS3-CGF8SFgx.js                  1.94 kB │ gzip:   0.95 kB
+2026-09-27T01:27:31.4579708Z ../internal/console/dist/assets/chunk-F27PBJKO-Blw_2c_d.js                  1.96 kB │ gzip:   0.88 kB
+2026-09-27T01:27:31.4580476Z ../internal/console/dist/assets/pegDiagram-XKGWAZYB-BwArq9c7.js             2.00 kB │ gzip:   0.94 kB
+2026-09-27T01:27:31.4581265Z ../internal/console/dist/assets/ebnfDiagram-PWID7BFC-S0V0DQQe.js            2.05 kB │ gzip:   0.88 kB
+2026-09-27T01:27:31.4582034Z ../internal/console/dist/assets/authors-Dpbujt2q.js                         2.06 kB │ gzip:   0.97 kB
+2026-09-27T01:27:31.4582970Z ../internal/console/dist/assets/modelFilter-DHZUixh-.js                     2.11 kB │ gzip:   0.87 kB
+2026-09-27T01:27:31.4583853Z ../internal/console/dist/assets/erb-CIsHcwm1.js                             2.13 kB │ gzip:   0.62 kB
+2026-09-27T01:27:31.4584747Z ../internal/console/dist/assets/wenyan-C8pVoKbM.js                          2.15 kB │ gzip:   1.08 kB
+2026-09-27T01:27:31.4585499Z ../internal/console/dist/assets/composite-CD7pWvd9.js                       2.15 kB │ gzip:   0.79 kB
+2026-09-27T01:27:31.4586232Z ../internal/console/dist/assets/dist-v5Q1xZ2K.js                            2.17 kB │ gzip:   0.98 kB
+2026-09-27T01:27:31.4587279Z ../internal/console/dist/assets/jssm-DXw9l8Rf.js                            2.23 kB │ gzip:   0.61 kB
+2026-09-27T01:27:31.4588029Z ../internal/console/dist/assets/edge-8z7Jp9dO.js                            2.30 kB │ gzip:   0.67 kB
+2026-09-27T01:27:31.4588750Z ../internal/console/dist/assets/reg-CRGYupPL.js                             2.33 kB │ gzip:   0.69 kB
+2026-09-27T01:27:31.4589512Z ../internal/console/dist/assets/AuthorCard-D0IfTgSD.js                      2.37 kB │ gzip:   1.08 kB
+2026-09-27T01:27:31.4590255Z ../internal/console/dist/assets/Form-DiywK1fM.js                            2.49 kB │ gzip:   0.81 kB
+2026-09-27T01:27:31.4591044Z ../internal/console/dist/assets/useButton-CY2gYUTM.js                       2.49 kB │ gzip:   1.14 kB
+2026-09-27T01:27:31.4591778Z ../internal/console/dist/assets/diff-woXpYk--.js                            2.56 kB │ gzip:   0.68 kB
+2026-09-27T01:27:31.4592501Z ../internal/console/dist/assets/gleam-CSRkHgEL.js                           2.57 kB │ gzip:   0.81 kB
+2026-09-27T01:27:31.4593218Z ../internal/console/dist/assets/hy-CZbG8q4J.js                              2.64 kB │ gzip:   1.17 kB
+2026-09-27T01:27:31.4593936Z ../internal/console/dist/assets/dialog-DGnKfco5.js                          2.81 kB │ gzip:   1.09 kB
+2026-09-27T01:27:31.4594702Z ../internal/console/dist/assets/openscad-BUDT5pXO.js                        2.81 kB │ gzip:   1.00 kB
+2026-09-27T01:27:31.4595445Z ../internal/console/dist/assets/log-BNLmms1o.js                             2.84 kB │ gzip:   0.89 kB
+2026-09-27T01:27:31.4596173Z ../internal/console/dist/assets/json-DAgxKhMr.js                            2.89 kB │ gzip:   0.82 kB
+2026-09-27T01:27:31.4596933Z ../internal/console/dist/assets/CredentialApplyModal-BrIJmtLm.js            2.91 kB │ gzip:   1.28 kB
+2026-09-27T01:27:31.4597696Z ../internal/console/dist/assets/cairo-DLTphjLi.js                           2.93 kB │ gzip:   0.80 kB
+2026-09-27T01:27:31.4598428Z ../internal/console/dist/assets/berry-DKpUyyne.js                           2.99 kB │ gzip:   0.80 kB
+2026-09-27T01:27:31.4599159Z ../internal/console/dist/assets/jsonl-CmCQp5Yx.js                           3.00 kB │ gzip:   0.78 kB
+2026-09-27T01:27:31.4599935Z ../internal/console/dist/assets/jsonc-CYpm1nAK.js                           3.10 kB │ gzip:   0.78 kB
+2026-09-27T01:27:31.4601803Z ../internal/console/dist/assets/logo-Cluzi2Zq.js                            3.12 kB │ gzip:   1.46 kB
+2026-09-27T01:27:31.4602548Z ../internal/console/dist/assets/po-BiJDBrnU.js                              3.23 kB │ gzip:   0.90 kB
+2026-09-27T01:27:31.4603274Z ../internal/console/dist/assets/json5-BR5RXkoi.js                           3.24 kB │ gzip:   0.82 kB
+2026-09-27T01:27:31.4604005Z ../internal/console/dist/assets/mipsasm-BMqwQI7S.js                         3.25 kB │ gzip:   1.17 kB
+2026-09-27T01:27:31.4604736Z ../internal/console/dist/assets/tasl-DMoTqEGO.js                            3.28 kB │ gzip:   0.84 kB
+2026-09-27T01:27:31.4605462Z ../internal/console/dist/assets/genie-CV2tkWYe.js                           3.34 kB │ gzip:   1.20 kB
+2026-09-27T01:27:31.4606174Z ../internal/console/dist/assets/rel-BtDbiS_P.js                             3.36 kB │ gzip:   1.10 kB
+2026-09-27T01:27:31.4607121Z ../internal/console/dist/assets/vala-zf12oZj6.js                            3.36 kB │ gzip:   1.18 kB
+2026-09-27T01:27:31.4607940Z ../internal/console/dist/assets/splunk-BC2Px7Mm.js                          3.42 kB │ gzip:   1.51 kB
+2026-09-27T01:27:31.4608884Z ../internal/console/dist/assets/arc-C5ENRMco.js                             3.48 kB │ gzip:   1.47 kB
+2026-09-27T01:27:31.4609697Z ../internal/console/dist/assets/hurl-DCZHXKU4.js                            3.51 kB │ gzip:   1.09 kB
+2026-09-27T01:27:31.4610719Z ../internal/console/dist/assets/fluent-C03EYrpw.js                          3.60 kB │ gzip:   0.89 kB
+2026-09-27T01:27:31.4611492Z ../internal/console/dist/assets/ssh-config-BgfXC-Er.js                      3.61 kB │ gzip:   1.59 kB
+2026-09-27T01:27:31.4612229Z ../internal/console/dist/assets/jsonnet-CJTPZ8u_.js                         3.61 kB │ gzip:   1.03 kB
+2026-09-27T01:27:31.4612969Z ../internal/console/dist/assets/models_._modelId-Dk__GXtp.js                3.61 kB │ gzip:   1.31 kB
+2026-09-27T01:27:31.4613694Z ../internal/console/dist/assets/kdl-CsD5j6eV.js                             3.62 kB │ gzip:   1.03 kB
+2026-09-27T01:27:31.4614428Z ../internal/console/dist/assets/narrat-_X_XdTYD.js                          3.66 kB │ gzip:   1.09 kB
+2026-09-27T01:27:31.4615150Z ../internal/console/dist/assets/turtle-ByJddavk.js                          3.69 kB │ gzip:   0.96 kB
+2026-09-27T01:27:31.4615873Z ../internal/console/dist/assets/glsl-D5MA2a_X.js                            3.69 kB │ gzip:   1.46 kB
+2026-09-27T01:27:31.4616612Z ../internal/console/dist/assets/useCompositeItem-BWw_4b8x.js                3.71 kB │ gzip:   1.65 kB
+2026-09-27T01:27:31.4617369Z ../internal/console/dist/assets/zenscript-BnlCZFoB.js                       3.90 kB │ gzip:   1.28 kB
+2026-09-27T01:27:31.4618104Z ../internal/console/dist/assets/ron-VUp2lXgN.js                             3.90 kB │ gzip:   0.97 kB
+2026-09-27T01:27:31.4618830Z ../internal/console/dist/assets/react-dom-hf6EcyAr.js                       3.90 kB │ gzip:   1.42 kB
+2026-09-27T01:27:31.4619553Z ../internal/console/dist/assets/gn-ilITqXS6.js                              3.99 kB │ gzip:   1.47 kB
+2026-09-27T01:27:31.4620300Z ../internal/console/dist/assets/FacetFilter-eRLEy2dd.js                     4.00 kB │ gzip:   1.59 kB
+2026-09-27T01:27:31.4621049Z ../internal/console/dist/assets/pascal-4ZHwLPI5.js                          4.14 kB │ gzip:   1.67 kB
+2026-09-27T01:27:31.4621800Z ../internal/console/dist/assets/authors_._authorId-CTEdcE-p.js              4.22 kB │ gzip:   1.40 kB
+2026-09-27T01:27:31.4622580Z ../internal/console/dist/assets/diagram-Z3DM3KII-CkzFIG5G.js                4.26 kB │ gzip:   1.84 kB
+2026-09-27T01:27:31.4623326Z ../internal/console/dist/assets/http-kmH8AyfE.js                            4.41 kB │ gzip:   1.06 kB
+2026-09-27T01:27:31.4624041Z ../internal/console/dist/assets/tcl-CZd0xW_V.js                             4.42 kB │ gzip:   1.50 kB
+2026-09-27T01:27:31.4629219Z ../internal/console/dist/assets/nextflow-Bbiyy34d.js                        4.50 kB │ gzip:   1.16 kB
+2026-09-27T01:27:31.4630355Z ../internal/console/dist/assets/rosmsg-CAekHB0j.js                          4.51 kB │ gzip:   1.05 kB
+2026-09-27T01:27:31.4631128Z ../internal/console/dist/assets/defaultLocale-BFoDCU3G.js                   4.63 kB │ gzip:   2.12 kB
+2026-09-27T01:27:31.4631877Z ../internal/console/dist/assets/polar-C7UOKdEL.js                           4.66 kB │ gzip:   1.12 kB
+2026-09-27T01:27:31.4632622Z ../internal/console/dist/assets/providers-Bjqqzfsp.js                       4.66 kB │ gzip:   2.01 kB
+2026-09-27T01:27:31.4633358Z ../internal/console/dist/assets/sdbl-bTVj8UrX.js                            4.69 kB │ gzip:   2.00 kB
+2026-09-27T01:27:31.4634102Z ../internal/console/dist/assets/ProviderCard-bYOqH7EK.js                    4.73 kB │ gzip:   1.55 kB
+2026-09-27T01:27:31.4634853Z ../internal/console/dist/assets/fennel-DQxkIbk2.js                          4.76 kB │ gzip:   1.53 kB
+2026-09-27T01:27:31.4635576Z ../internal/console/dist/assets/bibtex-Ci_nEsc7.js                          4.78 kB │ gzip:   0.83 kB
+2026-09-27T01:27:31.4636317Z ../internal/console/dist/assets/ModelPicker-CTTDd-kh.js                     4.90 kB │ gzip:   1.83 kB
+2026-09-27T01:27:31.4637238Z ../internal/console/dist/assets/llvm-Cm23YOpf.js                            5.04 kB │ gzip:   2.01 kB
+2026-09-27T01:27:31.4638073Z ../internal/console/dist/assets/wgsl-BsKzXJz4.js                            5.13 kB │ gzip:   1.38 kB
+2026-09-27T01:27:31.4638823Z ../internal/console/dist/assets/gdresource-C0sCabJj.js                      5.28 kB │ gzip:   1.33 kB
+2026-09-27T01:27:31.4639559Z ../internal/console/dist/assets/zig-CMLA9XwU.js                             5.33 kB │ gzip:   1.55 kB
+2026-09-27T01:27:31.4641235Z ../internal/console/dist/assets/qml-_a-QhfPD.js                             5.33 kB │ gzip:   1.38 kB
+2026-09-27T01:27:31.4642013Z ../internal/console/dist/assets/dax-BkyTk9wS.js                             5.35 kB │ gzip:   2.21 kB
+2026-09-27T01:27:31.4642767Z ../internal/console/dist/assets/bicep-CUHmPFLl.js                           5.37 kB │ gzip:   1.14 kB
+2026-09-27T01:27:31.4643532Z ../internal/console/dist/assets/xml-BlnrEAEy.js                             5.44 kB │ gzip:   1.25 kB
+2026-09-27T01:27:31.4644254Z ../internal/console/dist/assets/awk-BWXHIvNe.js                             5.45 kB │ gzip:   1.37 kB
+2026-09-27T01:27:31.4645156Z ../internal/console/dist/assets/coq-BrsZFFmf.js                             5.54 kB │ gzip:   1.91 kB
+2026-09-27T01:27:31.4645949Z ../internal/console/dist/assets/jinja-BMiPVedm.js                           5.62 kB │ gzip:   1.36 kB
+2026-09-27T01:27:31.4646691Z ../internal/console/dist/assets/linear-FD-9takj.js                          5.75 kB │ gzip:   2.37 kB
+2026-09-27T01:27:31.4647416Z ../internal/console/dist/assets/lean-CewbzKMR.js                            5.77 kB │ gzip:   1.91 kB
+2026-09-27T01:27:31.4648164Z ../internal/console/dist/assets/chunk-PWAF6VOD-C0lXo4hS.js                  5.83 kB │ gzip:   2.68 kB
+2026-09-27T01:27:31.4648919Z ../internal/console/dist/assets/moonbit-CaWjb8XO.js                         5.89 kB │ gzip:   1.67 kB
+2026-09-27T01:27:31.4649687Z ../internal/console/dist/assets/powerquery-DNMTfnFr.js                      5.89 kB │ gzip:   1.51 kB
+2026-09-27T01:27:31.4650441Z ../internal/console/dist/assets/shaderlab-TOUzSsQk.js                       5.91 kB │ gzip:   2.08 kB
+2026-09-27T01:27:31.4651185Z ../internal/console/dist/assets/verilog-CiiDBU1e.js                         5.92 kB │ gzip:   1.89 kB
+2026-09-27T01:27:31.4651921Z ../internal/console/dist/assets/cypher-ClKdZ_lG.js                          5.94 kB │ gzip:   1.71 kB
+2026-09-27T01:27:31.4652651Z ../internal/console/dist/assets/audit-mKaYMEZK.js                           5.97 kB │ gzip:   2.40 kB
+2026-09-27T01:27:31.4653404Z ../internal/console/dist/assets/diagram-UQ7AKVKN-BEF2iRAr.js                6.06 kB │ gzip:   2.56 kB
+2026-09-27T01:27:31.4654243Z ../internal/console/dist/assets/vb-Djn5o6TS.js                              6.08 kB │ gzip:   2.33 kB
+2026-09-27T01:27:31.4655451Z ../internal/console/dist/assets/pieDiagram-E7YTZNPT-DQ4MHNJp.js             6.18 kB │ gzip:   2.58 kB
+2026-09-27T01:27:31.4656250Z ../internal/console/dist/assets/red-CJ3rzSJv.js                             6.25 kB │ gzip:   1.59 kB
+2026-09-27T01:27:31.4657005Z ../internal/console/dist/assets/min-dark-BSWPekZh.js                        6.28 kB │ gzip:   1.70 kB
+2026-09-27T01:27:31.4657995Z ../internal/console/dist/assets/gdshader-CBce3t8t.js                        6.31 kB │ gzip:   1.72 kB
+2026-09-27T01:27:31.4658767Z ../internal/console/dist/assets/prisma-BsRQq5mF.js                          6.32 kB │ gzip:   1.38 kB
+2026-09-27T01:27:31.4659498Z ../internal/console/dist/assets/ara-4CJ0cIlV.js                             6.35 kB │ gzip:   1.80 kB
+2026-09-27T01:27:31.4660225Z ../internal/console/dist/assets/clojure-DqKBuwfJ.js                         6.40 kB │ gzip:   1.41 kB
+2026-09-27T01:27:31.4660967Z ../internal/console/dist/assets/postcss-BXeXVLqQ.js                         6.41 kB │ gzip:   1.90 kB
+2026-09-27T01:27:31.4661708Z ../internal/console/dist/assets/toml-CcmNWLt0.js                            6.41 kB │ gzip:   1.28 kB
+2026-09-27T01:27:31.4662675Z ../internal/console/dist/assets/solarized-light-DSh2HLQt.js                 6.47 kB │ gzip:   1.71 kB
+2026-09-27T01:27:31.4663579Z ../internal/console/dist/assets/proto-DB4EqR-F.js                           6.54 kB │ gzip:   1.41 kB
+2026-09-27T01:27:31.4664320Z ../internal/console/dist/assets/smalltalk-B16xEiuN.js                       6.58 kB │ gzip:   1.61 kB
+2026-09-27T01:27:31.4665058Z ../internal/console/dist/assets/r-D6UWEOL2.js                               6.60 kB │ gzip:   1.83 kB
+2026-09-27T01:27:31.4665789Z ../internal/console/dist/assets/talonscript-CohzipZa.js                     6.75 kB │ gzip:   1.48 kB
+2026-09-27T01:27:31.4666555Z ../internal/console/dist/assets/solarized-dark-DV17i1UV.js                  6.84 kB │ gzip:   1.78 kB
+2026-09-27T01:27:31.4667305Z ../internal/console/dist/assets/members-D9dN4wIu.js                         6.88 kB │ gzip:   2.25 kB
+2026-09-27T01:27:31.4668056Z ../internal/console/dist/assets/riscv-Ckw8ddFX.js                           6.90 kB │ gzip:   1.97 kB
+2026-09-27T01:27:31.4668772Z ../internal/console/dist/assets/soy-B5n_eHSp.js                             6.92 kB │ gzip:   1.62 kB
+2026-09-27T01:27:31.4669496Z ../internal/console/dist/assets/min-light-DDpmG2fV.js                       6.96 kB │ gzip:   1.88 kB
+2026-09-27T01:27:31.4670257Z ../internal/console/dist/assets/useRenderElement-BuFyzs6P.js                7.05 kB │ gzip:   2.99 kB
+2026-09-27T01:27:31.4671009Z ../internal/console/dist/assets/files-DS_YZLmw.js                           7.14 kB │ gzip:   2.61 kB
+2026-09-27T01:27:31.4671741Z ../internal/console/dist/assets/scheme-DQCgrYNe.js                          7.16 kB │ gzip:   2.04 kB
+2026-09-27T01:27:31.4672468Z ../internal/console/dist/assets/hlsl-Cvrh5tZx.js                            7.25 kB │ gzip:   2.18 kB
+2026-09-27T01:27:31.4673188Z ../internal/console/dist/assets/qss-Fe1Jh2GI.js                             7.46 kB │ gzip:   2.57 kB
+2026-09-27T01:27:31.4673945Z ../internal/console/dist/assets/documents-ijlRMApV.js                       7.60 kB │ gzip:   2.26 kB
+2026-09-27T01:27:31.4674684Z ../internal/console/dist/assets/dart-DkHntEIa.js                            7.80 kB │ gzip:   1.91 kB
+2026-09-27T01:27:31.4675403Z ../internal/console/dist/assets/auth-DHrpC9VI.js                            7.85 kB │ gzip:   2.82 kB
+2026-09-27T01:27:31.4676138Z ../internal/console/dist/assets/systemd-BxMlprV5.js                         7.86 kB │ gzip:   2.54 kB
+2026-09-27T01:27:31.4676883Z ../internal/console/dist/assets/monokai-CdkpiU2Y.js                         7.88 kB │ gzip:   1.90 kB
+2026-09-27T01:27:31.4677829Z ../internal/console/dist/assets/regexp-DR20uMnK.js                          8.05 kB │ gzip:   1.47 kB
+2026-09-27T01:27:31.4678659Z ../internal/console/dist/assets/diagram-S7CK7UJ4-BCRO5HQa.js                8.18 kB │ gzip:   3.65 kB
+2026-09-27T01:27:31.4679796Z ../internal/console/dist/assets/jsx-runtime-BNakU3Ej.js                     8.24 kB │ gzip:   3.11 kB
+2026-09-27T01:27:31.4680559Z ../internal/console/dist/assets/models-rryvx58C.js                          8.28 kB │ gzip:   3.07 kB
+2026-09-27T01:27:31.4681286Z ../internal/console/dist/assets/haml-mpgecWZ6.js                            8.33 kB │ gzip:   1.85 kB
+2026-09-27T01:27:31.4682023Z ../internal/console/dist/assets/ModelDetail-LMYs24LZ.js                     8.37 kB │ gzip:   2.38 kB
+2026-09-27T01:27:31.4682765Z ../internal/console/dist/assets/typst-DI99ib-x.js                           8.38 kB │ gzip:   1.66 kB
+2026-09-27T01:27:31.4683502Z ../internal/console/dist/assets/vue-html-DkKkQnZL.js                        8.47 kB │ gzip:   1.68 kB
+2026-09-27T01:27:31.4684235Z ../internal/console/dist/assets/plsql-DGHpHOYJ.js                           8.50 kB │ gzip:   2.99 kB
+2026-09-27T01:27:31.4684966Z ../internal/console/dist/assets/horizon-CE9ld1lL.js                         8.77 kB │ gzip:   1.94 kB
+2026-09-27T01:27:31.4685709Z ../internal/console/dist/assets/kotlin-DhhofPvG.js                          8.77 kB │ gzip:   2.12 kB
+2026-09-27T01:27:31.4686644Z ../internal/console/dist/assets/horizon-bright-Br1oVSNq.js                  8.78 kB │ gzip:   1.96 kB
+2026-09-27T01:27:31.4687507Z ../internal/console/dist/assets/ts-tags-q3pptdMi.js                         8.92 kB │ gzip:   1.20 kB
+2026-09-27T01:27:31.4688241Z ../internal/console/dist/assets/make-Dixweg8N.js                            8.95 kB │ gzip:   1.76 kB
+2026-09-27T01:27:31.4688980Z ../internal/console/dist/assets/andromeeda-vGVdxbeo.js                      9.01 kB │ gzip:   2.35 kB
+2026-09-27T01:27:31.4689716Z ../internal/console/dist/assets/sas-B6p8-ynO.js                             9.06 kB │ gzip:   3.82 kB
+2026-09-27T01:27:31.4690445Z ../internal/console/dist/assets/dark-plus-Cs2F2srj.js                       9.09 kB │ gzip:   2.10 kB
+2026-09-27T01:27:31.4691190Z ../internal/console/dist/assets/slack-dark-DnToyrRv.js                      9.11 kB │ gzip:   1.96 kB
+2026-09-27T01:27:31.4696260Z ../internal/console/dist/assets/link-CGWrH9KS.js                            9.23 kB │ gzip:   4.23 kB
+2026-09-27T01:27:31.4697020Z ../internal/console/dist/assets/sass-DXrisJhu.js                            9.28 kB │ gzip:   2.48 kB
+2026-09-27T01:27:31.4697992Z ../internal/console/dist/assets/plastic-DQwYfKfQ.js                         9.29 kB │ gzip:   1.96 kB
+2026-09-27T01:27:31.4698823Z ../internal/console/dist/assets/slack-ochin-B2OO5cIa.js                     9.42 kB │ gzip:   2.08 kB
+2026-09-27T01:27:31.4699564Z ../internal/console/dist/assets/tex-0w6-Dtgt.js                             9.67 kB │ gzip:   3.06 kB
+2026-09-27T01:27:31.4700305Z ../internal/console/dist/assets/chunk-JQ64N6SF-52H_u9bc.js                  9.68 kB │ gzip:   2.93 kB
+2026-09-27T01:27:31.4701046Z ../internal/console/dist/assets/jison-CBjhYtSs.js                           9.69 kB │ gzip:   1.86 kB
+2026-09-27T01:27:31.4701769Z ../internal/console/dist/assets/cmake-Bj61d0ZC.js                           9.84 kB │ gzip:   3.37 kB
+2026-09-27T01:27:31.4702540Z ../internal/console/dist/assets/cynefinDiagram-5FMLGOSQ-B57ImBBd.js         9.93 kB │ gzip:   3.51 kB
+2026-09-27T01:27:31.4703313Z ../internal/console/dist/assets/light-plus-DVQuIRkW.js                      9.93 kB │ gzip:   2.27 kB
+2026-09-27T01:27:31.4704047Z ../internal/console/dist/assets/hcl-Dh228itO.js                            10.04 kB │ gzip:   1.93 kB
+2026-09-27T01:27:31.4704754Z ../internal/console/dist/assets/rst-CgIrbW_q.js                            10.31 kB │ gzip:   2.24 kB
+2026-09-27T01:27:31.4705464Z ../internal/console/dist/assets/pkl-ot-7Btpt.js                            10.36 kB │ gzip:   1.37 kB
+2026-09-27T01:27:31.4706196Z ../internal/console/dist/assets/beancount-D-usSTwE.js                      10.36 kB │ gzip:   1.43 kB
+2026-09-27T01:27:31.4706947Z ../internal/console/dist/assets/nextflow-groovy-Dc_ddanL.js                10.39 kB │ gzip:   2.12 kB
+2026-09-27T01:27:31.4708173Z ../internal/console/dist/assets/dream-maker-DW3nJb8Q.js                    10.46 kB │ gzip:   2.25 kB
+2026-09-27T01:27:31.4708941Z ../internal/console/dist/assets/raku-B3gFvitq.js                           10.46 kB │ gzip:   2.94 kB
+2026-09-27T01:27:31.4709670Z ../internal/console/dist/assets/yaml-Du_6cdrH.js                           10.57 kB │ gzip:   2.32 kB
+2026-09-27T01:27:31.4710420Z ../internal/console/dist/assets/stateDiagram-HBIQ2CUA-BqXXSOuT.js          10.64 kB │ gzip:   3.73 kB
+2026-09-27T01:27:31.4711201Z ../internal/console/dist/assets/diagram-VSXAHHWV-BIphAKEs.js               10.65 kB │ gzip:   4.11 kB
+2026-09-27T01:27:31.4711951Z ../internal/console/dist/assets/just-DMArCiVH.js                           10.76 kB │ gzip:   2.60 kB
+2026-09-27T01:27:31.4712668Z ../internal/console/dist/assets/elm-o4NJxfws.js                            10.94 kB │ gzip:   2.09 kB
+2026-09-27T01:27:31.4713404Z ../internal/console/dist/assets/dagre-3AP2YEHR-BAFsJql5.js                 10.96 kB │ gzip:   4.15 kB
+2026-09-27T01:27:31.4714160Z ../internal/console/dist/assets/popover-C6tUObVX.js                        11.03 kB │ gzip:   4.29 kB
+2026-09-27T01:27:31.4715097Z ../internal/console/dist/assets/github-light-EUqPIrTm.js                   11.18 kB │ gzip:   2.49 kB
+2026-09-27T01:27:31.4716677Z ../internal/console/dist/assets/prolog-iXnhIJG7.js                         11.34 kB │ gzip:   3.84 kB
+2026-09-27T01:27:31.4717475Z ../internal/console/dist/assets/terraform-DswuEJGm.js                      11.38 kB │ gzip:   2.51 kB
+2026-09-27T01:27:31.4718253Z ../internal/console/dist/assets/github-dark-C-LZuMrd.js                    11.40 kB │ gzip:   2.53 kB
+2026-09-27T01:27:31.4719003Z ../internal/console/dist/assets/puppet-CDv2pdJW.js                         11.43 kB │ gzip:   2.10 kB
+2026-09-27T01:27:31.4719765Z ../internal/console/dist/assets/laserwave-C_8bwKvT.js                      11.49 kB │ gzip:   2.57 kB
+2026-09-27T01:27:31.4720507Z ../internal/console/dist/assets/routes-DKBdhDFb.js                         11.80 kB │ gzip:   4.29 kB
+2026-09-27T01:27:31.4721280Z ../internal/console/dist/assets/gherkin-DExj1W_8.js                        11.93 kB │ gzip:   5.04 kB
+2026-09-27T01:27:31.4722010Z ../internal/console/dist/assets/wasm-ByWQv1Qj.js                           12.00 kB │ gzip:   2.17 kB
+2026-09-27T01:27:31.4722740Z ../internal/console/dist/assets/hjson-CxZEssPk.js                          12.04 kB │ gzip:   1.64 kB
+2026-09-27T01:27:31.4723479Z ../internal/console/dist/assets/handlebars-CAx_777f.js                     12.16 kB │ gzip:   2.37 kB
+2026-09-27T01:27:31.4724212Z ../internal/console/dist/assets/apache-U0d_L8uA.js                         12.44 kB │ gzip:   3.71 kB
+2026-09-27T01:27:31.4724938Z ../internal/console/dist/assets/vesper-D5bVUKB1.js                         12.68 kB │ gzip:   1.98 kB
+2026-09-27T01:27:31.4725664Z ../internal/console/dist/assets/bat-Bo4NYOV-.js                            12.88 kB │ gzip:   3.22 kB
+2026-09-27T01:27:31.4727466Z ../internal/console/dist/assets/tabs-CPt58F-W.js                           13.00 kB │ gzip:   4.80 kB
+2026-09-27T01:27:31.4728254Z ../internal/console/dist/assets/fish-BJitypiv.js                           13.03 kB │ gzip:   1.73 kB
+2026-09-27T01:27:31.4729006Z ../internal/console/dist/assets/useScrollLock-ug3Jedrn.js                  13.15 kB │ gzip:   5.07 kB
+2026-09-27T01:27:31.4729744Z ../internal/console/dist/assets/v-DETTlOr0.js                              13.20 kB │ gzip:   2.73 kB
+2026-09-27T01:27:31.4730460Z ../internal/console/dist/assets/jobs-B4pjWWQK.js                           13.60 kB │ gzip:   4.27 kB
+2026-09-27T01:27:31.4731202Z ../internal/console/dist/assets/vitesse-light-VbXTXTou.js                  13.61 kB │ gzip:   3.03 kB
+2026-09-27T01:27:31.4731951Z ../internal/console/dist/assets/aurora-x-CDeNXAV0.js                       13.65 kB │ gzip:   2.28 kB
+2026-09-27T01:27:31.4732709Z ../internal/console/dist/assets/vitesse-black-fwtXNY1n.js                  13.67 kB │ gzip:   3.05 kB
+2026-09-27T01:27:31.4734579Z ../internal/console/dist/assets/vitesse-dark-BZCL-v6S.js                   13.75 kB │ gzip:   3.06 kB
+2026-09-27T01:27:31.4735573Z ../internal/console/dist/assets/teams-BgwK_Yye.js                          13.78 kB │ gzip:   3.93 kB
+2026-09-27T01:27:31.4736329Z ../internal/console/dist/assets/pug-DO6yvBr3.js                            13.84 kB │ gzip:   2.58 kB
+2026-09-27T01:27:31.4737058Z ../internal/console/dist/assets/luau-CNKltnaQ.js                           13.95 kB │ gzip:   3.16 kB
+2026-09-27T01:27:31.4737811Z ../internal/console/dist/assets/synthwave-84-nFMaYfgc.js                   14.03 kB │ gzip:   2.85 kB
+2026-09-27T01:27:31.4738590Z ../internal/console/dist/assets/github-light-default-BXViO-2h.js           14.15 kB │ gzip:   3.02 kB
+2026-09-27T01:27:31.4739360Z ../internal/console/dist/assets/clarity-SemFz856.js                        14.26 kB │ gzip:   2.46 kB
+2026-09-27T01:27:31.4741000Z ../internal/console/dist/assets/github-light-high-contrast-B68TUdTA.js     14.27 kB │ gzip:   3.00 kB
+2026-09-27T01:27:31.4741882Z ../internal/console/dist/assets/github-dark-dimmed-Bx1FflLF.js             14.43 kB │ gzip:   3.11 kB
+2026-09-27T01:27:31.4743005Z ../internal/console/dist/assets/github-dark-default-DXG-b-1a.js            14.43 kB │ gzip:   3.12 kB
+2026-09-27T01:27:31.4743897Z ../internal/console/dist/assets/github-dark-high-contrast-B_tTalzw.js      14.59 kB │ gzip:   3.07 kB
+2026-09-27T01:27:31.4744675Z ../internal/console/dist/assets/gnuplot-7GGW24-e.js                        14.77 kB │ gzip:   3.27 kB
+2026-09-27T01:27:31.4745411Z ../internal/console/dist/assets/time-DQt9QpA_.js                           14.92 kB │ gzip:   4.81 kB
+2026-09-27T01:27:31.4746877Z ../internal/console/dist/assets/rust-Cfkwpbl8.js                           15.06 kB │ gzip:   2.71 kB
+2026-09-27T01:27:31.4747649Z ../internal/console/dist/assets/kusto-BUv0MjJC.js                          15.16 kB │ gzip:   3.93 kB
+2026-09-27T01:27:31.4748428Z ../internal/console/dist/assets/actionscript-3--17pq3dv.js                 15.19 kB │ gzip:   2.67 kB
+2026-09-27T01:27:31.4749201Z ../internal/console/dist/assets/nix-IvuFDN5E.js                            15.50 kB │ gzip:   2.47 kB
+2026-09-27T01:27:31.4749997Z ../internal/console/dist/assets/lua-FONpmTUP.js                            15.60 kB │ gzip:   3.19 kB
+2026-09-27T01:27:31.4750796Z ../internal/console/dist/assets/chunk-SVP7TREG-D02c85jf.js                 15.63 kB │ gzip:   4.34 kB
+2026-09-27T01:27:31.4751751Z ../internal/console/dist/assets/diagram-VX7I27RA-DJUoEG-0.js               15.74 kB │ gzip:   5.52 kB
+2026-09-27T01:27:31.4753634Z ../internal/console/dist/assets/abap-CLvhMVsD.js                           15.84 kB │ gzip:   5.93 kB
+2026-09-27T01:27:31.4754483Z ../internal/console/dist/assets/solidity-CKzVLygQ.js                       16.06 kB │ gzip:   3.09 kB
+2026-09-27T01:27:31.4755232Z ../internal/console/dist/assets/matlab-D7qyCx1q.js                         16.07 kB │ gzip:   3.06 kB
+2026-09-27T01:27:31.4755971Z ../internal/console/dist/assets/cue-CE9AQfxI.js                            16.19 kB │ gzip:   2.04 kB
+2026-09-27T01:27:31.4756732Z ../internal/console/dist/assets/elixir-CUV54ev5.js                         16.26 kB │ gzip:   2.76 kB
+2026-09-27T01:27:31.4757461Z ../internal/console/dist/assets/odin-B1RWQWA5.js                           16.50 kB │ gzip:   2.92 kB
+2026-09-27T01:27:31.4758214Z ../internal/console/dist/assets/mermaid-parser.core-BvBccTDT.js            16.58 kB │ gzip:   3.92 kB
+2026-09-27T01:27:31.4759893Z ../internal/console/dist/assets/bird2-C2hNVINV.js                          16.96 kB │ gzip:   3.84 kB
+2026-09-27T01:27:31.4760985Z ../internal/console/dist/assets/kanagawa-wave-CTweb8Dz.js                  17.12 kB │ gzip:   2.90 kB
+2026-09-27T01:27:31.4762785Z ../internal/console/dist/assets/kanagawa-lotus-BN08jTvb.js                 17.12 kB │ gzip:   2.90 kB
+2026-09-27T01:27:31.4763697Z ../internal/console/dist/assets/kanagawa-dragon-CXtmUGW6.js                17.12 kB │ gzip:   2.92 kB
+2026-09-27T01:27:31.4764977Z ../internal/console/dist/assets/ishikawaDiagram-5VMMS53U-CV3B6LWB.js       17.30 kB │ gzip:   6.52 kB
+2026-09-27T01:27:31.4765782Z ../internal/console/dist/assets/settings-CtKNCtZo.js                       17.31 kB │ gzip:   6.12 kB
+2026-09-27T01:27:31.4771319Z ../internal/console/dist/assets/move-B1IS1UjX.js                           17.49 kB │ gzip:   3.06 kB
+2026-09-27T01:27:31.4772116Z ../internal/console/dist/assets/graphql-Ctjuxyvl.js                        18.08 kB │ gzip:   2.53 kB
+2026-09-27T01:27:31.4772867Z ../internal/console/dist/assets/liquid-CCX5qouA.js                         18.10 kB │ gzip:   3.14 kB
+2026-09-27T01:27:31.4773601Z ../internal/console/dist/assets/svelte-CIt8Fl9I.js                         18.24 kB │ gzip:   3.14 kB
+2026-09-27T01:27:31.4774349Z ../internal/console/dist/assets/material-theme-Bm3Qr25_.js                 18.61 kB │ gzip:   3.10 kB
+2026-09-27T01:27:31.4775127Z ../internal/console/dist/assets/material-theme-darker-2IIEA8gg.js          18.62 kB │ gzip:   3.10 kB
+2026-09-27T01:27:31.4775941Z ../internal/console/dist/assets/material-theme-ocean-CHQ94UKr.js           18.62 kB │ gzip:   3.12 kB
+2026-09-27T01:27:31.4777725Z ../internal/console/dist/assets/material-theme-lighter-uhdI0v04.js         18.63 kB │ gzip:   3.10 kB
+2026-09-27T01:27:31.4778698Z ../internal/console/dist/assets/material-theme-palenight-B5W6OYN7.js       18.63 kB │ gzip:   3.11 kB
+2026-09-27T01:27:31.4779667Z ../internal/console/dist/assets/docs-CBbFFOWI.js                           18.87 kB │ gzip:   6.14 kB
+2026-09-27T01:27:31.4780490Z ../internal/console/dist/assets/chunk-75Z2AOVW-JWQp4Pq2.js                 18.89 kB │ gzip:   6.15 kB
+2026-09-27T01:27:31.4781249Z ../internal/console/dist/assets/gdscript-Cp2uCuqX.js                       18.98 kB │ gzip:   3.75 kB
+2026-09-27T01:27:31.4781990Z ../internal/console/dist/assets/groovy-CacY0gHj.js                         19.17 kB │ gzip:   3.59 kB
+2026-09-27T01:27:31.4782744Z ../internal/console/dist/assets/mdc-B_uQHOlt.js                            19.54 kB │ gzip:   6.66 kB
+2026-09-27T01:27:31.4783520Z ../internal/console/dist/assets/presets-zVGEXPFw.js                        19.98 kB │ gzip:   6.16 kB
+2026-09-27T01:27:31.4784290Z ../internal/console/dist/assets/ayu-dark-DluEY0Gj.js                       20.07 kB │ gzip:   3.93 kB
+2026-09-27T01:27:31.4785103Z ../internal/console/dist/assets/ayu-mirage-Bqwy1Gya.js                     20.08 kB │ gzip:   3.91 kB
+2026-09-27T01:27:31.4785852Z ../internal/console/dist/assets/glimmer-js-OEO36pDk.js                     20.08 kB │ gzip:   2.93 kB
+2026-09-27T01:27:31.4786603Z ../internal/console/dist/assets/glimmer-ts-BnAPyISE.js                     20.08 kB │ gzip:   2.93 kB
+2026-09-27T01:27:31.4787361Z ../internal/console/dist/assets/powershell-DshXNtvi.js                     20.14 kB │ gzip:   4.05 kB
+2026-09-27T01:27:31.4788112Z ../internal/console/dist/assets/ayu-light-C3h-C4tm.js                      20.14 kB │ gzip:   3.89 kB
+2026-09-27T01:27:31.4788883Z ../internal/console/dist/assets/kanban-definition-3QL26DDD-OwcOu9oF.js     20.25 kB │ gzip:   7.14 kB
+2026-09-27T01:27:31.4789666Z ../internal/console/dist/assets/viml-DvXPmvsu.js                           20.35 kB │ gzip:   6.73 kB
+2026-09-27T01:27:31.4790401Z ../internal/console/dist/assets/nushell-DcLAeLz5.js                        20.40 kB │ gzip:   5.21 kB
+2026-09-27T01:27:31.4791151Z ../internal/console/dist/assets/snazzy-light-4G7pJPwS.js                   20.77 kB │ gzip:   3.80 kB
+2026-09-27T01:27:31.4791899Z ../internal/console/dist/assets/twig-LIeLXgf5.js                           20.90 kB │ gzip:   3.66 kB
+2026-09-27T01:27:31.4792632Z ../internal/console/dist/assets/dracula-BHWKrbxM.js                        21.06 kB │ gzip:   3.99 kB
+2026-09-27T01:27:31.4793386Z ../internal/console/dist/assets/dracula-soft-5eyTD99u.js                   21.07 kB │ gzip:   4.02 kB
+2026-09-27T01:27:31.4794125Z ../internal/console/dist/assets/wit-DdvCle-K.js                            21.46 kB │ gzip:   2.87 kB
+2026-09-27T01:27:31.4795340Z ../internal/console/dist/assets/rose-pine-BthvhNj6.js                      21.74 kB │ gzip:   3.86 kB
+2026-09-27T01:27:31.4796118Z ../internal/console/dist/assets/rose-pine-moon-hon4tzzS.js                 21.75 kB │ gzip:   3.87 kB
+2026-09-27T01:27:31.4797783Z ../internal/console/dist/assets/rose-pine-dawn-Dg85fqjY.js                 21.75 kB │ gzip:   3.88 kB
+2026-09-27T01:27:31.4799694Z ../internal/console/dist/assets/keys-CtzMw9V4.js                           22.36 kB │ gzip:   7.54 kB
+2026-09-27T01:27:31.4800442Z ../internal/console/dist/assets/nim-8PQFL6ZB.js                            22.45 kB │ gzip:   3.15 kB
+2026-09-27T01:27:31.4801180Z ../internal/console/dist/assets/common-lisp-Cv5bFMCO.js                    22.57 kB │ gzip:   6.07 kB
+2026-09-27T01:27:31.4801931Z ../internal/console/dist/assets/surrealql-DIn4NJsS.js                      22.58 kB │ gzip:   4.31 kB
+2026-09-27T01:27:31.4802692Z ../internal/console/dist/assets/gruvbox-dark-hard-C820rvS2.js              22.63 kB │ gzip:   4.15 kB
+2026-09-27T01:27:31.4803487Z ../internal/console/dist/assets/gruvbox-dark-soft-MrdJrrXF.js              22.63 kB │ gzip:   4.15 kB
+2026-09-27T01:27:31.4804533Z ../internal/console/dist/assets/gruvbox-light-hard-BC_s9l72.js             22.63 kB │ gzip:   4.16 kB
+2026-09-27T01:27:31.4805454Z ../internal/console/dist/assets/gruvbox-light-soft-BSMLrYjP.js             22.63 kB │ gzip:   4.16 kB
+2026-09-27T01:27:31.4806238Z ../internal/console/dist/assets/gruvbox-dark-medium-BPjhmG05.js            22.63 kB │ gzip:   4.15 kB
+2026-09-27T01:27:31.4807023Z ../internal/console/dist/assets/gruvbox-light-medium-BAWPOn9u.js           22.63 kB │ gzip:   4.16 kB
+2026-09-27T01:27:31.4807825Z ../internal/console/dist/assets/sankeyDiagram-P5KCCOFB-BL3a5iNz.js         22.78 kB │ gzip:   8.25 kB
+2026-09-27T01:27:31.4808622Z ../internal/console/dist/assets/journeyDiagram-EYS64GPL-D8PeVrtr.js        23.15 kB │ gzip:   8.15 kB
+2026-09-27T01:27:31.4809419Z ../internal/console/dist/assets/mindmap-definition-FBJOCRG2-B6T4oJe2.js    23.43 kB │ gzip:   8.01 kB
+2026-09-27T01:27:31.4810194Z ../internal/console/dist/assets/sql-ClgswhA6.js                            23.47 kB │ gzip:   7.49 kB
+2026-09-27T01:27:31.4810927Z ../internal/console/dist/assets/cadence-CQ2zXKGN.js                        23.66 kB │ gzip:   3.65 kB
+2026-09-27T01:27:31.4811668Z ../internal/console/dist/assets/graphlib-DS17s2tU.js                       23.90 kB │ gzip:   8.31 kB
+2026-09-27T01:27:31.4812419Z ../internal/console/dist/assets/isArguments-2ZchtnyI.js                    23.95 kB │ gzip:   7.92 kB
+2026-09-27T01:27:31.4813168Z ../internal/console/dist/assets/typespec-B88KGewJ.js                       24.01 kB │ gzip:   2.58 kB
+2026-09-27T01:27:31.4813910Z ../internal/console/dist/assets/astro-B1Q6BwBx.js                          24.02 kB │ gzip:   7.59 kB
+2026-09-27T01:27:31.4814633Z ../internal/console/dist/assets/apl-cDmXqmZ-.js                            24.02 kB │ gzip:   4.16 kB
+2026-09-27T01:27:31.4815699Z ../internal/console/dist/assets/templ-BREsJpNc.js                          24.06 kB │ gzip:   5.41 kB
+2026-09-27T01:27:31.4816475Z ../internal/console/dist/assets/angular-html-DlZBZkSp.js                   24.24 kB │ gzip:   3.99 kB
+2026-09-27T01:27:31.4817219Z ../internal/console/dist/assets/vhdl-BroJfC0k.js                           24.25 kB │ gzip:   3.86 kB
+2026-09-27T01:27:31.4817938Z ../internal/console/dist/assets/vue-DVSfBueU.js                            24.48 kB │ gzip:   2.95 kB
+2026-09-27T01:27:31.4818682Z ../internal/console/dist/assets/purescript-9MfHhQsQ.js                     24.67 kB │ gzip:   3.24 kB
+2026-09-27T01:27:31.4819417Z ../internal/console/dist/assets/esm-Cu8hNHcV.js                            24.95 kB │ gzip:   7.47 kB
+2026-09-27T01:27:31.4820168Z ../internal/console/dist/assets/wardleyDiagram-VM6X3IG4-D2bRm3wp.js        25.19 kB │ gzip:   6.54 kB
+2026-09-27T01:27:31.4820936Z ../internal/console/dist/assets/one-light-D7Lr4KcI.js                      25.29 kB │ gzip:   3.63 kB
+2026-09-27T01:27:31.4821671Z ../internal/console/dist/assets/fsharp-D13ZGOAj.js                         25.30 kB │ gzip:   4.12 kB
+2026-09-27T01:27:31.4822838Z ../internal/console/dist/assets/marko-oPGh3KfH.js                          25.48 kB │ gzip:   3.59 kB
+2026-09-27T01:27:31.4823569Z ../internal/console/dist/assets/c3-CnJL0r0V.js                             25.62 kB │ gzip:   3.85 kB
+2026-09-27T01:27:31.4824303Z ../internal/console/dist/assets/night-owl-light-eJ-hLW7d.js                25.89 kB │ gzip:   4.23 kB
+2026-09-27T01:27:31.4825066Z ../internal/console/dist/assets/system-verilog-DJ5XKQeo.js                 26.19 kB │ gzip:   4.82 kB
+2026-09-27T01:27:31.4825808Z ../internal/console/dist/assets/nord-Cb4Vim4T.js                           26.72 kB │ gzip:   4.35 kB
+2026-09-27T01:27:31.4826533Z ../internal/console/dist/assets/codeql-oeQT6MSM.js                         26.87 kB │ gzip:   3.79 kB
+2026-09-27T01:27:31.4827347Z ../internal/console/dist/assets/rough.esm-Dy-Kn_BL.js                      27.10 kB │ gzip:   8.85 kB
+2026-09-27T01:27:31.4828080Z ../internal/console/dist/assets/scss-DcoSS-ti.js                           27.26 kB │ gzip:   4.23 kB
+2026-09-27T01:27:31.4828994Z ../internal/console/dist/assets/java-DdHNQ9hk.js                           27.28 kB │ gzip:   4.31 kB
+2026-09-27T01:27:31.4829877Z ../internal/console/dist/assets/coffee-CiiSLhB6.js                         27.42 kB │ gzip:   6.35 kB
+2026-09-27T01:27:31.4830613Z ../internal/console/dist/assets/razor-CMVBVp3T.js                          27.45 kB │ gzip:   3.54 kB
+2026-09-27T01:27:31.4831338Z ../internal/console/dist/assets/dist-DMBGflCB.js                           28.35 kB │ gzip:  11.82 kB
+2026-09-27T01:27:31.4832063Z ../internal/console/dist/assets/scala-DKOlJaKm.js                          28.87 kB │ gzip:   3.92 kB
+2026-09-27T01:27:31.4832801Z ../internal/console/dist/assets/night-owl-DhmEMT88.js                      28.91 kB │ gzip:   5.14 kB
+2026-09-27T01:27:31.4833571Z ../internal/console/dist/assets/gitGraphDiagram-WWUBYQGX-DCHX5War.js       29.00 kB │ gzip:   8.54 kB
+2026-09-27T01:27:31.4834351Z ../internal/console/dist/assets/crystal-DDxHDkHz.js                        29.41 kB │ gzip:   4.43 kB
+2026-09-27T01:27:31.4835389Z ../internal/console/dist/assets/mermaid-Bk4SNUv9.js                        29.50 kB │ gzip:   3.64 kB
+2026-09-27T01:27:31.4836214Z ../internal/console/dist/assets/applescript-CCn79oCD.js                    29.56 kB │ gzip:   5.94 kB
+2026-09-27T01:27:31.4841551Z ../internal/console/dist/assets/accounts-CuXm6o9r.js                       30.34 kB │ gzip:   7.41 kB
+2026-09-27T01:27:31.4842369Z ../internal/console/dist/assets/timeline-definition-24CTP7MA-Dlqgnytg.js   30.35 kB │ gzip:   9.96 kB
+2026-09-27T01:27:31.4843167Z ../internal/console/dist/assets/erDiagram-SSCWMZ5O-B0AQsz3s.js             30.67 kB │ gzip:  10.56 kB
+2026-09-27T01:27:31.4843963Z ../internal/console/dist/assets/requirementDiagram-EFPCY7ZU-BKDUsydW.js    30.98 kB │ gzip:   9.76 kB
+2026-09-27T01:27:31.4844729Z ../internal/console/dist/assets/julia-CjHxn3vf.js                          30.99 kB │ gzip:   4.30 kB
+2026-09-27T01:27:31.4845487Z ../internal/console/dist/assets/stylus-B6D30XZt.js                         31.06 kB │ gzip:   8.01 kB
+2026-09-27T01:27:31.4846229Z ../internal/console/dist/assets/poimandres-DRFjx7u4.js                     33.49 kB │ gzip:   5.49 kB
+2026-09-27T01:27:31.4847012Z ../internal/console/dist/assets/quadrantDiagram-AXDQQJYC-D4zCjAfp.js       33.51 kB │ gzip:   9.73 kB
+2026-09-27T01:27:31.4847792Z ../internal/console/dist/assets/one-dark-pro-CLwyXe_n.js                   33.78 kB │ gzip:   5.50 kB
+2026-09-27T01:27:31.4848522Z ../internal/console/dist/assets/bsl-BkkzgIyY.js                            33.86 kB │ gzip:   8.34 kB
+2026-09-27T01:27:31.4849257Z ../internal/console/dist/assets/useBaseUiId-C1iZ2NP-.js                    34.04 kB │ gzip:  12.02 kB
+2026-09-27T01:27:31.4850018Z ../internal/console/dist/assets/providers_._providerId-ognyVG_2.js         35.06 kB │ gzip:   9.47 kB
+2026-09-27T01:27:31.4850771Z ../internal/console/dist/assets/haxe-OTjmBuCE.js                           35.15 kB │ gzip:   5.90 kB
+2026-09-27T01:27:31.4852016Z ../internal/console/dist/assets/nginx-BTMw9COX.js                          35.35 kB │ gzip:   4.45 kB
+2026-09-27T01:27:31.4852759Z ../internal/console/dist/assets/houston-CsvMBhTu.js                        35.41 kB │ gzip:   5.76 kB
+2026-09-27T01:27:31.4853512Z ../internal/console/dist/assets/tokyo-night-oM2G3aXe.js                    35.66 kB │ gzip:   6.22 kB
+2026-09-27T01:27:31.4854271Z ../internal/console/dist/assets/chunk-R7TYR2AO-B9xFqg2q.js                 36.14 kB │ gzip:   7.96 kB
+2026-09-27T01:27:31.4855274Z ../internal/console/dist/assets/dagre-C-rnJpZF.js                          36.85 kB │ gzip:  13.23 kB
+2026-09-27T01:27:31.4856096Z ../internal/console/dist/assets/usePositioner-DuP_MiwE.js                  36.95 kB │ gzip:  13.62 kB
+2026-09-27T01:27:31.4856835Z ../internal/console/dist/assets/src-MZOfHXs4.js                            37.18 kB │ gzip:  12.40 kB
+2026-09-27T01:27:31.4857571Z ../internal/console/dist/assets/erlang-Cphh6RMH.js                         37.47 kB │ gzip:   4.36 kB
+2026-09-27T01:27:31.4858549Z ../internal/console/dist/assets/chunk-G27WJ6UU-rvMaLDlr.js                 37.63 kB │ gzip:  12.25 kB
+2026-09-27T01:27:31.4859378Z ../internal/console/dist/assets/cobol-BsV-839J.js                          39.09 kB │ gzip:  10.89 kB
+2026-09-27T01:27:31.4860112Z ../internal/console/dist/assets/asm-Cmm7eHzH.js                            40.71 kB │ gzip:   8.16 kB
+2026-09-27T01:27:31.4860867Z ../internal/console/dist/assets/vennDiagram-4TSXK5OY-CTVc5pEl.js           41.14 kB │ gzip:  15.10 kB
+2026-09-27T01:27:31.4861632Z ../internal/console/dist/assets/haskell-D8IpX4py.js                        41.48 kB │ gzip:   6.41 kB
+2026-09-27T01:27:31.4862399Z ../internal/console/dist/assets/blockDiagram-NRAW4CY4-BuTNahmF.js          41.48 kB │ gzip:  13.37 kB
+2026-09-27T01:27:31.4863173Z ../internal/console/dist/assets/shellscript-Da78Ox-3.js                    41.54 kB │ gzip:   6.13 kB
+2026-09-27T01:27:31.4863960Z ../internal/console/dist/assets/xychartDiagram-S5SC5T6Z-BKe478VK.js        42.86 kB │ gzip:  11.74 kB
+2026-09-27T01:27:31.4864724Z ../internal/console/dist/assets/perl-Vf0i0hAx.js                           43.14 kB │ gzip:   4.64 kB
+2026-09-27T01:27:31.4865436Z ../internal/console/dist/assets/d-qD-0Kul2.js                              43.78 kB │ gzip:   8.43 kB
+2026-09-27T01:27:31.4866153Z ../internal/console/dist/assets/ruby-Dp6Zud9H.js                           45.83 kB │ gzip:   5.55 kB
+2026-09-27T01:27:31.4866951Z ../internal/console/dist/assets/go-BJwz_mda.js                             46.80 kB │ gzip:   5.15 kB
+2026-09-27T01:27:31.4867719Z ../internal/console/dist/assets/apex-CGTLDQj6.js                           46.97 kB │ gzip:   6.72 kB
+2026-09-27T01:27:31.4868472Z ../internal/console/dist/assets/catppuccin-mocha-DYhrFGRu.js               47.25 kB │ gzip:   7.98 kB
+2026-09-27T01:27:31.4869250Z ../internal/console/dist/assets/catppuccin-latte-DwIHMF0Q.js               47.25 kB │ gzip:   7.98 kB
+2026-09-27T01:27:31.4870043Z ../internal/console/dist/assets/catppuccin-frappe-3VR1Za6u.js              47.25 kB │ gzip:   7.99 kB
+2026-09-27T01:27:31.4870822Z ../internal/console/dist/assets/catppuccin-macchiato-DYnBP6_5.js           47.26 kB │ gzip:   7.99 kB
+2026-09-27T01:27:31.4871569Z ../internal/console/dist/assets/ada-C5qYipkI.js                            48.07 kB │ gzip:   5.96 kB
+2026-09-27T01:27:31.4872310Z ../internal/console/dist/assets/chunk-LCL6LL3I-BqG3wiQy.js                 48.77 kB │ gzip:  15.74 kB
+2026-09-27T01:27:31.4873087Z ../internal/console/dist/assets/css-LjpOdHib.js                            49.08 kB │ gzip:  11.95 kB
+2026-09-27T01:27:31.4873810Z ../internal/console/dist/assets/imba-DsUTQ-LC.js                           49.92 kB │ gzip:   9.47 kB
+2026-09-27T01:27:31.4874557Z ../internal/console/dist/assets/chunk-GMAD6QVW-CJJrU7ma.js                 51.84 kB │ gzip:  16.68 kB
+2026-09-27T01:27:31.4875544Z ../internal/console/dist/assets/everforest-dark-sB-x3p7T.js                53.74 kB │ gzip:   8.37 kB
+2026-09-27T01:27:31.4876735Z ../internal/console/dist/assets/everforest-light-Df2xbC6M.js               53.74 kB │ gzip:   8.36 kB
+2026-09-27T01:27:31.4877531Z ../internal/console/dist/assets/ganttDiagram-EL5Y4UJY-qbVvdLm7.js          54.67 kB │ gzip:  18.34 kB
+2026-09-27T01:27:31.4878301Z ../internal/console/dist/assets/wikitext-ClFFjSW2.js                       55.87 kB │ gzip:   4.81 kB
+2026-09-27T01:27:31.4879055Z ../internal/console/dist/assets/DataTable-DegGulWK.js                      56.71 kB │ gzip:  16.50 kB
+2026-09-27T01:27:31.4879793Z ../internal/console/dist/assets/stata-RoaAgbqU.js                          56.99 kB │ gzip:  12.39 kB
+2026-09-27T01:27:31.4880545Z ../internal/console/dist/assets/PaletteDialog-DZJMZOyz.js                  57.25 kB │ gzip:  19.55 kB
+2026-09-27T01:27:31.4881290Z ../internal/console/dist/assets/html-B2lrdnWr.js                           57.32 kB │ gzip:  11.78 kB
+2026-09-27T01:27:31.4882034Z ../internal/console/dist/assets/ballerina-B7ZEbQpA.js                      58.68 kB │ gzip:   8.10 kB
+2026-09-27T01:27:31.4882971Z ../internal/console/dist/assets/markdown-BYOwaDjH.js                       59.32 kB │ gzip:   5.66 kB
+2026-09-27T01:27:31.4883886Z ../internal/console/dist/assets/chunk-RHFEMEQ7-DWl7lMlb.js                 61.19 kB │ gzip:  19.81 kB
+2026-09-27T01:27:31.4884640Z ../internal/console/dist/assets/ocaml-O90oeIOV.js                          62.44 kB │ gzip:   5.04 kB
+2026-09-27T01:27:31.4885400Z ../internal/console/dist/assets/c4Diagram-UCG6FXSJ-BTcJqfjy.js             64.74 kB │ gzip:  18.52 kB
+2026-09-27T01:27:31.4886170Z ../internal/console/dist/assets/calendar-b4Pnfuri.js                       68.78 kB │ gzip:  20.29 kB
+2026-09-27T01:27:31.4886900Z ../internal/console/dist/assets/mojo-BgCJLMeH.js                           69.79 kB │ gzip:   9.21 kB
+2026-09-27T01:27:31.4887626Z ../internal/console/dist/assets/python-gzcpVVnB.js                         69.94 kB │ gzip:   9.09 kB
+2026-09-27T01:27:31.4888354Z ../internal/console/dist/assets/c-iCihek07.js                              72.17 kB │ gzip:  10.55 kB
+2026-09-27T01:27:31.4889071Z ../internal/console/dist/assets/latex-D9bvcAJr.js                          72.61 kB │ gzip:   6.68 kB
+2026-09-27T01:27:31.4889799Z ../internal/console/dist/assets/vyper-CgoNMtux.js                          74.64 kB │ gzip:  10.69 kB
+2026-09-27T01:27:31.4890520Z ../internal/console/dist/assets/hack-D_mkkoLd.js                           80.18 kB │ gzip:  26.27 kB
+2026-09-27T01:27:31.4891272Z ../internal/console/dist/assets/cose-bilkent-JH36ORCC-CrnjL4hF.js          81.25 kB │ gzip:  21.53 kB
+2026-09-27T01:27:31.4892027Z ../internal/console/dist/assets/swift-DonLKvLd.js                          86.68 kB │ gzip:  14.69 kB
+2026-09-27T01:27:31.4892777Z ../internal/console/dist/assets/fortran-free-form-CYNrtFtB.js              88.96 kB │ gzip:  11.18 kB
+2026-09-27T01:27:31.4893532Z ../internal/console/dist/assets/csharp-Ct8U2NOr.js                         89.68 kB │ gzip:  10.64 kB
+2026-09-27T01:27:31.4894276Z ../internal/console/dist/assets/racket-DcIDlBhZ.js                         92.38 kB │ gzip:  15.07 kB
+2026-09-27T01:27:31.4895004Z ../internal/console/dist/assets/less-DVTAwKKz.js                           97.62 kB │ gzip:  14.84 kB
+2026-09-27T01:27:31.4896071Z ../internal/console/dist/assets/chunk-TEH6E4GO-DFoMjHnv.js                104.84 kB │ gzip:  25.61 kB
+2026-09-27T01:27:31.4896825Z ../internal/console/dist/assets/blade-Xpu-LGTm.js                         104.97 kB │ gzip:  28.29 kB
+2026-09-27T01:27:31.4897563Z ../internal/console/dist/assets/objective-c-D1A_Heim.js                   105.40 kB │ gzip:  23.63 kB
+2026-09-27T01:27:31.4898296Z ../internal/console/dist/assets/php-am1OsKhm.js                           111.05 kB │ gzip:  28.64 kB
+2026-09-27T01:27:31.4899038Z ../internal/console/dist/assets/swimlanes-XN3QIQJK-COMH_PHO.js            111.11 kB │ gzip:  38.00 kB
+2026-09-27T01:27:31.4899820Z ../internal/console/dist/assets/sequenceDiagram-WJ2MYXX4-nL97Y6nl.js      115.73 kB │ gzip:  30.57 kB
+2026-09-27T01:27:31.4901063Z ../internal/console/dist/assets/asciidoc-DE70LPWp.js                      131.52 kB │ gzip:   9.31 kB
+2026-09-27T01:27:31.4901806Z ../internal/console/dist/assets/mdx-DQZ5AkYe.js                           136.10 kB │ gzip:  23.54 kB
+2026-09-27T01:27:31.4902571Z ../internal/console/dist/assets/architectureDiagram-5GKGNRK7-BDjn1-0L.js  148.89 kB │ gzip:  41.12 kB
+2026-09-27T01:27:31.4903358Z ../internal/console/dist/assets/objective-cpp-BsSzOQcm.js                 171.96 kB │ gzip:  30.98 kB
+2026-09-27T01:27:31.4908625Z ../internal/console/dist/assets/javascript-obGGvMPs.js                    174.89 kB │ gzip:  16.68 kB
+2026-09-27T01:27:31.4909401Z ../internal/console/dist/assets/tsx-CUOciP0b.js                           175.60 kB │ gzip:  16.68 kB
+2026-09-27T01:27:31.4910122Z ../internal/console/dist/assets/jsx-gTgmArGx.js                           177.85 kB │ gzip:  16.77 kB
+2026-09-27T01:27:31.4910886Z ../internal/console/dist/assets/typescript-BydbNFcO.js                    181.14 kB │ gzip:  16.29 kB
+2026-09-27T01:27:31.4911989Z ../internal/console/dist/assets/angular-ts-BVPGOT0K.js                    183.73 kB │ gzip:  16.78 kB
+2026-09-27T01:27:31.4912838Z ../internal/console/dist/assets/vue-vine-pWqEcBkW.js                      190.05 kB │ gzip:  18.07 kB
+2026-09-27T01:27:31.4913582Z ../internal/console/dist/assets/dist-DU8bG6Es.js                          206.84 kB │ gzip:  66.97 kB
+2026-09-27T01:27:31.4914329Z ../internal/console/dist/assets/chunk-DU6HZSFF-O48eeA5c.js                237.30 kB │ gzip:  39.10 kB
+2026-09-27T01:27:31.4915080Z ../internal/console/dist/assets/wolfram-DLL8P-h_.js                       262.38 kB │ gzip:  77.63 kB
+2026-09-27T01:27:31.4916123Z ../internal/console/dist/assets/usage-CG46yND-.js                         358.92 kB │ gzip:  99.03 kB
+2026-09-27T01:27:31.4916868Z ../internal/console/dist/assets/cytoscape.esm-BZkf-uXn.js                 434.85 kB │ gzip: 137.78 kB
+2026-09-27T01:27:31.4917631Z ../internal/console/dist/assets/index-Drv3ygdj.js                         458.60 kB │ gzip: 144.39 kB
+2026-09-27T01:27:31.4918364Z ../internal/console/dist/assets/wasm-BnjxR4X6.js                          622.32 kB │ gzip: 232.09 kB
+2026-09-27T01:27:31.4919083Z ../internal/console/dist/assets/cpp-DjoE5qBx.js                           626.13 kB │ gzip:  48.10 kB
+2026-09-27T01:27:31.4919822Z ../internal/console/dist/assets/chunk-FOHPRMQF-DzxwRta7.js                662.10 kB │ gzip: 143.16 kB
+2026-09-27T01:27:31.4920579Z ../internal/console/dist/assets/emacs-lisp-C9PiwqqW.js                    779.84 kB │ gzip: 197.53 kB
+2026-09-27T01:27:31.4921325Z ../internal/console/dist/assets/chat-CbhjuzWg.js                          920.73 kB │ gzip: 281.78 kB
+2026-09-27T01:27:31.4921667Z 
+2026-09-27T01:27:31.4922639Z [32m✓ built in 3.25s[39m
+2026-09-27T01:27:33.0032896Z go: downloading github.com/agentstation/starmap v0.16.6-0.20260927002942-b46c077a7039
+2026-09-27T01:27:33.0182867Z go: downloading github.com/rs/zerolog v1.35.1
+2026-09-27T01:27:33.0184726Z go: downloading github.com/urfave/cli/v3 v3.12.0
+2026-09-27T01:27:33.1486534Z go: downloading github.com/agentstation/uuidkey v1.2.0
+2026-09-27T01:27:33.2151044Z go: downloading github.com/google/uuid v1.6.0
+2026-09-27T01:27:42.2286419Z go: downloading github.com/gofrs/flock v0.13.1
+2026-09-27T01:27:42.2325625Z go: downloading github.com/mattn/go-isatty v0.0.24
+2026-09-27T01:27:42.2353218Z go: downloading github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
+2026-09-27T01:27:42.2431656Z go: downloading github.com/urfave/cli-docs/v3 v3.1.0
+2026-09-27T01:27:42.2757932Z go: downloading github.com/joho/godotenv v1.5.1
+2026-09-27T01:27:42.2758415Z go: downloading github.com/sethvargo/go-envconfig v1.4.3
+2026-09-27T01:27:42.2968333Z go: downloading github.com/dgraph-io/badger/v4 v4.9.6
+2026-09-27T01:27:42.3996949Z go: downloading github.com/valkey-io/valkey-go v1.0.78
+2026-09-27T01:27:42.5447912Z go: downloading golang.org/x/crypto v0.57.0
+2026-09-27T01:27:42.5526524Z go: downloading github.com/agentstation/utc v0.2.0
+2026-09-27T01:27:42.5778864Z go: downloading github.com/goccy/go-yaml v1.19.2
+2026-09-27T01:27:42.6411085Z go: downloading golang.org/x/sys v0.48.0
+2026-09-27T01:27:42.6422619Z go: downloading github.com/aws/aws-sdk-go-v2 v1.47.0
+2026-09-27T01:27:43.0015808Z go: downloading github.com/aws/aws-sdk-go-v2/config v1.33.5
+2026-09-27T01:27:43.0907274Z go: downloading github.com/aws/aws-sdk-go-v2/credentials v1.20.5
+2026-09-27T01:27:43.1282249Z go: downloading github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.23.7
+2026-09-27T01:27:43.1961360Z go: downloading github.com/aws/aws-sdk-go-v2/service/s3 v1.113.1
+2026-09-27T01:27:43.2562591Z go: downloading github.com/aws/smithy-go v1.28.2
+2026-09-27T01:27:43.6188628Z go: downloading github.com/dgraph-io/ristretto/v2 v2.4.2
+2026-09-27T01:27:43.6204802Z go: downloading github.com/go-chi/chi/v5 v5.3.2
+2026-09-27T01:27:43.8132456Z go: downloading github.com/ledongthuc/pdf v0.0.0-20250511090121-5959a4027728
+2026-09-27T01:27:43.8337337Z go: downloading cloud.google.com/go/secretmanager v1.21.0
+2026-09-27T01:27:43.9375691Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.1
+2026-09-27T01:27:43.9425675Z go: downloading cloud.google.com/go v0.123.0
+2026-09-27T01:27:44.1175788Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.14.1
+2026-09-27T01:27:44.1176427Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets v1.5.0
+2026-09-27T01:27:44.1256446Z go: downloading github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.50.0
+2026-09-27T01:27:44.1422743Z go: downloading github.com/hashicorp/vault/api v1.23.0
+2026-09-27T01:27:44.1739127Z go: downloading github.com/openbao/openbao/api/v2 v2.7.0
+2026-09-27T01:27:45.6246925Z go: downloading google.golang.org/grpc v1.84.0
+2026-09-27T01:27:45.6717325Z go: downloading github.com/gorilla/sessions v1.4.0
+2026-09-27T01:27:45.6736921Z go: downloading github.com/markbates/goth v1.82.0
+2026-09-27T01:27:45.9996932Z go: downloading github.com/workos/workos-go/v10 v10.5.0
+2026-09-27T01:27:46.0331089Z go: downloading go.opentelemetry.io/otel v1.46.0
+2026-09-27T01:27:46.7751432Z go: downloading github.com/go-chi/cors v1.2.2
+2026-09-27T01:27:46.8215246Z go: downloading github.com/prometheus/client_golang v1.24.1
+2026-09-27T01:27:46.9118575Z go: downloading go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.46.0
+2026-09-27T01:27:46.9842065Z go: downloading go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.46.0
+2026-09-27T01:27:47.0374005Z go: downloading go.opentelemetry.io/otel/sdk v1.46.0
+2026-09-27T01:27:47.1278879Z go: downloading go.opentelemetry.io/otel/trace v1.46.0
+2026-09-27T01:27:47.1445253Z go: downloading github.com/go-sql-driver/mysql v1.10.1
+2026-09-27T01:27:47.1445678Z go: downloading github.com/jackc/pgx/v5 v5.11.0
+2026-09-27T01:27:47.1890032Z go: downloading modernc.org/sqlite v1.59.0
+2026-09-27T01:27:47.2192477Z go: downloading github.com/tiktoken-go/tokenizer v0.8.1
+2026-09-27T01:27:47.4365575Z go: downloading cloud.google.com/go/auth v0.23.3
+2026-09-27T01:27:47.4838981Z go: downloading github.com/cpuguy83/go-md2man/v2 v2.0.7
+2026-09-27T01:27:47.5929303Z go: downloading github.com/mattn/go-colorable v0.1.15
+2026-09-27T01:27:47.6581003Z go: downloading github.com/Microsoft/go-winio v0.6.2
+2026-09-27T01:27:47.6595175Z go: downloading github.com/oiweiwei/go-msrpc v1.5.4
+2026-09-27T01:27:56.1977920Z go: downloading google.golang.org/protobuf v1.36.12
+2026-09-27T01:27:56.1978476Z go: downloading github.com/dustin/go-humanize v1.0.1
+2026-09-27T01:27:56.4727271Z go: downloading github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.20.0
+2026-09-27T01:27:56.4757688Z go: downloading github.com/aws/aws-sdk-go-v2/service/signin v1.10.0
+2026-09-27T01:27:56.5209874Z go: downloading github.com/aws/aws-sdk-go-v2/service/sso v1.38.0
+2026-09-27T01:27:56.5262002Z go: downloading github.com/aws/aws-sdk-go-v2/service/ssooidc v1.43.0
+2026-09-27T01:27:56.5656113Z go: downloading github.com/aws/aws-sdk-go-v2/service/sts v1.51.0
+2026-09-27T01:27:56.5836835Z go: downloading github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.20
+2026-09-27T01:27:56.6419355Z go: downloading github.com/aws/aws-sdk-go-v2/internal/configsources v1.5.3
+2026-09-27T01:27:56.7295510Z go: downloading github.com/aws/aws-sdk-go-v2/internal/v4a v1.5.3
+2026-09-27T01:27:56.7296201Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.19
+2026-09-27T01:27:56.7319550Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.11.3
+2026-09-27T01:27:56.7597363Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.14.3
+2026-09-27T01:27:56.7705641Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.20.3
+2026-09-27T01:27:56.8443102Z go: downloading cloud.google.com/go/iam v1.11.0
+2026-09-27T01:27:56.8469946Z go: downloading github.com/googleapis/gax-go/v2 v2.23.0
+2026-09-27T01:27:56.9292292Z go: downloading google.golang.org/genproto/googleapis/api v0.0.0-20260819154853-08b0e4226688
+2026-09-27T01:27:58.6284743Z go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20260819154853-08b0e4226688
+2026-09-27T01:27:58.6854324Z go: downloading google.golang.org/genproto v0.0.0-20260319201613-d00831a3d3e7
+2026-09-27T01:27:58.9554855Z go: downloading google.golang.org/api v0.292.0
+2026-09-27T01:28:18.4389006Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal v1.2.0
+2026-09-27T01:28:18.4389642Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/internal v1.12.0
+2026-09-27T01:28:18.4508409Z go: downloading github.com/AzureAD/microsoft-authentication-library-for-go v1.8.0
+2026-09-27T01:28:18.6047178Z go: downloading github.com/cenkalti/backoff/v5 v5.0.3
+2026-09-27T01:28:18.6047619Z go: downloading github.com/go-jose/go-jose/v4 v4.1.4
+2026-09-27T01:28:18.6048020Z go: downloading github.com/go-viper/mapstructure/v2 v2.5.0
+2026-09-27T01:28:18.6452454Z go: downloading github.com/hashicorp/go-cleanhttp v0.5.2
+2026-09-27T01:28:18.6566612Z go: downloading github.com/hashicorp/go-multierror v1.1.1
+2026-09-27T01:28:18.6701859Z go: downloading github.com/hashicorp/go-retryablehttp v0.7.8
+2026-09-27T01:28:18.6943164Z go: downloading github.com/hashicorp/go-secure-stdlib/parseutil v0.2.0
+2026-09-27T01:28:18.7080615Z go: downloading github.com/hashicorp/hcl v1.0.1-vault-7
+2026-09-27T01:28:18.8893532Z go: downloading github.com/cenkalti/backoff/v4 v4.3.0
+2026-09-27T01:28:18.8893977Z go: downloading github.com/hashicorp/errwrap v1.1.0
+2026-09-27T01:28:18.8894323Z go: downloading golang.org/x/time v0.15.0
+2026-09-27T01:28:18.8894629Z go: downloading golang.org/x/net v0.58.0
+2026-09-27T01:28:18.9287431Z go: downloading github.com/hashicorp/go-rootcerts v1.0.2
+2026-09-27T01:28:18.9298171Z go: downloading github.com/hashicorp/go-secure-stdlib/strutil v0.1.2
+2026-09-27T01:28:18.9344803Z go: downloading github.com/mitchellh/mapstructure v1.5.0
+2026-09-27T01:28:18.9573813Z go: downloading github.com/gorilla/securecookie v1.1.2
+2026-09-27T01:28:18.9636152Z go: downloading golang.org/x/oauth2 v0.37.0
+2026-09-27T01:28:18.9669936Z go: downloading github.com/gorilla/mux v1.6.2
+2026-09-27T01:28:19.0046609Z go: downloading github.com/google/go-querystring v1.2.0
+2026-09-27T01:28:19.0508132Z go: downloading github.com/prometheus/client_model v0.6.2
+2026-09-27T01:28:19.0928463Z go: downloading github.com/prometheus/common v0.70.1
+2026-09-27T01:28:19.1089992Z go: downloading github.com/beorn7/perks v1.0.1
+2026-09-27T01:28:19.1090822Z go: downloading github.com/cespare/xxhash/v2 v2.3.0
+2026-09-27T01:28:19.2224904Z go: downloading go.opentelemetry.io/proto/otlp v1.11.0
+2026-09-27T01:28:19.2847907Z go: downloading filippo.io/edwards25519 v1.2.0
+2026-09-27T01:28:19.3088691Z go: downloading github.com/russross/blackfriday/v2 v2.1.0
+2026-09-27T01:28:19.3358207Z go: downloading cloud.google.com/go/compute/metadata v0.9.0
+2026-09-27T01:28:19.3441648Z go: downloading modernc.org/libc v1.75.7
+2026-09-27T01:28:19.3861056Z go: downloading github.com/oiweiwei/go-smb2.fork v1.0.2
+2026-09-27T01:28:19.4761713Z go: downloading github.com/google/flatbuffers v25.12.19+incompatible
+2026-09-27T01:28:19.7059388Z go: downloading github.com/klauspost/compress v1.19.2
+2026-09-27T01:28:20.8427279Z go: downloading github.com/go-logr/logr v1.4.4
+2026-09-27T01:28:20.9175646Z go: downloading go.opentelemetry.io/otel/metric v1.46.0
+2026-09-27T01:28:20.9610425Z go: downloading github.com/sigstore/sigstore-go v1.2.1
+2026-09-27T01:28:21.1055613Z go: downloading github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.8.3
+2026-09-27T01:28:21.1840000Z go: downloading cloud.google.com/go/auth/oauth2adapt v0.2.8
+2026-09-27T01:28:21.2097068Z go: downloading go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.70.0
+2026-09-27T01:28:22.2498751Z go: downloading go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.70.0
+2026-09-27T01:28:22.2973597Z go: downloading github.com/kylelemons/godebug v1.1.0
+2026-09-27T01:28:22.3452122Z go: downloading github.com/hashicorp/go-sockaddr v1.0.7
+2026-09-27T01:28:22.4647438Z go: downloading github.com/ryanuber/go-glob v1.0.0
+2026-09-27T01:28:22.4942575Z go: downloading github.com/grpc-ecosystem/grpc-gateway/v2 v2.30.0
+2026-09-27T01:28:23.1721078Z go: downloading go.opentelemetry.io/auto/sdk v1.2.1
+2026-09-27T01:28:23.1721828Z go: downloading github.com/go-logr/stdr v1.2.2
+2026-09-27T01:28:23.2052364Z go: downloading github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
+2026-09-27T01:28:23.4621972Z go: downloading github.com/dlclark/regexp2/v2 v2.5.1
+2026-09-27T01:28:24.5238440Z go: downloading github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761
+2026-09-27T01:28:24.5238974Z go: downloading github.com/jackc/pgpassfile v1.0.0
+2026-09-27T01:28:24.5501367Z go: downloading golang.org/x/text v0.42.0
+2026-09-27T01:28:24.5549504Z go: downloading github.com/jackc/puddle/v2 v2.2.2
+2026-09-27T01:28:24.6033493Z go: downloading google.golang.org/genai v1.68.0
+2026-09-27T01:28:25.0277899Z go: downloading github.com/googleapis/enterprise-certificate-proxy v0.3.20
+2026-09-27T01:28:25.0337378Z go: downloading github.com/oiweiwei/go-math v1.0.0
+2026-09-27T01:28:25.0692155Z go: downloading github.com/in-toto/attestation v1.2.0
+2026-09-27T01:28:25.1295905Z go: downloading github.com/secure-systems-lab/go-securesystemslib v0.11.0
+2026-09-27T01:28:25.1889447Z go: downloading github.com/sigstore/protobuf-specs v0.5.1
+2026-09-27T01:28:25.4206879Z go: downloading golang.org/x/mod v0.41.0
+2026-09-27T01:28:25.4207364Z go: downloading github.com/sigstore/timestamp-authority/v2 v2.1.3
+2026-09-27T01:28:25.4207799Z go: downloading github.com/sigstore/sigstore v1.10.8
+2026-09-27T01:28:25.5688138Z go: downloading github.com/google/certificate-transparency-go v1.3.3
+2026-09-27T01:28:25.9458105Z go: downloading github.com/sigstore/rekor-tiles/v2 v2.2.2-0.20260601073857-5d098a2b6443
+2026-09-27T01:28:26.6445608Z go: downloading github.com/google/s2a-go v0.1.9
+2026-09-27T01:28:26.6446047Z go: downloading github.com/felixge/httpsnoop v1.1.0
+2026-09-27T01:28:26.6449843Z go: downloading golang.org/x/sync v0.23.0
+2026-09-27T01:28:26.6456541Z go: downloading github.com/golang-jwt/jwt/v5 v5.3.1
+2026-09-27T01:28:26.6884876Z go: downloading github.com/ncruces/go-strftime v1.0.0
+2026-09-27T01:28:26.6931582Z go: downloading modernc.org/mathutil v1.7.1
+2026-09-27T01:28:26.7301100Z go: downloading modernc.org/memory v1.12.1
+2026-09-27T01:28:26.7336996Z go: downloading github.com/jcmturner/gofork v1.7.6
+2026-09-27T01:28:26.7604315Z go: downloading github.com/jcmturner/gokrb5/v8 v8.4.4
+2026-09-27T01:28:26.7792408Z go: downloading github.com/oiweiwei/gokrb5.fork/v9 v9.0.7
+2026-09-27T01:28:26.9789629Z go: downloading github.com/oiweiwei/go-oem v1.0.0
+2026-09-27T01:28:26.9790439Z go: downloading github.com/geoffgarside/ber v1.1.0
+2026-09-27T01:28:26.9908662Z go: downloading github.com/google/go-cmp v0.7.0
+2026-09-27T01:28:26.9909608Z go: downloading github.com/gorilla/websocket v1.5.3
+2026-09-27T01:28:27.0655164Z go: downloading github.com/cyberphone/json-canonicalization v0.0.0-20241213102144-19d51d7fe467
+2026-09-27T01:28:27.0672265Z go: downloading github.com/go-openapi/runtime v0.33.0
+2026-09-27T01:28:27.1032967Z go: downloading github.com/go-openapi/strfmt v0.27.0
+2026-09-27T01:28:27.1037700Z go: downloading github.com/go-openapi/swag/conv v0.28.0
+2026-09-27T01:28:27.1394889Z go: downloading github.com/go-openapi/swag v0.28.0
+2026-09-27T01:28:27.2245341Z go: downloading github.com/sigstore/rekor v1.5.3
+2026-09-27T01:28:28.4450008Z go: downloading github.com/theupdateframework/go-tuf/v2 v2.4.2
+2026-09-27T01:28:28.4450580Z go: downloading github.com/digitorus/pkcs7 v0.0.0-20230818184609-3a137a874352
+2026-09-27T01:28:28.4842907Z go: downloading github.com/digitorus/timestamp v0.0.0-20231217203849-220c5c2851b7
+2026-09-27T01:28:28.5277205Z go: downloading github.com/pkg/errors v0.9.1
+2026-09-27T01:28:28.5527071Z go: downloading github.com/google/go-containerregistry v0.21.7
+2026-09-27T01:28:28.5529216Z go: downloading github.com/transparency-dev/merkle v0.0.2
+2026-09-27T01:28:28.5579879Z go: downloading github.com/transparency-dev/formats v0.1.1
+2026-09-27T01:28:28.6130398Z go: downloading github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78
+2026-09-27T01:28:28.6358668Z go: downloading golang.org/x/term v0.46.0
+2026-09-27T01:28:28.6378906Z go: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec
+2026-09-27T01:28:28.6458035Z go: downloading github.com/jcmturner/dnsutils/v2 v2.0.0
+2026-09-27T01:28:28.6730995Z go: downloading github.com/hashicorp/go-uuid v1.0.3
+2026-09-27T01:28:28.7701711Z go: downloading github.com/jcmturner/goidentity/v6 v6.0.1
+2026-09-27T01:28:28.7784227Z go: downloading github.com/indece-official/go-ebcdic v1.2.0
+2026-09-27T01:28:28.7933178Z go: downloading github.com/go-openapi/errors v0.22.8
+2026-09-27T01:28:28.8076837Z go: downloading github.com/oklog/ulid/v2 v2.1.1
+2026-09-27T01:28:28.8240956Z go: downloading github.com/go-openapi/swag/fileutils v0.28.0
+2026-09-27T01:28:28.8479681Z go: downloading github.com/go-openapi/swag/jsonutils v0.28.0
+2026-09-27T01:28:28.8543070Z go: downloading github.com/go-openapi/swag/stringutils v0.28.0
+2026-09-27T01:28:28.8697669Z go: downloading github.com/go-openapi/validate v0.26.1
+2026-09-27T01:28:28.8908814Z go: downloading github.com/blang/semver v3.5.1+incompatible
+2026-09-27T01:28:28.9069449Z go: downloading github.com/in-toto/in-toto-golang v0.11.0
+2026-09-27T01:28:28.9332937Z go: downloading k8s.io/klog/v2 v2.140.0
+2026-09-27T01:28:29.0776639Z go: downloading github.com/jcmturner/aescts/v2 v2.0.0
+2026-09-27T01:28:29.0977176Z go: downloading github.com/jcmturner/rpc/v2 v2.0.3
+2026-09-27T01:28:29.1583308Z go: downloading github.com/go-openapi/jsonpointer v1.0.0
+2026-09-27T01:28:29.1599773Z go: downloading github.com/go-openapi/swag/cmdutils v0.28.0
+2026-09-27T01:28:29.1828448Z go: downloading github.com/go-openapi/swag/loading v0.28.0
+2026-09-27T01:28:29.2041130Z go: downloading github.com/go-openapi/swag/mangling v0.28.0
+2026-09-27T01:28:29.2246967Z go: downloading github.com/go-openapi/swag/netutils v0.28.0
+2026-09-27T01:28:29.2390127Z go: downloading github.com/go-openapi/swag/typeutils v0.28.0
+2026-09-27T01:28:29.2450668Z go: downloading github.com/go-openapi/swag/yamlutils v0.28.0
+2026-09-27T01:28:29.2498798Z go: downloading github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
+2026-09-27T01:28:29.2643107Z go: downloading github.com/shibumi/go-pathspec v1.3.0
+2026-09-27T01:28:29.2813601Z go: downloading github.com/opencontainers/go-digest v1.0.0
+2026-09-27T01:28:29.2928178Z go: downloading github.com/go-openapi/runtime/server-middleware v0.30.0
+2026-09-27T01:28:29.3096725Z go: downloading go.yaml.in/yaml/v3 v3.0.5
+2026-09-27T01:28:29.3189588Z go: downloading github.com/go-openapi/swag/pools v0.28.0
+2026-09-27T01:28:29.3443459Z go: downloading github.com/go-openapi/analysis v0.25.5
+2026-09-27T01:28:29.3578651Z go: downloading github.com/go-openapi/loads v0.25.0
+2026-09-27T01:28:29.3599582Z go: downloading github.com/go-openapi/spec v0.22.9
+2026-09-27T01:28:29.6191645Z go: downloading github.com/go-openapi/jsonreference v1.0.0
+2026-09-27T01:29:59.7446835Z PASS 538 console files embedded in native-starport.exe
+2026-09-27T01:30:01.7958393Z Traceback (most recent call last):
+2026-09-27T01:30:01.7990475Z   File "C:\a\starport\starport\scripts\verify-console-binary.py", line 29, in <module>
+2026-09-27T01:30:01.7991151Z     verify(Path(sys.argv[1]))
+2026-09-27T01:30:01.7991433Z     ~~~~~~^^^^^^^^^^^^^^^^^^^
+2026-09-27T01:30:01.7991914Z   File "C:\a\starport\starport\scripts\verify-console-binary.py", line 24, in verify
+2026-09-27T01:30:01.7992560Z     native.verify_development(binary.resolve(), environment, home, port, report)
+2026-09-27T01:30:01.7993118Z     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-09-27T01:30:01.7993726Z   File "C:\a\starport\starport\scripts\verify-native-release.py", line 176, in verify_development
+2026-09-27T01:30:01.7995133Z     raise RuntimeError(f'The released development server exited before readiness (exit {process.returncode}): {report["startup_error"]}')
+2026-09-27T01:30:01.7996844Z RuntimeError: The released development server exited before readiness (exit 1): create development scratch directory: validation failed for field private.directory: DACL grants access beyond the process account and privileged host administrators. Review native ACL entries before retrying
+2026-09-27T01:30:01.8246507Z ##[error]Process completed with exit code 1.
+2026-09-27T01:30:01.8716977Z Post job cleanup.
+2026-09-27T01:30:02.1877475Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-09-27T01:30:02.2400813Z git version 2.55.0.windows.5
+2026-09-27T01:30:02.2482364Z Temporarily overriding HOME='C:\a\_temp\a805509f-9041-472a-9cd5-bf8e2b77226a' before making global git config changes
+2026-09-27T01:30:02.2483200Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T01:30:02.2488719Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory C:\a\starport\starport
+2026-09-27T01:30:02.3024439Z Removing SSH command configuration
+2026-09-27T01:30:02.3037115Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T01:30:02.3552788Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-09-27T01:30:03.5391231Z Removing HTTP extra header
+2026-09-27T01:30:03.5399980Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T01:30:03.5917815Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-09-27T01:30:04.7769368Z Removing includeIf entries pointing to credentials config files
+2026-09-27T01:30:04.7781002Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T01:30:04.8307063Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-09-27T01:30:06.0168188Z Cleaning up orphan processes

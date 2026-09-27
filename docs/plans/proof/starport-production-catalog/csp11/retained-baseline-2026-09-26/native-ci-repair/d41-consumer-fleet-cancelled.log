@@ -1,0 +1,806 @@
+﻿2026-09-27T01:24:57.0909400Z Current runner version: '2.337.0'
+2026-09-27T01:24:57.0943837Z ##[group]Runner Image Provisioner
+2026-09-27T01:24:57.0945152Z Hosted Compute Agent
+2026-09-27T01:24:57.0946118Z Version: 20260828.587
+2026-09-27T01:24:57.0947328Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-27T01:24:57.0948579Z Build Date: 2026-08-28T16:44:25Z
+2026-09-27T01:24:57.0949903Z Worker ID: {58bf64f7-a958-4691-9df4-c0ad390ab9fe}
+2026-09-27T01:24:57.0951263Z Azure Region: eastus
+2026-09-27T01:24:57.0952468Z ##[endgroup]
+2026-09-27T01:24:57.0954891Z ##[group]Operating System
+2026-09-27T01:24:57.0955898Z Ubuntu
+2026-09-27T01:24:57.0956844Z 24.04.5
+2026-09-27T01:24:57.0957698Z LTS
+2026-09-27T01:24:57.0958538Z ##[endgroup]
+2026-09-27T01:24:57.0959823Z ##[group]Runner Image
+2026-09-27T01:24:57.0961027Z Image: ubuntu-24.04
+2026-09-27T01:24:57.0961917Z Version: 20260920.314.1
+2026-09-27T01:24:57.0964144Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-27T01:24:57.0967063Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+2026-09-27T01:24:57.0968700Z ##[endgroup]
+2026-09-27T01:24:57.0971133Z ##[group]GITHUB_TOKEN Permissions
+2026-09-27T01:24:57.0974057Z Contents: read
+2026-09-27T01:24:57.0975160Z Metadata: read
+2026-09-27T01:24:57.0976034Z PullRequests: read
+2026-09-27T01:24:57.0977110Z ##[endgroup]
+2026-09-27T01:24:57.0980367Z Secret source: Actions
+2026-09-27T01:24:57.0981876Z Cache mode: write
+2026-09-27T01:24:57.0983131Z Prepare workflow directory
+2026-09-27T01:24:57.1636169Z Prepare all required actions
+2026-09-27T01:24:57.1708321Z Getting action download info
+2026-09-27T01:24:57.3656774Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-09-27T01:24:57.4727017Z Download action repository 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e' (SHA:b7ad1dad31e06c5925ef5d2fc7ad053ef454303e)
+2026-09-27T01:24:57.6426333Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-27T01:24:57.8162289Z Complete job name: Catalog Fleet Recovery
+2026-09-27T01:24:57.8693600Z ##[group]Checking docker version
+2026-09-27T01:24:57.8706753Z ##[command]/usr/bin/docker version --format '{{.Server.APIVersion}}'
+2026-09-27T01:24:57.9812157Z '1.48'
+2026-09-27T01:24:57.9833625Z Docker daemon API version: '1.48'
+2026-09-27T01:24:57.9834410Z ##[command]/usr/bin/docker version --format '{{.Client.APIVersion}}'
+2026-09-27T01:24:58.0006337Z '1.48'
+2026-09-27T01:24:58.0018987Z Docker client API version: '1.48'
+2026-09-27T01:24:58.0026336Z ##[endgroup]
+2026-09-27T01:24:58.0030377Z ##[group]Clean up resources from previous jobs
+2026-09-27T01:24:58.0036919Z ##[command]/usr/bin/docker ps --all --quiet --no-trunc --filter "label=231969"
+2026-09-27T01:24:58.0181086Z ##[command]/usr/bin/docker network prune --force --filter "label=231969"
+2026-09-27T01:24:58.0311103Z ##[endgroup]
+2026-09-27T01:24:58.0311682Z ##[group]Create local container network
+2026-09-27T01:24:58.0322256Z ##[command]/usr/bin/docker network create --label 231969 github_network_e79643e2f2cf415e9bdbab9d403b2824
+2026-09-27T01:24:58.0870543Z 036609edd8683792ffd04f5a18580bfd88af005044d2b54f4525d0aa5bef5bfa
+2026-09-27T01:24:58.0891295Z ##[endgroup]
+2026-09-27T01:24:58.0916090Z ##[group]Starting valkey service container
+2026-09-27T01:24:58.0938219Z ##[command]/usr/bin/docker pull valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:58.2762813Z docker.io/valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f: Pulling from valkey/valkey
+2026-09-27T01:24:58.3501237Z 55afa1ecc21d: Already exists
+2026-09-27T01:24:58.3538515Z e5f1646f3a0b: Pulling fs layer
+2026-09-27T01:24:58.3540771Z f53508937e4f: Pulling fs layer
+2026-09-27T01:24:58.3543033Z 28bc9e6fed3f: Pulling fs layer
+2026-09-27T01:24:58.3544690Z bf8c3f567f1b: Pulling fs layer
+2026-09-27T01:24:58.3546486Z 4f4fb700ef54: Pulling fs layer
+2026-09-27T01:24:58.3547698Z 6373f0728da7: Pulling fs layer
+2026-09-27T01:24:58.3548442Z bf8c3f567f1b: Waiting
+2026-09-27T01:24:58.3549292Z 4f4fb700ef54: Waiting
+2026-09-27T01:24:58.3549916Z 6373f0728da7: Waiting
+2026-09-27T01:24:58.4054782Z e5f1646f3a0b: Verifying Checksum
+2026-09-27T01:24:58.4055953Z e5f1646f3a0b: Download complete
+2026-09-27T01:24:58.4317561Z bf8c3f567f1b: Verifying Checksum
+2026-09-27T01:24:58.4320087Z bf8c3f567f1b: Download complete
+2026-09-27T01:24:58.4327998Z e5f1646f3a0b: Pull complete
+2026-09-27T01:24:58.4356192Z f53508937e4f: Verifying Checksum
+2026-09-27T01:24:58.4358443Z f53508937e4f: Download complete
+2026-09-27T01:24:58.4680099Z 6373f0728da7: Verifying Checksum
+2026-09-27T01:24:58.4680858Z 6373f0728da7: Download complete
+2026-09-27T01:24:58.4689307Z 28bc9e6fed3f: Verifying Checksum
+2026-09-27T01:24:58.4690621Z 28bc9e6fed3f: Download complete
+2026-09-27T01:24:58.4739550Z 4f4fb700ef54: Verifying Checksum
+2026-09-27T01:24:58.4740573Z 4f4fb700ef54: Download complete
+2026-09-27T01:24:58.6394154Z f53508937e4f: Pull complete
+2026-09-27T01:24:58.8100639Z 28bc9e6fed3f: Pull complete
+2026-09-27T01:24:58.8193024Z bf8c3f567f1b: Pull complete
+2026-09-27T01:24:58.8267381Z 4f4fb700ef54: Pull complete
+2026-09-27T01:24:58.8391662Z 6373f0728da7: Pull complete
+2026-09-27T01:24:58.8432517Z Digest: sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:58.8449772Z Status: Downloaded newer image for valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:58.8458616Z docker.io/valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:58.8488088Z ##[command]/usr/bin/docker create --name 473d459a27a64e20a74e10a932ea479e_valkeyvalkeysha2569acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f_725b73 --label 231969 --network github_network_e79643e2f2cf415e9bdbab9d403b2824 --network-alias valkey -p 6379/tcp --health-cmd "valkey-cli ping" --health-interval 5s --health-timeout 3s --health-retries 10 -e GITHUB_ACTIONS=true -e CI=true valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:58.8765496Z 04e6f5e041e44a0dfa9debf507da0f377405ff6e5a77feb5ad1f14a53d86ea70
+2026-09-27T01:24:58.8789360Z ##[command]/usr/bin/docker start 04e6f5e041e44a0dfa9debf507da0f377405ff6e5a77feb5ad1f14a53d86ea70
+2026-09-27T01:24:59.2184681Z 04e6f5e041e44a0dfa9debf507da0f377405ff6e5a77feb5ad1f14a53d86ea70
+2026-09-27T01:24:59.2202781Z ##[command]/usr/bin/docker ps --all --filter id=04e6f5e041e44a0dfa9debf507da0f377405ff6e5a77feb5ad1f14a53d86ea70 --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+2026-09-27T01:24:59.2325650Z 04e6f5e041e44a0dfa9debf507da0f377405ff6e5a77feb5ad1f14a53d86ea70 Up Less than a second (health: starting)
+2026-09-27T01:24:59.2346342Z ##[command]/usr/bin/docker port 04e6f5e041e44a0dfa9debf507da0f377405ff6e5a77feb5ad1f14a53d86ea70
+2026-09-27T01:24:59.2478606Z 6379/tcp -> 0.0.0.0:32768
+2026-09-27T01:24:59.2479889Z 6379/tcp -> [::]:32768
+2026-09-27T01:24:59.2525002Z ##[endgroup]
+2026-09-27T01:24:59.2526885Z ##[group]Starting valkey-replacement service container
+2026-09-27T01:24:59.2528581Z ##[command]/usr/bin/docker pull valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:59.2828143Z docker.io/valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f: Pulling from valkey/valkey
+2026-09-27T01:24:59.2911570Z Digest: sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:59.2913155Z Status: Image is up to date for valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:59.2918325Z docker.io/valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:59.2934574Z ##[command]/usr/bin/docker create --name 22766d7605de4b0f9e2243f900b8387b_valkeyvalkeysha2569acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f_d1d023 --label 231969 --network github_network_e79643e2f2cf415e9bdbab9d403b2824 --network-alias valkey-replacement -p 6379/tcp --health-cmd "valkey-cli ping" --health-interval 5s --health-timeout 3s --health-retries 10 -e GITHUB_ACTIONS=true -e CI=true valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:59.3172024Z f9ee3edae4a6b8055526fd8b571fb231229c164dc7c75250ecd53010ed381338
+2026-09-27T01:24:59.3185849Z ##[command]/usr/bin/docker start f9ee3edae4a6b8055526fd8b571fb231229c164dc7c75250ecd53010ed381338
+2026-09-27T01:24:59.4574977Z f9ee3edae4a6b8055526fd8b571fb231229c164dc7c75250ecd53010ed381338
+2026-09-27T01:24:59.4613436Z ##[command]/usr/bin/docker ps --all --filter id=f9ee3edae4a6b8055526fd8b571fb231229c164dc7c75250ecd53010ed381338 --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+2026-09-27T01:24:59.4754545Z f9ee3edae4a6b8055526fd8b571fb231229c164dc7c75250ecd53010ed381338 Up Less than a second (health: starting)
+2026-09-27T01:24:59.4773156Z ##[command]/usr/bin/docker port f9ee3edae4a6b8055526fd8b571fb231229c164dc7c75250ecd53010ed381338
+2026-09-27T01:24:59.4913349Z 6379/tcp -> 0.0.0.0:32769
+2026-09-27T01:24:59.4914135Z 6379/tcp -> [::]:32769
+2026-09-27T01:24:59.4929298Z ##[endgroup]
+2026-09-27T01:24:59.4930791Z ##[group]Starting valkey-fresh service container
+2026-09-27T01:24:59.4931902Z ##[command]/usr/bin/docker pull valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:59.5230314Z docker.io/valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f: Pulling from valkey/valkey
+2026-09-27T01:24:59.5283668Z Digest: sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:59.5286629Z Status: Image is up to date for valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:59.5306772Z docker.io/valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:59.5314587Z ##[command]/usr/bin/docker create --name c9170ccead824d248db7e08c01097e09_valkeyvalkeysha2569acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f_e82cb0 --label 231969 --network github_network_e79643e2f2cf415e9bdbab9d403b2824 --network-alias valkey-fresh -p 6379/tcp --health-cmd "valkey-cli ping" --health-interval 5s --health-timeout 3s --health-retries 10 -e GITHUB_ACTIONS=true -e CI=true valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+2026-09-27T01:24:59.5587341Z 81e5d9d817c2c6378c50efaba10e83bc0e584dc688374658db57c913f8ddb676
+2026-09-27T01:24:59.5602127Z ##[command]/usr/bin/docker start 81e5d9d817c2c6378c50efaba10e83bc0e584dc688374658db57c913f8ddb676
+2026-09-27T01:24:59.7036528Z 81e5d9d817c2c6378c50efaba10e83bc0e584dc688374658db57c913f8ddb676
+2026-09-27T01:24:59.7061648Z ##[command]/usr/bin/docker ps --all --filter id=81e5d9d817c2c6378c50efaba10e83bc0e584dc688374658db57c913f8ddb676 --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+2026-09-27T01:24:59.7193772Z 81e5d9d817c2c6378c50efaba10e83bc0e584dc688374658db57c913f8ddb676 Up Less than a second (health: starting)
+2026-09-27T01:24:59.7205306Z ##[command]/usr/bin/docker port 81e5d9d817c2c6378c50efaba10e83bc0e584dc688374658db57c913f8ddb676
+2026-09-27T01:24:59.7322900Z 6379/tcp -> 0.0.0.0:32770
+2026-09-27T01:24:59.7323466Z 6379/tcp -> [::]:32770
+2026-09-27T01:24:59.7336413Z ##[endgroup]
+2026-09-27T01:24:59.7337867Z ##[group]Starting postgres service container
+2026-09-27T01:24:59.7339204Z ##[command]/usr/bin/docker pull postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94
+2026-09-27T01:24:59.8912649Z docker.io/library/postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94: Pulling from library/postgres
+2026-09-27T01:24:59.9746207Z 6310eb16bf42: Pulling fs layer
+2026-09-27T01:24:59.9746800Z 4d710b756578: Pulling fs layer
+2026-09-27T01:24:59.9747493Z 3fa541d8cac9: Pulling fs layer
+2026-09-27T01:24:59.9748327Z b3ffe1fd6e79: Pulling fs layer
+2026-09-27T01:24:59.9749038Z f122bc3261fc: Pulling fs layer
+2026-09-27T01:24:59.9749573Z 5322d81b9b21: Pulling fs layer
+2026-09-27T01:24:59.9749981Z 9bd242f25e75: Pulling fs layer
+2026-09-27T01:24:59.9750383Z 9d1e9c1e61f4: Pulling fs layer
+2026-09-27T01:24:59.9750859Z 48dd761b6bfe: Pulling fs layer
+2026-09-27T01:24:59.9751360Z 00034b17b963: Pulling fs layer
+2026-09-27T01:24:59.9751826Z 8a082189cfe1: Pulling fs layer
+2026-09-27T01:24:59.9752301Z 988d57697ad2: Pulling fs layer
+2026-09-27T01:24:59.9752756Z 9f809ec5ff35: Pulling fs layer
+2026-09-27T01:24:59.9753250Z af7708f26521: Pulling fs layer
+2026-09-27T01:24:59.9753740Z b3ffe1fd6e79: Waiting
+2026-09-27T01:24:59.9754162Z f122bc3261fc: Waiting
+2026-09-27T01:24:59.9754608Z 48dd761b6bfe: Waiting
+2026-09-27T01:24:59.9755046Z 5322d81b9b21: Waiting
+2026-09-27T01:24:59.9755453Z 9bd242f25e75: Waiting
+2026-09-27T01:24:59.9755773Z 9d1e9c1e61f4: Waiting
+2026-09-27T01:24:59.9756099Z 9f809ec5ff35: Waiting
+2026-09-27T01:24:59.9756420Z af7708f26521: Waiting
+2026-09-27T01:24:59.9756741Z 8a082189cfe1: Waiting
+2026-09-27T01:24:59.9757057Z 988d57697ad2: Waiting
+2026-09-27T01:24:59.9757447Z 00034b17b963: Waiting
+2026-09-27T01:25:00.0022575Z 4d710b756578: Verifying Checksum
+2026-09-27T01:25:00.0023456Z 4d710b756578: Download complete
+2026-09-27T01:25:00.0344752Z 3fa541d8cac9: Verifying Checksum
+2026-09-27T01:25:00.0346523Z 3fa541d8cac9: Download complete
+2026-09-27T01:25:00.0638478Z b3ffe1fd6e79: Download complete
+2026-09-27T01:25:00.1083250Z f122bc3261fc: Verifying Checksum
+2026-09-27T01:25:00.1083774Z f122bc3261fc: Download complete
+2026-09-27T01:25:00.1106582Z 5322d81b9b21: Verifying Checksum
+2026-09-27T01:25:00.1107573Z 5322d81b9b21: Download complete
+2026-09-27T01:25:00.1204628Z 6310eb16bf42: Verifying Checksum
+2026-09-27T01:25:00.1205156Z 6310eb16bf42: Download complete
+2026-09-27T01:25:00.1359382Z 9bd242f25e75: Verifying Checksum
+2026-09-27T01:25:00.1359792Z 9bd242f25e75: Download complete
+2026-09-27T01:25:00.1377448Z 9d1e9c1e61f4: Download complete
+2026-09-27T01:25:00.1664180Z 00034b17b963: Verifying Checksum
+2026-09-27T01:25:00.1677085Z 00034b17b963: Download complete
+2026-09-27T01:25:00.1678321Z 8a082189cfe1: Verifying Checksum
+2026-09-27T01:25:00.1679744Z 8a082189cfe1: Download complete
+2026-09-27T01:25:00.1935999Z 9f809ec5ff35: Verifying Checksum
+2026-09-27T01:25:00.1937906Z 9f809ec5ff35: Download complete
+2026-09-27T01:25:00.1977167Z 988d57697ad2: Verifying Checksum
+2026-09-27T01:25:00.1977690Z 988d57697ad2: Download complete
+2026-09-27T01:25:00.2232636Z af7708f26521: Verifying Checksum
+2026-09-27T01:25:00.2233287Z af7708f26521: Download complete
+2026-09-27T01:25:00.7973492Z 48dd761b6bfe: Verifying Checksum
+2026-09-27T01:25:00.7974003Z 48dd761b6bfe: Download complete
+2026-09-27T01:25:01.2149602Z 6310eb16bf42: Pull complete
+2026-09-27T01:25:01.5112816Z 4d710b756578: Pull complete
+2026-09-27T01:25:01.6930420Z 3fa541d8cac9: Pull complete
+2026-09-27T01:25:01.7330290Z b3ffe1fd6e79: Pull complete
+2026-09-27T01:25:02.0398152Z f122bc3261fc: Pull complete
+2026-09-27T01:25:02.1140827Z 5322d81b9b21: Pull complete
+2026-09-27T01:25:02.1228054Z 9bd242f25e75: Pull complete
+2026-09-27T01:25:02.1312604Z 9d1e9c1e61f4: Pull complete
+2026-09-27T01:25:05.1565800Z 48dd761b6bfe: Pull complete
+2026-09-27T01:25:05.1715823Z 00034b17b963: Pull complete
+2026-09-27T01:25:05.1811624Z 8a082189cfe1: Pull complete
+2026-09-27T01:25:05.1901849Z 988d57697ad2: Pull complete
+2026-09-27T01:25:05.2019380Z 9f809ec5ff35: Pull complete
+2026-09-27T01:25:05.2104299Z af7708f26521: Pull complete
+2026-09-27T01:25:05.2145658Z Digest: sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94
+2026-09-27T01:25:05.2151970Z Status: Downloaded newer image for postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94
+2026-09-27T01:25:05.2161341Z docker.io/library/postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94
+2026-09-27T01:25:05.2204308Z ##[command]/usr/bin/docker create --name 673a1e58898d422f804ca80252b1debb_postgressha256f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94_9a2a44 --label 231969 --network github_network_e79643e2f2cf415e9bdbab9d403b2824 --network-alias postgres -p 5432/tcp --health-cmd "pg_isready -U postgres -d starport_test" --health-interval 5s --health-timeout 3s --health-retries 10 -e "POSTGRES_HOST_AUTH_METHOD=trust" -e "POSTGRES_DB=starport_test" -e GITHUB_ACTIONS=true -e CI=true postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94
+2026-09-27T01:25:05.2465322Z e135b0213a98869c13485a040f8d606bca2dc110fd5a3b670eb4e73ea44df322
+2026-09-27T01:25:05.2479196Z ##[command]/usr/bin/docker start e135b0213a98869c13485a040f8d606bca2dc110fd5a3b670eb4e73ea44df322
+2026-09-27T01:25:05.3911988Z e135b0213a98869c13485a040f8d606bca2dc110fd5a3b670eb4e73ea44df322
+2026-09-27T01:25:05.3933324Z ##[command]/usr/bin/docker ps --all --filter id=e135b0213a98869c13485a040f8d606bca2dc110fd5a3b670eb4e73ea44df322 --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+2026-09-27T01:25:05.4077332Z e135b0213a98869c13485a040f8d606bca2dc110fd5a3b670eb4e73ea44df322 Up Less than a second (health: starting)
+2026-09-27T01:25:05.4093918Z ##[command]/usr/bin/docker port e135b0213a98869c13485a040f8d606bca2dc110fd5a3b670eb4e73ea44df322
+2026-09-27T01:25:05.4232640Z 5432/tcp -> 0.0.0.0:32771
+2026-09-27T01:25:05.4233264Z 5432/tcp -> [::]:32771
+2026-09-27T01:25:05.4247256Z ##[endgroup]
+2026-09-27T01:25:05.4259555Z ##[group]Waiting for all services to be ready
+2026-09-27T01:25:05.4273383Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 04e6f5e041e44a0dfa9debf507da0f377405ff6e5a77feb5ad1f14a53d86ea70
+2026-09-27T01:25:05.4424964Z healthy
+2026-09-27T01:25:05.4450091Z valkey service is healthy.
+2026-09-27T01:25:05.4451980Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" f9ee3edae4a6b8055526fd8b571fb231229c164dc7c75250ecd53010ed381338
+2026-09-27T01:25:05.4585086Z healthy
+2026-09-27T01:25:05.4601479Z valkey-replacement service is healthy.
+2026-09-27T01:25:05.4603370Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 81e5d9d817c2c6378c50efaba10e83bc0e584dc688374658db57c913f8ddb676
+2026-09-27T01:25:05.4749331Z healthy
+2026-09-27T01:25:05.4751506Z valkey-fresh service is healthy.
+2026-09-27T01:25:05.4752319Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" e135b0213a98869c13485a040f8d606bca2dc110fd5a3b670eb4e73ea44df322
+2026-09-27T01:25:05.4882393Z starting
+2026-09-27T01:25:05.4903009Z postgres service is starting, waiting 2 seconds before checking again.
+2026-09-27T01:25:07.4904544Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" e135b0213a98869c13485a040f8d606bca2dc110fd5a3b670eb4e73ea44df322
+2026-09-27T01:25:07.5032134Z starting
+2026-09-27T01:25:07.5044723Z postgres service is starting, waiting 4 seconds before checking again.
+2026-09-27T01:25:11.7942648Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" e135b0213a98869c13485a040f8d606bca2dc110fd5a3b670eb4e73ea44df322
+2026-09-27T01:25:11.8075666Z healthy
+2026-09-27T01:25:11.8088422Z postgres service is healthy.
+2026-09-27T01:25:11.8089566Z ##[endgroup]
+2026-09-27T01:25:11.8389947Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-09-27T01:25:11.8390654Z with:
+2026-09-27T01:25:11.8390880Z   repository: agentstation/starport
+2026-09-27T01:25:11.8393220Z   token: ***
+2026-09-27T01:25:11.8393422Z   ssh-strict: true
+2026-09-27T01:25:11.8393629Z   ssh-user: git
+2026-09-27T01:25:11.8393833Z   persist-credentials: true
+2026-09-27T01:25:11.8394064Z   clean: true
+2026-09-27T01:25:11.8394270Z   sparse-checkout-cone-mode: true
+2026-09-27T01:25:11.8394522Z   fetch-depth: 1
+2026-09-27T01:25:11.8394726Z   fetch-tags: false
+2026-09-27T01:25:11.8394928Z   show-progress: true
+2026-09-27T01:25:11.8395130Z   lfs: false
+2026-09-27T01:25:11.8395525Z   submodules: false
+2026-09-27T01:25:11.8395730Z   set-safe-directory: true
+2026-09-27T01:25:11.8395968Z   allow-unsafe-pr-checkout: false
+2026-09-27T01:25:11.8396438Z env:
+2026-09-27T01:25:11.8396629Z   GOTOOLCHAIN: go1.27.1
+2026-09-27T01:25:11.8396848Z ##[endgroup]
+2026-09-27T01:25:11.9463432Z Syncing repository: agentstation/starport
+2026-09-27T01:25:11.9465529Z ##[group]Getting Git version info
+2026-09-27T01:25:11.9466149Z Working directory is '/home/runner/work/starport/starport'
+2026-09-27T01:25:11.9467136Z [command]/usr/bin/git version
+2026-09-27T01:25:11.9550887Z git version 2.55.0
+2026-09-27T01:25:11.9575021Z ##[endgroup]
+2026-09-27T01:25:11.9585765Z Temporarily overriding HOME='/home/runner/work/_temp/0c5df83b-3830-4a2b-a382-592db673a7a0' before making global git config changes
+2026-09-27T01:25:11.9587250Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T01:25:11.9593821Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starport/starport
+2026-09-27T01:25:11.9649708Z Deleting the contents of '/home/runner/work/starport/starport'
+2026-09-27T01:25:11.9654101Z ##[group]Determining repository object format
+2026-09-27T01:25:11.9655796Z ##[endgroup]
+2026-09-27T01:25:11.9656467Z ##[group]Initializing the repository
+2026-09-27T01:25:11.9661767Z [command]/usr/bin/git init /home/runner/work/starport/starport
+2026-09-27T01:25:11.9813602Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-27T01:25:11.9820053Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-27T01:25:11.9821093Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-27T01:25:11.9821821Z hint: call:
+2026-09-27T01:25:11.9822180Z hint:
+2026-09-27T01:25:11.9822716Z hint: 	git config --global init.defaultBranch <name>
+2026-09-27T01:25:11.9823278Z hint:
+2026-09-27T01:25:11.9823818Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-27T01:25:11.9824865Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-27T01:25:11.9825593Z hint:
+2026-09-27T01:25:11.9825962Z hint: 	git branch -m <name>
+2026-09-27T01:25:11.9826395Z hint:
+2026-09-27T01:25:11.9827023Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-27T01:25:11.9828046Z Initialized empty Git repository in /home/runner/work/starport/starport/.git/
+2026-09-27T01:25:11.9830831Z [command]/usr/bin/git remote add origin https://github.com/agentstation/starport
+2026-09-27T01:25:11.9895397Z ##[endgroup]
+2026-09-27T01:25:11.9896385Z ##[group]Disabling automatic garbage collection
+2026-09-27T01:25:11.9899320Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-27T01:25:11.9950339Z ##[endgroup]
+2026-09-27T01:25:11.9950985Z ##[group]Setting up auth
+2026-09-27T01:25:11.9951534Z Removing SSH command configuration
+2026-09-27T01:25:11.9957465Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T01:25:11.9995606Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T01:25:12.0389606Z Removing HTTP extra header
+2026-09-27T01:25:12.0395668Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T01:25:12.0433735Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T01:25:12.0664626Z Removing includeIf entries pointing to credentials config files
+2026-09-27T01:25:12.0670221Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T01:25:12.0715516Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T01:25:12.0952861Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-8bcec1ed-d983-4db7-933a-c2ee9d7659b7.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-27T01:25:12.0996322Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starport/starport/.git.path /home/runner/work/_temp/git-credentials-8bcec1ed-d983-4db7-933a-c2ee9d7659b7.config
+2026-09-27T01:25:12.1034559Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starport/starport/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-8bcec1ed-d983-4db7-933a-c2ee9d7659b7.config
+2026-09-27T01:25:12.1073984Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-8bcec1ed-d983-4db7-933a-c2ee9d7659b7.config
+2026-09-27T01:25:12.1112299Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-8bcec1ed-d983-4db7-933a-c2ee9d7659b7.config
+2026-09-27T01:25:12.1145266Z ##[endgroup]
+2026-09-27T01:25:12.1145878Z ##[group]Fetching the repository
+2026-09-27T01:25:12.1154216Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +cedc965835f6ba061a851edb62f77dbb153f1289:refs/remotes/pull/385/merge
+2026-09-27T01:25:13.2148344Z From https://github.com/agentstation/starport
+2026-09-27T01:25:13.2149576Z  * [new ref]         cedc965835f6ba061a851edb62f77dbb153f1289 -> pull/385/merge
+2026-09-27T01:25:13.2153732Z ##[endgroup]
+2026-09-27T01:25:13.2154490Z ##[group]Determining the checkout info
+2026-09-27T01:25:13.2155253Z ##[endgroup]
+2026-09-27T01:25:13.2160835Z [command]/usr/bin/git sparse-checkout disable
+2026-09-27T01:25:13.2218490Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-27T01:25:13.2254494Z ##[group]Checking out the ref
+2026-09-27T01:25:13.2259867Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/385/merge
+2026-09-27T01:25:13.3492813Z Note: switching to 'refs/remotes/pull/385/merge'.
+2026-09-27T01:25:13.3493363Z 
+2026-09-27T01:25:13.3493817Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-27T01:25:13.3494475Z changes and commit them, and you can discard any commits you make in this
+2026-09-27T01:25:13.3495186Z state without impacting any branches by switching back to a branch.
+2026-09-27T01:25:13.3495591Z 
+2026-09-27T01:25:13.3495903Z If you want to create a new branch to retain commits you create, you may
+2026-09-27T01:25:13.3496477Z do so (now or later) by using -c with the switch command. Example:
+2026-09-27T01:25:13.3496812Z 
+2026-09-27T01:25:13.3496949Z   git switch -c <new-branch-name>
+2026-09-27T01:25:13.3497165Z 
+2026-09-27T01:25:13.3497292Z Or undo this operation with:
+2026-09-27T01:25:13.3497495Z 
+2026-09-27T01:25:13.3497604Z   git switch -
+2026-09-27T01:25:13.3497819Z 
+2026-09-27T01:25:13.3498100Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-27T01:25:13.3498524Z 
+2026-09-27T01:25:13.3499375Z HEAD is now at cedc965 Merge aab7dd7c8bf52b2046e2284e480d81ce1d0b873c into f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda
+2026-09-27T01:25:13.3507816Z ##[endgroup]
+2026-09-27T01:25:13.3564119Z [command]/usr/bin/git log -1 --format=%H
+2026-09-27T01:25:13.3599852Z cedc965835f6ba061a851edb62f77dbb153f1289
+2026-09-27T01:25:13.3868498Z ##[group]Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+2026-09-27T01:25:13.3869201Z with:
+2026-09-27T01:25:13.3869405Z   go-version: 1.27.1
+2026-09-27T01:25:13.3869614Z   cache: true
+2026-09-27T01:25:13.3869810Z   check-latest: false
+2026-09-27T01:25:13.3872024Z   token: ***
+2026-09-27T01:25:13.3872213Z env:
+2026-09-27T01:25:13.3872393Z   GOTOOLCHAIN: go1.27.1
+2026-09-27T01:25:13.3872610Z ##[endgroup]
+2026-09-27T01:25:13.5071963Z Setup go version spec 1.27.1
+2026-09-27T01:25:13.5081642Z Attempting to download 1.27.1...
+2026-09-27T01:25:13.9529129Z matching 1.27.1...
+2026-09-27T01:25:13.9536504Z Acquiring 1.27.1 from https://github.com/actions/go-versions/releases/download/1.27.1-33583469715/go-1.27.1-linux-x64.tar.gz
+2026-09-27T01:25:14.4143188Z Extracting Go...
+2026-09-27T01:25:14.4265601Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/1108b18c-77aa-4372-815a-1dd7d7be9306 -f /home/runner/work/_temp/66dc7a4a-c24f-485b-a8fe-3a73b0205d5b
+2026-09-27T01:25:16.1549699Z Successfully extracted go to /home/runner/work/_temp/1108b18c-77aa-4372-815a-1dd7d7be9306
+2026-09-27T01:25:16.1550341Z Adding to the cache ...
+2026-09-27T01:25:22.1086160Z Successfully cached go to /opt/hostedtoolcache/go/1.27.1/x64
+2026-09-27T01:25:22.1088392Z Added go to the path
+2026-09-27T01:25:22.1090921Z Successfully set up Go version 1.27.1
+2026-09-27T01:25:22.1311486Z [command]/opt/hostedtoolcache/go/1.27.1/x64/bin/go env GOMODCACHE
+2026-09-27T01:25:22.1357781Z [command]/opt/hostedtoolcache/go/1.27.1/x64/bin/go env GOCACHE
+2026-09-27T01:25:22.1397376Z /home/runner/go/pkg/mod
+2026-09-27T01:25:22.1417493Z /home/runner/.cache/go-build
+2026-09-27T01:25:22.2129669Z Cache is not found
+2026-09-27T01:25:22.2152727Z go version go1.27.1 linux/amd64
+2026-09-27T01:25:22.2153233Z 
+2026-09-27T01:25:22.2153980Z ##[group]go env
+2026-09-27T01:25:22.4108445Z AR='ar'
+2026-09-27T01:25:22.4109014Z CC='gcc'
+2026-09-27T01:25:22.4109348Z CGO_CFLAGS='-O2 -g'
+2026-09-27T01:25:22.4109620Z CGO_CPPFLAGS=''
+2026-09-27T01:25:22.4109848Z CGO_CXXFLAGS='-O2 -g'
+2026-09-27T01:25:22.4110073Z CGO_ENABLED='1'
+2026-09-27T01:25:22.4110270Z CGO_FFLAGS='-O2 -g'
+2026-09-27T01:25:22.4110486Z CGO_LDFLAGS='-O2 -g'
+2026-09-27T01:25:22.4110692Z CXX='g++'
+2026-09-27T01:25:22.4110883Z GCCGO='gccgo'
+2026-09-27T01:25:22.4111086Z GO111MODULE=''
+2026-09-27T01:25:22.4111283Z GOAMD64='v1'
+2026-09-27T01:25:22.4111473Z GOARCH='amd64'
+2026-09-27T01:25:22.4111662Z GOAUTH='netrc'
+2026-09-27T01:25:22.4111870Z GOBIN='/home/runner/go/bin'
+2026-09-27T01:25:22.4112136Z GOCACHE='/home/runner/.cache/go-build'
+2026-09-27T01:25:22.4112409Z GOCACHEPROG=''
+2026-09-27T01:25:22.4112612Z GODEBUG=''
+2026-09-27T01:25:22.4112818Z GOENV='/home/runner/.config/go/env'
+2026-09-27T01:25:22.4113067Z GOEXE=''
+2026-09-27T01:25:22.4113247Z GOEXPERIMENT=''
+2026-09-27T01:25:22.4113445Z GOFIPS140='off'
+2026-09-27T01:25:22.4113629Z GOFLAGS=''
+2026-09-27T01:25:22.4114297Z GOGCCFLAGS='-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=/tmp/go-build2667215759=/tmp/go-build -gno-record-gcc-switches'
+2026-09-27T01:25:22.4114993Z GOHOSTARCH='amd64'
+2026-09-27T01:25:22.4115206Z GOHOSTOS='linux'
+2026-09-27T01:25:22.4115414Z GOINSECURE=''
+2026-09-27T01:25:22.4115683Z GOMOD='/home/runner/work/starport/starport/go.mod'
+2026-09-27T01:25:22.4116033Z GOMODCACHE='/home/runner/go/pkg/mod'
+2026-09-27T01:25:22.4116303Z GONOPROXY=''
+2026-09-27T01:25:22.4116499Z GONOSUMDB=''
+2026-09-27T01:25:22.4116681Z GOOS='linux'
+2026-09-27T01:25:22.4116879Z GOPACKAGESDRIVER=''
+2026-09-27T01:25:22.4117106Z GOPATH='/home/runner/go'
+2026-09-27T01:25:22.4117650Z GOPRIVATE=''
+2026-09-27T01:25:22.4118222Z GOPROXY='https://proxy.golang.org,direct'
+2026-09-27T01:25:22.4119050Z GOROOT='/opt/hostedtoolcache/go/1.27.1/x64'
+2026-09-27T01:25:22.4119631Z GOSUMDB='sum.golang.org'
+2026-09-27T01:25:22.4120114Z GOTELEMETRY='local'
+2026-09-27T01:25:22.4120669Z GOTELEMETRYDIR='/home/runner/.config/go/telemetry'
+2026-09-27T01:25:22.4121204Z GOTMPDIR=''
+2026-09-27T01:25:22.4121995Z GOTOOLCHAIN='local'
+2026-09-27T01:25:22.4122682Z GOTOOLDIR='/opt/hostedtoolcache/go/1.27.1/x64/pkg/tool/linux_amd64'
+2026-09-27T01:25:22.4123245Z GOVCS=''
+2026-09-27T01:25:22.4123686Z GOVERSION='go1.27.1'
+2026-09-27T01:25:22.4124138Z GOWORK=''
+2026-09-27T01:25:22.4124593Z PKG_CONFIG='pkg-config'
+2026-09-27T01:25:22.4124915Z 
+2026-09-27T01:25:22.4125397Z ##[endgroup]
+2026-09-27T01:25:22.4357352Z ##[group]Run go test -json -race -count=1 -timeout 7m ./internal/catalog ./internal/catalog/recovery ./internal/storage -run '^(TestFleet|TestFreshFleet|TestRecoveryWitness|TestValkeyIncarnation)' > fleet-catalog.jsonl
+2026-09-27T01:25:22.4359195Z [36;1mgo test -json -race -count=1 -timeout 7m ./internal/catalog ./internal/catalog/recovery ./internal/storage -run '^(TestFleet|TestFreshFleet|TestRecoveryWitness|TestValkeyIncarnation)' > fleet-catalog.jsonl[0m
+2026-09-27T01:25:22.4590848Z shell: /usr/bin/bash -e {0}
+2026-09-27T01:25:22.4591198Z env:
+2026-09-27T01:25:22.4591500Z   GOTOOLCHAIN: local
+2026-09-27T01:25:22.4591840Z   TEST_VALKEY_URL: redis://127.0.0.1:32768
+2026-09-27T01:25:22.4592277Z   TEST_VALKEY_REPLACEMENT_URL: redis://127.0.0.1:32769
+2026-09-27T01:25:22.4592884Z   TEST_POSTGRES_URL: postgres://postgres@127.0.0.1:32771/starport_test?sslmode=disable
+2026-09-27T01:25:22.4593442Z ##[endgroup]
+2026-09-27T01:25:22.4908776Z go: downloading github.com/dgraph-io/badger/v4 v4.9.6
+2026-09-27T01:25:22.4923357Z go: downloading github.com/rs/zerolog v1.35.1
+2026-09-27T01:25:22.4937733Z go: downloading github.com/jackc/pgx/v5 v5.11.0
+2026-09-27T01:25:22.4968282Z go: downloading github.com/valkey-io/valkey-go v1.0.78
+2026-09-27T01:25:22.5672829Z go: downloading github.com/stretchr/testify v1.12.1
+2026-09-27T01:25:22.6518886Z go: downloading github.com/valkey-io/valkey-go/mock v1.0.78
+2026-09-27T01:25:22.6653343Z go: downloading github.com/agentstation/starmap v0.16.6-0.20260927002942-b46c077a7039
+2026-09-27T01:25:22.6831360Z go: downloading go.uber.org/mock v0.6.0
+2026-09-27T01:25:39.8397558Z go: downloading github.com/google/uuid v1.6.0
+2026-09-27T01:25:39.8438382Z go: downloading github.com/go-sql-driver/mysql v1.10.1
+2026-09-27T01:25:39.8443050Z go: downloading modernc.org/sqlite v1.59.0
+2026-09-27T01:25:39.8690034Z go: downloading github.com/dgraph-io/ristretto/v2 v2.4.2
+2026-09-27T01:25:39.8727401Z go: downloading github.com/dustin/go-humanize v1.0.1
+2026-09-27T01:25:39.8859117Z go: downloading go.opentelemetry.io/otel v1.46.0
+2026-09-27T01:25:39.9006175Z go: downloading golang.org/x/sys v0.48.0
+2026-09-27T01:25:40.1331465Z go: downloading google.golang.org/protobuf v1.36.12
+2026-09-27T01:25:40.3644013Z go: downloading github.com/agentstation/utc v0.2.0
+2026-09-27T01:25:40.3716220Z go: downloading github.com/goccy/go-yaml v1.19.2
+2026-09-27T01:25:40.3847979Z go: downloading github.com/gofrs/flock v0.13.1
+2026-09-27T01:25:40.5091986Z go: downloading github.com/mattn/go-colorable v0.1.15
+2026-09-27T01:25:40.5111633Z go: downloading filippo.io/edwards25519 v1.2.0
+2026-09-27T01:25:40.5122956Z go: downloading github.com/google/flatbuffers v25.12.19+incompatible
+2026-09-27T01:25:40.5226361Z go: downloading github.com/klauspost/compress v1.19.2
+2026-09-27T01:25:41.0638896Z go: downloading github.com/cespare/xxhash/v2 v2.3.0
+2026-09-27T01:25:41.0645445Z go: downloading github.com/go-logr/logr v1.4.4
+2026-09-27T01:25:41.0656068Z go: downloading go.opentelemetry.io/otel/metric v1.46.0
+2026-09-27T01:25:41.0759965Z go: downloading go.opentelemetry.io/otel/trace v1.46.0
+2026-09-27T01:25:41.0812371Z go: downloading go.yaml.in/yaml/v3 v3.0.5
+2026-09-27T01:25:41.0919707Z go: downloading github.com/jackc/pgpassfile v1.0.0
+2026-09-27T01:25:41.0929809Z go: downloading github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761
+2026-09-27T01:25:41.0994572Z go: downloading golang.org/x/text v0.42.0
+2026-09-27T01:25:41.1071688Z go: downloading cloud.google.com/go/auth v0.23.3
+2026-09-27T01:25:41.1740930Z go: downloading cloud.google.com/go v0.123.0
+2026-09-27T01:25:41.2180519Z go: downloading cloud.google.com/go/secretmanager v1.21.0
+2026-09-27T01:25:41.2496384Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.1
+2026-09-27T01:25:41.2857288Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.14.1
+2026-09-27T01:25:41.2864994Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets v1.5.0
+2026-09-27T01:25:41.3095068Z go: downloading github.com/aws/aws-sdk-go-v2 v1.47.0
+2026-09-27T01:25:41.3535873Z go: downloading github.com/aws/aws-sdk-go-v2/config v1.33.5
+2026-09-27T01:25:41.4097749Z go: downloading github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.50.0
+2026-09-27T01:25:41.4190066Z go: downloading github.com/aws/smithy-go v1.28.2
+2026-09-27T01:25:41.4490468Z go: downloading github.com/hashicorp/vault/api v1.23.0
+2026-09-27T01:25:41.4848422Z go: downloading github.com/openbao/openbao/api/v2 v2.7.0
+2026-09-27T01:25:41.5509808Z go: downloading google.golang.org/grpc v1.84.0
+2026-09-27T01:25:41.6059785Z go: downloading github.com/jackc/puddle/v2 v2.2.2
+2026-09-27T01:25:41.6250565Z go: downloading github.com/mattn/go-isatty v0.0.24
+2026-09-27T01:25:41.6269807Z go: downloading github.com/go-logr/stdr v1.2.2
+2026-09-27T01:25:41.6328968Z go: downloading go.opentelemetry.io/auto/sdk v1.2.1
+2026-09-27T01:25:41.6450994Z go: downloading github.com/googleapis/gax-go/v2 v2.23.0
+2026-09-27T01:25:41.6471708Z go: downloading cloud.google.com/go/compute/metadata v0.9.0
+2026-09-27T01:25:41.6626258Z go: downloading cloud.google.com/go/iam v1.11.0
+2026-09-27T01:25:41.7116467Z go: downloading google.golang.org/api v0.292.0
+2026-09-27T01:25:44.5677009Z go: downloading google.golang.org/genproto v0.0.0-20260319201613-d00831a3d3e7
+2026-09-27T01:25:44.5681842Z go: downloading google.golang.org/genproto/googleapis/api v0.0.0-20260819154853-08b0e4226688
+2026-09-27T01:25:44.5683279Z go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20260819154853-08b0e4226688
+2026-09-27T01:25:44.5686130Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/internal v1.12.0
+2026-09-27T01:25:44.6055454Z go: downloading github.com/AzureAD/microsoft-authentication-library-for-go v1.8.0
+2026-09-27T01:25:44.6612528Z go: downloading golang.org/x/crypto v0.57.0
+2026-09-27T01:25:44.8089672Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal v1.2.0
+2026-09-27T01:25:44.8195481Z go: downloading github.com/aws/aws-sdk-go-v2/credentials v1.20.5
+2026-09-27T01:25:44.8346893Z go: downloading github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.20.0
+2026-09-27T01:25:44.8479902Z go: downloading github.com/aws/aws-sdk-go-v2/service/signin v1.10.0
+2026-09-27T01:25:44.8682040Z go: downloading github.com/aws/aws-sdk-go-v2/service/sso v1.38.0
+2026-09-27T01:25:44.9376713Z go: downloading github.com/aws/aws-sdk-go-v2/service/ssooidc v1.43.0
+2026-09-27T01:25:44.9531042Z go: downloading github.com/aws/aws-sdk-go-v2/service/sts v1.51.0
+2026-09-27T01:25:44.9753786Z go: downloading github.com/aws/aws-sdk-go-v2/internal/configsources v1.5.3
+2026-09-27T01:25:44.9830775Z go: downloading github.com/cenkalti/backoff/v4 v4.3.0
+2026-09-27T01:25:45.0233395Z go: downloading github.com/go-jose/go-jose/v4 v4.1.4
+2026-09-27T01:25:45.0988295Z go: downloading github.com/hashicorp/errwrap v1.1.0
+2026-09-27T01:25:45.1171393Z go: downloading github.com/hashicorp/go-cleanhttp v0.5.2
+2026-09-27T01:25:45.1262599Z go: downloading github.com/hashicorp/go-multierror v1.1.1
+2026-09-27T01:25:45.1530294Z go: downloading github.com/hashicorp/go-retryablehttp v0.7.8
+2026-09-27T01:25:45.1605451Z go: downloading github.com/hashicorp/go-rootcerts v1.0.2
+2026-09-27T01:25:45.1613130Z go: downloading github.com/hashicorp/go-secure-stdlib/parseutil v0.2.0
+2026-09-27T01:25:45.1674044Z go: downloading github.com/hashicorp/go-secure-stdlib/strutil v0.1.2
+2026-09-27T01:25:45.1693152Z go: downloading github.com/hashicorp/hcl v1.0.1-vault-7
+2026-09-27T01:25:45.1991754Z go: downloading github.com/mitchellh/mapstructure v1.5.0
+2026-09-27T01:25:45.1993229Z go: downloading golang.org/x/net v0.58.0
+2026-09-27T01:25:45.1994388Z go: downloading golang.org/x/time v0.15.0
+2026-09-27T01:25:45.2041029Z go: downloading github.com/cenkalti/backoff/v5 v5.0.3
+2026-09-27T01:25:45.2101171Z go: downloading github.com/go-viper/mapstructure/v2 v2.5.0
+2026-09-27T01:25:45.2108152Z go: downloading modernc.org/libc v1.75.7
+2026-09-27T01:25:45.2266862Z go: downloading google.golang.org/genai v1.68.0
+2026-09-27T01:25:45.2913752Z go: downloading github.com/sigstore/sigstore-go v1.2.1
+2026-09-27T01:25:45.4023318Z go: downloading golang.org/x/sync v0.23.0
+2026-09-27T01:25:45.4183765Z go: downloading github.com/googleapis/enterprise-certificate-proxy v0.3.20
+2026-09-27T01:25:45.4497197Z go: downloading cloud.google.com/go/auth/oauth2adapt v0.2.8
+2026-09-27T01:25:45.4499259Z go: downloading go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.70.0
+2026-09-27T01:25:45.4621054Z go: downloading golang.org/x/oauth2 v0.37.0
+2026-09-27T01:25:45.4746890Z go: downloading go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.70.0
+2026-09-27T01:25:45.4986760Z go: downloading github.com/kylelemons/godebug v1.1.0
+2026-09-27T01:25:45.4993246Z go: downloading github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
+2026-09-27T01:25:45.5112392Z go: downloading github.com/aws/aws-sdk-go-v2/internal/v4a v1.5.3
+2026-09-27T01:25:45.5115868Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.19
+2026-09-27T01:25:45.5357125Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.14.3
+2026-09-27T01:25:45.5430646Z go: downloading github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.8.3
+2026-09-27T01:25:45.5448966Z go: downloading github.com/hashicorp/go-sockaddr v1.0.7
+2026-09-27T01:25:45.5529788Z go: downloading github.com/ryanuber/go-glob v1.0.0
+2026-09-27T01:25:45.5690102Z go: downloading github.com/google/go-cmp v0.7.0
+2026-09-27T01:25:45.5755203Z go: downloading github.com/gorilla/websocket v1.5.3
+2026-09-27T01:25:45.5924612Z go: downloading github.com/in-toto/attestation v1.2.0
+2026-09-27T01:25:45.6077229Z go: downloading github.com/secure-systems-lab/go-securesystemslib v0.11.0
+2026-09-27T01:25:45.6269909Z go: downloading github.com/sigstore/protobuf-specs v0.5.1
+2026-09-27T01:25:45.7304670Z go: downloading golang.org/x/mod v0.41.0
+2026-09-27T01:25:45.7310469Z go: downloading github.com/sigstore/sigstore v1.10.8
+2026-09-27T01:25:45.7669465Z go: downloading github.com/sigstore/timestamp-authority/v2 v2.1.3
+2026-09-27T01:25:45.7979722Z go: downloading github.com/google/certificate-transparency-go v1.3.3
+2026-09-27T01:25:45.9291422Z go: downloading github.com/sigstore/rekor-tiles/v2 v2.2.2-0.20260601073857-5d098a2b6443
+2026-09-27T01:25:46.0342919Z go: downloading github.com/google/s2a-go v0.1.9
+2026-09-27T01:25:46.0365553Z go: downloading github.com/felixge/httpsnoop v1.1.0
+2026-09-27T01:25:46.0559934Z go: downloading github.com/golang-jwt/jwt/v5 v5.3.1
+2026-09-27T01:25:46.0758580Z go: downloading github.com/cyberphone/json-canonicalization v0.0.0-20241213102144-19d51d7fe467
+2026-09-27T01:25:46.0877972Z go: downloading github.com/go-openapi/runtime v0.33.0
+2026-09-27T01:25:46.1044574Z go: downloading github.com/go-openapi/strfmt v0.27.0
+2026-09-27T01:25:46.1455496Z go: downloading github.com/go-openapi/swag/conv v0.28.0
+2026-09-27T01:25:46.1507230Z go: downloading github.com/go-openapi/swag v0.28.0
+2026-09-27T01:25:46.1670164Z go: downloading github.com/sigstore/rekor v1.5.3
+2026-09-27T01:25:46.3912774Z go: downloading github.com/theupdateframework/go-tuf/v2 v2.4.2
+2026-09-27T01:25:46.4313734Z go: downloading github.com/digitorus/pkcs7 v0.0.0-20230818184609-3a137a874352
+2026-09-27T01:25:46.4315523Z go: downloading github.com/digitorus/timestamp v0.0.0-20231217203849-220c5c2851b7
+2026-09-27T01:25:46.4422092Z go: downloading github.com/pkg/errors v0.9.1
+2026-09-27T01:25:46.4496436Z go: downloading github.com/google/go-containerregistry v0.21.7
+2026-09-27T01:25:46.4564474Z go: downloading github.com/transparency-dev/merkle v0.0.2
+2026-09-27T01:25:46.4784482Z go: downloading github.com/grpc-ecosystem/grpc-gateway/v2 v2.30.0
+2026-09-27T01:25:46.6839735Z go: downloading github.com/transparency-dev/formats v0.1.1
+2026-09-27T01:25:46.7026463Z go: downloading github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78
+2026-09-27T01:25:46.7039706Z go: downloading golang.org/x/term v0.46.0
+2026-09-27T01:25:46.7129752Z go: downloading github.com/go-openapi/errors v0.22.8
+2026-09-27T01:25:46.7149502Z go: downloading github.com/go-openapi/swag/fileutils v0.28.0
+2026-09-27T01:25:46.7225189Z go: downloading github.com/go-openapi/swag/jsonutils v0.28.0
+2026-09-27T01:25:46.7263191Z go: downloading github.com/go-openapi/swag/stringutils v0.28.0
+2026-09-27T01:25:46.7353901Z go: downloading github.com/oklog/ulid/v2 v2.1.1
+2026-09-27T01:25:46.7409797Z go: downloading github.com/go-openapi/validate v0.26.1
+2026-09-27T01:25:46.7489778Z go: downloading github.com/in-toto/in-toto-golang v0.11.0
+2026-09-27T01:25:46.8023662Z go: downloading github.com/blang/semver v3.5.1+incompatible
+2026-09-27T01:25:46.8024874Z go: downloading k8s.io/klog/v2 v2.140.0
+2026-09-27T01:25:46.8174589Z go: downloading github.com/opencontainers/go-digest v1.0.0
+2026-09-27T01:25:46.9483063Z go: downloading github.com/go-openapi/swag/typeutils v0.28.0
+2026-09-27T01:25:46.9541987Z go: downloading github.com/go-openapi/jsonpointer v1.0.0
+2026-09-27T01:25:46.9600456Z go: downloading github.com/go-openapi/swag/cmdutils v0.28.0
+2026-09-27T01:25:46.9712316Z go: downloading github.com/go-openapi/swag/loading v0.28.0
+2026-09-27T01:25:46.9749785Z go: downloading github.com/go-openapi/swag/mangling v0.28.0
+2026-09-27T01:25:46.9865336Z go: downloading github.com/go-openapi/swag/netutils v0.28.0
+2026-09-27T01:25:46.9898056Z go: downloading github.com/go-openapi/swag/yamlutils v0.28.0
+2026-09-27T01:25:46.9905695Z go: downloading modernc.org/mathutil v1.7.1
+2026-09-27T01:25:46.9946946Z go: downloading modernc.org/memory v1.12.1
+2026-09-27T01:25:47.0379405Z go: downloading github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
+2026-09-27T01:25:47.1004626Z go: downloading github.com/shibumi/go-pathspec v1.3.0
+2026-09-27T01:25:47.1543384Z go: downloading github.com/go-openapi/analysis v0.25.5
+2026-09-27T01:25:47.1572500Z go: downloading github.com/go-openapi/loads v0.25.0
+2026-09-27T01:25:47.1581235Z go: downloading github.com/go-openapi/spec v0.22.9
+2026-09-27T01:25:47.1586477Z go: downloading github.com/go-openapi/runtime/server-middleware v0.30.0
+2026-09-27T01:25:47.2415917Z go: downloading github.com/go-openapi/swag/pools v0.28.0
+2026-09-27T01:25:47.2521232Z go: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec
+2026-09-27T01:25:47.2919969Z go: downloading github.com/go-openapi/jsonreference v1.0.0
+2026-09-27T01:34:04.0812887Z ##[group]Run go test -json -race -count=1 -timeout 3m ./internal/app -run '^TestInitializeFleet' > fleet-initialization.jsonl
+2026-09-27T01:34:04.0813781Z [36;1mgo test -json -race -count=1 -timeout 3m ./internal/app -run '^TestInitializeFleet' > fleet-initialization.jsonl[0m
+2026-09-27T01:34:04.0880325Z shell: /usr/bin/bash -e {0}
+2026-09-27T01:34:04.0880572Z env:
+2026-09-27T01:34:04.0880777Z   GOTOOLCHAIN: local
+2026-09-27T01:34:04.0881060Z   TEST_FRESH_VALKEY_URL: redis://127.0.0.1:32770
+2026-09-27T01:34:04.0881529Z   TEST_POSTGRES_URL: postgres://postgres@127.0.0.1:32771/starport_test?sslmode=disable
+2026-09-27T01:34:04.0881963Z ##[endgroup]
+2026-09-27T01:34:04.1349702Z go: downloading github.com/joho/godotenv v1.5.1
+2026-09-27T01:34:04.1409618Z go: downloading github.com/agentstation/uuidkey v1.2.0
+2026-09-27T01:34:04.1430260Z go: downloading github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.23.7
+2026-09-27T01:34:04.1439604Z go: downloading github.com/aws/aws-sdk-go-v2/service/s3 v1.113.1
+2026-09-27T01:34:04.2633213Z go: downloading github.com/go-chi/chi/v5 v5.3.2
+2026-09-27T01:34:04.2648606Z go: downloading github.com/sethvargo/go-envconfig v1.4.3
+2026-09-27T01:34:04.2836098Z go: downloading github.com/ledongthuc/pdf v0.0.0-20250511090121-5959a4027728
+2026-09-27T01:34:04.2925297Z go: downloading github.com/gorilla/sessions v1.4.0
+2026-09-27T01:34:04.3000203Z go: downloading github.com/markbates/goth v1.82.0
+2026-09-27T01:34:04.4970347Z go: downloading github.com/workos/workos-go/v10 v10.5.0
+2026-09-27T01:34:04.5005958Z go: downloading github.com/go-chi/cors v1.2.2
+2026-09-27T01:34:04.5017698Z go: downloading github.com/prometheus/client_golang v1.24.1
+2026-09-27T01:34:04.5150387Z go: downloading go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.46.0
+2026-09-27T01:34:04.5304115Z go: downloading go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.46.0
+2026-09-27T01:34:04.5419155Z go: downloading go.opentelemetry.io/otel/sdk v1.46.0
+2026-09-27T01:34:04.5577283Z go: downloading github.com/tiktoken-go/tokenizer v0.8.1
+2026-09-27T01:34:04.5777332Z go: downloading github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.20
+2026-09-27T01:34:04.5915612Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.11.3
+2026-09-27T01:34:04.5916267Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.20.3
+2026-09-27T01:34:04.6179793Z go: downloading github.com/gorilla/securecookie v1.1.2
+2026-09-27T01:34:04.6180242Z go: downloading github.com/gorilla/mux v1.6.2
+2026-09-27T01:34:04.6400632Z go: downloading go.opentelemetry.io/proto/otlp v1.11.0
+2026-09-27T01:34:04.6572477Z go: downloading github.com/beorn7/perks v1.0.1
+2026-09-27T01:34:04.6672435Z go: downloading github.com/prometheus/client_model v0.6.2
+2026-09-27T01:34:04.6772382Z go: downloading github.com/prometheus/common v0.70.1
+2026-09-27T01:34:04.7183431Z go: downloading github.com/prometheus/procfs v0.21.1
+2026-09-27T01:34:04.7380735Z go: downloading github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
+2026-09-27T01:34:04.7629765Z go: downloading github.com/google/go-querystring v1.2.0
+2026-09-27T01:34:04.8936424Z go: downloading github.com/dlclark/regexp2/v2 v2.5.1
+2026-09-27T01:35:09.0319520Z ##[error]The operation was canceled.
+2026-09-27T01:35:09.0384619Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-09-27T01:35:09.0385052Z with:
+2026-09-27T01:35:09.0385259Z   name: catalog-fleet-recovery
+2026-09-27T01:35:09.0385580Z   path: fleet-catalog.jsonl
+fleet-initialization.jsonl
+
+2026-09-27T01:35:09.0385913Z   retention-days: 7
+2026-09-27T01:35:09.0386124Z   if-no-files-found: error
+2026-09-27T01:35:09.0386389Z   compression-level: 6
+2026-09-27T01:35:09.0386601Z   overwrite: false
+2026-09-27T01:35:09.0386811Z   include-hidden-files: false
+2026-09-27T01:35:09.0387042Z   archive: true
+2026-09-27T01:35:09.0387227Z env:
+2026-09-27T01:35:09.0387411Z   GOTOOLCHAIN: local
+2026-09-27T01:35:09.0387614Z ##[endgroup]
+2026-09-27T01:35:09.1920612Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-09-27T01:35:09.1923641Z The least common ancestor is /home/runner/work/starport/starport. This will be the root directory of the artifact
+2026-09-27T01:35:09.1925227Z With the provided path, there will be 2 files uploaded
+2026-09-27T01:35:09.1926680Z Artifact name is valid!
+2026-09-27T01:35:09.1927497Z Root directory input is valid!
+2026-09-27T01:35:09.4258148Z Uploading artifact: catalog-fleet-recovery.zip
+2026-09-27T01:35:09.4324376Z Beginning upload of artifact content to blob storage
+2026-09-27T01:35:09.5326153Z Uploaded bytes 8763
+2026-09-27T01:35:09.5500702Z Finished uploading artifact content to blob storage!
+2026-09-27T01:35:09.5501807Z SHA256 digest of uploaded artifact is 282b124784ab3f15171e0c2a77727cfd77c7024d53b7c485d20ef67a9c657ec2
+2026-09-27T01:35:09.5502999Z Finalizing artifact upload
+2026-09-27T01:35:09.7495581Z Artifact catalog-fleet-recovery successfully finalized. Artifact ID 10920104497
+2026-09-27T01:35:09.7501513Z Artifact catalog-fleet-recovery has been successfully uploaded! Final size is 8763 bytes. Artifact ID is 10920104497
+2026-09-27T01:35:09.7509557Z Artifact download URL: https://github.com/agentstation/starport/actions/runs/36285454177/artifacts/10920104497
+2026-09-27T01:35:09.7805268Z Post job cleanup.
+2026-09-27T01:35:09.8771162Z [command]/usr/bin/git version
+2026-09-27T01:35:09.8839707Z git version 2.55.0
+2026-09-27T01:35:09.8883338Z Temporarily overriding HOME='/home/runner/work/_temp/5a516e04-1808-40db-85d6-148748ad7f7f' before making global git config changes
+2026-09-27T01:35:09.8884870Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T01:35:09.8907202Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starport/starport
+2026-09-27T01:35:09.8957608Z Removing SSH command configuration
+2026-09-27T01:35:09.8966334Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T01:35:09.9060011Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T01:35:09.9374673Z Removing HTTP extra header
+2026-09-27T01:35:09.9383369Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T01:35:09.9441822Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T01:35:09.9799719Z Removing includeIf entries pointing to credentials config files
+2026-09-27T01:35:09.9800768Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T01:35:09.9855943Z includeif.gitdir:/home/runner/work/starport/starport/.git.path
+2026-09-27T01:35:09.9867141Z includeif.gitdir:/home/runner/work/starport/starport/.git/worktrees/*.path
+2026-09-27T01:35:09.9868140Z includeif.gitdir:/github/workspace/.git.path
+2026-09-27T01:35:09.9869914Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-27T01:35:09.9884253Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starport/starport/.git.path
+2026-09-27T01:35:09.9929765Z /home/runner/work/_temp/git-credentials-8bcec1ed-d983-4db7-933a-c2ee9d7659b7.config
+2026-09-27T01:35:09.9978038Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starport/starport/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-8bcec1ed\-d983\-4db7\-933a\-c2ee9d7659b7\.config
+2026-09-27T01:35:10.0036301Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starport/starport/.git/worktrees/*.path
+2026-09-27T01:35:10.0105605Z /home/runner/work/_temp/git-credentials-8bcec1ed-d983-4db7-933a-c2ee9d7659b7.config
+2026-09-27T01:35:10.0120947Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starport/starport/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-8bcec1ed\-d983\-4db7\-933a\-c2ee9d7659b7\.config
+2026-09-27T01:35:10.0181357Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-27T01:35:10.0200240Z /github/runner_temp/git-credentials-8bcec1ed-d983-4db7-933a-c2ee9d7659b7.config
+2026-09-27T01:35:10.0211814Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-8bcec1ed\-d983\-4db7\-933a\-c2ee9d7659b7\.config
+2026-09-27T01:35:10.0260106Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-27T01:35:10.0298221Z /github/runner_temp/git-credentials-8bcec1ed-d983-4db7-933a-c2ee9d7659b7.config
+2026-09-27T01:35:10.0320954Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-8bcec1ed\-d983\-4db7\-933a\-c2ee9d7659b7\.config
+2026-09-27T01:35:10.0393213Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T01:35:10.0840679Z Removing credentials config '/home/runner/work/_temp/git-credentials-8bcec1ed-d983-4db7-933a-c2ee9d7659b7.config'
+2026-09-27T01:35:10.0980502Z Print service container logs: 473d459a27a64e20a74e10a932ea479e_valkeyvalkeysha2569acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f_725b73
+2026-09-27T01:35:10.0987002Z ##[command]/usr/bin/docker logs --details 04e6f5e041e44a0dfa9debf507da0f377405ff6e5a77feb5ad1f14a53d86ea70
+2026-09-27T01:35:10.1175254Z  7:C 27 Sep 2026 01:24:59.240 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+2026-09-27T01:35:10.1179158Z  7:C 27 Sep 2026 01:24:59.240 * oO0OoO0OoO0Oo Valkey is starting oO0OoO0OoO0Oo
+2026-09-27T01:35:10.1180539Z  7:C 27 Sep 2026 01:24:59.240 * Valkey version=7.2.14, bits=64, commit=00000000, modified=0, pid=7, just started
+2026-09-27T01:35:10.1182040Z  7:C 27 Sep 2026 01:24:59.240 # Warning: no config file specified, using the default config. In order to specify a config file use valkey-server /path/to/valkey.conf
+2026-09-27T01:35:10.1183298Z  7:M 27 Sep 2026 01:24:59.240 * monotonic clock: POSIX clock_gettime
+2026-09-27T01:35:10.1183994Z  7:M 27 Sep 2026 01:24:59.240 * Running mode=standalone, port=6379.
+2026-09-27T01:35:10.1184605Z  7:M 27 Sep 2026 01:24:59.241 * Server initialized
+2026-09-27T01:35:10.1185199Z  7:M 27 Sep 2026 01:24:59.241 * Ready to accept connections tcp
+2026-09-27T01:35:10.1185858Z  7:M 27 Sep 2026 01:30:00.085 * 100 changes in 300 seconds. Saving...
+2026-09-27T01:35:10.1186589Z  7:M 27 Sep 2026 01:30:00.086 * Background saving started by pid 368
+2026-09-27T01:35:10.1187223Z  368:C 27 Sep 2026 01:30:00.312 * DB saved on disk
+2026-09-27T01:35:10.1187914Z  368:C 27 Sep 2026 01:30:00.313 * Fork CoW for RDB: current 1 MB, peak 1 MB, average 1 MB
+2026-09-27T01:35:10.1188942Z  7:M 27 Sep 2026 01:30:00.387 * Background saving terminated with success
+2026-09-27T01:35:10.1190042Z  7:M 27 Sep 2026 01:32:36.415 * 10000 changes in 60 seconds. Saving...
+2026-09-27T01:35:10.1191679Z  7:M 27 Sep 2026 01:32:36.415 * Background saving started by pid 554
+2026-09-27T01:35:10.1192315Z  554:C 27 Sep 2026 01:32:36.418 * DB saved on disk
+2026-09-27T01:35:10.1193009Z  554:C 27 Sep 2026 01:32:36.419 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+2026-09-27T01:35:10.1193838Z  7:M 27 Sep 2026 01:32:36.516 * Background saving terminated with success
+2026-09-27T01:35:10.1203398Z Stop and remove container: 473d459a27a64e20a74e10a932ea479e_valkeyvalkeysha2569acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f_725b73
+2026-09-27T01:35:10.1211048Z ##[command]/usr/bin/docker rm --force 04e6f5e041e44a0dfa9debf507da0f377405ff6e5a77feb5ad1f14a53d86ea70
+2026-09-27T01:35:10.2500204Z 04e6f5e041e44a0dfa9debf507da0f377405ff6e5a77feb5ad1f14a53d86ea70
+2026-09-27T01:35:10.2522557Z Print service container logs: 22766d7605de4b0f9e2243f900b8387b_valkeyvalkeysha2569acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f_d1d023
+2026-09-27T01:35:10.2524116Z ##[command]/usr/bin/docker logs --details f9ee3edae4a6b8055526fd8b571fb231229c164dc7c75250ecd53010ed381338
+2026-09-27T01:35:10.2663838Z  7:C 27 Sep 2026 01:24:59.463 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+2026-09-27T01:35:10.2665763Z  7:C 27 Sep 2026 01:24:59.464 * oO0OoO0OoO0Oo Valkey is starting oO0OoO0OoO0Oo
+2026-09-27T01:35:10.2676090Z  7:C 27 Sep 2026 01:24:59.464 * Valkey version=7.2.14, bits=64, commit=00000000, modified=0, pid=7, just started
+2026-09-27T01:35:10.2677837Z  7:C 27 Sep 2026 01:24:59.464 # Warning: no config file specified, using the default config. In order to specify a config file use valkey-server /path/to/valkey.conf
+2026-09-27T01:35:10.2678633Z  7:M 27 Sep 2026 01:24:59.464 * monotonic clock: POSIX clock_gettime
+2026-09-27T01:35:10.2679485Z  7:M 27 Sep 2026 01:24:59.464 * Running mode=standalone, port=6379.
+2026-09-27T01:35:10.2679874Z  7:M 27 Sep 2026 01:24:59.465 * Server initialized
+2026-09-27T01:35:10.2680224Z  7:M 27 Sep 2026 01:24:59.465 * Ready to accept connections tcp
+2026-09-27T01:35:10.2681642Z Stop and remove container: 22766d7605de4b0f9e2243f900b8387b_valkeyvalkeysha2569acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f_d1d023
+2026-09-27T01:35:10.2682674Z ##[command]/usr/bin/docker rm --force f9ee3edae4a6b8055526fd8b571fb231229c164dc7c75250ecd53010ed381338
+2026-09-27T01:35:10.3830936Z f9ee3edae4a6b8055526fd8b571fb231229c164dc7c75250ecd53010ed381338
+2026-09-27T01:35:10.3850874Z Print service container logs: c9170ccead824d248db7e08c01097e09_valkeyvalkeysha2569acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f_e82cb0
+2026-09-27T01:35:10.3852632Z ##[command]/usr/bin/docker logs --details 81e5d9d817c2c6378c50efaba10e83bc0e584dc688374658db57c913f8ddb676
+2026-09-27T01:35:10.4001273Z  7:C 27 Sep 2026 01:24:59.709 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+2026-09-27T01:35:10.4003631Z  7:C 27 Sep 2026 01:24:59.709 * oO0OoO0OoO0Oo Valkey is starting oO0OoO0OoO0Oo
+2026-09-27T01:35:10.4004412Z  7:C 27 Sep 2026 01:24:59.709 * Valkey version=7.2.14, bits=64, commit=00000000, modified=0, pid=7, just started
+2026-09-27T01:35:10.4005426Z  7:C 27 Sep 2026 01:24:59.709 # Warning: no config file specified, using the default config. In order to specify a config file use valkey-server /path/to/valkey.conf
+2026-09-27T01:35:10.4006236Z  7:M 27 Sep 2026 01:24:59.709 * monotonic clock: POSIX clock_gettime
+2026-09-27T01:35:10.4006647Z  7:M 27 Sep 2026 01:24:59.710 * Running mode=standalone, port=6379.
+2026-09-27T01:35:10.4007014Z  7:M 27 Sep 2026 01:24:59.710 * Server initialized
+2026-09-27T01:35:10.4007360Z  7:M 27 Sep 2026 01:24:59.710 * Ready to accept connections tcp
+2026-09-27T01:35:10.4020368Z Stop and remove container: c9170ccead824d248db7e08c01097e09_valkeyvalkeysha2569acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f_e82cb0
+2026-09-27T01:35:10.4021455Z ##[command]/usr/bin/docker rm --force 81e5d9d817c2c6378c50efaba10e83bc0e584dc688374658db57c913f8ddb676
+2026-09-27T01:35:10.5162025Z 81e5d9d817c2c6378c50efaba10e83bc0e584dc688374658db57c913f8ddb676
+2026-09-27T01:35:10.5178354Z Print service container logs: 673a1e58898d422f804ca80252b1debb_postgressha256f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94_9a2a44
+2026-09-27T01:35:10.5179746Z ##[command]/usr/bin/docker logs --details e135b0213a98869c13485a040f8d606bca2dc110fd5a3b670eb4e73ea44df322
+2026-09-27T01:35:10.5340580Z  ********************************************************************************
+2026-09-27T01:35:10.5341427Z  The files belonging to this database system will be owned by user "postgres".
+2026-09-27T01:35:10.5342129Z  WARNING: POSTGRES_HOST_AUTH_METHOD has been set to "trust". This will allow
+2026-09-27T01:35:10.5342559Z  This user must also own the server process.
+2026-09-27T01:35:10.5343083Z           anyone with access to the Postgres port to access your database without
+2026-09-27T01:35:10.5343453Z  
+2026-09-27T01:35:10.5343879Z           a password, even if POSTGRES_PASSWORD is set. See PostgreSQL
+2026-09-27T01:35:10.5344323Z  The database cluster will be initialized with locale "en_US.utf8".
+2026-09-27T01:35:10.5344816Z           documentation about "trust":
+2026-09-27T01:35:10.5345510Z  The default database encoding has accordingly been set to "UTF8".
+2026-09-27T01:35:10.5346130Z           https://www.postgresql.org/docs/current/auth-trust.html
+2026-09-27T01:35:10.5346553Z  The default text search configuration will be set to "english".
+2026-09-27T01:35:10.5347111Z           In Docker's default configuration, this is effectively any other
+2026-09-27T01:35:10.5347459Z  
+2026-09-27T01:35:10.5347766Z           container on the same system.
+2026-09-27T01:35:10.5348093Z  Data page checksums are disabled.
+2026-09-27T01:35:10.5348479Z  
+2026-09-27T01:35:10.5348640Z  
+2026-09-27T01:35:10.5349436Z           It is not recommended to use POSTGRES_HOST_AUTH_METHOD=trust. Replace
+2026-09-27T01:35:10.5349936Z  fixing permissions on existing directory /var/lib/postgresql/data ... ok
+2026-09-27T01:35:10.5350770Z           it with "-e POSTGRES_PASSWORD=password" instead to set a password in
+2026-09-27T01:35:10.5351178Z  creating subdirectories ... ok
+2026-09-27T01:35:10.5351547Z           "docker run".
+2026-09-27T01:35:10.5351840Z  selecting dynamic shared memory implementation ... posix
+2026-09-27T01:35:10.5352345Z  ********************************************************************************
+2026-09-27T01:35:10.5352680Z  selecting default max_connections ... 100
+2026-09-27T01:35:10.5353307Z  initdb: warning: enabling "trust" authentication for local connections
+2026-09-27T01:35:10.5353857Z  selecting default shared_buffers ... 128MB
+2026-09-27T01:35:10.5354824Z  initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+2026-09-27T01:35:10.5355445Z  selecting default time zone ... Etc/UTC
+2026-09-27T01:35:10.5356236Z  2026-09-27 01:25:06.329 UTC [1] LOG:  starting PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-27T01:35:10.5356887Z  creating configuration files ... ok
+2026-09-27T01:35:10.5357410Z  2026-09-27 01:25:06.329 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-09-27T01:35:10.5357820Z  running bootstrap script ... ok
+2026-09-27T01:35:10.5358289Z  2026-09-27 01:25:06.329 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-09-27T01:35:10.5358910Z  performing post-bootstrap initialization ... ok
+2026-09-27T01:35:10.5359599Z  2026-09-27 01:25:06.330 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-09-27T01:35:10.5360043Z  syncing data to disk ... ok
+2026-09-27T01:35:10.5360550Z  2026-09-27 01:25:06.332 UTC [65] LOG:  database system was shut down at 2026-09-27 01:25:06 UTC
+2026-09-27T01:35:10.5360946Z  
+2026-09-27T01:35:10.5361357Z  2026-09-27 01:25:06.336 UTC [1] LOG:  database system is ready to accept connections
+2026-09-27T01:35:10.5361731Z  
+2026-09-27T01:35:10.5362082Z  2026-09-27 01:27:30.242 UTC [337] ERROR:  injected SQL refusal
+2026-09-27T01:35:10.5362467Z  Success. You can now start the database server using:
+2026-09-27T01:35:10.5363054Z  2026-09-27 01:27:30.242 UTC [337] CONTEXT:  PL/pgSQL function refuse_approval() line 1 at RAISE
+2026-09-27T01:35:10.5363455Z  
+2026-09-27T01:35:10.5364582Z  2026-09-27 01:27:30.242 UTC [337] STATEMENT:  INSERT INTO catalog_recovery (deployment_id, epoch, gate_open, backend_id, evidence, bootstrap_allowed) VALUES ( 'test-deployment' , 1, 1,  '0163dd11125478faf874165b10279990dfde088d:808c278d8627ad64c3c2bdeaa8cd638879a2256f' ,  'test/procedure' , 1)
+2026-09-27T01:35:10.5365747Z      pg_ctl -D /var/lib/postgresql/data -l logfile start
+2026-09-27T01:35:10.5366389Z  2026-09-27 01:27:30.407 UTC [339] ERROR:  duplicate key value violates unique constraint "catalog_recovery_pkey"
+2026-09-27T01:35:10.5366860Z  
+2026-09-27T01:35:10.5367374Z  2026-09-27 01:27:30.407 UTC [339] DETAIL:  Key (deployment_id)=(recovery-I33VJ6JJ2KTDRHOB3HRDMVJJI3) already exists.
+2026-09-27T01:35:10.5368487Z  waiting for server to start....2026-09-27 01:25:06.023 UTC [49] LOG:  starting PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-27T01:35:10.5369820Z  2026-09-27 01:27:30.407 UTC [339] STATEMENT:  INSERT INTO catalog_recovery
+2026-09-27T01:35:10.5370355Z  2026-09-27 01:25:06.024 UTC [49] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-09-27T01:35:10.5371194Z  	(deployment_id, epoch, gate_open, backend_id, evidence) VALUES ( 'recovery-I33VJ6JJ2KTDRHOB3HRDMVJJI3' , 1, 0, '', '')
+2026-09-27T01:35:10.5371864Z  2026-09-27 01:25:06.026 UTC [52] LOG:  database system was shut down at 2026-09-27 01:25:05 UTC
+2026-09-27T01:35:10.5372461Z  2026-09-27 01:30:06.406 UTC [63] LOG:  checkpoint starting: time
+2026-09-27T01:35:10.5372909Z  2026-09-27 01:25:06.030 UTC [49] LOG:  database system is ready to accept connections
+2026-09-27T01:35:10.5374402Z  2026-09-27 01:30:33.483 UTC [63] LOG:  checkpoint complete: wrote 273 buffers (1.7%); 1 WAL file(s) added, 0 removed, 0 recycled; write=27.052 s, sync=0.005 s, total=27.077 s; sync files=705, longest=0.001 s, average=0.001 s; distance=3975 kB, estimate=3975 kB; lsn=0/1D08110, redo lsn=0/1D00CD0
+2026-09-27T01:35:10.5375381Z   done
+2026-09-27T01:35:10.5375767Z  2026-09-27 01:35:06.542 UTC [63] LOG:  checkpoint starting: time
+2026-09-27T01:35:10.5376092Z  server started
+2026-09-27T01:35:10.5376415Z  CREATE DATABASE
+2026-09-27T01:35:10.5376685Z  
+2026-09-27T01:35:10.5376920Z  
+2026-09-27T01:35:10.5377303Z  /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+2026-09-27T01:35:10.5377816Z  
+2026-09-27T01:35:10.5379502Z  2026-09-27 01:25:06.209 UTC [49] LOG:  received fast shutdown request
+2026-09-27T01:35:10.5380588Z  waiting for server to shut down....2026-09-27 01:25:06.209 UTC [49] LOG:  aborting any active transactions
+2026-09-27T01:35:10.5381822Z  2026-09-27 01:25:06.211 UTC [49] LOG:  background worker "logical replication launcher" (PID 55) exited with exit code 1
+2026-09-27T01:35:10.5382779Z  2026-09-27 01:25:06.212 UTC [50] LOG:  shutting down
+2026-09-27T01:35:10.5383453Z  2026-09-27 01:25:06.212 UTC [50] LOG:  checkpoint starting: shutdown immediate
+2026-09-27T01:35:10.5384871Z  2026-09-27 01:25:06.227 UTC [50] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.012 s, sync=0.003 s, total=0.016 s; sync files=301, longest=0.002 s, average=0.001 s; distance=4273 kB, estimate=4273 kB; lsn=0/191F060, redo lsn=0/191F060
+2026-09-27T01:35:10.5385977Z  2026-09-27 01:25:06.234 UTC [49] LOG:  database system is shut down
+2026-09-27T01:35:10.5386307Z   done
+2026-09-27T01:35:10.5386498Z  server stopped
+2026-09-27T01:35:10.5386690Z  
+2026-09-27T01:35:10.5386935Z  PostgreSQL init process complete; ready for start up.
+2026-09-27T01:35:10.5387245Z  
+2026-09-27T01:35:10.5388277Z Stop and remove container: 673a1e58898d422f804ca80252b1debb_postgressha256f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94_9a2a44
+2026-09-27T01:35:10.5389592Z ##[command]/usr/bin/docker rm --force e135b0213a98869c13485a040f8d606bca2dc110fd5a3b670eb4e73ea44df322
+2026-09-27T01:35:10.6552733Z e135b0213a98869c13485a040f8d606bca2dc110fd5a3b670eb4e73ea44df322
+2026-09-27T01:35:10.6609308Z Remove container network: github_network_e79643e2f2cf415e9bdbab9d403b2824
+2026-09-27T01:35:10.6616331Z ##[command]/usr/bin/docker network rm github_network_e79643e2f2cf415e9bdbab9d403b2824
+2026-09-27T01:35:10.7474459Z github_network_e79643e2f2cf415e9bdbab9d403b2824
+2026-09-27T01:35:10.7557444Z Cleaning up orphan processes
+2026-09-27T01:35:10.7808876Z Terminate orphan process: pid (23738) (go)
+2026-09-27T01:35:10.7852905Z Terminate orphan process: pid (25711) (app.test)

@@ -1,0 +1,480 @@
+﻿2026-09-27T01:24:56.7651908Z Current runner version: '2.337.0'
+2026-09-27T01:24:56.7666980Z ##[group]Runner Image Provisioner
+2026-09-27T01:24:56.7667595Z Hosted Compute Agent
+2026-09-27T01:24:56.7668015Z Version: 20260828.587
+2026-09-27T01:24:56.7668482Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-27T01:24:56.7669187Z Build Date: 2026-08-28T16:44:25Z
+2026-09-27T01:24:56.7669681Z Worker ID: {9f51e3cd-2cec-4e40-99dd-127b7c8777f2}
+2026-09-27T01:24:56.7670178Z Azure Region: centralus
+2026-09-27T01:24:56.7670573Z ##[endgroup]
+2026-09-27T01:24:56.7671456Z ##[group]Operating System
+2026-09-27T01:24:56.7671895Z Ubuntu
+2026-09-27T01:24:56.7672238Z 24.04.5
+2026-09-27T01:24:56.7672613Z LTS
+2026-09-27T01:24:56.7672991Z ##[endgroup]
+2026-09-27T01:24:56.7673368Z ##[group]Runner Image
+2026-09-27T01:24:56.7673836Z Image: ubuntu-24.04
+2026-09-27T01:24:56.7674202Z Version: 20260920.314.1
+2026-09-27T01:24:56.7675085Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-27T01:24:56.7676146Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+2026-09-27T01:24:56.7676795Z ##[endgroup]
+2026-09-27T01:24:56.7677614Z ##[group]GITHUB_TOKEN Permissions
+2026-09-27T01:24:56.7679317Z Contents: read
+2026-09-27T01:24:56.7679762Z Metadata: read
+2026-09-27T01:24:56.7680212Z PullRequests: read
+2026-09-27T01:24:56.7680600Z ##[endgroup]
+2026-09-27T01:24:56.7682054Z Secret source: Actions
+2026-09-27T01:24:56.7682693Z Cache mode: write
+2026-09-27T01:24:56.7683146Z Prepare workflow directory
+2026-09-27T01:24:56.7943635Z Prepare all required actions
+2026-09-27T01:24:56.7977563Z Getting action download info
+2026-09-27T01:24:57.0761279Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-09-27T01:24:57.2824583Z Download action repository 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e' (SHA:b7ad1dad31e06c5925ef5d2fc7ad053ef454303e)
+2026-09-27T01:24:57.7794807Z Download action repository 'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020' (SHA:820762786026740c76f36085b0efc47a31fe5020)
+2026-09-27T01:24:58.0017987Z Download action repository 'anchore/sbom-action@3ad7283483fc7af8ff2b4ea19663c2d5ca935e26' (SHA:3ad7283483fc7af8ff2b4ea19663c2d5ca935e26)
+2026-09-27T01:24:58.4752763Z Download action repository 'Homebrew/actions@848c272c7bfe984a197bd4d16383f4c106ec61e6' (SHA:848c272c7bfe984a197bd4d16383f4c106ec61e6)
+2026-09-27T01:24:59.5106095Z Download action repository 'goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94' (SHA:f06c13b6b1a9625abc9e6e439d9c05a8f2190e94)
+2026-09-27T01:24:59.8412605Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-27T01:25:00.0072531Z Complete job name: Release Snapshot
+2026-09-27T01:25:00.0516282Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-09-27T01:25:00.0516780Z with:
+2026-09-27T01:25:00.0517009Z   fetch-depth: 0
+2026-09-27T01:25:00.0517276Z   repository: agentstation/starport
+2026-09-27T01:25:00.0519510Z   token: ***
+2026-09-27T01:25:00.0519740Z   ssh-strict: true
+2026-09-27T01:25:00.0519975Z   ssh-user: git
+2026-09-27T01:25:00.0520215Z   persist-credentials: true
+2026-09-27T01:25:00.0520485Z   clean: true
+2026-09-27T01:25:00.0520744Z   sparse-checkout-cone-mode: true
+2026-09-27T01:25:00.0521002Z   fetch-tags: false
+2026-09-27T01:25:00.0521231Z   show-progress: true
+2026-09-27T01:25:00.0521448Z   lfs: false
+2026-09-27T01:25:00.0521664Z   submodules: false
+2026-09-27T01:25:00.0521906Z   set-safe-directory: true
+2026-09-27T01:25:00.0522138Z   allow-unsafe-pr-checkout: false
+2026-09-27T01:25:00.0522545Z env:
+2026-09-27T01:25:00.0522782Z   GOTOOLCHAIN: go1.27.1
+2026-09-27T01:25:00.0523011Z ##[endgroup]
+2026-09-27T01:25:00.1266143Z Syncing repository: agentstation/starport
+2026-09-27T01:25:00.1267255Z ##[group]Getting Git version info
+2026-09-27T01:25:00.1267670Z Working directory is '/home/runner/work/starport/starport'
+2026-09-27T01:25:00.1268431Z [command]/usr/bin/git version
+2026-09-27T01:25:00.1519094Z git version 2.55.0
+2026-09-27T01:25:00.1547586Z ##[endgroup]
+2026-09-27T01:25:00.1563131Z Temporarily overriding HOME='/home/runner/work/_temp/887ab5da-2f16-4f78-9bbb-367c113d6a23' before making global git config changes
+2026-09-27T01:25:00.1567849Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T01:25:00.1569331Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starport/starport
+2026-09-27T01:25:00.1835240Z Deleting the contents of '/home/runner/work/starport/starport'
+2026-09-27T01:25:00.1837499Z ##[group]Determining repository object format
+2026-09-27T01:25:00.1838725Z ##[endgroup]
+2026-09-27T01:25:00.1839432Z ##[group]Initializing the repository
+2026-09-27T01:25:00.1842519Z [command]/usr/bin/git init /home/runner/work/starport/starport
+2026-09-27T01:25:00.3924791Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-27T01:25:00.3925414Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-27T01:25:00.3925966Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-27T01:25:00.3926439Z hint: call:
+2026-09-27T01:25:00.3926686Z hint:
+2026-09-27T01:25:00.3927047Z hint: 	git config --global init.defaultBranch <name>
+2026-09-27T01:25:00.3927342Z hint:
+2026-09-27T01:25:00.3927679Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-27T01:25:00.3928119Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-27T01:25:00.3928556Z hint:
+2026-09-27T01:25:00.3928860Z hint: 	git branch -m <name>
+2026-09-27T01:25:00.3929307Z hint:
+2026-09-27T01:25:00.3929662Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-27T01:25:00.3930370Z Initialized empty Git repository in /home/runner/work/starport/starport/.git/
+2026-09-27T01:25:00.3933471Z [command]/usr/bin/git remote add origin https://github.com/agentstation/starport
+2026-09-27T01:25:00.4743234Z ##[endgroup]
+2026-09-27T01:25:00.4746075Z ##[group]Disabling automatic garbage collection
+2026-09-27T01:25:00.4746734Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-27T01:25:00.5371313Z ##[endgroup]
+2026-09-27T01:25:00.5371833Z ##[group]Setting up auth
+2026-09-27T01:25:00.5373436Z Removing SSH command configuration
+2026-09-27T01:25:00.5376327Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T01:25:00.5402409Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T01:25:00.6931421Z Removing HTTP extra header
+2026-09-27T01:25:00.6936192Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T01:25:00.6960368Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T01:25:00.7097123Z Removing includeIf entries pointing to credentials config files
+2026-09-27T01:25:00.7100884Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T01:25:00.7121729Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T01:25:00.7264270Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-e585482b-0961-450e-9b9b-c8e294005153.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-27T01:25:00.8279856Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starport/starport/.git.path /home/runner/work/_temp/git-credentials-e585482b-0961-450e-9b9b-c8e294005153.config
+2026-09-27T01:25:00.8324545Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starport/starport/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-e585482b-0961-450e-9b9b-c8e294005153.config
+2026-09-27T01:25:00.8891828Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-e585482b-0961-450e-9b9b-c8e294005153.config
+2026-09-27T01:25:00.9182397Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-e585482b-0961-450e-9b9b-c8e294005153.config
+2026-09-27T01:25:00.9436343Z ##[endgroup]
+2026-09-27T01:25:00.9436956Z ##[group]Fetching the repository
+2026-09-27T01:25:00.9443898Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +cedc965835f6ba061a851edb62f77dbb153f1289:refs/remotes/pull/385/merge
+2026-09-27T01:25:03.1836431Z From https://github.com/agentstation/starport
+2026-09-27T01:25:03.1837010Z  * [new branch]      codex/catalog-fleet-adapter              -> origin/codex/catalog-fleet-adapter
+2026-09-27T01:25:03.1837749Z  * [new branch]      main                                     -> origin/main
+2026-09-27T01:25:03.1838190Z  * [new tag]         v0.0.0                                   -> v0.0.0
+2026-09-27T01:25:03.1838541Z  * [new tag]         v1.0.0                                   -> v1.0.0
+2026-09-27T01:25:03.1838861Z  * [new tag]         v1.0.1                                   -> v1.0.1
+2026-09-27T01:25:03.1839428Z  * [new tag]         v1.0.2                                   -> v1.0.2
+2026-09-27T01:25:03.1839830Z  * [new tag]         v1.0.3                                   -> v1.0.3
+2026-09-27T01:25:03.1840290Z  * [new tag]         v1.0.4                                   -> v1.0.4
+2026-09-27T01:25:03.1840715Z  * [new tag]         v1.0.5                                   -> v1.0.5
+2026-09-27T01:25:03.1841125Z  * [new tag]         v1.1.0                                   -> v1.1.0
+2026-09-27T01:25:03.1841526Z  * [new tag]         v1.2.0                                   -> v1.2.0
+2026-09-27T01:25:03.1841898Z  * [new tag]         v1.2.1                                   -> v1.2.1
+2026-09-27T01:25:03.1842392Z  * [new ref]         cedc965835f6ba061a851edb62f77dbb153f1289 -> pull/385/merge
+2026-09-27T01:25:03.1843914Z ##[endgroup]
+2026-09-27T01:25:03.1844518Z ##[group]Determining the checkout info
+2026-09-27T01:25:03.1845991Z ##[endgroup]
+2026-09-27T01:25:03.1846603Z [command]/usr/bin/git sparse-checkout disable
+2026-09-27T01:25:03.2259899Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-27T01:25:03.2402072Z ##[group]Checking out the ref
+2026-09-27T01:25:03.2406342Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/385/merge
+2026-09-27T01:25:03.3166318Z Note: switching to 'refs/remotes/pull/385/merge'.
+2026-09-27T01:25:03.3167024Z 
+2026-09-27T01:25:03.3167321Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-27T01:25:03.3167989Z changes and commit them, and you can discard any commits you make in this
+2026-09-27T01:25:03.3168692Z state without impacting any branches by switching back to a branch.
+2026-09-27T01:25:03.3169213Z 
+2026-09-27T01:25:03.3169421Z If you want to create a new branch to retain commits you create, you may
+2026-09-27T01:25:03.3169926Z do so (now or later) by using -c with the switch command. Example:
+2026-09-27T01:25:03.3170297Z 
+2026-09-27T01:25:03.3170456Z   git switch -c <new-branch-name>
+2026-09-27T01:25:03.3170724Z 
+2026-09-27T01:25:03.3170900Z Or undo this operation with:
+2026-09-27T01:25:03.3171163Z 
+2026-09-27T01:25:03.3171316Z   git switch -
+2026-09-27T01:25:03.3171537Z 
+2026-09-27T01:25:03.3171817Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-27T01:25:03.3172175Z 
+2026-09-27T01:25:03.3172566Z HEAD is now at cedc965 Merge aab7dd7c8bf52b2046e2284e480d81ce1d0b873c into f5f066ddb3d9ee2c016d828c6a031fb9a3e3ffda
+2026-09-27T01:25:03.3180028Z ##[endgroup]
+2026-09-27T01:25:03.3208356Z [command]/usr/bin/git log -1 --format=%H
+2026-09-27T01:25:03.3225492Z cedc965835f6ba061a851edb62f77dbb153f1289
+2026-09-27T01:25:03.3410324Z ##[group]Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+2026-09-27T01:25:03.3410648Z with:
+2026-09-27T01:25:03.3410866Z   go-version: 1.27.1
+2026-09-27T01:25:03.3411104Z   cache: true
+2026-09-27T01:25:03.3411312Z   check-latest: false
+2026-09-27T01:25:03.3413178Z   token: ***
+2026-09-27T01:25:03.3413383Z env:
+2026-09-27T01:25:03.3413591Z   GOTOOLCHAIN: go1.27.1
+2026-09-27T01:25:03.3413842Z ##[endgroup]
+2026-09-27T01:25:03.4213376Z Setup go version spec 1.27.1
+2026-09-27T01:25:03.4218770Z Attempting to download 1.27.1...
+2026-09-27T01:25:04.1530236Z matching 1.27.1...
+2026-09-27T01:25:04.1537136Z Acquiring 1.27.1 from https://github.com/actions/go-versions/releases/download/1.27.1-33583469715/go-1.27.1-linux-x64.tar.gz
+2026-09-27T01:25:04.8754448Z Extracting Go...
+2026-09-27T01:25:04.8836870Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/d34f24f3-e126-4e3f-a7f0-38c2958f9419 -f /home/runner/work/_temp/0695c4cc-fa8a-446c-8e9e-93450447a519
+2026-09-27T01:25:06.1514820Z Successfully extracted go to /home/runner/work/_temp/d34f24f3-e126-4e3f-a7f0-38c2958f9419
+2026-09-27T01:25:06.1515511Z Adding to the cache ...
+2026-09-27T01:25:15.7800684Z Successfully cached go to /opt/hostedtoolcache/go/1.27.1/x64
+2026-09-27T01:25:15.7802399Z Added go to the path
+2026-09-27T01:25:15.7804166Z Successfully set up Go version 1.27.1
+2026-09-27T01:25:15.7958323Z [command]/opt/hostedtoolcache/go/1.27.1/x64/bin/go env GOMODCACHE
+2026-09-27T01:25:15.7981585Z [command]/opt/hostedtoolcache/go/1.27.1/x64/bin/go env GOCACHE
+2026-09-27T01:25:15.8004756Z /home/runner/go/pkg/mod
+2026-09-27T01:25:15.8020433Z /home/runner/.cache/go-build
+2026-09-27T01:25:15.9642913Z Cache is not found
+2026-09-27T01:25:15.9664679Z go version go1.27.1 linux/amd64
+2026-09-27T01:25:15.9664874Z 
+2026-09-27T01:25:15.9665181Z ##[group]go env
+2026-09-27T01:25:16.0945497Z AR='ar'
+2026-09-27T01:25:16.0945877Z CC='gcc'
+2026-09-27T01:25:16.0946138Z CGO_CFLAGS='-O2 -g'
+2026-09-27T01:25:16.0946390Z CGO_CPPFLAGS=''
+2026-09-27T01:25:16.0946623Z CGO_CXXFLAGS='-O2 -g'
+2026-09-27T01:25:16.0946867Z CGO_ENABLED='1'
+2026-09-27T01:25:16.0947086Z CGO_FFLAGS='-O2 -g'
+2026-09-27T01:25:16.0947337Z CGO_LDFLAGS='-O2 -g'
+2026-09-27T01:25:16.0947543Z CXX='g++'
+2026-09-27T01:25:16.0947770Z GCCGO='gccgo'
+2026-09-27T01:25:16.0947980Z GO111MODULE=''
+2026-09-27T01:25:16.0948174Z GOAMD64='v1'
+2026-09-27T01:25:16.0948399Z GOARCH='amd64'
+2026-09-27T01:25:16.0948596Z GOAUTH='netrc'
+2026-09-27T01:25:16.0948812Z GOBIN='/home/runner/go/bin'
+2026-09-27T01:25:16.0949224Z GOCACHE='/home/runner/.cache/go-build'
+2026-09-27T01:25:16.0949496Z GOCACHEPROG=''
+2026-09-27T01:25:16.0949721Z GODEBUG=''
+2026-09-27T01:25:16.0949930Z GOENV='/home/runner/.config/go/env'
+2026-09-27T01:25:16.0950176Z GOEXE=''
+2026-09-27T01:25:16.0950437Z GOEXPERIMENT=''
+2026-09-27T01:25:16.0950643Z GOFIPS140='off'
+2026-09-27T01:25:16.0950862Z GOFLAGS=''
+2026-09-27T01:25:16.0951356Z GOGCCFLAGS='-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=/tmp/go-build2000873053=/tmp/go-build -gno-record-gcc-switches'
+2026-09-27T01:25:16.0951934Z GOHOSTARCH='amd64'
+2026-09-27T01:25:16.0952138Z GOHOSTOS='linux'
+2026-09-27T01:25:16.0952375Z GOINSECURE=''
+2026-09-27T01:25:16.0952622Z GOMOD='/home/runner/work/starport/starport/go.mod'
+2026-09-27T01:25:16.0952896Z GOMODCACHE='/home/runner/go/pkg/mod'
+2026-09-27T01:25:16.0953120Z GONOPROXY=''
+2026-09-27T01:25:16.0953345Z GONOSUMDB=''
+2026-09-27T01:25:16.0953523Z GOOS='linux'
+2026-09-27T01:25:16.0953712Z GOPACKAGESDRIVER=''
+2026-09-27T01:25:16.0953920Z GOPATH='/home/runner/go'
+2026-09-27T01:25:16.0954152Z GOPRIVATE=''
+2026-09-27T01:25:16.0954420Z GOPROXY='https://proxy.golang.org,direct'
+2026-09-27T01:25:16.0954707Z GOROOT='/opt/hostedtoolcache/go/1.27.1/x64'
+2026-09-27T01:25:16.0954958Z GOSUMDB='sum.golang.org'
+2026-09-27T01:25:16.0955168Z GOTELEMETRY='local'
+2026-09-27T01:25:16.0955591Z GOTELEMETRYDIR='/home/runner/.config/go/telemetry'
+2026-09-27T01:25:16.0955854Z GOTMPDIR=''
+2026-09-27T01:25:16.0956131Z GOTOOLCHAIN='local'
+2026-09-27T01:25:16.0956386Z GOTOOLDIR='/opt/hostedtoolcache/go/1.27.1/x64/pkg/tool/linux_amd64'
+2026-09-27T01:25:16.0956711Z GOVCS=''
+2026-09-27T01:25:16.0956913Z GOVERSION='go1.27.1'
+2026-09-27T01:25:16.0957130Z GOWORK=''
+2026-09-27T01:25:16.0957349Z PKG_CONFIG='pkg-config'
+2026-09-27T01:25:16.0957463Z 
+2026-09-27T01:25:16.0957775Z ##[endgroup]
+2026-09-27T01:25:16.1086686Z ##[group]Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+2026-09-27T01:25:16.1087067Z with:
+2026-09-27T01:25:16.1087287Z   node-version: 24
+2026-09-27T01:25:16.1087501Z   check-latest: false
+2026-09-27T01:25:16.1089758Z   token: ***
+2026-09-27T01:25:16.1089993Z   package-manager-cache: true
+2026-09-27T01:25:16.1090277Z env:
+2026-09-27T01:25:16.1090497Z   GOTOOLCHAIN: local
+2026-09-27T01:25:16.1090709Z ##[endgroup]
+2026-09-27T01:25:16.2015427Z Found in cache @ /opt/hostedtoolcache/node/24.21.0/x64
+2026-09-27T01:25:16.2017638Z ##[group]Environment details
+2026-09-27T01:25:16.6635228Z node: v24.21.0
+2026-09-27T01:25:16.6635550Z npm: 11.19.0
+2026-09-27T01:25:16.6635905Z yarn: 1.22.22
+2026-09-27T01:25:16.6636485Z ##[endgroup]
+2026-09-27T01:25:16.6740775Z ##[group]Run npm install -g pnpm@11.22.0
+2026-09-27T01:25:16.6741131Z [36;1mnpm install -g pnpm@11.22.0[0m
+2026-09-27T01:25:16.7265039Z shell: /usr/bin/bash -e {0}
+2026-09-27T01:25:16.7265325Z env:
+2026-09-27T01:25:16.7265617Z   GOTOOLCHAIN: local
+2026-09-27T01:25:16.7265844Z ##[endgroup]
+2026-09-27T01:25:18.7369081Z 
+2026-09-27T01:25:18.7376048Z added 1 package in 2s
+2026-09-27T01:25:18.7376285Z 
+2026-09-27T01:25:18.7376638Z 1 package is looking for funding
+2026-09-27T01:25:18.7376952Z   run `npm fund` for details
+2026-09-27T01:25:18.7577936Z ##[group]Run anchore/sbom-action/download-syft@3ad7283483fc7af8ff2b4ea19663c2d5ca935e26
+2026-09-27T01:25:18.7578313Z with:
+2026-09-27T01:25:18.7578555Z   syft-version: v1.51.0
+2026-09-27T01:25:18.7578799Z   run: download-syft
+2026-09-27T01:25:18.7580154Z env:
+2026-09-27T01:25:18.7580397Z   GOTOOLCHAIN: local
+2026-09-27T01:25:18.7580632Z ##[endgroup]
+2026-09-27T01:25:18.9884339Z [command]/usr/bin/sh /home/runner/work/_temp/b2cc9187-2fd3-4091-94d2-bda9c5853f23 -d -b /home/runner/work/_temp/b2cc9187-2fd3-4091-94d2-bda9c5853f23_syft v1.51.0
+2026-09-27T01:25:18.9924131Z [info] checking github for release tag='v1.51.0' 
+2026-09-27T01:25:18.9957870Z [debug] http_download(url=https://github.com/anchore/syft/releases/v1.51.0) 
+2026-09-27T01:25:19.4341607Z [info] using release tag='v1.51.0' version='1.51.0' os='linux' arch='amd64' 
+2026-09-27T01:25:19.4357094Z [debug] downloading files into /tmp/tmp.I2LEjxtw2K 
+2026-09-27T01:25:19.4394618Z [debug] http_download(url=https://github.com/anchore/syft/releases/download/v1.51.0/syft_1.51.0_checksums.txt) 
+2026-09-27T01:25:19.5789420Z [debug] http_download(url=https://github.com/anchore/syft/releases/download/v1.51.0/syft_1.51.0_linux_amd64.tar.gz) 
+2026-09-27T01:25:20.6077553Z [info] installed /home/runner/work/_temp/b2cc9187-2fd3-4091-94d2-bda9c5853f23_syft/syft 
+2026-09-27T01:25:21.2814665Z ##[group]Run Homebrew/actions/setup-homebrew@848c272c7bfe984a197bd4d16383f4c106ec61e6
+2026-09-27T01:25:21.2815057Z with:
+2026-09-27T01:25:21.2815265Z   core: false
+2026-09-27T01:25:21.2815544Z   cask: false
+2026-09-27T01:25:21.2815764Z   debug: false
+2026-09-27T01:25:21.2817782Z   brew-gh-api-token: ***
+2026-09-27T01:25:21.2818034Z   stable: auto
+2026-09-27T01:25:21.2818236Z env:
+2026-09-27T01:25:21.2818500Z   GOTOOLCHAIN: local
+2026-09-27T01:25:21.2818743Z ##[endgroup]
+2026-09-27T01:25:21.3942057Z [command]/bin/bash /home/runner/work/_actions/Homebrew/actions/848c272c7bfe984a197bd4d16383f4c106ec61e6/setup-homebrew/main.sh false false false  auto ***
+2026-09-27T01:25:21.9282241Z [34m==>[0m [1mFetching Homebrew/brew...[0m
+2026-09-27T01:25:22.9374965Z From https://github.com/Homebrew/brew
+2026-09-27T01:25:22.9375762Z  - [deleted]               (none)     -> origin/cask-artifact-typed-options
+2026-09-27T01:25:22.9376726Z  - [deleted]               (none)     -> origin/patch-remove
+2026-09-27T01:25:22.9377250Z  - [deleted]               (none)     -> origin/sandbox-allow-fsevents
+2026-09-27T01:25:22.9377939Z  - [deleted]               (none)     -> origin/sandbox-package-processing
+2026-09-27T01:25:28.1827936Z  * [new branch]            feat/analytics/report_x86_version -> origin/feat/analytics/report_x86_version
+2026-09-27T01:25:28.1828843Z    13eeb3b76e..ce46735f34  main       -> origin/main
+2026-09-27T01:25:28.1829567Z  * [new branch]            master     -> origin/master
+2026-09-27T01:25:28.1830227Z  * [new branch]            pr-publish-warn-on-upload-failure -> origin/pr-publish-warn-on-upload-failure
+2026-09-27T01:25:28.1830969Z  * [new branch]            type-subcommand-context-targets -> origin/type-subcommand-context-targets
+2026-09-27T01:25:28.1831545Z  * [new tag]               7.0.5      -> 7.0.5
+2026-09-27T01:25:28.1832052Z  * [new tag]               7.0.6      -> 7.0.6
+2026-09-27T01:25:28.8335133Z 'origin/HEAD' is unchanged and points to 'main'
+2026-09-27T01:25:28.9237378Z branch 'main' set up to track 'origin/main'.
+2026-09-27T01:25:31.4702728Z Reset branch 'stable'
+2026-09-27T01:25:31.4719385Z [34m==>[0m [1mbrew update --auto-update[0m
+2026-09-27T01:25:34.4688531Z Checking if we need to fetch /home/linuxbrew/.linuxbrew/Homebrew...
+2026-09-27T01:25:34.4810113Z Checking if we need to fetch internal/packages.x86_64_linux.jws.json...
+2026-09-27T01:25:34.7131937Z Updated internal/packages.x86_64_linux.jws.json.
+2026-09-27T01:25:39.0615221Z [34m==>[0m [1mHomebrew collects anonymous analytics.[0m
+2026-09-27T01:25:39.0616253Z [1mRead the analytics documentation (and how to opt-out) here:
+2026-09-27T01:25:39.0616998Z   [4mhttps://docs.brew.sh/Analytics[24m[0m
+2026-09-27T01:25:39.0617632Z No analytics have been recorded yet (nor will be during this `brew` run).
+2026-09-27T01:25:39.0618015Z 
+2026-09-27T01:25:39.0618492Z [34m==>[0m [1mHomebrew is run entirely by unpaid volunteers. Please consider donating:[0m
+2026-09-27T01:25:39.0619659Z   [4mhttps://github.com/Homebrew/brew#-donations[24m
+2026-09-27T01:25:39.0619989Z 
+2026-09-27T01:25:41.2486315Z ##[group]Run goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94
+2026-09-27T01:25:41.2486718Z with:
+2026-09-27T01:25:41.2486952Z   distribution: goreleaser
+2026-09-27T01:25:41.2487227Z   version: v2.17.1
+2026-09-27T01:25:41.2487484Z   args: release --snapshot --clean --skip=notarize
+2026-09-27T01:25:41.2487801Z   workdir: .
+2026-09-27T01:25:41.2488033Z   install-only: false
+2026-09-27T01:25:41.2488408Z env:
+2026-09-27T01:25:41.2488910Z   GOTOOLCHAIN: local
+2026-09-27T01:25:41.2489364Z   HOMEBREW_NO_INSTALL_FROM_API: 
+2026-09-27T01:25:41.2491607Z   HOMEBREW_GITHUB_API_TOKEN: ***
+2026-09-27T01:25:41.2491882Z   HOMEBREW_UPDATE_TO_TAG: 1
+2026-09-27T01:25:41.2492145Z ##[endgroup]
+2026-09-27T01:25:41.3165894Z Downloading https://github.com/goreleaser/goreleaser/releases/download/v2.17.1/goreleaser_Linux_x86_64.tar.gz
+2026-09-27T01:25:41.7467626Z Downloading https://github.com/goreleaser/goreleaser/releases/download/v2.17.1/checksums.txt
+2026-09-27T01:25:41.9741936Z Checksum verified for goreleaser_Linux_x86_64.tar.gz
+2026-09-27T01:25:41.9761360Z cosign not found in PATH, skipping signature verification
+2026-09-27T01:25:41.9761826Z Extracting GoReleaser
+2026-09-27T01:25:41.9839081Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/4974f2f7-df9e-4ad6-8500-6e9c4cffa7fe -f /home/runner/work/_temp/f18edae0-e961-4936-bc8c-cf4df6e80689
+2026-09-27T01:25:42.7725485Z GoReleaser v2.17.1 installed successfully
+2026-09-27T01:25:42.7784217Z [command]/opt/hostedtoolcache/goreleaser-action/2.17.1/x64/goreleaser release --snapshot --clean --skip=notarize
+2026-09-27T01:25:42.7969925Z [1;94m  •[m [1mstarting release[m
+2026-09-27T01:25:42.7975402Z [1;93m  •[m [1;93mskipping announce, notarize, publish, and validate...[m
+2026-09-27T01:25:42.7976084Z [1;94m  •[m [1mcleaning distribution directory[m
+2026-09-27T01:25:42.7977028Z [1;94m  •[m [1mloading environment variables[m
+2026-09-27T01:25:42.7977703Z [1;94m  •[m [1mgetting and validating git state[m
+2026-09-27T01:25:42.8613533Z [1;94m    •[m using tags                                     [1;94mprevious[m=v1.2.0 [1;94mcurrent[m=v1.2.1
+2026-09-27T01:25:42.8614333Z [1;93m    •[m pipe skipped or partially skipped              [1;93mreason[m=disabled during snapshot mode
+2026-09-27T01:25:42.8614830Z [1;94m  •[m [1mparsing tag[m
+2026-09-27T01:25:42.8615258Z [1;94m  •[m [1msetting defaults[m
+2026-09-27T01:25:42.8677362Z [1;94m  •[m [1msnapshotting[m
+2026-09-27T01:25:42.8678106Z [1;94m    •[m building snapshot...                           [1;94mversion[m=1.2.2-next
+2026-09-27T01:25:42.8678697Z [1;94m  •[m [1mrunning before hooks[m
+2026-09-27T01:25:42.8679502Z [1;94m    •[m running                                        [1;94mhook[m=go mod verify
+2026-09-27T01:25:44.2418795Z [1;94m    •[m running                                        [1;94mhook[m=bash scripts/build-console.sh
+2026-09-27T01:25:54.2784951Z [1;94m      •[m [3;2mtook: 10s[m
+2026-09-27T01:25:54.2786024Z [1;94m    •[m running                                        [1;94mhook[m=bash scripts/generate-release-artifacts.sh build/release-artifacts
+2026-09-27T01:27:02.4536002Z [1;94m      •[m [3;2mtook: 1m8s[m
+2026-09-27T01:27:02.4536509Z [1;94m      •[m [3;2mtook: 1m20s[m
+2026-09-27T01:27:02.4537144Z [1;94m  •[m [1mensuring distribution directory[m
+2026-09-27T01:27:02.4537625Z [1;94m  •[m [1msetting up metadata[m
+2026-09-27T01:27:02.4537976Z [1;94m  •[m [1mwriting release metadata[m
+2026-09-27T01:27:02.4539949Z [1;94m  •[m [1mloading go mod information[m
+2026-09-27T01:27:02.4576210Z [1;94m  •[m [1mbuild prerequisites[m
+2026-09-27T01:27:02.4582512Z [1;94m  •[m [1mbuilding binaries[m
+2026-09-27T01:27:02.4623078Z [1;94m    •[m building                                       [1;94mpaths[m=cmd/starport [1;94mbinaries[m=starport [1;94mtarget[m=linux_amd64_v1
+2026-09-27T01:27:02.4642316Z [1;94m    •[m building                                       [1;94mpaths[m=cmd/starport [1;94mbinaries[m=starport [1;94mtarget[m=darwin_arm64_v8.0
+2026-09-27T01:27:02.4644799Z [1;94m    •[m building                                       [1;94mpaths[m=cmd/starport [1;94mbinaries[m=starport [1;94mtarget[m=linux_arm64_v8.0
+2026-09-27T01:27:02.4649832Z [1;94m    •[m building                                       [1;94mpaths[m=cmd/starport [1;94mbinaries[m=starport [1;94mtarget[m=windows_amd64_v1
+2026-09-27T01:29:34.6047310Z [1;94m    •[m running hook                                   [1;94mhook[m=python3 scripts/verify-embedded-console.py "/home/runner/work/starport/starport/dist/starport_linux_amd64_v1/starport" internal/console/dist
+2026-09-27T01:30:06.8782913Z [1;94m      •[m [3;2mtook: 32s[m
+2026-09-27T01:30:06.8910867Z [1;94m    •[m building                                       [1;94mpaths[m=cmd/starport [1;94mbinaries[m=starport [1;94mtarget[m=windows_arm64_v8.0
+2026-09-27T01:30:43.7061646Z [1;94m    •[m go build -buildvcs=true -trimpath -ldflags=-s -w -X main.version=1.2.2-next -X main.buildTime=2026-09-27T01:24:51Z -X main.gitCommit=cedc965 -X main.gitBranch=release -o /home/runner/work/starport/starport/dist/starport_darwin_arm64_v8.0/starport ./cmd/starport
+2026-09-27T01:30:43.7119925Z       [1;94moutput[m=
+2026-09-27T01:30:43.7191636Z     [1;94m  │ [mgo: downloading github.com/ebitengine/purego v0.11.0
+2026-09-27T01:30:43.7259201Z     [1;94m  │ [mgo: downloading github.com/ncruces/go-strftime v1.0.0
+2026-09-27T01:30:43.7320016Z     [1;94m  │ [mgo: downloading github.com/mitchellh/go-homedir v1.1.0
+2026-09-27T01:30:43.7380642Z [1;94m    •[m running hook                                   [1;94mhook[m=python3 scripts/verify-embedded-console.py "/home/runner/work/starport/starport/dist/starport_darwin_arm64_v8.0/starport" internal/console/dist
+2026-09-27T01:30:43.9601329Z [1;94m    •[m running hook                                   [1;94mhook[m=python3 scripts/verify-embedded-console.py "/home/runner/work/starport/starport/dist/starport_linux_arm64_v8.0/starport" internal/console/dist
+2026-09-27T01:30:50.1092059Z [1;94m    •[m go build -buildvcs=true -trimpath -ldflags=-s -w -X main.version=1.2.2-next -X main.buildTime=2026-09-27T01:24:51Z -X main.gitCommit=cedc965 -X main.gitBranch=release -o /home/runner/work/starport/starport/dist/starport_windows_amd64_v1/starport.exe ./cmd/starport
+2026-09-27T01:30:50.1160053Z       [1;94moutput[m=
+2026-09-27T01:30:50.1240291Z     [1;94m  │ [mgo: downloading github.com/Microsoft/go-winio v0.6.2
+2026-09-27T01:30:50.1293424Z     [1;94m  │ [mgo: downloading github.com/oiweiwei/go-msrpc v1.5.4
+2026-09-27T01:30:50.1359105Z     [1;94m  │ [mgo: downloading github.com/oiweiwei/go-smb2.fork v1.0.2
+2026-09-27T01:30:50.1389881Z     [1;94m  │ [mgo: downloading github.com/oiweiwei/go-math v1.0.0
+2026-09-27T01:30:50.1439935Z     [1;94m  │ [mgo: downloading github.com/jcmturner/gofork v1.7.6
+2026-09-27T01:30:50.1494702Z     [1;94m  │ [mgo: downloading github.com/jcmturner/gokrb5/v8 v8.4.4
+2026-09-27T01:30:50.1550431Z     [1;94m  │ [mgo: downloading github.com/oiweiwei/gokrb5.fork/v9 v9.0.7
+2026-09-27T01:30:50.1593503Z     [1;94m  │ [mgo: downloading github.com/oiweiwei/go-oem v1.0.0
+2026-09-27T01:30:50.1641505Z     [1;94m  │ [mgo: downloading github.com/jcmturner/dnsutils/v2 v2.0.0
+2026-09-27T01:30:50.1710296Z     [1;94m  │ [mgo: downloading github.com/jcmturner/goidentity/v6 v6.0.1
+2026-09-27T01:30:50.1712889Z     [1;94m  │ [mgo: downloading github.com/hashicorp/go-uuid v1.0.3
+2026-09-27T01:30:50.1713834Z     [1;94m  │ [mgo: downloading github.com/geoffgarside/ber v1.1.0
+2026-09-27T01:30:50.1714706Z     [1;94m  │ [mgo: downloading github.com/jcmturner/rpc/v2 v2.0.3
+2026-09-27T01:30:50.1726788Z     [1;94m  │ [mgo: downloading github.com/indece-official/go-ebcdic v1.2.0
+2026-09-27T01:30:50.1727798Z     [1;94m  │ [mgo: downloading github.com/jcmturner/aescts/v2 v2.0.0
+2026-09-27T01:30:50.1729969Z [1;94m    •[m running hook                                   [1;94mhook[m=python3 scripts/verify-embedded-console.py "/home/runner/work/starport/starport/dist/starport_windows_amd64_v1/starport.exe" internal/console/dist
+2026-09-27T01:31:28.6771709Z [1;94m    •[m running hook                                   [1;94mhook[m=python3 scripts/verify-embedded-console.py "/home/runner/work/starport/starport/dist/starport_windows_arm64_v8.0/starport.exe" internal/console/dist
+2026-09-27T01:31:30.1307092Z [1;94m      •[m [3;2mtook: 4m28s[m
+2026-09-27T01:31:30.1307616Z [1;94m  •[m [1marchives[m
+2026-09-27T01:31:30.1309701Z [1;94m    •[m archiving                                      [1;94mname[m=dist/starport_1.2.2-next_windows_arm64.zip
+2026-09-27T01:31:30.1310478Z [1;94m    •[m archiving                                      [1;94mname[m=dist/starport_1.2.2-next_linux_arm64.tar.gz
+2026-09-27T01:31:30.1323611Z [1;94m    •[m archiving                                      [1;94mname[m=dist/starport_1.2.2-next_windows_x86_64.zip
+2026-09-27T01:31:30.1324864Z [1;94m    •[m archiving                                      [1;94mname[m=dist/starport_1.2.2-next_darwin_arm64.tar.gz
+2026-09-27T01:31:40.4508836Z [1;94m    •[m archiving                                      [1;94mname[m=dist/starport_1.2.2-next_linux_x86_64.tar.gz
+2026-09-27T01:31:50.3936246Z [1;94m      •[m [3;2mtook: 20s[m
+2026-09-27T01:31:50.3937193Z [1;94m  •[m [1msoftware bill of materials[m
+2026-09-27T01:31:50.3938087Z [1;94m    •[m cataloging                                     [1;94mcmd[m=syft [1;94msbom[m=starport_1.2.2-next_windows_arm64.zip.sbom.json
+2026-09-27T01:31:56.9243186Z [1;94m    •[m cataloging                                     [1;94mcmd[m=syft [1;94msbom[m=starport_1.2.2-next_linux_arm64.tar.gz.sbom.json
+2026-09-27T01:31:58.3885528Z [1;94m    •[m cataloging                                     [1;94mcmd[m=syft [1;94msbom[m=starport_1.2.2-next_darwin_arm64.tar.gz.sbom.json
+2026-09-27T01:31:59.8173170Z [1;94m    •[m cataloging                                     [1;94mcmd[m=syft [1;94msbom[m=starport_1.2.2-next_windows_x86_64.zip.sbom.json
+2026-09-27T01:32:01.2991206Z [1;94m    •[m cataloging                                     [1;94mcmd[m=syft [1;94msbom[m=starport_1.2.2-next_linux_x86_64.tar.gz.sbom.json
+2026-09-27T01:32:02.7163590Z [1;94m      •[m [3;2mtook: 12s[m
+2026-09-27T01:32:02.7190438Z [1;94m  •[m [1mcalculating checksums[m
+2026-09-27T01:32:02.7658437Z [1;94m  •[m [1mhomebrew cask[m
+2026-09-27T01:32:02.8293108Z [1;94m    •[m writing                                        [1;94mcask[m=dist/homebrew/Casks/starport.rb
+2026-09-27T01:32:02.8293703Z [1;94m  •[m [1mwriting artifacts metadata[m
+2026-09-27T01:32:02.8296622Z [1;94m  •[m [1mrelease succeeded after 6m20s[m
+2026-09-27T01:32:02.8297771Z [1;94m  •[m thanks for using GoReleaser!
+2026-09-27T01:32:02.8341664Z ##[group]Artifacts output
+2026-09-27T01:32:02.8369998Z [{"name":"metadata.json","path":"dist/metadata.json","internal_type":35,"type":"Metadata"},{"name":"starport","path":"dist/starport_linux_amd64_v1/starport","goos":"linux","goarch":"amd64","goamd64":"v1","target":"linux_amd64_v1","internal_type":4,"type":"Binary","extra":{"Binary":"starport","Builder":"go","Ext":"","ID":"starport"}},{"name":"starport","path":"dist/starport_darwin_arm64_v8.0/starport","goos":"darwin","goarch":"arm64","goarm64":"v8.0","target":"darwin_arm64_v8.0","internal_type":4,"type":"Binary","extra":{"Binary":"starport","Builder":"go","Ext":"","ID":"starport"}},{"name":"starport","path":"dist/starport_linux_arm64_v8.0/starport","goos":"linux","goarch":"arm64","goarm64":"v8.0","target":"linux_arm64_v8.0","internal_type":4,"type":"Binary","extra":{"Binary":"starport","Builder":"go","Ext":"","ID":"starport"}},{"name":"starport.exe","path":"dist/starport_windows_amd64_v1/starport.exe","goos":"windows","goarch":"amd64","goamd64":"v1","target":"windows_amd64_v1","internal_type":4,"type":"Binary","extra":{"Binary":"starport","Builder":"go","Ext":".exe","ID":"starport"}},{"name":"starport.exe","path":"dist/starport_windows_arm64_v8.0/starport.exe","goos":"windows","goarch":"arm64","goarm64":"v8.0","target":"windows_arm64_v8.0","internal_type":4,"type":"Binary","extra":{"Binary":"starport","Builder":"go","Ext":".exe","ID":"starport"}},{"name":"starport_1.2.2-next_windows_arm64.zip","path":"dist/starport_1.2.2-next_windows_arm64.zip","goos":"windows","goarch":"arm64","goarm64":"v8.0","target":"windows_arm64_v8.0","internal_type":1,"type":"Archive","extra":{"Binaries":["starport.exe"],"Checksum":"sha256:81c2e8771c6156911b7d40efbb410e439a8cbec99f7988b2db92f4e2f69f1634","Files":[".env.example","LICENSE","README.md","SECURITY.md","completions/starport.bash","completions/starport.fish","completions/starport.ps1","completions/starport.zsh","manpages/starport.1"],"Format":"zip","ID":"starport","WrappedIn":""}},{"name":"starport_1.2.2-next_linux_arm64.tar.gz","path":"dist/starport_1.2.2-next_linux_arm64.tar.gz","goos":"linux","goarch":"arm64","goarm64":"v8.0","target":"linux_arm64_v8.0","internal_type":1,"type":"Archive","extra":{"Binaries":["starport"],"Checksum":"sha256:74210402aec00e5458a74a2359d6c9783ca431f965dc745f72e5407abe24a439","Files":[".env.example","LICENSE","README.md","SECURITY.md","completions/starport.bash","completions/starport.fish","completions/starport.ps1","completions/starport.zsh","manpages/starport.1"],"Format":"tar.gz","ID":"starport","WrappedIn":""}},{"name":"starport_1.2.2-next_darwin_arm64.tar.gz","path":"dist/starport_1.2.2-next_darwin_arm64.tar.gz","goos":"darwin","goarch":"arm64","goarm64":"v8.0","target":"darwin_arm64_v8.0","internal_type":1,"type":"Archive","extra":{"Binaries":["starport"],"Checksum":"sha256:ee15e50b2c8c67a1794298de0ca7b4c5dd7e00ddd7e97ba5075febd476f8b28c","Files":[".env.example","LICENSE","README.md","SECURITY.md","completions/starport.bash","completions/starport.fish","completions/starport.ps1","completions/starport.zsh","manpages/starport.1"],"Format":"tar.gz","ID":"starport","WrappedIn":""}},{"name":"starport_1.2.2-next_windows_x86_64.zip","path":"dist/starport_1.2.2-next_windows_x86_64.zip","goos":"windows","goarch":"amd64","goamd64":"v1","target":"windows_amd64_v1","internal_type":1,"type":"Archive","extra":{"Binaries":["starport.exe"],"Checksum":"sha256:3f10a4557fbadcbad2e8afcc9c7750800fe82f18cb526f6c93114880f6d173f6","Files":[".env.example","LICENSE","README.md","SECURITY.md","completions/starport.bash","completions/starport.fish","completions/starport.ps1","completions/starport.zsh","manpages/starport.1"],"Format":"zip","ID":"starport","WrappedIn":""}},{"name":"starport_1.2.2-next_linux_x86_64.tar.gz","path":"dist/starport_1.2.2-next_linux_x86_64.tar.gz","goos":"linux","goarch":"amd64","goamd64":"v1","target":"linux_amd64_v1","internal_type":1,"type":"Archive","extra":{"Binaries":["starport"],"Checksum":"sha256:fd522513802d1e3f1b5de2ad6e9da58a1a30ecc17e151bd35b67ee279e0e812e","Files":[".env.example","LICENSE","README.md","SECURITY.md","completions/starport.bash","completions/starport.fish","completions/starport.ps1","completions/starport.zsh","manpages/starport.1"],"Format":"tar.gz","ID":"starport","WrappedIn":""}},{"name":"starport_1.2.2-next_windows_arm64.zip.sbom.json","path":"dist/starport_1.2.2-next_windows_arm64.zip.sbom.json","internal_type":28,"type":"SBOM","extra":{"Checksum":"sha256:e864c75785b642839342cd637d7975702fb4341062c92b1709ea0b246d5385ec","ID":"default"}},{"name":"starport_1.2.2-next_linux_arm64.tar.gz.sbom.json","path":"dist/starport_1.2.2-next_linux_arm64.tar.gz.sbom.json","internal_type":28,"type":"SBOM","extra":{"Checksum":"sha256:0e7a06a9cb16e164012a8e494d84b655ffb379971ffae81bbddb12a0ded204b7","ID":"default"}},{"name":"starport_1.2.2-next_darwin_arm64.tar.gz.sbom.json","path":"dist/starport_1.2.2-next_darwin_arm64.tar.gz.sbom.json","internal_type":28,"type":"SBOM","extra":{"Checksum":"sha256:e2d07665b07d8928c320c6e6f608db75b9f1c0bcd0d0fe82bc88a96d50bf0460","ID":"default"}},{"name":"starport_1.2.2-next_windows_x86_64.zip.sbom.json","path":"dist/starport_1.2.2-next_windows_x86_64.zip.sbom.json","internal_type":28,"type":"SBOM","extra":{"Checksum":"sha256:fecf8d9ac909d113ad92d0f6802dbba007db8e4a09a863948bf12e6fcb9d3ca4","ID":"default"}},{"name":"starport_1.2.2-next_linux_x86_64.tar.gz.sbom.json","path":"dist/starport_1.2.2-next_linux_x86_64.tar.gz.sbom.json","internal_type":28,"type":"SBOM","extra":{"Checksum":"sha256:3d8a3855a6dfe0e44f49661240b5fc281b64a1285f78699fd4af18a3fe7a1b58","ID":"default"}},{"name":"checksums.txt","path":"dist/checksums.txt","internal_type":12,"type":"Checksum","extra":{}},{"name":"starport.rb","path":"dist/homebrew/Casks/starport.rb","internal_type":17,"type":"Homebrew Cask","extra":{"BrewCaskConfig":{"name":"starport","repository":{"owner":"agentstation","name":"homebrew-tap","branch":"main","git":{},"pull_request":{"base":{}}},"commit_author":{"name":"agentstation-release","email":"releases@agentstation.ai","signing":{}},"commit_msg_template":"Update starport to v{{ .Version }}","directory":"Casks","description":"OpenAI- and OpenRouter-compatible LLM inference gateway","homepage":"https://github.com/agentstation/starport","skip_upload":"true","custom_block":"on_macos do\n  depends_on arch: :arm64\nend\npostflight_steps do\n  on_macos do\n    run \"/usr/bin/xattr\", args: [\"-dr\", \"com.apple.quarantine\", \"{{ \"{{staged_path}}\" }}/starport\"], sudo: false\n  end\nend\n","ids":["starport"],"binaries":["starport"],"manpages":["manpages/starport.1"],"url":{},"completions":{"bash":"completions/starport.bash","zsh":"completions/starport.zsh","fish":"completions/starport.fish"},"hooks":{"pre":{},"post":{}},"uninstall":{},"zap":{},"generate_completions_from_executable":{}}}}]
+2026-09-27T01:32:02.8391009Z ##[endgroup]
+2026-09-27T01:32:02.8391556Z ##[group]Metadata output
+2026-09-27T01:32:02.8392852Z {"project_name":"starport","tag":"v1.2.1","previous_tag":"v1.2.0","version":"1.2.2-next","commit":"cedc965835f6ba061a851edb62f77dbb153f1289","date":"2026-09-27T01:25:42.797346947Z","runtime":{"goos":"linux","goarch":"amd64"}}
+2026-09-27T01:32:02.8394554Z ##[endgroup]
+2026-09-27T01:32:02.8446104Z ##[group]Run scripts/verify-release-binaries.sh dist
+2026-09-27T01:32:02.8446504Z [36;1mscripts/verify-release-binaries.sh dist[0m
+2026-09-27T01:32:02.8446809Z [36;1mscripts/verify-release-archives.sh dist[0m
+2026-09-27T01:32:02.8447176Z [36;1mscripts/verify-homebrew-cask.sh dist/homebrew/Casks/starport.rb[0m
+2026-09-27T01:32:02.8447588Z [36;1mscripts/audit-homebrew-cask.sh dist/homebrew/Casks/starport.rb[0m
+2026-09-27T01:32:02.9564721Z shell: /usr/bin/bash -e {0}
+2026-09-27T01:32:02.9564987Z env:
+2026-09-27T01:32:02.9565298Z   GOTOOLCHAIN: local
+2026-09-27T01:32:02.9565544Z   HOMEBREW_NO_INSTALL_FROM_API: 
+2026-09-27T01:32:02.9567609Z   HOMEBREW_GITHUB_API_TOKEN: ***
+2026-09-27T01:32:02.9567885Z   HOMEBREW_UPDATE_TO_TAG: 1
+2026-09-27T01:32:02.9568130Z ##[endgroup]
+2026-09-27T01:32:02.9903941Z release binary size: dist/starport_darwin_arm64_v8.0/starport (131797186 bytes)
+2026-09-27T01:32:03.0017752Z release binary size: dist/starport_linux_amd64_v1/starport (132001952 bytes)
+2026-09-27T01:32:05.2569360Z PASS console HTTP 200 and 18 referenced assets
+2026-09-27T01:32:05.2805847Z release binary size: dist/starport_linux_arm64_v8.0/starport (126550176 bytes)
+2026-09-27T01:32:05.2957467Z release binary size: dist/starport_windows_amd64_v1/starport.exe (136545280 bytes)
+2026-09-27T01:32:05.7214927Z release binary size: dist/starport_windows_arm64_v8.0/starport.exe (129989120 bytes)
+2026-09-27T01:32:05.7229543Z objdump: dist/starport_windows_arm64_v8.0/starport.exe: file format not recognized
+2026-09-27T01:32:05.7251573Z PASS 5 version-exact cgo-disabled release binaries for the supported target matrix
+2026-09-27T01:32:05.7582729Z starport_1.2.2-next_darwin_arm64.tar.gz: OK
+2026-09-27T01:32:05.7584472Z starport_1.2.2-next_darwin_arm64.tar.gz.sbom.json: OK
+2026-09-27T01:32:05.7787018Z starport_1.2.2-next_linux_arm64.tar.gz: OK
+2026-09-27T01:32:05.7788736Z starport_1.2.2-next_linux_arm64.tar.gz.sbom.json: OK
+2026-09-27T01:32:05.8004021Z starport_1.2.2-next_linux_x86_64.tar.gz: OK
+2026-09-27T01:32:05.8006023Z starport_1.2.2-next_linux_x86_64.tar.gz.sbom.json: OK
+2026-09-27T01:32:05.8213502Z starport_1.2.2-next_windows_arm64.zip: OK
+2026-09-27T01:32:05.8215508Z starport_1.2.2-next_windows_arm64.zip.sbom.json: OK
+2026-09-27T01:32:05.8439140Z starport_1.2.2-next_windows_x86_64.zip: OK
+2026-09-27T01:32:05.8442264Z starport_1.2.2-next_windows_x86_64.zip.sbom.json: OK
+2026-09-27T01:32:07.6140599Z PASS 5 release archives, 5 Syft SBOMs, and the checksum manifest
+2026-09-27T01:32:08.8527197Z Homebrew cask must retain Linux x86-64 without Intel macOS
+2026-09-27T01:32:08.8557314Z ##[error]Process completed with exit code 1.
+2026-09-27T01:32:08.8844987Z Post job cleanup.
+2026-09-27T01:32:09.0554523Z [command]/bin/bash /home/runner/work/_actions/Homebrew/actions/848c272c7bfe984a197bd4d16383f4c106ec61e6/setup-homebrew/post.sh false
+2026-09-27T01:32:09.0752332Z Post job cleanup.
+2026-09-27T01:32:09.1440391Z [command]/usr/bin/git version
+2026-09-27T01:32:09.1468455Z git version 2.55.0
+2026-09-27T01:32:09.1489744Z Temporarily overriding HOME='/home/runner/work/_temp/8ce1fc9d-9aea-44d5-be8f-15f9e33e3bdb' before making global git config changes
+2026-09-27T01:32:09.1490779Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T01:32:09.1493714Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starport/starport
+2026-09-27T01:32:09.1516494Z Removing SSH command configuration
+2026-09-27T01:32:09.1521297Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T01:32:09.1546226Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T01:32:09.2215869Z Removing HTTP extra header
+2026-09-27T01:32:09.2220466Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T01:32:09.2245830Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T01:32:09.2381025Z Removing includeIf entries pointing to credentials config files
+2026-09-27T01:32:09.2385674Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T01:32:09.2402698Z includeif.gitdir:/home/runner/work/starport/starport/.git.path
+2026-09-27T01:32:09.2403474Z includeif.gitdir:/home/runner/work/starport/starport/.git/worktrees/*.path
+2026-09-27T01:32:09.2404072Z includeif.gitdir:/github/workspace/.git.path
+2026-09-27T01:32:09.2404567Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-27T01:32:09.2408600Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starport/starport/.git.path
+2026-09-27T01:32:09.2425317Z /home/runner/work/_temp/git-credentials-e585482b-0961-450e-9b9b-c8e294005153.config
+2026-09-27T01:32:09.2431789Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starport/starport/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-e585482b\-0961\-450e\-9b9b\-c8e294005153\.config
+2026-09-27T01:32:09.2456554Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starport/starport/.git/worktrees/*.path
+2026-09-27T01:32:09.2477417Z /home/runner/work/_temp/git-credentials-e585482b-0961-450e-9b9b-c8e294005153.config
+2026-09-27T01:32:09.2483177Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starport/starport/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-e585482b\-0961\-450e\-9b9b\-c8e294005153\.config
+2026-09-27T01:32:09.2506032Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-27T01:32:09.2521159Z /github/runner_temp/git-credentials-e585482b-0961-450e-9b9b-c8e294005153.config
+2026-09-27T01:32:09.2525754Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-e585482b\-0961\-450e\-9b9b\-c8e294005153\.config
+2026-09-27T01:32:09.2548678Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-27T01:32:09.2562969Z /github/runner_temp/git-credentials-e585482b-0961-450e-9b9b-c8e294005153.config
+2026-09-27T01:32:09.2568311Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-e585482b\-0961\-450e\-9b9b\-c8e294005153\.config
+2026-09-27T01:32:09.2594176Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T01:32:09.2731250Z Removing credentials config '/home/runner/work/_temp/git-credentials-e585482b-0961-450e-9b9b-c8e294005153.config'
+2026-09-27T01:32:09.2846362Z Cleaning up orphan processes
