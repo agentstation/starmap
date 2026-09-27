@@ -372,6 +372,7 @@ func deepCopyModelOperationPricing(pricing *ModelOperationPricing) *ModelOperati
 	copied := *pricing
 	copied.Request = copyPtr(pricing.Request)
 	copied.ImageInput = copyPtr(pricing.ImageInput)
+	copied.ImageUnit = copyPtr(pricing.ImageUnit)
 	copied.CharacterInput = copyPtr(pricing.CharacterInput)
 	copied.PageInput = copyPtr(pricing.PageInput)
 	copied.AudioInput = copyPtr(pricing.AudioInput)

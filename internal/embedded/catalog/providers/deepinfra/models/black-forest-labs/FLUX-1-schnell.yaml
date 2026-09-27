@@ -77,7 +77,7 @@ features:
 # Model pricing
 pricing:
   operations:
-    image_gen: 0.0005
+    image_unit: 0.0005
   currency: USD
 extensions:
   deepinfra:
@@ -90,3 +90,16 @@ extensions:
 # Timestamps
 created_at: 2026-07-11T20:15:13.085375Z
 updated_at: 2026-07-11T20:15:13.085375Z
+
+billing:
+  images:
+    basis: pixel_iterations
+    operations:
+    - images-generations
+    default_images: 1
+    request_charge: false
+    default_width: 1024
+    default_height: 1024
+    iterations: 1
+    unit_pixels: 1048576
+    unit_iterations: 1

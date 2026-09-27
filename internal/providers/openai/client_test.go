@@ -772,8 +772,9 @@ func TestConvertToModelPreservesMetadataMediaDefaultsAndPermissions(t *testing.T
 		model.Pricing.Tokens.CacheRead == nil ||
 		model.Pricing.Tokens.CacheRead.Per1M != cacheReadTokens ||
 		model.Pricing.Operations == nil ||
-		model.Pricing.Operations.ImageGen == nil ||
-		*model.Pricing.Operations.ImageGen != perImage {
+		model.Pricing.Operations.ImageUnit == nil ||
+		model.Pricing.Operations.ImageGen != nil ||
+		*model.Pricing.Operations.ImageUnit != perImage {
 		t.Fatalf("pricing = %#v", model.Pricing)
 	}
 	extension := model.Extensions["deepinfra"].Fields

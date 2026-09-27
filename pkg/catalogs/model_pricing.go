@@ -172,6 +172,8 @@ type ModelTokenCost struct {
 
 // ModelOperationPricing represents fixed costs for operations.
 type ModelOperationPricing struct {
+	// ImageUnit is the price for the image unit declared by billing.images.
+	ImageUnit *float64 `json:"image_unit,omitempty" yaml:"image_unit,omitempty"`
 	// CharacterInput is the cost per Unicode code point for a declared speech contract.
 	CharacterInput *float64 `json:"character_input,omitempty" yaml:"character_input,omitempty"`
 	// Core operations

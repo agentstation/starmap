@@ -80,7 +80,7 @@ features:
 # Model pricing
 pricing:
   operations:
-    image_gen: 0.025
+    image_unit: 0.025
   currency: USD
 extensions:
   deepinfra:

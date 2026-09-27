@@ -29,9 +29,13 @@ const RerankBillingSchemaVersion uint64 = 15
 // SpeechBillingSchemaVersion adds character-priced speech declarations.
 const SpeechBillingSchemaVersion uint64 = 16
 
+// ImageBillingSchemaVersion adds explicit image charge units.
+const ImageBillingSchemaVersion uint64 = 17
+
 // ModelBilling declares provider billing units independently of current prices.
 // A missing operation record means that its billing basis is unknown.
 type ModelBilling struct {
+	Images      *ImageBilling       `json:"images,omitempty" yaml:"images,omitempty"`
 	Speech      *SpeechBilling      `json:"speech,omitempty" yaml:"speech,omitempty"`
 	Rerank      *RerankBilling      `json:"rerank,omitempty" yaml:"rerank,omitempty"`
 	Moderations *ModerationBilling  `json:"moderations,omitempty" yaml:"moderations,omitempty"`
@@ -190,6 +194,9 @@ func (b *ModelBilling) Validate() error {
 	if b == nil {
 		return nil
 	}
+	if err := b.Images.validate(); err != nil {
+		return err
+	}
 	if err := b.Speech.validate(); err != nil {
 		return err
 	}
@@ -250,6 +257,11 @@ func deepCopyModelBilling(billing *ModelBilling) *ModelBilling {
 	copied := copyPtr(billing)
 	if copied == nil {
 		return nil
+	}
+	copied.Images = copyPtr(billing.Images)
+	if copied.Images != nil {
+		copied.Images.RequestCharge = copyPtr(billing.Images.RequestCharge)
+		copied.Images.Operations = slices.Clone(billing.Images.Operations)
 	}
 	copied.Speech = copyPtr(billing.Speech)
 	if copied.Speech != nil {

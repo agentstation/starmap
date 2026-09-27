@@ -719,6 +719,7 @@ func copyModelOperationPricing(source *catalogs.ModelOperationPricing) *catalogs
 	}
 	copied := *source
 	copied.Request = copyValuePtr(source.Request)
+	copied.ImageUnit = copyValuePtr(source.ImageUnit)
 	copied.CharacterInput = copyValuePtr(source.CharacterInput)
 	copied.ImageInput = copyValuePtr(source.ImageInput)
 	copied.PageInput = copyValuePtr(source.PageInput)

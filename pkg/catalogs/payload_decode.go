@@ -243,26 +243,8 @@ func decodePayloadProviders(
 		}
 		mergeRecordReport(&report, recordReport)
 		for _, model := range models {
-			if payload.SchemaVersion < SpeechBillingSchemaVersion && ((model.Billing != nil && model.Billing.Speech != nil) || (model.Pricing != nil && model.Pricing.Operations != nil && model.Pricing.Operations.CharacterInput != nil)) {
-				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing.speech", Message: "requires catalog schema version 16"}
-			}
-			if payload.SchemaVersion < RerankBillingSchemaVersion && model.Billing != nil && model.Billing.Rerank != nil {
-				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing.rerank", Message: "requires catalog schema version 15"}
-			}
-			if payload.SchemaVersion < ModerationBillingSchemaVersion && model.Billing != nil && model.Billing.Moderations != nil {
-				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing.moderations", Message: "requires catalog schema version 14"}
-			}
-			if payload.SchemaVersion < RecognitionChargesSchemaVersion && model.Billing != nil && model.Billing.Recognition.hasCharges() {
-				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing.recognition", Message: "complete charges require catalog schema version 13"}
-			}
-			if payload.SchemaVersion < EmbeddingBillingSchemaVersion && model.Billing != nil && model.Billing.Embeddings != nil {
-				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing.embeddings", Message: "requires catalog schema version 12"}
-			}
-			if payload.SchemaVersion < TextChatBillingSchemaVersion && model.Billing != nil && model.Billing.TextChat != nil {
-				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing.text_chat", Message: "requires catalog schema version 11"}
-			}
-			if payload.SchemaVersion < RecognitionBillingSchemaVersion && model.RecordPresence(ModelRecordBilling) != ValueMissing {
-				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing", Message: "requires catalog schema version 10"}
+			if err := validatePayloadBillingSchema(model, payload.SchemaVersion); err != nil {
+				return sourcepayload.RecordReport{}, err
 			}
 			if err := builder.SetProviderModel(ProviderID(providerID), model); err != nil {
 				report.Accepted--
@@ -275,6 +257,42 @@ func decodePayloadProviders(
 		}
 	}
 	return report, nil
+}
+
+func validatePayloadBillingSchema(model Model, version uint64) error {
+	billing := model.Billing
+	if billing == nil {
+		billing = &ModelBilling{}
+	}
+	operations := &ModelOperationPricing{}
+	if model.Pricing != nil && model.Pricing.Operations != nil {
+		operations = model.Pricing.Operations
+	}
+	if version < ImageBillingSchemaVersion && ((billing.Images != nil) || (operations.ImageUnit != nil)) {
+		return &errors.ValidationError{Field: "billing.images", Message: "requires catalog schema version 17"}
+	}
+	if version < SpeechBillingSchemaVersion && ((billing.Speech != nil) || (operations.CharacterInput != nil)) {
+		return &errors.ValidationError{Field: "billing.speech", Message: "requires catalog schema version 16"}
+	}
+	if version < RerankBillingSchemaVersion && billing.Rerank != nil {
+		return &errors.ValidationError{Field: "billing.rerank", Message: "requires catalog schema version 15"}
+	}
+	if version < ModerationBillingSchemaVersion && billing.Moderations != nil {
+		return &errors.ValidationError{Field: "billing.moderations", Message: "requires catalog schema version 14"}
+	}
+	if version < RecognitionChargesSchemaVersion && billing.Recognition.hasCharges() {
+		return &errors.ValidationError{Field: "billing.recognition", Message: "complete charges require catalog schema version 13"}
+	}
+	if version < EmbeddingBillingSchemaVersion && billing.Embeddings != nil {
+		return &errors.ValidationError{Field: "billing.embeddings", Message: "requires catalog schema version 12"}
+	}
+	if version < TextChatBillingSchemaVersion && billing.TextChat != nil {
+		return &errors.ValidationError{Field: "billing.text_chat", Message: "requires catalog schema version 11"}
+	}
+	if version < RecognitionBillingSchemaVersion && model.RecordPresence(ModelRecordBilling) != ValueMissing {
+		return &errors.ValidationError{Field: "billing", Message: "requires catalog schema version 10"}
+	}
+	return nil
 }
 
 func decodePayloadAuthors(

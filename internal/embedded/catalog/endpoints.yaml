@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: speech-billing-0de20d10ac7cead3475c3a1ffc403093486a3d57a8b4158bc4789058b835efaf
-catalog_digest: sha256:0de20d10ac7cead3475c3a1ffc403093486a3d57a8b4158bc4789058b835efaf
+generation_id: image-billing-7e01e9ea6f908898f68dc9ae94911af9c9f863aa930bcab991d3ef89fc664ec1
+catalog_digest: sha256:7e01e9ea6f908898f68dc9ae94911af9c9f863aa930bcab991d3ef89fc664ec1
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -131,7 +131,7 @@ models:
         provider_model_id: Wan-AI/Wan2.6-T2I
         pricing:
           operations:
-            image_gen: 0.03
+            image_unit: 0.03
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -874,7 +874,7 @@ models:
         provider_model_id: black-forest-labs/FLUX-1-dev
         pricing:
           operations:
-            image_gen: 0.009
+            image_unit: 0.009
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -891,7 +891,7 @@ models:
         provider_model_id: black-forest-labs/FLUX-1-Redux-dev
         pricing:
           operations:
-            image_gen: 0.012
+            image_unit: 0.012
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -908,7 +908,7 @@ models:
         provider_model_id: black-forest-labs/FLUX-1-schnell
         pricing:
           operations:
-            image_gen: 0.0005
+            image_unit: 0.0005
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -932,7 +932,7 @@ models:
         provider_model_id: black-forest-labs/FLUX-1.1-pro
         pricing:
           operations:
-            image_gen: 0.04
+            image_unit: 0.04
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -949,7 +949,7 @@ models:
         provider_model_id: black-forest-labs/FLUX-2-dev
         pricing:
           operations:
-            image_gen: 0.01
+            image_unit: 0.01
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -966,7 +966,7 @@ models:
         provider_model_id: black-forest-labs/FLUX-2-klein-4b
         pricing:
           operations:
-            image_gen: 0.014
+            image_unit: 0.014
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -983,7 +983,7 @@ models:
         provider_model_id: black-forest-labs/FLUX-2-klein-9b
         pricing:
           operations:
-            image_gen: 0.015
+            image_unit: 0.015
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1000,7 +1000,7 @@ models:
         provider_model_id: black-forest-labs/FLUX-2-max
         pricing:
           operations:
-            image_gen: 0.1
+            image_unit: 0.1
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1017,7 +1017,7 @@ models:
         provider_model_id: black-forest-labs/FLUX-2-pro
         pricing:
           operations:
-            image_gen: 0.015
+            image_unit: 0.015
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1034,7 +1034,7 @@ models:
         provider_model_id: black-forest-labs/FLUX.1-Kontext-dev
         pricing:
           operations:
-            image_gen: 0.01
+            image_unit: 0.01
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1064,7 +1064,7 @@ models:
         provider_model_id: Bria/blur_background
         pricing:
           operations:
-            image_gen: 0.04
+            image_unit: 0.04
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1081,7 +1081,7 @@ models:
         provider_model_id: Bria/Bria-3.2
         pricing:
           operations:
-            image_gen: 0.04
+            image_unit: 0.04
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1098,7 +1098,7 @@ models:
         provider_model_id: Bria/Bria-3.2-vector
         pricing:
           operations:
-            image_gen: 0.04
+            image_unit: 0.04
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1115,7 +1115,7 @@ models:
         provider_model_id: Bria/erase_foreground
         pricing:
           operations:
-            image_gen: 0.04
+            image_unit: 0.04
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1132,7 +1132,7 @@ models:
         provider_model_id: Bria/expand
         pricing:
           operations:
-            image_gen: 0.04
+            image_unit: 0.04
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1149,7 +1149,7 @@ models:
         provider_model_id: Bria/fibo
         pricing:
           operations:
-            image_gen: 0.04
+            image_unit: 0.04
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1166,7 +1166,7 @@ models:
         provider_model_id: Bria/fibo_edit
         pricing:
           operations:
-            image_gen: 0.04
+            image_unit: 0.04
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1183,7 +1183,7 @@ models:
         provider_model_id: Bria/remove_background
         pricing:
           operations:
-            image_gen: 0.018
+            image_unit: 0.018
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1346,7 +1346,7 @@ models:
         provider_model_id: ByteDance/Seedream-4
         pricing:
           operations:
-            image_gen: 0.04
+            image_unit: 0.04
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -10037,7 +10037,7 @@ models:
         provider_model_id: PrunaAI/p-image
         pricing:
           operations:
-            image_gen: 0.005
+            image_unit: 0.005
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -10132,7 +10132,7 @@ models:
         provider_model_id: Qwen/Qwen-Image-Edit
         pricing:
           operations:
-            image_gen: 0.025
+            image_unit: 0.025
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -10149,7 +10149,7 @@ models:
         provider_model_id: Qwen/Qwen-Image-Max
         pricing:
           operations:
-            image_gen: 0.075
+            image_unit: 0.075
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -12535,7 +12535,7 @@ models:
         provider_model_id: stabilityai/sdxl-turbo
         pricing:
           operations:
-            image_gen: 0.0002
+            image_unit: 0.0002
           currency: USD
         availability: unknown
         lifecycle: unknown

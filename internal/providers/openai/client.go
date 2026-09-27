@@ -409,8 +409,8 @@ func applyOpenAICompatibleMetadataPricing(
 	}
 	if source.PerImageUnit != nil || source.InputSeconds != nil || source.OutputSeconds != nil {
 		ensureOperationPricing(pricing)
-		if source.PerImageUnit != nil && pricing.Operations.ImageGen == nil {
-			pricing.Operations.ImageGen = normalizeProviderOperationPrice(source.PerImageUnit)
+		if source.PerImageUnit != nil && pricing.Operations.ImageUnit == nil {
+			pricing.Operations.ImageUnit = normalizeProviderOperationPrice(source.PerImageUnit)
 		}
 		if source.InputSeconds != nil && pricing.Operations.AudioInput == nil {
 			pricing.Operations.AudioInput = normalizeProviderOperationPrice(source.InputSeconds)
