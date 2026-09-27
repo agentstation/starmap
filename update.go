@@ -204,7 +204,10 @@ func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (
 		return Publication{}, err
 	}
 
-	published, err := catalogs.DecodeCatalogGeneration(generation)
+	if err := generation.Validate(); err != nil {
+		return Publication{}, errors.WrapResource("validate", "catalog generation", generation.Manifest.GenerationID, err)
+	}
+	published, err := decodeValidatedCatalog(generation, c.embeddedCatalog, c.embeddedBootstrap)
 	if err != nil {
 		return Publication{}, errors.WrapResource(
 			"decode",

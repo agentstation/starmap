@@ -6124,6 +6124,294 @@
           "test": "TestCachedPermissionKeepsOriginalDeadline"
         }
       ]
+    },
+    "A15.budget_usage_unknown": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestBudgetStorageErrorRefuses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestBatchBudgetUnknownRequiredStateRefuses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAuthorizationUnknownAccountRefusesAdmission"
+        }
+      ]
+    },
+    "A15.team_policy_unknown": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestTeamBudgetReadErrorRefuses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCachedTeamBudgetUsesAdmittedPolicy"
+        }
+      ]
+    },
+    "A15.confirmed_no_budget": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestBudgetMiddlewarePassesKeysWithoutBudgets"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestBatchBudgetConfirmedAbsenceNeedsNoUsageReader"
+        }
+      ]
+    },
+    "A31.recipe_configuration_guards": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFleetRecipeRejectsReplicaLocalStores"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestSharedStorageRecipeSupportedModes"
+        }
+      ]
+    },
+    "A41.valkey_url_contract": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyURLDatabaseSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyConnectionRefusesUnsafeSettings"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyCredentialConflicts"
+        }
+      ]
+    },
+    "A41.valkey_tls_identity": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/storage",
+      "test": "TestValkeyTLSIdentity"
+    },
+    "A41.valkey_username_password": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/storage",
+      "test": "TestValkeyUsernamePassword"
+    },
+    "A41.valkey_effective_connection_options": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyEffectiveConnectionOptions"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestDurableKVConnectionSettings"
+        }
+      ]
+    },
+    "A41.badger_effective_options": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestBadgerEffectiveCompression"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestBadgerConfiguredGarbageCollection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBadgerMaintenanceProjection"
+        }
+      ]
+    },
+    "A41.badger_write_sync_profile": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBadgerDurableWriteProfile"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestBadgerMemoryDoesNotClaimDiskDurability"
+        }
+      ]
+    },
+    "A41.deployment_key_channel_isolation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyDeploymentNamespace"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyDeploymentNotificationIsolation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDeploymentIsolationIncludesGatewayRecords"
+        }
+      ]
+    },
+    "A41.namespace_atomic_layout": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyRequiresDeploymentIdentity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyDeploymentNamespace"
+        }
+      ]
+    },
+    "A41.unsupported_modes_refused": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestSharedStorageRecipeSupportedModes"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyConnectionRefusesUnsafeSettings"
+        }
+      ]
+    },
+    "A31.compose_complete_storage": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestComposeStorageRecipes"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestContainerRecipePersistence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestOfflineStartupRetainsEmbeddedGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestOfflineBaselineStorageFailureRefusesStartup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestOfflineEmbeddedCandidateHasDurableGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestMatchingCandidateStillRequiresDurableAcceptance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./",
+          "test": "TestStoredBaselineReusesVerifiedCatalog"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./",
+          "test": "TestStoredBaselineReuseStillValidatesGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/workspace",
+          "test": "TestProjectionPresencePreservesRecoverySelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestManualRunByANonOwnerReturnsAConflict"
+        }
+      ]
     }
   },
   "task_component_checks": {

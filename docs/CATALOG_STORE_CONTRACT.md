@@ -690,6 +690,16 @@ Its identity, checksum, and timestamp remain independent of application storage,
 The getter uses the catalog already verified during construction. It reads no storage and decodes no payload.
 `EmbeddedGeneration` remains the constructor-free accessor for a complete manifest and payload.
 
+With an explicit writable store, an ordinary refresh owner commits an uncommitted embedded baseline before returning.
+An ordinary follower can serve its baseline without a storage write.
+A failed commit prevents startup. Restart retains the same generation without another commit.
+Library construction remains read-only. Fleet, authority, origin, and pin publication retain their separate contracts.
+
+The constructor reuses the immutable embedded catalog when validated stored bytes have its exact digest.
+It still validates stored schema and membership evidence, and preserves the stored generation identity.
+Retaining the baseline does not create an unused YAML authoring workspace.
+Existing trees and recovery records retain normal repair behavior. Explicit `Client.RepairWorkspace` can create the selected workspace.
+
 The connected runtime keeps this compiled baseline separately from the accepted current state.
 When retained inputs exist, reconstruction starts from the compiled baseline and applies the retained source, provider, and manual observations.
 With an explicit binding set, startup reconstructs and publishes the selected state before returning.

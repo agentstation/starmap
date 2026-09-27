@@ -392,7 +392,7 @@ func (c *Client) CurrentGenerationID() string
 CurrentGenerationID returns the logical identity of the currently published catalog. Before the first durable mutation, this is the embedded bootstrap ID.
 
 <a name="Client.EmbeddedCatalogState"></a>
-### func \(\*Client\) [EmbeddedCatalogState](<https://github.com/agentstation/starmap/blob/main/baseline.go#L6>)
+### func \(\*Client\) [EmbeddedCatalogState](<https://github.com/agentstation/starmap/blob/main/baseline.go#L11>)
 
 ```go
 func (c *Client) EmbeddedCatalogState() CatalogState
