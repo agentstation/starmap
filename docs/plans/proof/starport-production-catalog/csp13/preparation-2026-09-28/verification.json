@@ -74,5 +74,11 @@
       "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -overlay=/tmp/csp13-sql-probe-overlay.json -json -race -count=1 -timeout 2m ./internal/sqlstore -run ^TestConcurrentSQLiteMigrationStartupHasOneOwner$"
     }
   ],
-  "updated_at": "2026-09-28T14:08:58.651730+00:00"
+  "updated_at": "2026-09-28T14:08:58.651730+00:00",
+  "implementation_preparation": {
+    "source": "d6107baa33fc64c3cb1b896c624862e458c8e949",
+    "note": "BOUNDARIES.md",
+    "state": "preparation_only",
+    "scope": "Source-grounded ownership and backup constraints. Database documentation verifies locking and snapshot semantics. No additional product code or support claim."
+  }
 }
