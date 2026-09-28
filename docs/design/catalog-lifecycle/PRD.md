@@ -538,3 +538,8 @@ The administrator correction flow remains unfinished.
 Late provider evidence and its required budget restriction must become visible together.
 The [atomic publication proof](../../plans/proof/starport-production-catalog/csp12.2/atomic-dispute-2026-09-27/verification.json) covers this boundary.
 The complete administrator correction flow remains unfinished.
+
+An administrator correction must commit its job and audit state with required budget changes.
+A stale inspected state must preserve restrictions. Reusing a decision identifier with different publication must fail.
+The [transaction proof](../../plans/proof/starport-production-catalog/csp12.2/correction-publication-2026-09-27/verification.json) covers this storage contract.
+Job intent, recovery, and administrator operations remain unfinished.

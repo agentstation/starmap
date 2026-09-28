@@ -1061,3 +1061,8 @@ These records belong to optional reporting and cannot grant required budget capa
 The [proof](../../plans/proof/starport-production-catalog/csp12.2/usage-adjustments-2026-09-27/verification.json) covers memory, Badger, and real Valkey behavior.
 Consumer `0db2fbcd` commits late evidence and its dispute with one storage transaction.
 Job correction still needs to compare the same job state with its budget write. Shared fleet qualification remains open.
+
+Consumer `00dfff81` qualifies atomic correction publication through the same KV authority.
+Correction receipt schema 2 binds owner writes to the retained decision. Exact retries cannot replace those writes or duplicate charges.
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/correction-publication-2026-09-27/verification.json) covers Badger process interruption and real Valkey concurrency.
+CSP13 must migrate earlier correction receipts. Job-owned history and full fleet qualification remain open.

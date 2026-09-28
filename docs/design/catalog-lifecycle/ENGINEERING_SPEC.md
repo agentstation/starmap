@@ -4825,3 +4825,16 @@ The correction operation must still bind its budget write to the inspected job s
 
 The [review](../../plans/proof/starport-production-catalog/csp12.2/usage-adjustments-2026-09-27/REVIEW.md) defines this remaining transaction contract.
 Required settlement must survive expired optional reporting history. Recovery must not recreate expired usage or repeat provider generation.
+
+### Correction publication transaction: September 27, 2026
+
+Consumer `00dfff81` adds `reservation.CorrectWith` for job and audit publication with required budget correction.
+The transaction compares every owner record and updates the correction receipt, attempt, and original windows together.
+A stale owner record prevents all changes. A receipt binds the canonical publication digest, so changed publication cannot reuse a prior decision identifier.
+
+Correction receipt schema 2 replaces schema 1. The operation permits up to eight persistent owner records, with 4,096-byte keys and 64-KiB values.
+It refuses deletion, expiry, duplicate keys, and writes inside the budget namespace. CSP13 owns migration.
+
+The [review](../../plans/proof/starport-production-catalog/csp12.2/correction-publication-2026-09-27/REVIEW.md) records both late-evidence commit orders and process interruption evidence.
+Job-owned intent, immutable correction history, effective billing state, reporting acknowledgement, and administrator routes remain required.
+A pending decision must not silently adopt evidence that the operator did not inspect.

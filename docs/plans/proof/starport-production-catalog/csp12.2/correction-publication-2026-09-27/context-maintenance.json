@@ -1,0 +1,16 @@
+{
+  "moved_rows": 15,
+  "retained_rows": 8,
+  "preserved_rows_sha256": "d8f78f447333336f82af7baf9bd45999a24da6f3d342f391ef295e8006f670d1",
+  "history": "../../execution-history-2026-09-27-corrections.html",
+  "preservation": "Moved rows are byte-identical. The HTML base retains resolution against the active plan. Task contracts, goal, and status tokens remain unchanged.",
+  "verified_sections": [
+    "goal",
+    "invariants",
+    "verification"
+  ],
+  "verified_original_rows": 15,
+  "cold_resume": "Current state identifies CSP12.2, exact worktrees, commits, pending job integration, qualification gaps, and authorization boundaries.",
+  "history_local_links_checked": 18,
+  "task_sections_compared": 40
+}

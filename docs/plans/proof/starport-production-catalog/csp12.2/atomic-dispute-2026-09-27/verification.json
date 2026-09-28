@@ -231,13 +231,13 @@
       "sha256": "052b48cc6e62201aaa2239a425c8a502bd7240ed9e38f3707aec6df0dac2148f"
     },
     {
-      "command": "technical-writing lint <six edited plan documents> --format text",
+      "command": "technical-writing lint docs/design/catalog-lifecycle/PRD.md docs/design/catalog-lifecycle/ENGINEERING_SPEC.md docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md docs/design/catalog-lifecycle/STORAGE_REVIEW.md docs/plans/starport-production-catalog-plan.html docs/plans/proof/starport-production-catalog/csp12.2/atomic-dispute-2026-09-27/REVIEW.md --format text",
       "exit_code": 1,
       "output": "plan-writing.log.gz",
       "sha256": "1590812980187ebd84cd5c092f05a2666aef6404fbe0a5bbe97292bfabae199d"
     },
     {
-      "command": "technical-writing lint <six edited plan documents> --format text",
+      "command": "technical-writing lint docs/design/catalog-lifecycle/PRD.md docs/design/catalog-lifecycle/ENGINEERING_SPEC.md docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md docs/design/catalog-lifecycle/STORAGE_REVIEW.md docs/plans/starport-production-catalog-plan.html docs/plans/proof/starport-production-catalog/csp12.2/atomic-dispute-2026-09-27/REVIEW.md --format text",
       "exit_code": 0,
       "output": "plan-writing-final.log.gz",
       "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087"

@@ -4529,3 +4529,10 @@ The job service still lacks correction intent, history, administrator routes, an
 Consumer `0db2fbcd` replaces the two-write late-provider sequence with one atomic job and reservation transaction.
 The [follow-up proof](../../plans/proof/starport-production-catalog/csp12.2/atomic-dispute-2026-09-27/verification.json) records stale-state, concurrent-write, and lost-acknowledgement checks.
 The correction operation must still compare its inspected job state before clearing a dispute.
+
+Consumer `00dfff81` adds the correction side of the atomic publication contract.
+The baseline test rejects separate correction and job writes because a stale job can leave its dispute cleared.
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/correction-publication-2026-09-27/verification.json) passes 271 shared race results with one PostgreSQL skip.
+
+Final targeted race checks pass 24 results. Pure-Go checks pass 21 results.
+The job service does not yet call this correction operation. This evidence does not qualify an administrator correction API.
