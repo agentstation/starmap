@@ -1,5 +1,5 @@
 {
-  "status": "FAIL_UNDER_INVESTIGATION",
+  "status": "LOCAL_REPAIR_QUALIFIED",
   "task": "CSP12.2",
   "source": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
   "run": 36432573361,
@@ -60,7 +60,7 @@
       "failed_tests": []
     }
   ],
-  "updated_at": "2026-09-28T14:51:05.557802+00:00",
+  "updated_at": "2026-09-28T15:03:37.159237+00:00",
   "local_reproduction": {
     "exit_code": 1,
     "source": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
@@ -77,7 +77,7 @@
       ".github/workflows/ci.yml"
     ],
     "change": "Close the setup gateway before starting independent gateways. Inspect durable state through independent native repositories. Release fixture memory before child startup.",
-    "status": "UNDER_TEST",
+    "status": "PASS_LOCAL",
     "unchanged": [
       "Full embedded catalog",
       "Real Valkey and PostgreSQL",
@@ -86,7 +86,7 @@
       "30-minute CI job limit"
     ],
     "compile": "PASS",
-    "lint": "PASS, zero issues",
+    "lint": "PASS after final source edits, zero issues",
     "session": 73618,
     "output": "/tmp/csp122-fleet-budget-qualified-fixtures.jsonl",
     "first_attempt": {
@@ -131,7 +131,67 @@
     "ownership_verifier": {
       "pass": 12,
       "fail": 0
-    }
+    },
+    "commit": "d6107baa33fc64c3cb1b896c624862e458c8e949",
+    "exit_code": 0,
+    "results": [
+      {
+        "Test": "TestProductionBudgetAcrossProcesses/concurrent-settlement",
+        "Action": "pass",
+        "Elapsed": 102.55
+      },
+      {
+        "Test": "TestProductionBudgetAcrossProcesses",
+        "Action": "pass",
+        "Elapsed": 102.55
+      },
+      {
+        "Test": "TestProductionBudgetAcrossProcesses/dispatched-process-loss",
+        "Action": "pass",
+        "Elapsed": 127.05
+      },
+      {
+        "Test": "TestProductionBudgetAcrossProcesses",
+        "Action": "pass",
+        "Elapsed": 127.05
+      },
+      {
+        "Test": "TestProductionBudgetAcrossProcesses/backend-replacement",
+        "Action": "pass",
+        "Elapsed": 201.01
+      },
+      {
+        "Test": "TestProductionBudgetAcrossProcesses",
+        "Action": "pass",
+        "Elapsed": 201.01
+      },
+      {
+        "Test": "TestSettledJobRequiresOriginalSharedApproval",
+        "Action": "pass",
+        "Elapsed": 0.08
+      },
+      {
+        "Test": "TestProductionBudgetBackendOperations",
+        "Action": "pass",
+        "Elapsed": 24.86
+      }
+    ],
+    "events": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "archive": "qualified-fixtures.jsonl.gz",
+    "sha256_raw": "bb9b0aff8e2ef8f155353418d39692a5eb01f6f2add60c13c8b5cb1b64498004",
+    "package_elapsed_seconds": [
+      104.862,
+      129.433,
+      203.335,
+      27.19
+    ],
+    "actionlint": "PASS",
+    "prose_lint": "PASS, two files, zero diagnostics",
+    "limits": "Fresh native CI and required review remain open. Local evidence does not qualify Windows plugin discovery."
   },
   "native_run_status": "completed/failure",
   "native_failures": [

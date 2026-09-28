@@ -1063,20 +1063,17 @@
     "native_ci": "Run 36432573361 completed with fleet readiness and Windows Compose failures. Linux amd64/arm64, macOS arm64, and Windows arm64 pass.",
     "required_review": {
       "producer": "PASS: three parts, zero findings; decoded catalog secret scan passes",
-      "consumer": "PASS at 0f536c92: nine parts, zero actionable findings, secret scan clean."
+      "consumer": "Previous 0f536c92 review passed. Complete review for d6107baa is in progress."
     },
     "remaining_dirty_files": {
       "docs/ARCHITECTURE.md": "CSP18 preparation",
-      "internal/cache/README.md": "CSP18 preparation",
-      "internal/app/budget_fleet_test.go": "CSP12.2 readiness fixture repair under test",
-      "internal/config/compose_recipe_test.go": "CSP12.2 Windows Compose environment repair",
-      ".github/workflows/ci.yml": "CSP12.2 independent budget scenario processes"
+      "internal/cache/README.md": "CSP18 preparation"
     },
     "processes": [
       {
-        "session": 73618,
-        "role": "final revised budget scenarios",
-        "log": "/tmp/csp122-fleet-budget-qualified-fixtures.jsonl"
+        "session": 22767,
+        "role": "complete pre-PR review of committed fixture repair",
+        "log": "/tmp/csp122-consumer-fixtures-review.log"
       }
     ],
     "producer_companion": {
@@ -1104,7 +1101,7 @@
       "consumer_head": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
       "consumer_ci_run": 36432573361,
       "producer_merge": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
-      "consumer_local_head": "0f536c92c85f675e24bd1862ae37fa1534b8661f"
+      "consumer_local_head": "d6107baa33fc64c3cb1b896c624862e458c8e949"
     },
     "qualification_limits": "Published producer dependency passes with GOWORK=off. Native CI and paired merges remain required.",
     "candidate_workspace": "/tmp/csp122-billing.work",
@@ -1119,7 +1116,7 @@
     "rerank_proof": "../../csp12.2/rerank-billing-2026-09-27/verification.json",
     "speech_proof": "../../csp12.2/speech-billing-2026-09-27/verification.json",
     "image_billing_proof": "../../csp12.2/image-billing-2026-09-27/verification.json",
-    "next_action": "Collect final fixture session 73618, rerun lint after its final allowance edit, commit the three fixture/CI files, run required complete pre-PR review, and publish through PR #387.",
+    "next_action": "Collect the complete pre-PR review for d6107baa, publish through existing PR #387, and qualify fresh native CI before merge.",
     "local_test_service": {
       "containers": [
         "starport-csp122-async-usage",
@@ -1127,7 +1124,7 @@
         "starport-csp122-postgres",
         "starport-csp122-retirement-objectstore"
       ],
-      "status": "Valkey, replacement Valkey, and PostgreSQL are running for readiness verification. The object store remains stopped.",
+      "status": "All task storage containers are stopped.",
       "note": "Stop these task services after the checks finish. Recheck mapped ports before reuse."
     },
     "accounting_retry_proof": "../../csp12.2/accounting-retries-2026-09-27/verification.json",
@@ -1228,7 +1225,15 @@
     "published_dependency_proof": "docs/plans/proof/starport-production-catalog/csp12.2/final-source-2026-09-28/published-dependency/verification.json",
     "ci_repair_proof": "../../csp12.2/fleet-ci-repair-2026-09-28/verification.json",
     "producer_merge_proof": "../../csp12.2/merged-pair-2026-09-28/producer.json",
-    "readiness_failure": "../../csp12.2/fleet-readiness-2026-09-28/verification.json"
+    "readiness_failure": "../../csp12.2/fleet-readiness-2026-09-28/verification.json",
+    "fixture_qualification": {
+      "commit": "d6107baa33fc64c3cb1b896c624862e458c8e949",
+      "test_pass": 8,
+      "test_fail": 0,
+      "test_skip": 0,
+      "lint": "PASS",
+      "proof": "../../csp12.2/fleet-readiness-2026-09-28/verification.json"
+    }
   },
   "remote_state_note": "Producer #187 merged. Consumer #387 remains open with reviewed CI repairs.",
   "open_queue_snapshot": {
