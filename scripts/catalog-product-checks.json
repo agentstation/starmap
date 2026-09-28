@@ -7240,6 +7240,138 @@
           "test": "TestEveryPublishedMediaOperationMatchesItsDefinition"
         }
       ]
+    },
+    "A47.reconciliation_retention": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/limits/reservation",
+          "test": "TestReconciliationRetention"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/limits/reservation",
+          "test": "TestCorrectionHorizon"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/limits/reservation",
+          "test": "TestUncertainReservationHasNoCorrectionDeadline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/limits/reservation",
+          "test": "TestCorrectionDeadlineGuardsAtomicWrite"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/limits/reservation",
+          "test": "TestRecoveryPreservesUnmeasuredAndCorruptAttempts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/jobs",
+          "test": "TestJobCorrectionHorizon"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/jobs",
+          "test": "TestJobCorrectionMissingHistoryRefusesApplication"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/jobs",
+          "test": "TestLateEvidenceSurvivesAuditWriteFailureAndAssetExpiry"
+        }
+      ]
+    },
+    "A15.online_batch_retry": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionBatchBudget",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionBatchRestart",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionBudgetPreservesRequestIdentity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/jobs",
+          "test": "TestBatchResumeOnlyProvenUnstartedLines"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/jobs",
+          "test": "TestBatchResumeCompletedPrefixAndCancellation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/jobs",
+          "test": "TestBatchResumeAfterProcessLoss"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/jobs",
+          "test": "TestBatchCancellationAcrossWorkersPreventsNextLine"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/jobs",
+          "test": "TestBatchClaimFailureCannotDispatch"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/jobs",
+          "test": "TestBatchAggregateSharedProcessRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestBatchRestartUsesCurrentCallerPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestBatchRestartSessionRemainsScopedAndExpiring"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/localauth",
+          "test": "TestBatchSessionReceipt"
+        }
+      ]
     }
   },
   "task_component_checks": {
