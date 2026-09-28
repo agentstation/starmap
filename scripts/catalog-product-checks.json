@@ -6902,11 +6902,44 @@
       ]
     },
     "A47.crash_failover_recovery": {
-      "kind": "go_test",
-      "repository": "starport",
-      "package": "./internal/app",
-      "test": "TestProductionBudgetAcrossProcesses",
-      "batch": false
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionBudgetAcrossProcesses",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetAdoptionRecoversLostSelectionResponse",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetAdoptionRepeatedRecoveryAndConcurrentSelection",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetAdoptionDoesNotRenewExpiredPermission",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission",
+          "batch": false
+        }
+      ]
     },
     "A47.media_async_reconciliation": {
       "kind": "all",
@@ -6997,6 +7030,214 @@
           "repository": "starport",
           "package": "./internal/app",
           "test": "TestSettledJobRequiresOriginalSharedApproval"
+        }
+      ]
+    },
+    "A47.bounded_cost_and_tokens": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestDeclaredChatTokenBounds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestTextChatBillingScopeRejectsExtraChargeSurfaces"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestEmbeddingTokenBounds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRerankTokenBound"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRecognitionBoundEnforcesSelectedOffering"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestFixedPageBoundDoesNotInventProviderLimit"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestModerationChargeBoundsAndEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestImageValuation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestImageValuationEditRequestCharge"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestSpeechValuation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestVideoValuationUsesPinnedMeasuredSeconds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestVideoValuationRefusesUnknownAdditionalCharges"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/limits/reservation",
+          "test": "TestValuation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/limits/reservation",
+          "test": "TestAggregateOverflowPreservesDebtAndBlocksAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionBudgetDispatchReservesConcurrentCapacity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionSpendSettlementUsesDeclaredClasses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionBudgetDispatchStreamCompletionAndCancellation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionResponsesBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionEmbeddingBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionSemanticEmbeddingSharesBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionRecognitionBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionPageRecognitionBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionRerankBudget",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionModerationBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionGuardrailModerationAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionImagesBudget",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionSpeechBudget",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionTranscriptionBudgetRefusal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionNativeVideoBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionNativeExternalVideoAsset"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionVideoFollowupBudget",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionBatchBudget",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/bootstrap",
+          "test": "TestEveryPublishedMediaOperationMatchesItsDefinition"
         }
       ]
     }
