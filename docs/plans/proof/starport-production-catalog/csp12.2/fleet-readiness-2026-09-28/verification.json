@@ -1,0 +1,91 @@
+{
+  "status": "FAIL_UNDER_INVESTIGATION",
+  "task": "CSP12.2",
+  "source": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
+  "run": 36432573361,
+  "job": 108962226585,
+  "failure": "TestProductionBudgetAcrossProcesses/backend-replacement exceeded the 45-second child readiness timer. No budget assertion failed.",
+  "root_cause": "UNVERIFIED. The original fixture retains a complete setup runtime while children start. The local run reproduces the CI timeout. The candidate repair removes this unnecessary ownership.",
+  "local_session": 30621,
+  "local_command": "python3 /tmp/csp122-run-ci-budget.py",
+  "local_output": "/tmp/csp122-fleet-budget-ci-reproduce.jsonl",
+  "go": "1.27.1",
+  "workspace": "off",
+  "files": [
+    {
+      "file": "fleet-adoption.jsonl.gz",
+      "sha256_raw": "3ec56dc987ee4e9637f71ce812a7b2b182c4745094117aef16385dc5450081ee",
+      "sha256_archive": "6e7223cb7c310c8a94b907c94f6ac5bfb652f80940fd89bd0464c459d3cfef92",
+      "test_events": {
+        "pass": 22,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": []
+    },
+    {
+      "file": "fleet-budget.jsonl.gz",
+      "sha256_raw": "a41a10712497ac87876df43ab27135fde97c468a5591f340fd84a35cb4fa72c7",
+      "sha256_archive": "861e69f3a0c7bdc030a4acc5c512b7e14f2a55adedad4a0518daf446accf3f72",
+      "test_events": {
+        "pass": 4,
+        "fail": 2,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestProductionBudgetAcrossProcesses/backend-replacement",
+        "TestProductionBudgetAcrossProcesses"
+      ]
+    },
+    {
+      "file": "fleet-catalog.jsonl.gz",
+      "sha256_raw": "c9d39e1e4d3cd7c01c37ea73ba6e3f33aefafa51c529f5fe17c1f5c1711dc091",
+      "sha256_archive": "1f94c88f84e52aae8c1e4415706d4a16267c6e8a7dd77b5420e364c230d7f952",
+      "test_events": {
+        "pass": 80,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": []
+    },
+    {
+      "file": "fleet-initialization.jsonl.gz",
+      "sha256_raw": "865b85fab4d102b22bdcbf0de337e40f995e2604b9d6639dc8d82302204352e4",
+      "sha256_archive": "619fcc34e4b52c1b4f39b2dde8dc55024c54ea88a699233c57876d23d5e67012",
+      "test_events": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": []
+    }
+  ],
+  "updated_at": "2026-09-28T14:32:34.083631+00:00",
+  "local_reproduction": {
+    "exit_code": 1,
+    "source": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
+    "compiled_before_fixture_edit": true,
+    "elapsed_seconds": 398.793,
+    "failure": "Same replacement-process readiness timeout as CI.",
+    "archive": "local-before.jsonl.gz",
+    "sha256_raw": "09ec06f2af06dce6764004f34758b14c07f5797ee2bd366097c63e88d93d4523"
+  },
+  "candidate_repair": {
+    "files": [
+      "internal/app/budget_fleet_test.go"
+    ],
+    "change": "Close the setup gateway before starting independent gateways. Inspect durable state through independent native repositories. Release fixture memory before child startup.",
+    "status": "UNDER_TEST",
+    "unchanged": [
+      "Full embedded catalog",
+      "Real Valkey and PostgreSQL",
+      "All accounting and recovery assertions",
+      "45-second readiness timer",
+      "7-minute test-group limit"
+    ],
+    "compile": "PASS",
+    "lint": "PASS, zero issues",
+    "session": 85100,
+    "output": "/tmp/csp122-fleet-budget-ci-fixture-after.jsonl"
+  }
+}

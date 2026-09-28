@@ -1,0 +1,86 @@
+{
+  "head": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
+  "run": 36432573361,
+  "captured_at": "2026-09-28T14:21:31.313882+00:00",
+  "scope": "Completed service jobs only. The full workflow remains in progress.",
+  "skip_reason": "TestSharedCachePausedServiceDeadlineAndRecovery requires TEST_SHARED_CACHE_FAULT_URL. Failure qualification remains assigned to CSP15.",
+  "files": [
+    {
+      "original_path": "authorization-capacity/authorization-capacity.jsonl",
+      "archive": "authorization-capacity/authorization-capacity.jsonl.gz",
+      "raw_sha256": "887e3908c8e596424bfbde3cefc12af1be71dabf02bc4b96ef6f774815bc899c",
+      "archive_sha256": "2cc5cd2599aef37244e1b3119e1ff8006f7d72ce693aa9e711aba57ee471cb76",
+      "test_events": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped": []
+    },
+    {
+      "original_path": "shared-storage-startup/authorization-storage.jsonl",
+      "archive": "shared-storage-startup/authorization-storage.jsonl.gz",
+      "raw_sha256": "a9164d089ccb5631f55a189f4f3222a26498f7bbc4e058da193b3c19b93ad8e5",
+      "archive_sha256": "5aa6cb0b422b80b2044a1de5e639f600712df36898db750f0b576614ce044ca9",
+      "test_events": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped": []
+    },
+    {
+      "original_path": "shared-storage-startup/durable-adapters.jsonl",
+      "archive": "shared-storage-startup/durable-adapters.jsonl.gz",
+      "raw_sha256": "6bfeb1a554adf5a101be38eb81caf1f328fd524c50e7ff9c320edad48310ce01",
+      "archive_sha256": "5a041962f58e6dc444f50de3b29e0edd28702129d94a051614790eec8fef34bd",
+      "test_events": {
+        "pass": 29,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped": []
+    },
+    {
+      "original_path": "shared-storage-startup/shared-cache.jsonl",
+      "archive": "shared-storage-startup/shared-cache.jsonl.gz",
+      "raw_sha256": "acf001a396f61a206f602672045bf7f55f521106771be9e2ac87ad3e4cbed472",
+      "archive_sha256": "a4e29d012ce2a924aa9a26cc77645faae8418878cd4cacd401c7563ce95ddcb3",
+      "test_events": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 1
+      },
+      "skipped": [
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "test": "TestSharedCachePausedServiceDeadlineAndRecovery"
+        }
+      ]
+    },
+    {
+      "original_path": "shared-storage-startup/shared-startup.jsonl",
+      "archive": "shared-storage-startup/shared-startup.jsonl.gz",
+      "raw_sha256": "6436b3ad597d698ce54006150eba231644cb2434822da2da5966fadc90e30e60",
+      "archive_sha256": "7ae8da899673e949e000008ea847591921799d96cf91796bcb286121fccaac26",
+      "test_events": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped": []
+    },
+    {
+      "original_path": "storage-recipes/storage-recipes.jsonl",
+      "archive": "storage-recipes/storage-recipes.jsonl.gz",
+      "raw_sha256": "5c1446f4728c1e130e24c3972756f0c8357ac9405e84e077bf4eb2aa2a74204b",
+      "archive_sha256": "66223bd5a596a21a71c8516d5e8f6356e4b783b067c5b501e697671be89aea5f",
+      "test_events": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped": []
+    }
+  ]
+}
