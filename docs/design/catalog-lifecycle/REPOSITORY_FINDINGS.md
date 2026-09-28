@@ -4621,3 +4621,21 @@ Ten race results and ten pure-Go results pass. Distinct line identities bind res
 
 Measured usage settles ordinary provider charges. Missing usage retains capacity and prevents another dispatch.
 Insufficient capacity records per-line HTTP 402 errors. Retry and restart qualification remain open.
+
+## Preset order and unsupported budget modes: September 28, 2026
+
+Production batch tests found that preset projection omitted the primary model from the complete routing list.
+Consumer `d5f05496` preserves that model and tests provider order, attempt identity, uncertain reservations, and fallback refusal.
+
+The configuration loader silently ignored a requested admission mode.
+It now accepts `STARPORT_BUDGET_ADMISSION_MODE=atomic` and refuses other modes before startup.
+Standalone and shared configuration tests use the same validation. No local quota lease implementation exists.
+
+Producer `91e9ee1e7` registers the operation matrix and quota-lease boundary.
+Both adapters pass in the [proof](../../plans/proof/starport-production-catalog/csp12.2/followup-modes-2026-09-28/verification.json).
+Five task checks remain unverified. The sixteen earlier passes remain historical until the full task gate runs again.
+
+The final configuration and proxy suites pass 642 race results with four backend skips.
+Focused application tests pass 33 race results. Pure-Go checks pass 47 results without skips.
+The proof preserves fixture failures, source identities, skipped checks, and current limitations.
+Docker remains stopped. No paid provider request or publication occurred.

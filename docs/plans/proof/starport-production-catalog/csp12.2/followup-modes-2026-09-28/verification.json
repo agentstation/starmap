@@ -1,0 +1,121 @@
+{
+  "task": "CSP12.2",
+  "date": "2026-09-28",
+  "status": "partial",
+  "commits": {
+    "consumer": "d5f05496f1f9d10083ba190c227ba5101e993972",
+    "producer": "91e9ee1e7088a43e266167cc7e43c78c3914c7c1"
+  },
+  "toolchain": "go1.27.1",
+  "workspace": "/tmp/csp122-billing.work",
+  "checks": {
+    "video-followup-race.jsonl": {
+      "packages": {
+        "github.com/agentstation/starport/internal/app": {
+          "pass": 19
+        }
+      },
+      "skipped_tests": []
+    },
+    "batch-retry-qualified.jsonl": {
+      "packages": {
+        "github.com/agentstation/starport/internal/app": {
+          "pass": 14
+        }
+      },
+      "skipped_tests": []
+    },
+    "followup-packages.jsonl": {
+      "packages": {
+        "github.com/agentstation/starport/internal/config": {
+          "pass": 348,
+          "fail": 9,
+          "skip": 1
+        },
+        "github.com/agentstation/starport/internal/proxy": {
+          "pass": 285,
+          "skip": 3
+        }
+      },
+      "skipped_tests": [
+        "TestContainerRecipePersistence",
+        "TestJobCorrectionsPreserveOriginalUsage/valkey",
+        "TestJobCorrectionRefusesUnsupportedOrInvalidReporting/valkey",
+        "TestJobCorrectionExpiredHistoryDoesNotRecreateUsage/valkey"
+      ]
+    },
+    "budget-mode-qualified.jsonl": {
+      "packages": {
+        "github.com/agentstation/starport/internal/config": {
+          "pass": 357,
+          "skip": 1
+        }
+      },
+      "skipped_tests": [
+        "TestContainerRecipePersistence"
+      ]
+    },
+    "followup-pure.jsonl": {
+      "packages": {
+        "github.com/agentstation/starport/internal/config": {
+          "pass": 13
+        },
+        "github.com/agentstation/starport/internal/proxy": {
+          "pass": 1
+        },
+        "github.com/agentstation/starport/internal/app": {
+          "pass": 33
+        }
+      },
+      "skipped_tests": []
+    },
+    "video-restart-race.jsonl": {
+      "packages": {
+        "github.com/agentstation/starport/internal/app": {
+          "pass": 13
+        }
+      },
+      "skipped_tests": []
+    },
+    "video-restart-pure.jsonl": {
+      "packages": {
+        "github.com/agentstation/starport/internal/app": {
+          "pass": 20
+        }
+      },
+      "skipped_tests": []
+    },
+    "registered_conditions": {
+      "budget-mode": {
+        "status": "PASS",
+        "leaf_checks": 2
+      },
+      "operation-matrix": {
+        "status": "PASS",
+        "leaf_checks": 19
+      }
+    }
+  },
+  "scope": "Local application restart and audited video reconciliation, production video follow-up calls, preset-based batch fallback, and explicit atomic budget configuration. Two acceptance subcases pass through their registered adapters. This is not the full task gate.",
+  "services": "Docker Desktop and all task containers remained stopped. No paid provider requests ran.",
+  "limitations": [
+    "Four broad backend checks skipped without Docker or Valkey.",
+    "Prior sixteen task passes remain historical at their recorded commits.",
+    "Full task gate, retained asynchronous settlement matrix, bounds, storage failover, retention, interrupted batches, latency, capacity, native CI, review, dependency qualification, and paired merges remain required.",
+    "The final comment-only preset edit followed the earlier focused race and pure-Go runs. The matrix invocation subsequently tested the same runtime source.",
+    "The matrix result combines eighteen unchanged passing leaf results with the corrected image fixture result. The initial failure is retained separately. No runtime code changed between invocations. The final registry batches shorter checks and isolates five larger application tests during the full gate.",
+    "The initial combined package run failed nine configuration test results because the assertion matched the sanitized outer message. The final configuration suite uses error identity and passes.",
+    "The first batch selector matched no tests. That invocation is retained and supplies no qualification."
+  ],
+  "matrix_qualification_method": "Composite: eighteen unchanged passes from initial matrix plus corrected image fixture. Initial failed invocation is retained. No runtime code changed between invocations.",
+  "matrix_test_results": {
+    "pass": 140,
+    "fail": 0,
+    "skip": 0
+  },
+  "current_document_lint": {
+    "files": 4,
+    "diagnostics": 0
+  },
+  "previous_goal_turn_classification": "progress: committed preset and admission-mode repairs plus focused verification; the resumed matrix process was confirmed live and is now terminal."
+}

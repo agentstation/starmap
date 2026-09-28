@@ -575,3 +575,21 @@ Production tests also retain recognition charges after caller cancellation and c
 Fallback tests retain earlier uncertain capacity. UTC tests cover exact window boundaries and leap February.
 The remaining matrix, storage failover, backend operation counts, retention horizons, capacity, native CI, and paired merges remain required.
 The owner decision for proven unstarted batch lines remains pending.
+
+### Operation matrix qualification: September 28, 2026
+
+The [current proof](../../plans/proof/starport-production-catalog/csp12.2/followup-modes-2026-09-28/verification.json) qualifies every applicable matrix row through nineteen registered checks.
+The registry includes the catalog census. The current catalog publishes no image-edit offering.
+
+Video follow-up calls refuse required budgets without verified billing bounds. Confirmed absent budgets permit a single provider call.
+Local completed-job and asset reads do not repeat generation.
+Batch chat and Responses use persisted presets to exercise fallback with separate reservations under the same line identity.
+An uncertain first attempt retains its full capacity. Insufficient capacity prevents the fallback dispatch.
+
+Preset resolution now includes the primary model in the complete ordered routing list.
+The previous projection omitted it and skipped the intended first model.
+Embeddings retain their existing execution policy. The fixture does not enable automatic same-route retry.
+
+The quota-lease boundary also passes its registered checks. Starport supports only atomic admission.
+These two results do not close A47. Bounds, storage replacement, retained asynchronous settlement, retention horizons, and interrupted batches remain unverified.
+The owner must decide whether Starport automatically resumes proven unstarted lines after restart.

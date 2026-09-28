@@ -2984,6 +2984,10 @@ Incomplete scans continue after one second. Complete scans restart after thirty 
 These intervals do not guarantee a fleet recovery deadline. Capacity qualification must measure full traversal with retained history and concurrent traffic.
 Logs report pass counts without storage connection details or record contents.
 
+`STARPORT_BUDGET_ADMISSION_MODE=atomic` is the default and the only supported admission mode.
+The standard loader and direct application construction reject other values before storage or provider dispatch.
+The same validation applies to standalone and shared deployments. Confirmed absent budgets still need no reservation.
+
 Previously reserved local quota leases are an optional optimization after the same correctness tests pass.
 The authority must deduct capacity before granting a lease.
 Leases need fencing, expiry, bounded capacity, replica identity, and safe recovery without duplicate reallocation.

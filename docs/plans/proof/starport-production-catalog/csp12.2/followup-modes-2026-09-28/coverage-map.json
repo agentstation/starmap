@@ -1,0 +1,619 @@
+{
+  "task": "CSP12.2",
+  "required": 23,
+  "registered": 18,
+  "unregistered": 5,
+  "checks": [
+    {
+      "id": "A47.atomic_hierarchical_reservation",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestReservationContract"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestValkeyReservationAcrossProcesses"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionBudgetAcrossProcesses",
+            "batch": false
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestReservationSnapshotRefreshAfterConflict"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.idempotent_attempt_identity",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestReservationContract"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionBudgetPreservesRequestIdentity"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.bounded_cost_and_tokens",
+      "status": "UNVERIFIED",
+      "checks": null,
+      "remaining": "Complete projection and request-enforcement coverage for every matrix row. Existing text and media components do not qualify the full surface."
+    },
+    {
+      "id": "A47.unknown_cost_refusal",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/admission",
+            "test": "TestAdmissionFailureBoundaries"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestTokenOnlyCannotBypassSpendOrInventFreePricing"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionBudgetDispatchUnknownCostAndAbsentBudgets"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionEmbeddingRefusalBeforeDispatch"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.retry_fallback_charges",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionBudgetPreservesRequestIdentity"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/admission",
+            "test": "TestAdmissionReservesExclusiveCapacity"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.stream_cancel_uncertainty",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionBudgetDispatchStreamCompletionAndCancellation"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionSpendMissingTokenCountRetainsCapacity"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.crash_failover_recovery",
+      "status": "UNVERIFIED",
+      "checks": null,
+      "remaining": "Qualify storage replacement and recovery through production dispatch. The new gateway process-loss test retains the original running storage services."
+    },
+    {
+      "id": "A47.usage_reconcile_once",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestReservationContract"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestRecoveryConcurrentWorkersSettleOnce"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestRecoveryRetriesLostSettlementAcknowledgement"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestRunRecoversRetainedBudgetEvidence"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestRecoveryHandlesConcurrentSettlementBetweenReads"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.analytics_drop_independence",
+      "status": "PASS",
+      "checks": {
+        "kind": "go_test",
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionBudgetSurvivesReportingFailure"
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.confirmed_absent_fast_path",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/admission",
+            "test": "TestAbsentBudgetsStayLocal"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionBudgetDispatchUnknownCostAndAbsentBudgets"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.quota_lease_support_boundary",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/config",
+            "test": "TestBudgetAdmissionRejectsUnsupportedModes"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/config",
+            "test": "TestBudgetAdmissionAtomicSources"
+          }
+        ]
+      },
+      "remaining": null,
+      "evidence": "verification.json"
+    },
+    {
+      "id": "A47.backend_operation_evidence",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionBudgetBackendOperations"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/storage",
+            "test": "TestBudgetAuthorityNativeOperationCommands"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/storage",
+            "test": "TestLifetimeBatch"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.chargeable_operation_matrix",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionBudgetDispatchReservesConcurrentCapacity"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionSpendSettlementUsesDeclaredClasses"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionBudgetDispatchStreamCompletionAndCancellation"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionResponsesBudget"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionEmbeddingBudget"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionSemanticEmbeddingSharesBudget"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionRecognitionBudget"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionPageRecognitionBudget"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionRerankBudget",
+            "batch": false
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionModerationBudget"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionGuardrailModerationAdmission"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionImagesBudget",
+            "batch": false
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionSpeechBudget",
+            "batch": false
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionTranscriptionBudgetRefusal"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionNativeVideoBudget"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionNativeExternalVideoAsset"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionVideoFollowupBudget",
+            "batch": false
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionBatchBudget",
+            "batch": false
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/bootstrap",
+            "test": "TestEveryPublishedMediaOperationMatchesItsDefinition"
+          }
+        ]
+      },
+      "remaining": null,
+      "evidence": "verification.json"
+    },
+    {
+      "id": "A47.recognition_then_cancel",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionRecognitionThenCancel"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.rerank_billing_units",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/router",
+            "test": "TestRerankTokenBound"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionRerankBudget",
+            "batch": false
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionRerankRefusesInsufficientCapacity"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionRerankInvalidResultRetainsCharge"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.semantic_embedding_cache_hit",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/app",
+            "test": "TestProductionSemanticEmbeddingSharesBudget"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.media_async_reconciliation",
+      "status": "UNVERIFIED",
+      "checks": null,
+      "remaining": "Assemble complete supported media evidence, including retained settlement and operator correction. Existing component tests alone do not close the full contract."
+    },
+    {
+      "id": "A47.utc_window_boundaries",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestFixedUTCWindows"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestBudgetHistoryRollover"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestDelayedDispatchCannotUseAClosedWindow"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.late_usage_pinned_valuation",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestLateSettlementKeepsOriginalWindowAndValuation"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestBudgetHistoryRollover"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestRetainedUsageSurvivesRestart"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.policy_edit_preserves_spend",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestReservationContract"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestHolderCreationAndBudgetHistory"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestTeamBudgetHistoryHandoff"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestChangedHistoryRequiresReconciliation"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.clock_and_window_authority",
+      "status": "PASS",
+      "checks": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/storage",
+            "test": "TestTimeBoundStore"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestBudgetHistoryRollover"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestDelayedDispatchCannotUseAClosedWindow"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starport",
+            "package": "./internal/limits/reservation",
+            "test": "TestReservationSnapshotRefusesExpiringHistory"
+          }
+        ]
+      },
+      "remaining": null
+    },
+    {
+      "id": "A47.reconciliation_retention",
+      "status": "UNVERIFIED",
+      "checks": null,
+      "remaining": "Define numeric provider and replay horizons in the release profile and qualify late or expired evidence without capacity restoration."
+    },
+    {
+      "id": "A15.online_batch_retry",
+      "status": "UNVERIFIED",
+      "checks": null,
+      "remaining": "Resolve the pending owner decision for proven unstarted lines and qualify interrupted batches. Unknown dispatches must never replay."
+    }
+  ],
+  "status_note": "Two current adapters pass. The other sixteen PASS labels remain historical at the grouped-read commits. Five required checks remain unverified. The full task gate was not rerun."
+}

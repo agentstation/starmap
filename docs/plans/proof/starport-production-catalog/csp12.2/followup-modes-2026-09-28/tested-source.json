@@ -1,0 +1,33 @@
+{
+  "consumer": {
+    "commit": "d5f05496f1f9d10083ba190c227ba5101e993972",
+    "included_commits": [
+      "d5f05496f1f9d10083ba190c227ba5101e993972",
+      "e9a808ccf851afab07425e00fdf04dd954f41ef4"
+    ],
+    "sha256": {
+      ".env.example": "96bf6b9e79f957a095cfdefba9f357a497258fe8accb7de4e1d91c5d828df33e",
+      "docs/OPERATOR-GUIDE.md": "1813c180ec87922718838a57b22dcfc0dd9c3c9c65f2986d1ab44f4f39ee8f84",
+      "internal/app/budget_batch_test.go": "ad39e347603767c982b1f1a9d06f715ef7ba1eed1c824768128c71f80e229fb2",
+      "internal/app/budget_images_test.go": "485dbbd87420a1d19ca3e635a47b7b07cb9ac208f5a2bb09f1c52c622f76b7bb",
+      "internal/app/budget_video_followup_test.go": "693c99452bb017a0bb6254c46c9b1389ffd3a58bb055307a168f0b755a57bd46",
+      "internal/app/budget_video_reconciliation_test.go": "5e55aa44b3c22dce822cac9c10c4e63d4a0d2ba35ba3d88eebd73deb85355198",
+      "internal/config/README.md": "66fc112e07b96ed0b01fb01005a1cf327f87f62c997e7cea7e12280698fffa50",
+      "internal/config/budget_admission.go": "d715b6e491c966d712cf914540b09bf7d887e6a47279630be38484d89dd953b6",
+      "internal/config/budget_admission_test.go": "4e42776582aa59cbc8588213316b15312b82fabe092b5f0363b5331ffb20f6ce",
+      "internal/config/config.go": "366ca8eca201ef9f1405f7272d651378d8872ca4704ee88dce691fb9cf0732b0",
+      "internal/proxy/presets.go": "89aeecf55593409aeb81790c810492f95bcd65599126569f2e12e78703b97ae6",
+      "internal/proxy/presets_test.go": "a88594bbfbe0e3f7de98530dcbe4014deda3c1293f4731000606cea7eeb80a76"
+    }
+  },
+  "producer": {
+    "commit": "91e9ee1e7088a43e266167cc7e43c78c3914c7c1",
+    "included_commits": [
+      "91e9ee1e7088a43e266167cc7e43c78c3914c7c1",
+      "7f31b8f2513a2fdc730031be07dd66aa144c4825"
+    ],
+    "sha256": {
+      "scripts/catalog-product-checks.json": "2af95e56df01339b79c54a64a622e74783ae98dc4220dfbd919e0cda1495d693"
+    }
+  }
+}
