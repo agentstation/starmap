@@ -1,0 +1,48 @@
+{
+  "task": "CSP13",
+  "state": "preparation_only",
+  "producer": "485b543761c7ef4ee89edbd788ef50dfd5386312",
+  "consumer": "28729b0584a7f9db64bca32cd18dc9e730a8e823",
+  "go": "1.27.1",
+  "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 bash scripts/verify-catalog-product.sh --starport-root /private/tmp/starport-fleet-review-20260926 --task CSP13 --json",
+  "exit_code": 1,
+  "selected_subcases": {
+    "A16.sqlite_wal_backup": "UNVERIFIED",
+    "A16.kv_sql_file_references": "UNVERIFIED",
+    "A16.concurrent_migration_owner": "UNVERIFIED",
+    "A16.interrupted_migration": "UNVERIFIED",
+    "A33.backup_then_revoke_and_spend": "UNVERIFIED",
+    "A33.old_writer_fenced": "UNVERIFIED",
+    "A33.independent_record_replay": "UNVERIFIED",
+    "A33.missing_evidence_restricted": "UNVERIFIED",
+    "A33.operator_reconciliation": "UNVERIFIED",
+    "A33.measured_rpo_rto": "UNVERIFIED",
+    "A16.complete_backup_manifest": "UNVERIFIED",
+    "A41.unprefixed_record_migration": "UNVERIFIED",
+    "A04.identity_and_journal_recovery": "PASS",
+    "A33.fresh_replica_history_barrier": "UNVERIFIED",
+    "A33.old_primary_admission_fence": "UNVERIFIED",
+    "A33.restart_and_recovery_epoch": "UNVERIFIED"
+  },
+  "counts": {
+    "PASS": 1,
+    "UNVERIFIED": 15
+  },
+  "report": "baseline-report.json.gz",
+  "report_sha256": "8188b012e799638e7fc7594953689daa2043cd6b5f5b2681153a008b8afeb579",
+  "limits": "Preparation only. CSP12.2 remains the active task. Missing registered behavior checks are UNVERIFIED, not passing.",
+  "source_audit": [
+    {
+      "path": "internal/catalog/runtime_migration.go",
+      "finding": "Existing migration transfers only the runtime directory. Gateway databases, catalog store, and authoring workspace remain outside that operation."
+    },
+    {
+      "path": "internal/sqlstore/migrate.go",
+      "finding": "Startup checks applied migrations before per-file transactions. No cross-process migration-owner lock is present. A regression test must prove the concurrent-startup failure before implementation."
+    },
+    {
+      "path": "internal/app/runtime_migration.go",
+      "finding": "Existing stopped-runtime procedure requires persistent Badger or a PostgreSQL recovery witness for shared operation. Preserve its ownership and retained-state bindings."
+    }
+  ]
+}

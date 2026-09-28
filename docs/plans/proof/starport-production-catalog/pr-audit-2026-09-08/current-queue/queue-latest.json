@@ -866,12 +866,12 @@
   },
   "next_task": {
     "task": "CSP12.2",
-    "next_action": "Complete remaining media, search-unit, and recognition contracts, asynchronous recovery, A47, exact dependency qualification, review, native CI, and protected merges.",
+    "next_action": "Finish isolated application verification, commit and review both CI repairs, update PR #387; merge #187 first after its final native check.",
     "worktree": "/tmp/starport-fleet-review-20260926",
     "branch": "codex/atomic-budget-admission",
     "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
-    "head": "2a2e8a5b05cd0ff8efe03ada4e7336003e07d008",
-    "action": "Complete remaining media, search-unit, and recognition contracts, asynchronous recovery, A47, exact dependency qualification, review, native CI, and protected merges."
+    "head": "28729b0584a7f9db64bca32cd18dc9e730a8e823",
+    "action": "Finish isolated application verification, commit and review both CI repairs, update PR #387; merge #187 first after its final native check."
   },
   "merged_followups": {
     "tasks": [
@@ -1047,7 +1047,7 @@
     "status": "MERGED",
     "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-28T13:23:13.730088+00:00",
+  "local_updated_at": "2026-09-28T13:46:00.033735+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -1060,25 +1060,27 @@
     "commit": "28729b0584a7f9db64bca32cd18dc9e730a8e823",
     "published": true,
     "proof": "../../csp12.2/retention-acceptance-2026-09-28/verification.json",
-    "native_ci": "Producer and consumer CI active.",
+    "native_ci": "Producer: one Windows check pending. Consumer original run completed with one fixture failure and four application package timeouts; local repairs under verification.",
     "required_review": {
       "producer": "PASS: three parts, zero findings; decoded catalog secret scan passes",
       "consumer": "PASS: nine parts, zero findings; secret scan passed after synthetic fixture repair."
     },
     "remaining_dirty_files": {
       "docs/ARCHITECTURE.md": "CSP18 preparation",
-      "internal/cache/README.md": "CSP18 preparation"
+      "internal/cache/README.md": "CSP18 preparation",
+      "internal/catalog/runtime_fleet_test.go": "CI fixture namespace repair",
+      ".github/workflows/ci.yml": "CI application package isolation and explicit whole-suite deadline"
     },
     "processes": [
       {
         "session": 7966,
-        "role": "producer native CI watch",
+        "role": "producer CI watch",
         "log": "/tmp/csp122-producer-ci-watch.log"
       },
       {
-        "session": 91326,
-        "role": "consumer native CI watch",
-        "log": "/tmp/csp122-consumer-ci-watch.log"
+        "session": 70577,
+        "role": "isolated native application suite",
+        "log": "/tmp/csp122-app-isolated-after.jsonl"
       }
     ],
     "producer_companion": {
@@ -1105,7 +1107,7 @@
       "consumer_head": "28729b0584a7f9db64bca32cd18dc9e730a8e823",
       "consumer_ci_run": 36428092608
     },
-    "qualification_limits": "Local primary-backend qualification uses an unpublished producer through GOWORK. V01 remains unverified until the exact published module pin is qualified. Native CI and paired merges remain required.",
+    "qualification_limits": "Published producer dependency passes with GOWORK=off. Native CI and paired merges remain required.",
     "candidate_workspace": "/tmp/csp122-billing.work",
     "billing_proof": "../../csp12.2/text-billing-2026-09-27/verification.json",
     "identity_proof": "../../csp12.2/request-identity-2026-09-27/verification.json",
@@ -1118,7 +1120,7 @@
     "rerank_proof": "../../csp12.2/rerank-billing-2026-09-27/verification.json",
     "speech_proof": "../../csp12.2/speech-billing-2026-09-27/verification.json",
     "image_billing_proof": "../../csp12.2/image-billing-2026-09-27/verification.json",
-    "next_action": "Wait for required native CI, then merge reviewed producer PR #187 before consumer PR #387. Verify exact heads and record actual merge commits.",
+    "next_action": "Finish isolated application verification, commit and review both CI repairs, update PR #387; merge #187 first after its final native check.",
     "local_test_service": {
       "containers": [
         "starport-csp122-async-usage",
@@ -1224,7 +1226,8 @@
       "resolved_by": "Owner approved shared-tool support; producer review passed and PR #187 is open."
     },
     "review_tool_proof": "docs/plans/proof/starport-production-catalog/csp12.2/final-source-2026-09-28/review-tool/verification.json",
-    "published_dependency_proof": "docs/plans/proof/starport-production-catalog/csp12.2/final-source-2026-09-28/published-dependency/verification.json"
+    "published_dependency_proof": "docs/plans/proof/starport-production-catalog/csp12.2/final-source-2026-09-28/published-dependency/verification.json",
+    "ci_repair_proof": "../../csp12.2/fleet-ci-repair-2026-09-28/verification.json"
   },
   "remote_state_note": "Reviewed CSP12.2 PRs #187 and #387 are open. Their current dispositions are in open_queue_snapshot. Historical merged PR records remain unchanged.",
   "open_queue_snapshot": {
@@ -1259,8 +1262,8 @@
         "title": "Reserve paid-operation budgets and recover durable work safely",
         "url": "https://github.com/agentstation/starport/pull/387",
         "owner": "CSP12.2",
-        "disposition": "Reviewed; wait for required native CI.",
-        "next_action": "Merge in producer-then-consumer order after checks pass."
+        "disposition": "CI failed; focused fixture repair passes locally.",
+        "next_action": "Complete the isolated reader fixture repair, review and push PR #387; merge producer #187 first after native checks pass."
       }
     ]
   }

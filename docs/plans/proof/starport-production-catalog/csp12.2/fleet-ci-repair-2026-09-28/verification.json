@@ -1,0 +1,87 @@
+{
+  "updated_at": "2026-09-28T13:44:09.617029+00:00",
+  "source": "28729b0584a7f9db64bca32cd18dc9e730a8e823",
+  "task": "CSP12.2",
+  "ci_run": 36428092608,
+  "ci_job": 108946966669,
+  "failure": "TestFleetRuntimeRejectsUnapprovedBackend: fleet publication with ID accepted not found",
+  "cause": "fleetTestStores now isolates each test with CSP11_TEST_STORAGE_DEPLOYMENT; the read-only reader still selected fixed contract-tests storage. It could not read the writer publication.",
+  "repair": "Use the fixture namespace for the read-only client. No production change or assertion change.",
+  "changed_files": [
+    "internal/catalog/runtime_fleet_test.go",
+    ".github/workflows/ci.yml"
+  ],
+  "evidence": {
+    "ci_failed": {
+      "events": {
+        "pass": 79,
+        "fail": 1
+      },
+      "failed": [
+        "TestFleetRuntimeRejectsUnapprovedBackend"
+      ]
+    },
+    "local_before": {
+      "events": {
+        "fail": 1
+      },
+      "failed": [
+        "TestFleetRuntimeRejectsUnapprovedBackend"
+      ]
+    },
+    "local_after": {
+      "events": {
+        "pass": 3
+      },
+      "failed": []
+    }
+  },
+  "lint": {
+    "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 make lint",
+    "exit_code": 0,
+    "issues": 0
+  },
+  "full_ci_step": {
+    "status": "PASS",
+    "exit_code": 0,
+    "test_events": {
+      "pass": 80,
+      "fail": 0,
+      "skip": 0
+    },
+    "catalog_seconds": 251.076,
+    "archive": "fleet-after.jsonl.gz"
+  },
+  "remaining": [
+    "Complete full failing test group",
+    "Commit and required pre-PR review",
+    "Push same PR",
+    "Required native CI and paired merges"
+  ],
+  "native_package_timeout": {
+    "failed_jobs": [
+      108946966943,
+      108946967132
+    ],
+    "cause": "All four race-enabled native jobs exceeded the implicit ten-minute Go package limit in internal/app. No individual assertion failed. Windows arm64 (pure Go, without race) passed.",
+    "repair": "Run internal/app separately before remaining packages, with an explicit 30-minute whole-package limit. Preserve individual deadlines, all five targets, race flags, and combined coverage.",
+    "status": "qualification_in_progress",
+    "session": 70577,
+    "log": "/tmp/csp122-app-isolated-after.jsonl",
+    "failed_platforms": [
+      "ubuntu-24.04",
+      "ubuntu-24.04-arm",
+      "macos-15",
+      "windows-2025"
+    ],
+    "original_run_status": "completed/failure"
+  },
+  "workflow_validation": {
+    "actionlint": "PASS",
+    "native_evidence_verifier": {
+      "pass": 10,
+      "fail": 0
+    }
+  },
+  "containers": "All three task storage containers stopped after full fleet test group passed."
+}
