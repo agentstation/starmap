@@ -1,0 +1,11 @@
+{
+  "producer": "9aeec53dd913ce98742616fbe720b1a4bf0c3932",
+  "consumer": "374efcd0c5de0062e502f9d937144ceed402c543",
+  "consumer_test_sha256": "0b5d6fd3df765a6282b029b098934ca6a0c57cd3d4446cc6971c38f746a181d4",
+  "unrelated_consumer_dirty": [
+    "docs/ARCHITECTURE.md",
+    "internal/cache/README.md"
+  ],
+  "final_run_note": "The code bytes stayed unchanged during the final run. The local commit records those same bytes.",
+  "intermediate_runs_note": "Build and acquisition failures preserve fixture development history. The seeded focused run preceded the final typed-not-found and copied-head assertions. These runs do not qualify the final source."
+}

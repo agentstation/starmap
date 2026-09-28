@@ -1,0 +1,22 @@
+{
+  "containers": [
+    {
+      "name": "starport-csp122-postgres",
+      "running": false,
+      "status": "exited"
+    },
+    {
+      "name": "starport-csp122-async-usage",
+      "running": false,
+      "status": "exited"
+    },
+    {
+      "name": "starport-csp122-replacement-valkey",
+      "running": false,
+      "status": "exited"
+    }
+  ],
+  "docker_desktop": "stopped",
+  "native_docker_processes": "none",
+  "unrelated_services": "not started or changed"
+}

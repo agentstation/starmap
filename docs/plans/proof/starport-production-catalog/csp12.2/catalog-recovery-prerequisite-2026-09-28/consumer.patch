@@ -1,0 +1,120 @@
+diff --git i/internal/app/budget_fleet_test.go w/internal/app/budget_fleet_test.go
+index 6b32cf08..2cae3acf 100644
+--- i/internal/app/budget_fleet_test.go
++++ w/internal/app/budget_fleet_test.go
+@@ -21,6 +21,7 @@ import (
+ 	"time"
+ 
+ 	"github.com/agentstation/starmap/pkg/catalogs"
++	starmaperrors "github.com/agentstation/starmap/pkg/errors"
+ 	"github.com/agentstation/starport/internal/account"
+ 	"github.com/agentstation/starport/internal/apikey"
+ 	runtimecatalog "github.com/agentstation/starport/internal/catalog"
+@@ -57,7 +58,14 @@ func budgetFleetConfig(t *testing.T, input budgetFleetInput) *config.Config {
+ 	provider := cfg.Providers[catalogs.ProviderIDOpenAI]
+ 	provider.BaseURL, provider.CredentialReferences, provider.Timeout = input.Upstream, nil, 30*time.Second
+ 	cfg.Providers[catalogs.ProviderIDOpenAI] = provider
+-	loaded, err := config.NewLoader().WithPaths(config.PathsForConfigDir(t.TempDir())).WithEnvFiles().WithEnvironment(map[string]string{"STARPORT_DEPLOYMENT_ID": input.Deployment, "OPENAI_API_KEY": "sk-test-key"}).Load(t.Context(), func(target *config.Config) { *target = *cfg })
++	loaded, err := config.NewLoader().WithPaths(config.PathsForConfigDir(t.TempDir())).WithEnvFiles().WithEnvironment(map[string]string{"STARPORT_DEPLOYMENT_ID": input.Deployment, "OPENAI_API_KEY": "sk-test-key", "STARPORT_CATALOG_ACQUISITION_SOURCES": ""}).Load(t.Context(), func(target *config.Config) {
++		catalogSettings := target.Catalog
++		catalogSettings.Source = cfg.Catalog.Source
++		catalogSettings.StateDirectory = cfg.Catalog.StateDirectory
++		catalogSettings.AcquisitionEnabled = false
++		*target = *cfg
++		target.Catalog = catalogSettings
++	})
+ 	require.NoError(t, err)
+ 	bundled, err := runtimecatalog.Bundled()
+ 	require.NoError(t, err)
+@@ -91,6 +99,7 @@ type budgetFleetProcess struct {
+ 	output  bytes.Buffer
+ 	base    string
+ 	stopped bool
++	done    chan struct{}
+ }
+ 
+ func startBudgetFleetProcess(t *testing.T, input budgetFleetInput) *budgetFleetProcess {
+@@ -98,29 +107,43 @@ func startBudgetFleetProcess(t *testing.T, input budgetFleetInput) *budgetFleetP
+ 	input.Ready = filepath.Join(t.TempDir(), "ready")
+ 	encoded, err := json.Marshal(input)
+ 	require.NoError(t, err)
+-	child := &budgetFleetProcess{command: exec.CommandContext(t.Context(), os.Args[0], "-test.run=^TestProductionBudgetAcrossProcesses$", "-test.timeout=90s")}
++	child := &budgetFleetProcess{command: exec.CommandContext(t.Context(), os.Args[0], "-test.run=^TestProductionBudgetAcrossProcesses$", "-test.timeout=90s"), done: make(chan struct{})}
+ 	child.command.Env = append(os.Environ(), budgetFleetChild+"="+string(encoded))
+ 	child.command.Stdout, child.command.Stderr = &child.output, &child.output
+ 	require.NoError(t, child.command.Start())
++	go func() {
++		_ = child.command.Wait()
++		close(child.done)
++	}()
+ 	t.Cleanup(func() { child.stop() })
+-	deadline := time.Now().Add(45 * time.Second)
+-	for time.Now().Before(deadline) {
++	deadline := time.NewTimer(45 * time.Second)
++	defer deadline.Stop()
++	poll := time.NewTicker(10 * time.Millisecond)
++	defer poll.Stop()
++	for {
+ 		data, _ := os.ReadFile(input.Ready)
+ 		if len(data) != 0 {
+ 			child.base = string(data)
+ 			return child
+ 		}
+-		time.Sleep(10 * time.Millisecond)
++		select {
++		case <-child.done:
++			t.Fatalf("gateway process exited before readiness: %s", child.output.String())
++		case <-deadline.C:
++			child.stop()
++			t.Fatalf("gateway process did not become ready: %s", child.output.String())
++		case <-t.Context().Done():
++			child.stop()
++			t.Fatalf("gateway readiness canceled: %v", t.Context().Err())
++		case <-poll.C:
++		}
+ 	}
+-	child.stop()
+-	t.Fatalf("gateway process did not become ready: %s", child.output.String())
+-	return nil
+ }
+ 
+ func (p *budgetFleetProcess) stop() {
+ 	if !p.stopped {
+ 		_ = p.command.Process.Kill()
+-		_ = p.command.Wait()
++		<-p.done
+ 		p.stopped = true
+ 	}
+ }
+@@ -210,6 +233,20 @@ func TestProductionBudgetAcrossProcesses(t *testing.T) {
+ 			})
+ 			require.NoError(t, err)
+ 			t.Cleanup(func() { require.NoError(t, application.Close(context.Background())) })
++			if mode == "backend-replacement" {
++				// New opens the embedded baseline. Explicit refresh publishes the
++				// fleet snapshot before the fixture takes a recovery copy.
++				catalogRuntime, ok := application.catalogRuntime.(*runtimecatalog.Runtime)
++				require.True(t, ok)
++				_, err := catalogRuntime.AcceptedGeneration(t.Context())
++				require.ErrorIs(t, err, starmaperrors.ErrNotFound, "construction alone has not accepted a fleet publication")
++				candidate, err := application.syncCatalog(t.Context())
++				require.NoError(t, err)
++				require.NoError(t, application.activateRuntimeState(t.Context(), candidate))
++				accepted, err := catalogRuntime.AcceptedGeneration(t.Context())
++				require.NoError(t, err)
++				require.Equal(t, candidate.State.GenerationID, accepted.Manifest.GenerationID)
++			}
+ 			now := time.Now().UTC()
+ 			budgets := func() *limits.Limits {
+ 				return &limits.Limits{Tokens: &limits.Budget{Limit: 200_000, Interval: limits.IntervalDay}, Spend: &limits.Budget{Limit: 1_000_000_000, Interval: limits.IntervalDay}}
+@@ -309,6 +346,10 @@ func TestProductionBudgetAcrossProcesses(t *testing.T) {
+ 				require.NoError(t, err)
+ 				_, err = witness.ApproveAuthority(t.Context(), newBackend, closed, newID, "fixture-complete-snapshot-with-retained-dispatch", "restore-fixture")
+ 				require.NoError(t, err)
++				copiedFleet, err := runtimecatalog.NewFleetStore(t.Context(), newBackend, witness, input.Deployment)
++				require.NoError(t, err)
++				_, err = copiedFleet.CurrentHead(t.Context())
++				require.ErrorContains(t, err, "another recovery identity", "budget approval does not adopt catalog history")
+ 				authority, err := witness.OpenAuthority(t.Context(), newBackend, input.Deployment)
+ 				require.NoError(t, err)
+ 				ledger, err := reservation.Open(authority)

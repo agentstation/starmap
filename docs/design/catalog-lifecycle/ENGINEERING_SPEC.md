@@ -4903,3 +4903,17 @@ Production tests also retain recognition charges after caller cancellation and c
 Fallback tests retain earlier uncertain capacity. UTC tests cover exact window boundaries and leap February.
 The remaining matrix, storage failover, backend operation counts, retention horizons, capacity, native CI, and paired merges remain required.
 The owner decision for proven unstarted batch lines remains pending.
+
+### Catalog adoption prerequisite: September 28, 2026
+
+CSP12.2 requires successful gateway recovery after the operator replaces the budget backend.
+The catalog and budget share that backend and the independent recovery epoch.
+Budget authority approval cannot authorize catalog records from the previous identity.
+
+The [catalog recovery contract](../../plans/proof/starport-production-catalog/csp12.2/catalog-recovery-prerequisite-2026-09-28/CONTRACT.md) is part of CSP12.2 acceptance.
+It requires controlled adoption under a closed recovery epoch, complete publication validation, preserved authority restrictions, and bounded crash recovery.
+Partial recovery cannot admit requests. Exact retries cannot renew catalog permission or release uncertain budget capacity.
+CSP13 retains complete backup tooling, populated migration, and operator procedures.
+
+The production replacement test must pass through the supported adoption operation.
+Its successful restart, five retained meters, explicit reconciliation, and exact provider dispatch count remain mandatory.

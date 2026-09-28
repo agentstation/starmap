@@ -1,0 +1,94 @@
+{
+  "status": "fail",
+  "date": "2026-09-28",
+  "task": "CSP12.2",
+  "producer": "9aeec53dd913ce98742616fbe720b1a4bf0c3932",
+  "consumer": "374efcd0c5de0062e502f9d937144ceed402c543",
+  "toolchain": "go1.27.1",
+  "platform": "darwin/arm64",
+  "workspace": "/tmp/csp122-billing.work",
+  "command": "go test -race -count=1 -timeout 7m -json -run ^TestProductionBudgetAcrossProcesses$ ./internal/app",
+  "services": [
+    "isolated PostgreSQL schema",
+    "scoped original Valkey",
+    "scoped replacement Valkey"
+  ],
+  "test_results": [
+    {
+      "name": "TestProductionBudgetAcrossProcesses/concurrent-settlement",
+      "status": "pass",
+      "seconds": 80.77
+    },
+    {
+      "name": "TestProductionBudgetAcrossProcesses/dispatched-process-loss",
+      "status": "pass",
+      "seconds": 96.8
+    },
+    {
+      "name": "TestProductionBudgetAcrossProcesses/backend-replacement",
+      "status": "fail",
+      "seconds": 117.79
+    },
+    {
+      "name": "TestProductionBudgetAcrossProcesses",
+      "status": "fail",
+      "seconds": 295.36
+    }
+  ],
+  "scenario_counts": {
+    "pass": 2,
+    "fail": 1,
+    "skip": 0
+  },
+  "test_event_counts": {
+    "pass": 2,
+    "fail": 2,
+    "skip": 0
+  },
+  "package_seconds": 296.604,
+  "failure": "Replacement startup refuses the copied catalog acceptance record after budget authority approval. The copied current head explicitly fails the recovery identity check.",
+  "unreached": [
+    "successful replacement startup",
+    "HTTP 402 with all five retained reservations after backend replacement",
+    "idempotent no-charge reconciliation and successful next production dispatch"
+  ],
+  "checks": {
+    "vet_app": "pass",
+    "goago_app": "pass; zero findings, stale ignores, or incomplete errors",
+    "changed_test_prose": "pass",
+    "changed_document_prose": "pass",
+    "contract_prose": "pass",
+    "full_task_gate": "not run; required fleet probe remains failed",
+    "native_ci": "unverified",
+    "pre_pr_review": "not run; incomplete task",
+    "changed_plan_prose": "pass; ten changed paragraphs or cells; historical unchanged text excluded",
+    "plan_structure": "pass; 40 tasks, 26 done, CSP12.2 sole in_progress"
+  },
+  "historical_evidence": "../shared-recovery-2026-09-28/verification.json",
+  "scope_correction": "Controlled catalog adoption moves into CSP12.2 as a prerequisite. CSP13 keeps complete backup, migration, and operator tooling.",
+  "paid_inference": false,
+  "publication": false,
+  "service_cleanup": "service-cleanup.json",
+  "raw_logs": [
+    {
+      "path": "csp122-catalog-recovery-final.jsonl.gz",
+      "sha256_uncompressed": "46630dcbff92ba1e47e11e34896aadaba355cd47eb8083ad6d379d2cd1ca1a4a"
+    },
+    {
+      "path": "csp122-catalog-seeded-acquisition-refusal.jsonl.gz",
+      "sha256_uncompressed": "03e53d3075037286700d05e60d95c2270549a11d5af323c7ca7d79fcff885f53"
+    },
+    {
+      "path": "csp122-catalog-seeded-build-failure.jsonl.gz",
+      "sha256_uncompressed": "4cebad8a9d6f2f5d0b770facf94eed0260b175fe6ac88235a858df58b81fd98f"
+    },
+    {
+      "path": "csp122-catalog-seeded-config-refusal.jsonl.gz",
+      "sha256_uncompressed": "00cb23e5e9ffcbf4454b88ae46cda82535b1fcfc0e70c3335ae899eded16d8fb"
+    },
+    {
+      "path": "csp122-catalog-seeded-replacement.jsonl.gz",
+      "sha256_uncompressed": "adc2f227a9518023f8ed9ccab8ad23339f46cd323c87b661a5ca6f5b53e06cb3"
+    }
+  ]
+}

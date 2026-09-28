@@ -4653,3 +4653,18 @@ Neither task can treat budget approval as sufficient catalog recovery.
 
 Fourteen media and settlement tests map to 88 passing results, including real Valkey approval checks.
 The complete task gate, native CI, and paired publication remain unverified.
+
+## Catalog adoption gap confirmed: September 28, 2026
+
+The corrected backend replacement fixture publishes and accepts its catalog before copying the stopped deployment.
+It explicitly disables acquisition and preserves canonical settings from the loader.
+The replacement gateway still refuses startup after budget approval, with `invalid fleet acceptance record`.
+The copied publication and acceptance retain the old recovery identity.
+
+`FleetStore.CurrentHead` requires the approved backend and epoch.
+`readAcceptance` enforces the same identity. `ApproveAuthority` only adopts the budget authority.
+No catalog adoption operation currently connects these contracts. Resetting bootstrap permission would not repair this mismatch.
+
+The [recovery contract](../../plans/proof/starport-production-catalog/csp12.2/catalog-recovery-prerequisite-2026-09-28/CONTRACT.md) moves the necessary prerequisite into CSP12.2.
+CSP13 retains the complete migration and operator tooling scope.
+The original and corrected failures remain evidence. Successful backend recovery remains unverified.
