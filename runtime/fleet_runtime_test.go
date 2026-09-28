@@ -455,6 +455,16 @@ func TestFleetRuntimeRetainsGrantCapturedBeforeSourceRead(t *testing.T) {
 }
 
 func TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission(t *testing.T) {
+	for _, scenario := range []struct {
+		name  string
+		adopt bool
+	}{{"ordinary", false}, {"adopted", true}} {
+		t.Run(scenario.name, func(t *testing.T) { testFleetAuthorityRecovery(t, scenario.adopt) })
+	}
+}
+
+func testFleetAuthorityRecovery(t *testing.T, adopt bool) {
+	t.Helper()
 	backend := newFleetRuntimeBackend(t)
 	backend.head = FleetHead{}
 	backend.snapshots = make(map[FleetHead]FleetSnapshot)
@@ -474,6 +484,24 @@ func TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission(t *testing.T) {
 	}
 	if !leader.AllowsNewAttempt() {
 		t.Fatal("the leader did not activate the acquired authority permission")
+	}
+	if adopt {
+		if err := leader.Close(); err != nil {
+			t.Fatal(err)
+		}
+		backend.mu.Lock()
+		previous := backend.head
+		snapshot := backend.snapshots[previous]
+		backend.identity.RecoveryEpoch++
+		backend.identity.BackendID = "replacement"
+		backend.head.Identity = backend.identity
+		snapshot.Head = backend.head
+		snapshot.Adoption = &FleetAdoption{Previous: previous, Receipt: fleetRecoveryChecksum([]byte("host-verified-adoption"))}
+		backend.snapshots[backend.head] = snapshot
+		backend.mu.Unlock()
+		if err := snapshot.Validate(); err != nil {
+			t.Fatal(err)
+		}
 	}
 	follower, source := open("authority-follower")
 	if follower.State().AuthorityHead != leader.State().AuthorityHead {
