@@ -59,3 +59,8 @@ It refuses any existing destination, including an empty directory.
 The caller must sync staged contents before the move and both parent directories afterward.
 The caller also owns recovery if its operation spans multiple roots.
 `SyncDirectory` reports native synchronization errors without claiming hardware power-loss qualification.
+
+`CheckNoPendingPublications` inspects existing publication journals without creating files or recovering writes.
+It uses the existing native writer lock and refuses pending journals.
+`PublicationDirectoryName` identifies metadata owned by this package.
+Hosts must preserve that metadata and fence writers before copying inspected state.
