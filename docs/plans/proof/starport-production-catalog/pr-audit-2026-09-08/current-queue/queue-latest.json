@@ -1397,15 +1397,33 @@
         "owner": "Repository dependency maintenance",
         "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
         "next_action": "Update this PR from main after #387 merges, then rerun Windows qualification and dependency review."
+      },
+      {
+        "baseRefName": "main",
+        "baseRefOid": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+        "headRefName": "dependabot/npm_and_yarn/console/console-packages-590881ce15",
+        "headRefOid": "0e014147087ec13ec3e5ba470f6a54fe4187dec6",
+        "isDraft": false,
+        "mergeStateStatus": "UNSTABLE",
+        "number": 390,
+        "state": "OPEN",
+        "title": "chore(deps): bump the console-packages group in /console with 10 updates",
+        "updatedAt": "2026-09-28T15:11:54Z",
+        "url": "https://github.com/agentstation/starport/pull/390",
+        "repository": "agentstation/starport",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Retain for review after active implementation qualification. Windows ARM64 concurrent policy acceptance failed.",
+        "next_action": "Update from main after PR #387 merges, then reproduce TestInferencePolicyConcurrentAcceptance without changing its acceptance guarantees. Review console dependency changes separately."
       }
     ]
   },
   "dependency_queue": {
-    "checked_at": "2026-09-28T15:11:06.371426+00:00",
+    "checked_at": "2026-09-28T16:03:47.076323+00:00",
     "proof": "dependency-queue-2026-09-28.json",
     "owner": "Repository dependency maintenance",
-    "open_count": 8,
-    "next_action": "Review after active CSP12.2 exact-head qualification and merge. Preserve current implementation base during its CI."
+    "open_count": 9,
+    "next_action": "Review after active CSP12.2 exact-head qualification and merge. Preserve current implementation base during its CI.",
+    "additional_proof": "starport-390-review-2026-09-28.json"
   },
   "compose_qualification": {
     "owner": "CSP12.2",
@@ -1413,5 +1431,24 @@
     "published_head": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
     "disposition": "Reviewed mandatory Compose qualification published. Native CI running.",
     "next_action": "Collect run 36447373952, verify exact head and review threads, and merge PR #387."
+  },
+  "dependency_review_snapshot": {
+    "checked_at": "2026-09-28T16:03:47.076323+00:00",
+    "starmap_all_checks_pass": [
+      189,
+      190,
+      191
+    ],
+    "starmap_repair_required": [
+      188,
+      192,
+      193
+    ],
+    "starport_repair_or_reproduction": [
+      388,
+      389,
+      390
+    ],
+    "limits": "No merge qualification completed for dependency PRs. Existing next actions remain."
   }
 }

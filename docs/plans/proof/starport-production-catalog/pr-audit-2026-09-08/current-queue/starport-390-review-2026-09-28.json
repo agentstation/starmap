@@ -1,0 +1,195 @@
+{
+  "checked_at": "2026-09-28T16:03:47.076323+00:00",
+  "pull_request": {
+    "baseRefName": "main",
+    "baseRefOid": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+    "headRefName": "dependabot/npm_and_yarn/console/console-packages-590881ce15",
+    "headRefOid": "0e014147087ec13ec3e5ba470f6a54fe4187dec6",
+    "isDraft": false,
+    "mergeStateStatus": "UNSTABLE",
+    "number": 390,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:12:52Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736152",
+        "name": "Lint",
+        "startedAt": "2026-09-28T15:12:01Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:25:22Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736570",
+        "name": "Test (ubuntu-24.04)",
+        "startedAt": "2026-09-28T15:12:02Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:19:58Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736277",
+        "name": "Test (ubuntu-24.04-arm)",
+        "startedAt": "2026-09-28T15:12:04Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:26:15Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736183",
+        "name": "Test (macos-15)",
+        "startedAt": "2026-09-28T15:12:06Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:29:25Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736443",
+        "name": "Test (windows-2025)",
+        "startedAt": "2026-09-28T15:12:03Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:19:22Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736434",
+        "name": "Test (windows-11-arm)",
+        "startedAt": "2026-09-28T15:12:01Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:18:44Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993735727",
+        "name": "Shared Storage Startup",
+        "startedAt": "2026-09-28T15:12:01Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:21:15Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736244",
+        "name": "Catalog Fleet Recovery",
+        "startedAt": "2026-09-28T15:12:02Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:14:01Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736112",
+        "name": "Authorization Capacity",
+        "startedAt": "2026-09-28T15:12:01Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:19:12Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736349",
+        "name": "Storage Recipes",
+        "startedAt": "2026-09-28T15:12:02Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:13:27Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736221",
+        "name": "Security Scan",
+        "startedAt": "2026-09-28T15:12:01Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:18:53Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736274",
+        "name": "Release Contract",
+        "startedAt": "2026-09-28T15:12:02Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:15:06Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736158",
+        "name": "OpenRouter SDK Compatibility",
+        "startedAt": "2026-09-28T15:12:02Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:22:54Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736610",
+        "name": "Release Snapshot",
+        "startedAt": "2026-09-28T15:12:03Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:12:11Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/108993736345",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-28T15:12:02Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-28T15:29:25Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36441751806/job/109001330254",
+        "name": "Build",
+        "startedAt": "2026-09-28T15:29:26Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      }
+    ],
+    "title": "chore(deps): bump the console-packages group in /console with 10 updates",
+    "updatedAt": "2026-09-28T15:11:54Z",
+    "url": "https://github.com/agentstation/starport/pull/390",
+    "repository": "agentstation/starport",
+    "owner": "Repository dependency maintenance",
+    "disposition": "Retain for review after active implementation qualification. Windows ARM64 concurrent policy acceptance failed.",
+    "next_action": "Update from main after PR #387 merges, then reproduce TestInferencePolicyConcurrentAcceptance without changing its acceptance guarantees. Review console dependency changes separately."
+  },
+  "review_threads": 0,
+  "failure": {
+    "run": 36441751806,
+    "job": 108993736434,
+    "test": "TestInferencePolicyConcurrentAcceptance",
+    "source": "internal/credentials/policy_migration_test.go:144",
+    "errors": 6,
+    "message": "context deadline exceeded",
+    "elapsed_seconds": 6.46,
+    "interpretation": "The test belongs to Go credential-policy acceptance. The dependency PR changes console packages. The observed deadline does not establish a console dependency defect.",
+    "next_action": "Update from main after PR #387 merges, then reproduce TestInferencePolicyConcurrentAcceptance without changing its acceptance guarantees. Review console dependency changes separately."
+  },
+  "scope": "Read-only queue audit. No PR head, base, review comment, or dependency file changed."
+}
