@@ -4902,7 +4902,7 @@ This evidence does not qualify storage replacement or background recovery worker
 Production tests also retain recognition charges after caller cancellation and charge embeddings on semantic-cache hits.
 Fallback tests retain earlier uncertain capacity. UTC tests cover exact window boundaries and leap February.
 The remaining matrix, storage failover, backend operation counts, retention horizons, capacity, native CI, and paired merges remain required.
-The owner decision for proven unstarted batch lines remains pending.
+The September 28 decision below permits automatic recovery of proven-unstarted lines.
 
 ### Catalog adoption prerequisite: September 28, 2026
 
@@ -4939,3 +4939,16 @@ The [implementation proof](../../plans/proof/starport-production-catalog/csp12.2
 It does not complete the broader recovery contract or CSP12.2.
 
 Native Linux and Windows qualification, remaining adoption cases, and the complete task gate remain required.
+
+
+### Approved batch restart and correction policy: September 28, 2026
+
+Starport automatically resumes batch lines that durable records prove never started.
+It retains completed results and never repeats uncertain attempts automatically.
+Each resumed line requires current authorization and normal budget admission.
+
+Administrators can correct settled charges for 90 days after original settlement.
+Corrections do not extend that horizon. Exact accepted retries remain idempotent.
+Unresolved reservations remain until reconciliation and never expire through retention cleanup.
+The [decision record](../../plans/proof/starport-production-catalog/csp12.2/owner-decisions-2026-09-28/DECISIONS.md) owns these policies.
+CSP12.2 implementation and qualification remain required.

@@ -1,6 +1,6 @@
 # Interrupted batch recovery contract
 
-Status: architecture repair within CSP12.2. The owner decision about untouched lines remains pending.
+Status: architecture repair within CSP12.2. The owner approved automatic recovery of proven-unstarted lines on September 28, 2026.
 This contract supplements the paid-operation matrix. It does not create another plan or authorize a component PR.
 
 ## Verified gap
@@ -15,10 +15,10 @@ The recovery sweep only releases finished claims. A timeout cannot prove that an
 
 ## Owner decision
 
-Should recovery continue lines that durable records prove never started, or stop the batch and require explicit new submission?
-The recommendation continues only proven unstarted lines and retains completed results.
-Uncertain dispatches must never repeat automatically under either choice.
-Do not implement restart behavior until the owner answers.
+On September 28, 2026, the owner selected automatic recovery of proven-unstarted lines.
+Retain completed results. Never repeat uncertain attempts automatically.
+Every resumed line requires current authorization and normal budget admission.
+A missing result does not prove that a line never started.
 
 ## Ownership
 
@@ -91,4 +91,4 @@ Lost acknowledgment and concurrent claim checks pass without repeated dispatch.
 The [claim proof](../batch-line-claims-2026-09-27/verification.json) records exact scope and counts.
 
 The remaining contract still requires durable results, interrupted-run recovery, and process-loss qualification.
-The owner decision about untouched lines remains pending. Do not count the claim repair as complete batch recovery.
+The owner approved automatic recovery of proven-unstarted lines on September 28, 2026. Do not count the claim repair as complete batch recovery.

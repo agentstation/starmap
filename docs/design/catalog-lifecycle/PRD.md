@@ -552,3 +552,16 @@ New evidence requires a new decision if it invalidates the inspected state.
 
 Required settlement remains independent of optional usage delivery. Reporting expiry must be visible without claiming delivery or restoring budget capacity.
 The [local implementation proof](../../plans/proof/starport-production-catalog/csp12.2/job-corrections-2026-09-27/verification.json) verifies these behaviors. Fleet qualification and paired merges remain required.
+
+
+### Approved batch restart and correction policy: September 28, 2026
+
+Starport automatically resumes batch lines that durable records prove never started.
+It retains completed results and never repeats uncertain attempts automatically.
+Each resumed line requires current authorization and normal budget admission.
+
+Administrators can correct settled charges for 90 days after original settlement.
+Corrections do not extend that horizon. Exact accepted retries remain idempotent.
+Unresolved reservations remain until reconciliation and never expire through retention cleanup.
+The [decision record](../../plans/proof/starport-production-catalog/csp12.2/owner-decisions-2026-09-28/DECISIONS.md) owns these policies.
+CSP12.2 implementation and qualification remain required.

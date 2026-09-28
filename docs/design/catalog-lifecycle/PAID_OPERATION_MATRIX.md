@@ -574,7 +574,7 @@ This evidence does not qualify storage replacement or background recovery worker
 Production tests also retain recognition charges after caller cancellation and charge embeddings on semantic-cache hits.
 Fallback tests retain earlier uncertain capacity. UTC tests cover exact window boundaries and leap February.
 The remaining matrix, storage failover, backend operation counts, retention horizons, capacity, native CI, and paired merges remain required.
-The owner decision for proven unstarted batch lines remains pending.
+The owner approved automatic recovery of proven-unstarted lines on September 28, 2026.
 
 ### Operation matrix qualification: September 28, 2026
 
@@ -593,3 +593,14 @@ Embeddings retain their existing execution policy. The fixture does not enable a
 The quota-lease boundary also passes its registered checks. Starport supports only atomic admission.
 These two results do not close A47. Bounds, storage replacement, retained asynchronous settlement, retention horizons, and interrupted batches remain unverified.
 The owner must decide whether Starport automatically resumes proven unstarted lines after restart.
+
+
+### Recovery and correction policy: September 28, 2026
+
+The [accepted decisions](../../plans/proof/starport-production-catalog/csp12.2/owner-decisions-2026-09-28/DECISIONS.md) define automatic recovery and the correction horizon.
+Resume only proven-unstarted batch lines under current authorization and normal budget admission.
+Retain completed results. Never repeat uncertain attempts automatically.
+
+Allow settled-charge corrections for 90 days after original settlement. Corrections do not extend that horizon.
+Unresolved reservations remain until reconciliation. Retention cleanup never releases uncertain capacity.
+Implementation and qualification remain open under CSP12.2.
