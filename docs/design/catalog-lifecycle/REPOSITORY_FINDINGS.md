@@ -4526,5 +4526,6 @@ The [proof](../../plans/proof/starport-production-catalog/csp12.2/usage-adjustme
 
 Classification: in-scope CSP12.2 reporting and correction integration.
 The job service still lacks correction intent, history, administrator routes, and report acknowledgement.
-Current late-provider handling writes the dispute before its job compare-and-swap. Correction must not race this sequence and clear a new dispute.
-The required fix belongs to the job and reservation transaction boundary.
+Consumer `0db2fbcd` replaces the two-write late-provider sequence with one atomic job and reservation transaction.
+The [follow-up proof](../../plans/proof/starport-production-catalog/csp12.2/atomic-dispute-2026-09-27/verification.json) records stale-state, concurrent-write, and lost-acknowledgement checks.
+The correction operation must still compare its inspected job state before clearing a dispute.

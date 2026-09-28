@@ -4820,5 +4820,8 @@ The job service does not yet call the correction reporter. Job correction needs 
 Late provider evidence and its budget dispute must commit with the job state. Correction must compare the same state before clearing that dispute.
 Separate job and budget writes can lose a restriction. Deterministic tests must cover both commit orders, retries, and lost acknowledgements.
 
+Consumer `0db2fbcd` now commits late evidence and its dispute together through `Repository.Replacement` and `FlagDisputeWith`.
+The correction operation must still bind its budget write to the inspected job state.
+
 The [review](../../plans/proof/starport-production-catalog/csp12.2/usage-adjustments-2026-09-27/REVIEW.md) defines this remaining transaction contract.
 Required settlement must survive expired optional reporting history. Recovery must not recreate expired usage or repeat provider generation.

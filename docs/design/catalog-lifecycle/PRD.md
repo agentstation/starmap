@@ -534,3 +534,7 @@ Provider measurements remain separate from administrator evidence. Public usage 
 Required budget correction must not depend on optional report delivery. Report retries need a separate durable acknowledgement for each correction.
 The [component proof](../../plans/proof/starport-production-catalog/csp12.2/usage-adjustments-2026-09-27/verification.json) covers the reporter and usage store.
 The administrator correction flow remains unfinished.
+
+Late provider evidence and its required budget restriction must become visible together.
+The [atomic publication proof](../../plans/proof/starport-production-catalog/csp12.2/atomic-dispute-2026-09-27/verification.json) covers this boundary.
+The complete administrator correction flow remains unfinished.

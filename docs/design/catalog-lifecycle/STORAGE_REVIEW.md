@@ -1059,4 +1059,5 @@ The original usage schema remains 1. The original record never stores its read-p
 These records belong to optional reporting and cannot grant required budget capacity.
 
 The [proof](../../plans/proof/starport-production-catalog/csp12.2/usage-adjustments-2026-09-27/verification.json) covers memory, Badger, and real Valkey behavior.
-Job correction still needs an atomic boundary with required budgets and late evidence. Shared fleet qualification remains open.
+Consumer `0db2fbcd` commits late evidence and its dispute with one storage transaction.
+Job correction still needs to compare the same job state with its budget write. Shared fleet qualification remains open.

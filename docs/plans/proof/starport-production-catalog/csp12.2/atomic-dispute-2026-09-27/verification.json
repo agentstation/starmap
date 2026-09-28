@@ -1,0 +1,262 @@
+{
+  "status": "partial; atomic late-evidence publication qualified; correction intent and administrator API remain open",
+  "recorded_at": "2026-09-28T02:46:36.752876+00:00",
+  "consumer_commit": "0db2fbcdbefcfe5b345ddbf256f41ce684174326",
+  "base_consumer_commit": "27983f87100452b39c56f4bf6f8062a0a4c4862f",
+  "producer_commit": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+  "environment": {
+    "GOTOOLCHAIN": "go1.27.1",
+    "GOWORK": "/tmp/csp122-billing.work",
+    "platform": "darwin/arm64",
+    "valkey": "7.2.14",
+    "lifecycle": "Started only the existing Valkey container for shared tests, then stopped it and Docker Desktop. PostgreSQL and MinIO remained stopped."
+  },
+  "source_binding": "Full shared race and production checks cover final runtime behavior. A later test adds the resolved-evidence refusal case. Final focused race and pure-Go cover that test. Comment edits do not change runtime behavior. Final vet and goago cover committed source.",
+  "checks": [
+    {
+      "command": "go test -json ./internal/limits/reservation -run '^TestDisputePublicationRejectsStaleJob$' -count=1",
+      "output": "baseline.jsonl.gz",
+      "sha256": "ce7684ed70392d23ec75b028a12675f6ef951551d4be2796ee5f951b1be22236",
+      "test_results_including_parent_tests": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 1,
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "fail",
+          "elapsed_seconds": 0
+        }
+      ]
+    },
+    {
+      "command": "go test -json ./internal/limits/reservation -run '^TestDisputePublicationRejectsStaleJob$' -count=1",
+      "output": "baseline-fixed.jsonl.gz",
+      "sha256": "7d050a621a76becde549a3431c6e854782dc812c530c8b73a898888ecfc86ea0",
+      "test_results_including_parent_tests": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 1
+      },
+      "exit_code": 1,
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "fail",
+          "elapsed_seconds": 0.33
+        }
+      ]
+    },
+    {
+      "command": "go test -race -json ./internal/limits/reservation ./internal/jobs -run 'Test(Dispute|Administrator|StaleJob|ConcurrentJob)' -count=1 -timeout 2m",
+      "output": "focused-race.jsonl.gz",
+      "sha256": "25b886f7ecada5e08bdae267ca228b616143680fe7bd375b67ad37e209d48139",
+      "test_results_including_parent_tests": {
+        "pass": 23,
+        "fail": 2,
+        "skip": 9
+      },
+      "exit_code": 1,
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "fail",
+          "elapsed_seconds": 0.535
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 2.013
+        }
+      ]
+    },
+    {
+      "command": "go test -race -json ./internal/limits/reservation ./internal/jobs -run 'Test(Dispute|Administrator|StaleJob|ConcurrentJob|PreparedJob)' -count=1 -timeout 2m",
+      "output": "focused-race-fixed.jsonl.gz",
+      "sha256": "25a277bc48afc6aea0e94265def4b29e0283a89d62c99a9cda0c96af29d454c7",
+      "test_results_including_parent_tests": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 15
+      },
+      "exit_code": 0,
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed_seconds": 1.8399999999999999
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 1.7970000000000002
+        }
+      ]
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:55198 go test -race -json ./internal/limits/reservation ./internal/jobs -count=1 -timeout 3m",
+      "output": "shared-full-race.jsonl.gz",
+      "sha256": "b7330cb7857256640eec86f8ac758d43c636b940eb8d4989a73b6baf4d52e175",
+      "test_results_including_parent_tests": {
+        "pass": 546,
+        "fail": 0,
+        "skip": 2
+      },
+      "exit_code": 0,
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed_seconds": 19.527
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 24.142
+        }
+      ]
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:55198 go test -race -json ./internal/limits/reservation ./internal/jobs -run 'Test(DisputePublication|PreparedJob)' -count=1 -timeout 2m",
+      "output": "shared-final-race.jsonl.gz",
+      "sha256": "63e1be5ba6098f9f803fff10626edc18f53271555e8fd571b6cdab6460a5c84e",
+      "test_results_including_parent_tests": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0,
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 1.806
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed_seconds": 2.01
+        }
+      ]
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:55198 CGO_ENABLED=0 go test -json ./internal/limits/reservation ./internal/jobs -run 'Test(DisputePublication|PreparedJob)' -count=1 -timeout 2m",
+      "output": "pure-go.jsonl.gz",
+      "sha256": "e0b303b67d567bfd4b1f148a7107259518f3a3713b2dffa6df571a0419c29208",
+      "test_results_including_parent_tests": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0,
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 0.471
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed_seconds": 1.1
+        }
+      ]
+    },
+    {
+      "command": "go test -race -json ./internal/app -run 'TestProductionAdministratorVideoReconciliation|TestLateNativeResponseBlocksDisputedBudget' -count=1 -timeout 2m",
+      "output": "app-race.jsonl.gz",
+      "sha256": "9ffd6e196b4e0cb44898c1201e644778a5890391a17117271a03ba137bcca077",
+      "test_results_including_parent_tests": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0,
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed_seconds": 32.524
+        }
+      ]
+    },
+    {
+      "command": "go vet ./internal/jobs ./internal/limits/reservation ./internal/app",
+      "output": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0
+    },
+    {
+      "command": "go vet ./internal/jobs ./internal/limits/reservation ./internal/app",
+      "output": "vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./internal/jobs ./internal/limits/reservation ./internal/app",
+      "output": "goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "exit_code": 0
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./internal/jobs ./internal/limits/reservation ./internal/app",
+      "output": "goago-final.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "output": "layout.log.gz",
+      "sha256": "acb749e48b928ebc2118d32147adeee53e4a54dff03d96744f5764da7eb55979",
+      "exit_code": 0
+    },
+    {
+      "command": "technical-writing lint internal/jobs/required_settlement.go internal/jobs/repository.go internal/jobs/repository_store.go internal/jobs/admin_receipt.go internal/app/budget_jobs.go internal/limits/reservation/dispute.go --format text",
+      "output": "source-writing.log.gz",
+      "sha256": "63b03ad06dd84d6dc3f87d959610564a9f902c6ba23f4d576981bf4f672d4fc3",
+      "exit_code": 1
+    },
+    {
+      "command": "technical-writing lint internal/jobs/required_settlement.go internal/jobs/repository.go internal/jobs/repository_store.go internal/jobs/admin_receipt.go internal/app/budget_jobs.go internal/limits/reservation/dispute.go --format text",
+      "output": "source-writing-final.log.gz",
+      "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087",
+      "exit_code": 0
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "output": "doc-gate.log.gz",
+      "sha256": "052b48cc6e62201aaa2239a425c8a502bd7240ed9e38f3707aec6df0dac2148f"
+    },
+    {
+      "command": "technical-writing lint <six edited plan documents> --format text",
+      "exit_code": 1,
+      "output": "plan-writing.log.gz",
+      "sha256": "1590812980187ebd84cd5c092f05a2666aef6404fbe0a5bbe97292bfabae199d"
+    },
+    {
+      "command": "technical-writing lint <six edited plan documents> --format text",
+      "exit_code": 0,
+      "output": "plan-writing-final.log.gz",
+      "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087"
+    }
+  ],
+  "failures": [
+    "The first baseline probe failed to compile because Set received an obsolete TTL argument. The repaired baseline then failed its stale-job assertion.",
+    "The first implementation returned ErrValueTooLarge for longer competing job data. That proves different bytes, so the corrected path returns storage.ErrConflict without copying the larger value.",
+    "The first source prose check found two existing long comments. The final check passes after precise comment edits."
+  ],
+  "unverified": [
+    "TestTeamBudgetHistoryHandoff/postgres-valkey: TEST_POSTGRES_URL absent",
+    "TestNativeRetirementWithRealObjectStore: object-store fixture absent",
+    "Administrator correction API, durable job correction intent and history, correction reporting recovery",
+    "Full paid-operation matrix, shared recovery, A47, capacity, native CI, pre-PR review, paired merges"
+  ],
+  "schemas": "Unchanged from the usage-adjustment component.",
+  "findings": [
+    "Whole-repository prose gate remains failing. The targeted six-document check passes after splitting a long paragraph. Historical and unrelated diagnostics remain outside this component.",
+    "Previous goal work made progress: usage adjustment code and evidence were recorded. This continuation adds atomic late-evidence publication and its verified tests."
+  ]
+}
