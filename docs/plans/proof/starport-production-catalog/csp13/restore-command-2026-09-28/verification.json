@@ -1,0 +1,399 @@
+{
+  "task": "CSP13",
+  "status": "in_progress",
+  "source_commit": "7237a692c543b51f00178a3353969d5093b2f32c",
+  "baseline_commit": "2a4e9216dad52fd8cbac7d7b6cfc68d0acc038fe",
+  "go": "1.27.1",
+  "host": "darwin/arm64",
+  "results": {
+    "before.jsonl": {
+      "counts": {
+        "fail": 1
+      },
+      "nonpassing_tests": [
+        "TestRestorePrepareCommandExplainsRestrictedOutput"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "fail",
+          "elapsed": 0.631
+        }
+      ]
+    },
+    "first.jsonl": {
+      "counts": {},
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "fail",
+          "elapsed": 0
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "fail",
+          "elapsed": 0
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "fail",
+          "elapsed": 0
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "fail",
+          "elapsed": 0
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/storage",
+          "result": "pass",
+          "elapsed": 0.233
+        }
+      ]
+    },
+    "local.jsonl": {
+      "counts": {
+        "fail": 9,
+        "pass": 8
+      },
+      "nonpassing_tests": [
+        "TestPrepareImportSchemaNativeBackends/sqlite/empty",
+        "TestPrepareImportSchemaNativeBackends/sqlite/partial-empty",
+        "TestPrepareImportSchemaNativeBackends/sqlite/partial-populated",
+        "TestPrepareImportSchemaNativeBackends/sqlite/unknown-table",
+        "TestPrepareImportSchemaNativeBackends/sqlite/current",
+        "TestPrepareImportSchemaNativeBackends/sqlite",
+        "TestPrepareImportSchemaNativeBackends",
+        "TestRestoreCommandsPrepareRestrictedNativeStores",
+        "TestRestoreApplicationPreservesPopulatedTargets"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "fail",
+          "elapsed": 0.255
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 0.849
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "fail",
+          "elapsed": 5.355
+        }
+      ]
+    },
+    "local-fixed.jsonl": {
+      "counts": {
+        "pass": 17
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 0.275
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 0.842
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 6.482
+        }
+      ]
+    },
+    "native.jsonl": {
+      "counts": {
+        "pass": 149
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 2.601
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 3.338
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 23.714
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 77.638
+        }
+      ]
+    },
+    "final-race.jsonl": {
+      "counts": {
+        "pass": 168,
+        "fail": 3
+      },
+      "nonpassing_tests": [
+        "TestOpenImportTargetPreservesRestrictedRetry/badger",
+        "TestOpenImportTargetPreservesRestrictedRetry",
+        "TestOpenImportTargetRefusesEphemeralStorage"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 1.796
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/storage",
+          "result": "fail",
+          "elapsed": 2.326
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 15.564
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 24.643
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 84.407
+        }
+      ]
+    },
+    "storage-race.jsonl": {
+      "counts": {
+        "pass": 3,
+        "fail": 1
+      },
+      "nonpassing_tests": [
+        "TestOpenImportTargetRefusesEphemeralStorage"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/storage",
+          "result": "fail",
+          "elapsed": 0.379
+        }
+      ]
+    },
+    "storage-final-race.jsonl": {
+      "counts": {
+        "pass": 4
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/storage",
+          "result": "pass",
+          "elapsed": 1.422
+        }
+      ]
+    },
+    "purego.jsonl": {
+      "counts": {
+        "pass": 66,
+        "fail": 1
+      },
+      "nonpassing_tests": [
+        "TestOpenImportTargetRefusesEphemeralStorage"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/storage",
+          "result": "fail",
+          "elapsed": 2.576
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 2.6310000000000002
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 5.269
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 13.112
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 17.895
+        }
+      ]
+    },
+    "storage-final-purego.jsonl": {
+      "counts": {
+        "pass": 4
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/storage",
+          "result": "pass",
+          "elapsed": 0.313
+        }
+      ]
+    },
+    "null-before.jsonl": {
+      "counts": {
+        "fail": 3
+      },
+      "nonpassing_tests": [
+        "TestPrepareImportSchemaNativeBackends/sqlite/null-metadata",
+        "TestPrepareImportSchemaNativeBackends/sqlite",
+        "TestPrepareImportSchemaNativeBackends"
+      ]
+    },
+    "null-race.jsonl": {
+      "counts": {
+        "pass": 22
+      },
+      "nonpassing_tests": []
+    },
+    "null-purego.jsonl": {
+      "counts": {
+        "pass": 22
+      },
+      "nonpassing_tests": []
+    }
+  },
+  "final_package_results": {
+    "race": {
+      "counts": {
+        "pass": 171
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/storage",
+          "result": "pass"
+        }
+      ],
+      "selection": "Four unchanged passing packages from final-race.jsonl; corrected storage fixture from storage-final-race.jsonl. No duplicate test outcomes are counted."
+    },
+    "purego": {
+      "counts": {
+        "pass": 67
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/storage",
+          "result": "pass"
+        }
+      ],
+      "selection": "Four unchanged passing packages from purego.jsonl; corrected storage fixture from storage-final-purego.jsonl. No duplicate test outcomes are counted."
+    }
+  },
+  "commands": [
+    "python3 /tmp/csp13-all-storage-env.py /tmp/csp13-restore-cli-final-race.jsonl go test -race ./internal/app ./internal/cli ./internal/sqlstore ./internal/recovery ./internal/storage -run '^TestRestore|^TestPrepareImportSchema|^TestPrepareBundle|^TestBackup|^TestVerifiedRestoreSource|^TestOpenImportTarget|^TestRelationalImport' -json -count=1 -timeout=4m",
+    "python3 /tmp/csp13-all-storage-env.py /tmp/csp13-restore-cli-storage-final-race.jsonl go test -race ./internal/storage -run '^TestOpenImportTarget' -json -count=1 -timeout=2m",
+    "CGO_ENABLED=0 python3 /tmp/csp13-all-storage-env.py /tmp/csp13-restore-cli-purego.jsonl go test ./internal/app ./internal/cli ./internal/sqlstore ./internal/recovery ./internal/storage -run '^TestRestore|^TestPrepareImportSchema|^TestPrepareBundle|^TestVerifiedRestoreSource|^TestOpenImportTarget' -json -count=1 -timeout=4m",
+    "CGO_ENABLED=0 python3 /tmp/csp13-all-storage-env.py /tmp/csp13-restore-cli-storage-final-purego.jsonl go test ./internal/storage -run '^TestOpenImportTarget' -json -count=1 -timeout=2m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 make lint",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./internal/app ./internal/cli ./internal/recovery ./internal/storage ./internal/sqlstore",
+    "bash scripts/verify-dependency-direction.sh",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go build ./cmd/starport",
+    "./starport backup prepare --help",
+    "python3 /tmp/csp13-sql-storage-env.py /tmp/csp13-restore-cli-null-race.jsonl go test -race ./internal/sqlstore -run '^TestPrepareImportSchemaNativeBackends$' -json -count=1 -timeout=2m",
+    "CGO_ENABLED=0 python3 /tmp/csp13-sql-storage-env.py /tmp/csp13-restore-cli-null-purego.jsonl go test ./internal/sqlstore -run '^TestPrepareImportSchemaNativeBackends$' -json -count=1 -timeout=2m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go build -o /tmp/csp13-starport-restore-cli-final ./cmd/starport",
+    "/tmp/csp13-starport-restore-cli-final backup prepare --help"
+  ],
+  "checks": {
+    "lint": "PASS; zero issues",
+    "vet": "PASS; five affected packages",
+    "dependency_direction": "PASS; six conditions",
+    "build": "PASS; command help verified on the built executable",
+    "source_writing": "PASS; twelve files, zero diagnostics",
+    "plan_writing": "PASS; five current files, zero diagnostics. Full plan gate retains 226 historical diagnostics in unchanged files.",
+    "plan_structure": "PASS; 40 rows, 27 done, CSP13 in_progress, 97 anchors, 154 links, 490 resume words.",
+    "final_build": "PASS; rebuilt final 7237a692c source and verified executable help"
+  },
+  "fail_before": "The command help test fails before backup prepare exists. It passes with the registered command and documented restricted-output flags.",
+  "initial_failures": [
+    "Schema-query extraction initially omitted a local query declaration; fixed before native qualification.",
+    "Initial application fixtures omitted required CLI dependencies and used exclusive directory creation for missing nested parents. Production and fixtures now use the native create-or-check directory API.",
+    "The initial SQL fixture called the network isolation helper for SQLite. SQLite now uses its own temporary file.",
+    "The new storage refusal fixture omitted required Badger sizing defaults. Final storage-only race and pure-Go runs use complete configurations and pass. Production storage code did not change during these fixture repairs.",
+    "The all-storage runner refused a SQL-only rerun while KV and object storage were stopped. A two-container SQL runner then qualified the final guard on all three SQL dialects."
+  ],
+  "contracts": [
+    "Complete source and key verification precedes target creation or connection",
+    "The selected deployment ID must match the source",
+    "Native path checks refuse overlaps and aliases before local target creation",
+    "The private verified-source object retains immutable manifest facts and avoids a second complete reference scan",
+    "Each importer still verifies component bytes after target opening",
+    "Fencing evidence binds component operation claims and the retained receipt",
+    "The CLI starts neither the gateway nor catalog acquisition",
+    "SQL setup refuses unknown tables and populated incompatible schemas; empty setup can resume",
+    "Native KV import access retains barriers without application maintenance",
+    "Local and shared application recipes remain restricted after preparation and process reopen",
+    "Command errors print no success receipt and do not claim rollback"
+  ],
+  "manual_review": [
+    "No inference request-path call was added.",
+    "Target configuration selects stores; captured source paths never select active target paths.",
+    "Private directory creation uses the native NewDirectory capability; existing access conflicts are not repaired silently.",
+    "SQL schema ownership and exact import validation remain in sqlstore. KV native access remains in storage. Blob target selection remains a composition concern.",
+    "The SQL preflight runs under an external stopped-writer precondition. It does not fence a live database or validate external fencing evidence.",
+    "The command retains provider work and saved tokens in inactive state. It does not release reservations, start batch work, or approve a recovered epoch."
+  ],
+  "limitations": [
+    "Canonical file placement, independent later history, complete target validation, catalog and budget epoch approval, activation, and measured recovery remain open.",
+    "Fifteen CSP13 acceptance subcases remain UNVERIFIED; no new subcase is complete.",
+    "Native Linux/Windows qualification, required pre-PR review, CI, and merge remain open."
+  ],
+  "fixtures": "Task-owned PostgreSQL, MySQL, Valkey, and MinIO stopped after qualification; volumes preserved",
+  "implementation_commit": "edc7771cb284ca6e1e0c0dbe44585a4daa354658",
+  "final_sql_guard": "After the command commit, manual review found that NULL metadata escaped the empty-state count. The regression proves that the old preflight changed the schema before refusing. Explicit NULL checks now refuse without changing schema. All 22 schema preparation results pass under race and pure-Go on SQLite, PostgreSQL, and MySQL."
+}

@@ -4828,3 +4828,25 @@ Native identity checks detect path aliases into protected source trees.
 The implementation remains a library operation. Canonical file placement, independent history, and operator recovery commands remain open.
 
 The [bundle preparation proof](../../plans/proof/starport-production-catalog/csp13/bundle-prepare-2026-09-28/verification.json) records exact results and qualification limits.
+
+
+### Operator restore preparation: September 28, 2026
+
+Consumer `7237a692c` exposes restricted preparation.
+
+The missing command test fails before the CLI registers `backup prepare`.
+The command now reaches native application preparation and retains restricted state across exact retries.
+Local and shared recipes verify SQL, KV, blob barriers, and inactive selected files.
+Wrong source digests, keys, deployment IDs, and overlapping targets cause refusal before target creation.
+Changed fencing evidence cannot reuse a retained import.
+
+Native schema preparation covers SQLite, PostgreSQL, and MySQL.
+Final package results contain 171 race passes and 67 pure-Go passes.
+The evidence preserves initial compile and fixture failures and identifies the final storage-only reruns.
+Independent-history and activation commands remain open.
+
+The [operator preparation proof](../../plans/proof/starport-production-catalog/csp13/restore-command-2026-09-28/verification.json) records exact results and qualification limits.
+
+The final review found that SQL NULL metadata could escape an inequality count.
+The regression proves that the preflight then changed the schema before refusing.
+Explicit NULL checks now refuse without changing the target schema.

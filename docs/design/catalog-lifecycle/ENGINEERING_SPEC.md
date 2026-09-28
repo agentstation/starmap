@@ -5199,3 +5199,22 @@ Independent later history, operator commands, activation, and native release qua
 A completion receipt proves preparation only. All target writers must remain fenced through activation.
 
 The [bundle preparation proof](../../plans/proof/starport-production-catalog/csp13/bundle-prepare-2026-09-28/verification.json) records exact results and qualification limits.
+
+
+### Operator restore preparation: September 28, 2026
+
+Consumer `7237a692c` exposes restricted preparation.
+
+`starport backup prepare` selects isolated targets from current product configuration.
+It verifies the complete source and encryption-key access before target creation or connection.
+The target deployment ID must match the backup.
+A private verified-source object avoids a repeated full reference scan. Native importers still recheck component bytes.
+
+The required fencing reference binds component claims and the preparation receipt.
+An exact retry preserves that reference. The reference does not itself fence any writer.
+The command starts neither the gateway nor catalog acquisition.
+SQL setup refuses populated incompatible schemas. Native KV import access retains barriers without application maintenance.
+
+Canonical file placement, independent later history, and activation remain required before admission.
+
+The [operator preparation proof](../../plans/proof/starport-production-catalog/csp13/restore-command-2026-09-28/verification.json) records exact results and qualification limits.
