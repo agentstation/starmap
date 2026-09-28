@@ -55,5 +55,19 @@
     "pr": 387,
     "run": 36447373952,
     "watch_session": 91819
+  },
+  "native_preflight": {
+    "checked_at": "2026-09-28T15:59:26.837930+00:00",
+    "head": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
+    "job": 109013045649,
+    "step": {
+      "completedAt": "2026-09-28T15:58:57Z",
+      "conclusion": "success",
+      "name": "Qualify Windows Compose before the native suite",
+      "number": 7,
+      "startedAt": "2026-09-28T15:58:36Z",
+      "status": "completed"
+    },
+    "limits": "Focused step passed. Test-event artifact and complete native suite remain pending."
   }
 }

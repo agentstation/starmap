@@ -1,0 +1,6 @@
+go version go1.27.1 windows/arm64
+windows
+arm64
+windows
+arm64
+0
