@@ -1057,13 +1057,13 @@
   "budget_preparation": {
     "owner": "CSP12.2",
     "status": "in_progress",
-    "commit": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
+    "commit": "d6107baa33fc64c3cb1b896c624862e458c8e949",
     "published": true,
     "proof": "../../csp12.2/retention-acceptance-2026-09-28/verification.json",
-    "native_ci": "Run 36432573361 completed with fleet readiness and Windows Compose failures. Linux amd64/arm64, macOS arm64, and Windows arm64 pass.",
+    "native_ci": "Run 36440996799 is in progress at reviewed d6107baa.",
     "required_review": {
       "producer": "PASS: three parts, zero findings; decoded catalog secret scan passes",
-      "consumer": "Previous 0f536c92 review passed. Complete review for d6107baa is in progress."
+      "consumer": "PASS at d6107baa: nine complete parts, zero actionable findings, clean secret scan."
     },
     "remaining_dirty_files": {
       "docs/ARCHITECTURE.md": "CSP18 preparation",
@@ -1071,9 +1071,9 @@
     },
     "processes": [
       {
-        "session": 22767,
-        "role": "complete pre-PR review of committed fixture repair",
-        "log": "/tmp/csp122-consumer-fixtures-review.log"
+        "session": 58694,
+        "role": "native CI watch",
+        "log": "/tmp/csp122-consumer-fixtures-native-watch.log"
       }
     ],
     "producer_companion": {
@@ -1098,8 +1098,8 @@
       "owner": "current task",
       "consumer_pr": 387,
       "consumer_url": "https://github.com/agentstation/starport/pull/387",
-      "consumer_head": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
-      "consumer_ci_run": 36432573361,
+      "consumer_head": "d6107baa33fc64c3cb1b896c624862e458c8e949",
+      "consumer_ci_run": 36440996799,
       "producer_merge": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
       "consumer_local_head": "d6107baa33fc64c3cb1b896c624862e458c8e949"
     },
@@ -1116,7 +1116,7 @@
     "rerank_proof": "../../csp12.2/rerank-billing-2026-09-27/verification.json",
     "speech_proof": "../../csp12.2/speech-billing-2026-09-27/verification.json",
     "image_billing_proof": "../../csp12.2/image-billing-2026-09-27/verification.json",
-    "next_action": "Collect the complete pre-PR review for d6107baa, publish through existing PR #387, and qualify fresh native CI before merge.",
+    "next_action": "Collect fresh native CI for published d6107baa and merge PR #387 only after exact-head checks pass.",
     "local_test_service": {
       "containers": [
         "starport-csp122-async-usage",

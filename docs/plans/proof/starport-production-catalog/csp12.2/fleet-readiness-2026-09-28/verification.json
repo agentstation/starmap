@@ -287,5 +287,27 @@
       "unresolved_native_seconds": 20.23
     },
     "limits": "Instrumented setup observations are not release-build startup or request-latency qualification. CSP22 retains performance ownership."
+  },
+  "required_review": {
+    "status": "PASS",
+    "commit": "d6107baa33fc64c3cb1b896c624862e458c8e949",
+    "gate": "pre-pr",
+    "mode": "auto",
+    "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+    "reviewer": "claude-opus-5-5 high",
+    "parts": 9,
+    "findings": 0,
+    "secret_scan": "clean",
+    "max_passes": 64,
+    "reason": "Preserve the complete coherent consumer implementation diff. No truncation or scope reduction.",
+    "json": "review.json",
+    "log": "review.log"
+  },
+  "publication": {
+    "pr": 387,
+    "head": "d6107baa33fc64c3cb1b896c624862e458c8e949",
+    "status": "published",
+    "merge": "pending native CI",
+    "ci_run": 36440996799
   }
 }

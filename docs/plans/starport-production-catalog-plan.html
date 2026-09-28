@@ -9,15 +9,15 @@
 
 <h1>Starmap and Starport production catalog</h1>
 <section id="current-resume"><h2>Current resume state</h2>
-<p>Updated September 28, 2026 (America/Chicago). The plan remains active. CSP12.2 producer code is on main. The consumer fixture repair passes local verification. Required review is in progress. 26 of 40 tasks are complete.</p>
+<p>Updated September 28, 2026 (America/Chicago). The plan remains active. CSP12.2 producer code is on main. The consumer fixture repair passes local verification. Required review passes all nine parts. 26 of 40 tasks are complete.</p>
 
-<p id="next-action">Collect review session <code>22767</code> for consumer <code>d6107baa</code>. The <a href="proof/starport-production-catalog/csp12.2/fleet-readiness-2026-09-28/verification.json">fixture qualification</a> records eight passing real-storage race results without failures or skips. Final lint and workflow validation pass. Publish through existing PR #387, then collect fresh native CI.</p>
+<p id="next-action">Collect native CI run <code>36440996799</code> through watch session <code>58694</code> for consumer <code>d6107baa</code>. The <a href="proof/starport-production-catalog/csp12.2/fleet-readiness-2026-09-28/verification.json">fixture qualification</a> records eight passing real-storage race results without failures or skips. Final lint and workflow validation pass. PR #387 now contains the reviewed repair.</p>
 
-<p>The local fixture closes its setup gateway and adopts the exact stopped catalog head. Profiled startup supports a 90-second instrumented setup allowance. Request deadlines and accounting assertions remain unchanged. Review and publish the repair through PR #387 before its protected merge.</p>
+<p>The local fixture closes its setup gateway and adopts the exact stopped catalog head. Profiled startup supports a 90-second instrumented setup allowance. Request deadlines and accounting assertions remain unchanged. Verify native CI before the protected merge of PR #387.</p>
 
 <p>Starmap PR #187 merged as <code>4586667a3</code>. CSP12.2 remains active.</p>
 
-<p>Producer <code>/private/tmp/starmap-fleet-review-20260926</code> uses <code>codex/budget-qualification</code> at <code>485b54376</code>. Consumer <code>/private/tmp/starport-fleet-review-20260926</code> uses <code>codex/atomic-budget-admission</code> at <code>d6107baa</code>. PR #187 merged with exact reviewed-tree equality. PR #387 contains <code>0f536c92</code>. The local repair commit awaits review and publication. Use Go 1.27.1.</p>
+<p>Producer <code>/private/tmp/starmap-fleet-review-20260926</code> uses <code>codex/budget-qualification</code> at <code>485b54376</code>. Consumer <code>/private/tmp/starport-fleet-review-20260926</code> uses <code>codex/atomic-budget-admission</code> at <code>d6107baa</code>. PR #187 merged with exact reviewed-tree equality. PR #387 contains reviewed <code>d6107baa</code>. Native CI and merge remain open. Use Go 1.27.1.</p>
 
 <p>Current consumer qualification uses <code>GOWORK=off</code> with published Starmap <code>v0.16.6-0.20260928105604-485b543761c7</code>. Producer checks also use <code>GOWORK=off</code>. Commit <code>ff2a1f52</code> records the pin.</p>
 
@@ -25,7 +25,7 @@
 
 <p>The <a href="proof/starport-production-catalog/csp12.2/final-source-2026-09-28/task-summary.json">final-source task gate</a> passes all 23 selected cases with 443 results and no failures or skips. The proof retains its 22 completed invocations.</p>
 
-<p>Preserve unrelated consumer changes in <code>docs/ARCHITECTURE.md</code> and <code>internal/cache/README.md</code>. Preserve unrelated plan-checkout changes. Reuse clean detached checkout <code>/private/tmp/starport-clock-review-20260926</code> at <code>d6107baa</code> for consumer review. Review session <code>22767</code> owns it.</p>
+<p>Preserve unrelated consumer changes in <code>docs/ARCHITECTURE.md</code> and <code>internal/cache/README.md</code>. Preserve unrelated plan-checkout changes. Reuse clean detached checkout <code>/private/tmp/starport-clock-review-20260926</code> at <code>d6107baa</code> for consumer review. Its nine-part review finished successfully.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp12.2/owner-decisions-2026-09-28/DECISIONS.md">accepted policies</a> permit only proven-unstarted batch recovery under current authorization. Corrections stop 90 days after original settlement. Unresolved reservations do not expire. Completed results remain available. Uncertain attempts never repeat automatically.</p>
 
