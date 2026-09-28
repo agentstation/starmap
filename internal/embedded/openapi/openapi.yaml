@@ -250,6 +250,8 @@ components:
       - EndpointTypeOllama
       - EndpointTypeCohere
       - EndpointTypeVoyage
+      - EndpointTypeMistralOCR
+      - EndpointTypeDeepInfraVideo
     catalogs.FieldMapping:
       properties:
         from:
@@ -1335,6 +1337,10 @@ components:
       properties:
         operation:
           $ref: '#/components/schemas/catalogs.ProviderOperation'
+        overrides_by_model:
+          additionalProperties:
+            $ref: '#/components/schemas/catalogs.ProviderInferenceModelEndpoint'
+          type: object
         path:
           type: string
         paths_by_author:
@@ -1353,6 +1359,8 @@ components:
             - EndpointTypeOllama
             - EndpointTypeCohere
             - EndpointTypeVoyage
+            - EndpointTypeMistralOCR
+            - EndpointTypeDeepInfraVideo
           type: object
         stream_path:
           type: string
@@ -1371,6 +1379,28 @@ components:
           - EndpointTypeOllama
           - EndpointTypeCohere
           - EndpointTypeVoyage
+          - EndpointTypeMistralOCR
+          - EndpointTypeDeepInfraVideo
+      type: object
+    catalogs.ProviderInferenceModelEndpoint:
+      properties:
+        path:
+          type: string
+        stream_path:
+          type: string
+        type:
+          description: 'Required: API style'
+          type: string
+          x-enum-varnames:
+          - EndpointTypeOpenAI
+          - EndpointTypeAnthropic
+          - EndpointTypeGoogle
+          - EndpointTypeGoogleCloud
+          - EndpointTypeOllama
+          - EndpointTypeCohere
+          - EndpointTypeVoyage
+          - EndpointTypeMistralOCR
+          - EndpointTypeDeepInfraVideo
       type: object
     catalogs.ProviderOpenAICatalogProtocolOptions:
       properties:

@@ -73,6 +73,8 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [func PrepareAcquisitionReplay\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation, runID string, completedAt time.Time\) \(catalogs.Generation, \[\]sources.Observation, error\)](<#PrepareAcquisitionReplay>)
 - [func ReplayAcquisition\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation\) \(\*starmap.Candidate, error\)](<#ReplayAcquisition>)
 - [func ValidateDirectoryPermissions\(ctx context.Context, directory string\) error](<#ValidateDirectoryPermissions>)
+- [func ValidateFleetRecovery\(ctx context.Context, snapshot FleetSnapshot\) error](<#ValidateFleetRecovery>)
+- [func ValidateFleetReplay\(ctx context.Context, snapshot FleetSnapshot, opts ...Option\) error](<#ValidateFleetReplay>)
 - [func VerifyDirectoryMigrationPublication\(ctx context.Context, request DirectoryMigrationRequest\) error](<#VerifyDirectoryMigrationPublication>)
 - [type Acquirer](<#Acquirer>)
 - [type AcquisitionPolicy](<#AcquisitionPolicy>)
@@ -95,6 +97,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(o DirectoryOwner\) Validate\(\) error](<#DirectoryOwner.Validate>)
 - [type FleetAcquisitionChecker](<#FleetAcquisitionChecker>)
 - [type FleetAcquisitionRequirements](<#FleetAcquisitionRequirements>)
+- [type FleetAdoption](<#FleetAdoption>)
 - [type FleetHead](<#FleetHead>)
   - [func \(h FleetHead\) Validate\(\) error](<#FleetHead.Validate>)
 - [type FleetIdentity](<#FleetIdentity>)
@@ -469,6 +472,24 @@ Linux and macOS also check ancestor ownership, directory\-entry protection, and 
 
 An empty directory selects in\-memory state. Missing paths remain absent.
 
+<a name="ValidateFleetRecovery"></a>
+## func [ValidateFleetRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_validation.go#L12>)
+
+```go
+func ValidateFleetRecovery(ctx context.Context, snapshot FleetSnapshot) error
+```
+
+ValidateFleetRecovery checks retained input structure without opening a runtime. It grants no permission and does not check compatibility with deployment settings.
+
+<a name="ValidateFleetReplay"></a>
+## func [ValidateFleetReplay](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_validation.go#L33>)
+
+```go
+func ValidateFleetReplay(ctx context.Context, snapshot FleetSnapshot, opts ...Option) error
+```
+
+ValidateFleetReplay reproduces a retained catalog under the supplied runtime settings. It starts no runtime, acquisition, clock observation, filesystem access, or lease. Successful validation does not renew a receipt or authorize an inference attempt.
+
 <a name="VerifyDirectoryMigrationPublication"></a>
 ## func [VerifyDirectoryMigrationPublication](<https://github.com/agentstation/starmap/blob/main/runtime/migration_check.go#L52>)
 
@@ -790,6 +811,18 @@ type FleetAcquisitionRequirements struct {
 }
 ```
 
+<a name="FleetAdoption"></a>
+## type [FleetAdoption](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L103-L106>)
+
+FleetAdoption identifies explicit host recovery without changing the original publication grant. The host must verify the receipt and independent approval before exposing this snapshot. This record grants no refresh lease or inference permission.
+
+```go
+type FleetAdoption struct {
+    Previous FleetHead `json:"previous"`
+    Receipt  string    `json:"receipt"`
+}
+```
+
 <a name="FleetHead"></a>
 ## type [FleetHead](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L31-L36>)
 
@@ -882,7 +915,7 @@ func (r FleetRecovery) Validate(generation catalogs.Generation) error
 Validate checks the generation binding and the complete input checksum. Runtime recovery separately validates the input schema and acquisition policy.
 
 <a name="FleetSnapshot"></a>
-## type [FleetSnapshot](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L94-L97>)
+## type [FleetSnapshot](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L94-L98>)
 
 FleetSnapshot retains the accepted publication and its original ownership evidence. Reading a snapshot does not prove that its grant remains valid.
 
@@ -890,11 +923,12 @@ FleetSnapshot retains the accepted publication and its original ownership eviden
 type FleetSnapshot struct {
     Head        FleetHead        `json:"head"`
     Publication FleetPublication `json:"publication"`
+    Adoption    *FleetAdoption   `json:"adoption,omitempty"`
 }
 ```
 
 <a name="FleetSnapshot.Validate"></a>
-### func \(FleetSnapshot\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L100>)
+### func \(FleetSnapshot\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L109>)
 
 ```go
 func (s FleetSnapshot) Validate() error
@@ -916,7 +950,7 @@ type FleetStatus struct {
 ```
 
 <a name="FleetStore"></a>
-## type [FleetStore](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L114-L140>)
+## type [FleetStore](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L150-L176>)
 
 FleetStore owns shared publication, retained inputs, and refresh ownership. Hosts supply the adapter. Standalone stores keep the separate storage.Store contract. Each method uses one deployment namespace and the approved backend incarnation. New or recovered connections must validate that incarnation before application operations.
 
