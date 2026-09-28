@@ -1,6 +1,7 @@
 package privatefiles
 
 import (
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -24,6 +25,10 @@ func TestPrivateEmptyRecordReadWhileExclusivelyLocked(t *testing.T) {
 		t.Fatalf("acquire owner lock: %v, %v", locked, err)
 	}
 	for _, limit := range []int64{0, 1, 4096} {
+		n, err := directory.CopyFile(t.Context(), "owner.lock", io.Discard, limit)
+		if err != nil || n != 0 {
+			t.Fatalf("copy empty locked file: %d, %v", n, err)
+		}
 		data, err := directory.ReadFile("owner.lock", limit)
 		if err != nil || data == nil || len(data) != 0 {
 			t.Fatalf("read empty locked file with limit %d: %v, %v", limit, data, err)
