@@ -1,5 +1,5 @@
 {
-  "status": "LOCAL_PASS_REVIEW_RUNNING",
+  "status": "REVIEWED_PUBLISHED_NATIVE_CI_RUNNING",
   "task": "CSP12.2",
   "consumer_commit": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
   "failure_evidence": {
@@ -25,10 +25,14 @@
     "diff_check": "PASS"
   },
   "review": {
-    "status": "running",
+    "status": "PASS",
     "session": 60236,
     "max_passes": 64,
-    "reason": "Review the complete coherent consumer diff without truncation."
+    "reason": "Review the complete coherent consumer diff without truncation.",
+    "reviewer": "claude-opus-5-5 high",
+    "parts": 9,
+    "findings": 0,
+    "secret_scan": "clean"
   },
   "artifacts": {
     "local-tests.jsonl": {
@@ -45,5 +49,11 @@
     }
   },
   "native": "UNVERIFIED at this commit",
-  "merge": "pending"
+  "merge": "pending",
+  "publication": {
+    "head": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
+    "pr": 387,
+    "run": 36447373952,
+    "watch_session": 91819
+  }
 }

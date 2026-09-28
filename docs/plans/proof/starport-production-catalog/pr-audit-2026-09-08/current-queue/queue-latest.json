@@ -1353,7 +1353,7 @@
         "baseRefName": "main",
         "baseRefOid": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
         "headRefName": "codex/atomic-budget-admission",
-        "headRefOid": "6f97ba52960620e62f91f49d8fe56621bfada6eb",
+        "headRefOid": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
         "isDraft": false,
         "mergeStateStatus": "BLOCKED",
         "number": 387,
@@ -1361,7 +1361,7 @@
         "title": "Reserve paid-operation budgets and recover durable work safely",
         "url": "https://github.com/agentstation/starport/pull/387",
         "owner": "CSP12.2",
-        "disposition": "Reviewed source-fixture repair published. Fresh native CI is active.",
+        "disposition": "Mandatory Windows Compose qualification reviewed and published. Fresh native CI is active.",
         "next_action": "Collect current native CI, verify exact consumer head and review threads, merge PR #387, record merge commit, and close CSP12.2."
       },
       {
@@ -1410,8 +1410,8 @@
   "compose_qualification": {
     "owner": "CSP12.2",
     "local_head": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
-    "published_head": "6f97ba52960620e62f91f49d8fe56621bfada6eb",
-    "disposition": "Review mandatory Windows Compose qualification. Earlier native job skipped the check.",
-    "next_action": "Complete review, publish existing PR #387, qualify exact native head, and merge."
+    "published_head": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
+    "disposition": "Reviewed mandatory Compose qualification published. Native CI running.",
+    "next_action": "Collect run 36447373952, verify exact head and review threads, and merge PR #387."
   }
 }
