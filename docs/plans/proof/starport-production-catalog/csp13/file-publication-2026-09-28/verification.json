@@ -2,15 +2,18 @@
   "status": "in_progress",
   "previous_goal_turn": "no progress: repeated shared-tool verification did not change the next plan action",
   "producer": {
-    "head": "a055f88ff6222663bd96443a62c28f023e4f0f8c",
+    "head": "ffb2d25dd1bfeada8e34f80a4e9be2df5b50b987",
     "branch": "codex/recovery-file-access",
-    "worktree": "/private/tmp/starmap-fleet-review-20260926"
+    "worktree": "/private/tmp/starmap-fleet-review-20260926",
+    "code_head": "a055f88ff6222663bd96443a62c28f023e4f0f8c",
+    "documentation": "pkg/productfiles/README.md documents byte bounds, partial output, writer fencing, and caller hashes. Full source-writing check: 1919 files, zero diagnostics."
   },
   "consumer": {
     "head": "3c48670d5cf76f4a2c507998dbdefa88cf2943f8",
     "branch": "codex/storage-recovery",
     "uncommitted": {
       "internal/recovery/file_tree.go": "c2a422c580eeea54be98cb9b8042224ff6325b811c8cb0fd1febf60cb2db80bc",
+      "internal/recovery/file_tree_process_test.go": "de411d5b591c70540179eb43b01e01b29e93b7df4265af6c0514a58a9bafc4fe",
       "internal/recovery/file_tree_test.go": "803b9c3c87e7335f1ad4ca4151e8288077751fcfd04078fe73db647e71569a62",
       "internal/recovery/file_tree_verify.go": "49ef74915fa5655b30ecd411a24fde62d7ccca1caa3eb43702ee2bf73703d0d0"
     }
@@ -276,6 +279,317 @@
     "producer_goago": {
       "raw": "csp13-private-stream-goago.json",
       "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    "consumer_process_race": {
+      "counts": {
+        "pass": 31,
+        "fail": 0,
+        "skip": 0
+      },
+      "results": [
+        {
+          "test": "TestRestoreFileTreeProcessLoss/validated",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeProcessLoss/published",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeProcessLoss",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePublishesOnlyAfterOwnerValidation",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets/bytes",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets/extra-file",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets/extra-directory",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets/symlink",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets/wrong-type",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets/owner-refusal",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent/source-changed",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent/owner-refusal",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent/owner-mutation",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent/canceled",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent/missing-validator",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/relative-target",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/source-overlap",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/empty",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/unknown",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/traversal",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/case-alias",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/file-parent",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/duplicate-payload",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeResumesAfterLostPublicationAcknowledgment",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesACompetingDirectory",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsStagingReplacementWithoutDeletingIt",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeConcurrentPublicationHasOneWinner",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePortableNames",
+          "action": "pass"
+        }
+      ],
+      "raw": "consumer_process_race.jsonl.gz",
+      "sha256": "16b2edef9fe9a799e877ddd5d5d946c1887cdce1e805c2bb8973df22a4e10e72",
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -modfile=/tmp/csp13-native.mod -race -json -count=1 -timeout=3m ./internal/recovery -run ^TestRestoreFileTree"
+    },
+    "consumer_process_pure_go": {
+      "counts": {
+        "pass": 31,
+        "fail": 0,
+        "skip": 0
+      },
+      "results": [
+        {
+          "test": "TestRestoreFileTreeProcessLoss/validated",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeProcessLoss/published",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeProcessLoss",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePublishesOnlyAfterOwnerValidation",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets/bytes",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets/extra-file",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets/extra-directory",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets/symlink",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets/wrong-type",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets/owner-refusal",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesConflictingTargets",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent/source-changed",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent/owner-refusal",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent/owner-mutation",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent/canceled",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent/missing-validator",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/relative-target",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/source-overlap",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/empty",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/unknown",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/traversal",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/case-alias",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/file-parent",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging/duplicate-payload",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeResumesAfterLostPublicationAcknowledgment",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePreservesACompetingDirectory",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeRejectsStagingReplacementWithoutDeletingIt",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreeConcurrentPublicationHasOneWinner",
+          "action": "pass"
+        },
+        {
+          "test": "TestRestoreFileTreePortableNames",
+          "action": "pass"
+        }
+      ],
+      "raw": "consumer_process_pure_go.jsonl.gz",
+      "sha256": "3cb5b7ef6417931fdfbd32487832d66eaddd9e6eaa07840309348e53c9b05f20",
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 go test -modfile=/tmp/csp13-native.mod -json -count=1 -timeout=3m ./internal/recovery -run ^TestRestoreFileTree"
+    },
+    "consumer_process_lint": {
+      "raw": "csp13-tree-lint-process.log",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "exit_code": 0
+    },
+    "producer_writing": {
+      "raw": "csp13-private-stream-doc-writing.log",
+      "sha256": "94f010e21b11e25461310d70ee6e916bb13e265a9b4bf3e1c21d24b7dbf5908f",
+      "exit_code": 0
+    },
+    "consumer_vet": {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet -modfile=/tmp/csp13-native.mod ./internal/recovery",
+      "exit_code": 0
+    },
+    "producer_windows_compile": {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go test -c -o /tmp/csp13-privatefiles-windows.test.exe ./internal/privatefiles",
+      "exit_code": 0,
+      "limitation": "Cross-compilation only. Native Windows execution remains UNVERIFIED."
+    },
+    "consumer_writing": {
+      "files": 4,
+      "diagnostics": 0,
+      "exit_code": 0
+    },
+    "plan_writing": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "files": 1925,
+      "diagnostics": 226,
+      "scope": "Existing historical diagnostics. Scoped changed prose passes. This full check preceded the final process-test evidence update."
+    },
+    "producer_full_verify": {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 make verify",
+      "status": "RUNNING",
+      "session_id": 7562,
+      "log": "/tmp/csp13-private-stream-verify.log",
+      "partial_log": "producer-verification-partial.log.gz",
+      "note": "Session polled live after the final focused tests. No completion or native-platform pass is inferred."
     }
   },
   "limitations": [
@@ -284,5 +598,11 @@
     "Consumer tests use /tmp/csp13-native.mod or /tmp/csp13-lint.work with the local producer. The committed module pin is unchanged.",
     "The tree publisher is not connected to component owners or operator activation.",
     "One CSP13 acceptance subcase passes from prior evidence. Fifteen remain UNVERIFIED."
+  ],
+  "process_loss_contract": [
+    "Subprocess exits with code 77 before namespace publication and after publication without executing deferred cleanup.",
+    "A pre-publication process loss leaves an inactive staging tree. A retry publishes a new verified tree and preserves the abandoned tree.",
+    "A post-publication process loss reuses the verified target and confirms durability. It never overwrites target contents.",
+    "These tests prove process-loss recovery, not hardware power-loss durability or complete deployment activation."
   ]
 }
