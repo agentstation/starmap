@@ -53,10 +53,8 @@
     "archive": "fleet-after.jsonl.gz"
   },
   "remaining": [
-    "Complete full failing test group",
-    "Commit and required pre-PR review",
-    "Push same PR",
-    "Required native CI and paired merges"
+    "Required native CI",
+    "Consumer merge"
   ],
   "native_package_timeout": {
     "failed_jobs": [
@@ -65,7 +63,7 @@
     ],
     "cause": "All four race-enabled native jobs exceeded the implicit ten-minute Go package limit in internal/app. No individual assertion failed. Windows arm64 (pure Go, without race) passed.",
     "repair": "Run internal/app separately before remaining packages, with an explicit 30-minute whole-package limit. Preserve individual deadlines, all five targets, race flags, and combined coverage.",
-    "status": "qualification_in_progress",
+    "status": "PASS_LOCAL",
     "session": 70577,
     "log": "/tmp/csp122-app-isolated-after.jsonl",
     "failed_platforms": [
@@ -74,7 +72,112 @@
       "macos-15",
       "windows-2025"
     ],
-    "original_run_status": "completed/failure"
+    "original_run_status": "completed/failure",
+    "historical_partial_results": {
+      "ubuntu-24.04": {
+        "test_events": {
+          "pass": 5233,
+          "skip": 323
+        },
+        "failed_packages": [
+          "github.com/agentstation/starport/internal/app"
+        ],
+        "application_last_test_passes": [
+          [
+            "TestProductionRecognitionThenCancel",
+            3.86
+          ],
+          [
+            "TestRunRecoversRetainedBudgetEvidence",
+            0.55
+          ],
+          [
+            "TestProductionBudgetSurvivesReportingFailure/store/measured",
+            4.18
+          ]
+        ]
+      },
+      "ubuntu-24.04-arm": {
+        "test_events": {
+          "pass": 5347,
+          "skip": 325
+        },
+        "failed_packages": [
+          "github.com/agentstation/starport/internal/app"
+        ],
+        "application_last_test_passes": [
+          [
+            "TestInferenceCredentialsNeverEnterCatalogState",
+            1.36
+          ],
+          [
+            "TestAuthPlanesAreIsolated",
+            1.34
+          ],
+          [
+            "TestCatalogConfigurationControlsRuntimeTraffic/offline",
+            6.28
+          ]
+        ]
+      },
+      "windows-2025": {
+        "test_events": {
+          "pass": 5222,
+          "skip": 328
+        },
+        "failed_packages": [
+          "github.com/agentstation/starport/internal/app"
+        ],
+        "application_last_test_passes": [
+          [
+            "TestProductionRecognitionBudget/token_budget_without_cache_count",
+            11.62
+          ],
+          [
+            "TestProductionRecognitionBudget",
+            60.44
+          ],
+          [
+            "TestProductionRecognitionRefusesInsufficientBudget",
+            4.07
+          ]
+        ]
+      },
+      "macos-15": {
+        "test_events": {
+          "pass": 5233,
+          "skip": 324
+        },
+        "failed_packages": [
+          "github.com/agentstation/starport/internal/app"
+        ],
+        "application_last_test_passes": [
+          [
+            "TestProductionBudgetSurvivesReportingFailure/store/uncertain",
+            4.33
+          ],
+          [
+            "TestProductionBudgetSurvivesReportingFailure/export/measured",
+            11.41
+          ],
+          [
+            "TestProductionBudgetSurvivesReportingFailure/export/uncertain",
+            12.61
+          ]
+        ]
+      }
+    },
+    "result": {
+      "exit_code": 0,
+      "elapsed_seconds": 588.579,
+      "test_events": {
+        "pass": 381,
+        "fail": 0,
+        "skip": 9
+      },
+      "archive": "app-after.jsonl.gz",
+      "limits": "Shared-service tests are optional in this local package run. Separate service jobs and final hosted native results remain required."
+    }
   },
   "workflow_validation": {
     "actionlint": "PASS",
@@ -83,5 +186,19 @@
       "fail": 0
     }
   },
-  "containers": "All three task storage containers stopped after full fleet test group passed."
+  "containers": "All three task storage containers stopped after full fleet test group passed.",
+  "commit": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
+  "review": {
+    "status": "PASS",
+    "exit_code": 0,
+    "reviewer": "claude-opus-5-5 high",
+    "parts": 9,
+    "actionable_findings": 0,
+    "secret_scan": "PASS",
+    "max_passes": 64,
+    "reason": "Preserve the complete coherent consumer diff."
+  },
+  "published": true,
+  "new_ci_run": 36432573361,
+  "new_ci_head": "0f536c92c85f675e24bd1862ae37fa1534b8661f"
 }
