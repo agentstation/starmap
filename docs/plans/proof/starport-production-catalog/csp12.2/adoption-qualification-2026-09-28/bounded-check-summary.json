@@ -1,0 +1,209 @@
+{
+  "status": "PASS",
+  "registered_checks": 33,
+  "statuses": {
+    "PASS": 33
+  },
+  "raw": "bounded-check.json.gz",
+  "raw_sha256": "9ccfa401ed913536f00787cf1efd3d6978a0e2e1da656e4546c3b220926ebc47",
+  "checks": [
+    {
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestDeclaredChatTokenBounds",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestTextChatBillingScopeRejectsExtraChargeSurfaces",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestEmbeddingTokenBounds",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestRerankTokenBound",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestRecognitionBoundEnforcesSelectedOffering",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestFixedPageBoundDoesNotInventProviderLimit",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestModerationChargeBoundsAndEvidence",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestImageValuation",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestImageValuationEditRequestCharge",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestSpeechValuation",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestVideoValuationUsesPinnedMeasuredSeconds",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestVideoValuationRefusesUnknownAdditionalCharges",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/limits/reservation",
+      "test": "TestValuation",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/limits/reservation",
+      "test": "TestAggregateOverflowPreservesDebtAndBlocksAdmission",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionBudgetDispatchReservesConcurrentCapacity",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionSpendSettlementUsesDeclaredClasses",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionBudgetDispatchStreamCompletionAndCancellation",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionResponsesBudget",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionEmbeddingBudget",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionSemanticEmbeddingSharesBudget",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionRecognitionBudget",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionPageRecognitionBudget",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionRerankBudget",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionModerationBudget",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionGuardrailModerationAdmission",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionImagesBudget",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionSpeechBudget",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionTranscriptionBudgetRefusal",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionNativeVideoBudget",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionNativeExternalVideoAsset",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionVideoFollowupBudget",
+      "status": "PASS"
+    },
+    {
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionBatchBudget",
+      "status": "PASS"
+    },
+    {
+      "repository": "starmap",
+      "package": "./internal/bootstrap",
+      "test": "TestEveryPublishedMediaOperationMatchesItsDefinition",
+      "status": "PASS"
+    }
+  ]
+}

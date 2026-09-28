@@ -1,0 +1,528 @@
+{
+  "adoption_group_measured_seconds": 385.99,
+  "scope": "Local adoption and focused bound qualification; CSP12.2 and released-pair qualification remain incomplete.",
+  "toolchain": "go1.27.1",
+  "platform": "darwin/arm64",
+  "race": true,
+  "runs": {
+    "adoption-expiry": {
+      "raw": "adoption-expiry.jsonl.gz",
+      "sha256": "39ece608e422096b1178a99ed6fda82c7275a77869ddbd062df89a63c4269b39",
+      "test_results": {
+        "pass": 3,
+        "fail": 1
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "status": "fail",
+          "elapsed": 49.684
+        }
+      ],
+      "repository": "starmap",
+      "reproduction_command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "-run",
+        "^(TestFleetAdoptionDoesNotRenewExpiredPermission|TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission)$",
+        "./runtime"
+      ],
+      "command_note": "Equivalent reproduction selector; the exact original selector was not retained."
+    },
+    "adoption-expiry-final": {
+      "raw": "adoption-expiry-final.jsonl.gz",
+      "sha256": "5af359d48edcab6703098e78e8bd3b89a4e9b40b833470027b9578c750f13beb",
+      "test_results": {
+        "pass": 1
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "status": "pass",
+          "elapsed": 35.992
+        }
+      ],
+      "repository": "starmap",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "-run",
+        "^TestFleetAdoptionDoesNotRenewExpiredPermission$",
+        "./runtime"
+      ]
+    },
+    "adoption-concurrency-initial": {
+      "raw": "adoption-concurrency-initial.jsonl.gz",
+      "sha256": "2c52a55ae3ef3a5a446f332f4cd750346c44659e63a81e58ff9029ee0851283e",
+      "test_results": {
+        "fail": 2
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "status": "fail",
+          "elapsed": 88.352
+        }
+      ],
+      "repository": "starport",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^TestFleetAdoptionRepeatedRecoveryAndConcurrentSelection$",
+        "./internal/catalog"
+      ]
+    },
+    "adoption-concurrency": {
+      "raw": "adoption-concurrency.jsonl.gz",
+      "sha256": "00b12ba5d5411d4e9c1a72f6841f57962c8dfd9cccbc372ba54216b6c7355bb3",
+      "test_results": {
+        "pass": 3
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "status": "pass",
+          "elapsed": 161.008
+        }
+      ],
+      "repository": "starport",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^TestFleetAdoptionRepeatedRecoveryAndConcurrentSelection$",
+        "./internal/catalog"
+      ]
+    },
+    "adoption-fleet-full": {
+      "raw": "adoption-fleet-full.jsonl.gz",
+      "sha256": "87f4106946e7c1bebcfff98be00ceb8dc373b89ad7d957f7e280a4805e5ddb36",
+      "test_results": {
+        "fail": 18,
+        "pass": 52
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/storage",
+          "status": "pass",
+          "elapsed": 1.6949999999999998
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "status": "fail",
+          "elapsed": 3.668
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "status": "fail",
+          "elapsed": 427.354
+        }
+      ],
+      "repository": "starport",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "7m",
+        "-json",
+        "-run",
+        "^(TestFleet|TestFreshFleet|TestRecoveryWitness|TestBudgetAuthority|TestValkeyIncarnation)",
+        "./internal/catalog",
+        "./internal/recovery",
+        "./internal/storage"
+      ]
+    },
+    "adoption-recovery-final": {
+      "raw": "adoption-recovery-final.jsonl.gz",
+      "sha256": "53bbb6639a6511144a699bbb1425c802524066ad501f5b84c5a944608c2ebe3c",
+      "test_results": {
+        "pass": 21
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "status": "pass",
+          "elapsed": 7.167
+        }
+      ],
+      "repository": "starport",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "7m",
+        "-json",
+        "-run",
+        "^(TestFleet|TestFreshFleet|TestRecoveryWitness|TestBudgetAuthority|TestValkeyIncarnation)",
+        "./internal/recovery"
+      ]
+    },
+    "adoption-production-contention": {
+      "raw": "adoption-production-contention.jsonl.gz",
+      "sha256": "6c54a1edfeb48ccfbff25a87a5493c31710dbb76005c7f814f3455be67c25c89",
+      "test_results": {
+        "pass": 3,
+        "fail": 2
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "status": "fail",
+          "elapsed": 395.268
+        }
+      ],
+      "repository": "starport",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "7m",
+        "-json",
+        "-run",
+        "^(TestProductionBudgetAcrossProcesses|TestSettledJobRequiresOriginalSharedApproval)$",
+        "./internal/app"
+      ]
+    },
+    "adoption-production-full": {
+      "raw": "adoption-production-full.jsonl.gz",
+      "sha256": "86109e38f1c3e96e02df0b6b49ae2947d9c254ea1a10d815c868946a741dcda2",
+      "test_results": {
+        "pass": 5
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "status": "pass",
+          "elapsed": 293.272
+        }
+      ],
+      "repository": "starport",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "7m",
+        "-json",
+        "-run",
+        "^(TestProductionBudgetAcrossProcesses|TestSettledJobRequiresOriginalSharedApproval)$",
+        "./internal/app"
+      ]
+    },
+    "bounds-qualification": {
+      "raw": "bounds-qualification.jsonl.gz",
+      "sha256": "7649402dee2578283c8a2b42bbeaa026fdcf2e16a9adf5d40e7fcd4d212344d0",
+      "test_results": {
+        "pass": 72
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "status": "pass",
+          "elapsed": 2.989
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/router",
+          "status": "pass",
+          "elapsed": 18.83
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "status": "pass",
+          "elapsed": 19.594
+        }
+      ],
+      "scope": "Fourteen focused named tests. The later bounded-check.json.gz contains their exact verifier commands and the complete 33-check result."
+    }
+  },
+  "sources": {
+    "starmap": {
+      "root": "/private/tmp/starmap-fleet-review-20260926",
+      "head": "89e818f854a79660c8a3c3bb69945679dddc39bb",
+      "files": {
+        "runtime/fleet_runtime_test.go": "b4961c79fba29ef0fe32423aaa51bfd605ce14bfa9b38bb40f650eb37ba00619",
+        "scripts/catalog-product-checks.json": "821da12b047fbaa5cf81d77ac8a4ecd3db76bacd5c180eb96710e1aa2cf655db"
+      },
+      "patch": "starmap.patch.gz"
+    },
+    "starport": {
+      "root": "/private/tmp/starport-fleet-review-20260926",
+      "head": "bcfa9345455c35587b7a7c3ea38a53ca763447c0",
+      "files": {
+        "internal/catalog/fleet_adoption_concurrency_test.go": "1332661993c2327eb6462bb31cda279dd0a4e66122b5081ea19f38c360bb2757",
+        "internal/catalog/fleet_adoption_transport_test.go": "600a57eeeb3a29c31c98c72d93342549d45971df86fc8d518ae5517a9099c12e",
+        ".github/workflows/ci.yml": "a8a6de89bb18de1387364b8adebaa7d1cbcdf558480c59094682dec6cf76a40b"
+      },
+      "patch": "starport.patch.gz"
+    }
+  },
+  "notes": [
+    "The expiry test comment changed after its passing run; executable source did not change.",
+    "The combined fleet command failed in recovery fixtures with duplicate database selection and exhausted the catalog package deadline after its adoption tests passed. Inspect the corrected recovery run. CI now separates adoption into its own bounded step.",
+    "The fourteen focused bounds tests supplement nineteen production operation checks. The complete bound subcase passes all 33 checks through the repository verifier.",
+    "Initial expiry and transport assertions and the invalid verifier invocation remain historical evidence."
+  ],
+  "required": [
+    "complete separated fleet CI commands",
+    "retention decision and implementation",
+    "batch continuation decision and implementation",
+    "complete task gate",
+    "latency and capacity",
+    "native CI",
+    "pre-PR review",
+    "published dependency qualification",
+    "paired merges"
+  ],
+  "cleanup": {
+    "running_containers": [],
+    "stopped": [
+      "starport-csp122-postgres",
+      "starport-csp122-async-usage",
+      "starport-csp122-replacement-valkey"
+    ],
+    "docker_desktop_stop_exit": 0,
+    "docker_desktop_status": "Stopped successfully; subsequent status query could not reach Desktop."
+  },
+  "checks": {
+    "vet_runtime": 0,
+    "vet_catalog": 0,
+    "goago_starmap": 0,
+    "goago_starport": 0,
+    "verifier_tests": 99,
+    "actionlint": 0,
+    "action_pins": 14
+  },
+  "bounded_cost_and_tokens": {
+    "status": "PASS",
+    "registered_checks": 33,
+    "statuses": {
+      "PASS": 33
+    },
+    "raw": "bounded-check.json.gz",
+    "raw_sha256": "9ccfa401ed913536f00787cf1efd3d6978a0e2e1da656e4546c3b220926ebc47",
+    "checks": [
+      {
+        "repository": "starport",
+        "package": "./internal/router",
+        "test": "TestDeclaredChatTokenBounds",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/router",
+        "test": "TestTextChatBillingScopeRejectsExtraChargeSurfaces",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/router",
+        "test": "TestEmbeddingTokenBounds",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/router",
+        "test": "TestRerankTokenBound",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/router",
+        "test": "TestRecognitionBoundEnforcesSelectedOffering",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/router",
+        "test": "TestFixedPageBoundDoesNotInventProviderLimit",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/router",
+        "test": "TestModerationChargeBoundsAndEvidence",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/catalog",
+        "test": "TestImageValuation",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/catalog",
+        "test": "TestImageValuationEditRequestCharge",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/catalog",
+        "test": "TestSpeechValuation",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/catalog",
+        "test": "TestVideoValuationUsesPinnedMeasuredSeconds",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/catalog",
+        "test": "TestVideoValuationRefusesUnknownAdditionalCharges",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/limits/reservation",
+        "test": "TestValuation",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/limits/reservation",
+        "test": "TestAggregateOverflowPreservesDebtAndBlocksAdmission",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionBudgetDispatchReservesConcurrentCapacity",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionSpendSettlementUsesDeclaredClasses",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionBudgetDispatchStreamCompletionAndCancellation",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionResponsesBudget",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionEmbeddingBudget",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionSemanticEmbeddingSharesBudget",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionRecognitionBudget",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionPageRecognitionBudget",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionRerankBudget",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionModerationBudget",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionGuardrailModerationAdmission",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionImagesBudget",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionSpeechBudget",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionTranscriptionBudgetRefusal",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionNativeVideoBudget",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionNativeExternalVideoAsset",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionVideoFollowupBudget",
+        "status": "PASS"
+      },
+      {
+        "repository": "starport",
+        "package": "./internal/app",
+        "test": "TestProductionBatchBudget",
+        "status": "PASS"
+      },
+      {
+        "repository": "starmap",
+        "package": "./internal/bootstrap",
+        "test": "TestEveryPublishedMediaOperationMatchesItsDefinition",
+        "status": "PASS"
+      }
+    ]
+  }
+}
