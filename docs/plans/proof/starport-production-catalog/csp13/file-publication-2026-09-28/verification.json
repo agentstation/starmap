@@ -1,0 +1,288 @@
+{
+  "status": "in_progress",
+  "previous_goal_turn": "no progress: repeated shared-tool verification did not change the next plan action",
+  "producer": {
+    "head": "a055f88ff6222663bd96443a62c28f023e4f0f8c",
+    "branch": "codex/recovery-file-access",
+    "worktree": "/private/tmp/starmap-fleet-review-20260926"
+  },
+  "consumer": {
+    "head": "3c48670d5cf76f4a2c507998dbdefa88cf2943f8",
+    "branch": "codex/storage-recovery",
+    "uncommitted": {
+      "internal/recovery/file_tree.go": "c2a422c580eeea54be98cb9b8042224ff6325b811c8cb0fd1febf60cb2db80bc",
+      "internal/recovery/file_tree_test.go": "803b9c3c87e7335f1ad4ca4151e8288077751fcfd04078fe73db647e71569a62",
+      "internal/recovery/file_tree_verify.go": "49ef74915fa5655b30ecd411a24fde62d7ccca1caa3eb43702ee2bf73703d0d0"
+    }
+  },
+  "checks": {
+    "producer_fail_before": {
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-28T17:39:13.751993-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/pkg/productfiles",
+          "Elapsed": 0,
+          "FailedBuild": "github.com/agentstation/starmap/pkg/productfiles_test [github.com/agentstation/starmap/pkg/productfiles.test]"
+        }
+      ],
+      "skips": [],
+      "raw": "producer_fail_before.jsonl.gz",
+      "sha256": "4f814ad151f3631274510ff3c52dc244650f51cfda1ee1a34605d470efcaad06"
+    },
+    "producer_race": {
+      "counts": {
+        "pass": 139,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-28T17:42:19.55744-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/productfiles",
+          "Elapsed": 2.781
+        },
+        {
+          "Time": "2026-09-28T17:42:23.426836-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Elapsed": 6.651
+        }
+      ],
+      "skips": [],
+      "raw": "producer_race.jsonl.gz",
+      "sha256": "82225fe468ba4a2540ddf99391b06efdda78227d448b37a2caac6a84c80eb048"
+    },
+    "producer_pure_go": {
+      "counts": {
+        "pass": 139,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-28T17:43:27.144979-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/productfiles",
+          "Elapsed": 1.937
+        },
+        {
+          "Time": "2026-09-28T17:43:30.12348-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Elapsed": 4.915
+        }
+      ],
+      "skips": [],
+      "raw": "producer_pure_go.jsonl.gz",
+      "sha256": "94eec64c02ba42628b552cf10f09b9b60d53314803c0a85a6036aaeace3488eb"
+    },
+    "consumer_fail_before": {
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-28T17:34:24.540294-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Elapsed": 0,
+          "FailedBuild": "github.com/agentstation/starport/internal/recovery [github.com/agentstation/starport/internal/recovery.test]"
+        }
+      ],
+      "skips": [],
+      "raw": "consumer_fail_before.jsonl.gz",
+      "sha256": "8225c5e5ded72b0e6291726f3636b56799c7acd24f4a8b87d46a6c7058f00e93"
+    },
+    "consumer_final_race": {
+      "counts": {
+        "pass": 28,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-28T17:57:03.396247-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Elapsed": 17.002
+        }
+      ],
+      "skips": [],
+      "raw": "consumer_final_race.jsonl.gz",
+      "sha256": "5368c7402e4a3fc1f8daa523c814873dca8e876e1bb0fe6af67c31fb91b4e3db"
+    },
+    "consumer_pure_go_before_refactor": {
+      "counts": {
+        "pass": 28,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-28T17:49:10.98442-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Elapsed": 7.182
+        }
+      ],
+      "skips": [],
+      "raw": "consumer_pure_go_before_refactor.jsonl.gz",
+      "sha256": "f2af47e7d296e125867b0f2a0fdc364335dc09d658cf59bcaf6caf7966be5438"
+    },
+    "consumer_full_race_before_refactor": {
+      "counts": {
+        "pass": 169,
+        "fail": 0,
+        "skip": 26
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-28T17:55:55.86058-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Elapsed": 123.734
+        }
+      ],
+      "skips": [
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestBudgetAuthorityRequiresBothApprovals"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestBudgetAuthorityFencesDelayedWrites/before-native-write"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestBudgetAuthorityFencesDelayedWrites/after-native-write"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestBudgetAuthorityClosedAndChangedEpoch"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetBootstrapPermission"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestPrepareBundleLocalAndSharedRecipes/shared"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestBackupBundleSharedRecipe"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetInitialization"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesExistingState/kv"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesExistingState/sql"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesExistingState/approval"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesExistingState/closed-approval"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesExistingState/row-security"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesExistingState/unknown-table"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetInterruptedClaim"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetConcurrentInitialization"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetRefusesChangedIncarnation"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestFreshFleetSQLFailureRetainsOnlyRetryClaim"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestKVSnapshotTransfersAllBackendPairs/badger_to_valkey"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestKVSnapshotTransfersAllBackendPairs/valkey_to_badger"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestKVSnapshotTransfersAllBackendPairs/valkey_to_valkey"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestKVSnapshotInterruptedImportRetainsBarrierAndExactRetry/valkey_interrupted"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestKVSnapshotInterruptedImportRetainsBarrierAndExactRetry/valkey_lost_ack"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestKVSnapshotConcurrentImportsChooseOneOperation/valkey"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestKVSnapshotReadsEveryNativeScanPage"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestRecoveryRequiresOriginalIndependentApproval"
+        }
+      ],
+      "raw": "consumer_full_race_before_refactor.jsonl.gz",
+      "sha256": "ca1bb5f58f7f00b7f4ad5ff8627affe79eb1522d0fd9abf3473a9518759557d4"
+    },
+    "consumer_lint": {
+      "raw": "csp13-tree-lint-final.log",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "consumer_lint_failed_modfile": {
+      "raw": "csp13-tree-lint-candidate.log",
+      "sha256": "823a39633ea706ad31c4c4b7ab5a8b44937baf4cf4d217fc538a2b81b9f15340"
+    },
+    "consumer_lint_before_refactor": {
+      "raw": "csp13-tree-lint-workspace.log",
+      "sha256": "036d2089bd3192b86235095ca2d1833569987e5dfc046a70e5b35d3570a9f1d7"
+    },
+    "producer_goago": {
+      "raw": "csp13-private-stream-goago.json",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    }
+  },
+  "limitations": [
+    "Producer full make verify remains live in session 7562, log /tmp/csp13-private-stream-verify.log.",
+    "Linux and Windows native checks, pre-PR review, publication, and merge remain UNVERIFIED.",
+    "Consumer tests use /tmp/csp13-native.mod or /tmp/csp13-lint.work with the local producer. The committed module pin is unchanged.",
+    "The tree publisher is not connected to component owners or operator activation.",
+    "One CSP13 acceptance subcase passes from prior evidence. Fifteen remain UNVERIFIED."
+  ]
+}

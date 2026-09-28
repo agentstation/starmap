@@ -1,0 +1,4 @@
+Linting code...
+level=error msg="Running error: context loading failed: failed to load packages: failed to load packages: failed to load with go/packages: err: exit status 1: stderr: build flag -modfile only valid when using modules\n"
+exit status 3
+make: *** [lint] Error 1

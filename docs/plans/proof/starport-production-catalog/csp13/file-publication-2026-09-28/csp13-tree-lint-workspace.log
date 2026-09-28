@@ -1,0 +1,8 @@
+Linting code...
+internal/recovery/file_tree.go:61:1: cyclomatic complexity 31 of func `(*RestoreSource).publishFileTree` is high (> 30) (gocyclo)
+func (s *RestoreSource) publishFileTree(ctx context.Context, request FileTreeRequest, validate FileTreeValidator, checkpoint func(string) error) (result FileTreeResult, resultErr error) {
+^
+1 issues:
+* gocyclo: 1
+exit status 1
+make: *** [lint] Error 1
