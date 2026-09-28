@@ -1,0 +1,619 @@
+{
+  "checked_at": "2026-09-28T16:08:40.189611+00:00",
+  "state": "PREMERGE_AUDIT_NATIVE_CI_PENDING",
+  "consumer_head": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
+  "task_gate_source": "af12f463ff02322211762c6fd1dc634204c5639a",
+  "report_sha256": "1cd35e00fa39760055ec60694fa15607daac9cce46f09dd085f34a3d0b490505",
+  "selected_case_count": 23,
+  "unique_invocations": 22,
+  "events": {
+    "pass": 443,
+    "fail": 0,
+    "skip": 0
+  },
+  "case_to_invocation": {
+    "A15.online_batch_retry": [
+      "go-run-y9srrv7c.json",
+      "go-run-2zlqzt1l.json",
+      "go-run-g98l31x_.json",
+      "go-run-38t2654a.json",
+      "go-run-38t2654a.json",
+      "go-run-38t2654a.json",
+      "go-run-38t2654a.json",
+      "go-run-38t2654a.json",
+      "go-run-38t2654a.json",
+      "go-run-iwzwa7y0.json",
+      "go-run-iwzwa7y0.json",
+      "go-run-iz2324xx.json"
+    ],
+    "A47.analytics_drop_independence": [
+      "go-run-g98l31x_.json"
+    ],
+    "A47.atomic_hierarchical_reservation": [
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-rhtiveqc.json",
+      "go-run-ivx8ogk1.json"
+    ],
+    "A47.backend_operation_evidence": [
+      "go-run-g98l31x_.json",
+      "go-run-1g3aftca.json",
+      "go-run-1g3aftca.json"
+    ],
+    "A47.bounded_cost_and_tokens": [
+      "go-run-tcw8ddx8.json",
+      "go-run-tcw8ddx8.json",
+      "go-run-tcw8ddx8.json",
+      "go-run-tcw8ddx8.json",
+      "go-run-tcw8ddx8.json",
+      "go-run-tcw8ddx8.json",
+      "go-run-tcw8ddx8.json",
+      "go-run-5ajjhoun.json",
+      "go-run-5ajjhoun.json",
+      "go-run-5ajjhoun.json",
+      "go-run-5ajjhoun.json",
+      "go-run-5ajjhoun.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-cd6jyhpt.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-dh930th8.json",
+      "go-run-6g60ct4j.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-mgquq0l1.json",
+      "go-run-y9srrv7c.json",
+      "go-run-9stlll3_.json"
+    ],
+    "A47.chargeable_operation_matrix": [
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-cd6jyhpt.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-dh930th8.json",
+      "go-run-6g60ct4j.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-mgquq0l1.json",
+      "go-run-y9srrv7c.json",
+      "go-run-9stlll3_.json"
+    ],
+    "A47.clock_and_window_authority": [
+      "go-run-1g3aftca.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json"
+    ],
+    "A47.confirmed_absent_fast_path": [
+      "go-run-5p13v47u.json",
+      "go-run-g98l31x_.json"
+    ],
+    "A47.crash_failover_recovery": [
+      "go-run-rhtiveqc.json",
+      "go-run-s4yzu3ge.json",
+      "go-run-tmirefz6.json",
+      "go-run-ir1kf0_l.json",
+      "go-run-4oj1p_f9.json"
+    ],
+    "A47.idempotent_attempt_identity": [
+      "go-run-ivx8ogk1.json",
+      "go-run-g98l31x_.json"
+    ],
+    "A47.late_usage_pinned_valuation": [
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json"
+    ],
+    "A47.media_async_reconciliation": [
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-dh930th8.json",
+      "go-run-6g60ct4j.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-mgquq0l1.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json"
+    ],
+    "A47.policy_edit_preserves_spend": [
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json"
+    ],
+    "A47.quota_lease_support_boundary": [
+      "go-run-vxt97nih.json",
+      "go-run-vxt97nih.json"
+    ],
+    "A47.recognition_then_cancel": [
+      "go-run-g98l31x_.json"
+    ],
+    "A47.reconciliation_retention": [
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-38t2654a.json",
+      "go-run-38t2654a.json",
+      "go-run-38t2654a.json"
+    ],
+    "A47.rerank_billing_units": [
+      "go-run-tcw8ddx8.json",
+      "go-run-cd6jyhpt.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json"
+    ],
+    "A47.retry_fallback_charges": [
+      "go-run-g98l31x_.json",
+      "go-run-5p13v47u.json"
+    ],
+    "A47.semantic_embedding_cache_hit": [
+      "go-run-g98l31x_.json"
+    ],
+    "A47.stream_cancel_uncertainty": [
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json"
+    ],
+    "A47.unknown_cost_refusal": [
+      "go-run-5p13v47u.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-g98l31x_.json",
+      "go-run-g98l31x_.json"
+    ],
+    "A47.usage_reconcile_once": [
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-g98l31x_.json",
+      "go-run-ivx8ogk1.json"
+    ],
+    "A47.utc_window_boundaries": [
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json",
+      "go-run-ivx8ogk1.json"
+    ]
+  },
+  "invocations": {
+    "go-run-y9srrv7c.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionBatchBudget)$",
+        "./internal/app"
+      ],
+      "events": {
+        "pass": 14
+      },
+      "sha256_stdout": "a8156cf2ceeae054eeb2e9a2863dffa5ac214da7bf8edd0224c499c6b28301a0"
+    },
+    "go-run-2zlqzt1l.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionBatchRestart)$",
+        "./internal/app"
+      ],
+      "events": {
+        "pass": 3
+      },
+      "sha256_stdout": "110d79336e5af0c088884c5a0313cf4e706806fa6c854a1e4382a3daf7dfbf1a"
+    },
+    "go-run-g98l31x_.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestJobReservationChecksOriginalIdentity|TestLateNativeResponseBlocksDisputedBudget|TestProductionAdministratorVideoReconciliation|TestProductionBudgetBackendOperations|TestProductionBudgetDispatchReservesConcurrentCapacity|TestProductionBudgetDispatchStreamCompletionAndCancellation|TestProductionBudgetDispatchUnknownCostAndAbsentBudgets|TestProductionBudgetPreservesRequestIdentity|TestProductionBudgetSurvivesReportingFailure|TestProductionEmbeddingBudget|TestProductionEmbeddingRefusalBeforeDispatch|TestProductionGuardrailModerationAdmission|TestProductionJobsRequireSettledReservation|TestProductionModerationBudget|TestProductionNativeExternalVideoAsset|TestProductionNativeVideoBudget|TestProductionPageRecognitionBudget|TestProductionRecognitionBudget|TestProductionRecognitionThenCancel|TestProductionRerankInvalidResultRetainsCharge|TestProductionRerankRefusesInsufficientCapacity|TestProductionResponsesBudget|TestProductionSemanticEmbeddingSharesBudget|TestProductionSpendMissingTokenCountRetainsCapacity|TestProductionSpendSettlementUsesDeclaredClasses|TestProductionTranscriptionBudgetRefusal|TestRunRecoversRetainedBudgetEvidence|TestSettledJobRequiresOriginalSharedApproval)$",
+        "./internal/app"
+      ],
+      "events": {
+        "pass": 113
+      },
+      "sha256_stdout": "e8b0504f5d7b9bc2e06bd12bf82f7fc82e3f3b9cf05a6c91bdba29208ae42ab4"
+    },
+    "go-run-38t2654a.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestBatchAggregateSharedProcessRecovery|TestBatchCancellationAcrossWorkersPreventsNextLine|TestBatchClaimFailureCannotDispatch|TestBatchResumeAfterProcessLoss|TestBatchResumeCompletedPrefixAndCancellation|TestBatchResumeOnlyProvenUnstartedLines|TestJobCorrectionHorizon|TestJobCorrectionMissingHistoryRefusesApplication|TestLateEvidenceSurvivesAuditWriteFailureAndAssetExpiry)$",
+        "./internal/jobs"
+      ],
+      "events": {
+        "pass": 37
+      },
+      "sha256_stdout": "cba3cfdbe7158279422525c0f18e769097d4baa1b5dcd79f5d0746647585104d"
+    },
+    "go-run-iwzwa7y0.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestBatchRestartSessionRemainsScopedAndExpiring|TestBatchRestartUsesCurrentCallerPolicy)$",
+        "./internal/server"
+      ],
+      "events": {
+        "pass": 2
+      },
+      "sha256_stdout": "fc6d00aaac5d972dc46febf285e1e75aca591879b0b480db8f7a621b0d4007a0"
+    },
+    "go-run-iz2324xx.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestBatchSessionReceipt)$",
+        "./internal/localauth"
+      ],
+      "events": {
+        "pass": 1
+      },
+      "sha256_stdout": "7b5b93e256b5f73442b5887c2202dc3b030930c28d8a0e446421a7f2ba0eaa9e"
+    },
+    "go-run-ivx8ogk1.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestAggregateOverflowPreservesDebtAndBlocksAdmission|TestBudgetHistoryRollover|TestChangedHistoryRequiresReconciliation|TestCorrectionDeadlineGuardsAtomicWrite|TestCorrectionHorizon|TestDelayedDispatchCannotUseAClosedWindow|TestFixedUTCWindows|TestHolderCreationAndBudgetHistory|TestLateSettlementKeepsOriginalWindowAndValuation|TestReconciliationRetention|TestRecoveryConcurrentWorkersSettleOnce|TestRecoveryHandlesConcurrentSettlementBetweenReads|TestRecoveryPreservesUnmeasuredAndCorruptAttempts|TestRecoveryRetriesLostSettlementAcknowledgement|TestReservationContract|TestReservationSnapshotRefreshAfterConflict|TestReservationSnapshotRefusesExpiringHistory|TestRetainedUsageSurvivesRestart|TestTeamBudgetHistoryHandoff|TestTokenOnlyCannotBypassSpendOrInventFreePricing|TestUncertainReservationHasNoCorrectionDeadline|TestValkeyReservationAcrossProcesses|TestValuation)$",
+        "./internal/limits/reservation"
+      ],
+      "events": {
+        "pass": 100
+      },
+      "sha256_stdout": "ab1dfdc062f3e057f21a590c35644ecda66a32fbb0c2da81d107bcb932ff05cd"
+    },
+    "go-run-rhtiveqc.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionBudgetAcrossProcesses)$",
+        "./internal/app"
+      ],
+      "events": {
+        "pass": 4
+      },
+      "sha256_stdout": "af088a3f0420362b558360e5bff02793aab6ab147dd95daac355c9828d91576a"
+    },
+    "go-run-1g3aftca.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestBudgetAuthorityNativeOperationCommands|TestLifetimeBatch|TestTimeBoundStore)$",
+        "./internal/storage"
+      ],
+      "events": {
+        "pass": 7
+      },
+      "sha256_stdout": "c435b50ab05585c714b2ef4e0462c7ae9b3bcffbc786dd614168d172bd7b6285"
+    },
+    "go-run-tcw8ddx8.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestDeclaredChatTokenBounds|TestEmbeddingTokenBounds|TestFixedPageBoundDoesNotInventProviderLimit|TestModerationChargeBoundsAndEvidence|TestRecognitionBoundEnforcesSelectedOffering|TestRerankTokenBound|TestTextChatBillingScopeRejectsExtraChargeSurfaces)$",
+        "./internal/router"
+      ],
+      "events": {
+        "pass": 53
+      },
+      "sha256_stdout": "c65290f5a967ffb5430379c23fb612fe9928c8f5b35dab7f7d744351b6a0dff4"
+    },
+    "go-run-5ajjhoun.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestImageValuation|TestImageValuationEditRequestCharge|TestSpeechValuation|TestVideoValuationRefusesUnknownAdditionalCharges|TestVideoValuationUsesPinnedMeasuredSeconds)$",
+        "./internal/catalog"
+      ],
+      "events": {
+        "pass": 17
+      },
+      "sha256_stdout": "29de0518f0731aed2fa3a59dd432e5468694959c53922886c65f002e55c9e438"
+    },
+    "go-run-cd6jyhpt.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionRerankBudget)$",
+        "./internal/app"
+      ],
+      "events": {
+        "pass": 7
+      },
+      "sha256_stdout": "307ae69ace191e67237b7eb0c73fb63a01616bc9c75e8fc903573fe6f2447cfa"
+    },
+    "go-run-dh930th8.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionImagesBudget)$",
+        "./internal/app"
+      ],
+      "events": {
+        "pass": 16
+      },
+      "sha256_stdout": "867b4423b2f6a8eaf458806ac760ed8d18e26483c6d5ce310380899d8e5acc81"
+    },
+    "go-run-6g60ct4j.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionSpeechBudget)$",
+        "./internal/app"
+      ],
+      "events": {
+        "pass": 13
+      },
+      "sha256_stdout": "3e2d49876d854eeba8904a5a51d175b1633d6b23a8b19aa5565f140519c8d6b4"
+    },
+    "go-run-mgquq0l1.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionVideoFollowupBudget)$",
+        "./internal/app"
+      ],
+      "events": {
+        "pass": 19
+      },
+      "sha256_stdout": "7616604aa33897878be62765d3646387f35a319d4004be03a66294a458becf2d"
+    },
+    "go-run-9stlll3_.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestEveryPublishedMediaOperationMatchesItsDefinition)$",
+        "./internal/bootstrap"
+      ],
+      "events": {
+        "pass": 1
+      },
+      "sha256_stdout": "493d0781e02c0f091eac652142ae09a3202ac049eb592cdc213aa9e16d8c9b1c"
+    },
+    "go-run-5p13v47u.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestAbsentBudgetsStayLocal|TestAdmissionFailureBoundaries|TestAdmissionReservesExclusiveCapacity)$",
+        "./internal/limits/admission"
+      ],
+      "events": {
+        "pass": 10
+      },
+      "sha256_stdout": "edcb58fd361b7844de4d35eacd69ba410a06d410b605d40cf827001d8d1b5ccd"
+    },
+    "go-run-s4yzu3ge.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestFleetAdoptionRecoversLostSelectionResponse)$",
+        "./internal/catalog"
+      ],
+      "events": {
+        "pass": 6
+      },
+      "sha256_stdout": "511bc374771dfc91ac349584f4ccc1a9f4dcd6026fa20a4a4f90829d81f0f238"
+    },
+    "go-run-tmirefz6.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestFleetAdoptionRepeatedRecoveryAndConcurrentSelection)$",
+        "./internal/catalog"
+      ],
+      "events": {
+        "pass": 3
+      },
+      "sha256_stdout": "dcb726ba12847377a01b8f40a1ca7ea66da012d2f87abbffaa05991a957e7cd7"
+    },
+    "go-run-ir1kf0_l.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestFleetAdoptionDoesNotRenewExpiredPermission)$",
+        "./runtime"
+      ],
+      "events": {
+        "pass": 1
+      },
+      "sha256_stdout": "37f7466f6ab172e82f65f97a44f31f2f48bdac5e098f6f07624e96d09e4392f2"
+    },
+    "go-run-4oj1p_f9.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission)$",
+        "./runtime"
+      ],
+      "events": {
+        "pass": 3
+      },
+      "sha256_stdout": "1c3058e0e4cd714044591f4437fe350908a68e3fb51752f1ffa4b9a1993b33c6"
+    },
+    "go-run-vxt97nih.json": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestBudgetAdmissionAtomicSources|TestBudgetAdmissionRejectsUnsupportedModes)$",
+        "./internal/config"
+      ],
+      "events": {
+        "pass": 13
+      },
+      "sha256_stdout": "5e7715601184713b6f3e26b6c2b216966f74f259d50cda9ff1b9e9eafac358ec"
+    }
+  },
+  "consumer_changes_since_task_gate": [
+    ".github/workflows/ci.yml",
+    "go.mod",
+    "go.sum",
+    "internal/app/budget_fleet_test.go",
+    "internal/catalog/runtime_fleet_test.go",
+    "internal/config/compose_recipe_test.go",
+    "internal/jobs/assetfetch/client_test.go",
+    "internal/providers/connectors/deepinfra_video_test.go"
+  ],
+  "production_go_source_unchanged": true,
+  "producer_reviewed_and_merged_tree": "44403ef7c9d28a84814e3d0812d83b8ecddf3146",
+  "dependency_equivalence_proof": "final-source-2026-09-28/published-dependency/published-module-equivalence.json",
+  "current_native_run": 36447373952,
+  "open_requirements": [
+    "All required checks complete successfully at consumer exact head",
+    "Native artifacts prove mandatory Windows Compose and complete coverage",
+    "Current PR head, base, review threads, and branch protection agree",
+    "Consumer PR merged and actual merge commit recorded"
+  ],
+  "limits": "This audits retained evidence and source continuity. It does not mark the task complete or count pending native CI as success."
+}

@@ -1450,5 +1450,11 @@
       390
     ],
     "limits": "No merge qualification completed for dependency PRs. Existing next actions remain."
+  },
+  "verification_duration_audit": {
+    "proof": "../../csp12.2/fleet-readiness-2026-09-28/native-duration-audit.json",
+    "owner": "CSP22 and repository verification maintenance",
+    "state": "measured historical evidence",
+    "next_action": "Use actual test timings and startup profiles for subsequent optimization. Preserve complete behavioral and platform coverage."
   }
 }

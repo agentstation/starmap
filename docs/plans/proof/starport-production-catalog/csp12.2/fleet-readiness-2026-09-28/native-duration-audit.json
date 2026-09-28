@@ -1,0 +1,317 @@
+{
+  "checked_at": "2026-09-28T16:05:41.507701+00:00",
+  "run": 36440996799,
+  "consumer_head": "d6107baa33fc64c3cb1b896c624862e458c8e949",
+  "owner": "CSP22 performance qualification and repository verification maintenance",
+  "scope": "Historical test-package execution timings from retained Go JSON artifacts. No rerun or CI mutation.",
+  "findings": "The application package takes 711.806 to 1071.411 seconds on race-enabled native runners. Fixture startup and full-runtime tests deserve measurement before adding more parallel work.",
+  "limits": "Test elapsed intervals can overlap. These numbers exclude toolchain setup and do not prove the entire critical path, startup cause, or production request latency. Windows ARM64 has no race instrumentation and is not a like-for-like speed comparison.",
+  "next_action": "Retain distinct platform and failure coverage. Use measured startup profiles to decide whether immutable fixtures can be reused without sharing mutable authorization or accounting state. Keep SQL and backup unit tests at their owning seams, with separate complete operator recovery drills.",
+  "results": [
+    {
+      "platform": "ubuntu-24.04",
+      "source_sha256": "1a3930b7dbc1efb1885a834a6368861d493db139f3bb96cd3ec39f1be608c163",
+      "race": true,
+      "longest_packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "elapsed_seconds": 990.172
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "elapsed_seconds": 196.104
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers",
+          "elapsed_seconds": 145.96
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "elapsed_seconds": 132.547
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "elapsed_seconds": 119.08
+        }
+      ],
+      "longest_top_level_tests": [
+        {
+          "test": "TestProductionVideoFollowupBudget",
+          "elapsed_seconds": 67.55
+        },
+        {
+          "test": "TestProductionImagesBudget",
+          "elapsed_seconds": 60.34
+        },
+        {
+          "test": "TestProductionBatchBudget",
+          "elapsed_seconds": 54.54
+        },
+        {
+          "test": "TestProductionBudgetSurvivesReportingFailure",
+          "elapsed_seconds": 48.6
+        },
+        {
+          "test": "TestFilePagesReachPublicFilesAndExpiredPreparations",
+          "elapsed_seconds": 45.13
+        },
+        {
+          "test": "TestProductionVideoSubmissionPersistsBeforeDispatch",
+          "elapsed_seconds": 44.67
+        },
+        {
+          "test": "TestProductionSpeechBudget",
+          "elapsed_seconds": 43.89
+        },
+        {
+          "test": "TestNoAuthProviderRegistersWithoutMaterial",
+          "elapsed_seconds": 39.84
+        }
+      ]
+    },
+    {
+      "platform": "ubuntu-24.04-arm",
+      "source_sha256": "1adb97883a723a9cfa039119d9c065befb9b587f073f62c06a678041c1429330",
+      "race": true,
+      "longest_packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "elapsed_seconds": 711.806
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "elapsed_seconds": 167.658
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "elapsed_seconds": 154.076
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers",
+          "elapsed_seconds": 150.754
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "elapsed_seconds": 122.733
+        }
+      ],
+      "longest_top_level_tests": [
+        {
+          "test": "TestProductionVideoFollowupBudget",
+          "elapsed_seconds": 49.54
+        },
+        {
+          "test": "TestProductionBudgetSurvivesReportingFailure",
+          "elapsed_seconds": 42.78
+        },
+        {
+          "test": "TestProductionImagesBudget",
+          "elapsed_seconds": 41.59
+        },
+        {
+          "test": "TestDiagnosisRedactsSecretsFromDependencyFailures",
+          "elapsed_seconds": 39.55
+        },
+        {
+          "test": "TestNoAuthProviderRegistersWithoutMaterial",
+          "elapsed_seconds": 39.41
+        },
+        {
+          "test": "TestLoaderIgnoresRemovedProviderEnvironmentNamespaces",
+          "elapsed_seconds": 38.98
+        },
+        {
+          "test": "TestCatalogOnlyProviderEnvironmentResolvesWithoutSourceRoster",
+          "elapsed_seconds": 38.89
+        },
+        {
+          "test": "TestCatalogProviderRegistersWithoutOperatorMaterial",
+          "elapsed_seconds": 38.42
+        }
+      ]
+    },
+    {
+      "platform": "macos-15",
+      "source_sha256": "836a5099881dd5f853a703ec184158fbf5bd4953078d0636a892bb7324055cde",
+      "race": true,
+      "longest_packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "elapsed_seconds": 1057.468
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "elapsed_seconds": 268.635
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers",
+          "elapsed_seconds": 223.119
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "elapsed_seconds": 215.846
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "elapsed_seconds": 206.401
+        }
+      ],
+      "longest_top_level_tests": [
+        {
+          "test": "TestProductionVideoFollowupBudget",
+          "elapsed_seconds": 70.91
+        },
+        {
+          "test": "TestActivationSkipsUnsupportedAuthenticationPrimitive",
+          "elapsed_seconds": 64.77
+        },
+        {
+          "test": "TestSpeechUsageCapture",
+          "elapsed_seconds": 60.28
+        },
+        {
+          "test": "TestProductionImagesBudget",
+          "elapsed_seconds": 59.97
+        },
+        {
+          "test": "TestNoAuthProviderRegistersWithoutMaterial",
+          "elapsed_seconds": 59.42
+        },
+        {
+          "test": "TestAnAudioTurnAgainstAPricedOfferingCosts",
+          "elapsed_seconds": 58.89
+        },
+        {
+          "test": "TestProductionBatchBudget",
+          "elapsed_seconds": 58.13
+        },
+        {
+          "test": "TestHetznerInferenceEnvironmentComesFromCatalog",
+          "elapsed_seconds": 57.61
+        }
+      ]
+    },
+    {
+      "platform": "windows-2025",
+      "source_sha256": "32054577bce31e5fee4daed48cd686206ec5634c2c271a2a77773ff28838372e",
+      "race": true,
+      "longest_packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "elapsed_seconds": 1071.411
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "elapsed_seconds": 286.326
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/providers",
+          "elapsed_seconds": 240.635
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "elapsed_seconds": 238.339
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "elapsed_seconds": 206.227
+        }
+      ],
+      "longest_top_level_tests": [
+        {
+          "test": "TestProductionVideoFollowupBudget",
+          "elapsed_seconds": 73.94
+        },
+        {
+          "test": "TestProductionImagesBudget",
+          "elapsed_seconds": 63.58
+        },
+        {
+          "test": "TestHetznerInferenceEnvironmentComesFromCatalog",
+          "elapsed_seconds": 62.11
+        },
+        {
+          "test": "TestNoAuthProviderRegistersWithoutMaterial",
+          "elapsed_seconds": 61.17
+        },
+        {
+          "test": "TestProductionBudgetSurvivesReportingFailure",
+          "elapsed_seconds": 61.11
+        },
+        {
+          "test": "TestActivationSkipsUnsupportedAuthenticationPrimitive",
+          "elapsed_seconds": 61.03
+        },
+        {
+          "test": "TestCatalogProviderRegistersWithoutOperatorMaterial",
+          "elapsed_seconds": 60.03
+        },
+        {
+          "test": "TestFilePagesReachPublicFilesAndExpiredPreparations",
+          "elapsed_seconds": 59.83
+        }
+      ]
+    },
+    {
+      "platform": "windows-11-arm",
+      "source_sha256": "a629703135569351f869752249ce90868be252c03ee2cfc6a2d1ebf1e9e68c75",
+      "race": false,
+      "longest_packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "elapsed_seconds": 338.276
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/files",
+          "elapsed_seconds": 95.17
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/setup",
+          "elapsed_seconds": 85.92
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "elapsed_seconds": 68.454
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "elapsed_seconds": 29.141
+        }
+      ],
+      "longest_top_level_tests": [
+        {
+          "test": "TestFilePagesReachPublicFilesAndExpiredPreparations",
+          "elapsed_seconds": 92.56
+        },
+        {
+          "test": "TestProductionBudgetSurvivesReportingFailure",
+          "elapsed_seconds": 33.6
+        },
+        {
+          "test": "TestSetupRecoversProcessTermination",
+          "elapsed_seconds": 27.65
+        },
+        {
+          "test": "TestProductionVideoFollowupBudget",
+          "elapsed_seconds": 25.82
+        },
+        {
+          "test": "TestProductionImagesBudget",
+          "elapsed_seconds": 19.32
+        },
+        {
+          "test": "TestProductionBatchBudget",
+          "elapsed_seconds": 18.71
+        },
+        {
+          "test": "TestProductionSpeechBudget",
+          "elapsed_seconds": 17.12
+        },
+        {
+          "test": "TestProductionVideoSubmissionPersistsBeforeDispatch",
+          "elapsed_seconds": 13.59
+        }
+      ]
+    }
+  ]
+}

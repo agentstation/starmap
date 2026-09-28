@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-28T16:00:52.009416+00:00",
+  "checked_at": "2026-09-28T16:08:57.990972+00:00",
   "run": {
     "conclusion": "",
     "headSha": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
@@ -80,12 +80,12 @@
         "url": "https://github.com/agentstation/starport/actions/runs/36447373952/job/109013045047"
       },
       {
-        "completedAt": "0001-01-01T00:00:00Z",
-        "conclusion": "",
+        "completedAt": "2026-09-28T16:07:08Z",
+        "conclusion": "success",
         "databaseId": 109013045379,
         "name": "Release Snapshot",
         "startedAt": "2026-09-28T15:56:30Z",
-        "status": "in_progress",
+        "status": "completed",
         "steps": [
           {
             "completedAt": "2026-09-28T15:56:34Z",
@@ -144,60 +144,68 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:06:14Z",
+            "conclusion": "success",
             "name": "Build release snapshot",
             "number": 8,
             "startedAt": "2026-09-28T15:57:18Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:06:57Z",
+            "conclusion": "success",
             "name": "Verify release snapshot",
             "number": 9,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:06:14Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:07:03Z",
+            "conclusion": "success",
             "name": "Upload artifact",
             "number": 10,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:06:57Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:07:04Z",
+            "conclusion": "success",
             "name": "Post Set up Homebrew",
             "number": 17,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:07:03Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:07:04Z",
+            "conclusion": "success",
             "name": "Post Set up Node.js",
             "number": 18,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:07:04Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:07:04Z",
+            "conclusion": "success",
             "name": "Post Set up Go",
             "number": 19,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:07:04Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:07:04Z",
+            "conclusion": "success",
             "name": "Post Checkout code",
             "number": 20,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:07:04Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-28T16:07:04Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 21,
+            "startedAt": "2026-09-28T16:07:04Z",
+            "status": "completed"
           }
         ],
         "url": "https://github.com/agentstation/starport/actions/runs/36447373952/job/109013045379"
@@ -393,20 +401,20 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:03:40Z",
+            "conclusion": "success",
             "name": "Verify native catalog publication and recovery",
             "number": 5,
             "startedAt": "2026-09-28T15:57:10Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
             "conclusion": "",
             "name": "Verify controlled catalog adoption",
             "number": 6,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:03:40Z",
+            "status": "in_progress"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
@@ -674,12 +682,12 @@
         "url": "https://github.com/agentstation/starport/actions/runs/36447373952/job/109013045551"
       },
       {
-        "completedAt": "0001-01-01T00:00:00Z",
-        "conclusion": "",
+        "completedAt": "2026-09-28T16:01:58Z",
+        "conclusion": "success",
         "databaseId": 109013045586,
         "name": "Shared Storage Startup",
         "startedAt": "2026-09-28T15:56:30Z",
-        "status": "in_progress",
+        "status": "completed",
         "steps": [
           {
             "completedAt": "2026-09-28T15:56:32Z",
@@ -730,52 +738,60 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:48Z",
+            "conclusion": "success",
             "name": "Verify authorization source and fleet enforcement",
             "number": 7,
             "startedAt": "2026-09-28T15:59:23Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:53Z",
+            "conclusion": "success",
             "name": "Verify dedicated response cache",
             "number": 8,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:48Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:54Z",
+            "conclusion": "success",
             "name": "Retain shared startup evidence",
             "number": 9,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:53Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:54Z",
+            "conclusion": "success",
             "name": "Post Set up Go",
             "number": 16,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:54Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:54Z",
+            "conclusion": "success",
             "name": "Post Checkout code",
             "number": 17,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:54Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:55Z",
+            "conclusion": "success",
             "name": "Stop containers",
             "number": 18,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-28T16:01:55Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 19,
+            "startedAt": "2026-09-28T16:01:55Z",
+            "status": "completed"
           }
         ],
         "url": "https://github.com/agentstation/starport/actions/runs/36447373952/job/109013045586"
@@ -872,52 +888,52 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:33Z",
+            "conclusion": "success",
             "name": "Set up Go",
             "number": 3,
             "startedAt": "2026-09-28T15:56:45Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:34Z",
+            "conclusion": "success",
             "name": "Download dependencies",
             "number": 4,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:33Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:38Z",
+            "conclusion": "success",
             "name": "Test native evidence verifier",
             "number": 5,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:34Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:39Z",
+            "conclusion": "success",
             "name": "Record native toolchain",
             "number": 6,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:38Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:39Z",
+            "conclusion": "skipped",
             "name": "Qualify Windows Compose before the native suite",
             "number": 7,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:39Z",
+            "status": "completed"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
             "conclusion": "",
             "name": "Run native tests",
             "number": 8,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:39Z",
+            "status": "in_progress"
           },
           {
             "completedAt": "0001-01-01T00:00:00Z",
@@ -1193,12 +1209,12 @@
         "url": "https://github.com/agentstation/starport/actions/runs/36447373952/job/109013045649"
       },
       {
-        "completedAt": "0001-01-01T00:00:00Z",
-        "conclusion": "",
+        "completedAt": "2026-09-28T16:01:36Z",
+        "conclusion": "success",
         "databaseId": 109013045739,
         "name": "Storage Recipes",
         "startedAt": "2026-09-28T15:56:30Z",
-        "status": "in_progress",
+        "status": "completed",
         "steps": [
           {
             "completedAt": "2026-09-28T15:56:35Z",
@@ -1241,52 +1257,60 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:17Z",
+            "conclusion": "success",
             "name": "Verify complete recipes and local restore",
             "number": 6,
             "startedAt": "2026-09-28T16:00:14Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:19Z",
+            "conclusion": "success",
             "name": "Retain recipe evidence",
             "number": 7,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:17Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:20Z",
+            "conclusion": "success",
             "name": "Post Build recipe image",
             "number": 11,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:19Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:32Z",
+            "conclusion": "success",
             "name": "Post Set up container builder",
             "number": 12,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:20Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:33Z",
+            "conclusion": "success",
             "name": "Post Set up Go",
             "number": 13,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:32Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:01:33Z",
+            "conclusion": "success",
             "name": "Post Checkout code",
             "number": 14,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:01:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-28T16:01:33Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 15,
+            "startedAt": "2026-09-28T16:01:33Z",
+            "status": "completed"
           }
         ],
         "url": "https://github.com/agentstation/starport/actions/runs/36447373952/job/109013045739"
@@ -1407,12 +1431,12 @@
         "url": "https://github.com/agentstation/starport/actions/runs/36447373952/job/109013045841"
       },
       {
-        "completedAt": "0001-01-01T00:00:00Z",
-        "conclusion": "",
+        "completedAt": "2026-09-28T16:07:30Z",
+        "conclusion": "success",
         "databaseId": 109013045875,
         "name": "Release Contract",
         "startedAt": "2026-09-28T15:56:32Z",
-        "status": "in_progress",
+        "status": "completed",
         "steps": [
           {
             "completedAt": "2026-09-28T15:56:35Z",
@@ -1447,36 +1471,44 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:07:25Z",
+            "conclusion": "success",
             "name": "Verify release contracts",
             "number": 5,
             "startedAt": "2026-09-28T15:56:54Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:07:27Z",
+            "conclusion": "success",
             "name": "Check GoReleaser configuration",
             "number": 6,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:07:25Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:07:27Z",
+            "conclusion": "success",
             "name": "Post Set up Go",
             "number": 11,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:07:27Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-28T16:07:27Z",
+            "conclusion": "success",
             "name": "Post Checkout code",
             "number": 12,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-28T16:07:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-28T16:07:27Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-09-28T16:07:27Z",
+            "status": "completed"
           }
         ],
         "url": "https://github.com/agentstation/starport/actions/runs/36447373952/job/109013045875"
@@ -1563,6 +1595,46 @@
   },
   "artifacts": [
     {
+      "id": 10982355180,
+      "node_id": "MDg6QXJ0aWZhY3QxMDk4MjM1NTE4MA==",
+      "name": "shared-storage-startup",
+      "size_in_bytes": 8255,
+      "url": "https://api.github.com/repos/agentstation/starport/actions/artifacts/10982355180",
+      "archive_download_url": "https://api.github.com/repos/agentstation/starport/actions/artifacts/10982355180/zip",
+      "expired": false,
+      "digest": "sha256:edca292bbc5b2ea86072ee35d2b797dea7b902acafa116d5c3a81884fb35649f",
+      "created_at": "2026-09-28T16:01:54Z",
+      "updated_at": "2026-09-28T16:01:54Z",
+      "expires_at": "2026-10-05T16:01:53Z",
+      "workflow_run": {
+        "id": 36447373952,
+        "repository_id": 1014876153,
+        "head_repository_id": 1014876153,
+        "head_branch": "codex/atomic-budget-admission",
+        "head_sha": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784"
+      }
+    },
+    {
+      "id": 10982105435,
+      "node_id": "MDg6QXJ0aWZhY3QxMDk4MjEwNTQzNQ==",
+      "name": "storage-recipes",
+      "size_in_bytes": 1278,
+      "url": "https://api.github.com/repos/agentstation/starport/actions/artifacts/10982105435",
+      "archive_download_url": "https://api.github.com/repos/agentstation/starport/actions/artifacts/10982105435/zip",
+      "expired": false,
+      "digest": "sha256:734e0ae6645f4f48b4e8266c854c727737373f370a9e0ababdba60a96f90c9f2",
+      "created_at": "2026-09-28T16:01:18Z",
+      "updated_at": "2026-09-28T16:01:18Z",
+      "expires_at": "2026-10-05T16:01:17Z",
+      "workflow_run": {
+        "id": 36447373952,
+        "repository_id": 1014876153,
+        "head_repository_id": 1014876153,
+        "head_branch": "codex/atomic-budget-admission",
+        "head_sha": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784"
+      }
+    },
+    {
       "id": 10981800459,
       "node_id": "MDg6QXJ0aWZhY3QxMDk4MTgwMDQ1OQ==",
       "name": "durable-work-recovery",
@@ -1604,6 +1676,63 @@
     }
   ],
   "results": [
+    {
+      "file": "shared-storage-startup/authorization-storage.jsonl.gz",
+      "sha256_raw": "850b80f518a4b224f567b0b5f44cfbd4ac4448d2898377d32a88fdc922ec418a",
+      "events": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed": [],
+      "skipped": []
+    },
+    {
+      "file": "shared-storage-startup/durable-adapters.jsonl.gz",
+      "sha256_raw": "b33aacf877e1e5bd239228881738d9a359c7d2714eb186e5ed4eac60bda00507",
+      "events": {
+        "pass": 29,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed": [],
+      "skipped": []
+    },
+    {
+      "file": "shared-storage-startup/shared-cache.jsonl.gz",
+      "sha256_raw": "9edf1abd38d402b64160f223994cc6f33a8ca8da22bcf2ba12b17c9e1e6ab889",
+      "events": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 1
+      },
+      "failed": [],
+      "skipped": [
+        "TestSharedCachePausedServiceDeadlineAndRecovery"
+      ]
+    },
+    {
+      "file": "shared-storage-startup/shared-startup.jsonl.gz",
+      "sha256_raw": "64e8b0c6377091e3c31fe5ecc7e7ec31a51153b19c0d92caa2f8bc3d946c5ed5",
+      "events": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed": [],
+      "skipped": []
+    },
+    {
+      "file": "storage-recipes/storage-recipes.jsonl.gz",
+      "sha256_raw": "4d44d498d1279beaefcdbde95a22380a8aeb0478cc81782116dcc94d62cef1cd",
+      "events": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed": [],
+      "skipped": []
+    },
     {
       "file": "durable-work-recovery/fleet-reservation-jobs.jsonl.gz",
       "sha256_raw": "63ddbc5919630c432ccde5f9331950baa5061f22c112487ece2934fb8b703fd1",
