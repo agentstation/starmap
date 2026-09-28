@@ -1,0 +1,30 @@
+{
+  "producer": {
+    "commit": "5ee0530804782759901b34f8dbf75a3c5898bef7",
+    "sha256": {
+      "internal/bootstrap/media_operations_test.go": "4bb1b8d521eb0749dacfce3694b659624455896ed3eb23d964335e53e4d0a360",
+      "internal/bootstrap/whisper_operations_test.go": "b5e03e862bbb0abfe123b5470add43a5ed91f898bf1dd56e6c02815097eca2df",
+      "internal/embedded/catalog/authors/openai/models/whisper-1.yaml": "f92912991d26b03b2dc2e3a9c8906e3a986d6916de23c874f1b15969aaf63e43",
+      "internal/embedded/catalog/endpoints.yaml": "db9a7061aa15adabc5b13c3c0201d4a939747ae4574c97b2d4d21070ec4ea3b8",
+      "internal/embedded/catalog/generation-manifest.json": "71e7858a478a5a56d27276933e12949d4d0b108c7180f157e1cbb28dc6af4039",
+      "internal/embedded/catalog/generation-payload.json.gz": "167b2aac383ffb872de130e15030c582628865d453badc44245abe1efae05267",
+      "internal/embedded/catalog/generation.json": "f88ee2b9ad9a2aa3c7df1d30e6a07cc40540174c22f9a53309f795bde2d7d5fc",
+      "internal/embedded/catalog/providers/openai/models/whisper-1.yaml": "2b58fe97551ebee01e598e759bbfda68bcd79769c863b84ac5eadcb17fb9b9ab"
+    }
+  },
+  "consumer": {
+    "commit": "d231abea6504073dddbde3991c2a8042c7114e89",
+    "sha256": {
+      "internal/app/budget_responses_test.go": "ce7299579ceff60f7d7e9d9767f83bc945757163a02c3a8850d25092961eb80d",
+      "internal/app/budget_transcription_test.go": "fb0d775d01b35a9e6ea9fc9bf9c4eeffdee0e0b259f14c086ded706ee7b3fc1f",
+      "internal/providers/connectors/multipart_auth_test.go": "9d00b06097a0e861e5d13c1466b93d81fac5c2c8a52969eb72f0d7661bc60077",
+      "internal/providers/connectors/openai.go": "6615a496c2c436d08553a874ceb721b04c2ac69a86a1de24f82f2c65330b9e73"
+    }
+  },
+  "consumer_batch": {
+    "commit": "7f5a4756affee5dc3828c1483ab3a879ada2599f",
+    "sha256": {
+      "internal/app/budget_batch_test.go": "0e1e84c62772289f19bad4f83751efe3d9acba778d34085dcfded945061f988a"
+    }
+  }
+}

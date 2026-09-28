@@ -1,0 +1,187 @@
+{
+  "task": "CSP12.2",
+  "status": "in_progress",
+  "date": "2026-09-28",
+  "commits": {
+    "producer": "5ee0530804782759901b34f8dbf75a3c5898bef7",
+    "consumer": "7f5a4756affee5dc3828c1483ab3a879ada2599f"
+  },
+  "platform": "darwin/arm64",
+  "toolchain": "go1.27.1",
+  "workspace": "GOWORK=/tmp/csp122-billing.work",
+  "released_pair": false,
+  "checks": [
+    {
+      "repository": "consumer",
+      "command": "go test -race -count=1 -timeout 5m -json ./internal/app -run '^(TestProductionResponsesBudget|TestProductionTranscriptionBudgetRefusal)$'",
+      "exit_code": 0,
+      "results": {
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "source": "consumer-race.jsonl.gz",
+      "tested_commit": "d231abea6504073dddbde3991c2a8042c7114e89"
+    },
+    {
+      "repository": "producer",
+      "command": "go test -race -count=1 -timeout 5m -json ./internal/bootstrap -run '^(TestWhisperPublishesSpeechRecognition|TestEveryPublishedMediaOperationMatchesItsDefinition|TestOfferedChatCompletionsAgreeWithCanonicalModelFacts|TestEmbeddedBootstrapManifestMatchesCanonicalCatalog|TestTheResidualOfferingsAreRealtimeAlone)$'",
+      "exit_code": 0,
+      "results": {
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "source": "producer-race.jsonl.gz",
+      "tested_commit": "5ee0530804782759901b34f8dbf75a3c5898bef7"
+    },
+    {
+      "repository": "consumer",
+      "command": "go test -race -count=1 -timeout 5m -json ./internal/providers/connectors",
+      "exit_code": 0,
+      "results": {
+        "pass": 435,
+        "fail": 0,
+        "skip": 0
+      },
+      "source": "connectors-race.jsonl.gz",
+      "tested_commit": "d231abea6504073dddbde3991c2a8042c7114e89"
+    },
+    {
+      "repository": "consumer",
+      "command": "CGO_ENABLED=0 go test -count=1 -timeout 5m -json ./internal/app ./internal/providers/connectors -run '^(TestProductionResponsesBudget|TestProductionTranscriptionBudgetRefusal|TestOpenAIAuthenticationPreservesMultipartUploads)$'",
+      "exit_code": 0,
+      "results": {
+        "pass": 22,
+        "fail": 0,
+        "skip": 0
+      },
+      "source": "purego.jsonl.gz",
+      "tested_commit": "d231abea6504073dddbde3991c2a8042c7114e89"
+    },
+    {
+      "repository": "consumer",
+      "command": "go test -race -count=1 -timeout 5m -json ./internal/app -run '^TestProductionBatchBudget$'",
+      "exit_code": 0,
+      "tested_commit": "7f5a4756affee5dc3828c1483ab3a879ada2599f",
+      "results": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "source": "batch-race.jsonl.gz"
+    },
+    {
+      "repository": "consumer",
+      "command": "CGO_ENABLED=0 go test -count=1 -timeout 5m -json ./internal/app -run '^TestProductionBatchBudget$'",
+      "exit_code": 0,
+      "tested_commit": "7f5a4756affee5dc3828c1483ab3a879ada2599f",
+      "results": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "source": "batch-purego.jsonl.gz"
+    }
+  ],
+  "prior_failures": [
+    {
+      "source": "consumer-before.jsonl.gz",
+      "exit_code": 1,
+      "results": {
+        "pass": 8,
+        "fail": 10,
+        "skip": 0
+      }
+    },
+    {
+      "source": "producer-before.jsonl.gz",
+      "exit_code": 1,
+      "results": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      }
+    },
+    {
+      "source": "consumer-after-catalog.jsonl.gz",
+      "exit_code": 1,
+      "results": {
+        "pass": 14,
+        "fail": 4,
+        "skip": 0
+      }
+    },
+    {
+      "source": "connector-before.jsonl.gz",
+      "exit_code": 1,
+      "results": {
+        "pass": 0,
+        "fail": 4,
+        "skip": 0
+      }
+    }
+  ],
+  "initial_compile_error": "connector-compile-error.jsonl.gz",
+  "other_checks": {
+    "goago": {
+      "producer": 0,
+      "consumer": 0,
+      "findings": 0,
+      "errors": 0,
+      "stale_ignores": 0
+    },
+    "vet": {
+      "producer": 0,
+      "consumer": 0
+    },
+    "package_layout": {
+      "producer": 0,
+      "consumer": 0
+    },
+    "changed_source_writing": {
+      "producer_files": 2,
+      "consumer_files": 4,
+      "exit_code": 0
+    },
+    "producer_full_writing": {
+      "files": 1910,
+      "diagnostics": 0,
+      "exit_code": 0
+    },
+    "consumer_make_writing": {
+      "exit_code": 2,
+      "reason": "No target. Direct lint of four changed files passes."
+    },
+    "plan_full_writing": {
+      "exit_code": 2,
+      "files": 1792,
+      "diagnostics": 156,
+      "reason": "Existing historical evidence diagnostics. The five changed prose files pass direct lint.",
+      "source": "plan-full-writing.log.gz",
+      "tested_source_note": "Full check ran before the final batch prose append. All five final prose files pass direct lint. No claim of a clean repository-wide writing check."
+    },
+    "changed_plan_writing": {
+      "exit_code": 0,
+      "files": 5,
+      "diagnostics": 0,
+      "source": "plan-writing.log"
+    },
+    "consumer_batch": {
+      "goago_exit": 0,
+      "vet_exit": 0,
+      "writing_exit": 0,
+      "sources": [
+        "batch-goago.json",
+        "batch-vet.log",
+        "batch-writing.log"
+      ]
+    }
+  },
+  "scope": "Production Responses budget behavior, strict audio refusal, absent-budget audio dispatch, Whisper catalog operations, and multipart wire preservation. Loopback provider with real local Badger and SQLite. No paid inference or Docker services. Uninterrupted production batches qualify all three endpoints with measured usage, missing usage, and insufficient capacity.",
+  "remaining": "Full matrix, shared failover, quota lease support boundary, retention horizons, interrupted batches, latency, capacity, final review, native CI, dependency qualification, and paired merges. Prior 16-of-23 registration is unchanged.",
+  "previous_goal_turn": "User-directed Docker inspection found the daemon stopped. This goal turn makes code and evidence progress.",
+  "review": "REVIEW.md",
+  "consumer_runtime_commit": "d231abea6504073dddbde3991c2a8042c7114e89",
+  "next_action": "Qualify video call purposes, batch retry attempts, shared storage failover, quota lease refusal, and retention horizons. Restart continuation awaits owner decision. Keep full A47, latency, capacity, native CI, dependency qualification, and paired merges required."
+}

@@ -3017,6 +3017,14 @@ Recognition before chat and semantic embeddings before a cache hit require separ
 When an outer request stops, retain charged or uncertain inner operations.
 An operation with unsupported billing units must refuse strict-budget dispatch before contacting its provider.
 
+The Responses adapter uses the chat reservation once per provider attempt. Protocol conversion creates no additional provider charge.
+Missing usage or a truncated provider stream retains uncertain capacity.
+
+Transcription and translation require a verified duration or token bound before strict-budget dispatch.
+Until that bound exists, refuse required spend and token budgets before provider contact.
+Confirmed absent budgets permit dispatch. Preserve the multipart content type and boundary during provider authentication.
+The [Responses and audio proof](../../plans/proof/starport-production-catalog/csp12.2/responses-audio-2026-09-28/verification.json) records focused local qualification.
+
 Embedding admission requires a complete `billing.embeddings` declaration for monetary budgets.
 The `input_tokens` basis charges all measured input tokens at the ordinary input rate.
 An explicit `request_charge` decision states whether a per-call charge also applies.

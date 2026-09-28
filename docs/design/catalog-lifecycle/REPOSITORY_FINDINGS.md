@@ -4599,3 +4599,25 @@ Each conditional-write retry gets a new snapshot. No snapshot or budget balance 
 Native tests cover grouped-read consistency and refusal under a replacement backend.
 Reservation tests preserve concurrent settlement, history continuity, expiry refusal, and conditional-write conflict recovery.
 The full paid-operation matrix, production storage failover, retention horizons, capacity, native CI, and paired merges remain required.
+
+### Responses and audio: September 28, 2026
+
+Production HTTP tests found two defects in the declared audio path.
+The embedded Whisper records identified a text model, so routing rejected transcription and translation before admission.
+After catalog repair, provider authentication replaced the multipart content type with JSON and prevented file decoding.
+
+Producer `5ee053080` corrects both Whisper records and regenerates the bound payload and endpoint projection.
+Consumer `d231abea` preserves encoder content types and tests multipart bytes through the provider connector.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/responses-audio-2026-09-28/verification.json) retains both failures and their regression tests.
+Eighteen production HTTP results, 435 connector results, five catalog checks, and 22 pure-Go results pass without skips.
+Responses reserves once per attempt. Uncertain usage retains capacity. Audio requests with required budgets refuse unknown billing bounds before dispatch.
+Confirmed absent budgets permit transcription and translation through valid multipart requests.
+
+The full paid-operation matrix and seven remaining CSP12.2 checks remain unverified. This increment uses no Docker service or paid provider.
+
+Consumer `7f5a4756` adds production batch evidence for chat, Responses, and embeddings.
+Ten race results and ten pure-Go results pass. Distinct line identities bind reservations to the caller and both meters.
+
+Measured usage settles ordinary provider charges. Missing usage retains capacity and prevents another dispatch.
+Insufficient capacity records per-line HTTP 402 errors. Retry and restart qualification remain open.

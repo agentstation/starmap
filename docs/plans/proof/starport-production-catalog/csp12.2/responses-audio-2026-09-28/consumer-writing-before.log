@@ -1,0 +1,3 @@
+/private/tmp/starport-fleet-review-20260926/internal/providers/connectors/openai.go:51:9: error nominalization: express the action with a direct verb
+/private/tmp/starport-fleet-review-20260926/internal/providers/connectors/openai.go:56:15: error nominalization: express the action with a direct verb
+FAIL: 4 file(s), 2 diagnostic(s)

@@ -8,6 +8,23 @@ Its checkout is `/Users/jack/src/github.com/agentstation/starport-native-catalog
 Starmap owns billing units and prices. This matrix owns the coverage inventory for Starport admission.
 It supplies no provider prices or unsupported billing assumptions.
 
+## Current focused evidence: September 28, 2026
+
+The [Responses and audio proof](../../plans/proof/starport-production-catalog/csp12.2/responses-audio-2026-09-28/verification.json) qualifies these production paths on the local pair.
+The complete matrix remains unverified. The source audit and dated entries below remain historical evidence.
+
+| Surface | Current evidence | Remaining limit |
+| --- | --- | --- |
+| Responses | One reservation per provider attempt, measured settlement, uncertain retention, streaming, insufficient capacity, and absent budgets. | Shared-storage and final pair qualification remain required. |
+| Transcription and translation | All three HTTP routes refuse required token or spend budgets before dispatch. Confirmed absent budgets permit valid multipart uploads. | No verified duration or token bound exists. Strict-budget support remains unavailable. |
+| Batch chat, Responses, and embeddings | Distinct durable identities, token and spend reservations, measured settlement, uncertain retention, and per-line HTTP 402 refusals. | Retry attempts, interruption, and shared recovery remain unverified. |
+| Image-edit transport | The connector preserves multipart headers, file bytes, and authentication. | The current catalog publishes no image-edit offering. This wire test does not qualify image-edit billing or routing. |
+
+The corrected Whisper catalog declares audio input, text output, speech recognition, and no streaming.
+Its endpoint projection publishes transcription and translation instead of chat completions.
+Production HTTP tests inspect real Badger reservation records and use SQLite identity storage.
+The provider is a loopback fixture. No paid inference occurs.
+
 ## Common contract
 
 Every potentially charged provider attempt requires a durable admission decision before dispatch.

@@ -1,0 +1,5 @@
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html:19:1: error long_paragraph: paragraph has 7 sentences; limit is 6
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp12.2/responses-audio-2026-09-28/REVIEW.md:38:1: error long_paragraph: paragraph has 7 sentences; limit is 6
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp12.2/responses-audio-2026-09-28/REVIEW.md:62:1: error long_paragraph: paragraph has 8 sentences; limit is 6
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md:4619:1: error long_paragraph: paragraph has 7 sentences; limit is 6
+FAIL: 5 file(s), 4 diagnostic(s)
