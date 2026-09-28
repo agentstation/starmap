@@ -1,0 +1,6 @@
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md:4593:1: error long_paragraph: paragraph has 7 sentences; limit is 6
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/STORAGE_REVIEW.md:1122:1: error long_paragraph: paragraph has 7 sentences; limit is 6
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/LATENCY_REVIEW.md:405:1: error long_paragraph: paragraph has 7 sentences; limit is 6
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp12.2/grouped-reads-2026-09-27/REVIEW.md:19:1: error long_paragraph: paragraph has 9 sentences; limit is 6
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp12.2/grouped-reads-2026-09-27/REVIEW.md:29:1: error long_paragraph: paragraph has 7 sentences; limit is 6
+FAIL: 5 file(s), 5 diagnostic(s)

@@ -1,0 +1,23 @@
+{
+  "commits": {
+    "consumer": "db589b9301fb8eae496fb98e1bb9c0eab0afe2be",
+    "producer": "afe794474d65b0d9a3ba784d2c2245c9a37ff94d"
+  },
+  "consumer_sha256": {
+    "internal/app/budget_operations_test.go": "212b406b232a974a692fdc565215f7352bb676a89778f287ecd0debe1235092d",
+    "internal/limits/reservation/read_snapshot.go": "fd815b073e3ff05968744adb128a7ab208b722a14a4b02872ffaeb978fd781eb",
+    "internal/limits/reservation/read_snapshot_test.go": "609357ac1348fb5926df509a84456295812c56dbba1d77039da9386f18963e8c",
+    "internal/limits/reservation/repository.go": "a8e2438bd7b14b6a6c592638748259024d408ec296f90e49167fde5e15b27393",
+    "internal/limits/reservation/retained_recovery_test.go": "4284d50ddfbe57164e4c80a1b78ace64df51081e922c3d0076bcbc2a50e7adae",
+    "internal/limits/reservation/transitions.go": "236744b8200631adaa2639dba91320f4fdd9008a0d262b981702c86c1be26f79",
+    "internal/recovery/authority.go": "459484ae053b63fa9b9a7eb4931d64c9ad73064472a0f43444749f6e2c1105a8",
+    "internal/storage/badger_lifetime_batch.go": "355e1b867facd7212437bcfc1648683a47b379c4d47ac8b3781548c8a1e350cf",
+    "internal/storage/lifetime_batch.go": "aff8a134e04e1677f4fe3ac76eff4ff857f648f786fe3053a12bc3ed061eb597",
+    "internal/storage/lifetime_batch_test.go": "9ab9db88448a25ac8c021ee00fadcb25b2a5eb2c925feda375361f545f250a4c",
+    "internal/storage/time_window.go": "bec661dc46964acaddbd89d2e060bfa424d4d734174761858a2c75fd644775dd",
+    "internal/storage/valkey_budget_work_test.go": "8ca3a28ae34b8173b82d0b9442f79a5f45046e415a342e2b05bf546e063573bb",
+    "internal/storage/valkey_incarnation_test.go": "5d0bd293a23c90ac07946820fc925af52119dbf700c4bdc5c0e318e3dc1e3861",
+    "internal/storage/valkey_lifetime_batch.go": "2bf27e0657856032b26d275e0c07297aeaf0a39f070cb986ab64781f8cd8d609"
+  },
+  "registry_sha256": "bbe90bb121f0fb4db1e014f6a1716aadc5ca859b3dcf14b5cc9029c7eebc3ce2"
+}

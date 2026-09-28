@@ -4583,3 +4583,19 @@ The test verifies real shared storage and production HTTP execution.
 These counts exclude unrelated storage work, connection setup, conflicts, and recovery. They do not establish latency or capacity.
 
 CSP12.2 must evaluate bounded grouped reads without weakening independent approval or uncertain reservation retention.
+
+### Grouped budget reads: September 27, 2026
+
+The [qualification proof](../../plans/proof/starport-production-catalog/csp12.2/grouped-reads-2026-09-27/verification.json) reduces a warm five-meter budget operation from 28 backend calls to fifteen.
+Ten calls precede provider dispatch. Five calls settle usage. All six independent SQL approval queries remain.
+This measurement does not qualify elapsed latency, capacity, or allocations.
+
+Storage returns an ordered snapshot with a maximum of sixteen unique keys and one MiB of possible payload.
+The caller bounds each record before copy or transfer. Errors return no partial batch.
+Badger uses one read transaction. Valkey uses one incarnation-checked EVAL.
+
+Each conditional-write retry gets a new snapshot. No snapshot or budget balance carries permission into another request.
+
+Native tests cover grouped-read consistency and refusal under a replacement backend.
+Reservation tests preserve concurrent settlement, history continuity, expiry refusal, and conditional-write conflict recovery.
+The full paid-operation matrix, production storage failover, retention horizons, capacity, native CI, and paired merges remain required.

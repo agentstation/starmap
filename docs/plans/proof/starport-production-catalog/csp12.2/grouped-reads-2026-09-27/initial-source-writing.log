@@ -1,0 +1,4 @@
+/private/tmp/starport-fleet-review-20260926/internal/recovery/authority.go:120:37: error nominalization: express the action with a direct verb
+/private/tmp/starport-fleet-review-20260926/internal/limits/reservation/repository.go:74:9: error banned_word: use a short, precise alternative: 'begin'
+/private/tmp/starport-fleet-review-20260926/internal/limits/reservation/transitions.go:13:4: error banned_word: use a short, precise alternative: 'begin'
+FAIL: 13 file(s), 3 diagnostic(s)

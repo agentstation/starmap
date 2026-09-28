@@ -1,0 +1,334 @@
+{
+  "task": "CSP12.2",
+  "status": "in_progress",
+  "date": "2026-09-27",
+  "platform": "darwin/arm64",
+  "toolchain": "go1.27.1",
+  "backends": {
+    "valkey": "7.2.14",
+    "postgresql": "16.15",
+    "replacement_valkey": "7.2.14, independent process"
+  },
+  "commits": {
+    "consumer": "db589b9301fb8eae496fb98e1bb9c0eab0afe2be",
+    "producer": "afe794474d65b0d9a3ba784d2c2245c9a37ff94d"
+  },
+  "dependency": "GOWORK=/tmp/csp122-billing.work; local producer, not the released pair",
+  "gate": {
+    "exit_code": 1,
+    "selected_subcases": 23,
+    "passed": 16,
+    "failed": 0,
+    "unverified": 7,
+    "source": "task-gate.json.gz",
+    "scope_note": "Task-scoped verification cannot pass all fifty primary cases. Their incomplete summary is not a fifty-case regression."
+  },
+  "gate_executions": [
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestBudgetHistoryRollover|TestChangedHistoryRequiresReconciliation|TestDelayedDispatchCannotUseAClosedWindow|TestFixedUTCWindows|TestHolderCreationAndBudgetHistory|TestLateSettlementKeepsOriginalWindowAndValuation|TestRecoveryConcurrentWorkersSettleOnce|TestRecoveryHandlesConcurrentSettlementBetweenReads|TestRecoveryRetriesLostSettlementAcknowledgement|TestReservationContract|TestReservationSnapshotRefreshAfterConflict|TestReservationSnapshotRefusesExpiringHistory|TestRetainedUsageSurvivesRestart|TestTeamBudgetHistoryHandoff|TestTokenOnlyCannotBypassSpendOrInventFreePricing|TestValkeyReservationAcrossProcesses)$",
+        "./internal/limits/reservation"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 16.337323582964018,
+      "results": {
+        "pass": 79,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionBudgetAcrossProcesses)$",
+        "./internal/app"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 156.7950135000283,
+      "results": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionBudgetBackendOperations|TestProductionBudgetDispatchStreamCompletionAndCancellation|TestProductionBudgetDispatchUnknownCostAndAbsentBudgets|TestProductionBudgetPreservesRequestIdentity|TestProductionBudgetSurvivesReportingFailure|TestProductionEmbeddingRefusalBeforeDispatch|TestProductionRecognitionThenCancel|TestProductionRerankInvalidResultRetainsCharge|TestProductionRerankRefusesInsufficientCapacity|TestProductionSemanticEmbeddingSharesBudget|TestProductionSpendMissingTokenCountRetainsCapacity|TestRunRecoversRetainedBudgetEvidence)$",
+        "./internal/app"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 120.46219862502767,
+      "results": {
+        "pass": 35,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestAbsentBudgetsStayLocal|TestAdmissionFailureBoundaries|TestAdmissionReservesExclusiveCapacity)$",
+        "./internal/limits/admission"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 2.6059442500118166,
+      "results": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestBudgetAuthorityNativeOperationCommands|TestLifetimeBatch|TestTimeBoundStore)$",
+        "./internal/storage"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 2.1310887499712408,
+      "results": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestRerankTokenBound)$",
+        "./internal/router"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 6.3672224169713445,
+      "results": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionRerankBudget)$",
+        "./internal/app"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 39.23670362494886,
+      "results": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  ],
+  "unique_test_results": {
+    "pass": 155,
+    "fail": 0,
+    "skip": 0
+  },
+  "other_checks": [
+    {
+      "command": "go test -race -json ./internal/app ./internal/storage ./internal/limits/reservation -run ^(TestProductionBudgetBackendOperations|TestBudgetAuthorityNativeOperationCommands|TestLifetimeBatch|TestRecoveryHandlesConcurrentSettlementBetweenReads|TestReservationSnapshotRefreshAfterConflict|TestReservationSnapshotRefusesExpiringHistory)$ -count=1 -timeout 5m",
+      "exit_code": 0,
+      "source": "focused-race.jsonl.gz",
+      "results": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": "go test -race -json ./internal/limits/reservation ./internal/limits/admission ./internal/recovery ./internal/storage -count=1 -timeout 5m",
+      "exit_code": 0,
+      "source": "packages-race.jsonl.gz",
+      "results": {
+        "pass": 467,
+        "fail": 0,
+        "skip": 1
+      }
+    },
+    {
+      "command": "go test -race -json ./internal/storage -run ^TestValkeyIncarnationRejectsReplacementBackend$ -count=1 -timeout 5m",
+      "exit_code": 0,
+      "source": "replacement-race.jsonl.gz",
+      "results": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": "CGO_ENABLED=0 go test -json ./internal/app ./internal/storage ./internal/limits/reservation -run ^(TestProductionBudgetBackendOperations|TestBudgetAuthorityNativeOperationCommands|TestLifetimeBatch|TestRecoveryHandlesConcurrentSettlementBetweenReads|TestReservationSnapshotRefreshAfterConflict|TestReservationSnapshotRefusesExpiringHistory)$ -count=1 -timeout 5m",
+      "exit_code": 0,
+      "source": "purego.jsonl.gz",
+      "results": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": "go test ./... -run ^$",
+      "exit_code": 0,
+      "scope": "Compilation only",
+      "source": "compile-all.log.gz"
+    },
+    {
+      "command": "go vet ./internal/storage ./internal/recovery ./internal/limits/... ./internal/app",
+      "exit_code": 0,
+      "source": "vet.log"
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0,
+      "source": "goago.json"
+    },
+    {
+      "command": "python3 scripts/test_catalog_product_verify.py",
+      "exit_code": 0,
+      "tests": 99,
+      "source": "registry-tests.log"
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "exit_code": 0,
+      "source": "layout.log"
+    },
+    {
+      "command": "technical-writing lint fourteen changed Go files --format text",
+      "exit_code": 0,
+      "sources": [
+        "source-writing.log",
+        "replacement-writing.log"
+      ]
+    },
+    {
+      "command": "technical-writing lint plan, four design documents, and review --format text",
+      "exit_code": 0,
+      "files": 6,
+      "diagnostics": 0,
+      "source": "final-writing.log"
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "files": 1791,
+      "diagnostics": 157,
+      "source": "full-writing.log.gz",
+      "scope": "One current plan paragraph exceeded the limit. It was split, and the focused six-file check passes. The other 156 findings match the existing historical evidence diagnostics."
+    }
+  ],
+  "skip_resolution": "The package run skipped TestValkeyIncarnationRejectsReplacementBackend because its second endpoint was absent. The separate replacement run supplies two independent processes and passes that test, including grouped reads.",
+  "prior_runs": [
+    {
+      "source": "fail-before.jsonl.gz",
+      "exit_code": 1,
+      "results": {
+        "pass": 1,
+        "fail": 1,
+        "skip": 0
+      },
+      "tested_source": "Consumer bf8fa420 plus fail-before.patch.gz",
+      "reason": "Eighteen record reads exceed the five-read requirement."
+    },
+    {
+      "source": "initial-focused.jsonl.gz",
+      "exit_code": 1,
+      "results": {
+        "pass": 5,
+        "fail": 3,
+        "skip": 0
+      },
+      "reason": "The recovery fault fixture intercepted only individual reads. Its unchanged peer-settlement assertion exposed that missing injection after the grouped-read implementation. The fixture now intercepts both paths."
+    }
+  ],
+  "measurement": {
+    "meters": 5,
+    "previous": {
+      "record_reads": 18,
+      "clock_reads": 1,
+      "native_writes": 3,
+      "sql_approval_queries": 6,
+      "before_dispatch": 19,
+      "settlement": 9,
+      "total": 28
+    },
+    "current": {
+      "record_read_commands": 5,
+      "clock_reads": 1,
+      "native_writes": 3,
+      "sql_approval_queries": 6,
+      "before_dispatch": 10,
+      "settlement": 5,
+      "total": 15
+    },
+    "limitations": "Successful uncontended warm request. Not elapsed latency, allocations, capacity, cold authorization, unrelated KV work, connection setup, conflicts, or recovery."
+  },
+  "remaining": "coverage-map.json",
+  "next_action": "Complete the seven remaining subcases, including bounded billing, the full paid-operation matrix, production storage failover, lease-mode refusal, retention horizons, and interrupted-batch recovery. Qualify latency and capacity before publication.",
+  "publication": "Local commits only. Pre-PR review, native CI, dependency qualification, and paired merges remain required.",
+  "paid_inference": false,
+  "record_completed_on": "2026-09-28",
+  "docker": "Both task Valkey services and PostgreSQL stopped. docker ps returned no running containers. Docker Desktop stopped successfully."
+}

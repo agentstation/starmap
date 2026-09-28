@@ -2996,7 +2996,13 @@ Optional analytics can batch asynchronously within byte, entry, and deadline bou
 
 The [reporting qualification](../../plans/proof/starport-production-catalog/csp12.2/reporting-operations-2026-09-27/verification.json) tests failed usage writes and exports through production dispatch.
 The same proof counts nineteen budget backend calls before dispatch and nine during settlement with five meters.
-These counts do not qualify latency. Evaluate bounded grouped reads while retaining independent approval and uncertain capacity.
+These historical counts do not qualify latency.
+
+The [grouped-read proof](../../plans/proof/starport-production-catalog/csp12.2/grouped-reads-2026-09-27/verification.json) reduces this path to ten calls before dispatch and five during settlement.
+Each conditional-write attempt owns one bounded read snapshot. Conflicts require fresh reads.
+Storage accepts at most sixteen unique keys and one MiB of possible payload. The caller supplies one per-record byte bound.
+
+No snapshot grants write permission or survives into another request. All independent approval and mutation checks remain mandatory.
 
 Confirmed absent budgets need no usage-total lookup.
 Cache delivery retains its documented admission semantics without inventing a chargeable provider call.
