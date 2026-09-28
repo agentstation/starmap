@@ -1,0 +1,491 @@
+[
+  {
+    "checked_at": "2026-09-28T16:16:37.783282+00:00",
+    "pr": {
+      "baseRefOid": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
+      "headRefOid": "31b3bef19a3130fe62a1afa66389a2a8ecd9678a",
+      "mergeStateStatus": "BLOCKED",
+      "number": 189,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943712",
+          "name": "Build pinned object fixture",
+          "startedAt": "2026-09-28T16:15:19Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943450",
+          "name": "Constructor Network Passivity",
+          "startedAt": "2026-09-28T16:15:19Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943880",
+          "name": "Offline Server Persistence",
+          "startedAt": "2026-09-28T16:15:20Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943985",
+          "name": "Verification Checks",
+          "startedAt": "2026-09-28T16:15:20Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943805",
+          "name": "Security & Reliability",
+          "startedAt": "2026-09-28T16:15:19Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:15:35Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943768",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-28T16:15:19Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943969",
+          "name": "Runtime windows-2025",
+          "startedAt": "2026-09-28T16:15:19Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020944105",
+          "name": "Runtime windows-11-arm",
+          "startedAt": "2026-09-28T16:15:19Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943843",
+          "name": "Runtime ubuntu-24.04",
+          "startedAt": "2026-09-28T16:15:20Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943937",
+          "name": "Runtime ubuntu-24.04-arm",
+          "startedAt": "2026-09-28T16:15:22Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020944205",
+          "name": "Runtime macos-15",
+          "startedAt": "2026-09-28T16:15:25Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020944175",
+          "name": "Publication windows-2025",
+          "startedAt": "2026-09-28T16:15:20Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020944264",
+          "name": "Publication windows-11-arm",
+          "startedAt": "2026-09-28T16:15:20Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943904",
+          "name": "Publication ubuntu-24.04",
+          "startedAt": "2026-09-28T16:15:20Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020944265",
+          "name": "Publication ubuntu-24.04-arm",
+          "startedAt": "2026-09-28T16:15:22Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020944215",
+          "name": "Publication macos-15",
+          "startedAt": "2026-09-28T16:15:25Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:15:15Z",
+          "conclusion": "NEUTRAL",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/109020919421",
+          "name": "CodeQL",
+          "startedAt": "2026-09-28T16:15:13Z",
+          "status": "COMPLETED",
+          "workflowName": ""
+        }
+      ],
+      "title": "build(deps): bump cloud.google.com/go/auth in /"
+    },
+    "review_threads": 0,
+    "review": {
+      "kind": "manual dependency source audit",
+      "module": {
+        "modules": [
+          {
+            "Path": "cloud.google.com/go/auth",
+            "Version": "v0.23.3",
+            "Info": "/Users/jack/go/pkg/mod/cache/download/cloud.google.com/go/auth/@v/v0.23.3.info",
+            "GoMod": "/Users/jack/go/pkg/mod/cache/download/cloud.google.com/go/auth/@v/v0.23.3.mod",
+            "Zip": "/Users/jack/go/pkg/mod/cache/download/cloud.google.com/go/auth/@v/v0.23.3.zip",
+            "Dir": "/Users/jack/go/pkg/mod/cloud.google.com/go/auth@v0.23.3",
+            "Sum": "h1:UMK+oBtuNGMCR/6i6mmySUItqjOazpJrbmZyhGbGBWo=",
+            "GoModSum": "h1:fClbry28fo7XkxhSeT6AQtAVAp6Jy0fW9N99PoPNPFM=",
+            "Origin": {
+              "VCS": "git",
+              "URL": "https://github.com/googleapis/google-cloud-go",
+              "Subdir": "auth",
+              "Hash": "1b10ddfc0fc88f9f30f2e428830a736fb563650c",
+              "Ref": "refs/tags/auth/v0.23.3"
+            }
+          },
+          {
+            "Path": "cloud.google.com/go/auth",
+            "Version": "v0.24.0",
+            "Info": "/Users/jack/go/pkg/mod/cache/download/cloud.google.com/go/auth/@v/v0.24.0.info",
+            "GoMod": "/Users/jack/go/pkg/mod/cache/download/cloud.google.com/go/auth/@v/v0.24.0.mod",
+            "Zip": "/Users/jack/go/pkg/mod/cache/download/cloud.google.com/go/auth/@v/v0.24.0.zip",
+            "Dir": "/Users/jack/go/pkg/mod/cloud.google.com/go/auth@v0.24.0",
+            "Sum": "h1:UYMbF8otPZnLAkNJ5/LYQYOq0ARcJS1P4JqTeMKbCYU=",
+            "GoModSum": "h1:IFG/AMA1VWfuTrdbieEsB2GcpJyJV/phGAvogkOoPR4=",
+            "Origin": {
+              "VCS": "git",
+              "URL": "https://github.com/googleapis/google-cloud-go",
+              "Subdir": "auth",
+              "Hash": "8a17bee208939e0166936a59675414439c47e341",
+              "Ref": "refs/tags/auth/v0.24.0"
+            }
+          }
+        ],
+        "changed_files": [
+          "CHANGES.md",
+          "auth.go",
+          "auth_test.go",
+          "credentials/detect.go",
+          "credentials/detect_test.go",
+          "credentials/filetypes.go",
+          "credentials/internal/externalaccount/externalaccount.go",
+          "credentials/internal/externalaccountuser/externalaccountuser.go",
+          "go.mod",
+          "internal/transport/transport.go",
+          "internal/transport/transport_test.go",
+          "internal/version.go",
+          "threelegged.go"
+        ]
+      },
+      "assessment": "The auth update honors configured early expiry and synchronous refresh across credential types. Defaults remain asynchronous. Its Go floor rises to 1.26, below the project pin of 1.27.1. Starmap uses default DetectOptions for cloud acquisition. Native constructor-passivity and credential tests must pass at the new head.",
+      "findings": [],
+      "integrity": "Downloaded module and go.mod checksums match the PR."
+    },
+    "disposition": "Source review complete. Dependabot updated this PR after #191 merged. Fresh exact-head CI is running.",
+    "next_action": "Require successful current-base checks, recheck head and review threads, then merge without bypass. Recheck the remaining PR after each preceding merge.",
+    "limits": "No merge approval inferred from old-head CI. No agent branch rewrite, local checkout change, or public review comment."
+  },
+  {
+    "checked_at": "2026-09-28T16:16:37.783282+00:00",
+    "pr": {
+      "baseRefOid": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
+      "headRefOid": "db3f98e86c4e802f97b16121124051968e4fcafe",
+      "mergeStateStatus": "BLOCKED",
+      "number": 190,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020967798",
+          "name": "Build pinned object fixture",
+          "startedAt": "2026-09-28T16:15:22Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020967682",
+          "name": "Constructor Network Passivity",
+          "startedAt": "2026-09-28T16:15:22Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020967981",
+          "name": "Offline Server Persistence",
+          "startedAt": "2026-09-28T16:15:25Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020968003",
+          "name": "Verification Checks",
+          "startedAt": "2026-09-28T16:15:23Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020967972",
+          "name": "Security & Reliability",
+          "startedAt": "2026-09-28T16:15:24Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:15:39Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020967566",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-28T16:15:24Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020967939",
+          "name": "Runtime windows-2025",
+          "startedAt": "2026-09-28T16:15:23Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020968335",
+          "name": "Runtime windows-11-arm",
+          "startedAt": "2026-09-28T16:15:24Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020967930",
+          "name": "Runtime ubuntu-24.04",
+          "startedAt": "2026-09-28T16:15:22Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020968216",
+          "name": "Runtime ubuntu-24.04-arm",
+          "startedAt": "2026-09-28T16:15:25Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020968192",
+          "name": "Runtime macos-15",
+          "startedAt": "2026-09-28T16:15:27Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020967975",
+          "name": "Publication windows-2025",
+          "startedAt": "2026-09-28T16:15:23Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020968030",
+          "name": "Publication windows-11-arm",
+          "startedAt": "2026-09-28T16:15:23Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020967992",
+          "name": "Publication ubuntu-24.04",
+          "startedAt": "2026-09-28T16:15:23Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020968013",
+          "name": "Publication ubuntu-24.04-arm",
+          "startedAt": "2026-09-28T16:15:25Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449700339/job/109020968113",
+          "name": "Publication macos-15",
+          "startedAt": "2026-09-28T16:15:29Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:15:16Z",
+          "conclusion": "NEUTRAL",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/109020935898",
+          "name": "CodeQL",
+          "startedAt": "2026-09-28T16:15:16Z",
+          "status": "COMPLETED",
+          "workflowName": ""
+        }
+      ],
+      "title": "build(deps): bump cloud.google.com/go/secretmanager in /"
+    },
+    "review_threads": 0,
+    "review": {
+      "kind": "manual dependency source audit",
+      "module": {
+        "modules": [
+          {
+            "Path": "cloud.google.com/go/secretmanager",
+            "Version": "v1.21.0",
+            "Info": "/Users/jack/go/pkg/mod/cache/download/cloud.google.com/go/secretmanager/@v/v1.21.0.info",
+            "GoMod": "/Users/jack/go/pkg/mod/cache/download/cloud.google.com/go/secretmanager/@v/v1.21.0.mod",
+            "Zip": "/Users/jack/go/pkg/mod/cache/download/cloud.google.com/go/secretmanager/@v/v1.21.0.zip",
+            "Dir": "/Users/jack/go/pkg/mod/cloud.google.com/go/secretmanager@v1.21.0",
+            "Sum": "h1:e56QQaKWRyzBdUz40AeZaio/ZHAl268cFx3QFAAw9CY=",
+            "GoModSum": "h1:+nlV+GYqTD8DM+x7Kk3UF7ZPYgdYMowrkZxAmMXORQ8=",
+            "Origin": {
+              "VCS": "git",
+              "URL": "https://github.com/googleapis/google-cloud-go",
+              "Subdir": "secretmanager",
+              "Hash": "8e9f00f76afc0a0e5d1434e0c6039212e21d238d",
+              "Ref": "refs/tags/secretmanager/v1.21.0"
+            }
+          },
+          {
+            "Path": "cloud.google.com/go/secretmanager",
+            "Version": "v1.22.0",
+            "Info": "/Users/jack/go/pkg/mod/cache/download/cloud.google.com/go/secretmanager/@v/v1.22.0.info",
+            "GoMod": "/Users/jack/go/pkg/mod/cache/download/cloud.google.com/go/secretmanager/@v/v1.22.0.mod",
+            "Zip": "/Users/jack/go/pkg/mod/cache/download/cloud.google.com/go/secretmanager/@v/v1.22.0.zip",
+            "Dir": "/Users/jack/go/pkg/mod/cloud.google.com/go/secretmanager@v1.22.0",
+            "Sum": "h1:c9nPLiK4IZeT/zDyLjvNaBw1BHNkp0Ysybj1FfFIAPQ=",
+            "GoModSum": "h1:aDN9cW5x6Y8QVj32snakZv96vYyW7Nf1P+eqZGH8408=",
+            "Origin": {
+              "VCS": "git",
+              "URL": "https://github.com/googleapis/google-cloud-go",
+              "Subdir": "secretmanager",
+              "Hash": "8a17bee208939e0166936a59675414439c47e341",
+              "Ref": "refs/tags/secretmanager/v1.22.0"
+            }
+          }
+        ],
+        "changed_files": [
+          "CHANGES.md",
+          "apiv1/auxiliary.go",
+          "apiv1/auxiliary_go123.go",
+          "apiv1beta2/auxiliary.go",
+          "apiv1beta2/auxiliary_go123.go",
+          "examples/apiv1/snippet_metadata.google.cloud.secretmanager.v1.json",
+          "examples/apiv1beta2/snippet_metadata.google.cloud.secretmanager.v1beta2.json",
+          "go.mod",
+          "go.sum",
+          "internal/version.go"
+        ]
+      },
+      "assessment": "The secret manager update moves existing Go 1.23 iterator methods into generated files without build tags. Its Go floor rises to 1.26. The newer gRPC and x/* minimums already match the project-selected versions. The public service calls retain their existing definitions.",
+      "findings": [],
+      "integrity": "Downloaded module and go.mod checksums match the PR."
+    },
+    "disposition": "Source review complete. Dependabot updated this PR after #191 merged. Fresh exact-head CI is running.",
+    "next_action": "Require successful current-base checks, recheck head and review threads, then merge without bypass. Recheck the remaining PR after each preceding merge.",
+    "limits": "No merge approval inferred from old-head CI. No agent branch rewrite, local checkout change, or public review comment."
+  }
+]

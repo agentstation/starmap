@@ -1277,16 +1277,16 @@
         "url": "https://github.com/agentstation/starmap/pull/189",
         "state": "OPEN",
         "headRefName": "dependabot/go_modules/go_modules-d494d303f5",
-        "headRefOid": "177577e7d6088a13721395d7a52b5620d31ca82c",
+        "headRefOid": "31b3bef19a3130fe62a1afa66389a2a8ecd9678a",
         "baseRefName": "main",
-        "baseRefOid": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
+        "baseRefOid": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
         "isDraft": false,
         "mergeStateStatus": "BLOCKED",
         "updatedAt": "2026-09-28T14:35:34Z",
         "repository": "agentstation/starmap",
         "owner": "Repository dependency maintenance",
-        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-        "next_action": "Review dependency changes and exact-head checks after PR #387 merges. Reuse this PR and update its base when required."
+        "disposition": "Source review complete. Dependabot updated this PR after #191 merged. Fresh exact-head CI is running.",
+        "next_action": "Require successful current-base checks, recheck head and review threads, then merge without bypass. Recheck the remaining PR after each preceding merge."
       },
       {
         "number": 190,
@@ -1294,16 +1294,16 @@
         "url": "https://github.com/agentstation/starmap/pull/190",
         "state": "OPEN",
         "headRefName": "dependabot/go_modules/go_modules-b8e632704f",
-        "headRefOid": "1e9e78832840b5b199aa52b98e10e812aaa9db0e",
+        "headRefOid": "db3f98e86c4e802f97b16121124051968e4fcafe",
         "baseRefName": "main",
-        "baseRefOid": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
+        "baseRefOid": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
         "isDraft": false,
         "mergeStateStatus": "BLOCKED",
         "updatedAt": "2026-09-28T14:35:36Z",
         "repository": "agentstation/starmap",
         "owner": "Repository dependency maintenance",
-        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-        "next_action": "Review dependency changes and exact-head checks after PR #387 merges. Reuse this PR and update its base when required."
+        "disposition": "Source review complete. Dependabot updated this PR after #191 merged. Fresh exact-head CI is running.",
+        "next_action": "Require successful current-base checks, recheck head and review threads, then merge without bypass. Recheck the remaining PR after each preceding merge."
       },
       {
         "number": 192,
@@ -1425,11 +1425,8 @@
     "next_action": "Collect run 36447373952, verify exact head and review threads, and merge PR #387."
   },
   "dependency_review_snapshot": {
-    "checked_at": "2026-09-28T16:03:47.076323+00:00",
-    "starmap_all_checks_pass": [
-      189,
-      190
-    ],
+    "checked_at": "2026-09-28T16:16:37.783282+00:00",
+    "starmap_all_checks_pass": [],
     "starmap_repair_required": [
       188,
       192,
@@ -1440,7 +1437,12 @@
       389,
       390
     ],
-    "limits": "PR #191 merged after source and exact-head review. Other producer PRs now require current-base qualification."
+    "limits": "PR #191 merged after source and exact-head review. Other producer PRs now require current-base qualification.",
+    "current_google_review": "google-dependency-review-2026-09-28.json",
+    "starmap_source_review_pass_ci_pending": [
+      189,
+      190
+    ]
   },
   "verification_duration_audit": {
     "proof": "../../csp12.2/fleet-readiness-2026-09-28/native-duration-audit.json",
