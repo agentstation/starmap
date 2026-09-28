@@ -4475,3 +4475,17 @@ Consumer `98bbd43d` checks byte-publication capability before file allocation an
 The [proof](../../plans/proof/starport-production-catalog/csp12.2/publication-readiness-2026-09-27/verification.json) retains exact commands, results, failure history, and source hashes. Runtime probes preserve unrelated gateway readiness. Warm checks use memory without heap allocation.
 
 Aggregate reconstruction, interrupted-run recovery, audited correction, A47, capacity, review, native CI, and paired merges remain required.
+
+## Batch aggregate repair: September 27, 2026
+
+Consumer `7ba266a9` repairs unstable aggregate identity, unchecked cleanup, and deletion retries after lost acknowledgments.
+The broad tests also found that recovery finished incomplete failed batches too early. Such batches now retain their claims.
+The architecture check found a storage dependency in the limits vocabulary. The meter now belongs to `internal/limits/storedbytes`.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/batch-aggregates-2026-09-27/verification.json) records 655 package race results with 88 optional skips.
+Production checks pass two results. Router checks pass 23 results. Pure-Go checks pass 39 results with eight skips.
+Two child-process interruption cases preserve aggregate identity and storage charges. Earlier failures remain evidence.
+
+The router test reached terminal status before checkpoint retirement finished. It now waits for the durable cleanup marker before removing temporary storage.
+Application shutdown still lacks a batch-worker drain contract. CSP12.2 owns that repair before publication.
+Shared backends, interrupted-run policy, audited correction, full A47, capacity, review, native CI, and paired merges remain open.

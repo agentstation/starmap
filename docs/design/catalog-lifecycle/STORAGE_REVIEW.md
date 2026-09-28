@@ -1012,3 +1012,17 @@ The blob contract now gates new file allocation and video dispatch. Batch result
 The runtime probe checks successful creation, retained content, and refused replacement for single-part and multipart writes. Successful checks stay in memory for one configured client. A failed check permits another attempt after one second.
 
 Each attempt retains up to four small identities. Retirement markers must survive lifecycle rules and restoration. Interrupted probes can leave incomplete multipart uploads. Configure their cleanup separately. Backend-wide consistency, physical erasure, native platforms, and coordinated migration remain unqualified.
+
+## Aggregate storage ownership: September 27, 2026
+
+Consumer `7ba266a9` uses file schema 5 and batch schema 4. CSP13 owns coordinated migration.
+Line checkpoints remain private to recovery. Confirmed aggregate files appear in ordinary file listings.
+Each aggregate has one account-scoped identity, digest, size, and original expiry.
+
+The byte meter now belongs to `internal/limits/storedbytes`. Its schema and durable keys remain unchanged.
+It counts both checkpoints and aggregate files during publication. Cleanup releases each checkpoint charge once.
+A lost acknowledgment after deletion permits an exact retry. Corrupt references prevent cleanup.
+
+The [local proof](../../plans/proof/starport-production-catalog/csp12.2/batch-aggregates-2026-09-27/verification.json) covers memory, Badger, filesystem, and application composition.
+Valkey with shared-object aggregate recovery remains unverified in this revision. Docker remains stopped.
+Shutdown must drain batch workers before closing storage. Terminal batch status alone does not establish cleanup completion.

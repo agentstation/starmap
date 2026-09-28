@@ -494,3 +494,15 @@ Production storage readiness and the remaining CSP12.2 criteria still require qu
 New file allocation and video dispatch require byte-publication capability. Batch lines must establish that capability before provider execution. Storage failure must not disable unrelated text requests or general gateway diagnostics.
 
 Return a retryable storage error before affected work creates provider charges. Keep successful capability evidence in memory for the configured client. A capability probe does not guarantee future availability or physical erasure.
+
+## Recoverable batch aggregates: September 27, 2026
+
+Batch recovery must preserve completed results without another provider charge.
+Output and error files must retain stable identities across retries and process loss.
+The gateway must confirm aggregate bytes and their batch references before removing line checkpoints.
+
+Peak storage includes checkpoints and aggregates while both exist. Recovery must preserve the original batch bound.
+A quota refusal retains results until legitimate capacity becomes available. Status reads must not reconstruct large files.
+
+The [local proof](../../plans/proof/starport-production-catalog/csp12.2/batch-aggregates-2026-09-27/verification.json) qualifies these behaviors on local storage.
+Complete shared deployment qualification and graceful shutdown remain open. The restart-policy decision still governs untouched lines.

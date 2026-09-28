@@ -4742,3 +4742,25 @@ An object-store client coalesces the first probe and caches success in process m
 Require successful single-part and multipart creation. Verify that both reject replacements of live bytes and retirement markers. Read retained bytes before accepting capability. A fresh configured client repeats qualification. Keep warm checks local and allocation-free.
 
 Probe attempts retain up to four identities. Preserve retirement markers and configure incomplete-upload cleanup. Do not interpret probe success as proof of physical erasure, restore safety, backend-wide consistency, or future availability. File and video HTTP failures return 503 with a recovery message. Detailed causes remain in logs.
+
+## Batch aggregate recovery: September 27, 2026
+
+Consumer `7ba266a9` reconstructs complete output and error aggregates from retained line files.
+Recovery has no provider runner. Each pass verifies exact line sizes and digests in input order with bounded buffers.
+Stable aggregate identities bind account, batch, and result category. Retries preserve the first digest, expiry, and storage bound.
+
+Batch schema 4 retains the original storage bound and the cleanup marker.
+File schema 5 separates internal checkpoints from public aggregate files. CSP13 owns migration.
+The worker and background sweep publish aggregate references before public exposure and checkpoint retirement.
+Cleanup verifies every result count and reference before deleting any checkpoint. Exact cleanup retries preserve unrelated byte charges.
+
+Status reads do not reconstruct files. Incomplete failed batches retain their outstanding claims.
+After cancellation, recovery publishes results from previously admitted lines. Unknown dispatches never authorize another provider call.
+The owner decision about untouched lines remains pending.
+
+The byte meter belongs to `internal/limits/storedbytes`. Its storage format remains schema 2.
+The limits vocabulary remains independent of storage. `internal/jobs/fileio` connects batch recovery and HTTP submission to the same file owner.
+
+The [local proof](../../plans/proof/starport-production-catalog/csp12.2/batch-aggregates-2026-09-27/verification.json) records process-loss, concurrent recovery, corruption, expiry, quota, and production sweep checks.
+Shared backends, capacity, native CI, full A47, and bounded shutdown drain remain required.
+Terminal status promises readable aggregate bytes. It does not mean that checkpoint cleanup finished.

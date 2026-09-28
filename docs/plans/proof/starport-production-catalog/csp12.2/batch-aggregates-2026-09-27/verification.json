@@ -1,0 +1,626 @@
+{
+  "status": "partial; local aggregate recovery qualified; CSP12.2 remains in progress",
+  "recorded_at": "2026-09-28T01:35:34.030849+00:00",
+  "consumer_commit": "7ba266a9f5067350a659ee201ebcdc25cb6ce716",
+  "base_consumer_commit": "98bbd43d37078a34addd8a6e3ac2c833749d29ac",
+  "producer_commit": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+  "environment": {
+    "GOWORK": "/tmp/csp122-billing.work",
+    "GOTOOLCHAIN": "go1.27.1",
+    "platform": "darwin/arm64",
+    "services": "Docker daemon stopped; no test services started"
+  },
+  "checks": [
+    {
+      "command": "go test -json ./internal/server/controllers -run '^TestBatchAggregateRetryKeepsOneFileIdentity$'",
+      "output": "before.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "fail",
+          "elapsed_seconds": 0.665
+        }
+      ],
+      "phase": "historical diagnostic or intermediate",
+      "command_note": "Reproduction command from the retained probe name. The original shell command was not retained."
+    },
+    {
+      "command": "go test -json ./internal/jobs -run '^TestBatchAggregateCleanupRequiresCompleteReferences$'",
+      "output": "cleanup-before.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "fail",
+          "elapsed_seconds": 0.48
+        }
+      ],
+      "phase": "historical diagnostic or intermediate"
+    },
+    {
+      "command": "go test -race -json -timeout 3m ./internal/jobs -run 'Test(BatchAggregate|AggregateRecovery)'",
+      "output": "faults-race.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 14,
+        "fail": 5,
+        "skip": 5
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "fail",
+          "elapsed_seconds": 2.221
+        }
+      ],
+      "phase": "historical diagnostic or intermediate"
+    },
+    {
+      "command": "go test -json ./internal/architecture -run TestImportGraphArchitecture",
+      "output": "architecture.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/architecture",
+          "result": "fail",
+          "elapsed_seconds": 1.318
+        }
+      ],
+      "phase": "historical diagnostic or intermediate"
+    },
+    {
+      "command": "go test -json ./internal/architecture ./internal/limits/storedbytes",
+      "output": "seams.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 27,
+        "fail": 0,
+        "skip": 6
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/storedbytes",
+          "result": "pass",
+          "elapsed_seconds": 0.604
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/architecture",
+          "result": "pass",
+          "elapsed_seconds": 4.849
+        }
+      ],
+      "phase": "final"
+    },
+    {
+      "command": "go test -race -json -timeout 5m ./internal/limits/storedbytes ./internal/files ./internal/jobs/... ./internal/server/controllers",
+      "output": "packages-race.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 644,
+        "fail": 7,
+        "skip": 88
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/storedbytes",
+          "result": "pass",
+          "elapsed_seconds": 2.415
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs/assetfetch",
+          "result": "pass",
+          "elapsed_seconds": 1.77
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "fail",
+          "elapsed_seconds": 21.411
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 19.74
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/files",
+          "result": "pass",
+          "elapsed_seconds": 70.724
+        }
+      ],
+      "phase": "historical diagnostic or intermediate"
+    },
+    {
+      "command": "go test -race -json -timeout 5m ./internal/limits/storedbytes ./internal/files ./internal/jobs/... ./internal/server/controllers",
+      "output": "packages-final-race.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 655,
+        "fail": 0,
+        "skip": 88
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/storedbytes",
+          "result": "pass",
+          "elapsed_seconds": 0.001
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/files",
+          "result": "pass",
+          "elapsed_seconds": 0.006
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs/assetfetch",
+          "result": "pass",
+          "elapsed_seconds": 0.016
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 0.004
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 11.917
+        }
+      ],
+      "phase": "final"
+    },
+    {
+      "command": "go test -race -json -timeout 3m ./internal/app -run '^TestProductionSweep'",
+      "output": "app-final.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed_seconds": 28.01
+        }
+      ],
+      "phase": "final"
+    },
+    {
+      "command": "CGO_ENABLED=0 go test -json ./internal/jobs ./internal/files ./internal/limits/storedbytes -run 'Test(BatchAggregate|OutputExposure|Durable|StoredBytes|UnattachedByte|ResultStorage|ResultConfirmation)'",
+      "output": "pure-go-final.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 39,
+        "fail": 0,
+        "skip": 8
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/files",
+          "result": "pass",
+          "elapsed_seconds": 0.304
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits/storedbytes",
+          "result": "pass",
+          "elapsed_seconds": 0.504
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 5.415
+        }
+      ],
+      "phase": "final"
+    },
+    {
+      "command": "go test -race -json -timeout 3m ./internal/server -run 'Test.*(Batch|File)'",
+      "output": "router-final.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 22,
+        "fail": 1,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "result": "fail",
+          "elapsed_seconds": 17.084
+        }
+      ],
+      "phase": "historical diagnostic or intermediate"
+    },
+    {
+      "command": "go test -race -json -timeout 3m ./internal/server -run 'Test.*(Batch|File)'",
+      "output": "router-final-race.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "result": "pass",
+          "elapsed_seconds": 17.585
+        }
+      ],
+      "phase": "final"
+    },
+    {
+      "command": "go test -race -json -timeout 1m ./internal/jobs -run '^TestBatchAggregateSurvivesProcessLoss$'",
+      "output": "process-loss.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 1.845
+        }
+      ],
+      "phase": "historical diagnostic or intermediate"
+    }
+  ],
+  "static_checks": [
+    {
+      "command": "go vet ./internal/jobs/... ./internal/files ./internal/limits/storedbytes ./internal/server/controllers ./internal/app",
+      "output": "vet-final.log.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./internal/jobs/... ./internal/files ./internal/limits/storedbytes ./internal/server/controllers ./internal/app",
+      "output": "goago-final.json.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "output": "layout.log.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "output": "dependencies.log.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-async-media-jobs.sh",
+      "output": "async.log.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "technical-writing lint added operator prose",
+      "output": "prose.log.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "technical-writing lint new aggregate source comments",
+      "output": "source-prose-final.log.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "technical-writing lint REVIEW.md",
+      "output": "review-prose-final.log.gz",
+      "exit_code": 0
+    }
+  ],
+  "source_manifest": [
+    {
+      "path": "docs/OPERATOR-GUIDE.md",
+      "sha256": "97d343d18580e38a885b7eb29513a083adc65da9e43cf6d5b2e208e1606acfc5"
+    },
+    {
+      "path": "internal/app/app.go",
+      "sha256": "64aea6c60b1f3d86adedfad8de191be4de03ea3446f9c9fdea2b1b28ccfc572c"
+    },
+    {
+      "path": "internal/app/job_recovery_test.go",
+      "sha256": "f360107acb1084139e4b5c3dbc99fabb26694d50a47f22adfe4f5613c40e83cb"
+    },
+    {
+      "path": "internal/architecture/import_graph_test.go",
+      "sha256": "3edb24a899140d0e80fc745d6fd2f258d16fc2080099512a34f37da671dd5a0d"
+    },
+    {
+      "path": "internal/files/file.go",
+      "sha256": "b7b23092fc58d363e8ee03bc561e52006b694ae55f2ec76a88f672498f622a80"
+    },
+    {
+      "path": "internal/files/output.go",
+      "sha256": "aa618b355b30db5311910eea4426de74b0791fbf3e71d4b28fb183d3eea0338f"
+    },
+    {
+      "path": "internal/files/output_retirement_test.go",
+      "sha256": "93d7e2160968571ee876fd63fe0d9d71b231bc8e4d4e486046b89cfbf36f6c78"
+    },
+    {
+      "path": "internal/files/output_test.go",
+      "sha256": "5bd009755db6dd6a75f3bfd3a96a9da70229180ff0859026005ee8a344bf4bd4"
+    },
+    {
+      "path": "internal/files/quota_test.go",
+      "sha256": "dbd28a9e8d1829afd0f9b7cf2f39227ac7846fc7b4bb711fcfe691d904b5f0f4"
+    },
+    {
+      "path": "internal/files/recovery_quota_test.go",
+      "sha256": "97cbe24b5426994920ee826f86dd2b1127aad456ea1e334c715a00383cf5e5f1"
+    },
+    {
+      "path": "internal/files/repository.go",
+      "sha256": "b286827f5741a2f7af7a0376a44995f49c84166a2c51cde908b74576993e96f6"
+    },
+    {
+      "path": "internal/files/retirement_ack_test.go",
+      "sha256": "dd2d28b04cb6aeec1637cc40c31cbe18820cf3389cac52c6c058247a7871e326"
+    },
+    {
+      "path": "internal/files/service.go",
+      "sha256": "5573093f55ed99461689fb9dbdecb5aca04e2b66eb9da8e7602a1daea86f39da"
+    },
+    {
+      "path": "internal/files/storage_claim_failure_test.go",
+      "sha256": "46b62459e091f0b73923a1068f9a4e71de2d3bb2ba0eb7027a537b153a6bacde"
+    },
+    {
+      "path": "internal/jobs/batch.go",
+      "sha256": "f684071db8321eb11e0c6bf1eb92dfb3ee0d13896ad3e27d57626c16cca6cb31"
+    },
+    {
+      "path": "internal/jobs/batch_aggregate.go",
+      "sha256": "12e99209ba239aa10c0730e3c1cb58fedbd93cebac8c0690d589e5698d8d9bdc"
+    },
+    {
+      "path": "internal/jobs/batch_aggregate_test.go",
+      "sha256": "bdacbdfb93f6d3cb522b8cabd124bd4e6edc79d8b78f8271b1e1224c48f51918"
+    },
+    {
+      "path": "internal/jobs/batch_repository.go",
+      "sha256": "41a3a4f96e6b3aeca85e3e5c844946e016fe6f33b22115291961c5f1f62e5708"
+    },
+    {
+      "path": "internal/jobs/batch_result_loss_test.go",
+      "sha256": "dff32e69dee537c2a870149aa455b00ec4dd2c46bedfcdb73f31534816272180"
+    },
+    {
+      "path": "internal/jobs/batch_service.go",
+      "sha256": "d36400fc544baa714ca9b85b1c7ddd913186a98aac743fb3a6b9685544c8b334"
+    },
+    {
+      "path": "internal/jobs/batch_service_test.go",
+      "sha256": "fda399d914a8301ca30fb4492ee8632285bc095c0c0c0a830514c1e7c42861e1"
+    },
+    {
+      "path": "internal/jobs/fileio/files.go",
+      "sha256": "d714e8765e3b43291004e5094ddfcb2602531eb368876ab9fd06638e236ece1e"
+    },
+    {
+      "path": "internal/jobs/recovery.go",
+      "sha256": "b9a6c68b76c50a9361571f91e2e0d9dc66e1d58c51d692782b31e32f1062f917"
+    },
+    {
+      "path": "internal/jobs/slot_recovery_test.go",
+      "sha256": "3307f648e154d209fd8d4bec10f85ec8d07b57da392185bac6f91b657ee3599a"
+    },
+    {
+      "path": "internal/limits/stored_bytes_test.go",
+      "sha256": "a859711a2896195eeac424eaa68dddd83f701a08755f2191d1383eea100a19e6"
+    },
+    {
+      "path": "internal/limits/storedbytes/storage.go",
+      "sha256": "aee0ee177bf0b9e80360a9339e3e280751e2065db9c9853297faabdd48a63fa4"
+    },
+    {
+      "path": "internal/limits/storedbytes/storage_recovery.go",
+      "sha256": "d4bffd9dda8ebbe4413bf418837c8f44b180b3c94db7ce3726b622a44b306526"
+    },
+    {
+      "path": "internal/limits/storedbytes/storage_test.go",
+      "sha256": "ec9ce394c4bcd05b0e59e1e38d41981d8ed34ef707f39f905dd7ef72e46f4960"
+    },
+    {
+      "path": "internal/server/catalog_batch_permission_test.go",
+      "sha256": "f734bf4b8ce352dd3800a02e7c8decf6427ffcd4d21c2c90ba8f61d246b22983"
+    },
+    {
+      "path": "internal/server/controllers/batch_aggregate_identity_test.go",
+      "sha256": "a1b9d3c3f8b738bbb82f502fecc9cb9d51dd05acf3fc633d0fcd8317ee4d83f9"
+    },
+    {
+      "path": "internal/server/controllers/batches.go",
+      "sha256": "aed509355e73c97b42e1e8ddc83e9d07de8dbe4ff7db54cab3a5b37f76643493"
+    },
+    {
+      "path": "internal/server/controllers/files.go",
+      "sha256": "291b5e2ba6ed1a3d7fce0d9bfacb0d16d14d4b20b4f64766ca87f823115f6d20"
+    },
+    {
+      "path": "internal/server/test_helpers_test.go",
+      "sha256": "05daf280469082f2659a8192c0d69f3f05c239d21681c107b9732f8aa7fd5301"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "app-final.json.gz",
+      "sha256": "ea1a3224ebb4178300b2af4218b6865d29adc0b112735841208f252be23d7c8b",
+      "uncompressed_sha256": "a1f30d3d9239f316aac5789d448b7e4ca569caa01b2a49d3f8654c1ea4de68d6"
+    },
+    {
+      "path": "architecture.json.gz",
+      "sha256": "1b6c8e94aeb7e56ceda28a8b80d9fbb403bf939ec7855f685954b09daf93cf55",
+      "uncompressed_sha256": "48f203e0a14e75a22bac7a413293812512b5973a17b90c77ddfcce67171de6ae"
+    },
+    {
+      "path": "async.log.gz",
+      "sha256": "6d6c9b7c72a002478f74e1c1d62915ed2b6caebd448f8388f2f2a40af447e33c",
+      "uncompressed_sha256": "2e320c6c7a59d3ce3e3736f1918c22033814cc4647f54233f1de03ac2948951d"
+    },
+    {
+      "path": "batch-race.json.gz",
+      "sha256": "0fdc6aa826898fc3fdac6edc96d4f053366a8fd8ba68c45f8c4bc772cb5276cc",
+      "uncompressed_sha256": "ecd128204abd394477cb360851f76e144ee4fe9856044e5fca0b6566c0909189"
+    },
+    {
+      "path": "before.json.gz",
+      "sha256": "825892897fbedcc3d5fcae941669f132398579fdda2e3cf769c5dd952a6832dd",
+      "uncompressed_sha256": "2a2152f80d2782dbe0439a78768711c62a1243731513098009037a4cb2915020"
+    },
+    {
+      "path": "cleanup-before.json.gz",
+      "sha256": "a5892df519a78abdbcafce8a1b002332b45d8c8ff56df5b1a7a2c655bcbbe073",
+      "uncompressed_sha256": "423e2827fac096306dc7b8c8ae42fe7d0f11ff2ab91777403612a53d9a1fbcb4"
+    },
+    {
+      "path": "dependencies.log.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "uncompressed_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "expanded-race.json.gz",
+      "sha256": "57cdd91c53776e9c7fae8eb45ed0b5ca2913a2b9be20709a09bb8730fd17e5d0",
+      "uncompressed_sha256": "fe489aa513737a17b3515d0bf7fe14410ec5e9b0b7dfe3740a7c3557b72091e4"
+    },
+    {
+      "path": "faults-race.json.gz",
+      "sha256": "8f637233eae9ce4ad61d9c7e116b65beadf8ee50ba9c8af651d82bd6aab67f60",
+      "uncompressed_sha256": "0d3058d27260a80e29a0edf4706d12e6dcb09244eeadf018e25ad61daad3925a"
+    },
+    {
+      "path": "final-aggregate-race.json.gz",
+      "sha256": "bf8556908ab8c8c865f8b7b2cd7f89ee8ce6df365baf4d0952968e14778398bb",
+      "uncompressed_sha256": "85b19d7eec8c17fa02223e3e0aabe66b3eb6bc207f133769ae02875baa90a06e"
+    },
+    {
+      "path": "final-batch-race.json.gz",
+      "sha256": "eb448359a8826585e6e2e2429cfd4abad43737ec8156c0d36f025d294f5eac1e",
+      "uncompressed_sha256": "25e48cd5cdd0c366c171ac0806dd2f7d575231be0db3ce99ecc4e727ed9920ba"
+    },
+    {
+      "path": "goago-final.json.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "uncompressed_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "goago.json.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "uncompressed_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "identity-before.go.txt.gz",
+      "sha256": "59326e4ac57100f58ba30f87617df94f059ea8676c65b66eff4ca9199fb4d5be",
+      "uncompressed_sha256": "9503b877aa14070f83213ed28baeed1838b128f9e681265880267ae999c77ab5"
+    },
+    {
+      "path": "initial.json.gz",
+      "sha256": "03f8b6bd3adbf320711fbb1703cc9182edb6330f0a451c85e414111e2865018c",
+      "uncompressed_sha256": "f7bc6dca3a40d3d0821363600a0cfba71dc7da09dea6bce2d4ce8b7ee3fd6ab0"
+    },
+    {
+      "path": "layout.log.gz",
+      "sha256": "481f2e091859295ed496ba798f0baf1586fe884846bb9b894c56ff3c751c4c92",
+      "uncompressed_sha256": "950c7009eb5f833e803379099570451310174a936b1e75f6e73b83f499015718"
+    },
+    {
+      "path": "packages-final-race.json.gz",
+      "sha256": "c4805fb4025f45f803b4ebeb73cc2714048855280cee5263f80734a48af158ca",
+      "uncompressed_sha256": "b3412d79e319440197198df690531adac21ec5fcc656e5afbf86ad369bd59e51"
+    },
+    {
+      "path": "packages-race.json.gz",
+      "sha256": "4e9d2b0e8d74aef97c1914ba63466cca63f5921999ec4433c0d7e910abf6eb6f",
+      "uncompressed_sha256": "0fc116ded4761d4dbf4c2cf804c4dc7d214f29b367b8f4a9790f9b915e7d6455"
+    },
+    {
+      "path": "process-loss.json.gz",
+      "sha256": "9c4325f7fc2fad51361ca8e6a6f81a53bfd7949e391aba9f31bd23ccd9f7d6d2",
+      "uncompressed_sha256": "a46498cf0caa1d9807f1f19ebc41e659ef041f568003896d3a874c0b5c216b2f"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "32be36f7cfdb0b4cfb45063e72ff52c10f3e1865222cea2fd66b1e91ed21331a",
+      "uncompressed_sha256": "1d02343db735de3e9f6bb62f5897af06453bb2131892c3823d9533e594e7d261"
+    },
+    {
+      "path": "pure-go-final.json.gz",
+      "sha256": "3c50108f41db238ca7a87241c6070f59e11e9c4f905ca821e0baf2c5afe6247a",
+      "uncompressed_sha256": "ceda006176a3bdfc3eae1d02c3a0c460c3d90a5113ed7a12b1e703897df2391a"
+    },
+    {
+      "path": "pure-go.json.gz",
+      "sha256": "bb2776e6fd311e713cde25b00a7e44a6a7204f5c37ee26b99bb1b6fe4361f79b",
+      "uncompressed_sha256": "fab7c494298b469f6c54b4ab80afea9890947dfee20a11be04a1b2bd7642f8a1"
+    },
+    {
+      "path": "recovery-final.json.gz",
+      "sha256": "d047f1bf139a9d544cfc92f920d65278f996d3308af0c7d0cd179a69be4007d9",
+      "uncompressed_sha256": "7cb37477482a58aaa90625701059e37b08fc70e781a570a50b0457b0f5ca6376"
+    },
+    {
+      "path": "recovery.json.gz",
+      "sha256": "847225fdf7eafc7b455bf294a103a1eddb30329838c7014784499205077a1c36",
+      "uncompressed_sha256": "279c6e2ea2eab300130d70c74fa5688a4fdc981ad033f0f56d1df7aa8a4b7062"
+    },
+    {
+      "path": "review-prose-final.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "uncompressed_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66"
+    },
+    {
+      "path": "review-prose.log.gz",
+      "sha256": "55208d188b1dc33557f15a8c298ccbab910753e6e8f27613abd0002d47c08efa",
+      "uncompressed_sha256": "2ad7e4d31020199d48c12744b3ce47bec2eaf6a354e5cf847f75d1228885abe9"
+    },
+    {
+      "path": "router-final-race.json.gz",
+      "sha256": "836fabc720f1a333b63b9c6975ca07a8ac808ff301bc6a2db0de6f71257d41fa",
+      "uncompressed_sha256": "bac04f8745203277abb026c26968dbe1ed5b41666c2cb521fff602a7eac4186b"
+    },
+    {
+      "path": "router-final.json.gz",
+      "sha256": "881573b36012ce47161512c8b891eb49e75728323c0c4e1a95a07e3a23a493e4",
+      "uncompressed_sha256": "a33987ffa866167aa1ae506e49481dc74a1d15bfe39c9064fba29dd30b678594"
+    },
+    {
+      "path": "seams.json.gz",
+      "sha256": "c4b29e824bef09c6bb354c27da78005721847053d9481cfb9d735a9d76823c95",
+      "uncompressed_sha256": "58633f8dc9ecb4164c0acd83e1762430e8cf7a668e077d697e19ea84c9016929"
+    },
+    {
+      "path": "source-prose-final.log.gz",
+      "sha256": "3a8a4461ab82bcabf697e5461b5c91a9d9b762e9b528b2e8ce4797850849e7fb",
+      "uncompressed_sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    {
+      "path": "source-prose.log.gz",
+      "sha256": "493f39fb06aeee2924712f5a0e8cc679b4a88825d93e3a93762b35b8acf17b9e",
+      "uncompressed_sha256": "b66f5255b34f1a0beed8e148da1e9fb2fc4e667195ef2e5e4f9be087b99939df"
+    },
+    {
+      "path": "vet-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "limitations": [
+    "No task completion, PR publication, merge, or release claim.",
+    "Shared Valkey/object-store aggregate tests, native CI, capacity, restore, failover, and full A47 remain unverified.",
+    "Pending owner decision about continuing proven-unstarted batch lines. Unknown provider dispatch must never replay.",
+    "Bounded batch-worker drain before application storage shutdown remains required.",
+    "Audited administrator correction and the complete paid-operation matrix remain required.",
+    "CSP13 owns migration for file schema 5 and batch schema 4."
+  ]
+}
