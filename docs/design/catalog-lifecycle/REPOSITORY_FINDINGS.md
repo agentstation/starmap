@@ -4727,3 +4727,19 @@ SQL references, independent later history, full restore, native qualification, r
 
 The [reference proof](../../plans/proof/starport-production-catalog/csp13/reference-validation-2026-09-28/verification.json) records 47 focused race passes, 47 pure-Go passes, and 939 full owner-suite race passes.
 All three cohorts have no failures or skips.
+
+
+### SQL identity reference validation: September 28, 2026
+
+Consumer `31616bb68` validates captured SQL identities.
+
+The previous reference verifier accepted a SQL user row with invalid record JSON.
+The retained failing regression now passes through owner-specific SQL validation.
+The shared private-image reader also serves relational import, with all nine backend pairs still passing.
+
+An initial template validator reused the smaller authorization-record bound.
+The corrected validator accepts valid larger templates within the 64 MiB portable-record bound.
+Gateway-key and budget references, independent later history, full restore, native qualification, review, and merge remain open.
+
+The [SQL reference proof](../../plans/proof/starport-production-catalog/csp13/identity-references-2026-09-28/verification.json) records 35 focused race passes, 35 pure-Go passes, and 318 broader passes.
+All three cohorts have no failures or skips.

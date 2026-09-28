@@ -5089,3 +5089,21 @@ SQL identity and budget references, independent later history, and restore activ
 
 The [reference proof](../../plans/proof/starport-production-catalog/csp13/reference-validation-2026-09-28/verification.json) records 47 focused race passes, 47 pure-Go passes, and 939 full owner-suite race passes.
 All three cohorts have no failures or skips.
+
+
+### SQL identity reference validation: September 28, 2026
+
+Consumer `31616bb68` validates captured SQL identities.
+
+The importer and backup inspector share a verified read-only relational image.
+Identity owners validate users, teams, memberships, and account grants.
+Account owners validate retained accounts and template identities and revisions.
+Missing principals cause refusal. Deleted-account grant references remain diagnostics without granting access.
+The captured SQL recovery state must match the closed manifest boundary with bootstrap permission disabled.
+
+User, team, and account records retain the 64 KiB authorization-record bound.
+Templates use the 64 MiB portable-record bound. A regression preserves valid templates larger than 64 KiB.
+Gateway API-key references, budget records, independent later history, and restore activation remain required.
+
+The [SQL reference proof](../../plans/proof/starport-production-catalog/csp13/identity-references-2026-09-28/verification.json) records 35 focused race passes, 35 pure-Go passes, and 318 broader passes.
+All three cohorts have no failures or skips.

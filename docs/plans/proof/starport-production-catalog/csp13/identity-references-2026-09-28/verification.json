@@ -1,0 +1,181 @@
+{
+  "task": "CSP13",
+  "status": "in_progress",
+  "source_commit": "31616bb68899816e06a3a6109f61270e21dcf16c",
+  "go": "1.27.1",
+  "host": "darwin/arm64",
+  "results": {
+    "before.jsonl": {
+      "fail": 1,
+      "nonpassing_tests": [
+        "TestBundleReferencesRejectInvalidSQLIdentity"
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "fail",
+          "elapsed": 0.823
+        }
+      ]
+    },
+    "first.jsonl": {
+      "pass": 6,
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/account",
+          "result": "pass",
+          "elapsed": 0.689
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 0.922
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/identity",
+          "result": "pass",
+          "elapsed": 1.161
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 3.825
+        }
+      ]
+    },
+    "focused.jsonl": {
+      "pass": 17,
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 1.679
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 15.093
+        }
+      ]
+    },
+    "full-race.jsonl": {
+      "pass": 318,
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/account",
+          "result": "pass",
+          "elapsed": 3.5540000000000003
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/identity",
+          "result": "pass",
+          "elapsed": 4.257
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 42.612
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 45.703
+        }
+      ]
+    },
+    "final-race.jsonl": {
+      "pass": 35,
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 2.479
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 1.796
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 7.865
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 19.382
+        }
+      ]
+    },
+    "final-purego.jsonl": {
+      "pass": 35,
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 0.511
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 0.651
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 5.603
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 9.344
+        }
+      ]
+    }
+  },
+  "commands": [
+    "python3 /tmp/csp13-all-storage-env.py /tmp/csp13-sql-references-full-race.jsonl go test -race ./internal/sqlstore ./internal/recovery ./internal/account ./internal/identity -json -count=1 -timeout=5m",
+    "python3 /tmp/csp13-all-storage-env.py /tmp/csp13-sql-references-final-race.jsonl go test -race ./internal/recovery ./internal/sqlstore ./internal/app ./internal/cli -run '^TestBundleReferences|^TestBundleIdentityReferences|^TestRelationalSnapshotView|^TestBackupApplication|^TestBackupCommand' -json -count=1 -timeout=3m",
+    "CGO_ENABLED=0 python3 /tmp/csp13-all-storage-env.py /tmp/csp13-sql-references-final-purego.jsonl go test ./internal/recovery ./internal/sqlstore ./internal/app ./internal/cli -run '^TestBundleReferences|^TestBundleIdentityReferences|^TestRelationalSnapshotView|^TestBackupApplication|^TestBackupCommand' -json -count=1 -timeout=3m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 make lint",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./internal/sqlstore ./internal/account ./internal/identity ./internal/recovery ./internal/app ./internal/cli",
+    "bash scripts/verify-dependency-direction.sh",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go test -c ./internal/app -o /tmp/csp13-sql-references-windows.test.exe",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go test -c ./internal/app -o /tmp/csp13-sql-references-linux.test"
+  ],
+  "checks": {
+    "lint": "PASS; zero issues",
+    "vet": "PASS; six affected packages",
+    "dependency_direction": "PASS; six conditions",
+    "writing": "PASS; recovery README",
+    "cross_compile": "PASS linux/amd64 and windows/amd64; not native execution",
+    "scoped_writing": "PASS; four plan and specification files plus four new Go source files",
+    "full_writing": "FAIL; 224 pre-existing diagnostics in unchanged historical proof files; no changed file has a finding"
+  },
+  "fail_before": "TestBundleReferencesRejectInvalidSQLIdentity fails against 339883cfa because invalid SQL identity JSON passes artifact and reference verification.",
+  "retained_failures": [
+    "An initial template check incorrectly reused the 64 KiB authorization-record bound; a valid large-template regression failed before the separate portable-record bound repair"
+  ],
+  "contracts": [
+    "SQL import and inspection share a verified read-only private image",
+    "SQL identity owners validate users, teams, memberships and account grants",
+    "Account owners verify account records and template identities and revisions",
+    "Deleted-account grant references remain counted diagnostics; missing users or teams fail validation",
+    "Captured SQL recovery state must match the closed manifest boundary and disable bootstrap",
+    "User, team and account records retain their 64 KiB bound; templates use the 64 MiB portable-record bound"
+  ],
+  "limitations": [
+    "The 318-result broader cohort precedes the template-bound correction; final focused cohorts include that correction and its regression",
+    "Gateway API-key references, budget records, independent later history, restore and activation remain open",
+    "Fifteen CSP13 acceptance subcases remain UNVERIFIED; no new subcase is complete",
+    "Native Linux and Windows execution, required pre-PR review, CI and merge remain open",
+    "A verified snapshot never establishes current permission or authorizes retries"
+  ],
+  "fixtures": "Task-owned PostgreSQL, MySQL, Valkey and MinIO stopped after checks; volumes preserved"
+}
