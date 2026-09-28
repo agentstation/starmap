@@ -5125,3 +5125,20 @@ Aggregate accounting checks, complete correction ancestry, independent later his
 
 The [reference proof](../../plans/proof/starport-production-catalog/csp13/security-references-2026-09-28/verification.json) records 623 race passes and 72 pure-Go passes.
 Both cohorts have no failures or skips.
+
+
+### Accounting consistency: September 28, 2026
+
+Consumer `bca519227` validates captured balances and correction chains.
+
+A private on-disk index compares window totals with contributions from all retained attempts.
+The budget owner checks seeded consumption, reserved capacity, active disputes, and retained overflow.
+
+Each correction edge must reproduce its successor. Cycles and orphan receipts cause refusal.
+Every correction retains its original deadline. Immutable state bindings establish order despite backward absolute time within that interval.
+Verification cannot repair a mismatched balance or authorize new spending.
+
+Internal consistency does not establish later history completeness.
+Cross-store execution links, independent evidence, and restore activation remain required.
+
+The [accounting proof](../../plans/proof/starport-production-catalog/csp13/accounting-consistency-2026-09-28/verification.json) records test counts, retained failures, and final qualification scope.

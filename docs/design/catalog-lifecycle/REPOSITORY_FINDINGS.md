@@ -4760,3 +4760,19 @@ Aggregate accounting checks, complete correction ancestry, independent later his
 
 The [reference proof](../../plans/proof/starport-production-catalog/csp13/security-references-2026-09-28/verification.json) records 623 race passes and 72 pure-Go passes.
 Both cohorts have no failures or skips.
+
+
+### Accounting consistency: September 28, 2026
+
+Consumer `bca519227` validates captured balances and correction chains.
+
+The previous verifier accepted changed window totals, missing attempts, changed correction heads, and orphan correction receipts.
+Six failing regression subtests preserve those gaps.
+The implementation now checks accounting conservation through a private on-disk index.
+
+Review found that ordered absolute correction timestamps would reject state that the runtime permits.
+The repair uses immutable state bindings and retains each correction deadline.
+The backward-time regression fails before that repair and passes afterward.
+Cross-store execution links, independent history, and full restore remain open.
+
+The [accounting proof](../../plans/proof/starport-production-catalog/csp13/accounting-consistency-2026-09-28/verification.json) records test counts, retained failures, and final qualification scope.

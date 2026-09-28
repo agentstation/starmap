@@ -1,0 +1,199 @@
+{
+  "task": "CSP13",
+  "status": "in_progress",
+  "source_commit": "bca519227d0f66185fae1f3500e3398b9d8c1cac",
+  "baseline_commit": "e02671ac93164038f507354e2daa3e56f9d8049b",
+  "go": "1.27.1",
+  "host": "darwin/arm64",
+  "results": {
+    "before.jsonl": {
+      "counts": {
+        "fail": 7
+      },
+      "nonpassing_tests": [
+        "TestBackupRejectsAccountingMismatch/reserved",
+        "TestBackupRejectsAccountingMismatch/consumed",
+        "TestBackupRejectsAccountingMismatch/disputes",
+        "TestBackupRejectsAccountingMismatch/missing-attempt",
+        "TestBackupRejectsAccountingMismatch/correction-head",
+        "TestBackupRejectsAccountingMismatch/orphan-correction",
+        "TestBackupRejectsAccountingMismatch"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "fail",
+          "elapsed": 2.754
+        }
+      ]
+    },
+    "first.jsonl": {
+      "counts": {
+        "pass": 14
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 12.996
+        }
+      ]
+    },
+    "focused.jsonl": {
+      "counts": {
+        "pass": 12
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 14.707
+        }
+      ]
+    },
+    "clock-before.jsonl": {
+      "counts": {
+        "fail": 1
+      },
+      "nonpassing_tests": [
+        "TestBackupAccountingPreservesAllTransitions"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "fail",
+          "elapsed": 5.567
+        }
+      ]
+    },
+    "final-race.jsonl": {
+      "counts": {
+        "pass": 476
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 2.43
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed": 22.416
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 95.068
+        }
+      ]
+    },
+    "final-purego.jsonl": {
+      "counts": {
+        "pass": 91
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed": 0.342
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 0.65
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 40.817
+        }
+      ]
+    },
+    "qualified-race.jsonl": {
+      "counts": {
+        "pass": 91
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed": 1.416
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 1.9100000000000001
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 60.409
+        }
+      ]
+    },
+    "clock-purego.jsonl": {
+      "counts": {
+        "pass": 1
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 4.584
+        }
+      ]
+    }
+  },
+  "commands": [
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go test ./internal/recovery -run '^TestBackupRejectsAccountingMismatch$' -json -count=1 -timeout=2m",
+    "python3 /tmp/csp13-all-storage-env.py /tmp/csp13-accounting-final-race.jsonl go test -race ./internal/limits/reservation ./internal/recovery ./internal/cli -json -count=1 -timeout=5m",
+    "CGO_ENABLED=0 python3 /tmp/csp13-all-storage-env.py /tmp/csp13-accounting-final-purego.jsonl go test ./internal/limits/reservation ./internal/recovery ./internal/cli -run '^TestBackup|^TestBundleIdentity|^TestRecoveryRequiresOriginalIndependentApproval$' -json -count=1 -timeout=4m",
+    "python3 /tmp/csp13-all-storage-env.py /tmp/csp13-accounting-qualified-race.jsonl go test -race ./internal/limits/reservation ./internal/recovery ./internal/cli -run '^TestBackup|^TestBundleIdentity|^TestRecoveryRequiresOriginalIndependentApproval$' -json -count=1 -timeout=4m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 go test ./internal/recovery -run '^TestBackupAccountingPreservesAllTransitions$' -json -count=1 -timeout=2m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 make lint",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./internal/limits/reservation ./internal/recovery ./internal/cli",
+    "bash scripts/verify-dependency-direction.sh",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go test -c ./internal/app -o /tmp/csp13-accounting-linux.test",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go test -c ./internal/app -o /tmp/csp13-accounting-windows.test.exe"
+  ],
+  "checks": {
+    "lint": "PASS; zero issues",
+    "vet": "PASS; three affected packages",
+    "dependency_direction": "PASS; six conditions",
+    "source_writing": "PASS; recovery README",
+    "cross_compile": "PASS linux/amd64 and windows/amd64; not native execution",
+    "plan_writing": "PASS; four files, zero diagnostics"
+  },
+  "fail_before": "The preceding verifier accepts altered reserved, consumed, and dispute totals, a missing attempt, an inconsistent correction head, and an orphan correction. Six subtests plus their parent fail before implementation.",
+  "retained_failures": [
+    "An initial ancestry check required ordered absolute timestamps. The backward-authority-time regression failed. State bindings now establish ancestry; every receipt must remain within its original correction deadline."
+  ],
+  "qualification_scope": "The 476-result broader race suite and 91-result pure-Go cohort precede the timestamp repair. The final 91-result race cohort includes the repair. A final pure-Go transition test also includes backward authority time.",
+  "contracts": [
+    "Private on-disk aggregation retains bounded SQLite page cache and per-record processing",
+    "Exact reservation and dispute sums, seeded consumption saturation, and retained valuation overflow must match window state",
+    "Each correction edge must reproduce its successor; constant-memory cycle detection bounds chain traversal",
+    "The total number of linked correction receipts must equal the retained receipt count",
+    "No balance repair, settlement, refund, replay, or admission occurs during inspection"
+  ],
+  "manual_review": [
+    "Scratch index creation uses the verified snapshot private directory and exclusive private files. Connections close before directory removal.",
+    "The live correction-head validator delegates to the same unchanged pure check. No inference request-path lookup was added.",
+    "Correction deadline checks preserve the original first-settlement horizon. Immutable state bindings permit backward absolute time inside that horizon.",
+    "Capture remains a stopped-writer operation; accounting conservation cannot prove an independently acknowledged later history."
+  ],
+  "limitations": [
+    "Cross-store job/reservation and correction-publication links still need complete inspection",
+    "Independent later history, operator restore, external fencing, and measured recovery remain open",
+    "Fifteen CSP13 acceptance subcases remain UNVERIFIED; no new subcase is complete",
+    "Native Linux/Windows execution, required pre-PR review, CI, and merge remain open"
+  ],
+  "fixtures": "Task-owned PostgreSQL, MySQL, Valkey, and MinIO stopped after qualification; volumes preserved"
+}
