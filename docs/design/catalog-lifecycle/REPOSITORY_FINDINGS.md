@@ -4850,3 +4850,19 @@ The [operator preparation proof](../../plans/proof/starport-production-catalog/c
 The final review found that SQL NULL metadata could escape an inequality count.
 The regression proves that the preflight then changed the schema before refusing.
 Explicit NULL checks now refuse without changing the target schema.
+
+
+### Restore inventory validation: September 28, 2026
+
+Consumer `3c48670d5` validates product inventory before target access.
+
+Eight malformed product inventories passed preparation despite valid outer bundle hashes.
+The regression fixture changes inventory metadata and recomputes outer hashes to isolate that gap.
+New validation refuses these cases before target creation. A ninth case checks unknown JSON members.
+
+The final focused suites record 75 race passes and 75 pure-Go passes without failures or skips.
+The broader configuration and CLI suite records 529 passes and one optional container-image skip.
+Twenty configuration tests pass under race detection and pure Go after the final constant rename.
+The report identifies required file procedures. Actual file publication and activation remain open.
+
+The [inventory proof](../../plans/proof/starport-production-catalog/csp13/file-plan-2026-09-28/verification.json) records exact results and remaining requirements.

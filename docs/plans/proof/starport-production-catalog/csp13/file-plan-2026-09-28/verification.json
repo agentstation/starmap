@@ -1,0 +1,293 @@
+{
+  "task": "CSP13",
+  "status": "in_progress",
+  "source_commit": "3c48670d5cf76f4a2c507998dbdefa88cf2943f8",
+  "baseline_commit": "7237a692c543b51f00178a3353969d5093b2f32c",
+  "go": "1.27.1",
+  "host": "darwin/arm64",
+  "results": {
+    "inventory-before.jsonl": {
+      "counts": {
+        "fail": 9
+      },
+      "nonpassing_tests": [
+        "TestPrepareBackupRejectsInvalidInventoryBeforeTargetAccess/deployment",
+        "TestPrepareBackupRejectsInvalidInventoryBeforeTargetAccess/version",
+        "TestPrepareBackupRejectsInvalidInventoryBeforeTargetAccess/duplicate-file",
+        "TestPrepareBackupRejectsInvalidInventoryBeforeTargetAccess/missing-file",
+        "TestPrepareBackupRejectsInvalidInventoryBeforeTargetAccess/unknown-role",
+        "TestPrepareBackupRejectsInvalidInventoryBeforeTargetAccess/escape",
+        "TestPrepareBackupRejectsInvalidInventoryBeforeTargetAccess/loaded-digest",
+        "TestPrepareBackupRejectsInvalidInventoryBeforeTargetAccess/missing-role",
+        "TestPrepareBackupRejectsInvalidInventoryBeforeTargetAccess"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "fail",
+          "elapsed": 7.434
+        }
+      ]
+    },
+    "inventory-after.jsonl": {
+      "counts": {
+        "pass": 9
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 5.349
+        }
+      ]
+    },
+    "inventory-focused.jsonl": {
+      "counts": {
+        "pass": 38,
+        "fail": 2
+      },
+      "nonpassing_tests": [
+        "TestRestoreInventoryKeepsUnselectedAndConfigurationInputsInactive",
+        "TestRestoreCommandsPrepareRestrictedNativeStores"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/config",
+          "result": "fail",
+          "elapsed": 0.745
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 0.628
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "fail",
+          "elapsed": 6.987
+        }
+      ]
+    },
+    "inventory-focused-final.jsonl": {
+      "counts": {
+        "pass": 41
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/config",
+          "result": "pass",
+          "elapsed": 0.748
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 0.924
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 1.05
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 8.045
+        }
+      ]
+    },
+    "file-plan-race.jsonl": {
+      "counts": {
+        "pass": 75
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/config",
+          "result": "pass",
+          "elapsed": 2.027
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 1.787
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 28.382
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 30.049
+        }
+      ]
+    },
+    "file-plan-race-final.jsonl": {
+      "counts": {
+        "pass": 75
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/config",
+          "result": "pass",
+          "elapsed": 2.973
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 2.446
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 47.046
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 47.777
+        }
+      ]
+    },
+    "file-plan-purego.jsonl": {
+      "counts": {
+        "pass": 75
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/config",
+          "result": "pass",
+          "elapsed": 0.845
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 1.47
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 32.247
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 34.05
+        }
+      ]
+    },
+    "file-plan-broader.jsonl": {
+      "counts": {
+        "pass": 529,
+        "skip": 1
+      },
+      "nonpassing_tests": [
+        "TestContainerRecipePersistence"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 1.584
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/config",
+          "result": "pass",
+          "elapsed": 16.494
+        }
+      ]
+    },
+    "file-plan-config-race.jsonl": {
+      "counts": {
+        "pass": 20
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/config",
+          "result": "pass",
+          "elapsed": 1.9529999999999998
+        }
+      ]
+    },
+    "file-plan-config-purego.jsonl": {
+      "counts": {
+        "pass": 20
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/config",
+          "result": "pass",
+          "elapsed": 0.726
+        }
+      ]
+    }
+  },
+  "commands": [
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -json ./internal/app -run '^TestPrepareBackupRejectsInvalidInventoryBeforeTargetAccess$' -count=1",
+    "python3 /tmp/csp13-all-storage-env.py /tmp/csp13-file-plan-race-final.jsonl go test -race -json ./internal/config ./internal/cli ./internal/app ./internal/recovery -run 'Test(Restore|PrepareBackup|PrepareBundle|VerifiedRestore)' -count=1 -timeout=4m",
+    "CGO_ENABLED=0 python3 /tmp/csp13-all-storage-env.py /tmp/csp13-file-plan-purego.jsonl go test -json ./internal/config ./internal/cli ./internal/app ./internal/recovery -run 'Test(Restore|PrepareBackup|PrepareBundle|VerifiedRestore)' -count=1 -timeout=4m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -json ./internal/config ./internal/cli -count=1 -timeout=3m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race -json ./internal/config -run 'Test(RestoreInventory|RestoreFileDestinations)' -count=1",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 go test -json ./internal/config -run 'Test(RestoreInventory|RestoreFileDestinations)' -count=1",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 make lint",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./internal/config ./internal/app ./internal/cli ./internal/recovery",
+    "bash scripts/verify-dependency-direction.sh",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go build -o /tmp/csp13-starport-file-plan ./cmd/starport",
+    "/tmp/csp13-starport-file-plan backup prepare --help"
+  ],
+  "fail_before": "Eight validly hashed bundles with malformed product inventories were accepted. The parent and eight subtests fail because PrepareBackup returned nil. New validation refuses these before any target creation. A ninth final case rejects unknown JSON members.",
+  "checks": {
+    "race": "75 pass; zero failures or skips",
+    "pure_go": "75 pass; zero failures or skips",
+    "broader": "529 pass; one optional TestContainerRecipePersistence skip because its image is not selected",
+    "final_constant_names": "20 configuration race passes and 20 pure-Go passes after a lint-only identifier rename; no behavioral code changed after the four-package runs",
+    "lint": "PASS; zero issues",
+    "vet": "PASS; four affected packages before the constant identifier rename",
+    "dependencies": "PASS; six conditions",
+    "build": "PASS; final source and command help",
+    "source_writing": "PASS; twelve files, zero diagnostics",
+    "documentation_writing": "PASS; five files, zero diagnostics",
+    "plan": "PASS; 40 rows, 27 done, only CSP13 in_progress, 477 resume words, 97 anchors, 154 valid links"
+  },
+  "initial_failures": [
+    "The first metadata reader passed a nested path to an API that permits one child name. It now opens each private parent before reading the leaf.",
+    "Workspace recovery roles are conditional. Validation now uses the complete role schema and source selection rather than requiring target and source selections to match.",
+    "Repository lint required shared role constants and decomposition of inventory-role validation. Credential-like constant identifiers produced a false-positive secret finding; semantic acquisition/inference names resolve it without suppression."
+  ],
+  "contracts": [
+    "Outer hashes do not replace product inventory validation",
+    "All selected payloads have exactly one canonical inventory identity and verified digest",
+    "Target paths come only from current target configuration",
+    "Configuration and trust inputs require explicit reconciliation",
+    "Environment-file indexes never imply matching target files",
+    "Local administrator tokens require access reconciliation",
+    "Different instances require distinct runtime identities",
+    "Path-bound journals remain with their component owner",
+    "Disabled target roles retain inactive backup data",
+    "Unsafe relative names and lexical destination collisions refuse preparation",
+    "The private metadata reader checks bounded bytes against the retained manifest again",
+    "Import barriers remain on every successful preparation"
+  ],
+  "manual_review": [
+    "The report performs no filesystem mutation and never authorizes publication or admission.",
+    "Application composition validates inventory before creating target parents or opening SQL/KV/blob adapters.",
+    "Configuration owns canonical role selection and target path derivation. Recovery owns verified bundle reads and operator output types.",
+    "Native publication still needs identity, access, interruption, and retry checks. Lexical collision checks do not prove absence of filesystem aliases.",
+    "The source and target may select different backends and workspace names. The schema accounts for disabled and conditional roles.",
+    "No inference request-path work or network refresh was added."
+  ],
+  "limitations": [
+    "This change validates and reports canonical placement. It does not publish staged files.",
+    "Independent later history, owner-specific publication, activation, and measured recovery remain open.",
+    "Fifteen CSP13 acceptance subcases remain UNVERIFIED. No new subcase is complete.",
+    "Native Linux/Windows qualification, required pre-PR review, CI, and merge remain open."
+  ],
+  "fixtures": "Task-owned PostgreSQL, MySQL, Valkey, and MinIO stopped after verification; volumes preserved"
+}

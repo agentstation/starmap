@@ -5218,3 +5218,23 @@ SQL setup refuses populated incompatible schemas. Native KV import access retain
 Canonical file placement, independent later history, and activation remain required before admission.
 
 The [operator preparation proof](../../plans/proof/starport-production-catalog/csp13/restore-command-2026-09-28/verification.json) records exact results and qualification limits.
+
+
+### Restore inventory validation: September 28, 2026
+
+Consumer `3c48670d5` validates product inventory before target access.
+
+Preparation validates canonical file inventory before creating or connecting to target stores.
+Every payload requires one role, portable relative name, stable artifact identity, and verified digest.
+The metadata reader enforces a byte bound and rechecks its retained digest.
+Unknown metadata, incomplete roles, unsafe names, and lexical target collisions cause refusal.
+
+The `file_plan` result derives destinations from current target configuration.
+Source absolute paths cannot select targets. Environment-file indexes cannot identify target environment files.
+Configuration, trust, administrator tokens, runtime identity, and journals retain explicit recovery procedures.
+A new replica requires a distinct runtime identity. Disabled target roles retain inactive captured files.
+
+The report does not publish files or approve admission.
+Native alias checks, owner-specific publication, independent later history, and activation remain required.
+
+The [inventory proof](../../plans/proof/starport-production-catalog/csp13/file-plan-2026-09-28/verification.json) records exact results and remaining requirements.

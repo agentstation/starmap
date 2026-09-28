@@ -574,7 +574,10 @@ Operators must be able to retry interrupted preparation without repeating comple
 A restore operation binds all storage components and selected files to the same verified backup.
 Preparation stages selected files separately from active configuration.
 It must preserve existing operator files and refuse conflicting targets.
+
 The preparation command must verify the source and deployment identity before creating or connecting to target stores.
+It must also validate canonical file inventory against every captured payload.
+Its file report must use target configuration and identify the procedure required before each file becomes active.
 Its durable receipt must bind the operator's external fencing reference without claiming that the reference fences writers.
 
 A preparation receipt does not approve inference or prove later history.
