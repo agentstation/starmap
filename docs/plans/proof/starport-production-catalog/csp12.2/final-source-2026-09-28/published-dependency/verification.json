@@ -1,0 +1,68 @@
+{
+  "status": "local_qualification_and_review_passed_native_ci_pending",
+  "producer_pr": 187,
+  "producer_head": "485b543761c7ef4ee89edbd788ef50dfd5386312",
+  "consumer_base": "af12f463ff02322211762c6fd1dc634204c5639a",
+  "consumer_dirty": [],
+  "module": "github.com/agentstation/starmap",
+  "version": "v0.16.6-0.20260928105604-485b543761c7",
+  "environment": {
+    "GOWORK": "off",
+    "GOTOOLCHAIN": "go1.27.1"
+  },
+  "checks": {
+    "lint": "PASS: zero issues",
+    "vet": "PASS",
+    "module_integrity": "PASS",
+    "architecture": "PASS: 12 checks, including the full Go test suite",
+    "build": "PASS",
+    "synthetic_uri_fixture_repair": {
+      "test_events": 38,
+      "fail": 0,
+      "skip": 0,
+      "lint": "PASS",
+      "runtime_values_and_assertions": "unchanged",
+      "files": [
+        "internal/jobs/assetfetch/client_test.go",
+        "internal/providers/connectors/deepinfra_video_test.go"
+      ]
+    }
+  },
+  "running": [
+    {
+      "session": 7966,
+      "role": "producer native CI watch",
+      "log": "/tmp/csp122-producer-ci-watch.log"
+    },
+    {
+      "session": 91326,
+      "role": "consumer native CI watch",
+      "log": "/tmp/csp122-consumer-ci-watch.log"
+    }
+  ],
+  "note": "Qualify the published producer candidate while native CI runs. The producer must merge before the consumer merges. Prior workspace evidence remains historical and is not relabeled as a published-module run.",
+  "incomplete_optional_command": "go tool goago is unavailable with GOWORK=off because Starport has no module tool declaration. Its repository-owned make lint passes.",
+  "consumer_commit": "28729b0584a7f9db64bca32cd18dc9e730a8e823",
+  "review": {
+    "status": "PASS",
+    "exit_code": 0,
+    "parts": 9,
+    "bundle_bytes": 1850435,
+    "reviewer": "claude-opus-5-5 high",
+    "actionable_findings": 0,
+    "secret_scan": "PASS",
+    "source": "28729b0584a7f9db64bca32cd18dc9e730a8e823"
+  },
+  "prs": {
+    "producer": "https://github.com/agentstation/starmap/pull/187",
+    "consumer": "https://github.com/agentstation/starport/pull/387"
+  },
+  "push_recovery": {
+    "first_push": "Rejected by main branch protection because the local upstream selected main; main remained cfee741fd00c8ff7b5e790c87df6eae7b16de2f7.",
+    "resolved": "Explicit refs/heads/codex/atomic-budget-admission source and destination succeeded. Upstream now tracks the task branch."
+  },
+  "ci_runs": {
+    "producer": 36425546855,
+    "consumer": 36428092608
+  }
+}

@@ -72,15 +72,18 @@
   "running": [
     {
       "session": 7966,
-      "command": "gh run watch 36425546855 --repo agentstation/starmap --interval 30 --exit-status",
+      "role": "producer native CI watch",
       "log": "/tmp/csp122-producer-ci-watch.log"
+    },
+    {
+      "session": 91326,
+      "role": "consumer native CI watch",
+      "log": "/tmp/csp122-consumer-ci-watch.log"
     }
   ],
   "remaining": [
-    "Hosted native producer CI",
-    "Published producer dependency qualification",
-    "Consumer pre-PR review and native CI",
-    "Paired merges"
+    "Hosted native producer CI and merge",
+    "Hosted native consumer CI and merge"
   ],
   "scope": "CSP12.2 qualifies budget backend calls and its 23 acceptance subcases. CSP22 owns full production latency and capacity qualification.",
   "review_budget": {
@@ -521,8 +524,11 @@
   "review_tool_proof": "review-tool/verification.json",
   "review_result": {
     "producer": "PASS",
-    "consumer": "PENDING",
+    "consumer": "PASS",
     "producer_pr": 187,
-    "proof": "review-tool/verification.json"
-  }
+    "consumer_pr": 387,
+    "producer_proof": "review-tool/verification.json",
+    "consumer_proof": "published-dependency/verification.json"
+  },
+  "published_dependency_proof": "published-dependency/verification.json"
 }

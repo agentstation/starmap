@@ -1,0 +1,85 @@
+{
+  "module": "github.com/agentstation/starmap",
+  "version": "v0.16.6-0.20260928105604-485b543761c7",
+  "sum": "h1:FQFysvvjgLKoXyfgejl2f98i1cUurtRkXBzCl9YS8To=",
+  "source": "485b543761c7ef4ee89edbd788ef50dfd5386312",
+  "compared_files": 5329,
+  "differences": [],
+  "status": "PASS",
+  "missing_go_files": [
+    "testdata/consumers/pinned-artifact/consumer.go",
+    "testdata/consumers/pinned-artifact/consumer_test.go",
+    "testdata/consumers/read-only/consumer.go",
+    "testdata/consumers/read-only/consumer_test.go",
+    "testdata/consumers/remote-subscriber/consumer.go",
+    "testdata/consumers/remote-subscriber/consumer_test.go",
+    "testdata/consumers/server-embed/consumer.go",
+    "testdata/consumers/server-embed/consumer_test.go",
+    "testdata/consumers/server-storage/storage.go",
+    "testdata/consumers/server-storage/storage_test.go",
+    "testdata/consumers/store-only/catalog_store_contract_test.go",
+    "testdata/consumers/store-only/consumer.go",
+    "testdata/consumers/store-only/consumer_test.go",
+    "testdata/consumers/store-only/starport_store.go"
+  ],
+  "unexpected_module_files": [],
+  "nested_module_exclusions": [
+    {
+      "path": "testdata/consumers/pinned-artifact/consumer.go",
+      "nested_module": "testdata/consumers/pinned-artifact"
+    },
+    {
+      "path": "testdata/consumers/pinned-artifact/consumer_test.go",
+      "nested_module": "testdata/consumers/pinned-artifact"
+    },
+    {
+      "path": "testdata/consumers/read-only/consumer.go",
+      "nested_module": "testdata/consumers/read-only"
+    },
+    {
+      "path": "testdata/consumers/read-only/consumer_test.go",
+      "nested_module": "testdata/consumers/read-only"
+    },
+    {
+      "path": "testdata/consumers/remote-subscriber/consumer.go",
+      "nested_module": "testdata/consumers/remote-subscriber"
+    },
+    {
+      "path": "testdata/consumers/remote-subscriber/consumer_test.go",
+      "nested_module": "testdata/consumers/remote-subscriber"
+    },
+    {
+      "path": "testdata/consumers/server-embed/consumer.go",
+      "nested_module": "testdata/consumers/server-embed"
+    },
+    {
+      "path": "testdata/consumers/server-embed/consumer_test.go",
+      "nested_module": "testdata/consumers/server-embed"
+    },
+    {
+      "path": "testdata/consumers/server-storage/storage.go",
+      "nested_module": "testdata/consumers/server-storage"
+    },
+    {
+      "path": "testdata/consumers/server-storage/storage_test.go",
+      "nested_module": "testdata/consumers/server-storage"
+    },
+    {
+      "path": "testdata/consumers/store-only/catalog_store_contract_test.go",
+      "nested_module": "testdata/consumers/store-only"
+    },
+    {
+      "path": "testdata/consumers/store-only/consumer.go",
+      "nested_module": "testdata/consumers/store-only"
+    },
+    {
+      "path": "testdata/consumers/store-only/consumer_test.go",
+      "nested_module": "testdata/consumers/store-only"
+    },
+    {
+      "path": "testdata/consumers/store-only/starport_store.go",
+      "nested_module": "testdata/consumers/store-only"
+    }
+  ],
+  "missing_root_module_go_files": []
+}
