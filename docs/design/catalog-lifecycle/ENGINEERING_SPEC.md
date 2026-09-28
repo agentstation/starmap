@@ -4732,3 +4732,13 @@ The [proof](../../plans/proof/starport-production-catalog/csp12.2/video-publicat
 It also covers versioned MinIO with memory, Badger, and Valkey metadata.
 Conditional-write readiness must precede affected paid dispatch without blocking independent gateway operations.
 Native platforms, restore, staging cleanup, noncurrent versions, batch aggregates, and full A47 remain open.
+
+## Conditional publication readiness
+
+The blob owner exposes `EnsurePublicationReady`. File allocation and the video dispatch recorder call this contract before creating durable work ownership. Batch result preparation checks it before provider execution. The constructor does not probe the bucket.
+
+An object-store client coalesces the first probe and caches success in process memory. Waiters honor cancellation. Failed checks permit another probe after one second. Each probe has a 30-second deadline, with separate five-second multipart abort deadlines.
+
+Require successful single-part and multipart creation. Verify that both reject replacements of live bytes and retirement markers. Read retained bytes before accepting capability. A fresh configured client repeats qualification. Keep warm checks local and allocation-free.
+
+Probe attempts retain up to four identities. Preserve retirement markers and configure incomplete-upload cleanup. Do not interpret probe success as proof of physical erasure, restore safety, backend-wide consistency, or future availability. File and video HTTP failures return 503 with a recovery message. Detailed causes remain in logs.

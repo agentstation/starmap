@@ -371,3 +371,11 @@ These clock results do not establish complete gateway latency or multi-host prop
 
 The [proof](../../plans/proof/starport-production-catalog/csp10.2/merged-qualification-2026-09-26/verification.json) passes all ten A46 subcases. The toolchain is Go 1.27.1.
 It records 192 named passing test events, with no failures or skips. CSP10.2 is complete at Starport merge `f5f066ddb`.
+
+## Valkey scan work: September 27, 2026
+
+A small result limit must not reduce the native scan work hint to one.
+Absent-key checks otherwise require thousands of round trips in a shared database.
+Starport now keeps COUNT 1000 while preserving the caller's returned-key limit.
+A real Valkey probe with 4,096 unrelated keys checks this boundary.
+This repair does not qualify full gateway latency or fleet capacity.

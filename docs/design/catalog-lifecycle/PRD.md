@@ -488,3 +488,9 @@ A failed acknowledgment must not create an unreferenced duplicate.
 The [local implementation proof](../../plans/proof/starport-production-catalog/csp12.2/video-publication-2026-09-27/verification.json) covers these rules at consumer `e0aae1c7`.
 API expiry prevents new content reads. It does not specify physical deletion times for backups or object versions.
 Production storage readiness and the remaining CSP12.2 criteria still require qualification.
+
+## Storage capability before paid work
+
+New file allocation and video dispatch require byte-publication capability. Batch lines must establish that capability before provider execution. Storage failure must not disable unrelated text requests or general gateway diagnostics.
+
+Return a retryable storage error before affected work creates provider charges. Keep successful capability evidence in memory for the configured client. A capability probe does not guarantee future availability or physical erasure.

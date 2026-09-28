@@ -1004,3 +1004,11 @@ The [proof](../../plans/proof/starport-production-catalog/csp12.2/video-publicat
 Preserve current retirement markers in backups and lifecycle rules.
 API expiry does not establish a physical deletion deadline for noncurrent versions or backups.
 Storage readiness, physical cleanup, native platforms, and coordinated migration remain required.
+
+## Conditional publication readiness: September 27, 2026
+
+The blob contract now gates new file allocation and video dispatch. Batch result preparation checks the same contract before provider execution. The object-store constructor remains passive. General gateway readiness remains independent.
+
+The runtime probe checks successful creation, retained content, and refused replacement for single-part and multipart writes. Successful checks stay in memory for one configured client. A failed check permits another attempt after one second.
+
+Each attempt retains up to four small identities. Retirement markers must survive lifecycle rules and restoration. Interrupted probes can leave incomplete multipart uploads. Configure their cleanup separately. Backend-wide consistency, physical erasure, native platforms, and coordinated migration remain unqualified.

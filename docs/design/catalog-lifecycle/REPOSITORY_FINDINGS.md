@@ -4467,3 +4467,11 @@ Earlier schema, fixture, and compile failures remain evidence.
 
 All job blobs now use immutable publication. Pending provider assets retain durable ownership.
 Conditional-write readiness, restore, physical cleanup, and the full task acceptance criteria remain unqualified.
+
+## Conditional publication readiness: September 27, 2026
+
+Consumer `98bbd43d` checks byte-publication capability before file allocation and video dispatch. Five baseline readiness results failed before this repair. A separate real Valkey scan regression exceeded its deadline before the scan-work repair.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/publication-readiness-2026-09-27/verification.json) retains exact commands, results, failure history, and source hashes. Runtime probes preserve unrelated gateway readiness. Warm checks use memory without heap allocation.
+
+Aggregate reconstruction, interrupted-run recovery, audited correction, A47, capacity, review, native CI, and paired merges remain required.

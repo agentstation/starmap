@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-09-28T01:03:49.173412+00:00",
+  "running_containers": [],
+  "stopped_containers": [
+    "starport-csp122-retirement-objectstore",
+    "starport-csp122-postgres",
+    "starport-csp122-async-usage"
+  ],
+  "exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "data_preserved": true,
+  "reason": "Owner requested stopping unused containers after checks completed. Restart only when required and recheck port mappings."
+}
