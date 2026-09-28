@@ -1,0 +1,74 @@
+{
+  "task": "CSP13",
+  "status": "in_progress",
+  "source_commit": "a01d8c44b367c98259fa6833649abe55c5995b9f",
+  "go": "1.27.1",
+  "host": "darwin/arm64",
+  "results": {
+    "final-race.jsonl": {
+      "pass": 50,
+      "nonpassing_tests": []
+    },
+    "final-purego.jsonl": {
+      "pass": 50,
+      "nonpassing_tests": []
+    },
+    "full-config-cli.jsonl": {
+      "pass": 499,
+      "skip": 1,
+      "nonpassing_tests": [
+        "TestContainerRecipePersistence"
+      ]
+    },
+    "badger-race.jsonl": {
+      "pass": 68,
+      "nonpassing_tests": []
+    }
+  },
+  "commands": [
+    "python3 /tmp/csp13-bundle-shared-env.py /tmp/csp13-inventory-command-final-race.jsonl go test -race ./internal/config ./internal/cli ./internal/app ./internal/storage ./internal/recovery -run '^TestBackup|^TestSnapshotSource' -json -count=1 -timeout=3m",
+    "CGO_ENABLED=0 python3 /tmp/csp13-bundle-shared-env.py /tmp/csp13-inventory-command-final-purego.jsonl go test ./internal/config ./internal/cli ./internal/app ./internal/storage ./internal/recovery -run '^TestBackup|^TestSnapshotSource' -json -count=1 -timeout=3m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race ./internal/config ./internal/cli -json -count=1 -timeout=3m",
+    "python3 /tmp/csp13-bundle-shared-env.py /tmp/csp13-inventory-command-badger-race.jsonl go test -race ./internal/storage -run '^TestBadger|^TestSnapshotSource' -json -count=1 -timeout=3m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 make lint",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./internal/app ./internal/cli ./internal/config ./internal/storage ./internal/recovery ./cmd/starport",
+    "bash scripts/verify-dependency-direction.sh",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go test -c ./internal/app",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go test -c ./internal/app"
+  ],
+  "checks": {
+    "lint": "PASS; zero issues",
+    "vet": "PASS; six affected packages",
+    "dependency_direction": "PASS; six conditions",
+    "writing": "PASS; recovery README",
+    "cross_compile": "PASS linux/amd64 and windows/amd64; not native execution",
+    "plan_writing": "PASS; four files, zero diagnostics"
+  },
+  "contracts": [
+    "File inventory derives from canonical path roles, access policies, and bounded inspection",
+    "Loaded configuration must retain its loader digest through file copy; absent unloaded default configuration is allowed",
+    "Workspace recovery paths and original Unicode names survive portable artifact mapping",
+    "Database and blob engines use native snapshot adapters; no raw engine-file capture",
+    "Capture refuses missing or open SQL recovery boundaries; close initializes only a closed record or closes the current epoch",
+    "Verification uses retained digest and key access without opening live stores or granting permission",
+    "Windows Badger uses its native exclusive open with application maintenance disabled; an empty source directory cannot initialize a fresh database",
+    "Valkey source construction binds observed incarnation and refuses import barriers"
+  ],
+  "retained_failures": [
+    "Inventory JSON tag was malformed after constant extraction; corrected tag restores the files mapping",
+    "New Badger fixtures omitted required engine sizes; corrected fixtures use existing native settings",
+    "Application fixture created directories in the wrong order and attempted exclusive creation of existing parents; corrected fixture setup preserves native checks",
+    "Application fixture used an incorrect master-key environment name; corrected to STARPORT_SECURITY_MASTER_KEY"
+  ],
+  "limitations": [
+    "No new CSP13 acceptance subcase is complete; fifteen remain UNVERIFIED",
+    "Full config/CLI suite skips optional TestContainerRecipePersistence; no container-recipe qualification claimed",
+    "Badger broader cohort preceded the final empty-directory guard; final focused cohorts include that regression",
+    "Native Windows and Linux execution, complete deployment recovery, required review, CI and merge remain open",
+    "Selected-key challenge does not validate every historical encrypted credential",
+    "Cross-store reference checks, independent post-backup history, restore and activation commands remain open",
+    "External writer fencing remains an operator procedure; closing the SQL record does not stop processes or independently fence all admission paths",
+    "Effective environment and external secret access must be recovered from the deployment owner"
+  ],
+  "fixtures": "Task-owned PostgreSQL, Valkey, and MinIO containers were stopped after checks; volumes retained"
+}

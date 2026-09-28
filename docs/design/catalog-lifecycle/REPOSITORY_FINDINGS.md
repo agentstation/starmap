@@ -4695,3 +4695,19 @@ The [correction proof](../../plans/proof/starport-production-catalog/csp12.2/cor
 The [restart proof](../../plans/proof/starport-production-catalog/csp12.2/batch-resume-2026-09-28/verification.json) covers process loss, withdrawn permission, native storage, and production recovery.
 The [retention proof](../../plans/proof/starport-production-catalog/csp12.2/retention-acceptance-2026-09-28/verification.json) verifies that missing or expired evidence cannot refund consumption.
 Complete task qualification, native CI, required review, and paired merges remain open.
+
+
+### Backup capture boundary: September 28, 2026
+
+Consumer `a01d8c44b` connects canonical file selection and native store snapshots to operator capture commands.
+It rejects changed loaded configuration and verifies bundles without opening live stores.
+The [proof](../../plans/proof/starport-production-catalog/csp13/inventory-capture-2026-09-28/verification.json) records the checks and retained fixture failures.
+
+Badger rejects read-only opens on Windows.
+Windows capture therefore uses an exclusive native open with application maintenance disabled.
+It refuses a missing database manifest before that open.
+Cross-compilation passes, but native Windows capture remains UNVERIFIED.
+
+Capture does not establish independent recovery history or validate every historical encrypted credential.
+The SQL close command does not stop processes. Operators must separately stop and fence writers.
+Reference validation, full restore, required review, native CI, and merge remain open.

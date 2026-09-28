@@ -5048,3 +5048,25 @@ The key challenge proves selected-key access. Credential owners must also valida
 The [proof](../../plans/proof/starport-production-catalog/csp13/bundle-capture-2026-09-28/verification.json) records sixteen race passes, sixteen pure-Go passes, and 66 full recovery passes.
 All three cohorts have no failures or skips.
 Operator commands, independent history reconciliation, native CI, review, and merge remain CSP13 requirements.
+
+
+### Deployment inventory and capture commands: September 28, 2026
+
+Consumer `a01d8c44b` derives backup files from the canonical path manifest and its access policies.
+Database and blob adapters own their snapshots. Portable file mappings preserve original names and workspace recovery paths.
+Loaded configuration must match its loader digest during capture. Missing optional default configuration remains valid.
+
+`backup close` changes only the SQL recovery record. Operators must separately stop and fence all writers.
+
+`backup create` requires existing stores, a closed recovery epoch, key access, and operator evidence references.
+
+`backup verify` opens no live stores and grants no permission.
+The [capture contract](../../plans/proof/starport-production-catalog/csp13/inventory-capture-2026-09-28/CONTRACT.md) records the exact boundary.
+
+Badger uses read-only capture on Linux and macOS.
+Windows requires a native exclusive open, which can recover engine state. Application maintenance remains disabled.
+Capture refuses an empty source directory without a Badger manifest.
+Native Windows execution remains UNVERIFIED despite successful cross-compilation.
+
+The [proof](../../plans/proof/starport-production-catalog/csp13/inventory-capture-2026-09-28/verification.json) records 50 race passes and 50 pure-Go passes without skips.
+Reference checks, historical credential validation, independent later history, restore commands, native CI, review, and merge remain CSP13 requirements.
