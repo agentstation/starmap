@@ -1406,5 +1406,12 @@
     "owner": "Repository dependency maintenance",
     "open_count": 8,
     "next_action": "Review after active CSP12.2 exact-head qualification and merge. Preserve current implementation base during its CI."
+  },
+  "compose_qualification": {
+    "owner": "CSP12.2",
+    "local_head": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
+    "published_head": "6f97ba52960620e62f91f49d8fe56621bfada6eb",
+    "disposition": "Review mandatory Windows Compose qualification. Earlier native job skipped the check.",
+    "next_action": "Complete review, publish existing PR #387, qualify exact native head, and merge."
   }
 }

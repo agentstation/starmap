@@ -1,0 +1,38 @@
+[
+  {
+    "Time": "2026-09-28T15:34:12.5748819Z",
+    "Action": "run",
+    "Package": "github.com/agentstation/starport/internal/config",
+    "Test": "TestComposeStorageRecipes"
+  },
+  {
+    "Time": "2026-09-28T15:34:12.5748819Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/config",
+    "Test": "TestComposeStorageRecipes",
+    "Output": "=== RUN   TestComposeStorageRecipes\n",
+    "OutputType": "frame"
+  },
+  {
+    "Time": "2026-09-28T15:34:22.6355668Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/config",
+    "Test": "TestComposeStorageRecipes",
+    "Output": "    compose_recipe_test.go:39: UNVERIFIED: Docker Compose is unavailable: exit status 1\n"
+  },
+  {
+    "Time": "2026-09-28T15:34:22.6355668Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/config",
+    "Test": "TestComposeStorageRecipes",
+    "Output": "--- SKIP: TestComposeStorageRecipes (10.07s)\n",
+    "OutputType": "frame"
+  },
+  {
+    "Time": "2026-09-28T15:34:22.6355668Z",
+    "Action": "skip",
+    "Package": "github.com/agentstation/starport/internal/config",
+    "Test": "TestComposeStorageRecipes",
+    "Elapsed": 10.07
+  }
+]

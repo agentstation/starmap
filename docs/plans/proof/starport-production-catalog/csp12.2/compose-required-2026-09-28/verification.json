@@ -1,0 +1,49 @@
+{
+  "status": "LOCAL_PASS_REVIEW_RUNNING",
+  "task": "CSP12.2",
+  "consumer_commit": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
+  "failure_evidence": {
+    "run": 36440996799,
+    "head": "d6107baa33fc64c3cb1b896c624862e458c8e949",
+    "platform": "windows-2025",
+    "observation": "Compose discovery skipped after about ten seconds. A green job did not qualify this test.",
+    "cause": "Unconfirmed. Probe output and required native execution will distinguish discovery failure from timeout."
+  },
+  "change": "Require Compose on Windows x86-64 CI. Run its focused preflight before the broad suite. Preserve discovery diagnostics and fail required probes or timed-out probes. Bound discovery to 30 seconds.",
+  "local": {
+    "race_test_events": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    },
+    "failure_probes": {
+      "missing_docker": "PASS: fails without skip",
+      "failed_plugin": "PASS: fails without skip and preserves diagnostics"
+    },
+    "lint": "PASS: zero issues",
+    "actionlint": "PASS",
+    "diff_check": "PASS"
+  },
+  "review": {
+    "status": "running",
+    "session": 60236,
+    "max_passes": 64,
+    "reason": "Review the complete coherent consumer diff without truncation."
+  },
+  "artifacts": {
+    "local-tests.jsonl": {
+      "archive": "local-tests.jsonl.gz",
+      "sha256_raw": "8c498a39ee9b577d4be711609f21e8a30552d3362648266f8e4bb80c149afa31"
+    },
+    "required-failure-probes.json": {
+      "archive": "required-failure-probes.json.gz",
+      "sha256_raw": "c713f302189b1e7b0f719b1d884637f3e125daa8e50dce9838e41b448aa1410c"
+    },
+    "lint.log": {
+      "archive": "lint.log.gz",
+      "sha256_raw": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    }
+  },
+  "native": "UNVERIFIED at this commit",
+  "merge": "pending"
+}
