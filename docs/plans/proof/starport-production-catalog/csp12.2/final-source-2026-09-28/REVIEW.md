@@ -27,3 +27,14 @@ That result predates the lint refactors.
 Final-source task qualification, required review, native CI, the published dependency, and paired merges remain open.
 CSP22 owns full production latency and capacity qualification.
 CSP12.2 retains its measured backend-call and spending-safety requirements.
+
+The final-source task gate passes all 23 selected cases across 22 invocations.
+It records 443 passing events, with no failures or skips, in 1,311.9 seconds.
+The tested commits are producer `485b54376` and consumer `af12f46`.
+All four task containers now report a stopped state.
+The broader producer repository gate remains active.
+
+Consumer review preflight passes.
+Producer preflight refuses the generated catalog gzip before model review.
+The owner question requests bounded JSON-gzip support in the shared review tool.
+No final review, push, native CI run, or merge occurred.

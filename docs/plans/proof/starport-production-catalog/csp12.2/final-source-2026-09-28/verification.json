@@ -1,6 +1,6 @@
 {
   "task": "CSP12.2",
-  "updated_at": "2026-09-28T11:16:27.434542+00:00",
+  "updated_at": "2026-09-28T11:23:39.106175+00:00",
   "producer": "485b54376",
   "consumer": "af12f463ff02322211762c6fd1dc634204c5639a",
   "go": "1.27.1",
@@ -74,18 +74,11 @@
       "session": 92670,
       "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 bash scripts/verify.sh all",
       "log": "/tmp/csp122-producer-final-refactor.log"
-    },
-    {
-      "session": 65729,
-      "command": "Final CSP12.2 task gate at 485b54376 and af12f46",
-      "log": "/tmp/csp122-lint-native/task-final.jsonl",
-      "result": "/tmp/csp122-lint-native/task-final-result.json",
-      "invocations": "/tmp/csp122-task-final-evidence"
     }
   ],
   "remaining": [
-    "Final-source task gate",
-    "Final repository checks and required review",
+    "Finish producer repository verification",
+    "Required pre-PR review",
     "Hosted native CI",
     "Published producer dependency qualification",
     "Paired merges"
@@ -212,6 +205,98 @@
     {
       "file": "csp122-producer-review-preflight.log.gz",
       "sha256": "bd4604b5a467e3b39df39359470642135bad73708b39b33c90689e8d43d89ee9"
+    },
+    {
+      "file": "task-report.json.gz",
+      "sha256": "bbfa3260937de3f3b0aa7f4f68db1be707da8c51a5b50be1eef532f7b1657876"
+    },
+    {
+      "file": "go-run-6g60ct4j.json.gz",
+      "sha256": "ab8159bf3b5ba9d1984e5aed4833b970617f9fa2d0547c9cb18e8c48f59fd28a"
+    },
+    {
+      "file": "go-run-s4yzu3ge.json.gz",
+      "sha256": "9ec837b2f8dcb1b0aee55f884fc8286cc379526e1c5b3874d573bada8bfb72cc"
+    },
+    {
+      "file": "go-run-cd6jyhpt.json.gz",
+      "sha256": "a1fbc990b386899f41b578a3ed92b32e1272777aece05eb83e5b24ac2e555bda"
+    },
+    {
+      "file": "go-run-5ajjhoun.json.gz",
+      "sha256": "3a8461527f9577913c5bbf1457766a8ddb3952bc3afdfc3575692a776deb0b65"
+    },
+    {
+      "file": "go-run-38t2654a.json.gz",
+      "sha256": "f83e9c3953994009043cbebd29ee0c74c4f68086a27869a5bde8f0a0daf42635"
+    },
+    {
+      "file": "go-run-ivx8ogk1.json.gz",
+      "sha256": "eb4c6c5d052232d51fd5c25452d338b4b0fc6d74e8afeb9cc4f93fbcdac470da"
+    },
+    {
+      "file": "go-run-tmirefz6.json.gz",
+      "sha256": "9369fd2d1bd0e6e77abd8ceb1bf5376105302c3438f34c408edb915e4d27d8ad"
+    },
+    {
+      "file": "go-run-5p13v47u.json.gz",
+      "sha256": "1127b481fe516f86363604121b8bbdf145ca6e31dba01ce5b67845004dcb05c6"
+    },
+    {
+      "file": "go-run-y9srrv7c.json.gz",
+      "sha256": "c6ae6e5929c85883ee174e5397207dee96f57c696b83f6ca916dd4c1363914c9"
+    },
+    {
+      "file": "go-run-tcw8ddx8.json.gz",
+      "sha256": "0a67638269bd8b98a55a228b262afd513dc1619c13903f395582aab7686246c1"
+    },
+    {
+      "file": "go-run-rhtiveqc.json.gz",
+      "sha256": "b747fba96aee4ed6e8588b8707be87093473bf32fae7db2fbf5a2acd7566526f"
+    },
+    {
+      "file": "go-run-iwzwa7y0.json.gz",
+      "sha256": "0d1b3bbd88a4734bbd88c15ca3058a7937b9cc19bb4b317f678e611b06b8350b"
+    },
+    {
+      "file": "go-run-1g3aftca.json.gz",
+      "sha256": "9e7c268923eb604213e4090adfc795c4c5b02beba89d7beb5c7c759087db55c4"
+    },
+    {
+      "file": "go-run-9stlll3_.json.gz",
+      "sha256": "f9ef09e74fe341e88d238bd50e908ea5d3695478691d39c0a24e71b5373f80a0"
+    },
+    {
+      "file": "go-run-mgquq0l1.json.gz",
+      "sha256": "6bb2447e6f08a08928dd85e814712ff7dd8c0ac13ffd7153c420279534c9285e"
+    },
+    {
+      "file": "go-run-dh930th8.json.gz",
+      "sha256": "01337db0082f91062aa7a0549736cb4ca51473d236e8f220842937eed1bc1ac2"
+    },
+    {
+      "file": "go-run-2zlqzt1l.json.gz",
+      "sha256": "7f38e106acb2082125b9fa07208cbc88964935dec204df2a6edbbfc1cbb02c03"
+    },
+    {
+      "file": "go-run-ir1kf0_l.json.gz",
+      "sha256": "7de655e7faef3017914dfa55ff0fc4f16e5a1e380f607ae7913a381ee227baae"
+    },
+    {
+      "file": "go-run-4oj1p_f9.json.gz",
+      "sha256": "770756d8db91891603379f368b5321839a9736c6248eed3529a15ceac9ee4bf7"
+    },
+    {
+      "file": "go-run-iz2324xx.json.gz",
+      "sha256": "f1f28776043a9b014d8d4ae810fd3259b701691d4939677a09928b43abace388"
+    },
+    {
+      "file": "go-run-vxt97nih.json.gz",
+      "sha256": "07a400ec97df9f58fcc76c78d9ca9f5fd79e1e8b1f0a1b388ff346b626e9e2c7"
+    },
+    {
+      "file": "go-run-g98l31x_.json.gz",
+      "sha256": "f0abf31018bf68ee4c32edfd1cf3721c18405113807729c2119e5eac7fdcb64e"
     }
   ],
   "review_preflight": {
@@ -237,89 +322,46 @@
     "head": "af12f463ff02322211762c6fd1dc634204c5639a"
   },
   "active_task_gate": {
-    "status": "RUNNING",
-    "completed_invocations": [
-      {
-        "file": "go-run-6g60ct4j.json",
-        "exit_code": 0,
-        "elapsed_seconds": 50.50037062499905,
-        "named_tests": 1
-      },
-      {
-        "file": "go-run-cd6jyhpt.json",
-        "exit_code": 0,
-        "elapsed_seconds": 37.89927412499674,
-        "named_tests": 1
-      },
-      {
-        "file": "go-run-5ajjhoun.json",
-        "exit_code": 0,
-        "elapsed_seconds": 15.237222958996426,
-        "named_tests": 5
-      },
-      {
-        "file": "go-run-ivx8ogk1.json",
-        "exit_code": 0,
-        "elapsed_seconds": 6.057425707986113,
-        "named_tests": 23
-      },
-      {
-        "file": "go-run-5p13v47u.json",
-        "exit_code": 0,
-        "elapsed_seconds": 2.059150083048735,
-        "named_tests": 3
-      },
-      {
-        "file": "go-run-y9srrv7c.json",
-        "exit_code": 0,
-        "elapsed_seconds": 59.78169716702541,
-        "named_tests": 1
-      },
-      {
-        "file": "go-run-tcw8ddx8.json",
-        "exit_code": 0,
-        "elapsed_seconds": 16.943118583003525,
-        "named_tests": 7
-      },
-      {
-        "file": "go-run-rhtiveqc.json",
-        "exit_code": 0,
-        "elapsed_seconds": 308.00348291697446,
-        "named_tests": 1
-      },
-      {
-        "file": "go-run-9stlll3_.json",
-        "exit_code": 0,
-        "elapsed_seconds": 13.643092291022185,
-        "named_tests": 1
-      },
-      {
-        "file": "go-run-mgquq0l1.json",
-        "exit_code": 0,
-        "elapsed_seconds": 70.32350450003287,
-        "named_tests": 1
-      },
-      {
-        "file": "go-run-dh930th8.json",
-        "exit_code": 0,
-        "elapsed_seconds": 57.28378075000364,
-        "named_tests": 1
-      },
-      {
-        "file": "go-run-g98l31x_.json",
-        "exit_code": 0,
-        "elapsed_seconds": 258.19038849999197,
-        "named_tests": 28
-      }
-    ],
-    "named_test_statuses": {
-      "PASS": 73
+    "gate_status": "PASS",
+    "selected_subcases": 23,
+    "subcases": {
+      "A47.atomic_hierarchical_reservation": "PASS",
+      "A47.idempotent_attempt_identity": "PASS",
+      "A47.bounded_cost_and_tokens": "PASS",
+      "A47.unknown_cost_refusal": "PASS",
+      "A47.retry_fallback_charges": "PASS",
+      "A47.stream_cancel_uncertainty": "PASS",
+      "A47.crash_failover_recovery": "PASS",
+      "A47.usage_reconcile_once": "PASS",
+      "A47.analytics_drop_independence": "PASS",
+      "A47.confirmed_absent_fast_path": "PASS",
+      "A47.quota_lease_support_boundary": "PASS",
+      "A47.backend_operation_evidence": "PASS",
+      "A47.chargeable_operation_matrix": "PASS",
+      "A47.recognition_then_cancel": "PASS",
+      "A47.rerank_billing_units": "PASS",
+      "A47.semantic_embedding_cache_hit": "PASS",
+      "A47.media_async_reconciliation": "PASS",
+      "A47.utc_window_boundaries": "PASS",
+      "A47.late_usage_pinned_valuation": "PASS",
+      "A47.policy_edit_preserves_spend": "PASS",
+      "A47.clock_and_window_authority": "PASS",
+      "A47.reconciliation_retention": "PASS",
+      "A15.online_batch_retry": "PASS"
     },
-    "session": 65729,
+    "events": {
+      "pass": 443,
+      "fail": 0,
+      "skip": 0
+    },
+    "invocations": 22,
     "source": {
       "producer": "485b54376",
-      "consumer": "af12f46"
-    }
+      "consumer": "af12f463ff02322211762c6fd1dc634204c5639a"
+    },
+    "go": "1.27.1",
+    "elapsed_seconds": 1311.8644692919916,
+    "limits": "Local final-source qualification. Required review, native CI, published dependency qualification, and paired merges remain open."
   },
   "active_producer_gate": {
     "session": 92670,
@@ -359,5 +401,27 @@
     "previous_turn": "progress: committed implementation refactors, isolated native fixtures, and updated durable evidence",
     "current_turn": "verified wait and evidence retention: both verification handles are live",
     "owner_decision": "Shared review-tool JSON-gzip support remains pending; no approval inferred."
-  }
+  },
+  "cleanup": [
+    {
+      "container": "starport-csp122-async-usage",
+      "running": false,
+      "status": "exited"
+    },
+    {
+      "container": "starport-csp122-replacement-valkey",
+      "running": false,
+      "status": "exited"
+    },
+    {
+      "container": "starport-csp122-postgres",
+      "running": false,
+      "status": "exited"
+    },
+    {
+      "container": "starport-csp122-retirement-objectstore",
+      "running": false,
+      "status": "exited"
+    }
+  ]
 }

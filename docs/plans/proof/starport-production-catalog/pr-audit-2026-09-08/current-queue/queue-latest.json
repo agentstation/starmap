@@ -1047,7 +1047,7 @@
     "status": "MERGED",
     "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-28T11:16:27.434542+00:00",
+  "local_updated_at": "2026-09-28T11:23:39.106175+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -1071,13 +1071,6 @@
         "session": 92670,
         "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 bash scripts/verify.sh all",
         "log": "/tmp/csp122-producer-final-refactor.log"
-      },
-      {
-        "session": 65729,
-        "command": "Final CSP12.2 task gate at 485b54376 and af12f46",
-        "log": "/tmp/csp122-lint-native/task-final.jsonl",
-        "result": "/tmp/csp122-lint-native/task-final-result.json",
-        "invocations": "/tmp/csp122-task-final-evidence"
       }
     ],
     "producer_companion": {
@@ -1105,7 +1098,7 @@
     "rerank_proof": "../../csp12.2/rerank-billing-2026-09-27/verification.json",
     "speech_proof": "../../csp12.2/speech-billing-2026-09-27/verification.json",
     "image_billing_proof": "../../csp12.2/image-billing-2026-09-27/verification.json",
-    "next_action": "Collect final checks, qualify final-source task, review, then publish one producer PR followed by one consumer PR.",
+    "next_action": "Finish producer repository verification, resolve the pending review-tool decision, complete review, and publish the producer PR before the consumer PR.",
     "local_test_service": {
       "containers": [
         "starport-csp122-async-usage",
@@ -1113,7 +1106,7 @@
         "starport-csp122-postgres",
         "starport-csp122-retirement-objectstore"
       ],
-      "status": "running for whole-task qualification",
+      "status": "All four task containers stopped after final-source task qualification.",
       "note": "Stop these task services after the checks finish. Recheck mapped ports before reuse."
     },
     "accounting_retry_proof": "../../csp12.2/accounting-retries-2026-09-27/verification.json",
@@ -1125,13 +1118,46 @@
     "interrupted_run_proof": "../../csp12.2/verification-resume-2026-09-28/interrupted.json",
     "verification_resume_proof": "../../csp12.2/verification-resume-2026-09-28/verification.json",
     "task_gate": {
-      "status": "PASS",
+      "gate_status": "PASS",
       "selected_subcases": 23,
-      "passing_test_events": 443,
-      "failed_test_events": 0,
-      "skipped_test_events": 0,
+      "subcases": {
+        "A47.atomic_hierarchical_reservation": "PASS",
+        "A47.idempotent_attempt_identity": "PASS",
+        "A47.bounded_cost_and_tokens": "PASS",
+        "A47.unknown_cost_refusal": "PASS",
+        "A47.retry_fallback_charges": "PASS",
+        "A47.stream_cancel_uncertainty": "PASS",
+        "A47.crash_failover_recovery": "PASS",
+        "A47.usage_reconcile_once": "PASS",
+        "A47.analytics_drop_independence": "PASS",
+        "A47.confirmed_absent_fast_path": "PASS",
+        "A47.quota_lease_support_boundary": "PASS",
+        "A47.backend_operation_evidence": "PASS",
+        "A47.chargeable_operation_matrix": "PASS",
+        "A47.recognition_then_cancel": "PASS",
+        "A47.rerank_billing_units": "PASS",
+        "A47.semantic_embedding_cache_hit": "PASS",
+        "A47.media_async_reconciliation": "PASS",
+        "A47.utc_window_boundaries": "PASS",
+        "A47.late_usage_pinned_valuation": "PASS",
+        "A47.policy_edit_preserves_spend": "PASS",
+        "A47.clock_and_window_authority": "PASS",
+        "A47.reconciliation_retention": "PASS",
+        "A15.online_batch_retry": "PASS"
+      },
+      "events": {
+        "pass": 443,
+        "fail": 0,
+        "skip": 0
+      },
       "invocations": 22,
-      "proof": "task-summary.json"
+      "source": {
+        "producer": "485b54376",
+        "consumer": "af12f463ff02322211762c6fd1dc634204c5639a"
+      },
+      "go": "1.27.1",
+      "elapsed_seconds": 1311.8644692919916,
+      "limits": "Local final-source qualification. Required review, native CI, published dependency qualification, and paired merges remain open."
     },
     "final_source_proof": "../../csp12.2/final-source-2026-09-28/verification.json",
     "consumer_review_preflight": {
