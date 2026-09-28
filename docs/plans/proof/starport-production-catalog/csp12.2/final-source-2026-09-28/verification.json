@@ -1,6 +1,6 @@
 {
   "task": "CSP12.2",
-  "updated_at": "2026-09-28T11:12:41.224480+00:00",
+  "updated_at": "2026-09-28T11:16:27.434542+00:00",
   "producer": "485b54376",
   "consumer": "af12f463ff02322211762c6fd1dc634204c5639a",
   "go": "1.27.1",
@@ -264,6 +264,18 @@
         "named_tests": 23
       },
       {
+        "file": "go-run-5p13v47u.json",
+        "exit_code": 0,
+        "elapsed_seconds": 2.059150083048735,
+        "named_tests": 3
+      },
+      {
+        "file": "go-run-y9srrv7c.json",
+        "exit_code": 0,
+        "elapsed_seconds": 59.78169716702541,
+        "named_tests": 1
+      },
+      {
         "file": "go-run-tcw8ddx8.json",
         "exit_code": 0,
         "elapsed_seconds": 16.943118583003525,
@@ -273,6 +285,18 @@
         "file": "go-run-rhtiveqc.json",
         "exit_code": 0,
         "elapsed_seconds": 308.00348291697446,
+        "named_tests": 1
+      },
+      {
+        "file": "go-run-9stlll3_.json",
+        "exit_code": 0,
+        "elapsed_seconds": 13.643092291022185,
+        "named_tests": 1
+      },
+      {
+        "file": "go-run-mgquq0l1.json",
+        "exit_code": 0,
+        "elapsed_seconds": 70.32350450003287,
         "named_tests": 1
       },
       {
@@ -289,12 +313,51 @@
       }
     ],
     "named_test_statuses": {
-      "PASS": 67
+      "PASS": 73
     },
     "session": 65729,
     "source": {
       "producer": "485b54376",
       "consumer": "af12f46"
     }
+  },
+  "active_producer_gate": {
+    "session": 92670,
+    "stage": "python3 ./scripts/verification_tests.py race --group runtime --shard 3",
+    "completed_groups": [
+      {
+        "event_file": "go-check-events.jsonl",
+        "tests": {
+          "pass": 56,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "event_file": "starmap-tests-tqut1njo.jsonl",
+        "tests": {
+          "pass": 358,
+          "fail": 0,
+          "skip": 2
+        }
+      },
+      {
+        "event_file": "starmap-tests-xaz9hz9w.jsonl",
+        "tests": {
+          "pass": 532,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    ],
+    "result": "RUNNING",
+    "retention_session": 93055,
+    "retention_script": "/tmp/csp122-retain-producer-evidence.py",
+    "retained_events": "/tmp/csp122-producer-final-events"
+  },
+  "resume_audit": {
+    "previous_turn": "progress: committed implementation refactors, isolated native fixtures, and updated durable evidence",
+    "current_turn": "verified wait and evidence retention: both verification handles are live",
+    "owner_decision": "Shared review-tool JSON-gzip support remains pending; no approval inferred."
   }
 }
