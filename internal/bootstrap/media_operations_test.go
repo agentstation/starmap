@@ -65,13 +65,13 @@ func TestEveryPublishedMediaOperationMatchesItsDefinition(t *testing.T) {
 	if checked == 0 {
 		t.Fatal("the shipped catalog publishes no media operation")
 	}
-	// CSP12.2 adds two speech offerings and one page-billed OCR offering to
-	// the MOD12 census. Each offering must still match its declared facts.
+	// CSP12.2 adds speech, transcription, and page-billed OCR offerings.
+	// Each offering must match its declared facts.
 	want := map[catalogs.ProviderOperation]int{
 		catalogs.ProviderOperationImagesGenerations:    26,
 		catalogs.ProviderOperationAudioSpeech:          16,
-		catalogs.ProviderOperationAudioTranscriptions:  7,
-		catalogs.ProviderOperationAudioTranslations:    7,
+		catalogs.ProviderOperationAudioTranscriptions:  8,
+		catalogs.ProviderOperationAudioTranslations:    8,
 		catalogs.ProviderOperationVideosGenerations:    13,
 		catalogs.ProviderOperationDocumentsRecognition: 12,
 	}

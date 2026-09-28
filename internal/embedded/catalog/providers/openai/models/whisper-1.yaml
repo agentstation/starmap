@@ -6,11 +6,15 @@ authors:
 - id: openai
   name: OpenAI
 
+metadata:
+  tags:
+  - speech_to_text
+
 # Model features
 features:
   modalities:
     input:
-    - text
+    - audio
     output:
     - text
 
@@ -65,7 +69,7 @@ features:
   # Response delivery
   format_response: false
   structured_outputs: false
-  streaming: true
+  streaming: false
 extensions:
   openai:
     fields:

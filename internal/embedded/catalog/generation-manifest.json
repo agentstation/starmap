@@ -1,16 +1,16 @@
 {
   "manifest_version": 2,
   "schema_version": 19,
-  "generation_id": "video-billing-contract-669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf",
-  "generated_at": "2026-09-27T20:20:42.870634Z",
+  "generation_id": "whisper-operation-correction-47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9",
+  "generated_at": "2026-09-28T05:13:12.909271Z",
   "payload": {
-    "checksum": "sha256:669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf",
-    "size_bytes": 26427881,
+    "checksum": "sha256:47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9",
+    "size_bytes": 26428039,
     "media_type": "application/vnd.agentstation.starmap.catalog+json"
   },
   "validation": {
-    "validator_version": "starmap-video-billing-contract-v1",
-    "validated_at": "2026-09-27T20:20:42.870634Z",
+    "validator_version": "starmap-whisper-operation-correction-v1",
+    "validated_at": "2026-09-28T05:13:12.909271Z",
     "status": "passed",
     "error_count": 0,
     "warning_count": 0,
@@ -21,7 +21,7 @@
       }
     ]
   },
-  "sync_run_id": "video-billing-contract-669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf",
+  "sync_run_id": "whisper-operation-correction-47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9",
   "source_observations": [
     {
       "source": "models_dev_http",
@@ -406,6 +406,18 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "whisper-operation-correction-47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9",
+      "observed_at": "2026-09-28T05:13:12.909271Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9"
     }
   ],
   "review_candidates": [

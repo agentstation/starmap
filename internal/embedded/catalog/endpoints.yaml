@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: video-billing-contract-669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf
-catalog_digest: sha256:669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf
+generation_id: whisper-operation-correction-47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9
+catalog_digest: sha256:47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -9893,11 +9893,15 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - audio-transcriptions
+            - audio-translations
         service_endpoints:
-          - operation: chat-completions
+          - operation: audio-transcriptions
             type: openai
-            url: https://api.openai.com/v1/chat/completions
+            url: https://api.openai.com/v1/audio/transcriptions
+          - operation: audio-translations
+            type: openai
+            url: https://api.openai.com/v1/audio/translations
   - model: openai/whisper-large-v3
     endpoints:
       - provider: deepinfra
