@@ -1,0 +1,311 @@
+diff --git i/scripts/catalog-product-checks.json w/scripts/catalog-product-checks.json
+index 372994397..7508649d3 100644
+--- i/scripts/catalog-product-checks.json
++++ w/scripts/catalog-product-checks.json
+@@ -6412,6 +6412,306 @@
+           "test": "TestManualRunByANonOwnerReturnsAConflict"
+         }
+       ]
++    },
++    "A47.atomic_hierarchical_reservation": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestReservationContract"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestValkeyReservationAcrossProcesses"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionBudgetAcrossProcesses",
++          "batch": false
++        }
++      ]
++    },
++    "A47.idempotent_attempt_identity": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestReservationContract"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionBudgetPreservesRequestIdentity"
++        }
++      ]
++    },
++    "A47.unknown_cost_refusal": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/admission",
++          "test": "TestAdmissionFailureBoundaries"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestTokenOnlyCannotBypassSpendOrInventFreePricing"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionBudgetDispatchUnknownCostAndAbsentBudgets"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionEmbeddingRefusalBeforeDispatch"
++        }
++      ]
++    },
++    "A47.retry_fallback_charges": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionBudgetPreservesRequestIdentity"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/admission",
++          "test": "TestAdmissionReservesExclusiveCapacity"
++        }
++      ]
++    },
++    "A47.stream_cancel_uncertainty": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionBudgetDispatchStreamCompletionAndCancellation"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionSpendMissingTokenCountRetainsCapacity"
++        }
++      ]
++    },
++    "A47.usage_reconcile_once": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestReservationContract"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestRecoveryConcurrentWorkersSettleOnce"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestRecoveryRetriesLostSettlementAcknowledgement"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestRunRecoversRetainedBudgetEvidence"
++        }
++      ]
++    },
++    "A47.confirmed_absent_fast_path": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/admission",
++          "test": "TestAbsentBudgetsStayLocal"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionBudgetDispatchUnknownCostAndAbsentBudgets"
++        }
++      ]
++    },
++    "A47.recognition_then_cancel": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionRecognitionThenCancel"
++        }
++      ]
++    },
++    "A47.rerank_billing_units": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/router",
++          "test": "TestRerankTokenBound"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionRerankBudget",
++          "batch": false
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionRerankRefusesInsufficientCapacity"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionRerankInvalidResultRetainsCharge"
++        }
++      ]
++    },
++    "A47.semantic_embedding_cache_hit": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/app",
++          "test": "TestProductionSemanticEmbeddingSharesBudget"
++        }
++      ]
++    },
++    "A47.utc_window_boundaries": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestFixedUTCWindows"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestBudgetHistoryRollover"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestDelayedDispatchCannotUseAClosedWindow"
++        }
++      ]
++    },
++    "A47.late_usage_pinned_valuation": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestLateSettlementKeepsOriginalWindowAndValuation"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestBudgetHistoryRollover"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestRetainedUsageSurvivesRestart"
++        }
++      ]
++    },
++    "A47.policy_edit_preserves_spend": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestReservationContract"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestHolderCreationAndBudgetHistory"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestTeamBudgetHistoryHandoff"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestChangedHistoryRequiresReconciliation"
++        }
++      ]
++    },
++    "A47.clock_and_window_authority": {
++      "kind": "all",
++      "checks": [
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/storage",
++          "test": "TestTimeBoundStore"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestBudgetHistoryRollover"
++        },
++        {
++          "kind": "go_test",
++          "repository": "starport",
++          "package": "./internal/limits/reservation",
++          "test": "TestDelayedDispatchCannotUseAClosedWindow"
++        }
++      ]
+     }
+   },
+   "task_component_checks": {

@@ -1,0 +1,578 @@
+diff --git i/internal/app/budget_embedding_test.go w/internal/app/budget_embedding_test.go
+index eb85ad0f..99fb4d63 100644
+--- i/internal/app/budget_embedding_test.go
++++ w/internal/app/budget_embedding_test.go
+@@ -7,6 +7,7 @@ import (
+ 	"net/http"
+ 	"strings"
+ 	"testing"
++	"time"
+ 
+ 	"github.com/agentstation/starport/internal/config"
+ 	"github.com/agentstation/starport/internal/limits"
+@@ -118,6 +119,50 @@ func TestProductionSemanticEmbeddingSharesBudget(t *testing.T) {
+ 	require.Equal(t, reservation.Settled, parent.State)
+ 	require.EqualValues(t, 3000, *parent.NanoUSD)
+ 	require.EqualValues(t, 2, fixture.calls.Load())
++	// Wait for optional fills without submitting more inference requests.
++	require.Eventually(t, func() bool {
++		status := fixture.application.cacheManager.FillStatus()
++		return status.RetainedEntries == 0 && status.ActiveFills == 0
++	}, time.Second, time.Millisecond)
++	req, err = http.NewRequestWithContext(t.Context(), http.MethodPost, fixture.gateway.URL+"/v1/chat/completions", strings.NewReader(`{"model":"openai/gpt-4o-mini","messages":[{"role":"user","content":"hi there"}]}`))
++	require.NoError(t, err)
++	req.Header.Set("Authorization", "Bearer "+performanceGatewayKey)
++	req.Header.Set("Content-Type", "application/json")
++	req.Header.Set("X-Request-ID", "semantic-hit")
++	req.Header.Set("X-Semantic-Cache", "true")
++	response, err = fixture.client.Do(req)
++	require.NoError(t, err)
++	body, err = io.ReadAll(response.Body)
++	require.NoError(t, err)
++	require.NoError(t, response.Body.Close())
++	require.Equal(t, http.StatusOK, response.StatusCode, string(body))
++	require.Equal(t, "HIT", response.Header.Get("X-Cache"))
++	require.Equal(t, "1.0000", response.Header.Get("X-Cache-Similarity"))
++	require.Contains(t, string(body), "hello")
++	require.EqualValues(t, 3, fixture.calls.Load(), "only the second embedding reaches the provider")
++	keys, err = fixture.application.store.ScanWithPrefix(t.Context(), "budget:v1:attempt:", 10)
++	require.NoError(t, err)
++	require.Len(t, keys, 3, "a semantic hit must not reserve another chat attempt")
++	for _, key := range keys {
++		data, err := fixture.application.store.Get(t.Context(), key)
++		require.NoError(t, err)
++		var record reservation.Record
++		require.NoError(t, json.Unmarshal(data, &record))
++		records[record.Attempt.RequestID] = record
++	}
++	hit, ok := records["semantic-hit-semantic-cache"]
++	require.True(t, ok)
++	require.Equal(t, reservation.Settled, hit.State)
++	require.EqualValues(t, 160, *hit.NanoUSD)
++	require.Equal(t, child.Attempt.Rules, hit.Attempt.Rules)
++	_, exists := records["semantic-hit"]
++	require.False(t, exists)
++	for _, rule := range hit.Attempt.Rules {
++		window, err := fixture.application.budget.ledger.Window(t.Context(), rule.Meter, hit.AdmittedAt)
++		require.NoError(t, err)
++		require.Zero(t, window.Reserved)
++		require.EqualValues(t, 3320, window.Consumed)
++	}
+ }
+ 
+ func TestProductionEmbeddingRefusalBeforeDispatch(t *testing.T) {
+diff --git i/internal/app/budget_identity_test.go w/internal/app/budget_identity_test.go
+index 48de7de9..8b53fa71 100644
+--- i/internal/app/budget_identity_test.go
++++ w/internal/app/budget_identity_test.go
+@@ -55,6 +55,7 @@ func TestProductionBudgetPreservesRequestIdentity(t *testing.T) {
+ 			require.EqualValues(t, 3, calls.Load())
+ 			ids := map[string]bool{}
+ 			states := map[reservation.State]int{}
++			var uncertain reservation.Record
+ 			for _, key := range keys {
+ 				data, err := fixture.application.store.Get(t.Context(), key)
+ 				require.NoError(t, err)
+@@ -65,8 +66,17 @@ func TestProductionBudgetPreservesRequestIdentity(t *testing.T) {
+ 				require.False(t, ids[record.Attempt.ID], "a repeated request ID must not reuse a dispatch permit")
+ 				ids[record.Attempt.ID] = true
+ 				states[record.State]++
++				if record.State == reservation.Uncertain {
++					uncertain = record
++				}
+ 			}
+ 			require.Equal(t, map[reservation.State]int{reservation.Uncertain: 1, reservation.Settled: 2}, states)
++			for _, binding := range uncertain.Bindings {
++				window, err := fixture.application.budget.ledger.Window(t.Context(), binding.Rule.Meter, uncertain.AdmittedAt)
++				require.NoError(t, err)
++				require.Equal(t, binding.Amount, window.Reserved)
++				require.EqualValues(t, 22, window.Consumed, "both measured retries charge the same token meter")
++			}
+ 		})
+ 	}
+ }
+diff --git i/internal/app/budget_recognition_test.go w/internal/app/budget_recognition_test.go
+index 9f60a673..5cf4f0ea 100644
+--- i/internal/app/budget_recognition_test.go
++++ w/internal/app/budget_recognition_test.go
+@@ -1,6 +1,7 @@
+ package app
+ 
+ import (
++	"context"
+ 	"encoding/base64"
+ 	"encoding/json/v2"
+ 	"fmt"
+@@ -9,6 +10,7 @@ import (
+ 	"os"
+ 	"strings"
+ 	"testing"
++	"time"
+ 
+ 	"github.com/agentstation/starmap/pkg/catalogs"
+ 	"github.com/agentstation/starport/internal/apikey"
+@@ -124,17 +126,22 @@ func TestProductionRecognitionBudget(t *testing.T) {
+ 	}
+ }
+ 
+-func sendRecognitionRequest(t *testing.T, fixture *performanceFixture) (*http.Response, []byte) {
++func recognitionRequest(t *testing.T, ctx context.Context, fixture *performanceFixture) *http.Request {
+ 	t.Helper()
+ 	pdf, err := os.ReadFile("../document/testdata/scanned.pdf")
+ 	require.NoError(t, err)
+ 	body := fmt.Sprintf(`{"model":"openai/gpt-4o-mini","max_tokens":32,"messages":[{"role":"user","content":[{"type":"file","file":{"filename":"scanned.pdf","file_data":"data:application/pdf;base64,%s"}}]}],"plugins":[{"id":"file-parser","pdf":{"engine":"recognition"}}]}`, base64.StdEncoding.EncodeToString(pdf))
+-	request, err := http.NewRequestWithContext(t.Context(), http.MethodPost, fixture.gateway.URL+"/api/v1/chat/completions", strings.NewReader(body))
++	request, err := http.NewRequestWithContext(ctx, http.MethodPost, fixture.gateway.URL+"/api/v1/chat/completions", strings.NewReader(body))
+ 	require.NoError(t, err)
+ 	request.Header.Set("Authorization", "Bearer "+performanceGatewayKey)
+ 	request.Header.Set("Content-Type", "application/json")
+ 	request.Header.Set("X-Request-ID", "recognition-parent")
+-	response, err := fixture.client.Do(request)
++	return request
++}
++
++func sendRecognitionRequest(t *testing.T, fixture *performanceFixture) (*http.Response, []byte) {
++	t.Helper()
++	response, err := fixture.client.Do(recognitionRequest(t, t.Context(), fixture))
+ 	require.NoError(t, err)
+ 	data, err := io.ReadAll(response.Body)
+ 	require.NoError(t, err)
+@@ -156,3 +163,88 @@ func TestProductionRecognitionRefusesInsufficientBudget(t *testing.T) {
+ 	require.NoError(t, err)
+ 	require.Empty(t, keys)
+ }
++
++func TestProductionRecognitionThenCancel(t *testing.T) {
++	const googlePath = "/gemini-2.5-flash:generateContent"
++	chatEntered, release := make(chan struct{}), make(chan struct{})
++	fixture := newPerformanceFixtureForProviders(t, 0, nil, true,
++		&limits.Limits{Spend: &limits.Budget{Limit: 2_000_000_000, Interval: limits.IntervalDay}},
++		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
++			if r.URL.Path == googlePath {
++				w.Header().Set("Content-Type", "application/json")
++				_, _ = io.WriteString(w, `{"candidates":[{"content":{"role":"model","parts":[{"text":"<<<STARPORT_PAGE_1>>>\nInvoice"}]},"finishReason":"STOP"}],"usageMetadata":{"promptTokenCount":100,"candidatesTokenCount":20,"totalTokenCount":120,"cachedContentTokenCount":0}}`)
++				return
++			}
++			_, _ = io.Copy(io.Discard, r.Body)
++			close(chatEntered)
++			select {
++			case <-r.Context().Done():
++			case <-release:
++			}
++		}), []performanceProvider{
++			{catalogs.ProviderIDOpenAI, "OPENAI_API_KEY", "Authorization", "Bearer sk-test-key", []string{"/v1/chat/completions"}},
++			{catalogs.ProviderIDGoogleAIStudio, "GOOGLE_API_KEY", "X-Goog-Api-Key", "sk-test-key", []string{googlePath}},
++		}, func(key *apikey.APIKey) {
++			key.AllowedModels = []string{"openai/gpt-4o-mini", "google-ai-studio/gemini-2.5-flash"}
++		})
++	t.Cleanup(func() { close(release) })
++	ctx, cancel := context.WithCancel(t.Context())
++	defer cancel()
++	request := recognitionRequest(t, ctx, fixture)
++	completed := make(chan error, 1)
++	go func() {
++		response, err := fixture.client.Do(request)
++		if response != nil {
++			_ = response.Body.Close()
++		}
++		completed <- err
++	}()
++	select {
++	case <-chatEntered:
++	case err := <-completed:
++		t.Fatalf("request stopped before chat dispatch: %v", err)
++	case <-time.After(10 * time.Second):
++		t.Fatal("chat dispatch did not start")
++	}
++	keys, err := fixture.application.store.ScanWithPrefix(t.Context(), "budget:v1:attempt:", 10)
++	require.NoError(t, err)
++	require.Len(t, keys, 2)
++	var child, parent reservation.Record
++	for _, key := range keys {
++		raw, err := fixture.application.store.Get(t.Context(), key)
++		require.NoError(t, err)
++		var record reservation.Record
++		require.NoError(t, json.Unmarshal(raw, &record))
++		if record.Attempt.OfferingID == "google-ai-studio/gemini-2.5-flash" {
++			child = record
++		} else {
++			parent = record
++		}
++	}
++	require.Equal(t, reservation.Settled, child.State)
++	require.EqualValues(t, 80000, *child.NanoUSD)
++	require.Equal(t, reservation.Dispatched, parent.State)
++	require.NotEqual(t, child.Attempt.ID, parent.Attempt.ID)
++	require.Equal(t, child.Attempt.Rules, parent.Attempt.Rules)
++	cancel()
++	select {
++	case err := <-completed:
++		require.ErrorIs(t, err, context.Canceled)
++	case <-time.After(5 * time.Second):
++		t.Fatal("client did not observe cancellation")
++	}
++	require.Eventually(t, func() bool {
++		current, err := fixture.application.budget.ledger.Inspect(t.Context(), parent.Attempt.ID)
++		return err == nil && current.State == reservation.Uncertain
++	}, 5*time.Second, time.Millisecond)
++	current, err := fixture.application.budget.ledger.Inspect(t.Context(), child.Attempt.ID)
++	require.NoError(t, err)
++	require.Equal(t, &child, current, "outer cancellation must preserve the measured recognition charge")
++	for _, binding := range parent.Bindings {
++		window, err := fixture.application.budget.ledger.Window(t.Context(), binding.Rule.Meter, parent.AdmittedAt)
++		require.NoError(t, err)
++		require.EqualValues(t, 80000, window.Consumed)
++		require.Equal(t, binding.Amount, window.Reserved)
++	}
++	require.EqualValues(t, 2, fixture.calls.Load())
++}
+diff --git i/internal/limits/reservation/repository_test.go w/internal/limits/reservation/repository_test.go
+index cc5bae0f..0a80fbb1 100644
+--- i/internal/limits/reservation/repository_test.go
++++ w/internal/limits/reservation/repository_test.go
+@@ -289,8 +289,29 @@ func (s *lostAcknowledgement) CompareAndSwapInWindow(ctx context.Context, mutati
+ }
+ 
+ func TestFixedUTCWindows(t *testing.T) {
+-	at := time.Date(2027, time.January, 1, 23, 59, 59, 0, time.FixedZone("east", 2*3600))
+-	require.Equal(t, time.Date(2026, time.December, 28, 0, 0, 0, 0, time.UTC), windowFor(limits.IntervalWeek, at).Start)
+-	require.Equal(t, time.Date(2027, time.January, 2, 0, 0, 0, 0, time.UTC), windowFor(limits.IntervalDay, at).End)
+-	require.Equal(t, time.Date(2027, time.February, 1, 0, 0, 0, 0, time.UTC), windowFor(limits.IntervalMonth, at).End)
++	for _, tc := range []struct {
++		name, at, start, end string
++		interval             string
++	}{
++		{"day before midnight", "2026-12-31T23:59:59.999999999Z", "2026-12-31T00:00:00Z", "2027-01-01T00:00:00Z", limits.IntervalDay},
++		{"day at midnight", "2027-01-01T00:00:00Z", "2027-01-01T00:00:00Z", "2027-01-02T00:00:00Z", limits.IntervalDay},
++		{"ISO week across year", "2027-01-01T23:59:59+02:00", "2026-12-28T00:00:00Z", "2027-01-04T00:00:00Z", limits.IntervalWeek},
++		{"ISO week before Monday", "2027-01-03T23:59:59.999999999Z", "2026-12-28T00:00:00Z", "2027-01-04T00:00:00Z", limits.IntervalWeek},
++		{"ISO week at Monday", "2027-01-04T00:00:00Z", "2027-01-04T00:00:00Z", "2027-01-11T00:00:00Z", limits.IntervalWeek},
++		{"month before boundary", "2027-01-31T23:59:59.999999999Z", "2027-01-01T00:00:00Z", "2027-02-01T00:00:00Z", limits.IntervalMonth},
++		{"month at boundary", "2027-02-01T00:00:00Z", "2027-02-01T00:00:00Z", "2027-03-01T00:00:00Z", limits.IntervalMonth},
++		{"leap February", "2028-02-29T12:00:00Z", "2028-02-01T00:00:00Z", "2028-03-01T00:00:00Z", limits.IntervalMonth},
++		{"offset crosses UTC date", "2027-01-01T00:30:00+02:00", "2026-12-31T00:00:00Z", "2027-01-01T00:00:00Z", limits.IntervalDay},
++	} {
++		t.Run(tc.name, func(t *testing.T) {
++			parse := func(value string) time.Time {
++				at, err := time.Parse(time.RFC3339Nano, value)
++				require.NoError(t, err)
++				return at
++			}
++			window := windowFor(tc.interval, parse(tc.at))
++			require.Equal(t, parse(tc.start), window.Start)
++			require.Equal(t, parse(tc.end), window.End)
++		})
++	}
+ }
+diff --git 1/internal/app/budget_fleet_test.go 2/internal/app/budget_fleet_test.go
+new file mode 100644
+index 00000000..9f1bbb2f
+--- /dev/null
++++ 2/internal/app/budget_fleet_test.go
+@@ -0,0 +1,306 @@
++package app
++
++import (
++	"bytes"
++	"context"
++	"crypto/rand"
++	"crypto/sha256"
++	"encoding/hex"
++	"encoding/json/v2"
++	"io"
++	"net/http"
++	"net/http/httptest"
++	"net/url"
++	"os"
++	"os/exec"
++	"path/filepath"
++	"strings"
++	"sync/atomic"
++	"testing"
++	"time"
++
++	"github.com/agentstation/starmap/pkg/catalogs"
++	"github.com/agentstation/starport/internal/account"
++	"github.com/agentstation/starport/internal/apikey"
++	runtimecatalog "github.com/agentstation/starport/internal/catalog"
++	"github.com/agentstation/starport/internal/config"
++	"github.com/agentstation/starport/internal/credentials"
++	"github.com/agentstation/starport/internal/identity"
++	"github.com/agentstation/starport/internal/limits"
++	"github.com/agentstation/starport/internal/limits/reservation"
++	"github.com/agentstation/starport/internal/providers"
++	"github.com/agentstation/starport/internal/providers/keyring"
++	"github.com/agentstation/starport/internal/server"
++	"github.com/agentstation/starport/internal/sqlstore"
++	"github.com/jackc/pgx/v5"
++	"github.com/stretchr/testify/require"
++)
++
++const budgetFleetChild = "STARPORT_BUDGET_FLEET_CHILD"
++
++type budgetFleetInput struct{ Valkey, Postgres, Deployment, Upstream, Ready string }
++
++func budgetFleetConfig(t *testing.T, input budgetFleetInput) *config.Config {
++	t.Helper()
++	cfg := validProductionConfig(t)
++	cfg.Storage.Mode, cfg.Storage.Valkey.URL = "valkey", input.Valkey
++	cfg.Storage.Valkey.MaxConnections, cfg.Storage.Valkey.MinIdleConns = 10, 1
++	cfg.Storage.Valkey.DialTimeout, cfg.Storage.Valkey.ReadTimeout, cfg.Storage.Valkey.WriteTimeout = time.Second, time.Second, time.Second
++	cfg.Storage.SQL.Mode, cfg.Storage.SQL.Postgres.URL = sqlstore.TypePostgres, input.Postgres
++	cfg.Catalog.StateDirectory = filepath.Join(t.TempDir(), "catalog")
++	cfg.Files.Backend = config.BlobBackendObjectStore
++	cfg.Files.ObjectStore.Bucket, cfg.Files.ObjectStore.Region, cfg.Files.ObjectStore.Endpoint = "unused-budget-fixture", "us-east-1", "http://127.0.0.1:1"
++	cfg.Identity.OAuth.GitHub.ClientID, cfg.Identity.OAuth.GitHub.ClientSecret = "fixture", "fixture"
++	provider := cfg.Providers[catalogs.ProviderIDOpenAI]
++	provider.BaseURL, provider.CredentialReferences, provider.Timeout = input.Upstream, nil, 30*time.Second
++	cfg.Providers[catalogs.ProviderIDOpenAI] = provider
++	loaded, err := config.NewLoader().WithPaths(config.PathsForConfigDir(t.TempDir())).WithEnvFiles().WithEnvironment(map[string]string{"STARPORT_DEPLOYMENT_ID": input.Deployment, "OPENAI_API_KEY": "sk-test-key"}).Load(t.Context(), func(target *config.Config) { *target = *cfg })
++	require.NoError(t, err)
++	bundled, err := runtimecatalog.Bundled()
++	require.NoError(t, err)
++	catalogProvider, err := bundled.Provider(catalogs.ProviderIDOpenAI)
++	require.NoError(t, err)
++	policy, err := providers.CompileDestinationPolicy(catalogProvider, string(keyring.SourceEnvironment), catalogProvider.Credentials.Inference.Alternatives[0], input.Upstream, nil)
++	require.NoError(t, err)
++	loaded.InferenceDestinationApprovals, err = credentials.NewDestinationApprovals(nil, policy)
++	require.NoError(t, err)
++	return loaded
++}
++
++func runBudgetFleetChild(t *testing.T, encoded string) {
++	t.Helper()
++	var input budgetFleetInput
++	require.NoError(t, json.Unmarshal([]byte(encoded), &input))
++	application, err := New(budgetFleetConfig(t, input))
++	require.NoError(t, err)
++	defer func() { require.NoError(t, application.Close(context.Background())) }()
++	runtime, ok := application.httpServer.(*server.Server)
++	require.True(t, ok)
++	gateway := httptest.NewServer(runtime.Router())
++	defer gateway.Close()
++	require.NoError(t, os.WriteFile(input.Ready, []byte(gateway.URL), 0600))
++	// The parent terminates this process after inspecting dispatch and durable state.
++	<-t.Context().Done()
++}
++
++type budgetFleetProcess struct {
++	command *exec.Cmd
++	output  bytes.Buffer
++	base    string
++	stopped bool
++}
++
++func startBudgetFleetProcess(t *testing.T, input budgetFleetInput) *budgetFleetProcess {
++	t.Helper()
++	input.Ready = filepath.Join(t.TempDir(), "ready")
++	encoded, err := json.Marshal(input)
++	require.NoError(t, err)
++	child := &budgetFleetProcess{command: exec.CommandContext(t.Context(), os.Args[0], "-test.run=^TestProductionBudgetAcrossProcesses$", "-test.timeout=90s")}
++	child.command.Env = append(os.Environ(), budgetFleetChild+"="+string(encoded))
++	child.command.Stdout, child.command.Stderr = &child.output, &child.output
++	require.NoError(t, child.command.Start())
++	t.Cleanup(func() { child.stop() })
++	deadline := time.Now().Add(45 * time.Second)
++	for time.Now().Before(deadline) {
++		data, _ := os.ReadFile(input.Ready)
++		if len(data) != 0 {
++			child.base = string(data)
++			return child
++		}
++		time.Sleep(10 * time.Millisecond)
++	}
++	child.stop()
++	t.Fatalf("gateway process did not become ready: %s", child.output.String())
++	return nil
++}
++
++func (p *budgetFleetProcess) stop() {
++	if !p.stopped {
++		_ = p.command.Process.Kill()
++		_ = p.command.Wait()
++		p.stopped = true
++	}
++}
++
++func TestProductionBudgetAcrossProcesses(t *testing.T) {
++	if input := os.Getenv(budgetFleetChild); input != "" {
++		runBudgetFleetChild(t, input)
++		return
++	}
++	valkey, postgres := os.Getenv("TEST_VALKEY_URL"), os.Getenv("TEST_POSTGRES_URL")
++	if valkey == "" || postgres == "" {
++		t.Skip("UNVERIFIED: TEST_VALKEY_URL and TEST_POSTGRES_URL are required")
++	}
++	for _, mode := range []string{"concurrent-settlement", "dispatched-process-loss"} {
++		t.Run(mode, func(t *testing.T) {
++			entered, release := make(chan struct{}, 2), make(chan struct{})
++			var calls atomic.Int64
++			upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
++				if r.URL.Path != "/v1/chat/completions" || r.Header.Get("Authorization") != "Bearer sk-test-key" {
++					t.Error("unexpected provider path or authentication")
++					http.Error(w, "unexpected request", http.StatusBadRequest)
++					return
++				}
++				calls.Add(1)
++				entered <- struct{}{}
++				select {
++				case <-release:
++					w.Header().Set("Content-Type", "application/json")
++					_, _ = io.WriteString(w, `{"id":"fleet-usage","object":"chat.completion","model":"gpt-4o-mini","choices":[{"index":0,"message":{"role":"assistant","content":"ok"},"finish_reason":"stop"}],"usage":{"prompt_tokens":8,"completion_tokens":3,"total_tokens":11,"prompt_tokens_details":{"cached_tokens":0}}}`)
++				case <-r.Context().Done():
++				}
++			}))
++			t.Cleanup(upstream.Close)
++			t.Cleanup(func() {
++				select {
++				case <-release:
++				default:
++					close(release)
++				}
++			})
++			admin, err := sqlstore.Open(config.StorageConfig{SQL: config.SQLConfig{Mode: sqlstore.TypePostgres, Postgres: config.SQLPostgresConfig{URL: postgres}}}.RuntimeSQL())
++			require.NoError(t, err)
++			t.Cleanup(func() { require.NoError(t, admin.Close()) })
++			schemaName := "budget_fleet_" + strings.ToLower(rand.Text())
++			schema := pgx.Identifier{schemaName}.Sanitize()
++			_, err = admin.ExecContext(t.Context(), "CREATE SCHEMA "+schema)
++			require.NoError(t, err)
++			t.Cleanup(func() {
++				_, err := admin.ExecContext(context.Background(), "DROP SCHEMA "+schema+" CASCADE")
++				require.NoError(t, err)
++			})
++			parsed, err := url.Parse(postgres)
++			require.NoError(t, err)
++			query := parsed.Query()
++			query.Set("search_path", schemaName)
++			parsed.RawQuery = query.Encode()
++			input := budgetFleetInput{Valkey: valkey, Postgres: parsed.String(), Deployment: "budget-fleet-" + rand.Text(), Upstream: upstream.URL}
++			cfg := budgetFleetConfig(t, input)
++			seed, err := openStorage(cfg.RuntimeStorage())
++			require.NoError(t, err)
++			approveTestFleet(t, cfg, seed)
++			bootstrap, err := apikey.Open(seed)
++			require.NoError(t, err)
++			_, err = bootstrap.Create(t.Context(), testAPIKey())
++			require.NoError(t, err)
++			require.NoError(t, seed.Close())
++			t.Cleanup(func() {
++				ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
++				defer cancel()
++				cleanup, err := openStorage(cfg.RuntimeStorage())
++				require.NoError(t, err)
++				defer func() { require.NoError(t, cleanup.Close()) }()
++				keys, err := cleanup.ScanWithPrefix(ctx, "", 0)
++				require.NoError(t, err)
++				require.NoError(t, cleanup.BatchDelete(ctx, keys))
++			})
++			var deps server.Dependencies
++			application, err := New(cfg, func(options *buildOptions) {
++				original := options.factories.newServer
++				options.factories.newServer = func(settings *server.Config, dependencies server.Dependencies) (httpRuntime, error) {
++					deps = dependencies
++					return original(settings, dependencies)
++				}
++			})
++			require.NoError(t, err)
++			t.Cleanup(func() { require.NoError(t, application.Close(context.Background())) })
++			now := time.Now().UTC()
++			budgets := func() *limits.Limits {
++				return &limits.Limits{Tokens: &limits.Budget{Limit: 200_000, Interval: limits.IntervalDay}, Spend: &limits.Budget{Limit: 1_000_000_000, Interval: limits.IntervalDay}}
++			}
++			_, err = deps.Accounts.Create(t.Context(), account.Account{ID: "fleet-account", Name: "Fleet account", Limits: budgets(), Active: true, CreatedAt: now})
++			require.NoError(t, err)
++			team, err := deps.Identity.Teams.Create(t.Context(), identity.Team{ID: "fleet-team", Name: "Fleet team", Budget: &limits.TeamBudget{Limit: 1_000_000_000, Interval: limits.IntervalDay}})
++			require.NoError(t, err)
++			digest := sha256.Sum256([]byte(performanceGatewayKey))
++			key := testAPIKey()
++			key.ID = "fleet-key"
++			key.Hash = hex.EncodeToString(digest[:])
++			key.AccountID = "fleet-account"
++			key.TeamID = team.Team.ID
++			key.Limits = budgets()
++			_, err = deps.APIKeys.Create(t.Context(), key)
++			require.NoError(t, err)
++			first, second := startBudgetFleetProcess(t, input), startBudgetFleetProcess(t, input)
++			client := &http.Client{Timeout: 20 * time.Second}
++			request := func(base string) (int, string, error) {
++				return budgetRequest(t.Context(), &performanceFixture{gateway: &httptest.Server{URL: base}, client: client})
++			}
++			type response struct {
++				status int
++				body   string
++				err    error
++			}
++			pending := make(chan response, 1)
++			go func() { status, body, err := request(first.base); pending <- response{status, body, err} }()
++			select {
++			case <-entered:
++			case result := <-pending:
++				t.Fatalf("request stopped before provider: %d %s %v", result.status, result.body, result.err)
++			case <-time.After(15 * time.Second):
++				t.Fatal("provider dispatch did not start")
++			}
++			status, body, err := request(second.base)
++			require.NoError(t, err)
++			require.Equal(t, http.StatusPaymentRequired, status, body)
++			require.EqualValues(t, 1, calls.Load())
++			keys, err := application.store.ScanWithPrefix(t.Context(), "budget:v1:attempt:", 100)
++			require.NoError(t, err)
++			require.Len(t, keys, 1)
++			raw, err := application.store.Get(t.Context(), keys[0])
++			require.NoError(t, err)
++			var record reservation.Record
++			require.NoError(t, json.Unmarshal(raw, &record))
++			require.Equal(t, reservation.Dispatched, record.State)
++			require.Len(t, record.Attempt.Rules, 5, "account/key token and spend meters plus team spend")
++			for _, rule := range record.Attempt.Rules {
++				state, err := application.budget.ledger.Window(t.Context(), rule.Meter, record.AdmittedAt)
++				require.NoError(t, err)
++				require.Positive(t, state.Reserved)
++				require.Zero(t, state.Consumed)
++			}
++			if mode == "dispatched-process-loss" {
++				first.stop()
++				<-pending
++				replacement := startBudgetFleetProcess(t, input)
++				status, body, err = request(replacement.base)
++				require.NoError(t, err)
++				require.Equal(t, http.StatusPaymentRequired, status, body)
++				require.EqualValues(t, 1, calls.Load(), "restart cannot refund uncertain dispatch")
++				current, err := application.budget.ledger.Inspect(t.Context(), record.Attempt.ID)
++				require.NoError(t, err)
++				require.Equal(t, reservation.Dispatched, current.State)
++				require.Nil(t, current.Evidence)
++				for _, rule := range record.Attempt.Rules {
++					state, err := application.budget.ledger.Window(t.Context(), rule.Meter, record.AdmittedAt)
++					require.NoError(t, err)
++					require.Positive(t, state.Reserved)
++					require.Zero(t, state.Consumed)
++				}
++			} else {
++				close(release)
++				result := <-pending
++				require.NoError(t, result.err)
++				require.Equal(t, http.StatusOK, result.status, result.body)
++				current, err := application.budget.ledger.Inspect(t.Context(), record.Attempt.ID)
++				require.NoError(t, err)
++				require.Equal(t, reservation.Settled, current.State)
++				require.EqualValues(t, 11, current.Evidence.Tokens)
++				for _, rule := range record.Attempt.Rules {
++					state, err := application.budget.ledger.Window(t.Context(), rule.Meter, record.AdmittedAt)
++					require.NoError(t, err)
++					require.Zero(t, state.Reserved)
++					if rule.Meter.Dimension == limits.DimensionTokens {
++						require.EqualValues(t, 11, state.Consumed)
++					} else {
++						require.Equal(t, *current.NanoUSD, state.Consumed)
++					}
++				}
++				status, body, err = request(second.base)
++				require.NoError(t, err)
++				require.Equal(t, http.StatusOK, status, body)
++				require.EqualValues(t, 2, calls.Load())
++			}
++		})
++	}
++}

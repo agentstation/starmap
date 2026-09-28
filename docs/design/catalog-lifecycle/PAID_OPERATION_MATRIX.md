@@ -543,3 +543,18 @@ Interrupted batches, remaining operation rows, shared recovery, A47, capacity, a
 
 The [shared aggregate proof](../../plans/proof/starport-production-catalog/csp12.2/shared-aggregates-2026-09-27/verification.json) qualifies retained batch output after process loss.
 The recovery path uses no inference runner. It does not qualify interrupted-line continuation or complete the paid-dispatch matrix.
+
+### Admission qualification: September 27, 2026
+
+Producer `ab86b3ca2` and consumer `1d9b328f` qualify fourteen CSP12.2 checks. Nine required checks remain unverified.
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/admission-qualification-2026-09-27/verification.json) records 134 race results, fifteen pure-Go results, and 99 verifier tests without skips.
+The [coverage map](../../plans/proof/starport-production-catalog/csp12.2/admission-qualification-2026-09-27/coverage-map.json) names each remaining requirement.
+
+Separate gateway processes share five applicable meters through real Valkey and PostgreSQL.
+Process loss after dispatch retains uncertain capacity. A replacement gateway cannot spend that capacity or repeat the provider call.
+This evidence does not qualify storage replacement or background recovery workers.
+
+Production tests also retain recognition charges after caller cancellation and charge embeddings on semantic-cache hits.
+Fallback tests retain earlier uncertain capacity. UTC tests cover exact window boundaries and leap February.
+The remaining matrix, storage failover, backend operation counts, retention horizons, capacity, native CI, and paired merges remain required.
+The owner decision for proven unstarted batch lines remains pending.

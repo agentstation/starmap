@@ -1,0 +1,18 @@
+{
+  "consumer": {
+    "parent": "07578301cd01ce94ce41ffd6797a8d21a7025ddb",
+    "inputs": {
+      "internal/app/budget_fleet_test.go": "c300d6c718778ff020cf7ea549c6633b673ce2bab786c09a5ec9b85398b05de4",
+      "internal/app/budget_embedding_test.go": "833bc8b28fbea9f73550eae682721d0cba108ec78c253930fb4ec83aa4adb590",
+      "internal/app/budget_identity_test.go": "bcb321113195c5bd0e3af7eb12b72c1e3a66a658fa4366857790996e428c7766",
+      "internal/app/budget_recognition_test.go": "01a6eea96a9333b3af95711b20549c4c729bec3b89fe447501afa4e25000dc0a",
+      "internal/limits/reservation/repository_test.go": "d782878ef52d27815dd845854432f564981b363e609920db5d3de43c21f1204b"
+    }
+  },
+  "producer": {
+    "parent": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+    "inputs": {
+      "scripts/catalog-product-checks.json": "d409e02a7922e4054769ecb32dcb1e5f38774ed0fc3adbf8c7e916e48687382f"
+    }
+  }
+}

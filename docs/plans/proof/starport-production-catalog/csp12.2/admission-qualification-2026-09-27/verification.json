@@ -1,0 +1,263 @@
+{
+  "task": "CSP12.2",
+  "status": "in_progress",
+  "date": "2026-09-27",
+  "toolchain": "go1.27.1",
+  "platform": "darwin/arm64",
+  "commits": {
+    "consumer": "1d9b328f841f89a1b4c0e0f616a58212e519c877",
+    "producer": "ab86b3ca288970e8abab3076768a4092bd4f72e0"
+  },
+  "dependency": "GOWORK=/tmp/csp122-billing.work; local producer, not the released pair",
+  "gate": {
+    "exit_code": 1,
+    "selected_subcases": 23,
+    "passed": 14,
+    "failed": 0,
+    "unverified": 9,
+    "source": "task-gate.json.gz",
+    "scope_note": "The command prints all fifty primary cases as unverified because this run selects one incomplete task. This is not a fifty-case regression."
+  },
+  "gate_executions": [
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestBudgetHistoryRollover|TestChangedHistoryRequiresReconciliation|TestDelayedDispatchCannotUseAClosedWindow|TestFixedUTCWindows|TestHolderCreationAndBudgetHistory|TestLateSettlementKeepsOriginalWindowAndValuation|TestRecoveryConcurrentWorkersSettleOnce|TestRecoveryRetriesLostSettlementAcknowledgement|TestReservationContract|TestRetainedUsageSurvivesRestart|TestTeamBudgetHistoryHandoff|TestTokenOnlyCannotBypassSpendOrInventFreePricing|TestValkeyReservationAcrossProcesses)$",
+        "./internal/limits/reservation"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 11.088160082988907,
+      "results": {
+        "pass": 70
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionBudgetAcrossProcesses)$",
+        "./internal/app"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 137.4643701669993,
+      "results": {
+        "pass": 3
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionBudgetDispatchStreamCompletionAndCancellation|TestProductionBudgetDispatchUnknownCostAndAbsentBudgets|TestProductionBudgetPreservesRequestIdentity|TestProductionEmbeddingRefusalBeforeDispatch|TestProductionRecognitionThenCancel|TestProductionRerankInvalidResultRetainsCharge|TestProductionRerankRefusesInsufficientCapacity|TestProductionSemanticEmbeddingSharesBudget|TestProductionSpendMissingTokenCountRetainsCapacity|TestRunRecoversRetainedBudgetEvidence)$",
+        "./internal/app"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 79.54284895805176,
+      "results": {
+        "pass": 27
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestAbsentBudgetsStayLocal|TestAdmissionFailureBoundaries|TestAdmissionReservesExclusiveCapacity)$",
+        "./internal/limits/admission"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 2.128461083979346,
+      "results": {
+        "pass": 10
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestRerankTokenBound)$",
+        "./internal/router"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 5.423221375036519,
+      "results": {
+        "pass": 14
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionRerankBudget)$",
+        "./internal/app"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 40.847287375014275,
+      "results": {
+        "pass": 7
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestTimeBoundStore)$",
+        "./internal/storage"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 1.9551889169961214,
+      "results": {
+        "pass": 3
+      }
+    }
+  ],
+  "unique_test_results": {
+    "pass": 134,
+    "fail": 0,
+    "skip": 0
+  },
+  "other_checks": [
+    {
+      "command": "go test -race -json ./internal/app -run ^TestProduction(BudgetAcrossProcesses|SemanticEmbeddingSharesBudget|RecognitionThenCancel)$ -count=1 -timeout 5m",
+      "exit_code": 0,
+      "pass": 5,
+      "skip": 0,
+      "source": "final-focused-race.jsonl.gz"
+    },
+    {
+      "command": "CGO_ENABLED=0 go test -json ./internal/app -run ^TestProduction(SemanticEmbeddingSharesBudget|RecognitionThenCancel|BudgetPreservesRequestIdentity)$ -count=1 -timeout 3m",
+      "exit_code": 0,
+      "pass": 5,
+      "skip": 0,
+      "source": "preprocess-purego.jsonl.gz"
+    },
+    {
+      "command": "CGO_ENABLED=0 go test -json ./internal/limits/reservation -run ^TestFixedUTCWindows$ -count=1 -timeout 1m",
+      "exit_code": 0,
+      "pass": 10,
+      "skip": 0,
+      "source": "windows-purego.jsonl.gz"
+    },
+    {
+      "command": "python3 scripts/test_catalog_product_verify.py",
+      "exit_code": 0,
+      "tests": 99,
+      "source": "registry-tests.log"
+    },
+    {
+      "command": "go vet ./internal/app ./internal/limits/reservation",
+      "exit_code": 0,
+      "source": "vet.log"
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0,
+      "source": "goago.json"
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "exit_code": 0,
+      "source": "package-layout.log"
+    },
+    {
+      "command": "technical-writing lint changed Go tests --format text",
+      "exit_code": 0,
+      "files": 5,
+      "diagnostics": 0,
+      "source": "source-writing.log"
+    }
+  ],
+  "prior_runs": [
+    {
+      "source": "initial-fleet-race.jsonl.gz",
+      "exit_code": 0,
+      "pass": 3,
+      "skip": 0,
+      "note": "Before namespace cleanup and fixture assertion repair."
+    },
+    {
+      "source": "initial-preprocess-race.jsonl.gz",
+      "exit_code": 1,
+      "pass": 1,
+      "note": "Record-value versus pointer assertion error followed by test-fixture cleanup timeout. The final check repairs both test defects."
+    }
+  ],
+  "remaining": "coverage-map.json",
+  "no_external_inference": true,
+  "publication": "Unpublished local commits; no merges or release. CSP12.2 remains incomplete.",
+  "documentation": {
+    "changed_prose": {
+      "exit_code": 0,
+      "files": 3,
+      "diagnostics": 0,
+      "source": "changed-prose.log"
+    },
+    "initial_repository_prose": {
+      "exit_code": 2,
+      "files": 1789,
+      "diagnostics": 159,
+      "source": "initial-full-writing.log.gz",
+      "note": "Includes three plan diagnostics repaired in the final changed-prose check. Historical evidence and captured test source remain unchanged."
+    },
+    "plan_validation": "plan-validation.json",
+    "final_repository_prose": {
+      "exit_code": 2,
+      "files": 1789,
+      "diagnostics": 156,
+      "source": "full-writing.log.gz",
+      "note": "Remaining diagnostics concern historical evidence and captured source. Changed plan prose and current source comments pass their focused checks."
+    }
+  }
+}
