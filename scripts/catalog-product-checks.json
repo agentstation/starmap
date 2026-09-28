@@ -6900,6 +6900,105 @@
           "test": "TestEveryPublishedMediaOperationMatchesItsDefinition"
         }
       ]
+    },
+    "A47.crash_failover_recovery": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionBudgetAcrossProcesses",
+      "batch": false
+    },
+    "A47.media_async_reconciliation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionModerationBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionGuardrailModerationAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionImagesBudget",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionSpeechBudget",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionTranscriptionBudgetRefusal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionNativeVideoBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionNativeExternalVideoAsset"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionVideoFollowupBudget",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionAdministratorVideoReconciliation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestLateNativeResponseBlocksDisputedBudget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionJobsRequireSettledReservation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestJobReservationChecksOriginalIdentity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRunRecoversRetainedBudgetEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestSettledJobRequiresOriginalSharedApproval"
+        }
+      ]
     }
   },
   "task_component_checks": {
