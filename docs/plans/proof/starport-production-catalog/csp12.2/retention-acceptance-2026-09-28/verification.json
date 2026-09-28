@@ -73,6 +73,20 @@
     "retention-workflow.log": {
       "counts": {},
       "note": ""
+    },
+    "retention-pure-final.jsonl": {
+      "counts": {
+        "pass": 20,
+        "skip": 3
+      },
+      "skipped": [
+        "TestReconciliationRetention/valkey/none",
+        "TestReconciliationRetention/valkey/attempt",
+        "TestReconciliationRetention/valkey/correction"
+      ],
+      "command": "CGO_ENABLED=0 go test -count=1 -timeout 2m -json -run '^(TestReconciliationRetention|TestVideoBytesSurviveProcessLoss|TestVideo(Reconciliation|Correction))' ./internal/limits/reservation ./internal/jobs ./internal/server",
+      "source": "8a0c586",
+      "note": "All three Valkey skips have separate native coverage."
     }
   },
   "verifier_tests": 99,
@@ -139,5 +153,6 @@
       "exit_code": 0
     }
   ],
-  "boundary_checks_note": "Ten commands pass. The architecture command failed before the import and marker repairs; its published-module gate also rejects the local workspace. Final qualification remains required."
+  "boundary_checks_note": "Ten commands pass. The architecture command failed before the import and marker repairs; its published-module gate also rejects the local workspace. Final qualification remains required.",
+  "objectstore_health_probe": "HTTP 200 from the configured native test service at /minio/health/live"
 }

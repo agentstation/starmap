@@ -1,0 +1,21 @@
+{
+  "status": "INTERRUPTED",
+  "verifier_pid": 85951,
+  "children": [
+    {
+      "pid": 90109,
+      "command": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/go-build1276976293/b001/catalog.test -test.paniconexit0 -test.v=test2json -test.count=1 -test.timeout=5m0s -test.run=^(TestFleetAdoptionRepeatedRecoveryAndConcurrentSelection)$"
+    },
+    {
+      "pid": 90098,
+      "command": "go test -race -count=1 -timeout 5m -json -run ^(TestFleetAdoptionRepeatedRecoveryAndConcurrentSelection)$ ./internal/catalog"
+    }
+  ],
+  "producer_before": "bcf20ca1cf7ec03354434356f21aaa59fe833566",
+  "required_main": "024c24c2247841b537c98b42bdbfc21e3dc2a7a4",
+  "original_reason": "Producer branch lacks merged baseline PR #186. Integrate origin/main before final qualification. No final task report exists.",
+  "reason": "The run stopped for a suspected missing baseline change. Merge inspection found the baseline code already present. Only its ancestry was missing. The interruption was unnecessary.",
+  "merge": "94b43e8db",
+  "tree_before": "e6cb86ff9f5197bc9a32ce7bfc9c7eb34c3a0cf5",
+  "tree_after": "e6cb86ff9f5197bc9a32ce7bfc9c7eb34c3a0cf5"
+}
