@@ -1,0 +1,235 @@
+{
+  "consumer_commit": "501cb0d3c349f6bfb4d4b4826291df795e62236e",
+  "producer_commit": "89e818f854a79660c8a3c3bb69945679dddc39bb",
+  "go": "1.27.1",
+  "platform": "darwin/arm64",
+  "scope": "Local batch restart and correction-horizon follow-up",
+  "whole_task": "UNVERIFIED",
+  "runs": {
+    "batch-resume-local": {
+      "counts": {
+        "skip": 15,
+        "pass": 68
+      },
+      "failed": [],
+      "skipped": [
+        "TestBatchAggregateSharedProcessRecovery",
+        "TestBatchAggregateRecoversLostPublicationWithoutReplay/valkey",
+        "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/metadata/valkey",
+        "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/confirmation/valkey",
+        "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/cleanup/valkey",
+        "TestBatchAggregateConcurrentRecovery/valkey",
+        "TestBatchLineClaimIsDurableAndExclusive/valkey",
+        "TestBatchClaimFailureCannotDispatch/valkey",
+        "TestBatchCancellationAcrossWorkersPreventsNextLine/valkey",
+        "TestBatchResultEvidenceIsImmutable/valkey",
+        "TestBatchResumeOnlyProvenUnstartedLines/valkey",
+        "TestUnboundedBatchPreservesOutstandingVideoSlot/valkey",
+        "TestRecoverySkipsCorruptionAndReleasesUnreadFinishedBatches/valkey",
+        "TestCancelledBatchRetainsItsSlotUntilLinesDrain/valkey",
+        "TestFinishedBatchSlotReleaseRecoversAfterRestart/valkey"
+      ],
+      "raw_log": "batch-resume-local.jsonl.gz",
+      "sha256_uncompressed": "e06a7deaa6fb35dd84bc0fee448792039646c55585058bb4d70cc1ff9af2083f"
+    },
+    "batch-wiring": {
+      "counts": {
+        "skip": 15,
+        "pass": 87
+      },
+      "failed": [
+        "github.com/agentstation/starport/internal/server",
+        "github.com/agentstation/starport/internal/app"
+      ],
+      "skipped": [
+        "TestBatchAggregateSharedProcessRecovery",
+        "TestBatchAggregateRecoversLostPublicationWithoutReplay/valkey",
+        "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/metadata/valkey",
+        "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/confirmation/valkey",
+        "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/cleanup/valkey",
+        "TestBatchAggregateConcurrentRecovery/valkey",
+        "TestBatchLineClaimIsDurableAndExclusive/valkey",
+        "TestBatchClaimFailureCannotDispatch/valkey",
+        "TestBatchCancellationAcrossWorkersPreventsNextLine/valkey",
+        "TestBatchResultEvidenceIsImmutable/valkey",
+        "TestBatchResumeOnlyProvenUnstartedLines/valkey",
+        "TestUnboundedBatchPreservesOutstandingVideoSlot/valkey",
+        "TestRecoverySkipsCorruptionAndReleasesUnreadFinishedBatches/valkey",
+        "TestCancelledBatchRetainsItsSlotUntilLinesDrain/valkey",
+        "TestFinishedBatchSlotReleaseRecoversAfterRestart/valkey"
+      ],
+      "raw_log": "batch-wiring.jsonl.gz",
+      "sha256_uncompressed": "62e9d0dec87f80d7749daf0b90a11fc2a00f9bf8c2ef2653801ec3c79f120306"
+    },
+    "batch-wiring-fixed": {
+      "counts": {
+        "pass": 56,
+        "fail": 1
+      },
+      "failed": [
+        "TestProductionSweepPublishesRetainedBatchResults",
+        "github.com/agentstation/starport/internal/app"
+      ],
+      "skipped": [],
+      "raw_log": "batch-wiring-fixed.jsonl.gz",
+      "sha256_uncompressed": "97ecdce6b61b77c3fd52751b02a05ed86271f2375ccea133c6e21a7a22f0067b"
+    },
+    "batch-aggregate-regression": {
+      "counts": {
+        "pass": 1
+      },
+      "failed": [],
+      "skipped": [],
+      "raw_log": "batch-aggregate-regression.jsonl.gz",
+      "sha256_uncompressed": "57c2255681c7a48238e3c2bf5e5976a2a89410816cc280f682779a2ca9cc1b7c"
+    },
+    "batch-authority": {
+      "counts": {
+        "pass": 2,
+        "fail": 1
+      },
+      "failed": [
+        "TestBatchRestartUsesCurrentCallerPolicy",
+        "github.com/agentstation/starport/internal/server"
+      ],
+      "skipped": [],
+      "raw_log": "batch-authority.jsonl.gz",
+      "sha256_uncompressed": "9b997899898846068275b5a36449fbac095d719feecf0a744bb06871482d02d8"
+    },
+    "batch-authority-fixed": {
+      "counts": {
+        "pass": 3
+      },
+      "failed": [],
+      "skipped": [],
+      "raw_log": "batch-authority-fixed.jsonl.gz",
+      "sha256_uncompressed": "baa843c9bd57d93a7b9fde42f8d86e3e51d56e469fc533450e54f9ec52db2954"
+    },
+    "batch-resume-process": {
+      "counts": {
+        "pass": 7,
+        "skip": 1
+      },
+      "failed": [],
+      "skipped": [
+        "TestBatchResumeOnlyProvenUnstartedLines/valkey"
+      ],
+      "raw_log": "batch-resume-process.jsonl.gz",
+      "sha256_uncompressed": "34438f685713d1c15f56d91adb7b80c07e9eda584b474739e76ab13fbf4c3475"
+    },
+    "batch-production-restart": {
+      "counts": {
+        "pass": 3
+      },
+      "failed": [],
+      "skipped": [],
+      "raw_log": "batch-production-restart.jsonl.gz",
+      "sha256_uncompressed": "9442a8f6f653c0b87da7818d56bbeaada8975395dd277ef239e5e3892c242169"
+    },
+    "batch-preflight": {
+      "counts": {
+        "pass": 11,
+        "skip": 1
+      },
+      "failed": [],
+      "skipped": [
+        "TestBatchResumeOnlyProvenUnstartedLines/valkey"
+      ],
+      "raw_log": "batch-preflight.jsonl.gz",
+      "sha256_uncompressed": "66f03657da691bd731d4063739bb544051e5edfb0fbe4af7f7f32f66c1977c8a"
+    },
+    "batch-native": {
+      "counts": {
+        "pass": 553,
+        "skip": 2,
+        "fail": 4
+      },
+      "failed": [
+        "TestLegacyJobSchemasRequireMigration/memory",
+        "TestLegacyJobSchemasRequireMigration/badger",
+        "TestLegacyJobSchemasRequireMigration/valkey",
+        "TestLegacyJobSchemasRequireMigration",
+        "github.com/agentstation/starport/internal/jobs"
+      ],
+      "skipped": [
+        "TestBatchAggregateSharedProcessRecovery",
+        "TestNativeRetirementWithRealObjectStore"
+      ],
+      "raw_log": "batch-native.jsonl.gz",
+      "sha256_uncompressed": "94622d03c25cf94e52331542929f8456a5a92030796bca43de45f6248194f93f"
+    },
+    "batch-native-final": {
+      "counts": {
+        "pass": 557,
+        "skip": 2
+      },
+      "failed": [],
+      "skipped": [
+        "TestBatchAggregateSharedProcessRecovery",
+        "TestNativeRetirementWithRealObjectStore"
+      ],
+      "raw_log": "batch-native-final.jsonl.gz",
+      "sha256_uncompressed": "f20fc5631bfd82ca8d4a336c2e30908eca5cf998fa290c7a454efd539a09b5fd"
+    },
+    "batch-objectstore": {
+      "counts": {
+        "pass": 7
+      },
+      "failed": [],
+      "skipped": [],
+      "raw_log": "batch-objectstore.jsonl.gz",
+      "sha256_uncompressed": "58f0e84da4b1a4c43dea0140d5344029302919b2dbff3fffcbc8a0f2accef3f0"
+    },
+    "batch-pure": {
+      "counts": {
+        "pass": 14,
+        "skip": 1
+      },
+      "failed": [],
+      "skipped": [
+        "TestBatchResumeOnlyProvenUnstartedLines/valkey"
+      ],
+      "raw_log": "batch-pure.jsonl.gz",
+      "sha256_uncompressed": "5f25740bc0f05b52881f8a557c965e9df08203a71ce88dede13106470783e720"
+    },
+    "horizon-postgres": {
+      "counts": {
+        "pass": 23
+      },
+      "failed": [],
+      "skipped": [],
+      "raw_log": "horizon-postgres.jsonl.gz",
+      "sha256_uncompressed": "d8d6f2288c5cc63413bc45683ffa890bf0a25c3209e9c3debe301108558ae965"
+    },
+    "correction-budget-operations": {
+      "counts": {
+        "pass": 1
+      },
+      "failed": [],
+      "skipped": [],
+      "raw_log": "correction-budget-operations.jsonl.gz",
+      "sha256_uncompressed": "9783ff08ecd64eaf70ac1d62bb59445576fd7480ae998e32d9cb8a51b7855048"
+    }
+  },
+  "schema": {
+    "batch": 5,
+    "attempt": 4
+  },
+  "commands": {
+    "native": "go test -race -count=1 -timeout 5m -json ./internal/jobs ./internal/localauth ./internal/server/requestctx",
+    "objectstore": "go test -race -count=1 -timeout 3m -json -run \"^(TestBatchAggregateSharedProcessRecovery|TestNativeRetirementWithRealObjectStore)$\" ./internal/jobs",
+    "preflight": "go test -race -count=1 -timeout 4m -json -run \"^(TestBatchResume|TestProductionBatchRestart|TestProductionSweepPublishesRetainedBatchResults)\" ./internal/jobs ./internal/app",
+    "pure": "CGO_ENABLED=0 go test -count=1 -timeout 4m -json -run \"^(TestBatchRestart|TestBatchSession|TestBatchResume|TestProductionBatchRestart|TestProductionSweepPublishesRetainedBatchResults)\" ./internal/jobs ./internal/localauth ./internal/server ./internal/app",
+    "postgres": "go test -race -count=1 -timeout 3m -json -run \"^TestTeamBudgetHistoryHandoff$\" ./internal/limits/reservation",
+    "profile": "STARPORT_BUDGET_PROFILE_SAMPLES=3 go test -count=1 -timeout 3m -json -run \"^TestProductionBudgetBackendOperations$\" ./internal/app"
+  },
+  "environment": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1. Native checks supply local Valkey, PostgreSQL, and object-store test endpoints. No provider API calls.",
+  "limitations": [
+    "Initial fail-before is a missing-API compilation failure, not a behavioral reproduction.",
+    "Historical wiring, authorization-fixture, and migration-fixture failures remain in raw logs.",
+    "Native suite skips two object-store tests; the separate object-store run passes them. Pure-Go run skips Valkey; native runs cover it.",
+    "Three sequential requests establish operation counts, not production latency or capacity.",
+    "Whole-task checks, hosted native CI, review, published dependency qualification, and paired merges remain open."
+  ],
+  "containers": "All three task services stopped after checks."
+}

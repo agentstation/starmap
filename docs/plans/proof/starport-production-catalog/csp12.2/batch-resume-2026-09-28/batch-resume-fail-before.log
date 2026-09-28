@@ -1,0 +1,6 @@
+# github.com/agentstation/starport/internal/jobs_test [github.com/agentstation/starport/internal/jobs.test]
+internal/jobs/batch_resume_test.go:35:79: undefined: jobs.WithBatchRecoveryRunner
+internal/jobs/batch_resume_test.go:37:80: undefined: jobs.WithBatchRecoveryRunner
+internal/jobs/batch_resume_test.go:87:125: undefined: jobs.WithBatchRecoveryRunner
+FAIL	github.com/agentstation/starport/internal/jobs [build failed]
+FAIL

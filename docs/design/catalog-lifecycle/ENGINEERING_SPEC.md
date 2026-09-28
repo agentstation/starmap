@@ -4952,3 +4952,35 @@ Corrections do not extend that horizon. Exact accepted retries remain idempotent
 Unresolved reservations remain until reconciliation and never expire through retention cleanup.
 The [decision record](../../plans/proof/starport-production-catalog/csp12.2/owner-decisions-2026-09-28/DECISIONS.md) owns these policies.
 CSP12.2 implementation and qualification remain required.
+
+
+### Correction horizon implementation: September 28, 2026
+
+Consumer `1fecf04` records original settlement time in budget attempt payload version 4.
+
+The storage authority refuses new corrections after 90 days. Atomic publication checks the deadline.
+Corrections retain the original timestamp. Accepted retries remain idempotent after expiry.
+Unresolved reservations and audit evidence remain persistent.
+
+Jobs without required reservations use the original administrator decision time.
+Inspection reports `correction_horizon_expired` after the deadline. New expired requests return HTTP 409.
+Settlement adds one storage-authority time read. Its latency requires measurement before task completion.
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/correction-horizon-2026-09-28/verification.json) records local checks and remaining qualification.
+
+
+### Batch restart implementation: September 28, 2026
+
+Consumer `501cb0d` stores private recovery authorization in batch payload version 5.
+A bearer caller contributes its hash. A console session contributes a receipt scoped to the account and batch.
+The receipt preserves the original session expiry and signing-key boundary.
+No bearer secret or reusable console cookie enters the batch record.
+
+Recovery validates current permission before claiming untouched lines.
+Every newly claimed line also passes normal authorization and budget admission.
+Completed results survive restart. Uncertain claims never authorize automatic replay.
+A replica that cannot validate a session receipt leaves untouched lines pending.
+Cancellation prevents new claims, while admitted work drains.
+
+The [restart proof](../../plans/proof/starport-production-catalog/csp12.2/batch-resume-2026-09-28/verification.json) records process-loss, native storage, and production checks.
+Its operation profile retains ten admission calls and adds one settlement-time read, for six settlement calls.
+Production latency and capacity remain unqualified.

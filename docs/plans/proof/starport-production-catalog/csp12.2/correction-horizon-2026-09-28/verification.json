@@ -1,0 +1,155 @@
+{
+  "consumer_commit": "1fecf04894ef6a27ffa964083fda78a9472744dc",
+  "producer_commit": "89e818f854a79660c8a3c3bb69945679dddc39bb",
+  "go": "1.27.1",
+  "platform": "darwin/arm64",
+  "runs": {
+    "horizon-reservation.jsonl": {
+      "counts": {
+        "pass": 132,
+        "skip": 48
+      },
+      "failed": [],
+      "skipped": [
+        "TestCorrectionHorizon/valkey",
+        "TestUncertainReservationHasNoCorrectionDeadline/valkey",
+        "TestCorrectionRejectsStalePublication/valkey",
+        "TestCorrectionPublicationCommitsAndRetries/valkey/success",
+        "TestCorrectionPublicationCommitsAndRetries/valkey/before",
+        "TestCorrectionPublicationCommitsAndRetries/valkey/after",
+        "TestCorrectionPublicationRacesLateEvidence/valkey/correction_first",
+        "TestCorrectionPublicationRacesLateEvidence/valkey/late_first",
+        "TestCorrectionPublicationRacesLateEvidence/valkey/late_during_commit",
+        "TestCorrectionPreservesOtherDisputesAndAudit/valkey",
+        "TestCorrectionConcurrentRetriesAndLostAcknowledgement/valkey",
+        "TestCorrectionRefusesUnsafeCapacityRelease/valkey/write-failure",
+        "TestCorrectionRefusesUnsafeCapacityRelease/valkey/overflow",
+        "TestCorrectionRefusesUnsafeCapacityRelease/valkey/new-overflow",
+        "TestCorrectionRefusesUnsafeCapacityRelease/valkey/counter-missing",
+        "TestCorrectionRefusesUnsafeCapacityRelease/valkey/old-window-version",
+        "TestCorrectionRefusesUnsafeCapacityRelease/valkey/unknown-charge",
+        "TestCorrectionRefusesUnsafeCapacityRelease/valkey/unaudited",
+        "TestConcurrentCorrectionsRequireCurrentBinding/valkey",
+        "TestCorrectionConcurrentExactFirstSubmission/valkey",
+        "TestDisputePublicationRejectsStaleJob/valkey",
+        "TestDisputePublicationAtomicWrite/valkey/success",
+        "TestDisputePublicationAtomicWrite/valkey/before",
+        "TestDisputePublicationAtomicWrite/valkey/after",
+        "TestDisputePublicationAtomicWrite/valkey/race",
+        "TestDisputePublicationAtomicWrite/valkey/existing_dispute",
+        "TestDisputePublicationCannotAttachResolvedEvidence/valkey",
+        "TestDisputedChargeBlocksOriginalWindows/valkey",
+        "TestDisputeCountRetainsEveryAttempt/valkey",
+        "TestBudgetHistoryRollover/valkey",
+        "TestBudgetHistoryDoesNotInventZero/valkey",
+        "TestJobBindingIsExclusiveAndSurvivesSettlement/valkey",
+        "TestJobBindingRecoversLostAcknowledgement/valkey",
+        "TestExplicitNoChargeSettlement/valkey",
+        "TestNoChargeRetainedRecovery/valkey",
+        "TestRetainedUsageCannotChangeEvidenceOrRefund/valkey",
+        "TestReservationSnapshotRefreshAfterConflict/valkey",
+        "TestReservationSnapshotRefusesExpiringHistory/valkey",
+        "TestValkeyReservationAcrossProcesses",
+        "TestReservationContract/valkey",
+        "TestRecoveryPreservesUnmeasuredAndCorruptAttempts/valkey",
+        "TestRecoveryConcurrentWorkersSettleOnce/valkey",
+        "TestRecoveryRetriesLostSettlementAcknowledgement/valkey",
+        "TestRecoveryNativePaginationReachesEveryAttempt/valkey",
+        "TestRecoveryRequiresOriginalIndependentApproval",
+        "TestRecoveryHandlesConcurrentSettlementBetweenReads/valkey",
+        "TestTeamBudgetHistoryHandoff/postgres-valkey",
+        "TestHolderCreationAndBudgetHistory/valkey"
+      ]
+    },
+    "horizon-native.jsonl": {
+      "counts": {
+        "pass": 188,
+        "fail": 2,
+        "skip": 1
+      },
+      "failed": [
+        "TestRecoveryPreservesUnmeasuredAndCorruptAttempts/valkey",
+        "TestRecoveryPreservesUnmeasuredAndCorruptAttempts",
+        "github.com/agentstation/starport/internal/limits/reservation"
+      ],
+      "skipped": [
+        "TestTeamBudgetHistoryHandoff/postgres-valkey"
+      ]
+    },
+    "horizon-integration.jsonl": {
+      "counts": {
+        "pass": 56,
+        "skip": 16
+      },
+      "failed": [],
+      "skipped": [
+        "TestAdministratorReconciliationRestartAndIsolation/valkey",
+        "TestJobCorrectionHorizon/valkey",
+        "TestJobCorrectionHistoryAndOrderedReports/valkey",
+        "TestJobCorrectionSupersedesOnlyPendingIntent/valkey",
+        "TestJobCorrectionConcurrentIntentHasOneWinner/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/false/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/true/valkey",
+        "TestJobCorrectionServiceReportingRecovery/valkey",
+        "TestJobCorrectionExpiredReportDoesNotUndoSettlement/valkey",
+        "TestJobCorrectionStaleIntentRetainsNewEvidence/valkey",
+        "TestJobCorrectionIntentRecoversLostAcknowledgement/before/valkey",
+        "TestJobCorrectionIntentRecoversLostAcknowledgement/after/valkey",
+        "TestJobCorrectionMissingHistoryRefusesApplication/valkey",
+        "TestJobCorrectionResolvesUnmeasuredLateEvidence/valkey",
+        "TestJobCorrectionExpiredOriginalStopsReportingRetries/valkey",
+        "TestExplicitReconciliationPreservesAndResolvesCapacity/valkey"
+      ]
+    },
+    "horizon-scan-regression.jsonl": {
+      "counts": {
+        "pass": 3
+      },
+      "failed": [],
+      "skipped": []
+    },
+    "horizon-native-final.jsonl": {
+      "counts": {
+        "pass": 190,
+        "skip": 1
+      },
+      "failed": [],
+      "skipped": [
+        "TestTeamBudgetHistoryHandoff/postgres-valkey"
+      ]
+    },
+    "horizon-native-integration.jsonl": {
+      "counts": {
+        "pass": 72
+      },
+      "failed": [],
+      "skipped": []
+    },
+    "horizon-pure.jsonl": {
+      "counts": {
+        "pass": 9,
+        "skip": 4
+      },
+      "failed": [],
+      "skipped": [
+        "TestCorrectionHorizon/valkey",
+        "TestUncertainReservationHasNoCorrectionDeadline/valkey",
+        "TestCorrectionDeadlineGuardsAtomicWrite/valkey",
+        "TestJobCorrectionHorizon/valkey"
+      ]
+    }
+  },
+  "scope": "local correction-horizon qualification only",
+  "whole_task": "UNVERIFIED",
+  "schema": {
+    "attempt": 4,
+    "correction": 2
+  },
+  "containers": "test Valkey stopped after verification",
+  "limitations": [
+    "PostgreSQL handoff test skipped because TEST_POSTGRES_DSN was not set.",
+    "Pure-Go check skipped Valkey cases. Native checks cover those cases separately.",
+    "Settlement adds one storage-authority time read. Backend cost and latency require remeasurement.",
+    "Automatic batch restart and complete paired qualification remain open."
+  ]
+}
