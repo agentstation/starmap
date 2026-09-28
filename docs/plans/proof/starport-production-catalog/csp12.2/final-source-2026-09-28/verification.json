@@ -1,6 +1,6 @@
 {
   "task": "CSP12.2",
-  "updated_at": "2026-09-28T11:00:37.409656+00:00",
+  "updated_at": "2026-09-28T11:12:41.224480+00:00",
   "producer": "485b54376",
   "consumer": "af12f463ff02322211762c6fd1dc634204c5639a",
   "go": "1.27.1",
@@ -57,7 +57,12 @@
         "leader-directory-loss recovery"
       ]
     },
-    "architecture": "Final rerun active; V01 requires the published Starmap dependency."
+    "architecture": {
+      "passed": 11,
+      "failed": 1,
+      "full_go_suite": "PASS",
+      "failure": "V01 requires the published Starmap module. Current qualification uses the local paired workspace."
+    }
   },
   "failures_preserved": [
     "Launcher valkey:// URL did not meet the fixture redis:// contract.",
@@ -195,6 +200,101 @@
     {
       "file": "csp122-lint-native-adoption-isolation-peer.stderr.gz",
       "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "csp122-architecture-final.log.gz",
+      "sha256": "9030a15f47fb05ebd8952eb512b5b092ca8417314261908e63f242ac78caa634"
+    },
+    {
+      "file": "csp122-consumer-review-preflight.log.gz",
+      "sha256": "3f4406cca8e25a8dd21bf5518d3bb222be73f127f3fe01b30b246fc95b54ce23"
+    },
+    {
+      "file": "csp122-producer-review-preflight.log.gz",
+      "sha256": "bd4604b5a467e3b39df39359470642135bad73708b39b33c90689e8d43d89ee9"
     }
-  ]
+  ],
+  "review_preflight": {
+    "status": "FAILED",
+    "command": "autoreview --gate pre-pr --mode auto --base origin/main --max-passes 32 --dry-run",
+    "reason": "The helper refuses binary changes in internal/embedded/catalog/generation-payload.json.gz.",
+    "reviewer": "claude-opus-5-5 high",
+    "secret_scan": "PASS",
+    "owner_question": "Authorize narrowly scoped JSON-gzip input support in the shared autoreview tool, with bounded decompression, readable JSON diffs, and tests.",
+    "owner_answer": "pending",
+    "note": "No reviewer call occurred; this is not a review pass."
+  },
+  "consumer_review_preflight": {
+    "status": "PASS",
+    "reviewer": "claude-opus-5-5 high",
+    "bundle": "constructible",
+    "inputs": "PASS",
+    "prompt": "PASS",
+    "secret_scan": "PASS",
+    "engine": "PASS",
+    "note": "Dry run only. No model review or final approval.",
+    "worktree": "/private/tmp/starport-clock-review-20260926",
+    "head": "af12f463ff02322211762c6fd1dc634204c5639a"
+  },
+  "active_task_gate": {
+    "status": "RUNNING",
+    "completed_invocations": [
+      {
+        "file": "go-run-6g60ct4j.json",
+        "exit_code": 0,
+        "elapsed_seconds": 50.50037062499905,
+        "named_tests": 1
+      },
+      {
+        "file": "go-run-cd6jyhpt.json",
+        "exit_code": 0,
+        "elapsed_seconds": 37.89927412499674,
+        "named_tests": 1
+      },
+      {
+        "file": "go-run-5ajjhoun.json",
+        "exit_code": 0,
+        "elapsed_seconds": 15.237222958996426,
+        "named_tests": 5
+      },
+      {
+        "file": "go-run-ivx8ogk1.json",
+        "exit_code": 0,
+        "elapsed_seconds": 6.057425707986113,
+        "named_tests": 23
+      },
+      {
+        "file": "go-run-tcw8ddx8.json",
+        "exit_code": 0,
+        "elapsed_seconds": 16.943118583003525,
+        "named_tests": 7
+      },
+      {
+        "file": "go-run-rhtiveqc.json",
+        "exit_code": 0,
+        "elapsed_seconds": 308.00348291697446,
+        "named_tests": 1
+      },
+      {
+        "file": "go-run-dh930th8.json",
+        "exit_code": 0,
+        "elapsed_seconds": 57.28378075000364,
+        "named_tests": 1
+      },
+      {
+        "file": "go-run-g98l31x_.json",
+        "exit_code": 0,
+        "elapsed_seconds": 258.19038849999197,
+        "named_tests": 28
+      }
+    ],
+    "named_test_statuses": {
+      "PASS": 67
+    },
+    "session": 65729,
+    "source": {
+      "producer": "485b54376",
+      "consumer": "af12f46"
+    }
+  }
 }
