@@ -21,6 +21,6 @@ CSP16 depends on CSP13, and the remaining implementation and release tasks depen
 No independent unfinished task meets its recorded prerequisites.
 The existing CSP12.2 tests and measurements remain historical evidence for their recorded source.
 
-Both questions remain pending. The first impasse observation leaves the whole goal active.
+Both questions remain pending. The third unchanged observation sets the autonomous goal to `blocked`.
 After the owner answers, resume CSP12.2 in the recorded worktrees and complete its checks, review, dependency qualification, and paired merges.
 No new product test, remote write, service start, or code change occurred during this audit.
