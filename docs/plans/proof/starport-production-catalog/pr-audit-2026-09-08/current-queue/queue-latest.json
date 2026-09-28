@@ -1256,5 +1256,12 @@
         "next_action": "Collect current native CI, verify exact consumer head and review threads, merge PR #387, record merge commit, and close CSP12.2."
       }
     ]
+  },
+  "dependency_queue": {
+    "checked_at": "2026-09-28T15:11:06.371426+00:00",
+    "proof": "dependency-queue-2026-09-28.json",
+    "owner": "Repository dependency maintenance",
+    "open_count": 8,
+    "next_action": "Review after active CSP12.2 exact-head qualification and merge. Preserve current implementation base during its CI."
   }
 }
