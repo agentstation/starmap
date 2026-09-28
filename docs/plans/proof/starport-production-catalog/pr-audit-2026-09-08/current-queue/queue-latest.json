@@ -1056,21 +1056,24 @@
   },
   "budget_preparation": {
     "owner": "CSP12.2",
-    "status": "blocked(review-tool-input)",
+    "status": "in_progress",
     "commit": "af12f463ff02322211762c6fd1dc634204c5639a",
     "published": false,
     "proof": "../../csp12.2/retention-acceptance-2026-09-28/verification.json",
     "native_ci": "UNVERIFIED",
-    "required_review": "Producer preflight rejects generated gzip; owner permission for shared-tool support is pending. Consumer preflight passes. Neither has a final model review.",
+    "required_review": {
+      "producer": "PASS: three parts, zero findings; decoded catalog secret scan passes",
+      "consumer": "pending published producer pin"
+    },
     "remaining_dirty_files": {
       "docs/ARCHITECTURE.md": "CSP18 preparation",
       "internal/cache/README.md": "CSP18 preparation"
     },
     "processes": [
       {
-        "session": 92670,
-        "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 bash scripts/verify.sh all",
-        "log": "/tmp/csp122-producer-final-refactor.log"
+        "session": 7966,
+        "role": "producer native CI watch",
+        "log": "/tmp/csp122-producer-ci-watch.log"
       }
     ],
     "producer_companion": {
@@ -1084,7 +1087,14 @@
     "known_failures": [
       "Global live-provider and fixture-drift gates fail for missing acquisition credentials and stale fixtures outside DeepInfra. DeepInfra passes."
     ],
-    "publication": "Not ready. Whole-task qualification, final checks, exact published dependency, review, native CI, and paired merges remain required.",
+    "publication": {
+      "producer_pr": 187,
+      "producer_url": "https://github.com/agentstation/starmap/pull/187",
+      "producer_head": "485b543761c7ef4ee89edbd788ef50dfd5386312",
+      "producer_ci_run": 36425546855,
+      "consumer": "unpublished",
+      "owner": "current task"
+    },
     "qualification_limits": "Local primary-backend qualification uses an unpublished producer through GOWORK. V01 remains unverified until the exact published module pin is qualified. Native CI and paired merges remain required.",
     "candidate_workspace": "/tmp/csp122-billing.work",
     "billing_proof": "../../csp12.2/text-billing-2026-09-27/verification.json",
@@ -1098,7 +1108,7 @@
     "rerank_proof": "../../csp12.2/rerank-billing-2026-09-27/verification.json",
     "speech_proof": "../../csp12.2/speech-billing-2026-09-27/verification.json",
     "image_billing_proof": "../../csp12.2/image-billing-2026-09-27/verification.json",
-    "next_action": "Await the shared review-tool decision. Then collect the live verification result, complete required review, and publish the producer PR before the consumer PR.",
+    "next_action": "Qualify and merge producer PR #187, then pin its published commit in Starport and complete consumer review and CI.",
     "local_test_service": {
       "containers": [
         "starport-csp122-async-usage",
@@ -1173,9 +1183,13 @@
       "head": "af12f463ff02322211762c6fd1dc634204c5639a"
     },
     "evidence_retention": {
-      "session": 93055,
-      "directory": "/tmp/csp122-producer-final-events",
-      "purpose": "Copy completed native event files before verification cleanup."
+      "status": "completed",
+      "proof": "docs/plans/proof/starport-production-catalog/csp12.2/final-source-2026-09-28/producer-repository/summary.json",
+      "counts": {
+        "pass": 7739,
+        "fail": 0,
+        "skip": 24
+      }
     },
     "blocked_audit": {
       "consecutive_goal_turns": 4,
@@ -1196,8 +1210,10 @@
         "purpose": "Preserve completed event files before the verification script cleans its temporary directory."
       },
       "why_not_complete": "Required review, broader producer verification, native CI, exact published dependency, and paired merges remain open.",
-      "why_blocked": "The pending owner decision prevents the required review and publication. The blocker is not test duration."
-    }
+      "why_blocked": "The pending owner decision prevents the required review and publication. The blocker is not test duration.",
+      "resolved_by": "Owner approved shared-tool support; producer review passed and PR #187 is open."
+    },
+    "review_tool_proof": "docs/plans/proof/starport-production-catalog/csp12.2/final-source-2026-09-28/review-tool/verification.json"
   },
   "remote_state_note": "The open-PR lists for both repositories returned zero entries on September 28. Historical merged PR records remain below.",
   "open_queue_snapshot": {

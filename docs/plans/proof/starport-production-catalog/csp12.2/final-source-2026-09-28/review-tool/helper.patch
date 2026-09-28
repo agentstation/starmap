@@ -1,0 +1,296 @@
+--- scripts/autoreview.before
++++ scripts/autoreview
+@@ -30,6 +30,7 @@
+ import tomllib
+ import unicodedata
+ import urllib.parse
++import zlib
+ from pathlib import Path, PurePosixPath
+ from typing import Any, Callable, NamedTuple
+ 
+@@ -2516,6 +2517,8 @@
+ 
+ def write_snapshot_blob(root: Path, rel: str, content: bytes) -> None:
+     destination = snapshot_destination(root, rel)
++    if rel.endswith(".json.gz"):
++        content = decode_review_json_gzip(content).encode("utf-8")
+     try:
+         destination.parent.mkdir(parents=True, exist_ok=True)
+         destination.write_bytes(content)
+@@ -2551,12 +2554,7 @@
+         if mode == b"160000":
+             continue
+         rel = raw_path.decode(SUBPROCESS_TEXT_ENCODING, errors="strict")
+-        content = git_bytes(
+-            repo,
+-            "cat-file",
+-            "blob",
+-            object_id.decode("ascii"),
+-        ).stdout
++        content = review_blob_bytes(repo, object_id.decode("ascii"), rel)
+         write_snapshot_blob(root, rel, content)
+         count += 1
+     return count
+@@ -2588,12 +2586,7 @@
+         if object_type != b"blob" or mode == b"160000":
+             continue
+         rel = raw_path.decode(SUBPROCESS_TEXT_ENCODING, errors="strict")
+-        content = git_bytes(
+-            repo,
+-            "cat-file",
+-            "blob",
+-            object_id.decode("ascii"),
+-        ).stdout
++        content = review_blob_bytes(repo, object_id.decode("ascii"), rel)
+         write_snapshot_blob(root, rel, content)
+         count += 1
+     return count
+@@ -3000,6 +2993,7 @@
+             repo,
+             "diff",
+             *SAFE_DIFF_FLAGS,
++            "--no-renames",
+             "--name-only",
+             "--cached",
+             "-z",
+@@ -3008,6 +3002,7 @@
+             repo,
+             "diff",
+             *SAFE_DIFF_FLAGS,
++            "--no-renames",
+             "--name-only",
+             "-z",
+         )
+@@ -3050,6 +3045,7 @@
+             repo,
+             "diff",
+             *SAFE_DIFF_FLAGS,
++            "--no-renames",
+             "--name-only",
+             "-z",
+             "--end-of-options",
+@@ -3070,6 +3066,7 @@
+             repo,
+             "show",
+             *SAFE_DIFF_FLAGS,
++            "--no-renames",
+             "--name-only",
+             "--format=",
+             "-z",
+@@ -9074,14 +9071,167 @@
+     return patch
+ 
+ 
+-def require_no_binary_diff(label: str, numstat: str) -> None:
++# Limits apply before allocation of the decoded catalog or formatted review text.
++MAX_JSON_GZIP_BYTES = 8 * 1024 * 1024
++MAX_JSON_DECODED_BYTES = 32 * 1024 * 1024
++MAX_JSON_RENDERED_BYTES = 64 * 1024 * 1024
++MAX_JSON_GZIP_FILES = 16
++
++
++def decode_review_json_gzip(content: bytes) -> str:
++    if len(content) > MAX_JSON_GZIP_BYTES:
++        raise SystemExit("JSON-gzip compressed input exceeds the review limit")
++    try:
++        # Optional headers can carry unreviewed strings. Accept one member with
++        # the fixed header only; do not discard comments or concatenated members.
++        if len(content) < 18 or content[:4] != b"\x1f\x8b\x08\x00":
++            raise ValueError("unsupported gzip header")
++        decoder = zlib.decompressobj(wbits=31)
++        decoded = decoder.decompress(content, MAX_JSON_DECODED_BYTES + 1)
++        if len(decoded) > MAX_JSON_DECODED_BYTES:
++            raise SystemExit("JSON-gzip decoded input exceeds the review limit")
++        if not decoder.eof or decoder.unused_data or decoder.unconsumed_tail:
++            raise ValueError("incomplete or concatenated gzip member")
++        text = decoded.decode("utf-8")
++        # Validate without changing number precision or spelling.
++        def reject_constant(_value: str) -> None:
++            raise ValueError("non-JSON constant")
++        json.loads(text, parse_int=str, parse_float=str, parse_constant=reject_constant)
++    except (OSError, EOFError, UnicodeError, ValueError, RecursionError, zlib.error):
++        raise SystemExit("invalid gzip or UTF-8 JSON in review input") from None
++
++    # Insert layout only outside strings. Preserve duplicate keys, number tokens,
++    # string escapes, and key order so normalization cannot hide a content change.
++    output = io.StringIO()
++    depth = 0
++    quoted = False
++    escaped = False
++    for char in text:
++        if quoted:
++            output.write(char)
++            if escaped:
++                escaped = False
++            elif char == "\\":
++                escaped = True
++            elif char == '"':
++                quoted = False
++        elif char == '"':
++            quoted = True
++            output.write(char)
++        elif char in "[{":
++            depth += 1
++            if depth > 64:
++                raise SystemExit("JSON-gzip nesting exceeds the review limit")
++            output.write(char + "\n" + "  " * depth)
++        elif char in "]}":
++            depth -= 1
++            output.write("\n" + "  " * depth + char)
++        elif char == ",":
++            output.write(",\n" + "  " * depth)
++        elif char == ":":
++            output.write(": ")
++        elif char not in " \t\r\n":
++            output.write(char)
++        if output.tell() > MAX_JSON_RENDERED_BYTES:
++            raise SystemExit("JSON-gzip rendered input exceeds the review limit")
++    rendered = output.getvalue() + "\n"
++    if len(rendered.encode("utf-8")) > MAX_JSON_RENDERED_BYTES:
++        raise SystemExit("JSON-gzip rendered input exceeds the review limit")
++    return rendered
++
++
++def review_blob_bytes(repo: Path, object_id: str, rel: str) -> bytes:
++    if rel.endswith(".json.gz"):
++        size = int(git(repo, "cat-file", "-s", object_id))
++        if size > MAX_JSON_GZIP_BYTES:
++            raise SystemExit("JSON-gzip compressed input exceeds the review limit")
++    return git_bytes(repo, "cat-file", "blob", object_id).stdout
++
++
++def expand_json_gzip_diff(
++    repo: Path, label: str, patch: str, raw_diff: str, numstat: str,
++) -> str:
++    """Expand committed JSON-gzip blobs; retain Git's original change metadata."""
++    records = iter(raw_diff.split("\0"))
++    changes = []
++    for record in records:
++        if not record:
++            continue
++        fields = record.split()
++        if len(fields) != 5 or not fields[0].startswith(":"):
++            raise SystemExit("invalid raw diff for JSON-gzip review")
++        old_mode, new_mode, old_oid, new_oid, status = fields
++        old_path = next(records, "")
++        new_path = next(records, "") if status[0] in "RC" else old_path
++        changes.append((old_mode[1:], new_mode, old_oid, new_oid, old_path, new_path))
++    eligible = [c for c in changes if c[4].endswith(".json.gz") or c[5].endswith(".json.gz")]
++    if not eligible:
++        require_no_binary_diff(label, numstat)
++        return patch
++    if len(eligible) > MAX_JSON_GZIP_FILES:
++        raise SystemExit("too many JSON-gzip files in one review target")
++    # Renames across formats are not silently reinterpreted as JSON-gzip.
++    allowed = set()
++    for old_mode, new_mode, _old_oid, _new_oid, old_path, new_path in eligible:
++        if not old_path.endswith(".json.gz") or not new_path.endswith(".json.gz"):
++            raise SystemExit("JSON-gzip review refuses renames across file formats")
++        if old_mode not in {"000000", "100644", "100755"} or new_mode not in {"000000", "100644", "100755"}:
++            raise SystemExit("JSON-gzip review requires regular files")
++        allowed.update((old_path, new_path))
++    require_no_binary_diff(label, numstat, allowed_paths=allowed)
++    units = review_bundle_units(patch)
++    indexes = [i for i, unit in enumerate(units) if unit.startswith("diff --git ")]
++    if len(indexes) != len(changes):
++        raise SystemExit("JSON-gzip review cannot match raw changes to patch sections")
++    for index, change in zip(indexes, changes):
++        if change not in eligible:
++            continue
++        old_mode, new_mode, old_oid, new_oid, old_path, new_path = change
++        old = decode_review_json_gzip(review_blob_bytes(repo, old_oid, old_path)) if old_mode != "000000" else ""
++        new = decode_review_json_gzip(review_blob_bytes(repo, new_oid, new_path)) if new_mode != "000000" else ""
++        with tempfile.TemporaryDirectory(prefix="autoreview-json-gzip.", dir=safe_temp_root(repo)) as tempdir:
++            root = Path(tempdir)
++            (root / "old").write_text(old, encoding="utf-8")
++            (root / "new").write_text(new, encoding="utf-8")
++            result = git_result(root, "diff", "--no-index", "--text", "--no-ext-diff", "--no-textconv", "--no-color", "--unified=3", "--", "old", "new", check=False)
++            if result.returncode not in {0, 1}:
++                raise SystemExit("unable to diff decoded JSON-gzip review input")
++        header = []
++        for line in literal_lf_lines(units[index]):
++            if line.startswith(("Binary files ", "GIT binary patch", "--- ", "@@")):
++                break
++            header.append(line)
++        header.append("JSON-gzip: decoded UTF-8 JSON; hunk lines refer to formatted content\n")
++        header.append(f"compressed objects: {old_oid} -> {new_oid}\n")
++        if old == new:
++            header.append("Decoded JSON unchanged; compressed representation or file metadata changed.\n")
++        else:
++            old_label = json.dumps("a/" + old_path, ensure_ascii=True) if old else "/dev/null"
++            new_label = json.dumps("b/" + new_path, ensure_ascii=True) if new else "/dev/null"
++            header.extend((f"--- {old_label}\n", f"+++ {new_label}\n"))
++            hunks = result.stdout.find("\n@@")
++            if hunks < 0:
++                raise SystemExit("decoded JSON-gzip change has no review hunks")
++            header.append(result.stdout[hunks + 1:])
++        units[index] = "".join(header)
++        old_changed, new_changed = unified_diff_contents(units[index])
++        require_no_secret_values("decoded JSON-gzip changes", old_changed)
++        require_no_secret_values("decoded JSON-gzip changes", new_changed)
++    return "".join(units)
++
++
++def require_no_binary_diff(label: str, numstat: str, *, allowed_paths: set[str] | None = None) -> None:
+     binary_paths: list[str] = []
+-    for record in numstat.split("\0"):
++    records = iter(numstat.split("\0"))
++    for record in records:
+         if not record:
+             continue
+         fields = record.split("\t", 2)
+-        if len(fields) == 3 and fields[0] == "-" and fields[1] == "-":
+-            binary_paths.append(fields[2])
++        if len(fields) != 3:
++            raise SystemExit("invalid numstat for binary review guard")
++        paths = [fields[2]] if fields[2] else [next(records, ""), next(records, "")]
++        if fields[:2] == ["-", "-"]:
++            binary_paths.extend(path for path in paths if path not in (allowed_paths or set()))
+     if binary_paths:
+         details = "\n".join(
+             f"- {display_escape(path, 500)}"
+@@ -9593,17 +9743,10 @@
+         "--end-of-options",
+         diff_range,
+     )
+-    require_no_binary_diff(
+-        "branch diff",
+-        git(
+-            repo,
+-            "diff",
+-            *SAFE_DIFF_FLAGS,
+-            "--numstat",
+-            "-z",
+-            "--end-of-options",
+-            diff_range,
+-        ),
++    branch_patch = expand_json_gzip_diff(
++        repo, "branch diff", branch_patch,
++        git(repo, "diff", *SAFE_DIFF_FLAGS, "--raw", "--no-abbrev", "-z", "--end-of-options", diff_range),
++        git(repo, "diff", *SAFE_DIFF_FLAGS, "--numstat", "-z", "--end-of-options", diff_range),
+     )
+     require_no_gitlink_diff(
+         "branch diff",
+@@ -9689,18 +9832,10 @@
+         "--end-of-options",
+         commit_ref,
+     )
+-    require_no_binary_diff(
+-        "commit diff",
+-        git(
+-            repo,
+-            "show",
+-            *SAFE_DIFF_FLAGS,
+-            "--numstat",
+-            "--format=",
+-            "-z",
+-            "--end-of-options",
+-            commit_ref,
+-        ),
++    commit_patch = expand_json_gzip_diff(
++        repo, "commit diff", commit_patch,
++        git(repo, "show", *SAFE_DIFF_FLAGS, "--raw", "--no-abbrev", "-z", "--format=", "--end-of-options", commit_ref),
++        git(repo, "show", *SAFE_DIFF_FLAGS, "--numstat", "-z", "--format=", "--end-of-options", commit_ref),
+     )
+     require_no_gitlink_diff(
+         "commit diff",

@@ -1,0 +1,58 @@
+{
+  "approval": "Owner approved bounded JSON-gzip review support through the question tool.",
+  "helper_sha256": "ca72abe7187e08ce7dc415bdc3dd8e1b3be44b8d11a62866fd5f668a531752e9",
+  "before_sha256": "3696bca72b26d7fe496a341f72208bea1367a5c9c620799ccc03fc24b8b4fc7d",
+  "scope": "Committed branch and commit reviews. Local and unsupported binary reviews retain their previous refusal.",
+  "bounds": {
+    "compressed_bytes": 8388608,
+    "decoded_bytes": 33554432,
+    "rendered_bytes": 67108864,
+    "nesting_depth": 64,
+    "files_per_target": 16
+  },
+  "behavior": [
+    "Retain compressed Git object IDs, file modes, rename metadata, JSON tokens, duplicate keys, and numeric precision.",
+    "Reject malformed JSON/gzip, optional gzip headers, concatenated members, cross-format renames, and non-regular files.",
+    "Scan decoded additions and deletions through deterministic checks and the existing TruffleHog preflight.",
+    "Keep all existing prompt byte limits and complete-input requirements."
+  ],
+  "tests": {
+    "targeted": {
+      "pass": 20,
+      "fail": 0
+    },
+    "helper": {
+      "pass": 50,
+      "fail": 0
+    },
+    "python_suite_before_last_two_cases": {
+      "pass": 374,
+      "skip": 3,
+      "fail": 0
+    },
+    "self_tests": "PASS",
+    "skill_validator": {
+      "pass": 39
+    },
+    "prose": "PASS",
+    "python_suite_final": {
+      "pass": 376,
+      "fail": 0,
+      "skip": 3,
+      "seconds": 76.06
+    }
+  },
+  "review": {
+    "producer_session": 29851,
+    "status": "PASS",
+    "head": "485b543761c7ef4ee89edbd788ef50dfd5386312",
+    "log": "/tmp/csp122-producer-final-review.log",
+    "exit_code": 0,
+    "passes": 3,
+    "bundle_bytes": 611396,
+    "findings": 0,
+    "secret_scan": "PASS",
+    "reviewer": "claude-opus-5-5 high",
+    "pr": "https://github.com/agentstation/starmap/pull/187"
+  }
+}

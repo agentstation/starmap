@@ -1,9 +1,10 @@
 {
-  "original_sha256": "015fec0b9cf08388467e7f8607451a7983a1b33624048ae7b2b6a7f8a21faacb",
-  "moved_rows": 1,
-  "remaining_execution_rows": 10,
-  "task_rows": 40,
-  "done_rows": 26,
-  "links": 145,
-  "missing_links": []
+  "status": "pass",
+  "anchors": 97,
+  "links": 146,
+  "ledger_rows": 40,
+  "done": 26,
+  "in_progress": "CSP12.2",
+  "resume_words": 360,
+  "context_note": "The plan retains all forty task contracts. Resume reads current state, the active contract, and current linked evidence. Historical logs remain reference material."
 }

@@ -1,0 +1,103 @@
+{
+  "status": "PASS",
+  "exit_code": 0,
+  "source": "485b543761c7ef4ee89edbd788ef50dfd5386312",
+  "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 STARMAP_VERIFY_EVENTS_DIR=/tmp/csp122-producer-final-events bash scripts/verify.sh all",
+  "counts": {
+    "pass": 7739,
+    "skip": 24
+  },
+  "groups": [
+    {
+      "file": "go-check-events.jsonl.gz",
+      "counts": {
+        "pass": 56
+      },
+      "skipped": []
+    },
+    {
+      "file": "starmap-tests-jhbomtag.jsonl.gz",
+      "counts": {
+        "pass": 454,
+        "skip": 1
+      },
+      "skipped": [
+        "github.com/agentstation/starmap/runtime/TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
+      ]
+    },
+    {
+      "file": "starmap-tests-_sdw1yts.jsonl.gz",
+      "counts": {
+        "pass": 1
+      },
+      "skipped": []
+    },
+    {
+      "file": "starmap-tests-9onuao7z.jsonl.gz",
+      "counts": {
+        "pass": 887
+      },
+      "skipped": []
+    },
+    {
+      "file": "starmap-tests-xaz9hz9w.jsonl.gz",
+      "counts": {
+        "pass": 532
+      },
+      "skipped": []
+    },
+    {
+      "file": "starmap-tests-tyk235_i.jsonl.gz",
+      "counts": {
+        "pass": 443
+      },
+      "skipped": []
+    },
+    {
+      "file": "starmap-tests-tqut1njo.jsonl.gz",
+      "counts": {
+        "pass": 358,
+        "skip": 2
+      },
+      "skipped": [
+        "github.com/agentstation/starmap/runtime/TestPublicChannelUpgradeRetainsAcceptedCatalogBeforeRefresh",
+        "github.com/agentstation/starmap/runtime/TestPublicCatalogActivatesWithoutProviderCredentials"
+      ]
+    },
+    {
+      "file": "starmap-tests-78u9euvg.jsonl.gz",
+      "counts": {
+        "pass": 5008,
+        "skip": 21
+      },
+      "skipped": [
+        "github.com/agentstation/starmap/internal/providers/anthropic/TestRefreshAnthropicProviderFixture",
+        "github.com/agentstation/starmap/internal/providers/anthropic/TestAnthropicProviderFixtureCurrency",
+        "github.com/agentstation/starmap/internal/providers/openai/TestClientErrors/missing_provider_configuration",
+        "github.com/agentstation/starmap/internal/providers/openai/TestRefreshOpenAICompatibleProviderFixture",
+        "github.com/agentstation/starmap/internal/providers/openai/TestOpenAICompatibleProviderFixtureCurrency",
+        "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/TestWindowsMonitorFactoryRequiresSourceBounds",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinationBackendConditionalRecords",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinationBackendConcurrentCAS",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinationBackendRefusesInvalidAndExpiredRecords/type",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinationBackendRefusesInvalidAndExpiredRecords/shape",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinationBackendRefusesInvalidAndExpiredRecords/version",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinationBackendRefusesInvalidAndExpiredRecords/schema",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinationBackendRefusesInvalidAndExpiredRecords/size",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinationBackendRefusesInvalidAndExpiredRecords/expiration",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinationBackendRefusesCancellationAndUnconditionalWrites",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinationBackendRefusesReplicaReadsAndWrites",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinationBackendConfigurationIsInert",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinationBackendRetainsStateAcrossServerRestart",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinatedCatalogSurvivesProcessAndServiceRestart",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinatedCatalogProcess",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey/TestCoordinatedCatalogUsesNativeObjectAndCoordinationServices"
+      ]
+    }
+  ],
+  "sessions": {
+    "92670": "completed",
+    "93055": "completed"
+  },
+  "limitation": "Optional skips are not qualified by this run."
+}
