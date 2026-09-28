@@ -1,0 +1,207 @@
+{
+  "task": "CSP13",
+  "status": "in_progress",
+  "source_commit": "339883cfae31db9807b1ce773d56c8d2b718f47c",
+  "go": "1.27.1",
+  "host": "darwin/arm64",
+  "results": {
+    "qualified-race.jsonl": {
+      "pass": 47,
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed": 1.675
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/blob",
+          "result": "pass",
+          "elapsed": 1.621
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/files",
+          "result": "pass",
+          "elapsed": 1.9809999999999999
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 3.61
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/credentials",
+          "result": "pass",
+          "elapsed": 5.376
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 12.078
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 9.518
+        }
+      ]
+    },
+    "qualified-purego.jsonl": {
+      "pass": 47,
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed": 0.72
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/blob",
+          "result": "pass",
+          "elapsed": 0.463
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/files",
+          "result": "pass",
+          "elapsed": 0.815
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 1.032
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 4.445
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/credentials",
+          "result": "pass",
+          "elapsed": 2.497
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 4.618
+        }
+      ]
+    },
+    "recovery-native-race.jsonl": {
+      "pass": 939,
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/credentials",
+          "result": "pass",
+          "elapsed": 10.279
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/blob",
+          "result": "pass",
+          "elapsed": 19.524
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed": 59.056
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 66.106
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/files",
+          "result": "pass",
+          "elapsed": 132.209
+        }
+      ]
+    },
+    "focused-race.jsonl": {
+      "pass": 58,
+      "skip": 2,
+      "nonpassing_tests": [
+        "TestRecoveryReachesBeyondFirstThousandRecords/valkey",
+        "TestRecoverySkipsCorruptionAndReleasesUnreadFinishedBatches/valkey"
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/blob",
+          "result": "pass",
+          "elapsed": 2.359
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed": 2.993
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/files",
+          "result": "pass",
+          "elapsed": 3.186
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/credentials",
+          "result": "pass",
+          "elapsed": 3.474
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 8.7
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 2.9539999999999997
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 6.413
+        }
+      ]
+    }
+  },
+  "commands": [
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race ./internal/recovery ./internal/jobs ./internal/app ./internal/cli ./internal/blob ./internal/files ./internal/credentials -run '^TestBundleReferences|^TestKVSnapshotView|^TestRecoveryNativeReceipt|^TestRecoveryBatchKeeps|^TestRecoveryFileReferences|^TestRecoveryCredentials|^TestSnapshotView|^TestBackupApplication|^TestBackupCommand' -json -count=1 -timeout=3m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 go test ./internal/recovery ./internal/jobs ./internal/app ./internal/cli ./internal/blob ./internal/files ./internal/credentials -run '^TestBundleReferences|^TestKVSnapshotView|^TestRecoveryNativeReceipt|^TestRecoveryBatchKeeps|^TestRecoveryFileReferences|^TestRecoveryCredentials|^TestSnapshotView|^TestBackupApplication|^TestBackupCommand' -json -count=1 -timeout=3m",
+    "python3 /tmp/csp13-bundle-shared-env.py /tmp/csp13-reference-recovery-native-race.jsonl go test -race ./internal/recovery ./internal/jobs ./internal/files ./internal/blob ./internal/credentials -json -count=1 -timeout=5m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 make lint",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./internal/app ./internal/cli ./internal/credentials ./internal/blob ./internal/files ./internal/jobs ./internal/recovery",
+    "bash scripts/verify-dependency-direction.sh",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go test -c ./internal/app -o /tmp/csp13-reference-windows.test.exe",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go test -c ./internal/app -o /tmp/csp13-reference-linux.test"
+  ],
+  "checks": {
+    "lint": "PASS; zero issues",
+    "vet": "PASS; seven affected packages",
+    "dependency_direction": "PASS; six conditions",
+    "writing": "PASS; recovery README",
+    "cross_compile": "PASS linux/amd64 and windows/amd64; not native execution"
+  },
+  "fail_before": "TestBundleReferencesRequireMoreThanArtifactDigestsAndKeyChallenge proves VerifyBundle accepts intact bundles with the wrong historical credential key or missing referenced bytes; InspectBundleReferences rejects those bundles.",
+  "retained_failures": [
+    "Initial lint reported a De Morgan simplification; source corrected without suppression",
+    "Initial broader focused run skipped two optional Valkey cases; final full native-storage run passes without skips",
+    "First shared runner failed before test launch because Docker startup had not completed; waited for completion and retried"
+  ],
+  "contracts": [
+    "Every stored provider credential is decrypted, including shared entries without grants",
+    "Verified private KV and blob views expose no mutation or provider acquisition",
+    "Ready unexpired file and job references require matching retained bytes",
+    "Native receipts preserve uncertain submissions without dispatch",
+    "A missing batch execution claim fails validation; deleted batch files remain diagnostic references",
+    "An interrupted result-digest bind with pending output remains valid; it cannot satisfy a confirmed result"
+  ],
+  "limitations": [
+    "Fifteen CSP13 acceptance subcases remain UNVERIFIED; no new subcase is complete",
+    "SQL identity and budget references, independent post-backup history, restore and activation remain open",
+    "Historical-key mismatch refuses verification; this change does not add multi-key credential migration",
+    "Native Linux and Windows execution, required pre-PR review, CI and merge remain open",
+    "A verified bundle does not establish permission or authorize retries",
+    "External writer fencing remains an operator procedure"
+  ],
+  "fixtures": "Task-owned PostgreSQL, Valkey and MinIO stopped after checks; volumes preserved"
+}

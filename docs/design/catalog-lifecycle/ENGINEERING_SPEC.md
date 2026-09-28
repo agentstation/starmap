@@ -5070,3 +5070,22 @@ Native Windows execution remains UNVERIFIED despite successful cross-compilation
 
 The [proof](../../plans/proof/starport-production-catalog/csp13/inventory-capture-2026-09-28/verification.json) records 50 race passes and 50 pure-Go passes without skips.
 Reference checks, historical credential validation, independent later history, restore commands, native CI, review, and merge remain CSP13 requirements.
+
+
+### Backup reference validation: September 28, 2026
+
+Consumer `339883cfa` adds owner-specific backup checks.
+
+Backup verification now decrypts every retained provider credential through its owner.
+File and job owners check published bytes, lengths, digests, and native response receipts.
+Batch validation requires every retained execution claim and its parent.
+Missing execution claims cause refusal. Deleted batch files remain explicit reconciliation evidence.
+An interrupted result digest with pending output remains valid until its ready transition.
+
+Verification uses private immutable copies and streams payload checks.
+The CLI reports unfinished lines, unconfirmed submissions, and missing file references.
+It never contacts a provider, opens a live store, approves admission, or authorizes a retry.
+SQL identity and budget references, independent later history, and restore activation remain required.
+
+The [reference proof](../../plans/proof/starport-production-catalog/csp13/reference-validation-2026-09-28/verification.json) records 47 focused race passes, 47 pure-Go passes, and 939 full owner-suite race passes.
+All three cohorts have no failures or skips.

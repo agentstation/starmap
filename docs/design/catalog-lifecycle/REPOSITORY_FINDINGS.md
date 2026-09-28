@@ -4711,3 +4711,19 @@ Cross-compilation passes, but native Windows capture remains UNVERIFIED.
 Capture does not establish independent recovery history or validate every historical encrypted credential.
 The SQL close command does not stop processes. Operators must separately stop and fence writers.
 Reference validation, full restore, required review, native CI, and merge remain open.
+
+
+### Backup reference validation: September 28, 2026
+
+Consumer `339883cfa` adds owner-specific backup checks.
+Artifact digests and a selected-key challenge do not prove usable application state.
+A regression fixture captures intact bundles with missing file bytes or a credential encrypted under another key.
+The byte-only verifier accepts those bundles. The reference verifier refuses them.
+
+Batch results can retain a digest before their output file commits.
+Validation preserves that interrupted state. Missing execution claims cause refusal.
+The full owner suites pass without optional storage skips.
+SQL references, independent later history, full restore, native qualification, review, and merge remain open.
+
+The [reference proof](../../plans/proof/starport-production-catalog/csp13/reference-validation-2026-09-28/verification.json) records 47 focused race passes, 47 pure-Go passes, and 939 full owner-suite race passes.
+All three cohorts have no failures or skips.
