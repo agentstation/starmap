@@ -1,0 +1,15 @@
+{
+  "consumer_commit": "bf8fa420280c0b3bc00c121d4a86ac0cd4ef26e7",
+  "producer_commit": "530d91513c95e4915d9fd3ab366a2b20506a219a",
+  "consumer_files": {
+    "internal/app/performance_test.go": "a78b16f3d6549083393cb2cd2f5276564aa19d1ac93c58faf1b37b4a087d30b0",
+    "internal/app/budget_reporting_test.go": "f7596e97080a7f6ac35043a5bc17729af1df7ee8414da2649d6608a90d48969d",
+    "internal/app/budget_operations_test.go": "8256fd12685bda15817235cb0dea466433dcb624f2a7db461976db58c7970084",
+    "internal/storage/valkey_budget_work_test.go": "2c66a3bf218a588f5fec3abe2df989ee844c7db727c62afbd89614008c2c5788",
+    "internal/storage/valkey_incarnation.go": "d9b809744012ed79dfabf49188132f3c4f0046ccd383980106d21b4c693d6aea",
+    "internal/storage/valkey_time_window.go": "6c9f3f9fd5cfaa7d94113c41af95b660c394c274776c39c197c9b76155454bf3",
+    "internal/storage/valkey_connection.go": "50b0bb3c4df4131c20c42643f8b0d94d2d6fc84ce8a86293f73a97fb8c551a99",
+    "internal/recovery/authority.go": "3634ac3e37f4200de20121030c6f2307a2e00929273f2e190adb5efe0bbeed70"
+  },
+  "registry_sha256": "472b1a325157cea0f4181937e37db8f968b5e1bcdcb2fa01a309a9be432d772a"
+}

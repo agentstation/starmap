@@ -379,3 +379,19 @@ Absent-key checks otherwise require thousands of round trips in a shared databas
 Starport now keeps COUNT 1000 while preserving the caller's returned-key limit.
 A real Valkey probe with 4,096 unrelated keys checks this boundary.
 This repair does not qualify full gateway latency or fleet capacity.
+
+## Required budget operations: September 27, 2026
+
+The [measurement](../../plans/proof/starport-production-catalog/csp12.2/reporting-operations-2026-09-27/verification.json) records one warm production request against real Valkey and PostgreSQL.
+Account, key, and team rules create five applicable budget meters.
+Admission requires twelve record reads, one authority-clock read, two native writes, and four SQL approval queries.
+Settlement requires six record reads, one native write, and two SQL approval queries.
+
+Each native operation issues one synchronous EVAL. The complete budget operation uses 28 backend calls, with nineteen before provider dispatch.
+The SQL queries check independent recovery approval before and after each budget mutation.
+This evidence does not measure elapsed latency or qualify the overhead target.
+Connection setup, cold authorization, optional reporting, other KV work, conflicts, and recovery are outside the count.
+
+CSP12.2 must evaluate bounded grouped reads before performance qualification.
+Any reduction must preserve incarnation checks, byte limits, conflict detection, and retained uncertain capacity.
+Keep the measured call counts separate from full-path latency and capacity evidence.

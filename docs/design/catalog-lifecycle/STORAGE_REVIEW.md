@@ -1099,3 +1099,16 @@ Production tests also retain recognition charges after caller cancellation and c
 Fallback tests retain earlier uncertain capacity. UTC tests cover exact window boundaries and leap February.
 The remaining matrix, storage failover, backend operation counts, retention horizons, capacity, native CI, and paired merges remain required.
 The owner decision for proven unstarted batch lines remains pending.
+
+### Reporting failures and budget operations: September 27, 2026
+
+The [qualification proof](../../plans/proof/starport-production-catalog/csp12.2/reporting-operations-2026-09-27/verification.json) covers failed usage writes, rejected HTTP exports, and both faults together.
+Complete measured usage remains charged. Missing usage retains its full reservation.
+Every case refuses another provider dispatch when capacity is insufficient.
+
+A warm request with five applicable meters uses 22 native Valkey commands and six PostgreSQL approval queries.
+Nineteen calls precede provider dispatch. Nine calls settle measured usage.
+The test verifies real shared storage and production HTTP execution.
+These counts exclude unrelated storage work, connection setup, conflicts, and recovery. They do not establish latency or capacity.
+
+CSP12.2 must evaluate bounded grouped reads without weakening independent approval or uncertain reservation retention.

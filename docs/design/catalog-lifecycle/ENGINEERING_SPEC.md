@@ -2994,6 +2994,10 @@ Keep required admission and accounting synchronous or durably acknowledged befor
 Do not use a lossy usage or analytics queue as the spending authority.
 Optional analytics can batch asynchronously within byte, entry, and deadline bounds.
 
+The [reporting qualification](../../plans/proof/starport-production-catalog/csp12.2/reporting-operations-2026-09-27/verification.json) tests failed usage writes and exports through production dispatch.
+The same proof counts nineteen budget backend calls before dispatch and nine during settlement with five meters.
+These counts do not qualify latency. Evaluate bounded grouped reads while retaining independent approval and uncertain capacity.
+
 Confirmed absent budgets need no usage-total lookup.
 Cache delivery retains its documented admission semantics without inventing a chargeable provider call.
 CSP12.2 owns reservation semantics. CSP15 repeats their real-backend failure tests.

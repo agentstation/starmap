@@ -1,0 +1,294 @@
+{
+  "task": "CSP12.2",
+  "status": "in_progress",
+  "date": "2026-09-27",
+  "platform": "darwin/arm64",
+  "toolchain": "go1.27.1",
+  "commits": {
+    "consumer": "bf8fa420280c0b3bc00c121d4a86ac0cd4ef26e7",
+    "producer": "530d91513c95e4915d9fd3ab366a2b20506a219a"
+  },
+  "dependency": "Local producer through GOWORK=/tmp/csp122-billing.work; not a released pair",
+  "gate": {
+    "exit_code": 1,
+    "selected_subcases": 23,
+    "passed": 16,
+    "unverified": 7,
+    "failed": 0,
+    "source": "task-gate.json.gz",
+    "scope_note": "The full fifty-case summary remains incomplete. This task-scoped result is not a fifty-case regression."
+  },
+  "gate_executions": [
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestBudgetHistoryRollover|TestChangedHistoryRequiresReconciliation|TestDelayedDispatchCannotUseAClosedWindow|TestFixedUTCWindows|TestHolderCreationAndBudgetHistory|TestLateSettlementKeepsOriginalWindowAndValuation|TestRecoveryConcurrentWorkersSettleOnce|TestRecoveryRetriesLostSettlementAcknowledgement|TestReservationContract|TestRetainedUsageSurvivesRestart|TestTeamBudgetHistoryHandoff|TestTokenOnlyCannotBypassSpendOrInventFreePricing|TestValkeyReservationAcrossProcesses)$",
+        "./internal/limits/reservation"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 6.697650124959182,
+      "results": {
+        "pass": 70,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionBudgetAcrossProcesses)$",
+        "./internal/app"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 132.07028862496372,
+      "results": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionBudgetBackendOperations|TestProductionBudgetDispatchStreamCompletionAndCancellation|TestProductionBudgetDispatchUnknownCostAndAbsentBudgets|TestProductionBudgetPreservesRequestIdentity|TestProductionBudgetSurvivesReportingFailure|TestProductionEmbeddingRefusalBeforeDispatch|TestProductionRecognitionThenCancel|TestProductionRerankInvalidResultRetainsCharge|TestProductionRerankRefusesInsufficientCapacity|TestProductionSemanticEmbeddingSharesBudget|TestProductionSpendMissingTokenCountRetainsCapacity|TestRunRecoversRetainedBudgetEvidence)$",
+        "./internal/app"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 114.907689707994,
+      "results": {
+        "pass": 35,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestAbsentBudgetsStayLocal|TestAdmissionFailureBoundaries|TestAdmissionReservesExclusiveCapacity)$",
+        "./internal/limits/admission"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 2.1100950409891084,
+      "results": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestBudgetAuthorityNativeOperationCommands|TestTimeBoundStore)$",
+        "./internal/storage"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 2.796537000045646,
+      "results": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestRerankTokenBound)$",
+        "./internal/router"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 5.39222029101802,
+      "results": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^(TestProductionRerankBudget)$",
+        "./internal/app"
+      ],
+      "cwd": "/private/tmp/starport-fleet-review-20260926",
+      "exit_code": 0,
+      "elapsed_seconds": 38.74004116602009,
+      "results": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  ],
+  "unique_test_results": {
+    "pass": 143,
+    "fail": 0,
+    "skip": 0
+  },
+  "checks": [
+    {
+      "command": "CGO_ENABLED=0 go test -json ./internal/app ./internal/storage -run ^(TestProductionBudgetBackendOperations|TestBudgetAuthorityNativeOperationCommands|TestProductionBudgetSurvivesReportingFailure)$ -count=1 -timeout 5m",
+      "exit_code": 0,
+      "results": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "source": "purego.jsonl.gz"
+    },
+    {
+      "command": "go vet ./internal/app ./internal/storage",
+      "exit_code": 0,
+      "source": "vet.log"
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0,
+      "source": "goago.json"
+    },
+    {
+      "command": "python3 scripts/test_catalog_product_verify.py",
+      "exit_code": 0,
+      "tests": 99,
+      "source": "registry-tests.log"
+    },
+    {
+      "command": "GOWORK=/tmp/csp122-billing.work GOTOOLCHAIN=go1.27.1 bash scripts/verify-package-layout.sh",
+      "exit_code": 0,
+      "source": "layout.log"
+    },
+    {
+      "command": "technical-writing lint four changed Go files --format text",
+      "exit_code": 0,
+      "source": "source-writing.log"
+    },
+    {
+      "command": "technical-writing lint plan, four design documents, and review --format text",
+      "exit_code": 0,
+      "files": 6,
+      "diagnostics": 0,
+      "source": "final-writing.log"
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "files": 1790,
+      "diagnostics": 156,
+      "source": "full-writing.log.gz",
+      "scope": "Existing historical evidence diagnostics remain unchanged in count. All six changed prose files pass their focused check."
+    }
+  ],
+  "initial_checks": [
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "exit_code": 1,
+      "reason": "The shell omitted the local workspace and selected the older published producer. Compilation refused missing billing types. The corrected command used the approved local producer."
+    },
+    {
+      "command": "technical-writing lint changed documents --format text",
+      "exit_code": 1,
+      "diagnostics": 2,
+      "source": "initial-prose.log",
+      "repair": "Split two seven-sentence paragraphs. No factual change."
+    }
+  ],
+  "fail_before": "The previous admission-qualification coverage map records both newly registered requirements as UNVERIFIED. This increment adds missing evidence and changes no production behavior.",
+  "measurement": {
+    "applicable_meters": 5,
+    "warm_admission": {
+      "native_reads": 12,
+      "native_clock": 1,
+      "native_writes": 2,
+      "sql_approval_queries": 4,
+      "total": 19
+    },
+    "settlement": {
+      "native_reads": 6,
+      "native_clock": 0,
+      "native_writes": 1,
+      "sql_approval_queries": 2,
+      "total": 9
+    },
+    "complete_budget_calls": 28,
+    "scope": "Successful uncontended warm request. Not latency, capacity, cold authorization, other KV calls, connection setup, conflicts, or recovery."
+  },
+  "remaining": "coverage-map.json",
+  "next_action": "Evaluate bounded grouped budget reads at the storage and reservation seams. Preserve independent approval, record bounds, conflict behavior, and uncertain capacity. Then complete the seven remaining subcases and capacity qualification.",
+  "publication": "Local commits only. Pre-PR review, native CI, exact dependency qualification, and paired merges remain required.",
+  "docker": "Valkey and PostgreSQL stopped after the task gate. docker ps returned no running containers, then docker desktop stop succeeded.",
+  "paid_inference": false,
+  "prior_runs": [
+    {
+      "source": "operations-race.jsonl.gz",
+      "exit_code": 0,
+      "note": "Intermediate passing run before random probe cleanup repair. The final task gate and pure-Go run qualify the current source."
+    },
+    {
+      "source": "reporting-race.jsonl.gz",
+      "exit_code": 0,
+      "results": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "note": "Initial standalone reporting test. The final task gate repeats it against the committed source."
+    }
+  ]
+}
