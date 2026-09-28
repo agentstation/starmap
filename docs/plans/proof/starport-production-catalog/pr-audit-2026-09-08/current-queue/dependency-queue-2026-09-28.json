@@ -197,7 +197,12 @@
       "repository": "agentstation/starmap",
       "owner": "Repository dependency maintenance",
       "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-      "next_action": "Review dependency changes and exact-head checks after PR #387 merges. Reuse this PR and update its base when required."
+      "next_action": "Verify the new action source and compatibility, then update the reviewed-pin evidence and guard together.",
+      "failure_analysis": {
+        "finding": "The action pin changed, but TestActiveWorkflowsUseReviewedCurrentActions still expects the prior reviewed SHA.",
+        "raw_log": "dependency-starmap188-failure.log.gz",
+        "sha256_raw": "7641ba0e99d5661b4a0c58ac3349ac7751ea969c4c63919719d8a5ad30e8c8f4"
+      }
     },
     {
       "number": 189,
@@ -1111,7 +1116,12 @@
       "repository": "agentstation/starmap",
       "owner": "Repository dependency maintenance",
       "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-      "next_action": "Review dependency changes and exact-head checks after PR #387 merges. Reuse this PR and update its base when required."
+      "next_action": "Update the external acquisition fixture module for the reviewed dependency graph and rerun all six consumer compile checks.",
+      "failure_analysis": {
+        "finding": "CPO-V10 fails because the acquisition consumer fixture requires go.mod updates after AWS SDK changes.",
+        "raw_log": "dependency-starmap192-failure.log.gz",
+        "sha256_raw": "a486e1c59d5841afc14973aaed6416c1404e442b46ae86b3694a9f461a5324af"
+      }
     },
     {
       "number": 193,
@@ -1308,7 +1318,12 @@
       "repository": "agentstation/starmap",
       "owner": "Repository dependency maintenance",
       "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-      "next_action": "Review dependency changes and exact-head checks after PR #387 merges. Reuse this PR and update its base when required."
+      "next_action": "Update the external acquisition fixture module for the reviewed dependency graph and rerun all six consumer compile checks.",
+      "failure_analysis": {
+        "finding": "CPO-V10 fails because the acquisition consumer fixture requires go.mod updates after AWS SDK changes.",
+        "raw_log": "dependency-starmap193-failure.log.gz",
+        "sha256_raw": "29b7bbc28c126f80ada5e1c94a6f29b14f7c62871288b914fa3fe156e329b435"
+      }
     },
     {
       "number": 388,
@@ -1463,7 +1478,12 @@
       "repository": "agentstation/starport",
       "owner": "Repository dependency maintenance",
       "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-      "next_action": "Review dependency changes and exact-head checks after PR #387 merges. Reuse this PR and update its base when required."
+      "next_action": "Reproduce the credential-resolution deadline after the budget PR merges. Preserve grant assertions and the runtime failure boundary.",
+      "failure_analysis": {
+        "finding": "macOS account-grant credential resolution reached its material-load context deadline. The action change is not yet established as the cause.",
+        "raw_log": "dependency-starport388-failure.log.gz",
+        "sha256_raw": "bae6b1faf39a28d6532e30f44cab9a8dc5c46a30a67893cacf5dcdd340336d97"
+      }
     },
     {
       "number": 389,
@@ -1618,7 +1638,12 @@
       "repository": "agentstation/starport",
       "owner": "Repository dependency maintenance",
       "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-      "next_action": "Review dependency changes and exact-head checks after PR #387 merges. Reuse this PR and update its base when required."
+      "next_action": "Update this PR from main after #387 merges, then rerun Windows qualification and dependency review.",
+      "failure_analysis": {
+        "finding": "Windows Compose rendering lost plugin discovery, matching the failure repaired in d6107baa.",
+        "raw_log": "dependency-starport389-failure.log.gz",
+        "sha256_raw": "4003da89e23aca868ccf57693add5d2d7f29f33135cb08af659609c56bb43be3"
+      }
     }
   ]
 }
