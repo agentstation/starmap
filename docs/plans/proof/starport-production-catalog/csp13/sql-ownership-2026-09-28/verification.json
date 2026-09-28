@@ -1,0 +1,92 @@
+{
+  "task": "CSP13",
+  "status": "LOCAL_COMPONENT_PASS_TASK_INCOMPLETE",
+  "recorded_at": "2026-09-28T16:47:59.410096+00:00",
+  "head": "44eee9614d3cd2a44b4a69c7b596a31f0ef24b54",
+  "base": "a1a08df86c31c73cfd38d49e03ceb3571c86a86c",
+  "worktree": "/private/tmp/starport-clock-review-20260926",
+  "branch": "codex/storage-recovery",
+  "toolchain": "go1.27.1",
+  "change": [
+    "Reserve one connection for network SQL migration ownership. PostgreSQL uses a schema-scoped advisory lock. MySQL uses a database-scoped named lock.",
+    "SQLite takes BEGIN IMMEDIATE before each migration history read and commit. Connection setup applies a bounded initial busy timeout before WAL setup. Migration wait retries honor cancellation. Ordinary connections regain the 5000ms busy timeout.",
+    "Reject schema history with migrations unknown to the current binary.",
+    "Retain MySQL DDL intent before execution. Unknown or partial completion refuses automatic replay until operator reconciliation."
+  ],
+  "checks": {
+    "race": "GOWORK=off GOTOOLCHAIN=go1.27.1 TEST_POSTGRES_URL=<disposable PostgreSQL> TEST_MYSQL_DSN=<disposable MySQL> go test -json -race -count=1 -timeout 3m ./internal/sqlstore",
+    "events": {
+      "pass": 45,
+      "fail": 0,
+      "skip": 0
+    },
+    "vet": "PASS: go vet ./internal/sqlstore before the final rows-close error check",
+    "lint": "PASS: full make lint, zero issues",
+    "writing": "PASS: four changed Go files, zero diagnostics",
+    "diff": "PASS"
+  },
+  "platform": "local macOS arm64 with real Linux arm64 database containers",
+  "backends": {
+    "sqlite": "pinned modernc.org/sqlite from go.mod",
+    "postgres": "16.15, local image f1c3376c26f2",
+    "mysql": "8.4.11, local image 3466ba4a4828"
+  },
+  "observations": {
+    "prior_history_gap": "Sixteen SQLite connections apply duplicate DDL. Baseline regression fails.",
+    "additional_failures": "Initial cross-process check failed with SQLITE_BUSY. Cancellation waited 5.057 seconds. These remain in ownership-before.jsonl.gz.",
+    "current_coverage": "Forty-five events include four independent child processes per backend, sixteen concurrent connections, cancellation/release, future schema refusal, and retained MySQL partial-DDL intent."
+  },
+  "artifacts": {
+    "migration-before.jsonl": {
+      "path": "migration-before.jsonl.gz",
+      "sha256_raw": "df9cc03106f60801e6cdae6856cc463c1f906017027a48d8ecb82f0c70571cd5",
+      "events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "failed": [
+        "TestConcurrentSQLiteMigrationStartupHasOneOwner"
+      ]
+    },
+    "ownership-before.jsonl": {
+      "path": "ownership-before.jsonl.gz",
+      "sha256_raw": "b095b782720199f2741810043b6e40d93c3d1cc088f7fc945cbcf3c0e6ed07a0",
+      "events": {
+        "pass": 0,
+        "fail": 4,
+        "skip": 0
+      },
+      "failed": [
+        "TestMigrationOwnershipAcrossProcesses/sqlite",
+        "TestMigrationOwnershipAcrossProcesses",
+        "TestMigrationOwnerCancellationAndRelease/sqlite",
+        "TestMigrationOwnerCancellationAndRelease"
+      ]
+    },
+    "real-storage.jsonl": {
+      "path": "real-storage.jsonl.gz",
+      "sha256_raw": "7d2bbd94f7dc4884504e75e3423e6b846f8da8e45d83e697fd25de8c676c2167",
+      "events": {
+        "pass": 45,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed": []
+    },
+    "lint.log": {
+      "path": "lint.log.gz",
+      "sha256_raw": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    }
+  },
+  "open_requirements": [
+    "MySQL operator reconciliation for retained DDL intent",
+    "Owner loss and interruption qualification through actual operator procedures",
+    "Non-destructive Badger import and durable replacement recovery",
+    "Complete KV, SQL, blob, configuration, catalog, key-access manifest and transfer",
+    "Independent revocation/spending replay and former-writer fencing",
+    "All sixteen CSP13 assigned subcases, required pre-PR checks, review, native CI, and merge"
+  ],
+  "publication": "Local commit only. No CSP13 PR or push. No support or task-completion claim.",
+  "containers": "Both task database containers stopped after verification."
+}
