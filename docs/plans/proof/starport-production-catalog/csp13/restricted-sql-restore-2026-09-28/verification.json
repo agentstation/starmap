@@ -1,0 +1,175 @@
+{
+  "task": "CSP13",
+  "status": "in_progress",
+  "source_commit": "f5d5558ff83b88ee104cadddbe157be7899a0801",
+  "baseline_commit": "1e69e4f1682b7bbe7eb402d86682fb38b02f2691",
+  "go": "1.27.1",
+  "host": "darwin/arm64",
+  "results": {
+    "before.jsonl": {
+      "counts": {
+        "fail": 2
+      },
+      "nonpassing_tests": [
+        "TestRelationalImportReceiptRetriesWithoutRepeatingRestrictions/sqlite",
+        "TestRelationalImportReceiptRetriesWithoutRepeatingRestrictions"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "fail",
+          "elapsed": 0.456
+        }
+      ]
+    },
+    "first.jsonl": {
+      "counts": {
+        "pass": 4
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 0.806
+        }
+      ]
+    },
+    "focused.jsonl": {
+      "counts": {
+        "pass": 18
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 8.108
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 2.281
+        }
+      ]
+    },
+    "recovery.jsonl": {
+      "counts": {
+        "pass": 1
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 3.759
+        }
+      ]
+    },
+    "final-race.jsonl": {
+      "counts": {
+        "pass": 66
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 6.391
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 2.269
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 22.559
+        }
+      ]
+    },
+    "purego.jsonl": {
+      "counts": {
+        "pass": 22
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 4.063
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 1.08
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 7.069
+        }
+      ]
+    },
+    "capture-guard.jsonl": {
+      "counts": {
+        "pass": 5
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 6.088
+        }
+      ]
+    }
+  },
+  "commands": [
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go test ./internal/sqlstore -run '^TestRelationalImportReceiptRetriesWithoutRepeatingRestrictions$' -json -count=1",
+    "python3 /tmp/csp13-all-storage-env.py /tmp/csp13-sql-receipt-final-race.jsonl go test -race ./internal/sqlstore ./internal/recovery ./internal/app -run '^TestRelational|^TestSQLRestore|^TestStartupRefusesPendingRelationalImport$' -json -count=1 -timeout=4m",
+    "CGO_ENABLED=0 python3 /tmp/csp13-all-storage-env.py /tmp/csp13-sql-receipt-purego.jsonl go test ./internal/sqlstore ./internal/recovery ./internal/app -run '^TestRelationalImport|^TestSQLRestore|^TestStartupRefusesPendingRelationalImport$' -json -count=1 -timeout=3m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race ./internal/recovery -run '^TestSQLRestore|^TestBackupBundleBindsStoresFilesAndKeyAccess$' -json -count=1 -timeout=2m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 make lint",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./internal/sqlstore ./internal/recovery ./internal/app",
+    "bash scripts/verify-dependency-direction.sh"
+  ],
+  "checks": {
+    "lint": "PASS; zero issues",
+    "vet": "PASS; three affected packages",
+    "dependency_direction": "PASS; six conditions",
+    "source_writing": "PASS; six files, zero diagnostics",
+    "plan_writing": "PASS; four files, zero diagnostics",
+    "full_plan_writing": "FAIL; 226 diagnostics in unchanged historical proof. The previous 224-diagnostic capture predates security-references/before-test.go.txt, which adds two source-as-prose diagnostics. No changed file has a diagnostic."
+  },
+  "fail_before": {
+    "method": "The initial ImportRelationalOnce adapter delegates directly to the unchanged ImportRelational method. No receipt or barrier logic exists in that adapter.",
+    "observation": "The exact-retry assertion fails with target-not-fresh on SQLite. The parent and one subtest fail.",
+    "scope": "This demonstrates the missing idempotent import contract; it does not claim the old one-shot API promised retries."
+  },
+  "qualification_scope": "66 relational/recovery/application race results cover all nine SQL transfer pairs and receipt retries on SQLite, PostgreSQL, and MySQL. 22 focused pure-Go results pass. Five final race results also cover the added capture barrier. No passing cohort has failures or skips. Counts include parent and subtest outcomes.",
+  "contracts": [
+    "The same SQL transaction publishes imported rows, recovery restrictions, and the startup barrier",
+    "Exact retries bind operation, complete restriction-policy identity, and original verified snapshot",
+    "Concurrent exact retries apply restrictions once; changed operations or policies refuse",
+    "PrepareSQLRestore validates the full bundle before target mutation and advances retained epochs while closing all recovery gates",
+    "All bootstrap permissions and unused team initialization grants close",
+    "Ordinary startup and backup capture refuse retained SQL import barriers",
+    "Preparation never grants admission or proves independent later history"
+  ],
+  "manual_review": [
+    "No inference request-path lookup was added. SQL marker checks run during startup, backup capture, and explicit import.",
+    "Receipt reads are bounded. The SQL migration owner serializes import checks and transaction publication.",
+    "A retry still verifies the original image. It does not assert every later target record is unchanged; target writers must remain fenced.",
+    "The preparation coordinator rechecks all gate and initialization restrictions on retries. Activation still needs complete target validation and independent evidence.",
+    "Restored epochs advance only from captured state. They cannot substitute for a higher epoch known to an independent authority."
+  ],
+  "limitations": [
+    "The prepare coordinator currently transfers SQL only. Complete KV, blob, and selected-file preparation remains open.",
+    "Independent later history, activation, operator commands, external fencing, and measured recovery remain open",
+    "Fifteen CSP13 acceptance subcases remain UNVERIFIED; no new subcase is complete",
+    "Native Linux/Windows qualification, required pre-PR review, CI, and merge remain open"
+  ],
+  "fixtures": "Task-owned PostgreSQL, MySQL, Valkey, and MinIO stopped after qualification; volumes preserved"
+}

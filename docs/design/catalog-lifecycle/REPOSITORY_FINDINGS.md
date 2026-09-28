@@ -4794,3 +4794,19 @@ Missing jobs remain diagnostics. Conflicting identities or retained evidence cau
 Independent later history and full restore remain open.
 
 The [job accounting proof](../../plans/proof/starport-production-catalog/csp13/job-accounting-links-2026-09-28/verification.json) records exact results and retained fixture failures.
+
+
+### Restricted SQL restore: September 28, 2026
+
+Consumer `f5d5558ff` retains transactional SQL import receipts.
+
+The original relational importer refused an exact retry after a successful import.
+The new wrapper's baseline test reproduces that target-not-fresh result.
+The receipt now resolves a lost acknowledgement without repeating recovery restrictions.
+
+All three SQL backends pass retry, concurrent ownership, and rollback tests.
+The coordinator also checks closed gates after process reopen and refuses changed target permissions.
+Backup capture refuses a pending SQL import, so partial recovery cannot become a new accepted backup.
+Complete bundle preparation and independent recovery history remain open.
+
+The [SQL restore proof](../../plans/proof/starport-production-catalog/csp13/restricted-sql-restore-2026-09-28/verification.json) records exact results and qualification limits.

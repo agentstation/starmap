@@ -5159,3 +5159,21 @@ Pending and superseded intents remain unapplied. Conflicts and missing chain rec
 Independent later history and restore activation remain required.
 
 The [job accounting proof](../../plans/proof/starport-production-catalog/csp13/job-accounting-links-2026-09-28/verification.json) records exact results and retained fixture failures.
+
+
+### Restricted SQL restore: September 28, 2026
+
+Consumer `f5d5558ff` retains transactional SQL import receipts.
+
+Relational import publishes a durable receipt with copied records and recovery restrictions in one transaction.
+The receipt binds the operation, snapshot, and complete restriction-policy identity.
+An exact retry verifies the image and receipt without applying restrictions twice.
+The caller must keep target writers fenced.
+
+SQL preparation validates the complete bundle first.
+It advances retained epochs, closes all recovery gates, and disables bootstrap and unused team initialization grants.
+Ordinary startup and backup capture refuse the import barrier.
+Preparation cannot approve admission or replace independent later history.
+Complete target verification and activation remain required.
+
+The [SQL restore proof](../../plans/proof/starport-production-catalog/csp13/restricted-sql-restore-2026-09-28/verification.json) records exact results and qualification limits.
