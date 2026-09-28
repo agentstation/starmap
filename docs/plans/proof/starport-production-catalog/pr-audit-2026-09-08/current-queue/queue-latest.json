@@ -160,6 +160,15 @@
       "pr": 386,
       "head": "d9faa352179e05d2bbc5616b223025f8189499ea",
       "merge_commit": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7"
+    },
+    {
+      "repo": "starmap",
+      "pr": 191,
+      "head": "b625971100c58fce338669c853ca820a9afa2109",
+      "merge_commit": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
+      "proof": "starmap-191-merge-2026-09-28.json",
+      "passing_jobs": 28,
+      "neutral_jobs": 1
     }
   ],
   "publication_replay": {
@@ -1297,23 +1306,6 @@
         "next_action": "Review dependency changes and exact-head checks after PR #387 merges. Reuse this PR and update its base when required."
       },
       {
-        "number": 191,
-        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2 in /",
-        "url": "https://github.com/agentstation/starmap/pull/191",
-        "state": "OPEN",
-        "headRefName": "dependabot/go_modules/go_modules-c3e2ba5d96",
-        "headRefOid": "b625971100c58fce338669c853ca820a9afa2109",
-        "baseRefName": "main",
-        "baseRefOid": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
-        "isDraft": false,
-        "mergeStateStatus": "BLOCKED",
-        "updatedAt": "2026-09-28T14:38:16Z",
-        "repository": "agentstation/starmap",
-        "owner": "Repository dependency maintenance",
-        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-        "next_action": "Review dependency changes and exact-head checks after PR #387 merges. Reuse this PR and update its base when required."
-      },
-      {
         "number": 192,
         "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
         "url": "https://github.com/agentstation/starmap/pull/192",
@@ -1418,11 +1410,11 @@
     ]
   },
   "dependency_queue": {
-    "checked_at": "2026-09-28T16:03:47.076323+00:00",
+    "checked_at": "2026-09-28T16:14:27.103614+00:00",
     "proof": "dependency-queue-2026-09-28.json",
     "owner": "Repository dependency maintenance",
-    "open_count": 9,
-    "next_action": "Review after active CSP12.2 exact-head qualification and merge. Preserve current implementation base during its CI.",
+    "open_count": 8,
+    "next_action": "Review independent producer dependencies against current main. Keep consumer PR #387 pinned during its qualification. Dependent consumer repairs follow its merge.",
     "additional_proof": "starport-390-review-2026-09-28.json"
   },
   "compose_qualification": {
@@ -1436,8 +1428,7 @@
     "checked_at": "2026-09-28T16:03:47.076323+00:00",
     "starmap_all_checks_pass": [
       189,
-      190,
-      191
+      190
     ],
     "starmap_repair_required": [
       188,
@@ -1449,7 +1440,7 @@
       389,
       390
     ],
-    "limits": "No merge qualification completed for dependency PRs. Existing next actions remain."
+    "limits": "PR #191 merged after source and exact-head review. Other producer PRs now require current-base qualification."
   },
   "verification_duration_audit": {
     "proof": "../../csp12.2/fleet-readiness-2026-09-28/native-duration-audit.json",
