@@ -6759,6 +6759,23 @@
           "test": "TestLifetimeBatch"
         }
       ]
+    },
+    "A47.quota_lease_support_boundary": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBudgetAdmissionRejectsUnsupportedModes"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBudgetAdmissionAtomicSources"
+        }
+      ]
     }
   },
   "task_component_checks": {
