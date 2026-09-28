@@ -1,0 +1,143 @@
+{
+  "consumer_commit": "5cfa7311070ba2c20d466df553f880f02f5a25ce",
+  "producer_commit": "bcf20ca1cf7ec03354434356f21aaa59fe833566",
+  "go": "1.27.1",
+  "runs": {
+    "retention-check.jsonl": {
+      "sha256": "9dcde590e93d2d08af15fbe8974226bdd41801e66e2ae1ee4af45de915192360",
+      "counts": {},
+      "failed": [
+        "github.com/agentstation/starport/internal/limits/reservation"
+      ],
+      "skipped": []
+    },
+    "retention-local.jsonl": {
+      "sha256": "96ad0c02a2ca59d5dbebc53eb9bc339b1a9e973cbfdec8a569b1a1931abb81c4",
+      "counts": {
+        "pass": 4,
+        "skip": 3
+      },
+      "failed": [],
+      "skipped": [
+        "TestReconciliationRetention/valkey/none",
+        "TestReconciliationRetention/valkey/attempt",
+        "TestReconciliationRetention/valkey/correction"
+      ]
+    },
+    "retention-native.jsonl": {
+      "sha256": "aa2a1ad947695ac0183ad65d79e5412bf6b21f209e21266f1d0ae3711d36d0cd",
+      "counts": {
+        "pass": 16
+      },
+      "failed": [],
+      "skipped": []
+    },
+    "retention-verifier.log": {
+      "sha256": "0ca14bec8c442aa47e51fdc37177fb2c09e4cdec13bee813d762509aa415a639",
+      "counts": {},
+      "failed": [],
+      "skipped": []
+    },
+    "retention-goago.json": {
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "counts": {},
+      "failed": [],
+      "skipped": []
+    },
+    "correction-architecture.jsonl": {
+      "counts": {
+        "pass": 1
+      },
+      "note": ""
+    },
+    "reconciliation-boundary.jsonl": {
+      "counts": {},
+      "note": "The first controller selection matched no tests; it provides compilation evidence only."
+    },
+    "reconciliation-boundary-final.jsonl": {
+      "counts": {
+        "pass": 13
+      },
+      "note": ""
+    },
+    "asset-marker-regression.jsonl": {
+      "counts": {
+        "pass": 40
+      },
+      "note": ""
+    },
+    "reconciliation-goago.json": {
+      "counts": {},
+      "note": ""
+    },
+    "retention-workflow.log": {
+      "counts": {},
+      "note": ""
+    }
+  },
+  "verifier_tests": 99,
+  "unregistered_CSP12_2_cases": [],
+  "whole_task": "running",
+  "whole_task_output": "/tmp/csp122-task-final.json",
+  "whole_task_session": 74653,
+  "coverage": "Old accepted evidence remains idempotent. Missing attempt or correction evidence cannot refund recorded window consumption. Unresolved reservation lifetime remains unbounded.",
+  "limitations": [
+    "The new retention test first failed to compile due to a pointer-value mismatch in the fixture. It is qualification of existing behavior, not a product regression fix.",
+    "Whole-task native verification remains active. Local performance, hosted CI, review, dependency qualification, and paired merges remain required."
+  ],
+  "workflow_commit": "a99fd31",
+  "workflow_check": "actionlint .github/workflows/ci.yml: PASS",
+  "current_consumer_commit": "8a0c586",
+  "boundary_fixes": {
+    "architecture_commit": "b8072e9",
+    "conflict_and_marker_commit": "8a0c586",
+    "reason": "Jobs owns conflict classification. The HTTP layer no longer imports storage. Jobs may use the shared correction-limit vocabulary. The process-loss test waits for an atomically published marker rather than a file that can still be empty."
+  },
+  "boundary_checks": [
+    {
+      "command": "bash scripts/verify-starmap-ownership.sh",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-v1-architecture.sh",
+      "exit_code": 1
+    },
+    {
+      "command": "bash scripts/test-dependency-direction-verifier.sh",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-catalog-driven-providers.sh",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-files-api.sh",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-async-media-jobs.sh",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-console-session-grants.sh",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-auth-onboarding.sh",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-action-pins.sh",
+      "exit_code": 0
+    }
+  ],
+  "boundary_checks_note": "Ten commands pass. The architecture command failed before the import and marker repairs; its published-module gate also rejects the local workspace. Final qualification remains required."
+}
