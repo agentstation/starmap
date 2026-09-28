@@ -16,7 +16,8 @@
       "internal/recovery/file_tree_process_test.go": "de411d5b591c70540179eb43b01e01b29e93b7df4265af6c0514a58a9bafc4fe",
       "internal/recovery/file_tree_test.go": "803b9c3c87e7335f1ad4ca4151e8288077751fcfd04078fe73db647e71569a62",
       "internal/recovery/file_tree_verify.go": "49ef74915fa5655b30ecd411a24fde62d7ccca1caa3eb43702ee2bf73703d0d0"
-    }
+    },
+    "latest_head": "b07d68207e736d3a0f830c3069c4320992b71b90"
   },
   "checks": {
     "producer_fail_before": {
@@ -604,5 +605,70 @@
     "A pre-publication process loss leaves an inactive staging tree. A retry publishes a new verified tree and preserves the abandoned tree.",
     "A post-publication process loss reuses the verified target and confirms durability. It never overwrites target contents.",
     "These tests prove process-loss recovery, not hardware power-loss durability or complete deployment activation."
-  ]
+  ],
+  "native_test_repair": "../native-test-deadlines-2026-09-28/verification.json",
+  "full_gate_observation": {
+    "session": 7562,
+    "status": "running; checked through write_stdin",
+    "phase": "client race group; all three runtime shards passed",
+    "counts_are_partial": true,
+    "events": {
+      "starmap-tests-jaeybulx.jsonl": {
+        "counts": {
+          "pass": 454,
+          "skip": 1
+        },
+        "last_event_time": "2026-09-28T18:27:02.469482-05:00",
+        "raw": "full-verify-starmap-tests-jaeybulx.jsonl.gz",
+        "partial": true
+      },
+      "starmap-tests-oloxvu3o.jsonl": {
+        "counts": {
+          "pass": 154
+        },
+        "last_event_time": "2026-09-28T18:34:18.506623-05:00",
+        "raw": "full-verify-starmap-tests-oloxvu3o.jsonl.gz",
+        "partial": true
+      },
+      "starmap-tests-bti5dvzy.jsonl": {
+        "counts": {
+          "pass": 358,
+          "skip": 2
+        },
+        "last_event_time": "2026-09-28T17:55:30.023686-05:00",
+        "raw": "full-verify-starmap-tests-bti5dvzy.jsonl.gz",
+        "partial": true
+      },
+      "go-check-events.jsonl": {
+        "counts": {
+          "pass": 56
+        },
+        "last_event_time": "2026-09-28T17:44:39.011839-05:00",
+        "raw": "full-verify-go-check-events.jsonl.gz",
+        "partial": true
+      },
+      "starmap-tests-hkucrxc4.jsonl": {
+        "counts": {
+          "pass": 532
+        },
+        "last_event_time": "2026-09-28T18:11:31.620339-05:00",
+        "raw": "full-verify-starmap-tests-hkucrxc4.jsonl.gz",
+        "partial": true
+      }
+    },
+    "runtime_shards": {
+      "1": {
+        "pass": 358,
+        "skip": 2
+      },
+      "2": {
+        "pass": 532,
+        "skip": 0
+      },
+      "3": {
+        "pass": 454,
+        "skip": 1
+      }
+    }
+  }
 }

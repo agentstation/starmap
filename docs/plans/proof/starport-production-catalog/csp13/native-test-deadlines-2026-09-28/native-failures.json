@@ -1,0 +1,134 @@
+[
+  {
+    "pr": 388,
+    "Time": "2026-09-28T17:10:56.30512Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+    "OutputType": "error"
+  },
+  {
+    "pr": 388,
+    "Time": "2026-09-28T17:10:56.4274145Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+    "OutputType": "error"
+  },
+  {
+    "pr": 388,
+    "Time": "2026-09-28T17:10:56.4420393Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+    "OutputType": "error"
+  },
+  {
+    "pr": 388,
+    "Time": "2026-09-28T17:10:56.4455586Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+    "OutputType": "error"
+  },
+  {
+    "pr": 388,
+    "Time": "2026-09-28T17:10:56.4597614Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+    "OutputType": "error"
+  },
+  {
+    "pr": 388,
+    "Time": "2026-09-28T17:10:56.4837812Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+    "OutputType": "error"
+  },
+  {
+    "pr": 388,
+    "Time": "2026-09-28T17:10:56.4837812Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+    "OutputType": "error"
+  },
+  {
+    "pr": 388,
+    "Time": "2026-09-28T17:10:56.4998278Z",
+    "Action": "fail",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Elapsed": 6.34
+  },
+  {
+    "pr": 389,
+    "Time": "2026-09-28T09:50:47.8822722-07:00",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+    "OutputType": "error"
+  },
+  {
+    "pr": 389,
+    "Time": "2026-09-28T09:50:48.3219442-07:00",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+    "OutputType": "error"
+  },
+  {
+    "pr": 389,
+    "Time": "2026-09-28T09:50:48.3310956-07:00",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+    "OutputType": "error"
+  },
+  {
+    "pr": 389,
+    "Time": "2026-09-28T09:50:48.4386274-07:00",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+    "OutputType": "error"
+  },
+  {
+    "pr": 389,
+    "Time": "2026-09-28T09:50:48.4386274-07:00",
+    "Action": "fail",
+    "Package": "github.com/agentstation/starport/internal/credentials",
+    "Test": "TestInferencePolicyConcurrentAcceptance",
+    "Elapsed": 6.61
+  },
+  {
+    "pr": 390,
+    "Time": "2026-09-28T18:00:46.529806Z",
+    "Action": "output",
+    "Package": "github.com/agentstation/starport/internal/providers/keyring",
+    "Test": "TestGrantedSharedCredentialResolution",
+    "Output": "        \t            \tcontext deadline exceeded\n",
+    "OutputType": "error-continue"
+  },
+  {
+    "pr": 390,
+    "Time": "2026-09-28T18:00:46.530282Z",
+    "Action": "fail",
+    "Package": "github.com/agentstation/starport/internal/providers/keyring",
+    "Test": "TestGrantedSharedCredentialResolution",
+    "Elapsed": 2.63
+  }
+]

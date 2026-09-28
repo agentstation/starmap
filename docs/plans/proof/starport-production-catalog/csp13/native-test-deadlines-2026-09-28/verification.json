@@ -1,0 +1,147 @@
+{
+  "status": "local-qualified; native execution and publication remain open",
+  "previous_goal_turn": "no progress: verified an already completed shared-review-tool repair",
+  "source": {
+    "worktree": "/private/tmp/starport-clock-review-20260926",
+    "branch": "codex/storage-recovery",
+    "head": "b07d68207e736d3a0f830c3069c4320992b71b90",
+    "keyring_commit": "9cde42bf621aa581b3fe7319778319ad959d34a4",
+    "policy_commit": "b07d68207e736d3a0f830c3069c4320992b71b90",
+    "files": {
+      "internal/providers/keyring/provider_keys_test.go": "d6ab9bee47be09fb0acf54ea3670111604bec57c4a857685ecd6889352ddc434",
+      "internal/credentials/policy_migration_test.go": "2271d5e266e7be4f788d1ea133d4078769ec893ccbea644f76a086dc9c971120"
+    }
+  },
+  "contract": [
+    "Functional grant and concurrent policy tests use controlled time and retain their assertions.",
+    "Policy publication still uses real native file locks. The new timeout test proves refusal at the five-second production deadline, unchanged policy on refusal, and successful publication after lock release.",
+    "Existing material-load deadline and late-result rejection tests remain in the repeated suite.",
+    "Production timeouts and source code are unchanged."
+  ],
+  "checks": {
+    "grant-time-race": {
+      "results": {
+        "pass": 30
+      },
+      "raw": "grant-time-race.jsonl.gz",
+      "sha256": "13e99546c854213c642d46d0f7379f9ea51ac30f1128715f4011654422dd6418",
+      "packages": [
+        {
+          "Time": "2026-09-28T18:16:49.996099-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/providers/keyring",
+          "Elapsed": 9.041
+        }
+      ],
+      "skipped_tests": []
+    },
+    "grant-time-purego": {
+      "results": {
+        "pass": 3
+      },
+      "raw": "grant-time-purego.jsonl.gz",
+      "sha256": "fe84fa536dc7ac6a0efed673c1ec4751a1513d2897e0fa312e97a956e310c64d",
+      "packages": [
+        {
+          "Time": "2026-09-28T18:16:42.561145-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/providers/keyring",
+          "Elapsed": 0.767
+        }
+      ],
+      "skipped_tests": []
+    },
+    "keyring-all-race": {
+      "results": {
+        "pass": 116,
+        "skip": 1
+      },
+      "raw": "keyring-all-race.jsonl.gz",
+      "sha256": "7ac32ea4bcc6994c49b808a2b91790238c08208846009928b49d9757edb65d5c",
+      "packages": [
+        {
+          "Time": "2026-09-28T18:22:36.21563-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/providers/keyring",
+          "Elapsed": 31.773
+        }
+      ],
+      "skipped_tests": [
+        "TestManagedMaterialValkeyOutageAndRecovery"
+      ]
+    },
+    "policy-time-race": {
+      "results": {
+        "pass": 20
+      },
+      "raw": "policy-time-race.jsonl.gz",
+      "sha256": "aa1c1c9490d1f5c3f4cd4b1de836de2f28a7679f977f406449ac08b7f68388e4",
+      "packages": [
+        {
+          "Time": "2026-09-28T18:26:49.943361-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/credentials",
+          "Elapsed": 19.529
+        }
+      ],
+      "skipped_tests": []
+    },
+    "policy-time-purego": {
+      "results": {
+        "pass": 2
+      },
+      "raw": "policy-time-purego.jsonl.gz",
+      "sha256": "d04c925efc724ae3973ff62ca0ab711879228d833d139d8ec7b21b20c1ea2b15",
+      "packages": [
+        {
+          "Time": "2026-09-28T18:27:07.951652-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/credentials",
+          "Elapsed": 1.395
+        }
+      ],
+      "skipped_tests": []
+    },
+    "credentials-all-race": {
+      "results": {
+        "pass": 191,
+        "skip": 1
+      },
+      "raw": "credentials-all-race.jsonl.gz",
+      "sha256": "eab2d1b29436c8c39339001869943644fb7278aedf1a5a06ac33bc430e91b775",
+      "packages": [
+        {
+          "Time": "2026-09-28T18:27:28.774012-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/credentials",
+          "Elapsed": 9.366
+        }
+      ],
+      "skipped_tests": [
+        "TestProviderCredentialRepositoryContract/valkey"
+      ]
+    }
+  },
+  "lint": "PASS with repository-pinned linter and temporary candidate GOWORK",
+  "windows_amd64_compile": "PASS; native execution remains UNVERIFIED",
+  "native_failures": "native-failures.json",
+  "publication": "Neither test repair is published yet. Apply reviewed repairs to existing dependency PRs or merge through the consumer branch before refreshing those PRs. Do not mark CI fixed without native results.",
+  "commands": {
+    "grant-time-race": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race -json -count=10 -timeout=3m ./internal/providers/keyring -run '^Test(GrantedSharedCredentialResolution|ManagedMaterialLoadDeadlineReleasesCapacity|ManagedMaterialLateSuccessCannotEscapeDeadline)$'",
+    "grant-time-purego": "GOWORK=off GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 go test -json -count=1 -timeout=3m ./internal/providers/keyring -run '^Test(GrantedSharedCredentialResolution|ManagedMaterialLoadDeadlineReleasesCapacity|ManagedMaterialLateSuccessCannotEscapeDeadline)$'",
+    "keyring-all-race": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout=5m ./internal/providers/keyring",
+    "policy-time-race": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race -json -count=10 -timeout=5m ./internal/credentials -run '^TestInferencePolicy(ConcurrentAcceptance|PublicationDeadline)$'",
+    "policy-time-purego": "GOWORK=off GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 go test -json -count=1 -timeout=3m ./internal/credentials -run '^TestInferencePolicy(ConcurrentAcceptance|PublicationDeadline)$'",
+    "credentials-all-race": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout=5m ./internal/credentials",
+    "lint": "GOWORK=/tmp/csp13-lint.work GOTOOLCHAIN=go1.27.1 make lint",
+    "windows_amd64_compile": "GOWORK=off GOTOOLCHAIN=go1.27.1 GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go test -c -o /tmp/csp13-credentials-deadline-windows.test.exe ./internal/credentials"
+  },
+  "toolchain": "go1.27.1",
+  "scope": "Local test-only repairs for observed CI failures. No production source changed.",
+  "plan_checks": {
+    "structure": "PASS: 40 rows, 27 done, CSP13 alone in progress, 397 resume words",
+    "scoped_writing": "PASS: two files, zero diagnostics",
+    "full_writing": "1929 files, 226 historical diagnostics, no new diagnostic identities against previous recorded full run",
+    "full_writing_exit": 2
+  }
+}
