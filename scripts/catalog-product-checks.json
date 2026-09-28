@@ -6712,6 +6712,29 @@
           "test": "TestDelayedDispatchCannotUseAClosedWindow"
         }
       ]
+    },
+    "A47.analytics_drop_independence": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestProductionBudgetSurvivesReportingFailure"
+    },
+    "A47.backend_operation_evidence": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestProductionBudgetBackendOperations"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestBudgetAuthorityNativeOperationCommands"
+        }
+      ]
     }
   },
   "task_component_checks": {
