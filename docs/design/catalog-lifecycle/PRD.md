@@ -566,3 +566,15 @@ Unresolved reservations remain until reconciliation and never expire through ret
 The [decision record](../../plans/proof/starport-production-catalog/csp12.2/owner-decisions-2026-09-28/DECISIONS.md) owns these policies.
 
 CSP12.2 implements both policies locally. Complete qualification and paired merges remain required.
+
+
+### Recovery preparation boundary
+
+Operators must be able to retry interrupted preparation without repeating completed imports or opening admission.
+A restore operation binds all storage components and selected files to the same verified backup.
+Preparation stages selected files separately from active configuration.
+It must preserve existing operator files and refuse conflicting targets.
+
+A preparation receipt does not approve inference or prove later history.
+Independent reconciliation, target configuration placement, and activation remain separate required steps.
+The [bundle preparation proof](../../plans/proof/starport-production-catalog/csp13/bundle-prepare-2026-09-28/verification.json) records the current library evidence and remaining product work.

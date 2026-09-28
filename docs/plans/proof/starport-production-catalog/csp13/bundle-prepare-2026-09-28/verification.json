@@ -1,0 +1,206 @@
+{
+  "task": "CSP13",
+  "status": "in_progress",
+  "source_commit": "2a4e9216dad52fd8cbac7d7b6cfc68d0acc038fe",
+  "baseline_commit": "f5d5558ff83b88ee104cadddbe157be7899a0801",
+  "go": "1.27.1",
+  "host": "darwin/arm64",
+  "results": {
+    "before.jsonl": {
+      "counts": {
+        "fail": 1
+      },
+      "nonpassing_tests": [
+        "TestFilesystemRestoreRetryPreservesBarrierAndVerifiesContents"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/blob",
+          "result": "fail",
+          "elapsed": 0.466
+        }
+      ]
+    },
+    "first.jsonl": {
+      "counts": {
+        "pass": 22,
+        "skip": 1
+      },
+      "nonpassing_tests": [
+        "TestPrepareBundleLocalAndSharedRecipes/shared"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/blob",
+          "result": "pass",
+          "elapsed": 2.222
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 16.651
+        }
+      ]
+    },
+    "race.jsonl": {
+      "counts": {
+        "pass": 70
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/blob",
+          "result": "pass",
+          "elapsed": 10.112
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 2.292
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 12.729
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 30.512
+        }
+      ]
+    },
+    "final-race.jsonl": {
+      "counts": {
+        "pass": 71
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/blob",
+          "result": "pass",
+          "elapsed": 8.818999999999999
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed": 2.296
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/sqlstore",
+          "result": "pass",
+          "elapsed": 12.105
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 30.4
+        }
+      ]
+    },
+    "owner-race.jsonl": {
+      "counts": {
+        "pass": 259
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/blob",
+          "result": "pass",
+          "elapsed": 8.889
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 116.909
+        }
+      ]
+    },
+    "final-paths.jsonl": {
+      "counts": {
+        "pass": 24
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 26.981
+        }
+      ]
+    },
+    "terminal-purego.jsonl": {
+      "counts": {
+        "pass": 25
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/blob",
+          "result": "pass",
+          "elapsed": 1.08
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 16.47
+        }
+      ]
+    }
+  },
+  "commands": [
+    "python3 /tmp/csp13-all-storage-env.py /tmp/csp13-bundle-prepare-final-race.jsonl go test -race ./internal/recovery ./internal/blob ./internal/sqlstore ./internal/app -run 'TestPrepareBundle|TestRestoreFiles|TestFilesystemRestoreRetry|TestBlobSnapshot|TestSQLRestore|TestRelationalImport|TestStartupRefusesPendingRelationalImport' -json -count=1 -timeout=4m",
+    "python3 /tmp/csp13-all-storage-env.py /tmp/csp13-bundle-prepare-owner-race.jsonl go test -race ./internal/recovery ./internal/blob -json -count=1 -timeout=4m",
+    "python3 /tmp/csp13-all-storage-env.py /tmp/csp13-bundle-prepare-final-paths.jsonl go test -race ./internal/recovery -run 'TestPrepareBundle|TestRestoreFiles|TestRestorePath' -json -count=1 -timeout=3m",
+    "CGO_ENABLED=0 python3 /tmp/csp13-all-storage-env.py /tmp/csp13-bundle-prepare-terminal-purego.jsonl go test ./internal/recovery ./internal/blob -run 'TestPrepareBundle|TestRestoreFiles|TestRestorePath|TestFilesystemRestoreRetry' -json -count=1 -timeout=3m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 make lint",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./internal/recovery ./internal/blob",
+    "bash scripts/verify-dependency-direction.sh"
+  ],
+  "checks": {
+    "lint": "PASS; zero issues",
+    "vet": "PASS; two affected packages",
+    "dependency_direction": "PASS; six conditions",
+    "source_writing": "PASS; seven files, zero diagnostics",
+    "plan_writing": "PASS; five current files, zero diagnostics. Full plan gate retains 226 historical diagnostics from unchanged files.",
+    "plan_structure": "PASS; 40 rows, 27 done, CSP13 in_progress, 97 anchors, 154 links, 477 resume words."
+  },
+  "fail_before": {
+    "method": "RestoreFilesystemOnce initially delegates to the unchanged one-shot RestoreFilesystem API.",
+    "observation": "The exact retry fails with file already exists. The completed implementation verifies the prior restricted import.",
+    "scope": "The new retry wrapper adds a contract; the original one-shot API still refuses existing paths."
+  },
+  "qualification_scope": "259 complete recovery/blob race results and 71 focused SQL/recovery/blob/application race results pass. The final path guard has 24 race results. The final pure-Go cohort has 25 results. All four final cohorts have no failures or skips. Counts include parent and subtest outcomes.",
+  "initial_failures": [
+    "The first local run skipped the shared recipe because fixture variables were absent. Native fixtures supplied those variables for every final cohort.",
+    "Initial lint reported one complexity finding and one unused parameter. Receipt validation now has its own function; the filesystem adapter marks the unused scratch parameter explicitly.",
+    "Initial scoped writing reported three diagnostics. Final writing passes.",
+    "Initial plan writing reported long paragraphs and a semicolon in new prose. Final scoped plan writing passes."
+  ],
+  "contracts": [
+    "Full bundle verification precedes every target import",
+    "Component operation identities bind the user operation and complete manifest digest",
+    "SQL restrictions and all import barriers remain after successful preparation",
+    "Lost KV or blob acknowledgements resume without repeating SQL restrictions",
+    "Selected files publish under portable artifact names in an inactive directory with a completion receipt",
+    "Existing staged files require exact receipt, inventory, types, sizes, and hashes",
+    "Filesystem blob retries verify exact content and import identity",
+    "Path identity checks reject aliases into the backup or scratch tree",
+    "The coordinator rechecks SQL restrictions before publishing completion"
+  ],
+  "manual_review": [
+    "The new work runs only during explicit recovery, with no inference-path calls.",
+    "Selected files never select active destinations from source absolute paths. Canonical placement remains a later operation.",
+    "The native identity check supplements lexical path checks on case-insensitive filesystems. Private-directory checks reject untrusted parent paths.",
+    "File publication uses a private stage and atomic new-directory publication. Cleanup removes only the unchanged owned stage.",
+    "A preparation receipt does not prove later history or continued immutability of target records. All target writers must stay fenced.",
+    "Exact retry failures retain all barriers. Different operations or source manifests cannot reuse existing component claims."
+  ],
+  "limitations": [
+    "This is a library preparation operation. Operator restore commands and canonical file placement remain open.",
+    "Independent history, complete target validation, catalog and budget epoch approval, activation, external fencing, and measured recovery remain open.",
+    "Fifteen CSP13 acceptance subcases remain UNVERIFIED; no new subcase is complete.",
+    "Native Linux/Windows qualification, required pre-PR review, CI, and merge remain open."
+  ],
+  "fixtures": "Task-owned PostgreSQL, MySQL, Valkey, and MinIO stopped after qualification; volumes preserved"
+}

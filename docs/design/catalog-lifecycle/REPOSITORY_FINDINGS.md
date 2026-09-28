@@ -4810,3 +4810,21 @@ Backup capture refuses a pending SQL import, so partial recovery cannot become a
 Complete bundle preparation and independent recovery history remain open.
 
 The [SQL restore proof](../../plans/proof/starport-production-catalog/csp13/restricted-sql-restore-2026-09-28/verification.json) records exact results and qualification limits.
+
+
+### Restricted bundle preparation: September 28, 2026
+
+Consumer `2a4e9216d` connects the retained storage adapters.
+
+The original one-shot filesystem blob importer cannot resume after a lost acknowledgement.
+The new exact-retry wrapper verifies the retained import receipt and every object.
+The old one-shot API retains its existing-path refusal.
+
+Local and shared bundle recipes now pass complete preparation and retry checks.
+Injected failures before and after blob import and after KV import retain barriers and resume without repeating SQL restrictions.
+Changed SQL gates prevent completion. Changed staged files cause refusal on retry.
+Native identity checks detect path aliases into protected source trees.
+
+The implementation remains a library operation. Canonical file placement, independent history, and operator recovery commands remain open.
+
+The [bundle preparation proof](../../plans/proof/starport-production-catalog/csp13/bundle-prepare-2026-09-28/verification.json) records exact results and qualification limits.

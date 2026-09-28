@@ -5177,3 +5177,25 @@ Preparation cannot approve admission or replace independent later history.
 Complete target verification and activation remain required.
 
 The [SQL restore proof](../../plans/proof/starport-production-catalog/csp13/restricted-sql-restore-2026-09-28/verification.json) records exact results and qualification limits.
+
+
+### Restricted bundle preparation: September 28, 2026
+
+Consumer `2a4e9216d` connects the retained storage adapters.
+
+`PrepareBundle` validates the complete backup before importing SQL, KV, and blobs.
+Each component claim binds the operation and complete manifest digest.
+Retries retain SQL restrictions, original KV expirations, blob retirement markers, and all import barriers.
+The coordinator rechecks SQL restrictions before final publication.
+
+Selected files retain portable artifact names in an inactive staging directory.
+The directory and completion receipt publish together after all component imports succeed.
+Exact retries verify inventory and contents. Unexpected files, directories, and symlinks cause refusal.
+Native path identity checks prevent aliases into backup and scratch trees.
+
+Canonical placement must use target configuration ownership rules. Source absolute paths cannot select active destinations.
+
+Independent later history, operator commands, activation, and native release qualification remain open.
+A completion receipt proves preparation only. All target writers must remain fenced through activation.
+
+The [bundle preparation proof](../../plans/proof/starport-production-catalog/csp13/bundle-prepare-2026-09-28/verification.json) records exact results and qualification limits.
