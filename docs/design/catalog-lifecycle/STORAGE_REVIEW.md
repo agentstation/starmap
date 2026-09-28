@@ -1078,3 +1078,9 @@ Required history survives optional usage expiry. Original-report expiry has a se
 Job payload schema 6 carries the correction heads and report cursor. Correction history schema 1 owns separate audit records.
 CSP13 must migrate populated stores. The [proof](../../plans/proof/starport-production-catalog/csp12.2/job-corrections-2026-09-27/verification.json) covers memory, Badger, and real Valkey behavior.
 Full fleet recovery and capacity qualification remain required.
+
+### Shared batch aggregate qualification: September 27, 2026
+
+Consumer `07578301` verifies aggregate recovery across separate processes using Valkey and versioned MinIO.
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/shared-aggregates-2026-09-27/verification.json) preserves output identity and exact byte totals after process loss.
+PostgreSQL is outside this publication path and receives no inherited qualification.

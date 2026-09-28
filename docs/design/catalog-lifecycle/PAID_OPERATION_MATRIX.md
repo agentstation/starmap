@@ -538,3 +538,8 @@ New provider evidence during pending intent retains its required restriction. Op
 
 The [proof](../../plans/proof/starport-production-catalog/csp12.2/job-corrections-2026-09-27/verification.json) records job, adapter, route, production, and pure-Go checks.
 Interrupted batches, remaining operation rows, shared recovery, A47, capacity, and paired merges remain required.
+
+### Shared batch aggregate qualification: September 27, 2026
+
+The [shared aggregate proof](../../plans/proof/starport-production-catalog/csp12.2/shared-aggregates-2026-09-27/verification.json) qualifies retained batch output after process loss.
+The recovery path uses no inference runner. It does not qualify interrupted-line continuation or complete the paid-dispatch matrix.

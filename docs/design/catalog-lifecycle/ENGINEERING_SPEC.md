@@ -4853,3 +4853,16 @@ An expired original report retains `reporting_expired_at` without setting `accou
 
 Job schema 6 and job correction history schema 1 replace the previous job-only record contract. CSP13 owns populated migration.
 The [review](../../plans/proof/starport-production-catalog/csp12.2/job-corrections-2026-09-27/REVIEW.md) records local evidence and remaining fleet qualification.
+
+### Shared batch aggregate qualification: September 27, 2026
+
+Consumer `07578301` qualifies aggregate recovery against real Valkey and versioned MinIO after process loss.
+Two fresh processes recover after either object publication or batch metadata publication.
+The assertions preserve output identities, both output bodies, checkpoint retirement, and the exact retained-byte total.
+The publication path has no inference runner. This test does not qualify SQL identity or provider dispatch.
+
+The first run exposed a shutdown-order race in an older restart test. The test now drains the original worker before starting recovery.
+All original output and accounting assertions remain. Final checks pass 34 race results, forty repeated-test results, and three pure-Go results without skips.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/shared-aggregates-2026-09-27/verification.json) preserves failures and commands.
+The task gate still has 23 unregistered checks. Full A47, interrupted-line policy, and paired merges remain open.

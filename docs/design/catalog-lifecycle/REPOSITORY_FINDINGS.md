@@ -4549,3 +4549,9 @@ The real reporter test verifies that expiry cannot recreate usage or counters.
 The [proof](../../plans/proof/starport-production-catalog/csp12.2/job-corrections-2026-09-27/verification.json) preserves failed runs and exact source boundaries.
 Final race checks pass 458 job results with one MinIO skip, sixteen adapter results, and four production results.
 Pure-Go checks pass 54 results with sixteen Valkey skips. Full CSP12.2 qualification remains open.
+
+### Shared batch aggregate qualification: September 27, 2026
+
+The [shared aggregate proof](../../plans/proof/starport-production-catalog/csp12.2/shared-aggregates-2026-09-27/verification.json) passes at consumer `07578301`.
+An older restart test raced its still-active worker. It now drains that worker through `Close` before recovery.
+Original output and byte-total assertions remain unchanged. The task gate still lacks 23 registered checks.

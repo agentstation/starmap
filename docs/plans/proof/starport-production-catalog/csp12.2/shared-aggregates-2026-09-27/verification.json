@@ -1,0 +1,135 @@
+{
+  "status": "partial; shared batch aggregate process recovery verified; CSP12.2 remains in_progress",
+  "recorded_at": "2026-09-28T03:48:15.942815+00:00",
+  "consumer_commit": "07578301cd01ce94ce41ffd6797a8d21a7025ddb",
+  "base_consumer_commit": "0e3e3aba950b01422012c2c591f6d8c0706f2d94",
+  "producer_commit": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+  "environment": {
+    "GOWORK": "/tmp/csp122-billing.work",
+    "GOTOOLCHAIN": "go1.27.1",
+    "platform": "darwin/arm64",
+    "backends": "Valkey 7.2.14 and versioned MinIO RELEASE.2025-09-07T16-13-09Z; bounded fixtures on localhost",
+    "lifecycle": "Test-owned Valkey namespaces and MinIO buckets cleaned. Both test containers stopped after final tests. Docker Desktop stopped successfully. PostgreSQL remained stopped."
+  },
+  "checks": [
+    {
+      "command": "go test -race -json ./internal/jobs -run TestBatchAggregate -count=1 -timeout 2m",
+      "exit_code": 0,
+      "output": "local.jsonl.gz",
+      "sha256": "46413a3e836b76d06973ac89ebb69b9e4f26f8ea7ffdb4cc1286a61145f22bd9",
+      "test_results_including_parents": {
+        "pass": 25,
+        "fail": 0,
+        "skip": 6
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "TestBatchAggregateSharedProcessRecovery",
+        "TestBatchAggregateRecoversLostPublicationWithoutReplay/valkey",
+        "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/metadata/valkey",
+        "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/confirmation/valkey",
+        "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/cleanup/valkey",
+        "TestBatchAggregateConcurrentRecovery/valkey"
+      ],
+      "elapsed_seconds": [
+        3.259
+      ]
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:63816 TEST_BLOB_S3_ENDPOINT=http://127.0.0.1:63818 go test -race -json ./internal/jobs -run TestBatchAggregate -count=1 -timeout 3m",
+      "exit_code": 1,
+      "output": "race.jsonl.gz",
+      "sha256": "e91b7752fcccb36a4e5918a825776ceb688f80ce489b93a9cd543830569eb912",
+      "test_results_including_parents": {
+        "pass": 31,
+        "fail": 2,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestBatchAggregateRecoversLostPublicationWithoutReplay/memory",
+        "TestBatchAggregateRecoversLostPublicationWithoutReplay"
+      ],
+      "skipped_tests": [],
+      "elapsed_seconds": [
+        6.641
+      ]
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:63816 TEST_BLOB_S3_ENDPOINT=http://127.0.0.1:63818 go test -race -json ./internal/jobs -run 'TestBatchAggregate|TestAggregateRecovery' -count=1 -timeout 3m",
+      "exit_code": 0,
+      "output": "final-race.jsonl.gz",
+      "sha256": "da34669d66cac202dce53f3538c36b4b9f4259cb207725779b44ce8329d1bd80",
+      "test_results_including_parents": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "elapsed_seconds": [
+        7.682
+      ]
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:63816 go test -race -json ./internal/jobs -run '^TestBatchAggregateRecoversLostPublicationWithoutReplay$' -count=10 -timeout 2m",
+      "exit_code": 0,
+      "output": "repeat.jsonl.gz",
+      "sha256": "631f1f40dad151a0d08f83072f2aa4ae4a5edb952e56e2ce2116d2e8860d59b9",
+      "test_results_including_parents": {
+        "pass": 40,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "elapsed_seconds": [
+        7.5280000000000005
+      ]
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:63816 TEST_BLOB_S3_ENDPOINT=http://127.0.0.1:63818 CGO_ENABLED=0 go test -json ./internal/jobs -run '^TestBatchAggregateSharedProcessRecovery$' -count=1 -timeout 2m",
+      "exit_code": 0,
+      "output": "pure-go.jsonl.gz",
+      "sha256": "453b69f0fe89f5526becf6bde81a7eef6099a178f41721286708a58f0d96957f",
+      "test_results_including_parents": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "elapsed_seconds": [
+        1.294
+      ]
+    },
+    {
+      "command": "go vet ./internal/jobs",
+      "exit_code": 0,
+      "output": "vet.log.gz"
+    },
+    {
+      "command": "go vet ./internal/jobs",
+      "exit_code": 0,
+      "output": "vet-final.log.gz"
+    }
+  ],
+  "review": [
+    "Retained batch fixture now accepts the selected blob backend without changing local cases.",
+    "The new test kills a separate process after aggregate object publication or batch metadata publication. Two fresh processes recover against the same Valkey namespace and MinIO bucket.",
+    "Assertions verify original aggregate identity, both output bodies, released checkpoint state, two visible files, and exactly 22 stored bytes. No inference runner exists in the publication path.",
+    "The first shared run exposed a test lifecycle race. The old restart test began recovery before the original worker drained. It now calls the production Close boundary before restart. All original result and accounting assertions remain.",
+    "Final race, repeated-race, and pure-Go checks use the committed test code. No production runtime source changed in this commit."
+  ],
+  "task_gate": {
+    "command": "bash scripts/verify-catalog-product.sh --starport-root /private/tmp/starport-fleet-review-20260926 --task CSP12.2 --json",
+    "exit_code": 1,
+    "output": "task-gate.json",
+    "scope": "Executed from producer eb03c466c against consumer 0e3e3aba before this test-only commit. All 23 selected subcases lack registered behavior checks. This is missing qualification, not 23 observed runtime failures."
+  },
+  "unverified": [
+    "Interrupted-line continuation awaits the owner decision. Unknown dispatches must never repeat automatically.",
+    "Full paid-operation matrix, A47 production multi-process admission and failover, complete registry mapping, backend-operation counts, capacity, native CI, pre-PR review, paired dependency pin and merges",
+    "SQL identity behavior is outside this KV/blob aggregate-publication test. PostgreSQL receives no inherited pass.",
+    "CSP13 populated migration and CSP15 complete backend failure qualification"
+  ]
+}
