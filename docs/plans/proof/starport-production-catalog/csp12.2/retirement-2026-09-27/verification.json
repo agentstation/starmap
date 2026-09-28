@@ -1,0 +1,967 @@
+{
+  "status": "partial; file retirement qualified locally; CSP12.2 remains in progress",
+  "recorded_at": "2026-09-28T00:09:22.628579+00:00",
+  "work_date": "2026-09-27",
+  "consumer_commit": "4a0de8d516b7fa34a60d623672a01b3fa8c85f96",
+  "producer_commit": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+  "environment": {
+    "GOWORK": "/tmp/csp122-billing.work",
+    "GOTOOLCHAIN": "go1.27.1",
+    "TEST_VALKEY_URL": "redis://127.0.0.1:51487",
+    "TEST_POSTGRES_URL": "postgres://postgres@127.0.0.1:55001/starport_test?sslmode=disable",
+    "TEST_BLOB_S3_ENDPOINT": "http://127.0.0.1:54399",
+    "objectstore_image": "sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e",
+    "objectstore_tag": "quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z",
+    "platform": "ProductName:\t\tmacOS\nProductVersion:\t\t15.7.2\nBuildVersion:\t\t24G325\n"
+  },
+  "checks": [
+    {
+      "command": "go test -race -json ./internal/blob ./internal/files",
+      "exit_code": 0,
+      "note": "Initial implementation, before new backend contract tests and bounded sweep.",
+      "output": "initial.json.gz",
+      "counts": {
+        "pass": 129,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestNewFilesystemRefusesAnEmptyRoot",
+          "TestObjectStoreInterruptedPutWritesNothing",
+          "TestObjectStoreRefusesAnEmptyBucket",
+          "TestContractMissingKey/filesystem/missing_key",
+          "TestFilesystemRejectsAPathSeparatorBeforeAnyWrite",
+          "TestContractRejectsAnInvalidKey/filesystem/rejects_an_invalid_key",
+          "TestContractRejectsAnInvalidKey/objectstore/rejects_an_invalid_key",
+          "TestObjectStoreNamesItsBackend",
+          "TestContractCanceledContext/filesystem/canceled_context",
+          "TestContractRejectsAnInvalidKey",
+          "TestFilesystemStagesOutsideTheObjectTree",
+          "TestContractBackendNamesItself/objectstore/names_itself",
+          "TestContractEmptyObject/filesystem/empty_object",
+          "TestObjectStoreScopesKeysUnderThePrefix",
+          "TestContractBackendNamesItself/filesystem/names_itself",
+          "TestContractBackendNamesItself",
+          "TestValidateKey/too_long",
+          "TestValidateKey/traversal",
+          "TestValidateKey/forward_separator",
+          "TestValidateKey/current_directory",
+          "TestValidateKey/newline",
+          "TestValidateKey/empty",
+          "TestValidateKey/space",
+          "TestValidateKey/parent_directory",
+          "TestObjectStoreWithoutAPrefixUsesTheKeyItself",
+          "TestValidateKey/backward_separator",
+          "TestContractInterruptedPutLeavesNothing/filesystem/interrupted_put_leaves_nothing",
+          "TestValidateKey/colon",
+          "TestValidateKey/null_byte",
+          "TestObjectStoreErrorsNameNoCredential",
+          "TestValidateKey",
+          "TestContractCanceledContext/objectstore/canceled_context",
+          "TestContractCanceledContext",
+          "TestContractMissingKey/objectstore/missing_key",
+          "TestContractInterruptedPutLeavesNothing/objectstore/interrupted_put_leaves_nothing",
+          "TestContractInterruptedPutLeavesNothing",
+          "TestContractEmptyObject/objectstore/empty_object",
+          "TestContractEmptyObject",
+          "TestContractPutGetStatDelete/objectstore/round_trip",
+          "TestContractMissingKey",
+          "TestContractInterruptedPutKeepsThePriorObject/objectstore/interrupted_put_keeps_the_prior_object",
+          "TestContractPutGetStatDelete/filesystem/round_trip",
+          "TestContractPutGetStatDelete",
+          "TestContractOverwrite/objectstore/overwrite",
+          "TestContractOverwrite/filesystem/overwrite",
+          "TestContractOverwrite",
+          "TestContractInterruptedPutKeepsThePriorObject/filesystem/interrupted_put_keeps_the_prior_object",
+          "TestContractInterruptedPutKeepsThePriorObject",
+          "TestRetirementFencesDelayedOutputPublication/memory",
+          "TestRetirementFencesDelayedOutputPublication/badger",
+          "TestRetirementFencesDelayedOutputPublication/valkey",
+          "TestRetirementFencesDelayedOutputPublication",
+          "TestPreparedOutputRetainsIdentityBytesAndQuota/memory",
+          "TestPreparedOutputRetainsIdentityBytesAndQuota/badger",
+          "TestPreparedOutputRetainsIdentityBytesAndQuota/valkey",
+          "TestPreparedOutputRetainsIdentityBytesAndQuota",
+          "TestOutputReaderRejectsChangedLengthAndDigest/#00",
+          "TestOutputReaderRejectsChangedLengthAndDigest/short",
+          "TestOutputReaderRejectsChangedLengthAndDigest/12345678x",
+          "TestOutputReaderRejectsChangedLengthAndDigest/abcdefgh",
+          "TestOutputReaderRejectsChangedLengthAndDigest",
+          "TestPreparedOutputAcceptsOneConcurrentResult/memory",
+          "TestPreparedOutputAcceptsOneConcurrentResult/badger",
+          "TestPreparedOutputAcceptsOneConcurrentResult/valkey",
+          "TestPreparedOutputAcceptsOneConcurrentResult",
+          "TestFilePagesReachPublicFilesAndExpiredPreparations/memory",
+          "TestFilePagesReachPublicFilesAndExpiredPreparations/badger",
+          "TestFilePagesReachPublicFilesAndExpiredPreparations/valkey",
+          "TestFilePagesReachPublicFilesAndExpiredPreparations",
+          "TestFileReadRejectsChangedStoredIdentity",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached/memory",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached/badger",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached/valkey",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured/memory",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured/badger",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured/valkey",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released/memory",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released/badger",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released/valkey",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments",
+          "TestFilePublicationCannotReviveDeletingMetadata/memory",
+          "TestFilePublicationCannotReviveDeletingMetadata/badger",
+          "TestFilePublicationCannotReviveDeletingMetadata/valkey",
+          "TestFilePublicationCannotReviveDeletingMetadata",
+          "TestConcurrentFileRetirementPreservesOtherStoredBytes/memory",
+          "TestConcurrentFileRetirementPreservesOtherStoredBytes/badger",
+          "TestConcurrentFileRetirementPreservesOtherStoredBytes/valkey",
+          "TestConcurrentFileRetirementPreservesOtherStoredBytes",
+          "TestUploadRefusesAPurposeThisGatewayDoesNotServe",
+          "TestReplaceRefusesAnAbsentRecord",
+          "TestNewServiceRefusesAMissingStore",
+          "TestEveryStoredFileStatesAWindow",
+          "TestExpiredReadsTheBoundary",
+          "TestAccountsCannotShareAnIdentifier",
+          "TestDeleteIsRepeatable",
+          "TestCreateRefusesADuplicateIdentifier",
+          "TestRepositoryRoundTripsEveryField",
+          "TestSweepLeavesACommittedFileAlone",
+          "TestAnUploadPastTheBoundWritesNothing",
+          "TestAnotherAccountReadsNotFound",
+          "TestUploadCommitsTheRecordAfterTheBytes",
+          "TestUploadShortensTheWindowAndNeverExtendsIt",
+          "TestOpenReportsNotFoundWhenTheBytesAreGone",
+          "TestCorruptRecordDoesNotPassAsAFile",
+          "TestRecordExposesNoBlobKey",
+          "TestValidateBoundsTheRecord/no_identifier",
+          "TestValidateBoundsTheRecord/newline_in_the_filename",
+          "TestValidateBoundsTheRecord/no_filename",
+          "TestValidateBoundsTheRecord/unknown_state",
+          "TestValidateBoundsTheRecord/no_account",
+          "TestValidateBoundsTheRecord/no_created_at",
+          "TestValidateBoundsTheRecord/negative_size",
+          "TestValidateBoundsTheRecord/no_bytes_named",
+          "TestValidateBoundsTheRecord/long_filename",
+          "TestValidateBoundsTheRecord",
+          "TestTheSweepGivesBackAnAbandonedClaim",
+          "TestExpiredFileReadsAsNotFoundBeforeTheSweep",
+          "TestDeleteMarksTheRecordBeforeItRemovesTheBytes",
+          "TestDeleteRemovesBothWritesWhenNothingFails",
+          "TestSweepContinuesPastAFailingRecord",
+          "TestFailedUploadLeavesNothing",
+          "TestDeleteRemovesBothWrites",
+          "TestAFailedWriteGivesBackItsClaim",
+          "TestCrashBeforeTheCommitLeavesNoReachableFile",
+          "TestADeleteLowersTheTotalByTheFileSize",
+          "TestTheClaimSettlesAgainstTheRealSize"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "command": "go test -race -json ./internal/blob",
+      "exit_code": 0,
+      "note": "HTTP fixture and filesystem contract, before real service integration.",
+      "output": "publication-contract.json.gz",
+      "counts": {
+        "pass": 57,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestPublicationContract/objectstore/immutable_publication_and_retirement",
+          "TestPublicationContract/filesystem/immutable_publication_and_retirement",
+          "TestPublicationContract",
+          "TestRetirementRejectsInFlightPublication/objectstore/retire_while_writer_reads",
+          "TestRetirementRejectsInFlightPublication/filesystem/retire_while_writer_reads",
+          "TestRetirementRejectsInFlightPublication",
+          "TestPublicationFailureLeavesIdentityAvailable/objectstore/failed_input_and_cancellation",
+          "TestPublicationFailureLeavesIdentityAvailable/filesystem/failed_input_and_cancellation",
+          "TestPublicationFailureLeavesIdentityAvailable",
+          "TestObjectStoreRefusesAnEmptyBucket",
+          "TestNewFilesystemRefusesAnEmptyRoot",
+          "TestObjectStoreNamesItsBackend",
+          "TestObjectStoreScopesKeysUnderThePrefix",
+          "TestObjectStoreInterruptedPutWritesNothing",
+          "TestFilesystemRejectsAPathSeparatorBeforeAnyWrite",
+          "TestContractCanceledContext/filesystem/canceled_context",
+          "TestObjectStoreWithoutAPrefixUsesTheKeyItself",
+          "TestContractBackendNamesItself/objectstore/names_itself",
+          "TestContractCanceledContext/objectstore/canceled_context",
+          "TestContractCanceledContext",
+          "TestContractInterruptedPutKeepsThePriorObject/objectstore/interrupted_put_keeps_the_prior_object",
+          "TestContractRejectsAnInvalidKey/objectstore/rejects_an_invalid_key",
+          "TestContractBackendNamesItself/filesystem/names_itself",
+          "TestContractPutGetStatDelete/filesystem/round_trip",
+          "TestObjectStoreErrorsNameNoCredential",
+          "TestContractBackendNamesItself",
+          "TestContractRejectsAnInvalidKey/filesystem/rejects_an_invalid_key",
+          "TestContractRejectsAnInvalidKey",
+          "TestValidateKey/forward_separator",
+          "TestValidateKey/colon",
+          "TestValidateKey/traversal",
+          "TestValidateKey/empty",
+          "TestContractInterruptedPutLeavesNothing/objectstore/interrupted_put_leaves_nothing",
+          "TestContractInterruptedPutKeepsThePriorObject/filesystem/interrupted_put_keeps_the_prior_object",
+          "TestValidateKey/too_long",
+          "TestValidateKey/newline",
+          "TestContractInterruptedPutKeepsThePriorObject",
+          "TestValidateKey/current_directory",
+          "TestValidateKey/null_byte",
+          "TestValidateKey/parent_directory",
+          "TestValidateKey/space",
+          "TestValidateKey/backward_separator",
+          "TestValidateKey",
+          "TestContractEmptyObject/objectstore/empty_object",
+          "TestContractPutGetStatDelete/objectstore/round_trip",
+          "TestContractPutGetStatDelete",
+          "TestContractMissingKey/objectstore/missing_key",
+          "TestContractOverwrite/objectstore/overwrite",
+          "TestFilesystemStagesOutsideTheObjectTree",
+          "TestContractMissingKey/filesystem/missing_key",
+          "TestContractMissingKey",
+          "TestContractInterruptedPutLeavesNothing/filesystem/interrupted_put_leaves_nothing",
+          "TestContractInterruptedPutLeavesNothing",
+          "TestContractEmptyObject/filesystem/empty_object",
+          "TestContractEmptyObject",
+          "TestContractOverwrite/filesystem/overwrite",
+          "TestContractOverwrite"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "command": "go test -race -json ./internal/blob ./internal/files",
+      "exit_code": 1,
+      "note": "Real service tests pass. File pagination exceeds the 30-second Valkey sweep budget.",
+      "output": "backends.json.gz",
+      "counts": {
+        "pass": 142,
+        "fail": 2,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestRetirementFencesDelayedOutputPublication/memory",
+          "TestRetirementFencesDelayedOutputPublication/badger",
+          "TestFilesystemRetirementFencesAnotherProcess",
+          "TestRealObjectStoreConditionalRetirement",
+          "TestPublicationContract/objectstore/immutable_publication_and_retirement",
+          "TestPublicationContract/filesystem/immutable_publication_and_retirement",
+          "TestPublicationContract",
+          "TestRetirementRejectsInFlightPublication/objectstore/retire_while_writer_reads",
+          "TestRetirementRejectsInFlightPublication/filesystem/retire_while_writer_reads",
+          "TestRetirementRejectsInFlightPublication",
+          "TestPublicationFailureLeavesIdentityAvailable/objectstore/failed_input_and_cancellation",
+          "TestPublicationFailureLeavesIdentityAvailable/filesystem/failed_input_and_cancellation",
+          "TestPublicationFailureLeavesIdentityAvailable",
+          "TestObjectStoreNamesItsBackend",
+          "TestNewFilesystemRefusesAnEmptyRoot",
+          "TestObjectStoreRefusesAnEmptyBucket",
+          "TestObjectStoreInterruptedPutWritesNothing",
+          "TestContractCanceledContext/filesystem/canceled_context",
+          "TestFilesystemRejectsAPathSeparatorBeforeAnyWrite",
+          "TestObjectStoreWithoutAPrefixUsesTheKeyItself",
+          "TestContractCanceledContext/objectstore/canceled_context",
+          "TestContractCanceledContext",
+          "TestObjectStoreScopesKeysUnderThePrefix",
+          "TestContractRejectsAnInvalidKey/objectstore/rejects_an_invalid_key",
+          "TestContractBackendNamesItself/objectstore/names_itself",
+          "TestContractInterruptedPutKeepsThePriorObject/filesystem/interrupted_put_keeps_the_prior_object",
+          "TestContractInterruptedPutLeavesNothing/objectstore/interrupted_put_leaves_nothing",
+          "TestObjectStoreErrorsNameNoCredential",
+          "TestContractInterruptedPutLeavesNothing/filesystem/interrupted_put_leaves_nothing",
+          "TestContractBackendNamesItself/filesystem/names_itself",
+          "TestContractBackendNamesItself",
+          "TestContractInterruptedPutLeavesNothing",
+          "TestContractRejectsAnInvalidKey/filesystem/rejects_an_invalid_key",
+          "TestFilesystemStagesOutsideTheObjectTree",
+          "TestValidateKey/current_directory",
+          "TestContractRejectsAnInvalidKey",
+          "TestValidateKey/traversal",
+          "TestValidateKey/null_byte",
+          "TestContractMissingKey/filesystem/missing_key",
+          "TestValidateKey/forward_separator",
+          "TestValidateKey/empty",
+          "TestValidateKey/backward_separator",
+          "TestValidateKey/parent_directory",
+          "TestValidateKey/too_long",
+          "TestContractOverwrite/filesystem/overwrite",
+          "TestContractInterruptedPutKeepsThePriorObject/objectstore/interrupted_put_keeps_the_prior_object",
+          "TestContractInterruptedPutKeepsThePriorObject",
+          "TestValidateKey/colon",
+          "TestValidateKey/newline",
+          "TestValidateKey/space",
+          "TestValidateKey",
+          "TestContractOverwrite/objectstore/overwrite",
+          "TestContractOverwrite",
+          "TestContractMissingKey/objectstore/missing_key",
+          "TestContractPutGetStatDelete/filesystem/round_trip",
+          "TestContractMissingKey",
+          "TestContractEmptyObject/objectstore/empty_object",
+          "TestContractEmptyObject/filesystem/empty_object",
+          "TestContractEmptyObject",
+          "TestContractPutGetStatDelete/objectstore/round_trip",
+          "TestContractPutGetStatDelete",
+          "TestRetirementFencesDelayedOutputPublication/valkey",
+          "TestRetirementFencesDelayedOutputPublication",
+          "TestPreparedOutputRetainsIdentityBytesAndQuota/memory",
+          "TestPreparedOutputRetainsIdentityBytesAndQuota/badger",
+          "TestPreparedOutputRetainsIdentityBytesAndQuota/valkey",
+          "TestPreparedOutputRetainsIdentityBytesAndQuota",
+          "TestOutputReaderRejectsChangedLengthAndDigest/#00",
+          "TestOutputReaderRejectsChangedLengthAndDigest/short",
+          "TestOutputReaderRejectsChangedLengthAndDigest/12345678x",
+          "TestOutputReaderRejectsChangedLengthAndDigest/abcdefgh",
+          "TestOutputReaderRejectsChangedLengthAndDigest",
+          "TestPreparedOutputAcceptsOneConcurrentResult/memory",
+          "TestPreparedOutputAcceptsOneConcurrentResult/badger",
+          "TestPreparedOutputAcceptsOneConcurrentResult/valkey",
+          "TestPreparedOutputAcceptsOneConcurrentResult",
+          "TestFilePagesReachPublicFilesAndExpiredPreparations/memory",
+          "TestFilePagesReachPublicFilesAndExpiredPreparations/badger",
+          "TestFileReadRejectsChangedStoredIdentity",
+          "TestLostRetirementAcknowledgmentRetainsCharge/memory",
+          "TestLostRetirementAcknowledgmentRetainsCharge/badger",
+          "TestLostRetirementAcknowledgmentRetainsCharge/valkey",
+          "TestLostRetirementAcknowledgmentRetainsCharge",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached/memory",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached/badger",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached/valkey",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured/memory",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured/badger",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured/valkey",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released/memory",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released/badger",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released/valkey",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments",
+          "TestFilePublicationCannotReviveDeletingMetadata/memory",
+          "TestFilePublicationCannotReviveDeletingMetadata/badger",
+          "TestFilePublicationCannotReviveDeletingMetadata/valkey",
+          "TestFilePublicationCannotReviveDeletingMetadata",
+          "TestConcurrentFileRetirementPreservesOtherStoredBytes/memory",
+          "TestConcurrentFileRetirementPreservesOtherStoredBytes/badger",
+          "TestConcurrentFileRetirementPreservesOtherStoredBytes/valkey",
+          "TestConcurrentFileRetirementPreservesOtherStoredBytes",
+          "TestCreateRefusesADuplicateIdentifier",
+          "TestCorruptRecordDoesNotPassAsAFile",
+          "TestAccountsCannotShareAnIdentifier",
+          "TestNewServiceRefusesAMissingStore",
+          "TestRepositoryRoundTripsEveryField",
+          "TestUploadRefusesAPurposeThisGatewayDoesNotServe",
+          "TestEveryStoredFileStatesAWindow",
+          "TestTheSweepGivesBackAnAbandonedClaim",
+          "TestAnotherAccountReadsNotFound",
+          "TestUploadCommitsTheRecordAfterTheBytes",
+          "TestExpiredReadsTheBoundary",
+          "TestSweepLeavesACommittedFileAlone",
+          "TestDeleteIsRepeatable",
+          "TestAnUploadPastTheBoundWritesNothing",
+          "TestReplaceRefusesAnAbsentRecord",
+          "TestExpiredFileReadsAsNotFoundBeforeTheSweep",
+          "TestCrashBeforeTheCommitLeavesNoReachableFile",
+          "TestValidateBoundsTheRecord/no_bytes_named",
+          "TestValidateBoundsTheRecord/negative_size",
+          "TestValidateBoundsTheRecord/unknown_state",
+          "TestValidateBoundsTheRecord/no_filename",
+          "TestValidateBoundsTheRecord/newline_in_the_filename",
+          "TestValidateBoundsTheRecord/no_account",
+          "TestValidateBoundsTheRecord/no_identifier",
+          "TestValidateBoundsTheRecord/no_created_at",
+          "TestValidateBoundsTheRecord/long_filename",
+          "TestValidateBoundsTheRecord",
+          "TestDeleteRemovesBothWrites",
+          "TestDeleteRemovesBothWritesWhenNothingFails",
+          "TestAFailedWriteGivesBackItsClaim",
+          "TestUploadShortensTheWindowAndNeverExtendsIt",
+          "TestRecordExposesNoBlobKey",
+          "TestTheClaimSettlesAgainstTheRealSize",
+          "TestFailedUploadLeavesNothing",
+          "TestDeleteMarksTheRecordBeforeItRemovesTheBytes",
+          "TestOpenReportsNotFoundWhenTheBytesAreGone",
+          "TestADeleteLowersTheTotalByTheFileSize",
+          "TestSweepContinuesPastAFailingRecord"
+        ],
+        "fail": [
+          "TestFilePagesReachPublicFilesAndExpiredPreparations/valkey",
+          "TestFilePagesReachPublicFilesAndExpiredPreparations"
+        ],
+        "skip": []
+      }
+    },
+    {
+      "command": "go test -race -json ./internal/blob",
+      "exit_code": 0,
+      "note": "Final backend implementation, real MinIO and separate process included.",
+      "output": "blob-final.json.gz",
+      "counts": {
+        "pass": 59,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestFilesystemRetirementFencesAnotherProcess",
+          "TestRealObjectStoreConditionalRetirement",
+          "TestPublicationContract/objectstore/immutable_publication_and_retirement",
+          "TestPublicationContract/filesystem/immutable_publication_and_retirement",
+          "TestPublicationContract",
+          "TestRetirementRejectsInFlightPublication/objectstore/retire_while_writer_reads",
+          "TestRetirementRejectsInFlightPublication/filesystem/retire_while_writer_reads",
+          "TestRetirementRejectsInFlightPublication",
+          "TestPublicationFailureLeavesIdentityAvailable/objectstore/failed_input_and_cancellation",
+          "TestPublicationFailureLeavesIdentityAvailable/filesystem/failed_input_and_cancellation",
+          "TestPublicationFailureLeavesIdentityAvailable",
+          "TestObjectStoreRefusesAnEmptyBucket",
+          "TestNewFilesystemRefusesAnEmptyRoot",
+          "TestContractBackendNamesItself/objectstore/names_itself",
+          "TestObjectStoreInterruptedPutWritesNothing",
+          "TestObjectStoreScopesKeysUnderThePrefix",
+          "TestContractRejectsAnInvalidKey/objectstore/rejects_an_invalid_key",
+          "TestObjectStoreNamesItsBackend",
+          "TestObjectStoreWithoutAPrefixUsesTheKeyItself",
+          "TestContractCanceledContext/objectstore/canceled_context",
+          "TestObjectStoreErrorsNameNoCredential",
+          "TestValidateKey/too_long",
+          "TestValidateKey/empty",
+          "TestValidateKey/parent_directory",
+          "TestValidateKey/space",
+          "TestValidateKey/null_byte",
+          "TestValidateKey/current_directory",
+          "TestValidateKey/forward_separator",
+          "TestValidateKey/colon",
+          "TestValidateKey/backward_separator",
+          "TestValidateKey/newline",
+          "TestValidateKey/traversal",
+          "TestValidateKey",
+          "TestContractInterruptedPutKeepsThePriorObject/objectstore/interrupted_put_keeps_the_prior_object",
+          "TestContractOverwrite/objectstore/overwrite",
+          "TestContractPutGetStatDelete/objectstore/round_trip",
+          "TestContractInterruptedPutLeavesNothing/objectstore/interrupted_put_leaves_nothing",
+          "TestFilesystemRejectsAPathSeparatorBeforeAnyWrite",
+          "TestContractMissingKey/objectstore/missing_key",
+          "TestContractEmptyObject/objectstore/empty_object",
+          "TestContractBackendNamesItself/filesystem/names_itself",
+          "TestContractBackendNamesItself",
+          "TestContractRejectsAnInvalidKey/filesystem/rejects_an_invalid_key",
+          "TestContractCanceledContext/filesystem/canceled_context",
+          "TestContractCanceledContext",
+          "TestContractRejectsAnInvalidKey",
+          "TestContractMissingKey/filesystem/missing_key",
+          "TestContractMissingKey",
+          "TestContractEmptyObject/filesystem/empty_object",
+          "TestContractEmptyObject",
+          "TestContractPutGetStatDelete/filesystem/round_trip",
+          "TestContractPutGetStatDelete",
+          "TestContractOverwrite/filesystem/overwrite",
+          "TestContractOverwrite",
+          "TestFilesystemStagesOutsideTheObjectTree",
+          "TestContractInterruptedPutKeepsThePriorObject/filesystem/interrupted_put_keeps_the_prior_object",
+          "TestContractInterruptedPutKeepsThePriorObject",
+          "TestContractInterruptedPutLeavesNothing/filesystem/interrupted_put_leaves_nothing",
+          "TestContractInterruptedPutLeavesNothing"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "command": "go test -race -json ./internal/files",
+      "exit_code": 0,
+      "note": "Final file implementation with bounded cleanup.",
+      "output": "files-final.json.gz",
+      "counts": {
+        "pass": 85,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestRetirementFencesDelayedOutputPublication/memory",
+          "TestRetirementFencesDelayedOutputPublication/badger",
+          "TestRetirementFencesDelayedOutputPublication/valkey",
+          "TestRetirementFencesDelayedOutputPublication",
+          "TestPreparedOutputRetainsIdentityBytesAndQuota/memory",
+          "TestPreparedOutputRetainsIdentityBytesAndQuota/badger",
+          "TestPreparedOutputRetainsIdentityBytesAndQuota/valkey",
+          "TestPreparedOutputRetainsIdentityBytesAndQuota",
+          "TestOutputReaderRejectsChangedLengthAndDigest/#00",
+          "TestOutputReaderRejectsChangedLengthAndDigest/short",
+          "TestOutputReaderRejectsChangedLengthAndDigest/12345678x",
+          "TestOutputReaderRejectsChangedLengthAndDigest/abcdefgh",
+          "TestOutputReaderRejectsChangedLengthAndDigest",
+          "TestPreparedOutputAcceptsOneConcurrentResult/memory",
+          "TestPreparedOutputAcceptsOneConcurrentResult/badger",
+          "TestPreparedOutputAcceptsOneConcurrentResult/valkey",
+          "TestPreparedOutputAcceptsOneConcurrentResult",
+          "TestFilePagesReachPublicFilesAndExpiredPreparations/memory",
+          "TestFilePagesReachPublicFilesAndExpiredPreparations/badger",
+          "TestFilePagesReachPublicFilesAndExpiredPreparations/valkey",
+          "TestFilePagesReachPublicFilesAndExpiredPreparations",
+          "TestFileReadRejectsChangedStoredIdentity",
+          "TestLostRetirementAcknowledgmentRetainsCharge/memory",
+          "TestLostRetirementAcknowledgmentRetainsCharge/badger",
+          "TestLostRetirementAcknowledgmentRetainsCharge/valkey",
+          "TestLostRetirementAcknowledgmentRetainsCharge",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached/memory",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached/badger",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached/valkey",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured/memory",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured/badger",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured/valkey",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released/memory",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released/badger",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released/valkey",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released",
+          "TestFileClaimsRecoverLostSuccessfulAcknowledgments",
+          "TestFilePublicationCannotReviveDeletingMetadata/memory",
+          "TestFilePublicationCannotReviveDeletingMetadata/badger",
+          "TestFilePublicationCannotReviveDeletingMetadata/valkey",
+          "TestFilePublicationCannotReviveDeletingMetadata",
+          "TestConcurrentFileRetirementPreservesOtherStoredBytes/memory",
+          "TestConcurrentFileRetirementPreservesOtherStoredBytes/badger",
+          "TestConcurrentFileRetirementPreservesOtherStoredBytes/valkey",
+          "TestConcurrentFileRetirementPreservesOtherStoredBytes",
+          "TestCreateRefusesADuplicateIdentifier",
+          "TestExpiredReadsTheBoundary",
+          "TestCorruptRecordDoesNotPassAsAFile",
+          "TestReplaceRefusesAnAbsentRecord",
+          "TestRepositoryRoundTripsEveryField",
+          "TestDeleteIsRepeatable",
+          "TestAccountsCannotShareAnIdentifier",
+          "TestNewServiceRefusesAMissingStore",
+          "TestTheSweepGivesBackAnAbandonedClaim",
+          "TestAnotherAccountReadsNotFound",
+          "TestSweepLeavesACommittedFileAlone",
+          "TestAnUploadPastTheBoundWritesNothing",
+          "TestFailedUploadLeavesNothing",
+          "TestOpenReportsNotFoundWhenTheBytesAreGone",
+          "TestDeleteMarksTheRecordBeforeItRemovesTheBytes",
+          "TestAFailedWriteGivesBackItsClaim",
+          "TestUploadRefusesAPurposeThisGatewayDoesNotServe",
+          "TestValidateBoundsTheRecord/no_filename",
+          "TestValidateBoundsTheRecord/negative_size",
+          "TestValidateBoundsTheRecord/no_bytes_named",
+          "TestDeleteRemovesBothWritesWhenNothingFails",
+          "TestValidateBoundsTheRecord/no_created_at",
+          "TestValidateBoundsTheRecord/no_account",
+          "TestValidateBoundsTheRecord/no_identifier",
+          "TestValidateBoundsTheRecord/long_filename",
+          "TestValidateBoundsTheRecord/unknown_state",
+          "TestValidateBoundsTheRecord/newline_in_the_filename",
+          "TestValidateBoundsTheRecord",
+          "TestTheClaimSettlesAgainstTheRealSize",
+          "TestEveryStoredFileStatesAWindow",
+          "TestCrashBeforeTheCommitLeavesNoReachableFile",
+          "TestADeleteLowersTheTotalByTheFileSize",
+          "TestUploadShortensTheWindowAndNeverExtendsIt",
+          "TestRecordExposesNoBlobKey",
+          "TestUploadCommitsTheRecordAfterTheBytes",
+          "TestDeleteRemovesBothWrites",
+          "TestExpiredFileReadsAsNotFoundBeforeTheSweep",
+          "TestSweepContinuesPastAFailingRecord"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "command": "go test -race -json ./internal/jobs ./internal/server/controllers -run 'Test(CompletedBatchResultSurvivesProcessLoss|AThreeLineBatchCompletesWithThreeResults|ResultStorageFailureStopsDispatchAndRetainsCapacity|ResultConfirmationLostAckDoesNotDispatchAgain)$'",
+      "exit_code": 0,
+      "note": "File publication integration. Later cleanup change separately covered by final file suite.",
+      "output": "batch-integration.json.gz",
+      "counts": {
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestCompletedBatchResultSurvivesProcessLoss",
+          "TestResultStorageFailureStopsDispatchAndRetainsCapacity/memory/before",
+          "TestResultStorageFailureStopsDispatchAndRetainsCapacity/memory/after",
+          "TestResultStorageFailureStopsDispatchAndRetainsCapacity/memory",
+          "TestResultStorageFailureStopsDispatchAndRetainsCapacity/badger/before",
+          "TestResultStorageFailureStopsDispatchAndRetainsCapacity/badger/after",
+          "TestResultStorageFailureStopsDispatchAndRetainsCapacity/badger",
+          "TestResultStorageFailureStopsDispatchAndRetainsCapacity/valkey/before",
+          "TestResultStorageFailureStopsDispatchAndRetainsCapacity/valkey/after",
+          "TestResultStorageFailureStopsDispatchAndRetainsCapacity/valkey",
+          "TestResultStorageFailureStopsDispatchAndRetainsCapacity",
+          "TestResultConfirmationLostAckDoesNotDispatchAgain/memory",
+          "TestResultConfirmationLostAckDoesNotDispatchAgain/badger",
+          "TestResultConfirmationLostAckDoesNotDispatchAgain/valkey",
+          "TestResultConfirmationLostAckDoesNotDispatchAgain",
+          "TestAThreeLineBatchCompletesWithThreeResults"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "command": "CGO_ENABLED=0 go test -json ./internal/blob -run 'Test(PublicationContract|RetirementRejectsInFlightPublication|FilesystemRetirementFencesAnotherProcess|RealObjectStoreConditionalRetirement)$'",
+      "exit_code": 0,
+      "note": "Pure-Go publication boundary, including real MinIO.",
+      "output": "pure-go.json.gz",
+      "counts": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestFilesystemRetirementFencesAnotherProcess",
+          "TestRealObjectStoreConditionalRetirement",
+          "TestPublicationContract/objectstore/immutable_publication_and_retirement",
+          "TestPublicationContract/filesystem/immutable_publication_and_retirement",
+          "TestPublicationContract",
+          "TestRetirementRejectsInFlightPublication/objectstore/retire_while_writer_reads",
+          "TestRetirementRejectsInFlightPublication/filesystem/retire_while_writer_reads",
+          "TestRetirementRejectsInFlightPublication"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "command": "go test -race -json ./internal/app -run 'Test(CompositionOpensTheConfiguredByteStore|ObjectStoreCompositionReachesNoBucket)$'",
+      "exit_code": 0,
+      "note": "Production composition.",
+      "output": "app.json.gz",
+      "counts": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestCompositionOpensTheConfiguredByteStore",
+          "TestObjectStoreCompositionReachesNoBucket"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "command": "go tool goago check ./internal/blob ./internal/files",
+      "exit_code": 2,
+      "output": "goago.txt.gz"
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./internal/blob ./internal/files",
+      "exit_code": 0,
+      "output": "goago-final.json.gz"
+    },
+    {
+      "command": "go vet ./internal/blob ./internal/files",
+      "exit_code": 0,
+      "output": "vet-final.txt.gz"
+    },
+    {
+      "command": "bash scripts/verify-files-api.sh",
+      "exit_code": 0,
+      "output": "files-gate-final.txt.gz"
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit_code": 0,
+      "output": "dependency-gate-final.txt.gz"
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "exit_code": 0,
+      "output": "layout-gate-final.txt.gz"
+    },
+    {
+      "command": "technical-writing lint guide-excerpt.md source-comments.md --format text",
+      "exit_code": 0,
+      "output": "prose-final.txt.gz"
+    },
+    {
+      "command": "technical-writing lint REVIEW.md --format text",
+      "exit_code": 0,
+      "output": "review-prose-final.txt.gz"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "output": "diff-check.txt.gz"
+    },
+    {
+      "command": "technical-writing lint plan-excerpts.md --format text",
+      "exit_code": 0,
+      "output": "plan-prose.txt.gz"
+    },
+    {
+      "command": "python3 /tmp/csp122-check-retirement.py",
+      "exit_code": 0,
+      "output": "plan-check.json.gz"
+    }
+  ],
+  "source_manifest": [
+    {
+      "path": "docs/OPERATOR-GUIDE.md",
+      "sha256": "e7a0a6dbbf9d43bf951a9bb4ccf392a8cf0ba01c098346f43b815e37aeebeef2"
+    },
+    {
+      "path": "internal/blob/blob.go",
+      "sha256": "65544ae8ac03808e2569858747fecd92f82d9edaff04ba6390d37e682cbc652c"
+    },
+    {
+      "path": "internal/blob/filesystem.go",
+      "sha256": "1b84f2ba44d966987f734122e63ef4ab596653bc88ae3cf25f76bacf71c7183b"
+    },
+    {
+      "path": "internal/blob/filesystem_publication.go",
+      "sha256": "10748fe6cb5ed2b7968339120458ff4d75a5ad1ec1ef5de2170d2a02fc1ec87a"
+    },
+    {
+      "path": "internal/blob/filesystem_publication_test.go",
+      "sha256": "a65dadd6919c58516250de566d8ead9e3d0da642faf595bb044b8f9008a1bf45"
+    },
+    {
+      "path": "internal/blob/objectstore.go",
+      "sha256": "e9690e033e63c6004f2d05128f637a4e6969248b2aa0ac4204fef133e60031d9"
+    },
+    {
+      "path": "internal/blob/objectstore_publication.go",
+      "sha256": "ba3ed10349086cca0af42f930a18e1d6cca1ed06250a7d24e6720d83fa03db1e"
+    },
+    {
+      "path": "internal/blob/objectstore_publication_integration_test.go",
+      "sha256": "eca77c313148f92049262fb309d5058618d014807fa971f6ded9d760ae8bf4bc"
+    },
+    {
+      "path": "internal/blob/objectstore_server_test.go",
+      "sha256": "1c21fd5df5a5b936dd3adc01ae8bcc6bb4ecce2b5bb6627a0e770e36e101e0a4"
+    },
+    {
+      "path": "internal/blob/publication.go",
+      "sha256": "51dd21fb410aae77e426a2940ea6c04b438104f7202903932ceb686646b469d1"
+    },
+    {
+      "path": "internal/blob/publication_test.go",
+      "sha256": "23836a6dc9956afba903cb55c964ea420cbd6d01dc951df0217b6637149cdfd4"
+    },
+    {
+      "path": "internal/files/output.go",
+      "sha256": "04f14896e0f65de97f1bfef42a215c18ae2f6a5011c3f40e7f07dbda008c70f9"
+    },
+    {
+      "path": "internal/files/output_retirement_test.go",
+      "sha256": "16278f689e1e778d035bf1f7cc05ccd2b20dd17b4f8295a14af1683e9c5f5845"
+    },
+    {
+      "path": "internal/files/output_test.go",
+      "sha256": "fa9139dc920286b6071699784f0d18204eb62c6994987f4b94c348bb5f27430d"
+    },
+    {
+      "path": "internal/files/page_test.go",
+      "sha256": "a9b243bcd880f32f0818372d2a2fc867e3abfa15bf7aa0e73e0de142f0590944"
+    },
+    {
+      "path": "internal/files/quota_test.go",
+      "sha256": "17211b9e0449d202be46eebe09a1d3fa44858b5af6f2a290b303c206c02544c1"
+    },
+    {
+      "path": "internal/files/recovery_quota_test.go",
+      "sha256": "e85f71820e00d76dc7aee0f0becf56102f53ad184c967868998b949fab411075"
+    },
+    {
+      "path": "internal/files/repository.go",
+      "sha256": "1627f02c12dc7fdbe3d42a5d61463d927975b39496887a53431d6abb5fb355f9"
+    },
+    {
+      "path": "internal/files/retention_test.go",
+      "sha256": "f675cf26b15d1fd17990a3c01b7f8e439146e53ad0db035d0f936bec2a91ae50"
+    },
+    {
+      "path": "internal/files/retirement_ack_test.go",
+      "sha256": "95c6d3408198e0e6051d1f58a1f61e2572950b93a3e57ee97e0801dc27874056"
+    },
+    {
+      "path": "internal/files/service.go",
+      "sha256": "455648481367621fa059e8be45df1248b4df15953819d85457713bd89fb1904b"
+    },
+    {
+      "path": "internal/files/service_test.go",
+      "sha256": "70a07a78e74d070edef26eef3422303a95bd6385554e85f2a9c05bbea81a626f"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "REVIEW.md.gz",
+      "sha256": "ca58281354d914f2d3f53df330910f2eef9fc557b704c21d52c9a560d81e872e",
+      "raw_sha256": "706419043c688b4539cf189817e8033ac46a01407c2e24ab0b3ab7e5157aca70"
+    },
+    {
+      "file": "app.json.gz",
+      "sha256": "69e3384e2aa81c6913c71f8b9f5dde44cbab26fbd833e5b2800039c1d9a3ddd8",
+      "raw_sha256": "6ddaa4a6bac425c91e612c39d99f5d66cee1b55e7dc66776b6d7a684e68b9dc5"
+    },
+    {
+      "file": "backends.json.gz",
+      "sha256": "c84534bd9969cae179ce400bd55ff1c199fe419d1c1855009b4afbafd3643949",
+      "raw_sha256": "275919afd126d194cedb877bf7a1b05acd69a807ca5d13c7c5aa9fe20ba1d0fc"
+    },
+    {
+      "file": "batch-integration.json.gz",
+      "sha256": "d88213cf49adaa05dabb62d075e1ff6d6b8ec60abce3d1d43633fda9948bfe20",
+      "raw_sha256": "08b48f869762ba6d29d4ba87384eee50d6c0e55cc7c180aaa5997a5fc54c172d"
+    },
+    {
+      "file": "blob-final.json.gz",
+      "sha256": "c6c0ab3295fc5ae67c65268d5926b69852b1a4bf7a1d085d30ecc9da3f1225ce",
+      "raw_sha256": "e73020bbd6af5432068c74860e4b268a0ef3edf379ce8ad1af39e6eb00c92ae7"
+    },
+    {
+      "file": "dependency-gate-final.txt.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "file": "dependency-gate.txt.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "file": "diff-check.txt.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "files-final.json.gz",
+      "sha256": "5cb3523ed808ea346e583443689fba655994cc4a54cd181a2f6c63b2ee7067d3",
+      "raw_sha256": "fb37794b4ed89aa435405abc4c63f1d0ec567ad7bb03af23750b438c1dab8300"
+    },
+    {
+      "file": "files-gate-final.txt.gz",
+      "sha256": "9c6c662407490bef317cfb3e2c57aa66b7f2da180dad489172f8a168c59841f0",
+      "raw_sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986"
+    },
+    {
+      "file": "files-gate.txt.gz",
+      "sha256": "9c6c662407490bef317cfb3e2c57aa66b7f2da180dad489172f8a168c59841f0",
+      "raw_sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986"
+    },
+    {
+      "file": "goago-final.json.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "file": "goago.txt.gz",
+      "sha256": "000182d131c58ca0513d7a93d8bd17fbbf5083ab0b51056f5da446d960a0724c",
+      "raw_sha256": "ff951a87209a3c55d40a77e8e615191047763734f1751f743893c7adcb399e0e"
+    },
+    {
+      "file": "guide-excerpt.md.gz",
+      "sha256": "25d4ac4e48f5e686b1fef5ed00489a5165b8e827b02bb21c73991f41ce44ee43",
+      "raw_sha256": "b590f03b0fadd03056ce640dc9a6e11e7cd1a28689882d630375fb009293942b"
+    },
+    {
+      "file": "guide-prose.txt.gz",
+      "sha256": "0b1c81aef866001122b26e0da611d501e605c1e4b3796a0bda9c6fae0009ab7c",
+      "raw_sha256": "6f579a60644da267408bfab7b038c694ef773006a66eb6b5a688c88893c702ec"
+    },
+    {
+      "file": "initial.json.gz",
+      "sha256": "ae41e9cf8a3e08a9e8bef8c64a29d5237b8934c9baa61b258e4983f84b0b641c",
+      "raw_sha256": "6bc48f80c82d65fc1d816867f197793ec75a03434efd8468da2d742c4855ae21"
+    },
+    {
+      "file": "layout-gate-final.txt.gz",
+      "sha256": "4dba00f44703c25c3c2c0a78e73b74d19db8a82577ff0ea5dfb021dc298c8e36",
+      "raw_sha256": "694548eb253d431a30ea1c5fdb948c228004e02d4dededa56c51a3a30198277d"
+    },
+    {
+      "file": "layout-gate.txt.gz",
+      "sha256": "c2f31f6b5b5b4ba3cabf8e5e51760281829d4920c4e6b5f0cf263825ec2a9bcd",
+      "raw_sha256": "c5248423f35aa7857155f128a016cd99789735c01db62e86f449852bbdbe5f8c"
+    },
+    {
+      "file": "objectstore-image.txt.gz",
+      "sha256": "43f8730cb8a401946c474133c6c72e217d2bab3bc4fc4921a32c34b02c34d4da",
+      "raw_sha256": "905aa7c129bcbf24b3988a286ccb2cc9ac2ece5f2abe1cd5642c21238d481e98"
+    },
+    {
+      "file": "platform.txt.gz",
+      "sha256": "33c54befd953c62bef9d9c8022b6a04e99afb3a0a956599d291a3843d8bebdf3",
+      "raw_sha256": "ae94f14162b9ced7663309cc8a9c63132a685126f5a77e3088511f4e472d3c51"
+    },
+    {
+      "file": "prose-final.txt.gz",
+      "sha256": "3a8a4461ab82bcabf697e5461b5c91a9d9b762e9b528b2e8ce4797850849e7fb",
+      "raw_sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    {
+      "file": "publication-contract.json.gz",
+      "sha256": "2d90707ef981efd1a6a5ee7337043dbc78b8b59101dec933bbb2e26886b9634d",
+      "raw_sha256": "918cd8250cdd4b847ec625a3fe56cb1580250d98d42773761fe8668e833cc540"
+    },
+    {
+      "file": "pure-go.json.gz",
+      "sha256": "371bade5e906ef691708cdf574ef8a565bf52b9e54777507e22b6eafb7312e5e",
+      "raw_sha256": "a6ef86c02e4655dbcd9e907a937b45da3ba7f44362682975c96dafbb62bc927b"
+    },
+    {
+      "file": "review-prose-final.txt.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "raw_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66"
+    },
+    {
+      "file": "review-prose.txt.gz",
+      "sha256": "3ab55d2d4f45f4f6b295c5fc4c2e4287da0abd2e0734dd1f360a5ca79200f422",
+      "raw_sha256": "58950cba2eae749d4bd4845e88469a0250ebf1814b20acb09b6263b88a0a13fc"
+    },
+    {
+      "file": "source-comments.md.gz",
+      "sha256": "aa753ac0c2096e06fcb72734d8c6f8d1862e2f0406710d6df2837b2426cbeef1",
+      "raw_sha256": "1d83394f91ecac8567162fdd81b14b49d174f07129ea8ddbe05828c505f67fe4"
+    },
+    {
+      "file": "vet-final.txt.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "vet.txt.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "plan-excerpts.md.gz",
+      "sha256": "101c02dc1ef4224d8e4e87db3273e867abb703b2e4e93f4740aa237c5b10d49c",
+      "raw_sha256": "453e657c51fbd03abd0bf68c887d3644dd2c2aaccb55af512e611481c2037256"
+    },
+    {
+      "file": "plan-prose.txt.gz",
+      "sha256": "1e411516f7e018b28c304d9e332acd11389ff82699d4a82ad8a501fd8694dd61",
+      "raw_sha256": "e8daf0e97781b19b481e35eafac52dcfb9748434aa447da547c042683fc5fdfc"
+    },
+    {
+      "file": "plan-check.json.gz",
+      "sha256": "74cb4744a5099fd65bb4610e6d6772b0a7f4dea14c517d67aceadf5bd0542c3e",
+      "raw_sha256": "97ea9cd5cde021d5097ae6987fccd34ffd0847ee5b897ce9e81926ae324d6cb2"
+    }
+  ],
+  "limitations": [
+    "No native Linux or Windows execution for this change.",
+    "MinIO evidence does not qualify other S3 services.",
+    "Bucket construction performs no capability probe; readiness remains required.",
+    "Staging and multipart cleanup, noncurrent versions, and restore qualification remain open.",
+    "Video owner still uses mutable blob API; delayed-write/expiry audit remains required.",
+    "Aggregate recovery, interrupted-run policy, audited correction, full A47, capacity, structured review, CI, and paired merges remain open."
+  ],
+  "historical_failure": "../durable-results-2026-09-27/verification.json"
+}

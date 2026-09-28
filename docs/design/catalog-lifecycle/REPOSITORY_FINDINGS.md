@@ -4436,3 +4436,19 @@ The paused writer later creates a blob after the file record and its quota charg
 Four results fail across memory, Badger, and Valkey. The probe remains required evidence.
 The [backend retirement repair](../../plans/proof/starport-production-catalog/csp12.2/durable-results-2026-09-27/RETIREMENT_CONTRACT.md) remains within CSP12.2.
 The commit is local and does not qualify full batch recovery or shared-object storage.
+
+
+## File retirement repair: September 27, 2026
+
+Consumer `4a0de8d5` repairs the delayed-publication failure recorded at `d93432d0`.
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/retirement-2026-09-27/verification.json) records 59 final blob race results and 85 final file race results, with no skips.
+Batch integration passes 16 results, pure-Go checks pass eight, and application composition passes two.
+The original failing probe remains historical evidence.
+
+Durable cleanup exposed a Valkey pagination timeout. Each pass now handles at most 256 records.
+The final test removes all 1,030 expired records, preserves the live record, and rejects every retired identity.
+An earlier run's two failed results remain in the proof.
+
+The video owner still calls mutable blob writes and deletion. Its expiry race needs a separate audit.
+Construction still performs no bucket probe. Conditional-write readiness remains unqualified.
+This local commit does not complete CSP12.2 or authorize a claim of production readiness.

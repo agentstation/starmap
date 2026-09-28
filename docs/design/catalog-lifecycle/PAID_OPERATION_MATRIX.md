@@ -517,3 +517,9 @@ The [durable-result proof](../../plans/proof/starport-production-catalog/csp12.2
 It also proves that lost result acknowledgments stop further dispatch and retain the batch claim.
 A new delayed-publication retirement probe fails on all three metadata backends.
 The [retirement contract](../../plans/proof/starport-production-catalog/csp12.2/durable-results-2026-09-27/RETIREMENT_CONTRACT.md), aggregate reconstruction, and interrupted-run recovery remain required before full batch qualification.
+
+
+The [file-retirement proof](../../plans/proof/starport-production-catalog/csp12.2/retirement-2026-09-27/verification.json) repairs delayed file publication at consumer `4a0de8d5`.
+Confirmed retirement precedes quota release. Failed acknowledgments preserve recoverable metadata and charges.
+A separate-process test and a real versioned MinIO test reject delayed publication.
+Video retirement, aggregate reconstruction, interrupted-run behavior, audited correction, and full A47 remain required.

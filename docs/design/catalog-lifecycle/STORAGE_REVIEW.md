@@ -978,3 +978,16 @@ The [qualification proof](../../plans/proof/starport-production-catalog/csp12.2/
 A delayed blob write can recreate bytes after metadata deletion and quota release.
 The [retirement contract](../../plans/proof/starport-production-catalog/csp12.2/durable-results-2026-09-27/RETIREMENT_CONTRACT.md) requires backing-store ordering before release.
 Backend retirement and shared-object qualification remain open.
+
+
+## Immutable file bytes and retirement: September 27, 2026
+
+Consumer `4a0de8d5` uses file schema 4 and a separate `retained-v1` byte namespace.
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/retirement-2026-09-27/verification.json) qualifies local filesystem and versioned MinIO retirement.
+An interrupted cleanup retains its byte claim until retirement succeeds.
+A delayed writer cannot replace the retained marker.
+
+Backups and lifecycle rules must preserve current retirement markers.
+Logical payload quotas exclude marker overhead, filesystem staging, multipart parts, and noncurrent versions.
+Monitor these storage costs separately. CSP13 owns safe migration and marker reclamation.
+Staging cleanup, restore tests, other S3 services, native platform checks, and shared readiness remain open.

@@ -4691,3 +4691,26 @@ The same proof fails delayed-publication retirement on all three metadata backen
 A blob can reappear after cleanup deletes the file and releases its charge.
 The [retirement contract](../../plans/proof/starport-production-catalog/csp12.2/durable-results-2026-09-27/RETIREMENT_CONTRACT.md) requires a backend fence before quota release.
 Aggregate reconstruction, stable aggregate publication, and interrupted-run recovery remain incomplete.
+
+
+## File publication retirement: September 27, 2026
+
+Consumer `4a0de8d5` uses immutable blob publication for uploaded files and batch outputs.
+File schema 4 selects the `retained-v1` namespace. CSP13 owns migration.
+Cleanup confirms durable retirement before releasing the byte claim and file record.
+A lost acknowledgment retains both. Exact output retries verify existing content.
+
+Filesystem publication uses a flushed staged file and a hard link without replacement.
+Retirement replaces the identity with a flushed marker and flushes its directory ancestors.
+Shared publication requires conditional creation for single-part writes and multipart completion.
+Retirement writes a real object because S3 delete markers permit conditional creation.
+
+The [local proof](../../plans/proof/starport-production-catalog/csp12.2/retirement-2026-09-27/verification.json) passes the original delayed-writer assertion on all three metadata backends.
+It also tests separate processes, versioned MinIO, and delayed multipart completion.
+Each cleanup pass handles at most 256 records and preserves its page continuation.
+The 30-second deadline remains unchanged.
+
+Current retirement markers require indefinite retention in backups and object lifecycle policy.
+Payload quotas exclude markers, staging, multipart parts, and noncurrent versions.
+CSP13 must prove that old writers cannot resume before reclaiming markers.
+Native platforms, restore behavior, storage readiness, video retirement, and full batch recovery remain required.
