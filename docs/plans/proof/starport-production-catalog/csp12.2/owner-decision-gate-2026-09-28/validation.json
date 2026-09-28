@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "ledger_rows": 40,
+  "done": 26,
+  "blocked": "CSP12.2",
+  "active_tasks": 0,
+  "goal_status": "active",
+  "resume_words": 357,
+  "links": 142,
+  "task_contracts_preserved": 40,
+  "cold_resume": "Await the two pending owner answers, then resume the existing CSP12.2 worktrees. No process or independent eligible task remains."
+}

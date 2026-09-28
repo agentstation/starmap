@@ -1,0 +1,7 @@
+{
+  "moved_original_row_sha256": "40e4a0ab41e667e8e53c129a33b8ccf10816759494b61a8f49f3ed894f24869e",
+  "task_contracts_preserved": 40,
+  "transition": "CSP12.2 in_progress -> blocked(owner-decisions)",
+  "goal_status": "active",
+  "execution_entries": 10
+}

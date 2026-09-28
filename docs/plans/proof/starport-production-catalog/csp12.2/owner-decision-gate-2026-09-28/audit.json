@@ -1,0 +1,94 @@
+{
+  "classification": "owner-blocker-observation",
+  "consecutive_impasse_observations": 1,
+  "goal_status": "active",
+  "previous_goal_turn": "PROGRESS: committed endpoint allocation repair and evidence",
+  "producer_head": "89e818f854a79660c8a3c3bb69945679dddc39bb",
+  "consumer_head": "dcad9e2b68f801f463b604390532fd2b6aa46a26",
+  "open_decisions": [
+    "Automatically resume only proven-unstarted batch lines, or require explicit resubmission. Never repeat uncertain attempts automatically.",
+    "Choose the correction horizon for settled charges: proposed 90 days, one year, or no expiry. Unresolved reservations do not expire."
+  ],
+  "remaining_tasks": [
+    {
+      "task": "CSP12.2",
+      "status": "in_progress",
+      "dependency_contract": "CSP0.4, CSP10.2, CSP12."
+    },
+    {
+      "task": "CSP13",
+      "status": "todo",
+      "dependency_contract": "CSP11, CSP12, CSP12.1, CSP12.2."
+    },
+    {
+      "task": "CSP15",
+      "status": "todo",
+      "dependency_contract": "CSP11, CSP12, CSP12.1, CSP12.2, CSP13."
+    },
+    {
+      "task": "CSP16",
+      "status": "todo",
+      "dependency_contract": "CSP8, CSP9, CSP10, CSP10.2, CSP12, CSP12.1, CSP13. Review D15 before implementation."
+    },
+    {
+      "task": "CSP16.1",
+      "status": "todo",
+      "dependency_contract": "CSP16."
+    },
+    {
+      "task": "CSP17",
+      "status": "todo",
+      "dependency_contract": "CSP0.1, CSP10, CSP12, CSP16.1."
+    },
+    {
+      "task": "CSP18",
+      "status": "todo",
+      "dependency_contract": "CSP1, CSP8, CSP16, CSP17."
+    },
+    {
+      "task": "CSP19",
+      "status": "todo",
+      "dependency_contract": "CSP12 through CSP18."
+    },
+    {
+      "task": "CSP20",
+      "status": "todo",
+      "dependency_contract": "CSP17, CSP18, CSP19."
+    },
+    {
+      "task": "CSP21",
+      "status": "todo",
+      "dependency_contract": "CSP17, CSP20. Select the recording release first."
+    },
+    {
+      "task": "CSP22",
+      "status": "todo",
+      "dependency_contract": "CSP0 through CSP21."
+    },
+    {
+      "task": "CSP23",
+      "status": "todo",
+      "dependency_contract": "CSP22. Publication requires explicit authorization."
+    },
+    {
+      "task": "CSP24",
+      "status": "todo",
+      "dependency_contract": "CSP23."
+    },
+    {
+      "task": "CSP99",
+      "status": "todo",
+      "dependency_contract": "CSP24 and merge of the final implementation PR."
+    }
+  ],
+  "csp14": {
+    "status": "done",
+    "merge": "e7a6abdf7",
+    "proof": "../../csp14/merged-2026-09-16/verification.json"
+  },
+  "safe_action": "Await the pending product answers, then resume CSP12.2 in its existing worktrees. Do not infer policy from elapsed time.",
+  "new_product_checks": "none",
+  "remote_writes": "none",
+  "worktree_mutations": "plan and evidence only",
+  "running_commands": "none"
+}
