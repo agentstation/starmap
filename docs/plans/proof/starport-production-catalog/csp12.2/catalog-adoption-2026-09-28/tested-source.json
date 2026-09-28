@@ -1,0 +1,30 @@
+{
+  "producer": {
+    "worktree": "/private/tmp/starmap-fleet-review-20260926",
+    "head": "35264ea325c65b65e01d97656de35afd6bf45cee",
+    "files": {
+      "runtime/fleet_adoption_test.go": "1b8e37d7b9cd8339a06e0c94817f7ba2a1b277a039a5670f8179a79b91232ccb",
+      "runtime/fleet_runtime_test.go": "3b5d05006e7c50435358591dff96297bb9a0d6c9846b397e031d04743ef70d62",
+      "runtime/fleet_store.go": "6fd42b9707d2ab2756f76de305fd427ae45cec7d75fd34c1b7f7410260a5974c",
+      "runtime/fleet_validation.go": "dd4e852fc7c7765cd0a880342c99fa07125534a2f90a670ea056def65a3203ee",
+      "runtime/fleet_validation_test.go": "adbb945b8625c753f6eeb86ea3b7846e5da09fe8d506129682e8666452147ca0"
+    }
+  },
+  "consumer": {
+    "worktree": "/private/tmp/starport-fleet-review-20260926",
+    "head": "f238cc2763ec8f33850aadf30085be15bba1b213",
+    "files": {
+      "internal/app/budget_fleet_test.go": "05b67c86ea1053db90a5b06dacae1bfe01f3c618d501027a58c5010b57694b7e",
+      "internal/catalog/fleet_adoption.go": "99b8b2027df2dad9103e8612befc1b465d98be151eff11ea5e1428dba5190641",
+      "internal/catalog/fleet_adoption_lease.go": "78c281cbc3101c2a8ac3edd427486e16521c263ac1a3bf9b3f9205010f589239",
+      "internal/catalog/fleet_adoption_request_test.go": "f94cbc35db1b561214b98ca047e5ebbf5defeaceb23ed98382fb2d7eeb4ee127",
+      "internal/catalog/fleet_adoption_test.go": "c5274921ebe1e26f28fe4f3b31a76fc01e06a52588a06047445477b5e3199262",
+      "internal/catalog/fleet_retention.go": "19a460df0ba9702dedbe031be7b555889dd901bb7c239127bada4961b4d44baa",
+      "internal/catalog/fleet_retention_record.go": "5d0cdb97110498607c90e3cde7886cc89eff4adc1753803f47fc144e081f4fc4"
+    }
+  },
+  "toolchain": "go1.27.1",
+  "workspace": "/tmp/csp122-billing.work",
+  "platform": "darwin/arm64",
+  "test_source_note": "Production code was unchanged across the passing runs. The native test gained historical-revision, reader, pending-upload, and approval-response cases in successive runs. The final boundary run covers the committed consumer test. The producer final broad run preceded the pin test and authority table extension; separate focused runs cover both additions."
+}

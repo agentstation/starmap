@@ -4917,3 +4917,25 @@ CSP13 retains complete backup tooling, populated migration, and operator procedu
 
 The production replacement test must pass through the supported adoption operation.
 Its successful restart, five retained meters, explicit reconciliation, and exact provider dispatch count remain mandatory.
+
+### Controlled adoption implementation: September 28, 2026
+
+Starmap `FleetAdoption` separates the original acquisition grant from approval to use a recovered catalog.
+
+`ValidateFleetRecovery` checks retained inputs.
+
+`ValidateFleetReplay` checks the selected deployment policy without starting acquisition or local publication.
+The original generation, source times, authority head, and private input bytes remain unchanged.
+
+Starport `AdoptFleet` requires an explicit source approval, closed recovery record, original head, replacement backend, operation ID, and reconciliation evidence.
+It validates retained data before atomically changing catalog descriptors, inventory, selection, acceptance, and the adoption receipt.
+It then installs native budget authority before opening SQL approval.
+A lost response requires an exact retry. Partial recovery keeps admission closed.
+
+Recovery removes the copied refresh lease. It preserves the durable lease epoch and requires a new grant for subsequent publication.
+
+The [implementation proof](../../plans/proof/starport-production-catalog/csp12.2/catalog-adoption-2026-09-28/verification.json) qualifies production replacement and native interrupted recovery on macOS arm64.
+
+It does not complete the broader recovery contract or CSP12.2.
+
+Native Linux and Windows qualification, remaining adoption cases, and the complete task gate remain required.

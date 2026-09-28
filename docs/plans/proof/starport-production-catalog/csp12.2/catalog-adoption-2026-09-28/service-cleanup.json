@@ -1,0 +1,12 @@
+{
+  "task_containers": [
+    "starport-csp122-postgres",
+    "starport-csp122-async-usage",
+    "starport-csp122-replacement-valkey"
+  ],
+  "container_stop_exit": 0,
+  "running_containers_before_desktop_stop": [],
+  "docker_desktop_stop_exit": 0,
+  "backend_and_vm_processes_remaining": [],
+  "deleted_resources": false
+}

@@ -4668,3 +4668,17 @@ No catalog adoption operation currently connects these contracts. Resetting boot
 The [recovery contract](../../plans/proof/starport-production-catalog/csp12.2/catalog-recovery-prerequisite-2026-09-28/CONTRACT.md) moves the necessary prerequisite into CSP12.2.
 CSP13 retains the complete migration and operator tooling scope.
 The original and corrected failures remain evidence. Successful backend recovery remains unverified.
+
+## Controlled catalog adoption implemented: September 28, 2026
+
+Producer commit `35264ea32` and consumer commit `f238cc27` add explicit catalog adoption under a closed recovery gate.
+The [current proof](../../plans/proof/starport-production-catalog/csp12.2/catalog-adoption-2026-09-28/verification.json) closes the production replacement startup failure.
+The test retains five uncertain reservations and refuses another request until explicit reconciliation permits it.
+The catalog keeps its original publication evidence and receives a separate recovery receipt.
+
+Native tests reject missing or corrupt retained data, conflicting operation evidence, and unresolved reader claims.
+They recover pending uploads and retry after lost catalog-selection or native-approval responses.
+The approved retry preserves a later ordinary publication. An obsolete retry cannot reopen a newer closed epoch.
+Authority tests confirm that adoption grants no inference permission and does not undo a known withdrawal.
+
+The changes remain unpublished. Remaining adoption cases, native CI, full task verification, review, and paired merges remain required.

@@ -1,0 +1,54 @@
+{
+  "config_sources": [
+    "/Users/jack/.config/agentstation/technical-writing.toml",
+    "/private/tmp/starport-fleet-review-20260926/.agents/technical-writing.toml"
+  ],
+  "documents": [
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/catalog/fleet_adoption.go",
+      "words": 65
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/catalog/fleet_adoption_lease.go",
+      "words": 18
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/catalog/fleet_adoption_test.go",
+      "words": 11
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/catalog/fleet_retention.go",
+      "words": 83
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/catalog/fleet_retention_record.go",
+      "words": 0
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/app/budget_fleet_test.go",
+      "words": 48
+    }
+  ],
+  "mode": "strict",
+  "passed": true,
+  "summary": {
+    "diagnostics": 0,
+    "errors": 0,
+    "files": 6,
+    "max_warnings_per_100_words": 0.0,
+    "warning_rate_per_100_words": 0.0,
+    "warnings": 0
+  }
+}

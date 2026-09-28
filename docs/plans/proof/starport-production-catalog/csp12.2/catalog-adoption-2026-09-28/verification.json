@@ -1,0 +1,1541 @@
+{
+  "status": "partial",
+  "task": "CSP12.2",
+  "date": "2026-09-28",
+  "producer": "35264ea325c65b65e01d97656de35afd6bf45cee",
+  "consumer": "f238cc2763ec8f33850aadf30085be15bba1b213",
+  "toolchain": "go1.27.1",
+  "platform": "darwin/arm64",
+  "production_replacement": "pass; startup, five retained reservations, HTTP 402, idempotent no-charge reconciliation, subsequent HTTP 200, and exact provider dispatch count",
+  "commands": {
+    "producer_broad": "go test -race -count=1 -timeout 5m -json -run '^Test(Fleet|ValidateFleet)' ./runtime",
+    "producer_pin": "go test -race -count=1 -json -run '^TestValidateFleetReplayPreservesPin$' ./runtime",
+    "producer_authority": "go test -race -count=1 -json -run '^TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission$' ./runtime",
+    "consumer_native": "go test -race -count=1 -timeout 5m -json -run '^TestFleetAdoption' ./internal/catalog",
+    "consumer_regression": "go test -race -count=1 -timeout 5m -json -run '^TestFleet(Store|Retention|Acceptance|Migration|Accepted|Publication|Head|Lease)' ./internal/catalog",
+    "production_replacement": "go test -race -count=1 -timeout 5m -json -run '^TestProductionBudgetAcrossProcesses$/^backend-replacement$' ./internal/app",
+    "producer_pure_go": "CGO_ENABLED=0 go test -count=1 -json -run '^Test(FleetSnapshotAdoption|ValidateFleet)' ./runtime",
+    "consumer_pure_go": "CGO_ENABLED=0 go test -count=1 -json -run '^TestFleetAdoptionRequest' ./internal/catalog"
+  },
+  "checks": {
+    "goago_both": "pass; zero findings, stale ignores, or incomplete errors",
+    "vet_affected_packages": "pass",
+    "changed_source_prose": "pass",
+    "native_ci": "UNVERIFIED",
+    "full_task_gate": "not run; remaining task cases",
+    "pre_pr_autoreview": "not run; incomplete task",
+    "plan_structure": "pass; 40 tasks, 26 done, CSP12.2 sole in_progress; statuses unchanged",
+    "changed_plan_and_design_prose": "pass",
+    "service_cleanup": "pass; task containers stopped, Docker Desktop stopped, backend and VM processes absent"
+  },
+  "remaining": [
+    "Direct native repeated adoption into another epoch",
+    "Simultaneous conflicting adoption operations and backend replacement during selection",
+    "Expired authority receipts after adoption",
+    "Complete cost bounds, retention decisions, interrupted batches, latency and capacity",
+    "Full task qualification, native CI, pre-PR review, published dependency qualification and paired merges"
+  ],
+  "historical_failure": "../catalog-recovery-prerequisite-2026-09-28/verification.json",
+  "fixture_failure": "The first native adoption fixture used an existing non-private state directory. The fixture now supplies a child path that the runtime creates privately. The production permission policy did not change.",
+  "build_failure": "The initial native test used the wrong KV Set signature and a nonexistent interface assertion. The compile log remains preserved.",
+  "raw_logs": [
+    {
+      "path": "csp122-adoption-producer-before.log.gz",
+      "sha256_uncompressed": "49ef2e75dcfde919ed04dae1be591952acd5b202069d01be105a688c5a8ddca8"
+    },
+    {
+      "path": "csp122-adoption-producer-final.jsonl.gz",
+      "sha256_uncompressed": "7d44838dc47a542a3b913a9711be373fc3d5258afba582d21a262ab20ab1dd4e",
+      "test_counts": {
+        "pass": 121,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 40.254
+        }
+      ],
+      "test_results": [
+        {
+          "Test": "TestFleetSnapshotAdoptionPreservesPublication",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/receipt",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/previous-empty",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/same-epoch",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/previous-regression",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/parallel-backend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/foreign-deployment",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/foreign-previous",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/revision",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/generation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/recovery-inputs",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/previous-revision",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/original-grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetCapabilityRefusesOwnershipAndRecovers",
+          "Action": "pass",
+          "Elapsed": 25.39
+        },
+        {
+          "Test": "TestFleetCapabilityChecksActiveBindings",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Test": "TestFleetCapabilityChecksUnobservedProvidersBeforeGrant",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Test": "TestFleetCapabilityRetainsProviderMetadataAcrossPin",
+          "Action": "pass",
+          "Elapsed": 0.61
+        },
+        {
+          "Test": "TestFleetCapabilityClassifiesDiscoveryCandidates",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Test": "TestFleetCapabilityPreservesAuthorMappingTargets",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetLeaseRenewalCannotReplaceGrant/holder",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetLeaseRenewalCannotReplaceGrant/epoch",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetLeaseRenewalCannotReplaceGrant/session",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetLeaseRenewalCannotReplaceGrant/backend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetLeaseRenewalCannotReplaceGrant/recovery-epoch",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetLeaseRenewalCannotReplaceGrant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetLeaseLateRenewalCannotReplaceCurrentState/closed",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetLeaseLateRenewalCannotReplaceCurrentState/lost",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetLeaseLateRenewalCannotReplaceCurrentState/new-grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetLeaseLateRenewalCannotReplaceCurrentState/new-grant-error",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetLeaseLateRenewalCannotReplaceCurrentState",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryCodecBoundsAndIntegrity/expansion",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryCodecBoundsAndIntegrity/truncated",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryCodecBoundsAndIntegrity/checksum",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryCodecBoundsAndIntegrity/extra-member",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryCodecBoundsAndIntegrity/trailing",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryCodecBoundsAndIntegrity/plaintext",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryCodecBoundsAndIntegrity/empty",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryCodecBoundsAndIntegrity",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Test": "TestFleetRecoveryPreservesNextPartialMerge",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Test": "TestFleetRecoveryBindsExactGenerationAndBytes/generation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryBindsExactGenerationAndBytes/payload",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryBindsExactGenerationAndBytes/checksum",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryBindsExactGenerationAndBytes/bytes",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryBindsExactGenerationAndBytes/empty",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryBindsExactGenerationAndBytes",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsAmbiguousAndInvalidInputs/version",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsAmbiguousAndInvalidInputs/publisher",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsAmbiguousAndInvalidInputs/unknown",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsAmbiguousAndInvalidInputs/duplicate",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsAmbiguousAndInvalidInputs/trailing",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsAmbiguousAndInvalidInputs/source",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsAmbiguousAndInvalidInputs/manual",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsAmbiguousAndInvalidInputs/provider",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsAmbiguousAndInvalidInputs",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestFleetRecoveryRetainsProviderScopesAndRejectsDuplicates",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Test": "TestFleetRecoveryPreservesSourceResetsAndRemovals",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsMissingOrCorruptBaseline/missing",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsMissingOrCorruptBaseline/manifest",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsMissingOrCorruptBaseline/payload",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsMissingOrCorruptBaseline/schema",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRecoveryRejectsMissingOrCorruptBaseline",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestFleetReplayRequiresEquivalentPolicy/authority",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetReplayRequiresEquivalentPolicy/explicit-no-providers",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetReplayRequiresEquivalentPolicy/explicit-no-sources",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetReplayRequiresEquivalentPolicy/source-capability",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetReplayRequiresEquivalentPolicy/publisher-aliases",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetReplayRequiresEquivalentPolicy",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestFleetReplayRejectsInputsThatDoNotReproduceCatalog",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestFleetReplayRetainsBaselineAcrossBinaryUpgrade/embedded-only",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetReplayRetainsBaselineAcrossBinaryUpgrade/configured-upstream",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetReplayRetainsBaselineAcrossBinaryUpgrade",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestFleetRetentionUsesCanonicalPolicyAndExplicitCollection/disabled",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Test": "TestFleetRetentionUsesCanonicalPolicyAndExplicitCollection/enabled",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Test": "TestFleetRetentionUsesCanonicalPolicyAndExplicitCollection",
+          "Action": "pass",
+          "Elapsed": 0.19
+        },
+        {
+          "Test": "TestFleetRuntimeRecoversInputsWithoutLeaderDirectory",
+          "Action": "pass",
+          "Elapsed": 0.33
+        },
+        {
+          "Test": "TestFleetRuntimeIncompatibleReplayRemainsFollower",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Test": "TestFleetRuntimePinSurvivesLostDirectoriesAndUnpin/ordinary",
+          "Action": "pass",
+          "Elapsed": 1.06
+        },
+        {
+          "Test": "TestFleetRuntimePinSurvivesLostDirectoriesAndUnpin/origin",
+          "Action": "pass",
+          "Elapsed": 1.18
+        },
+        {
+          "Test": "TestFleetRuntimePinSurvivesLostDirectoriesAndUnpin",
+          "Action": "pass",
+          "Elapsed": 2.24
+        },
+        {
+          "Test": "TestFleetRuntimeRetainsGrantCapturedBeforeSourceRead/expired",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Test": "TestFleetRuntimeRetainsGrantCapturedBeforeSourceRead/released",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Test": "TestFleetRuntimeRetainsGrantCapturedBeforeSourceRead/takeover",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Test": "TestFleetRuntimeRetainsGrantCapturedBeforeSourceRead/same-epoch-new-incarnation",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Test": "TestFleetRuntimeRetainsGrantCapturedBeforeSourceRead",
+          "Action": "pass",
+          "Elapsed": 0.39
+        },
+        {
+          "Test": "TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission",
+          "Action": "pass",
+          "Elapsed": 7.11
+        },
+        {
+          "Test": "TestFleetRuntimeRejectsRegressedOrReplacedHead/missing",
+          "Action": "pass",
+          "Elapsed": 0.21
+        },
+        {
+          "Test": "TestFleetRuntimeRejectsRegressedOrReplacedHead/regressed",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Test": "TestFleetRuntimeRejectsRegressedOrReplacedHead/same-revision",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Test": "TestFleetRuntimeRejectsRegressedOrReplacedHead/recovery-identity",
+          "Action": "pass",
+          "Elapsed": 0.17
+        },
+        {
+          "Test": "TestFleetRuntimeRejectsRegressedOrReplacedHead",
+          "Action": "pass",
+          "Elapsed": 0.74
+        },
+        {
+          "Test": "TestFleetRuntimeRefusesUnacceptedPinOnFollower",
+          "Action": "pass",
+          "Elapsed": 0.17
+        },
+        {
+          "Test": "TestFleetRuntimeUnchangedRefreshRebindsAfterTakeover",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Test": "TestFleetRuntimeUpgradeKeepsRetainedBaselineAndSourceUpdates",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Test": "TestFleetRuntimeUnchangedSourceTakeover",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Test": "TestFleetRuntimeStartupRefreshesAfterOwnership",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity/holder",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity/session",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity/epoch",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity/deployment",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity/recovery-epoch",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity/backend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity/foreign-predecessor",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity/restored-predecessor",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity/different-process",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity/revision-overflow",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity/partial-head",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity/malformed-digest",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetPublicationRejectsIncompleteAndForeignIdentity",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetHeadDistinguishesInputsForUnchangedCatalog",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetCommitPreservesOriginalGrantAndInputsOnRetry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetCommitRefusesUnownedContextsAndWrongPredecessor",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetCommitRejectsMismatchedBackendReceipt",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetReplayOffline",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestValidateFleetRecoveryRejectsCorruption/checksum",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetRecoveryRejectsCorruption/schema",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetRecoveryRejectsCorruption/generation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetRecoveryRejectsCorruption",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestValidateFleetRecoveryContext/recovery",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetRecoveryContext/replay",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetRecoveryContext",
+          "Action": "pass",
+          "Elapsed": 0
+        }
+      ]
+    },
+    {
+      "path": "csp122-adoption-pin.jsonl.gz",
+      "sha256_uncompressed": "35d17e2d5df8c06e90cd548f0d67ed1b3a7d38d841b6e092b9bb28e92edf8a3e",
+      "test_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 1.6520000000000001
+        }
+      ],
+      "test_results": [
+        {
+          "Test": "TestValidateFleetReplayPreservesPin",
+          "Action": "pass",
+          "Elapsed": 0.02
+        }
+      ]
+    },
+    {
+      "path": "csp122-adoption-authority.jsonl.gz",
+      "sha256_uncompressed": "e0a1553239c44dc2b32eec416517a5acaecaf5fb8e1befd6eba5b257a076bf19",
+      "test_counts": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 40.476
+        }
+      ],
+      "test_results": [
+        {
+          "Test": "TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission/ordinary",
+          "Action": "pass",
+          "Elapsed": 30.32
+        },
+        {
+          "Test": "TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission/adopted",
+          "Action": "pass",
+          "Elapsed": 8.48
+        },
+        {
+          "Test": "TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission",
+          "Action": "pass",
+          "Elapsed": 38.8
+        }
+      ]
+    },
+    {
+      "path": "csp122-adoption-producer-pure-go.jsonl.gz",
+      "sha256_uncompressed": "e481f3e11f942043d9b89d7a8e29c4d1f9c981fb6044e181f914784261a2dd55",
+      "test_counts": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 0.556
+        }
+      ],
+      "test_results": [
+        {
+          "Test": "TestFleetSnapshotAdoptionPreservesPublication",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/receipt",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/previous-empty",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/same-epoch",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/previous-regression",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/parallel-backend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/foreign-deployment",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/foreign-previous",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/revision",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/generation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/recovery-inputs",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/previous-revision",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence/original-grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetSnapshotAdoptionRejectsChangedEvidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetReplayOffline",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetRecoveryRejectsCorruption/checksum",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetRecoveryRejectsCorruption/schema",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetRecoveryRejectsCorruption/generation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetRecoveryRejectsCorruption",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetRecoveryContext/recovery",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetRecoveryContext/replay",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetRecoveryContext",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestValidateFleetReplayPreservesPin",
+          "Action": "pass",
+          "Elapsed": 0
+        }
+      ]
+    },
+    {
+      "path": "csp122-adoption-consumer-pure-go.jsonl.gz",
+      "sha256_uncompressed": "958300f5ded0902e024ac77fe005952236fb06e41fb37d3827646835310c3b3b",
+      "test_counts": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 0.719
+        }
+      ],
+      "test_results": [
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/open-gate",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/obsolete-epoch",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/foreign-deployment",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/unapproved-source",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/missing-source-evidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/oversized-source-evidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/foreign-source",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/missing-operation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/missing-evidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/blank-backend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/oversized-backend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/empty-head",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence",
+          "Action": "pass",
+          "Elapsed": 0
+        }
+      ]
+    },
+    {
+      "path": "csp122-adoption-replacement.jsonl.gz",
+      "sha256_uncompressed": "6fd726200f9a5d5be2567ee7a8bd024d4e1512bf1b0de71604a15d2029424978",
+      "test_counts": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 168.802
+        }
+      ],
+      "test_results": [
+        {
+          "Test": "TestProductionBudgetAcrossProcesses/backend-replacement",
+          "Action": "pass",
+          "Elapsed": 166.54
+        },
+        {
+          "Test": "TestProductionBudgetAcrossProcesses",
+          "Action": "pass",
+          "Elapsed": 166.54
+        }
+      ]
+    },
+    {
+      "path": "csp122-adoption-native.jsonl.gz",
+      "sha256_uncompressed": "6fee09a848864002c8a40a45283fba195bf7ae67d975f3a4e1aedad39af862b5",
+      "test_counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "fail",
+          "Elapsed": 14.993
+        }
+      ],
+      "test_results": [
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse",
+          "Action": "fail",
+          "Elapsed": 14.01
+        }
+      ]
+    },
+    {
+      "path": "csp122-adoption-native-v2.jsonl.gz",
+      "sha256_uncompressed": "bd2faa72586bc935f1627567e2f781a07e26d122c4df6e95f1a7b970ff106a95",
+      "test_counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 127.024
+        }
+      ],
+      "test_results": [
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse/changed-head",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse/missing-chunk-before-selection",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse/corruption-during-interruption",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse",
+          "Action": "pass",
+          "Elapsed": 125.01
+        }
+      ]
+    },
+    {
+      "path": "csp122-adoption-native-final.jsonl.gz",
+      "sha256_uncompressed": "0b8101d8c9bd182f5abd361f5928049b4cfc974267c2744b11553887d41c549b",
+      "test_counts": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 178.556
+        }
+      ],
+      "test_results": [
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/open-gate",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/obsolete-epoch",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/foreign-deployment",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/unapproved-source",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/missing-source-evidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/oversized-source-evidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/foreign-source",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/missing-operation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/missing-evidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/blank-backend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/oversized-backend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/empty-head",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse/changed-head",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse/missing-chunk-before-selection",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse/corruption-during-interruption",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse",
+          "Action": "pass",
+          "Elapsed": 176.55
+        }
+      ]
+    },
+    {
+      "path": "csp122-adoption-native-boundaries.jsonl.gz",
+      "sha256_uncompressed": "a5136c21475b854b3994bbe84702db101130ed57e88cf2e7ec8da33210fe0499",
+      "test_counts": {
+        "pass": 19,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 190.487
+        }
+      ],
+      "test_results": [
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/open-gate",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/obsolete-epoch",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/foreign-deployment",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/unapproved-source",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/missing-source-evidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/oversized-source-evidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/foreign-source",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/missing-operation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/missing-evidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/blank-backend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/oversized-backend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/empty-head",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse/changed-head",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse/missing-chunk-before-selection",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse/reader-resolution-requires-consent",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse/corruption-during-interruption",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse/conflicting-operation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRecoversLostSelectionResponse",
+          "Action": "pass",
+          "Elapsed": 188.52
+        }
+      ]
+    },
+    {
+      "path": "csp122-adoption-native-regression.jsonl.gz",
+      "sha256_uncompressed": "2f496595656b874bb6a9ca3469e516af249dae15a82d6ded9d10318c406eb13e",
+      "test_counts": {
+        "pass": 37,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 24.63
+        }
+      ],
+      "test_results": [
+        {
+          "Test": "TestFleetRetentionRequiresExplicitCollection",
+          "Action": "pass",
+          "Elapsed": 1.83
+        },
+        {
+          "Test": "TestFleetRetentionHonorsLimitsAndRequiredGenerations/predecessor",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestFleetRetentionHonorsLimitsAndRequiredGenerations/required",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestFleetRetentionHonorsLimitsAndRequiredGenerations/scan",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRetentionHonorsLimitsAndRequiredGenerations/input",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Test": "TestFleetRetentionHonorsLimitsAndRequiredGenerations/invalid",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetRetentionHonorsLimitsAndRequiredGenerations",
+          "Action": "pass",
+          "Elapsed": 0.95
+        },
+        {
+          "Test": "TestFleetRetentionCountsGenerationsSeparatelyFromReceipts",
+          "Action": "pass",
+          "Elapsed": 1.28
+        },
+        {
+          "Test": "TestFleetRetentionDryRunPreservesPendingRecovery",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Test": "TestFleetRetentionResumesInterruptedCollection",
+          "Action": "pass",
+          "Elapsed": 0.79
+        },
+        {
+          "Test": "TestFleetRetentionRefusesUnownedStaging",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Test": "TestFleetRetentionBoundsCommittedSnapshots",
+          "Action": "pass",
+          "Elapsed": 1.68
+        },
+        {
+          "Test": "TestFleetRetentionProtectsPinnedGeneration",
+          "Action": "pass",
+          "Elapsed": 1.02
+        },
+        {
+          "Test": "TestFleetRetentionRecoversInterruptedUploadAndDeletion",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Test": "TestFleetRetentionFencesExpiredMaintenance",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Test": "TestFleetRetentionConcurrentReadersAndCollection",
+          "Action": "pass",
+          "Elapsed": 3.37
+        },
+        {
+          "Test": "TestFleetRetentionCapacityRefusesWithoutMovingHead",
+          "Action": "pass",
+          "Elapsed": 7.76
+        },
+        {
+          "Test": "TestFleetRetentionRejectsOverlappingDeletionRecord",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/current",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/accepted",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/rollback",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/inventory-missing",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Test": "TestFleetRetentionCorruptionCannotDeleteSelectedBytes",
+          "Action": "pass",
+          "Elapsed": 0.4
+        },
+        {
+          "Test": "TestFleetAcceptanceRetainsDistinctRollbackGenerations",
+          "Action": "pass",
+          "Elapsed": 1.07
+        },
+        {
+          "Test": "TestFleetStoreCompleteKeyLossRequiresRecovery",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Test": "TestFleetStoreNativePublication",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Test": "TestFleetStoreRefusesExpiredGrant",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Test": "TestFleetStoreSeparateProcessTakeover",
+          "Action": "pass",
+          "Elapsed": 1.14
+        },
+        {
+          "Test": "TestFleetStoreProcessHelper",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetStoreMissingSelectedPublicationIsNotAnEmptyStore",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Test": "TestFleetStoreAcceptanceUsesOriginalGrant",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Test": "TestFleetStoreNamespaceAndMalformedDescriptor",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Test": "TestFleetStoreLeaseExpiresDuringSelection/publication",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Test": "TestFleetStoreLeaseExpiresDuringSelection/acceptance",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Test": "TestFleetStoreLeaseExpiresDuringSelection",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Test": "TestFleetStoreLostHeadCannotBootstrapAgain",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Test": "TestFleetMigrationRequiresSameRecoveryIdentity",
+          "Action": "pass",
+          "Elapsed": 0.24
+        }
+      ]
+    },
+    {
+      "path": "csp122-adoption-request.jsonl.gz",
+      "sha256_uncompressed": "9245cb67f6167b87898a195fab8fea05fdbfa62dd31f202c7ceced2c2c8fd46c",
+      "test_counts": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 1.986
+        }
+      ],
+      "test_results": [
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/open-gate",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/obsolete-epoch",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/foreign-deployment",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/unapproved-source",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/missing-source-evidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/oversized-source-evidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/foreign-source",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/missing-operation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/missing-evidence",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/blank-backend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/oversized-backend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence/empty-head",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence",
+          "Action": "pass",
+          "Elapsed": 0
+        }
+      ]
+    },
+    {
+      "path": "csp122-adoption-test-build.log.gz",
+      "sha256_uncompressed": "f22427fcc328abf87bcdbfa9adb6099929bd15761d38d15c2579053856cae038"
+    }
+  ],
+  "paid_inference": false,
+  "publication": false,
+  "goal_turn_classification": "progress",
+  "service_cleanup": "service-cleanup.json"
+}

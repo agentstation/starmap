@@ -1,0 +1,843 @@
+diff --git a/internal/app/budget_fleet_test.go b/internal/app/budget_fleet_test.go
+index 2cae3acf..7b09f7f5 100644
+--- a/internal/app/budget_fleet_test.go
++++ b/internal/app/budget_fleet_test.go
+@@ -233,6 +233,7 @@ func TestProductionBudgetAcrossProcesses(t *testing.T) {
+ 			})
+ 			require.NoError(t, err)
+ 			t.Cleanup(func() { require.NoError(t, application.Close(context.Background())) })
++			var fleetCandidate runtimecatalog.Candidate
+ 			if mode == "backend-replacement" {
+ 				// New opens the embedded baseline. Explicit refresh publishes the
+ 				// fleet snapshot before the fixture takes a recovery copy.
+@@ -246,6 +247,7 @@ func TestProductionBudgetAcrossProcesses(t *testing.T) {
+ 				accepted, err := catalogRuntime.AcceptedGeneration(t.Context())
+ 				require.NoError(t, err)
+ 				require.Equal(t, candidate.State.GenerationID, accepted.Manifest.GenerationID)
++				fleetCandidate = candidate
+ 			}
+ 			now := time.Now().UTC()
+ 			budgets := func() *limits.Limits {
+@@ -350,6 +352,19 @@ func TestProductionBudgetAcrossProcesses(t *testing.T) {
+ 				require.NoError(t, err)
+ 				_, err = copiedFleet.CurrentHead(t.Context())
+ 				require.ErrorContains(t, err, "another recovery identity", "budget approval does not adopt catalog history")
++				partialApproval, err := witness.Current(t.Context(), input.Deployment)
++				require.NoError(t, err)
++				closed, err = witness.Close(t.Context(), partialApproval)
++				require.NoError(t, err)
++				adoption := runtimecatalog.FleetAdoptionRequest{Closed: closed, SourceApproval: approved,
++					Head: fleetCandidate.FleetHead, BackendID: newID, OperationID: "catalog-and-budget-restore",
++					Evidence: "fixture-complete-snapshot-with-retained-dispatch"}
++				completed, err := runtimecatalog.AdoptFleet(t.Context(), newBackend, witness, adoption, catalogSettings(&restoredConfig))
++				require.NoError(t, err)
++				repeated, err := runtimecatalog.AdoptFleet(t.Context(), newBackend, witness, adoption, catalogSettings(&restoredConfig))
++				require.NoError(t, err)
++				require.Equal(t, completed, repeated)
++
+ 				authority, err := witness.OpenAuthority(t.Context(), newBackend, input.Deployment)
+ 				require.NoError(t, err)
+ 				ledger, err := reservation.Open(authority)
+diff --git a/internal/catalog/fleet_adoption.go b/internal/catalog/fleet_adoption.go
+new file mode 100644
+index 00000000..20efe271
+--- /dev/null
++++ b/internal/catalog/fleet_adoption.go
+@@ -0,0 +1,402 @@
++package catalog
++
++import (
++	"bytes"
++	"context"
++	"crypto/rand"
++	"encoding/json/v2"
++	"errors"
++	"math"
++	"strconv"
++	"strings"
++	"time"
++
++	"github.com/agentstation/starmap/acquisition"
++	"github.com/agentstation/starmap/runtime"
++	"github.com/agentstation/starport/internal/recovery"
++	"github.com/agentstation/starport/internal/storage"
++)
++
++// FleetAdoptionRequest names a fenced recovery operation and its selected source head.
++// ResolveReaders explicitly abandons claims from the externally fenced processes.
++// Evidence must identify the operator's fencing and cross-store reconciliation record.
++type FleetAdoptionRequest struct {
++	SourceApproval recovery.Record   `json:"source_approval"`
++	Closed         recovery.Record   `json:"closed"`
++	Head           runtime.FleetHead `json:"head"`
++	BackendID      string            `json:"backend_id"`
++	OperationID    string            `json:"operation_id"`
++	Evidence       string            `json:"evidence"`
++	ResolveReaders bool              `json:"resolve_readers"`
++}
++
++type fleetAdoptionReceipt struct {
++	Version            int                  `json:"version"`
++	Request            FleetAdoptionRequest `json:"request"`
++	InventoryChecksum  string               `json:"inventory_checksum"`
++	AcceptanceChecksum string               `json:"acceptance_checksum"`
++}
++
++func (r fleetAdoptionReceipt) validate() error {
++	if r.Version != 1 || !fleetChunkDigest(r.InventoryChecksum) || !fleetChunkDigest(r.AcceptanceChecksum) {
++		return recovery.ErrConflict
++	}
++	return r.Request.validate()
++}
++
++func (r FleetAdoptionRequest) validate() error {
++	if err := (recovery.FreshRequest{OperationID: r.OperationID, Evidence: r.Evidence}).Validate(); err != nil {
++		return err
++	}
++	if err := r.Head.Validate(); err != nil {
++		return err
++	}
++	for _, record := range []recovery.Record{r.SourceApproval, r.Closed} {
++		if strings.TrimSpace(record.DeploymentID) == "" || len(record.DeploymentID) > 128 ||
++			strings.TrimSpace(record.BackendID) == "" || len(record.BackendID) > 256 ||
++			strings.TrimSpace(record.Evidence) == "" || len(record.Evidence) > 4096 {
++			return recovery.ErrConflict
++		}
++	}
++	if r.Closed.Open || r.Closed.Epoch <= 0 || r.Head == (runtime.FleetHead{}) || strings.TrimSpace(r.BackendID) == "" || len(r.BackendID) > 256 ||
++		r.Head.Identity.DeploymentID != r.Closed.DeploymentID || !r.SourceApproval.Open || r.SourceApproval.DeploymentID != r.Head.Identity.DeploymentID ||
++		r.SourceApproval.BackendID != r.Head.Identity.BackendID || r.SourceApproval.Epoch <= 0 || uint64(r.SourceApproval.Epoch) != r.Head.Identity.RecoveryEpoch ||
++		uint64(r.Closed.Epoch) <= r.Head.Identity.RecoveryEpoch {
++		return recovery.ErrConflict
++	}
++	return nil
++}
++
++func (r FleetAdoptionRequest) approval() recovery.Record {
++	next := r.Closed
++	next.Open, next.BackendID, next.Evidence = true, r.BackendID, r.Evidence
++	return next
++}
++
++// AdoptFleet validates copied catalog state before approving the replacement budget authority.
++// The operator must first close recovery, fence all writers, and reconcile missing history.
++// This operation does not infer those external actions from copied records.
++func AdoptFleet(ctx context.Context, backend storage.IncarnationProvider, witness *recovery.Witness, request FleetAdoptionRequest, settings Settings) (recovery.Record, error) {
++	if ctx == nil || backend == nil || witness == nil {
++		return recovery.Record{}, recovery.ErrClosed
++	}
++	if err := ctx.Err(); err != nil {
++		return recovery.Record{}, err
++	}
++	if err := request.validate(); err != nil {
++		return recovery.Record{}, err
++	}
++	if settings.DeploymentID != request.Closed.DeploymentID {
++		return recovery.Record{}, recovery.ErrConflict
++	}
++	options, err := settings.starmapOptions()
++	if err != nil {
++		return recovery.Record{}, err
++	}
++	providers, err := acquisition.NewAcquirer()
++	if err != nil {
++		return recovery.Record{}, err
++	}
++	metadata, err := settings.metadataCollector()
++	if err != nil {
++		return recovery.Record{}, err
++	}
++	options = append(options, runtime.WithAcquirer(providers), runtime.WithSourceAcquirer(metadata))
++	if settings.Source == string(runtime.SourceStarmap) {
++		source, err := settings.cascadeSource(ctx)
++		if err != nil {
++			return recovery.Record{}, err
++		}
++		defer source.Close()
++		options = append(options, runtime.WithSource(source))
++	}
++	return adoptFleet(ctx, backend, witness, request, options)
++}
++
++func adoptFleet(ctx context.Context, backend storage.IncarnationProvider, witness *recovery.Witness, request FleetAdoptionRequest, options []runtime.Option) (recovery.Record, error) {
++	if ctx == nil || backend == nil || witness == nil {
++		return recovery.Record{}, recovery.ErrClosed
++	}
++	if err := request.validate(); err != nil {
++		return recovery.Record{}, err
++	}
++	ctx, cancel := context.WithTimeout(ctx, 5*time.Minute)
++	defer cancel()
++	bound, err := backend.BindIncarnation(ctx, request.BackendID)
++	if err != nil {
++		return recovery.Record{}, err
++	}
++	current, err := witness.Current(ctx, request.Closed.DeploymentID)
++	if err != nil {
++		return recovery.Record{}, err
++	}
++	if current != request.Closed && current != request.approval() {
++		return recovery.Record{}, recovery.ErrConflict
++	}
++	prefix := "catalog:fleet:{" + payloadDigest([]byte(request.Closed.DeploymentID)) + "}:v1:"
++	operationKey := prefix + "adoption-operation:" + payloadDigest([]byte(request.OperationID))
++	completed, receiptTTL, readErr := bound.ReadWithLifetime(ctx, operationKey, fleetDescriptorMaxBytes)
++	if readErr == nil {
++		var receipt fleetAdoptionReceipt
++		if receiptTTL != 0 || json.Unmarshal(completed, &receipt) != nil || receipt.validate() != nil || receipt.Request != request {
++			return recovery.Record{}, recovery.ErrConflict
++		}
++		durable, ttl, err := bound.ReadWithLifetime(ctx, prefix+"adoption-receipt:"+payloadDigest(completed), fleetDescriptorMaxBytes)
++		if err != nil {
++			return recovery.Record{}, err
++		}
++		if ttl != 0 || !bytes.Equal(durable, completed) {
++			return recovery.Record{}, recovery.ErrConflict
++		}
++		if !current.Open {
++			gate := &closedFleetWitness{witness: witness, expected: request.Closed, approval: request.approval()}
++			guarded := &closedFleetStore{IncarnationStore: bound, gate: gate}
++			identity := runtime.FleetIdentity{DeploymentID: request.Closed.DeploymentID, RecoveryEpoch: uint64(request.Closed.Epoch), BackendID: request.BackendID}
++			fleet := &FleetStore{store: guarded, witness: gate, approval: gate.approval, identity: identity, prefix: prefix, session: rand.Text()}
++			if err := verifyAdoptedFleet(ctx, fleet, request, options); err != nil {
++				return recovery.Record{}, err
++			}
++		}
++		return witness.ApproveAuthority(ctx, backend, request.Closed, request.BackendID, request.Evidence, request.OperationID)
++	}
++	if !errors.Is(readErr, storage.ErrNotFound) {
++		return recovery.Record{}, readErr
++	}
++	if current != request.Closed {
++		return recovery.Record{}, recovery.ErrConflict
++	}
++	gate := &closedFleetWitness{witness: witness, expected: request.Closed, approval: request.SourceApproval}
++	guarded := &closedFleetStore{IncarnationStore: bound, gate: gate}
++	source := &FleetStore{store: guarded, witness: gate, approval: gate.approval, identity: request.Head.Identity, prefix: prefix, session: rand.Text()}
++	head, err := source.CurrentHead(ctx)
++	if err != nil {
++		return recovery.Record{}, err
++	}
++	if head != request.Head {
++		return recovery.Record{}, recovery.ErrConflict
++	}
++	maintenance, err := source.maintain(ctx)
++	if err != nil {
++		return recovery.Record{}, err
++	}
++	defer maintenance.finish()
++	workCtx, abort := context.WithCancel(ctx)
++	defer abort()
++	stopRenewal := renewFleetAdoption(workCtx, maintenance, abort)
++	defer stopRenewal()
++	ctx = workCtx
++	selected, headBytes, err := maintenance.readHead(ctx)
++	if err != nil {
++		return recovery.Record{}, err
++	}
++	if selected != request.Head {
++		return recovery.Record{}, recovery.ErrConflict
++	}
++	accepted, acceptanceBytes, err := source.readAcceptance(ctx)
++	if err != nil {
++		return recovery.Record{}, err
++	}
++	if len(maintenance.inventory.Readers) > 0 && !request.ResolveReaders {
++		return recovery.Record{}, errors.New("catalog recovery requires explicit resolution of abandoned reader claims")
++	}
++	if err := validateAdoptionInputs(ctx, maintenance, selected, accepted, options); err != nil {
++		return recovery.Record{}, err
++	}
++	receipt := fleetAdoptionReceipt{Version: 1, Request: request, InventoryChecksum: payloadDigest(maintenance.encoded), AcceptanceChecksum: payloadDigest(acceptanceBytes)}
++	encoded, err := json.Marshal(receipt)
++	if err != nil {
++		return recovery.Record{}, err
++	}
++	digest := payloadDigest(encoded)
++	target := request.approval()
++	identity := runtime.FleetIdentity{DeploymentID: target.DeploymentID, RecoveryEpoch: uint64(target.Epoch), BackendID: target.BackendID}
++	mutations := []storage.CompareAndSwapMutation{
++		{Key: operationKey, NewValue: encoded},
++		{Key: prefix + "adoption-receipt:" + digest, NewValue: encoded},
++	}
++	inventory := fleetInventory{Version: 1, Readers: map[string]string{}}
++	for _, blob := range maintenance.inventory.Entries {
++		original, err := json.Marshal(blob)
++		if err != nil {
++			return recovery.Record{}, err
++		}
++		replacement := blob
++		replacement.Head.Identity = identity
++		replacement.Adoption = &runtime.FleetAdoption{Previous: blob.Head, Receipt: digest}
++		updated, err := json.Marshal(replacement)
++		if err != nil {
++			return recovery.Record{}, err
++		}
++		mutations = append(mutations, storage.CompareAndSwapMutation{Key: source.publicationKey(blob.Head), ExpectedValue: original}, storage.CompareAndSwapMutation{Key: source.publicationKey(replacement.Head), NewValue: updated})
++		inventory.Entries = append(inventory.Entries, replacement)
++	}
++	if err := inventory.validate(identity); err != nil {
++		return recovery.Record{}, err
++	}
++	selected.Identity, accepted.Head.Identity = identity, identity
++	nextHead, _ := json.Marshal(selected)
++	nextAccepted, _ := json.Marshal(accepted)
++	nextInventory, err := json.Marshal(inventory)
++	if err != nil {
++		return recovery.Record{}, err
++	}
++	if len(nextInventory) > fleetRetentionRecordBytes {
++		return recovery.Record{}, errors.New("fleet retention inventory exceeds its byte limit")
++	}
++	mutations = append(mutations,
++		storage.CompareAndSwapMutation{Key: prefix + "head", ExpectedValue: headBytes, NewValue: nextHead},
++		storage.CompareAndSwapMutation{Key: prefix + "accepted", ExpectedValue: acceptanceBytes, NewValue: nextAccepted},
++		storage.CompareAndSwapMutation{Key: prefix + "inventory", ExpectedValue: maintenance.encoded, NewValue: nextInventory},
++		storage.CompareAndSwapMutation{Key: prefix + "maintenance", ExpectedValue: maintenance.token},
++	)
++	for _, marker := range []struct{ key, value string }{{"head-initialized", "fleet-head/1"}, {"inventory-initialized", "fleet-retention/1"}} {
++		mutations = append(mutations, storage.CompareAndSwapMutation{Key: prefix + marker.key, ExpectedValue: []byte(marker.value), NewValue: []byte(marker.value)})
++	}
++	lease, _, err := bound.ReadWithLifetime(ctx, prefix+"lease", 4096)
++	if err != nil && !errors.Is(err, storage.ErrNotFound) {
++		return recovery.Record{}, err
++	}
++	mutations = append(mutations, storage.CompareAndSwapMutation{Key: prefix + "lease", ExpectedValue: lease})
++	epochBytes, ttl, err := bound.ReadWithLifetime(ctx, prefix+"epoch", 32)
++	if err != nil {
++		return recovery.Record{}, err
++	}
++	epoch, err := strconv.ParseUint(string(epochBytes), 10, 64)
++	if err != nil || ttl != 0 || epoch == 0 || epoch == math.MaxUint64 {
++		return recovery.Record{}, errors.New("catalog recovery lease epoch is missing or exhausted")
++	}
++	mutations = append(mutations, storage.CompareAndSwapMutation{Key: prefix + "epoch", ExpectedValue: epochBytes, NewValue: epochBytes})
++	if err := stopRenewal(); err != nil {
++		return recovery.Record{}, err
++	}
++	if err := guarded.CompareAndSwap(ctx, mutations, prefix+"maintenance"); err != nil {
++		return recovery.Record{}, err
++	}
++	return witness.ApproveAuthority(ctx, backend, request.Closed, request.BackendID, request.Evidence, request.OperationID)
++}
++
++func validateAdoptionInputs(ctx context.Context, maintenance *fleetMaintenance, selected runtime.FleetHead, accepted fleetAcceptance, options []runtime.Option) error {
++	found := map[runtime.FleetHead]bool{}
++	history := map[string]GenerationIndexEntry{}
++	for _, entry := range accepted.History {
++		history[entry.GenerationID] = entry
++	}
++	for _, blob := range maintenance.inventory.Entries {
++		if err := maintenance.mutate(ctx, nil); err != nil {
++			return err
++		}
++		snapshot, err := maintenance.read(ctx, blob)
++		if err != nil {
++			return err
++		}
++		if blob.Head == selected || blob.Head == accepted.Head {
++			if err := runtime.ValidateFleetReplay(ctx, snapshot, options...); err != nil {
++				return err
++			}
++		} else if err := runtime.ValidateFleetRecovery(ctx, snapshot); err != nil {
++			return err
++		}
++		found[blob.Head] = true
++		if expected, ok := history[blob.Head.GenerationID]; ok {
++			actual, err := fleetIndexEntry(snapshot.Publication.Generation)
++			if err != nil {
++				return err
++			}
++			if actual != expected {
++				return errors.New("catalog recovery history differs from retained generation")
++			}
++			delete(history, blob.Head.GenerationID)
++		}
++	}
++	if !found[selected] || !found[accepted.Head] || len(history) != 0 {
++		return errors.New("catalog recovery lacks a selected or retained history publication")
++	}
++	return nil
++}
++
++func verifyAdoptedFleet(ctx context.Context, fleet *FleetStore, request FleetAdoptionRequest, options []runtime.Option) error {
++	maintenance, err := fleet.maintain(ctx)
++	if err != nil {
++		return err
++	}
++	defer maintenance.finish()
++	ctx, cancel := context.WithCancel(ctx)
++	defer cancel()
++	stop := renewFleetAdoption(ctx, maintenance, cancel)
++	defer stop()
++	selected, _, err := maintenance.readHead(ctx)
++	if err != nil {
++		return err
++	}
++	expected := request.Head
++	expected.Identity = fleet.identity
++	if selected != expected || len(maintenance.inventory.Readers) != 0 {
++		return recovery.ErrConflict
++	}
++	accepted, _, err := fleet.readAcceptance(ctx)
++	if err != nil {
++		return err
++	}
++	if err := validateAdoptionInputs(ctx, maintenance, selected, accepted, options); err != nil {
++		return err
++	}
++	return stop()
++}
++
++func (s *FleetStore) verifyAdoption(ctx context.Context, blob fleetBlob) error {
++	if blob.Adoption == nil {
++		return nil
++	}
++	data, ttl, err := s.store.ReadWithLifetime(ctx, s.prefix+"adoption-receipt:"+blob.Adoption.Receipt, fleetDescriptorMaxBytes)
++	if err != nil {
++		return err
++	}
++	var record fleetAdoptionReceipt
++	if ttl != 0 || payloadDigest(data) != blob.Adoption.Receipt || json.Unmarshal(data, &record) != nil || record.validate() != nil || record.Request.approval() != s.approval || record.Request.Head.Identity != blob.Adoption.Previous.Identity {
++		return errors.New("catalog adoption receipt does not match independent approval")
++	}
++	return nil
++}
++
++type closedFleetWitness struct {
++	witness            *recovery.Witness
++	expected, approval recovery.Record
++}
++
++func (w *closedFleetWitness) check(ctx context.Context) error {
++	current, err := w.witness.Current(ctx, w.expected.DeploymentID)
++	if err != nil {
++		return err
++	}
++	if current != w.expected {
++		return recovery.ErrConflict
++	}
++	return nil
++}
++func (w *closedFleetWitness) Approved(ctx context.Context, deployment string) (recovery.Record, error) {
++	if deployment != w.expected.DeploymentID {
++		return recovery.Record{}, recovery.ErrConflict
++	}
++	return w.approval, w.check(ctx)
++}
++func (*closedFleetWitness) CheckBootstrap(context.Context, recovery.Record) error {
++	return recovery.ErrBootstrapConsumed
++}
++func (*closedFleetWitness) ConsumeBootstrap(context.Context, recovery.Record) error {
++	return recovery.ErrBootstrapConsumed
++}
++
++type closedFleetStore struct {
++	storage.IncarnationStore
++	gate *closedFleetWitness
++}
++
++func (s *closedFleetStore) CompareAndSwap(ctx context.Context, mutations []storage.CompareAndSwapMutation, live ...string) error {
++	if err := s.gate.check(ctx); err != nil {
++		return err
++	}
++	if err := s.IncarnationStore.CompareAndSwap(ctx, mutations, live...); err != nil {
++		return err
++	}
++	return s.gate.check(ctx)
++}
+diff --git a/internal/catalog/fleet_adoption_lease.go b/internal/catalog/fleet_adoption_lease.go
+new file mode 100644
+index 00000000..6b6cec76
+--- /dev/null
++++ b/internal/catalog/fleet_adoption_lease.go
+@@ -0,0 +1,35 @@
++package catalog
++
++import (
++	"context"
++	"sync"
++	"time"
++)
++
++// renewFleetAdoption keeps validation within the native maintenance grant.
++// A failed renewal cancels validation before the selection can change.
++func renewFleetAdoption(ctx context.Context, maintenance *fleetMaintenance, cancel context.CancelFunc) func() error {
++	stop, done := make(chan struct{}), make(chan struct{})
++	var once sync.Once
++	var failure error
++	go func() {
++		defer close(done)
++		timer := time.NewTicker(fleetRetentionLockLifetime / 3)
++		defer timer.Stop()
++		for {
++			select {
++			case <-ctx.Done():
++				return
++			case <-stop:
++				return
++			case <-timer.C:
++				if err := maintenance.mutate(ctx, nil); err != nil {
++					failure = err
++					cancel()
++					return
++				}
++			}
++		}
++	}()
++	return func() error { once.Do(func() { close(stop) }); <-done; return failure }
++}
+diff --git a/internal/catalog/fleet_adoption_request_test.go b/internal/catalog/fleet_adoption_request_test.go
+new file mode 100644
+index 00000000..c4220a2c
+--- /dev/null
++++ b/internal/catalog/fleet_adoption_request_test.go
+@@ -0,0 +1,44 @@
++package catalog
++
++import (
++	"strings"
++	"testing"
++
++	"github.com/agentstation/starmap/runtime"
++	"github.com/agentstation/starport/internal/recovery"
++	"github.com/stretchr/testify/require"
++)
++
++func TestFleetAdoptionRequestRequiresBoundedRecoveryEvidence(t *testing.T) {
++	approved := recovery.Record{DeploymentID: "deployment", Epoch: 1, Open: true, BackendID: "source", Evidence: "original-approval"}
++	closed := approved
++	closed.Epoch, closed.Open = 2, false
++	request := FleetAdoptionRequest{SourceApproval: approved, Closed: closed,
++		Head: runtime.FleetHead{Identity: runtime.FleetIdentity{DeploymentID: "deployment", BackendID: "source", RecoveryEpoch: 1}, Revision: 1,
++			GenerationID: "generation", RecoveryChecksum: strings.Repeat("a", 64)},
++		BackendID: "replacement", OperationID: "restore", Evidence: "fenced-and-reconciled"}
++	require.NoError(t, request.validate())
++	for _, scenario := range []struct {
++		name   string
++		change func(*FleetAdoptionRequest)
++	}{
++		{"open-gate", func(r *FleetAdoptionRequest) { r.Closed.Open = true }},
++		{"obsolete-epoch", func(r *FleetAdoptionRequest) { r.Closed.Epoch = 1 }},
++		{"foreign-deployment", func(r *FleetAdoptionRequest) { r.Closed.DeploymentID = "other" }},
++		{"unapproved-source", func(r *FleetAdoptionRequest) { r.SourceApproval.Open = false }},
++		{"missing-source-evidence", func(r *FleetAdoptionRequest) { r.SourceApproval.Evidence = "" }},
++		{"oversized-source-evidence", func(r *FleetAdoptionRequest) { r.SourceApproval.Evidence = strings.Repeat("a", 4097) }},
++		{"foreign-source", func(r *FleetAdoptionRequest) { r.SourceApproval.BackendID = "other" }},
++		{"missing-operation", func(r *FleetAdoptionRequest) { r.OperationID = "" }},
++		{"missing-evidence", func(r *FleetAdoptionRequest) { r.Evidence = "" }},
++		{"blank-backend", func(r *FleetAdoptionRequest) { r.BackendID = " " }},
++		{"oversized-backend", func(r *FleetAdoptionRequest) { r.BackendID = strings.Repeat("a", 257) }},
++		{"empty-head", func(r *FleetAdoptionRequest) { r.Head = runtime.FleetHead{} }},
++	} {
++		t.Run(scenario.name, func(t *testing.T) {
++			changed := request
++			scenario.change(&changed)
++			require.Error(t, changed.validate())
++		})
++	}
++}
+diff --git a/internal/catalog/fleet_adoption_test.go b/internal/catalog/fleet_adoption_test.go
+new file mode 100644
+index 00000000..ebbb76f7
+--- /dev/null
++++ b/internal/catalog/fleet_adoption_test.go
+@@ -0,0 +1,234 @@
++package catalog
++
++import (
++	"context"
++	"crypto/rand"
++	"encoding/json/v2"
++	"errors"
++	"path/filepath"
++	"strings"
++	"sync"
++	"testing"
++	"time"
++
++	"github.com/agentstation/starport/internal/recovery"
++	"github.com/agentstation/starport/internal/storage"
++	"github.com/stretchr/testify/require"
++)
++
++// lostAdoptionReply loses only the response to a real atomic selection commit.
++type lostAdoptionReply struct {
++	storage.IncarnationProvider
++	mu       sync.Mutex
++	injected bool
++	marker   string
++}
++
++type lostAdoptionStore struct {
++	storage.IncarnationStore
++	owner *lostAdoptionReply
++}
++
++func (p *lostAdoptionReply) BindIncarnation(ctx context.Context, identity string) (storage.IncarnationStore, error) {
++	bound, err := p.IncarnationProvider.BindIncarnation(ctx, identity)
++	if err != nil {
++		return nil, err
++	}
++	return &lostAdoptionStore{IncarnationStore: bound, owner: p}, nil
++}
++
++func (s *lostAdoptionStore) CompareAndSwap(ctx context.Context, mutations []storage.CompareAndSwapMutation, live ...string) error {
++	if err := s.IncarnationStore.CompareAndSwap(ctx, mutations, live...); err != nil {
++		return err
++	}
++	for _, mutation := range mutations {
++		marker := s.owner.marker
++		if marker == "" {
++			marker = ":adoption-operation:"
++		}
++		if strings.Contains(mutation.Key, marker) {
++			s.owner.mu.Lock()
++			defer s.owner.mu.Unlock()
++			if !s.owner.injected {
++				s.owner.injected = true
++				return errors.New("lost catalog adoption response")
++			}
++		}
++	}
++	return nil
++}
++
++func TestFleetAdoptionRecoversLostSelectionResponse(t *testing.T) {
++	fleet, kv, witness := fleetTestStore(t)
++	ctx := t.Context()
++	provider := kv.(storage.IncarnationProvider)
++	settings := identityTestSettings(filepath.Join(t.TempDir(), "state"), "", "127.0.0.1:0")
++	settings.DeploymentID = fleet.identity.DeploymentID
++	connected, err := openRuntime(ctx, kv, settings, runtimeCollectors{fleet: fleet})
++	require.NoError(t, err)
++	_, err = connected.runtime.RefreshSource(ctx)
++	require.NoError(t, err)
++	candidate, err := connected.CurrentCandidate(ctx)
++	require.NoError(t, err)
++	require.NoError(t, connected.Accept(ctx, candidate))
++	require.NoError(t, connected.Close(ctx))
++	original, err := fleet.CurrentPublication(ctx)
++	require.NoError(t, err)
++	// Keep an older input revision outside both selected heads.
++	// Recovery must validate it before opening admission after an interruption.
++	grant, err := fleet.AcquireLease(ctx, "fixture-publisher", time.Minute)
++	require.NoError(t, err)
++	next := original.Publication
++	next.Expected, next.Grant = original.Head, grant
++	head, err := fleet.CommitPublication(ctx, next)
++	require.NoError(t, err)
++	require.NoError(t, fleet.AcceptPublication(ctx, head, original.Head))
++	original, err = fleet.CurrentPublication(ctx)
++	require.NoError(t, err)
++	history, err := fleet.AcceptedHistory(ctx)
++	require.NoError(t, err)
++	options, err := settings.starmapOptions()
++	require.NoError(t, err)
++	closed, err := witness.Close(ctx, fleet.approval)
++	require.NoError(t, err)
++	request := FleetAdoptionRequest{SourceApproval: fleet.approval, Closed: closed, Head: original.Head,
++		BackendID: fleet.identity.BackendID, OperationID: "restore", Evidence: "isolated-fenced-fixture"}
++	t.Cleanup(func() { require.NoError(t, kv.Delete(context.Background(), "recovery:authority:v1")) })
++
++	t.Run("changed-head", func(t *testing.T) {
++		changed := request
++		changed.Head.Revision++
++		_, err := adoptFleet(ctx, provider, witness, changed, options)
++		require.Error(t, err)
++		current, err := witness.Current(ctx, request.Closed.DeploymentID)
++		require.NoError(t, err)
++		require.Equal(t, closed, current)
++	})
++
++	var inventory fleetInventory
++	data, _, err := fleet.store.ReadWithLifetime(ctx, fleet.prefix+"inventory", fleetRetentionRecordBytes)
++	require.NoError(t, err)
++	require.NoError(t, json.Unmarshal(data, &inventory))
++	require.Len(t, inventory.Entries, 2)
++	blob := inventory.Entries[0]
++	require.NotEqual(t, original.Head, blob.Head, "corruption must affect retained history outside selected heads")
++	chunkKey := fleet.prefix + "blob:" + blob.ID + ":" + blob.Record.Chunks[0]
++	chunk, _, err := fleet.store.ReadWithLifetime(ctx, chunkKey, generationChunkSize)
++	require.NoError(t, err)
++
++	t.Run("missing-chunk-before-selection", func(t *testing.T) {
++		require.NoError(t, kv.Delete(ctx, chunkKey))
++		_, err := adoptFleet(ctx, provider, witness, request, options)
++		require.Error(t, err)
++		current, err := witness.Current(ctx, request.Closed.DeploymentID)
++		require.NoError(t, err)
++		require.Equal(t, closed, current)
++		require.NoError(t, kv.Set(ctx, chunkKey, chunk))
++	})
++
++	t.Run("reader-resolution-requires-consent", func(t *testing.T) {
++		inventory.Readers[rand.Text()] = blob.ID
++		withReader, err := json.Marshal(inventory)
++		require.NoError(t, err)
++		require.NoError(t, kv.Set(ctx, fleet.prefix+"inventory", withReader))
++		_, err = adoptFleet(ctx, provider, witness, request, options)
++		require.ErrorContains(t, err, "explicit resolution")
++		current, err := witness.Current(ctx, request.Closed.DeploymentID)
++		require.NoError(t, err)
++		require.Equal(t, closed, current)
++	})
++	request.ResolveReaders = true
++	pending := blob
++	pending.ID, pending.Head.Revision = rand.Text(), original.Head.Revision+1
++	inventory.Pending = &pending
++	orphan := fleet.prefix + "blob:" + pending.ID + ":" + pending.Record.Chunks[0]
++	require.NoError(t, kv.Set(ctx, orphan, chunk))
++	withPending, err := json.Marshal(inventory)
++	require.NoError(t, err)
++	require.NoError(t, kv.Set(ctx, fleet.prefix+"inventory", withPending))
++
++	fault := &lostAdoptionReply{IncarnationProvider: provider}
++	_, err = adoptFleet(ctx, fault, witness, request, options)
++	require.ErrorContains(t, err, "lost catalog adoption response")
++	require.True(t, fault.injected)
++	_, err = kv.Get(ctx, orphan)
++	require.ErrorIs(t, err, storage.ErrNotFound)
++	adoptedInventory, _, err := fleet.store.ReadWithLifetime(ctx, fleet.prefix+"inventory", fleetRetentionRecordBytes)
++	require.NoError(t, err)
++	var adopted fleetInventory
++	require.NoError(t, json.Unmarshal(adoptedInventory, &adopted))
++	require.Nil(t, adopted.Pending)
++	require.Empty(t, adopted.Readers)
++	require.Len(t, adopted.Entries, 2)
++	current, err := witness.Current(ctx, request.Closed.DeploymentID)
++	require.NoError(t, err)
++	require.Equal(t, closed, current, "lost selection acknowledgement must not open admission")
++	_, err = NewFleetStore(ctx, provider, witness, request.Closed.DeploymentID)
++	require.ErrorIs(t, err, recovery.ErrClosed)
++
++	t.Run("corruption-during-interruption", func(t *testing.T) {
++		require.NoError(t, kv.Set(ctx, chunkKey, []byte("corrupt")))
++		_, err := adoptFleet(ctx, provider, witness, request, options)
++		require.Error(t, err)
++		current, err := witness.Current(ctx, request.Closed.DeploymentID)
++		require.NoError(t, err)
++		require.Equal(t, closed, current)
++		require.NoError(t, kv.Set(ctx, chunkKey, chunk))
++	})
++
++	t.Run("conflicting-operation", func(t *testing.T) {
++		changed := request
++		changed.Evidence = "different-reconciliation"
++		_, err := adoptFleet(ctx, provider, witness, changed, options)
++		require.ErrorIs(t, err, recovery.ErrConflict)
++	})
++	approvalFault := &lostAdoptionReply{IncarnationProvider: provider, marker: "recovery:authority:v1"}
++	_, err = adoptFleet(ctx, approvalFault, witness, request, options)
++	require.ErrorContains(t, err, "lost catalog adoption response")
++	require.True(t, approvalFault.injected)
++	current, err = witness.Current(ctx, request.Closed.DeploymentID)
++	require.NoError(t, err)
++	require.Equal(t, closed, current, "lost native approval response must keep SQL closed")
++
++	approved, err := adoptFleet(ctx, provider, witness, request, options)
++	require.NoError(t, err)
++	require.Equal(t, request.approval(), approved)
++	repeated, err := adoptFleet(ctx, provider, witness, request, options)
++	require.NoError(t, err)
++	require.Equal(t, approved, repeated)
++	restored, err := NewFleetStore(ctx, provider, witness, request.Closed.DeploymentID)
++	require.NoError(t, err)
++	recovered, err := restored.AcceptedPublication(ctx)
++	require.NoError(t, err)
++	require.Equal(t, original.Publication, recovered.Publication, "original publication and acquisition grant must remain unchanged")
++	require.Equal(t, original.Head, recovered.Adoption.Previous)
++	retained, err := restored.AcceptedHistory(ctx)
++	require.NoError(t, err)
++	require.Equal(t, history, retained)
++	_, err = fleet.CurrentHead(ctx)
++	require.Error(t, err, "old owner cannot adopt the new recovery approval")
++	_, _, err = restored.store.ReadWithLifetime(ctx, restored.prefix+"lease", 4096)
++	require.ErrorIs(t, err, storage.ErrNotFound, "recovery must not revive a copied acquisition lease")
++	_, err = witness.OpenAuthority(ctx, provider, request.Closed.DeploymentID)
++	require.NoError(t, err)
++	grant, err = restored.AcquireLease(ctx, "recovered-publisher", time.Minute)
++	require.NoError(t, err)
++	require.Greater(t, grant.Epoch, original.Publication.Grant.Epoch)
++	next = recovered.Publication
++	next.Expected, next.Grant = recovered.Head, grant
++	newHead, err := restored.CommitPublication(ctx, next)
++	require.NoError(t, err)
++	require.NoError(t, restored.AcceptPublication(ctx, newHead, recovered.Head))
++	_, err = adoptFleet(ctx, provider, witness, request, options)
++	require.NoError(t, err, "an approved retry must preserve later ordinary publication")
++	actual, err := restored.CurrentHead(ctx)
++	require.NoError(t, err)
++	require.Equal(t, newHead, actual)
++	require.NoError(t, restored.Release(ctx, grant))
++	_, err = witness.Close(ctx, approved)
++	require.NoError(t, err)
++	_, err = adoptFleet(ctx, provider, witness, request, options)
++	require.ErrorIs(t, err, recovery.ErrConflict, "an obsolete retry cannot reopen a later closed epoch")
++}
++
++var _ storage.IncarnationProvider = (*lostAdoptionReply)(nil)
+diff --git a/internal/catalog/fleet_retention.go b/internal/catalog/fleet_retention.go
+index 6a6e3e7a..17d6b70e 100644
+--- a/internal/catalog/fleet_retention.go
++++ b/internal/catalog/fleet_retention.go
+@@ -27,11 +27,12 @@ const (
+ )
+ 
+ type fleetBlob struct {
+-	ID              string            `json:"id"`
+-	Head            runtime.FleetHead `json:"head"`
+-	Record          generationRecord  `json:"record"`
+-	GenerationBytes int64             `json:"generation_bytes"`
+-	RecoveryBytes   int64             `json:"recovery_bytes"`
++	ID              string                 `json:"id"`
++	Head            runtime.FleetHead      `json:"head"`
++	Record          generationRecord       `json:"record"`
++	GenerationBytes int64                  `json:"generation_bytes"`
++	RecoveryBytes   int64                  `json:"recovery_bytes"`
++	Adoption        *runtime.FleetAdoption `json:"adoption,omitempty"`
+ }
+ 
+ type fleetInventory struct {
+@@ -241,6 +242,9 @@ func (m *fleetMaintenance) generation(id string) (fleetBlob, bool) {
+ }
+ 
+ func (m *fleetMaintenance) read(ctx context.Context, blob fleetBlob) (runtime.FleetSnapshot, error) {
++	if err := m.owner.verifyAdoption(ctx, blob); err != nil {
++		return runtime.FleetSnapshot{}, err
++	}
+ 	data, err := m.owner.readBlob(ctx, blob)
+ 	if err != nil {
+ 		return runtime.FleetSnapshot{}, err
+@@ -252,6 +256,12 @@ func (m *fleetMaintenance) read(ctx context.Context, blob fleetBlob) (runtime.Fl
+ 	if err = snapshot.Validate(); err != nil {
+ 		return snapshot, err
+ 	}
++	if blob.Adoption != nil {
++		snapshot.Head, snapshot.Adoption = blob.Head, blob.Adoption
++		if err = snapshot.Validate(); err != nil {
++			return snapshot, err
++		}
++	}
+ 	if snapshot.Head != blob.Head {
+ 		return snapshot, fleetStoreConflict("the stored snapshot differs from the selected head")
+ 	}
+diff --git a/internal/catalog/fleet_retention_record.go b/internal/catalog/fleet_retention_record.go
+index 85ca5647..a5d6ceb2 100644
+--- a/internal/catalog/fleet_retention_record.go
++++ b/internal/catalog/fleet_retention_record.go
+@@ -56,6 +56,14 @@ func (blob fleetBlob) validate(identity runtime.FleetIdentity) error {
+ 	if err := blob.Head.Validate(); err != nil {
+ 		return err
+ 	}
++	if blob.Adoption != nil {
++		if err := blob.Adoption.Previous.Validate(); err != nil {
++			return err
++		}
++		if blob.Adoption.Previous == (runtime.FleetHead{}) || !fleetChunkDigest(blob.Adoption.Receipt) {
++			return errors.New("invalid fleet adoption receipt")
++		}
++	}
+ 	r := blob.Record
+ 	if blob.GenerationBytes <= 0 || blob.GenerationBytes > int64(r.Size) || blob.RecoveryBytes < 0 || blob.RecoveryBytes > runtime.MaxFleetRecoveryBytes || blob.RecoveryBytes > int64(r.Size) {
+ 		return errors.New("invalid fleet retained byte counts")

@@ -1,0 +1,430 @@
+diff --git a/runtime/fleet_adoption_test.go b/runtime/fleet_adoption_test.go
+new file mode 100644
+index 000000000..c18577869
+--- /dev/null
++++ b/runtime/fleet_adoption_test.go
+@@ -0,0 +1,73 @@
++package runtime
++
++import (
++	"encoding/json/v2"
++	"reflect"
++	"strings"
++	"testing"
++)
++
++func TestFleetSnapshotAdoptionPreservesPublication(t *testing.T) {
++	publication := fleetTestPublication(t)
++	original := publication.nextHead()
++	recovered := original
++	recovered.Identity.RecoveryEpoch++
++	recovered.Identity.BackendID = "replacement"
++	wire, err := json.Marshal(map[string]any{
++		"head": recovered, "publication": publication,
++		"adoption": map[string]any{"previous": original, "receipt": strings.Repeat("a", 64)},
++	})
++	if err != nil {
++		t.Fatal(err)
++	}
++	var snapshot FleetSnapshot
++	if err := json.Unmarshal(wire, &snapshot); err != nil {
++		t.Fatal(err)
++	}
++	if err := snapshot.Validate(); err != nil {
++		t.Fatal(err)
++	}
++	if !reflect.DeepEqual(publication, snapshot.Publication) {
++		t.Fatal("recovery changed the original publication")
++	}
++}
++
++func TestFleetSnapshotAdoptionRejectsChangedEvidence(t *testing.T) {
++	publication := fleetTestPublication(t)
++	previous := publication.nextHead()
++	head := previous
++	head.Identity.RecoveryEpoch++
++	head.Identity.BackendID = "replacement"
++	for _, scenario := range []struct {
++		name   string
++		change func(*FleetSnapshot)
++	}{
++		{"receipt", func(s *FleetSnapshot) { s.Adoption.Receipt = "invalid" }},
++		{"previous-empty", func(s *FleetSnapshot) { s.Adoption.Previous = FleetHead{} }},
++		{"same-epoch", func(s *FleetSnapshot) { s.Head.Identity.RecoveryEpoch = previous.Identity.RecoveryEpoch }},
++		{"previous-regression", func(s *FleetSnapshot) { s.Adoption.Previous.Identity.RecoveryEpoch-- }},
++		{"parallel-backend", func(s *FleetSnapshot) { s.Adoption.Previous.Identity.BackendID = "different" }},
++		{"foreign-deployment", func(s *FleetSnapshot) { s.Head.Identity.DeploymentID = "other" }},
++		{"foreign-previous", func(s *FleetSnapshot) { s.Adoption.Previous.Identity.DeploymentID = "other" }},
++		{"revision", func(s *FleetSnapshot) { s.Head.Revision++ }},
++		{"generation", func(s *FleetSnapshot) { s.Head.GenerationID = "different" }},
++		{"recovery-inputs", func(s *FleetSnapshot) { s.Head.RecoveryChecksum = strings.Repeat("b", 64) }},
++		{"previous-revision", func(s *FleetSnapshot) { s.Adoption.Previous.Revision++ }},
++		{"original-grant", func(s *FleetSnapshot) { s.Publication.Grant.Identity.BackendID = "different" }},
++	} {
++		t.Run(scenario.name, func(t *testing.T) {
++			snapshot := FleetSnapshot{Head: head, Publication: publication, Adoption: &FleetAdoption{Previous: previous, Receipt: strings.Repeat("a", 64)}}
++			scenario.change(&snapshot)
++			if snapshot.Validate() == nil {
++				t.Fatal("accepted inconsistent adoption evidence")
++			}
++		})
++	}
++	snapshot := FleetSnapshot{Head: head, Publication: publication, Adoption: &FleetAdoption{Previous: previous, Receipt: strings.Repeat("a", 64)}}
++	snapshot.Adoption.Previous = head
++	snapshot.Head.Identity.RecoveryEpoch++
++	snapshot.Head.Identity.BackendID = "third-backend"
++	if err := snapshot.Validate(); err != nil {
++		t.Fatal("refused repeated explicit recovery:", err)
++	}
++}
+diff --git a/runtime/fleet_runtime_test.go b/runtime/fleet_runtime_test.go
+index c47833194..967d721c6 100644
+--- a/runtime/fleet_runtime_test.go
++++ b/runtime/fleet_runtime_test.go
+@@ -455,6 +455,16 @@ func TestFleetRuntimeRetainsGrantCapturedBeforeSourceRead(t *testing.T) {
+ }
+ 
+ func TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission(t *testing.T) {
++	for _, scenario := range []struct {
++		name  string
++		adopt bool
++	}{{"ordinary", false}, {"adopted", true}} {
++		t.Run(scenario.name, func(t *testing.T) { testFleetAuthorityRecovery(t, scenario.adopt) })
++	}
++}
++
++func testFleetAuthorityRecovery(t *testing.T, adopt bool) {
++	t.Helper()
+ 	backend := newFleetRuntimeBackend(t)
+ 	backend.head = FleetHead{}
+ 	backend.snapshots = make(map[FleetHead]FleetSnapshot)
+@@ -475,6 +485,24 @@ func TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission(t *testing.T) {
+ 	if !leader.AllowsNewAttempt() {
+ 		t.Fatal("the leader did not activate the acquired authority permission")
+ 	}
++	if adopt {
++		if err := leader.Close(); err != nil {
++			t.Fatal(err)
++		}
++		backend.mu.Lock()
++		previous := backend.head
++		snapshot := backend.snapshots[previous]
++		backend.identity.RecoveryEpoch++
++		backend.identity.BackendID = "replacement"
++		backend.head.Identity = backend.identity
++		snapshot.Head = backend.head
++		snapshot.Adoption = &FleetAdoption{Previous: previous, Receipt: fleetRecoveryChecksum([]byte("host-verified-adoption"))}
++		backend.snapshots[backend.head] = snapshot
++		backend.mu.Unlock()
++		if err := snapshot.Validate(); err != nil {
++			t.Fatal(err)
++		}
++	}
+ 	follower, source := open("authority-follower")
+ 	if follower.State().AuthorityHead != leader.State().AuthorityHead {
+ 		t.Fatal("the follower lost the exact upstream authority head")
+diff --git a/runtime/fleet_store.go b/runtime/fleet_store.go
+index 419eee938..4c2f665e4 100644
+--- a/runtime/fleet_store.go
++++ b/runtime/fleet_store.go
+@@ -94,6 +94,15 @@ func (p FleetPublication) nextHead() FleetHead {
+ type FleetSnapshot struct {
+ 	Head        FleetHead        `json:"head"`
+ 	Publication FleetPublication `json:"publication"`
++	Adoption    *FleetAdoption   `json:"adoption,omitempty"`
++}
++
++// FleetAdoption identifies explicit host recovery without changing the original publication grant.
++// The host must verify the receipt and independent approval before exposing this snapshot.
++// This record grants no refresh lease or inference permission.
++type FleetAdoption struct {
++	Previous FleetHead `json:"previous"`
++	Receipt  string    `json:"receipt"`
+ }
+ 
+ // Validate checks that the head selects exactly this publication and its recovery inputs.
+@@ -101,12 +110,39 @@ func (s FleetSnapshot) Validate() error {
+ 	if err := s.Publication.Validate(); err != nil {
+ 		return err
+ 	}
+-	if s.Head != s.Publication.nextHead() {
++	original := s.Publication.nextHead()
++	if s.Adoption != nil {
++		return s.Adoption.validate(original, s.Head)
++	}
++	if s.Head != original {
+ 		return fleetConflict("the selected head does not match the retained publication")
+ 	}
+ 	return nil
+ }
+ 
++func (a FleetAdoption) validate(original, selected FleetHead) error {
++	if err := a.Previous.Validate(); err != nil {
++		return err
++	}
++	if err := selected.Validate(); err != nil {
++		return err
++	}
++	if !validFleetChecksum(a.Receipt) || a.Previous == (FleetHead{}) || selected == (FleetHead{}) ||
++		a.Previous.Identity.DeploymentID != original.Identity.DeploymentID ||
++		selected.Identity.DeploymentID != original.Identity.DeploymentID ||
++		a.Previous.Identity.RecoveryEpoch < original.Identity.RecoveryEpoch ||
++		(a.Previous.Identity.RecoveryEpoch == original.Identity.RecoveryEpoch && a.Previous.Identity != original.Identity) ||
++		selected.Identity.RecoveryEpoch <= a.Previous.Identity.RecoveryEpoch {
++		return fleetConflict("catalog adoption requires a receipt and a newer approved recovery identity")
++	}
++	previous, current := a.Previous, selected
++	previous.Identity, current.Identity = original.Identity, original.Identity
++	if previous != original || current != original {
++		return fleetConflict("catalog adoption changed the original publication selection")
++	}
++	return nil
++}
++
+ // FleetStore owns shared publication, retained inputs, and refresh ownership.
+ // Hosts supply the adapter. Standalone stores keep the separate storage.Store contract.
+ // Each method uses one deployment namespace and the approved backend incarnation.
+diff --git a/runtime/fleet_validation.go b/runtime/fleet_validation.go
+new file mode 100644
+index 000000000..3eba66684
+--- /dev/null
++++ b/runtime/fleet_validation.go
+@@ -0,0 +1,77 @@
++package runtime
++
++import (
++	"context"
++	"slices"
++
++	"github.com/agentstation/starmap/pkg/errors"
++)
++
++// ValidateFleetRecovery checks retained input structure without opening a runtime.
++// It grants no permission and does not check compatibility with deployment settings.
++func ValidateFleetRecovery(ctx context.Context, snapshot FleetSnapshot) error {
++	if ctx == nil {
++		return &errors.ValidationError{Field: "context", Message: "is required"}
++	}
++	if err := snapshot.Validate(); err != nil {
++		return err
++	}
++	record, err := readFleetRecovery(ctx, snapshot.Publication.Recovery.Data)
++	if err != nil {
++		return err
++	}
++	if record.Pin != nil && !pinRecordMatches(*record.Pin, snapshot.Publication.Generation) {
++		return pinRecordConflict("the shared pin receipt differs from the selected generation")
++	}
++	_, err = decodeFleetRecoveryRecord(ctx, record, layerSet{})
++	return err
++}
++
++// ValidateFleetReplay reproduces a retained catalog under the supplied runtime settings.
++// It starts no runtime, acquisition, clock observation, filesystem access, or lease.
++// Successful validation does not renew a receipt or authorize an inference attempt.
++func ValidateFleetReplay(ctx context.Context, snapshot FleetSnapshot, opts ...Option) error {
++	if ctx == nil {
++		return &errors.ValidationError{Field: "context", Message: "is required"}
++	}
++	if err := ctx.Err(); err != nil {
++		return err
++	}
++	config := defaults()
++	if _, err := config.apply(opts...); err != nil {
++		return err
++	}
++	config.resolve()
++	if err := config.validate(); err != nil {
++		return err
++	}
++	if err := config.validateStoredAuthoritySelection(snapshot.Publication.Generation.Manifest.AuthorityHead); err != nil {
++		return err
++	}
++	description, err := describeSources(config)
++	if err != nil {
++		return err
++	}
++	probe := &Runtime{config: *config, source: config.customSource}
++	// File sources use their protocol identity, without reading the selected path.
++	if probe.source == nil && config.source.Kind == SourceFile {
++		probe.source = &fileSource{}
++	}
++	local := layerSet{requireAuthority: probe.requiresAuthority(), providerBindings: config.providerBindings,
++		acquisitionSources: config.acquisitionSources, publisherAliases: slices.Clone(config.source.Aliases), sourceConfiguration: description}
++	recovered, pin, err := recoverFleetState(ctx, snapshot, local)
++	if err != nil {
++		return err
++	}
++	if pin != nil && pin.Binding != probe.pinBinding() {
++		return pinRecordConflict("the shared pin belongs to a different source or authority")
++	}
++	identity := config.source.SafeIdentity()
++	if probe.source != nil {
++		identity = probe.source.Identity()
++	}
++	if recovered.source != nil && recovered.source.Identity != identity {
++		return fleetConflict("retained inputs belong to a different configured source")
++	}
++	return ctx.Err()
++}
+diff --git a/runtime/fleet_validation_test.go b/runtime/fleet_validation_test.go
+new file mode 100644
+index 000000000..e835f6c58
+--- /dev/null
++++ b/runtime/fleet_validation_test.go
+@@ -0,0 +1,155 @@
++package runtime
++
++import (
++	"context"
++	"errors"
++	"os"
++	"path/filepath"
++	"reflect"
++	"testing"
++)
++
++func fleetValidationFixture(t *testing.T) (FleetSnapshot, layerSet) {
++	t.Helper()
++	snapshot, layers := fleetReplayFixture(t)
++	var err error
++	layers.sourceConfiguration, err = describeSources(defaults())
++	if err != nil {
++		t.Fatal(err)
++	}
++	snapshot.Publication.Recovery.Data, err = encodeFleetRecoveryWithPin(t.Context(), layers, nil)
++	if err != nil {
++		t.Fatal(err)
++	}
++	snapshot.Publication.Recovery.Checksum = fleetRecoveryChecksum(snapshot.Publication.Recovery.Data)
++	snapshot.Head = snapshot.Publication.nextHead()
++	return snapshot, layers
++}
++
++func TestValidateFleetReplayOffline(t *testing.T) {
++	snapshot, layers := fleetValidationFixture(t)
++	source := newStubSource("retained-source")
++	generation := snapshot.Publication.Generation
++	layers.source = &sourceLayer{Identity: source.Identity(), GenerationID: generation.Manifest.GenerationID,
++		Checksum: generation.Manifest.Payload.Checksum, Payload: generation.Payload, Manifest: &generation.Manifest,
++		PublishedAt: generation.Manifest.GeneratedAt}
++	data, err := encodeFleetRecoveryWithPin(t.Context(), layers, nil)
++	if err != nil {
++		t.Fatal(err)
++	}
++	snapshot.Publication.Recovery.Data = data
++	snapshot.Publication.Recovery.Checksum = fleetRecoveryChecksum(data)
++	snapshot.Head = snapshot.Publication.nextHead()
++	before := snapshot
++	directory := filepath.Join(t.TempDir(), "must-not-be-created")
++	if err := ValidateFleetRecovery(t.Context(), snapshot); err != nil {
++		t.Fatal(err)
++	}
++	if err := ValidateFleetReplay(t.Context(), snapshot, WithSource(source), WithStateDirectory(directory)); err != nil {
++		t.Fatal(err)
++	}
++	if source.reads != 0 {
++		t.Fatal("validation read its external source")
++	}
++	if _, err := os.Stat(directory); !os.IsNotExist(err) {
++		t.Fatalf("validation created state: %v", err)
++	}
++	if !reflect.DeepEqual(snapshot, before) {
++		t.Fatal("validation changed publication evidence")
++	}
++	if err := ValidateFleetReplay(t.Context(), snapshot, WithSource(newStubSource("different"))); err == nil {
++		t.Fatal("accepted a different source")
++	}
++	if err := ValidateFleetReplay(t.Context(), snapshot, WithSource(source), WithSourceAliases("changed")); err == nil {
++		t.Fatal("accepted a different acquisition policy")
++	}
++}
++
++func TestValidateFleetRecoveryRejectsCorruption(t *testing.T) {
++	for _, name := range []string{"checksum", "schema", "generation"} {
++		t.Run(name, func(t *testing.T) {
++			snapshot, _ := fleetValidationFixture(t)
++			switch name {
++			case "checksum":
++				snapshot.Publication.Recovery.Data = []byte("corrupt")
++			case "schema":
++				snapshot.Publication.Recovery.Data = []byte(`{"version":999}`)
++				snapshot.Publication.Recovery.Checksum = fleetRecoveryChecksum(snapshot.Publication.Recovery.Data)
++				snapshot.Head = snapshot.Publication.nextHead()
++			case "generation":
++				snapshot.Head.GenerationID = "different"
++			}
++			if ValidateFleetRecovery(t.Context(), snapshot) == nil {
++				t.Fatal("accepted corrupt retained inputs")
++			}
++			if ValidateFleetReplay(t.Context(), snapshot) == nil {
++				t.Fatal("replayed corrupt retained inputs")
++			}
++		})
++	}
++}
++
++func TestValidateFleetRecoveryContext(t *testing.T) {
++	snapshot, _ := fleetValidationFixture(t)
++	ctx, cancel := context.WithCancel(t.Context())
++	cancel()
++	for name, validate := range map[string]func(context.Context, FleetSnapshot) error{
++		"recovery": ValidateFleetRecovery,
++		"replay":   func(ctx context.Context, snapshot FleetSnapshot) error { return ValidateFleetReplay(ctx, snapshot) },
++	} {
++		t.Run(name, func(t *testing.T) {
++			if err := validate(nil, snapshot); err == nil {
++				t.Fatal("accepted a missing context")
++			}
++			if err := validate(ctx, snapshot); !errors.Is(err, context.Canceled) {
++				t.Fatalf("ignored cancellation: %v", err)
++			}
++		})
++	}
++}
++
++func TestValidateFleetReplayPreservesPin(t *testing.T) {
++	snapshot, layers := fleetValidationFixture(t)
++	manifest := snapshot.Publication.Generation.Manifest
++	config := defaults()
++	config.resolve()
++	probe := &Runtime{config: *config}
++	pin := generationPinRecord{Version: generationPinRecordVersion, Binding: probe.pinBinding(), Phase: pinAccepted,
++		Receipt: GenerationPinAcceptance{OperationID: "retained-pin", SelectedGenerationID: manifest.GenerationID,
++			AcceptedGenerationID: manifest.GenerationID, PayloadChecksum: manifest.Payload.Checksum,
++			RequestedAt: manifest.GeneratedAt, AcceptedAt: manifest.GeneratedAt}}
++	data, err := encodeFleetRecoveryWithPin(t.Context(), layers, &pin)
++	if err != nil {
++		t.Fatal(err)
++	}
++	snapshot.Publication.Recovery.Data = data
++	snapshot.Publication.Recovery.Checksum = fleetRecoveryChecksum(data)
++	snapshot.Head = snapshot.Publication.nextHead()
++	if err := ValidateFleetRecovery(t.Context(), snapshot); err != nil {
++		t.Fatal(err)
++	}
++	if err := ValidateFleetReplay(t.Context(), snapshot); err != nil {
++		t.Fatal(err)
++	}
++	record, err := readFleetRecovery(t.Context(), snapshot.Publication.Recovery.Data)
++	if err != nil {
++		t.Fatal(err)
++	}
++	if !reflect.DeepEqual(record.Pin, &pin) {
++		t.Fatal("validation changed the retained pin receipt")
++	}
++	if err := ValidateFleetReplay(t.Context(), snapshot, WithSource(newStubSource("foreign-authority"))); err == nil {
++		t.Fatal("accepted a pin under another source authority")
++	}
++	pin.Receipt.AcceptedGenerationID = "different"
++	data, err = encodeFleetRecoveryWithPin(t.Context(), layers, &pin)
++	if err != nil {
++		t.Fatal(err)
++	}
++	snapshot.Publication.Recovery.Data = data
++	snapshot.Publication.Recovery.Checksum = fleetRecoveryChecksum(data)
++	snapshot.Head = snapshot.Publication.nextHead()
++	if ValidateFleetRecovery(t.Context(), snapshot) == nil {
++		t.Fatal("accepted a pin for a different generation")
++	}
++}

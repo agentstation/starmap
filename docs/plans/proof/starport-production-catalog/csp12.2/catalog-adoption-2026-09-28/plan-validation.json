@@ -1,0 +1,15 @@
+{
+  "status": "pass",
+  "tasks": 40,
+  "done": 26,
+  "active": "CSP12.2",
+  "statuses_preserved": true,
+  "broken_local_links": [],
+  "changed_blocks": 8,
+  "resume_words": 322,
+  "execution_entries": 9,
+  "whole_plan_words": 11504,
+  "whole_plan_bytes": 122552,
+  "size_exception": "The plan retains forty task contracts and the full goal. Resume uses current state, CSP12.2, its recovery contract, and the linked current review. Historical proof is not required for routine resume.",
+  "cold_resume": "pass; active task, exact next tests, source commits, required gates, authorization, and stopped service state are explicit."
+}

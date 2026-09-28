@@ -1,0 +1,30 @@
+{
+  "config_sources": [
+    "/Users/jack/.config/agentstation/technical-writing.toml",
+    "/private/tmp/starport-fleet-review-20260926/.agents/technical-writing.toml"
+  ],
+  "documents": [
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/catalog/fleet_adoption_test.go",
+      "words": 30
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/catalog/fleet_adoption_request_test.go",
+      "words": 0
+    }
+  ],
+  "mode": "strict",
+  "passed": true,
+  "summary": {
+    "diagnostics": 0,
+    "errors": 0,
+    "files": 2,
+    "max_warnings_per_100_words": 0.0,
+    "warning_rate_per_100_words": 0.0,
+    "warnings": 0
+  }
+}
