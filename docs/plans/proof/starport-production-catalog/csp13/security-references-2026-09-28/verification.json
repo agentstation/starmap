@@ -1,0 +1,255 @@
+{
+  "task": "CSP13",
+  "status": "in_progress",
+  "source_commit": "e02671ac93164038f507354e2daa3e56f9d8049b",
+  "go": "1.27.1",
+  "host": "darwin/arm64",
+  "results": {
+    "before.jsonl": {
+      "counts": {
+        "fail": 2
+      },
+      "nonpassing_tests": [
+        "TestBackupGatewayKeyReferences/missing-index",
+        "TestBackupGatewayKeyReferences"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "fail",
+          "elapsed": 0.875
+        }
+      ]
+    },
+    "focused-race.jsonl": {
+      "counts": {},
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "fail",
+          "elapsed": 0
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "fail",
+          "elapsed": 0
+        }
+      ]
+    },
+    "focused-race-v2.jsonl": {
+      "counts": {
+        "pass": 66,
+        "fail": 4
+      },
+      "nonpassing_tests": [
+        "TestBackupReportsUnknownAccountAndKeyHistory/intact",
+        "TestBackupReportsUnknownAccountAndKeyHistory/missing",
+        "TestBackupReportsUnknownAccountAndKeyHistory/different",
+        "TestBackupReportsUnknownAccountAndKeyHistory"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 1.826
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "fail",
+          "elapsed": 39.587
+        }
+      ]
+    },
+    "full-race.jsonl": {
+      "counts": {
+        "pass": 619,
+        "fail": 4
+      },
+      "nonpassing_tests": [
+        "TestBackupReportsUnknownAccountAndKeyHistory/intact",
+        "TestBackupReportsUnknownAccountAndKeyHistory/missing",
+        "TestBackupReportsUnknownAccountAndKeyHistory/different",
+        "TestBackupReportsUnknownAccountAndKeyHistory"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/apikey",
+          "result": "pass",
+          "elapsed": 2.027
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/account",
+          "result": "pass",
+          "elapsed": 2.364
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/identity",
+          "result": "pass",
+          "elapsed": 3.763
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 2.423
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed": 18.635
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "fail",
+          "elapsed": 58.265
+        }
+      ]
+    },
+    "history-race.jsonl": {
+      "counts": {
+        "pass": 2,
+        "fail": 2
+      },
+      "nonpassing_tests": [
+        "TestBackupReportsUnknownAccountAndKeyHistory/different",
+        "TestBackupReportsUnknownAccountAndKeyHistory"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "fail",
+          "elapsed": 2.875
+        }
+      ]
+    },
+    "purego.jsonl": {
+      "counts": {
+        "pass": 70,
+        "fail": 2
+      },
+      "nonpassing_tests": [
+        "TestBackupReportsUnknownAccountAndKeyHistory/different",
+        "TestBackupReportsUnknownAccountAndKeyHistory"
+      ],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 0.988
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "fail",
+          "elapsed": 17.711
+        }
+      ]
+    },
+    "final-race.jsonl": {
+      "counts": {
+        "pass": 623
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/apikey",
+          "result": "pass",
+          "elapsed": 1.855
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/account",
+          "result": "pass",
+          "elapsed": 2.171
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/identity",
+          "result": "pass",
+          "elapsed": 3.039
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 2.392
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed": 24.352
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 71.599
+        }
+      ]
+    },
+    "final-purego.jsonl": {
+      "counts": {
+        "pass": 72
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass",
+          "elapsed": 1.034
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "elapsed": 34.081
+        }
+      ]
+    }
+  },
+  "commands": [
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -overlay /tmp/csp13-security-before-overlay/overlay.json ./internal/recovery -run ^TestBackupGatewayKeyReferences/missing-index$ -json -count=1 -timeout=2m",
+    "python3 /tmp/csp13-all-storage-env.py /tmp/csp13-security-final-race.jsonl go test -race ./internal/account ./internal/apikey ./internal/identity ./internal/limits/reservation ./internal/recovery ./internal/cli -json -count=1 -timeout=5m",
+    "CGO_ENABLED=0 python3 /tmp/csp13-all-storage-env.py /tmp/csp13-security-final-purego.jsonl go test ./internal/recovery ./internal/cli -run '^TestBackup|^TestBundleIdentity|^TestRecoveryRequiresOriginalIndependentApproval$' -json -count=1 -timeout=4m",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 make lint",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./internal/apikey ./internal/identity ./internal/limits/reservation ./internal/recovery ./internal/cli",
+    "bash scripts/verify-dependency-direction.sh",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go test -c ./internal/app -o /tmp/csp13-security-linux.test",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go test -c ./internal/app -o /tmp/csp13-security-windows.test.exe"
+  ],
+  "checks": {
+    "lint": "PASS; zero issues",
+    "vet": "PASS; five affected packages",
+    "dependency_direction": "PASS; six conditions",
+    "source_writing": "PASS; recovery README",
+    "cross_compile": "PASS linux/amd64 and windows/amd64; not native execution",
+    "plan_writing": "PASS; four files, zero diagnostics"
+  },
+  "fail_before": {
+    "baseline": "31616bb68899816e06a3a6109f61270e21dcf16c",
+    "method": "Go overlay supplies baseline internal/recovery/references.go, internal/recovery/identity_references.go, internal/identity/recovery.go, and internal/recovery/references_test.go. A narrowed retained test only requires an error for the missing hash index. Other code remains current.",
+    "result": "The preceding reference verifier accepts a captured key with its hash index removed. The test fails at require.Error. This is a selected-verifier regression, not a full baseline checkout."
+  },
+  "retained_failures": [
+    "An internal reservation test imported the recovery coordinator, causing a test import cycle. Its real-storage test moved to the coordinator package with all six original meter assertions.",
+    "An intermediate callback signature edit failed compilation and was corrected.",
+    "The unknown-history fixture initially omitted mandatory API-key scopes; the fixture now uses chat:write.",
+    "A fixture tried to replace intact history through EstablishWindow, which correctly refused. The fixture now simulates a separately restored accounting history.",
+    "Intermediate lint found oversized branching; owner-specific helpers now keep the same checks below the existing limit."
+  ],
+  "contracts": [
+    "Gateway key hash indexes must agree in both directions and with the collection count",
+    "Original key expiration, inactivity, and deleted-initial markers remain unchanged",
+    "Budget records retain windows, attempts, corrections, and original storage TTL checks",
+    "Completed KV team initialization requires its consumed SQL grant, even after team deletion",
+    "Missing or different current policy history is diagnostic unknown history, never zero consumption",
+    "Verification cannot issue permission, settle, refund, or replay uncertain work"
+  ],
+  "limitations": [
+    "Reference integrity does not prove aggregate accounting totals or complete correction ancestry",
+    "Independent post-backup history, external fencing, restore coordinator, activation, and measured recovery remain open",
+    "Fifteen CSP13 subcases remain UNVERIFIED; no new acceptance subcase is complete",
+    "Native Linux/Windows execution, required pre-PR review, CI, and merge remain open"
+  ],
+  "fixtures": "Task-owned PostgreSQL, MySQL, Valkey and MinIO stopped after qualification; volumes preserved",
+  "manual_review": [
+    "Canonical reservation decoders retain the previous runtime checks and error return behavior. Snapshot readers preserve original TTL metadata.",
+    "Moved independent-approval test retains six meter checks and original-incarnation refusal.",
+    "New calls belong to backup inspection and reporting. No request-path lookups or mutations were added.",
+    "Correction ancestry and aggregate accounting remain explicit gaps; reference verification does not approve restoration."
+  ]
+}

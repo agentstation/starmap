@@ -5107,3 +5107,21 @@ Gateway API-key references, budget records, independent later history, and resto
 
 The [SQL reference proof](../../plans/proof/starport-production-catalog/csp13/identity-references-2026-09-28/verification.json) records 35 focused race passes, 35 pure-Go passes, and 318 broader passes.
 All three cohorts have no failures or skips.
+
+
+### Gateway-key and budget references: September 28, 2026
+
+Consumer `e02671ac9` validates captured key and accounting references.
+
+Gateway-key validation checks both hash-index directions, collection counts, and original storage expiry metadata.
+Missing owner references remain diagnostic. Deleted initial keys retain their markers.
+
+Budget owners validate attempts, windows, correction references, and captured history.
+Completed KV team initialization requires the matching consumed SQL grant, including after team deletion.
+Current policies with missing or different history remain unknown. Verification cannot create fresh budget capacity.
+CLI output reports missing references, held reservations, and unknown history counts.
+
+Aggregate accounting checks, complete correction ancestry, independent later history, and restore activation remain required.
+
+The [reference proof](../../plans/proof/starport-production-catalog/csp13/security-references-2026-09-28/verification.json) records 623 race passes and 72 pure-Go passes.
+Both cohorts have no failures or skips.

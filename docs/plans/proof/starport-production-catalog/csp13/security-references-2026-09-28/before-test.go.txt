@@ -1,0 +1,77 @@
+package recovery
+
+import (
+	"path/filepath"
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/agentstation/starport/internal/account"
+	"github.com/agentstation/starport/internal/apikey"
+	"github.com/agentstation/starport/internal/storage"
+	"github.com/stretchr/testify/require"
+)
+
+func inspectReferenceFixture(t *testing.T, source BundleSources, request BundleRequest, destination string) (ReferenceReport, error) {
+	t.Helper()
+	manifest, err := BackupBundle(t.Context(), destination, source, request)
+	require.NoError(t, err)
+	digest, err := manifest.Digest()
+	require.NoError(t, err)
+	_, result, err := InspectBundleReferences(t.Context(), destination, digest, filepath.Dir(destination), source.Encryption)
+	return result, err
+}
+
+func TestBackupGatewayKeyReferences(t *testing.T) {
+	for _, mode := range []string{"missing-index"} {
+		t.Run(mode, func(t *testing.T) {
+			source, request, destination := backupBundleFixture(t)
+			kv, transfer, _ := kvTransferStores(t, storage.StorageTypeBadger)
+			source.KV = transfer
+			accounts, err := account.Open(kv)
+			require.NoError(t, err)
+			owner, err := accounts.Create(t.Context(), account.Account{ID: "owner", Name: "Owner", Active: true})
+			require.NoError(t, err)
+			keys, err := apikey.Open(kv)
+			require.NoError(t, err)
+			key := apikey.APIKey{ID: "key", Name: "test-key", Hash: "opaque-test-hash", AccountID: "owner", Scopes: []string{"chat:write"}, Active: true, CreatedAt: time.Now().Add(-time.Hour)}
+			if mode == "expired-key" {
+				expires := time.Now().Add(-time.Minute)
+				key.ExpiresAt = &expires
+				key.Active = false
+			}
+			if mode == "missing-owners" {
+				key.TeamID = "deleted-team"
+			}
+			created, err := keys.CreateInitial(t.Context(), key)
+			require.NoError(t, err)
+			for _, prefix := range []string{"identity:v1:hash:", "identity:v1:key:"} {
+				ids, err := kv.ScanWithPrefix(t.Context(), prefix, 0)
+				require.NoError(t, err)
+				require.Len(t, ids, 1)
+				if mode == "missing-index" && strings.Contains(prefix, ":hash:") {
+					require.NoError(t, kv.Delete(t.Context(), ids[0]))
+				}
+				if mode == "orphan-index" && strings.Contains(prefix, ":hash:") {
+					data, err := kv.Get(t.Context(), ids[0])
+					require.NoError(t, err)
+					require.NoError(t, kv.Set(t.Context(), prefix+"foreign", data))
+				}
+				if mode == "expiring-record" && strings.Contains(prefix, ":key:") {
+					require.NoError(t, kv.ExpireAt(t.Context(), ids[0], time.Now().Add(time.Hour)))
+				}
+			}
+			if mode == "wrong-count" {
+				require.NoError(t, kv.Set(t.Context(), "identity:v1:collection", []byte(`{"schema_version":1,"revision":2,"count":2}`)))
+			}
+			if mode == "deleted-initial" {
+				require.NoError(t, keys.Delete(t.Context(), key.ID, created.Revision))
+			}
+			if mode == "missing-owners" {
+				require.NoError(t, accounts.Delete(t.Context(), "owner", owner.Revision))
+			}
+            _, err = inspectReferenceFixture(t, source, request, destination)
+            require.Error(t, err, "captured API key without its hash index must be refused")
+        })
+    }
+}

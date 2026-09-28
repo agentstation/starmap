@@ -4743,3 +4743,20 @@ Gateway-key and budget references, independent later history, full restore, nati
 
 The [SQL reference proof](../../plans/proof/starport-production-catalog/csp13/identity-references-2026-09-28/verification.json) records 35 focused race passes, 35 pure-Go passes, and 318 broader passes.
 All three cohorts have no failures or skips.
+
+
+### Gateway-key and budget references: September 28, 2026
+
+Consumer `e02671ac9` validates captured key and accounting references.
+
+The previous verifier accepted a captured gateway key after the fixture removed its hash index.
+The selected-verifier regression preserves that failure, and the owner check now refuses the backup.
+Deleted initial keys and teams can leave legitimate retained records. Verification preserves these states and reports their meaning.
+Consumed team grants without matching history remain unknown rather than fresh capacity.
+
+The reservation test imported the recovery coordinator. The new coordinator dependency exposed a test import cycle.
+The real-storage integration test now lives with the coordinator and retains its six meter assertions.
+Aggregate accounting checks, complete correction ancestry, independent later history, and full restore remain open.
+
+The [reference proof](../../plans/proof/starport-production-catalog/csp13/security-references-2026-09-28/verification.json) records 623 race passes and 72 pure-Go passes.
+Both cohorts have no failures or skips.
