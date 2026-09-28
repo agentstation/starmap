@@ -1,0 +1,96 @@
+{
+  "status": "REVIEWED_PUBLISHED_NATIVE_CI_RUNNING",
+  "task": "CSP12.2",
+  "consumer_commit": "6f97ba52960620e62f91f49d8fe56621bfada6eb",
+  "failed_run": 36440996799,
+  "failed_job": 108991117449,
+  "cause": "The previously used MinIO image digest and release tag now refuse public registry access with HTTP 401. Cached local image availability concealed that external dependency failure.",
+  "correction": "The initial diagnosis of an invalid image digest was unsupported. The local repository digest matches the pin; both registry digest and tag requests fail.",
+  "completed_fleet_tests": {
+    "catalog": 80,
+    "adoption": 22,
+    "initialization": 7,
+    "budget": 8,
+    "fail": 0,
+    "skip": 0
+  },
+  "source_fixture": {
+    "module": "github.com/minio/minio",
+    "version": "v0.0.0-20250907161309-07c3a429bfed",
+    "upstream_tag": "RELEASE.2025-09-07T16-13-09Z",
+    "tag_object": "01ce918d8279a20e4706b96a64396146894adee4",
+    "commit": "07c3a429bfed433e49018cb0f78a52145d4bedeb",
+    "go": "1.27.1",
+    "checksum_database": "sum.golang.org",
+    "module_changes_to_starport": false
+  },
+  "workflow": "Build the exact official fixture source in a separate durable-work-recovery job. Run the unchanged reservation and jobs suites against real Valkey, PostgreSQL, and MinIO. Build depends on the new job.",
+  "local_verification": {
+    "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -json -race -count=1 -timeout 5m ./internal/limits/reservation ./internal/jobs",
+    "test_events": {
+      "pass": 685,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_seconds": {
+      "reservation": 24.006,
+      "jobs": 35.758
+    },
+    "actionlint": "PASS",
+    "action_pin_verifier": "PASS",
+    "release_workflow_contract": "PASS",
+    "native_evidence_verifier_tests": 10
+  },
+  "review": {
+    "status": "PASS",
+    "commit": "6f97ba52960620e62f91f49d8fe56621bfada6eb",
+    "reviewer": "claude-opus-5-5 high",
+    "parts": 9,
+    "findings": 0,
+    "secret_scan": "clean",
+    "gate": "pre-pr",
+    "mode": "auto",
+    "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+    "max_passes": 64,
+    "reason": "Review the complete coherent consumer diff without truncation."
+  },
+  "artifacts": {
+    "failed-job.log": {
+      "archive": "failed-job.log.gz",
+      "sha256_raw": "37fd9c178408cce1f0e6c0292e2efa1d456de262d46ed5ff3cd86e1bb079659f"
+    },
+    "source-build.log": {
+      "archive": "source-build.log.gz",
+      "sha256_raw": "8959fcb8c239a029bd114896100cae38acfa6173029ac05891cbd8631c94a903"
+    },
+    "source-build-info.txt": {
+      "archive": "source-build-info.txt.gz",
+      "sha256_raw": "8cb168ef4b59cee073d1b52548cc1b2699051efd7fca7356dbede69d445ca778"
+    },
+    "tests.jsonl": {
+      "archive": "tests.jsonl.gz",
+      "sha256_raw": "28a8635813e7ba1afc5ee10c22272172088673ed0ae21371a8348a814e5da8af"
+    },
+    "action-pins.log": {
+      "archive": "action-pins.log.gz",
+      "sha256_raw": "a94bb5c32787cc4e2b807b0bd116b26755f3ba2b7cdfa5354a1dc15b66506eac"
+    },
+    "workflow-contract.log": {
+      "archive": "workflow-contract.log.gz",
+      "sha256_raw": "5c2f6dec911c5820130b7957e0deccb54a9823d32da88aa6366b6d6e35d87bbe"
+    },
+    "native-evidence-verifier.log": {
+      "archive": "native-evidence-verifier.log.gz",
+      "sha256_raw": "aca6137d5f5473f3045a71fd625740e39ab4dcbf06efa7e8a91204d2b448425c"
+    }
+  },
+  "limits": "Native CI on the new head and consumer merge remain required. The previous run still has macOS and Windows x86-64 jobs active.",
+  "updated_at": "2026-09-28T15:39:17.969869+00:00",
+  "publication": {
+    "pr": 387,
+    "head": "6f97ba52960620e62f91f49d8fe56621bfada6eb",
+    "run": 36445417644,
+    "watch_session": 75464,
+    "merge": "pending"
+  }
+}

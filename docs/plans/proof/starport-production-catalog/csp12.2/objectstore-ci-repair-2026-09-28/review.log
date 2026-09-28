@@ -1,0 +1,24 @@
+autoreview target: branch
+branch: detached
+gate: pre-pr (configured cadence: pre-pr)
+profile: auto
+config: /Users/jack/.config/autoreview/config.toml
+selection: opus5=8.43
+reviewers: claude model=claude-opus-5-5 thinking=high
+tools: on
+web_search: on
+ref: origin/main
+trufflehog: clean (11.3s)
+bundle: 1860440 bytes; review passes: 9
+review pass: 1/9 (231867 prompt bytes)
+review pass: 2/9 (231985 prompt bytes)
+review pass: 3/9 (232021 prompt bytes)
+review pass: 4/9 (231938 prompt bytes)
+review pass: 5/9 (231955 prompt bytes)
+review pass: 6/9 (231935 prompt bytes)
+review pass: 7/9 (231885 prompt bytes)
+review pass: 8/9 (232003 prompt bytes)
+review pass: 9/9 (69422 prompt bytes)
+autoreview chunked clean: no accepted/actionable findings reported
+overall: patch is correct (0.72)
+Chunked review complete. chunk 1/9: 0 finding(s), chunk 2/9: 0 finding(s), chunk 3/9: 0 finding(s), chunk 4/9: 0 finding(s), chunk 5/9: 0 finding(s), chunk 6/9: 0 finding(s), chunk 7/9: 0 finding(s), chunk 8/9: 0 finding(s), chunk 9/9: 0 finding(s).

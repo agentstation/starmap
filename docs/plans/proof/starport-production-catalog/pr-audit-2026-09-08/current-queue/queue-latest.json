@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-28T13:23:13.730088+00:00",
+  "checked_at": "2026-09-28T15:15:57.852582+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -1057,13 +1057,13 @@
   "budget_preparation": {
     "owner": "CSP12.2",
     "status": "in_progress",
-    "commit": "d6107baa33fc64c3cb1b896c624862e458c8e949",
+    "commit": "6f97ba52960620e62f91f49d8fe56621bfada6eb",
     "published": true,
     "proof": "../../csp12.2/retention-acceptance-2026-09-28/verification.json",
-    "native_ci": "Run 36440996799 is in progress at reviewed d6107baa.",
+    "native_ci": "Run 36445417644 starts at 6f97ba52. Prior d6107baa passes 117 fleet events and four native platforms, then fails the unavailable image pull. Windows x86-64 remains active.",
     "required_review": {
       "producer": "PASS: three parts, zero findings; decoded catalog secret scan passes",
-      "consumer": "PASS at d6107baa: nine complete parts, zero actionable findings, clean secret scan."
+      "consumer": "PASS at 6f97ba52: nine complete parts, zero actionable findings, clean secret scan."
     },
     "remaining_dirty_files": {
       "docs/ARCHITECTURE.md": "CSP18 preparation",
@@ -1071,8 +1071,13 @@
     },
     "processes": [
       {
+        "session": 75464,
+        "role": "current native CI watch",
+        "log": "/tmp/csp122-source-objectstore-native-watch.log"
+      },
+      {
         "session": 58694,
-        "role": "native CI watch",
+        "role": "retain previous Windows native result",
         "log": "/tmp/csp122-consumer-fixtures-native-watch.log"
       }
     ],
@@ -1098,10 +1103,10 @@
       "owner": "current task",
       "consumer_pr": 387,
       "consumer_url": "https://github.com/agentstation/starport/pull/387",
-      "consumer_head": "d6107baa33fc64c3cb1b896c624862e458c8e949",
-      "consumer_ci_run": 36440996799,
+      "consumer_head": "6f97ba52960620e62f91f49d8fe56621bfada6eb",
+      "consumer_ci_run": 36445417644,
       "producer_merge": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
-      "consumer_local_head": "d6107baa33fc64c3cb1b896c624862e458c8e949"
+      "consumer_local_head": "6f97ba52960620e62f91f49d8fe56621bfada6eb"
     },
     "qualification_limits": "Published producer dependency passes with GOWORK=off. Native CI and paired merges remain required.",
     "candidate_workspace": "/tmp/csp122-billing.work",
@@ -1116,7 +1121,7 @@
     "rerank_proof": "../../csp12.2/rerank-billing-2026-09-27/verification.json",
     "speech_proof": "../../csp12.2/speech-billing-2026-09-27/verification.json",
     "image_billing_proof": "../../csp12.2/image-billing-2026-09-27/verification.json",
-    "next_action": "Collect fresh native CI for published d6107baa and merge PR #387 only after exact-head checks pass.",
+    "next_action": "Collect current native CI run 36445417644 at reviewed 6f97ba52. Retain the remaining previous Windows result. Merge #387 only after exact-head checks and review threads permit it.",
     "local_test_service": {
       "containers": [
         "starport-csp122-async-usage",
@@ -1124,7 +1129,7 @@
         "starport-csp122-postgres",
         "starport-csp122-retirement-objectstore"
       ],
-      "status": "All task storage containers are stopped.",
+      "status": "All task storage containers are stopped. The source-built MinIO process exited after verification.",
       "note": "Stop these task services after the checks finish. Recheck mapped ports before reuse."
     },
     "accounting_retry_proof": "../../csp12.2/accounting-retries-2026-09-27/verification.json",
@@ -1233,18 +1238,122 @@
       "test_skip": 0,
       "lint": "PASS",
       "proof": "../../csp12.2/fleet-readiness-2026-09-28/verification.json"
-    }
+    },
+    "objectstore_fixture_proof": "../../csp12.2/objectstore-ci-repair-2026-09-28/verification.json"
   },
-  "remote_state_note": "Producer #187 merged. Consumer #387 remains open with reviewed CI repairs.",
+  "remote_state_note": "Producer #187 merged. Consumer #387 awaits native CI at reviewed 6f97ba52. Eight dependency PRs retain their recorded review and repair actions.",
   "open_queue_snapshot": {
-    "checked_at": "2026-09-28T13:23:13.730088+00:00",
-    "starmap": [],
+    "checked_at": "2026-09-28T15:15:57.852582+00:00",
+    "starmap": [
+      {
+        "number": 188,
+        "title": "build(deps): bump actions/download-artifact from 7.0.0 to 8.0.1 in the github-actions group",
+        "url": "https://github.com/agentstation/starmap/pull/188",
+        "state": "OPEN",
+        "headRefName": "dependabot/github_actions/github-actions-1fa769d870",
+        "headRefOid": "58ebcc21195da960f2b811679d6cfad5ebecbf78",
+        "baseRefName": "main",
+        "baseRefOid": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
+        "isDraft": false,
+        "mergeStateStatus": "BLOCKED",
+        "updatedAt": "2026-09-28T14:08:55Z",
+        "repository": "agentstation/starmap",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
+        "next_action": "Verify the new action source and compatibility, then update the reviewed-pin evidence and guard together."
+      },
+      {
+        "number": 189,
+        "title": "build(deps): bump cloud.google.com/go/auth in /",
+        "url": "https://github.com/agentstation/starmap/pull/189",
+        "state": "OPEN",
+        "headRefName": "dependabot/go_modules/go_modules-d494d303f5",
+        "headRefOid": "177577e7d6088a13721395d7a52b5620d31ca82c",
+        "baseRefName": "main",
+        "baseRefOid": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
+        "isDraft": false,
+        "mergeStateStatus": "BLOCKED",
+        "updatedAt": "2026-09-28T14:35:34Z",
+        "repository": "agentstation/starmap",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
+        "next_action": "Review dependency changes and exact-head checks after PR #387 merges. Reuse this PR and update its base when required."
+      },
+      {
+        "number": 190,
+        "title": "build(deps): bump cloud.google.com/go/secretmanager in /",
+        "url": "https://github.com/agentstation/starmap/pull/190",
+        "state": "OPEN",
+        "headRefName": "dependabot/go_modules/go_modules-b8e632704f",
+        "headRefOid": "1e9e78832840b5b199aa52b98e10e812aaa9db0e",
+        "baseRefName": "main",
+        "baseRefOid": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
+        "isDraft": false,
+        "mergeStateStatus": "BLOCKED",
+        "updatedAt": "2026-09-28T14:35:36Z",
+        "repository": "agentstation/starmap",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
+        "next_action": "Review dependency changes and exact-head checks after PR #387 merges. Reuse this PR and update its base when required."
+      },
+      {
+        "number": 191,
+        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2 in /",
+        "url": "https://github.com/agentstation/starmap/pull/191",
+        "state": "OPEN",
+        "headRefName": "dependabot/go_modules/go_modules-c3e2ba5d96",
+        "headRefOid": "b625971100c58fce338669c853ca820a9afa2109",
+        "baseRefName": "main",
+        "baseRefOid": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
+        "isDraft": false,
+        "mergeStateStatus": "BLOCKED",
+        "updatedAt": "2026-09-28T14:38:16Z",
+        "repository": "agentstation/starmap",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
+        "next_action": "Review dependency changes and exact-head checks after PR #387 merges. Reuse this PR and update its base when required."
+      },
+      {
+        "number": 192,
+        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
+        "url": "https://github.com/agentstation/starmap/pull/192",
+        "state": "OPEN",
+        "headRefName": "dependabot/go_modules/go_modules-9b3906e02d",
+        "headRefOid": "ab4a8acbed3764c51b3f1bed9ca92e58658d7499",
+        "baseRefName": "main",
+        "baseRefOid": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
+        "isDraft": false,
+        "mergeStateStatus": "BLOCKED",
+        "updatedAt": "2026-09-28T14:39:43Z",
+        "repository": "agentstation/starmap",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
+        "next_action": "Update the external acquisition fixture module for the reviewed dependency graph and rerun all six consumer compile checks."
+      },
+      {
+        "number": 193,
+        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/credentials in /",
+        "url": "https://github.com/agentstation/starmap/pull/193",
+        "state": "OPEN",
+        "headRefName": "dependabot/go_modules/go_modules-02c0f48f7e",
+        "headRefOid": "214393bdcfbc4e86caa744cd1f43f261b3dcd01d",
+        "baseRefName": "main",
+        "baseRefOid": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
+        "isDraft": false,
+        "mergeStateStatus": "BLOCKED",
+        "updatedAt": "2026-09-28T14:41:04Z",
+        "repository": "agentstation/starmap",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
+        "next_action": "Update the external acquisition fixture module for the reviewed dependency graph and rerun all six consumer compile checks."
+      }
+    ],
     "starport": [
       {
         "baseRefName": "main",
         "baseRefOid": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
         "headRefName": "codex/atomic-budget-admission",
-        "headRefOid": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
+        "headRefOid": "6f97ba52960620e62f91f49d8fe56621bfada6eb",
         "isDraft": false,
         "mergeStateStatus": "BLOCKED",
         "number": 387,
@@ -1252,8 +1361,42 @@
         "title": "Reserve paid-operation budgets and recover durable work safely",
         "url": "https://github.com/agentstation/starport/pull/387",
         "owner": "CSP12.2",
-        "disposition": "Reviewed CI repair published; native CI active.",
+        "disposition": "Reviewed source-fixture repair published. Fresh native CI is active.",
         "next_action": "Collect current native CI, verify exact consumer head and review threads, merge PR #387, record merge commit, and close CSP12.2."
+      },
+      {
+        "number": 388,
+        "title": "chore(deps): bump Homebrew/actions/setup-homebrew from 2026.09.21.1 to 2026.09.28.1 in the github-actions group",
+        "url": "https://github.com/agentstation/starport/pull/388",
+        "state": "OPEN",
+        "headRefName": "dependabot/github_actions/github-actions-45de2ffcd4",
+        "headRefOid": "cec144c09aca6db972e85ffcdc6e618b121d7669",
+        "baseRefName": "main",
+        "baseRefOid": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+        "isDraft": false,
+        "mergeStateStatus": "UNSTABLE",
+        "updatedAt": "2026-09-28T14:06:17Z",
+        "repository": "agentstation/starport",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
+        "next_action": "Reproduce the credential-resolution deadline after the budget PR merges. Preserve grant assertions and the runtime failure boundary."
+      },
+      {
+        "number": 389,
+        "title": "chore(deps): bump the go-modules group with 9 updates",
+        "url": "https://github.com/agentstation/starport/pull/389",
+        "state": "OPEN",
+        "headRefName": "dependabot/go_modules/go-modules-2346b439a7",
+        "headRefOid": "4a4ad50e88f3538a296e3e248c6868a429eb8d47",
+        "baseRefName": "main",
+        "baseRefOid": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+        "isDraft": false,
+        "mergeStateStatus": "UNSTABLE",
+        "updatedAt": "2026-09-28T14:34:34Z",
+        "repository": "agentstation/starport",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
+        "next_action": "Update this PR from main after #387 merges, then rerun Windows qualification and dependency review."
       }
     ]
   },
