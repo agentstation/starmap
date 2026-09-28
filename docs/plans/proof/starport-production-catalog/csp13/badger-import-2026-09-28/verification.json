@@ -1,0 +1,126 @@
+{
+  "task": "CSP13",
+  "status": "LOCAL_COMPONENT_PASS_TASK_INCOMPLETE",
+  "recorded_at": "2026-09-28T17:01:55.218024+00:00",
+  "head": "af6868e5703bf21f9d57ed1fda37a50369fbb781",
+  "base": "44eee9614d3cd2a44b4a69c7b596a31f0ef24b54",
+  "worktree": "/private/tmp/starport-clock-review-20260926",
+  "branch": "codex/storage-recovery",
+  "toolchain": "go1.27.1",
+  "decision": "Replace the unsafe in-place internal Restore API with explicit restore into a new persistent destination. Repository-wide call inspection found only tests. Full recovery must fence old writers and adopt the replacement through the deployment coordinator.",
+  "changes": [
+    "Backup returns format, exact byte count, and SHA-256 identity for the coordinated manifest. It creates a private file exclusively and flushes data and parent metadata.",
+    "Restore copies and hashes the declared artifact into private staging before loading it. Framing checks reject lengths outside the verified payload before Badger allocates them.",
+    "Load uses a private candidate and preserves absolute expirations and engine configuration. Publication refuses every existing destination.",
+    "Flush candidate files before native no-replacement publication, then flush the parent. Report publication separately from a later durability error.",
+    "The original store remains open and unchanged. No hot database pointer replacement occurs."
+  ],
+  "checks": {
+    "focused": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -json -race -count=1 -timeout 3m ./internal/storage -run 'TestBadgerRestore|TestBadgerBackup|TestBadgerEffectiveCompression|TestBadgerStore/BackupRestore'",
+    "focused_events": {
+      "pass": 18,
+      "fail": 0,
+      "skip": 0
+    },
+    "broader": "go test -json -race -count=1 -timeout 5m ./internal/storage",
+    "broader_events": {
+      "pass": 204,
+      "fail": 0,
+      "skip": 17
+    },
+    "broader_source": "Before final format-tag and load-helper extraction. Final focused checks cover all changed restore behavior.",
+    "lint": "PASS: full make lint, zero issues",
+    "writing": "PASS: both new files, zero diagnostics",
+    "diff": "PASS"
+  },
+  "fail_before": "../preparation-2026-09-28/verification.json",
+  "candidate_failures": [
+    "Initial fixture paths did not satisfy owner-only private-file policy. Tests now create private directories through the native product-file API.",
+    "Concurrent publication returned wrapped EEXIST. The test now checks error identity with errors.Is rather than legacy os.IsExist."
+  ],
+  "artifacts": {
+    "focused.jsonl": {
+      "path": "focused.jsonl.gz",
+      "sha256_raw": "e7926acb4cf8accc9dfc5300892198cb5e82e45871db0d2caf4e2b39dd2ff020",
+      "events": {
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed": [],
+      "skipped": []
+    },
+    "storage.jsonl": {
+      "path": "storage.jsonl.gz",
+      "sha256_raw": "d12b76e26dcaa0029806b424809a9a96e30dcf208440a37e162076edd6b69c05",
+      "events": {
+        "pass": 204,
+        "fail": 0,
+        "skip": 17
+      },
+      "failed": [],
+      "skipped": [
+        "TestLifetimeBatch/valkey",
+        "TestValueLifetimeSnapshot/valkey",
+        "TestTimeBoundStore/valkey",
+        "TestBudgetAuthorityNativeOperationCommands",
+        "TestValkeyTLSIdentity",
+        "TestValkeyUsernamePassword",
+        "TestValkeyEffectiveConnectionOptions",
+        "TestValkeyURLDatabaseSelection",
+        "TestValkeyIncarnationAtomicContract",
+        "TestValkeyIncarnationRejectsReplacementBackend",
+        "TestValkeyDeploymentNamespace",
+        "TestValkeyDeploymentNotificationIsolation",
+        "TestValkeySmallResultLimitBoundsScanRoundTrips",
+        "TestValkeyStore",
+        "TestValkeyPubSub",
+        "TestBoundedStorageRead/valkey",
+        "TestScanPagesPreserveEveryKeyAndLiteralPrefix/valkey"
+      ]
+    },
+    "first-candidate.jsonl": {
+      "path": "first-candidate.jsonl.gz",
+      "sha256_raw": "e8a7082e342306a46e2a7176a6ed196e7ef8e212f524c2a8e0e7490e28a5e78d",
+      "events": {
+        "pass": 1,
+        "fail": 6,
+        "skip": 0
+      },
+      "failed": [
+        "TestBadgerEffectiveCompression/none",
+        "TestBadgerEffectiveCompression/snappy",
+        "TestBadgerEffectiveCompression/zstd",
+        "TestBadgerEffectiveCompression",
+        "TestBadgerStore/BackupRestore",
+        "TestBadgerStore"
+      ],
+      "skipped": []
+    },
+    "concurrent-candidate.jsonl": {
+      "path": "concurrent-candidate.jsonl.gz",
+      "sha256_raw": "cd8a7586227b67dee7ae58cfc00088e0ac522afffe15b664667bbfd1ac01359b",
+      "events": {
+        "pass": 17,
+        "fail": 1,
+        "skip": 0
+      },
+      "failed": [
+        "TestBadgerRestoreConcurrentPublicationHasOneWinner"
+      ],
+      "skipped": []
+    },
+    "lint.log": {
+      "path": "lint.log.gz",
+      "sha256_raw": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    }
+  },
+  "limits": [
+    "Local macOS component evidence only. Native Linux and Windows qualification remains required.",
+    "Backup covers Badger alone. SQL, blobs, runtime files, configuration, keys, and independent recovery evidence require the coordinated manifest.",
+    "Corrupt and mismatched input refuses publication. Interrupted-process recovery and orphan-stage ownership remain part of the complete operator procedure.",
+    "The caller must verify the externally retained backup identity. This component does not establish revocation or spending freshness.",
+    "CSP13 remains in_progress. Required review, final task checks, native CI, and merge remain open."
+  ],
+  "publication": "Local commit only. No CSP13 PR or push."
+}
