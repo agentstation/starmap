@@ -543,3 +543,12 @@ An administrator correction must commit its job and audit state with required bu
 A stale inspected state must preserve restrictions. Reusing a decision identifier with different publication must fail.
 The [transaction proof](../../plans/proof/starport-production-catalog/csp12.2/correction-publication-2026-09-27/verification.json) covers this storage contract.
 Job intent, recovery, and administrator operations remain unfinished.
+
+### Administrator correction recovery: September 27, 2026
+
+An administrator can correct an earlier billing decision with a new identifier, inspected binding, evidence reference, and reason.
+Starport retains the first decision, each correction, and independent provider evidence. Corrections never generate another provider request.
+New evidence requires a new decision if it invalidates the inspected state.
+
+Required settlement remains independent of optional usage delivery. Reporting expiry must be visible without claiming delivery or restoring budget capacity.
+The [local implementation proof](../../plans/proof/starport-production-catalog/csp12.2/job-corrections-2026-09-27/verification.json) verifies these behaviors. Fleet qualification and paired merges remain required.

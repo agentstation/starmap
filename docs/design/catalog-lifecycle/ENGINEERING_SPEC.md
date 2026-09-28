@@ -4838,3 +4838,18 @@ It refuses deletion, expiry, duplicate keys, and writes inside the budget namesp
 The [review](../../plans/proof/starport-production-catalog/csp12.2/correction-publication-2026-09-27/REVIEW.md) records both late-evidence commit orders and process interruption evidence.
 Job-owned intent, immutable correction history, effective billing state, reporting acknowledgement, and administrator routes remain required.
 A pending decision must not silently adopt evidence that the operator did not inspect.
+
+### Audited job correction integration: September 27, 2026
+
+Consumer `0e3e3aba` implements durable intent, private correction inspection, and authenticated administrator correction routes.
+The job and budget ledger share one KV authority. Applying a decision commits the job, audit outcome, report link, reservation, receipt, and original windows together.
+
+Intent alone changes no charge. A new decision can supersede pending intent while preserving both decisions.
+Changed evidence requires another inspection. Exact retries cannot reverse a newer applied decision.
+
+Required settlement uses effective corrected evidence. Optional reporting preserves original evidence and applies ordered adjustments without another request count.
+The forward report cursor bounds each recovery call to sixteen adjustments. Outcomes distinguish delivered, expired, and disabled reports.
+An expired original report retains `reporting_expired_at` without setting `accounted`. Recovery stops delivery retries without changing required settlement.
+
+Job schema 6 and job correction history schema 1 replace the previous job-only record contract. CSP13 owns populated migration.
+The [review](../../plans/proof/starport-production-catalog/csp12.2/job-corrections-2026-09-27/REVIEW.md) records local evidence and remaining fleet qualification.

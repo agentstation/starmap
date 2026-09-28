@@ -4536,3 +4536,16 @@ The [proof](../../plans/proof/starport-production-catalog/csp12.2/correction-pub
 
 Final targeted race checks pass 24 results. Pure-Go checks pass 21 results.
 The job service does not yet call this correction operation. This evidence does not qualify an administrator correction API.
+
+### Audited correction integration: September 27, 2026
+
+Consumer `0e3e3aba` connects administrator correction to durable job history and required budget settlement.
+A review found that pending correction status could hide a new provider dispute. Required settlement now compares billing evidence directly.
+The production test verifies retained restriction, refusal before another provider call, and explicit operator resolution.
+
+A second probe found repeated delivery attempts after original reporting expired. The repair retains a separate expiry timestamp without claiming delivery.
+The real reporter test verifies that expiry cannot recreate usage or counters.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/job-corrections-2026-09-27/verification.json) preserves failed runs and exact source boundaries.
+Final race checks pass 458 job results with one MinIO skip, sixteen adapter results, and four production results.
+Pure-Go checks pass 54 results with sixteen Valkey skips. Full CSP12.2 qualification remains open.

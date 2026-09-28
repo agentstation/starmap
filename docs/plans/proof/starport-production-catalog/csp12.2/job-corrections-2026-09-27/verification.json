@@ -1,0 +1,783 @@
+{
+  "status": "partial; administrator correction implementation verified locally; CSP12.2 remains in_progress",
+  "recorded_at": "2026-09-28T03:39:47.214458+00:00",
+  "consumer_commit": "0e3e3aba950b01422012c2c591f6d8c0706f2d94",
+  "base_consumer_commit": "00dfff81cea9b286fc9e58fbc03db75a7c79b68c",
+  "producer_commit": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+  "environment": {
+    "GOWORK": "/tmp/csp122-billing.work",
+    "GOTOOLCHAIN": "go1.27.1",
+    "platform": "darwin/arm64",
+    "valkey": "7.2.14",
+    "lifecycle": "Only the existing Valkey test container ran. Final shared checks completed before Valkey and Docker Desktop stopped. PostgreSQL and MinIO containers remained stopped."
+  },
+  "checks": [
+    {
+      "output": "changed-writing-final.log.gz",
+      "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087",
+      "command": "technical-writing lint operator-correction-excerpt.md internal/jobs/correction.go internal/jobs/correction_repository.go internal/jobs/correction_service.go internal/app/budget_job_correction.go internal/server/controllers/video_reconciliation.go --glossary GLOSSARY.md --format text",
+      "exit_code": 0
+    },
+    {
+      "output": "final-adapter-race.jsonl.gz",
+      "sha256": "91b3bbad1348c1a7925f0e09542924acae03bd458ae5b91a759d2a0263482f55",
+      "test_results_including_parents": {
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 1.745
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/requestctx",
+          "result": "pass",
+          "elapsed_seconds": 1.9569999999999999
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "result": "pass",
+          "elapsed_seconds": 3.826
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "result": "pass",
+          "elapsed_seconds": 14.416
+        }
+      ],
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:62965 go test -race -json ./internal/proxy ./internal/server/... -run 'TestJobCorrection|TestVideoCorrection|TestActivityReportsCorrectedBilling' -count=1 -timeout 2m",
+      "exit_code": 0
+    },
+    {
+      "output": "final-jobs-race.jsonl.gz",
+      "sha256": "735281bd76af9a9704655c7129d44c5acac1db0f322ee3c80e9dca2d3a8a16e5",
+      "test_results_including_parents": {
+        "pass": 458,
+        "fail": 0,
+        "skip": 1
+      },
+      "skipped_tests": [
+        "TestNativeRetirementWithRealObjectStore"
+      ],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 21.716
+        }
+      ],
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:62965 go test -race -json ./internal/jobs -count=1 -timeout 3m",
+      "exit_code": 0
+    },
+    {
+      "output": "final-production-race.jsonl.gz",
+      "sha256": "463b540efad6ba3cb870484cf431d5347dbc4e475d4cbfa35ee28c600c8b3414",
+      "test_results_including_parents": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed_seconds": 28.646
+        }
+      ],
+      "command": "go test -race -json ./internal/app -run 'TestProductionAdministratorVideoReconciliation|TestLateNativeResponseBlocksDisputedBudget' -count=1 -timeout 3m",
+      "exit_code": 0
+    },
+    {
+      "output": "final-pure-go.jsonl.gz",
+      "sha256": "5bd4a3f029fc250a7c6048c090a0cd701173d6f7f3169871c5dc6bdc8c7ebdf4",
+      "test_results_including_parents": {
+        "pass": 54,
+        "fail": 0,
+        "skip": 16
+      },
+      "skipped_tests": [
+        "TestJobCorrectionHistoryAndOrderedReports/valkey",
+        "TestJobCorrectionSupersedesOnlyPendingIntent/valkey",
+        "TestJobCorrectionConcurrentIntentHasOneWinner/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/false/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/true/valkey",
+        "TestJobCorrectionServiceReportingRecovery/valkey",
+        "TestJobCorrectionExpiredReportDoesNotUndoSettlement/valkey",
+        "TestJobCorrectionStaleIntentRetainsNewEvidence/valkey",
+        "TestJobCorrectionIntentRecoversLostAcknowledgement/before/valkey",
+        "TestJobCorrectionIntentRecoversLostAcknowledgement/after/valkey",
+        "TestJobCorrectionMissingHistoryRefusesApplication/valkey",
+        "TestJobCorrectionResolvesUnmeasuredLateEvidence/valkey",
+        "TestJobCorrectionExpiredOriginalStopsReportingRetries/valkey",
+        "TestLegacyJobSchemasRequireMigration/valkey",
+        "TestJobCorrectionsPreserveOriginalUsage/valkey",
+        "TestJobCorrectionRefusesUnsupportedOrInvalidReporting/valkey"
+      ],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 1.361
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "result": "pass",
+          "elapsed_seconds": 0.882
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 1.959
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/requestctx",
+          "result": "pass",
+          "elapsed_seconds": 2.145
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "result": "pass",
+          "elapsed_seconds": 2.196
+        }
+      ],
+      "command": "CGO_ENABLED=0 go test -json ./internal/jobs ./internal/proxy ./internal/server/... -run 'TestJobCorrection|TestVideoCorrection|TestActivityReportsCorrectedBilling|TestLegacyJobSchemas' -count=1 -timeout 2m",
+      "exit_code": 0
+    },
+    {
+      "output": "goago-final.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0
+    },
+    {
+      "output": "layout-final.log.gz",
+      "sha256": "b80708fd8f326f9f8543abaeb2336c131f5efe7d33e04263c60c32a5c30bff57",
+      "command": "bash scripts/verify-package-layout.sh",
+      "exit_code": 0
+    },
+    {
+      "output": "operator-writing-final.log.gz",
+      "sha256": "20b43924c5d71b521dc12ae1293659f136f31c826a4c61e2ca7ab487d8fbe7b7",
+      "command": "technical-writing lint docs/OPERATOR-GUIDE.md --format text",
+      "exit_code": 1
+    },
+    {
+      "output": "original-expiry-after.jsonl.gz",
+      "sha256": "864f9aa20934c9623f7b62b2f96bbff0ac76f001abc90c2e7ef4609db0a9813c",
+      "test_results_including_parents": {
+        "pass": 47,
+        "fail": 0,
+        "skip": 15
+      },
+      "skipped_tests": [
+        "TestJobCorrectionHistoryAndOrderedReports/valkey",
+        "TestJobCorrectionSupersedesOnlyPendingIntent/valkey",
+        "TestJobCorrectionConcurrentIntentHasOneWinner/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/false/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/true/valkey",
+        "TestJobCorrectionServiceReportingRecovery/valkey",
+        "TestJobCorrectionExpiredReportDoesNotUndoSettlement/valkey",
+        "TestJobCorrectionStaleIntentRetainsNewEvidence/valkey",
+        "TestJobCorrectionIntentRecoversLostAcknowledgement/before/valkey",
+        "TestJobCorrectionIntentRecoversLostAcknowledgement/after/valkey",
+        "TestJobCorrectionMissingHistoryRefusesApplication/valkey",
+        "TestJobCorrectionResolvesUnmeasuredLateEvidence/valkey",
+        "TestJobCorrectionExpiredOriginalStopsReportingRetries/valkey",
+        "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals/valkey",
+        "TestRequiredSettlementDoesNotRetainTerminalSlot/valkey"
+      ],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 2.8369999999999997
+        }
+      ],
+      "command": "go test -race -json ./internal/jobs -run 'TestJobCorrection|TestJobReporting|TestRequiredSettlement' -count=1 -timeout 2m",
+      "exit_code": 0
+    },
+    {
+      "output": "original-expiry-before.jsonl.gz",
+      "sha256": "4e9d1cdd1c1b510b261be32a0173900ff288baea0326bda2dc9ca30591ab41ba",
+      "test_results_including_parents": {
+        "pass": 0,
+        "fail": 3,
+        "skip": 1
+      },
+      "skipped_tests": [
+        "TestJobCorrectionExpiredOriginalStopsReportingRetries/valkey"
+      ],
+      "failed_tests": [
+        "TestJobCorrectionExpiredOriginalStopsReportingRetries/memory",
+        "TestJobCorrectionExpiredOriginalStopsReportingRetries/badger",
+        "TestJobCorrectionExpiredOriginalStopsReportingRetries"
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "fail",
+          "elapsed_seconds": 0.398
+        }
+      ],
+      "command": "go test -json ./internal/jobs -run '^TestJobCorrectionExpiredOriginalStopsReportingRetries$' -count=1 -timeout 1m",
+      "exit_code": 1
+    },
+    {
+      "output": "vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": "go vet ./internal/jobs ./internal/proxy ./internal/app ./internal/server/...",
+      "exit_code": 0
+    },
+    {
+      "command": "technical-writing lint five changed design sections and REVIEW.md --glossary GLOSSARY.md --format text",
+      "output": "design-writing.log.gz",
+      "sha256": "84c1d1113aae7aac465b49df062787ade8ee740f785d3c02d0f69d052961dbc1",
+      "exit_code": 1
+    },
+    {
+      "command": "technical-writing lint five changed design sections and REVIEW.md --glossary GLOSSARY.md --format text",
+      "output": "design-writing-final.log.gz",
+      "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087",
+      "exit_code": 0
+    }
+  ],
+  "intermediate_evidence": [
+    {
+      "output": "app-expanded-race.jsonl.gz",
+      "sha256": "a7454960616d949a4d42d838f24e65979a52a2bfb92303bda96f64e166497402",
+      "test_results_including_parents": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed_seconds": 40.521
+        }
+      ]
+    },
+    {
+      "output": "app-final-race.jsonl.gz",
+      "sha256": "f5c79ce5d660dde6d73ab4eefa0f4ba0a89ca8b266d42c7a7dee253f68c4ff4e",
+      "test_results_including_parents": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed_seconds": 37.213
+        }
+      ]
+    },
+    {
+      "output": "app-race.jsonl.gz",
+      "sha256": "5318b79af1c0af5176c41f009adc569029e50809cf6785e758a3b60721d1e755",
+      "test_results_including_parents": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed_seconds": 30.391
+        }
+      ]
+    },
+    {
+      "output": "existing-race.jsonl.gz",
+      "sha256": "62ba7ac0ab7deac22c78a0d2d3d0aeafbb9a90ae5871b351171cb758e056c0a2",
+      "test_results_including_parents": {
+        "pass": 19,
+        "fail": 0,
+        "skip": 6
+      },
+      "skipped_tests": [
+        "TestAdministratorReconciliationRestartAndIsolation/valkey",
+        "TestAdministratorAuditPrecedesRelease/before_commit/valkey",
+        "TestAdministratorAuditPrecedesRelease/lost_acknowledgement/valkey",
+        "TestAdministratorDecisionSurvivesSettlementFailure/valkey",
+        "TestPreparedJobReplacementPreservesTransaction/valkey",
+        "TestRequiredSettlementDoesNotRetainTerminalSlot/valkey"
+      ],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 1.7930000000000001
+        }
+      ]
+    },
+    {
+      "output": "goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "output": "layout.log.gz",
+      "sha256": "fec766437caf3ac650a4442207d0efc9e922f82ba004f2538e3fc08211f6d0f3"
+    },
+    {
+      "output": "local-full-race.jsonl.gz",
+      "sha256": "856472fe03b017551b4969b352e658c56b6acfb6cfc69f8571d5c4361930564b",
+      "test_results_including_parents": {
+        "pass": 1275,
+        "fail": 3,
+        "skip": 88
+      },
+      "skipped_tests": [
+        "TestAdministratorReconciliationRestartAndIsolation/valkey",
+        "TestAdministratorAuditPrecedesRelease/before_commit/valkey",
+        "TestAdministratorAuditPrecedesRelease/lost_acknowledgement/valkey",
+        "TestConcurrentAdministratorDecisions/valkey",
+        "TestLateProviderEvidenceCannotReplaceAdministratorDecision/valkey",
+        "TestAdministratorDecisionSurvivesSettlementFailure/valkey",
+        "TestLateEvidenceSurvivesAuditWriteFailureAndAssetExpiry/valkey",
+        "TestMatchingLateEvidencePreservesResolvedDecision/valkey",
+        "TestAssetSurvivesLostRecordAcknowledgement/valkey",
+        "TestBatchAggregateRecoversLostPublicationWithoutReplay/valkey",
+        "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/metadata/valkey",
+        "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/confirmation/valkey",
+        "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/cleanup/valkey",
+        "TestBatchAggregateConcurrentRecovery/valkey",
+        "TestBatchLineClaimIsDurableAndExclusive/valkey",
+        "TestBatchClaimFailureCannotDispatch/valkey",
+        "TestBatchCancellationAcrossWorkersPreventsNextLine/valkey",
+        "TestBatchResultEvidenceIsImmutable/valkey",
+        "TestResultStorageFailureStopsDispatchAndRetainsCapacity/valkey",
+        "TestResultConfirmationLostAckDoesNotDispatchAgain/valkey",
+        "TestUnboundedBatchPreservesOutstandingVideoSlot/valkey",
+        "TestCancellationRetainsProviderOutcomeAndCapacity/queued/valkey",
+        "TestCancellationRetainsProviderOutcomeAndCapacity/running/valkey",
+        "TestCancellationRetainsProviderOutcomeAndCapacity/completed/valkey",
+        "TestCancellationRetainsProviderOutcomeAndCapacity/cancelled/valkey",
+        "TestCancellationRetainsProviderOutcomeAndCapacity/failed/valkey",
+        "TestCancellationRetainsProviderOutcomeAndCapacity/missing_state/valkey",
+        "TestCancellationRetainsProviderOutcomeAndCapacity/unknown_state/valkey",
+        "TestCancellationRetainsProviderOutcomeAndCapacity/lost_response/valkey",
+        "TestReleasedClaimCannotPublishJob/valkey",
+        "TestJobCorrectionHistoryAndOrderedReports/valkey",
+        "TestJobCorrectionSupersedesOnlyPendingIntent/valkey",
+        "TestJobCorrectionConcurrentIntentHasOneWinner/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/false/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/true/valkey",
+        "TestJobCorrectionServiceReportingRecovery/valkey",
+        "TestJobCorrectionExpiredReportDoesNotUndoSettlement/valkey",
+        "TestJobCorrectionStaleIntentRetainsNewEvidence/valkey",
+        "TestJobCorrectionIntentRecoversLostAcknowledgement/before/valkey",
+        "TestJobCorrectionIntentRecoversLostAcknowledgement/after/valkey",
+        "TestJobCorrectionMissingHistoryRefusesApplication/valkey",
+        "TestNativeExternalRecoveryPreservesBilling/valkey",
+        "TestNativeConcurrentReplicasBindOneAsset/valkey",
+        "TestNativeRetirementWithRealObjectStore",
+        "TestNativeReceiptRecoversWithoutProviderReplay/none/valkey",
+        "TestNativeReceiptRecoversWithoutProviderReplay/record_before_commit/valkey",
+        "TestNativeReceiptRecoversWithoutProviderReplay/record_after_commit/valkey",
+        "TestNativeReceiptRecoversWithoutProviderReplay/receipt_after_commit/valkey",
+        "TestNativeReceiptRecoversWithoutProviderReplay/asset_before_commit/valkey",
+        "TestNativeReceiptRecoversWithoutProviderReplay/asset_after_commit/valkey",
+        "TestNativeLostResponseRetainsUncertainJob/valkey",
+        "TestNativeRetirementFencesDelayedPublication/valkey",
+        "TestExplicitReconciliationPreservesAndResolvesCapacity/valkey",
+        "TestPollingExhaustionRetainsProviderWork/read/valkey",
+        "TestPollingExhaustionRetainsProviderWork/sweep/valkey",
+        "TestProviderAssetPreparationRecoversAndExpires/valkey",
+        "TestProviderRetirementFencesDelayedPublication/valkey",
+        "TestRecoveryReachesBeyondFirstThousandRecords/valkey",
+        "TestRecoverySkipsCorruptionAndReleasesUnreadFinishedBatches/valkey",
+        "TestTerminalNotificationDoesNotWaitForSettlement/valkey",
+        "TestOptionalJobAccountingRetriesAfterReopen/valkey",
+        "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals/valkey",
+        "TestConcurrentTerminalNotificationClaimsOneAttempt/valkey",
+        "TestStaleJobCannotEraseAccountingOrAssetState/valkey",
+        "TestConcurrentJobAccountingClaimsHaveOneWinner/valkey",
+        "TestPreparedJobReplacementPreservesTransaction/valkey",
+        "TestRequiredReservationCannotUseOptionalAccounting/valkey",
+        "TestRequiredJobBindingPrecedesDispatch/missing_owner/valkey",
+        "TestRequiredJobBindingPrecedesDispatch/binding_unavailable/valkey",
+        "TestRequiredSettlementDoesNotRetainTerminalSlot/valkey",
+        "TestVideoSlotReleaseRecoversWhileReportingRemainsPending/before_commit/valkey",
+        "TestVideoSlotReleaseRecoversWhileReportingRemainsPending/after_commit/valkey",
+        "TestVideoReleaseSurvivesLostJobStamp/valkey",
+        "TestCancelledBatchRetainsItsSlotUntilLinesDrain/valkey",
+        "TestFinishedBatchSlotReleaseRecoversAfterRestart/valkey",
+        "TestDuplicateVideoIdentityCannotReleaseExistingWork/valkey",
+        "TestLegacyJobSchemasRequireMigration/valkey",
+        "TestSubmissionPersistenceFailurePreventsProviderCall/valkey",
+        "TestAmbiguousSubmissionRetainsRecordAndSlot/valkey",
+        "TestSubmissionAcceptanceWriteRecovery/before_commit/valkey",
+        "TestSubmissionAcceptanceWriteRecovery/after_commit/valkey",
+        "TestSubmissionAcceptanceSurvivesCallerCancellation/valkey",
+        "TestGatewayOverheadBenchmark",
+        "TestAuthorizationWarmRequestsAvoidStableReads/valkey",
+        "TestAuthorizationUnknownAccountRefusesAdmission/valkey",
+        "TestSDKCanonicalRemovalAfterSuccessfulInference",
+        "TestJobCorrectionsPreserveOriginalUsage/valkey",
+        "TestJobCorrectionRefusesUnsupportedOrInvalidReporting/valkey"
+      ],
+      "failed_tests": [
+        "TestLegacyJobSchemasRequireMigration/memory",
+        "TestLegacyJobSchemasRequireMigration/badger",
+        "TestLegacyJobSchemasRequireMigration"
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "fail",
+          "elapsed_seconds": 14.284
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 21.576
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "result": "pass",
+          "elapsed_seconds": 39.744
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "result": "pass",
+          "elapsed_seconds": 127.063
+        }
+      ]
+    },
+    {
+      "output": "operator-correction-excerpt.md.gz",
+      "sha256": "f2619e3fc3c26a7839ebf136b37954ade9d767add06dce5b79e784e8dac099b7"
+    },
+    {
+      "output": "operator-writing.log.gz",
+      "sha256": "1d671b787fc27fb919648ac6160f57beaeeac50b5590c0792d860286b8a15c5f"
+    },
+    {
+      "output": "owner-race-fixed.jsonl.gz",
+      "sha256": "5adc86fb70054ecd51c5f7c31f491e783ad422980450200ce3851d921261975b",
+      "test_results_including_parents": {
+        "pass": 13,
+        "fail": 3,
+        "skip": 5
+      },
+      "skipped_tests": [
+        "TestJobCorrectionHistoryAndOrderedReports/valkey",
+        "TestJobCorrectionSupersedesOnlyPendingIntent/valkey",
+        "TestJobCorrectionConcurrentIntentHasOneWinner/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/false/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/true/valkey"
+      ],
+      "failed_tests": [
+        "TestJobCorrectionConcurrentIntentHasOneWinner/memory",
+        "TestJobCorrectionConcurrentIntentHasOneWinner/badger",
+        "TestJobCorrectionConcurrentIntentHasOneWinner"
+      ],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "fail",
+          "elapsed_seconds": 1.007
+        }
+      ]
+    },
+    {
+      "output": "owner-race.jsonl.gz",
+      "sha256": "0e9ea142482944b63f9483e31cde34070a2caab641e46910b3b412dd5533272b",
+      "test_results_including_parents": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "fail",
+          "elapsed_seconds": 0
+        }
+      ]
+    },
+    {
+      "output": "pure-go.jsonl.gz",
+      "sha256": "c8055397654f753ca3dc331d3a7119c7fa3ad1c9fa012a4b47d5782d3655f2d5",
+      "test_results_including_parents": {
+        "pass": 62,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "result": "pass",
+          "elapsed_seconds": 1.036
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 3.477
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 1.955
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "result": "pass",
+          "elapsed_seconds": 2.207
+        }
+      ]
+    },
+    {
+      "output": "recovery-race.jsonl.gz",
+      "sha256": "9b5157971bb8fbd88cf7d3b5897c8bb59ce1818bf67b64c0441b5a6b9dd8b3b8",
+      "test_results_including_parents": {
+        "pass": 35,
+        "fail": 0,
+        "skip": 11
+      },
+      "skipped_tests": [
+        "TestJobCorrectionHistoryAndOrderedReports/valkey",
+        "TestJobCorrectionSupersedesOnlyPendingIntent/valkey",
+        "TestJobCorrectionConcurrentIntentHasOneWinner/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/false/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/true/valkey",
+        "TestJobCorrectionServiceReportingRecovery/valkey",
+        "TestJobCorrectionExpiredReportDoesNotUndoSettlement/valkey",
+        "TestJobCorrectionStaleIntentRetainsNewEvidence/valkey",
+        "TestJobCorrectionIntentRecoversLostAcknowledgement/before/valkey",
+        "TestJobCorrectionIntentRecoversLostAcknowledgement/after/valkey",
+        "TestJobCorrectionMissingHistoryRefusesApplication/valkey"
+      ],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 3.009
+        }
+      ]
+    },
+    {
+      "output": "service-race-expanded.jsonl.gz",
+      "sha256": "4a78b14b0c7dbad04e9418efab244b995379b95a272bc2f9e9a7269250fd0b20",
+      "test_results_including_parents": {
+        "pass": 52,
+        "fail": 0,
+        "skip": 15
+      },
+      "skipped_tests": [
+        "TestAdministratorReconciliationRestartAndIsolation/valkey",
+        "TestAdministratorAuditPrecedesRelease/before_commit/valkey",
+        "TestAdministratorAuditPrecedesRelease/lost_acknowledgement/valkey",
+        "TestAdministratorDecisionSurvivesSettlementFailure/valkey",
+        "TestJobCorrectionHistoryAndOrderedReports/valkey",
+        "TestJobCorrectionSupersedesOnlyPendingIntent/valkey",
+        "TestJobCorrectionConcurrentIntentHasOneWinner/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/false/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/true/valkey",
+        "TestJobCorrectionServiceReportingRecovery/valkey",
+        "TestJobCorrectionExpiredReportDoesNotUndoSettlement/valkey",
+        "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals/valkey",
+        "TestRequiredSettlementDoesNotRetainTerminalSlot/valkey",
+        "TestJobCorrectionsPreserveOriginalUsage/valkey",
+        "TestJobCorrectionRefusesUnsupportedOrInvalidReporting/valkey"
+      ],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 2.9210000000000003
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "result": "pass",
+          "elapsed_seconds": 2.063
+        }
+      ]
+    },
+    {
+      "output": "service-race.jsonl.gz",
+      "sha256": "9bde5008625a72fdddd9842b7271dba6e6266d837cea99afc10f420347a3c214",
+      "test_results_including_parents": {
+        "pass": 46,
+        "fail": 0,
+        "skip": 13
+      },
+      "skipped_tests": [
+        "TestAdministratorReconciliationRestartAndIsolation/valkey",
+        "TestAdministratorAuditPrecedesRelease/before_commit/valkey",
+        "TestAdministratorAuditPrecedesRelease/lost_acknowledgement/valkey",
+        "TestAdministratorDecisionSurvivesSettlementFailure/valkey",
+        "TestJobCorrectionHistoryAndOrderedReports/valkey",
+        "TestJobCorrectionSupersedesOnlyPendingIntent/valkey",
+        "TestJobCorrectionConcurrentIntentHasOneWinner/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/false/valkey",
+        "TestJobCorrectionCommitFailurePreservesIntent/true/valkey",
+        "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals/valkey",
+        "TestRequiredSettlementDoesNotRetainTerminalSlot/valkey",
+        "TestJobCorrectionsPreserveOriginalUsage/valkey",
+        "TestJobCorrectionRefusesUnsupportedOrInvalidReporting/valkey"
+      ],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 2.409
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "result": "pass",
+          "elapsed_seconds": 1.987
+        }
+      ]
+    },
+    {
+      "output": "shared-final-race.jsonl.gz",
+      "sha256": "988d390678c62402e83ed04220c6b78ff72a31a321fb1b5b1c75e14deb457500",
+      "test_results_including_parents": {
+        "pass": 108,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 1.745
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 7.645
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "result": "pass",
+          "elapsed_seconds": 2.7720000000000002
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "result": "pass",
+          "elapsed_seconds": 15.02
+        }
+      ]
+    },
+    {
+      "output": "shared-jobs-full-race.jsonl.gz",
+      "sha256": "55f2d23c9ade89e55642e9e6efb26b5d0e8974a8f85628910c21622b45488870",
+      "test_results_including_parents": {
+        "pass": 450,
+        "fail": 0,
+        "skip": 1
+      },
+      "skipped_tests": [
+        "TestNativeRetirementWithRealObjectStore"
+      ],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 27.824
+        }
+      ]
+    },
+    {
+      "output": "shared-race.jsonl.gz",
+      "sha256": "9fd766515893da00599ee5356151e8e32b1a16960fff53c97b2bab48860d86f3",
+      "test_results_including_parents": {
+        "pass": 104,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "failed_tests": [],
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "result": "pass",
+          "elapsed_seconds": 2.19
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 3.367
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 8.812
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "result": "pass",
+          "elapsed_seconds": 15.846
+        }
+      ]
+    },
+    {
+      "output": "source-writing.log.gz",
+      "sha256": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668"
+    },
+    {
+      "output": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "source_binding": "Final job race and production checks cover committed runtime behavior. Adapter race includes the final real-storage reporting-expiry test. Pure-Go covers committed runtime but precedes that additional adapter test. Vet and goago precede only the additional adapter test, with no runtime changes afterward. Unrelated architecture and cache README changes are excluded from the commit.",
+  "failures": [
+    "Initial owner tests had a Replace return-count compile error. Fixed the test to match the repository API.",
+    "A supersession test reused the original decision identifier. Corrected its candidate identifiers without weakening the identity rule.",
+    "The initial full local suite had three failed results for legacy job schema checks. The test still changed a version-5 literal after the payload changed to version 6. It now explicitly rejects versions 5 and 4, retaining older refusals.",
+    "Late evidence during a pending correction exposed a status-label-based conflict check. Required settlement now compares BillingConflict directly. The production test verifies retained budget dispute and a refused second request.",
+    "The original-report expiry regression failed on memory and Badger before the repair. A durable reporting_expired_at now stops optional retries without claiming delivery.",
+    "The full operator-guide writing check retains 51 pre-existing diagnostics. The changed correction section and five source files pass the targeted writing check."
+  ],
+  "schemas": {
+    "attempt": 3,
+    "window": 2,
+    "budget_correction": 2,
+    "budget_history": 1,
+    "job": 6,
+    "job_correction_history": 1,
+    "usage_original": 1,
+    "usage_adjustment": 1
+  },
+  "unverified": [
+    "Optional real MinIO retirement check skipped in the full jobs run. Prior object-store evidence is not replaced.",
+    "Pure-Go run omitted Valkey and skipped 16 backend subtests; the final race runs exercised real Valkey.",
+    "Interrupted batch restart policy awaits owner input. Unknown dispatches cannot replay.",
+    "Remaining paid-operation matrix, shared aggregate recovery, A47 real concurrent processes, capacity, native CI, required review, paired dependency pin and merges",
+    "CSP13 populated schema migration",
+    "Full operator-guide and complete document prose gate"
+  ]
+}

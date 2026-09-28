@@ -1066,3 +1066,15 @@ Consumer `00dfff81` qualifies atomic correction publication through the same KV 
 Correction receipt schema 2 binds owner writes to the retained decision. Exact retries cannot replace those writes or duplicate charges.
 The [proof](../../plans/proof/starport-production-catalog/csp12.2/correction-publication-2026-09-27/verification.json) covers Badger process interruption and real Valkey concurrency.
 CSP13 must migrate earlier correction receipts. Job-owned history and full fleet qualification remain open.
+
+### Job correction storage: September 27, 2026
+
+Consumer `0e3e3aba` stores correction intent, history links, applied outcomes, and report receipts under `jobcorrection:v1:account:`.
+These persistent KV records share the job and required-budget authority. Each correction record has a 64-KiB bound.
+Original decisions and independent provider evidence remain immutable. Missing audit records prevent further correction.
+
+Required history survives optional usage expiry. Original-report expiry has a separate durable timestamp and cannot claim delivery.
+
+Job payload schema 6 carries the correction heads and report cursor. Correction history schema 1 owns separate audit records.
+CSP13 must migrate populated stores. The [proof](../../plans/proof/starport-production-catalog/csp12.2/job-corrections-2026-09-27/verification.json) covers memory, Badger, and real Valkey behavior.
+Full fleet recovery and capacity qualification remain required.

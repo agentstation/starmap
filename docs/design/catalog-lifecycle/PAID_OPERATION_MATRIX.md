@@ -529,3 +529,12 @@ The [video-publication proof](../../plans/proof/starport-production-catalog/csp1
 The production budget tests preserve measured charges and disputed late evidence.
 Recovery after actual worker death uses retained bytes without another inference request.
 Conditional-write readiness, stable batch aggregates, interrupted-run policy, audited correction, and full A47 remain required.
+
+### Audited video corrections: September 27, 2026
+
+Consumer `0e3e3aba` connects durable correction intent and administrator routes to atomic budget settlement.
+Production tests count one provider generation through inspection, correction, retry, late evidence, and explicit dispute resolution.
+New provider evidence during pending intent retains its required restriction. Optional report failure or expiry cannot reverse required settlement.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/job-corrections-2026-09-27/verification.json) records job, adapter, route, production, and pure-Go checks.
+Interrupted batches, remaining operation rows, shared recovery, A47, capacity, and paired merges remain required.
