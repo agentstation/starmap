@@ -38,11 +38,41 @@
     },
     {
       "path": "internal/sqlstore/migrate.go",
-      "finding": "Startup checks applied migrations before per-file transactions. No cross-process migration-owner lock is present. A regression test must prove the concurrent-startup failure before implementation."
+      "finding": "The sixteen-connection SQLite probe with delayed migration-file reads now reproduces duplicate application. PostgreSQL and MySQL remain untested by this probe."
     },
     {
       "path": "internal/app/runtime_migration.go",
       "finding": "Existing stopped-runtime procedure requires persistent Badger or a PostgreSQL recovery witness for shared operation. Preserve its ownership and retained-state bindings."
     }
-  ]
+  ],
+  "probe_source": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
+  "probe_method": "Go overlays add temporary tests without modifying the reviewed source checkout. All stores belong to t.TempDir. No user data or live service changed.",
+  "fail_before_probes": [
+    {
+      "case": "A16 supporting restore-integrity probe",
+      "test": "TestBadgerRestoreRejectsCorruptBackupWithoutLosingCommittedState",
+      "exit_code": 1,
+      "result": "CONFIRMED_FAILURE",
+      "error": "Key not found after rejecting corrupt backup and reopening the database through Badger.",
+      "scope": "Existing internal Badger Restore removes the live directory before backup validation. Repository call search found only tests invoking this API. CSP13 must replace this behavior before operator restore tooling uses it.",
+      "source": "badger-restore-probe.go.txt",
+      "events": "badger-restore-before.jsonl.gz",
+      "original_fixture_error": "badger-fixture-error.jsonl.gz",
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -overlay=/tmp/csp13-probe-overlay.json -json -race -count=1 -timeout 2m ./internal/storage -run ^TestBadgerRestoreRejectsCorruptBackupWithoutLosingCommittedState$"
+    },
+    {
+      "case": "A16.concurrent_migration_owner",
+      "test": "TestConcurrentSQLiteMigrationStartupHasOneOwner",
+      "exit_code": 1,
+      "result": "CONFIRMED_FAILURE",
+      "error": "Concurrent migration attempts report table migration_probe already exists.",
+      "scope": "Sixteen independent SQLite connection pools share a disposable file. Migration-file reads wait 100 ms to expose the history-check/application gap. This result does not qualify PostgreSQL, MySQL, or cross-process behavior.",
+      "source": "sql-migration-probe.go.txt",
+      "events": "sql-migration-before.jsonl.gz",
+      "earlier_unscheduled_probe": "sql-unscheduled.jsonl.gz",
+      "earlier_result": "PASS without forced overlap; not evidence of safe concurrency.",
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -overlay=/tmp/csp13-sql-probe-overlay.json -json -race -count=1 -timeout 2m ./internal/sqlstore -run ^TestConcurrentSQLiteMigrationStartupHasOneOwner$"
+    }
+  ],
+  "updated_at": "2026-09-28T14:08:58.651730+00:00"
 }

@@ -1,0 +1,53 @@
+package sqlstore
+
+import (
+	"path/filepath"
+	"testing"
+	"testing/fstest"
+	"time"
+
+	"github.com/stretchr/testify/require"
+)
+
+type migrationSlowSource struct{ fstest.MapFS }
+
+func (s migrationSlowSource) ReadFile(name string) ([]byte, error) {
+	// A slow source gives concurrent callers time to inspect the same history.
+	time.Sleep(100 * time.Millisecond)
+	return s.MapFS.ReadFile(name)
+}
+
+func TestConcurrentSQLiteMigrationStartupHasOneOwner(t *testing.T) {
+	config := Config{Type: TypeSQLite, SQLite: SQLiteConfig{Path: filepath.Join(t.TempDir(), "shared.db")}}
+	const callers = 16
+	connections := make([]*DB, 0, callers)
+	for range callers {
+		db, err := Open(config)
+		require.NoError(t, err)
+		t.Cleanup(func() { require.NoError(t, db.Close()) })
+		require.NoError(t, db.Ping(t.Context()))
+		connections = append(connections, db)
+	}
+	_, err := connections[0].ExecContext(t.Context(), connections[0].schemaMigrationsDDL())
+	require.NoError(t, err)
+	source := migrationSlowSource{fstest.MapFS{"migrations/sqlite/0001_probe.sql": {Data: []byte(`CREATE TABLE migration_probe (id INTEGER PRIMARY KEY); INSERT INTO migration_probe VALUES (1);`)}}}
+	start := make(chan struct{})
+	results := make(chan error, callers)
+	for _, db := range connections {
+		go func() {
+			<-start
+			results <- db.migrate(t.Context(), source)
+		}()
+	}
+	close(start)
+	var failures []error
+	for range callers {
+		if err := <-results; err != nil {
+			failures = append(failures, err)
+		}
+	}
+	require.Empty(t, failures, "all concurrent startup callers must observe one successful migration")
+	var count int
+	require.NoError(t, connections[0].QueryRowContext(t.Context(), "SELECT COUNT(*) FROM migration_probe").Scan(&count))
+	require.Equal(t, 1, count)
+}

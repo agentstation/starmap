@@ -1,0 +1,39 @@
+package storage
+
+import (
+	"os"
+	"path/filepath"
+	"testing"
+
+	"github.com/dgraph-io/badger/v4"
+	"github.com/stretchr/testify/require"
+)
+
+func TestBadgerRestoreRejectsCorruptBackupWithoutLosingCommittedState(t *testing.T) {
+	directory := filepath.Join(t.TempDir(), "database")
+	store, err := OpenBadger(BadgerConfig{Path: directory, SyncWrites: true, Compression: "snappy", NumVersions: 1, NumLevelZero: 5, MemTableSize: 64 << 20})
+	require.NoError(t, err)
+	t.Cleanup(func() { _ = store.Close() })
+	require.NoError(t, store.Set(t.Context(), "retained-record", []byte("committed-before-restore")))
+	backup := filepath.Join(t.TempDir(), "corrupt-backup")
+	require.NoError(t, os.WriteFile(backup, []byte{1, 2, 3}, 0600))
+	require.Error(t, store.Restore(t.Context(), backup))
+	_ = store.Close()
+
+	// Inspect the disk through Badger itself, independent of Starport's handle.
+	reopened, err := badger.Open(badger.DefaultOptions(directory).WithLogger(nil))
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, reopened.Close()) })
+	err = reopened.View(func(txn *badger.Txn) error {
+		item, err := txn.Get([]byte("retained-record"))
+		if err != nil {
+			return err
+		}
+		value, err := item.ValueCopy(nil)
+		if err == nil {
+			require.Equal(t, "committed-before-restore", string(value))
+		}
+		return err
+	})
+	require.NoError(t, err, "a rejected restore must retain the committed database")
+}
