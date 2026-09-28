@@ -1,0 +1,102 @@
+{
+  "checked_at": "2026-09-28T16:25:27.182476+00:00",
+  "state": "REVIEWED_PUBLISHED_NATIVE_CI_PENDING",
+  "pr": 188,
+  "original_head": "58ebcc21195da960f2b811679d6cfad5ebecbf78",
+  "reviewed_head": "7cea2538c9e4d8488e69841287901e9b6b42aae0",
+  "base": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
+  "worktree": "/private/tmp/starmap-action-review-20260928",
+  "branch": "codex/dependency-action-188",
+  "change": "Update the reviewed action assertion to the independently verified v8.0.1 commit. Merge current main into the existing PR history.",
+  "provenance": {
+    "tag": "v8.0.1",
+    "sha": "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+    "source": "https://github.com/actions/download-artifact",
+    "runtime": "node24",
+    "supported_inputs": [
+      "name",
+      "path"
+    ],
+    "digest_mismatch_default": "error",
+    "skip_decompress_default": false
+  },
+  "tests": {
+    "workflow_race_events": {
+      "pass": 56,
+      "fail": 0,
+      "skip": 0
+    },
+    "action_pins": 11,
+    "goago": {
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    "workflow_syntax": "PASS",
+    "actionlint": "Baseline and candidate have the same pre-existing SC2024 warning at line 460. No new diagnostic."
+  },
+  "review": {
+    "status": "PASS",
+    "reviewer": "claude-opus-5-5 high",
+    "parts": 1,
+    "findings": 0,
+    "secret_scan": "clean",
+    "additional_same_commit_run": "Final review also passes after the baseline diagnostic comparison. No source changed between reviews."
+  },
+  "publication": {
+    "method": "fast-forward push to existing Dependabot branch",
+    "history_rewrite": false,
+    "run": 36450680252
+  },
+  "artifacts": {
+    "before.log": {
+      "file": "before.log.gz",
+      "sha256_raw": "7568e30cc637ee86885423e5eed523d29296a9d923f3ad0582ec10f5034ae51b"
+    },
+    "tests.jsonl": {
+      "file": "tests.jsonl.gz",
+      "sha256_raw": "e9e3151d868d16cb2d73b9f6455f166abf24cac0373ab2195cbe164273fc3055"
+    },
+    "goago.json": {
+      "file": "goago.json.gz",
+      "sha256_raw": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    "goago-policy.json": {
+      "file": "goago-policy.json.gz",
+      "sha256_raw": "16baaa571b87aa21501669fe6da001a10afa3993b865fd79e93cbfb7e421ae04"
+    },
+    "action-pins.log": {
+      "file": "action-pins.log.gz",
+      "sha256_raw": "6bfdedd477cd66fd457b2a3c0c8dc6cb9d01092df585836b2e4410ebc26a364b"
+    },
+    "actionlint.json": {
+      "file": "actionlint.json.gz",
+      "sha256_raw": "195aaec1f5b26bba7d5882e706b2824e55dcafa83275e67e003b4d44c1d96388"
+    },
+    "review.json": {
+      "file": "review.json.gz",
+      "sha256_raw": "d8a36a473bc3d8fe085f59e937862df0cd674d6b4889686c9a10615f25797beb"
+    },
+    "review.log": {
+      "file": "review.log.gz",
+      "sha256_raw": "07ad2325de19e4dae120222e3af5dfa88c2dee65bf59e93d07a304db609ff936"
+    },
+    "review.md": {
+      "file": "review.md.gz",
+      "sha256_raw": "2ed65ea019acda30b3f6bcd3908926cd9a8716042b6127760ed6414f781c5d4e"
+    },
+    "final-review.json": {
+      "file": "final-review.json.gz",
+      "sha256_raw": "d611255d4a86fe7006755c54c2c5a927859586ca0fe0ee8548ed35cd5dd142eb"
+    },
+    "final-review.log": {
+      "file": "final-review.log.gz",
+      "sha256_raw": "ec7a118fd2cddfc50b6e5d7376b57804bf9a930b7d1122978a27293a7fbda63c"
+    },
+    "final-review.md": {
+      "file": "final-review.md.gz",
+      "sha256_raw": "55905aa1d331ef6593bb51c2b0f135e23bafc354f71cbbc72e9fd0050a6ecbeb"
+    }
+  },
+  "next_action": "Qualify current native CI, recheck exact head and base, and merge under branch protection."
+}

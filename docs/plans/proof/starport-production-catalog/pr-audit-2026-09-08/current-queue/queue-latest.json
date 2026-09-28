@@ -1260,16 +1260,16 @@
         "url": "https://github.com/agentstation/starmap/pull/188",
         "state": "OPEN",
         "headRefName": "dependabot/github_actions/github-actions-1fa769d870",
-        "headRefOid": "58ebcc21195da960f2b811679d6cfad5ebecbf78",
+        "headRefOid": "7cea2538c9e4d8488e69841287901e9b6b42aae0",
         "baseRefName": "main",
-        "baseRefOid": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
+        "baseRefOid": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
         "isDraft": false,
         "mergeStateStatus": "BLOCKED",
         "updatedAt": "2026-09-28T14:08:55Z",
         "repository": "agentstation/starmap",
         "owner": "Repository dependency maintenance",
-        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-        "next_action": "Verify the new action source and compatibility, then update the reviewed-pin evidence and guard together."
+        "disposition": "Verified upstream pin and repaired reviewed-action assertion. Published without rewriting history.",
+        "next_action": "Qualify current native CI, recheck exact head and base, and merge under branch protection."
       },
       {
         "number": 189,
@@ -1449,5 +1449,18 @@
     "owner": "CSP22 and repository verification maintenance",
     "state": "measured historical evidence",
     "next_action": "Use actual test timings and startup profiles for subsequent optimization. Preserve complete behavioral and platform coverage."
+  },
+  "action_188_repair": {
+    "owner": "Repository dependency maintenance",
+    "worktree": "/private/tmp/starmap-action-review-20260928",
+    "branch": "codex/dependency-action-188",
+    "source": "58ebcc21195da960f2b811679d6cfad5ebecbf78",
+    "managed_tool_error": "Not a git repository",
+    "state": "reviewed and published; native CI pending",
+    "next_action": "Qualify current native CI, recheck exact head and base, and merge under branch protection.",
+    "head": "7cea2538c9e4d8488e69841287901e9b6b42aae0",
+    "base": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
+    "proof": "starmap-188-repair-2026-09-28/verification.json",
+    "run": 36450680252
   }
 }
