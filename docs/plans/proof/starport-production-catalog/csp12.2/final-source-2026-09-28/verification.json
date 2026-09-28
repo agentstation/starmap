@@ -1,10 +1,10 @@
 {
   "task": "CSP12.2",
-  "updated_at": "2026-09-28T11:23:39.106175+00:00",
+  "updated_at": "2026-09-28T11:26:46.676739+00:00",
   "producer": "485b54376",
   "consumer": "af12f463ff02322211762c6fd1dc634204c5639a",
   "go": "1.27.1",
-  "status": "in_progress",
+  "status": "blocked(review-tool-input)",
   "checks": {
     "consumer_race_contracts": {
       "pass": 2289,
@@ -423,5 +423,26 @@
       "running": false,
       "status": "exited"
     }
-  ]
+  ],
+  "blocked_audit": {
+    "consecutive_goal_turns": 4,
+    "condition": "Required producer review refuses the generated JSON-gzip catalog. Shared-tool modification permission remains pending.",
+    "approval_inferred": false,
+    "independent_implementation_tasks": [],
+    "next_dependency": "CSP13 depends on CSP12.2; all other unfinished tasks depend on that chain.",
+    "live_verification": {
+      "session": 92670,
+      "last_tool_result": "Script remains running",
+      "stage": "runtime race shard 3",
+      "action": "Do not restart or cancel. Collect terminal result after owner response."
+    },
+    "live_retention": {
+      "session": 93055,
+      "script": "/tmp/csp122-retain-producer-evidence.py",
+      "output_directory": "/tmp/csp122-producer-final-events",
+      "purpose": "Preserve completed event files before the verification script cleans its temporary directory."
+    },
+    "why_not_complete": "Required review, broader producer verification, native CI, exact published dependency, and paired merges remain open.",
+    "why_blocked": "The pending owner decision prevents the required review and publication. The blocker is not test duration."
+  }
 }
