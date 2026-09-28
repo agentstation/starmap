@@ -60,7 +60,7 @@
       "failed_tests": []
     }
   ],
-  "updated_at": "2026-09-28T14:32:34.083631+00:00",
+  "updated_at": "2026-09-28T14:51:05.557802+00:00",
   "local_reproduction": {
     "exit_code": 1,
     "source": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
@@ -72,7 +72,9 @@
   },
   "candidate_repair": {
     "files": [
-      "internal/app/budget_fleet_test.go"
+      "internal/app/budget_fleet_test.go",
+      "internal/config/compose_recipe_test.go",
+      ".github/workflows/ci.yml"
     ],
     "change": "Close the setup gateway before starting independent gateways. Inspect durable state through independent native repositories. Release fixture memory before child startup.",
     "status": "UNDER_TEST",
@@ -80,12 +82,150 @@
       "Full embedded catalog",
       "Real Valkey and PostgreSQL",
       "All accounting and recovery assertions",
-      "45-second readiness timer",
-      "7-minute test-group limit"
+      "Request timeout and dispatch deadlines",
+      "30-minute CI job limit"
     ],
     "compile": "PASS",
     "lint": "PASS, zero issues",
-    "session": 85100,
-    "output": "/tmp/csp122-fleet-budget-ci-fixture-after.jsonl"
+    "session": 73618,
+    "output": "/tmp/csp122-fleet-budget-qualified-fixtures.jsonl",
+    "first_attempt": {
+      "exit_code": 1,
+      "failure": "Adoption refused catalog recovery record changed. It did not reach replacement readiness. Further diagnosis is required.",
+      "archive": "fixture-first-attempt.jsonl.gz",
+      "sha256_raw": "0a24b4860029e04601391c97145b019ff62c6e0e4c7968823888c2ef926615f9"
+    },
+    "head_contract": {
+      "status": "PASS_FOCUSED",
+      "reason": "Stopping the setup gateway permits successor publication. The observed head advanced from revision 1 to 2 with unchanged generation and recovery checksum. Adopt the exact stopped head and resolve reader claims only after both child gateways stop.",
+      "events": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "elapsed_seconds": 191.24,
+      "archive": "head-recovery-pass.jsonl.gz",
+      "limits": "This focused run preceded moving parent-memory reclamation into the child-start helper. The final complete scenario group remains required."
+    },
+    "execution_bounds": "Independent scenario processes retain all named accounting and recovery checks. See readiness_allowance for the instrumented setup bound.",
+    "final_source_sha256": {
+      "internal/app/budget_fleet_test.go": "e3a20035d7bcb4503a9d6ae3e09b95d2000d4213681a19d913819dd7946634d7",
+      "internal/config/compose_recipe_test.go": "5ff094603265a7a7f1fd17a73587c2d65b016c46066c13707c0641b1b92f11a5",
+      ".github/workflows/ci.yml": "3087a7657442e0b965f79a0a03f4cb2697451347947e635a962be42e4700310d"
+    },
+    "native_evidence_verifier": {
+      "pass": 10,
+      "fail": 0
+    },
+    "second_group_attempt": {
+      "exit_code": 1,
+      "failure": "Concurrent-settlement child also exceeded 45-second readiness during combined local checks.",
+      "archive": "group-readiness-before-allowance.jsonl.gz"
+    },
+    "readiness_allowance": {
+      "seconds": 90,
+      "reason": "Measured race-instrumented construction takes 29.22 to 37.18 seconds before scheduling variability. The earlier 45-second fixture timer failed locally and in CI. This harness limit is separate from request and dispatch deadlines.",
+      "child_lifetime": "At most five minutes, further bounded by the parent test deadline. Parent cleanup kills each child.",
+      "outer_limits": "Seven minutes per complete scenario; thirty minutes for the CI job."
+    },
+    "ownership_verifier": {
+      "pass": 12,
+      "fail": 0
+    }
+  },
+  "native_run_status": "completed/failure",
+  "native_failures": [
+    "Catalog Fleet Recovery readiness timeout",
+    "Windows x86-64 Compose command lost the host plugin environment"
+  ],
+  "native_results": {
+    "native-catalog-macos-15": {
+      "archive": "native/native-catalog-macos-15/tests.jsonl.gz",
+      "sha256_raw": "476c558316db6833e8d138e968a26074756301dc09890ce1ad128cdbdf5fe392",
+      "test_events": {
+        "pass": 5468,
+        "fail": 0,
+        "skip": 330
+      },
+      "failed_tests": []
+    },
+    "native-catalog-ubuntu-24.04": {
+      "archive": "native/native-catalog-ubuntu-24.04/tests.jsonl.gz",
+      "sha256_raw": "1e37f92316b177c875ed83a6e1d2de8bef83ccd3c6adcd9752d19857082d5801",
+      "test_events": {
+        "pass": 5471,
+        "fail": 0,
+        "skip": 329
+      },
+      "failed_tests": []
+    },
+    "native-catalog-ubuntu-24.04-arm": {
+      "archive": "native/native-catalog-ubuntu-24.04-arm/tests.jsonl.gz",
+      "sha256_raw": "edeea10b849e8bcbc79846ebfd661a93baef4656023b5f55aa91a348797b3034",
+      "test_events": {
+        "pass": 5471,
+        "fail": 0,
+        "skip": 329
+      },
+      "failed_tests": []
+    },
+    "native-catalog-windows-2025": {
+      "archive": "native/native-catalog-windows-2025/tests.jsonl.gz",
+      "sha256_raw": "59a35d39acc07446142cb4f2f422ec869518c293ac32333bb606e7713db12db4",
+      "test_events": {
+        "pass": 5463,
+        "fail": 3,
+        "skip": 333
+      },
+      "failed_tests": [
+        "TestComposeStorageRecipes/local",
+        "TestComposeStorageRecipes/fleet",
+        "TestComposeStorageRecipes"
+      ]
+    }
+  },
+  "windows_repair": {
+    "file": "internal/config/compose_recipe_test.go",
+    "cause": "The capability probe inherited the full environment. The render command retained PATH and HOME only, removing Windows plugin-discovery variables.",
+    "change": "Use one explicit host-path environment for both probe and rendering. Exclude operator configuration and assert fixture deployment values against conflicting ambient values.",
+    "local_test": "PASS: TestComposeStorageRecipes and both recipe subtests, Go 1.27.1 race run.",
+    "native_result": "UNVERIFIED until updated Windows CI."
+  },
+  "diagnostic_profile": {
+    "status": "PASS_DIAGNOSTIC_ONLY",
+    "go": "1.27.1",
+    "race": true,
+    "method": "Temporary Go overlay profiles gateway construction with a 90-second readiness allowance. It does not qualify the original 45-second bound.",
+    "events": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "elapsed_seconds": 188.616,
+    "archive": "profile-diagnostic-pass.jsonl.gz",
+    "startups": [
+      {
+        "file": "profiles/007.pprof",
+        "seconds": 37.134754291,
+        "sha256": "b577b702704eda5d49c8d1d15e66e46229e674ee9ca6ff5434444a37f096c93e"
+      },
+      {
+        "file": "profiles/008.pprof",
+        "seconds": 29.218536167,
+        "sha256": "51cfc47d826b228f0762a6191a7b28768bb188b7a9579f6658121bc7cb811144"
+      },
+      {
+        "file": "profiles/009.pprof",
+        "seconds": 37.184726459,
+        "sha256": "311d768fac611a1cbdcfa7b241d98f7c78d184adc373a6033060c5848fa1369e"
+      }
+    ],
+    "first_cpu_profile": {
+      "wall_seconds": 37.23,
+      "cpu_sample_seconds": 33.75,
+      "explicit_racecall_seconds": 4.8,
+      "unresolved_native_seconds": 20.23
+    },
+    "limits": "Instrumented setup observations are not release-build startup or request-latency qualification. CSP22 retains performance ownership."
   }
 }
