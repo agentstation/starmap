@@ -1,0 +1,384 @@
+{
+  "task": "CSP13",
+  "status": "LOCAL_COMPONENT_PASS_TASK_INCOMPLETE",
+  "recorded_at": "2026-09-28T17:23:13.943455+00:00",
+  "head": "42125d54477042eb132c5b7d8e722901158f6c22",
+  "base": "af6868e5703bf21f9d57ed1fda37a50369fbb781",
+  "worktree": "/private/tmp/starport-clock-review-20260926",
+  "branch": "codex/storage-recovery",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "changes": [
+    "SQLite VACUUM INTO snapshots capture committed WAL state, preserve exact SQL values and historical records, and validate integrity, foreign keys, and contiguous known migration history.",
+    "Export and import publish only into a new private directory with no replacement. Copy checks size and SHA256. Publication and later durability errors have separate result state.",
+    "MySQL reconciliation requires the exact embedded migration digest, pending intent, actor, operation ID, and independent evidence digest. Applied or reverted decisions record an audit receipt and clear intent in one owned transaction.",
+    "Exact retries are idempotent. Conflicting decisions, unknown digests, failed audit writes, and nontransactional control tables refuse completion. The operation does not repair DDL itself.",
+    "MySQL migration control tables require InnoDB. Existing MyISAM tables fail closed instead of pretending to commit audit and completion atomically."
+  ],
+  "checks": {
+    "race_command": "TEST_POSTGRES_URL=<disposable fixture> TEST_MYSQL_DSN=<disposable fixture> GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race -count=1 -timeout 3m -json ./internal/sqlstore",
+    "race": {
+      "pass": 77,
+      "fail": 0,
+      "skip": 0
+    },
+    "pure_go_command": "GOWORK=off GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 go test -count=1 -json ./internal/sqlstore -run '^TestSQLite'",
+    "pure_go": {
+      "pass": 18,
+      "fail": 0,
+      "skip": 0
+    },
+    "lint": "Full make lint PASS with zero issues",
+    "dependency_direction": "6 PASS, 0 FAIL",
+    "writing": "7 files PASS, zero diagnostics",
+    "diff": "PASS"
+  },
+  "fail_before": {
+    "raw_database_copy": "TestSQLiteRawFileCopyLosesCommittedWAL reproduces omission of a committed record when only the main database file is copied.",
+    "mysql_interruption": "Real database fixture retains DDL with a pending intent and no completion row. Migrate returns ErrMigrationRecoveryRequired before explicit reconciliation."
+  },
+  "candidate_failures": [
+    "First snapshot test expected two directory entries. Native publication also retains its private .record-publications metadata. The test now permits that named directory and still rejects every unexpected file.",
+    "The first MySQL run used the previous disposable port and failed to connect in five tests. Restart assigned new host ports. Real-storage qualification used the inspected current ports."
+  ],
+  "artifacts": {
+    "raw-copy-before.jsonl": {
+      "path": "raw-copy-before.jsonl.gz",
+      "sha256_raw": "c7fee5ea86039f26796b538143b6cc2d31581dac73c5b71fe0dd9b1aefac3d17",
+      "results": {
+        "pass": [
+          "TestSQLiteRawFileCopyLosesCommittedWAL"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "snapshot-first-candidate.jsonl": {
+      "path": "snapshot-first-candidate.jsonl.gz",
+      "sha256_raw": "ef4e6cc593bce89e9c88ecec3311d8bbd4bafdd898a8282e49290655784ca6c0",
+      "results": {
+        "pass": [
+          "TestSQLiteRawFileCopyLosesCommittedWAL",
+          "TestSQLiteSnapshotRefusesExistingDestination",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/digest",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/size",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/format",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/corrupt",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/foreign-key",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/future-history",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/history-gap",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/no-history",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages",
+          "TestSQLiteSnapshotConcurrentPublicationHasOneWinner",
+          "TestSQLiteSnapshotCancellationWhilePoolOccupied",
+          "TestSQLitePersistsAcrossOpens",
+          "TestSQLiteInMemory"
+        ],
+        "fail": [
+          "TestSQLiteSnapshotPreservesWALAndRestoresExactBytes"
+        ],
+        "skip": []
+      },
+      "counts": {
+        "pass": 15,
+        "fail": 1,
+        "skip": 0
+      }
+    },
+    "snapshot-focused.jsonl": {
+      "path": "snapshot-focused.jsonl.gz",
+      "sha256_raw": "5d4d8bb0d4847eef7b8c2df0aafbfbc81a5f035c75252558d1bbc4353c5eba6d",
+      "results": {
+        "pass": [
+          "TestSQLiteRawFileCopyLosesCommittedWAL",
+          "TestSQLiteSnapshotPreservesWALAndRestoresExactBytes",
+          "TestSQLiteSnapshotRefusesExistingDestination",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/digest",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/size",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/format",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/corrupt",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/foreign-key",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/future-history",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/history-gap",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/no-history",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages",
+          "TestSQLiteSnapshotConcurrentPublicationHasOneWinner",
+          "TestSQLiteSnapshotCancellationWhilePoolOccupied",
+          "TestSQLiteSnapshotKeepsConcurrentTransactionWhole",
+          "TestSQLiteSnapshotAcceptsOlderKnownSchemaWithoutMigration",
+          "TestSQLitePersistsAcrossOpens",
+          "TestSQLiteInMemory"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "counts": {
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "mysql-connection-failure.jsonl": {
+      "path": "mysql-connection-failure.jsonl.gz",
+      "sha256_raw": "1a03faf9f5b36b3c3984b18a9eb0729507956699158c39073f9b6bc5051aee79",
+      "results": {
+        "pass": [],
+        "fail": [
+          "TestMySQLMigrationReconciliationAppliedDoesNotRepeatDDL",
+          "TestMySQLMigrationReconciliationRevertedAllowsExplicitRetry",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence",
+          "TestMySQLMigrationReconciliationSerializesConflictingOperators",
+          "TestMySQLMigrationReconciliationRollsBackReceiptFailure"
+        ],
+        "skip": []
+      },
+      "counts": {
+        "pass": 0,
+        "fail": 5,
+        "skip": 0
+      }
+    },
+    "sql-before-engine-guard.jsonl": {
+      "path": "sql-before-engine-guard.jsonl.gz",
+      "sha256_raw": "cbb265e06357cf88c2c8e3cd2d8794d3ebc9e254ee2caf2ccfcae182ddcb68d3",
+      "results": {
+        "pass": [
+          "TestCatalogBootstrapMigrationDefaultsToDenied/sqlite",
+          "TestCatalogBootstrapMigrationDefaultsToDenied/postgres",
+          "TestCatalogBootstrapMigrationDefaultsToDenied",
+          "TestContractFixturesIsolateSchema/sqlite",
+          "TestContractFixturesIsolateSchema/postgres",
+          "TestContractFixturesIsolateSchema/mysql",
+          "TestContractFixturesIsolateSchema",
+          "TestConcurrentSQLiteMigrationStartupHasOneOwner",
+          "TestConcurrentNetworkMigrationStartupHasOneOwner/postgres",
+          "TestConcurrentNetworkMigrationStartupHasOneOwner/mysql",
+          "TestConcurrentNetworkMigrationStartupHasOneOwner",
+          "TestMigrationOwnershipAcrossProcesses/mysql",
+          "TestMigrationOwnershipAcrossProcesses/sqlite",
+          "TestMigrationOwnershipAcrossProcesses/postgres",
+          "TestMigrationOwnershipAcrossProcesses",
+          "TestMigrationOwnerCancellationAndRelease/sqlite",
+          "TestMigrationOwnerCancellationAndRelease/postgres",
+          "TestMigrationOwnerCancellationAndRelease/mysql",
+          "TestMigrationOwnerCancellationAndRelease",
+          "TestMigrationRejectsUnknownHistory/sqlite",
+          "TestMigrationRejectsUnknownHistory/postgres",
+          "TestMigrationRejectsUnknownHistory/mysql",
+          "TestMigrationRejectsUnknownHistory",
+          "TestMySQLPartialMigrationRequiresReconciliation",
+          "TestMySQLMigrationReconciliationAppliedDoesNotRepeatDDL",
+          "TestMySQLMigrationReconciliationRevertedAllowsExplicitRetry",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/source-digest",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/attempt-digest",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/actor",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/evidence",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/unknown-migration",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/outcome",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/missing-attempt",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence",
+          "TestMySQLMigrationReconciliationSerializesConflictingOperators",
+          "TestMySQLMigrationReconciliationRollsBackReceiptFailure",
+          "TestSQLiteRawFileCopyLosesCommittedWAL",
+          "TestSQLiteSnapshotPreservesWALAndRestoresExactBytes",
+          "TestSQLiteSnapshotRefusesExistingDestination",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/digest",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/size",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/format",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/corrupt",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/foreign-key",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/future-history",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/history-gap",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/no-history",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages",
+          "TestSQLiteSnapshotConcurrentPublicationHasOneWinner",
+          "TestSQLiteSnapshotCancellationWhilePoolOccupied",
+          "TestSQLiteSnapshotKeepsConcurrentTransactionWhole",
+          "TestSQLiteSnapshotAcceptsOlderKnownSchemaWithoutMigration",
+          "TestContractOpenMigrateReadWrite/sqlite",
+          "TestContractOpenMigrateReadWrite/postgres",
+          "TestContractOpenMigrateReadWrite/mysql",
+          "TestContractOpenMigrateReadWrite",
+          "TestContractTransactionRollback/postgres",
+          "TestContractTransactionRollback/mysql",
+          "TestContractTransactionRollback/sqlite",
+          "TestContractTransactionRollback",
+          "TestSQLitePersistsAcrossOpens",
+          "TestSQLiteInMemory",
+          "TestOpenRefusesUnknownType",
+          "TestOpenRefusesConnectWithoutAddress",
+          "TestMigrateRunsEachFileOnceInOrder",
+          "TestMigrateFailureRecordsNothing",
+          "TestDialectMigrationSetsAgree",
+          "TestAuditLogMigrationShips",
+          "TestBindNumbersPostgresPlaceholders",
+          "TestTeamBudgetMigrationDoesNotGrantZeroHistory/sqlite",
+          "TestTeamBudgetMigrationDoesNotGrantZeroHistory/postgres",
+          "TestTeamBudgetMigrationDoesNotGrantZeroHistory/mysql",
+          "TestTeamBudgetMigrationDoesNotGrantZeroHistory"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "counts": {
+        "pass": 73,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "sql-final.jsonl": {
+      "path": "sql-final.jsonl.gz",
+      "sha256_raw": "fa34fef6d23470486c49d214b582abdd18efb59e7d4ed24407026205e32c75f2",
+      "results": {
+        "pass": [
+          "TestCatalogBootstrapMigrationDefaultsToDenied/sqlite",
+          "TestCatalogBootstrapMigrationDefaultsToDenied/postgres",
+          "TestCatalogBootstrapMigrationDefaultsToDenied",
+          "TestContractFixturesIsolateSchema/sqlite",
+          "TestContractFixturesIsolateSchema/postgres",
+          "TestContractFixturesIsolateSchema/mysql",
+          "TestContractFixturesIsolateSchema",
+          "TestConcurrentSQLiteMigrationStartupHasOneOwner",
+          "TestConcurrentNetworkMigrationStartupHasOneOwner/postgres",
+          "TestConcurrentNetworkMigrationStartupHasOneOwner/mysql",
+          "TestConcurrentNetworkMigrationStartupHasOneOwner",
+          "TestMigrationOwnershipAcrossProcesses/sqlite",
+          "TestMigrationOwnershipAcrossProcesses/postgres",
+          "TestMigrationOwnershipAcrossProcesses/mysql",
+          "TestMigrationOwnershipAcrossProcesses",
+          "TestMigrationOwnerCancellationAndRelease/sqlite",
+          "TestMigrationOwnerCancellationAndRelease/postgres",
+          "TestMigrationOwnerCancellationAndRelease/mysql",
+          "TestMigrationOwnerCancellationAndRelease",
+          "TestMigrationRejectsUnknownHistory/postgres",
+          "TestMigrationRejectsUnknownHistory/mysql",
+          "TestMigrationRejectsUnknownHistory/sqlite",
+          "TestMigrationRejectsUnknownHistory",
+          "TestMySQLPartialMigrationRequiresReconciliation",
+          "TestMySQLMigrationReconciliationAppliedDoesNotRepeatDDL",
+          "TestMySQLMigrationReconciliationRevertedAllowsExplicitRetry",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/source-digest",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/attempt-digest",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/actor",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/evidence",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/unknown-migration",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/outcome",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence/missing-attempt",
+          "TestMySQLMigrationReconciliationRejectsUnboundEvidence",
+          "TestMySQLMigrationReconciliationSerializesConflictingOperators",
+          "TestMySQLMigrationReconciliationRollsBackReceiptFailure",
+          "TestMySQLMigrationReconciliationRequiresTransactionalRecords/schema_migrations",
+          "TestMySQLMigrationReconciliationRequiresTransactionalRecords/schema_migration_attempts",
+          "TestMySQLMigrationReconciliationRequiresTransactionalRecords/schema_migration_reconciliations",
+          "TestMySQLMigrationReconciliationRequiresTransactionalRecords",
+          "TestSQLiteRawFileCopyLosesCommittedWAL",
+          "TestSQLiteSnapshotPreservesWALAndRestoresExactBytes",
+          "TestSQLiteSnapshotRefusesExistingDestination",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/digest",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/size",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/format",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/corrupt",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/foreign-key",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/future-history",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/history-gap",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/no-history",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages",
+          "TestSQLiteSnapshotConcurrentPublicationHasOneWinner",
+          "TestSQLiteSnapshotCancellationWhilePoolOccupied",
+          "TestSQLiteSnapshotKeepsConcurrentTransactionWhole",
+          "TestSQLiteSnapshotAcceptsOlderKnownSchemaWithoutMigration",
+          "TestContractOpenMigrateReadWrite/mysql",
+          "TestContractOpenMigrateReadWrite/sqlite",
+          "TestContractOpenMigrateReadWrite/postgres",
+          "TestContractOpenMigrateReadWrite",
+          "TestContractTransactionRollback/sqlite",
+          "TestContractTransactionRollback/postgres",
+          "TestContractTransactionRollback/mysql",
+          "TestContractTransactionRollback",
+          "TestSQLitePersistsAcrossOpens",
+          "TestSQLiteInMemory",
+          "TestOpenRefusesUnknownType",
+          "TestOpenRefusesConnectWithoutAddress",
+          "TestMigrateRunsEachFileOnceInOrder",
+          "TestMigrateFailureRecordsNothing",
+          "TestDialectMigrationSetsAgree",
+          "TestAuditLogMigrationShips",
+          "TestBindNumbersPostgresPlaceholders",
+          "TestTeamBudgetMigrationDoesNotGrantZeroHistory/sqlite",
+          "TestTeamBudgetMigrationDoesNotGrantZeroHistory/postgres",
+          "TestTeamBudgetMigrationDoesNotGrantZeroHistory/mysql",
+          "TestTeamBudgetMigrationDoesNotGrantZeroHistory"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "counts": {
+        "pass": 77,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "pure-go.jsonl": {
+      "path": "pure-go.jsonl.gz",
+      "sha256_raw": "bc75ae9750de37c8f179758468e9a98e364c4fd52c314976ec93832ab2e6498b",
+      "results": {
+        "pass": [
+          "TestSQLiteRawFileCopyLosesCommittedWAL",
+          "TestSQLiteSnapshotPreservesWALAndRestoresExactBytes",
+          "TestSQLiteSnapshotRefusesExistingDestination",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/digest",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/size",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/format",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/corrupt",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/foreign-key",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/future-history",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/history-gap",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages/no-history",
+          "TestSQLiteSnapshotRejectsCorruptOrUnknownImages",
+          "TestSQLiteSnapshotConcurrentPublicationHasOneWinner",
+          "TestSQLiteSnapshotCancellationWhilePoolOccupied",
+          "TestSQLiteSnapshotKeepsConcurrentTransactionWhole",
+          "TestSQLiteSnapshotAcceptsOlderKnownSchemaWithoutMigration",
+          "TestSQLitePersistsAcrossOpens",
+          "TestSQLiteInMemory"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "counts": {
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "lint.log": {
+      "path": "lint.log.gz",
+      "sha256_raw": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "dependency-direction.log": {
+      "path": "dependency-direction.log.gz",
+      "sha256_raw": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    }
+  },
+  "sources": [
+    "https://www.sqlite.org/lang_vacuum.html",
+    "https://www.sqlite.org/pragma.html#pragma_integrity_check"
+  ],
+  "remaining": [
+    "PostgreSQL/MySQL snapshots and cross-backend relational transfer.",
+    "Coordinated KV, SQL, blob, runtime, configuration, key-access and independent-history backup manifest.",
+    "Operator CLI and authenticated reconciliation procedure. Old-writer fences and restriction of restored approval records before any admission.",
+    "Process-crash and orphan-stage recovery, real failover drills, measured RPO/RTO, complete A16/A33 and assigned CSP13 qualification.",
+    "Required pre-PR review, native Linux/macOS/Windows checks, and actual merge."
+  ],
+  "limitations": [
+    "Snapshot import preserves old approval records byte-for-byte. It does not select or activate this database. The coordinator must restrict and reconcile independent revocation and spending history before use.",
+    "Local component evidence does not qualify a complete deployment restore. CSP13 remains in_progress.",
+    "Both disposable SQL containers stopped after verification. No task processes remain."
+  ],
+  "previous_goal_turn_classification": "Progress: the prior goal work committed verified Badger import and its plan evidence. The intervening approval reply rechecked completed JSON-gzip support without new implementation."
+}

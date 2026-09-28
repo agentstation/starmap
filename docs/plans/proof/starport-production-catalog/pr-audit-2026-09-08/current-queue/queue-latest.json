@@ -1056,7 +1056,7 @@
     "status": "MERGED",
     "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-28T14:51:05.557802+00:00",
+  "local_updated_at": "2026-09-28T17:21:12.137571+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -1252,145 +1252,210 @@
   },
   "remote_state_note": "Producer #187 merged. Consumer #387 awaits native CI at reviewed 6f97ba52. Eight dependency PRs retain their recorded review and repair actions.",
   "open_queue_snapshot": {
-    "checked_at": "2026-09-28T16:37:27.428055+00:00",
+    "checked_at": "2026-09-28T17:21:12.137571+00:00",
     "starmap": [
       {
-        "number": 188,
-        "title": "build(deps): bump actions/download-artifact from 7.0.0 to 8.0.1 in the github-actions group",
-        "url": "https://github.com/agentstation/starmap/pull/188",
-        "state": "OPEN",
-        "headRefName": "dependabot/github_actions/github-actions-1fa769d870",
-        "headRefOid": "7cea2538c9e4d8488e69841287901e9b6b42aae0",
         "baseRefName": "main",
-        "baseRefOid": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
-        "isDraft": false,
-        "mergeStateStatus": "BLOCKED",
-        "updatedAt": "2026-09-28T14:08:55Z",
-        "repository": "agentstation/starmap",
-        "owner": "Repository dependency maintenance",
-        "disposition": "Verified upstream pin and repaired reviewed-action assertion. Published without rewriting history.",
-        "next_action": "Qualify current native CI, recheck exact head and base, and merge under branch protection."
-      },
-      {
-        "number": 189,
-        "title": "build(deps): bump cloud.google.com/go/auth in /",
-        "url": "https://github.com/agentstation/starmap/pull/189",
-        "state": "OPEN",
-        "headRefName": "dependabot/go_modules/go_modules-d494d303f5",
-        "headRefOid": "31b3bef19a3130fe62a1afa66389a2a8ecd9678a",
-        "baseRefName": "main",
-        "baseRefOid": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
-        "isDraft": false,
-        "mergeStateStatus": "BLOCKED",
-        "updatedAt": "2026-09-28T14:35:34Z",
-        "repository": "agentstation/starmap",
-        "owner": "Repository dependency maintenance",
-        "disposition": "Source review complete. Dependabot updated this PR after #191 merged. Fresh exact-head CI is running.",
-        "next_action": "Require successful current-base checks, recheck head and review threads, then merge without bypass. Recheck the remaining PR after each preceding merge."
-      },
-      {
-        "number": 190,
-        "title": "build(deps): bump cloud.google.com/go/secretmanager in /",
-        "url": "https://github.com/agentstation/starmap/pull/190",
-        "state": "OPEN",
-        "headRefName": "dependabot/go_modules/go_modules-b8e632704f",
-        "headRefOid": "db3f98e86c4e802f97b16121124051968e4fcafe",
-        "baseRefName": "main",
-        "baseRefOid": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
-        "isDraft": false,
-        "mergeStateStatus": "BLOCKED",
-        "updatedAt": "2026-09-28T14:35:36Z",
-        "repository": "agentstation/starmap",
-        "owner": "Repository dependency maintenance",
-        "disposition": "Source review complete. Dependabot updated this PR after #191 merged. Fresh exact-head CI is running.",
-        "next_action": "Require successful current-base checks, recheck head and review threads, then merge without bypass. Recheck the remaining PR after each preceding merge."
-      },
-      {
-        "number": 192,
-        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
-        "url": "https://github.com/agentstation/starmap/pull/192",
-        "state": "OPEN",
-        "headRefName": "dependabot/go_modules/go_modules-9b3906e02d",
-        "headRefOid": "ab4a8acbed3764c51b3f1bed9ca92e58658d7499",
-        "baseRefName": "main",
-        "baseRefOid": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
-        "isDraft": false,
-        "mergeStateStatus": "BLOCKED",
-        "updatedAt": "2026-09-28T14:39:43Z",
-        "repository": "agentstation/starmap",
-        "owner": "Repository dependency maintenance",
-        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-        "next_action": "Update the external acquisition fixture module for the reviewed dependency graph and rerun all six consumer compile checks."
-      },
-      {
-        "number": 193,
-        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/credentials in /",
-        "url": "https://github.com/agentstation/starmap/pull/193",
-        "state": "OPEN",
+        "baseRefOid": "ac12f1aa4bdee1ac03c1c3810eda839ccab416a1",
         "headRefName": "dependabot/go_modules/go_modules-02c0f48f7e",
-        "headRefOid": "214393bdcfbc4e86caa744cd1f43f261b3dcd01d",
-        "baseRefName": "main",
-        "baseRefOid": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
+        "headRefOid": "bf1ade3358f72ebc0d36b920656faf1965a727dd",
         "isDraft": false,
         "mergeStateStatus": "BLOCKED",
-        "updatedAt": "2026-09-28T14:41:04Z",
+        "number": 193,
+        "state": "OPEN",
+        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/credentials in /",
+        "updatedAt": "2026-09-28T17:08:57Z",
+        "url": "https://github.com/agentstation/starmap/pull/193",
         "repository": "agentstation/starmap",
         "owner": "Repository dependency maintenance",
-        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-        "next_action": "Update the external acquisition fixture module for the reviewed dependency graph and rerun all six consumer compile checks."
+        "disposition": "External acquisition fixture module needs repair.",
+        "next_action": "Update the external acquisition fixture module for the reviewed dependency graph and rerun all six consumer compile checks.",
+        "pending_checks": [
+          "Runtime windows-2025",
+          "Runtime windows-11-arm",
+          "Runtime ubuntu-24.04",
+          "Runtime macos-15",
+          "Publication macos-15"
+        ],
+        "failed_checks": [
+          "Verification Checks"
+        ]
+      },
+      {
+        "baseRefName": "main",
+        "baseRefOid": "ac12f1aa4bdee1ac03c1c3810eda839ccab416a1",
+        "headRefName": "dependabot/go_modules/go_modules-9b3906e02d",
+        "headRefOid": "d323fb8a1a2320c0e29a915cf636cdad7021ee9a",
+        "isDraft": false,
+        "mergeStateStatus": "BLOCKED",
+        "number": 192,
+        "state": "OPEN",
+        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
+        "updatedAt": "2026-09-28T17:08:26Z",
+        "url": "https://github.com/agentstation/starmap/pull/192",
+        "repository": "agentstation/starmap",
+        "owner": "Repository dependency maintenance",
+        "disposition": "External acquisition fixture module needs repair.",
+        "next_action": "Update the external acquisition fixture module for the reviewed dependency graph and rerun all six consumer compile checks.",
+        "pending_checks": [
+          "Runtime windows-2025",
+          "Runtime windows-11-arm",
+          "Runtime ubuntu-24.04",
+          "Runtime macos-15",
+          "Publication macos-15"
+        ],
+        "failed_checks": [
+          "Verification Checks"
+        ]
+      },
+      {
+        "baseRefName": "main",
+        "baseRefOid": "ac12f1aa4bdee1ac03c1c3810eda839ccab416a1",
+        "headRefName": "dependabot/go_modules/go_modules-b8e632704f",
+        "headRefOid": "295bc3d116353972eb3e1d796db12f0960a4e483",
+        "isDraft": false,
+        "mergeStateStatus": "BLOCKED",
+        "number": 190,
+        "state": "OPEN",
+        "title": "build(deps): bump cloud.google.com/go/secretmanager in /",
+        "updatedAt": "2026-09-28T17:07:18Z",
+        "url": "https://github.com/agentstation/starmap/pull/190",
+        "repository": "agentstation/starmap",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Source reviewed. Requalify the current base after PR #189 merged.",
+        "next_action": "Require successful current-base checks, recheck head and review threads, then merge without bypass. Recheck the remaining PR after each preceding merge.",
+        "pending_checks": [
+          "Runtime windows-2025",
+          "Runtime windows-11-arm",
+          "Runtime macos-15",
+          "Go 1.27.1 race runtime-1",
+          "Go 1.27.1 race runtime-2",
+          "Go 1.27.1 race runtime-3",
+          "Go 1.27.1 race client",
+          "Go 1.27.1 race application-1",
+          "Go 1.27.1 race application-2",
+          "Go 1.27.1 race application-3",
+          "Go 1.27.1 race contracts",
+          "Full Catalog Capacity"
+        ],
+        "failed_checks": []
+      },
+      {
+        "baseRefName": "main",
+        "baseRefOid": "ac12f1aa4bdee1ac03c1c3810eda839ccab416a1",
+        "headRefName": "dependabot/github_actions/github-actions-1fa769d870",
+        "headRefOid": "8f50312161c8acbfa094c8da9460be030a8f169a",
+        "isDraft": false,
+        "mergeStateStatus": "BLOCKED",
+        "number": 188,
+        "state": "OPEN",
+        "title": "build(deps): bump actions/download-artifact from 7.0.0 to 8.0.1 in the github-actions group",
+        "updatedAt": "2026-09-28T17:20:28Z",
+        "url": "https://github.com/agentstation/starmap/pull/188",
+        "repository": "agentstation/starmap",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Source reviewed. Requalify the current base after PR #189 merged.",
+        "next_action": "Qualify current native CI, recheck exact head and base, and merge under branch protection.",
+        "pending_checks": [
+          "Analyze (actions)",
+          "Build pinned object fixture",
+          "Analyze (go)",
+          "Analyze (python)",
+          "Constructor Network Passivity",
+          "Offline Server Persistence",
+          "Verification Checks",
+          "Security & Reliability",
+          "Runtime windows-2025",
+          "Runtime windows-11-arm",
+          "Runtime ubuntu-24.04",
+          "Runtime ubuntu-24.04-arm",
+          "Runtime macos-15",
+          "Publication windows-2025",
+          "Publication windows-11-arm",
+          "Publication ubuntu-24.04",
+          "Publication ubuntu-24.04-arm",
+          "Publication macos-15"
+        ],
+        "failed_checks": []
       }
     ],
     "starport": [
       {
-        "number": 388,
-        "title": "chore(deps): bump Homebrew/actions/setup-homebrew from 2026.09.21.1 to 2026.09.28.1 in the github-actions group",
-        "url": "https://github.com/agentstation/starport/pull/388",
-        "state": "OPEN",
-        "headRefName": "dependabot/github_actions/github-actions-45de2ffcd4",
-        "headRefOid": "cec144c09aca6db972e85ffcdc6e618b121d7669",
         "baseRefName": "main",
-        "baseRefOid": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
-        "isDraft": false,
-        "mergeStateStatus": "UNSTABLE",
-        "updatedAt": "2026-09-28T14:06:17Z",
-        "repository": "agentstation/starport",
-        "owner": "Repository dependency maintenance",
-        "disposition": "Retain for dependency review against main after PR #387 merged.",
-        "next_action": "Verify updated base and dependency diff, reproduce earlier failures if present, then qualify exact-head CI and review before merge."
-      },
-      {
-        "number": 389,
-        "title": "chore(deps): bump the go-modules group with 9 updates",
-        "url": "https://github.com/agentstation/starport/pull/389",
-        "state": "OPEN",
-        "headRefName": "dependabot/go_modules/go-modules-2346b439a7",
-        "headRefOid": "4a4ad50e88f3538a296e3e248c6868a429eb8d47",
-        "baseRefName": "main",
-        "baseRefOid": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
-        "isDraft": false,
-        "mergeStateStatus": "UNSTABLE",
-        "updatedAt": "2026-09-28T14:34:34Z",
-        "repository": "agentstation/starport",
-        "owner": "Repository dependency maintenance",
-        "disposition": "Retain for dependency review against main after PR #387 merged.",
-        "next_action": "Verify updated base and dependency diff, reproduce earlier failures if present, then qualify exact-head CI and review before merge."
-      },
-      {
-        "baseRefName": "main",
-        "baseRefOid": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+        "baseRefOid": "a1a08df86c31c73cfd38d49e03ceb3571c86a86c",
         "headRefName": "dependabot/npm_and_yarn/console/console-packages-590881ce15",
-        "headRefOid": "0e014147087ec13ec3e5ba470f6a54fe4187dec6",
+        "headRefOid": "8e9dc4a3dd3c124250d290cb25af8cffdaed2fbb",
         "isDraft": false,
-        "mergeStateStatus": "UNSTABLE",
+        "mergeStateStatus": "BLOCKED",
         "number": 390,
         "state": "OPEN",
         "title": "chore(deps): bump the console-packages group in /console with 10 updates",
-        "updatedAt": "2026-09-28T15:11:54Z",
+        "updatedAt": "2026-09-28T17:20:29Z",
         "url": "https://github.com/agentstation/starport/pull/390",
         "repository": "agentstation/starport",
         "owner": "Repository dependency maintenance",
-        "disposition": "Retain for dependency review against main after PR #387 merged.",
-        "next_action": "Verify updated base and dependency diff, reproduce earlier failures if present, then qualify exact-head CI and review before merge."
+        "disposition": "Updated existing branch by merge to include the CSP12.2 repairs. Current-base CI is running.",
+        "next_action": "Review dependency diff and current native results before merge.",
+        "pending_checks": [
+          "Lint",
+          "Test (ubuntu-24.04)",
+          "Test (ubuntu-24.04-arm)",
+          "Test (macos-15)",
+          "Test (windows-2025)",
+          "Test (windows-11-arm)",
+          "Shared Storage Startup",
+          "Catalog Fleet Recovery",
+          "Durable Work Recovery",
+          "Authorization Capacity",
+          "Storage Recipes",
+          "Security Scan",
+          "Release Contract",
+          "OpenRouter SDK Compatibility",
+          "Release Snapshot"
+        ],
+        "failed_checks": []
+      },
+      {
+        "baseRefName": "main",
+        "baseRefOid": "a1a08df86c31c73cfd38d49e03ceb3571c86a86c",
+        "headRefName": "dependabot/go_modules/go-modules-2346b439a7",
+        "headRefOid": "8cb829ac7124a8fb143606baca3c6f1d6b78cfa7",
+        "isDraft": false,
+        "mergeStateStatus": "UNSTABLE",
+        "number": 389,
+        "state": "OPEN",
+        "title": "chore(deps): bump the go-modules group across 1 directory with 9 updates",
+        "updatedAt": "2026-09-28T16:38:59Z",
+        "url": "https://github.com/agentstation/starport/pull/389",
+        "repository": "agentstation/starport",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Current-base native check failed. Keep the PR for diagnosis and dependency review.",
+        "next_action": "Inspect the current failed native job, reproduce the failure, and repair the owning test or source before merge.",
+        "pending_checks": [],
+        "failed_checks": [
+          "Test (windows-11-arm)"
+        ]
+      },
+      {
+        "baseRefName": "main",
+        "baseRefOid": "a1a08df86c31c73cfd38d49e03ceb3571c86a86c",
+        "headRefName": "dependabot/github_actions/github-actions-45de2ffcd4",
+        "headRefOid": "67dd98b1613168d61cb37c562ea1a8ef234a8f6e",
+        "isDraft": false,
+        "mergeStateStatus": "UNSTABLE",
+        "number": 388,
+        "state": "OPEN",
+        "title": "chore(deps): bump Homebrew/actions/setup-homebrew from 2026.09.21.1 to 2026.09.28.1 in the github-actions group across 1 directory",
+        "updatedAt": "2026-09-28T16:39:39Z",
+        "url": "https://github.com/agentstation/starport/pull/388",
+        "repository": "agentstation/starport",
+        "owner": "Repository dependency maintenance",
+        "disposition": "Current-base native check failed. Keep the PR for diagnosis and dependency review.",
+        "next_action": "Inspect the current failed native job, reproduce the failure, and repair the owning test or source before merge.",
+        "pending_checks": [],
+        "failed_checks": [
+          "Test (windows-2025)"
+        ]
       }
     ]
   },
@@ -1453,5 +1518,399 @@
     "proof": "../../../csp12.2/merged-pair-2026-09-28/verification.json",
     "status": "done",
     "next_task": "CSP13"
+  },
+  "starmap_open_count": 4,
+  "starport_open_count": 3,
+  "dependency_189_completion": {
+    "checked_at": "2026-09-28T17:04:54.239668+00:00",
+    "premerge": {
+      "baseRefOid": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
+      "headRefOid": "31b3bef19a3130fe62a1afa66389a2a8ecd9678a",
+      "isDraft": false,
+      "number": 189,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:17:33Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943712",
+          "name": "Build pinned object fixture",
+          "startedAt": "2026-09-28T16:15:19Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:16:03Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943450",
+          "name": "Constructor Network Passivity",
+          "startedAt": "2026-09-28T16:15:19Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:16:59Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943880",
+          "name": "Offline Server Persistence",
+          "startedAt": "2026-09-28T16:15:20Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:24:33Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943985",
+          "name": "Verification Checks",
+          "startedAt": "2026-09-28T16:15:20Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:18:13Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943805",
+          "name": "Security & Reliability",
+          "startedAt": "2026-09-28T16:15:19Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:15:35Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943768",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-28T16:15:19Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T17:01:44Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943969",
+          "name": "Runtime windows-2025",
+          "startedAt": "2026-09-28T16:15:19Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:55:03Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020944105",
+          "name": "Runtime windows-11-arm",
+          "startedAt": "2026-09-28T16:15:19Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:28:37Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943843",
+          "name": "Runtime ubuntu-24.04",
+          "startedAt": "2026-09-28T16:15:20Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:27:20Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943937",
+          "name": "Runtime ubuntu-24.04-arm",
+          "startedAt": "2026-09-28T16:15:22Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:30:48Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020944205",
+          "name": "Runtime macos-15",
+          "startedAt": "2026-09-28T16:15:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:26:24Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020944175",
+          "name": "Publication windows-2025",
+          "startedAt": "2026-09-28T16:15:20Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:26:37Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020944264",
+          "name": "Publication windows-11-arm",
+          "startedAt": "2026-09-28T16:15:20Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:22:13Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020943904",
+          "name": "Publication ubuntu-24.04",
+          "startedAt": "2026-09-28T16:15:20Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:22:42Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020944265",
+          "name": "Publication ubuntu-24.04-arm",
+          "startedAt": "2026-09-28T16:15:22Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:23:30Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109020944215",
+          "name": "Publication macos-15",
+          "startedAt": "2026-09-28T16:15:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:18:55Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109021887149",
+          "name": "Coordinated Storage valkey",
+          "startedAt": "2026-09-28T16:17:36Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:19:01Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109021887132",
+          "name": "Coordinated Storage redis",
+          "startedAt": "2026-09-28T16:17:36Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:34:01Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109024757662",
+          "name": "Go 1.27.1 race runtime-1",
+          "startedAt": "2026-09-28T16:24:35Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:42:21Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109024757719",
+          "name": "Go 1.27.1 race runtime-2",
+          "startedAt": "2026-09-28T16:24:35Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:48:10Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109024757979",
+          "name": "Go 1.27.1 race runtime-3",
+          "startedAt": "2026-09-28T16:25:37Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:52:51Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109024757808",
+          "name": "Go 1.27.1 race client",
+          "startedAt": "2026-09-28T16:25:02Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:45:29Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109024757971",
+          "name": "Go 1.27.1 race application-1",
+          "startedAt": "2026-09-28T16:25:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:35:58Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109024757794",
+          "name": "Go 1.27.1 race application-2",
+          "startedAt": "2026-09-28T16:24:44Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:33:38Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109024757912",
+          "name": "Go 1.27.1 race application-3",
+          "startedAt": "2026-09-28T16:25:05Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:42:53Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109024758058",
+          "name": "Go 1.27.1 race contracts",
+          "startedAt": "2026-09-28T16:25:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:32:42Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109024757506",
+          "name": "Full Catalog Capacity",
+          "startedAt": "2026-09-28T16:24:35Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:52:57Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36449691489/job/109036244621",
+          "name": "Verification Gate",
+          "startedAt": "2026-09-28T16:52:54Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-28T16:15:15Z",
+          "conclusion": "NEUTRAL",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/109020919421",
+          "name": "CodeQL",
+          "startedAt": "2026-09-28T16:15:13Z",
+          "status": "COMPLETED",
+          "workflowName": ""
+        }
+      ],
+      "url": "https://github.com/agentstation/starmap/pull/189"
+    },
+    "protection": {
+      "url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection",
+      "required_status_checks": {
+        "url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_status_checks",
+        "strict": true,
+        "contexts": [
+          "Security & Reliability",
+          "Verification Gate"
+        ],
+        "contexts_url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_status_checks/contexts",
+        "checks": [
+          {
+            "context": "Security & Reliability",
+            "app_id": 15368
+          },
+          {
+            "context": "Verification Gate",
+            "app_id": 15368
+          }
+        ]
+      },
+      "required_pull_request_reviews": {
+        "url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_pull_request_reviews",
+        "dismiss_stale_reviews": true,
+        "require_code_owner_reviews": false,
+        "require_last_push_approval": false,
+        "required_approving_review_count": 0
+      },
+      "required_signatures": {
+        "url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_signatures",
+        "enabled": true
+      },
+      "enforce_admins": {
+        "url": "https://api.github.com/repos/agentstation/starmap/branches/main/protection/enforce_admins",
+        "enabled": true
+      },
+      "required_linear_history": {
+        "enabled": false
+      },
+      "allow_force_pushes": {
+        "enabled": false
+      },
+      "allow_deletions": {
+        "enabled": false
+      },
+      "block_creations": {
+        "enabled": false
+      },
+      "required_conversation_resolution": {
+        "enabled": true
+      },
+      "lock_branch": {
+        "enabled": false
+      },
+      "allow_fork_syncing": {
+        "enabled": false
+      }
+    },
+    "review_threads": {
+      "headRefOid": "31b3bef19a3130fe62a1afa66389a2a8ecd9678a",
+      "baseRefOid": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
+      "reviewThreads": {
+        "totalCount": 0,
+        "nodes": []
+      }
+    },
+    "ancestry": {
+      "ahead": 1,
+      "behind": 0
+    },
+    "source_review": "google-dependency-review-2026-09-28.json",
+    "merged": {
+      "mergeCommit": {
+        "oid": "ac12f1aa4bdee1ac03c1c3810eda839ccab416a1"
+      },
+      "mergedAt": "2026-09-28T17:04:52Z",
+      "state": "MERGED",
+      "url": "https://github.com/agentstation/starmap/pull/189"
+    },
+    "reviewed_and_merged_tree": "5ef343899141afa4266f0cfde1d9f054c8e9ab72",
+    "checks": {
+      "SUCCESS": 28,
+      "NEUTRAL": 1
+    },
+    "limits": "No release, branch deletion, public review comment, history rewrite, or protection bypass."
+  },
+  "branch_updates_2026_09_28": {
+    "starmap_188": "Accepted GitHub update-branch with expected head 7cea2538c9e4d8488e69841287901e9b6b42aae0. No history rewrite.",
+    "starport_390": "Accepted GitHub update-branch with expected head 0e014147087ec13ec3e5ba470f6a54fe4187dec6. No history rewrite."
   }
 }
