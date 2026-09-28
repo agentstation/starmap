@@ -1,0 +1,15 @@
+{
+  "consumer": {
+    "commit": "e460bb98e15438348267941b03f7ca4b453a7414",
+    "sha256": {
+      ".github/workflows/ci.yml": "45fd66348fa1603b5bbc814e0b7020c1c4bdba9661d34e43826b1184de98f4fb",
+      "internal/app/budget_fleet_test.go": "63d440e9057f10c237ae8c8e12c20670daa68eedb50e2bf7c97a39910beac59b"
+    }
+  },
+  "producer": {
+    "commit": "9aeec53dd913ce98742616fbe720b1a4bf0c3932",
+    "sha256": {
+      "scripts/catalog-product-checks.json": "c6d8a839f139413fc97982addf288d3d86969603b98fb8e681711ff65890cf9b"
+    }
+  }
+}

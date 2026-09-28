@@ -1,0 +1,118 @@
+{
+  "status": "PASS",
+  "method": "Composite mapping of named tests to retained raw results. No complete task-gate invocation is claimed.",
+  "checks": [
+    {
+      "test": "TestProductionModerationBudget",
+      "source": "../followup-modes-2026-09-28/operation-matrix-adapter.json.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 4
+      }
+    },
+    {
+      "test": "TestProductionGuardrailModerationAdmission",
+      "source": "../followup-modes-2026-09-28/operation-matrix-adapter.json.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 4
+      }
+    },
+    {
+      "test": "TestProductionImagesBudget",
+      "source": "../followup-modes-2026-09-28/operation-matrix-adapter.json.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 16
+      }
+    },
+    {
+      "test": "TestProductionSpeechBudget",
+      "source": "../followup-modes-2026-09-28/operation-matrix-adapter.json.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 13
+      }
+    },
+    {
+      "test": "TestProductionTranscriptionBudgetRefusal",
+      "source": "../followup-modes-2026-09-28/operation-matrix-adapter.json.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 10
+      }
+    },
+    {
+      "test": "TestProductionNativeVideoBudget",
+      "source": "../followup-modes-2026-09-28/operation-matrix-adapter.json.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 5
+      }
+    },
+    {
+      "test": "TestProductionNativeExternalVideoAsset",
+      "source": "../followup-modes-2026-09-28/operation-matrix-adapter.json.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 3
+      }
+    },
+    {
+      "test": "TestProductionVideoFollowupBudget",
+      "source": "../followup-modes-2026-09-28/operation-matrix-adapter.json.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 19
+      }
+    },
+    {
+      "test": "TestProductionAdministratorVideoReconciliation",
+      "source": "../followup-modes-2026-09-28/video-restart-race.jsonl.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 3
+      }
+    },
+    {
+      "test": "TestLateNativeResponseBlocksDisputedBudget",
+      "source": "../followup-modes-2026-09-28/video-restart-race.jsonl.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 1
+      }
+    },
+    {
+      "test": "TestProductionJobsRequireSettledReservation",
+      "source": "../followup-modes-2026-09-28/video-restart-race.jsonl.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 1
+      }
+    },
+    {
+      "test": "TestJobReservationChecksOriginalIdentity",
+      "source": "../followup-modes-2026-09-28/video-restart-race.jsonl.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 7
+      }
+    },
+    {
+      "test": "TestRunRecoversRetainedBudgetEvidence",
+      "source": "../followup-modes-2026-09-28/video-restart-race.jsonl.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 1
+      }
+    },
+    {
+      "test": "TestSettledJobRequiresOriginalSharedApproval",
+      "source": "shared-job-approval-race.jsonl.gz",
+      "status": "PASS",
+      "test_results": {
+        "pass": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "task": "CSP12.2",
+  "date": "2026-09-28",
+  "status": "partial",
+  "commits": {
+    "consumer": "e460bb98e15438348267941b03f7ca4b453a7414",
+    "producer": "9aeec53dd913ce98742616fbe720b1a4bf0c3932"
+  },
+  "toolchain": "go1.27.1",
+  "workspace": "/tmp/csp122-billing.work",
+  "checks": {
+    "A47.crash_failover_recovery": {
+      "status": "FAIL",
+      "passed_subtests": [
+        "concurrent-settlement",
+        "dispatched-process-loss"
+      ],
+      "failed_subtest": "backend-replacement",
+      "reason": "Replacement startup refuses catalog bootstrap after budget authority approval. Controlled catalog recovery remains incomplete."
+    },
+    "A47.media_async_reconciliation": {
+      "status": "PASS",
+      "named_tests": 14,
+      "evidence": "media-qualification.json"
+    },
+    "verifier_tests": 99,
+    "action_pins": "PASS",
+    "vet": "PASS",
+    "goago": "PASS",
+    "documentation": {
+      "files": 2,
+      "diagnostics": 0
+    }
+  },
+  "limitations": [
+    "Concurrent settlement and gateway process loss pass. Replacement startup still fails because the catalog bootstrap permission is consumed. The attempted namespaced snapshot and budget approval do not establish complete catalog recovery. No replacement recovery pass is claimed.",
+    "The initial failure compared a record value against a pointer. The corrected assertion compares identical types. The next run exposed the independent catalog-recovery requirement. The failing production restart assertion remains mandatory. Runtime code did not change.",
+    "Media qualification reuses exact matching named results from the preceding proof and the shared approval run. It does not claim a fresh full task-gate run.",
+    "Bounds, retention horizons, interrupted batches, latency, capacity, final review, native CI, published dependency qualification, and paired merges remain required.",
+    "The cause of the catalog startup failure remains under investigation. Inspect the original fleet head and copied publication inventory before deciding whether the fixture or recovery implementation is incomplete. No catalog guard was relaxed."
+  ],
+  "services": "PostgreSQL and both task Valkey containers stopped after verification. Docker Desktop stopped successfully. Unrelated containers remained stopped.",
+  "service_cleanup": "service-cleanup.json"
+}

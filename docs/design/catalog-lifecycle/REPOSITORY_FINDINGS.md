@@ -4639,3 +4639,17 @@ The final configuration and proxy suites pass 642 race results with four backend
 Focused application tests pass 33 race results. Pure-Go checks pass 47 results without skips.
 The proof preserves fixture failures, source identities, skipped checks, and current limitations.
 Docker remains stopped. No paid provider request or publication occurred.
+
+## Replacement recovery prerequisite: September 28, 2026
+
+The [production replacement probe](../../plans/proof/starport-production-catalog/csp12.2/shared-recovery-2026-09-28/verification.json) uses PostgreSQL and two independent Valkey processes.
+Concurrent settlement and gateway process-loss subtests pass. Replacement startup fails after explicit budget authority approval.
+The error reports consumed catalog bootstrap permission and requires recovery.
+
+The failing production restart assertion remains mandatory. The current evidence does not establish a runtime defect or a complete catalog snapshot.
+Inspect the original publication and copied inventory before selecting the repair.
+CSP12.2 owns the accounting probe. CSP13 owns complete restore and catalog adoption.
+Neither task can treat budget approval as sufficient catalog recovery.
+
+Fourteen media and settlement tests map to 88 passing results, including real Valkey approval checks.
+The complete task gate, native CI, and paired publication remain unverified.

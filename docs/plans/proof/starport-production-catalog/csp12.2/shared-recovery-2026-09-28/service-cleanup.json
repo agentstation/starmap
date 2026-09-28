@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "containers_stopped": [
+    "starport-csp122-postgres",
+    "starport-csp122-async-usage",
+    "starport-csp122-replacement-valkey"
+  ],
+  "remaining_running_containers": [],
+  "docker_desktop_stop_exit": 0,
+  "backend_process_present": false,
+  "unrelated_containers": "Not started or changed"
+}
