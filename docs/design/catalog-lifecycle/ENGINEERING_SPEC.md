@@ -5007,3 +5007,27 @@ The coordinator must retain the barrier until all deployment components and inde
 The [transfer contract](../../plans/proof/starport-production-catalog/csp13/kv-transfer-2026-09-28/CONTRACT.md) records the representation limits and evidence boundaries.
 Full manifests, blob transfer, credential verification, operator commands, independent reconciliation, native CI, and merge remain CSP13 requirements.
 This component does not complete A16 or A33.
+
+
+### Portable blob transfer: September 28, 2026
+
+Consumer `3a0331b07` aligns filesystem and object-store addresses by the digest of each logical key.
+Decision CSP13-BLOB-01 requires this alignment because retired filesystem entries can outlive the records that held their original keys.
+The [transfer contract](../../plans/proof/starport-production-catalog/csp13/blob-transfer-2026-09-28/CONTRACT.md) records the migration and recovery boundaries.
+
+Existing object prefixes require explicit export into a new destination. The exporter leaves the source unchanged.
+A layout receipt prevents an upgraded process from silently treating legacy objects as absent.
+The archive preserves live bytes, empty publications, mutable objects, and permanent retirement markers.
+It excludes incomplete uploads and noncurrent object versions.
+
+Import verifies the full private archive before destination writes.
+Filesystem restore publishes only a new directory. Object-store restore permits exact retries under a durable operation claim.
+Readback verifies bytes and metadata. Final enumeration rejects objects outside the selected image.
+
+Barriers remain until the complete deployment recovery procedure approves activation.
+Existing clients must remain externally fenced. Cached readiness is not a writer fence.
+
+The [component proof](../../plans/proof/starport-production-catalog/csp13/blob-transfer-2026-09-28/verification.json) records 91 race passes and 25 pure-Go passes.
+Both cohorts have no failures or skips. Native Linux and Windows execution remains UNVERIFIED.
+The test-only barrier removal proves byte and retirement behavior, not production admission approval.
+Full manifests, credential access, independent history, operator commands, native CI, review, and merge remain CSP13 requirements.

@@ -1,0 +1,97 @@
+{
+  "task": "CSP13",
+  "status": "in_progress",
+  "source_commit": "3a0331b0759123600ce4f86b16ce6194e7e8a5d6",
+  "worktree": "/private/tmp/starport-clock-review-20260926",
+  "go": "1.27.1",
+  "host": "darwin/arm64",
+  "decision": "CSP13-BLOB-01",
+  "native_service": "MinIO RELEASE.2025-09-07T16-13-09Z; versioned disposable buckets",
+  "results": {
+    "before.jsonl": {
+      "fail": 3,
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/blob",
+          "Action": "fail",
+          "Elapsed": 0.784
+        }
+      ]
+    },
+    "race.jsonl": {
+      "pass": 88,
+      "fail": 2,
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/blob",
+          "Action": "fail",
+          "Elapsed": 6.229
+        }
+      ]
+    },
+    "qualified-race.jsonl": {
+      "pass": 91,
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/blob",
+          "Action": "pass",
+          "Elapsed": 6.32
+        }
+      ]
+    },
+    "qualified-purego.jsonl": {
+      "pass": 25,
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/blob",
+          "Action": "pass",
+          "Elapsed": 3.446
+        }
+      ]
+    },
+    "consumers.jsonl": {
+      "pass": 460,
+      "skip": 98,
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starport/internal/jobs",
+          "Action": "pass",
+          "Elapsed": 18.826999999999998
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/files",
+          "Action": "pass",
+          "Elapsed": 44.885
+        }
+      ]
+    }
+  },
+  "checks": {
+    "lint": "PASS; 0 issues",
+    "vet": "PASS internal/blob",
+    "dependency_direction": "PASS; 6 conditions",
+    "writing": "PASS; 5 source files and package README",
+    "linux_amd64_cross_compile": "PASS; not native execution",
+    "windows_amd64_cross_compile": "PASS; not native execution"
+  },
+  "fail_before": "Narrow Go overlay restores the former logical-key S3 addressing in the current adapter. The filesystem-to-objectstore test fails when the restored mutable object cannot be read. This is a contract regression reproduction, not a full checkout of the old implementation.",
+  "retained_initial_failure": "Readiness fault fixture counted layout receipt as a retained publication. The fixture now selects retained-v1 writes; the original failure assertion remains unchanged.",
+  "coverage": [
+    "All four filesystem/objectstore transfer pairs",
+    "Real conditional multipart import of a 6.3 MB retained payload",
+    "Live and empty publication, mutable bytes, and unreferenced retirement marker",
+    "Read-only export from legacy object layout; no source versions or delete markers changed",
+    "Interrupted import, exact retry, competing owners, conflicting data and unlisted objects",
+    "Private archive validation, hash mismatch, traversal, duplicate paths, symlinks, corrupt envelopes, excess trailer and wrong counts",
+    "Import barriers refuse ordinary opening and remain after failure",
+    "Controlled test-only activation proves late publication cannot recreate retired bytes"
+  ],
+  "limitations": [
+    "No full deployment manifest or operator recovery command yet",
+    "No external writer fence or independent revocation/spend reconciliation in these component helpers",
+    "Test-only barrier removal is not production recovery approval",
+    "98 optional consumer backend results skipped; no skipped results in the blob race and focused pure-Go cohorts",
+    "Native Linux and Windows execution UNVERIFIED",
+    "Required full CSP13 review, CI and merge remain open"
+  ]
+}
