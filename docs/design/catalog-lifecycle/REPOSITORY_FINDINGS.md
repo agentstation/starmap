@@ -4489,3 +4489,15 @@ Two child-process interruption cases preserve aggregate identity and storage cha
 The router test reached terminal status before checkpoint retirement finished. It now waits for the durable cleanup marker before removing temporary storage.
 Application shutdown still lacks a batch-worker drain contract. CSP12.2 owns that repair before publication.
 Shared backends, interrupted-run policy, audited correction, full A47, capacity, review, native CI, and paired merges remain open.
+
+## Batch shutdown repair: September 27, 2026
+
+The baseline probe showed that application Close returned success during active checkpoint retirement.
+Consumer `fa321e95` now drains batch workers before closing their dependencies.
+It tracks submission writes, admitted calls, result persistence, and final cleanup.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/batch-shutdown-2026-09-27/verification.json) records 91 batch race results with 15 optional skips.
+Lifecycle checks pass seven results. Pure-Go checks pass five results. Go vet and goago pass.
+A deadline preserves dependencies for a later Close attempt. The HTTP controller returns 503 for new work after shutdown starts.
+
+The restart-policy question, audited correction, shared qualification, full A47, capacity, review, native CI, and paired merges remain open.

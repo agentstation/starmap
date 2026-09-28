@@ -1026,3 +1026,12 @@ A lost acknowledgment after deletion permits an exact retry. Corrupt references 
 The [local proof](../../plans/proof/starport-production-catalog/csp12.2/batch-aggregates-2026-09-27/verification.json) covers memory, Badger, filesystem, and application composition.
 Valkey with shared-object aggregate recovery remains unverified in this revision. Docker remains stopped.
 Shutdown must drain batch workers before closing storage. Terminal batch status alone does not establish cleanup completion.
+
+## Storage lifetime during batch shutdown: September 27, 2026
+
+Consumer `fa321e95` keeps storage and other dependencies open while batch workers drain.
+A Close deadline returns an error. A later Close call can finish after cleanup completes.
+The application does not remove development scratch storage after a failed Close.
+
+The [local proof](../../plans/proof/starport-production-catalog/csp12.2/batch-shutdown-2026-09-27/verification.json) holds checkpoint retirement across the deadline and verifies a successful retry.
+Native platforms, shared backends, forced termination, and full task qualification remain open.

@@ -1,0 +1,239 @@
+{
+  "status": "partial; local batch shutdown qualified; CSP12.2 remains in progress",
+  "recorded_at": "2026-09-28T01:46:05.350360+00:00",
+  "consumer_commit": "fa321e95fb96089dd85a0767262190ed93b80be2",
+  "base_consumer_commit": "7ba266a9f5067350a659ee201ebcdc25cb6ce716",
+  "producer_commit": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+  "environment": {
+    "GOWORK": "/tmp/csp122-billing.work",
+    "GOTOOLCHAIN": "go1.27.1",
+    "platform": "darwin/arm64",
+    "services": "Docker stopped; no services started"
+  },
+  "checks": [
+    {
+      "command": "go test -json ./internal/app -run '^TestBatchShutdownPreservesStorageUntilCleanupDrains$'",
+      "output": "before.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "fail",
+          "elapsed_seconds": 1.082
+        }
+      ]
+    },
+    {
+      "command": "go test -race -json ./internal/app -run '^TestBatchShutdownPreservesStorageUntilCleanupDrains$'",
+      "output": "after.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed_seconds": 2.341
+        }
+      ]
+    },
+    {
+      "command": "go test -race -json -timeout 3m ./internal/jobs ./internal/app -run 'Test(BatchShutdown|LifecycleCloses|RunCancellation|ProductionSweep)'",
+      "output": "lifecycle-race.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 1.457
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed_seconds": 27.865
+        }
+      ]
+    },
+    {
+      "command": "go test -race -json -timeout 4m ./internal/jobs ./internal/server/controllers ./internal/server -run 'Test.*(Batch|ResultStorage|ResultConfirmation)'",
+      "output": "batch-race.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 91,
+        "fail": 0,
+        "skip": 15
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 1.858
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 6.437
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server",
+          "result": "pass",
+          "elapsed_seconds": 16.532
+        }
+      ]
+    },
+    {
+      "command": "CGO_ENABLED=0 go test -json ./internal/jobs ./internal/app ./internal/server/controllers -run 'Test(BatchShutdown|ClosedBatch)'",
+      "output": "pure-go.json.gz",
+      "test_results_including_parent_tests": {
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "result": "pass",
+          "elapsed_seconds": 0.403
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 0.606
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed_seconds": 1.705
+        }
+      ]
+    }
+  ],
+  "static_checks": [
+    {
+      "command": "go vet ./internal/jobs ./internal/server/controllers ./internal/server ./internal/app",
+      "output": "vet.log.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./internal/jobs ./internal/server/controllers ./internal/server ./internal/app",
+      "output": "goago.json.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "technical-writing lint added operator prose and REVIEW.md",
+      "output": "prose-final.log.gz",
+      "exit_code": 0
+    },
+    {
+      "command": "technical-writing lint internal/jobs/batch_workers.go",
+      "output": "source-prose.log.gz",
+      "exit_code": 0
+    }
+  ],
+  "source_manifest": [
+    {
+      "path": "docs/OPERATOR-GUIDE.md",
+      "sha256": "d029e8e059a5201601a95a74b6304065a8e390e6dd5fb71ce2bca33edf047519"
+    },
+    {
+      "path": "internal/app/app.go",
+      "sha256": "6ed6149380221b3d1794212e5d9e310b5d6e2f334b00acdb427a870e33c3c666"
+    },
+    {
+      "path": "internal/app/batch_shutdown_test.go",
+      "sha256": "07064bfb51113138076544ebdc833e7086949d0ffa8c461152e5dad00f5c1f35"
+    },
+    {
+      "path": "internal/jobs/batch_service.go",
+      "sha256": "aa4e9fb0ea30288b62ecb08358b8461d28ac1fea6e2761b02133068e0c550459"
+    },
+    {
+      "path": "internal/jobs/batch_workers.go",
+      "sha256": "b43a9bdf84d92615f461fea9f3444cd23608d224d08743b5d35bc343da68e643"
+    },
+    {
+      "path": "internal/jobs/batch_workers_test.go",
+      "sha256": "692df4a03e6c07ae56c8e7acebf8d1d7e6fa4fb7749473d239e268059a367b3f"
+    },
+    {
+      "path": "internal/server/controllers/batch_shutdown_test.go",
+      "sha256": "91b0b06209268492e70ed5635f1a473338a63f9d6959ac90d10b9002a3d34675"
+    },
+    {
+      "path": "internal/server/controllers/batches.go",
+      "sha256": "8a0c07dbbec2a4ba2e693de322a300f4ca4e28379eeb5bf1c4ffcb85d4755b75"
+    },
+    {
+      "path": "internal/server/test_helpers_test.go",
+      "sha256": "9d9152f029b24eee65426ffebbf43580ea08194903b6a35f828d0edd012f6ccc"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "after.json.gz",
+      "sha256": "449ceea78781e2e419830fdc23c939a5c8738683fe610f38997af97797c7d47b",
+      "uncompressed_sha256": "388af2e4ae1230515d1e07d99bfbb914d8cbacea07c2131881f037bc32ca58f0"
+    },
+    {
+      "path": "batch-race.json.gz",
+      "sha256": "ed6251059c27103458acd11111f5678d725481e3c76dc66af49e14e3031b7f05",
+      "uncompressed_sha256": "69de3ff7a4d496ad1d3899f2afeaf439a852ea332d6de8f08fd22e3c6d0f2a34"
+    },
+    {
+      "path": "before.json.gz",
+      "sha256": "01bad53558ca65a4a41219b7f04c31dafa71127d87623d5003a5f115f4e4abcc",
+      "uncompressed_sha256": "5fde7e133c8491a88cc6c37d9acee6085011c9afefd98b3e35ec491470064aa4"
+    },
+    {
+      "path": "goago.json.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "uncompressed_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "lifecycle-race.json.gz",
+      "sha256": "46a9d3558d60c04ec3855346d06856053fa5c3348c9265fe59f9536d297bf1c6",
+      "uncompressed_sha256": "0f4a2a3811fda33365f0dcc1dc4126753e87a4aa64662158aadf44fe90b808ec"
+    },
+    {
+      "path": "prose-final.log.gz",
+      "sha256": "3a8a4461ab82bcabf697e5461b5c91a9d9b762e9b528b2e8ce4797850849e7fb",
+      "uncompressed_sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "ec31d72193c430d4e3c4f61814ab140641801e7d02a1d10b4a78b243bb086911",
+      "uncompressed_sha256": "3431fc070a97764c594fd4b599f64369ecdf0827e32c58fe728c9ef3d4f92bdf"
+    },
+    {
+      "path": "pure-go.json.gz",
+      "sha256": "a074c9931d6e49ac27ae4614a179b3169a635f13d4d9e51a0e43e669388fc4b5",
+      "uncompressed_sha256": "b4695b80e33020cdaa44b7173729d4b9fed141f9d352ca0673cd2633148a1bc7"
+    },
+    {
+      "path": "source-prose.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "uncompressed_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "limitations": [
+    "No PR publication, merge, release, or complete CSP12.2 claim.",
+    "Shared backends, native CI, capacity, restore, failover, full A47, and full paired qualification remain open.",
+    "The owner decision about continuation of untouched lines remains pending. Shutdown never authorizes a new dispatch.",
+    "Close timeout leaves dependencies open. Callers must retry Close or treat forced termination as crash recovery.",
+    "Native video cancellation remains unchanged."
+  ]
+}

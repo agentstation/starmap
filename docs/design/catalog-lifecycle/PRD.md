@@ -506,3 +506,12 @@ A quota refusal retains results until legitimate capacity becomes available. Sta
 
 The [local proof](../../plans/proof/starport-production-catalog/csp12.2/batch-aggregates-2026-09-27/verification.json) qualifies these behaviors on local storage.
 Complete shared deployment qualification and graceful shutdown remain open. The restart-policy decision still governs untouched lines.
+
+## Batch shutdown behavior: September 27, 2026
+
+Shutdown must refuse new batches and stop later line dispatch. Admitted calls retain time to store their results.
+The gateway must drain batch workers before closing their dependencies.
+A shutdown deadline must return an error instead of reporting success while cleanup still uses storage.
+
+The [local proof](../../plans/proof/starport-production-catalog/csp12.2/batch-shutdown-2026-09-27/verification.json) qualifies retry after a drain timeout and refusal of new work.
+Untouched lines still require the confirmed restart policy before automatic execution.

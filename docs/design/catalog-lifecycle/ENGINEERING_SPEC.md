@@ -4764,3 +4764,17 @@ The limits vocabulary remains independent of storage. `internal/jobs/fileio` con
 The [local proof](../../plans/proof/starport-production-catalog/csp12.2/batch-aggregates-2026-09-27/verification.json) records process-loss, concurrent recovery, corruption, expiry, quota, and production sweep checks.
 Shared backends, capacity, native CI, full A47, and bounded shutdown drain remain required.
 Terminal status promises readable aggregate bytes. It does not mean that checkpoint cleanup finished.
+
+## Batch shutdown drain: September 27, 2026
+
+Consumer `fa321e95` registers batch workers before submission writes and retains ownership through final cleanup.
+Close rejects new batches and stops later line dispatch. Admitted calls retain their execution context and can store results.
+An incomplete run retains its durable claims for restart recovery. Shutdown does not authorize untouched lines.
+
+Application Close waits for batch workers before it closes dependencies.
+A deadline returns an error without consuming the final cleanup guard. Dependencies remain open until a successful retry.
+The HTTP controller maps a closed batch service to 503. Forced process termination remains a crash-recovery case.
+
+The [local proof](../../plans/proof/starport-production-catalog/csp12.2/batch-shutdown-2026-09-27/verification.json) qualifies metadata-write, admitted-call, and checkpoint-cleanup boundaries.
+It records 91 batch race results with 15 skips, seven lifecycle results, and five pure-Go results.
+The earlier aggregate proof remains tied to consumer `7ba266a9`. Shared backends and full task qualification remain open.
