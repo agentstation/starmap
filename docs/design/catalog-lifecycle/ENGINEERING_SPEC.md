@@ -5142,3 +5142,20 @@ Internal consistency does not establish later history completeness.
 Cross-store execution links, independent evidence, and restore activation remain required.
 
 The [accounting proof](../../plans/proof/starport-production-catalog/csp13/accounting-consistency-2026-09-28/verification.json) records test counts, retained failures, and final qualification scope.
+
+
+### Job accounting links: September 28, 2026
+
+Consumer `1e69e4f16` validates captured job and correction links.
+
+Each retained metered job must match its reservation identity and pinned dispatch facts.
+Completed reporting requires settled accounting. Independent budget evidence remains valid without duplication in the job.
+Missing jobs remain diagnostics because binding precedes creation and permitted deletion can remove jobs.
+Their reservations remain intact.
+
+Correction inspection verifies immutable intent, applied decisions, report progress, and paired budget decisions.
+Original publication digests remain evidence. Inspection does not reconstruct historical transaction bytes.
+Pending and superseded intents remain unapplied. Conflicts and missing chain records cause refusal.
+Independent later history and restore activation remain required.
+
+The [job accounting proof](../../plans/proof/starport-production-catalog/csp13/job-accounting-links-2026-09-28/verification.json) records exact results and retained fixture failures.

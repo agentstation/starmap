@@ -4776,3 +4776,21 @@ The backward-time regression fails before that repair and passes afterward.
 Cross-store execution links, independent history, and full restore remain open.
 
 The [accounting proof](../../plans/proof/starport-production-catalog/csp13/accounting-consistency-2026-09-28/verification.json) records test counts, retained failures, and final qualification scope.
+
+
+### Job accounting links: September 28, 2026
+
+Consumer `1e69e4f16` validates captured job and correction links.
+
+Four baseline regression cases reproduce accepted job/reservation mismatches.
+They cover generation, reservation identity, absent reverse binding, and valuation.
+The verifier now checks those links and retained correction histories.
+
+Review confirmed two valid states that inspection must preserve.
+Job creation binds the reservation first. Permitted deletion can also leave a reservation without its job.
+Budget evidence can exist without duplication in a job.
+
+Missing jobs remain diagnostics. Conflicting identities or retained evidence cause refusal.
+Independent later history and full restore remain open.
+
+The [job accounting proof](../../plans/proof/starport-production-catalog/csp13/job-accounting-links-2026-09-28/verification.json) records exact results and retained fixture failures.
