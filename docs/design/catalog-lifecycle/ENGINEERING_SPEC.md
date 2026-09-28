@@ -4714,3 +4714,21 @@ Current retirement markers require indefinite retention in backups and object li
 Payload quotas exclude markers, staging, multipart parts, and noncurrent versions.
 CSP13 must prove that old writers cannot resume before reclaiming markers.
 Native platforms, restore behavior, storage readiness, video retirement, and full batch recovery remain required.
+
+
+## Video publication ownership: September 27, 2026
+
+Consumer `e0aae1c7` moves all video receipts and assets to immutable blob publication.
+Job schema 5 requires coordinated migration. CSP13 owns that work.
+An exact native callback retry retains the first receipt timestamp. A conflicting callback returns a reconciliation conflict.
+Recovery verifies retained asset bytes before another download.
+
+Provider-polled jobs persist an asset key, digest, measured size, expiry, and pending state before byte publication.
+Refresh and startup recovery verify existing bytes and complete that same identity.
+Replacement configuration cannot alter a prepared size bound or deadline.
+Expiry confirms backend retirement before clearing pending state. Repository deletion refuses an asset awaiting retirement.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/video-publication-2026-09-27/verification.json) covers actual process death after receipt and asset publication.
+It also covers versioned MinIO with memory, Badger, and Valkey metadata.
+Conditional-write readiness must precede affected paid dispatch without blocking independent gateway operations.
+Native platforms, restore, staging cleanup, noncurrent versions, batch aggregates, and full A47 remain open.

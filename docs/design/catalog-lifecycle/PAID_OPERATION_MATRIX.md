@@ -523,3 +523,9 @@ The [file-retirement proof](../../plans/proof/starport-production-catalog/csp12.
 Confirmed retirement precedes quota release. Failed acknowledgments preserve recoverable metadata and charges.
 A separate-process test and a real versioned MinIO test reject delayed publication.
 Video retirement, aggregate reconstruction, interrupted-run behavior, audited correction, and full A47 remain required.
+
+
+The [video-publication proof](../../plans/proof/starport-production-catalog/csp12.2/video-publication-2026-09-27/verification.json) repairs receipt replacement, expired-content resurrection, and unreferenced provider assets at consumer `e0aae1c7`.
+The production budget tests preserve measured charges and disputed late evidence.
+Recovery after actual worker death uses retained bytes without another inference request.
+Conditional-write readiness, stable batch aggregates, interrupted-run policy, audited correction, and full A47 remain required.

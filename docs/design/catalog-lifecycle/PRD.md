@@ -476,3 +476,15 @@ D6, D7, D11, and D15 use the specification defaults as engineering decisions.
 These selections do not relabel an engineering proposal as an explicit user confirmation.
 The [activation resolution](../../plans/proof/starport-production-catalog/activation-2026-09-05/RESOLUTION.md) closes the seven audit gaps in task and acceptance contracts.
 Implementation evidence remains separate from those contract corrections.
+
+
+## Video result retention: September 27, 2026
+
+Video recovery must preserve the first accepted receipt, its measured usage, and its original retention clock.
+A conflicting callback must not replace that evidence. Recovery must not repeat inference.
+Provider-polled jobs must retain a discoverable asset identity before writing bytes.
+A failed acknowledgment must not create an unreferenced duplicate.
+
+The [local implementation proof](../../plans/proof/starport-production-catalog/csp12.2/video-publication-2026-09-27/verification.json) covers these rules at consumer `e0aae1c7`.
+API expiry prevents new content reads. It does not specify physical deletion times for backups or object versions.
+Production storage readiness and the remaining CSP12.2 criteria still require qualification.

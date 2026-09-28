@@ -4452,3 +4452,18 @@ An earlier run's two failed results remain in the proof.
 The video owner still calls mutable blob writes and deletion. Its expiry race needs a separate audit.
 Construction still performs no bucket probe. Conditional-write readiness remains unqualified.
 This local commit does not complete CSP12.2 or authorize a claim of production readiness.
+
+
+## Video publication repair: September 27, 2026
+
+Consumer `e0aae1c7` repairs two native defects and one provider-asset ownership defect.
+Delayed writes could recreate expired content. Repeated callbacks could replace the first billing receipt.
+A provider asset could lose its only reference after a successful write lost its acknowledgment.
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/video-publication-2026-09-27/verification.json) preserves five failed native results and the provider-asset failure.
+
+Final checks pass 578 broad race results with one optional skip, 29 HTTP results, and 23 production results.
+Pure-Go checks pass 23 results. Actual process-loss checks pass four results, and the prepared-bound check passes one.
+Earlier schema, fixture, and compile failures remain evidence.
+
+All job blobs now use immutable publication. Pending provider assets retain durable ownership.
+Conditional-write readiness, restore, physical cleanup, and the full task acceptance criteria remain unqualified.

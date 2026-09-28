@@ -991,3 +991,16 @@ Backups and lifecycle rules must preserve current retirement markers.
 Logical payload quotas exclude marker overhead, filesystem staging, multipart parts, and noncurrent versions.
 Monitor these storage costs separately. CSP13 owns safe migration and marker reclamation.
 Staging cleanup, restore tests, other S3 services, native platform checks, and shared readiness remain open.
+
+
+## Retained video identities: September 27, 2026
+
+Consumer `e0aae1c7` binds job schema 5 to `retained-v1` blob storage.
+Native receipts and all video assets now use permanent retirement.
+Provider assets retain their identity and content digest before writing bytes.
+A lost reply leaves a recoverable preparation. Startup recovery uses the stored bytes without a provider runner.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/video-publication-2026-09-27/verification.json) includes real process loss and versioned MinIO with all three metadata backends.
+Preserve current retirement markers in backups and lifecycle rules.
+API expiry does not establish a physical deletion deadline for noncurrent versions or backups.
+Storage readiness, physical cleanup, native platforms, and coordinated migration remain required.
