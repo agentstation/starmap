@@ -1047,3 +1047,16 @@ Overflow and missing audit history prevent capacity release. CSP13 must migrate 
 
 The [proof](../../plans/proof/starport-production-catalog/csp12.2/correction-ledger-2026-09-27/verification.json) covers Badger process loss and real Valkey concurrency.
 One PostgreSQL-dependent test remains unverified. Required job audit integration and full fleet qualification remain open.
+
+## Usage adjustment storage: September 27, 2026
+
+Consumer `27983f87` stores immutable adjustment receipts and a current adjustment beside the original usage record.
+One native compare-and-swap updates the receipt, current adjustment, and every affected reporting counter.
+The transaction guards original bytes. Request counts remain unchanged, and cost and token totals retain other requests' contributions.
+
+Adjustment schema 1 expires at the original usage deadline. Expired history cannot recreate counters.
+The original usage schema remains 1. The original record never stores its read-projection metadata.
+These records belong to optional reporting and cannot grant required budget capacity.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/usage-adjustments-2026-09-27/verification.json) covers memory, Badger, and real Valkey behavior.
+Job correction still needs an atomic boundary with required budgets and late evidence. Shared fleet qualification remains open.

@@ -4516,3 +4516,15 @@ Actual process interruption covers both sides of the correction commit. Real Val
 
 Classification: in-scope CSP12.2 budget and recovery repair.
 Job audit integration, administrator routes, usage adjustments, and full task qualification remain open.
+
+## CSP12.2 usage adjustments: September 27, 2026
+
+Consumer `27983f87` adds explicit adjustment storage while preserving immutable `Put` behavior.
+The baseline rejects changed billing under an existing usage identity. The new operation changes original-window totals without another request count.
+Final checks pass 134 race results, 60 pure-Go results, and four existing production results without skips.
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/usage-adjustments-2026-09-27/verification.json) preserves the initial test compile failure and intermediate results.
+
+Classification: in-scope CSP12.2 reporting and correction integration.
+The job service still lacks correction intent, history, administrator routes, and report acknowledgement.
+Current late-provider handling writes the dispute before its job compare-and-swap. Correction must not race this sequence and clear a new dispute.
+The required fix belongs to the job and reservation transaction boundary.

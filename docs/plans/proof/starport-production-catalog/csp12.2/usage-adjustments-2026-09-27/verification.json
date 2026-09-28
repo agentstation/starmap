@@ -1,0 +1,315 @@
+{
+  "status": "partial; usage adjustment component qualified; job correction API and recovery remain open",
+  "consumer_commit": "27983f87100452b39c56f4bf6f8062a0a4c4862f",
+  "base_consumer_commit": "3e1729c73ba30a9b9c2e53cf52326da3f7bbf214",
+  "producer_commit": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+  "recorded_at": "2026-09-28T02:36:10.615501+00:00",
+  "environment": {
+    "GOWORK": "/tmp/csp122-billing.work",
+    "GOTOOLCHAIN": "go1.27.1",
+    "platform": "darwin/arm64",
+    "valkey": "7.2.14",
+    "valkey_image": "sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "lifecycle": "Valkey and Docker Desktop stopped after checks. PostgreSQL and MinIO remained stopped."
+  },
+  "checks": [
+    {
+      "command": "go test -json ./internal/usage -run '^TestUsageCorrectionPreservesRequestCount$' -count=1",
+      "output": "baseline.jsonl.gz",
+      "sha256": "6f4926ed9925353c8c14355fa15e9475a43982359ecca348fb29a1f10f458837",
+      "source": "intermediate source; historical evidence",
+      "test_results_including_parent_tests": {
+        "pass": 0,
+        "fail": 3,
+        "skip": 1
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "result": "fail",
+          "elapsed_seconds": 0.262
+        }
+      ],
+      "exit_code": 1
+    },
+    {
+      "command": "go test -json ./internal/usage -run '^TestUsageCorrectionPreservesRequestCount$' -count=1",
+      "output": "first.jsonl.gz",
+      "sha256": "8df5b8522d20ebd5651ead2589d081b6dcf6b212446558c44e84cbcb9fbb007c",
+      "source": "intermediate source; historical evidence",
+      "test_results_including_parent_tests": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 1
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "result": "pass",
+          "elapsed_seconds": 0.257
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "go test -race -json ./internal/usage -run 'Test(UsageCorrection|UsageAdjustment|ConcurrentUsage)' -count=1 -timeout 2m",
+      "output": "focused-race.jsonl.gz",
+      "sha256": "376110f76176d4ad0742e0207577bce6c08eeaf9f2ed94f4566dc131abcfa81a",
+      "source": "intermediate source; historical evidence",
+      "test_results_including_parent_tests": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "result": "fail",
+          "elapsed_seconds": 0
+        }
+      ],
+      "exit_code": 1
+    },
+    {
+      "command": "go test -race -json ./internal/usage -run 'Test(UsageCorrection|UsageAdjustment|ConcurrentUsage)' -count=1 -timeout 2m",
+      "output": "focused-race-fixed.jsonl.gz",
+      "sha256": "62d25df3f8f4d96cc83b9ad0f4e7a884e2a3f93c187d5c5451fa7fa80ddd0910",
+      "source": "intermediate source; historical evidence",
+      "test_results_including_parent_tests": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 9
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "result": "pass",
+          "elapsed_seconds": 11.195
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "go test -race -json ./internal/proxy -run 'Test(JobCorrection|AdministratorBilling|JobReporting)' -count=1 -timeout 2m",
+      "output": "proxy-race.jsonl.gz",
+      "sha256": "3b01b811d1f730a14d155f9a65c6c8508cb12b7785eab4fbf7cd6940850cc297",
+      "source": "intermediate source; historical evidence",
+      "test_results_including_parent_tests": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 2
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "result": "pass",
+          "elapsed_seconds": 2.006
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:53753 go test -race -json ./internal/usage ./internal/proxy ./internal/server/controllers -run 'Test(Usage|ConcurrentUsage|JobCorrection|JobReporting|AdministratorBilling|Activity|AdminExport)' -count=1 -timeout 3m",
+      "output": "shared-race.jsonl.gz",
+      "sha256": "2aa8b838d7d0a742034eb3a403612d53b53a2d3199d42a9f9a5d801f2ed98355",
+      "source": "intermediate source; historical evidence",
+      "test_results_including_parent_tests": {
+        "pass": 130,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 1.876
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "result": "pass",
+          "elapsed_seconds": 18.635
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "result": "pass",
+          "elapsed_seconds": 28.478
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:53753 go test -race -json ./internal/usage ./internal/proxy ./internal/server/controllers -run 'Test(Usage|ConcurrentUsage|JobCorrection|JobReporting|AdministratorBilling|Activity|AdminExport)' -count=1 -timeout 3m",
+      "output": "shared-race-final.jsonl.gz",
+      "sha256": "052114830a98b457e8a6e1cdc630c78652680abba0b0eec6c0cdbcd708de328b",
+      "source": "final committed runtime",
+      "test_results_including_parent_tests": {
+        "pass": 134,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 1.8439999999999999
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "result": "pass",
+          "elapsed_seconds": 25.644
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "result": "pass",
+          "elapsed_seconds": 19.836
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:53753 go test -race -json ./internal/usage -count=1 -timeout 3m",
+      "output": "usage-full-race.jsonl.gz",
+      "sha256": "3e14ea099b2d5edbb619b0c80e3384a5c0da9108a2c2814d899f323efa0e4f56",
+      "source": "intermediate source; historical evidence",
+      "test_results_including_parent_tests": {
+        "pass": 181,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "result": "pass",
+          "elapsed_seconds": 27.055
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "CGO_ENABLED=0 TEST_VALKEY_URL=redis://127.0.0.1:53753 go test -json ./internal/usage ./internal/proxy ./internal/server/controllers -run 'Test(UsageCorrection|UsageAdjustment|ConcurrentUsageAdjustments|JobCorrection|ActivityReportsCorrectedBilling)' -count=1 -timeout 2m",
+      "output": "pure-go.jsonl.gz",
+      "sha256": "40dcdafe095573af2c7568e9ce178124dbcdfec8100d3c4f750587990e3905b2",
+      "source": "final committed runtime",
+      "test_results_including_parent_tests": {
+        "pass": 60,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/proxy",
+          "result": "pass",
+          "elapsed_seconds": 1.024
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/server/controllers",
+          "result": "pass",
+          "elapsed_seconds": 1.337
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/usage",
+          "result": "pass",
+          "elapsed_seconds": 7.475
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "go test -race -json ./internal/app -run 'TestProductionAdministratorVideoReconciliation|TestLateNativeResponseBlocksDisputedBudget' -count=1 -timeout 2m",
+      "output": "app-race.jsonl.gz",
+      "sha256": "f9cb7ae4253a7f1e9034ce7358135977ddbb8296b8ed1e8acbe39b24f4f5219c",
+      "source": "final committed runtime",
+      "test_results_including_parent_tests": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed_seconds": 30.126
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "go vet ./internal/usage ./internal/jobs ./internal/proxy ./internal/server/controllers",
+      "output": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "intermediate source; historical evidence",
+      "exit_code": 0
+    },
+    {
+      "command": "go vet ./internal/usage ./internal/jobs ./internal/proxy ./internal/server/controllers",
+      "output": "vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "final committed runtime",
+      "exit_code": 0
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./internal/usage ./internal/jobs ./internal/proxy ./internal/server/controllers",
+      "output": "goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "source": "intermediate source; historical evidence",
+      "exit_code": 0
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./internal/usage ./internal/jobs ./internal/proxy ./internal/server/controllers",
+      "output": "goago-final.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "source": "final committed runtime",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "output": "layout.log.gz",
+      "sha256": "07572aa95f35ab9322b2e5daf18325b6d7e808bde7b9323451c103c78ff9495f",
+      "source": "intermediate source; historical evidence",
+      "exit_code": 0
+    },
+    {
+      "command": "technical-writing lint internal/usage/adjustment.go internal/proxy/job_correction.go --format text",
+      "output": "source-writing.log.gz",
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "source": "intermediate source; historical evidence",
+      "exit_code": 0
+    },
+    {
+      "command": "technical-writing lint internal/usage/adjustment.go internal/proxy/job_correction.go --format text",
+      "output": "source-writing-final.log.gz",
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "source": "final committed runtime",
+      "exit_code": 0
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "output": "doc-gate.log.gz",
+      "scope": "whole planning repository; historical and unrelated diagnostics remain"
+    }
+  ],
+  "source_binding": "Final shared race, pure-Go, application, vet, goago, and prose checks cover the committed runtime. The 181-result full usage run precedes the last identity, projection, and account-isolation changes. Its result is historical. Layout passed before those changes, which add no package dependencies.",
+  "findings": [
+    "The baseline rejects changed billing through immutable Put. The new explicit Adjust contract preserves Put immutability.",
+    "The first focused race run failed to compile because a test passed two return values into require.ErrorIs. The repaired test captures the error first.",
+    "Job correction and late-provider evidence require an atomic budget/job protocol. Separate job CAS and ledger correction can lose a dispute restriction."
+  ],
+  "schemas": {
+    "usage_original": 1,
+    "usage_adjustment": 1,
+    "attempt": 3,
+    "window": 2,
+    "correction": 1,
+    "job": 5
+  },
+  "remaining": [
+    "Durable job correction intent and immutable history",
+    "Atomic job and budget correction with late-provider dispute publication",
+    "Administrator correction routes and optional reporting recovery",
+    "Interrupted batch restart policy",
+    "Full paid-operation matrix, shared recovery, A47, capacity, native CI, required review, paired merges",
+    "CSP13 migration",
+    "Whole-repository prose gate retains historical diagnostics"
+  ]
+}

@@ -4804,3 +4804,21 @@ Job integration must retain the correction intent before calling the ledger. Rec
 Job inspection must preserve the first decision, late evidence, and correction history. Jobs without budget reservations still need audit retention.
 Optional reporting must use explicit adjustments because the usage repository refuses changed reuse of its original request identity.
 Required settlement must remain independent of adjustment delivery.
+
+### Usage adjustments and correction integration: September 27, 2026
+
+Consumer `27983f87` adds `usage.AdjustmentWriter` and `jobs.CorrectionAccountant`.
+The usage transaction preserves original bytes and request counts. It stores an immutable adjustment receipt, current adjustment, and corrected totals together.
+Corrections affect the original day, week, and month windows. Retention uses the original event deadline.
+Missing counters, stale predecessors, corrupt data, and overflow refuse the complete write.
+
+The reporter hashes private decision identifiers before public usage storage. Activity JSON, CSV, and NDJSON retain original billing values beside effective values.
+Provider measurements remain unchanged. Adjustment metadata exists only in read projections, never in the original record.
+Usage record schema 1 remains unchanged. Adjustment schema 1 defines the new receipts.
+
+The job service does not yet call the correction reporter. Job correction needs durable intent, immutable history, and a separate reporting acknowledgement.
+Late provider evidence and its budget dispute must commit with the job state. Correction must compare the same state before clearing that dispute.
+Separate job and budget writes can lose a restriction. Deterministic tests must cover both commit orders, retries, and lost acknowledgements.
+
+The [review](../../plans/proof/starport-production-catalog/csp12.2/usage-adjustments-2026-09-27/REVIEW.md) defines this remaining transaction contract.
+Required settlement must survive expired optional reporting history. Recovery must not recreate expired usage or repeat provider generation.

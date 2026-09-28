@@ -524,3 +524,13 @@ Exact retries must not change capacity twice. One correction must not clear anot
 
 The [ledger proof](../../plans/proof/starport-production-catalog/csp12.2/correction-ledger-2026-09-27/verification.json) covers the budget storage operation.
 Administrator operations, job recovery, and usage-report adjustments remain required before this flow is complete.
+
+## Billing adjustment requirements: September 27, 2026
+
+An audited correction changes billed cost and token totals without adding another request.
+Activity and exports must show the revised values and preserve the original values.
+Provider measurements remain separate from administrator evidence. Public usage must not expose private decision identifiers, evidence references, reasons, or operator identities.
+
+Required budget correction must not depend on optional report delivery. Report retries need a separate durable acknowledgement for each correction.
+The [component proof](../../plans/proof/starport-production-catalog/csp12.2/usage-adjustments-2026-09-27/verification.json) covers the reporter and usage store.
+The administrator correction flow remains unfinished.
