@@ -1,0 +1,178 @@
+[
+  {
+    "pr": 389,
+    "test": "TestInferencePolicyConcurrentAcceptance",
+    "events": [
+      {
+        "Time": "2026-09-28T09:50:41.8223233-07:00",
+        "Action": "run",
+        "Package": "github.com/agentstation/starport/internal/credentials",
+        "Test": "TestInferencePolicyConcurrentAcceptance"
+      },
+      {
+        "Time": "2026-09-28T09:50:41.8223233-07:00",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/credentials",
+        "Test": "TestInferencePolicyConcurrentAcceptance",
+        "Output": "=== RUN   TestInferencePolicyConcurrentAcceptance\n",
+        "OutputType": "frame"
+      },
+      {
+        "Time": "2026-09-28T09:50:47.8822722-07:00",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/credentials",
+        "Test": "TestInferencePolicyConcurrentAcceptance",
+        "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+        "OutputType": "error"
+      },
+      {
+        "Time": "2026-09-28T09:50:48.3219442-07:00",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/credentials",
+        "Test": "TestInferencePolicyConcurrentAcceptance",
+        "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+        "OutputType": "error"
+      },
+      {
+        "Time": "2026-09-28T09:50:48.3310956-07:00",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/credentials",
+        "Test": "TestInferencePolicyConcurrentAcceptance",
+        "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+        "OutputType": "error"
+      },
+      {
+        "Time": "2026-09-28T09:50:48.4386274-07:00",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/credentials",
+        "Test": "TestInferencePolicyConcurrentAcceptance",
+        "Output": "    policy_migration_test.go:144: context deadline exceeded\n",
+        "OutputType": "error"
+      },
+      {
+        "Time": "2026-09-28T09:50:48.4386274-07:00",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/credentials",
+        "Test": "TestInferencePolicyConcurrentAcceptance",
+        "Output": "--- FAIL: TestInferencePolicyConcurrentAcceptance (6.61s)\n",
+        "OutputType": "frame"
+      },
+      {
+        "Time": "2026-09-28T09:50:48.4386274-07:00",
+        "Action": "fail",
+        "Package": "github.com/agentstation/starport/internal/credentials",
+        "Test": "TestInferencePolicyConcurrentAcceptance",
+        "Elapsed": 6.61
+      }
+    ],
+    "assessment": "The native log records context deadline expiry. Root-cause qualification and repair remain open.",
+    "next_action": "Use deterministic time for pure policy assertions where appropriate. Preserve production deadline and native filesystem contracts."
+  },
+  {
+    "pr": 390,
+    "test": "TestGrantedSharedCredentialResolution",
+    "events": [
+      {
+        "Time": "2026-09-28T18:00:43.904426Z",
+        "Action": "run",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution"
+      },
+      {
+        "Time": "2026-09-28T18:00:43.904491Z",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution",
+        "Output": "=== RUN   TestGrantedSharedCredentialResolution\n",
+        "OutputType": "frame"
+      },
+      {
+        "Time": "2026-09-28T18:00:44.804122Z",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution",
+        "Output": "{\"level\":\"info\",\"provider\":\"acme\",\"access\":\"granted\",\"time\":\"2026-09-28T18:00:44Z\",\"message\":\"Shared provider credential added\"}\n"
+      },
+      {
+        "Time": "2026-09-28T18:00:45.460871Z",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution",
+        "Output": "{\"level\":\"info\",\"provider\":\"acme\",\"access\":\"open\",\"time\":\"2026-09-28T18:00:45Z\",\"message\":\"Shared provider credential added\"}\n"
+      },
+      {
+        "Time": "2026-09-28T18:00:46.529557Z",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution",
+        "Output": "    provider_keys_test.go:318: \n",
+        "OutputType": "error"
+      },
+      {
+        "Time": "2026-09-28T18:00:46.529708Z",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution",
+        "Output": "        \tError Trace:\t/Users/runner/work/starport/starport/internal/providers/keyring/provider_keys_test.go:318\n",
+        "OutputType": "error-continue"
+      },
+      {
+        "Time": "2026-09-28T18:00:46.529727Z",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution",
+        "Output": "        \t            \t\t\t\t/Users/runner/work/starport/starport/internal/providers/keyring/provider_keys_test.go:324\n",
+        "OutputType": "error-continue"
+      },
+      {
+        "Time": "2026-09-28T18:00:46.529732Z",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution",
+        "Output": "        \tError:      \tReceived unexpected error:\n",
+        "OutputType": "error-continue"
+      },
+      {
+        "Time": "2026-09-28T18:00:46.529792Z",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution",
+        "Output": "        \t            \tcredential source stored is unavailable\n",
+        "OutputType": "error-continue"
+      },
+      {
+        "Time": "2026-09-28T18:00:46.529806Z",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution",
+        "Output": "        \t            \tcontext deadline exceeded\n",
+        "OutputType": "error-continue"
+      },
+      {
+        "Time": "2026-09-28T18:00:46.529809Z",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution",
+        "Output": "        \tTest:       \tTestGrantedSharedCredentialResolution\n",
+        "OutputType": "error-continue"
+      },
+      {
+        "Time": "2026-09-28T18:00:46.530111Z",
+        "Action": "output",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution",
+        "Output": "--- FAIL: TestGrantedSharedCredentialResolution (2.63s)\n",
+        "OutputType": "frame"
+      },
+      {
+        "Time": "2026-09-28T18:00:46.530282Z",
+        "Action": "fail",
+        "Package": "github.com/agentstation/starport/internal/providers/keyring",
+        "Test": "TestGrantedSharedCredentialResolution",
+        "Elapsed": 2.63
+      }
+    ],
+    "assessment": "The native log records context deadline expiry. Root-cause qualification and repair remain open.",
+    "next_action": "Use deterministic time for pure policy assertions where appropriate. Preserve production deadline and native filesystem contracts."
+  }
+]
