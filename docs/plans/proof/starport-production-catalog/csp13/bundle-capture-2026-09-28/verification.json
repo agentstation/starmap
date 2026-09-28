@@ -1,0 +1,55 @@
+{
+  "task": "CSP13",
+  "status": "in_progress",
+  "source_commit": "08f3e1e38fd00aeb2135054d0d6dfa1f1fa7f20a",
+  "go": "1.27.1",
+  "host": "darwin/arm64",
+  "results": {
+    "race.jsonl": {
+      "fail": 1,
+      "pass": 14
+    },
+    "recovery-race.jsonl": {
+      "fail": 18,
+      "pass": 48
+    },
+    "real-race.jsonl": {
+      "pass": 16
+    },
+    "real-purego.jsonl": {
+      "pass": 16
+    },
+    "recovery-qualified-race.jsonl": {
+      "pass": 66
+    }
+  },
+  "checks": {
+    "lint": "PASS; zero issues",
+    "vet": "PASS internal/recovery",
+    "writing": "PASS; three files",
+    "dependency_direction": "PASS; six conditions"
+  },
+  "recipes": [
+    "Badger + SQLite + filesystem",
+    "Valkey + PostgreSQL + versioned MinIO"
+  ],
+  "contract": [
+    "Closed SQL boundary checked before capture and before manifest publication",
+    "All selected stores and files bound by exact checksums",
+    "Manifest published last in a private directory",
+    "Verification requires independently retained manifest digest and selected encryption key",
+    "Known empty publication locks excluded; unexpected control contents refused",
+    "No recovery approval and no admission reopening"
+  ],
+  "retained_failures": [
+    "Initial inventory included publication lock files; the payload inventory now excludes only known empty control locks. The test keeps its exact artifact count.",
+    "Initial full recovery command selected Valkey DB 0 in its URL while existing fixtures also selected DB 14. The runner now leaves database selection to each fixture; no repository test changed."
+  ],
+  "limitations": [
+    "Application inventory completeness and cross-store reference validation remain open",
+    "Key challenge verifies selected-key access, not decryption of every historical credential",
+    "Operator commands and restore/reconciliation coordinator remain open",
+    "Native Linux/Windows checks, required review, CI and merge remain open",
+    "No CSP13 acceptance subcase newly marked complete"
+  ]
+}

@@ -5031,3 +5031,20 @@ The [component proof](../../plans/proof/starport-production-catalog/csp13/blob-t
 Both cohorts have no failures or skips. Native Linux and Windows execution remains UNVERIFIED.
 The test-only barrier removal proves byte and retirement behavior, not production admission approval.
 Full manifests, credential access, independent history, operator commands, native CI, review, and merge remain CSP13 requirements.
+
+
+### Backup bundle capture: September 28, 2026
+
+Consumer `08f3e1e38` captures portable stores and selected files under one private manifest.
+The coordinator verifies a closed SQL epoch before capture and before final publication.
+Capture never approves admission. A changed epoch prevents manifest publication.
+
+The manifest binds exact artifact bytes, capture times, build identity, fencing evidence, and external recovery requirements.
+Verification requires an independently retained manifest digest and access to the selected encryption key.
+Known empty publication locks remain outside the payload inventory. Unexpected control contents cause refusal.
+
+The [component contract](../../plans/proof/starport-production-catalog/csp13/bundle-capture-2026-09-28/CONTRACT.md) retains the complete application inventory and reference checks as required work.
+The key challenge proves selected-key access. Credential owners must also validate their historical records before recovery approval.
+The [proof](../../plans/proof/starport-production-catalog/csp13/bundle-capture-2026-09-28/verification.json) records sixteen race passes, sixteen pure-Go passes, and 66 full recovery passes.
+All three cohorts have no failures or skips.
+Operator commands, independent history reconciliation, native CI, review, and merge remain CSP13 requirements.
