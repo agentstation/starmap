@@ -4778,3 +4778,29 @@ The HTTP controller maps a closed batch service to 503. Forced process terminati
 The [local proof](../../plans/proof/starport-production-catalog/csp12.2/batch-shutdown-2026-09-27/verification.json) qualifies metadata-write, admitted-call, and checkpoint-cleanup boundaries.
 It records 91 batch race results with 15 skips, seven lifecycle results, and five pure-Go results.
 The earlier aggregate proof remains tied to consumer `7ba266a9`. Shared backends and full task qualification remain open.
+
+### Atomic correction ledger: September 27, 2026
+
+Consumer `3e1729c7` adds `reservation.Correct` and `InspectCorrection`.
+A correction binds the complete inspected attempt state. Its immutable receipt stores the previous record and links to the preceding correction.
+The transaction updates all original windows, the effective charge, and the receipt together.
+
+Each window counts active disputed attempts. Correction decrements only the current attempt's contribution.
+A retained resolved-evidence identity makes repeated observations idempotent. Other disputes continue to restrict admission.
+Corrections preserve the original valuation, window identities, unrelated reserved amounts, and initial consumption.
+Unknown monetary cost remains null for token-only usage.
+
+Missing audit history, invalid counts, replaced window history, and overflow refuse correction without partial changes.
+An overflowed aggregate requires explicit window repair. This operation cannot infer its exact value from a saturated counter.
+
+Attempt payload 3, window payload 2, and correction payload 1 are current. History payload 1 remains unchanged.
+CSP13 owns migration. The readers reject older attempt and window records.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/correction-ledger-2026-09-27/verification.json) qualifies Badger and Valkey component behavior.
+The [review](../../plans/proof/starport-production-catalog/csp12.2/correction-ledger-2026-09-27/REVIEW.md) records the source boundary and remaining integration.
+The administrator endpoint still cannot issue a correction.
+
+Job integration must retain the correction intent before calling the ledger. Recovery must finish a retained intent without another provider request.
+Job inspection must preserve the first decision, late evidence, and correction history. Jobs without budget reservations still need audit retention.
+Optional reporting must use explicit adjustments because the usage repository refuses changed reuse of its original request identity.
+Required settlement must remain independent of adjustment delivery.

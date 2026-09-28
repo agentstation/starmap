@@ -1,0 +1,325 @@
+{
+  "status": "partial; reservation correction ledger qualified; administrator integration remains open",
+  "recorded_at": "2026-09-28T02:07:46.840326+00:00",
+  "consumer_commit": "3e1729c73ba30a9b9c2e53cf52326da3f7bbf214",
+  "base_consumer_commit": "fa321e95fb96089dd85a0767262190ed93b80be2",
+  "producer_commit": "eb03c466cddbfa7c5104ce7ce91fcf55be869683",
+  "environment": {
+    "GOWORK": "/tmp/csp122-billing.work",
+    "GOTOOLCHAIN": "go1.27.1",
+    "platform": "darwin/arm64",
+    "valkey": "7.2.14",
+    "valkey_image": "sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "service_lifecycle": "Started existing Valkey container for tests, then stopped it and Docker Desktop. PostgreSQL and MinIO remained stopped."
+  },
+  "source_binding": "Final broad race and application checks precede a semantics-preserving constant extraction: correctionRecordVersion=1 replaces recordVersion=1 in correction.go. Final pure-Go, vet, and goago cover that extraction. Final comment edits pass prose lint. No other runtime change follows the race checks.",
+  "checks": [
+    {
+      "command": "go test -json ./internal/limits/reservation -run '^TestDisputeCountRetainsEveryAttempt$' -count=1",
+      "output": "baseline.jsonl.gz",
+      "sha256": "09459fb480a68ab990e919ea3f1cd0f6d8ab4471a8691c8f3c551c36dd635c8c",
+      "test_results_including_parent_tests": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 1
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "fail",
+          "elapsed_seconds": 0.386
+        }
+      ],
+      "exit_code": 1
+    },
+    {
+      "command": "go test -race -json ./internal/limits/reservation -run 'Test(Correction|ConcurrentCorrections|Dispute)' -count=1 -timeout 2m",
+      "output": "focused.jsonl.gz",
+      "sha256": "4dc86aff5e4b9fd29bf3e730318089e1228acbe74dfcd3275406c2a7c1a8e8e7",
+      "test_results_including_parent_tests": {
+        "pass": 17,
+        "fail": 2,
+        "skip": 11
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "fail",
+          "elapsed_seconds": 1.252
+        }
+      ],
+      "exit_code": 1
+    },
+    {
+      "command": "go test -race -json ./internal/limits/reservation -count=1 -timeout 3m",
+      "output": "reservation-race.jsonl.gz",
+      "sha256": "8578ecbc5ec5f8e32fc95185b7ea493fb8265744c268916f89b51b7a1ad24aa0",
+      "test_results_including_parent_tests": {
+        "pass": 82,
+        "fail": 0,
+        "skip": 28
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed_seconds": 5.813
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:51818 go test -race -json ./internal/limits/reservation -run 'Test(Correction|ConcurrentCorrections|Dispute)' -count=1 -timeout 2m",
+      "output": "shared-focused.jsonl.gz",
+      "sha256": "cb16eb42ad5fb32f020d3ea6e695942550731b65ed19b94b6d24bf525f809ad8",
+      "test_results_including_parent_tests": {
+        "pass": 30,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed_seconds": 3.1
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:51818 go test -race -json ./internal/limits/reservation -run 'Test(Correction|ConcurrentCorrections|Dispute)' -count=1 -timeout 2m",
+      "output": "shared-focused-final.jsonl.gz",
+      "sha256": "4d0135be0e456dc79cca3e37e07cb4b2fb7e8f6d4c2cb58b0b9d3414fb5db051",
+      "test_results_including_parent_tests": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed_seconds": 2.785
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:51818 go test -race -json ./internal/limits/... -count=1 -timeout 3m",
+      "output": "limits-race.jsonl.gz",
+      "sha256": "3f4d606e7a3c6992f05f7d39b60a00fab5e9e987d8e5e22fd503cad8c922d9bf",
+      "test_results_including_parent_tests": {
+        "pass": 216,
+        "fail": 0,
+        "skip": 1
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits",
+          "result": "fail",
+          "elapsed_seconds": 0
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits/admission",
+          "result": "pass",
+          "elapsed_seconds": 1.796
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits/jobslots",
+          "result": "pass",
+          "elapsed_seconds": 9.772
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits/storedbytes",
+          "result": "pass",
+          "elapsed_seconds": 11.485
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed_seconds": 25.206
+        }
+      ],
+      "exit_code": 1
+    },
+    {
+      "command": "TEST_VALKEY_URL=redis://127.0.0.1:51818 go test -race -json ./internal/limits/... -count=1 -timeout 3m",
+      "output": "limits-race-final.jsonl.gz",
+      "sha256": "a5d6724a05574b4875d0faa05008ba0a86411b62764f200fb53cfcabd0f3b1f0",
+      "test_results_including_parent_tests": {
+        "pass": 236,
+        "fail": 0,
+        "skip": 1
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits",
+          "result": "pass",
+          "elapsed_seconds": 1.244
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits/admission",
+          "result": "pass",
+          "elapsed_seconds": 2.153
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits/jobslots",
+          "result": "pass",
+          "elapsed_seconds": 10.117
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits/storedbytes",
+          "result": "pass",
+          "elapsed_seconds": 9.784
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed_seconds": 24.117
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "go test -race -json ./internal/app -run 'TestProductionAdministratorVideoReconciliation|TestLateNativeResponseBlocksDisputedBudget' -count=1 -timeout 2m",
+      "output": "app-race.jsonl.gz",
+      "sha256": "efb9b767ccbecf42b1142ff8afb3941a43cd2c44bd9dbb34ff98b6f64ee451ca",
+      "test_results_including_parent_tests": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass",
+          "elapsed_seconds": 30.697
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "CGO_ENABLED=0 TEST_VALKEY_URL=redis://127.0.0.1:51818 go test -json ./internal/limits/reservation -run 'Test(Correction|ConcurrentCorrections|Dispute|LateCorrection)' -count=1 -timeout 2m",
+      "output": "pure-go.jsonl.gz",
+      "sha256": "9d0e25e7d4fa5304d1e7553947e2e70c30c1c012365aa1028996aa2ee9b58ae0",
+      "test_results_including_parent_tests": {
+        "pass": 41,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "result": "pass",
+          "elapsed_seconds": 2.027
+        }
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "go vet ./internal/limits/reservation",
+      "output": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0
+    },
+    {
+      "command": "go vet ./internal/limits/...",
+      "output": "vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./internal/limits/reservation",
+      "output": "goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "exit_code": 0
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./internal/limits/...",
+      "output": "goago-final.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "output": "layout.log.gz",
+      "sha256": "fca2c0bfb95977912075767d4f43cf3c1411c7755a42028167673deedcaad777",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "output": "layout-final.log.gz",
+      "sha256": "663233081c8dafc582f501435f53a0350e465c943762c576abc80f303a45743d",
+      "exit_code": 0
+    },
+    {
+      "command": "technical-writing lint internal/limits/reservation/correction.go internal/limits/reservation/model.go --format text",
+      "output": "source-writing.log.gz",
+      "sha256": "6f6c79367d9aa043495eeaddaced58c416b48338a29b955b2ccae05c6ad28da0",
+      "exit_code": 1
+    },
+    {
+      "command": "technical-writing lint internal/limits/reservation/correction.go internal/limits/reservation/model.go --format text",
+      "output": "source-writing-final.log.gz",
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "exit_code": 0
+    },
+    {
+      "command": "technical-writing lint six changed documentation files --format text",
+      "output": "docs-writing.log.gz",
+      "exit_code": 1,
+      "sha256": "fe10c314fe7c8398392db38857cb206665ed4a87b82ed9851a43cf6a9c812bec"
+    },
+    {
+      "command": "technical-writing lint six changed documentation files --format text",
+      "output": "docs-writing-final.log.gz",
+      "exit_code": 1,
+      "sha256": "e428c13602d924c3c77b167b3c92d7c73e396530d351fbc21ba01b56e2e26552"
+    },
+    {
+      "command": "technical-writing lint six changed documentation files --format text",
+      "output": "docs-writing-final2.log.gz",
+      "exit_code": 0,
+      "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087"
+    },
+    {
+      "command": "make technical-writing-check",
+      "output": "repository-writing.log.gz",
+      "exit_code": 2,
+      "sha256": "7539774b4a51d9fe90e4061ee9db986830045ffba2420c1e700f3b685bb8decf"
+    }
+  ],
+  "findings": [
+    "Baseline dispute-count regression fails: two disputes produce no retained per-attempt count.",
+    "First focused run has a fixture comparison failure: JSON normalizes an absent quantity map to an empty map. The fixture now uses the persisted empty representation.",
+    "First broad limits run detects an existing compile error in stored_bytes_test.go. Restore limits.StoredBytes in the clone-identity assertion. Prior result claims do not qualify this test until the final broad run.",
+    "One final broad test remains unverified: TestTeamBudgetHistoryHandoff/postgres-valkey, because TEST_POSTGRES_URL is absent.",
+    "Whole-repository prose check reports 158 diagnostics across 1780 files during editing, including historical proof. Final targeted lint of all six edited documentation files passes. The broad prose result is not a pass."
+  ],
+  "schemas": {
+    "attempt": 3,
+    "window": 2,
+    "correction": 1,
+    "history": 1,
+    "job": 5,
+    "file": 5,
+    "batch": 4,
+    "line": 2,
+    "byte_accounting": 2,
+    "claim": 3
+  },
+  "remaining": [
+    "Job-owned correction intent and history",
+    "Administrator-only correction and inspection routes",
+    "Effective billing evidence and optional usage adjustment reporting",
+    "Operator correction instructions",
+    "Interrupted batch restart policy",
+    "Shared recovery and failover",
+    "Full paid-operation matrix and A47",
+    "Capacity and native qualification",
+    "Required pre-PR review and paired merges",
+    "CSP13 schema migration",
+    "Resolve or explicitly classify whole-repository prose failures at the delivery gate"
+  ],
+  "work_patch_sha256": "b63fe9874d6fd5ae3c1c4359933f1a168ceb9a1f4083f017ad12b791640dadcb"
+}

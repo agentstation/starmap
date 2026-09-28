@@ -1035,3 +1035,15 @@ The application does not remove development scratch storage after a failed Close
 
 The [local proof](../../plans/proof/starport-production-catalog/csp12.2/batch-shutdown-2026-09-27/verification.json) holds checkpoint retirement across the deadline and verifies a successful retry.
 Native platforms, shared backends, forced termination, and full task qualification remain open.
+
+## Correction receipts and dispute counts: September 27, 2026
+
+Consumer `3e1729c7` uses attempt payload 3, window payload 2, and correction payload 1. History payload 1 remains unchanged.
+The KV transaction stores the immutable receipt with the attempt and every affected window.
+The receipt has no automatic expiry. It preserves the preceding record and points to the prior correction.
+
+Each window retains an exact dispute count. Correction removes one attempt's contribution and preserves other disputes.
+Overflow and missing audit history prevent capacity release. CSP13 must migrate older payloads.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/correction-ledger-2026-09-27/verification.json) covers Badger process loss and real Valkey concurrency.
+One PostgreSQL-dependent test remains unverified. Required job audit integration and full fleet qualification remain open.

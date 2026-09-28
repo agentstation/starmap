@@ -4450,7 +4450,7 @@ The final test removes all 1,030 expired records, preserves the live record, and
 An earlier run's two failed results remain in the proof.
 
 The video owner still calls mutable blob writes and deletion. Its expiry race needs a separate audit.
-Construction still performs no bucket probe. Conditional-write readiness remains unqualified.
+The constructor still makes no bucket probe. Conditional-write readiness remains unqualified.
 This local commit does not complete CSP12.2 or authorize a claim of production readiness.
 
 
@@ -4501,3 +4501,18 @@ Lifecycle checks pass seven results. Pure-Go checks pass five results. Go vet an
 A deadline preserves dependencies for a later Close attempt. The HTTP controller returns 503 for new work after shutdown starts.
 
 The restart-policy question, audited correction, shared qualification, full A47, capacity, review, native CI, and paired merges remain open.
+
+## CSP12.2 correction ledger: September 27, 2026
+
+The dispute window stored one Boolean for all conflicting attempts. The new baseline test proves that two disputes had no separate retained count.
+Consumer `3e1729c7` adds exact counts and atomic corrections with immutable receipts.
+
+The broad limits run also found a prior compile error in `stored_bytes_test.go`.
+The clone assertion incorrectly referenced `storedbytes.StoredBytes`. The repair restores `limits.StoredBytes` and preserves the assertion.
+Earlier evidence does not qualify that test until the new passing run.
+
+The [proof](../../plans/proof/starport-production-catalog/csp12.2/correction-ledger-2026-09-27/verification.json) records 236 limits race results, one PostgreSQL skip, 41 pure-Go results, and four production results.
+Actual process interruption covers both sides of the correction commit. Real Valkey checks cover retry and competing decisions.
+
+Classification: in-scope CSP12.2 budget and recovery repair.
+Job audit integration, administrator routes, usage adjustments, and full task qualification remain open.

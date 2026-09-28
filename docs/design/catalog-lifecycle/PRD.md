@@ -515,3 +515,12 @@ A shutdown deadline must return an error instead of reporting success while clea
 
 The [local proof](../../plans/proof/starport-production-catalog/csp12.2/batch-shutdown-2026-09-27/verification.json) qualifies retry after a drain timeout and refusal of new work.
 Untouched lines still require the confirmed restart policy before automatic execution.
+
+## Audited correction requirements: September 27, 2026
+
+A correction must preserve the first administrator decision and any independent provider evidence.
+Each correction must identify the authenticated operator, inspected state, reason, evidence reference, and corrected billing units.
+Exact retries must not change capacity twice. One correction must not clear another job's dispute.
+
+The [ledger proof](../../plans/proof/starport-production-catalog/csp12.2/correction-ledger-2026-09-27/verification.json) covers the budget storage operation.
+Administrator operations, job recovery, and usage-report adjustments remain required before this flow is complete.
