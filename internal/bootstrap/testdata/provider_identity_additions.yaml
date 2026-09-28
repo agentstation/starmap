@@ -1,0 +1,8 @@
+schema_version: 1
+records:
+  - path: providers/mistral/models/mistral-ocr-4-0.yaml
+    provider: mistral
+    provider_model_id: mistral-ocr-4-0
+    model: mistral/mistral-ocr-4-0
+    status: linked
+    evidence: "Mistral publishes this exact model identifier at https://docs.mistral.ai/models/ocr-4-0 (verified 2026-09-27)."

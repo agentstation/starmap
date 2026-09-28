@@ -78,6 +78,12 @@ features:
   structured_outputs: true
   streaming: true
 
+billing:
+  text_chat:
+    input: [input, cache_read]
+    output: [output]
+    request_charge: false
+
 # Model pricing
 pricing:
   tokens:

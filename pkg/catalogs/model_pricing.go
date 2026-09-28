@@ -170,8 +170,17 @@ type ModelTokenCost struct {
 	unknownUnits uint8
 }
 
-// ModelOperationPricing represents fixed costs for operations.
+// ModelOperationPricing contains prices with explicit operation or quantity units.
 type ModelOperationPricing struct {
+	// InputSecond prices one second of input media in the pricing currency.
+	InputSecond *float64 `json:"input_second,omitempty" yaml:"input_second,omitempty"`
+	// OutputSecond prices one second of generated media in the pricing currency.
+	// Neither duration price declares a complete charge or grants an operation.
+	OutputSecond *float64 `json:"output_second,omitempty" yaml:"output_second,omitempty"`
+	// ImageUnit is the price for the image unit declared by billing.images.
+	ImageUnit *float64 `json:"image_unit,omitempty" yaml:"image_unit,omitempty"`
+	// CharacterInput is the cost per Unicode code point for a declared speech contract.
+	CharacterInput *float64 `json:"character_input,omitempty" yaml:"character_input,omitempty"`
 	// Core operations
 	Request *float64 `json:"request,omitempty" yaml:"request,omitempty"` // Cost per API request
 

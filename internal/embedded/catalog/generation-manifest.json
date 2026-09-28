@@ -1,27 +1,27 @@
 {
   "manifest_version": 2,
-  "schema_version": 10,
-  "generation_id": "bindings-ef621d8535ac238019ebeb041073148d2cfdb9bd67c552e87ed9b4eaf489b8bb.local.1db692c87a21",
-  "generated_at": "2026-09-26T13:04:35.936056398Z",
+  "schema_version": 19,
+  "generation_id": "whisper-operation-correction-47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9",
+  "generated_at": "2026-09-28T05:13:12.909271Z",
   "payload": {
-    "checksum": "sha256:4c37cb4f7195bc58184d39a9d0e3fa5954469f7843205b262952f45d9c12e222",
-    "size_bytes": 26422969,
+    "checksum": "sha256:47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9",
+    "size_bytes": 26428039,
     "media_type": "application/vnd.agentstation.starmap.catalog+json"
   },
   "validation": {
-    "validator_version": "starmap-v1",
-    "validated_at": "2026-09-26T13:04:35.936056398Z",
+    "validator_version": "starmap-whisper-operation-correction-v1",
+    "validated_at": "2026-09-28T05:13:12.909271Z",
     "status": "passed",
     "error_count": 0,
     "warning_count": 0,
     "checks": [
       {
-        "name": "catalog_publication",
+        "name": "catalog_decode_and_membership",
         "status": "passed"
       }
     ]
   },
-  "sync_run_id": "github-36243865909",
+  "sync_run_id": "whisper-operation-correction-47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9",
   "source_observations": [
     {
       "source": "models_dev_http",
@@ -262,6 +262,162 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:4822da55a813d42f1f0af61b4a4d2de5fb3707da9979eb48ebb09452f06d6c94"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "text-billing-b8d90e40b9e6cb5b6b96b089d7cc8b479d4af876c1c4db86247968c2eaba7062",
+      "observed_at": "2026-09-27T11:14:01.890931Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:b8d90e40b9e6cb5b6b96b089d7cc8b479d4af876c1c4db86247968c2eaba7062"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:b8d90e40b9e6cb5b6b96b089d7cc8b479d4af876c1c4db86247968c2eaba7062"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "embedding-billing-cdae981eb91353f2a9198b5be6ed0872ef6bc7aa18e369b4c8766f35f6d90b83",
+      "observed_at": "2026-09-27T12:15:13.992526Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:cdae981eb91353f2a9198b5be6ed0872ef6bc7aa18e369b4c8766f35f6d90b83"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:cdae981eb91353f2a9198b5be6ed0872ef6bc7aa18e369b4c8766f35f6d90b83"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "recognition-charges-19909b64f132177bde09d953430ffde11ccc349ae8433dec98fe2f841f19def0",
+      "observed_at": "2026-09-27T13:01:26.97877Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:19909b64f132177bde09d953430ffde11ccc349ae8433dec98fe2f841f19def0"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:19909b64f132177bde09d953430ffde11ccc349ae8433dec98fe2f841f19def0"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "page-recognition-ee0a63327a44cbb303028e2ebc22c36de5b67f8ab2aeb0a53794eb14a309b85b",
+      "observed_at": "2026-09-27T13:42:28.531257Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:ee0a63327a44cbb303028e2ebc22c36de5b67f8ab2aeb0a53794eb14a309b85b"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:ee0a63327a44cbb303028e2ebc22c36de5b67f8ab2aeb0a53794eb14a309b85b"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "moderation-billing-68e2b21522c0641ee86dccc18f57fee8c775656e623de3d5d7604a1dba6ad944",
+      "observed_at": "2026-09-27T14:08:41.129645Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:68e2b21522c0641ee86dccc18f57fee8c775656e623de3d5d7604a1dba6ad944"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:68e2b21522c0641ee86dccc18f57fee8c775656e623de3d5d7604a1dba6ad944"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "rerank-billing-9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3",
+      "observed_at": "2026-09-27T14:27:48.375262Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:9651141092891a9aa97f22edb82c7b1622a1bcde79a231e1b1ddee82594cc1a3"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "speech-billing-0de20d10ac7cead3475c3a1ffc403093486a3d57a8b4158bc4789058b835efaf",
+      "observed_at": "2026-09-27T14:53:11.164513Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:0de20d10ac7cead3475c3a1ffc403093486a3d57a8b4158bc4789058b835efaf"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:0de20d10ac7cead3475c3a1ffc403093486a3d57a8b4158bc4789058b835efaf"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "image-billing-7e01e9ea6f908898f68dc9ae94911af9c9f863aa930bcab991d3ef89fc664ec1",
+      "observed_at": "2026-09-27T15:20:25.563103Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:7e01e9ea6f908898f68dc9ae94911af9c9f863aa930bcab991d3ef89fc664ec1"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:7e01e9ea6f908898f68dc9ae94911af9c9f863aa930bcab991d3ef89fc664ec1"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "media-duration-pricing-db7f0f9f22386ecaffaf61f759d7f2f92355aff445733d3a935cc57945ca200e",
+      "observed_at": "2026-09-27T18:29:46.255318Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:db7f0f9f22386ecaffaf61f759d7f2f92355aff445733d3a935cc57945ca200e"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:db7f0f9f22386ecaffaf61f759d7f2f92355aff445733d3a935cc57945ca200e"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "media-duration-pricing-349df7fdc78650090fb1c8bec9bda77f71f2fc642975e6cbad83ae54e94e59c3",
+      "observed_at": "2026-09-27T18:34:47.350734Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:349df7fdc78650090fb1c8bec9bda77f71f2fc642975e6cbad83ae54e94e59c3"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:349df7fdc78650090fb1c8bec9bda77f71f2fc642975e6cbad83ae54e94e59c3"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "media-duration-pricing-6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1",
+      "observed_at": "2026-09-27T18:37:34.547756Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:6c4a373554a57cbe8083bac6eb3348b91723eae88b7c4407c46e0d63a6a8d2f1"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "video-billing-contract-669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf",
+      "observed_at": "2026-09-27T20:20:42.870634Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:669af23dc10eceae4d465180d8c9cd7a3925bad06891a6ee00f8243cab722cbf"
+    },
+    {
+      "source": "custom_update",
+      "observation_id": "whisper-operation-correction-47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9",
+      "observed_at": "2026-09-28T05:13:12.909271Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9"
     }
   ],
   "review_candidates": [
@@ -4301,7 +4457,7 @@
   "completeness": "complete",
   "degraded": false,
   "consumer_compatibility": {
-    "min_schema_version": 10,
-    "max_schema_version": 10
+    "min_schema_version": 19,
+    "max_schema_version": 19
   }
 }

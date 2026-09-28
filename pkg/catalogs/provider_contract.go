@@ -132,6 +132,9 @@ func (p Provider) ValidateContract() error {
 				}
 			}
 		}
+		if err := validateInferenceModelOverrides(endpoint); err != nil {
+			return err
+		}
 		seen[endpoint.Operation] = struct{}{}
 	}
 	if err := validateHealthAPI(p.Inference); err != nil {
@@ -271,7 +274,7 @@ func validateCatalogProtocolOptions(endpoint ProviderEndpoint) error {
 				"is required",
 			)
 		}
-	case EndpointTypeOllama, EndpointTypeCohere, EndpointTypeVoyage:
+	case EndpointTypeOllama, EndpointTypeCohere, EndpointTypeVoyage, EndpointTypeMistralOCR, EndpointTypeDeepInfraVideo:
 		return providerContractError(
 			"provider.catalog.endpoint.type",
 			endpoint.Type,
@@ -297,7 +300,8 @@ func validEndpointType(endpointType EndpointType) bool {
 		EndpointTypeGoogleCloud,
 		EndpointTypeOllama,
 		EndpointTypeCohere,
-		EndpointTypeVoyage:
+		EndpointTypeVoyage,
+		EndpointTypeMistralOCR, EndpointTypeDeepInfraVideo:
 		return true
 	default:
 		return false
@@ -306,4 +310,17 @@ func validEndpointType(endpointType EndpointType) bool {
 
 func providerContractError(field string, value any, message string) error {
 	return &errors.ValidationError{Field: field, Value: value, Message: message}
+}
+
+func validateInferenceModelOverrides(endpoint ProviderInferenceEndpoint) error {
+	for modelID, override := range endpoint.OverridesByModel {
+		if err := validateProviderModelPathID(string(modelID)); err != nil {
+			return providerContractError("provider.inference.overrides_by_model", modelID, "requires an exact provider model ID")
+		}
+		if !validEndpointType(override.Type) || !strings.HasPrefix(override.Path, "/") ||
+			(override.StreamPath != "" && !strings.HasPrefix(override.StreamPath, "/")) {
+			return providerContractError("provider.inference.overrides_by_model", modelID, "requires a supported protocol and absolute paths")
+		}
+	}
+	return nil
 }

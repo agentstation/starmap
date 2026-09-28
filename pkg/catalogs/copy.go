@@ -372,6 +372,10 @@ func deepCopyModelOperationPricing(pricing *ModelOperationPricing) *ModelOperati
 	copied := *pricing
 	copied.Request = copyPtr(pricing.Request)
 	copied.ImageInput = copyPtr(pricing.ImageInput)
+	copied.ImageUnit = copyPtr(pricing.ImageUnit)
+	copied.InputSecond = copyPtr(pricing.InputSecond)
+	copied.OutputSecond = copyPtr(pricing.OutputSecond)
+	copied.CharacterInput = copyPtr(pricing.CharacterInput)
 	copied.PageInput = copyPtr(pricing.PageInput)
 	copied.AudioInput = copyPtr(pricing.AudioInput)
 	copied.VideoInput = copyPtr(pricing.VideoInput)
@@ -419,6 +423,7 @@ func deepCopyProviderInference(inference *ProviderInference) *ProviderInference 
 	copied := *inference
 	copied.Endpoints = append([]ProviderInferenceEndpoint(nil), inference.Endpoints...)
 	for index := range copied.Endpoints {
+		copied.Endpoints[index].OverridesByModel = copyMap(inference.Endpoints[index].OverridesByModel)
 		copied.Endpoints[index].ProtocolsByAuthor = copyMap(inference.Endpoints[index].ProtocolsByAuthor)
 		copied.Endpoints[index].PathsByAuthor = copyMap(inference.Endpoints[index].PathsByAuthor)
 		copied.Endpoints[index].StreamPathsByAuthor = copyMap(inference.Endpoints[index].StreamPathsByAuthor)

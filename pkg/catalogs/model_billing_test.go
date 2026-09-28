@@ -1,13 +1,33 @@
 package catalogs
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"math"
 	"reflect"
 	"testing"
 
 	"github.com/goccy/go-yaml"
 )
+
+func TestTextChatBillingWireContract(t *testing.T) {
+	input := []byte(`{"text_chat":{"input":["input","cache_read"],"output":["output"],"request_charge":false}}`)
+	var billing ModelBilling
+	if err := json.Unmarshal(input, &billing); err != nil {
+		t.Fatal(err)
+	}
+	if err := billing.Validate(); err != nil {
+		t.Fatal(err)
+	}
+	encoded, err := json.Marshal(billing)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Contains(encoded, []byte(`"text_chat"`)) || !bytes.Contains(encoded, []byte(`"cache_read"`)) {
+		t.Fatalf("billing contract lost on round trip: %s", encoded)
+	}
+}
 
 func recognitionBilling(basis RecognitionBillingBasis) *ModelBilling {
 	return &ModelBilling{Recognition: &RecognitionBilling{Basis: basis}}
@@ -149,5 +169,98 @@ func TestRecognitionBillingPayloadRequiresCompatibleConsumer(t *testing.T) {
 	authored.Billing = recognitionBilling(RecognitionBillingPages)
 	if err := builder.SetAuthorModel("author", authored); err == nil {
 		t.Fatal("provider billing accepted as intrinsic author fact")
+	}
+}
+
+func TestTextChatBillingValidation(t *testing.T) {
+	for _, test := range []struct {
+		name, wire string
+		valid      bool
+	}{
+		{"standard", `{"input":["input"],"output":["output"],"request_charge":false}`, true},
+		{"all classes", `{"input":["input","cache_read","cache_write"],"output":["output","reasoning"],"request_charge":true}`, true},
+		{"missing request decision", `{"input":["input"],"output":["output"]}`, false},
+		{"null request decision", `{"input":["input"],"output":["output"],"request_charge":null}`, false},
+		{"missing input", `{"output":["output"],"request_charge":false}`, false},
+		{"missing ordinary input", `{"input":["cache_read"],"output":["output"],"request_charge":false}`, false},
+		{"missing output", `{"input":["input"],"request_charge":false}`, false},
+		{"crossed classes", `{"input":["input","reasoning"],"output":["output"],"request_charge":false}`, false},
+		{"repeated class", `{"input":["input","input"],"output":["output"],"request_charge":false}`, false},
+		{"unknown class", `{"input":["input","future"],"output":["output"],"request_charge":false}`, false},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			var billing ModelBilling
+			if err := json.Unmarshal([]byte(`{"text_chat":`+test.wire+`}`), &billing); err != nil {
+				t.Fatal(err)
+			}
+			if err := billing.Validate(); (err == nil) != test.valid {
+				t.Fatalf("Validate = %v, want valid %v", err, test.valid)
+			}
+		})
+	}
+}
+
+func TestTextChatBillingCopiesAndPayloadVersions(t *testing.T) {
+	var model Model
+	if err := json.Unmarshal([]byte(`{"id":"model","name":"Model","model":"author/model","billing":{"text_chat":{"input":["input","cache_read"],"output":["output"],"request_charge":false}}}`), &model); err != nil {
+		t.Fatal(err)
+	}
+	for _, copied := range []Model{DeepCopyModel(model), MergeModels(model, Model{Pricing: &ModelPricing{Currency: "USD"}})} {
+		copied.Billing.TextChat.Input[0] = TokenBillingCacheWrite
+		copied.Billing.TextChat.Output[0] = TokenBillingReasoning
+		*copied.Billing.TextChat.RequestCharge = true
+	}
+	if model.Billing.TextChat.Input[0] != TokenBillingInput || model.Billing.TextChat.Output[0] != TokenBillingOutput || *model.Billing.TextChat.RequestCharge {
+		t.Fatal("copied billing shares mutable state")
+	}
+	builder := NewEmpty()
+	if err := builder.SetAuthor(Author{ID: "author", Name: "Author"}); err != nil {
+		t.Fatal(err)
+	}
+	if err := builder.SetAuthorModel("author", Model{ID: "model", Name: "Model", Authors: []Author{{ID: "author", Name: "Author"}}}); err != nil {
+		t.Fatal(err)
+	}
+	if err := builder.SetProvider(Provider{ID: "provider", Name: "Provider", Models: map[string]*Model{"model": &model}}); err != nil {
+		t.Fatal(err)
+	}
+	encoded, err := EncodeCatalogPayload(builder)
+	if err != nil {
+		t.Fatal(err)
+	}
+	catalog, err := DecodeCatalogPayload(encoded)
+	if err != nil {
+		t.Fatal(err)
+	}
+	offering, err := catalog.Offering("provider", "model")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(offering.Billing, model.Billing) {
+		t.Fatal("catalog lost text billing")
+	}
+	offering.Billing.TextChat.Input[0] = TokenBillingCacheWrite
+	again, err := catalog.Offering("provider", "model")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if again.Billing.TextChat.Input[0] != TokenBillingInput {
+		t.Fatal("offering exposes catalog billing mutation")
+	}
+	for _, version := range []uint64{CanonicalAliasSchemaVersion, RecognitionBillingSchemaVersion} {
+		lowered := bytes.Replace(encoded, []byte(fmt.Sprintf(`"schema_version":%d`, CurrentCatalogSchemaVersion)), []byte(fmt.Sprintf(`"schema_version":%d`, version)), 1)
+		if _, err := DecodeCatalogPayload(lowered); err == nil {
+			t.Fatalf("schema %d accepted text billing", version)
+		}
+	}
+	yamlData, err := yaml.Marshal(model)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var restored Model
+	if err := yaml.Unmarshal(yamlData, &restored); err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(model.Billing, restored.Billing) {
+		t.Fatal("YAML lost text billing")
 	}
 }

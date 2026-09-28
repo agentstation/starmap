@@ -211,6 +211,17 @@ func decodePayloadProviders(
 				Field: "providers.id", Value: provider.ID, Message: "must be unique",
 			}
 		}
+		if payload.SchemaVersion < VideoContractSchemaVersion && provider.Inference != nil {
+			for _, endpoint := range provider.Inference.Endpoints {
+				requiresVideoSchema := len(endpoint.OverridesByModel) != 0 || endpoint.Type == EndpointTypeDeepInfraVideo
+				for _, protocol := range endpoint.ProtocolsByAuthor {
+					requiresVideoSchema = requiresVideoSchema || protocol == EndpointTypeDeepInfraVideo
+				}
+				if requiresVideoSchema {
+					return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "provider.inference", Message: "requires catalog schema version 19"}
+				}
+			}
+		}
 		provider.Models = nil
 		if err := builder.SetProvider(provider); err != nil {
 			return sourcepayload.RecordReport{}, errors.WrapResource("decode", "provider", string(provider.ID), err)
@@ -243,8 +254,8 @@ func decodePayloadProviders(
 		}
 		mergeRecordReport(&report, recordReport)
 		for _, model := range models {
-			if payload.SchemaVersion < RecognitionBillingSchemaVersion && model.RecordPresence(ModelRecordBilling) != ValueMissing {
-				return sourcepayload.RecordReport{}, &errors.ValidationError{Field: "billing", Message: "requires catalog schema version 10"}
+			if err := validatePayloadBillingSchema(model, payload.SchemaVersion); err != nil {
+				return sourcepayload.RecordReport{}, err
 			}
 			if err := builder.SetProviderModel(ProviderID(providerID), model); err != nil {
 				report.Accepted--
@@ -257,6 +268,48 @@ func decodePayloadProviders(
 		}
 	}
 	return report, nil
+}
+
+func validatePayloadBillingSchema(model Model, version uint64) error {
+	billing := model.Billing
+	if billing == nil {
+		billing = &ModelBilling{}
+	}
+	operations := &ModelOperationPricing{}
+	if model.Pricing != nil && model.Pricing.Operations != nil {
+		operations = model.Pricing.Operations
+	}
+	if version < VideoContractSchemaVersion && billing.Videos != nil {
+		return &errors.ValidationError{Field: "billing.videos", Message: "requires catalog schema version 19"}
+	}
+	if version < MediaDurationPricingSchemaVersion && (operations.InputSecond != nil || operations.OutputSecond != nil) {
+		return &errors.ValidationError{Field: "pricing.operations", Message: "duration prices require catalog schema version 18"}
+	}
+	if version < ImageBillingSchemaVersion && ((billing.Images != nil) || (operations.ImageUnit != nil)) {
+		return &errors.ValidationError{Field: "billing.images", Message: "requires catalog schema version 17"}
+	}
+	if version < SpeechBillingSchemaVersion && ((billing.Speech != nil) || (operations.CharacterInput != nil)) {
+		return &errors.ValidationError{Field: "billing.speech", Message: "requires catalog schema version 16"}
+	}
+	if version < RerankBillingSchemaVersion && billing.Rerank != nil {
+		return &errors.ValidationError{Field: "billing.rerank", Message: "requires catalog schema version 15"}
+	}
+	if version < ModerationBillingSchemaVersion && billing.Moderations != nil {
+		return &errors.ValidationError{Field: "billing.moderations", Message: "requires catalog schema version 14"}
+	}
+	if version < RecognitionChargesSchemaVersion && billing.Recognition.hasCharges() {
+		return &errors.ValidationError{Field: "billing.recognition", Message: "complete charges require catalog schema version 13"}
+	}
+	if version < EmbeddingBillingSchemaVersion && billing.Embeddings != nil {
+		return &errors.ValidationError{Field: "billing.embeddings", Message: "requires catalog schema version 12"}
+	}
+	if version < TextChatBillingSchemaVersion && billing.TextChat != nil {
+		return &errors.ValidationError{Field: "billing.text_chat", Message: "requires catalog schema version 11"}
+	}
+	if version < RecognitionBillingSchemaVersion && model.RecordPresence(ModelRecordBilling) != ValueMissing {
+		return &errors.ValidationError{Field: "billing", Message: "requires catalog schema version 10"}
+	}
+	return nil
 }
 
 func decodePayloadAuthors(

@@ -1,4 +1,5 @@
 import argparse
+import os
 import io
 import sys
 from contextlib import redirect_stdout
@@ -158,6 +159,39 @@ class CatalogVerifierTests(unittest.TestCase):
         with patch.object(verifier.subprocess, 'run', return_value=output):
             result = verifier.run_check('runner-fixture', entry, {'starmap': verifier.ROOT})
         self.assertEqual(result['status'], 'FAIL')
+
+    def test_go_run_evidence_survives_a_later_timeout(self):
+        events = [dict(event, Package='github.com/agentstation/starmap/pkg/errors') for event in [
+            {'Test': 'TestBudget', 'Action': 'run'}, {'Test': 'TestBudget', 'Action': 'pass'}, {'Action': 'pass'}]]
+        output = subprocess.CompletedProcess([], 0, '\n'.join(map(json.dumps, events)), '')
+        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {'CATALOG_PRODUCT_GO_EVIDENCE_DIR': directory}):
+            with patch.object(verifier.subprocess, 'run', return_value=output):
+                first = verifier.run_go_tests(verifier.ROOT, './pkg/errors', ['TestBudget'])
+            path = Path(first['TestBudget']['evidence_file'])
+            original = path.read_bytes()
+            saved = json.loads(original)
+            self.assertEqual(saved['tests']['TestBudget']['status'], 'PASS')
+            self.assertEqual(saved['execution']['stdout'], output.stdout)
+            timeout = subprocess.TimeoutExpired(['go', 'test'], 330, output=b'partial output', stderr=b'timeout detail')
+            with patch.object(verifier.subprocess, 'run', side_effect=timeout):
+                second = verifier.run_go_tests(verifier.ROOT, './pkg/errors', ['TestOther'])
+            self.assertEqual(second['TestOther']['status'], 'UNVERIFIED')
+            self.assertEqual(path.read_bytes(), original)
+            later = json.loads(Path(second['TestOther']['evidence_file']).read_text())
+            self.assertEqual(later['execution']['stdout'], 'partial output')
+            self.assertEqual(later['execution']['stderr'], 'timeout detail')
+            self.assertEqual(later['tests']['TestOther']['status'], 'UNVERIFIED')
+            self.assertEqual(len(list(Path(directory).glob('go-run-*.json'))), 2)
+
+    def test_go_run_evidence_write_failure_cannot_pass(self):
+        events = [dict(event, Package='github.com/agentstation/starmap/pkg/errors') for event in [
+            {'Test': 'TestBudget', 'Action': 'run'}, {'Test': 'TestBudget', 'Action': 'pass'}, {'Action': 'pass'}]]
+        output = subprocess.CompletedProcess([], 0, '\n'.join(map(json.dumps, events)), '')
+        with tempfile.NamedTemporaryFile() as occupied, patch.dict(os.environ, {'CATALOG_PRODUCT_GO_EVIDENCE_DIR': occupied.name}):
+            with patch.object(verifier.subprocess, 'run', return_value=output):
+                result = verifier.run_go_tests(verifier.ROOT, './pkg/errors', ['TestBudget'])
+            self.assertEqual(result['TestBudget']['status'], 'UNVERIFIED')
+            self.assertIn('Cannot retain Go run evidence', result['TestBudget']['reason'])
 
     def test_go_evidence_reuse_is_limited_to_one_invocation(self):
         entry = {'kind': 'go_test', 'repository': 'starmap', 'package': './pkg/errors', 'test': 'TestBudget'}

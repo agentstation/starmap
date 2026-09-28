@@ -46,7 +46,7 @@ type Provider struct {
 	Extensions SourceExtensions `json:"extensions,omitempty" yaml:"extensions,omitempty"`
 }
 
-// EndpointType specifies the API style for model listing.
+// EndpointType specifies a provider wire protocol.
 type EndpointType string
 
 const (
@@ -67,6 +67,10 @@ const (
 	// result count and the response envelope differently from Cohere's, so it
 	// cannot share that style.
 	EndpointTypeVoyage EndpointType = "voyage"
+	// EndpointTypeMistralOCR represents the Mistral document recognition protocol.
+	EndpointTypeMistralOCR EndpointType = "mistral-ocr"
+	// EndpointTypeDeepInfraVideo returns video bytes and measured duration in one response.
+	EndpointTypeDeepInfraVideo EndpointType = "deepinfra-video"
 )
 
 // FieldMapping defines how to map API response fields to model fields.
@@ -168,9 +172,7 @@ const (
 	ProviderOperationAudioTranscriptions ProviderOperation = "audio-transcriptions"
 	// ProviderOperationAudioTranslations transcribes speech into English.
 	ProviderOperationAudioTranslations ProviderOperation = "audio-translations"
-	// ProviderOperationVideosGenerations generates a video from a prompt. The
-	// provider answers with a job rather than a video, so a consumer submits,
-	// polls, and collects.
+	// ProviderOperationVideosGenerations generates video through the selected endpoint protocol.
 	ProviderOperationVideosGenerations ProviderOperation = "videos-generations"
 	// ProviderOperationDocumentsRecognition reads the text off a document that
 	// carries none. A document with a text layer needs no model at all, so this
@@ -217,15 +219,24 @@ const (
 	HealthAPIKindGoogleCloud HealthAPIKind = "google-cloud"
 )
 
+// ProviderInferenceModelEndpoint replaces the complete endpoint for an exact model ID.
+// An override takes precedence over provider and author defaults.
+type ProviderInferenceModelEndpoint struct {
+	Type       EndpointType `json:"type" yaml:"type"`
+	Path       string       `json:"path" yaml:"path"`
+	StreamPath string       `json:"stream_path,omitempty" yaml:"stream_path,omitempty"`
+}
+
 // ProviderInferenceEndpoint defines one operation path and wire protocol.
 type ProviderInferenceEndpoint struct {
-	Operation           ProviderOperation         `json:"operation" yaml:"operation"`
-	Type                EndpointType              `json:"type" yaml:"type"`
-	Path                string                    `json:"path" yaml:"path"`
-	StreamPath          string                    `json:"stream_path,omitempty" yaml:"stream_path,omitempty"`
-	ProtocolsByAuthor   map[AuthorID]EndpointType `json:"protocols_by_author,omitempty" yaml:"protocols_by_author,omitempty"`
-	PathsByAuthor       map[AuthorID]string       `json:"paths_by_author,omitempty" yaml:"paths_by_author,omitempty"`
-	StreamPathsByAuthor map[AuthorID]string       `json:"stream_paths_by_author,omitempty" yaml:"stream_paths_by_author,omitempty"`
+	OverridesByModel    map[ProviderModelID]ProviderInferenceModelEndpoint `json:"overrides_by_model,omitempty" yaml:"overrides_by_model,omitempty"`
+	Operation           ProviderOperation                                  `json:"operation" yaml:"operation"`
+	Type                EndpointType                                       `json:"type" yaml:"type"`
+	Path                string                                             `json:"path" yaml:"path"`
+	StreamPath          string                                             `json:"stream_path,omitempty" yaml:"stream_path,omitempty"`
+	ProtocolsByAuthor   map[AuthorID]EndpointType                          `json:"protocols_by_author,omitempty" yaml:"protocols_by_author,omitempty"`
+	PathsByAuthor       map[AuthorID]string                                `json:"paths_by_author,omitempty" yaml:"paths_by_author,omitempty"`
+	StreamPathsByAuthor map[AuthorID]string                                `json:"stream_paths_by_author,omitempty" yaml:"stream_paths_by_author,omitempty"`
 }
 
 // Endpoint returns the endpoint for an exact inference operation.

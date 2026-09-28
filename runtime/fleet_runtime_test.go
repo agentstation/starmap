@@ -6,6 +6,7 @@ import (
 	"os"
 	"reflect"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -455,11 +456,28 @@ func TestFleetRuntimeRetainsGrantCapturedBeforeSourceRead(t *testing.T) {
 }
 
 func TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission(t *testing.T) {
+	for _, scenario := range []struct {
+		name  string
+		adopt bool
+	}{{"ordinary", false}, {"adopted", true}} {
+		t.Run(scenario.name, func(t *testing.T) { testFleetAuthorityRecovery(t, scenario.adopt, false) })
+	}
+}
+
+func TestFleetAdoptionDoesNotRenewExpiredPermission(t *testing.T) {
+	testFleetAuthorityRecovery(t, true, true)
+}
+
+func testFleetAuthorityRecovery(t *testing.T, adopt, expire bool) {
+	t.Helper()
 	backend := newFleetRuntimeBackend(t)
 	backend.head = FleetHead{}
 	backend.snapshots = make(map[FleetHead]FleetSnapshot)
+	var elapsed atomic.Int64
 	open := func(identity string) (*Runtime, *authorityTestSource) {
 		source, options := authorityRuntimeFixture(t)
+		issued := source.receipt.IssuedAt
+		options = append(options, WithClock(func() time.Time { return issued.Add(time.Second + time.Duration(elapsed.Load())) }))
 		session := &fleetTestSession{backend: backend, session: identity + "-process"}
 		options = append(options, WithFleetStore(session), WithSchedulerIdentity(identity),
 			withScheduleTimer(newStubScheduleTimer().after))
@@ -475,6 +493,24 @@ func TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission(t *testing.T) {
 	if !leader.AllowsNewAttempt() {
 		t.Fatal("the leader did not activate the acquired authority permission")
 	}
+	if adopt {
+		if err := leader.Close(); err != nil {
+			t.Fatal(err)
+		}
+		backend.mu.Lock()
+		previous := backend.head
+		snapshot := backend.snapshots[previous]
+		backend.identity.RecoveryEpoch++
+		backend.identity.BackendID = "replacement"
+		backend.head.Identity = backend.identity
+		snapshot.Head = backend.head
+		snapshot.Adoption = &FleetAdoption{Previous: previous, Receipt: fleetRecoveryChecksum([]byte("host-verified-adoption"))}
+		backend.snapshots[backend.head] = snapshot
+		backend.mu.Unlock()
+		if err := snapshot.Validate(); err != nil {
+			t.Fatal(err)
+		}
+	}
 	follower, source := open("authority-follower")
 	if follower.State().AuthorityHead != leader.State().AuthorityHead {
 		t.Fatal("the follower lost the exact upstream authority head")
@@ -488,6 +524,30 @@ func TestFleetRuntimeAuthorityRecoveryDoesNotRecoverPermission(t *testing.T) {
 	}
 	if !follower.AllowsNewAttempt() {
 		t.Fatal("an independently validated receipt did not authorize the follower")
+	}
+	if expire {
+		elapsed.Store(int64(source.receipt.ValidUntil.Sub(source.receipt.IssuedAt)))
+		if follower.AllowsNewAttempt() {
+			t.Fatal("adoption extended an expired permission receipt")
+		}
+		if err := follower.RefreshFleet(t.Context()); err != nil {
+			t.Fatal(err)
+		}
+		if follower.AllowsNewAttempt() {
+			t.Fatal("replaying adopted bytes renewed expired permission")
+		}
+		// Refresh retains the latest authority requirement after receipt expiry.
+		if err := follower.RefreshPermission(t.Context()); err != nil {
+			t.Fatal(err)
+		}
+		report := follower.Status()
+		if report.PermissionValid || report.Usable || !report.PermissionValidUntil.Equal(source.receipt.ValidUntil) {
+			t.Fatal("expired receipt changed admission status or its original deadline")
+		}
+		if follower.AllowsNewAttempt() {
+			t.Fatal("refresh restored expired permission")
+		}
+		return
 	}
 	source.permissionMu.Lock()
 	source.receipt.Head.Sequence++

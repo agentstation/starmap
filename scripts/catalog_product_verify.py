@@ -153,6 +153,25 @@ class GoEvidence:
         return dict(self.results[key])
 
 
+def retain_go_run(evidence, results):
+    directory = os.environ.get("CATALOG_PRODUCT_GO_EVIDENCE_DIR")
+    if not directory:
+        return results
+    try:
+        Path(directory).mkdir(parents=True, exist_ok=True)
+        with tempfile.NamedTemporaryFile(mode="w", prefix="go-run-", suffix=".json", dir=directory, delete=False) as output:
+            json.dump({"execution": evidence, "tests": {
+                name: {"status": result["status"], "reason": result["reason"]}
+                for name, result in results.items()}}, output)
+            output.write("\n")
+        for result in results.values():
+            result["evidence_file"] = output.name
+    except OSError as error:
+        for result in results.values():
+            result.update(status="UNVERIFIED", reason=f"Cannot retain Go run evidence: {type(error).__name__}")
+    return results
+
+
 def run_go_tests(root, package, names):
     pattern = "^(" + "|".join(names) + ")$"
     command = ["go", "test", "-race", "-count=1", "-timeout", "5m", "-json", "-run", pattern, package]
@@ -166,8 +185,13 @@ def run_go_tests(root, package, names):
             import_path += "/" + package[2:].rstrip("/")
         result = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=330)
     except (OSError, ValueError, subprocess.TimeoutExpired) as error:
-        return {name: {"status": "UNVERIFIED", "reason": type(error).__name__, "command": command,
-                       "cwd": str(root), "elapsed_seconds": time.monotonic() - started} for name in names}
+        evidence = {"command": command, "cwd": str(root), "elapsed_seconds": time.monotonic() - started}
+        if isinstance(error, subprocess.TimeoutExpired):
+            for field in ("stdout", "stderr"):
+                value = getattr(error, field) or ""
+                evidence[field] = value.decode(errors="replace") if isinstance(value, bytes) else value
+        return retain_go_run(evidence, {
+            name: dict(evidence, status="UNVERIFIED", reason=type(error).__name__) for name in names})
     evidence = {"command": command, "cwd": str(root), "exit_code": result.returncode,
                 "stdout": result.stdout, "stderr": result.stderr, "elapsed_seconds": time.monotonic() - started}
     events, invalid = [], False
@@ -205,7 +229,7 @@ def run_go_tests(root, package, names):
         else:
             status, reason = "PASS", "The named behavior test passed in this invocation."
         results[name] = dict(evidence, status=status, reason=reason)
-    return results
+    return retain_go_run(evidence, results)
 
 
 def run_check(identity, entry, roots, go_evidence=None):

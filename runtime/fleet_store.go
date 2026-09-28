@@ -94,6 +94,15 @@ func (p FleetPublication) nextHead() FleetHead {
 type FleetSnapshot struct {
 	Head        FleetHead        `json:"head"`
 	Publication FleetPublication `json:"publication"`
+	Adoption    *FleetAdoption   `json:"adoption,omitempty"`
+}
+
+// FleetAdoption identifies explicit host recovery without changing the original publication grant.
+// The host must verify the receipt and independent approval before exposing this snapshot.
+// This record grants no refresh lease or inference permission.
+type FleetAdoption struct {
+	Previous FleetHead `json:"previous"`
+	Receipt  string    `json:"receipt"`
 }
 
 // Validate checks that the head selects exactly this publication and its recovery inputs.
@@ -101,8 +110,35 @@ func (s FleetSnapshot) Validate() error {
 	if err := s.Publication.Validate(); err != nil {
 		return err
 	}
-	if s.Head != s.Publication.nextHead() {
+	original := s.Publication.nextHead()
+	if s.Adoption != nil {
+		return s.Adoption.validate(original, s.Head)
+	}
+	if s.Head != original {
 		return fleetConflict("the selected head does not match the retained publication")
+	}
+	return nil
+}
+
+func (a FleetAdoption) validate(original, selected FleetHead) error {
+	if err := a.Previous.Validate(); err != nil {
+		return err
+	}
+	if err := selected.Validate(); err != nil {
+		return err
+	}
+	if !validFleetChecksum(a.Receipt) || a.Previous == (FleetHead{}) || selected == (FleetHead{}) ||
+		a.Previous.Identity.DeploymentID != original.Identity.DeploymentID ||
+		selected.Identity.DeploymentID != original.Identity.DeploymentID ||
+		a.Previous.Identity.RecoveryEpoch < original.Identity.RecoveryEpoch ||
+		(a.Previous.Identity.RecoveryEpoch == original.Identity.RecoveryEpoch && a.Previous.Identity != original.Identity) ||
+		selected.Identity.RecoveryEpoch <= a.Previous.Identity.RecoveryEpoch {
+		return fleetConflict("catalog adoption requires a receipt and a newer approved recovery identity")
+	}
+	previous, current := a.Previous, selected
+	previous.Identity, current.Identity = original.Identity, original.Identity
+	if previous != original || current != original {
+		return fleetConflict("catalog adoption changed the original publication selection")
 	}
 	return nil
 }

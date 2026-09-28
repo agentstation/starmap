@@ -103,6 +103,9 @@ func deriveProviderOfferingEndpoints(
 		if authorStreamPath, exists := inferenceEndpoint.StreamPathsByAuthor[authorID]; exists {
 			streamPath = authorStreamPath
 		}
+		if override, found := inferenceEndpoint.OverridesByModel[ProviderModelID(providerModelID)]; found {
+			endpointType, endpointPath, streamPath = override.Type, override.Path, override.StreamPath
+		}
 		resolvedEndpoint := inferenceEndpoint
 		resolvedEndpoint.Path = endpointPath
 		endpointURL := provider.Inference.EndpointURL(resolvedEndpoint, "")

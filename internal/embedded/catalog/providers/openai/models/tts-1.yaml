@@ -12,7 +12,7 @@ features:
     input:
     - text
     output:
-    - text
+    - audio
 
   # Core capabilities
   tool_calls: false
@@ -76,3 +76,14 @@ extensions:
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
 updated_at: 2026-09-18T21:17:47.66134312Z
+
+# Complete synchronous input-character charge.
+billing:
+  speech:
+    basis: unicode_code_points
+    max_input_characters: 4096
+    request_charge: false
+pricing:
+  currency: USD
+  operations:
+    character_input: 0.000015
