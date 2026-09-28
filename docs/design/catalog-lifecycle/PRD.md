@@ -564,4 +564,5 @@ Administrators can correct settled charges for 90 days after original settlement
 Corrections do not extend that horizon. Exact accepted retries remain idempotent.
 Unresolved reservations remain until reconciliation and never expire through retention cleanup.
 The [decision record](../../plans/proof/starport-production-catalog/csp12.2/owner-decisions-2026-09-28/DECISIONS.md) owns these policies.
-CSP12.2 implementation and qualification remain required.
+
+CSP12.2 implements both policies locally. Complete qualification and paired merges remain required.

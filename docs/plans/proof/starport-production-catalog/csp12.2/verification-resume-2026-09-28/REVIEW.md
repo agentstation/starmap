@@ -17,5 +17,30 @@ The replacement task run uses the exact commits in `csp122-task-resume-source.js
 Its process session is `14422`.
 Its output is `/tmp/csp122-task-resume.json`.
 Its evidence directory is `/tmp/csp122-task-resume-evidence`.
-Collect those files after completion.
+
+The run passed all 23 selected subcases across 22 Go invocations.
+It records 443 passing test events, with no failures or skips.
+The compressed report and per-invocation evidence remain beside this record.
 This record does not establish task completion.
+
+
+Fifteen additional consumer checks pass.
+The operator guide now states both accepted policies and batch schema 5.
+Changed prose and document links pass. Fifty unchanged prose diagnostics remain, compared with 51 in the prior revision.
+The PRD, engineering specification, and repository findings pass prose checks.
+
+The producer check found stale OpenAPI and runtime reference files.
+Commit `713813e0c` regenerates those artifacts. The complete documentation check then passes.
+Consumer `4825016` changes only operator prose.
+
+The task run retains its original source manifest because those documentation commits followed its start.
+Later lint refactors changed handwritten source.
+Both repository linters now pass without new suppressions.
+The refactored consumer contracts pass 2,289 race results, with one SDK setup skip.
+The separate SDK smoke script covers that test.
+
+The adoption suite passes nineteen results and fails one transport fixture.
+The launcher now supplies the required `redis://` URL.
+Its focused rerun is active.
+The producer repository gate runs separately with `GOWORK=off`.
+Final-source qualification, review, and paired merges remain open.

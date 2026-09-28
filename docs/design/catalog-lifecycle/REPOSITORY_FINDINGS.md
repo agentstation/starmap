@@ -4569,7 +4569,7 @@ This evidence does not qualify storage replacement or background recovery worker
 Production tests also retain recognition charges after caller cancellation and charge embeddings on semantic-cache hits.
 Fallback tests retain earlier uncertain capacity. UTC tests cover exact window boundaries and leap February.
 The remaining matrix, storage failover, backend operation counts, retention horizons, capacity, native CI, and paired merges remain required.
-The owner decision for proven unstarted batch lines remains pending.
+The September 28 decision below resolves the then-pending restart policy.
 
 ### Reporting failures and budget operations: September 27, 2026
 
@@ -4682,3 +4682,16 @@ The approved retry preserves a later ordinary publication. An obsolete retry can
 Authority tests confirm that adoption grants no inference permission and does not undo a known withdrawal.
 
 The changes remain unpublished. Remaining adoption cases, native CI, full task verification, review, and paired merges remain required.
+
+
+### Batch restart and correction horizon: September 28, 2026
+
+Consumer `1fecf04` implements the 90-day correction horizon from original settlement.
+Consumer `501cb0d` resumes only proven-unstarted batch lines under current authorization and normal budget admission.
+Completed results survive restart. Uncertain attempts never repeat automatically.
+Accepted exact correction retries remain idempotent after expiry. Unresolved reservations never expire through retention cleanup.
+
+The [correction proof](../../plans/proof/starport-production-catalog/csp12.2/correction-horizon-2026-09-28/verification.json) records reservation and integration checks.
+The [restart proof](../../plans/proof/starport-production-catalog/csp12.2/batch-resume-2026-09-28/verification.json) covers process loss, withdrawn permission, native storage, and production recovery.
+The [retention proof](../../plans/proof/starport-production-catalog/csp12.2/retention-acceptance-2026-09-28/verification.json) verifies that missing or expired evidence cannot refund consumption.
+Complete task qualification, native CI, required review, and paired merges remain open.

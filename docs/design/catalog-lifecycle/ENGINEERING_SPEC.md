@@ -4665,7 +4665,7 @@ Claims do not expire automatically. Existing current-policy authorization and pe
 
 The [claim proof](../../plans/proof/starport-production-catalog/csp12.2/batch-line-claims-2026-09-27/verification.json) covers concurrent claim winners, cancellation through another worker, and failed write acknowledgments.
 Durable result references, interrupted-run recovery, and process-loss qualification remain incomplete.
-The restart-policy question about proven unstarted lines remains pending. CSP13 owns schema migration.
+The September 28 policy below permits recovery of proven-unstarted lines. CSP13 owns schema migration.
 
 
 ### Recoverable batch output and byte claims
@@ -4951,7 +4951,8 @@ Administrators can correct settled charges for 90 days after original settlement
 Corrections do not extend that horizon. Exact accepted retries remain idempotent.
 Unresolved reservations remain until reconciliation and never expire through retention cleanup.
 The [decision record](../../plans/proof/starport-production-catalog/csp12.2/owner-decisions-2026-09-28/DECISIONS.md) owns these policies.
-CSP12.2 implementation and qualification remain required.
+
+CSP12.2 implements both policies locally. Complete qualification and paired merges remain required.
 
 
 ### Correction horizon implementation: September 28, 2026

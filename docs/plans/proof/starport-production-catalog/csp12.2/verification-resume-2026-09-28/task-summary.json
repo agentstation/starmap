@@ -1,0 +1,37 @@
+{
+  "gate_status": "PASS",
+  "selected_subcases": 23,
+  "subcases": {
+    "A47.atomic_hierarchical_reservation": "PASS",
+    "A47.idempotent_attempt_identity": "PASS",
+    "A47.bounded_cost_and_tokens": "PASS",
+    "A47.unknown_cost_refusal": "PASS",
+    "A47.retry_fallback_charges": "PASS",
+    "A47.stream_cancel_uncertainty": "PASS",
+    "A47.crash_failover_recovery": "PASS",
+    "A47.usage_reconcile_once": "PASS",
+    "A47.analytics_drop_independence": "PASS",
+    "A47.confirmed_absent_fast_path": "PASS",
+    "A47.quota_lease_support_boundary": "PASS",
+    "A47.backend_operation_evidence": "PASS",
+    "A47.chargeable_operation_matrix": "PASS",
+    "A47.recognition_then_cancel": "PASS",
+    "A47.rerank_billing_units": "PASS",
+    "A47.semantic_embedding_cache_hit": "PASS",
+    "A47.media_async_reconciliation": "PASS",
+    "A47.utc_window_boundaries": "PASS",
+    "A47.late_usage_pinned_valuation": "PASS",
+    "A47.policy_edit_preserves_spend": "PASS",
+    "A47.clock_and_window_authority": "PASS",
+    "A47.reconciliation_retention": "PASS",
+    "A15.online_batch_retry": "PASS"
+  },
+  "events": {
+    "pass": 443,
+    "fail": 0,
+    "skip": 0
+  },
+  "invocations": 22,
+  "source_manifest": "csp122-task-resume-source.json",
+  "limitations": "Local primary-backend qualification before lint refactors. It does not qualify hosted native CI, published dependency, performance, or paired merges."
+}

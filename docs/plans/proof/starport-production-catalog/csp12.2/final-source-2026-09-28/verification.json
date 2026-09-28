@@ -1,0 +1,200 @@
+{
+  "task": "CSP12.2",
+  "updated_at": "2026-09-28T11:00:37.409656+00:00",
+  "producer": "485b54376",
+  "consumer": "af12f463ff02322211762c6fd1dc634204c5639a",
+  "go": "1.27.1",
+  "status": "in_progress",
+  "checks": {
+    "consumer_race_contracts": {
+      "pass": 2289,
+      "skip": 1,
+      "fail": 0,
+      "exit_code": 0
+    },
+    "sdk_smoke": {
+      "exit_code": 0,
+      "separate_coverage": "TestSDKCanonicalRemovalAfterSuccessfulInference"
+    },
+    "goago": "PASS",
+    "consumer_lint": "PASS: zero issues",
+    "producer_lint": "PASS: zero issues",
+    "producer_catalog_contract": "PASS: race-enabled pkg/catalogs suite",
+    "prose": {
+      "new_diagnostics": 0,
+      "unchanged_diagnostics": 51
+    },
+    "consumer_repository": {
+      "pass": 5877,
+      "fail": 3,
+      "skip": 13,
+      "exit_code": 1,
+      "failed_top_level_tests": [
+        "TestFleetAdoptionRepeatedRecoveryAndConcurrentSelection",
+        "TestScanPagesPreserveEveryKeyAndLiteralPrefix"
+      ]
+    },
+    "scan_isolated": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0
+    },
+    "adoption_isolated": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0
+    },
+    "adoption_peer": {
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "covers": [
+        "overlapping native adoption invocations",
+        "separate-process takeover",
+        "leader-directory-loss recovery"
+      ]
+    },
+    "architecture": "Final rerun active; V01 requires the published Starmap dependency."
+  },
+  "failures_preserved": [
+    "Launcher valkey:// URL did not meet the fixture redis:// contract.",
+    "Catalog fixtures shared the contract-tests namespace and recovery authority key across unrelated runs. Unique per-fixture namespaces now propagate to child processes.",
+    "ScanPage count 7 exceeded its unchanged ten-second deadline on a shared database with 36,247 keys. The same test passed against empty logical database 15."
+  ],
+  "running": [
+    {
+      "session": 92670,
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 bash scripts/verify.sh all",
+      "log": "/tmp/csp122-producer-final-refactor.log"
+    },
+    {
+      "session": 65729,
+      "command": "Final CSP12.2 task gate at 485b54376 and af12f46",
+      "log": "/tmp/csp122-lint-native/task-final.jsonl",
+      "result": "/tmp/csp122-lint-native/task-final-result.json",
+      "invocations": "/tmp/csp122-task-final-evidence"
+    }
+  ],
+  "remaining": [
+    "Final-source task gate",
+    "Final repository checks and required review",
+    "Hosted native CI",
+    "Published producer dependency qualification",
+    "Paired merges"
+  ],
+  "scope": "CSP12.2 qualifies budget backend calls and its 23 acceptance subcases. CSP22 owns full production latency and capacity qualification.",
+  "review_budget": {
+    "producer_max_passes": 32,
+    "consumer_max_passes": 64,
+    "reason": "The owner-approved task requires one coherent producer PR followed by one consumer PR. Preserve the complete branch diffs without truncation."
+  },
+  "artifacts": [
+    {
+      "file": "tmp-csp122-consumer-lint-isolation.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    {
+      "file": "tmp-csp122-consumer-goago-final.json.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    {
+      "file": "tmp-csp122-producer-contract-final.log.gz",
+      "sha256": "faf3c215079111cc528dd09c2bbfa7070141a931d42db20726308db8837959b6"
+    },
+    {
+      "file": "tmp-csp122-sdk-refactor.log.gz",
+      "sha256": "a4e074d6883ee30e2339470c44c52fdcd4e6d884e7fd7dcc8b9d92ce30c151d6"
+    },
+    {
+      "file": "csp122-refactor-prose-verification.json.gz",
+      "sha256": "8bec894af6115a2eac6d7dc237fdbc079fb1abdd14609deced938d9801f1193d"
+    },
+    {
+      "file": "csp122-lint-native-contracts.jsonl.gz",
+      "sha256": "674900f65df0c8f8eb86971b63699986028ea74fd37720bba5d93b2a8b682f72"
+    },
+    {
+      "file": "csp122-lint-native-contracts.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "csp122-lint-native-contracts-result.json.gz",
+      "sha256": "ed1838d2c5dbc8432a8cb284850842aa1f0d559272f6ff05b90cc297f47f5015"
+    },
+    {
+      "file": "csp122-lint-native-adoption.jsonl.gz",
+      "sha256": "0cd6e1e3f435486bfacf8b87af1884ee8d19c0d5aa638547559701c93a443576"
+    },
+    {
+      "file": "csp122-lint-native-adoption.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "csp122-lint-native-adoption-result.json.gz",
+      "sha256": "b17c19edf53c326e59d11761903d6efdfb567190965370ffdc0e3f4cc0c5e65a"
+    },
+    {
+      "file": "csp122-lint-native-adoption-transport.jsonl.gz",
+      "sha256": "0889e4fed05a037bd42d46fc3261e47699576d6d59e3aaaba5c9dba03dca80c1"
+    },
+    {
+      "file": "csp122-lint-native-adoption-transport.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "csp122-lint-native-adoption-transport-result.json.gz",
+      "sha256": "6d26ec17bfa1f3d49cc8ef2910a3dd613a263608f913798cc4326bdf0663cfa3"
+    },
+    {
+      "file": "csp122-lint-native-repository.jsonl.gz",
+      "sha256": "0d7392764d38d6cc94fcbe6d12020cd3ed8996e6f503797acd41c8cac92b1aa1"
+    },
+    {
+      "file": "csp122-lint-native-repository.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "csp122-lint-native-repository-result.json.gz",
+      "sha256": "a9dabb2627b65dd83e0d406a43fea353ceb7c2f9847b36aae93606704b23a482"
+    },
+    {
+      "file": "csp122-lint-native-adoption-isolated.jsonl.gz",
+      "sha256": "aadd7ffafd6d413f591d055b0a6c6bc40cec9aa74266c64136c11fd1cdaac545"
+    },
+    {
+      "file": "csp122-lint-native-adoption-isolated.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "csp122-lint-native-adoption-isolated-result.json.gz",
+      "sha256": "f0a0675834784a2c01a0ac534e484fcc6467fa0a0944572979fc2c9fd53fc438"
+    },
+    {
+      "file": "csp122-lint-native-scan-isolated.jsonl.gz",
+      "sha256": "8201277c6df663a1026208bbf7ef1c470f692a4d10df2961b792645475f31bfa"
+    },
+    {
+      "file": "csp122-lint-native-scan-isolated.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "csp122-lint-native-scan-isolated-result.json.gz",
+      "sha256": "ca6b9872f8e56c323075478818f0786f16a046c1a3675e010f99e5428962ca94"
+    },
+    {
+      "file": "csp122-lint-native-adoption-isolation-peer.jsonl.gz",
+      "sha256": "ae059644dd815c365cf178cee4c1eab989f3cbbee556350cbd659c2538258db0"
+    },
+    {
+      "file": "csp122-lint-native-adoption-isolation-peer-result.json.gz",
+      "sha256": "374390e108845b5dfcd662498203b922cb19551be7a76de7e67928faf1cffb35"
+    },
+    {
+      "file": "csp122-lint-native-adoption-isolation-peer.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    }
+  ]
+}

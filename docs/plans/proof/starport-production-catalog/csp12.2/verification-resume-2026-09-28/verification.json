@@ -1,0 +1,73 @@
+{
+  "updated_at": "2026-09-28T10:51:50.507927+00:00",
+  "task": "CSP12.2",
+  "status": "in_progress",
+  "producer": "713813e0c",
+  "consumer": "4825016",
+  "source_binding": "The task gate passed at c0209d288 and 8a0c586. Subsequent documentation commits and uncommitted lint refactors require final-source qualification.",
+  "static_checks": {
+    "commands": 15,
+    "passed": 15,
+    "failures": 0,
+    "results": "csp122-final-static-results.json.gz"
+  },
+  "operator_prose": {
+    "changed_prose_exit": 0,
+    "baseline_diagnostics": 51,
+    "remaining_diagnostics": 50,
+    "new_diagnostics": 0,
+    "doc_links_exit": 0
+  },
+  "design_prose": {
+    "files": 3,
+    "exit_code": 0
+  },
+  "producer_docs": {
+    "initial": "FAIL: stale OpenAPI and runtime reference",
+    "final": "PASS: make docs-check"
+  },
+  "running": [
+    {
+      "session": 92670,
+      "output": "/tmp/csp122-producer-final-refactor.log",
+      "command": "GOWORK=off bash scripts/verify.sh all"
+    },
+    {
+      "session": 8867,
+      "output": "/tmp/csp122-lint-native/adoption-transport.jsonl"
+    },
+    {
+      "session": 90645,
+      "output": "/tmp/csp122-lint-native/repository.jsonl"
+    }
+  ],
+  "task_gate": {
+    "status": "PASS",
+    "selected_subcases": 23,
+    "passing_test_events": 443,
+    "failed_test_events": 0,
+    "skipped_test_events": 0,
+    "invocations": 22,
+    "proof": "task-summary.json"
+  },
+  "refactor_checks": {
+    "consumer_lint": "PASS: zero issues",
+    "producer_lint": "PASS: zero issues",
+    "goago": "PASS: no findings, stale ignores, or errors",
+    "race_contracts": {
+      "passing_test_events": 2289,
+      "skipped_test_events": 1,
+      "exit_code": 0,
+      "skip": "SDK test requires separate client setup; prior SDK smoke passes"
+    },
+    "adoption": {
+      "passing_test_events": 19,
+      "failed_test_events": 1,
+      "failure": "Test launcher supplied valkey:// to a fixture that requires redis://; focused rerun active."
+    },
+    "changed_prose": {
+      "new_diagnostics": 0,
+      "existing_diagnostics": 51
+    }
+  }
+}
