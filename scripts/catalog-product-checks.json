@@ -6434,6 +6434,12 @@
           "package": "./internal/app",
           "test": "TestProductionBudgetAcrossProcesses",
           "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/limits/reservation",
+          "test": "TestReservationSnapshotRefreshAfterConflict"
         }
       ]
     },
@@ -6543,6 +6549,12 @@
           "repository": "starport",
           "package": "./internal/app",
           "test": "TestRunRecoversRetainedBudgetEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/limits/reservation",
+          "test": "TestRecoveryHandlesConcurrentSettlementBetweenReads"
         }
       ]
     },
@@ -6710,6 +6722,12 @@
           "repository": "starport",
           "package": "./internal/limits/reservation",
           "test": "TestDelayedDispatchCannotUseAClosedWindow"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/limits/reservation",
+          "test": "TestReservationSnapshotRefusesExpiringHistory"
         }
       ]
     },
@@ -6733,6 +6751,12 @@
           "repository": "starport",
           "package": "./internal/storage",
           "test": "TestBudgetAuthorityNativeOperationCommands"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestLifetimeBatch"
         }
       ]
     }
