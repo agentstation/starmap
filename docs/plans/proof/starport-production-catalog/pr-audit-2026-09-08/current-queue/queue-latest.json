@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-28T15:15:57.852582+00:00",
+  "checked_at": "2026-09-28T16:37:27.428055+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -1252,7 +1252,7 @@
   },
   "remote_state_note": "Producer #187 merged. Consumer #387 awaits native CI at reviewed 6f97ba52. Eight dependency PRs retain their recorded review and repair actions.",
   "open_queue_snapshot": {
-    "checked_at": "2026-09-28T15:15:57.852582+00:00",
+    "checked_at": "2026-09-28T16:37:27.428055+00:00",
     "starmap": [
       {
         "number": 188,
@@ -1342,21 +1342,6 @@
     ],
     "starport": [
       {
-        "baseRefName": "main",
-        "baseRefOid": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
-        "headRefName": "codex/atomic-budget-admission",
-        "headRefOid": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
-        "isDraft": false,
-        "mergeStateStatus": "BLOCKED",
-        "number": 387,
-        "state": "OPEN",
-        "title": "Reserve paid-operation budgets and recover durable work safely",
-        "url": "https://github.com/agentstation/starport/pull/387",
-        "owner": "CSP12.2",
-        "disposition": "Mandatory Windows Compose qualification reviewed and published. Fresh native CI is active.",
-        "next_action": "Collect current native CI, verify exact consumer head and review threads, merge PR #387, record merge commit, and close CSP12.2."
-      },
-      {
         "number": 388,
         "title": "chore(deps): bump Homebrew/actions/setup-homebrew from 2026.09.21.1 to 2026.09.28.1 in the github-actions group",
         "url": "https://github.com/agentstation/starport/pull/388",
@@ -1370,8 +1355,8 @@
         "updatedAt": "2026-09-28T14:06:17Z",
         "repository": "agentstation/starport",
         "owner": "Repository dependency maintenance",
-        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-        "next_action": "Reproduce the credential-resolution deadline after the budget PR merges. Preserve grant assertions and the runtime failure boundary."
+        "disposition": "Retain for dependency review against main after PR #387 merged.",
+        "next_action": "Verify updated base and dependency diff, reproduce earlier failures if present, then qualify exact-head CI and review before merge."
       },
       {
         "number": 389,
@@ -1387,8 +1372,8 @@
         "updatedAt": "2026-09-28T14:34:34Z",
         "repository": "agentstation/starport",
         "owner": "Repository dependency maintenance",
-        "disposition": "Retain for dependency review. Do not interleave with active CSP12.2 qualification.",
-        "next_action": "Update this PR from main after #387 merges, then rerun Windows qualification and dependency review."
+        "disposition": "Retain for dependency review against main after PR #387 merged.",
+        "next_action": "Verify updated base and dependency diff, reproduce earlier failures if present, then qualify exact-head CI and review before merge."
       },
       {
         "baseRefName": "main",
@@ -1404,8 +1389,8 @@
         "url": "https://github.com/agentstation/starport/pull/390",
         "repository": "agentstation/starport",
         "owner": "Repository dependency maintenance",
-        "disposition": "Retain for review after active implementation qualification. Windows ARM64 concurrent policy acceptance failed.",
-        "next_action": "Update from main after PR #387 merges, then reproduce TestInferencePolicyConcurrentAcceptance without changing its acceptance guarantees. Review console dependency changes separately."
+        "disposition": "Retain for dependency review against main after PR #387 merged.",
+        "next_action": "Verify updated base and dependency diff, reproduce earlier failures if present, then qualify exact-head CI and review before merge."
       }
     ]
   },
@@ -1462,5 +1447,11 @@
     "base": "2a0bde2b9f4145c3a2eaea11f9565802bb8fa202",
     "proof": "starmap-188-repair-2026-09-28/verification.json",
     "run": 36450680252
+  },
+  "csp12_2_completion": {
+    "consumer_merge": "a1a08df86c31c73cfd38d49e03ceb3571c86a86c",
+    "proof": "../../../csp12.2/merged-pair-2026-09-28/verification.json",
+    "status": "done",
+    "next_task": "CSP13"
   }
 }

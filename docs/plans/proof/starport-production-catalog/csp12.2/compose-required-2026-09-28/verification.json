@@ -69,5 +69,15 @@
       "status": "completed"
     },
     "limits": "Focused step passed. Test-event artifact and complete native suite remain pending."
+  },
+  "completion": {
+    "native_run": 36447373952,
+    "consumer_merge": "a1a08df86c31c73cfd38d49e03ceb3571c86a86c",
+    "compose_events": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    },
+    "proof": "../merged-pair-2026-09-28/verification.json"
   }
 }

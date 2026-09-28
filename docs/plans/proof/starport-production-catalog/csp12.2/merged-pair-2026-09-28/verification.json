@@ -1,0 +1,59 @@
+{
+  "task": "CSP12.2",
+  "status": "PASS",
+  "checked_at": "2026-09-28T16:36:13.436368+00:00",
+  "consumer": {
+    "baseRefOid": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
+    "headRefOid": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
+    "mergeCommit": {
+      "oid": "a1a08df86c31c73cfd38d49e03ceb3571c86a86c"
+    },
+    "mergedAt": "2026-09-28T16:36:11Z",
+    "number": 387,
+    "state": "MERGED",
+    "url": "https://github.com/agentstation/starport/pull/387"
+  },
+  "consumer_reviewed_head": "cee9fbbc0fd5f4b85a6332966e9a47ffc343b784",
+  "consumer_reviewed_and_merged_tree": "5392dcba5aa6e25549fb4d234ac5248071059f7c",
+  "producer_merge": "4586667a3ddc8bf2b206b4f04ec6d06b6ca6b6a0",
+  "producer_reviewed_head": "485b543761c7ef4ee89edbd788ef50dfd5386312",
+  "producer_reviewed_and_merged_tree": "44403ef7c9d28a84814e3d0812d83b8ecddf3146",
+  "module": "v0.16.6-0.20260928105604-485b543761c7",
+  "module_sum": "h1:FQFysvvjgLKoXyfgejl2f98i1cUurtRkXBzCl9YS8To=",
+  "toolchain": "go1.27.1",
+  "consumer_checks": 17,
+  "producer_checks": 32,
+  "task_subcases": 23,
+  "task_events": {
+    "pass": 443,
+    "fail": 0,
+    "skip": 0
+  },
+  "task_source_continuity": "premerge-acceptance-audit.json",
+  "native": "consumer-compose-required-native/verification.json",
+  "fleet_events": {
+    "pass": 117,
+    "fail": 0,
+    "skip": 0
+  },
+  "durable_work_events": {
+    "pass": 685,
+    "fail": 0,
+    "skip": 0
+  },
+  "windows_compose_events": {
+    "pass": 3,
+    "fail": 0,
+    "skip": 0
+  },
+  "review": {
+    "parts": 9,
+    "findings": 0,
+    "proof": "../compose-required-2026-09-28/verification.json"
+  },
+  "limits": [
+    "Optional native skips remain unqualified. Dedicated real-storage jobs cover the required task scenarios.",
+    "CSP13 owns populated migration and complete restore. CSP15 owns complete backend fault qualification. CSP22 owns released-pair capacity and performance.",
+    "No release, branch deletion, or review comment occurred."
+  ]
+}
