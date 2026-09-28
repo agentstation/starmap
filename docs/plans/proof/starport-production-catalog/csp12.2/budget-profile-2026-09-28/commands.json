@@ -1,0 +1,24 @@
+{
+  "environment": {
+    "GOWORK": "/tmp/csp122-billing.work",
+    "GOTOOLCHAIN": "go1.27.1"
+  },
+  "storage_environment": [
+    "TEST_VALKEY_URL",
+    "TEST_POSTGRES_URL",
+    "TEST_VALKEY_REPLACEMENT_URL (fleet suites only)"
+  ],
+  "fleet_regression": "go test -race -count=1 -timeout 7m -json -run '^(TestFleet|TestFreshFleet|TestRecoveryWitness|TestBudgetAuthority|TestValkeyIncarnation)' -skip '^TestFleetAdoption' ./internal/catalog ./internal/recovery ./internal/storage",
+  "fleet_adoption": "go test -race -count=1 -timeout 7m -json -run '^TestFleetAdoption' ./internal/catalog",
+  "registry_race": "go test -race -count=1 -timeout 5m -json ./internal/registry",
+  "router_race": "go test -race -count=1 -timeout 5m -json -run 'Test.*(Endpoint|Destination|Credential)' ./internal/router",
+  "pure_go": "CGO_ENABLED=0 go test -count=1 -timeout 5m -json -run '^TestRuntimeEndpointBinding' ./internal/registry",
+  "allocation_fail_before": "go test -count=1 -json -run '^TestRuntimeEndpointBindingAllocationBound$' ./internal/registry",
+  "budget_race": "go test -race -count=1 -timeout 7m -json -run '^TestProductionBudgetBackendOperations$' ./internal/app",
+  "diagnostic": "STARPORT_BUDGET_PROFILE_SAMPLES=200 STARPORT_BUDGET_PROFILE_REPORT=/tmp/csp122-budget-sequence-warm.json go test -count=1 -timeout 7m -json -run '^TestProductionBudgetBackendOperations$' ./internal/app",
+  "earlier_diagnostic": "Same diagnostic with 1000 samples. The sampled run adds -cpuprofile /tmp/csp122-budget.cpu -memprofile /tmp/csp122-budget.mem -o /tmp/csp122-budget.test.",
+  "vet": "go vet ./internal/app ./internal/registry ./internal/router",
+  "goago": "go tool goago -stale-ignores -format json ./...",
+  "workflow": "actionlint .github/workflows/ci.yml",
+  "action_pins": "bash scripts/verify-action-pins.sh"
+}

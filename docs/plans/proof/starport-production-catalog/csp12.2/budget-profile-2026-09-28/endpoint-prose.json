@@ -1,0 +1,67 @@
+{
+  "config_sources": [
+    "/Users/jack/.config/agentstation/technical-writing.toml",
+    "/private/tmp/starport-fleet-review-20260926/.agents/technical-writing.toml"
+  ],
+  "documents": [
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/registry/generation.go",
+      "words": 163
+    },
+    {
+      "diagnostics": [
+        {
+          "column": 39,
+          "excerpt": "providers.Assess, which is the one seam that intersects a catalog offering",
+          "line": 115,
+          "message": "replace restricted vocabulary with a precise common term: 'seam'",
+          "path": "/private/tmp/starport-fleet-review-20260926/internal/registry/registry.go",
+          "rule": "restricted_vocabulary",
+          "severity": "error"
+        },
+        {
+          "column": 37,
+          "excerpt": "HasProvider checks if a provider is registered",
+          "line": 241,
+          "message": "use active voice when the actor is known",
+          "path": "/private/tmp/starport-fleet-review-20260926/internal/registry/registry.go",
+          "rule": "passive_voice",
+          "severity": "error"
+        }
+      ],
+      "passed": false,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/registry/registry.go",
+      "words": 231
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/registry/endpoint_contract_test.go",
+      "words": 0
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/app/budget_profile_test.go",
+      "words": 21
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/private/tmp/starport-fleet-review-20260926/internal/app/budget_operations_test.go",
+      "words": 30
+    }
+  ],
+  "mode": "strict",
+  "passed": false,
+  "summary": {
+    "diagnostics": 2,
+    "errors": 2,
+    "files": 5,
+    "max_warnings_per_100_words": 0.0,
+    "warning_rate_per_100_words": 0.0,
+    "warnings": 0
+  }
+}

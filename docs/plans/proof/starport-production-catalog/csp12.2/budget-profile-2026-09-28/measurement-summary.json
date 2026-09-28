@@ -1,0 +1,62 @@
+{
+  "before": {
+    "samples": 1000,
+    "settled_attempts": 1001,
+    "ledger_keys": 1017,
+    "ledger_encoded_key_value_bytes": 3293113,
+    "allocated_bytes_per_request": 807169.192,
+    "allocations_per_request": 8982.406,
+    "background_sql_queries_during_samples": "not separately counted",
+    "client_start_to_provider_ms": {
+      "p50": 9.945375,
+      "p95": 13.8885,
+      "p99": 17.490416,
+      "max": 33.442208
+    },
+    "client_response_complete_ms": {
+      "p50": 12.630125,
+      "p95": 17.455792,
+      "p99": 22.057458,
+      "max": 37.409792
+    },
+    "operation_samples": {
+      "admission": {
+        "{\"budget_clock_eval\": 1, \"budget_read_eval\": 3, \"budget_write_eval\": 2, \"sql_approval_queries\": 4, \"sql_queries\": 4}": 1000
+      },
+      "settlement": {
+        "{\"budget_clock_eval\": 0, \"budget_read_eval\": 2, \"budget_write_eval\": 1, \"sql_approval_queries\": 2, \"sql_queries\": 2}": 1000
+      }
+    }
+  },
+  "after": {
+    "samples": 200,
+    "settled_attempts": 201,
+    "ledger_keys": 217,
+    "ledger_encoded_key_value_bytes": 665186,
+    "allocated_bytes_per_request": 287030.92,
+    "allocations_per_request": 2664.24,
+    "background_sql_queries_during_samples": 0,
+    "client_start_to_provider_ms": {
+      "p50": 55.022083,
+      "p95": 71.281333,
+      "p99": 137.336375,
+      "max": 226.184458
+    },
+    "client_response_complete_ms": {
+      "p50": 69.496667,
+      "p95": 91.479667,
+      "p99": 166.9,
+      "max": 303.866833
+    },
+    "operation_samples": {
+      "admission": {
+        "{\"budget_clock_eval\": 1, \"budget_read_eval\": 3, \"budget_write_eval\": 2, \"sql_approval_queries\": 4, \"sql_queries\": 4}": 200
+      },
+      "settlement": {
+        "{\"budget_clock_eval\": 0, \"budget_read_eval\": 2, \"budget_write_eval\": 1, \"sql_approval_queries\": 2, \"sql_queries\": 2}": 200
+      }
+    }
+  },
+  "allocated_bytes_reduction_percent": 64.43980731117895,
+  "allocation_count_reduction_percent": 70.33935005832514
+}

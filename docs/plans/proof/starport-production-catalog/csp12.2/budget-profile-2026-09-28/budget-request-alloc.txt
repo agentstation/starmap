@@ -1,0 +1,24 @@
+File: csp122-budget.test
+Type: alloc_space
+Time: 2026-09-28 03:20:38 CDT
+Active filters:
+   focus=internal/(router|proxy|limits/reservation|ratelimit)
+Showing nodes accounting for 546.32MB, 21.85% of 2500.49MB total
+Dropped 152 nodes (cum <= 12.50MB)
+Showing top 15 nodes out of 142
+      flat  flat%   sum%        cum   cum%
+   91.13MB  3.64%  3.64%   487.70MB 19.50%  github.com/agentstation/starmap/pkg/catalogs.DeepCopyProviderModels
+   91.02MB  3.64%  7.28%   205.04MB  8.20%  github.com/agentstation/starmap/pkg/catalogs.deepCopyExtensionMap
+   70.02MB  2.80% 10.09%    70.02MB  2.80%  reflect.mapassign_faststr0
+   58.01MB  2.32% 12.41%   257.05MB 10.28%  github.com/agentstation/starmap/pkg/catalogs.SourceExtensions.Copy
+   39.51MB  1.58% 13.98%    39.51MB  1.58%  github.com/agentstation/starmap/pkg/catalogs.deepCopyModelAuthors
+      38MB  1.52% 15.50%       38MB  1.52%  github.com/agentstation/starmap/pkg/catalogs.deepCopyModelFeatures (inline)
+   37.05MB  1.48% 16.99%    39.05MB  1.56%  github.com/agentstation/starport/internal/storage.(*valkeyIncarnationStore).compareAndSwap
+   35.56MB  1.42% 18.41%    35.56MB  1.42%  bytes.Clone (inline)
+   30.50MB  1.22% 19.63%    30.50MB  1.22%  reflect.unsafe_New
+      12MB  0.48% 20.11%    31.50MB  1.26%  github.com/agentstation/starmap/pkg/catalogs.deepCopyModelPricing
+   10.50MB  0.42% 20.53%    10.50MB  0.42%  github.com/agentstation/starmap/pkg/catalogs.copyPtr[go.shape.struct { PerToken float64 "json:\"per_token\" yaml:\"per_token\""; Per1M float64 "json:\"per_1m_tokens\" yaml:\"per_1m\""; github.com/agentstation/starmap/pkg/catalogs.absentUnits uint8; github.com/agentstation/starmap/pkg/catalogs.unknownUnits uint8 }] (inline)
+      10MB   0.4% 20.93%       10MB   0.4%  reflect.makemap
+    9.01MB  0.36% 21.29%     9.01MB  0.36%  reflect.growslice
+    7.01MB  0.28% 21.57%    66.04MB  2.64%  github.com/agentstation/starport/internal/limits/reservation.(*Repository).Reserve
+       7MB  0.28% 21.85%        7MB  0.28%  encoding/hex.EncodeToString (inline)

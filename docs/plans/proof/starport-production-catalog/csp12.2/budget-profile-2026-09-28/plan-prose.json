@@ -1,0 +1,36 @@
+{
+  "config_sources": [
+    "/Users/jack/.config/agentstation/technical-writing.toml",
+    "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/.agents/technical-writing.toml"
+  ],
+  "documents": [
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html",
+      "words": 7133
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/LATENCY_REVIEW.md",
+      "words": 4061
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp12.2/budget-profile-2026-09-28/REVIEW.md",
+      "words": 663
+    }
+  ],
+  "mode": "strict",
+  "passed": true,
+  "summary": {
+    "diagnostics": 0,
+    "errors": 0,
+    "files": 3,
+    "max_warnings_per_100_words": 0.0,
+    "warning_rate_per_100_words": 0.0,
+    "warnings": 0
+  }
+}

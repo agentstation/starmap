@@ -1,0 +1,54 @@
+Total: 2.44GB
+ROUTINE ======================== github.com/agentstation/starport/internal/storage.(*valkeyIncarnationStore).compareAndSwap in /private/tmp/starport-fleet-review-20260926/internal/storage/valkey_incarnation.go
+   77.58MB    79.58MB (flat, cum)  3.18% of Total
+         .          .    142:func (b *valkeyIncarnationStore) compareAndSwap(ctx context.Context, mutations []CompareAndSwapMutation, window TimeWindow, liveKeys ...string) error {
+         .          .    143:	if err := window.validate(); err != nil {
+         .          .    144:		return err
+         .          .    145:	}
+         .   512.20kB    146:	if err := validateCompareAndSwapMutations(mutations); err != nil {
+         .          .    147:		return err
+         .          .    148:	}
+         .          .    149:	live := make(map[string]bool, len(liveKeys))
+         .          .    150:	for _, key := range liveKeys {
+         .          .    151:		live[key] = false
+         .          .    152:	}
+         .          .    153:	keys := make([]string, 0, len(mutations))
+         .          .    154:	start, end := "", ""
+         .          .    155:	if window != (TimeWindow{}) {
+         .          .    156:		start, end = strconv.FormatInt(window.Start.Unix(), 10), strconv.FormatInt(window.End.Unix(), 10)
+         .          .    157:	}
+         .          .    158:	args := []string{b.identity, start, end}
+         .          .    159:	for _, m := range mutations {
+         .          .    160:		requireLive := "0"
+         .          .    161:		if _, ok := live[m.Key]; ok {
+         .          .    162:			if m.ExpectedValue == nil {
+         .          .    163:				return ErrInvalidMutation
+         .          .    164:			}
+         .          .    165:			live[m.Key], requireLive = true, "1"
+         .          .    166:		}
+         .          .    167:		exists, next := "1", "1"
+         .          .    168:		if m.ExpectedValue == nil {
+         .          .    169:			exists = "0"
+         .          .    170:		}
+         .          .    171:		if m.NewValue == nil {
+         .          .    172:			next = "0"
+         .          .    173:		}
+         .          .    174:		millis := m.TTL.Milliseconds()
+         .          .    175:		if m.TTL > 0 && millis == 0 {
+         .          .    176:			millis = 1
+         .          .    177:		}
+       3MB        3MB    178:		keys = append(keys, b.store.prefix+m.Key)
+   74.58MB    74.58MB    179:		args = append(args, exists, string(m.ExpectedValue), next, string(m.NewValue), strconv.FormatInt(millis, 10), requireLive)
+         .          .    180:	}
+         .          .    181:	for _, found := range live {
+         .          .    182:		if !found {
+         .          .    183:			return ErrInvalidMutation
+         .          .    184:		}
+         .          .    185:	}
+         .          .    186:	cmd := b.store.client.B().Eval().Script(valkeyIncarnationCAS).Numkeys(int64(len(keys))).Key(keys...).Arg(args...).Build()
+         .     1.50MB    187:	result, err := b.store.do(ctx, cmd).AsInt64()
+         .          .    188:	if err != nil {
+         .          .    189:		return incarnationError(err)
+         .          .    190:	}
+         .          .    191:	if result != 1 {
+         .          .    192:		return ErrConflict

@@ -1,0 +1,27 @@
+File: csp122-budget.test
+Type: alloc_space
+Time: 2026-09-28 03:20:38 CDT
+Showing nodes accounting for 2033MB, 81.30% of 2500.49MB total
+Dropped 657 nodes (cum <= 12.50MB)
+Showing top 20 nodes out of 252
+      flat  flat%   sum%        cum   cum%
+  328.52MB 13.14% 13.14%   328.52MB 13.14%  bytes.Clone
+  215.41MB  8.61% 21.75%   218.42MB  8.74%  io.ReadAll
+  144.13MB  5.76% 27.52%   144.13MB  5.76%  reflect.mapassign_faststr0
+  132.04MB  5.28% 32.80%   132.04MB  5.28%  encoding/json/jsontext.(*decoderState).fetch
+  128.09MB  5.12% 37.92%   128.09MB  5.12%  slices.Grow[go.shape.[]uint8,go.shape.uint8]
+  122.16MB  4.89% 42.81%   654.25MB 26.17%  github.com/agentstation/starmap/pkg/catalogs.DeepCopyProviderModels
+  115.59MB  4.62% 47.43%   158.06MB  6.32%  encoding/json/jsontext.(*encoderState).reformatValue
+  115.03MB  4.60% 52.03%   269.06MB 10.76%  github.com/agentstation/starmap/pkg/catalogs.deepCopyExtensionMap
+   96.95MB  3.88% 55.91%    96.95MB  3.88%  github.com/agentstation/starmap/pkg/catalogs.(*Provenance).Map
+   78.51MB  3.14% 59.05%   341.07MB 13.64%  github.com/agentstation/starmap/pkg/catalogs.SourceExtensions.Copy
+   77.58MB  3.10% 62.15%    79.58MB  3.18%  github.com/agentstation/starport/internal/storage.(*valkeyIncarnationStore).compareAndSwap
+   74.35MB  2.97% 65.12%    74.35MB  2.97%  github.com/agentstation/starmap/pkg/catalogs.(*Provenance).Set
+   72.13MB  2.88% 68.01%    72.13MB  2.88%  encoding/json/jsontext.(*Value).UnmarshalJSON
+   59.51MB  2.38% 70.39%    59.51MB  2.38%  reflect.unsafe_New
+   55.01MB  2.20% 72.59%    55.01MB  2.20%  github.com/agentstation/starmap/pkg/catalogs.deepCopyModelAuthors
+      54MB  2.16% 74.75%       54MB  2.16%  github.com/agentstation/starmap/pkg/catalogs.deepCopyModelFeatures (inline)
+   50.42MB  2.02% 76.76%    50.42MB  2.02%  github.com/agentstation/starmap/pkg/catalogs.Generation.Copy
+   44.02MB  1.76% 78.52%    44.02MB  1.76%  reflect.growslice
+   42.47MB  1.70% 80.22%   158.06MB  6.32%  encoding/json/jsontext.(*encoderState).reformatObject
+   27.05MB  1.08% 81.30%    27.05MB  1.08%  github.com/valkey-io/valkey-go.readB

@@ -1,0 +1,242 @@
+{
+  "fleet-regression-final": {
+    "raw": "fleet-regression-final.jsonl.gz",
+    "sha256": "d99178290ef3a9b868e755bcf4426e3b6483aceb8a6211bab00eb2dc5d3e950c",
+    "test_results": {
+      "pass": 80
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/storage",
+        "Action": "pass",
+        "Elapsed": 1.318
+      },
+      {
+        "Package": "github.com/agentstation/starport/internal/recovery",
+        "Action": "pass",
+        "Elapsed": 2.8609999999999998
+      },
+      {
+        "Package": "github.com/agentstation/starport/internal/catalog",
+        "Action": "pass",
+        "Elapsed": 290.066
+      }
+    ],
+    "failure_messages": []
+  },
+  "adoption-group-final": {
+    "raw": "adoption-group-final.jsonl.gz",
+    "sha256": "f2e0b38f0643163aee83b6439425868fa9ab7ec0816bdc8b3a18c5ea5fa8073a",
+    "test_results": {
+      "pass": 22
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/catalog",
+        "Action": "pass",
+        "Elapsed": 284.364
+      }
+    ],
+    "failure_messages": []
+  },
+  "budget-profile-race": {
+    "raw": "budget-profile-race.jsonl.gz",
+    "sha256": "4e4960f21e2dddddcf7dbf19d6f8dbc1c615ce59a562176bd14e2b40a1ccd093",
+    "test_results": {
+      "pass": 1
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/app",
+        "Action": "pass",
+        "Elapsed": 25.982
+      }
+    ],
+    "failure_messages": []
+  },
+  "budget-profile-native": {
+    "raw": "budget-profile-native.jsonl.gz",
+    "sha256": "4aa2e76d7e1a19e79d808fbcc21caba1f586f23224cb3b4cc64368669f6f4ccc",
+    "test_results": {
+      "pass": 1
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/app",
+        "Action": "pass",
+        "Elapsed": 18.75
+      }
+    ],
+    "failure_messages": []
+  },
+  "budget-profile-sampled": {
+    "raw": "budget-profile-sampled.jsonl.gz",
+    "sha256": "d515dabceb3cff608f6994bccb57412388a091b343da9b5ae4011fa5b400ed95",
+    "test_results": {
+      "pass": 1
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/app",
+        "Action": "pass",
+        "Elapsed": 33.11
+      }
+    ],
+    "failure_messages": []
+  },
+  "endpoint-before": {
+    "raw": "endpoint-before.jsonl.gz",
+    "sha256": "6e45000e81a3cb26e7a3098b6b4f212aa27b4ce038128ab65e8f29c2f90fcc74",
+    "test_results": {
+      "fail": 1
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/registry",
+        "Action": "fail",
+        "Elapsed": 1.624
+      }
+    ],
+    "failure_messages": [
+      "endpoint_contract_test.go:47:",
+      "Error Trace:\t/private/tmp/starport-fleet-review-20260926/internal/registry/endpoint_contract_test.go:47",
+      "Error:      \t\"6317\" is not less than or equal to \"18\"",
+      "Test:       \tTestRuntimeEndpointBindingAllocationBound",
+      "Messages:   \tbinding must not copy the provider model inventory"
+    ]
+  },
+  "endpoint-registry-race": {
+    "raw": "endpoint-registry-race.jsonl.gz",
+    "sha256": "75acb82b3a702474eb2520122b5db47f918cd3707621ca68265ecfa70f12ecb5",
+    "test_results": {
+      "pass": 17
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/registry",
+        "Action": "pass",
+        "Elapsed": 17.529
+      }
+    ],
+    "failure_messages": []
+  },
+  "endpoint-router-race": {
+    "raw": "endpoint-router-race.jsonl.gz",
+    "sha256": "da83f994ba11e2bc6571fc2baeb57f67e40b0848cf44b1d035b651cfa738594d",
+    "test_results": {
+      "pass": 58
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/router",
+        "Action": "pass",
+        "Elapsed": 2.216
+      }
+    ],
+    "failure_messages": []
+  },
+  "endpoint-purego": {
+    "raw": "endpoint-purego.jsonl.gz",
+    "sha256": "cf2172a6b1fa14891fdb49c2d36cf538ec09a532ee0186ada1826e2f1e15a109",
+    "test_results": {
+      "pass": 4
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/registry",
+        "Action": "pass",
+        "Elapsed": 1.95
+      }
+    ],
+    "failure_messages": []
+  },
+  "budget-profile-race-after": {
+    "raw": "budget-profile-race-after.jsonl.gz",
+    "sha256": "9572c04ac0ce6549f4a1705fabd9179b68177e7c8079017a91ba447dc9bc5128",
+    "test_results": {
+      "pass": 1
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/app",
+        "Action": "pass",
+        "Elapsed": 34.376
+      }
+    ],
+    "failure_messages": []
+  },
+  "budget-profile-native-after": {
+    "raw": "budget-profile-native-after.jsonl.gz",
+    "sha256": "778abab5b79f1635e9a79b3a287777f2809a380900533bc5316e608d63d422b9",
+    "test_results": {
+      "fail": 1
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/app",
+        "Action": "fail",
+        "Elapsed": 33.638
+      }
+    ],
+    "failure_messages": [
+      "budget_operations_test.go:255:",
+      "Error Trace:\t/private/tmp/starport-fleet-review-20260926/internal/app/budget_operations_test.go:255",
+      "Error:      \tNot equal:",
+      "expected: 4",
+      "actual  : 5",
+      "Test:       \tTestProductionBudgetBackendOperations",
+      "Messages:   \teach budget write checks independent approval before and after its native transaction"
+    ]
+  },
+  "budget-profile-race-final": {
+    "raw": "budget-profile-race-final.jsonl.gz",
+    "sha256": "bd516b661908e1cc0add07ac403170e396560781bd5cd208ed43a92a70939ac0",
+    "test_results": {
+      "pass": 1
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/app",
+        "Action": "pass",
+        "Elapsed": 34.769
+      }
+    ],
+    "failure_messages": []
+  },
+  "budget-profile-native-final": {
+    "raw": "budget-profile-native-final.jsonl.gz",
+    "sha256": "4e513f7ef91b8a7b331f6b0ba0d06049321f9dc4883ccb20740dd813597b7e79",
+    "test_results": {
+      "fail": 1
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/app",
+        "Action": "fail",
+        "Elapsed": 65.222
+      }
+    ],
+    "failure_messages": [
+      "budget_operations_test.go:271:",
+      "Error Trace:\t/private/tmp/starport-fleet-review-20260926/internal/app/budget_operations_test.go:271",
+      "Error:      \t\"7\" is not less than or equal to \"5\"",
+      "Test:       \tTestProductionBudgetBackendOperations",
+      "Messages:   \tgroup meter and history reads within each atomic attempt"
+    ]
+  },
+  "budget-profile-native-warm": {
+    "raw": "budget-profile-native-warm.jsonl.gz",
+    "sha256": "3a0697d27eb903ced0d7b9e17aa3d89ec436adc4245223c7087e6b7f88096f9f",
+    "test_results": {
+      "pass": 1
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/app",
+        "Action": "pass",
+        "Elapsed": 22.704
+      }
+    ],
+    "failure_messages": []
+  }
+}

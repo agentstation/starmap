@@ -1,0 +1,44 @@
+File: csp122-budget.test
+Type: alloc_space
+Time: 2026-09-28 03:20:38 CDT
+Active filters:
+   focus=internal/(router|proxy|limits/reservation|ratelimit)
+Showing nodes accounting for 2.50MB, 0.1% of 2500.49MB total
+Dropped 152 nodes (cum <= 12.50MB)
+Showing top 35 nodes out of 142
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%   656.87MB 26.27%  github.com/agentstation/starport/internal/proxy.(*usageCaptureService).ProcessChatCompletion
+         0     0%     0%   656.87MB 26.27%  github.com/agentstation/starport/internal/server.(*AuthMiddleware).RequireAPIKey.func1
+         0     0%     0%   656.87MB 26.27%  github.com/agentstation/starport/internal/server.(*AuthMiddleware).RequireAnyScope.1.1
+         0     0%     0%   656.87MB 26.27%  github.com/agentstation/starport/internal/server.(*Server).enforceBudgets.func1
+         0     0%     0%   656.87MB 26.27%  github.com/agentstation/starport/internal/server.(*Server).rateLimit.func1
+         0     0%     0%   656.87MB 26.27%  github.com/agentstation/starport/internal/server.LoggingMiddleware.func1
+         0     0%     0%   656.87MB 26.27%  github.com/agentstation/starport/internal/server.SecurityHeaders.func1
+         0     0%     0%   656.87MB 26.27%  github.com/agentstation/starport/internal/server.SizeLimiter.func1.1
+         0     0%     0%   656.87MB 26.27%  github.com/agentstation/starport/internal/server.Timeout.func2.1
+         0     0%     0%   656.87MB 26.27%  github.com/agentstation/starport/internal/server.selectProtocol.1.1
+         0     0%     0%   656.87MB 26.27%  github.com/agentstation/starport/internal/server/controllers.(*ChatController).Create
+         0     0%     0%   656.87MB 26.27%  github.com/agentstation/starport/internal/server/controllers.(*ChatController).handleNonStream
+         0     0%     0%   656.87MB 26.27%  github.com/go-chi/chi/v5.(*ChainHandler).ServeHTTP
+         0     0%     0%   656.87MB 26.27%  github.com/go-chi/chi/v5.(*Mux).Mount.func1
+         0     0%     0%   656.87MB 26.27%  github.com/go-chi/chi/v5.(*Mux).ServeHTTP
+         0     0%     0%   656.87MB 26.27%  github.com/go-chi/chi/v5.(*Mux).routeHTTP
+         0     0%     0%   656.87MB 26.27%  github.com/go-chi/chi/v5/middleware.(*Compressor).Handler.func1
+         0     0%     0%   656.87MB 26.27%  github.com/go-chi/chi/v5/middleware.ClientIPFromRemoteAddr.func1
+         0     0%     0%   656.87MB 26.27%  github.com/go-chi/chi/v5/middleware.Recoverer.func1
+         0     0%     0%   656.87MB 26.27%  github.com/go-chi/chi/v5/middleware.RequestID.func1
+         0     0%     0%   656.87MB 26.27%  github.com/go-chi/cors.(*Cors).Handler.func1
+         0     0%     0%   656.87MB 26.27%  net/http.(*conn).serve
+         0     0%     0%   656.87MB 26.27%  net/http.HandlerFunc.ServeHTTP
+         0     0%     0%   656.87MB 26.27%  net/http.serverHandler.ServeHTTP
+         0     0%     0%   655.87MB 26.23%  github.com/agentstation/starport/internal/proxy.(*presetResolverService).ProcessChatCompletion
+         0     0%     0%   655.87MB 26.23%  github.com/agentstation/starport/internal/proxy.(*proxy).ProcessChatCompletion
+         0     0%     0%   650.37MB 26.01%  github.com/agentstation/starport/internal/router.(*modelRouter).RouteWithFallback
+    0.50MB  0.02%  0.02%   648.37MB 25.93%  github.com/agentstation/starport/internal/execution.(*Executor).ExecuteChat
+         0     0%  0.02%   647.87MB 25.91%  github.com/agentstation/starport/internal/execution.Execute[go.shape.struct { ID string; CreatedUnix int64; Model string; ModelUsed string; Choices []github.com/agentstation/starport/internal/inference.Choice; Usage github.com/agentstation/starport/internal/inference.Usage; SystemFingerprint string }]
+    0.50MB  0.02%  0.04%   647.87MB 25.91%  github.com/agentstation/starport/internal/execution.executeInference[go.shape.struct { ID string; CreatedUnix int64; Model string; ModelUsed string; Choices []github.com/agentstation/starport/internal/inference.Choice; Usage github.com/agentstation/starport/internal/inference.Usage; SystemFingerprint string }]
+    1.50MB  0.06%   0.1%   644.87MB 25.79%  github.com/agentstation/starport/internal/router.(*modelRouter).RouteWithFallback.func1
+         0     0%   0.1%   499.24MB 19.97%  github.com/agentstation/starport/internal/registry.(*Lease).BindEndpoint
+         0     0%   0.1%   499.24MB 19.97%  github.com/agentstation/starport/internal/registry.(*runtimeGeneration).bindEndpoint
+         0     0%   0.1%   499.24MB 19.97%  github.com/agentstation/starport/internal/router.bindSelectedEndpoint
+         0     0%   0.1%   498.21MB 19.92%  github.com/agentstation/starmap/pkg/catalogs.(*Builder).Provider

@@ -1,0 +1,74 @@
+{
+  "status": "PROGRESS",
+  "task": "CSP12.2",
+  "task_complete": false,
+  "toolchain": "go1.27.1",
+  "platform": "darwin/arm64",
+  "producer_head": "89e818f854a79660c8a3c3bb69945679dddc39bb",
+  "consumer_head": "dcad9e2b68f801f463b604390532fd2b6aa46a26",
+  "hardware": {
+    "cpu": "Apple M2 Max",
+    "physical_cores": 12,
+    "logical_cores": 12,
+    "memory_bytes": 34359738368,
+    "os": "macOS 15.7.2 (24G325)"
+  },
+  "profile_qualification": "UNVERIFIED",
+  "evidence": "runs.json",
+  "measurement": "measurement-summary.json",
+  "source_binding": {
+    "fleet_suites": "Consumer bcfa9345455c35587b7a7c3ea38a53ca763447c0. The tested catalog, recovery, and storage packages stayed unchanged during these runs. Results precede the registry production change.",
+    "before_profile": "Consumer bcfa9345455c35587b7a7c3ea38a53ca763447c0 with uncommitted optional app measurement code. Production endpoint binding is unchanged from that base. The exact initial measurement patch was not retained.",
+    "after_profile": "Current consumer commit. The full committed patch is retained in starport.patch.gz.",
+    "endpoint_fail_before": "Current allocation regression function against the prior production registry implementation. Generation-retention tests were added afterward."
+  },
+  "checks": {
+    "registry_race_results": 17,
+    "router_credential_destination_race_results": 58,
+    "endpoint_pure_go_results": 4,
+    "budget_backend_race_results": 1,
+    "budget_backend_warm_results": 1,
+    "fleet_regression_results": 80,
+    "fleet_adoption_results": 22,
+    "goago_exit": 0,
+    "goago_findings": 0,
+    "goago_errors": 0,
+    "vet_exit": 0,
+    "actionlint_exit": 0,
+    "action_pins": 14,
+    "changed_comment_prose_exit": 0
+  },
+  "limitations": [
+    "Diagnostic timing includes client, loopback provider, instrumentation, and Docker networking.",
+    "Before and after runs used different sample counts and different host load. No latency improvement or production target claim is supported.",
+    "Whole-process allocation deltas include test client and provider. The endpoint allocation regression isolates the eliminated provider copy.",
+    "The sampled CPU and allocation profiles include startup and post-request validation.",
+    "Encoded ledger bytes exclude backend prefixes, indexes, allocator overhead, replication, and SQL state. No fleet capacity claim is supported.",
+    "Whole-file prose lint reports two unchanged registry.go diagnostics, also present in its parent revision. Changed comments pass. JSON prose lint was unsupported; the one-word archive-count correction was checked against D39 and goreleaser."
+  ],
+  "failures_preserved": [
+    "The endpoint allocation regression fails at 6317 allocations before the fix.",
+    "The long run counted a background catalog SQL query as request work. Context-scoped query counters repair the instrumentation.",
+    "The next long run crossed the 60-second authorization deadline. Policy reload adds budget reads. The warm-path assertion remains unchanged; the shorter run qualifies only its recorded warm interval."
+  ],
+  "required": [
+    "owner decision and implementation for interrupted batches",
+    "owner decision and implementation for correction retention",
+    "whole-task verification",
+    "latency and capacity qualification",
+    "pre-PR review",
+    "native CI",
+    "published dependency qualification",
+    "paired merges"
+  ],
+  "cleanup": {
+    "running_containers": [],
+    "stopped": [
+      "starport-csp122-postgres",
+      "starport-csp122-async-usage",
+      "starport-csp122-replacement-valkey"
+    ],
+    "docker_desktop": "running; no containers remain active"
+  },
+  "publication": "No push, PR, paid inference, or release in this turn."
+}

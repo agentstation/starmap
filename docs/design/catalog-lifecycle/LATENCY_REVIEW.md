@@ -411,3 +411,26 @@ Each conditional-write retry gets a new snapshot. No snapshot or budget balance 
 Native tests cover grouped-read consistency and refusal under a replacement backend.
 Reservation tests preserve concurrent settlement, history continuity, expiry refusal, and conditional-write conflict recovery.
 The full paid-operation matrix, production storage failover, retention horizons, capacity, native CI, and paired merges remain required.
+
+### Endpoint binding and diagnostic profile: September 28, 2026
+
+The [budget profile review](../../plans/proof/starport-production-catalog/csp12.2/budget-profile-2026-09-28/REVIEW.md) records a remaining provider-model copy during each runtime endpoint binding.
+Consumer `dcad9e2b68f801f463b604390532fd2b6aa46a26` retains a private inference contract when it publishes the runtime generation.
+The request still supplies current credential bindings and its permitted endpoint override.
+Generation replacement preserves old leases and binds new leases to the replacement contract.
+
+The isolated regression reduces endpoint binding from 6,317 allocations to two without race detection.
+The diagnostic process average falls from 807,169 to 287,031 allocated bytes per request.
+Those process totals include the test client, provider fixture, and instrumentation. They do not qualify the gateway allocation target.
+
+All measured requests retain ten budget storage calls before dispatch and five during settlement.
+The final run settles 201 attempts across five meters and leaves no reserved capacity.
+Its encoded budget records occupy 665,186 bytes across 217 keys. This excludes SQL state and backend overhead.
+
+The initial run measures 1,000 warm requests. The final run measures 200 under substantial unrelated host load.
+Provider-arrival p99 changes from 17.49 ms to 137.34 ms. These conditions do not support a latency-improvement claim.
+
+The longer reruns expose background SQL counting and the 60-second authorization refresh boundary.
+The proof preserves both failures. Request-scoped SQL instrumentation separates background activity without changing budget checks.
+
+CSP22 retains full performance qualification on dedicated runners. CSP12.2 still requires complete task qualification and paired merges.

@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "ledger_rows": 40,
+  "complete": 26,
+  "active": "CSP12.2",
+  "anchors": 97,
+  "links": 139,
+  "resume_words": 349,
+  "execution_entries": 10,
+  "task_contracts": "All 40 preserved, ignoring paragraph whitespace only.",
+  "cold_resume": "Next action, pending owner decisions, current heads, tested source, command state, authorization limits, and remaining acceptance are explicit.",
+  "budget_exception": "The whole plan retains 40 required task contracts. Resume reading is bounded to current state, active contract, current review, and linked decision contracts."
+}
