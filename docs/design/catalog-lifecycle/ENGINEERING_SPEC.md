@@ -4985,3 +4985,25 @@ Cancellation prevents new claims, while admitted work drains.
 The [restart proof](../../plans/proof/starport-production-catalog/csp12.2/batch-resume-2026-09-28/verification.json) records process-loss, native storage, and production checks.
 Its operation profile retains ten admission calls and adds one settlement-time read, for six settlement calls.
 Production latency and capacity remain unqualified.
+
+
+### Portable KV transfer: September 28, 2026
+
+Consumer `e6cf20934` adds private KV snapshots and conditional import for Badger and Valkey.
+The [component proof](../../plans/proof/starport-production-catalog/csp13/kv-transfer-2026-09-28/verification.json) records all four backend pairs.
+Source and target writers must remain stopped and fenced. Valkey operations verify the selected process identity.
+The coordinator still owns cross-store consistency and external fencing.
+
+The SQLite interchange image preserves exact keys, values, and absolute expiry.
+It deduplicates identical scan records and refuses changed duplicates.
+Import verifies the complete private image before it claims the target namespace.
+Badger rounds millisecond expiry down to whole seconds and reports the adjustment. It never extends the original deadline.
+
+A persistent import barrier survives successful writes, failed acknowledgments, interruption, and process loss.
+Ordinary storage startup refuses that barrier. Exact retries require the same operation and archive.
+Raw backend constructors supply recovery access without approving admission.
+The coordinator must retain the barrier until all deployment components and independent evidence pass verification.
+
+The [transfer contract](../../plans/proof/starport-production-catalog/csp13/kv-transfer-2026-09-28/CONTRACT.md) records the representation limits and evidence boundaries.
+Full manifests, blob transfer, credential verification, operator commands, independent reconciliation, native CI, and merge remain CSP13 requirements.
+This component does not complete A16 or A33.
