@@ -1,0 +1,637 @@
+{
+  "recorded_at": "2026-09-29T06:14:40.981289+00:00",
+  "status": "catalog reference validation committed; CSP13 remains in_progress",
+  "previous_turn_classification": "no progress: the preceding turn reconfirmed completed JSON-gzip tooling",
+  "work": {
+    "consumer_head": "d96a11fff195543339e68b0c071bb1cf25c08220",
+    "consumer_tree": "30301356fc0fcb226a73409fe67a48d967d9a060",
+    "branch": "codex/storage-recovery",
+    "published": false,
+    "module": "github.com/agentstation/starmap v0.16.6-0.20260929053147-9ab700ad930f",
+    "go": "1.27.1",
+    "workspace": "GOWORK=off; published Starmap module; no committed replacement"
+  },
+  "merge": {
+    "pr": 197,
+    "head": "9ab700ad930f9f7aba4b592e1d3919bad296c68f",
+    "base": "01bc939e43c7fdc8642e853550351dd6e890e1c1",
+    "commit": "27fee03e33fd430c70f8235a08d665d24804c4b9",
+    "merged_at": "2026-09-29T06:11:43Z",
+    "checks_pass": 32,
+    "review_threads": 0,
+    "protection": "strict required checks, enforced administrator protection, signed commits, conversation resolution; no bypass",
+    "tested_tree_matches_merged_tree": true,
+    "native_artifacts": 10,
+    "required_restore_roots": 7,
+    "native_scope": "All seven roots pass without skips on macOS arm64, Linux amd64/arm64, and Windows amd64/arm64. Unrelated native skips remain recorded in the artifact audit."
+  },
+  "checks": {
+    "local-race": {
+      "results": {
+        "pass": 217,
+        "skip": 4
+      },
+      "packages": 3,
+      "skipped_tests": [
+        "TestBackupBundleSharedRecipe",
+        "TestRestorePublishFilesSharedRecipe/inference-credential-policy",
+        "TestRestorePublishFilesSharedRecipe/credential-policy",
+        "TestRestoreApplicationSharedRecipe"
+      ]
+    },
+    "final-pure": {
+      "results": {
+        "pass": 217,
+        "skip": 4
+      },
+      "packages": 3,
+      "skipped_tests": [
+        "TestBackupBundleSharedRecipe",
+        "TestRestorePublishFilesSharedRecipe/inference-credential-policy",
+        "TestRestorePublishFilesSharedRecipe/credential-policy",
+        "TestRestoreApplicationSharedRecipe"
+      ]
+    },
+    "final-focused-race": {
+      "results": {
+        "pass": 38
+      },
+      "packages": 2,
+      "skipped_tests": []
+    },
+    "final-focused-pure": {
+      "results": {
+        "pass": 38
+      },
+      "packages": 2,
+      "skipped_tests": []
+    },
+    "intermediate-published-storage-race": {
+      "results": {
+        "pass": 25
+      },
+      "packages": 2,
+      "skipped_tests": []
+    },
+    "published-storage-race": {
+      "results": {
+        "pass": 20
+      },
+      "packages": 2,
+      "skipped_tests": []
+    }
+  },
+  "qualification_scope": "The broader 217-result suites preceded final metadata-first ordering and the lost-selection guard. Final focused suites and the 20-result shared suite qualify the final committed owners. The earlier 25-result shared suite includes the unchanged adoption lost-response regression.",
+  "static_checks": {
+    "lint": "0 issues; pinned golangci-lint v2.13.2",
+    "vet": "PASS for catalog, app, recovery",
+    "ownership": "12 passed, 0 failed",
+    "dependency_direction": "6 passed, 0 failed",
+    "prose": "3 files, 0 diagnostics",
+    "goago": "No module tool or repository command is declared in Starport. No installation or policy change."
+  },
+  "producer_review": {
+    "reviewer": "Claude Opus 5.5 high",
+    "threshold": "P0-only",
+    "passes": 1,
+    "bundle_bytes": 47216,
+    "findings": 0,
+    "secret_scan": "clean",
+    "source": "9ab700ad930f9f7aba4b592e1d3919bad296c68f"
+  },
+  "contract": [
+    "Capture, verify, prepare, and file-publication preparation invoke the catalog owner through a read-only captured-KV inspector. No target store, runtime, provider, or lease starts during inspection.",
+    "Standalone pointers, every captured generation descriptor, payload chunks, and recorded acceptance history must match. Inactive orphan chunks remain valid after interrupted publication. An accepted pointer may precede its separately written index.",
+    "Fleet inspection verifies namespace, identity against the closed capture boundary, initialization markers, publication epochs, selected and retained publications, receipts, chunks, recovery-input structure, readers, acceptance history, and adoption operation/receipt pairs.",
+    "Pending fleet uploads or deletion records may retain partial bytes only when those bytes match their owner record. Inspection never selects those bytes.",
+    "Durable catalog records cannot carry expiration. Captured transient leases preserve their recorded expiration and grant no new permission.",
+    "Descriptor limits and chunk hashes are checked before unsafe allocation. Existing empty-codec round trips remain supported.",
+    "Captured-state consistency does not establish independent post-backup history, current permission, replay compatibility, or activation approval. Those CSP13 requirements remain open."
+  ],
+  "fail_before": "Five native application cases accepted broken catalog references. After the change, capture and verify refuse them, and preparation refuses before creating KV, SQL, or staging targets.",
+  "iteration_notes": [
+    "The first codec run exposed the existing empty-payload round-trip contract. Descriptor validation now permits zero-length codec payloads and rejects negative or excessive sizes.",
+    "The first shared attempt passed four application results but catalog compilation failed on an unused test import. The import was removed before qualification.",
+    "Static checks required smaller owner functions. Metadata checks now precede large fleet payload decoding. The native catalog test changed from 231.65 to 133.3 seconds in these local runs. This is test evidence, not a production latency claim.",
+    "The first ownership command lacked its required Starmap root. The corrected repository-owned command passed all twelve conditions."
+  ],
+  "task_gate": {
+    "command": "bash scripts/verify-catalog-product.sh --starport-root /private/tmp/starport-clock-review-20260926 --task CSP13",
+    "result": "FAIL: all 50 primary cases remain UNVERIFIED in this task-scoped report. No new task or released-pair acceptance is claimed. Historical assigned-subcase evidence remains unchanged."
+  },
+  "remaining": [
+    "Interrupted path migration recovery.",
+    "Independent post-backup permission, revocation, spend, and uncertain-work history.",
+    "Controlled activation and replay compatibility, populated migration, remaining CSP13 cases.",
+    "Full consumer publication gates, required review, publication, and native qualification."
+  ],
+  "artifacts": [
+    {
+      "path": "local-race.jsonl.gz",
+      "sha256": "cbedcb596440591008138726139c9ac45e67a70af06efbb05122d4fc27679211",
+      "uncompressed_sha256": "6f48d7221cb9340db2c7490e54ba79da28a7e6d2749cfd79c62703220d770752",
+      "uncompressed_bytes": 1610616
+    },
+    {
+      "path": "final-pure.jsonl.gz",
+      "sha256": "0b21c4eb32ba861fe2c1353d0058b077f080be7b4cc19f7897607d7f16a9867e",
+      "uncompressed_sha256": "e7ff835dbf9b4bcd3e998ea8e3ec0aa61e76120d7f74153fbb1d492c1c67a67a",
+      "uncompressed_bytes": 1610949
+    },
+    {
+      "path": "final-focused-race.jsonl.gz",
+      "sha256": "b9120aa7625c22cb87f67782129707a7be3b61d15404cd027adab455aa7ef8c6",
+      "uncompressed_sha256": "bfccf62cadd6028caafd716f4d1f520c5850d2411ef069f4e579a2b2fc69836a",
+      "uncompressed_bytes": 152963
+    },
+    {
+      "path": "final-focused-pure.jsonl.gz",
+      "sha256": "80ecf54fa0e70b62307d640cb5a4bd693d6e1ff0fae7805585a3f97f06399e4e",
+      "uncompressed_sha256": "2a0944768ee6d983105fed08904c33d4f5b5a976ffc3ba8e8f3476914ff7e6e5",
+      "uncompressed_bytes": 152931
+    },
+    {
+      "path": "intermediate-published-storage-race.jsonl.gz",
+      "sha256": "7ed0a6a7edef4da932b3ff82e1fa6642698688b11f25b3d7fee7902ad07c1f26",
+      "uncompressed_sha256": "1ebb435c874f776a2f48d1dffd1000d8e3f3ea596ab9a8af3d0ac94cba579111",
+      "uncompressed_bytes": 54929
+    },
+    {
+      "path": "published-storage-race.jsonl.gz",
+      "sha256": "9705eeec44098829411e2b405087ececdf92672ef60a16ec0555cc93652101b4",
+      "uncompressed_sha256": "78bde763fafb0648e9e615e62ed74ef6e1dc1e9a2d8bf713215973aa38f26228",
+      "uncompressed_bytes": 48973
+    },
+    {
+      "path": "source.json.gz",
+      "sha256": "ea0cfda0c876c5868daf7afff657f62e0c50faf7bc224cc8fc99bdc444593ba0",
+      "uncompressed_sha256": "fdb1ee62a59c5378cb028bf912cd63dab217e1123a75c62f4f0ffd35c39b3b33",
+      "uncompressed_bytes": 1574
+    },
+    {
+      "path": "lint-final.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "uncompressed_bytes": 10
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "ownership-final.log.gz",
+      "sha256": "cac58828c90bd4cd35ddd46ae076a72f1ca8dbb56fd79c94e584283ea907849e",
+      "uncompressed_sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed",
+      "uncompressed_bytes": 850
+    },
+    {
+      "path": "direction.log.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "uncompressed_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027",
+      "uncompressed_bytes": 380
+    },
+    {
+      "path": "prose-final.log.gz",
+      "sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b",
+      "uncompressed_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618",
+      "uncompressed_bytes": 33
+    },
+    {
+      "path": "shared.log.gz",
+      "sha256": "e8795a7c5fc7f3ad1477af27902052d475d46171a524194970058cb9fe6209a4",
+      "uncompressed_sha256": "af7448e2951ba7a60070fab7238476e512f37c92792ee29a19e9c203ceae463c",
+      "uncompressed_bytes": 1577
+    },
+    {
+      "path": "storage-fixture.json.gz",
+      "sha256": "561d6584fd6ddb1cf4c80106fad15ecab0e6fff78f32d56c23b9f365df09ec84",
+      "uncompressed_sha256": "3a83d9288ce3887abb8561fb5e3cb5d5bd97989db34c953ba7ae7bf64e53ed21",
+      "uncompressed_bytes": 941
+    },
+    {
+      "path": "storage-object-build.txt.gz",
+      "sha256": "a50f744a6feb4899cd62ae63da3f05dfde21f5f726cd655fa9c357c450b0db68",
+      "uncompressed_sha256": "8cb168ef4b59cee073d1b52548cc1b2699051efd7fca7356dbede69d445ca778",
+      "uncompressed_bytes": 22653
+    },
+    {
+      "path": "pr197-ready.json.gz",
+      "sha256": "f98a253e1a5bd9f48c95529c660edb7a3eb57477904312ded5dacbc3f34f9cd4",
+      "uncompressed_sha256": "0bb616404259dcaf5622fec36278b7a413734bff7100c6ae45d8af4b559b17da",
+      "uncompressed_bytes": 9789
+    },
+    {
+      "path": "pr197-actual-merge.json.gz",
+      "sha256": "f6b39c8c1da9d600e7970cc1cfaca4b195665fd5850f321b07c44de210c61f3a",
+      "uncompressed_sha256": "86757b2176965434e4122fe5df0c4f2096faceb0c2af22d9c4ef71b65e32d9fb",
+      "uncompressed_bytes": 287
+    },
+    {
+      "path": "pr197-artifacts.json.gz",
+      "sha256": "480eab727ae9020252fd4b72a4bc6e700de971ab18c13a89cee5f2cb08f1fc0e",
+      "uncompressed_sha256": "e10277fc81bd14e89bbec2c6d7cd8eb05733ddcc6b89649d9b6378762d42e499",
+      "uncompressed_bytes": 18069
+    },
+    {
+      "path": "pr197-native-audit.json.gz",
+      "sha256": "d9e849f77edf6936b665d296c24ae0263c45252b3fd5722879bb4b903b5e811c",
+      "uncompressed_sha256": "7365defdee4e44c25ff4b828cfbba59528b641a674f5f098daba0e7d7ad8aad3",
+      "uncompressed_bytes": 8696
+    },
+    {
+      "path": "pr197-threads.json.gz",
+      "sha256": "ef640a112b238eb1b2ae89fb3f0e01fbb7010f47c176227aa11e6e8073e6c98d",
+      "uncompressed_sha256": "5e67d9d510631059c0d98ef16f28a5699013c2f3e870c2fa0d54cb9af8fa5273",
+      "uncompressed_bytes": 230
+    },
+    {
+      "path": "main-protection.json.gz",
+      "sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce",
+      "uncompressed_sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+      "uncompressed_bytes": 1357
+    },
+    {
+      "path": "queue-starmap.json.gz",
+      "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+      "uncompressed_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "uncompressed_bytes": 3
+    },
+    {
+      "path": "queue-starport.json.gz",
+      "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+      "uncompressed_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "uncompressed_bytes": 3
+    },
+    {
+      "path": "task-verifier.log.gz",
+      "sha256": "1f1532c78f9e5ceba705010a780392900adc11005e0c451a7ae13b6e0ca7cf20",
+      "uncompressed_sha256": "0cb84a848ec77ec36be5b967a89c8076adcb0162a00e7c6305299edeedfabc56",
+      "uncompressed_bytes": 1263
+    },
+    {
+      "path": "intermediate-shared.log.gz",
+      "sha256": "345111041668619b74acac1899f4f0b306f9e473d4b4d05f9a1a9b1bf3fe8f91",
+      "uncompressed_sha256": "463037613295fe3484a328eab16ddf56f593c1f2fcec8267695ece9509502dec",
+      "uncompressed_bytes": 1577
+    },
+    {
+      "path": "intermediate-storage-fixture.json.gz",
+      "sha256": "f20832216e1988259a68569acf829d32b7be863b1607809f083fcd578e705052",
+      "uncompressed_sha256": "aa49cbb53b2b12d4340bba1bb324f6f6ba140b4b16718c786e92aec764072806",
+      "uncompressed_bytes": 1042
+    },
+    {
+      "path": "storage-build-rejected.jsonl.gz",
+      "sha256": "f0b73d316c5292e9ddcb8537398a43a245a75cc14c6dd11982cbe3880e05e098",
+      "uncompressed_sha256": "f4cbb2caa38d0bf29af4dcad8a4821cb38ee334571d862006a71059555e61062",
+      "uncompressed_bytes": 33540
+    },
+    {
+      "path": "storage-build-rejected.log.gz",
+      "sha256": "6a6c07cd658e1b02d2ffaf409a6c156b34abe2585604306c9dd4917fb63b2415",
+      "uncompressed_sha256": "aaa8770cca1537d7decde10d99497a2c0f84eb0112bb7628679aea545c9e1783",
+      "uncompressed_bytes": 1758
+    },
+    {
+      "path": "csp13-catalog-fail-before.log.gz",
+      "sha256": "e048c22e550f4dc84a07fb94ba71030c325e01b17add0fc384ced027c4dd367f",
+      "uncompressed_sha256": "3e1bdefe1c9611ca661be07b152cd51106e90eeec53fd988b1afdf0e3b0314bd",
+      "uncompressed_bytes": 17559
+    },
+    {
+      "path": "csp13-catalog-first.log.gz",
+      "sha256": "e94b7a7a791c602dc0f58761c4cf861c7a67205a32d640829e165abe0179d714",
+      "uncompressed_sha256": "b0eb0887287b34f43e82b52561767a3e35abbbc5ca974d9a667769619ecdcb92",
+      "uncompressed_bytes": 700
+    },
+    {
+      "path": "csp13-catalog-local-first.log.gz",
+      "sha256": "2bfc319a4881c76d5fd0f5cdaaca80480081681a4b3ad27fe7ad0ba9569b34ff",
+      "uncompressed_sha256": "727f6957ae9b4651c728987092a0547a0697c9bea734b00bf3e332ad6ac42a8c",
+      "uncompressed_bytes": 120
+    },
+    {
+      "path": "csp13-catalog-local-second.log.gz",
+      "sha256": "14586a9022b7b3b3b54f078f4482dad0472b61c93d255ce5f03105cdb023bb5d",
+      "uncompressed_sha256": "79d366c0481cb50733dc450c7c32f8fca4ca35098b73631d6e8b51b012564010",
+      "uncompressed_bytes": 361
+    },
+    {
+      "path": "csp13-baseline-journals-producer-review.log.gz",
+      "sha256": "b3b09faedc3ba1b101f023f8552c8d212f0c7e5dee156d5213c647ee5d7b8d4c",
+      "uncompressed_sha256": "5733cc9a69dbfe90d80255abda3a48a5627a346bbeec43319b5a6b0d535fddca",
+      "uncompressed_bytes": 1346
+    },
+    {
+      "path": "native-publication-macos-15--git-acquisition.jsonl.gz",
+      "sha256": "36c7f84f4119be05480bece411e25bec97b1956b156bc880845957f06164ace5",
+      "uncompressed_sha256": "39c3cf12fc36a2787250896a66301713bdde93ebe8a207b5a44df643bcf77762",
+      "uncompressed_bytes": 10608
+    },
+    {
+      "path": "native-publication-macos-15--publication-preparation.jsonl.gz",
+      "sha256": "aa26ff4588bb9cc917f63af0e4cf612e45615ad1be8b90bedade6757659a72d3",
+      "uncompressed_sha256": "271b7310f13363ca923a8d9afe26005891badb8a010f36034c06d0e79d9d36e0",
+      "uncompressed_bytes": 2234661
+    },
+    {
+      "path": "native-publication-macos-15--publisher-ingestion.jsonl.gz",
+      "sha256": "67ab09d9a034dc9503885710f76f8f7f8f715ea293dab4648e3be66fb91e5051",
+      "uncompressed_sha256": "0353424e39cb8a77b3388a25dab9b4a5ed808cd10a6acb659d8920624586da62",
+      "uncompressed_bytes": 5469
+    },
+    {
+      "path": "native-publication-macos-15--toolchain.txt.gz",
+      "sha256": "6e490c499188249bdc130065ebbee003714c4508246f262233f1c816cfea941b",
+      "uncompressed_sha256": "bd6912476815abe7799d5151a468b459ff557ff8c1cee943f59da6d3f74cbde3",
+      "uncompressed_bytes": 61
+    },
+    {
+      "path": "native-publication-ubuntu-24.04--git-acquisition.jsonl.gz",
+      "sha256": "7ac6d4ca6b5cd9cb6d3230e86c830f146effbc556c2a5e727637f999c9d3a101",
+      "uncompressed_sha256": "3bf9d25ae8b03727c2e7b304566547b4ae84c255b4cadf1b39ce95027cfb4702",
+      "uncompressed_bytes": 10616
+    },
+    {
+      "path": "native-publication-ubuntu-24.04--publication-preparation.jsonl.gz",
+      "sha256": "9da71ceb484179b43b8a35268330c31ba4f7116bf6e2648880c5b82121b1b0e5",
+      "uncompressed_sha256": "cad7add54f94bd07c92ed4238e15ab560d8028c7f230f5640de4b4c733ba5d1b",
+      "uncompressed_bytes": 2250409
+    },
+    {
+      "path": "native-publication-ubuntu-24.04--publisher-ingestion.jsonl.gz",
+      "sha256": "4b128956dc16636ef8339208724b05228052d2c375334f8e9f382151c2859805",
+      "uncompressed_sha256": "913265105343d55a8eb7cf8c01a367072c3ee650d1160d0f3b7d88a3bd5f80aa",
+      "uncompressed_bytes": 5535
+    },
+    {
+      "path": "native-publication-ubuntu-24.04--toolchain.txt.gz",
+      "sha256": "bf3d224792515352796ee049b4260a417d964975055291c3dd6d5c7da609e32f",
+      "uncompressed_sha256": "9019a5d77dde6ec377ac457b0781b39e7066e10d84f3101c7b42d09bacff6fa0",
+      "uncompressed_bytes": 58
+    },
+    {
+      "path": "native-publication-ubuntu-24.04-arm--git-acquisition.jsonl.gz",
+      "sha256": "25c8d235713f2cabd58e1aaf9c805f4185dd0fab20bab2ffc70f50f5786f0d2a",
+      "uncompressed_sha256": "6d9bcc1ce068947bfac9f5183c99de235d7bc3620ce2f6fffe26398a7ffbcdf7",
+      "uncompressed_bytes": 10621
+    },
+    {
+      "path": "native-publication-ubuntu-24.04-arm--publication-preparation.jsonl.gz",
+      "sha256": "9b2313d5d02a799cf4a7acfd3a688d5463ff91560e02659023b05c50caa7377f",
+      "uncompressed_sha256": "19ed90b87742461529e8b2ae2345bf9dedc859ebd3a3cfdfe2cff8e1b0a44bd6",
+      "uncompressed_bytes": 2250403
+    },
+    {
+      "path": "native-publication-ubuntu-24.04-arm--publisher-ingestion.jsonl.gz",
+      "sha256": "4dbd1b2c88f5156217125359a65e76c44e001cecd2bcdce95f8dd263b746c2eb",
+      "uncompressed_sha256": "f64721d58d90aab5251c2137e8f799790456bb5c623b76b8e33bb0cb69fce4e4",
+      "uncompressed_bytes": 5536
+    },
+    {
+      "path": "native-publication-ubuntu-24.04-arm--toolchain.txt.gz",
+      "sha256": "5cb5fb89008560c7073bfe79ee812fd45708a05f86d7baf27e4a2b5270755a51",
+      "uncompressed_sha256": "272f5bcd02190b64ac3d34eb7071973e38cc4c5246b757e17b6be8b93990ce58",
+      "uncompressed_bytes": 58
+    },
+    {
+      "path": "native-publication-windows-11-arm--git-acquisition.jsonl.gz",
+      "sha256": "16f5339fa11da6cc85bc57dac60bb0e5630e7565713ad7f83cbe8a5fe32c73c8",
+      "uncompressed_sha256": "993e927eb24da88e488720a16b2cff04e159c62807b3fb7b63171eb56f692ae7",
+      "uncompressed_bytes": 10971
+    },
+    {
+      "path": "native-publication-windows-11-arm--publication-preparation.jsonl.gz",
+      "sha256": "cdc97e15526109828a75ccdebbef6e9096d229fba26f8d152e494de2c08e2ca9",
+      "uncompressed_sha256": "e7304acf78905ced6a2fc60bf0dd43376fa15194288302fe2efd0d830403b448",
+      "uncompressed_bytes": 2289328
+    },
+    {
+      "path": "native-publication-windows-11-arm--publisher-ingestion.jsonl.gz",
+      "sha256": "2acfdbf2f31b08b06588553a65539022fc665fbe92696fb9ad5312d44eaf3245",
+      "uncompressed_sha256": "2eab6e77237123e23bac575769e17ea8c30239ccfc962e02a3d116fc9d93b62d",
+      "uncompressed_bytes": 5621
+    },
+    {
+      "path": "native-publication-windows-11-arm--toolchain.txt.gz",
+      "sha256": "60c59f8759a34774f8a7ca9bbaef5e11415dfe39dedacc1d97a99c2e1159505b",
+      "uncompressed_sha256": "b3f5d419e25e24ddcdc67f96ff1acfc592a620446319ef63967cd923d8630a8b",
+      "uncompressed_bytes": 64
+    },
+    {
+      "path": "native-publication-windows-2025--git-acquisition.jsonl.gz",
+      "sha256": "27f0e479c9376588200011d82a211df85d0d45a6a1df95d4ca6c95a0f00580eb",
+      "uncompressed_sha256": "efa3b51e1b97d5027671bbd66589d93c9234a824914879eafa3362df40226095",
+      "uncompressed_bytes": 10701
+    },
+    {
+      "path": "native-publication-windows-2025--publication-preparation.jsonl.gz",
+      "sha256": "4643e29e0eac7a77af0ff7064c6050ebe128db59bad6c597fb9f3dfc93375b72",
+      "uncompressed_sha256": "9514c02cc996e69a44fb717c9d2b8be51ee51e3f4741d07b92abbf1b35754d91",
+      "uncompressed_bytes": 2239739
+    },
+    {
+      "path": "native-publication-windows-2025--publisher-ingestion.jsonl.gz",
+      "sha256": "d82fa9b19e38dbaa2574d01cb7bbca9a5ff8521009bcd5ed75d74a23e34cd4f8",
+      "uncompressed_sha256": "171dbd184432a0cc908b8069f9411dd660f8ea6946dc7017b23d9bc42a729af1",
+      "uncompressed_bytes": 5501
+    },
+    {
+      "path": "native-publication-windows-2025--toolchain.txt.gz",
+      "sha256": "b3f1ba7b44f88e4eafab07f8de55b886230a6f236ada112d1fa36f38d17d4537",
+      "uncompressed_sha256": "f0bcc23df5afb670235b8dfd532d4a6048821a5c6fb61e9443fe2cc08d8ff343",
+      "uncompressed_bytes": 64
+    },
+    {
+      "path": "native-runtime-macos-15--filesystem-preflight.jsonl.gz",
+      "sha256": "cc1def121d451eb26dfe353e4be97f7a8f274aa9ae62b1a7ec21923e77ace945",
+      "uncompressed_sha256": "a9990932668aee894844aee4463a9790215366dbbff169adf2df7097bdb621fa",
+      "uncompressed_bytes": 43059
+    },
+    {
+      "path": "native-runtime-macos-15--tests.jsonl.gz",
+      "sha256": "c1dfa7a81adffca73da0c2325ae867085355b0e81f2dbffe09b59b08a032a693",
+      "uncompressed_sha256": "d1e705814a8ed57ceaaffec9b7e50a0fd7c8689747d0ddc5f107b70a4aedb69f",
+      "uncompressed_bytes": 6643786
+    },
+    {
+      "path": "native-runtime-macos-15--toolchain.txt.gz",
+      "sha256": "6e490c499188249bdc130065ebbee003714c4508246f262233f1c816cfea941b",
+      "uncompressed_sha256": "bd6912476815abe7799d5151a468b459ff557ff8c1cee943f59da6d3f74cbde3",
+      "uncompressed_bytes": 61
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04--filesystem-preflight.jsonl.gz",
+      "sha256": "290f587b5c1482a08cee3e0881122ffd7bf47c34812646bf75706f56fb27bc18",
+      "uncompressed_sha256": "891201b38c4317a743e4475b20610a4c6effc32d1100c93759383eb59dcd0dff",
+      "uncompressed_bytes": 43583
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04--service-owner.txt.gz",
+      "sha256": "f4d13eba019a347ac818c324f9e5f07df7c63bb7188d353fc1d33ed43c5f560a",
+      "uncompressed_sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68",
+      "uncompressed_bytes": 323
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04--tests.jsonl.gz",
+      "sha256": "ba67dc9d9b7f9ce2009c9b00c95308d2b85287b9fc41b65fadeb748a36752d19",
+      "uncompressed_sha256": "6758dc11e71357c6c74d8cc778d54c59c7e993ffa13a6b45bc58d23761a7b8be",
+      "uncompressed_bytes": 6670856
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04--toolchain.txt.gz",
+      "sha256": "bf3d224792515352796ee049b4260a417d964975055291c3dd6d5c7da609e32f",
+      "uncompressed_sha256": "9019a5d77dde6ec377ac457b0781b39e7066e10d84f3101c7b42d09bacff6fa0",
+      "uncompressed_bytes": 58
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04-arm--filesystem-preflight.jsonl.gz",
+      "sha256": "814b8cb2540ec87d1fcf17eaf8d4bee789d410c91d894ed6b461843e641e47a7",
+      "uncompressed_sha256": "a1d609f5d3fcf36aa353ca6a055abac2719f44a46ccf0278b00d57bb99004e7a",
+      "uncompressed_bytes": 43580
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04-arm--service-owner.txt.gz",
+      "sha256": "f4d13eba019a347ac818c324f9e5f07df7c63bb7188d353fc1d33ed43c5f560a",
+      "uncompressed_sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68",
+      "uncompressed_bytes": 323
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04-arm--tests.jsonl.gz",
+      "sha256": "22d0c40399f1e7896990f3ed3c7d9f7865125a8affd94bb3184faa15bbefb95a",
+      "uncompressed_sha256": "6f3195bf69e5368a7af248ef9c9fbdefcd5e9ff479f961f32dd5c45f7b3152ff",
+      "uncompressed_bytes": 6671117
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04-arm--toolchain.txt.gz",
+      "sha256": "5cb5fb89008560c7073bfe79ee812fd45708a05f86d7baf27e4a2b5270755a51",
+      "uncompressed_sha256": "272f5bcd02190b64ac3d34eb7071973e38cc4c5246b757e17b6be8b93990ce58",
+      "uncompressed_bytes": 58
+    },
+    {
+      "path": "native-runtime-windows-11-arm--filesystem-preflight.jsonl.gz",
+      "sha256": "fad19e0f7b2487877516dfaa2f7cbcfe5caf165e9447f6660ee6c392cf274c96",
+      "uncompressed_sha256": "3d5b5da21e384ede97d228544bb6252e1051bdc87cff9831046b5bca282ed92b",
+      "uncompressed_bytes": 51687
+    },
+    {
+      "path": "native-runtime-windows-11-arm--tests.jsonl.gz",
+      "sha256": "13398713a1b2ef7cb1f029b8b413ac1cfe0b5ac72bd3f8d4a9bb79261c1cc4fb",
+      "uncompressed_sha256": "f677d76ca2772d54172089ee3ee6a736b9f9da1f6c4bbfbd854477495173995f",
+      "uncompressed_bytes": 6543335
+    },
+    {
+      "path": "native-runtime-windows-11-arm--toolchain.txt.gz",
+      "sha256": "60c59f8759a34774f8a7ca9bbaef5e11415dfe39dedacc1d97a99c2e1159505b",
+      "uncompressed_sha256": "b3f5d419e25e24ddcdc67f96ff1acfc592a620446319ef63967cd923d8630a8b",
+      "uncompressed_bytes": 64
+    },
+    {
+      "path": "native-runtime-windows-11-arm--windows-clock.jsonl.gz",
+      "sha256": "078cb4b56611140c8a621cbd65aeb3061249bd20a61041fed54c7a66a0693bd1",
+      "uncompressed_sha256": "d7362d817b8be8d94aada56d52f08cc49f60c6e3255bc2303dacc6528357b944",
+      "uncompressed_bytes": 25205
+    },
+    {
+      "path": "native-runtime-windows-11-arm--windows-time-access.json.gz",
+      "sha256": "52c6a55e5942a08a2d706e723317aabcf0742233f28197b57dd03b90bc5830ee",
+      "uncompressed_sha256": "53b44fe516b8ce013f7c2987ac3b86a229bd5313f09c59536a80db8d670844c2",
+      "uncompressed_bytes": 93
+    },
+    {
+      "path": "native-runtime-windows-11-arm--windows-time-privileges.log.gz",
+      "sha256": "b4ab370164f1c3baf18a8259521ce9c03b2a59f8463f9dfb16bf92294b20dddc",
+      "uncompressed_sha256": "cda1d7b0e546f2a7ce49417c9bb9b11381302103634fa8ec0d76c9132f688ed8",
+      "uncompressed_bytes": 3146
+    },
+    {
+      "path": "native-runtime-windows-11-arm--windows-time-service.json.gz",
+      "sha256": "4dbb611839d1125eef0c6cc3020dd800d2fe42dd7da2c1b94f0b211c200550b9",
+      "uncompressed_sha256": "16fcb5aa411e95645f7d52f9de27cd2c9f7474bc20f2e5f9552f28dbfaa91801",
+      "uncompressed_bytes": 125
+    },
+    {
+      "path": "native-runtime-windows-11-arm--windows-time-status.log.gz",
+      "sha256": "f0ca76654143af01bc8e0556737c735ee9e61cef1d2ba67236fc3978c47de21b",
+      "uncompressed_sha256": "ec9d7221b326252a30f195b94b36e09ad38a784036f20b47a81fab493bd7b5e9",
+      "uncompressed_bytes": 546
+    },
+    {
+      "path": "native-runtime-windows-2025--filesystem-preflight.jsonl.gz",
+      "sha256": "f8d41db2837528548e313f2c40430b42ac68eaa78cfe346f940fdbb64c28ccba",
+      "uncompressed_sha256": "f1fa264c5192a9e2439f5b3f481d6fa349071a216bca35d2415f13927ce5f5c2",
+      "uncompressed_bytes": 50746
+    },
+    {
+      "path": "native-runtime-windows-2025--filesystem-race.jsonl.gz",
+      "sha256": "b42bc0399ce67f8f3a51da119826ba3d216314d3a79549592a4842598a7d9442",
+      "uncompressed_sha256": "3e445eddcb1aee46b07e38656958e319dd5fed3f5c96ace470bab9eb96f3099d",
+      "uncompressed_bytes": 172606
+    },
+    {
+      "path": "native-runtime-windows-2025--tests.jsonl.gz",
+      "sha256": "37676b01237dbf54a7ccc90d48872b4b8807753a14a2091cec22a1e03fe00c60",
+      "uncompressed_sha256": "79dcab7de115314434eb884d1e2ffb6707b3b89469485e4d6626b3352ed50dc3",
+      "uncompressed_bytes": 6394251
+    },
+    {
+      "path": "native-runtime-windows-2025--toolchain.txt.gz",
+      "sha256": "b3f1ba7b44f88e4eafab07f8de55b886230a6f236ada112d1fa36f38d17d4537",
+      "uncompressed_sha256": "f0bcc23df5afb670235b8dfd532d4a6048821a5c6fb61e9443fe2cc08d8ff343",
+      "uncompressed_bytes": 64
+    },
+    {
+      "path": "native-runtime-windows-2025--windows-clock.jsonl.gz",
+      "sha256": "a1febde092809bfd5915dcab04976c677e151feb54345730bdb00138b74e14d5",
+      "uncompressed_sha256": "0c118d8723820fcfc091c5a93ece46cf12d19313b22f7c95af859cfbb2895e1b",
+      "uncompressed_bytes": 24676
+    },
+    {
+      "path": "native-runtime-windows-2025--windows-time-access.json.gz",
+      "sha256": "56f77644e5857e18f7227db1c29f7d0a5e7fcb22da983e88e327939938c3f9f2",
+      "uncompressed_sha256": "30a8a2c16f5fe3cbc76bdac030a5e5d300010ecec784d5b1ee7a22b4b29a2df2",
+      "uncompressed_bytes": 93
+    },
+    {
+      "path": "native-runtime-windows-2025--windows-time-privileges.log.gz",
+      "sha256": "b4ab370164f1c3baf18a8259521ce9c03b2a59f8463f9dfb16bf92294b20dddc",
+      "uncompressed_sha256": "cda1d7b0e546f2a7ce49417c9bb9b11381302103634fa8ec0d76c9132f688ed8",
+      "uncompressed_bytes": 3146
+    },
+    {
+      "path": "native-runtime-windows-2025--windows-time-service.json.gz",
+      "sha256": "ce77e71aba160a934315dc75351b02da8afec4433544ace8bd26e3e028cad9e1",
+      "uncompressed_sha256": "746f7adffaf0d899e21cf316418fb9af798343291b47b9449871c9a6363fe0d8",
+      "uncompressed_bytes": 125
+    },
+    {
+      "path": "native-runtime-windows-2025--windows-time-status.log.gz",
+      "sha256": "c223843b0048a497db8fa529b95fbb1e0898f78fcfe7735cabe3605e1a068d89",
+      "uncompressed_sha256": "f937c0f842a550d0725c2ae8f4164ebf901b0040c8f4be9d2c69bf4a37c81506",
+      "uncompressed_bytes": 593
+    },
+    {
+      "path": "plan-writing-final.log.gz",
+      "sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b",
+      "uncompressed_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618",
+      "uncompressed_bytes": 33
+    },
+    {
+      "path": "plan-writing-full.log.gz",
+      "sha256": "ea1a5b2698cbdf9eebc2851c6564f597b41192bfbc3f39b8cab2e09596fcc572",
+      "uncompressed_sha256": "461dc62d2cd42cf4ad37748c44ea6e873fe2e8f99ee64f99bd2e00aa4e296a64",
+      "uncompressed_bytes": 55465
+    }
+  ],
+  "fleet_test_seconds": {
+    "intermediate-published-storage-race": 231.65,
+    "published-storage-race": 133.3
+  },
+  "plan_checks": {
+    "structure": "plan-validation.json",
+    "scoped_prose": "PASS: 3 files, 0 diagnostics",
+    "full_prose": "FAIL: 1948 files, 227 diagnostics. The plan diagnostic is on unchanged header line 10. No diagnostic names the updated design sections. Scoped current prose passes."
+  }
+}

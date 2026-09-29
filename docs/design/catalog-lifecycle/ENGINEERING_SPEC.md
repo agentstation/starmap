@@ -5380,3 +5380,13 @@ Keep staged files as `verified-staging` and journal records as `verified-history
 Unknown, malformed, or changed stages cause refusal before target preparation. Interrupted path migration, independent history, controlled activation, and full qualification remain open.
 
 The [baseline publication proof](../../plans/proof/starport-production-catalog/csp13/baseline-publication-journals-2026-09-29/verification.json) records the actual #196 merge, new #197, source commits, and final pinned qualification.
+
+### Captured catalog consistency (September 29, 2026)
+
+Starport `d96a11fff` checks catalog references during backup capture, verification, and restore preparation. It reads a verified private KV image before target creation.
+Standalone checks bind catalog pointers, chunk descriptors, payloads, and acceptance history. Fleet checks also bind deployment identity, publication receipts, recovery inputs, and adoption records.
+
+Incomplete fleet uploads retain matching bytes as inactive evidence. Durable catalog records cannot expire. Captured leases preserve their recorded expiration and grant no new permission.
+These checks establish captured-state consistency. Independent later history, deployment replay, controlled activation, and interrupted path recovery remain separate requirements.
+
+The [catalog reference proof](../../plans/proof/starport-production-catalog/csp13/catalog-reference-validation-2026-09-29/verification.json) records fail-before results, source commits, the actual #197 merge, and native qualification.
