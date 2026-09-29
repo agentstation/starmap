@@ -198,7 +198,30 @@ Local `2d4fc634` reconstructs SQL principals, membership, grants, and retained b
 Both preserve exact preimages and explicit ordered deletion or recreation.
 They do not initialize new budget history.
 
-The coordinator must include authorization revision changes in each related native transaction.
+Every intermediate replay step keeps admission closed.
+After policy replay, the coordinator replaces each authorization epoch in a final ordered owner transaction.
+Complete validation follows those replacements before any store activation.
 It must validate untouched records with the same strict schemas as replayed records.
 Final checks must cover both request admission and background work before any activation.
 Complete interval evidence and coordinated operator commands remain unfinished.
+
+## Native final inspection and revision authority
+
+Local `ceee809f` captures imported SQL and blob state without releasing startup barriers.
+SQL inspection checks the exact claim and retained replay cursor around a consistent export.
+Blob inspection checks native control state during capture and refuses output inside its imported filesystem.
+Both provide final guards for complete graph inspection. External writer fencing remains required.
+
+Local `55b9d878` replaces KV and SQL authorization revisions with explicit independently accepted epochs.
+The replacement preserves exact expected preimages and starts at sequence one.
+It runs once after policy replay while all stores remain closed.
+An old restored revision never proves that cached permission remains current.
+
+Local `9eb11989` derives exact component claims from the verified source and unchanged recovery operation.
+The coordinator can resume inspection or activation without repeating preparation after replay.
+Local `56aceaf59` prevents private recovery evidence from entering formatted diagnostics.
+The serialized evidence schema remains unchanged.
+
+Complete final graph checks, external interval acceptance, operator activation, and cross-topology catalog selection remain required.
+Local-to-fleet and fleet-to-local transfer must preserve accepted catalog identity and authority under their separate store contracts.
+Existing fleet adoption alone does not qualify those topology changes.

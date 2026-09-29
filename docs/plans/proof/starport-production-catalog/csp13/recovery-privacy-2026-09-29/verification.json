@@ -1,0 +1,100 @@
+{
+  "task": "CSP13",
+  "task_complete": false,
+  "source_commit": "a294108d",
+  "integration_commit": "56aceaf5",
+  "integrated_head": "56aceaf59cfe597f1231d4cc82001cce4725b12c",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "checks": {
+    "final-pure.jsonl": {
+      "results": {
+        "pass": 58
+      },
+      "skips": []
+    },
+    "final-race.jsonl": {
+      "results": {
+        "pass": 58
+      },
+      "skips": []
+    },
+    "pure.jsonl": {
+      "results": {
+        "pass": 58
+      },
+      "skips": []
+    },
+    "race.jsonl": {
+      "results": {
+        "pass": 58
+      },
+      "skips": []
+    }
+  },
+  "artifacts": {
+    "final-pure.jsonl.gz": {
+      "sha256_uncompressed": "e6bff713451c76965ddc652a8d47cdd94bf420aad7e424100cf0ccd915a6af24"
+    },
+    "final-race.jsonl.gz": {
+      "sha256_uncompressed": "ada056a733ebee7be4bd3a17a321a97c06662a691b0b96c125d4bbfad0a144f0"
+    },
+    "lint.log.gz": {
+      "sha256_uncompressed": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "prose.log.gz": {
+      "sha256_uncompressed": "2400ba049c78c104ea06bfbbc66e6a0f14493329b62b380d6eb8a9169630f60f"
+    },
+    "pure.jsonl.gz": {
+      "sha256_uncompressed": "27b169be5ec0c9e523a1f83e1d484286344b6eea704ab5dacda2404334fd2336"
+    },
+    "pure.py.gz": {
+      "sha256_uncompressed": "216e0802fb8a3d6a5154ea23676a59db4e6e2851f310e8eb2b08e161692f9b08"
+    },
+    "race.jsonl.gz": {
+      "sha256_uncompressed": "9b857709bc58a7a3acc268dfcf94cbdce446b72f1f88e47014517e485cd80d27"
+    },
+    "run.py.gz": {
+      "sha256_uncompressed": "616b145d02ebb08b3f55dd626c6a19e9ffbb440f10bbb937abbe453cbc77c1f4"
+    },
+    "verification.json.gz": {
+      "sha256_uncompressed": "947c5a6cd2401056ef5006e8d143c28f62e740b89beb1faa4f71e32108d1e8ca"
+    },
+    "vet.log.gz": {
+      "sha256_uncompressed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "remaining": [
+    "Complete recovery coordinator, independent history acceptance, final graph integration, operator activation, native platform qualification, pre-PR checks, review, publication and merge."
+  ],
+  "owner_verification": {
+    "base": "e591f971",
+    "go": "go1.27.1 darwin/arm64",
+    "tests": {
+      "final-race": {
+        "pass": 58
+      },
+      "final-pure": {
+        "pass": 58
+      }
+    },
+    "backends": [
+      "native persistent Badger",
+      "native Valkey"
+    ],
+    "checks": [
+      "go vet affected packages",
+      "make lint: 0 issues",
+      "technical-writing: 19 files, 0 diagnostics",
+      "git diff --check"
+    ],
+    "manual_review": [
+      "private pointer state prevents malformed pointer diagnostics from exposing nested fields",
+      "Formatter covers other diagnostic verbs for values and pointers",
+      "wire schema and source evidence unchanged",
+      "zero values fail closed",
+      "correction constructor deep-copies accepted wire evidence",
+      "revision replacement can run as a final independent ordered step before activation"
+    ]
+  },
+  "root_review": "Reviewed production wrapper diffs, deep-copy constructor, zero-value checks and schema preservation before integration."
+}

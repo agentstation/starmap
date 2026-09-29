@@ -1,0 +1,122 @@
+{
+  "task": "CSP13",
+  "task_complete": false,
+  "source_commit": "ceee809f",
+  "integration_commit": "ceee809f",
+  "integrated_head": "56aceaf59cfe597f1231d4cc82001cce4725b12c",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "checks": {
+    "initial.jsonl": {
+      "results": {
+        "pass": 4,
+        "skip": 1
+      },
+      "skips": [
+        "TestBlobImportInspection/objectstore"
+      ]
+    },
+    "native-expanded.jsonl": {
+      "results": {
+        "pass": 17
+      },
+      "skips": []
+    },
+    "native-initial.jsonl": {
+      "results": {
+        "pass": 7
+      },
+      "skips": []
+    },
+    "pure-final.jsonl": {
+      "results": {
+        "pass": 17
+      },
+      "skips": []
+    },
+    "pure-reviewed.jsonl": {
+      "results": {
+        "pass": 18
+      },
+      "skips": []
+    },
+    "race-final.jsonl": {
+      "results": {
+        "pass": 243
+      },
+      "skips": []
+    },
+    "race-reviewed.jsonl": {
+      "results": {
+        "pass": 18
+      },
+      "skips": []
+    },
+    "source-overlap-before.jsonl": {
+      "results": {
+        "fail": 1
+      },
+      "skips": []
+    },
+    "vet": "PASS",
+    "lint": "PASS: 0 issues",
+    "prose": "PASS: 3 files, 0 diagnostics"
+  },
+  "artifacts": {
+    "fail-before.log.gz": {
+      "sha256_uncompressed": "09289e4fd919be24511d97e5627c025858857e7e656c454b06b37581fe2a939f"
+    },
+    "initial.jsonl.gz": {
+      "sha256_uncompressed": "6d24a6ac40d6ce941882577b24a94044c035d27cb902b50da4d2a610986cf24d"
+    },
+    "lint-reviewed.log.gz": {
+      "sha256_uncompressed": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "native-expanded.jsonl.gz": {
+      "sha256_uncompressed": "c40bfafcd59fe2ded6810f4c73c8439af6fa18e40450b5262e438d72b384e99d"
+    },
+    "native-initial.jsonl.gz": {
+      "sha256_uncompressed": "bda5929927a411d25b7e613d9e2947ae63c9107936f5c39a47975bc3f0908f5d"
+    },
+    "prose-final.log.gz": {
+      "sha256_uncompressed": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    },
+    "prose-reviewed.log.gz": {
+      "sha256_uncompressed": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    "prose.log.gz": {
+      "sha256_uncompressed": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    "pure-final.jsonl.gz": {
+      "sha256_uncompressed": "55107a19b6372cdd0236114482dac44ab363ac929961e45242a3dd3b1bdab67e"
+    },
+    "pure-reviewed.jsonl.gz": {
+      "sha256_uncompressed": "4109c0e8adb58258b9810f7129f257eb1f57a14b754fb9a6bca095b9ed684acd"
+    },
+    "race-final.jsonl.gz": {
+      "sha256_uncompressed": "a942af12309fc3a788189cd33b9c46db69583ac95f96d009ea92122dae2eb5d7"
+    },
+    "race-reviewed.jsonl.gz": {
+      "sha256_uncompressed": "c3ffa8ec09e0c3f5d63c2caa17bb225dc98dd5532fb980c5e9e02f6d190c2d86"
+    },
+    "run-native.py.gz": {
+      "sha256_uncompressed": "ddd6114a97b77478d5407f46a238e481db4ec196125b1aa67e3aca2ea760bdc9"
+    },
+    "run-pure.py.gz": {
+      "sha256_uncompressed": "e1da07c07349f718aadb327f4745956c28ab4e3b7273dfd2201e2ac8d3bd5b2d"
+    },
+    "source-overlap-before.jsonl.gz": {
+      "sha256_uncompressed": "bf1383d47919a247bf55cd0d5fe3ed6359e8a503838ce4a7862bc8cec6b60681"
+    },
+    "vet-reviewed.log.gz": {
+      "sha256_uncompressed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vet.log.gz": {
+      "sha256_uncompressed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "remaining": [
+    "Complete recovery coordinator, independent history acceptance, final graph integration, operator activation, native platform qualification, pre-PR checks, review, publication and merge."
+  ],
+  "review": "recovery_contract independently reviewed native controls, SQL consistency, path overlap and final guards; no additional finding.",
+  "source_note": "243 broad race passes precede final filesystem overlap guard. Final18 race and18 pure results include that guard. One overlap regression fails before repair."
+}

@@ -1,0 +1,70 @@
+{
+  "task": "CSP13",
+  "task_complete": false,
+  "source_commit": "9eb11989",
+  "integration_commit": "9eb11989",
+  "integrated_head": "56aceaf59cfe597f1231d4cc82001cce4725b12c",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "checks": {
+    "final-binding.jsonl": {
+      "results": {
+        "pass": 1
+      },
+      "skips": []
+    },
+    "pure.jsonl": {
+      "results": {
+        "pass": 6
+      },
+      "skips": []
+    },
+    "race-initial.jsonl": {
+      "results": {
+        "pass": 17,
+        "skip": 1
+      },
+      "skips": [
+        "TestPrepareBundleLocalAndSharedRecipes/shared"
+      ]
+    },
+    "race-native.jsonl": {
+      "results": {
+        "pass": 18
+      },
+      "skips": []
+    }
+  },
+  "artifacts": {
+    "fail-before.log.gz": {
+      "sha256_uncompressed": "c160db3a3d52bc5dd8ebe71c90d6a9b17e84d285a857c0e770556a54c3a263a0"
+    },
+    "final-binding.jsonl.gz": {
+      "sha256_uncompressed": "3954b78cf1678ddd813da93418a20b00334dbbb86ddccea81a75ab9eb030f161"
+    },
+    "lint.log.gz": {
+      "sha256_uncompressed": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "prose.log.gz": {
+      "sha256_uncompressed": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66"
+    },
+    "pure.jsonl.gz": {
+      "sha256_uncompressed": "af15d5e7a826012f4cbb3d05d5b23e321ced1cfeab7525855cb1922cb29f8d49"
+    },
+    "race-initial.jsonl.gz": {
+      "sha256_uncompressed": "beadd7f68cbda4533b2104a7ff38efde10ac8a170399cd8eb6e8f6171d145b5b"
+    },
+    "race-native.jsonl.gz": {
+      "sha256_uncompressed": "c01a65cc69af7f22614dc21cd6750398f76ecb271c6814fdb63a069365f28ab3"
+    },
+    "run-native.py.gz": {
+      "sha256_uncompressed": "4f9af59c44e363cb436540a3d7fca8a8a05d70f863c17e4e2dc9cb0786d2153e"
+    },
+    "vet.log.gz": {
+      "sha256_uncompressed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "remaining": [
+    "Complete recovery coordinator, independent history acceptance, final graph integration, operator activation, native platform qualification, pre-PR checks, review, publication and merge."
+  ],
+  "source_note": "Native18 passes cover preparation and claims. Final field addition retested with one exact all-owner binding result. Six focused pure passes; vet/lint/prose pass."
+}

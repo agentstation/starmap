@@ -1,0 +1,58 @@
+{
+  "task": "CSP13",
+  "task_complete": false,
+  "source_commit": "e591f971",
+  "integration_commit": "55b9d878",
+  "integrated_head": "56aceaf59cfe597f1231d4cc82001cce4725b12c",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "checks": {
+    "native.jsonl": {
+      "results": {
+        "pass": 20
+      },
+      "skips": []
+    },
+    "qualified-pure.jsonl": {
+      "results": {
+        "pass": 41
+      },
+      "skips": []
+    },
+    "qualified-race.jsonl": {
+      "results": {
+        "pass": 41
+      },
+      "skips": []
+    }
+  },
+  "artifacts": {
+    "lint.log.gz": {
+      "sha256_uncompressed": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "native.jsonl.gz": {
+      "sha256_uncompressed": "64b932224c229121dc9e5c2ee1b06eba873dea598afa0912fc690789e1e5520a"
+    },
+    "prose.log.gz": {
+      "sha256_uncompressed": "0115cc50e23e7055e762ef7b12faf37fb81b34f3e81365314340b6d2523a7870"
+    },
+    "qualified-pure.jsonl.gz": {
+      "sha256_uncompressed": "71c68f75f3dfcc0234e2fb52506473f65ad199373114049a9ef5411d409bb464"
+    },
+    "qualified-race.jsonl.gz": {
+      "sha256_uncompressed": "e71c54637e969ae9910d3c972c45f1645632b5a3034c49bc12aa00cb454dd3cb"
+    },
+    "run-native.py.gz": {
+      "sha256_uncompressed": "76fbb48f45ed4ea5bd743cd3aae30bf2e04439d12a251543ead2b6f5e251aaa2"
+    },
+    "run-pure.py.gz": {
+      "sha256_uncompressed": "0f9462e64d667b3ca1f136ba38fc2f4d53239d3278341b5a076b5b4ba6eb0422"
+    },
+    "vet.log.gz": {
+      "sha256_uncompressed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "remaining": [
+    "Complete recovery coordinator, independent history acceptance, final graph integration, operator activation, native platform qualification, pre-PR checks, review, publication and merge."
+  ],
+  "root_review": "Read all production APIs; no correctness finding. Final-step comment repaired in subsequent privacy commit."
+}
