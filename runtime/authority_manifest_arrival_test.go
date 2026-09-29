@@ -109,17 +109,28 @@ func TestAuthorityRuntimeLearnsWithdrawalBeforePayloadArrival(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer source.Close()
-	r := openTestRuntime(t, append(options, WithSource(source))...)
+	timer := newStubScheduleTimer()
+	r := openTestRuntime(t, append(options, WithSource(source), withScheduleTimer(timer.after))...)
 	defer r.Close()
 	// Release the transfer before shutdown joins the source worker.
 	defer unblock()
-	finished := make(chan struct{})
+	// Complete startup permission persistence before the manifest transfer.
+	const waitBound = 30 * time.Second
+	if timer.waited(t, waitBound) != permissionPollInterval {
+		t.Fatal("permission schedule did not finish")
+	}
+	if !r.AllowsNewAttempt() {
+		t.Fatal("retained catalog has no valid permission before withdrawal")
+	}
+	finished := make(chan error, 1)
 	ctx, cancel := context.WithCancel(t.Context())
 	defer cancel()
-	go func() { defer close(finished); _, _ = r.RefreshSource(ctx) }()
+	go func() { _, err := r.RefreshSource(ctx); finished <- err }()
 	select {
 	case <-payloadEntered:
-	case <-time.After(5 * time.Second):
+	case err := <-finished:
+		t.Fatalf("source refresh ended before payload transfer: %v", err)
+	case <-time.After(waitBound):
 		t.Fatal("verified manifest did not reach payload transfer")
 	}
 	if r.AllowsNewAttempt() {
@@ -131,8 +142,11 @@ func TestAuthorityRuntimeLearnsWithdrawalBeforePayloadArrival(t *testing.T) {
 	unblock()
 	cancel()
 	select {
-	case <-finished:
-	case <-time.After(5 * time.Second):
+	case err := <-finished:
+		if err == nil {
+			t.Fatal("source refresh accepted the refused payload")
+		}
+	case <-time.After(waitBound):
 		t.Fatal("source refresh did not finish after payload refusal")
 	}
 }
