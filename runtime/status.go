@@ -68,6 +68,7 @@ func (r *Runtime) Status() Status {
 	r.mu.RUnlock()
 
 	report := Status{
+		RecoveryBaselineSHA256:     r.recoveryBaseline,
 		UpstreamPublication:        publication,
 		Retention:                  r.retentionStatus(state.retention),
 		Usable:                     effective.Catalog != nil,

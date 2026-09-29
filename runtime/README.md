@@ -89,6 +89,10 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type AcquisitionRequest](<#AcquisitionRequest>)
 - [type AcquisitionResult](<#AcquisitionResult>)
 - [type BindingAcquirer](<#BindingAcquirer>)
+- [type CatalogMaterializationInput](<#CatalogMaterializationInput>)
+- [type CatalogMaterializationReceipt](<#CatalogMaterializationReceipt>)
+  - [func MaterializeCatalogRecovery\(ctx context.Context, request CatalogMaterializationRequest, opts ...Option\) \(receipt CatalogMaterializationReceipt, resultErr error\)](<#MaterializeCatalogRecovery>)
+- [type CatalogMaterializationRequest](<#CatalogMaterializationRequest>)
 - [type CatalogRecovery](<#CatalogRecovery>)
   - [func CaptureFleetCatalogRecovery\(ctx context.Context, snapshot FleetSnapshot\) \(CatalogRecovery, error\)](<#CaptureFleetCatalogRecovery>)
   - [func ReadCatalogRecovery\(ctx context.Context, path string, owner DirectoryOwner, identity string, generation catalogs.Generation, recordChecksum string\) \(CatalogRecovery, error\)](<#ReadCatalogRecovery>)
@@ -703,6 +707,63 @@ BindingAcquirer observes only the supplied active declarations. It must preserve
 ```go
 type BindingAcquirer interface {
     AcquireProviderBindings(context.Context, AcquisitionRequest, []sources.ProviderAcquisitionBinding) (AcquisitionResult, error)
+}
+```
+
+<a name="CatalogMaterializationInput"></a>
+## type [CatalogMaterializationInput](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_materialization.go#L32-L35>)
+
+CatalogMaterializationInput binds one retained generation to its exact reconstruction inputs. The caller retains catalog\-store selection and authority evidence separately.
+
+```go
+type CatalogMaterializationInput struct {
+    Generation catalogs.Generation `json:"generation"`
+    Recovery   CatalogRecovery     `json:"recovery"`
+}
+```
+
+<a name="CatalogMaterializationReceipt"></a>
+## type [CatalogMaterializationReceipt](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_materialization.go#L51-L62>)
+
+CatalogMaterializationReceipt records completed private\-file replacement without catalog\-store activation. DirectoryIdentity binds native ownership. InventorySHA256 binds the supplied ordered historical inputs.
+
+```go
+type CatalogMaterializationReceipt struct {
+    Version                int                       `json:"version"`
+    OperationID            string                    `json:"operation_id"`
+    RequestSHA256          string                    `json:"request_sha256"`
+    PlanSHA256             string                    `json:"plan_sha256"`
+    InventorySHA256        string                    `json:"inventory_sha256"`
+    DirectoryIdentity      privatefiles.EntryReceipt `json:"directory_identity"`
+    SelectedManifestSHA256 string                    `json:"selected_manifest_sha256"`
+    SelectedInputsSHA256   string                    `json:"selected_inputs_sha256"`
+    CatalogPublisherID     string                    `json:"catalog_publisher_id"`
+    BaselineManifestSHA256 string                    `json:"baseline_manifest_sha256"`
+}
+```
+
+<a name="MaterializeCatalogRecovery"></a>
+### func [MaterializeCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_materialization.go#L90>)
+
+```go
+func MaterializeCatalogRecovery(ctx context.Context, request CatalogMaterializationRequest, opts ...Option) (receipt CatalogMaterializationReceipt, resultErr error)
+```
+
+MaterializeCatalogRecovery replaces catalog inputs through a private operation journal. It preserves owner, instance seed, permission checkpoints, and origin discovery records. Pending work blocks runtime startup. An exact completed retry returns its original receipt without replacing later state.
+
+<a name="CatalogMaterializationRequest"></a>
+## type [CatalogMaterializationRequest](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_materialization.go#L40-L47>)
+
+CatalogMaterializationRequest selects private catalog inputs for an existing stopped runtime. Selected is an index into Inputs. Each input must reproduce its generation under the supplied options. Writers must remain fenced throughout recovery. This API grants no publication or serving permission.
+
+```go
+type CatalogMaterializationRequest struct {
+    Directory         string                        `json:"directory"`
+    Owner             DirectoryOwner                `json:"owner"`
+    SchedulerIdentity string                        `json:"scheduler_identity"`
+    OperationID       string                        `json:"operation_id"`
+    Selected          int                           `json:"selected"`
+    Inputs            []CatalogMaterializationInput `json:"inputs"`
 }
 ```
 
@@ -2067,7 +2128,7 @@ type RetentionStatus = status.RetentionStatus
 ```
 
 <a name="Runtime"></a>
-## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L102-L151>)
+## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L102-L153>)
 
 Runtime is a connected Starmap. It serves the embedded catalog immediately, refreshes from one selected upstream source, retains per\-provider observations, and rebuilds one immutable effective catalog from those layers. Reads reach no external system.
 
@@ -2078,7 +2139,7 @@ type Runtime struct {
 ```
 
 <a name="Open"></a>
-### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L157>)
+### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L159>)
 
 ```go
 func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error)
@@ -2114,7 +2175,7 @@ func (r *Runtime) AllowsNewAttempt() bool
 AllowsNewAttempt checks current catalog permission using memory only. Call it for every new attempt, including retries and cached response delivery. It does not replace model, destination, account, or budget authorization.
 
 <a name="Runtime.Catalog"></a>
-### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L274>)
+### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L279>)
 
 ```go
 func (r *Runtime) Catalog() *catalogs.Catalog
@@ -2123,7 +2184,7 @@ func (r *Runtime) Catalog() *catalogs.Catalog
 Catalog returns the current immutable effective catalog. It reaches no external system and never blocks on the source.
 
 <a name="Runtime.Client"></a>
-### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L296>)
+### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L301>)
 
 ```go
 func (r *Runtime) Client() *starmap.Client
@@ -2132,7 +2193,7 @@ func (r *Runtime) Client() *starmap.Client
 Client returns the immutable publication client underneath the runtime. Use it for explicit publication, hooks, and generation retrieval.
 
 <a name="Runtime.Close"></a>
-### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L316>)
+### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L321>)
 
 ```go
 func (r *Runtime) Close() error
@@ -2294,7 +2355,7 @@ func (r *Runtime) RetentionSnapshot() RetentionStatus
 RetentionSnapshot returns the configured policy and last collection result without storage reads.
 
 <a name="Runtime.State"></a>
-### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L285>)
+### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L290>)
 
 ```go
 func (r *Runtime) State() starmap.CatalogState
@@ -2341,7 +2402,7 @@ UpdateObservations prepares and publishes original observations under runtime ow
 Optional resets replace prior local acquisition observations within the named scopes. Each scope requires complete successful replacement evidence. The baseline and unrelated scopes remain. Resets and replacements share the catalog publication journal.
 
 <a name="Runtime.Updates"></a>
-### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L306>)
+### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L311>)
 
 ```go
 func (r *Runtime) Updates() <-chan starmap.CatalogState

@@ -129,12 +129,14 @@ type Runtime struct {
 	permissionIO          sync.Mutex
 	authorityObservers    authorityObservationGroup
 
-	instanceSeed string
-	directory    *flock.Flock
-	store        *layerStore
-	lease        *leaseKeeper
-	schedule     scheduler
-	runs         runGroup
+	recoveryPublisher string
+	recoveryBaseline  string
+	instanceSeed      string
+	directory         *flock.Flock
+	store             *layerStore
+	lease             *leaseKeeper
+	schedule          scheduler
+	runs              runGroup
 
 	// updatesMu guards the publication channel. Close marks the channel closed
 	// under the lock that broadcast holds. A caller-owned run that publishes
@@ -196,6 +198,9 @@ func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 	}
 	directory, err = acquireDirectory(ctx, config.stateDirectory)
 	if err != nil {
+		return nil, err
+	}
+	if err := refusePendingCatalogMaterialization(ctx, config.stateDirectory); err != nil {
 		return nil, err
 	}
 	if err := refusePendingMigration(config.stateDirectory); err != nil {
@@ -369,7 +374,7 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	if r.config.fleetStore == nil {
+	if r.config.fleetStore == nil && r.recoveryBaseline == "" {
 		r.layers.embedded = baseline
 		r.layers.embeddedManifest = &manifest
 	} else {

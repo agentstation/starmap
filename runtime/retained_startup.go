@@ -23,6 +23,9 @@ func (r *Runtime) initializeRetainedState(ctx context.Context, initialFleet *Fle
 		if err := r.store.recoverInputPublication(ctx, r.client.CurrentCatalogState()); err != nil {
 			return err
 		}
+		if err := r.initializeRecoveryBaseline(ctx); err != nil {
+			return err
+		}
 		if err := r.loadRetainedLayers(ctx); err != nil {
 			return err
 		}

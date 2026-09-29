@@ -213,6 +213,11 @@ func (r *Runtime) collectCatalogRecovery(ctx context.Context, limit int, maxByte
 		return inventory.scanned, inventory.bytes, 0, err
 	}
 	keepBaselines := make(map[string]bool)
+	if checkpoint, err := r.store.loadRecoveryBaseline(ctx); err != nil {
+		return inventory.scanned, inventory.bytes, 0, err
+	} else if checkpoint != nil {
+		keepBaselines[checkpoint.ManifestSHA256] = true
+	}
 	var candidates []capturedCatalogRecovery
 	for _, record := range inventory.records {
 		generation, err := r.client.Generation(ctx, record.record.GenerationID)
