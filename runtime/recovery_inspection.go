@@ -97,6 +97,12 @@ func (s *layerStore) inspectRetainedRecords(ctx context.Context) error {
 	if _, err := s.loadPinRecord(); err != nil {
 		return err
 	}
+	if err := inspectMaterializationJournals(ctx, s); err != nil {
+		return err
+	}
+	if _, err := s.loadRecoveryBaseline(ctx); err != nil {
+		return err
+	}
 	if err := s.inspectCatalogRecovery(ctx); err != nil {
 		return err
 	}

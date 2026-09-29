@@ -235,12 +235,14 @@ func (k SourceKind) Valid() bool
 Valid reports whether the kind is one of the accepted source names.
 
 <a name="Status"></a>
-## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L118-L244>)
+## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L118-L246>)
 
 Status is the operator\-facing state of one connected runtime. It keeps usability, freshness, fallback, direct source health, and upstream\-reported health as five independent values, so a warning on one never hides another.
 
 ```go
 type Status struct {
+    // RecoveryBaselineSHA256 identifies an explicit retained recovery baseline.
+    RecoveryBaselineSHA256 string `json:"recovery_baseline_sha256,omitempty"`
     // UpstreamPublication summarizes run evidence independently of catalog and channel age.
     UpstreamPublication *Publication
     // Retention reports collection capability, bounded usage, and the last maintenance outcome.

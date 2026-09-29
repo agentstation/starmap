@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/agentstation/starmap/internal/privatefiles"
@@ -28,6 +29,13 @@ func TestFileInspectionPreservesPrivateRecordStaging(t *testing.T) {
 		{"catalog-runtime/providers/bindings", ".layer-candidate", "runtime-evidence"},
 		{"catalog-runtime/publication-inputs", ".input-candidate", "runtime-evidence"},
 		{"github-catalog-source", ".state-candidate", "github-discovery"},
+		{"catalog-runtime", ".materialization-selection-candidate", "runtime-evidence"},
+		{"catalog-runtime", "recovery-baseline.json", "runtime-evidence"},
+		{"catalog-runtime", "materialization.json", "runtime-evidence"},
+		{"catalog-runtime/materializations/" + strings.Repeat("a", 64), "plan.json.gz", "runtime-evidence"},
+		{"catalog-runtime/materializations/" + strings.Repeat("a", 64), "complete.json", "runtime-evidence"},
+		{"catalog-runtime/materializations/" + strings.Repeat("a", 64), ".materialization-plan-candidate", "runtime-evidence"},
+		{"catalog-runtime/materializations/" + strings.Repeat("a", 64), ".materialization-complete-candidate", "runtime-evidence"},
 	} {
 		path := filepath.Join(paths.Runtime.Path, filepath.FromSlash(location.directory))
 		directory, err := privatefiles.NewDirectory(path)

@@ -432,6 +432,9 @@ func (r *Runtime) loadRetainedLayers(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	if r.recoveryPublisher != "" {
+		publisherID = r.recoveryPublisher
+	}
 	if err := checkRetainedRemovals(r.client.CurrentCatalogState().Catalog, publisherID, removals); err != nil {
 		return err
 	}

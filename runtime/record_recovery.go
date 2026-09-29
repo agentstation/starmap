@@ -9,6 +9,9 @@ import (
 )
 
 func isRecordPublicationDirectory(path string) bool {
+	if filepath.Base(path) == privatefiles.PublicationDirectoryName && materializationJournalDirectory(filepath.ToSlash(filepath.Dir(path))) {
+		return true
+	}
 	switch filepath.ToSlash(path) {
 	case layerDirectoryName + "/" + privatefiles.PublicationDirectoryName,
 		layerDirectoryName + "/" + providerLayerDirectoryName + "/" + privatefiles.PublicationDirectoryName,

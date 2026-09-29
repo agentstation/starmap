@@ -95,6 +95,10 @@ func (s *fleetTestSession) Publication(ctx context.Context, head FleetHead) (Fle
 	}
 	snapshot.Publication.Generation = snapshot.Publication.Generation.Copy()
 	snapshot.Publication.Recovery.Data = bytes.Clone(snapshot.Publication.Recovery.Data)
+	if snapshot.Publication.RecoveryOrigin != nil {
+		origin := *snapshot.Publication.RecoveryOrigin
+		snapshot.Publication.RecoveryOrigin = &origin
+	}
 	return snapshot, nil
 }
 
@@ -177,7 +181,7 @@ func (s *fleetTestSession) Release(ctx context.Context, lease Lease) error {
 }
 
 func (s *fleetTestSession) CommitPublication(ctx context.Context, p FleetPublication) (FleetHead, error) {
-	if err := p.Validate(); err != nil {
+	if err := p.ValidateRefreshPublication(); err != nil {
 		return FleetHead{}, err
 	}
 	b := s.backend

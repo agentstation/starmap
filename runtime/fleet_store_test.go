@@ -86,6 +86,9 @@ type fleetRecordingStore struct {
 }
 
 func (s *fleetRecordingStore) CommitPublication(_ context.Context, p FleetPublication) (FleetHead, error) {
+	if err := p.ValidateRefreshPublication(); err != nil {
+		return FleetHead{}, err
+	}
 	s.attempts = append(s.attempts, p)
 	head := p.nextHead()
 	if s.wrongHead {

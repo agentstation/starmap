@@ -70,6 +70,9 @@ func inspectRuntimeInventory(ctx context.Context, directory *privatefiles.Direct
 }
 
 func knownRuntimeRecoveryDirectory(name string) bool {
+	if materializationJournalDirectory(name) {
+		return true
+	}
 	switch name {
 	case layerDirectoryName, layerDirectoryName + "/" + providerLayerDirectoryName,
 		layerDirectoryName + "/" + providerLayerDirectoryName + "/" + bindingLayerDirectoryName,
@@ -81,6 +84,9 @@ func knownRuntimeRecoveryDirectory(name string) bool {
 }
 
 func runtimeRecoveryFileLimit(name string) (int64, bool, error) {
+	if limit, known := materializationJournalFileLimit(name); known {
+		return limit, false, nil
+	}
 	parent, base := path.Dir(name), path.Base(name)
 	if isRecordPublicationDirectory(parent) && base == directoryLockName {
 		return 0, false, nil
@@ -97,7 +103,7 @@ func runtimeRecoveryFileLimit(name string) (int64, bool, error) {
 		}
 	case layerDirectoryName:
 		switch base {
-		case sourceLayerFileName, manualHistoryName, removalPolicyName, inputPublicationName:
+		case sourceLayerFileName, manualHistoryName, removalPolicyName, inputPublicationName, recoveryBaselineName, materializationSelectionName:
 			return maxLayerBytes, false, nil
 		case permissionCheckpointFile:
 			return maxPermissionCheckpointBytes, false, nil

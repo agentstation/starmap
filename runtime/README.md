@@ -89,6 +89,10 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type AcquisitionRequest](<#AcquisitionRequest>)
 - [type AcquisitionResult](<#AcquisitionResult>)
 - [type BindingAcquirer](<#BindingAcquirer>)
+- [type CatalogMaterializationInput](<#CatalogMaterializationInput>)
+- [type CatalogMaterializationReceipt](<#CatalogMaterializationReceipt>)
+  - [func MaterializeCatalogRecovery\(ctx context.Context, request CatalogMaterializationRequest, opts ...Option\) \(receipt CatalogMaterializationReceipt, resultErr error\)](<#MaterializeCatalogRecovery>)
+- [type CatalogMaterializationRequest](<#CatalogMaterializationRequest>)
 - [type CatalogRecovery](<#CatalogRecovery>)
   - [func CaptureFleetCatalogRecovery\(ctx context.Context, snapshot FleetSnapshot\) \(CatalogRecovery, error\)](<#CaptureFleetCatalogRecovery>)
   - [func ReadCatalogRecovery\(ctx context.Context, path string, owner DirectoryOwner, identity string, generation catalogs.Generation, recordChecksum string\) \(CatalogRecovery, error\)](<#ReadCatalogRecovery>)
@@ -113,8 +117,10 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(i FleetIdentity\) Validate\(\) error](<#FleetIdentity.Validate>)
 - [type FleetPublication](<#FleetPublication>)
   - [func \(p FleetPublication\) Validate\(\) error](<#FleetPublication.Validate>)
+  - [func \(p FleetPublication\) ValidateRefreshPublication\(\) error](<#FleetPublication.ValidateRefreshPublication>)
 - [type FleetRecovery](<#FleetRecovery>)
   - [func \(r FleetRecovery\) Validate\(generation catalogs.Generation\) error](<#FleetRecovery.Validate>)
+- [type FleetRecoveryOrigin](<#FleetRecoveryOrigin>)
 - [type FleetSnapshot](<#FleetSnapshot>)
   - [func \(s FleetSnapshot\) Validate\(\) error](<#FleetSnapshot.Validate>)
 - [type FleetStatus](<#FleetStatus>)
@@ -446,6 +452,12 @@ const (
 )
 ```
 
+<a name="FleetRecoveryOriginVersion"></a>FleetRecoveryOriginVersion identifies the explicit closed\-import evidence schema.
+
+```go
+const FleetRecoveryOriginVersion = 1
+```
+
 <a name="MaxFleetRecoveryBytes"></a>MaxFleetRecoveryBytes bounds both encoded and decoded private inputs for one fleet publication.
 
 ```go
@@ -706,6 +718,63 @@ type BindingAcquirer interface {
 }
 ```
 
+<a name="CatalogMaterializationInput"></a>
+## type [CatalogMaterializationInput](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_materialization.go#L32-L35>)
+
+CatalogMaterializationInput binds one retained generation to its exact reconstruction inputs. The caller retains catalog\-store selection and authority evidence separately.
+
+```go
+type CatalogMaterializationInput struct {
+    Generation catalogs.Generation `json:"generation"`
+    Recovery   CatalogRecovery     `json:"recovery"`
+}
+```
+
+<a name="CatalogMaterializationReceipt"></a>
+## type [CatalogMaterializationReceipt](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_materialization.go#L51-L62>)
+
+CatalogMaterializationReceipt records completed private\-file replacement without catalog\-store activation. DirectoryIdentity binds native ownership. InventorySHA256 binds the supplied ordered historical inputs.
+
+```go
+type CatalogMaterializationReceipt struct {
+    Version                int                       `json:"version"`
+    OperationID            string                    `json:"operation_id"`
+    RequestSHA256          string                    `json:"request_sha256"`
+    PlanSHA256             string                    `json:"plan_sha256"`
+    InventorySHA256        string                    `json:"inventory_sha256"`
+    DirectoryIdentity      privatefiles.EntryReceipt `json:"directory_identity"`
+    SelectedManifestSHA256 string                    `json:"selected_manifest_sha256"`
+    SelectedInputsSHA256   string                    `json:"selected_inputs_sha256"`
+    CatalogPublisherID     string                    `json:"catalog_publisher_id"`
+    BaselineManifestSHA256 string                    `json:"baseline_manifest_sha256"`
+}
+```
+
+<a name="MaterializeCatalogRecovery"></a>
+### func [MaterializeCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_materialization.go#L90>)
+
+```go
+func MaterializeCatalogRecovery(ctx context.Context, request CatalogMaterializationRequest, opts ...Option) (receipt CatalogMaterializationReceipt, resultErr error)
+```
+
+MaterializeCatalogRecovery replaces catalog inputs through a private operation journal. It preserves owner, instance seed, permission checkpoints, and origin discovery records. Pending work blocks runtime startup. An exact completed retry returns its original receipt without replacing later state.
+
+<a name="CatalogMaterializationRequest"></a>
+## type [CatalogMaterializationRequest](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_materialization.go#L40-L47>)
+
+CatalogMaterializationRequest selects private catalog inputs for an existing stopped runtime. Selected is an index into Inputs. Each input must reproduce its generation under the supplied options. Writers must remain fenced throughout recovery. This API grants no publication or serving permission.
+
+```go
+type CatalogMaterializationRequest struct {
+    Directory         string                        `json:"directory"`
+    Owner             DirectoryOwner                `json:"owner"`
+    SchedulerIdentity string                        `json:"scheduler_identity"`
+    OperationID       string                        `json:"operation_id"`
+    Selected          int                           `json:"selected"`
+    Inputs            []CatalogMaterializationInput `json:"inputs"`
+}
+```
+
 <a name="CatalogRecovery"></a>
 ## type [CatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery.go#L20-L23>)
 
@@ -907,9 +976,9 @@ type FleetAcquisitionRequirements struct {
 ```
 
 <a name="FleetAdoption"></a>
-## type [FleetAdoption](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L103-L106>)
+## type [FleetAdoption](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L124-L127>)
 
-FleetAdoption identifies explicit host recovery without changing the original publication grant. The host must verify the receipt and independent approval before exposing this snapshot. This record grants no refresh lease or inference permission.
+FleetAdoption identifies explicit host recovery without changing the original publication ownership evidence. The host must verify the receipt and independent approval before exposing this snapshot. This record grants no refresh lease or inference permission.
 
 ```go
 type FleetAdoption struct {
@@ -964,27 +1033,37 @@ func (i FleetIdentity) Validate() error
 Validate requires a complete identity. It does not establish external approval.
 
 <a name="FleetPublication"></a>
-## type [FleetPublication](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L54-L59>)
+## type [FleetPublication](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L54-L60>)
 
-FleetPublication carries the original grant and predecessor for one commit attempt. A retry preserves all fields. It must not substitute a newer grant or predecessor.
+FleetPublication retains one refresh grant or explicit recovery origin and its predecessor. A retry preserves all fields. It must not substitute newer ownership evidence or a predecessor.
 
 ```go
 type FleetPublication struct {
-    Generation catalogs.Generation `json:"generation"`
-    Recovery   FleetRecovery       `json:"recovery"`
-    Grant      Lease               `json:"grant"`
-    Expected   FleetHead           `json:"expected"`
+    Generation     catalogs.Generation  `json:"generation"`
+    Recovery       FleetRecovery        `json:"recovery"`
+    Grant          Lease                `json:"grant"`
+    Expected       FleetHead            `json:"expected"`
+    RecoveryOrigin *FleetRecoveryOrigin `json:"recovery_origin,omitempty"`
 }
 ```
 
 <a name="FleetPublication.Validate"></a>
-### func \(FleetPublication\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L64>)
+### func \(FleetPublication\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L65>)
 
 ```go
 func (p FleetPublication) Validate() error
 ```
 
-Validate checks publication content and identity before a backend operation. The backend must still compare the live grant, expiry, approved identity, and head atomically. No local clock reading can replace that comparison.
+Validate checks retained publication content and structural ownership evidence. It does not establish independent recovery approval, live lease ownership, or serving permission. Ordinary commit adapters must use ValidateRefreshPublication before their native transaction.
+
+<a name="FleetPublication.ValidateRefreshPublication"></a>
+### func \(FleetPublication\) [ValidateRefreshPublication](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L93>)
+
+```go
+func (p FleetPublication) ValidateRefreshPublication() error
+```
+
+ValidateRefreshPublication refuses recovery imports through the ordinary refresh commit path. The backend must still compare the original live grant, expiry, approved identity, and head atomically.
 
 <a name="FleetRecovery"></a>
 ## type [FleetRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L26-L31>)
@@ -1009,10 +1088,27 @@ func (r FleetRecovery) Validate(generation catalogs.Generation) error
 
 Validate checks the generation binding and the complete input checksum. Runtime recovery separately validates the input schema and acquisition policy.
 
-<a name="FleetSnapshot"></a>
-## type [FleetSnapshot](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L94-L98>)
+<a name="FleetRecoveryOrigin"></a>
+## type [FleetRecoveryOrigin](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery_origin.go#L15-L23>)
 
-FleetSnapshot retains the accepted publication and its original ownership evidence. Reading a snapshot does not prove that its grant remains valid.
+FleetRecoveryOrigin binds catalog facts to a host\-owned closed recovery import. The host must independently verify the accepted decision and closed import before exposing the publication. These digests describe retained evidence. They grant no refresh lease, authority receipt, or inference permission.
+
+```go
+type FleetRecoveryOrigin struct {
+    Version                  int           `json:"version"`
+    Identity                 FleetIdentity `json:"identity"`
+    OperationID              string        `json:"operation_id"`
+    AcceptedDecisionSHA256   string        `json:"accepted_decision_sha256"`
+    ClosedImportSHA256       string        `json:"closed_import_sha256"`
+    GenerationManifestSHA256 string        `json:"generation_manifest_sha256"`
+    RecoverySHA256           string        `json:"recovery_sha256"`
+}
+```
+
+<a name="FleetSnapshot"></a>
+## type [FleetSnapshot](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L115-L119>)
+
+FleetSnapshot retains the accepted publication and its original ownership evidence. Reading a snapshot proves neither a live grant nor independent recovery approval.
 
 ```go
 type FleetSnapshot struct {
@@ -1023,7 +1119,7 @@ type FleetSnapshot struct {
 ```
 
 <a name="FleetSnapshot.Validate"></a>
-### func \(FleetSnapshot\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L109>)
+### func \(FleetSnapshot\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L130>)
 
 ```go
 func (s FleetSnapshot) Validate() error
@@ -1045,7 +1141,7 @@ type FleetStatus struct {
 ```
 
 <a name="FleetStore"></a>
-## type [FleetStore](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L150-L176>)
+## type [FleetStore](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L171-L198>)
 
 FleetStore owns shared publication, retained inputs, and refresh ownership. Hosts supply the adapter. Standalone stores keep the separate storage.Store contract. Each method uses one deployment namespace and the approved backend incarnation. New or recovered connections must validate that incarnation before application operations.
 
@@ -1066,7 +1162,8 @@ type FleetStore interface {
     // Get retrieves a retained immutable catalog without exposing recovery inputs.
     Get(context.Context, string) (catalogs.Generation, error)
 
-    // CommitPublication selects the catalog and recovery reference in one backend transaction.
+    // CommitPublication selects a refresh publication and recovery reference in one backend transaction.
+    // It refuses RecoveryOrigin through ValidateRefreshPublication. Hosts import recovery separately.
     // It compares Expected, the exact holder, process session, epoch, live expiry, and recovery identity.
     // A refusal changes neither the head nor the recovery reference. Staged bytes confer no permission.
     //
@@ -2067,7 +2164,7 @@ type RetentionStatus = status.RetentionStatus
 ```
 
 <a name="Runtime"></a>
-## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L102-L151>)
+## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L102-L153>)
 
 Runtime is a connected Starmap. It serves the embedded catalog immediately, refreshes from one selected upstream source, retains per\-provider observations, and rebuilds one immutable effective catalog from those layers. Reads reach no external system.
 
@@ -2078,7 +2175,7 @@ type Runtime struct {
 ```
 
 <a name="Open"></a>
-### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L157>)
+### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L159>)
 
 ```go
 func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error)
@@ -2114,7 +2211,7 @@ func (r *Runtime) AllowsNewAttempt() bool
 AllowsNewAttempt checks current catalog permission using memory only. Call it for every new attempt, including retries and cached response delivery. It does not replace model, destination, account, or budget authorization.
 
 <a name="Runtime.Catalog"></a>
-### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L274>)
+### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L279>)
 
 ```go
 func (r *Runtime) Catalog() *catalogs.Catalog
@@ -2123,7 +2220,7 @@ func (r *Runtime) Catalog() *catalogs.Catalog
 Catalog returns the current immutable effective catalog. It reaches no external system and never blocks on the source.
 
 <a name="Runtime.Client"></a>
-### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L296>)
+### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L301>)
 
 ```go
 func (r *Runtime) Client() *starmap.Client
@@ -2132,7 +2229,7 @@ func (r *Runtime) Client() *starmap.Client
 Client returns the immutable publication client underneath the runtime. Use it for explicit publication, hooks, and generation retrieval.
 
 <a name="Runtime.Close"></a>
-### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L316>)
+### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L321>)
 
 ```go
 func (r *Runtime) Close() error
@@ -2294,7 +2391,7 @@ func (r *Runtime) RetentionSnapshot() RetentionStatus
 RetentionSnapshot returns the configured policy and last collection result without storage reads.
 
 <a name="Runtime.State"></a>
-### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L285>)
+### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L290>)
 
 ```go
 func (r *Runtime) State() starmap.CatalogState
@@ -2341,7 +2438,7 @@ UpdateObservations prepares and publishes original observations under runtime ow
 Optional resets replace prior local acquisition observations within the named scopes. Each scope requires complete successful replacement evidence. The baseline and unrelated scopes remain. Resets and replacements share the catalog publication journal.
 
 <a name="Runtime.Updates"></a>
-### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L306>)
+### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L311>)
 
 ```go
 func (r *Runtime) Updates() <-chan starmap.CatalogState
