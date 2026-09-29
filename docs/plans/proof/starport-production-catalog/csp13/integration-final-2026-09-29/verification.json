@@ -1,0 +1,955 @@
+{
+  "source_commit": "84d9a9a557f46146c40d25ed25875eec783fffa1",
+  "go_command": "GOWORK=off go test -json -timeout=20m ./...",
+  "exit_code": 0,
+  "counts": {
+    "tests": {
+      "pass": 6527,
+      "fail": 0,
+      "skip": 497
+    },
+    "packages": {
+      "pass": 67,
+      "fail": 0,
+      "skip": 9
+    }
+  },
+  "packages": [
+    {
+      "Package": "github.com/agentstation/starport/examples",
+      "Action": "skip",
+      "Elapsed": 0
+    },
+    {
+      "Package": "github.com/agentstation/starport/cmd/starport",
+      "Action": "pass",
+      "Elapsed": 2.122
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/account",
+      "Action": "pass",
+      "Elapsed": 2.209
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/apikey",
+      "Action": "pass",
+      "Elapsed": 2.207
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/catalog/disclosure",
+      "Action": "skip",
+      "Elapsed": 0.001
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/authorization",
+      "Action": "pass",
+      "Elapsed": 0.471
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/audit",
+      "Action": "pass",
+      "Elapsed": 0.628
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/authmode",
+      "Action": "pass",
+      "Elapsed": 1.7890000000000001
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/availability",
+      "Action": "pass",
+      "Elapsed": 2.73
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/catalog/logos",
+      "Action": "pass",
+      "Elapsed": 3.22
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/cache",
+      "Action": "pass",
+      "Elapsed": 3.706
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/catalog/view",
+      "Action": "pass",
+      "Elapsed": 5.507
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/cli",
+      "Action": "pass",
+      "Elapsed": 5.287
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/console",
+      "Action": "pass",
+      "Elapsed": 4.118
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/authorization/revision",
+      "Action": "pass",
+      "Elapsed": 5.933
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/credentials/cloudchain",
+      "Action": "pass",
+      "Elapsed": 3.293
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/architecture",
+      "Action": "pass",
+      "Elapsed": 7.066
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/deployment",
+      "Action": "pass",
+      "Elapsed": 3.669
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/doclinks",
+      "Action": "pass",
+      "Elapsed": 2.479
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/document",
+      "Action": "pass",
+      "Elapsed": 2.471
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/failure",
+      "Action": "pass",
+      "Elapsed": 1.748
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/execution",
+      "Action": "pass",
+      "Elapsed": 2.422
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/guardrails",
+      "Action": "pass",
+      "Elapsed": 1.038
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/inference",
+      "Action": "pass",
+      "Elapsed": 0.807
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/jobs/fileio",
+      "Action": "skip",
+      "Elapsed": 0
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/events",
+      "Action": "pass",
+      "Elapsed": 4.084
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/kvconnection/kvtest",
+      "Action": "skip",
+      "Elapsed": 0
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/jobs/assetfetch",
+      "Action": "pass",
+      "Elapsed": 0.881
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/kvconnection",
+      "Action": "pass",
+      "Elapsed": 0.711
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/limits",
+      "Action": "pass",
+      "Elapsed": 0.456
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/limits/admission",
+      "Action": "pass",
+      "Elapsed": 2.274
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/limits/storedbytes",
+      "Action": "pass",
+      "Elapsed": 1.819
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/limits/jobslots",
+      "Action": "pass",
+      "Elapsed": 4.451
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/policyrecord",
+      "Action": "pass",
+      "Elapsed": 0.248
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/presets",
+      "Action": "pass",
+      "Elapsed": 0.833
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/protocol/mediaform",
+      "Action": "skip",
+      "Elapsed": 0
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/localauth",
+      "Action": "pass",
+      "Elapsed": 2.135
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/protocol/openai",
+      "Action": "pass",
+      "Elapsed": 1.295
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/protocol/openrouter",
+      "Action": "pass",
+      "Elapsed": 0.84
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/diagnosis",
+      "Action": "pass",
+      "Elapsed": 12.526
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/identity",
+      "Action": "pass",
+      "Elapsed": 9.672
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/providers/auth",
+      "Action": "pass",
+      "Elapsed": 0.862
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/providers/connectors",
+      "Action": "pass",
+      "Elapsed": 3.82
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/providers/state",
+      "Action": "pass",
+      "Elapsed": 3.906
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/providers/statuspage",
+      "Action": "pass",
+      "Elapsed": 0.294
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/ratelimit",
+      "Action": "pass",
+      "Elapsed": 1.134
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/providers/keyring",
+      "Action": "pass",
+      "Elapsed": 6.432
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/registry",
+      "Action": "pass",
+      "Elapsed": 2.178
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/repotest",
+      "Action": "pass",
+      "Elapsed": 0.301
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/response/cache",
+      "Action": "pass",
+      "Elapsed": 0.519
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/config",
+      "Action": "pass",
+      "Elapsed": 30.533
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/limits/reservation",
+      "Action": "pass",
+      "Elapsed": 20.784
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/routing",
+      "Action": "pass",
+      "Elapsed": 0.378
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/router",
+      "Action": "pass",
+      "Elapsed": 4.717
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/server/dto",
+      "Action": "skip",
+      "Elapsed": 0.008
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/server/requestctx",
+      "Action": "pass",
+      "Elapsed": 0.63
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/providers",
+      "Action": "pass",
+      "Elapsed": 17.569
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Action": "pass",
+      "Elapsed": 5.095
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/proxy",
+      "Action": "pass",
+      "Elapsed": 16.682
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/telemetry",
+      "Action": "pass",
+      "Elapsed": 0.429
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/tokenize",
+      "Action": "pass",
+      "Elapsed": 0.501
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/credentials",
+      "Action": "pass",
+      "Elapsed": 44.568
+    },
+    {
+      "Package": "github.com/agentstation/starport/scripts/doclinks",
+      "Action": "skip",
+      "Elapsed": 0.018
+    },
+    {
+      "Package": "github.com/agentstation/starport/scripts/sdk-smoke-server",
+      "Action": "skip",
+      "Elapsed": 0
+    },
+    {
+      "Package": "github.com/agentstation/starport/skills/starport",
+      "Action": "skip",
+      "Elapsed": 0
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/usage",
+      "Action": "pass",
+      "Elapsed": 18.55
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/jobs",
+      "Action": "pass",
+      "Elapsed": 51.552
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Action": "pass",
+      "Elapsed": 31.351
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/storage",
+      "Action": "pass",
+      "Elapsed": 40.023
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/blob",
+      "Action": "pass",
+      "Elapsed": 84.054
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/sqlstore",
+      "Action": "pass",
+      "Elapsed": 75.526
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/files",
+      "Action": "pass",
+      "Elapsed": 146.791
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/catalog",
+      "Action": "pass",
+      "Elapsed": 166.49
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/setup",
+      "Action": "pass",
+      "Elapsed": 181.5
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/recovery",
+      "Action": "pass",
+      "Elapsed": 286.031
+    },
+    {
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Action": "pass",
+      "Elapsed": 509.341
+    }
+  ],
+  "skipped_tests": [
+    "github.com/agentstation/starport/internal/account/TestAccountRepositoryRecordBounds/valkey",
+    "github.com/agentstation/starport/internal/account/TestAccountPermissionReplayWithdrawsAndPreservesHistory/valkey",
+    "github.com/agentstation/starport/internal/apikey/TestAPIKeyRepositoryRecordBounds/valkey",
+    "github.com/agentstation/starport/internal/account/TestAccountRepositoryContract/valkey",
+    "github.com/agentstation/starport/internal/apikey/TestAPIKeyPermissionReplayWithdrawsAndPreservesIndexes/valkey",
+    "github.com/agentstation/starport/internal/account/TestEnsureDefaultIsIdempotent/valkey",
+    "github.com/agentstation/starport/internal/account/TestEnsureDefaultUnderConcurrentBoot/valkey",
+    "github.com/agentstation/starport/internal/account/TestDefaultAccountCannotBeDeleted/valkey",
+    "github.com/agentstation/starport/internal/account/TestRepositoryRejectsInvalidAccounts/valkey",
+    "github.com/agentstation/starport/internal/apikey/TestAPIKeyRepositoryContract/valkey",
+    "github.com/agentstation/starport/internal/authorization/TestAuthorizationTenantChurnCapacity",
+    "github.com/agentstation/starport/internal/authorization/TestFleetDurableReceiptPrecedesReplicaEnforcement",
+    "github.com/agentstation/starport/internal/authorization/TestRepositorySourceRealStoresAndLocalMutation/valkey",
+    "github.com/agentstation/starport/internal/authmode/TestRepositoryContract/valkey",
+    "github.com/agentstation/starport/internal/authorization/revision/TestKVRevisionCommitsWithMutation/valkey",
+    "github.com/agentstation/starport/internal/authorization/revision/TestKVRevisionConcurrentIndependentMutations/valkey",
+    "github.com/agentstation/starport/internal/authorization/revision/TestRevisionRecoveryKVNativeAtomicReplacement/valkey/absent",
+    "github.com/agentstation/starport/internal/authorization/revision/TestRevisionRecoveryKVNativeAtomicReplacement/valkey/present",
+    "github.com/agentstation/starport/internal/authorization/revision/TestRevisionRecoverySQLNativeAtomicReplacement/postgres/absent",
+    "github.com/agentstation/starport/internal/cache/TestDefaultCacheMemoryBudget",
+    "github.com/agentstation/starport/internal/cache/TestSharedCachePausedServiceDeadlineAndRecovery",
+    "github.com/agentstation/starport/internal/authorization/revision/TestRevisionRecoverySQLNativeAtomicReplacement/postgres/present",
+    "github.com/agentstation/starport/internal/cache/TestSharedCacheRealService",
+    "github.com/agentstation/starport/internal/cache/TestSharedCacheURIAuthenticationAndDatabase",
+    "github.com/agentstation/starport/internal/cache/TestSharedCacheTLSWithRealService",
+    "github.com/agentstation/starport/internal/authorization/revision/TestRevisionRecoverySQLNativeAtomicReplacement/mysql/absent",
+    "github.com/agentstation/starport/internal/authorization/revision/TestRevisionRecoverySQLNativeAtomicReplacement/mysql/present",
+    "github.com/agentstation/starport/internal/blob/TestBlobImportActivation/objectstore",
+    "github.com/agentstation/starport/internal/authorization/revision/TestRevisionRecoverySQLRefusesChangedOrAdditionalRows/postgres",
+    "github.com/agentstation/starport/internal/authorization/revision/TestRevisionRecoverySQLRefusesChangedOrAdditionalRows/mysql",
+    "github.com/agentstation/starport/internal/authorization/revision/TestRepositoriesPublishEveryAuthorizationMutation/valkey",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRetainsRestrictions/objectstore/different-operation",
+    "github.com/agentstation/starport/internal/config/TestContainerRecipePersistence",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRetainsRestrictions/objectstore/different-snapshot",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRetainsRestrictions/objectstore/bad-decision",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRetainsRestrictions/objectstore/canceled",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRetainsRestrictions/objectstore/missing-barrier",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRetainsRestrictions/objectstore/corrupt-barrier",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRetainsRestrictions/objectstore/history-without-current",
+    "github.com/agentstation/starport/internal/files/TestRetirementFencesDelayedOutputPublication/valkey",
+    "github.com/agentstation/starport/internal/files/TestPreparedOutputRetainsIdentityBytesAndQuota/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestBatchReplayStagesLargeClaimHistory/valkey",
+    "github.com/agentstation/starport/internal/files/TestPreparedOutputAcceptsOneConcurrentResult/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestAttachmentAndRecoveryResolveLostPublication/false/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestAttachmentAndRecoveryResolveLostPublication/true/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionHorizon/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestAttachmentCompetesAtomicallyWithRecovery/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestUncertainReservationHasNoCorrectionDeadline/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestRecoveryRetainsRecentClaimsAndOriginalTimestamp/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionDeadlineGuardsAtomicWrite/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestAdministratorReconciliationRestartAndIsolation/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestPendingRecoverySurvivesLostAcknowledgement/false/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionRejectsStalePublication/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestAdministratorAuditPrecedesRelease/before_commit/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestPendingRecoverySurvivesLostAcknowledgement/true/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestOlderClaimFormatRequiresMigration/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestAdministratorAuditPrecedesRelease/lost_acknowledgement/valkey",
+    "github.com/agentstation/starport/internal/identity/TestIdentityReplayNativeOrderedLifecycle/postgres",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestSlotAccountReplayEmptyIndependentHistory/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionPublicationCommitsAndRetries/valkey/success",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionPublicationCommitsAndRetries/valkey/before",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionPublicationCommitsAndRetries/valkey/after",
+    "github.com/agentstation/starport/internal/jobs/TestConcurrentAdministratorDecisions/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestSlotReplayNativeOrderedRetries/valkey",
+    "github.com/agentstation/starport/internal/limits/storedbytes/TestConcurrentReservationsCannotBothPassABoundThatAdmitsOne/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestSlotAccountReplaySpansNativeSteps/valkey",
+    "github.com/agentstation/starport/internal/limits/storedbytes/TestStoredByteClaimsPreserveIdentityAndCapacity/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestRepeatedJobReleaseCannotFreeAnotherClaim/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestLateProviderEvidenceCannotReplaceAdministratorDecision/valkey",
+    "github.com/agentstation/starport/internal/limits/storedbytes/TestStoredByteHistoryCannotResetImplicitly/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionPublicationRacesLateEvidence/valkey/correction_first",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionPublicationRacesLateEvidence/valkey/late_first",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionPublicationRacesLateEvidence/valkey/late_during_commit",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestClaimRetriesPreserveIdentityAndCapacity/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestAdministratorDecisionSurvivesSettlementFailure/valkey",
+    "github.com/agentstation/starport/internal/limits/storedbytes/TestUnattachedByteRecoveryFencesDelayedPublication/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestLostClaimAcknowledgementsRecoverWithoutChangingOtherWork/false/valkey",
+    "github.com/agentstation/starport/internal/identity/TestIdentityReplayNativeOrderedLifecycle/mysql",
+    "github.com/agentstation/starport/internal/limits/storedbytes/TestByteReservationLostAckAndBackendFailure/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestLostClaimAcknowledgementsRecoverWithoutChangingOtherWork/true/valkey",
+    "github.com/agentstation/starport/internal/limits/storedbytes/TestByteClaimRecoveryReachesLaterPages/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestLateEvidenceSurvivesAuditWriteFailureAndAssetExpiry/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestConcurrentClaimsAndReleasesPreserveTheBound/valkey",
+    "github.com/agentstation/starport/internal/limits/jobslots/TestLegacyAndMissingCountsRequireRecovery/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestMatchingLateEvidencePreservesResolvedDecision/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionPreservesOtherDisputesAndAudit/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionConcurrentRetriesAndLostAcknowledgement/valkey",
+    "github.com/agentstation/starport/internal/presets/TestPresetRepositoryContract/valkey",
+    "github.com/agentstation/starport/internal/presets/TestPresetRevisionHistoryAndRollback/valkey",
+    "github.com/agentstation/starport/internal/presets/TestPresetRollbackNeedsATarget/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestAssetSurvivesLostRecordAcknowledgement/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestBatchAggregateSharedProcessRecovery",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionRefusesUnsafeCapacityRelease/valkey/write-failure",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionRefusesUnsafeCapacityRelease/valkey/overflow",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionRefusesUnsafeCapacityRelease/valkey/new-overflow",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionRefusesUnsafeCapacityRelease/valkey/counter-missing",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionRefusesUnsafeCapacityRelease/valkey/old-window-version",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionRefusesUnsafeCapacityRelease/valkey/unknown-charge",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionRefusesUnsafeCapacityRelease/valkey/unaudited",
+    "github.com/agentstation/starport/internal/identity/TestIdentityReplayNativeRefusesConflictingEvidence/postgres",
+    "github.com/agentstation/starport/internal/limits/reservation/TestConcurrentCorrectionsRequireCurrentBinding/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestCorrectionConcurrentExactFirstSubmission/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestBatchAggregateRecoversLostPublicationWithoutReplay/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestDisputePublicationRejectsStaleJob/valkey",
+    "github.com/agentstation/starport/internal/identity/TestIdentityReplayNativeRefusesConflictingEvidence/mysql",
+    "github.com/agentstation/starport/internal/limits/reservation/TestDisputePublicationAtomicWrite/valkey/success",
+    "github.com/agentstation/starport/internal/limits/reservation/TestDisputePublicationAtomicWrite/valkey/before",
+    "github.com/agentstation/starport/internal/limits/reservation/TestDisputePublicationAtomicWrite/valkey/after",
+    "github.com/agentstation/starport/internal/limits/reservation/TestDisputePublicationAtomicWrite/valkey/race",
+    "github.com/agentstation/starport/internal/limits/reservation/TestDisputePublicationAtomicWrite/valkey/existing_dispute",
+    "github.com/agentstation/starport/internal/limits/reservation/TestDisputePublicationCannotAttachResolvedEvidence/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestBatchAggregateRecoveryRetainsResultsAcrossFailures/metadata/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestDisputedChargeBlocksOriginalWindows/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestDisputeCountRetainsEveryAttempt/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestBudgetHistoryRollover/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestBudgetHistoryDoesNotInventZero/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestBatchAggregateRecoveryRetainsResultsAcrossFailures/confirmation/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestJobBindingIsExclusiveAndSurvivesSettlement/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestJobBindingRecoversLostAcknowledgement/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestExplicitNoChargeSettlement/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestNoChargeRetainedRecovery/valkey",
+    "github.com/agentstation/starport/internal/providers/keyring/TestManagedMaterialValkeyOutageAndRecovery",
+    "github.com/agentstation/starport/internal/jobs/TestBatchAggregateRecoveryRetainsResultsAcrossFailures/cleanup/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestRetainedUsageCannotChangeEvidenceOrRefund/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestReservationSnapshotRefreshAfterConflict/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestReservationSnapshotRefusesExpiringHistory/valkey",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRefusesDamagedCompletion/objectstore/missing-current",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRefusesDamagedCompletion/objectstore/missing-history",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRefusesDamagedCompletion/objectstore/missing-barrier",
+    "github.com/agentstation/starport/internal/jobs/TestBatchAggregateConcurrentRecovery/valkey",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRefusesDamagedCompletion/objectstore/corrupt-current",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRefusesDamagedCompletion/objectstore/corrupt-history",
+    "github.com/agentstation/starport/internal/limits/reservation/TestValkeyReservationAcrossProcesses",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRefusesDamagedCompletion/objectstore/revived-barrier",
+    "github.com/agentstation/starport/internal/limits/reservation/TestAccountingReplayPreservesOriginalWindows/valkey",
+    "github.com/agentstation/starport/internal/ratelimit/TestRateLimitRepositoryContract/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestReservationContract/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestRecoveryPreservesUnmeasuredAndCorruptAttempts/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestRecoveryConcurrentWorkersSettleOnce/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestRecoveryRetriesLostSettlementAcknowledgement/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestBatchLineClaimIsDurableAndExclusive/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestBatchClaimFailureCannotDispatch/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestBatchCancellationAcrossWorkersPreventsNextLine/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestRecoveryNativePaginationReachesEveryAttempt/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestBatchResultEvidenceIsImmutable/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestRecoveryHandlesConcurrentSettlementBetweenReads/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestResultStorageFailureStopsDispatchAndRetainsCapacity/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestResultConfirmationLostAckDoesNotDispatchAgain/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestReconciliationRetention/valkey/none",
+    "github.com/agentstation/starport/internal/limits/reservation/TestReconciliationRetention/valkey/attempt",
+    "github.com/agentstation/starport/internal/limits/reservation/TestReconciliationRetention/valkey/correction",
+    "github.com/agentstation/starport/internal/jobs/TestBatchResumeOnlyProvenUnstartedLines/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestUnboundedBatchPreservesOutstandingVideoSlot/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestCancellationRetainsProviderOutcomeAndCapacity/queued/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestCancellationRetainsProviderOutcomeAndCapacity/running/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestCancellationRetainsProviderOutcomeAndCapacity/completed/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestCancellationRetainsProviderOutcomeAndCapacity/cancelled/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestCancellationRetainsProviderOutcomeAndCapacity/failed/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestCancellationRetainsProviderOutcomeAndCapacity/missing_state/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestCancellationRetainsProviderOutcomeAndCapacity/unknown_state/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestCancellationRetainsProviderOutcomeAndCapacity/lost_response/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestTeamBudgetHistoryHandoff/postgres-valkey",
+    "github.com/agentstation/starport/internal/jobs/TestReleasedClaimCannotPublishJob/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestWindowReplayNativeCorrectionReconstructsSaturation/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionHorizon/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionHistoryAndOrderedReports/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionSupersedesOnlyPendingIntent/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionConcurrentIntentHasOneWinner/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestWindowReplayStagesCompleteHistory/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionCommitFailurePreservesIntent/false/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestWindowReplayExplicitEmptyHistory/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionCommitFailurePreservesIntent/true/valkey",
+    "github.com/agentstation/starport/internal/proxy/TestJobCorrectionsPreserveOriginalUsage/valkey",
+    "github.com/agentstation/starport/internal/proxy/TestJobCorrectionRefusesUnsupportedOrInvalidReporting/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionServiceReportingRecovery/valkey",
+    "github.com/agentstation/starport/internal/proxy/TestJobCorrectionExpiredHistoryDoesNotRecreateUsage/valkey",
+    "github.com/agentstation/starport/internal/limits/reservation/TestHolderCreationAndBudgetHistory/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionExpiredReportDoesNotUndoSettlement/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionStaleIntentRetainsNewEvidence/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionIntentRecoversLostAcknowledgement/before/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionIntentRecoversLostAcknowledgement/after/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionMissingHistoryRefusesApplication/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionResolvesUnmeasuredLateEvidence/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobCorrectionExpiredOriginalStopsReportingRetries/valkey",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationResumesEveryDurableBoundary/objectstore/1",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationResumesEveryDurableBoundary/objectstore/2",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationResumesEveryDurableBoundary/objectstore/3",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationResumesEveryDurableBoundary/objectstore/4",
+    "github.com/agentstation/starport/internal/jobs/TestVideoJobReplayStagesLongPrivateCorrectionHistory/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestNativeExternalRecoveryPreservesBilling/valkey",
+    "github.com/agentstation/starport/internal/server/controllers/TestGatewayOverheadBenchmark",
+    "github.com/agentstation/starport/internal/jobs/TestNativeConcurrentReplicasBindOneAsset/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestNativeRetirementWithRealObjectStore",
+    "github.com/agentstation/starport/internal/server/TestAuthorizationWarmRequestsAvoidStableReads/valkey",
+    "github.com/agentstation/starport/internal/server/TestAuthorizationUnknownAccountRefusesAdmission/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestNativeReceiptRecoversWithoutProviderReplay/none/valkey",
+    "github.com/agentstation/starport/internal/sqlstore/TestMySQLPartialMigrationRequiresReconciliation",
+    "github.com/agentstation/starport/internal/sqlstore/TestMySQLMigrationReconciliationAppliedDoesNotRepeatDDL",
+    "github.com/agentstation/starport/internal/sqlstore/TestMySQLMigrationReconciliationRevertedAllowsExplicitRetry",
+    "github.com/agentstation/starport/internal/sqlstore/TestMySQLMigrationReconciliationRejectsUnboundEvidence",
+    "github.com/agentstation/starport/internal/sqlstore/TestMySQLMigrationReconciliationSerializesConflictingOperators",
+    "github.com/agentstation/starport/internal/sqlstore/TestMySQLMigrationReconciliationRollsBackReceiptFailure",
+    "github.com/agentstation/starport/internal/sqlstore/TestMySQLMigrationReconciliationRequiresTransactionalRecords/schema_migrations",
+    "github.com/agentstation/starport/internal/sqlstore/TestMySQLMigrationReconciliationRequiresTransactionalRecords/schema_migration_attempts",
+    "github.com/agentstation/starport/internal/sqlstore/TestMySQLMigrationReconciliationRequiresTransactionalRecords/schema_migration_reconciliations",
+    "github.com/agentstation/starport/internal/jobs/TestNativeReceiptRecoversWithoutProviderReplay/record_before_commit/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestNativeReceiptRecoversWithoutProviderReplay/record_after_commit/valkey",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationHistorySurvivesTransfer/filesystem/objectstore",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationHistorySurvivesTransfer/objectstore",
+    "github.com/agentstation/starport/internal/jobs/TestNativeReceiptRecoversWithoutProviderReplay/receipt_after_commit/valkey",
+    "github.com/agentstation/starport/internal/credentials/TestCredentialPermissionReplayWithdrawsSharedGrants/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestNativeReceiptRecoversWithoutProviderReplay/asset_before_commit/valkey",
+    "github.com/agentstation/starport/internal/credentials/TestProviderCredentialRepositoryContract/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageCorrectionPreservesRequestCount/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageAdjustmentsPreserveEvidenceAndWindows/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageAdjustmentFailureIsAtomic/false/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestNativeReceiptRecoversWithoutProviderReplay/asset_after_commit/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageAdjustmentFailureIsAtomic/true/valkey",
+    "github.com/agentstation/starport/internal/usage/TestConcurrentUsageAdjustments/false/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestNativeLostResponseRetainsUncertainJob/valkey",
+    "github.com/agentstation/starport/internal/usage/TestConcurrentUsageAdjustments/true/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageAdjustmentRefusesCorruptTotals/missing/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageAdjustmentRefusesCorruptTotals/negative/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageAdjustmentRefusesCorruptTotals/overflow/valkey",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationConcurrentDecisions/objectstore",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRejectsUnsupportedConditionalWrites/If-Match",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationRejectsUnsupportedConditionalWrites/If-None-Match",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationOrphanProbeRemainsOrdinaryData",
+    "github.com/agentstation/starport/internal/usage/TestUsageAdjustmentResolvesUnknownCostWithoutInventingMeasurements/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestNativeRetirementFencesDelayedPublication/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageAdjustmentCorruptionDoesNotAffectOtherAccounts/valkey",
+    "github.com/agentstation/starport/internal/usage/TestARecognizedDocumentCountsAgainstTheSpendBudget/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestExplicitReconciliationPreservesAndResolvesCapacity/valkey",
+    "github.com/agentstation/starport/internal/usage/TestARecognizedDocumentReportsItsPagesAndItsCost/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestPollingExhaustionRetainsProviderWork/read/valkey",
+    "github.com/agentstation/starport/internal/usage/TestANativelyReadDocumentCostsNothing/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestPollingExhaustionRetainsProviderWork/sweep/valkey",
+    "github.com/agentstation/starport/internal/usage/TestACachedReadIsRecordedAsCachedRatherThanFree/valkey",
+    "github.com/agentstation/starport/internal/usage/TestTheExtractionDurationSurvivesTheRoundTrip/valkey",
+    "github.com/agentstation/starport/internal/usage/TestATurnThatAttachedNoDocumentReportsNoExtraction/valkey",
+    "github.com/agentstation/starport/internal/storage/TestOpenImportTargetPreservesRestrictedRetry/valkey",
+    "github.com/agentstation/starport/internal/usage/TestRecognitionMeasurementsPersistWithUnknownTotal/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestProviderAssetPreparationRecoversAndExpires/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageReplayDoesNotIncreaseTotals/valkey",
+    "github.com/agentstation/starport/internal/server/TestSDKCanonicalRemovalAfterSuccessfulInference",
+    "github.com/agentstation/starport/internal/usage/TestUsageAtomicWriteAndLostAcknowledgement/before_commit/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageAtomicWriteAndLostAcknowledgement/after_commit/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageConcurrentReplayAndConflictingContents/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestProviderRetirementFencesDelayedPublication/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageExpiredReplayCannotRecreateTotals/valkey",
+    "github.com/agentstation/starport/internal/storage/TestLifetimeBatch/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageCounterFailureLeavesEveryWriteUnchanged/not-an-integer/valkey",
+    "github.com/agentstation/starport/internal/storage/TestValueLifetimeSnapshot/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageCounterFailureLeavesEveryWriteUnchanged/-1/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageCounterFailureLeavesEveryWriteUnchanged/9223372036854775807/valkey",
+    "github.com/agentstation/starport/internal/usage/TestUsageConcurrentEventsPreserveAllContributions/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestRecoveryReachesBeyondFirstThousandRecords/valkey",
+    "github.com/agentstation/starport/internal/storage/TestTimeBoundStore/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestRecoverySkipsCorruptionAndReleasesUnreadFinishedBatches/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationExactRetry/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestTerminalNotificationDoesNotWaitForSettlement/valkey",
+    "github.com/agentstation/starport/internal/usage/TestAPricedMediaTurnCountsAgainstTheSpendBudget/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestOptionalJobAccountingRetriesAfterReopen/valkey",
+    "github.com/agentstation/starport/internal/usage/TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals/valkey",
+    "github.com/agentstation/starport/internal/usage/TestMediaUnitsSurviveTheRoundTrip/valkey",
+    "github.com/agentstation/starport/internal/usage/TestATextRecordReadsBackWithoutMedia/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestConcurrentTerminalNotificationClaimsOneAttempt/valkey",
+    "github.com/agentstation/starport/internal/usage/TestRepositoryPutAndListByKey/valkey",
+    "github.com/agentstation/starport/internal/blob/TestBlobActivationPendingHistoryCannotBeOverwritten/objectstore",
+    "github.com/agentstation/starport/internal/jobs/TestStaleJobCannotEraseAccountingOrAssetState/valkey",
+    "github.com/agentstation/starport/internal/usage/TestListByKeyOrdersNewestFirstAcrossBackends/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestConcurrentJobAccountingClaimsHaveOneWinner/valkey",
+    "github.com/agentstation/starport/internal/usage/TestListFiltersAndCursorPagination/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestPreparedJobReplacementPreservesTransaction/valkey",
+    "github.com/agentstation/starport/internal/usage/TestAdminListSpansKeys/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestRequiredReservationCannotUseOptionalAccounting/valkey",
+    "github.com/agentstation/starport/internal/usage/TestAggregateCountersAccumulate/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesInvalidOwnership/valkey/missing",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesInvalidOwnership/valkey/different",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesInvalidOwnership/valkey/expiring",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesInvalidOwnership/valkey/canceled",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesInvalidOwnership/valkey/empty-claim",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesInvalidOwnership/valkey/large-claim",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesInvalidOwnership/valkey/short-decision",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesInvalidOwnership/valkey/uppercase-decision",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesInvalidOwnership/valkey/nonhex-decision",
+    "github.com/agentstation/starport/internal/jobs/TestRequiredJobBindingPrecedesDispatch/missing_owner/valkey",
+    "github.com/agentstation/starport/internal/usage/TestCostlessRecordCarriesReasonNotZero/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestRequiredJobBindingPrecedesDispatch/binding_unavailable/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationConcurrentDecisions/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationChecksNativeIncarnation",
+    "github.com/agentstation/starport/internal/usage/TestRetentionTTLApplied/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestRequiredSettlementDoesNotRetainTerminalSlot/valkey",
+    "github.com/agentstation/starport/internal/usage/TestAccountCounterSumsEveryKeyItHolds/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationHistoricalReceiptsAreNotAuthority/badger/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestVideoSlotReleaseRecoversWhileReportingRemainsPending/before_commit/valkey",
+    "github.com/agentstation/starport/internal/usage/TestTeamCounterSumsEveryAttributedKey/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationHistoricalReceiptsAreNotAuthority/badger/old-claim-valkey",
+    "github.com/agentstation/starport/internal/jobs/TestVideoSlotReleaseRecoversWhileReportingRemainsPending/after_commit/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationHistoricalReceiptsAreNotAuthority/valkey",
+    "github.com/agentstation/starport/internal/usage/TestListByAccountSpansEveryKey/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestVideoReleaseSurvivesLostJobStamp/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestCancelledBatchRetainsItsSlotUntilLinesDrain/valkey",
+    "github.com/agentstation/starport/internal/usage/TestListFiltersByGuardrailVerdictAndKeepsCacheFields/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestFinishedBatchSlotReleaseRecoversAfterRestart/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestDuplicateVideoIdentityCannotReleaseExistingWork/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestLegacyJobSchemasRequireMigration/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestSubmissionPersistenceFailurePreventsProviderCall/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestAmbiguousSubmissionRetainsRecordAndSlot/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesChangedCompletion/valkey/current-missing",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesChangedCompletion/valkey/receipt-missing",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesChangedCompletion/valkey/current-corrupt",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesChangedCompletion/valkey/receipt-corrupt",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesChangedCompletion/valkey/current-expiring",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesChangedCompletion/valkey/receipt-expiring",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationRefusesChangedCompletion/valkey/barrier-revived",
+    "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceWriteRecovery/before_commit/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationDoesNotReviveClaimFromCurrentMarker/valkey",
+    "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceWriteRecovery/after_commit/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportActivationValkeyReconnect",
+    "github.com/agentstation/starport/internal/jobs/TestSubmissionAcceptanceSurvivesCallerCancellation/valkey",
+    "github.com/agentstation/starport/internal/blob/TestBlobImportInspection/objectstore",
+    "github.com/agentstation/starport/internal/app/TestUnprefixedBackupMigratesVerifiedRecordsUnderBarriers",
+    "github.com/agentstation/starport/internal/storage/TestImportInspectionRefusesChangedBoundary/valkey/replay",
+    "github.com/agentstation/starport/internal/storage/TestImportInspectionRefusesChangedBoundary/valkey/activation",
+    "github.com/agentstation/starport/internal/storage/TestImportInspectionRefusesChangedBoundary/valkey/callback",
+    "github.com/agentstation/starport/internal/storage/TestImportInspectionRefusesChangedBoundary/valkey/canceled",
+    "github.com/agentstation/starport/internal/storage/TestImportInspectionRefusesChangedBoundary/valkey/expired-barrier",
+    "github.com/agentstation/starport/internal/storage/TestImportInspectionRefusesChangedBoundary/valkey/missing-history",
+    "github.com/agentstation/starport/internal/storage/TestImportInspectionRefusesChangedBoundary/valkey/malformed-cursor",
+    "github.com/agentstation/starport/internal/storage/TestImportInspectionKeepsBarrierAndBindsReplay/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationOrderedRetry/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationRefusesPartialAndOutOfOrderWrites/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationInvalidInputs/valkey",
+    "github.com/agentstation/starport/internal/blob/TestBlobImportInspectionRefusesIncompleteControls/objectstore/barrier",
+    "github.com/agentstation/starport/internal/blob/TestBlobImportInspectionRefusesIncompleteControls/objectstore/current",
+    "github.com/agentstation/starport/internal/blob/TestBlobImportInspectionRefusesIncompleteControls/objectstore/history",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationChecksPersistentOwnership/valkey/missing",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationChecksPersistentOwnership/valkey/other-claim",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationChecksPersistentOwnership/valkey/expiring-barrier",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationChecksPersistentOwnership/valkey/expiring-data",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationChecksPersistentOwnership/valkey/active",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationChecksPersistentOwnership/valkey/canceled",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationChecksPersistentOwnership/valkey/corrupt-cursor",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationChecksPersistentOwnership/valkey/corrupt-history",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationDistinguishesEmptyAndAbsent/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationConcurrentConflict/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationHistoryCannotAuthorizeAnotherRestore/valkey",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationChecksNativeIncarnation",
+    "github.com/agentstation/starport/internal/storage/TestImportReconciliationPreflightsWritePermissions",
+    "github.com/agentstation/starport/internal/storage/TestSnapshotSourceSharedEnumerationAndImportBarrier",
+    "github.com/agentstation/starport/internal/storage/TestRecordTransferExpiryAndConditionalImport/valkey",
+    "github.com/agentstation/starport/internal/storage/TestRecordTransferRefusesExistingAndConcurrentClaims/valkey",
+    "github.com/agentstation/starport/internal/storage/TestRecordTransferEnumeratesExactRecords/valkey",
+    "github.com/agentstation/starport/internal/storage/TestRecordTransferRequiresApprovedIncarnation",
+    "github.com/agentstation/starport/internal/storage/TestRecordTransferRejectsReplacementBackend",
+    "github.com/agentstation/starport/internal/storage/TestUnprefixedSnapshotRequiresExplicitSelection",
+    "github.com/agentstation/starport/internal/storage/TestUnprefixedSnapshotRefusesMixedNamespacesAndImportBarrier/{starport:v1:another:}kv:account",
+    "github.com/agentstation/starport/internal/storage/TestUnprefixedSnapshotRefusesMixedNamespacesAndImportBarrier/storage:import:v1",
+    "github.com/agentstation/starport/internal/storage/TestBudgetAuthorityNativeOperationCommands",
+    "github.com/agentstation/starport/internal/storage/TestValkeyTLSIdentity",
+    "github.com/agentstation/starport/internal/storage/TestValkeyUsernamePassword",
+    "github.com/agentstation/starport/internal/storage/TestValkeyEffectiveConnectionOptions",
+    "github.com/agentstation/starport/internal/storage/TestValkeyURLDatabaseSelection",
+    "github.com/agentstation/starport/internal/storage/TestValkeyIncarnationAtomicContract",
+    "github.com/agentstation/starport/internal/storage/TestValkeyIncarnationRejectsReplacementBackend",
+    "github.com/agentstation/starport/internal/storage/TestValkeyDeploymentNamespace",
+    "github.com/agentstation/starport/internal/storage/TestValkeyDeploymentNotificationIsolation",
+    "github.com/agentstation/starport/internal/storage/TestValkeySmallResultLimitBoundsScanRoundTrips",
+    "github.com/agentstation/starport/internal/storage/TestValkeyStore",
+    "github.com/agentstation/starport/internal/storage/TestValkeyPubSub",
+    "github.com/agentstation/starport/internal/storage/TestBoundedStorageRead/valkey",
+    "github.com/agentstation/starport/internal/storage/TestScanPagesPreserveEveryKeyAndLiteralPrefix/valkey",
+    "github.com/agentstation/starport/internal/blob/TestBlobSnapshotTransfer/filesystem/objectstore",
+    "github.com/agentstation/starport/internal/blob/TestBlobSnapshotTransfer/objectstore",
+    "github.com/agentstation/starport/internal/blob/TestBlobSnapshotLegacyObjectsRequireExplicitMigration",
+    "github.com/agentstation/starport/internal/blob/TestBlobSnapshotInterruptedObjectImport",
+    "github.com/agentstation/starport/internal/blob/TestBlobSnapshotObjectImportRefusesConflictingBytes",
+    "github.com/agentstation/starport/internal/blob/TestBlobSnapshotObjectImportValidatesBeforeClaim",
+    "github.com/agentstation/starport/internal/blob/TestBlobSnapshotObjectImportCompetingOwners",
+    "github.com/agentstation/starport/internal/blob/TestBlobSnapshotObjectImportRefusesUnlistedObject",
+    "github.com/agentstation/starport/internal/blob/TestRealObjectStoreConditionalRetirement",
+    "github.com/agentstation/starport/internal/blob/TestRealObjectStorePublicationReadiness",
+    "github.com/agentstation/starport/internal/recovery/TestImportedAuthorityKeepsSQLClosedUntilActivation",
+    "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityRequiresBothApprovals",
+    "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityFencesDelayedWrites/before-native-write",
+    "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityFencesDelayedWrites/after-native-write",
+    "github.com/agentstation/starport/internal/recovery/TestBudgetAuthorityClosedAndChangedEpoch",
+    "github.com/agentstation/starport/internal/recovery/TestFreshFleetBootstrapPermission",
+    "github.com/agentstation/starport/internal/catalog/TestCapturedFleetCatalogNativeReferences",
+    "github.com/agentstation/starport/internal/sqlstore/TestRelationalTransferMySQLPendingIntent",
+    "github.com/agentstation/starport/internal/recovery/TestPrepareBundleLocalAndSharedRecipes/shared",
+    "github.com/agentstation/starport/internal/sqlstore/TestRelationalTransferMySQLIncompatibleKeysRollBack",
+    "github.com/agentstation/starport/internal/sqlstore/TestRelationalTransferRestoresMySQLSessionSettings",
+    "github.com/agentstation/starport/internal/catalog/TestFleetAdoptionRepeatedRecoveryAndConcurrentSelection",
+    "github.com/agentstation/starport/internal/catalog/TestFleetAdoptionAcceptsRestoredClosedBoundary",
+    "github.com/agentstation/starport/internal/catalog/TestFleetAdoptionRecoversLostSelectionResponse",
+    "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapConcurrentExactPublication",
+    "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/before-sql",
+    "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/after-sql",
+    "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/before-kv",
+    "github.com/agentstation/starport/internal/catalog/TestFleetBootstrapWriteBoundaries/after-kv",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRequiresExplicitCollection",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionHonorsLimitsAndRequiredGenerations",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCountsGenerationsSeparatelyFromReceipts",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionDryRunPreservesPendingRecovery",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionResumesInterruptedCollection",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRefusesUnownedStaging",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionBoundsCommittedSnapshots",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionProtectsPinnedGeneration",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRecoversInterruptedUploadAndDeletion",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionFencesExpiredMaintenance",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionConcurrentReadersAndCollection",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCapacityRefusesWithoutMovingHead",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionRejectsOverlappingDeletionRecord",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/current",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/accepted",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/rollback",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRetentionCorruptionCannotDeleteSelectedBytes/inventory-missing",
+    "github.com/agentstation/starport/internal/catalog/TestFleetAcceptanceRetainsDistinctRollbackGenerations",
+    "github.com/agentstation/starport/internal/catalog/TestFleetStoreCompleteKeyLossRequiresRecovery",
+    "github.com/agentstation/starport/internal/catalog/TestFleetStoreNativePublication",
+    "github.com/agentstation/starport/internal/catalog/TestFleetStoreRefusesExpiredGrant",
+    "github.com/agentstation/starport/internal/catalog/TestFleetStoreSeparateProcessTakeover",
+    "github.com/agentstation/starport/internal/catalog/TestFleetStoreMissingSelectedPublicationIsNotAnEmptyStore",
+    "github.com/agentstation/starport/internal/catalog/TestFleetStoreAcceptanceUsesOriginalGrant",
+    "github.com/agentstation/starport/internal/catalog/TestFleetStoreNamespaceAndMalformedDescriptor",
+    "github.com/agentstation/starport/internal/catalog/TestFleetStoreLeaseExpiresDuringSelection/publication",
+    "github.com/agentstation/starport/internal/catalog/TestFleetStoreLeaseExpiresDuringSelection/acceptance",
+    "github.com/agentstation/starport/internal/catalog/TestFleetStoreLostHeadCannotBootstrapAgain",
+    "github.com/agentstation/starport/internal/catalog/TestFleetMigrationRequiresSameRecoveryIdentity",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeRejectsUnapprovedBackend",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRuntimePreservesOriginalGrantThroughAcceptance",
+    "github.com/agentstation/starport/internal/catalog/TestFleetRuntimeLiveTakeoverAcceptance",
+    "github.com/agentstation/starport/internal/recovery/TestBackupBundleSharedRecipe",
+    "github.com/agentstation/starport/internal/files/TestFilePagesReachPublicFilesAndExpiredPreparations/valkey",
+    "github.com/agentstation/starport/internal/files/TestFilesRefuseUnqualifiedPublication/valkey",
+    "github.com/agentstation/starport/internal/files/TestLostRetirementAcknowledgmentRetainsCharge/valkey",
+    "github.com/agentstation/starport/internal/files/TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached/valkey",
+    "github.com/agentstation/starport/internal/files/TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured/valkey",
+    "github.com/agentstation/starport/internal/files/TestFileClaimsRecoverLostSuccessfulAcknowledgments/released/valkey",
+    "github.com/agentstation/starport/internal/files/TestFilePublicationCannotReviveDeletingMetadata/valkey",
+    "github.com/agentstation/starport/internal/files/TestConcurrentFileRetirementPreservesOtherStoredBytes/valkey",
+    "github.com/agentstation/starport/internal/app/TestProductionBudgetAcrossProcesses",
+    "github.com/agentstation/starport/internal/app/TestSettledJobRequiresOriginalSharedApproval",
+    "github.com/agentstation/starport/internal/app/TestProductionBudgetBackendOperations",
+    "github.com/agentstation/starport/internal/recovery/TestFreshFleetInitialization",
+    "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/kv",
+    "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/sql",
+    "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/approval",
+    "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/closed-approval",
+    "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/row-security",
+    "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesExistingState/unknown-table",
+    "github.com/agentstation/starport/internal/recovery/TestFreshFleetInterruptedClaim",
+    "github.com/agentstation/starport/internal/recovery/TestFreshFleetConcurrentInitialization",
+    "github.com/agentstation/starport/internal/recovery/TestFreshFleetRefusesChangedIncarnation",
+    "github.com/agentstation/starport/internal/recovery/TestFreshFleetSQLFailureRetainsOnlyRetryClaim",
+    "github.com/agentstation/starport/internal/recovery/TestImportedReferencesNativeClosedGraph/valkey-postgres-objectstore",
+    "github.com/agentstation/starport/internal/recovery/TestBackupRejectsUnfinishedSlotReplay/valkey/valid",
+    "github.com/agentstation/starport/internal/recovery/TestBackupRejectsUnfinishedSlotReplay/valkey/malformed",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/active",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/pending",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/released-without-job",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/release-ack-pending",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/missing-counter",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/missing-history",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/low-counter",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/high-counter",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/missing-claim",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/missing-job",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/wrong-job",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/wrong-kind",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/pending-wrong-job",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/pending-wrong-kind",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/released-active",
+    "github.com/agentstation/starport/internal/recovery/TestBackupJobSlotOwnership/valkey/expiring-claim",
+    "github.com/agentstation/starport/internal/recovery/TestKVSnapshotTransfersAllBackendPairs/badger_to_valkey",
+    "github.com/agentstation/starport/internal/recovery/TestKVSnapshotTransfersAllBackendPairs/valkey_to_badger",
+    "github.com/agentstation/starport/internal/recovery/TestKVSnapshotTransfersAllBackendPairs/valkey_to_valkey",
+    "github.com/agentstation/starport/internal/recovery/TestKVSnapshotInterruptedImportRetainsBarrierAndExactRetry/valkey_interrupted",
+    "github.com/agentstation/starport/internal/recovery/TestKVSnapshotInterruptedImportRetainsBarrierAndExactRetry/valkey_lost_ack",
+    "github.com/agentstation/starport/internal/recovery/TestKVSnapshotConcurrentImportsChooseOneOperation/valkey",
+    "github.com/agentstation/starport/internal/recovery/TestKVSnapshotReadsEveryNativeScanPage",
+    "github.com/agentstation/starport/internal/recovery/TestBackupRejectsUnfinishedWindowReplay/valkey",
+    "github.com/agentstation/starport/internal/recovery/TestRecoveryRequiresOriginalIndependentApproval",
+    "github.com/agentstation/starport/internal/app/TestSharedCacheCompositionUsesSeparateService",
+    "github.com/agentstation/starport/internal/app/TestSharedCacheCanonicalDeploymentIsolation",
+    "github.com/agentstation/starport/internal/app/TestDeploymentIsolationIncludesGatewayRecords",
+    "github.com/agentstation/starport/internal/app/TestInitializeFleetFreshStartup",
+    "github.com/agentstation/starport/internal/app/TestInspectImportedBackupSharedTargetsRequireExactIncarnation",
+    "github.com/agentstation/starport/internal/app/TestRestorePublishFilesSharedRecipe/inference-credential-policy",
+    "github.com/agentstation/starport/internal/app/TestRestorePublishFilesSharedRecipe/credential-policy",
+    "github.com/agentstation/starport/internal/app/TestRestoreApplicationSharedRecipe",
+    "github.com/agentstation/starport/internal/app/TestAppWithValkey",
+    "github.com/agentstation/starport/internal/app/TestSharedStartupDoesNotCreateLocalDatabases"
+  ],
+  "notes": [
+    "Optional fixtures and platform-dependent checks remain skipped here; changed native owner tests have separate race and pure-Go evidence.",
+    "Twenty-five scripts passed at56aceaf5; architecture requalification passed at84d9a9a5 after the dependency repair."
+  ],
+  "other_checks": {
+    "go_vet_all": 0,
+    "make_lint": 0,
+    "make_build": 0,
+    "console_check": {
+      "exit_code": 0,
+      "tests": 464,
+      "files": 74
+    },
+    "smoke_first_run": 0,
+    "smoke_openrouter_sdks": 0,
+    "benchmark_overhead": {
+      "exit_code": 0,
+      "requests": 200,
+      "mock_upstream_ms": 20,
+      "reported_p50_ms": 0,
+      "reported_p99_ms": 0,
+      "scope": "existing component timer check; not a complete request-path latency claim"
+    }
+  },
+  "task": "CSP13",
+  "task_complete": false,
+  "artifacts": {
+    "go-test-final.jsonl.gz": {
+      "sha256_uncompressed": "837fa3269296cdc646258430e73d9c9e376806b44f2824b38d494453612911ab"
+    },
+    "vet-final.log.gz": {
+      "sha256_uncompressed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lint-final.log.gz": {
+      "sha256_uncompressed": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "build-final.log.gz": {
+      "sha256_uncompressed": "b6362d46216e3513ed365f745d3e0ae4677d886f11e743382427d62841423ff6"
+    },
+    "console-check.log.gz": {
+      "sha256_uncompressed": "b26042a94d3c7be7d6390943520cff8baa58e93b07412308b08ae8ac2ba67b17"
+    },
+    "smoke-first-run.log.gz": {
+      "sha256_uncompressed": "13df9cf24049e80dbd789601314d6896dc1a5674feff1997aab89e9fff49ff03"
+    },
+    "smoke-openrouter-sdks.log.gz": {
+      "sha256_uncompressed": "3f943ae1c7009abcdc2edf206ab0de1b9c7d427821075266f4ef205a3f5086ed"
+    },
+    "benchmark-overhead.log.gz": {
+      "sha256_uncompressed": "7e7cd4e4dad35c66194632119948fc4b19a955add8783b8508a51705139be2bf"
+    },
+    "verify-v1-architecture-final.log.gz": {
+      "sha256_uncompressed": "0a74729c61b008083dd93b18442bd813f9cc0b0b205f85f3449ec427dec0de88"
+    }
+  },
+  "review": "running; no verdict yet",
+  "publication": "not published"
+}
