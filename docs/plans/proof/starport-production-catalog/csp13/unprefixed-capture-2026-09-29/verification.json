@@ -1,0 +1,101 @@
+{
+  "state": "LOCAL_IMPLEMENTATION_UNPUBLISHED",
+  "head": "fa214f6a56ed041b0461e775023c01bdf1e91901",
+  "branch": "codex/recovery-migration",
+  "owner": "this chat",
+  "base": "90ad16c2d20aa2afed51d2108e160184a108d422",
+  "contract": [
+    "Only the explicit backup flag selects unprefixed Valkey records. Ordinary startup and capture retain canonical namespaces.",
+    "The source exposes enumeration only and binds the observed backend incarnation. The operator must fence all writers and select a dedicated source database.",
+    "Mixed canonical namespaces and import barriers cause refusal. Bytes and absolute expiration remain unchanged.",
+    "The manifest binds the source layout. Capture and verification report record counts and validate references.",
+    "Preparation imports into the canonical target namespace under retained startup barriers. Exact retry preserves the operation. The source remains unchanged."
+  ],
+  "checks": {
+    "fail_before": {
+      "results": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "reason": "The CLI rejects the missing --unprefixed-valkey flag.",
+      "expected_failure": true
+    },
+    "storage_cli_race": {
+      "results": {
+        "pass": 27,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "application_race": {
+      "results": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "vet": "PASS: four affected packages",
+    "lint": "PASS: zero issues",
+    "prose": "PASS: zero diagnostics",
+    "workflow": "Ruby YAML parsing, dedicated database selection, and bash syntax pass"
+  },
+  "fixture": {
+    "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "container": "csp13-unprefixed-valkey-20260929",
+    "state": "stopped",
+    "databases": [
+      13,
+      14
+    ]
+  },
+  "artifacts": {
+    "fail-before.jsonl": {
+      "file": "fail-before.jsonl.gz",
+      "sha256": "32fe2c9d951d22be33065fb676f40d555aaa493d9a358664cee238a4166d437a",
+      "gzip_sha256": "4a8ae52c3d1d96aa32ca6aee6c3eff61c584c4d0a6738c80c5fdb4afca827be2"
+    },
+    "source-cli-race.jsonl": {
+      "file": "source-cli-race.jsonl.gz",
+      "sha256": "52acbe02457698d1425582ffab9300a8bcc26305b701e6279654bfaa9948b8ce",
+      "gzip_sha256": "979a4947a7f832778828433c463ce186e84bfdcb4d8111bc7fcfb2e4ec0797b1"
+    },
+    "storage-cli-race.jsonl": {
+      "file": "storage-cli-race.jsonl.gz",
+      "sha256": "5a3982659654abc4fada30951aafde44b27581f75aaa247a488368475265ee0f",
+      "gzip_sha256": "8ea9c7210620230719e0a995c0cc5b49139276ccf5f2fd7a5958b6f2b0e58601"
+    },
+    "application-race.jsonl": {
+      "file": "application-race.jsonl.gz",
+      "sha256": "b3f237a8a07444c7e286d484466802922ae30eb643f12ffec7a2d17b55af7fe0",
+      "gzip_sha256": "a202499d9dc0b487fdb1e012169cf093d699dc61e400dd07a92b507f8c2d6cf4"
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "gzip_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    },
+    "ci-step.sh": {
+      "file": "ci-step.sh.gz",
+      "sha256": "1c2ed2f797bbd186fb0905658b3f492c73e67eb4a21ed059b8915ebefaeeec5d",
+      "gzip_sha256": "b97d9c1e5cbd372d24c97a7ac0808c72c939851268867dafdeb4d708eeecedb0"
+    }
+  },
+  "remaining": [
+    "Full repository pre-PR checks and required review.",
+    "Publication, native qualification, and merge.",
+    "Independent history reconciliation and explicit controlled activation. A41.unprefixed_record_migration remains UNVERIFIED."
+  ]
+}

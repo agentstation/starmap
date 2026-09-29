@@ -5066,3 +5066,19 @@ No production code changed in this repair. The Windows case remains required.
 
 The [parent contract proof](../../plans/proof/starport-production-catalog/csp13/windows-parent-contract-2026-09-29/verification.json) records 33 local race passes, Windows ARM compilation, and the fresh review.
 PR #391 publishes the reviewed repair. Its native checks remain open.
+
+### Canonical journal fixtures and namespace capture (September 29, 2026)
+
+Windows ARM at `d9b502da2` passed 1,134 results and failed six application results. Git converted two canonical journal fixtures to CRLF.
+The validators correctly refused those bytes. Published `90ad16c2d` pins both fixtures to LF without changing production code or assertions.
+Forced CRLF checkout now preserves their exact repository bytes. Seven focused application race results pass.
+The [checkout proof](../../plans/proof/starport-production-catalog/csp13/windows-journal-checkout-2026-09-29/verification.json) retains native failures, the repair, and required review evidence.
+Replacement native qualification and merge remain open.
+
+Local `fa214f6a5` adds explicit unprefixed Valkey capture. Ordinary startup and capture retain canonical namespaces.
+The source exposes enumeration only and binds its observed backend incarnation. Mixed deployment namespaces and import barriers cause refusal.
+The manifest records the selected source layout. Capture and verification report counts and validate references.
+Preparation imports into the canonical target namespace under startup barriers. Exact retries preserve the result and original source bytes.
+
+The [local proof](../../plans/proof/starport-production-catalog/csp13/unprefixed-capture-2026-09-29/verification.json) records 27 storage and CLI passes and two application passes without skips.
+This branch remains unpublished. Required review, full repository checks, independent history, and controlled activation remain open.

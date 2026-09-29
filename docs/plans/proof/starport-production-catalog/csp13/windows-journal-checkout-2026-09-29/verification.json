@@ -1,0 +1,197 @@
+{
+  "state": "REVIEWED_PUBLISHED_NATIVE_CI_RUNNING",
+  "checked_at": "2026-09-29T08:07:28.515140+00:00",
+  "head": "90ad16c2d20aa2afed51d2108e160184a108d422",
+  "failure": {
+    "head": "d9b502da27da2b072ba261196858992b2353ce7f",
+    "run": 36537498008,
+    "platform": "windows-arm64",
+    "results": {
+      "pass": 1134,
+      "fail": 6,
+      "skip": 101
+    },
+    "cause": "Git checkout converted two canonical journal fixtures from LF to CRLF. The existing validators refused the changed bytes.",
+    "failed_tests": [
+      "TestRestorePublishBaselineRetainsVerifiedStageWithoutPromotion",
+      "TestRestorePublishCredentialPolicyRetainsStagingWithoutAcceptance/credential-policy/native",
+      "TestRestorePublishCredentialPolicyRetainsStagingWithoutAcceptance/inference-credential-policy/native",
+      "TestRestorePublishCredentialPolicyRetainsStagingWithoutAcceptance",
+      "TestRestorePublishRuntimePreservesNativePublicationEvidence",
+      "TestRestorePublishRuntimeRejectsChangedNativeStagingBeforePreparation"
+    ]
+  },
+  "repair": {
+    "file": ".gitattributes",
+    "production_changes": false,
+    "test_assertion_changes": false,
+    "contract": "Pin the two retained-journal fixtures to LF. Forced core.autocrlf=true checkout must preserve the exact committed bytes."
+  },
+  "checks": {
+    "forced_checkout_before": [
+      {
+        "file": "internal/app/testdata/baseline-publication.json",
+        "repository_sha256": "712c20ce3f98ca4a09e300c59bd0b8131ee9df7ccf27474afa680e69080a3bb2",
+        "checkout_sha256": "8cbbbc3243176f98a109d5178a8a292caaf0a5ad0cc25059ecacd252c0524736",
+        "carriage_returns": 1,
+        "same_bytes": false
+      },
+      {
+        "file": "internal/app/testdata/recovery-publication.jsonl",
+        "repository_sha256": "52e0e2cba44aa1763959ab52d491bc0eabc785c1f400c2ec4b15446aca36195d",
+        "checkout_sha256": "3cd38061f3c46ec9df5ce8182adf3566f8080ea0db669b7f379ae2f4f77bcb80",
+        "carriage_returns": 3,
+        "same_bytes": false
+      }
+    ],
+    "forced_checkout_after": [
+      {
+        "file": "internal/app/testdata/baseline-publication.json",
+        "repository_sha256": "712c20ce3f98ca4a09e300c59bd0b8131ee9df7ccf27474afa680e69080a3bb2",
+        "checkout_sha256": "712c20ce3f98ca4a09e300c59bd0b8131ee9df7ccf27474afa680e69080a3bb2",
+        "carriage_returns": 0,
+        "same_bytes": true
+      },
+      {
+        "file": "internal/app/testdata/recovery-publication.jsonl",
+        "repository_sha256": "52e0e2cba44aa1763959ab52d491bc0eabc785c1f400c2ec4b15446aca36195d",
+        "checkout_sha256": "52e0e2cba44aa1763959ab52d491bc0eabc785c1f400c2ec4b15446aca36195d",
+        "carriage_returns": 0,
+        "same_bytes": true
+      }
+    ],
+    "local_application_race": {
+      "pass": 7,
+      "fail": 0,
+      "skip": 0
+    },
+    "review": {
+      "exit_code": 0,
+      "attestation": "reused for unchanged substantive diff and review contract",
+      "reviewer": "claude-opus-5-5 high",
+      "threshold": "configured P0 only",
+      "passes": 4,
+      "bundle_bytes": 864259,
+      "secret_scan": "clean",
+      "tools": "on",
+      "web_search": "on"
+    },
+    "signature_valid": true,
+    "review_threads": 0
+  },
+  "publication": {
+    "pr": 391,
+    "run": 36540096991,
+    "url": "https://github.com/agentstation/starport/actions/runs/36540096991",
+    "superseded_run_cancelled": 36537498008
+  },
+  "historical_fleet_results": {
+    "fleet-adoption.jsonl": {
+      "pass": 22,
+      "fail": 0,
+      "skip": 0
+    },
+    "fleet-budget.jsonl": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "fleet-catalog.jsonl": {
+      "pass": 80,
+      "fail": 0,
+      "skip": 0
+    },
+    "fleet-initialization.jsonl": {
+      "pass": 7,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "artifacts": {
+    "native-catalog-windows-11-arm/tests.jsonl": {
+      "file": "native-catalog-windows-11-arm/tests.jsonl.gz",
+      "sha256": "46b68379a5e6d280cb7c957e2ec94575fddbc4b901f2c8793482d8e1af788f4d",
+      "gzip_sha256": "8695952a93366543f38053b3198ff4cde6c44c12d11222fe5846d89624e1b500"
+    },
+    "native-catalog-windows-11-arm/toolchain.txt": {
+      "file": "native-catalog-windows-11-arm/toolchain.txt.gz",
+      "sha256": "b3f5d419e25e24ddcdc67f96ff1acfc592a620446319ef63967cd923d8630a8b",
+      "gzip_sha256": "60c59f8759a34774f8a7ca9bbaef5e11415dfe39dedacc1d97a99c2e1159505b"
+    },
+    "crlf-before.json": {
+      "file": "crlf-before.json.gz",
+      "sha256": "c87371f2147531b3f193259ba147886fbbc4113d49dc9d9f865d2bdf715098c3",
+      "gzip_sha256": "4db6d5d309da6404406b6de2de972276fd8d80883bc4ffb659c26575816a62ee"
+    },
+    "crlf-after.json": {
+      "file": "crlf-after.json.gz",
+      "sha256": "0fbc3bb7541c1e44dbced83b2ca9618a86afd94f01c2c445e5dee074e476caa5",
+      "gzip_sha256": "8d8e6f24b3d09f05b5ee7a829776fae77f7517fcbbaed7a02f82aff62fc3370d"
+    },
+    "journal-fixture-race.jsonl": {
+      "file": "journal-fixture-race.jsonl.gz",
+      "sha256": "a1344a8be8fac8ae67c47f358a3b6ffb187008e54a0636fe9f162439682825e3",
+      "gzip_sha256": "0b77d2800aafc281b21bbb4ec13fecebc87da10b53a065104ae7b661ea14d476"
+    },
+    "journal-autoreview.log": {
+      "file": "journal-autoreview.log.gz",
+      "sha256": "6cdc5e28f3864f5ebab8354f449e8a6588245f470697ec9e702d79eb5b222dd3",
+      "gzip_sha256": "7db7490dcce594e4b32afb8dc1f457a359cf1e496b8b9f36e46ef81436fc5302"
+    },
+    "repaired-pr.json": {
+      "file": "repaired-pr.json.gz",
+      "sha256": "52e2d8577c8fa9fcdbef7cc2a4987aedb7ed1cf784447c84d889d20644bfee1d",
+      "gzip_sha256": "ac02f9ada7c88c909ff7a93ebd34808d61981befc6386aee201de017cb2ee165"
+    },
+    "repair-signature.json": {
+      "file": "repair-signature.json.gz",
+      "sha256": "0d92a3a1cd489bbe277b9f0e4b8e8d51585a79041d9e1ebf20fe80e2a472f616",
+      "gzip_sha256": "292427939e0d8e7784fc44a29d27a420ad2fc3dfee4bc3f31d5cc0927d1e785d"
+    },
+    "repair-review-threads.json": {
+      "file": "repair-review-threads.json.gz",
+      "sha256": "5a7fe9e9c393322f1edf0b97a328096ee486b9edb8cb09fbbd13791292178944",
+      "gzip_sha256": "32d78427996201c61803ac8bb30939365d689b1773f8733493bc9b8851ddfd23"
+    },
+    "repaired-run.json": {
+      "file": "repaired-run.json.gz",
+      "sha256": "0d2d470aca741dac4f4e683861384c1030f01aa9b8221d2f55a88b71655b71b2",
+      "gzip_sha256": "69f6369127dc9879dc4225b6bbcbffb61ddddbb24c31e6f89b58c7173165ec30"
+    },
+    "superseded-run.json": {
+      "file": "superseded-run.json.gz",
+      "sha256": "49563710463e5faf798bf958faa02e9eace598c09e7e622bd422cc773a4c788d",
+      "gzip_sha256": "01ab60e2ad7c98a763838e7a32030fe7f32429379eab981fe4248b3e9fbe19ea"
+    },
+    "pr-body.md": {
+      "file": "pr-body.md.gz",
+      "sha256": "57ad58196c8e6fbbc606b3aa298b369f96a7ce4000ca3283db376133907d54ef",
+      "gzip_sha256": "82253c75c982f607f023d2a2b78f24c0e69fe515a42ce311d38d54aecf4c85f7"
+    },
+    "catalog-fleet-recovery/fleet-adoption.jsonl": {
+      "file": "catalog-fleet-recovery/fleet-adoption.jsonl.gz",
+      "sha256": "e75f115f353555208c74b724336206d34de79b234bc2bb559cafdeb2a637e852",
+      "gzip_sha256": "5553e62dbc87e48fdc9e02fd35186e839483342c48ca2843b9910e6389ce1499"
+    },
+    "catalog-fleet-recovery/fleet-budget.jsonl": {
+      "file": "catalog-fleet-recovery/fleet-budget.jsonl.gz",
+      "sha256": "3f4549492a38c80b7fb227f1fae0e302c280375ed733312d2cbae6cba1e634ab",
+      "gzip_sha256": "6876ceb08eff3715ad709822e7e83443ec800824ab8a3003cb76897128ce7b8d"
+    },
+    "catalog-fleet-recovery/fleet-catalog.jsonl": {
+      "file": "catalog-fleet-recovery/fleet-catalog.jsonl.gz",
+      "sha256": "a843e66dffb774e86e48374d912bdfe6670f778bff92eab595c6b6ded2b20965",
+      "gzip_sha256": "2022f3f8bd3e6744cf23053635ad51bf92f6c2a50bec5ff20559128b8c114bfb"
+    },
+    "catalog-fleet-recovery/fleet-initialization.jsonl": {
+      "file": "catalog-fleet-recovery/fleet-initialization.jsonl.gz",
+      "sha256": "f1debc240442592270e3f7cab6fe1d4f359a81ad5573c9c969188e8847046282",
+      "gzip_sha256": "29e114d0f68a1bad1e7e1916c5a3ea16d0946a64801eff17569edc71fd816aab"
+    }
+  },
+  "remaining": [
+    "Native checks for the repaired checkout.",
+    "Exact-head merge after all required checks pass.",
+    "The remaining CSP13 migration, independent history, and controlled activation criteria."
+  ]
+}

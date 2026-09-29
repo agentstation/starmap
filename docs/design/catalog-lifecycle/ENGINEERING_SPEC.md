@@ -2656,6 +2656,13 @@ Use an encoded deployment identity with an explicit schema version. Prevent anot
 Multi-key atomic operations must satisfy the required hash-slot layout.
 
 Migrate existing unprefixed records with counts, reference checks, and an explicit switch. Do not dual-write indefinitely.
+
+Unprefixed capture requires the explicit operator option `backup create --unprefixed-valkey` and a dedicated, fenced source database.
+Ordinary startup and capture retain canonical deployment namespaces. They must never select unprefixed records as a fallback.
+The manifest binds the source layout. Capture reports record counts and applies the same reference validation as ordinary backups.
+Preparation imports into a separate canonical target namespace with startup barriers intact. Exact retries retain the original operation and expiration times.
+Capture and preparation do not switch running gateways. Independent history reconciliation and controlled activation must precede that switch.
+
 A logical key prefix does not isolate server memory, eviction, persistence, or failures.
 Cluster, Sentinel, Redis, and MySQL support requires explicit mode-specific qualification before documentation claims it.
 
