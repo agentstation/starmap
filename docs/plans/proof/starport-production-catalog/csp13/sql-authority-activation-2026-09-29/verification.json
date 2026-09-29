@@ -1,0 +1,155 @@
+{
+  "state": "LOCAL_IMPLEMENTATION_UNPUBLISHED",
+  "head": "f87d3e3c79d97da68cb9f79a94d197a44d9a828a",
+  "branch": "codex/recovery-migration",
+  "worktree": "/private/tmp/starport-clock-review-20260926",
+  "checked_at": "2026-09-29T08:57:30.912945+00:00",
+  "toolchain": "go1.27.1",
+  "platform": "darwin/arm64",
+  "contract": [
+    "ActivateRelationalImport binds the exact snapshot, operation, restriction policy, and recovery decision digest.",
+    "Domain approval, historical and native completion receipts, and barrier removal share one SQL transaction under native migration ownership.",
+    "Exact completion retries never run the approval callback again. Later revocations and other records remain unchanged.",
+    "Historical receipts survive transfer. Import removes former native completion authority.",
+    "ApproveImportedAuthority installs the native KV approval inside the SQL activation callback, then commits SQL approval and barrier removal together.",
+    "A lost native reply leaves SQL closed. Exact retry can finish. Later SQL withdrawal prevents a recovery retry from granting admission."
+  ],
+  "checks": {
+    "fail_before": {
+      "pass": 0,
+      "fail": 2,
+      "skip": 0,
+      "failed": [
+        "TestRelationalActivationAtomicRetry/sqlite",
+        "TestRelationalActivationAtomicRetry"
+      ],
+      "skipped": []
+    },
+    "sqlite_initial_race": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "failed": [],
+      "skipped": []
+    },
+    "native_targeted_race": {
+      "pass": 33,
+      "fail": 0,
+      "skip": 0,
+      "failed": [],
+      "skipped": []
+    },
+    "native_relational_race": {
+      "command": "GOWORK=off go test -race -json -count=1 -timeout=6m ./internal/sqlstore -run '^TestRelational'",
+      "backends": [
+        "SQLite",
+        "PostgreSQL",
+        "MySQL"
+      ],
+      "pass": 77,
+      "fail": 0,
+      "skip": 0,
+      "failed": [],
+      "skipped": [],
+      "exit_code": 0
+    },
+    "authority_final_race": {
+      "command": "GOWORK=off go test -race -json -count=1 -timeout=6m ./internal/recovery -run '^Test(ImportedAuthority|BudgetAuthority|RecoveryWitnessTransitions)'",
+      "backends": [
+        "Valkey",
+        "SQLite",
+        "PostgreSQL",
+        "MySQL"
+      ],
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "failed": [],
+      "skipped": [],
+      "exit_code": 0
+    },
+    "vet": {
+      "command": "GOWORK=off go vet ./internal/sqlstore ./internal/recovery",
+      "exit_code": 0
+    },
+    "lint": {
+      "command": "GOWORK=off make lint",
+      "exit_code": 0,
+      "issues": 0
+    },
+    "prose": {
+      "files": [
+        "internal/sqlstore/README.md",
+        "internal/recovery/README.md"
+      ],
+      "exit_code": 0,
+      "diagnostics": 0
+    },
+    "manual_review": "Reviewed SQL transaction ownership, callback connection use, receipt identity, exact retry, native partial-write recovery, and later withdrawal.",
+    "diff_check": "PASS"
+  },
+  "intermediate_failure": {
+    "source": "authority-race.jsonl",
+    "pass": 4,
+    "fail": 6,
+    "skip": 0,
+    "failed": [
+      "TestImportedAuthorityKeepsSQLClosedUntilActivation",
+      "TestBudgetAuthorityRequiresBothApprovals",
+      "TestBudgetAuthorityFencesDelayedWrites/before-native-write",
+      "TestBudgetAuthorityFencesDelayedWrites/after-native-write",
+      "TestBudgetAuthorityFencesDelayedWrites",
+      "TestBudgetAuthorityClosedAndChangedEpoch"
+    ],
+    "skipped": [],
+    "reason": "The temporary runner supplied a database in the Valkey URL while the test selected database 14 explicitly. The corrected runner omits the URL database. No production behavior or assertion changed."
+  },
+  "remaining": [
+    "Independent history reconciliation and a bound complete recovery decision.",
+    "Application coordinator and actual operator commands, including canonical file placement and all component receipts.",
+    "Native platform qualification, full pre-PR checks, required review, publication, and merge.",
+    "All remaining CSP13 acceptance subcases."
+  ],
+  "artifacts": {
+    "fail-before.jsonl": {
+      "file": "fail-before.jsonl.gz",
+      "sha256": "e82cf168cab8543be2195da387b2118604f9632348b10863a59dd8c60e14d7aa",
+      "gzip_sha256": "90a58cb86de05fb43719b479810da56b405b27e4132e697f3a34ae5d4cd8a1ea"
+    },
+    "sqlite-race.jsonl": {
+      "file": "sqlite-race.jsonl.gz",
+      "sha256": "d00b424f9cf140288389ca51ac4487022eba0e1ee63af49ac80a03d6fe4d27de",
+      "gzip_sha256": "b42f9906f75d140bf6e972f0bbfbfc59f859dad55b48f009ec35d6aabaf9a1b3"
+    },
+    "native-race.jsonl": {
+      "file": "native-race.jsonl.gz",
+      "sha256": "981249db941a4fa5986195b804df04431f5c7941f457bbdd1b4b0546e3b5cff1",
+      "gzip_sha256": "43a53d78c824ff9800fef56a3dfd6d4db62b6e5547940ac78603de8fa4cc8436"
+    },
+    "all-relational-race.jsonl": {
+      "file": "all-relational-race.jsonl.gz",
+      "sha256": "b27f479638dc9f08d68f2b00f2329d335601c2f1202cc9bf4e7dfe3b2bd2ea71",
+      "gzip_sha256": "5107140420b93a28bb9ad57addd26a39ec0a2f68e6759e16ff2e6ef9ce0685f5"
+    },
+    "authority-race.jsonl": {
+      "file": "authority-race.jsonl.gz",
+      "sha256": "992c706a87480a0aabb35890729195b254d840ee9decba097ce33d0ffed0027f",
+      "gzip_sha256": "d4f4f5edb7200468cc217664a2a306aa6b5be7f654077eefbd2a7ab96d39c528"
+    },
+    "authority-native-final.jsonl": {
+      "file": "authority-native-final.jsonl.gz",
+      "sha256": "0b8f95349a7a46fa9f3328024e0ce06d7a8428594d59a14364a8c5c31f2590e0",
+      "gzip_sha256": "a9d8b547080d28a4789707442b15653bc4bdf91c1ab553940fd4a4f2991f7995"
+    },
+    "final-vet.log": {
+      "file": "final-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "final-lint.log": {
+      "file": "final-lint.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    }
+  }
+}

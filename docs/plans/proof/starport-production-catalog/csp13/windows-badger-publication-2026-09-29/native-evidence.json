@@ -1,0 +1,112 @@
+{
+  "head": "e9dfb890e199b4e1066ba3cdd8440d911df6a2c8",
+  "run": 36543355770,
+  "checked_at": "2026-09-29T09:00:53.254973+00:00",
+  "state": "NATIVE_PARTIAL_PASS",
+  "remaining": "Four platform jobs remain active. Required Build is pending their completion. No merge yet.",
+  "checks": {
+    "windows-arm": {
+      "pass": 5967,
+      "fail": 0,
+      "skip": 374,
+      "skip_note": "374 fixture-dependent test results skip in the standalone native job. Dedicated native service jobs qualify their assigned cases separately."
+    },
+    "fleet": {
+      "pass": 117,
+      "fail": 0,
+      "skip": 0
+    },
+    "durable": {
+      "pass": 1462,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "artifacts": {
+    "windows-arm/allocations.jsonl": {
+      "file": "windows-arm-allocations.jsonl.gz",
+      "sha256": "a458785b89128ae1bf86b9046c512bed0438dde9f96b066b2e9eac65a4affbe1",
+      "gzip_sha256": "78f54f660cb353e4450c67b8d09ebeb83330c0562f1112b0c17bbeb1a499f871"
+    },
+    "windows-arm/toolchain.txt": {
+      "file": "windows-arm-toolchain.txt.gz",
+      "sha256": "b3f5d419e25e24ddcdc67f96ff1acfc592a620446319ef63967cd923d8630a8b",
+      "gzip_sha256": "60c59f8759a34774f8a7ca9bbaef5e11415dfe39dedacc1d97a99c2e1159505b"
+    },
+    "windows-arm/packages.txt": {
+      "file": "windows-arm-packages.txt.gz",
+      "sha256": "43ebe1a454505e91549b06887a28cf96dde7ee946ee223afbbc023430cc46dc8",
+      "gzip_sha256": "c3a8e85d10e1887304defd95e64f7d4d4ca1cb7291f564ab02d175415ffae6f9"
+    },
+    "windows-arm/tests.jsonl": {
+      "file": "windows-arm-tests.jsonl.gz",
+      "sha256": "ed0c33fa53a02a8a89c1c53c7079efcfabf4b9d6f6a406f725cf8b17237f2e43",
+      "gzip_sha256": "af367e787be0c523a7f9ef975e66102fa44eb915744e740cc98baa36d58adc30"
+    },
+    "fleet/fleet-adoption.jsonl": {
+      "file": "fleet-fleet-adoption.jsonl.gz",
+      "sha256": "1ac8216b546841189ce90c63520e86665db1cc5fa6720b2fc2c4a7c47ffd85f2",
+      "gzip_sha256": "e15911d7b314e097c73f8b975e37739789b0ff1533158b5a90582e7015f12dd4"
+    },
+    "fleet/fleet-budget.jsonl": {
+      "file": "fleet-fleet-budget.jsonl.gz",
+      "sha256": "feeefbc43391689ddaffc17a5413e7fb7d81fe378b55ca57779ffddb77fecd09",
+      "gzip_sha256": "afaa992ea3e7e85cc1b85aa832f0f231ef38d54338e94962216f6123582e7c9a"
+    },
+    "fleet/fleet-catalog.jsonl": {
+      "file": "fleet-fleet-catalog.jsonl.gz",
+      "sha256": "7451bb9d77c57e5917b68dec457b89d5b6212135febe12bcd144433997c3d8ae",
+      "gzip_sha256": "310b6d2957c93b0d1d0817f3e79882b1024c31e85cc420a4f42b856b95dfa5f8"
+    },
+    "fleet/fleet-initialization.jsonl": {
+      "file": "fleet-fleet-initialization.jsonl.gz",
+      "sha256": "d39b00054f7f766205e04ab74d06b5fc7adc57e22745d03dc1ac7fb5881e4dc1",
+      "gzip_sha256": "745803a5e78d98f39b69229c829b0b270a5129ce8636fcf9aa177ad73d899f8c"
+    },
+    "durable/backup-application.jsonl": {
+      "file": "durable-backup-application.jsonl.gz",
+      "sha256": "0ddd613133d9254a2d3e6096d314517ac20262fbd02dfd0da887c3bd618ee61b",
+      "gzip_sha256": "911df63e2f96be2b333b7186c6fd73b5808ef603bec78ef3de47b4a448149d72"
+    },
+    "durable/backup-catalog.jsonl": {
+      "file": "durable-backup-catalog.jsonl.gz",
+      "sha256": "c338f804e962a42d6a92b5f58924c3f18cdfefeabf1499581d13ce579ab9cc27",
+      "gzip_sha256": "a3347c4347fc26e9c835027576b030c38acd5d4e0f5bca4964fa9d25cd53cd74"
+    },
+    "durable/recovery-objectstore.log": {
+      "file": "durable-recovery-objectstore.log.gz",
+      "sha256": "cf3acc6c3901126a6d330556ad70e56893595826c1f7086a23313013d66d65eb",
+      "gzip_sha256": "9faf8c1cca0a59cb1df9d17f93c442c0b9547ce5d22b0624959ffb8394254edd"
+    },
+    "durable/recovery-objectstore-build.txt": {
+      "file": "durable-recovery-objectstore-build.txt.gz",
+      "sha256": "37f93f5f76d9e09d78a995e9ab8e1e7197d9633e7faab87dba00d5a0297332b9",
+      "gzip_sha256": "a26ba0f396715a12395d94aa56f3e0545622a8625ef733f48b3ad9bb4fcbc001"
+    },
+    "durable/backup-storage.jsonl": {
+      "file": "durable-backup-storage.jsonl.gz",
+      "sha256": "c6834c745e3997f6035852655b7f1f7d596a17e22060594a06c10c25d3384450",
+      "gzip_sha256": "742d28919383576905f2b79cd516cfce5398176bd4c4182637ee460b9c63475a"
+    },
+    "durable/fleet-reservation-jobs.jsonl": {
+      "file": "durable-fleet-reservation-jobs.jsonl.gz",
+      "sha256": "ea9f08e04f4f6d94fc2b34001603a179eb6e37cb83d1540f04327f9bad1bbed0",
+      "gzip_sha256": "c347f497aa1fac92abef90be7eb0614b056a67a7fdb56cab6353834c869bb454"
+    },
+    "pr-current.json": {
+      "file": "current-pr-current.json.gz",
+      "sha256": "7a9aee2d3d14bfcbd2eec95486552a3b431daa4980d2b1ec7612122778088e7a",
+      "gzip_sha256": "3b18ef00560d1d3b3091b74c17a981002b7d2f405d16e879c217799218ffc624"
+    },
+    "protection.json": {
+      "file": "current-protection.json.gz",
+      "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+      "gzip_sha256": "f1a3ecaa02a381e3f7e2d73913df084cd9732f93e6ca7646f650f2bc1b3f34e5"
+    },
+    "review-threads.json": {
+      "file": "current-review-threads.json.gz",
+      "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+      "gzip_sha256": "26b091821f5b9b3b6b84b6cbac4fb48340c16c0a5843a5341543df10f92e383e"
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-29T08:42:42.233091+00:00",
+  "checked_at": "2026-09-29T09:00:53.254973+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -989,11 +989,11 @@
     "consumer_merge": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d"
   },
   "local_consumer_checkpoint": {
-    "head": "d043d3eada4619c0c7e90b2bf26d998bfea6cdd1",
+    "head": "f87d3e3c79d97da68cb9f79a94d197a44d9a828a",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-migration",
     "state": "unpublished",
-    "proof": "csp13/catalog-preparation-kv-activation-2026-09-29/verification.json",
+    "proof": "csp13/sql-authority-activation-2026-09-29/verification.json",
     "next_action": "Implement complete recovery reconciliation and coordinated activation."
   },
   "storage_recipe_preparation": {
@@ -1072,7 +1072,7 @@
     "status": "MERGED",
     "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-29T08:42:42.233091+00:00",
+  "local_updated_at": "2026-09-29T08:57:30.912945+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -1274,7 +1274,6 @@
         "baseRefOid": "41160fbf55f74a6659ff0ac488a4378524437be7",
         "headRefOid": "e9dfb890e199b4e1066ba3cdd8440d911df6a2c8",
         "isDraft": true,
-        "number": 391,
         "state": "OPEN",
         "statusCheckRollup": [
           {
@@ -1329,12 +1328,12 @@
           },
           {
             "__typename": "CheckRun",
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-29T08:54:45Z",
+            "conclusion": "SUCCESS",
             "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36543355770/job/109323788664",
             "name": "Test (windows-11-arm)",
             "startedAt": "2026-09-29T08:32:26Z",
-            "status": "IN_PROGRESS",
+            "status": "COMPLETED",
             "workflowName": "CI"
           },
           {
@@ -1349,12 +1348,12 @@
           },
           {
             "__typename": "CheckRun",
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-29T08:55:18Z",
+            "conclusion": "SUCCESS",
             "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36543355770/job/109323788995",
             "name": "Catalog Fleet Recovery",
             "startedAt": "2026-09-29T08:32:26Z",
-            "status": "IN_PROGRESS",
+            "status": "COMPLETED",
             "workflowName": "CI"
           },
           {
@@ -1419,12 +1418,12 @@
           },
           {
             "__typename": "CheckRun",
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-29T08:42:49Z",
+            "conclusion": "SUCCESS",
             "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36543355770/job/109323788788",
             "name": "Release Snapshot",
             "startedAt": "2026-09-29T08:32:25Z",
-            "status": "IN_PROGRESS",
+            "status": "COMPLETED",
             "workflowName": "CI"
           },
           {
@@ -2082,7 +2081,31 @@
       "active_jobs": 6,
       "tested_head": "d9b502da27da2b072ba261196858992b2353ce7f"
     },
-    "worktree": "/private/tmp/starport-badger-restore-20260929"
+    "worktree": "/private/tmp/starport-badger-restore-20260929",
+    "native_evidence": {
+      "proof": "csp13/windows-badger-publication-2026-09-29/native-evidence.json",
+      "tested_head": "e9dfb890e199b4e1066ba3cdd8440d911df6a2c8",
+      "successful_jobs": 12,
+      "active_jobs": 4,
+      "checks": {
+        "windows-arm": {
+          "pass": 5967,
+          "fail": 0,
+          "skip": 374,
+          "skip_note": "374 fixture-dependent test results skip in the standalone native job. Dedicated native service jobs qualify their assigned cases separately."
+        },
+        "fleet": {
+          "pass": 117,
+          "fail": 0,
+          "skip": 0
+        },
+        "durable": {
+          "pass": 1462,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    }
   },
   "windows_publication_repair": {
     "proof": "proof/starport-production-catalog/csp13/windows-directory-publication-2026-09-29/verification.json",
