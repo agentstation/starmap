@@ -1,0 +1,48 @@
+{
+  "state": "MERGED",
+  "pr": "https://github.com/agentstation/starport/pull/391",
+  "head": "3938ed15fad0fa0039b91edec73834bcabe694e8",
+  "base": "41160fbf55f74a6659ff0ac488a4378524437be7",
+  "merge": "03b09b21ae62c5eded76c132e2e3bc04335a7a0e",
+  "merged_at": "2026-09-29T10:31:09Z",
+  "tree": "7c7e5fd42cc4bbdb1d34677539c42ac34c134928",
+  "source_tree_equal": true,
+  "checks": {
+    "passed": 22,
+    "failed": 0,
+    "pending": 0,
+    "run": 36550634369,
+    "review_threads": 0,
+    "review_pagination_complete": true,
+    "strict_protection_preserved": true,
+    "signature_verified": true
+  },
+  "merge_method": "squash",
+  "merge_note": "The merge-commit API refused the method. Squash completed under the same verified head and required checks. No protection bypass.",
+  "local_integration": "04fdea5bcf8162c8ecd8d8d0a78652ee30567302",
+  "integration_note": "Published squash tree equals reviewed3938, an ancestor of local9d97. Ordinary merge produced duplicate-history conflicts. After abort, the ancestry-only merge preserved the exact local9d97 tree.",
+  "task": "CSP13",
+  "task_completed": false,
+  "artifacts": {
+    "final-premerge.json": {
+      "file": "final-premerge.json.gz",
+      "sha256": "f17617958636e25cd8a070248e508bf173878aeaeb42c436b4b6bf4dc26ac9c6"
+    },
+    "final-review-threads.json": {
+      "file": "final-review-threads.json.gz",
+      "sha256": "f9fe7db53a0db3ab94df955feca3b90f6d6b7022d0caae7268986abd168bbf68"
+    },
+    "protection.json": {
+      "file": "protection.json.gz",
+      "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0"
+    },
+    "merged-pr.json": {
+      "file": "merged-pr.json.gz",
+      "sha256": "4e686ac0501ae4c3d3b948b43dcdbcf3c7c4c6ba18b70d403ecae10ed82385df"
+    },
+    "merge-binding.json": {
+      "file": "merge-binding.json.gz",
+      "sha256": "9f57d54f83599b3fb95558f3dab81eb0c0c522279dc13c20bb97daf80fb7ede2"
+    }
+  }
+}
