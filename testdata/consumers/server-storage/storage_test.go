@@ -20,6 +20,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/remote"
 	"github.com/agentstation/starmap/server"
@@ -209,14 +210,7 @@ func runStorageDrill(
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	bootstrap, err := starmap.NewContext(ctx)
-	if err != nil {
-		t.Fatalf("bootstrap NewContext: %v", err)
-	}
-	generation, err := bootstrap.CurrentGeneration(ctx)
-	if err != nil {
-		t.Fatalf("bootstrap CurrentGeneration: %v", err)
-	}
+	generation := storageDrillGeneration(t)
 	if err := store.Commit(ctx, generation, ""); err != nil {
 		t.Fatalf("seed store: %v", err)
 	}
@@ -322,9 +316,63 @@ func runStorageDrill(
 			publication.GenerationID,
 		)
 	}
-	if _, err := restarted.Catalog().Provider("storage-drill"); err != nil {
-		t.Fatalf("restarted catalog provider: %v", err)
+	for _, provider := range []catalogs.ProviderID{"storage-baseline", "storage-drill"} {
+		if _, err := restarted.Catalog().Provider(provider); err != nil {
+			t.Fatalf("restarted catalog provider %q: %v", provider, err)
+		}
 	}
+}
+
+// storageDrillGeneration keeps the lifecycle test independent of catalog capacity.
+// The capacity verification suite checks the full embedded catalog.
+func storageDrillGeneration(t *testing.T) catalogs.Generation {
+	t.Helper()
+	builder := catalogs.NewEmpty()
+	if err := builder.SetProvider(catalogs.Provider{ID: "storage-baseline", Name: "Storage Baseline"}); err != nil {
+		t.Fatal(err)
+	}
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatal(err)
+	}
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	descriptor := catalogs.DescribeCatalogPayload(payload)
+	at := time.Date(2026, time.September, 28, 0, 0, 0, 0, time.UTC)
+	generation := catalogs.Generation{
+		Payload: payload,
+		Manifest: catalogs.GenerationManifest{
+			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
+			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,
+			GenerationID:    "storage-fixture",
+			GeneratedAt:     at,
+			Payload:         descriptor,
+			Validation: catalogs.GenerationValidationReport{
+				ValidatorVersion: "storage-fixture/v1", ValidatedAt: at,
+				Status: catalogs.GenerationValidationPassed,
+				Checks: []catalogs.GenerationValidationCheck{{Name: "schema", Status: catalogs.GenerationValidationCheckPassed}},
+			},
+			SyncRunID: "storage-fixture",
+			SourceObservations: []catalogs.SourceObservationLink{{
+				Source: evidence.LocalCatalogID, ObservationID: "storage-fixture", ObservedAt: at,
+				Revision:     evidence.ObservationRevision{Kind: evidence.ObservationRevisionKindContentDigest, Value: descriptor.Checksum},
+				Completeness: evidence.ObservationCompletenessComplete, Status: evidence.ObservationStatusSucceeded,
+				EvidenceChecksum: descriptor.Checksum,
+			}},
+			ReviewCandidates: []evidence.ReviewCandidate{},
+			Completeness:     catalogs.GenerationCompletenessComplete,
+			ConsumerCompatibility: catalogs.ConsumerCompatibility{
+				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+			},
+		},
+	}
+	if _, err := catalogs.DecodeCatalogGeneration(generation); err != nil {
+		t.Fatalf("validate storage fixture: %v", err)
+	}
+	return generation
 }
 
 func eventually(t *testing.T, timeout time.Duration, condition func() bool) {
