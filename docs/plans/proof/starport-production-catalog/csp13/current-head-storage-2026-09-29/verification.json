@@ -1,0 +1,325 @@
+{
+  "state": "CURRENT_HEAD_STORAGE_PASSED_NATIVE_PENDING",
+  "checked_at": "2026-09-29T07:49:37.276637+00:00",
+  "source_head": "d9b502da27da2b072ba261196858992b2353ce7f",
+  "run": 36537498008,
+  "url": "https://github.com/agentstation/starport/actions/runs/36537498008",
+  "previous_goal_turn": "No progress toward the remaining goal: repeated the already-complete JSON-gzip approval check. This turn verified current-head storage results and the live native jobs.",
+  "results": {
+    "authorization-capacity/authorization-capacity.jsonl": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starport/internal/authorization",
+          "action": "pass"
+        }
+      ],
+      "skipped_tests": []
+    },
+    "durable-work-recovery/backup-application.jsonl": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "action": "pass"
+        }
+      ],
+      "skipped_tests": []
+    },
+    "durable-work-recovery/backup-catalog.jsonl": {
+      "pass": 16,
+      "fail": 0,
+      "skip": 0,
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "action": "pass"
+        }
+      ],
+      "skipped_tests": []
+    },
+    "durable-work-recovery/backup-storage.jsonl": {
+      "pass": 736,
+      "fail": 0,
+      "skip": 0,
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starport/internal/storage",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/sqlstore",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/blob",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "action": "pass"
+        }
+      ],
+      "skipped_tests": []
+    },
+    "durable-work-recovery/fleet-reservation-jobs.jsonl": {
+      "pass": 706,
+      "fail": 0,
+      "skip": 0,
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starport/internal/limits/reservation",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/jobs",
+          "action": "pass"
+        }
+      ],
+      "skipped_tests": []
+    },
+    "shared-storage-startup/authorization-storage.jsonl": {
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starport/internal/authorization",
+          "action": "pass"
+        }
+      ],
+      "skipped_tests": []
+    },
+    "shared-storage-startup/durable-adapters.jsonl": {
+      "pass": 29,
+      "fail": 0,
+      "skip": 0,
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/storage",
+          "action": "pass"
+        }
+      ],
+      "skipped_tests": []
+    },
+    "shared-storage-startup/shared-cache.jsonl": {
+      "pass": 10,
+      "fail": 0,
+      "skip": 1,
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starport/internal/cache",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "action": "pass"
+        }
+      ],
+      "skipped_tests": [
+        "TestSharedCachePausedServiceDeadlineAndRecovery"
+      ]
+    },
+    "shared-storage-startup/shared-startup.jsonl": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "action": "pass"
+        }
+      ],
+      "skipped_tests": []
+    },
+    "storage-recipes/storage-recipes.jsonl": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "action": "pass"
+        }
+      ],
+      "skipped_tests": []
+    }
+  },
+  "durable_work_total": {
+    "pass": 1462,
+    "fail": 0,
+    "skip": 0
+  },
+  "checks": [
+    {
+      "name": "Catalog Fleet Recovery",
+      "status": "in_progress",
+      "conclusion": ""
+    },
+    {
+      "name": "Lint",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Shared Storage Startup",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Authorization Capacity",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Release Snapshot",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Action Pin Provenance",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "OpenRouter SDK Compatibility",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Security Scan",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Release Contract",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Durable Work Recovery",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Test (macos-15)",
+      "status": "in_progress",
+      "conclusion": ""
+    },
+    {
+      "name": "Test (windows-11-arm)",
+      "status": "in_progress",
+      "conclusion": ""
+    },
+    {
+      "name": "Storage Recipes",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Test (ubuntu-24.04-arm)",
+      "status": "in_progress",
+      "conclusion": ""
+    },
+    {
+      "name": "Test (ubuntu-24.04)",
+      "status": "in_progress",
+      "conclusion": ""
+    },
+    {
+      "name": "Test (windows-2025)",
+      "status": "in_progress",
+      "conclusion": ""
+    }
+  ],
+  "limits": [
+    "Five native platform jobs and catalog fleet recovery remain active. No merge occurred.",
+    "Shared-cache pause/recovery skipped because TEST_SHARED_CACHE_FAULT_URL was absent. This run does not qualify that fault case.",
+    "These results do not complete CSP13 or prove independent later-history reconciliation and controlled activation."
+  ],
+  "artifacts": {
+    "artifacts.json": {
+      "file": "artifacts.json.gz",
+      "sha256": "a137aafce3032994bac069d0b92f785a823354fd9ebc6ebba0cc5837d5d762d2",
+      "gzip_sha256": "575f34160b1ffdecf8632d0abef011cb606fbabb12348ddfce775bafca454f09"
+    },
+    "authorization-capacity/authorization-capacity.jsonl": {
+      "file": "authorization-capacity/authorization-capacity.jsonl.gz",
+      "sha256": "8e22024394ffb858e39970135a66858471be412eda1c1a59d05d496a6f9c7c3d",
+      "gzip_sha256": "aa92599b72209b20e2c3589ada8574a8b356d2ceccfd6ff772b05ed18be1661c"
+    },
+    "durable-work-recovery/backup-application.jsonl": {
+      "file": "durable-work-recovery/backup-application.jsonl.gz",
+      "sha256": "91e3d24a726959cb549c00dfaccf1f3a02d2eacab62035d921000b5a3d315eba",
+      "gzip_sha256": "495f6654eba20c84d53808217397354eef61a29f38809a0fab3b9c2d14d59174"
+    },
+    "durable-work-recovery/backup-catalog.jsonl": {
+      "file": "durable-work-recovery/backup-catalog.jsonl.gz",
+      "sha256": "e1d78389ae63cd0a02b0323d295a4d0b0857a90a654acf4a4212a2883bfe6f32",
+      "gzip_sha256": "0acfb66be2e20c2f9313a39d51167ee61845349aac8cac8113487c8ba47c93d8"
+    },
+    "durable-work-recovery/backup-storage.jsonl": {
+      "file": "durable-work-recovery/backup-storage.jsonl.gz",
+      "sha256": "57316812d34f81804274f303443c9c012bccd4101af9ec57f40d6510719d4f23",
+      "gzip_sha256": "324d8297b1eb9ff82ff87accbce94f021f026b4ac8e028d6ac248eca45c0ebb1"
+    },
+    "durable-work-recovery/fleet-reservation-jobs.jsonl": {
+      "file": "durable-work-recovery/fleet-reservation-jobs.jsonl.gz",
+      "sha256": "0394998996267556eb2bca3e0019f8eb6bb48857b53814eb1fb4213e6717159d",
+      "gzip_sha256": "97afe0b78c9f3d588944365966ab5688d9f3e76894393672f571f2d46ac04a49"
+    },
+    "durable-work-recovery/recovery-objectstore-build.txt": {
+      "file": "durable-work-recovery/recovery-objectstore-build.txt.gz",
+      "sha256": "37f93f5f76d9e09d78a995e9ab8e1e7197d9633e7faab87dba00d5a0297332b9",
+      "gzip_sha256": "a26ba0f396715a12395d94aa56f3e0545622a8625ef733f48b3ad9bb4fcbc001"
+    },
+    "durable-work-recovery/recovery-objectstore.log": {
+      "file": "durable-work-recovery/recovery-objectstore.log.gz",
+      "sha256": "cf3acc6c3901126a6d330556ad70e56893595826c1f7086a23313013d66d65eb",
+      "gzip_sha256": "9faf8c1cca0a59cb1df9d17f93c442c0b9547ce5d22b0624959ffb8394254edd"
+    },
+    "pr.json": {
+      "file": "pr.json.gz",
+      "sha256": "4cc33381ac48d54918bf00a7f2caa82b6fb09a58dc43f16059676d2b82f2cba5",
+      "gzip_sha256": "2fa86165a8c854bab02486f598898cda774b5c819e50cc89ceef5a4d4b4ea0df"
+    },
+    "run.json": {
+      "file": "run.json.gz",
+      "sha256": "042e66590c7b40387ef0cdd57f211d3f59eb34a970325ebd3bff9b898ed5a2d9",
+      "gzip_sha256": "3b81812bfdb4a2738da74f6dfe54c35470bcb1d4e23ce4af33e605adab121715"
+    },
+    "shared-storage-startup/authorization-storage.jsonl": {
+      "file": "shared-storage-startup/authorization-storage.jsonl.gz",
+      "sha256": "74bb8c8e88b9bfb6b1c18f57e3cd6874c7e3085d58ccfa80e74dc0513ad4d4db",
+      "gzip_sha256": "f3f6e5dc189fd1115ca7789b5029707ecc82d6f6cd750baf90e7e72b981a663b"
+    },
+    "shared-storage-startup/durable-adapters.jsonl": {
+      "file": "shared-storage-startup/durable-adapters.jsonl.gz",
+      "sha256": "22a0a571146f423621be216902e4728c18e7d56dbd1278ee1a93784c469c1dd6",
+      "gzip_sha256": "d0c89f53e618e1aa2d80f46d4f5cf081db17730e7e86809dca2248bee11deadf"
+    },
+    "shared-storage-startup/shared-cache.jsonl": {
+      "file": "shared-storage-startup/shared-cache.jsonl.gz",
+      "sha256": "3d1c36f3d512fa866d3c0b91fd73a0d6fb4c98efcd1427b24ab713c206bdef4c",
+      "gzip_sha256": "649e01ce50ba50c16123722d77ed50d440986b8c7db5865edee4b1e6072e8f67"
+    },
+    "shared-storage-startup/shared-startup.jsonl": {
+      "file": "shared-storage-startup/shared-startup.jsonl.gz",
+      "sha256": "6a37318f464275bb219f8a5e324081f54e65cb300113595aa5929f0e31665fc3",
+      "gzip_sha256": "97355d3d2a9b93f703c0171481bb6836debd2a95c9054d8688d2ad4b1711901b"
+    },
+    "storage-recipes/storage-recipes.jsonl": {
+      "file": "storage-recipes/storage-recipes.jsonl.gz",
+      "sha256": "ad6c6defa0e7c25251ff2588d4e8696cbf703580c9bc80db0a9a3c62d690c438",
+      "gzip_sha256": "0375befca990f27c0942b380ec309f6b154af8c558fbfb733204a9e535982f44"
+    }
+  }
+}
