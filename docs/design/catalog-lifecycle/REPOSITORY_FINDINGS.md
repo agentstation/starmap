@@ -5139,3 +5139,13 @@ The consumer uses the published module without a replacement. All twelve changed
 The topology review found incomplete selected-publication binding when different inputs share a generation ID.
 The final inventory identity encoding also lacked a bound after the compiler added archive metadata.
 Both repairs belong to the catalog owner before integration. Complete native activation and measured recovery remain open.
+
+### Passive restart and exact final approval (September 29)
+
+Starport `92b3b5f4` integrates the reviewed topology compiler, passive retained history, strict fleet approval, and passive operator-input reopen. The [topology proof](../../plans/proof/starport-production-catalog/csp13/catalog-topology-integration-2026-09-29/verification.json) records 21 integrated results per mode. It preserves the failures that exposed same-generation selection substitution and unbounded final inventory metadata.
+
+The [retained-history proof](../../plans/proof/starport-production-catalog/csp13/retained-activation-history-2026-09-29/verification.json) records 129 results per mode. It validates original package, journal, image, and final graph evidence without native replay. Catalog-mode journal integration remains open.
+
+The [fleet approval proof](../../plans/proof/starport-production-catalog/csp13/imported-authority-position-2026-09-29/verification.json) records five results per mode across real Valkey and three SQL owners. It binds approval to the final SQL position and exact closed boundary. Later withdrawal refuses approval while passive inspection still verifies historical completion.
+
+The [operator-input proof](../../plans/proof/starport-production-catalog/csp13/operator-input-inspection-2026-09-29/verification.json) records 30 results per mode. Passive reopen rejects missing or changed original evidence without publication or repair. Each final check has no failures or skips. These components do not qualify complete recovery. The catalog lane, local completion, canonical-file inspection, application decision, and process-loss matrix remain open.

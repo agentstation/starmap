@@ -1,0 +1,131 @@
+{
+  "status": "scoped native approval qualified; complete CSP13 recovery remains open",
+  "source_commit": "f3a8a2848615d815ea46e334878c2cc4b5389088",
+  "platform": "darwin/arm64",
+  "go": "1.27.1",
+  "storage": "Real Valkey plus SQLite, PostgreSQL, MySQL",
+  "checks": {
+    "race": {
+      "top_level_tests": 2,
+      "run": 5,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "package_results": [
+        {
+          "action": "pass",
+          "elapsed": 7.031
+        }
+      ]
+    },
+    "pure": {
+      "top_level_tests": 2,
+      "run": 5,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "package_results": [
+        {
+          "action": "pass",
+          "elapsed": 4.49
+        }
+      ]
+    }
+  },
+  "fail_before": {
+    "top_level_tests": 1,
+    "run": 2,
+    "pass": 0,
+    "fail": 2,
+    "skip": 0,
+    "package_results": [
+      {
+        "action": "fail",
+        "elapsed": 0.71
+      }
+    ]
+  },
+  "check_commands": [
+    "python3 run-native.py <output> race",
+    "python3 run-native.py <output> pure",
+    "go vet ./internal/recovery",
+    "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/recovery/...",
+    "technical-writing lint two changed files and CONTRACT.md --format text",
+    "git diff --check"
+  ],
+  "exit_codes": {
+    "race": 0,
+    "pure": 0,
+    "vet": 0,
+    "lint": 0,
+    "prose": 0,
+    "diff": 0
+  },
+  "preserved_failures": [
+    "Initial native wrapper selected Valkey database in both URL and DB field. Corrected wrapper only.",
+    "Initial lost-reply fixture omitted TimeBoundStore. Corrected fixture to preserve actual backend interfaces."
+  ],
+  "coverage": [
+    "Exact nonzero SQL position and locked closed boundary",
+    "Deadline required before independent native work",
+    "Lost native reply leaves SQL approval and receipt closed",
+    "Exact retry preserves original native bytes",
+    "Changed decision, backend and evidence refuse",
+    "Later withdrawal refuses approval while passive historical receipt remains valid"
+  ],
+  "unverified": [
+    "Complete application coordinator, writer fencing and all recovery subcases",
+    "Native Linux and Windows integrated application evidence"
+  ],
+  "source_sha256": {
+    "internal/recovery/authority_import_position.go": "daf784725ca89dd04fefa08145157cb9c567509e28e6b08b0d27d108ed0759dd",
+    "internal/recovery/authority_import_position_test.go": "f066b69e09b69dd3ded1f3c9f190e4b860d3c58830cec0b0ed76c4660b01c99d"
+  },
+  "artifacts": {
+    "CONTRACT.md": {
+      "file": "CONTRACT.md.gz",
+      "sha256": "9da08bacdb0467acb87cb2b503f36eefe7342f8af843cd50565898e4209bea70",
+      "size": 1059
+    },
+    "fail-before.jsonl": {
+      "file": "fail-before.jsonl.gz",
+      "sha256": "129d7a433a05ed8436ef07203a16972269d89cbff856847c75107088efebef6a",
+      "size": 3986
+    },
+    "native-race.jsonl": {
+      "file": "native-race.jsonl.gz",
+      "sha256": "0ddef4fc2d92389c2c5ea28474c7cadeefc70dc90328440a2689390883bd6896",
+      "size": 12705
+    },
+    "native-race-corrected.jsonl": {
+      "file": "native-race-corrected.jsonl.gz",
+      "sha256": "6a6c868462755db67fac87c708977cbd1d84c262aeefb2460afd7e563e1d05a4",
+      "size": 13134
+    },
+    "native-race-final.jsonl": {
+      "file": "native-race-final.jsonl.gz",
+      "sha256": "eadb982fd5eced70dba7db044a561754549020aa7ce4922be2c97040c361f76a",
+      "size": 7793
+    },
+    "native-pure-final.jsonl": {
+      "file": "native-pure-final.jsonl.gz",
+      "sha256": "810c0d0c1fb6eaa22f523ab0579fe1dd8b5904d735ca222f15362858c544f363",
+      "size": 7796
+    },
+    "run-native.py": {
+      "file": "run-native.py.gz",
+      "sha256": "5ab083e5b1083748c82663c9b787cde068ffca05c463771254df35ee54e88068",
+      "size": 1975
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "size": 10
+    }
+  }
+}

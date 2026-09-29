@@ -1,0 +1,148 @@
+{
+  "base_commit": "49b2e0c543b4c3b55a0610bf1075a3efb53cb6a7",
+  "worktree": "/private/tmp/starport-retained-activation-history-20260929",
+  "branch": "codex/recovery-retained-activation-history",
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "checks": {
+    "race": {
+      "exit_code": 0,
+      "top_level_tests": 7,
+      "tests_including_subtests": {
+        "run": 129,
+        "pass": 129,
+        "fail": 0,
+        "skip": 0
+      },
+      "elapsed_seconds": 170.147,
+      "command": "go test -race -json ./internal/recovery -run '^TestRetainedActivationHistory' -count=1 -timeout=6m"
+    },
+    "pure": {
+      "exit_code": 0,
+      "top_level_tests": 7,
+      "tests_including_subtests": {
+        "run": 129,
+        "pass": 129,
+        "fail": 0,
+        "skip": 0
+      },
+      "elapsed_seconds": 109.258,
+      "command": "CGO_ENABLED=0 go test -json ./internal/recovery -run '^TestRetainedActivationHistory' -count=1 -timeout=6m"
+    }
+  },
+  "vet": {
+    "exit_code": 0,
+    "command": "go vet ./internal/recovery"
+  },
+  "lint": {
+    "exit_code": 0,
+    "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/recovery/..."
+  },
+  "prose": {
+    "exit_code": 0,
+    "files": 6,
+    "diagnostics": 0
+  },
+  "goago": "Not applicable: this Starport module does not declare the tool.",
+  "source_sha256": {
+    "internal/recovery/activation_history.go": "e56368385dcb9290a3e12069efb660d0d764a2dc52607fc7537aab5b6f3ebca1",
+    "internal/recovery/activation_history_images.go": "4171a4101b478eb64f064c08e7f51fafc098afd95339af91c1c50ccd24b6215a",
+    "internal/recovery/activation_history_journal.go": "e8427912044281672201dfd42e25ca4ce1f05577844c3464ac4cfba3b0534d7f",
+    "internal/recovery/activation_history_permissions_test.go": "ea0b24d74127907e8ce363fedd1d7652fdd7a95f7e362ebeefd89941cc6ed2ca",
+    "internal/recovery/activation_history_test.go": "fd841dae25193a3084264710a03bb960d5759f3884c133e8ba4ee8f09e6ce3bc"
+  },
+  "coverage_boundary": {
+    "native_storage": "Real local Badger, SQLite, filesystem blobs; exact native barrier removal and later-data preservation.",
+    "platform": "Darwin/arm64 host. Linux/macOS POSIX permission test source present; Windows native ACL evidence remains root-owned.",
+    "catalog_lane": "Unsupported lane refuses; root integration owns typed mode and passive catalog lane bridge.",
+    "current_admission": "Not established. Current permission, fencing, files, settings and native phase receipts remain separate.",
+    "full_repository_checks": "Root owns complete integrated repository checks and review/publication."
+  },
+  "commit": "8c7b2bac07bb2668d9d572fa4bafbb5e0592b188",
+  "clean_worktree": true,
+  "root_integration": {
+    "head": "f3a8a2848615d815ea46e334878c2cc4b5389088",
+    "integration_commit": "0f425e4e",
+    "manual_review": "Root inspected all production files. Catalog-mode bridge remains a separate required integration.",
+    "published_module": "v0.16.6-0.20260929215215-cff5f361af01",
+    "replacement": false,
+    "checks": {
+      "race": {
+        "top_level_tests": 7,
+        "run": 129,
+        "pass": 129,
+        "fail": 0,
+        "skip": 0,
+        "package_results": [
+          {
+            "action": "pass",
+            "elapsed": 190.451
+          }
+        ]
+      },
+      "pure": {
+        "top_level_tests": 7,
+        "run": 129,
+        "pass": 129,
+        "fail": 0,
+        "skip": 0,
+        "package_results": [
+          {
+            "action": "pass",
+            "elapsed": 108.341
+          }
+        ]
+      }
+    },
+    "commands": [
+      "go test -race -json ./internal/recovery -run ^TestRetainedActivationHistory -count=1 -timeout=6m",
+      "CGO_ENABLED=0 go test -json ./internal/recovery -run ^TestRetainedActivationHistory -count=1 -timeout=6m"
+    ]
+  },
+  "artifacts": {
+    "verification.json": {
+      "file": "verification.json.gz",
+      "sha256": "0f73fd5b57c5e038ad50360825822dff3a0e4c9a3813f3e2cd3367d9351481cc",
+      "size": 2717
+    },
+    "CONTRACT.md": {
+      "file": "CONTRACT.md.gz",
+      "sha256": "ddf0ab6750f5a59797342feafe0a5d00bd8cf6fa3984ce22453c77d91a2ada3a",
+      "size": 3649
+    },
+    "race.jsonl": {
+      "file": "race.jsonl.gz",
+      "sha256": "0339a0af2b5d48ffbcc264884f9493632a9bf2017a4a1e83acf6915c4a76d674",
+      "size": 213526
+    },
+    "pure.jsonl": {
+      "file": "pure.jsonl.gz",
+      "sha256": "33a6e1c410d64c408dac2cd4f16d8f273a9fac873024197676a2b6664b3a91bd",
+      "size": 213504
+    },
+    "root-integration-race.jsonl": {
+      "file": "root-integration-race.jsonl.gz",
+      "sha256": "fc48ed6a3365047f9159956d68238fd6bacf8739eb9bda4ce3cf54ce8f2a09b6",
+      "size": 213512
+    },
+    "root-integration-pure.jsonl": {
+      "file": "root-integration-pure.jsonl.gz",
+      "sha256": "00ae1f350bb7b766cf61887560327e05c0db64f854bce268a35d933a331f9f0a",
+      "size": 213519
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "size": 10
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087",
+      "size": 33
+    }
+  }
+}

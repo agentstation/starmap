@@ -1,0 +1,122 @@
+{
+  "status": "scoped passive reopen qualified; complete recovery remains open",
+  "source_commit": "92b3b5f4",
+  "platform": "darwin/arm64",
+  "go": "1.27.1",
+  "storage": "Actual local targets and existing shared Valkey/PostgreSQL/MySQL/objectstore input tests",
+  "commands": [
+    "python3 run-native.py <output> race",
+    "python3 run-native.py <output> pure",
+    "go vet ./internal/app",
+    "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/app/...",
+    "technical-writing lint three changed files and CONTRACT.md --format text",
+    "git diff --check"
+  ],
+  "checks": {
+    "race": {
+      "top_level_tests": 8,
+      "run": 30,
+      "pass": 30,
+      "fail": 0,
+      "skip": 0,
+      "packages": [
+        {
+          "action": "pass",
+          "elapsed": 16.948
+        }
+      ]
+    },
+    "pure": {
+      "top_level_tests": 8,
+      "run": 30,
+      "pass": 30,
+      "fail": 0,
+      "skip": 0,
+      "packages": [
+        {
+          "action": "pass",
+          "elapsed": 10.473
+        }
+      ]
+    }
+  },
+  "fail_before": {
+    "top_level_tests": 1,
+    "run": 1,
+    "pass": 0,
+    "fail": 1,
+    "skip": 0,
+    "packages": [
+      {
+        "action": "fail",
+        "elapsed": 1.446
+      }
+    ]
+  },
+  "exit_codes": {
+    "race": 0,
+    "pure": 0,
+    "vet": 0,
+    "lint": 0,
+    "prose": 0,
+    "diff": 0
+  },
+  "contracts": [
+    "Passive reopen refuses missing evidence without creating it",
+    "Exact original decision binds current settings, native target and journal identity",
+    "Corrupt evidence, settings, token, operation or directory replacement refuse without repair",
+    "Check rejects pending journal publications",
+    "No permission, token rotation or policy initialization"
+  ],
+  "unverified": [
+    "Complete application activation/startup and process-loss matrix",
+    "Native Linux and Windows final integrated evidence"
+  ],
+  "source_sha256": {
+    "internal/app/recovery_operator_inputs.go": "d86bcae327666666e051674271bf2a2f5f93a26706a4833f422fb9fdb02167c8",
+    "internal/app/recovery_operator_inspection.go": "916c84a4c08f78e5e13633d269a93ca2c6a24ed6ce0ce16f5e3984d6ae7a422d",
+    "internal/app/recovery_operator_inspection_test.go": "457dcd7664f6fcde13c7427c35f29bcf321719ac8cea39be186cd6c0d7530de8"
+  },
+  "artifacts": {
+    "CONTRACT.md": {
+      "file": "CONTRACT.md.gz",
+      "sha256": "dbd9ed52caf719829bf0dad7008e6905c483f7419e3ca4d789e6a59435a576b2",
+      "size": 860
+    },
+    "run-native.py": {
+      "file": "run-native.py.gz",
+      "sha256": "2d21942dcc01873ea17cc6b42e84061f0d3ea570dbffb991038ec56adeb3804d",
+      "size": 1928
+    },
+    "fail-before.jsonl": {
+      "file": "fail-before.jsonl.gz",
+      "sha256": "3474eb863b2e1e3a1e7333c86141ee4880c2a6eca006f2e53435163b7bbc6340",
+      "size": 6939
+    },
+    "native-race.jsonl": {
+      "file": "native-race.jsonl.gz",
+      "sha256": "c1787e2b8c6b328b1dcb861db9c0b8e675f7a733692c2cb5ba0f42b4a6b514bc",
+      "size": 128785
+    },
+    "native-pure.jsonl": {
+      "file": "native-pure.jsonl.gz",
+      "sha256": "29a1eb01433d91d4395fcfb4a0cb2e5754b3e38ddeb08b99239c9cdc86cfc53c",
+      "size": 128778
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "size": 10
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "size": 33
+    }
+  }
+}

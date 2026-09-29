@@ -1,0 +1,325 @@
+{
+  "schema": 1,
+  "status": "scoped implementation qualified; full CSP13 activation remains incomplete",
+  "date": "2026-09-29",
+  "owner": "operator_recovery_inputs",
+  "worktree": "/private/tmp/starport-catalog-topology-compiler-20260929",
+  "branch": "codex/catalog-topology-compiler",
+  "base": "35433b7084b7f493c887ff908ac7b0f5798c6c31",
+  "go": "go1.27.1",
+  "native_platform": "darwin/arm64",
+  "producer_commit": "a7fc34520ee93c128679278685388cee72198d61",
+  "development_dependency": "uncommitted go.mod replacement points to clean producer worktree; excluded from source commit; root must publish and pin before final qualification",
+  "files": {
+    "internal/catalog/backup.go": "3a50faedba689c462db47d304bf2071af2e5230ce6f81e0925fb8d20e1c9a7c5",
+    "internal/catalog/topology_inventory.go": "164ca5b62335b4344f42e475d9c26bf5bd17b3f2848ac83bce9b56340f6989cc",
+    "internal/catalog/topology_archive.go": "a70ac5d7c8b087ffed57f466089dd3c534af80f68ded56b1fe332e2b4b1481f5",
+    "internal/catalog/topology_replay.go": "a1aa5ecd021ce7abbbfde88098c024c0dd4a572237a8ba7a9950f16303a17a01",
+    "internal/catalog/topology_materialization.go": "491c4da0955b00cc81f849a23da714091c0fd90b80a94840edcd8ba0af529bfe",
+    "internal/catalog/topology_replay_test.go": "6d1a051ee03de09bb2b9116c65169170cd3765f4fcfa39d80196e60843770303"
+  },
+  "checks": [
+    {
+      "log": "race-dedup-full.jsonl",
+      "top_level_passes": 10,
+      "pass_results": 16,
+      "test_failures": 0,
+      "skips": 0,
+      "package_exit": 0,
+      "elapsed_seconds": 342.637,
+      "timeout": false,
+      "command": "GOWORK=off go test -race -json -count=1 -timeout=6m ./internal/catalog -run ^TestTopology",
+      "scope": "all behavioral source at run; metadata-overhead test appended afterwards and separately raced"
+    },
+    {
+      "log": "race-representation-final.jsonl",
+      "top_level_passes": 3,
+      "pass_results": 3,
+      "test_failures": 0,
+      "skips": 0,
+      "package_exit": 0,
+      "elapsed_seconds": 1.9449999999999998,
+      "timeout": false,
+      "command": "GOWORK=off go test -race -json -count=1 -timeout=6m ./internal/catalog -run ^TestTopologyArchive|^TestTopologyReplay"
+    },
+    {
+      "log": "pure-owner-complete.jsonl",
+      "top_level_passes": 11,
+      "pass_results": 17,
+      "test_failures": 0,
+      "skips": 0,
+      "package_exit": 0,
+      "elapsed_seconds": 27.923000000000002,
+      "timeout": false,
+      "command": "CGO_ENABLED=0 GOWORK=off go test -json -count=1 -timeout=6m ./internal/catalog -run ^TestTopology"
+    },
+    {
+      "command": "GOWORK=off go vet ./internal/catalog",
+      "exit": 0,
+      "log": "vet-owner-final.log"
+    },
+    {
+      "command": "GOWORK=off go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/catalog",
+      "exit": 0,
+      "log": "lint-owner-final.log"
+    },
+    {
+      "command": "technical-writing lint six changed files --format text",
+      "exit": 0,
+      "log": "prose-owner-final.log"
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    }
+  ],
+  "preserved_failures": {
+    "full_fixture_timeout_before_dedup": [
+      {
+        "log": "race-initial.jsonl",
+        "top_level_passes": 10,
+        "pass_results": 47,
+        "test_failures": 0,
+        "skips": 0,
+        "package_exit": 1,
+        "elapsed_seconds": 360.945,
+        "timeout": true
+      },
+      {
+        "log": "race-final.jsonl",
+        "top_level_passes": 6,
+        "pass_results": 12,
+        "test_failures": 0,
+        "skips": 0,
+        "package_exit": 1,
+        "elapsed_seconds": 361.072,
+        "timeout": true
+      }
+    ],
+    "diagnosis": "Timeout stacks show runnable producer decode of 26.4 MiB JSON capsule, not a lock wait. Race process sampled at approximately 3.3-3.7 GiB RSS; no qualified peak memory measurement.",
+    "earlier_logs": [
+      "unit-initial.jsonl",
+      "unit-second.jsonl",
+      "unit-fourth.jsonl",
+      "unit-sixth.jsonl",
+      "embedded-second.jsonl",
+      "lint-initial.log",
+      "lint-second.log",
+      "lint-third.log",
+      "lint-fourth.log",
+      "prose-dedup-final.log"
+    ]
+  },
+  "semantic_replay_call_counts": {
+    "same_full_ref_pre_effect_per_call": {
+      "before": 2,
+      "after": 1
+    },
+    "same_full_ref_healthy_passive_per_call": {
+      "before": 3,
+      "after": 1,
+      "before_owners": "consumer accepted + consumer candidate + producer current selection",
+      "after_owners": "producer current selection"
+    },
+    "distinct_full_refs_healthy_passive_per_call": {
+      "after": 2,
+      "owners": "producer current selection + consumer other selection"
+    },
+    "additional_decode_work": "Producer structural retention, native read inspection, generation validation, and full retained-input byte verification remain required. Counts describe semantic replay calls only, not all JSON decodes."
+  },
+  "contracts": [
+    "Compiler privately owns exact mutations; operator DTOs cannot select keys or supply raw mutations.",
+    "Native CAS batches <=128 mutations and 4 MiB; existing 256 KiB chunk format retained.",
+    "Local-to-fleet uses truthful RecoveryOrigin, zero Grant, epoch floor 1, no lease; accepted and candidate remain separate.",
+    "Fleet-to-local activates accepted producer inputs and retains candidate separately; original fleet metadata stays historical only.",
+    "Source descriptor bytes and reconstruction checksum are distinct identities; original settings stay inside each capsule.",
+    "Exact old completed selection retry never reselects; passive checks reject changed current controls.",
+    "Full capsule census requires producer-derived exact original descriptor census from captured files; KV alone cannot prove all local same-generation descriptors.",
+    "Archive stores source values verbatim in content-addressed chunks. Exact source key+value census limit is 2 GiB, including control records.",
+    "Archive metadata bound derives from raw source census plus duplicated inventory and selection metadata and small final-chunk/scalar descriptor overhead.",
+    "Typed history aggregate 64 MiB limit unchanged; large capsule assets must remain outside the history payload."
+  ],
+  "unverified": [
+    "Root production SQL import-claim/cursor guard, external fencing, final graph census, activation coordinator, and authorization rotations.",
+    "Final admission, current authority permission and receipt expiry; topology and materialization do not grant permission.",
+    "Actual 2 GiB deployment peak memory, restore duration, and RPO qualification. 96-capsule case uses small capsules.",
+    "Detached capsule DTO JSON has a separate conservative 2 GiB representation ceiling; not every 2 GiB physical capsule inventory is qualified.",
+    "Native Linux and Windows for this consumer source; this proof is Darwin arm64.",
+    "Published producer module pin and whole-repository final qualification after root integration.",
+    "The test native adapter uses actual native CAS but does not implement the production SQL guard. Native Valkey/PostgreSQL fixture proves closed SQL boundary remains closed."
+  ],
+  "manual_audit": "Reviewed complete source, owner API and callers, exact source/target distinction, staged preimages, immutable record verification, old receipt behavior, accepted/candidate replay, archive expiry and identity, privacy formatters, checked arithmetic, and existing backup validation. No provider acquisition or serving approval paths called.",
+  "remaining_ci_risk": "Full race suite passes with approximately 17 seconds headroom under six-minute bound. Root should assess a separate heavy recovery lane or owner-level decode repair; increasing the timeout alone is not a performance fix.",
+  "source_commit": "8558bba76926b292e4dfa721642992d44592b205",
+  "review_fixes": {
+    "base_commit": "8558bba76926b292e4dfa721642992d44592b205",
+    "files": {
+      "internal/catalog/topology_inventory.go": "38c900280763764a9f03cfec75f350bf04c2acbd2a2a4a07530a3d206d8145f6",
+      "internal/catalog/topology_replay_test.go": "2dff598fa5db25b034e229e8ba7803636edb91e1652d1083d9491c40efd330e6"
+    },
+    "changes": [
+      "Each fleet selected reference binds its exact original FleetHead generation ID, recovery checksum and original publication descriptor SHA.",
+      "Final canonical inventory identity hashes through json.MarshalWrite and a capped SHA-256 writer after Archive and History are attached. Existing 2 GiB ceiling unchanged.",
+      "Native regression covers same-generation/distinct-input accepted and candidate substitutions. Descriptor-only owner check refuses even with matching recovery checksum.",
+      "Small bounded regression proves History exceeds final budget; streaming digest equals exact deterministic Marshal digest at boundary and refuses one byte below/zero/negative bounds."
+    ],
+    "fail_before": {
+      "log": "selection-identity-before.jsonl",
+      "top_level_passes": 0,
+      "pass_results": 0,
+      "fail_results": 5,
+      "skips": 0,
+      "exit": 1,
+      "elapsed_seconds": 1.729
+    },
+    "checks": [
+      {
+        "log": "selection-identity-final-race.jsonl",
+        "top_level_passes": 13,
+        "pass_results": 21,
+        "fail_results": 0,
+        "skips": 0,
+        "exit": 0,
+        "elapsed_seconds": 14.882,
+        "command": "GOWORK=off go test -race -json -count=1 -timeout=6m ./internal/catalog -run ^TestTopologyInventory|^TestTopologyFleet|^TestTopologyCompiler|^TestTopologyArchive|^TestTopologyReplay|^TestTopologyNative"
+      },
+      {
+        "log": "selection-identity-final-pure.jsonl",
+        "top_level_passes": 14,
+        "pass_results": 22,
+        "fail_results": 0,
+        "skips": 0,
+        "exit": 0,
+        "elapsed_seconds": 42.61,
+        "command": "CGO_ENABLED=0 GOWORK=off go test -json -count=1 -timeout=6m ./internal/catalog -run ^TestTopology"
+      },
+      {
+        "exit": 0,
+        "command": "GOWORK=off go vet ./internal/catalog",
+        "log": "selection-identity-final-vet.log"
+      },
+      {
+        "exit": 0,
+        "command": "pinned golangci-lint@v2.13.2 run ./internal/catalog",
+        "log": "selection-identity-final-lint.log"
+      },
+      {
+        "exit": 0,
+        "command": "technical-writing lint two changed files --format text",
+        "log": "selection-identity-final-prose.log"
+      },
+      {
+        "exit": 0,
+        "command": "git diff --check"
+      }
+    ],
+    "manual_audit": "Checked exact generation and recovery matching before original publication descriptor lookup. Checked hash writer error propagation and arithmetic. Reviewed Go1.27.1 MarshalWrite streaming encoder source and NeedFlush behavior. No second complete final JSON byte buffer. All mutation, permission, ancestry and capacity owner preconditions remain unchanged.",
+    "limits": "Final full embedded race run belongs to prior base8558bba7; follow-up scoped native race excludes that heavy case, and full embedded pure test passes on final source. Root owns final whole-repository native CI and publication.",
+    "commit": "d030cd2ace9359a99eab168e71118a9659639b92"
+  },
+  "root_integration": {
+    "head": "f3a8a2848615d815ea46e334878c2cc4b5389088",
+    "published_starmap_module": "v0.16.6-0.20260929215215-cff5f361af01",
+    "module_replacement": false,
+    "reviewed_commits": [
+      "8558bba76926b292e4dfa721642992d44592b205",
+      "d030cd2ace9359a99eab168e71118a9659639b92"
+    ],
+    "integration_commits": [
+      "24ce0d5c",
+      "d15560a3"
+    ],
+    "manual_review": "Root inspected all new production files and identity/bound regression repairs.",
+    "checks": {
+      "race": {
+        "top_level_tests": 13,
+        "run": 21,
+        "pass": 21,
+        "fail": 0,
+        "skip": 0,
+        "package_results": [
+          {
+            "action": "pass",
+            "elapsed": 7.562
+          }
+        ]
+      },
+      "pure": {
+        "top_level_tests": 13,
+        "run": 21,
+        "pass": 21,
+        "fail": 0,
+        "skip": 0,
+        "package_results": [
+          {
+            "action": "pass",
+            "elapsed": 3.407
+          }
+        ]
+      }
+    },
+    "command": "python3 root-integration.py <output> <race|pure> (wrapper retained; bounded native Go tests on published module)"
+  },
+  "artifacts": {
+    "verification.json": {
+      "file": "verification.json.gz",
+      "sha256": "4e3aa99ffaf9b6c2b741a9355dc2a5dc8af5b62bb80e21106a792c29e2b2ed62",
+      "size": 11157
+    },
+    "root-integration.py": {
+      "file": "root-integration.py.gz",
+      "sha256": "e9393ae999054b009666dfd15d65ccbcebe6d6ce471248aecd3113eada81d9e5",
+      "size": 1966
+    },
+    "root-native-race.jsonl": {
+      "file": "root-native-race.jsonl.gz",
+      "sha256": "55c798d7fa225623fe8a826c960f0ea68ecbcbc9014dbf60aa20c22c8245894c",
+      "size": 74627
+    },
+    "root-native-pure.jsonl": {
+      "file": "root-native-pure.jsonl.gz",
+      "sha256": "a9950cceb4cddbcbf825ea45771fdd9a4b3e31428881b8c06f2d9df3e8964bed",
+      "size": 74603
+    },
+    "selection-identity-before.jsonl": {
+      "file": "selection-identity-before.jsonl.gz",
+      "sha256": "3576347e9d91bb010d7d6bfadb6c08a3d9634180cc7ac1ddb18469e6caa56c84",
+      "size": 19271
+    },
+    "selection-identity-after-race.jsonl": {
+      "file": "selection-identity-after-race.jsonl.gz",
+      "sha256": "740bd99be9d7f8cea9439417f00cd464a80fc02fc63f5ae9f7917331a621f5d4",
+      "size": 74634
+    },
+    "selection-identity-after-pure.jsonl": {
+      "file": "selection-identity-after-pure.jsonl.gz",
+      "sha256": "2dc4bbd66e75a47cd0b951d9fd02bc7f1a776b32ed1a8617cc047b55060b29be",
+      "size": 74609
+    },
+    "race-dedup-full.jsonl": {
+      "file": "race-dedup-full.jsonl.gz",
+      "sha256": "a3ff5896b7ba101b91e7e3a303c0aa81cd15bd1966f4bcd3a62378c4c84c8e61",
+      "size": 63251
+    },
+    "pure-owner-complete.jsonl": {
+      "file": "pure-owner-complete.jsonl.gz",
+      "sha256": "3deeb6290c077e0a335a9eada659540afe759d02569ec9d43122f77901bcc4d0",
+      "size": 64660
+    },
+    "selection-identity-final-vet.log": {
+      "file": "selection-identity-final-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "selection-identity-final-lint.log": {
+      "file": "selection-identity-final-lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "size": 10
+    },
+    "selection-identity-final-prose.log": {
+      "file": "selection-identity-final-prose.log.gz",
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "size": 33
+    }
+  }
+}
