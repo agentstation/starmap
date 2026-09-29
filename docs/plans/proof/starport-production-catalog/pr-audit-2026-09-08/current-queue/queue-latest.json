@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-29T19:43:13.587144+00:00",
+  "checked_at": "2026-09-29T20:08:35.779572+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -2076,17 +2076,14 @@
     }
   },
   "history_coordination": {
-    "head": "497fbef2",
+    "head": "3e96860e340f7073dd93ca8a50779aade730ad0e",
     "owner": "this chat",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-history-coordination",
-    "proof": "csp13/operator-history-2026-09-29/verification.json",
-    "state": "FINAL_LOCAL_QUALIFICATION_RUNNING",
-    "next_action": "Finish full local checks and required isolated review before publishing the coherent owner-replay branch. Compose offline catalog and closed-final owner capabilities in separate worktrees.",
-    "processes": {
-      "static_checks": 93623,
-      "full_go": 20783
-    },
+    "proof": "csp13/history-final-qualification-2026-09-29/verification.json",
+    "state": "REVIEWED_PUBLISHED_NATIVE_PENDING",
+    "next_action": "Await exact-head native CI and protected merge. Review the offline catalog materializer and closed-final capability; compose topology transfer and coordinated activation.",
+    "processes": {},
     "agents": {
       "catalog_materializer": {
         "worktree": "/private/tmp/starmap-fleet-review-20260926",
@@ -2096,6 +2093,19 @@
         "worktree": "/private/tmp/starport-recovery-activation-20260929",
         "branch": "codex/recovery-activation-coordinator"
       }
+    },
+    "pr": "https://github.com/agentstation/starport/pull/393",
+    "review": {
+      "gate": "pre-pr",
+      "mode": "auto",
+      "reviewer": "Opus5.5",
+      "effort": "high",
+      "parts": 2,
+      "findings": 0,
+      "exit_code": 0,
+      "secret_scan": "clean",
+      "threshold": "P0",
+      "initial_secret_scan": "Failed before model invocation: synthetic URI fixture caused a verification error. Fixed with net/url construction; all assertions preserved, no scanner exception."
     }
   },
   "catalog_topology": {
