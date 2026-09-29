@@ -4881,3 +4881,24 @@ KV, SQL, and blob barriers remain closed. Administrator credentials and other fi
 Independent later history and activation remain required. This local checkpoint does not qualify complete recovery.
 
 The [owner publication proof](../../plans/proof/starport-production-catalog/csp13/owner-publication-command-2026-09-28/verification.json) records source, tests, and remaining requirements.
+
+### Acquisition-policy recovery and Windows copy tests: September 28, 2026
+
+Starmap now exposes a read-only credential-policy inspector. Starport uses it for the separate acquisition-policy publication procedure.
+The inspector validates the retained default, accepted provider records, native access, ownership, and pending publication state.
+Inspection does not create a missing default or consult provider credentials.
+Both policy restore paths preserve closed admission barriers in tests with Valkey, PostgreSQL, and object storage.
+
+The Windows amd64 runtime job for Starmap #194 failed while its test tried to rename an open directory.
+Windows returned a sharing violation before the test could replace that directory.
+The corrected Windows test requires that protection, verifies complete output, and checks handle release after copying.
+It then replaces the directory and requires the original handle owner to refuse a new copy.
+POSIX retains its replacement-during-copy refusal test. Cross-compilation does not qualify native execution.
+
+The [acquisition-policy proof](../../plans/proof/starport-production-catalog/csp13/credential-policy-publication-2026-09-28/verification.json) preserves the failed native evidence and subsequent checks.
+Full recovery, activation, and final native qualification remain open.
+
+The broader architecture suite exposed two stale import contracts from earlier CSP13 work.
+Recovery now composes domain-owner checks over captured state. Batch recovery reads file records through the file owner.
+The contract now names those owners explicitly. It still rejects application, provider, and request orchestration imports at these boundaries.
+The production validators and their record checks remain unchanged.

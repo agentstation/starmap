@@ -5253,3 +5253,16 @@ KV, SQL, and blob barriers remain closed. Administrator credentials and other fi
 Independent later history and activation remain required. This local checkpoint does not qualify complete recovery.
 
 The [owner publication proof](../../plans/proof/starport-production-catalog/csp13/owner-publication-command-2026-09-28/verification.json) records source, tests, and remaining requirements.
+
+### Acquisition-policy recovery: September 28, 2026
+
+`backup publish-files --role credential-policy` publishes the separate catalog-acquisition selection policy.
+Current target configuration selects the destination. Starmap inspects every retained record without creating state or resolving credentials.
+The retained default takes precedence over installation hints. Accepted provider decisions retain their current policy family.
+Missing defaults, different owners, invalid records, extra files, and pending publications cause refusal.
+
+The caller must fence writers and verify the complete inventory before and after owner inspection.
+An exact publication retry verifies the existing tree. KV, SQL, and blob barriers remain closed.
+This procedure does not restore other file roles, approve independent recovery history, or permit inference.
+
+The [acquisition-policy proof](../../plans/proof/starport-production-catalog/csp13/credential-policy-publication-2026-09-28/verification.json) binds the producer and consumer checks.

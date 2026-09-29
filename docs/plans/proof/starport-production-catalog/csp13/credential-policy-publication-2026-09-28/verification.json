@@ -1,0 +1,421 @@
+{
+  "checked_at": "2026-09-29T02:46:34.837284+00:00",
+  "task": "CSP13",
+  "status": "CREDENTIAL_POLICY_PUBLICATION_QUALIFIED_FULL_RECOVERY_OPEN",
+  "producer": {
+    "head": "f53f8bef0fc220e00f553c0135df6438e099d544",
+    "branch": "codex/recovery-credential-policy",
+    "published_pr": 194,
+    "published_branch": "codex/recovery-file-access",
+    "source_hashes": {
+      "acquisition/credential_policy_restore.go": "52a154fa6efacd6a734f24b859a42b1cbcaa01fcf4ff05c82d72e97b5914c090",
+      "acquisition/credential_policy_restore_test.go": "43fa7d2412cc53e54cd9b567ee21d4122ad1423088615a6bca85418fa5511f4f",
+      "internal/auth/policy_restore.go": "29ff2df2748ab5fc9c559d71b02f176019540ff07a64687fd1e44d22b186f583",
+      "internal/auth/policy_restore_test.go": "8226fea737ed51cc6f5e344f1017d63e6f1801e314fe1488812cbd109e99ea97",
+      "internal/auth/policy_store.go": "4c8f30455e82a5bd8cba98503fe9bdca905f12a358687fb3503bbbecf82e1c39",
+      "pkg/productfiles/copy_posix_test.go": "061fb79b48e2f035c3b562afe9a503d766c0d0f126309c1009e1aa57d76ad54d",
+      "pkg/productfiles/copy_test.go": "9723f65e39db7331bc60ff037b3985d627962222e5765151802e87056137750c",
+      "pkg/productfiles/copy_windows_test.go": "560bee0d7e614e62b5d8c140e1924b6725ee4570a3d4e321e2b750a33b0c9da8"
+    }
+  },
+  "consumer": {
+    "head": "2bcb0991030b3e6b08ecf6dc1d14f3c89fcdb527",
+    "branch": "codex/storage-recovery",
+    "module": "github.com/agentstation/starmap v0.16.6-0.20260929023747-f53f8bef0fc2",
+    "local_replacement": false,
+    "published": false,
+    "source_hashes": {
+      "go.mod": "9efc002309f55f5faf894af1f10e704bbeaba87cba6542738d835b687b86ded5",
+      "go.sum": "606d7cf7d0b7e49283195f86dbc071eb4dd6232863ed0bd7f5aae7bd96b04d66",
+      "internal/app/restore_publish.go": "9027ce236aa5696ae2d49065df08e2eba074c276b5ae22601849ca82bc666859",
+      "internal/app/restore_publish_test.go": "d2eea72039a43dd657aad82c7c8b914229b860a7ce9591fd98e357c86341d828",
+      "internal/architecture/import_graph_test.go": "4dbea1c21fd41e890a95aa82b67f5943a8ff0d66a67513a0656eddf358bf2976",
+      "internal/catalog/credential_policy.go": "c04d28fdfb70621cb9ca426419c17df716955bedd92005afa75fef26ac11ab05",
+      "internal/cli/restore_publish.go": "e7fd8a449b43546e67ad0fdfdfe450e495bbdba26018bde0c38a88ae8e373236",
+      "internal/cli/restore_publish_test.go": "8e15dc645db051e6fead1e181b5599105e62a1f478a7c47fb37e79924ab1dfe8",
+      "internal/config/file_manifest.go": "adb6d09b0090ec1317a07b94e627c4d536df260c76d10ec563b0ce67e36bee86",
+      "internal/recovery/README.md": "c7a931d57fe24401660f167128407518881e317258c76258d63ca7008b6d9ab2"
+    }
+  },
+  "contract": [
+    "Restore acquisition and inference credential-selection policies as separate configured roles.",
+    "Read-only Starmap inspection validates native private access, ownership, canonical record encoding, policy family, provider filenames, and pending publications.",
+    "Retain the legacy default and accepted provider choices. Do not initialize a missing default or resolve credentials.",
+    "Require fenced writers and complete inventory verification around owner inspection.",
+    "Preserve KV, SQL, and blob import barriers. File publication does not establish independent later history or approve inference."
+  ],
+  "checks": {
+    "producer_race": {
+      "pass": 300,
+      "fail": 0,
+      "skip": 0
+    },
+    "producer_purego": {
+      "pass": 300,
+      "fail": 0,
+      "skip": 0
+    },
+    "producer_static": "Pinned golangci-lint 2.13.2, goago, vet, and writing checks pass. Writing checks scanned 1926 files with no diagnostics.",
+    "producer_repository_checks": "PASS before the final platform-test correction. Production source did not change after this gate.",
+    "windows_compile": "Both amd64 and arm64 productfiles test binaries compile on Go 1.27.1. Native execution remains UNVERIFIED at the new head.",
+    "consumer_race": {
+      "pass": 24,
+      "fail": 0,
+      "skip": 2
+    },
+    "consumer_purego": {
+      "pass": 24,
+      "fail": 0,
+      "skip": 2
+    },
+    "consumer_skip_disposition": "The two environment-dependent shared-storage roots ran separately against real services.",
+    "real_shared_storage": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "services": [
+        "Valkey",
+        "PostgreSQL",
+        "MinIO"
+      ],
+      "cleanup": "PASS"
+    },
+    "consumer_architecture": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "consumer_dependency_direction": {
+      "pass": 6,
+      "fail": 0
+    },
+    "consumer_static": "Pinned lint, vet, module verification, final tidy diff, and changed prose checks pass."
+  },
+  "review": {
+    "reviewer": "Claude Opus 5.5 high",
+    "profile": "auto",
+    "gate": "pre-pr",
+    "threshold": "P0 only",
+    "passes": 1,
+    "bundle_bytes": 35853,
+    "findings": 0,
+    "secret_scan": "clean",
+    "result": "PASS"
+  },
+  "failures_and_corrections": [
+    "The initial corrected regression failed because InspectFilePolicyStore did not exist.",
+    "Initial implementation used a nonexistent Directory.Identity method. Final inspection reopens the bound directory for identity validation.",
+    "The pending-publication fixture needed an explicit private journal directory.",
+    "Pinned lint required extraction of one-record inspection to reduce cyclomatic complexity.",
+    "Windows native copy test at ef2b9fcec failed because the OS refused the attempted directory rename with a sharing violation. The final Windows test requires that protection, checks copied bytes and handle release, then verifies refusal after replacement. POSIX retains in-copy replacement refusal.",
+    "Initial Go tidy diff showed obsolete Starmap checksums. Go mod tidy removed them and the final diff is empty.",
+    "The broader architecture suite exposed stale CSP13 owner-import contracts. Recovery composes captured-state validators from named owners. Batch recovery reads account-bound file references through the file owner. Explicit allowlists now name these owners and continue to exclude application, provider, and request orchestration dependencies. Production validators did not change."
+  ],
+  "historical_qualification_limit": "The earlier full 278-test producer runs began before the entry-helper refactor. They are historical only. Final 300-test race and pure-Go runs bind the committed source. Early consumer runs used a temporary replacement, but final evidence uses the published module with GOWORK=off.",
+  "review_tool": {
+    "owner_approval": "Safe JSON-gzip support previously implemented and qualified. No additional helper edits in this checkpoint.",
+    "helper_sha256": "ca72abe7187e08ce7dc415bdc3dd8e1b3be44b8d11a62866fd5f668a531752e9",
+    "evidence": "../../csp12.2/final-source-2026-09-28/review-tool/verification.json"
+  },
+  "remaining": [
+    "Other canonical file-owner procedures",
+    "Independent post-backup withdrawal, spending, and uncertain-work history",
+    "Controlled activation",
+    "Populated migration, upgrade, and reverse procedures",
+    "Full consumer checks and required review before publication",
+    "Native qualification, reviewed merges, and full CSP13 acceptance"
+  ],
+  "artifacts": {
+    "csp13-acquisition-policy-red-corrected.jsonl": {
+      "file": "csp13-acquisition-policy-red-corrected.jsonl.gz",
+      "sha256": "34e28203961379f2dbe910b58aa1facf8f7f5ecc045daae706622bcae0456ed4",
+      "gzip_sha256": "e7de10197bd57650f7be0d6ef0dacf182dce16b5e00c9011fe8c07eeb3db4cca",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-acquisition-policy-race.jsonl": {
+      "file": "csp13-acquisition-policy-race.jsonl.gz",
+      "sha256": "66f9ec63c6bd33bb02cbc4633c6f30c6b701857d74dfb70d9ade486da97524a7",
+      "gzip_sha256": "571b72d11a7d4bd1a52a6bf44e7276b79d0c30cfea049efdf1352a99e96c3cc3",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-acquisition-policy-race-fixed.jsonl": {
+      "file": "csp13-acquisition-policy-race-fixed.jsonl.gz",
+      "sha256": "cb8c77c9da12994dc4874254a9cc71104388c1c5d1cbbc527b5f8018b8a1cd1d",
+      "gzip_sha256": "e7497e576552bd9f6f3575bf9815518009084a4c5b8606c864012d25c3a720b1",
+      "counts": {
+        "pass": 47,
+        "fail": 2,
+        "skip": 0
+      }
+    },
+    "csp13-acquisition-policy-full-race.jsonl": {
+      "file": "csp13-acquisition-policy-full-race.jsonl.gz",
+      "sha256": "c4aa20f8283c050dbd9707b90cac8977cfacba0851a9b1a7c891e4b7ccdc3ba5",
+      "gzip_sha256": "bef01d10225a3ce952675123c6f31bba49b7c4ea4d925a4c0ee980526378c923",
+      "counts": {
+        "pass": 278,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-acquisition-policy-purego.jsonl": {
+      "file": "csp13-acquisition-policy-purego.jsonl.gz",
+      "sha256": "5b46cf024fcb84d800eca68582dab020112507f8d6661d71955ea4a1e348d3b1",
+      "gzip_sha256": "6e18d62e04e09760728ed418802e8f4eabc9b7981bcd0d4f700d8cf511403b3e",
+      "counts": {
+        "pass": 278,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-acquisition-policy-lint-pinned.log": {
+      "file": "csp13-acquisition-policy-lint-pinned.log.gz",
+      "sha256": "da4a7b01be9c8c5cdd636705db9ba70273784a1af9e719da1add7d19c60cec04",
+      "gzip_sha256": "4e2be7dfbc827cc8d79966c4212e4b3d30b58438814d4466fd14d1958aa112e7"
+    },
+    "csp13-acquisition-producer-checks.log": {
+      "file": "csp13-acquisition-producer-checks.log.gz",
+      "sha256": "097bf1aaf3691f4387a7312f4430c8e75a199e6dc9616937121993bdab61b46b",
+      "gzip_sha256": "31bbda140b254a7a0f966b47542bfae4cbf76bff2a8b4f2b98de3ea8d6b7698d"
+    },
+    "csp13-acquisition-combined-race.jsonl": {
+      "file": "csp13-acquisition-combined-race.jsonl.gz",
+      "sha256": "0436af2c94dd2ccc3982dce9375c5dfa8fee252b0b3c9342a8d26b68c4e5829e",
+      "gzip_sha256": "5ea7b50c56c5efa75ef8acc1436fcc7a08cdbd3b9e9012f24f4f5111ba425f1d",
+      "counts": {
+        "pass": 300,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-acquisition-combined-purego.jsonl": {
+      "file": "csp13-acquisition-combined-purego.jsonl.gz",
+      "sha256": "e009281939fa270854603527a9ea60a828bbfab95249547b518ddebd70a2ef3f",
+      "gzip_sha256": "3a76efbe9720cbe4a08aea6aade758d53f16159c4b1b1b26f55af7179a1e79f5",
+      "counts": {
+        "pass": 300,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-acquisition-combined-goago.json": {
+      "file": "csp13-acquisition-combined-goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "gzip_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    "csp13-acquisition-combined-lint.log": {
+      "file": "csp13-acquisition-combined-lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    "csp13-acquisition-combined-vet.log": {
+      "file": "csp13-acquisition-combined-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-acquisition-combined-writing.log": {
+      "file": "csp13-acquisition-combined-writing.log.gz",
+      "sha256": "3ea83aacb17ca4cb7e717c5e4d879893dbc7cca5a80f08be91d52af92ac0f2ab",
+      "gzip_sha256": "23dc45fafb1ab35f9b13cdf4f373b8f0f9589edd6f11a21b881ea31212188c41"
+    },
+    "csp13-acquisition-producer-review.log": {
+      "file": "csp13-acquisition-producer-review.log.gz",
+      "sha256": "33645a586f4ba15c95d1b24e730c1c9519ae3219f5db83626147a5ca0df28c10",
+      "gzip_sha256": "cf49ccdcf4e637f0c408ae35c99cebfa283acb0c76cb10a5bc40a8e673f5f4e4"
+    },
+    "csp13-acquisition-194-body.md": {
+      "file": "csp13-acquisition-194-body.md.gz",
+      "sha256": "a3c415e67323fb2ec7d52bc5c01279fb1f020a972ef16c95b6afedcc3a0cf871",
+      "gzip_sha256": "3ee0b9e0de11ad132deb5363a66abe740d3db7112f57a88e8057d5421a9599aa"
+    },
+    "csp13-acquisition-194-current.json": {
+      "file": "csp13-acquisition-194-current.json.gz",
+      "sha256": "5f72c0be2b1566155a9645c2587f450d955ce4caf8c294eb59ee7c8c3e1a1957",
+      "gzip_sha256": "5a85bf247cc0d76fd0e5b71e6382981d508f38de3dd87f5c24334521674ba903"
+    },
+    "csp13-acquisition-194-published.json": {
+      "file": "csp13-acquisition-194-published.json.gz",
+      "sha256": "a8e00bebead66e25ae84c4234f8b85b3f0505b7cb00ee05402a55b348a17b947",
+      "gzip_sha256": "700c46f97e10330b828c34663a120940070df87ab6cbe5f25853114bd175f317"
+    },
+    "csp13-starmap194-windows-failure.log": {
+      "file": "csp13-starmap194-windows-failure.log.gz",
+      "sha256": "c0f8eee322592c2da405b8e6d7f0f73b51cc04cd0143eea82cc090e91d8b354d",
+      "gzip_sha256": "2e5cdc3229dc89581c9246bf0b698b132e3a80222895d8501c8200397b6cea1e"
+    },
+    "csp13-acquisition-consumer-real-pin.log": {
+      "file": "csp13-acquisition-consumer-real-pin.log.gz",
+      "sha256": "4a6235194eb3d8b74a880dc0138effb8a81f52b51cc81bf72a969a46887b0d8a",
+      "gzip_sha256": "1c0119589173a0f1aece3aadabd735a4f379b000d39c16bd65028736a9f51695"
+    },
+    "csp13-acquisition-consumer-real-tidy.log": {
+      "file": "csp13-acquisition-consumer-real-tidy.log.gz",
+      "sha256": "6b62fda8ec0da206ad916102d7c545f4d0e78525160518cbf2aaffa50693e562",
+      "gzip_sha256": "325cb4d5385fe4b50b1a7590fe69f1abb93c90ea6d588e1e59b1090886ebfa94"
+    },
+    "csp13-acquisition-consumer-real-tidy-final.log": {
+      "file": "csp13-acquisition-consumer-real-tidy-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-acquisition-consumer-pinned-race.jsonl": {
+      "file": "csp13-acquisition-consumer-pinned-race.jsonl.gz",
+      "sha256": "9704c2581b79aca8e6a1b1c64b3bb23c4c0048ae3213bfda37dd4ca185fc7d22",
+      "gzip_sha256": "e0605759561d0bbd41ddd15de260e461db3917291fa54878b9034e215c2ca7a4",
+      "counts": {
+        "pass": 24,
+        "fail": 0,
+        "skip": 2
+      }
+    },
+    "csp13-acquisition-consumer-pinned-purego.jsonl": {
+      "file": "csp13-acquisition-consumer-pinned-purego.jsonl.gz",
+      "sha256": "0c08c502d24e0c9b118fb3021366f73c92d306712b113013c0ebae336d9308e6",
+      "gzip_sha256": "19d029040944cffcca979da6834bc5417d9a14134ba7017a09b1187693ce56ef",
+      "counts": {
+        "pass": 24,
+        "fail": 0,
+        "skip": 2
+      }
+    },
+    "csp13-acquisition-consumer-pinned-lint.log": {
+      "file": "csp13-acquisition-consumer-pinned-lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    "csp13-acquisition-consumer-pinned-vet.log": {
+      "file": "csp13-acquisition-consumer-pinned-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-acquisition-consumer-pinned-modverify.log": {
+      "file": "csp13-acquisition-consumer-pinned-modverify.log.gz",
+      "sha256": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+      "gzip_sha256": "4699dce40a065353f016ef7eb2c309ee9dee73281263a6b29287016349618a1b"
+    },
+    "csp13-acquisition-consumer-pinned-writing.log": {
+      "file": "csp13-acquisition-consumer-pinned-writing.log.gz",
+      "sha256": "69a2f872785e8dd440717978a1f909d4fa1ebecc317183d912c5e0b023383e46",
+      "gzip_sha256": "6ddd61f4d55922f3853e42785dcdd811b74768d45e8c099839a49dc53525ab4b"
+    },
+    "csp13-acquisition-consumer-pinned-direction.jsonl": {
+      "file": "csp13-acquisition-consumer-pinned-direction.jsonl.gz",
+      "sha256": "70f343092da09f93bf8018e59790c86de055231e5c621a3b5f563f4154088329",
+      "gzip_sha256": "0d24f9c839284b1ea536e2451b0c141ac79015430081d5fc27fec26c9539eee1",
+      "counts": {
+        "pass": 1,
+        "fail": 1,
+        "skip": 0
+      }
+    },
+    "csp13-acquisition-consumer-pinned-direction.log": {
+      "file": "csp13-acquisition-consumer-pinned-direction.log.gz",
+      "sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027",
+      "gzip_sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9"
+    },
+    "csp13-acquisition-consumer-pinned-architecture.jsonl": {
+      "file": "csp13-acquisition-consumer-pinned-architecture.jsonl.gz",
+      "sha256": "7316b2b27741c9e3b0108b89ee7341da2e7c5094ac36569ee72558e6dde66bff",
+      "gzip_sha256": "bab8603b92521e0526c0965d6b40c3b73fc752d5fba8e716fd92547cc7397450",
+      "counts": {
+        "pass": 7,
+        "fail": 1,
+        "skip": 0
+      }
+    },
+    "csp13-acquisition-consumer-pinned-architecture-final.jsonl": {
+      "file": "csp13-acquisition-consumer-pinned-architecture-final.jsonl.gz",
+      "sha256": "7a5eeebbdd0e30564361d31ab97d72742b645375723ae12da448d05f5c33ac5f",
+      "gzip_sha256": "866c75b2991751bdb112ce503d5db96df55477e96081bd28cc1bbde634e860ff",
+      "counts": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-acquisition-consumer-architecture-writing-final.log": {
+      "file": "csp13-acquisition-consumer-architecture-writing-final.log.gz",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "gzip_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    },
+    "csp13-acquisition-consumer-architecture-lint-final.log": {
+      "file": "csp13-acquisition-consumer-architecture-lint-final.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    "csp13-acquisition-final-published-storage-race.jsonl": {
+      "file": "csp13-acquisition-final-published-storage-race.jsonl.gz",
+      "sha256": "a92f2bbb2fe210f8bc1966a3f268de66ad640a22d692e44722294e91525a3a0c",
+      "gzip_sha256": "202dfb7bd495bbfae5c12c75cdeacb727461138ea4e9be20201725ed060b79d9",
+      "counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-acquisition-final-storage-fixture.json": {
+      "file": "csp13-acquisition-final-storage-fixture.json.gz",
+      "sha256": "3905fc090203b56aeb2fee3bc2fdecff6e8b028bef5acd9c52259d255b2187d9",
+      "gzip_sha256": "52cfe4048b39bd3dcd7c7da8613f120348626078df6f70e850ec58a36c8c1c93"
+    },
+    "csp13-acquisition-final-storage-run.log": {
+      "file": "csp13-acquisition-final-storage-run.log.gz",
+      "sha256": "b04f2fd7b7f6c23cac94025eb6a0f588c1e54d45aef841eafc0bb4ec0792c4af",
+      "gzip_sha256": "9ad21ad203534d5008045fafbb126c760bf2f4102d134b6994bd5230827bb9fa"
+    },
+    "csp13-acquisition-final-storage-object-build.txt": {
+      "file": "csp13-acquisition-final-storage-object-build.txt.gz",
+      "sha256": "8cb168ef4b59cee073d1b52548cc1b2699051efd7fca7356dbede69d445ca778",
+      "gzip_sha256": "a50f744a6feb4899cd62ae63da3f05dfde21f5f726cd655fa9c357c450b0db68"
+    },
+    "csp13-qualify-acquisition-final-storage.py": {
+      "file": "csp13-qualify-acquisition-final-storage.py.gz",
+      "sha256": "84fcbce61d0d908d96307c35ba9e7149e25bdfc89413a4f98211bd0d22617f3a",
+      "gzip_sha256": "f32f7adc6bcadd7084294736f785a713cf38224d740cceac793b9ea7575b83ec"
+    },
+    "csp13-acquisition-queue-final-starmap.json": {
+      "file": "csp13-acquisition-queue-final-starmap.json.gz",
+      "sha256": "42d5b097377410b0fd4398575cbf8e3ad1716da98ad9e610040d3444c9230ae1",
+      "gzip_sha256": "0474d70b2a8080b0d326367d1485661494d1f9bc1585a4e9a5904b2e9379399b"
+    },
+    "csp13-acquisition-queue-final-starport.json": {
+      "file": "csp13-acquisition-queue-final-starport.json.gz",
+      "sha256": "fd4f99f4b8e73b42c266357aeec2a9d143f4698143f33bea0a6d639a04c68a1f",
+      "gzip_sha256": "61df12bf56617928214026d91df4819c8b7696acee7b69db7c7b9740b7056c4f"
+    },
+    "csp13-acquisition-390-latest.json": {
+      "file": "csp13-acquisition-390-latest.json.gz",
+      "sha256": "0989f9dc6203ecff13c5b47bb30e4b40fc900b643f74377975d20b5f12d61d45",
+      "gzip_sha256": "cc887f863af70940158c82e635ce3905022470ace2859f9e977a2f6fc97575c3"
+    },
+    "csp13-acquisition-390-protection.json": {
+      "file": "csp13-acquisition-390-protection.json.gz",
+      "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+      "gzip_sha256": "f1a3ecaa02a381e3f7e2d73913df084cd9732f93e6ca7646f650f2bc1b3f34e5"
+    },
+    "csp13-acquisition-390-threads.json": {
+      "file": "csp13-acquisition-390-threads.json.gz",
+      "sha256": "76e36f7e95afcf1c0c6bed618ea5b302a39f12c7a687f53f8424c32b8036ba54",
+      "gzip_sha256": "ec4c03ad8c11f85052a6c728af707fc2447619427b615e8a30f00db595c114d6"
+    },
+    "starmap194-windows-tests.jsonl": {
+      "file": "starmap194-windows-tests.jsonl.gz",
+      "sha256": "92377c571d3f93b16686b608e6231bae0567f80224d090baaf10ddff64f175a4",
+      "gzip_sha256": "632d17e3b8d9a9c83ec5048440e9420444000c41771195c415c70f627a94559f"
+    }
+  },
+  "plan_checks": {
+    "links_and_ledger": "PASS; see plan-validation.json",
+    "changed_prose": "PASS: one assembled changed-prose file, zero diagnostics",
+    "artifact_hashes": "44 packed and unpacked artifact hashes verified",
+    "source_hashes": "All producer and consumer source hashes verified"
+  }
+}
