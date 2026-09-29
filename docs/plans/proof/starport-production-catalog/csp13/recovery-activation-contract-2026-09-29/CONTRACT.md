@@ -225,3 +225,45 @@ The serialized evidence schema remains unchanged.
 Complete final graph checks, external interval acceptance, operator activation, and cross-topology catalog selection remain required.
 Local-to-fleet and fleet-to-local transfer must preserve accepted catalog identity and authority under their separate store contracts.
 Existing fleet adoption alone does not qualify those topology changes.
+
+## Operator inspection and remaining coordinator work
+
+Local `36f417fa` adds `backup inspect-import` and retains a complete private inspection receipt.
+The command requires explicit replay positions, the closed boundary, and the selected Valkey incarnation when applicable.
+Local `d7da3c9d` validates the complete imported graph and repeats native guards after inspection.
+Local `1a2484a2` removes accidental reader dependencies and declares recovery's existing job-slot validation dependency.
+
+The next coordinator contract uses one private history manifest with an independently retained digest.
+It binds the backup, unchanged operation, target identities, interval, evidence sources, highest epoch, typed steps, and operator attestation.
+The attestation must distinguish external completeness and fencing from facts that Starport verifies.
+Missing coverage or unknown scope retains deployment-wide restrictions for requests and background workers.
+
+Before each replay step, the coordinator must retain its immutable preimage and exact preceding native positions.
+It must publish that prepared record before changing any target.
+After a lost reply, an exact retry uses the same preimage and native receipt identity.
+It must not recapture newer state as the preimage of an earlier step.
+Cross-store interruption never implies rollback of a completed native transaction.
+
+Bound manifest size, payload size, step count, and aggregate payload bytes before replay.
+An initial 64 MiB aggregate payload limit requires explicit refusal when exceeded.
+Measure snapshot and replay costs against the required recovery objectives before qualification.
+These procedures remain implementation work. They do not claim continuous recovery journaling.
+
+### Remaining file and asset ownership
+
+Post-backup file metadata and stored-byte claims need typed reconstruction and a complete final census.
+The census must check file attachments, retained claim state, and totals through the stored-byte owner.
+Fresh-history initialization cannot repair lost accounting.
+
+Independently retained asset bytes need guarded publication under the original blob import claim.
+Blob replay requires durable preparation, ordered receipts, exact retry, and final inspection bound to its current replay position.
+An old publication retry must not resurrect retired bytes.
+Unavailable required assets keep recovery restricted. Recovery cannot repeat generation, invent bytes, or extend retention deadlines.
+
+### Remaining catalog topology contract
+
+A local accepted generation can differ from the current candidate.
+Current directory inputs cannot stand in for missing input evidence from an older accepted generation.
+Local-to-fleet recovery must preserve that distinction and must not fabricate a fleet lease.
+Starmap owns any offline export, retained input census, and explicit recovery-origin contract needed for this transfer.
+Starport owns selection under closed admission and the native import controls.

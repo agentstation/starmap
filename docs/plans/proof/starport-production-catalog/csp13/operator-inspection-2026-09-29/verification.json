@@ -1,0 +1,73 @@
+{
+  "base_head": "56aceaf5",
+  "dependency": "4a9ce55c5d20a9e6f22dcec8cf0df5178be53b86",
+  "source": "e3f1cb0ce8e7e2071b09eca1d1cd095da3ee03eb",
+  "go_version": "go version go1.27.1 darwin/arm64",
+  "tests": {
+    "race": {
+      "pass": 48,
+      "fail": 0,
+      "skip": 0
+    },
+    "pure": {
+      "pass": 48,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "native_owners": [
+    "Badger",
+    "SQLite",
+    "filesystem",
+    "Valkey",
+    "PostgreSQL",
+    "S3-compatible objectstore"
+  ],
+  "checks": {
+    "race": 0,
+    "pure_go": 0,
+    "vet": 0,
+    "make_lint": 0,
+    "technical_writing": 0,
+    "diff_check": 0
+  },
+  "manual_audit": [
+    "Explicit operator source digest, operation/fencing identity, closed expected boundary, replay positions, Valkey incarnation",
+    "No normal initialization, schema migration, preparation, activation, provider calls, or global shared-store mutation",
+    "Refuse absent local targets and source/output/scratch/store overlap including native path aliases before opens",
+    "Complete private inspection request retained with its recomputable native hash only after success and native close",
+    "Later independently accepted closed recovery epoch is checked separately from original prepared claims",
+    "Replay/authority/credential privacy remains owned by native graph inspection; output contains identities and counts only"
+  ],
+  "limits": [
+    "Inspection cannot prove external fencing or completeness of independent later history",
+    "Inspection does not approve activation, catalog topology translation, or provider retries",
+    "Requires existing private output parent and a fresh output directory per attempt; failed snapshots are diagnostic only",
+    "Actual native Windows/Linux runs remain parent CI responsibility"
+  ],
+  "task": "CSP13",
+  "task_complete": false,
+  "source_commit": "e3f1cb0ce8e7e2071b09eca1d1cd095da3ee03eb",
+  "integration_commit": "36f417fa",
+  "integrated_head": "84d9a9a557f46146c40d25ed25875eec783fffa1",
+  "artifacts": {
+    "vet.log.gz": {
+      "sha256_uncompressed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "race.jsonl.gz": {
+      "sha256_uncompressed": "e3b8c72ae7864850555a202ce02a2b0072f7d48512f619a9ad26149806ace476"
+    },
+    "lint.log.gz": {
+      "sha256_uncompressed": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "pure.jsonl.gz": {
+      "sha256_uncompressed": "2fa3ee26c85ce0b7a2ae04f350577138c6f824fbfe618dcf146939522d17f417"
+    },
+    "run-native.py.gz": {
+      "sha256_uncompressed": "975d73e230aa8e85942047f7fac56e8ad7b8de2f15eab9516446950e11caaa81"
+    },
+    "prose.log.gz": {
+      "sha256_uncompressed": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    }
+  }
+}

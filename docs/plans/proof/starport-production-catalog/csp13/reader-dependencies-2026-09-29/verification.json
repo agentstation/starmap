@@ -1,0 +1,244 @@
+{
+  "source_before_repair": "61adaeb719316c064534ea5a164de9d5ef559b1a",
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "change": "Consumer-owned bounded captured-record readers remove accidental domain dependencies; recovery allowlist declares existing job-slot owner validation.",
+  "checks": {
+    "reservation-fail-before": {
+      "log": "/tmp/csp13-recovery-dependencies-20260929/reservation-fail-before.jsonl",
+      "results": {},
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/limits/reservation",
+          "Action": "fail",
+          "Elapsed": 0,
+          "FailedBuild": "github.com/agentstation/starport/internal/limits/reservation [github.com/agentstation/starport/internal/limits/reservation.test]"
+        }
+      ]
+    },
+    "architecture-fail-before": {
+      "log": "/tmp/csp13-recovery-dependencies-20260929/architecture-fail-before.jsonl",
+      "results": {
+        "github.com/agentstation/starport/internal/architecture": {
+          "fail": 1
+        }
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Action": "fail",
+          "Elapsed": 2.391
+        }
+      ]
+    },
+    "architecture-fixed": {
+      "log": "/tmp/csp13-recovery-dependencies-20260929/architecture-fixed.jsonl",
+      "results": {
+        "github.com/agentstation/starport/internal/architecture": {
+          "fail": 1
+        }
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Action": "fail",
+          "Elapsed": 1.689
+        }
+      ]
+    },
+    "native-race": {
+      "log": "/tmp/csp13-recovery-dependencies-20260929/native-race.jsonl",
+      "results": {
+        "github.com/agentstation/starport/internal/limits/reservation": {
+          "pass": 269
+        },
+        "github.com/agentstation/starport/internal/authorization/revision": {
+          "pass": 41
+        },
+        "github.com/agentstation/starport/internal/credentials": {
+          "pass": 213
+        },
+        "github.com/agentstation/starport/internal/architecture": {
+          "pass": 7,
+          "fail": 1
+        }
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Action": "fail",
+          "Elapsed": 3.049
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/authorization/revision",
+          "Action": "pass",
+          "Elapsed": 17.209
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/credentials",
+          "Action": "pass",
+          "Elapsed": 29.106
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/limits/reservation",
+          "Action": "pass",
+          "Elapsed": 32.413
+        }
+      ]
+    },
+    "native-purego": {
+      "log": "/tmp/csp13-recovery-dependencies-20260929/native-purego.jsonl",
+      "results": {
+        "github.com/agentstation/starport/internal/limits/reservation": {
+          "pass": 269
+        },
+        "github.com/agentstation/starport/internal/authorization/revision": {
+          "pass": 41
+        },
+        "github.com/agentstation/starport/internal/credentials": {
+          "pass": 214
+        },
+        "github.com/agentstation/starport/internal/architecture": {
+          "pass": 7,
+          "fail": 1
+        }
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Action": "fail",
+          "Elapsed": 2.99
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/credentials",
+          "Action": "pass",
+          "Elapsed": 13.553
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/authorization/revision",
+          "Action": "pass",
+          "Elapsed": 15.568
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/limits/reservation",
+          "Action": "pass",
+          "Elapsed": 19.594
+        }
+      ]
+    },
+    "architecture-final-race": {
+      "log": "/tmp/csp13-recovery-dependencies-20260929/architecture-final-race.jsonl",
+      "results": {
+        "github.com/agentstation/starport/internal/architecture": {
+          "pass": 8
+        }
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Action": "pass",
+          "Elapsed": 3.294
+        }
+      ]
+    },
+    "architecture-final-purego": {
+      "log": "/tmp/csp13-recovery-dependencies-20260929/architecture-final-purego.jsonl",
+      "results": {
+        "github.com/agentstation/starport/internal/architecture": {
+          "pass": 8
+        }
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/architecture",
+          "Action": "pass",
+          "Elapsed": 1.87
+        }
+      ]
+    }
+  },
+  "commands": [
+    "go test -json ./internal/limits/reservation -run ^TestImportCycleRegression$ (compile-only failure before tests could execute)",
+    "go test -json -count=1 ./internal/architecture -run ^TestImportGraphArchitecture$",
+    "go test -race -json -count=1 -timeout=6m ./internal/limits/reservation ./internal/authorization/revision ./internal/credentials ./internal/architecture -run .",
+    "CGO_ENABLED=0 go test -json -count=1 -timeout=6m ./internal/limits/reservation ./internal/authorization/revision ./internal/credentials ./internal/architecture -run .",
+    "go test -race -json -count=1 ./internal/architecture",
+    "CGO_ENABLED=0 go test -json -count=1 ./internal/architecture",
+    "go vet ./internal/authorization/revision ./internal/credentials ./internal/limits/reservation",
+    "go vet ./internal/architecture",
+    "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/authorization/revision ./internal/credentials ./internal/limits/reservation",
+    "technical-writing lint (3 changed source files) --format text",
+    "git diff --check"
+  ],
+  "notes": [
+    "Original reservation failure occurs while building tests: reservation -> identity -> revision -> reservation.",
+    "Original architecture failure is credentials -> reservation only for BackupReader.",
+    "After reader repairs, architecture guard exposed omitted recovery -> jobslots declaration for existing owner validation. Added only that exact package, with root concurrence; assertions unchanged.",
+    "Native suite package results: reservation269/revision41/credentials213 race and269/41/214 pure-Go; no domain skips/failures. Architecture initially failed omitted edge, then all8 tests passed race and pure-Go on final allowlist.",
+    "Native Badger/Valkey and SQLite/PostgreSQL/MySQL fixtures exercised; services left running.",
+    "No behavioral mutation, permission change, architecture relaxation via broad prefixes, push, PR or structured autoreview."
+  ],
+  "static_checks": {
+    "vet": {
+      "exit_code": 0,
+      "log": "/tmp/csp13-recovery-dependencies-20260929/vet.log"
+    },
+    "architecture-vet": {
+      "exit_code": 0,
+      "log": "/tmp/csp13-recovery-dependencies-20260929/architecture-vet.log"
+    },
+    "lint": {
+      "exit_code": 0,
+      "log": "/tmp/csp13-recovery-dependencies-20260929/lint.log"
+    },
+    "prose": {
+      "exit_code": 0,
+      "log": "/tmp/csp13-recovery-dependencies-20260929/prose.log"
+    }
+  },
+  "task": "CSP13",
+  "task_complete": false,
+  "source_commit": "47da9c1c17bff3362859497f5b1f4b741b885ff4",
+  "integration_commit": "1a2484a2",
+  "integrated_head": "84d9a9a557f46146c40d25ed25875eec783fffa1",
+  "artifacts": {
+    "architecture-final-race.jsonl.gz": {
+      "sha256_uncompressed": "436ebbb97a593f3e3e2242942dda904ac5e8e37b285aa230e373a8303831ca94"
+    },
+    "architecture-fixed.jsonl.gz": {
+      "sha256_uncompressed": "103a4c44d8e0c55ea05d5fef4ddfb8d4a6859a5b890e2cb2bf352e98a8e68c7f"
+    },
+    "vet.log.gz": {
+      "sha256_uncompressed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lint.log.gz": {
+      "sha256_uncompressed": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "native-race.jsonl.gz": {
+      "sha256_uncompressed": "810b493f54cbd88e713796ecac5646ce69b3c0777d6e70776ce2801f1aaaacd4"
+    },
+    "native-purego.jsonl.gz": {
+      "sha256_uncompressed": "206e36f55309f37dd91c72879a0854b7f9e2896efed10da9710afe90a69e6ce0"
+    },
+    "architecture-final-purego.jsonl.gz": {
+      "sha256_uncompressed": "1659cfa53b3131915089244f3991945acbb4da0905283c1796700f5beea0fe8b"
+    },
+    "architecture-fail-before.jsonl.gz": {
+      "sha256_uncompressed": "9fc8f4524cbaec8c480473db9e8454c7996908cbe6af4a35446c5573a128060d"
+    },
+    "run-purego.py.gz": {
+      "sha256_uncompressed": "304288163a814660bbb6ab752e4a971d1be3b43f4a3b532cb9396290f9d32c0c"
+    },
+    "run-native.py.gz": {
+      "sha256_uncompressed": "bef07bf7227adaf20360f2fc41c61f09d64d499eb211fb5afeeb4ac5d3ccfefb"
+    },
+    "prose.log.gz": {
+      "sha256_uncompressed": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    },
+    "architecture-vet.log.gz": {
+      "sha256_uncompressed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "reservation-fail-before.jsonl.gz": {
+      "sha256_uncompressed": "49d4f40cf9786076f5cf34f814bc6796909bca1412eabadf5f0b938c7634a1b8"
+    }
+  }
+}

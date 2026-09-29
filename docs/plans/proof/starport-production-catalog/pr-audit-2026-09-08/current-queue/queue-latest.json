@@ -2018,11 +2018,11 @@
     "disposition": "Local, verified component; full recovery remains open."
   },
   "owner_replay": {
-    "head": "2250f314",
-    "state": "LOCAL_INTEGRATION_REPAIR",
+    "head": "84d9a9a557f46146c40d25ed25875eec783fffa1",
+    "state": "LOCAL_FINAL_CHECKS",
     "owner": "this chat",
-    "proof": "csp13/final-graph-2026-09-29/verification.json",
-    "next_action": "Integrate operator inspection and reader ownership repair, repeat final qualification, then bind independent history and controlled activation."
+    "proof": "csp13/operator-inspection-2026-09-29/verification.json",
+    "next_action": "Finish final qualification, structured review and publication of replay/inspection. Continue independent history, typed file/asset recovery and offline catalog topology transfer before activation."
   },
   "starport391_completion": {
     "state": "MERGED",
