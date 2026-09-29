@@ -1,0 +1,127 @@
+{
+  "head": "3938ed15fad0fa0039b91edec73834bcabe694e8",
+  "tested_merge": "7873d90960d22a464582dd9e562785117f8e1504",
+  "base": "41160fbf55f74a6659ff0ac488a4378524437be7",
+  "aggregate": "pass",
+  "raw_events": 12320,
+  "shards": [
+    {
+      "index": 0,
+      "owners": 56,
+      "results": {
+        "pass": 120,
+        "skip": 1
+      },
+      "go_test_seconds": 669.823
+    },
+    {
+      "index": 1,
+      "owners": 48,
+      "results": {
+        "pass": 106,
+        "skip": 8
+      },
+      "go_test_seconds": 510.539
+    },
+    {
+      "index": 2,
+      "owners": 47,
+      "results": {
+        "pass": 112,
+        "skip": 1
+      },
+      "go_test_seconds": 239.072
+    },
+    {
+      "index": 3,
+      "owners": 38,
+      "results": {
+        "pass": 125,
+        "skip": 2
+      },
+      "go_test_seconds": 513.491
+    }
+  ],
+  "overall_native_run": "in_progress",
+  "note": "Application sharding is qualified. Other native jobs and Build remain pending.",
+  "run": 36550634369,
+  "total_results": {
+    "passed": 463,
+    "failed": 0,
+    "optional_skipped": 12,
+    "owners": 189
+  },
+  "artifacts": {
+    "tested-merge.json": {
+      "file": "tested-merge.json.gz",
+      "sha256": "8de228196b6432388d10a6839f5921e8154b9ac7e4f3ab4c90625c75c24a0911",
+      "gzip_sha256": "e73c1e1d1dc9b74c46f7b9bfd8ced637b0a2ddd0f568856f933d31900c0e2a42"
+    },
+    "app-aggregate.json": {
+      "file": "app-aggregate.json.gz",
+      "sha256": "a52223dcfbdf3e51a18572cd13037c7f103a1e3dbcd9d2781778c895150e42f5",
+      "gzip_sha256": "4929901b3c104e3684d9cc2b66027967e1a204e241be2e7b174970ca87998a44"
+    },
+    "native-catalog-app-windows-2025-0/tests.jsonl": {
+      "file": "native-catalog-app-windows-2025-0-tests.jsonl.gz",
+      "sha256": "ae3a833c3d9cca703940ca8ebf01ba837a124f398bec681b9deb62f38681c516",
+      "gzip_sha256": "4ab141b5120a6fb7e3390ecb69fa32d8605cbc81b9d0ccc76866f52d908e675f"
+    },
+    "native-catalog-app-windows-2025-0/roster.json": {
+      "file": "native-catalog-app-windows-2025-0-roster.json.gz",
+      "sha256": "1083d4ec4723b6b9a1d5b6859681f2a31ae61604c273bfdbb4d26829087e852a",
+      "gzip_sha256": "1392a7b121a2ad94c88f2cd483d694c3ab520ed8225f13bbbb74d14c534426cd"
+    },
+    "native-catalog-app-windows-2025-0/toolchain.txt": {
+      "file": "native-catalog-app-windows-2025-0-toolchain.txt.gz",
+      "sha256": "d2c479df99b9b4ce5fddd73ea0a1b8c9f0e0a73a046d79f6e8e9d6714bb14df8",
+      "gzip_sha256": "ec34aebf9536dbfbe91c94ce5ee583169299adda1cf756b5bf08bd76cbf61aff"
+    },
+    "native-catalog-app-windows-2025-1/tests.jsonl": {
+      "file": "native-catalog-app-windows-2025-1-tests.jsonl.gz",
+      "sha256": "d2b8dda9f2064f1bde1bc2c177cb5d1b3eaba6829617ed7de5dd78b71eca1499",
+      "gzip_sha256": "9fccc3c6c62166acc2640be4fe181cb4ed1978043fe9d652ad30a4c41acc37a8"
+    },
+    "native-catalog-app-windows-2025-1/roster.json": {
+      "file": "native-catalog-app-windows-2025-1-roster.json.gz",
+      "sha256": "d5d7605d7b9b55b56df33477f95031b571ca60391021ede39c660bded17850e3",
+      "gzip_sha256": "d33635bff7ad205d1f15d66ecf4238edaa58662a2673392814cd8e1de53c34c6"
+    },
+    "native-catalog-app-windows-2025-1/toolchain.txt": {
+      "file": "native-catalog-app-windows-2025-1-toolchain.txt.gz",
+      "sha256": "d2c479df99b9b4ce5fddd73ea0a1b8c9f0e0a73a046d79f6e8e9d6714bb14df8",
+      "gzip_sha256": "ec34aebf9536dbfbe91c94ce5ee583169299adda1cf756b5bf08bd76cbf61aff"
+    },
+    "native-catalog-app-windows-2025-2/tests.jsonl": {
+      "file": "native-catalog-app-windows-2025-2-tests.jsonl.gz",
+      "sha256": "d9c7a8dcc997bcfa19efb72ada8e9558375b5e8732cd6e1c224db4ca410f6bdd",
+      "gzip_sha256": "c3f88cc00a20e550a1e4fab0e362ce027acbff7a69f7c7a5bf0a38aa8d8017e4"
+    },
+    "native-catalog-app-windows-2025-2/roster.json": {
+      "file": "native-catalog-app-windows-2025-2-roster.json.gz",
+      "sha256": "b83cf6939e31fd57bd9731941da6407874f7d88bde587c7ebbdbf28cd3e92a8c",
+      "gzip_sha256": "5561f18de879683dccfa7cd8d4c94996abaeea6aa6cedae2dc0b76d454351919"
+    },
+    "native-catalog-app-windows-2025-2/toolchain.txt": {
+      "file": "native-catalog-app-windows-2025-2-toolchain.txt.gz",
+      "sha256": "d2c479df99b9b4ce5fddd73ea0a1b8c9f0e0a73a046d79f6e8e9d6714bb14df8",
+      "gzip_sha256": "ec34aebf9536dbfbe91c94ce5ee583169299adda1cf756b5bf08bd76cbf61aff"
+    },
+    "native-catalog-app-windows-2025-3/tests.jsonl": {
+      "file": "native-catalog-app-windows-2025-3-tests.jsonl.gz",
+      "sha256": "00acf32f38f92e709dc6c1390d2cd07d502eac0d066cde2c121572e42218d3c4",
+      "gzip_sha256": "9a505492386c1501479d49cb341aa149501ad9b19c00e20661841a987d89756d"
+    },
+    "native-catalog-app-windows-2025-3/roster.json": {
+      "file": "native-catalog-app-windows-2025-3-roster.json.gz",
+      "sha256": "32cac504ea58b782d795759da1948d66e9b5a08193a2aac628640358281c4608",
+      "gzip_sha256": "591c73cbb0d1699402b0dbf25e93ae808b8c9484d019895a52772907031ba0db"
+    },
+    "native-catalog-app-windows-2025-3/toolchain.txt": {
+      "file": "native-catalog-app-windows-2025-3-toolchain.txt.gz",
+      "sha256": "d2c479df99b9b4ce5fddd73ea0a1b8c9f0e0a73a046d79f6e8e9d6714bb14df8",
+      "gzip_sha256": "ec34aebf9536dbfbe91c94ce5ee583169299adda1cf756b5bf08bd76cbf61aff"
+    }
+  },
+  "source_binding_note": "The local CLI correctly refused a different checkout SHA. The imported verifier passed after binding artifacts to the GitHub-confirmed PR merge parents."
+}

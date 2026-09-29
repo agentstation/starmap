@@ -1,0 +1,149 @@
+{
+  "state": "LOCAL_COMPONENT_VERIFIED",
+  "head": "222a21535d813f490ec2fe1ad0a13e32406592bc",
+  "parent": "74117b6b0b831b0d48808aafc46a0be7c0c9e17c",
+  "toolchain": "go1.27.1",
+  "platform": "darwin/arm64",
+  "checked_at": "2026-09-29T10:00:17.076129+00:00",
+  "task": "CSP13",
+  "task_completed": false,
+  "behavior": [
+    "Native ordered CAS replay under the exact retained import barrier.",
+    "Receipt binds claim, sequence, previous receipt, evidence, and mutation bytes including absence versus empty.",
+    "Exact retries preserve later data. Snapshot import refuses after reconciliation starts.",
+    "Persistent Badger transaction and incarnation-bound Valkey script retain native sequence separately from portable history.",
+    "Valkey checks all intended command permissions before writes."
+  ],
+  "checks": {
+    "fail_before": {
+      "failed_test_results": 2,
+      "reason": "Native import does not implement reconciliation."
+    },
+    "acl_regression_before": {
+      "failed_test_results": 1,
+      "reason": "A denied DEL followed a committed SET without a receipt."
+    },
+    "native_race": {
+      "passed": 143,
+      "failed": 0,
+      "skipped": 1,
+      "new_reconciliation_passed": 64,
+      "skipped_test": "TestRecordTransferRejectsReplacementBackend",
+      "skip_reason": "Separate backend-replacement fixture absent."
+    },
+    "pure_go_native": {
+      "passed": 64,
+      "failed": 0,
+      "skipped": 0
+    },
+    "vet": 0,
+    "lint": 0,
+    "prose": 0,
+    "diff": 0
+  },
+  "manual_review": {
+    "reviewer": "recovery_contract",
+    "findings": 1,
+    "resolved": 1,
+    "finding": "Preflight all Valkey write permissions before any mutation.",
+    "resolution": "Native regression reproduces partial write before repair and passes after repair."
+  },
+  "limitations": [
+    "Domain-owned permission, accounting, execution reconstruction and final coordinator remain unfinished.",
+    "No complete CSP13 case passes from this component evidence.",
+    "Full pre-PR checks, structured review, publication and native CI remain open.",
+    "External completeness and writer fencing remain operator responsibilities."
+  ],
+  "artifacts": {
+    "fail-before.jsonl": {
+      "file": "fail-before.jsonl.gz",
+      "sha256": "50e8fab74d81d03536ee86856e2a4ec1485aeab3c906fc930ea92b2b3297ca52",
+      "gzip_sha256": "2b0f14612b2e698dc30815174cafc6731c0eaf3afb64180c0d056e3c4de8bde4"
+    },
+    "initial.jsonl": {
+      "file": "initial.jsonl.gz",
+      "sha256": "a11937d931efbd814f7b98174298f7c61fcabb7c4ad2c9e405423dd38845cedc",
+      "gzip_sha256": "01da11bffc75b9c14ab6b7522228d9136e4b67c2789759b054d9fc2843ff504c"
+    },
+    "native.jsonl": {
+      "file": "native.jsonl.gz",
+      "sha256": "3fa7b583775ef2d7e9c200c0e396294f1400e86742c998baf4b68781dac1aa22",
+      "gzip_sha256": "758ec75c5b6afec7e41bd54c041515a0110ca631cce143769588a5b99466b4ba"
+    },
+    "native-final.jsonl": {
+      "file": "native-final.jsonl.gz",
+      "sha256": "2bac8cc79dab59859fbb908ae700cb80477d823cabc81f7d90cb325351542fe6",
+      "gzip_sha256": "32ca12b71288152052db040da3872f3a3e6a62afda8e8c5c6899e07154c6a8ef"
+    },
+    "native-reviewed.jsonl": {
+      "file": "native-reviewed.jsonl.gz",
+      "sha256": "72d4aa8499f97a5525948f7b4e9bead9187d36f072dc15cbd56e5e61e730da29",
+      "gzip_sha256": "94f66a360d7396429163403d8616b75216141f31d9ed1c9690341e932b92b803"
+    },
+    "native-qualified.jsonl": {
+      "file": "native-qualified.jsonl.gz",
+      "sha256": "b83da3fc5690e3f00c016c21dcf4994275c780899bd33b5072d7834a802a6d18",
+      "gzip_sha256": "9ddaa525e40b570d5474ac005064941748e01939f31afde7f6e054519078ec87"
+    },
+    "acl-before.jsonl": {
+      "file": "acl-before.jsonl.gz",
+      "sha256": "0f4098190e0991176267edb65f56a848803fd9ce1757de9e3d0dceb55e3e074d",
+      "gzip_sha256": "e990124f7862593a45c6535ec7201408aa31b79eee5b21afd89298d84cfad2a9"
+    },
+    "acl-reproduced.jsonl": {
+      "file": "acl-reproduced.jsonl.gz",
+      "sha256": "c957694e34beac8994da8f17d42b18e2753f33a526afc28229a534f2c33e291a",
+      "gzip_sha256": "9098e34068cf0b9aaba3678cee223fb1e0316521755b54c8d4816207cfc06f88"
+    },
+    "native-final-reviewed.jsonl": {
+      "file": "native-final-reviewed.jsonl.gz",
+      "sha256": "1aa89b715878d74f80bc37a1aadb9e36a30f6a22d9740c26903d75b2c219d930",
+      "gzip_sha256": "9e098b07895f6715c36adc265b1726f34d7fc75b0bcff2de3b82db9d70cababa"
+    },
+    "pure-go.jsonl": {
+      "file": "pure-go.jsonl.gz",
+      "sha256": "b28c79e885d74e3c3da81023bcf8a1689c8e108015c0ed665cd1b5a3676145bc",
+      "gzip_sha256": "1919aa6bf9bd3d3895c38073904ff18329f3a89e3b52c4c7fc668959a8535630"
+    },
+    "pure-native.jsonl": {
+      "file": "pure-native.jsonl.gz",
+      "sha256": "1a752bd0483f6e5f1f0d5c713337cd7b4dece2f5b9de2ec5600171c0b10b8ef1",
+      "gzip_sha256": "af4ef66f1134757f3b185999d4a256ebedea0b725d9914f42edefd035f6cc743"
+    },
+    "pure-native-final.jsonl": {
+      "file": "pure-native-final.jsonl.gz",
+      "sha256": "182101b6e30742ce56c381825696a4886dc0c7876cdbe828a300e485862deaa1",
+      "gzip_sha256": "1146c8fe4b6755169fff149ea6b3f4a7752cdd362c565d65b668458258778d11"
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "4f1d793c00fd2eecf0c5060f4dcc781d140fb24a76b655d80abe741278919dc8",
+      "gzip_sha256": "fe035c71dbb02ee13a697df20f3f960814a4373f56587bcff72ad4509abbe5e4"
+    },
+    "lint-final.log": {
+      "file": "lint-final.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "lint-qualified.log": {
+      "file": "lint-qualified.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "8ed9231925ef41f751ba167b0df33c2c2ac430633bea2ece13d975e7a76d6553",
+      "gzip_sha256": "26a67e8d1315c694a8f680197746c3610b99c507197b50b7b14acca626743e5c"
+    },
+    "prose-final.log": {
+      "file": "prose-final.log.gz",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "gzip_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    },
+    "vet-final.log": {
+      "file": "vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    }
+  }
+}

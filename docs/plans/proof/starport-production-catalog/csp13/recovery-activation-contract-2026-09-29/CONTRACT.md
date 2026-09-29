@@ -104,3 +104,31 @@ Qualify the actual operator commands with native stores and retain exact source 
 
 Catalog preparation alone cannot pass A16 or A33.
 The complete task remains open until these operator paths and every assigned acceptance subcase pass.
+
+
+## Independent owner replay
+
+Local `222a21535` adds ordered KV replay under the retained import barrier.
+Each step atomically binds exact preimages, mutations, independent evidence, and its preceding receipt.
+The first completed step prevents further snapshot import. Exact retries never restore an earlier value.
+
+The native sequence remains local. Portable backups retain historical receipts without granting replay authority.
+This component does not validate domain transitions or complete recovery.
+
+Domain owners must prepare typed replay records. Operator input must not contain arbitrary storage mutations.
+Accounting must retain original windows, history identities, pinned valuations, and correction times.
+Compute changes from the old and new attempt contributions. Do not infer zero consumption from absent state.
+A saturated total requires complete window reconstruction or continued restriction.
+
+Execution replay must include batch claims, job-slot attachments, and account counters.
+A lost batch claim must not make a paid line appear unstarted.
+A lost attachment must not permit the pending-slot worker to release capacity.
+Validate job, reservation, correction, asset, and claim references before activation.
+Unknown execution coverage keeps background dispatch closed as well as new requests.
+
+Until affected-scope restrictions cover both paths, keep the entire deployment closed.
+
+The coordinator must combine related owner changes in one bounded native step.
+SQL identity changes and blob publication retain their separate receipts.
+Final activation must verify those receipts and the complete reviewed interval.
+Existing audit records and nonempty evidence references do not establish interval completeness.
