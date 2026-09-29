@@ -18,3 +18,11 @@ type BaselineRecovery = bootstrap.BaselineRecovery
 func ExportEmbeddedBaseline(ctx context.Context, directory string) (BaselineExport, error) {
 	return bootstrap.Export(ctx, directory)
 }
+
+// InspectBaselineExports validates a private tree of completed baseline exports without writes.
+// Each child must have its generation-derived name, manifest, and compatible catalog payload.
+// The caller must fence writers and verify complete inventory before and after inspection.
+// Exclude journals and unfinished stages. This check does not approve provenance or activation.
+func InspectBaselineExports(ctx context.Context, directory string) error {
+	return bootstrap.InspectExports(ctx, directory)
+}

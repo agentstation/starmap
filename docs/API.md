@@ -32,6 +32,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 - [Constants](<#constants>)
 - [func EmbeddedBuilder\(\) \(\*catalogs.Builder, error\)](<#EmbeddedBuilder>)
 - [func EmbeddedGeneration\(\) \(catalogs.Generation, error\)](<#EmbeddedGeneration>)
+- [func InspectBaselineExports\(ctx context.Context, directory string\) error](<#InspectBaselineExports>)
 - [type BaselineExport](<#BaselineExport>)
   - [func ExportEmbeddedBaseline\(ctx context.Context, directory string\) \(BaselineExport, error\)](<#ExportEmbeddedBaseline>)
 - [type BaselineRecovery](<#BaselineRecovery>)
@@ -129,6 +130,15 @@ func EmbeddedGeneration() (catalogs.Generation, error)
 ```
 
 EmbeddedGeneration returns the verified generation compiled into this module. The caller owns its manifest and payload. This function reads no application configuration and creates no files, network connections, or runtime workers.
+
+<a name="InspectBaselineExports"></a>
+## func [InspectBaselineExports](<https://github.com/agentstation/starmap/blob/main/baseline_export.go#L26>)
+
+```go
+func InspectBaselineExports(ctx context.Context, directory string) error
+```
+
+InspectBaselineExports validates a private tree of completed baseline exports without writes. Each child must have its generation\-derived name, manifest, and compatible catalog payload. The caller must fence writers and verify complete inventory before and after inspection. Exclude journals and unfinished stages. This check does not approve provenance or activation.
 
 <a name="BaselineExport"></a>
 ## type [BaselineExport](<https://github.com/agentstation/starmap/blob/main/baseline_export.go#L10>)
