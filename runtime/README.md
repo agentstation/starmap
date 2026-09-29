@@ -456,7 +456,7 @@ func InspectRetainedDirectory(ctx context.Context, path string, owner DirectoryO
 InspectRetainedDirectory validates private runtime records without opening a runtime. The caller must fence writers and verify the complete inventory around inspection. This check preserves identity and replay evidence. It does not approve replica reuse, deployment settings, accepted\-catalog consistency, permission freshness, or admission. Path\-bound migration records require their separate recovery procedure.
 
 <a name="InspectRetainedMigration"></a>
-## func [InspectRetainedMigration](<https://github.com/agentstation/starmap/blob/main/runtime/migration_restore.go#L24>)
+## func [InspectRetainedMigration](<https://github.com/agentstation/starmap/blob/main/runtime/migration_restore.go#L25>)
 
 ```go
 func InspectRetainedMigration(ctx context.Context, originalDirectory string, owner DirectoryOwner, identity string, read RetainedRecordReader) ([]string, error)
@@ -465,7 +465,7 @@ func InspectRetainedMigration(ctx context.Context, originalDirectory string, own
 InspectRetainedMigration identifies completed migration records to keep inactive during restore. The caller supplies the captured directory name, configured owner and explicit scheduler identity. Paths in historical records are opaque identities. This check never opens those paths. The caller must verify the complete backup and the remaining runtime tree separately. This result does not approve current permission, external fencing, or replica reuse.
 
 <a name="InspectRetainedPublications"></a>
-## func [InspectRetainedPublications](<https://github.com/agentstation/starmap/blob/main/runtime/publication_restore.go#L26>)
+## func [InspectRetainedPublications](<https://github.com/agentstation/starmap/blob/main/runtime/publication_restore.go#L18>)
 
 ```go
 func InspectRetainedPublications(ctx context.Context, files map[string]RetainedFile, read RetainedRecordReader) ([]string, error)
@@ -1943,24 +1943,21 @@ type RefreshReport struct {
 ```
 
 <a name="RetainedFile"></a>
-## type [RetainedFile](<https://github.com/agentstation/starmap/blob/main/runtime/publication_restore.go#L17-L20>)
+## type [RetainedFile](<https://github.com/agentstation/starmap/blob/main/runtime/publication_restore.go#L12>)
 
 RetainedFile identifies bytes in a verified backup. Names are slash\-separated relative paths.
 
 ```go
-type RetainedFile struct {
-    Size   int64
-    SHA256 string
-}
+type RetainedFile = privatefiles.RetainedFile
 ```
 
 <a name="RetainedRecordReader"></a>
-## type [RetainedRecordReader](<https://github.com/agentstation/starmap/blob/main/runtime/migration_restore.go#L17>)
+## type [RetainedRecordReader](<https://github.com/agentstation/starmap/blob/main/runtime/migration_restore.go#L18>)
 
 RetainedRecordReader reads a record from a verified backup with the supplied byte limit. An absent record must return an error that matches os.ErrNotExist.
 
 ```go
-type RetainedRecordReader func(context.Context, string, int64) ([]byte, error)
+type RetainedRecordReader = privatefiles.RetainedRecordReader
 ```
 
 <a name="RetentionPolicy"></a>
