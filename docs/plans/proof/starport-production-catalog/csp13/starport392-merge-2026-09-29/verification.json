@@ -1,0 +1,39 @@
+{
+  "state": "MERGED",
+  "task": "CSP13",
+  "task_completed": false,
+  "pr": "https://github.com/agentstation/starport/pull/392",
+  "head": "aad21f345ed8f4174cfbe23d67062ba5711bde95",
+  "base": "03b09b21ae62c5eded76c132e2e3bc04335a7a0e",
+  "merge": "046d86bc6c0c219fd51a520dccf37b1612516300",
+  "merged_at": "2026-09-29T19:29:22Z",
+  "checks": {
+    "pass": 22,
+    "fail": 0,
+    "pending": 0,
+    "review_threads": 0,
+    "review_pagination_complete": true,
+    "protection_preserved": true
+  },
+  "run": 36568833884,
+  "review": "four clean pre-PR parts on aad21f34",
+  "reviewed_tree_equals_merge_tree": true,
+  "merge_signature_verified": true,
+  "merge_method": "squash",
+  "local_integration": "cfd8860f05bd30ebe906916bbac2902ec96f6997",
+  "integration_note": "The reviewed84d9a9a5 source is a local ancestor. Both CI repairs match aad21f34 exactly. An ancestry-only merge preserves all later local recovery work and its unchanged tree.",
+  "artifacts": {
+    "starport392-merged.json": {
+      "file": "starport392-merged.json.gz",
+      "sha256": "1cd919dafafe63872744d76b2b360f7033f41ba5a4b18a822f11424f86a3ae04"
+    },
+    "starport392-protection.json": {
+      "file": "starport392-protection.json.gz",
+      "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0"
+    },
+    "starport392-commit.json": {
+      "file": "starport392-commit.json.gz",
+      "sha256": "0f7a8fd0cdb64614f4e1209f2ef839980b1e3c727f350cd8bf1fcd2cf4a33874"
+    }
+  }
+}

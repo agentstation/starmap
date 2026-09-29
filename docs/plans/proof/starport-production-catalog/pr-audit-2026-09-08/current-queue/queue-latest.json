@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-29T09:00:53.254973+00:00",
+  "checked_at": "2026-09-29T19:34:56.960746+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -2019,12 +2019,13 @@
   },
   "owner_replay": {
     "head": "aad21f345ed8f4174cfbe23d67062ba5711bde95",
-    "state": "REPAIR_NATIVE_PENDING",
+    "state": "MERGED",
     "owner": "this chat",
-    "proof": "csp13/pr392-ci-repairs-2026-09-29/verification.json",
-    "next_action": "Wait for the complete CI run, including required Build. Recheck exact aad21f34, base and review threads, then merge under unchanged protection. Continue complete recovery on the separate history-coordination branch.",
+    "proof": "csp13/starport392-merge-2026-09-29/verification.json",
+    "next_action": "Continue complete recovery on the coordination branch. PR392 is merged under unchanged protection.",
     "pr": "https://github.com/agentstation/starport/pull/392",
-    "run": 36568833884
+    "run": 36568833884,
+    "merge": "046d86bc6c0c219fd51a520dccf37b1612516300"
   },
   "starport391_completion": {
     "state": "MERGED",
@@ -2075,20 +2076,92 @@
     }
   },
   "history_coordination": {
+    "head": "cfd8860f05bd30ebe906916bbac2902ec96f6997",
     "owner": "this chat",
-    "branch": "codex/recovery-history-coordination",
     "worktree": "/private/tmp/starport-clock-review-20260926",
-    "base": "84d9a9a557f46146c40d25ed25875eec783fffa1",
-    "state": "in_progress",
-    "owned_uncommitted": [],
-    "next_action": "Complete the durable typed runner, operator commands, final graph checks, and coordinated activation. Keep all target writers fenced.",
-    "head": "bd2271babe2c790b9a15b7ea337784c0a731c841",
-    "proof": "csp13/history-coordination-2026-09-29/verification.json"
+    "branch": "codex/recovery-history-coordination",
+    "proof": "csp13/operator-history-2026-09-29/verification.json",
+    "state": "LOCAL_VERIFIED_REPLAY_ACTIVATION_PENDING",
+    "next_action": "Complete retained catalog materialization and topology transfers, then connect verified completion to final graph checks and coordinated activation."
   },
   "catalog_topology": {
-    "owner": "recovery_contract",
-    "head": "152055fe7d6589375879a9572289312755a89c49",
-    "state": "REFERENCE_DOC_REPAIR",
-    "next_action": "Regenerate API docs, finish repository checks and required review, then publish for native CI."
+    "state": "PUBLISHED_NATIVE_FAILED_REPAIR_IN_PROGRESS",
+    "pr": "https://github.com/agentstation/starmap/pull/198",
+    "head": "1c2c05452edbbb9888685ac438eac86d5fd665d9",
+    "base": "27fee03e33fd430c70f8235a08d665d24804c4b9",
+    "run": 36572846698,
+    "failed_checks": [
+      "Runtime windows-2025",
+      "Runtime windows-11-arm",
+      "Runtime ubuntu-24.04",
+      "Runtime ubuntu-24.04-arm",
+      "Runtime macos-15",
+      "Go 1.27.1 race client",
+      "Go 1.27.1 race application-1",
+      "Go 1.27.1 race application-2",
+      "Verification Gate"
+    ],
+    "review": "one clean pre-PR part, Opus5.5 high, exact1c2c05452",
+    "local_checks": "192 focused results per mode; 31 extra fleet-codec race results; root verify-checks, vet, lint, full goago, generated docs and prose pass.",
+    "failure_causes": [
+      "Offline option census omitted WithGenerationRetainer.",
+      "Runtime file manifest omitted generation-inputs, generation-baselines and their publication lock records."
+    ],
+    "repair_owner": "starmap_ci_repair",
+    "repair_worktree": "/private/tmp/starmap-retention-ci-repair-20260929",
+    "repair_branch": "codex/catalog-retention-ci-repair",
+    "artifacts": {
+      "published-pr198.json": {
+        "file": "published-pr198.json.gz",
+        "sha256": "93782eee842d35f1642226937d21c58840b7b9ae5dd0a09c4e2a4be6612e1bc0"
+      },
+      "native-ci-failed.log": {
+        "file": "native-ci-failed.log.gz",
+        "sha256": "3bce2cd6eeb76ff9f49768637b74142a4d523fe3ba6726f7a95fd97788ad0f39"
+      },
+      "FINAL.json": {
+        "file": "FINAL.json.gz",
+        "sha256": "064a0d7a51228032d5ddd72d4acdd68f9195af225167d45fefd91197ef2ea193"
+      }
+    }
+  },
+  "starport392_completion": {
+    "state": "MERGED",
+    "task": "CSP13",
+    "task_completed": false,
+    "pr": "https://github.com/agentstation/starport/pull/392",
+    "head": "aad21f345ed8f4174cfbe23d67062ba5711bde95",
+    "base": "03b09b21ae62c5eded76c132e2e3bc04335a7a0e",
+    "merge": "046d86bc6c0c219fd51a520dccf37b1612516300",
+    "merged_at": "2026-09-29T19:29:22Z",
+    "checks": {
+      "pass": 22,
+      "fail": 0,
+      "pending": 0,
+      "review_threads": 0,
+      "review_pagination_complete": true,
+      "protection_preserved": true
+    },
+    "run": 36568833884,
+    "review": "four clean pre-PR parts on aad21f34",
+    "reviewed_tree_equals_merge_tree": true,
+    "merge_signature_verified": true,
+    "merge_method": "squash",
+    "local_integration": "cfd8860f05bd30ebe906916bbac2902ec96f6997",
+    "integration_note": "The reviewed84d9a9a5 source is a local ancestor. Both CI repairs match aad21f34 exactly. An ancestry-only merge preserves all later local recovery work and its unchanged tree.",
+    "artifacts": {
+      "starport392-merged.json": {
+        "file": "starport392-merged.json.gz",
+        "sha256": "1cd919dafafe63872744d76b2b360f7033f41ba5a4b18a822f11424f86a3ae04"
+      },
+      "starport392-protection.json": {
+        "file": "starport392-protection.json.gz",
+        "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0"
+      },
+      "starport392-commit.json": {
+        "file": "starport392-commit.json.gz",
+        "sha256": "0f7a8fd0cdb64614f4e1209f2ef839980b1e3c727f350cd8bf1fcd2cf4a33874"
+      }
+    }
   }
 }

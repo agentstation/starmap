@@ -1,0 +1,78 @@
+{
+  "head": "ffe4812c",
+  "integrated_runner": "23b9c06a39c65c5bb924434cc9c1ccffca6820bc",
+  "source_runner": "7ed723d21d7b7bdfac1460ea9fd8d44a1de1274c",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "state": "LOCAL_VERIFIED_OPERATOR_REPLAY_ADMISSION_CLOSED",
+  "checks": {
+    "race": {
+      "pass": 60,
+      "fail": 0,
+      "skip": 0,
+      "packages": [
+        "github.com/agentstation/starport/internal/cli",
+        "github.com/agentstation/starport/internal/app",
+        "github.com/agentstation/starport/internal/recovery"
+      ]
+    },
+    "pure": {
+      "pass": 60,
+      "fail": 0,
+      "skip": 0,
+      "packages": [
+        "github.com/agentstation/starport/internal/cli",
+        "github.com/agentstation/starport/internal/app",
+        "github.com/agentstation/starport/internal/recovery"
+      ]
+    }
+  },
+  "vet_exit": 0,
+  "focused_lint_exit": 0,
+  "prose_exit": 0,
+  "test_selector": "TestApplyHistory|TestApplyImportedHistory|TestInspectImportedBackup|TestHistoryRunner",
+  "native_services": [
+    "Badger",
+    "Valkey",
+    "SQLite",
+    "PostgreSQL",
+    "MySQL",
+    "filesystem",
+    "object storage"
+  ],
+  "contract": [
+    "Existing closed targets only. Selected target digest must match before acceptance and after replay.",
+    "Immutable acceptance, pre-step images and native receipts survive interruption. Exact retries refuse changed claims or later native positions.",
+    "Reported completion grants no activation permission. All admission stays closed. Changed accepted evidence needs fresh-target recovery."
+  ],
+  "limitations": [
+    "Complete catalog topology transfer and coordinated activation remain UNVERIFIED.",
+    "Full repository, native Linux and Windows qualification of this slice remains pending.",
+    "Full pre-step snapshots can dominate recovery disk use and elapsed time. Deployment RPO/RTO qualification remains open."
+  ],
+  "artifacts": {
+    "operator-race.jsonl": {
+      "file": "operator-race.jsonl.gz",
+      "sha256": "a4a5d0446c9882b2c4423f45dd85fd21042bac573284e2d7d90cf768d9727803"
+    },
+    "operator-pure.jsonl": {
+      "file": "operator-pure.jsonl.gz",
+      "sha256": "46472bcad78966ce11a00c4ee9b3a3139ad93cbd55d3d0f9c4560d905c2127e1"
+    },
+    "operator-vet.log": {
+      "file": "operator-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "operator-lint.log": {
+      "file": "operator-lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "operator-prose.log": {
+      "file": "operator-prose.log.gz",
+      "sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7"
+    },
+    "verification.json": {
+      "file": "verification.json.gz",
+      "sha256": "81e5c93834181c8152d73fe93d68ef35b3adaca9527952413b6f6ec0d98b4031"
+    }
+  }
+}

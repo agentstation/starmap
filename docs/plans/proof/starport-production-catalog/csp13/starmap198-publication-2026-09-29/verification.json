@@ -1,0 +1,41 @@
+{
+  "state": "PUBLISHED_NATIVE_FAILED_REPAIR_IN_PROGRESS",
+  "pr": "https://github.com/agentstation/starmap/pull/198",
+  "head": "1c2c05452edbbb9888685ac438eac86d5fd665d9",
+  "base": "27fee03e33fd430c70f8235a08d665d24804c4b9",
+  "run": 36572846698,
+  "failed_checks": [
+    "Runtime windows-2025",
+    "Runtime windows-11-arm",
+    "Runtime ubuntu-24.04",
+    "Runtime ubuntu-24.04-arm",
+    "Runtime macos-15",
+    "Go 1.27.1 race client",
+    "Go 1.27.1 race application-1",
+    "Go 1.27.1 race application-2",
+    "Verification Gate"
+  ],
+  "review": "one clean pre-PR part, Opus5.5 high, exact1c2c05452",
+  "local_checks": "192 focused results per mode; 31 extra fleet-codec race results; root verify-checks, vet, lint, full goago, generated docs and prose pass.",
+  "failure_causes": [
+    "Offline option census omitted WithGenerationRetainer.",
+    "Runtime file manifest omitted generation-inputs, generation-baselines and their publication lock records."
+  ],
+  "repair_owner": "starmap_ci_repair",
+  "repair_worktree": "/private/tmp/starmap-retention-ci-repair-20260929",
+  "repair_branch": "codex/catalog-retention-ci-repair",
+  "artifacts": {
+    "published-pr198.json": {
+      "file": "published-pr198.json.gz",
+      "sha256": "93782eee842d35f1642226937d21c58840b7b9ae5dd0a09c4e2a4be6612e1bc0"
+    },
+    "native-ci-failed.log": {
+      "file": "native-ci-failed.log.gz",
+      "sha256": "3bce2cd6eeb76ff9f49768637b74142a4d523fe3ba6726f7a95fd97788ad0f39"
+    },
+    "FINAL.json": {
+      "file": "FINAL.json.gz",
+      "sha256": "064a0d7a51228032d5ddd72d4acdd68f9195af225167d45fefd91197ef2ea193"
+    }
+  }
+}
