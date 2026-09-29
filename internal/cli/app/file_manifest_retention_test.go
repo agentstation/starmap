@@ -203,3 +203,66 @@ func TestFileInspectionPreservesCatalogRetirementRecords(t *testing.T) {
 		})
 	}
 }
+
+func TestFileInspectionCoversPrivateGenerationRecoveryArtifacts(t *testing.T) {
+	clearCatalogEnvironment(t)
+	t.Setenv("STARMAP_HOME", t.TempDir())
+	a := NewForCommand("test", "test", "test", "test")
+	paths, err := a.ResolvedPaths()
+	if err != nil {
+		t.Fatal(err)
+	}
+	known := []string{
+		"generation-baselines/example.json.gz", "generation-baselines/.baseline-pending",
+		"generation-baselines/.record-publications/.owner.lock", "generation-baselines/.record-publications/pending.jsonl",
+		"generation-inputs/example.json.gz", "generation-inputs/.generation-input-pending",
+		"generation-inputs/.record-publications/.owner.lock", "generation-inputs/.record-publications/pending.jsonl",
+	}
+	contents := []byte("private generation recovery fixture contents")
+	for _, relative := range known {
+		path := filepath.Join(paths.Runtime.Path, "catalog-runtime", filepath.FromSlash(relative))
+		directory, err := privatefiles.NewDirectory(filepath.Dir(path))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := directory.WriteFile(filepath.Base(path), contents, ".fixture-"); err != nil {
+			t.Fatal(err)
+		}
+	}
+	report, err := a.InspectFiles(t.Context(), 10000)
+	if err != nil || !report.Inspection.Complete {
+		t.Fatalf("inspection did not complete: %v", err)
+	}
+	for _, relative := range known {
+		path := filepath.Join(paths.Runtime.Path, "catalog-runtime", filepath.FromSlash(relative))
+		found := false
+		for _, item := range report.Inspection.Observations {
+			if item.Path == path {
+				found = item.ID == "runtime-evidence" && item.State == "present" && item.AccessPolicy == filepolicy.OwnerOnly
+			}
+		}
+		if !found || !manifestCoversFile(t, report, path) {
+			t.Errorf("inspection omits private generation recovery file: %s", relative)
+		}
+		after, err := os.ReadFile(path)
+		if err != nil || !bytes.Equal(contents, after) {
+			t.Errorf("inspection changed %s: %v", relative, err)
+		}
+	}
+	for _, relative := range []string{
+		"generation-baselines/operator-notes.txt", "generation-inputs/operator-notes.txt",
+		"generation-baselines/.record-publications/operator-notes.txt", "generation-inputs/.record-publications/operator-notes.txt",
+		"generation-baselines/unrelated/nested.json.gz", "generation-inputs/unrelated/nested.json.gz",
+	} {
+		if manifestCoversFile(t, report, filepath.Join(paths.Runtime.Path, "catalog-runtime", filepath.FromSlash(relative))) {
+			t.Errorf("manifest adopts unknown recovery contents: %s", relative)
+		}
+	}
+	encoded, err := json.Marshal(report)
+	if err != nil || bytes.Contains(encoded, contents) {
+		t.Errorf("inspection exposed private recovery contents: %v", err)
+	}
+	if a.runtime != nil || a.starmap != nil || a.credentialResolver != nil {
+		t.Fatal("inspection initialized application state")
+	}
+}
