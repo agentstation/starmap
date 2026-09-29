@@ -4915,3 +4915,21 @@ KV, SQL, and blob barriers stay closed. The independent recovery witness also st
 Full recovery and activation remain open.
 
 The [local-access proof](../../plans/proof/starport-production-catalog/csp13/local-access-recovery-2026-09-28/verification.json) also records the actual Starport #390 merge and its integration.
+
+### Completed baseline export recovery: September 28, 2026
+
+The existing exporter writes the installed generation and can recover local journals.
+It could not validate a retained export without writes or without requiring the current binary's generation.
+The new Starmap inspector separates that read-only check from export and recovery.
+It uses the catalog generation decoder rather than duplicating schema and membership rules in Starport.
+
+Starport now has a candidate baseline file-publication path through the catalog owner.
+Its integration tests use a real embedded export, Badger, SQLite, and filesystem blob storage.
+They cover publication at the configured destination, exact retry, conflicting targets, corrupt payloads, and unfinished stages.
+The successful path keeps captured journal files inactive and every storage barrier closed.
+The installed exporter can subsequently verify the same generation with fresh journal ownership.
+
+This checkpoint does not recover runtime identity, replay floors, or path-bound journals.
+Independent later history, admission, and full recovery remain unfinished.
+
+Publish the producer API before final consumer qualification. Use the published module without a local replacement.

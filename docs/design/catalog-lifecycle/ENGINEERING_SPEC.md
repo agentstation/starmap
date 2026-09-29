@@ -5280,3 +5280,26 @@ Rotation does not open KV, SQL, blob, or recovery approval barriers. Preparation
 Record only rotation metadata with the recovery incident. Gateway keys, provider credentials, and SSO grants retain their separate recovery requirements.
 
 The [local-access proof](../../plans/proof/starport-production-catalog/csp13/local-access-recovery-2026-09-28/verification.json) records command tests and the native local-storage procedure.
+
+### Completed baseline export recovery: September 28, 2026
+
+CSP13 adds a separate owner check for completed baseline exports.
+Starmap inspects a private tree without writes, acquisition, or activation.
+Each child must use the SHA-256 name derived from its generation ID and contain exactly its manifest and catalog payload.
+The catalog generation decoder verifies the payload digest, schema agreement, semantic validity, and source membership evidence.
+The check accepts a retained generation when the current reader supports it. It does not require the installed binary's generation ID.
+
+Starport's `backup publish-files --role baseline` uses current target paths after restricted preparation.
+It publishes the complete verified tree without replacing a conflicting destination. An exact retry verifies the existing tree.
+The selected baseline is inspectable evidence, not an accepted catalog head or authority receipt.
+All KV, SQL, and blob import barriers remain closed.
+
+Captured `.starmap-baseline` journals remain in inactive recovery storage with an outstanding owner disposition.
+Their recorded filesystem identities cannot authorize recovery at a new path.
+An unfinished baseline stage causes publication refusal and requires separate owner recovery.
+After controlled activation, the installed binary can verify or add its own baseline export and create fresh journal ownership.
+That startup changes the inventory, so a later publication retry must not replace it.
+
+Source and target writers must remain fenced throughout publication.
+The caller verifies the complete backup inventory before and after component validation.
+This procedure does not establish independent post-backup history or authorize inference.
