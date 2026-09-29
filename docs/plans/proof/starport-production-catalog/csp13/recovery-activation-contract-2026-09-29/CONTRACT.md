@@ -146,3 +146,18 @@ Local `f6430984` validates job-slot counts, history markers, and both directions
 An existing claim key does not prove that its job, kind, account, or attachment matches retained work.
 These checks do not reconstruct missing post-backup execution or grant dispatch permission.
 Complete execution replay and controlled activation remain required.
+
+## Typed execution replay
+
+Local `c496990c` stages batch lines and publishes the parent after complete claimed-line checks.
+Local `4dab785c` reconstructs account slot history through an independent census and bounded staging.
+Local `7cc3a251` retains complete private video records, correction chains, receipts, and asset references.
+Local `bf31ce37` refuses unfinished slot replay markers during final bundle inspection.
+
+These components retain import barriers. The coordinator must validate the complete final view before activation.
+Terminal video execution can release concurrency while a separate uncertain money reservation stays held.
+This behavior follows the existing service contract. It does not refund the charge.
+
+Long accounting correction histories use bounded intermediate owner states from the retained receipt chain.
+Each step retains the same immutable pre-step view for exact retry.
+Complete permission replay, missing or saturated window reconstruction, and operator activation remain required.

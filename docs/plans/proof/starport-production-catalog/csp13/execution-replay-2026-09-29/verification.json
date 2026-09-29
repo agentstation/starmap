@@ -1,0 +1,293 @@
+{
+  "state": "LOCAL_COMPONENT_VERIFIED",
+  "task": "CSP13",
+  "task_completed": false,
+  "head": "bf31ce37194343bbaef321751548333053a9edf3",
+  "batch_commit": "c496990c",
+  "slot_source": "8015bd0cd66d5b0e46f0f156d84ad719df4b7fe4",
+  "slot_integrated": "4dab785c",
+  "video_source": "55a69db7f867a09d0e56a3f23f29fd8ca6c57ca3",
+  "video_integrated": "7cc3a251",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "checks": {
+    "batch_race": {
+      "results": {
+        "pass": 99,
+        "skip": 1
+      },
+      "skips": [
+        "TestBatchAggregateSharedProcessRecovery"
+      ]
+    },
+    "batch_pure": {
+      "results": {
+        "pass": 36
+      },
+      "skips": []
+    },
+    "slot_race": {
+      "results": {
+        "pass": 133
+      },
+      "skips": []
+    },
+    "slot_pure": {
+      "results": {
+        "pass": 133
+      },
+      "skips": []
+    },
+    "video_race": {
+      "results": {
+        "pass": 105
+      },
+      "skips": []
+    },
+    "video_new_race": {
+      "results": {
+        "pass": 23
+      },
+      "skips": []
+    },
+    "video_pure": {
+      "results": {
+        "pass": 23
+      },
+      "skips": []
+    },
+    "integrated_replay": {
+      "results": {
+        "pass": 92
+      },
+      "skips": []
+    },
+    "slot_reference_race": {
+      "results": {
+        "pass": 50
+      },
+      "skips": []
+    },
+    "final_marker_race": {
+      "results": {
+        "pass": 7
+      },
+      "skips": []
+    },
+    "marker_fail_before": {
+      "results": {
+        "fail": 7
+      },
+      "skips": []
+    },
+    "reader_fail_before": {
+      "results": {
+        "fail": 1
+      },
+      "skips": []
+    }
+  },
+  "other_checks": {
+    "vet": "PASS",
+    "make_lint": "PASS (0 issues)",
+    "prose": "PASS",
+    "diff": "PASS"
+  },
+  "review": [
+    "Root reviewed both delegated implementations before integration.",
+    "Batch review reproduced an oversized captured preimage accepted by a reader that ignored its bound. Explicit length validation repaired it.",
+    "Native bundle inspection accepted unfinished slot replay markers before the repair. Both valid and malformed markers now refuse.",
+    "Video service tests require terminal concurrency release to remain independent from unresolved financial reservation. The replay regression preserves this contract."
+  ],
+  "commands": [
+    "go test -race -json -count=1 -timeout=5m ./internal/jobs -run TestBatch",
+    "CGO_ENABLED=0 go test -json -count=1 -timeout=5m ./internal/jobs -run TestBatchReplay",
+    "go test -race -json -count=1 -timeout=5m ./internal/limits/jobslots",
+    "go test -race -json -count=1 -timeout=5m ./internal/jobs -run \"Test.*Replay|TestRequiredSettlementDoesNotRetainTerminalSlot\"",
+    "go test -race -json -count=1 -timeout=5m ./internal/recovery -run \"TestBackup.*Slot\"",
+    "GOWORK=off go vet ./internal/jobs ./internal/limits/jobslots ./internal/recovery",
+    "GOWORK=off make lint"
+  ],
+  "limits": [
+    "The batch process-recovery case requiring object storage was skipped in the broader component run.",
+    "Native Linux/Windows qualification and full pre-PR checks remain required.",
+    "Complete independent interval proof, permission reconstruction, missing/saturated accounting reconstruction, coordinator commands and activation remain incomplete.",
+    "Early batch native/lint logs contain the temporary merge-conflict compile failure; these are inconclusive historical runs, not final component failures.",
+    "No provider request or admission permission occurs in replay preparation."
+  ],
+  "artifacts": {
+    "batch-prose-marker.log.gz": {
+      "source_sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    "batch-run.py.gz": {
+      "source_sha256": "6e994ac921866c8b8fd18e25a6f2d1602b334f0749d2384b6f837afcb6692e85"
+    },
+    "batch-marker-before.jsonl.gz": {
+      "source_sha256": "00cf9b1edf43cc630442270dc4a5be70b82b3b1633c293aa9c3c81ab58767d59"
+    },
+    "batch-prose-expanded.log.gz": {
+      "source_sha256": "25fac4de65bdd09696829f3eb2fe6ca57955f6f29e1c6a4b91663901fbd54b1c"
+    },
+    "batch-marker-final.jsonl.gz": {
+      "source_sha256": "c8bc0ce63a323ab217bc1cd109bbbbfac44d8caecc9e01e72c9e336f0dcc9869"
+    },
+    "batch-prose-reviewed.log.gz": {
+      "source_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    },
+    "batch-native.jsonl.gz": {
+      "source_sha256": "9efeab5e18b733cd980f183be5003c430338a4f4dbc15e703a5165686a1f8cd1"
+    },
+    "batch-vet.log.gz": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "batch-lint.log.gz": {
+      "source_sha256": "b62f6f8f3b3394210e3f41659b5854bde98bb4cee4d57f8ce153af92513114e7"
+    },
+    "batch-vet-integrated.log.gz": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "batch-lint-reviewed.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "batch-pure-reviewed.jsonl.gz": {
+      "source_sha256": "bcd56cb1cb366aa5423c130bb094fbfc908ec7bbd6da6e37716a48bf6f5091e2"
+    },
+    "batch-strict-race.jsonl.gz": {
+      "source_sha256": "bfb5b0a9308baf4b76b965b7539e0ceae7b1436a9cb4164804eff97f51f77415"
+    },
+    "batch-integrated-jobs-race.jsonl.gz": {
+      "source_sha256": "ddba825cca4eed537a76d5cabe9564d31a02ac02fae1a2a4e1c7b7f6918ee685"
+    },
+    "batch-marker-race.jsonl.gz": {
+      "source_sha256": "6141496d89bae02308c4b5a90cb79e03db80078f2e1b75adc0d8ee9251bf82e5"
+    },
+    "batch-lint-expanded.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "batch-vet-expanded.log.gz": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "batch-lint-integrated.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "batch-pure-final.jsonl.gz": {
+      "source_sha256": "9e79d582ca8e1148f3aeb5007a83d7a1e67affdb281a1b888a14b923460f1973"
+    },
+    "batch-race-reviewed.jsonl.gz": {
+      "source_sha256": "3fbed5b06d642f737edb27367eaffda6ddd74a9bcc0e512d6d50dacfa66d7782"
+    },
+    "batch-native-ancestry.jsonl.gz": {
+      "source_sha256": "8d21eb02af5310d26abf1a272a7a820542efa18ca66c8d6199da221ca2a3f84f"
+    },
+    "batch-batch-race.jsonl.gz": {
+      "source_sha256": "0572f897f48e60d4757dfa06acf0c5729714e025f61651901f14bf55070964c3"
+    },
+    "batch-lint-final.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "batch-reader-bound-before.jsonl.gz": {
+      "source_sha256": "cb01cb2b6383db4f0c4e32feac9a714829d2979106943a1b533756a4e3743a96"
+    },
+    "batch-prose.log.gz": {
+      "source_sha256": "80a7392ff7b14a693dfa3cb35a6efaef70f3884d284452e83c0c68c54c3c6543"
+    },
+    "batch-lint-ancestry.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "batch-fail-before.log.gz": {
+      "source_sha256": "ea6c3ef27ed56a63c1f3a91c4bab33fe821304a433b7c6fd0b1a53971b0d9d26"
+    },
+    "batch-batch-pure.jsonl.gz": {
+      "source_sha256": "5d96238b91112c3208ee62cec1b5939d9e4e0928f06859a6331afb6694b3c40d"
+    },
+    "batch-run-pure.py.gz": {
+      "source_sha256": "56184743c2c083b13cd0464b9d61caa113c142521a6aa44ca9c27ad11fd61b19"
+    },
+    "batch-run-recovery.py.gz": {
+      "source_sha256": "e15a6291c4abceaa924297eb93953a7a3437e55f2e5ce8eefab1a8d6cdb5e5a5"
+    },
+    "batch-prose-final.log.gz": {
+      "source_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    },
+    "slot-vet.log.gz": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "slot-race.jsonl.gz": {
+      "source_sha256": "84cfed2433092d1a24ddc2eb2be688e87f460f307dd0f808a995d3e8136f2e88"
+    },
+    "slot-lint.log.gz": {
+      "source_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "slot-purego-final.jsonl.gz": {
+      "source_sha256": "3ecb467dd29f74abd1773881a44efaecbcd1738329d563ff588cdc0fa8651e72"
+    },
+    "slot-lint-final.log.gz": {
+      "source_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "slot-race-final.jsonl.gz": {
+      "source_sha256": "dc23b2b151974856b89025a2b78746d0f559c8fc269991457b3876cd872c1cb8"
+    },
+    "slot-prose.log.gz": {
+      "source_sha256": "b7a53eec42a2bdab08bfbcccf38f6b77ac7a70ad1754e45670c61cb2751d0fb2"
+    },
+    "slot-verification.json.gz": {
+      "source_sha256": "f0eee4fcbefa87c8a8326044201788b5eb2170c48756a13bda726a1d73dd2f5a"
+    },
+    "slot-purego.jsonl.gz": {
+      "source_sha256": "a213d9bd6c396292e0d27c6a593e0ade24d6437dd37e1dd9b4ae7a4b552bf4a4"
+    },
+    "slot-empty-history-fail-before.log.gz": {
+      "source_sha256": "1806cd8fe69d3299a5f20ef5e0c259727ad0ff4e14a22e0cb5a77a222af0d09d"
+    },
+    "slot-vet-final.log.gz": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "slot-prose-final.log.gz": {
+      "source_sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    "video-initial.jsonl.gz": {
+      "source_sha256": "b9fe02edd2de4ad15d6009de55de15d52836da0980d86433f7e033ea792bfb86"
+    },
+    "video-race-terminal-slot-pass.jsonl.gz": {
+      "source_sha256": "d9e8914048dfa48d258b3d24e7245771e993df41eb7019109e960fb703a6d930"
+    },
+    "video-run.py.gz": {
+      "source_sha256": "6e994ac921866c8b8fd18e25a6f2d1602b334f0749d2384b6f837afcb6692e85"
+    },
+    "video-race.jsonl.gz": {
+      "source_sha256": "a16e5f4c44c576671a0306be089f594b71ad742b7f9a54a2eaeb18f122a5244d"
+    },
+    "video-lint.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "video-pure.jsonl.gz": {
+      "source_sha256": "b0814d52f892d1190b949f9752a6d89d65d6f43b78c724daba835210954eaf58"
+    },
+    "video-race-terminal-slot.jsonl.gz": {
+      "source_sha256": "1435c8a0ac82e8fd6eb899780df747b1e3cf3322f66501e539367cc5ad3a86b9"
+    },
+    "video-pure-complete.jsonl.gz": {
+      "source_sha256": "799392be65eab2053d9fd67e85f0dc185b23e5e750a93375ef3499e788f83d86"
+    },
+    "video-lint-complete.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "video-race-new-final.jsonl.gz": {
+      "source_sha256": "b7e1420c42fc2d106f8a25c84bc128594f21a202e9caaf92cd774c79977df96c"
+    },
+    "video-race-complete.jsonl.gz": {
+      "source_sha256": "22ef103c3d04a63d9beb72b1bedb59c505549da1c5bd005d492b0d160a72abec"
+    },
+    "video-lint-final.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "video-race-final.jsonl.gz": {
+      "source_sha256": "dff2946ed4b7ca69440647fcf16da5d5c1b02925e6b2c92a9865d2e38c3e443d"
+    },
+    "video-race-terminal-slot-final.jsonl.gz": {
+      "source_sha256": "dfc1232f5e8eb4168c25c42ccded442ed32d8b69cd83417434a0a3eb3e2dd6a3"
+    },
+    "video-run-pure.py.gz": {
+      "source_sha256": "56184743c2c083b13cd0464b9d61caa113c142521a6aa44ca9c27ad11fd61b19"
+    }
+  }
+}

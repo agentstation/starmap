@@ -1080,7 +1080,7 @@
     "status": "MERGED",
     "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-29T10:24:12.014481+00:00",
+  "local_updated_at": "2026-09-29T10:51:26.672777+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -2018,12 +2018,11 @@
     "disposition": "Local, verified component; full recovery remains open."
   },
   "owner_replay": {
-    "head": "9d97ae2a9343666bcda290a58b6fc778f9b043b2",
-    "owner": "this chat",
+    "head": "bf31ce37194343bbaef321751548333053a9edf3",
     "state": "LOCAL_COMPONENT_VERIFIED",
-    "proof": "csp13/accounting-replay-2026-09-29/verification.json",
-    "jobslot_head": "f6430984650058149895a61569d33c865ce26be9",
-    "next_action": "Complete execution replay and operator recovery before final qualification and publication."
+    "owner": "this chat",
+    "proof": "csp13/execution-replay-2026-09-29/verification.json",
+    "next_action": "Complete permission and accounting-window reconstruction, final closed-state validation and coordinated operator activation."
   },
   "starport391_completion": {
     "state": "MERGED",
