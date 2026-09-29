@@ -1,5 +1,5 @@
 {
-  "state": "PUBLISHED_NATIVE_FAILED_REPAIR_IN_PROGRESS",
+  "state": "REPAIRED_REVIEWED_PUBLISHED_NATIVE_PENDING",
   "pr": "https://github.com/agentstation/starmap/pull/198",
   "head": "1c2c05452edbbb9888685ac438eac86d5fd665d9",
   "base": "27fee03e33fd430c70f8235a08d665d24804c4b9",
@@ -21,7 +21,7 @@
     "Offline option census omitted WithGenerationRetainer.",
     "Runtime file manifest omitted generation-inputs, generation-baselines and their publication lock records."
   ],
-  "repair_owner": "starmap_ci_repair",
+  "repair_owner": "this chat",
   "repair_worktree": "/private/tmp/starmap-retention-ci-repair-20260929",
   "repair_branch": "codex/catalog-retention-ci-repair",
   "artifacts": {
@@ -36,6 +36,37 @@
     "FINAL.json": {
       "file": "FINAL.json.gz",
       "sha256": "064a0d7a51228032d5ddd72d4acdd68f9195af225167d45fefd91197ef2ea193"
+    },
+    "ci-repair-verification.json": {
+      "file": "ci-repair-verification.json.gz",
+      "sha256": "05fc5c33de43180582b2ee68ac2092236025311f0447aece843861a6d4af76bb"
+    },
+    "ci-failure-census.json": {
+      "file": "ci-failure-census.json.gz",
+      "sha256": "2e2488c7b5f1d155bc365b80b57a27ea7126676ea4135272c67919f66eb46f65"
+    },
+    "ci-repair-autoreview.log": {
+      "file": "ci-repair-autoreview.log.gz",
+      "sha256": "c2d42c6eec76541891367f434b9fd4b3e3c5a1b1f5e40672ff627f360c5c4f71"
+    },
+    "repaired-pr198.json": {
+      "file": "repaired-pr198.json.gz",
+      "sha256": "d3db72dae44a8e37b7b204eaa4fef040e716dd032ab1b9ed995c0f5f6b5f7f1e"
     }
-  }
+  },
+  "repaired_head": "b6bf9c5d782f223152c0aa69ff9b2a51ef9ceb40",
+  "repaired_run": 36620785985,
+  "repair_review": "one clean part; auto profile; Opus5.5 high; exact b6bf9c5d",
+  "repair_checks": {
+    "race_pass": 32,
+    "pure_pass": 32,
+    "fail": 0,
+    "skip": 0,
+    "vet": 0,
+    "pinned_lint": 0,
+    "full_goago": 0,
+    "full_prose": 0,
+    "generated_docs": 0
+  },
+  "next_action": "Await complete native CI. Recheck exact head, base, all checks and review threads before protected merge."
 }
