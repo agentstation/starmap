@@ -90,7 +90,15 @@
     "runtime_shards_skip": 3,
     "client_pass": 443,
     "client_fail": 0,
-    "client_skip": 0
+    "client_skip": 0,
+    "evidence_collector": {
+      "session": 37371,
+      "script": "/tmp/csp13-preserve-gate-events.py",
+      "destination": "/tmp/csp13-private-stream-verify-events",
+      "status": "running",
+      "purpose": "Keep open handles and drain events after the verifier deletes its temporary directory. Does not change tests or their exit status.",
+      "next_action": "Poll verifier session 7562 for its actual result and collector session 37371 for completion. Do not overwrite the collector output while it runs."
+    }
   },
   "remaining": [
     "Finish producer gate, integrate main d721eb88, verify changed workflow and dependency, review and publish producer.",
