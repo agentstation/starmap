@@ -1,0 +1,350 @@
+{
+  "checked_at": "2026-09-29T01:34:10.485937+00:00",
+  "state": "PRODUCER_PUBLISHED_CONSUMER_COMMITTED_NATIVE_QUALIFICATION_PENDING",
+  "producer": {
+    "head": "5564b4908ea29fb31521990e8cc55e5d10c55dd2",
+    "branch": "codex/recovery-file-access",
+    "worktree": "/private/tmp/starmap-fleet-review-20260926",
+    "pr": "https://github.com/agentstation/starmap/pull/194",
+    "draft": true,
+    "depends_on": 192,
+    "checks": {
+      "race": {
+        "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout=10m ./internal/privatefiles ./pkg/productfiles",
+        "pass": 141,
+        "fail": 0,
+        "skip": 0
+      },
+      "purego": {
+        "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 go test -json -count=1 -timeout=10m ./internal/privatefiles ./pkg/productfiles",
+        "pass": 141,
+        "fail": 0,
+        "skip": 0
+      },
+      "repository_checks": {
+        "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 bash scripts/verify.sh checks",
+        "exit_code": 0
+      }
+    },
+    "review": {
+      "gate": "pre-pr",
+      "mode": "auto",
+      "exit_code": 0,
+      "reviewer": "claude-opus-5-5 high",
+      "threshold": "default P0 only",
+      "passes": 1,
+      "bytes": 44102,
+      "findings": 0,
+      "secret_scan": "clean"
+    },
+    "publication": "Reviewed #192 integrated before its merge to start native qualification concurrently. Merge #192 first and integrate its actual merge before #194. An initial shorthand push targeted main through inherited upstream configuration. Branch protection rejected it without a remote change. The explicit HEAD:refs/heads/codex/recovery-file-access push succeeded without force or bypass.",
+    "native_failure": {
+      "job": 109211118964,
+      "run": 36507179088,
+      "platform": "windows-2025",
+      "name": "Publication windows-2025",
+      "stage": "public fixture download, before tests",
+      "error": "HTTP 500 Internal Server Error",
+      "retry": "GitHub refused the job rerun with HTTP 403 because the workflow was still running. Retry the failed job after the workflow finishes. No test or production change made."
+    }
+  },
+  "consumer": {
+    "head": "1251d867d1e35fa2dd80d16b8ce293426a86917a",
+    "branch": "codex/storage-recovery",
+    "worktree": "/private/tmp/starport-clock-review-20260926",
+    "publication": "Local commit only. Required full verification and pre-PR review remain open.",
+    "producer_module": "github.com/agentstation/starmap v0.16.6-0.20260929011029-5564b4908ea2",
+    "module_override": false,
+    "checks": {
+      "race": {
+        "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout=10m ./internal/credentials ./internal/recovery",
+        "pass": 381,
+        "fail": 0,
+        "skip": 27
+      },
+      "purego": {
+        "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 go test -json -count=1 -timeout=10m ./internal/credentials ./internal/recovery",
+        "pass": 382,
+        "fail": 0,
+        "skip": 27,
+        "additional_test": "TestDestinationTemplateAuthorizationHasNoAllocations"
+      },
+      "real_storage": {
+        "pass": 41,
+        "fail": 0,
+        "skip": 0,
+        "command_source": "csp13-consumer-storage-fixture.json.gz",
+        "backends": [
+          "Valkey",
+          "PostgreSQL",
+          "MinIO"
+        ],
+        "previously_skipped_results_covered": [
+          {
+            "package": "github.com/agentstation/starport/internal/credentials",
+            "test": "TestProviderCredentialRepositoryContract/valkey"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestBackupBundleSharedRecipe"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestBudgetAuthorityClosedAndChangedEpoch"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestBudgetAuthorityFencesDelayedWrites/after-native-write"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestBudgetAuthorityFencesDelayedWrites/before-native-write"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestBudgetAuthorityRequiresBothApprovals"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestFreshFleetBootstrapPermission"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestFreshFleetConcurrentInitialization"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestFreshFleetInitialization"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestFreshFleetInterruptedClaim"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestFreshFleetRefusesChangedIncarnation"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestFreshFleetRefusesExistingState/approval"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestFreshFleetRefusesExistingState/closed-approval"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestFreshFleetRefusesExistingState/kv"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestFreshFleetRefusesExistingState/row-security"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestFreshFleetRefusesExistingState/sql"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestFreshFleetRefusesExistingState/unknown-table"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestFreshFleetSQLFailureRetainsOnlyRetryClaim"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestKVSnapshotConcurrentImportsChooseOneOperation/valkey"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestKVSnapshotInterruptedImportRetainsBarrierAndExactRetry/valkey_interrupted"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestKVSnapshotInterruptedImportRetainsBarrierAndExactRetry/valkey_lost_ack"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestKVSnapshotReadsEveryNativeScanPage"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestKVSnapshotTransfersAllBackendPairs/badger_to_valkey"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestKVSnapshotTransfersAllBackendPairs/valkey_to_badger"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestKVSnapshotTransfersAllBackendPairs/valkey_to_valkey"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestPrepareBundleLocalAndSharedRecipes/shared"
+          },
+          {
+            "package": "github.com/agentstation/starport/internal/recovery",
+            "test": "TestRecoveryRequiresOriginalIndependentApproval"
+          }
+        ]
+      },
+      "vet": "PASS: ./internal/credentials ./internal/recovery",
+      "lint": "PASS: zero issues",
+      "module_integrity": "PASS: go mod verify",
+      "writing": "PASS: eight changed source and test files",
+      "diff_check": "PASS"
+    },
+    "services": "All isolated Compose services and the MinIO process stopped after qualification. No task storage container remains."
+  },
+  "remaining": [
+    "Canonical publication through each file owner",
+    "Independent history after the backup, including withdrawals and spending",
+    "Controlled deployment activation",
+    "Final native and complete-task acceptance"
+  ],
+  "acceptance": {
+    "done_tasks": 27,
+    "total_tasks": 40,
+    "task": "CSP13",
+    "status": "in_progress",
+    "passing_subcases": 1,
+    "unverified_subcases": 15
+  },
+  "artifacts": {
+    "csp13-producer-integrated-race.jsonl": {
+      "file": "csp13-producer-integrated-race.jsonl.gz",
+      "sha256": "7e564e865f95ab56dd9c1fa013e06d459cae8972fd4383c8691207a40d961bc6",
+      "gzip_sha256": "da3d59364c79c8b6f5228e8ad806048a6abd64d696658e3b62c768be673f458e",
+      "counts": {
+        "pass": 141,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-producer-integrated-purego.jsonl": {
+      "file": "csp13-producer-integrated-purego.jsonl.gz",
+      "sha256": "30330802804aff9d329750dc5d1c7b42f250458cba4704e2cebae2abbee63aec",
+      "gzip_sha256": "78196f4c09aec667506106ee50c569e7341960f6c9878c08208b860359e54d97",
+      "counts": {
+        "pass": 141,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-producer-integrated-checks.log": {
+      "file": "csp13-producer-integrated-checks.log.gz",
+      "sha256": "bce267f87d8cb4321e7e0949dfc386d160b5d5b46b4c0aa9f1c84131acbb4f88",
+      "gzip_sha256": "02232a7b8f3c8d088585aa3bd6fd16732bc36f0d15b77dc72c3bb2a8ac7132d0"
+    },
+    "csp13-producer-integrated-review.log": {
+      "file": "csp13-producer-integrated-review.log.gz",
+      "sha256": "6e858ffde9ae9926b5b4678fbd871952b11554dfa9b90fdcbc2a08329a601513",
+      "gzip_sha256": "8375b58fd36ccd7f5af4d0b62d50a14ebeec0aaf05e1831a9c915bf32b6c55a6"
+    },
+    "csp13-producer-pr194-published.json": {
+      "file": "csp13-producer-pr194-published.json.gz",
+      "sha256": "86dc3b722658d4a8366f474b67351ab64ac1439f70c5c77b7d42b530b263130a",
+      "gzip_sha256": "7a5fad1ea4ca8b9489135b0c78a9f07e841c8fcafff550f1cd0dad0c6367c83a"
+    },
+    "csp13-producer194-windows-publication-failed.log": {
+      "file": "csp13-producer194-windows-publication-failed.log.gz",
+      "sha256": "b601a1edfe48864ccd3c149f3a1283131e0b93b98a1364d4f7542cefde99b119",
+      "gzip_sha256": "a18a1ac21064b28315f0a7e86f185b377fe34efe5cc0f158b8005863fa6e6f84"
+    },
+    "csp13-consumer-published-pin.log": {
+      "file": "csp13-consumer-published-pin.log.gz",
+      "sha256": "5e7b4f1096bbab8d800331938a6354c62507731f262cabe152e24f6cd709f539",
+      "gzip_sha256": "1b64ed90657414b504613ba2a6779f6bf2c44d7ad6cb43bc15a2d5fe1839fe0a"
+    },
+    "csp13-consumer-published-race.jsonl": {
+      "file": "csp13-consumer-published-race.jsonl.gz",
+      "sha256": "ce7fd9cbe02ea7c2a51bafa205b4f26a5bf5a29070b9bfdc4471604c780a9247",
+      "gzip_sha256": "15b04d5fa4b4b1b666a6d6b5d4353dac6058515cfbb128d5359c4c87410417dd",
+      "counts": {
+        "pass": 381,
+        "fail": 0,
+        "skip": 27
+      }
+    },
+    "csp13-consumer-published-purego.jsonl": {
+      "file": "csp13-consumer-published-purego.jsonl.gz",
+      "sha256": "c0645a443fd7a67c243345997bf30c19fbe5fd9d145ba277ec469b508d7ef2e6",
+      "gzip_sha256": "2826f58f126b6b2557a51623873e0b44c036862f52d91e866e14ce0f89c7b740",
+      "counts": {
+        "pass": 382,
+        "fail": 0,
+        "skip": 27
+      }
+    },
+    "csp13-consumer-published-lint.log": {
+      "file": "csp13-consumer-published-lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    "csp13-consumer-published-module-verify.log": {
+      "file": "csp13-consumer-published-module-verify.log.gz",
+      "sha256": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+      "gzip_sha256": "4699dce40a065353f016ef7eb2c309ee9dee73281263a6b29287016349618a1b"
+    },
+    "csp13-consumer-published-storage-race.jsonl": {
+      "file": "csp13-consumer-published-storage-race.jsonl.gz",
+      "sha256": "0b4f1351a2ea7e7b38169628637b1f935a4dc5a19059764a3b45fb47dd44cdb2",
+      "gzip_sha256": "aa86c5a79344e9040f37bde5d596c54ba3ae86ad37f6204affc44f658dba72e5",
+      "counts": {
+        "pass": 41,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-consumer-storage-fixture.json": {
+      "file": "csp13-consumer-storage-fixture.json.gz",
+      "sha256": "cf363c92daac8cdac86b78f9718d49b0b35171e1612ee597d25d1b719a2b7f2d",
+      "gzip_sha256": "145a61501fbf775de15d1581cd4e04371f43da27d5c4ebf3ba018585b702b355"
+    },
+    "csp13-consumer-storage-fixture.log": {
+      "file": "csp13-consumer-storage-fixture.log.gz",
+      "sha256": "abacb834fb1f6a57a691515f7236b7fd8aff8fa9675816e4d7e2ae142fec6d2d",
+      "gzip_sha256": "17a3ab74d05d8d281ea64279d68223b3a09276ffcecbc426d3803a0dd8a075f9"
+    },
+    "csp13-consumer-storage-object-build.txt": {
+      "file": "csp13-consumer-storage-object-build.txt.gz",
+      "sha256": "8cb168ef4b59cee073d1b52548cc1b2699051efd7fca7356dbede69d445ca778",
+      "gzip_sha256": "a50f744a6feb4899cd62ae63da3f05dfde21f5f726cd655fa9c357c450b0db68"
+    },
+    "csp13-qualify-published-storage.py": {
+      "file": "csp13-qualify-published-storage.py.gz",
+      "sha256": "d696d93de939d8e911205db86d61818efc2820757f7d721301e07cba9fb82dc2",
+      "gzip_sha256": "2898e4d0d01fd8674ebcb4fb754a4178a96760f36e3946d7fc4dc879179e36f5"
+    },
+    "csp13-published-recovery-writing-final.log": {
+      "file": "csp13-published-recovery-writing-final.log.gz",
+      "sha256": "3b53645580593344bb86a09c0028a836b875c02bf1d2d7951fa3be4b777c1296",
+      "gzip_sha256": "1d446c9ff4039cc769304bf288bfeb18253b6d034bc7b79b1a273d43f03f894c"
+    },
+    "csp13-published-recovery-plan-lint.log": {
+      "file": "csp13-published-recovery-plan-lint.log.gz",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "gzip_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    }
+  },
+  "shared_review_tool_confirmation": {
+    "helper_sha256": "ca72abe7187e08ce7dc415bdc3dd8e1b3be44b8d11a62866fd5f668a531752e9",
+    "matches_approved_qualified_helper": true,
+    "evidence": "../../csp12.2/final-source-2026-09-28/review-tool/verification.json",
+    "tests": "Existing exact-source evidence: 20 focused passes, 376 full-suite passes, three skips."
+  },
+  "plan_validation": {
+    "structure": "PASS: 40 rows, 27 done, CSP13 only active task, 344 resume words, local links and anchors valid",
+    "scoped_writing": "PASS: current prose and complete plan each have zero diagnostics",
+    "repository_writing": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "previous_diagnostics": 226,
+      "current_diagnostics": 226,
+      "new_diagnostics": 0,
+      "note": "Historical prose findings remain. This is not a passing repository-wide writing gate."
+    }
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "checked_at": "2026-09-29T01:34:10.485937+00:00",
+  "starport388": {
+    "merge": {
+      "baseRefOid": "a1a08df86c31c73cfd38d49e03ceb3571c86a86c",
+      "headRefOid": "182a16c1c696efa7ca4fef7b98bf3b03be319e07",
+      "mergeCommit": {
+        "oid": "3d54c99d3a833744a53e03a40ebcac69d1a9746a"
+      },
+      "mergedAt": "2026-09-29T01:20:56Z",
+      "state": "MERGED",
+      "url": "https://github.com/agentstation/starport/pull/388",
+      "tested_tree": "ab95095265c0dbf4dcc594423cae83dbbcaff518",
+      "merged_tree": "ab95095265c0dbf4dcc594423cae83dbbcaff518",
+      "tested_tree_matches_merge": true
+    },
+    "checks": {
+      "pass": 17,
+      "fail": 0
+    },
+    "review_threads": 0,
+    "protection": "Required checks and conversation resolution preserved. No bypass, release, branch deletion, or review comment.",
+    "method": "Exact-head squash merge"
+  },
+  "starport389": {
+    "original_head": "8cb829ac7124a8fb143606baca3c6f1d6b78cfa7",
+    "head": "26f3b92eed3634cc3a0aef82dec82080723683a7",
+    "integrated_main": "3d54c99d3a833744a53e03a40ebcac69d1a9746a",
+    "checks": {
+      "affected_packages": [
+        "./internal/credentials/cloudchain",
+        "./internal/blob",
+        "./internal/cli"
+      ],
+      "race": {
+        "pass": 186,
+        "fail": 0,
+        "skip": 2
+      },
+      "real_objectstore": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0,
+        "covers_both_skipped_roots": true
+      },
+      "vet": "PASS",
+      "module_integrity": "PASS",
+      "tidy_diff": "PASS"
+    },
+    "review": "Manual dependency source audit retained. Required auto pre-PR checkpoint skipped as metadata-only. This skip is not a model review.",
+    "binding": "Affected-package and object-store checks ran at the original dependency head. Integration adds only the previously qualified #388 workflow and credential test repairs. Final native CI must pass at the new head.",
+    "source_review": "../starport-389-source-audit-2026-09-28/verification.json"
+  },
+  "starport390": {
+    "original_head": "8e9dc4a3dd3c124250d290cb25af8cffdaed2fbb",
+    "head": "9a793e612a4f69ec08f532d9350616490ea844ad",
+    "integrated_main": "3d54c99d3a833744a53e03a40ebcac69d1a9746a",
+    "console_tree_unchanged": true,
+    "checks": {
+      "console_tests": 464,
+      "design_rule_rejection_checks": 6,
+      "lint": "PASS",
+      "build": "PASS",
+      "typecheck": "PASS"
+    },
+    "review": "Required auto pre-PR checkpoint skipped as metadata-only. This skip is not a model review.",
+    "prior_evidence": "../starport-390-console-qualification-2026-09-28/verification.json",
+    "remaining": "Final dependency disposition and native CI at the integrated head"
+  },
+  "publication": "Both existing PRs received normal fast-forward pushes with explicit refspecs. No history rewrite. Actual main and parent ancestry checked because cached PR baseRefOid initially lagged the main ref.",
+  "next_action": "Require native checks and current head, base, threads, and protection before each merge. Update a remaining PR after any main change.",
+  "artifacts": {
+    "csp13-starport388-ready-final.json": {
+      "file": "csp13-starport388-ready-final.json.gz",
+      "sha256": "78e3361328f9d8f5d895f44de28771eb9a72f2200b224e35d3842dc5877b93c5",
+      "gzip_sha256": "bed1bdc1be60f51eea67112e52ddbea4796e1e3f777115fb4c5e444d26d4d4cf"
+    },
+    "csp13-starport388-threads-final.json": {
+      "file": "csp13-starport388-threads-final.json.gz",
+      "sha256": "c7efc65c33137f3d0fda3481919e1e1c91df8c45192870368fe110fafdc51858",
+      "gzip_sha256": "ee88a59c9135da6642ea0082d550484d7f2e40fd895a721cbd88723ee10e97b8"
+    },
+    "csp13-starport388-protection-final.json": {
+      "file": "csp13-starport388-protection-final.json.gz",
+      "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+      "gzip_sha256": "f1a3ecaa02a381e3f7e2d73913df084cd9732f93e6ca7646f650f2bc1b3f34e5"
+    },
+    "csp13-starport388-merged.json": {
+      "file": "csp13-starport388-merged.json.gz",
+      "sha256": "4e89dc6034b21a4ecb86dfb785102dbed991950beecefb6b121e42688eca36b0",
+      "gzip_sha256": "e8be93f2771c091028da00aa6f4cbdb640d8f771a0acaceaf5be0226c52878c8"
+    },
+    "csp13-starport389-affected-race.jsonl": {
+      "file": "csp13-starport389-affected-race.jsonl.gz",
+      "sha256": "dcbc47d9e22df96f84c8485470e03f6a60c7a1ce53162e46d77de9806fcb62ec",
+      "gzip_sha256": "1801107aed384d9fd09bba9672ae6226d5acb444b2749dc051be705e578cb314",
+      "counts": {
+        "pass": 186,
+        "fail": 0,
+        "skip": 2
+      }
+    },
+    "csp13-starport389-affected-vet.log": {
+      "file": "csp13-starport389-affected-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-starport389-module-verify.log": {
+      "file": "csp13-starport389-module-verify.log.gz",
+      "sha256": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+      "gzip_sha256": "4699dce40a065353f016ef7eb2c309ee9dee73281263a6b29287016349618a1b"
+    },
+    "csp13-starport389-integrated-tidy.log": {
+      "file": "csp13-starport389-integrated-tidy.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-starport389-objectstore-race.jsonl": {
+      "file": "csp13-starport389-objectstore-race.jsonl.gz",
+      "sha256": "e50871be0eb623311a4f1d6a5ef833c23a0993d49aaba5d6f47dda013cc3647a",
+      "gzip_sha256": "bcb7f1cb2a66ce57c6a782d32aeb8991af6a5477de3fb34646790971ff229cb2",
+      "counts": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-starport389-objectstore-build.txt": {
+      "file": "csp13-starport389-objectstore-build.txt.gz",
+      "sha256": "8cb168ef4b59cee073d1b52548cc1b2699051efd7fca7356dbede69d445ca778",
+      "gzip_sha256": "a50f744a6feb4899cd62ae63da3f05dfde21f5f726cd655fa9c357c450b0db68"
+    },
+    "csp13-starport389-objectstore-fixture.json": {
+      "file": "csp13-starport389-objectstore-fixture.json.gz",
+      "sha256": "e0b55335ed801ca4b40618dc8a2abc7b80054c9d1717f1c1e9bc8446a711e426",
+      "gzip_sha256": "1df4e2034e56fe071ab6204d2d0140b676e41ead5470b5b633ba7e4dd6a96080"
+    },
+    "csp13-starport389-integrated-review.log": {
+      "file": "csp13-starport389-integrated-review.log.gz",
+      "sha256": "12bbf64de628b1299e17cb70dcdf7f21a4c4320237e3f2f5c15618a9d00cbac4",
+      "gzip_sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4"
+    },
+    "csp13-starport390-integrated-review.log": {
+      "file": "csp13-starport390-integrated-review.log.gz",
+      "sha256": "12bbf64de628b1299e17cb70dcdf7f21a4c4320237e3f2f5c15618a9d00cbac4",
+      "gzip_sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4"
+    },
+    "csp13-starport389-published.json": {
+      "file": "csp13-starport389-published.json.gz",
+      "sha256": "ba5ea6569951a3da9864d837ed5c129b7d80d1ca2abdb29eeb9b98d53411c241",
+      "gzip_sha256": "5245a2cdf960c288dc4ca7965fbdb5e16fee6407784fff8c9d4bdb9532148c09"
+    },
+    "csp13-starport390-published.json": {
+      "file": "csp13-starport390-published.json.gz",
+      "sha256": "1cd6f2d92224152a04b8d961d00a2fc0677b06ca18be66a0b086bbbb23fd4991",
+      "gzip_sha256": "d080f8d382c3b2f2c93a34aadf690c31d8f44c4d5c02dab9c433acf0e24db02d"
+    },
+    "csp13-current-starmap-queue.json": {
+      "file": "csp13-current-starmap-queue.json.gz",
+      "sha256": "7871cd65cbf04bff3e653756977b38c793744b90f174c63c32c33267991e3840",
+      "gzip_sha256": "7ad737649eefbc574017c66d9d04556bf9cc2bb952ae87364dc928c37bbf3b42"
+    },
+    "csp13-current-starport-queue.json": {
+      "file": "csp13-current-starport-queue.json.gz",
+      "sha256": "21a663ce0a1139f518970906d4cbb3157ebd6efb295c4589224f1621d75d3a94",
+      "gzip_sha256": "9a999e5e4d84b9dee8aea0b6b915fd2703e9bc978a13a5cb46498191bd7a2992"
+    }
+  }
+}
