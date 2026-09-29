@@ -53,6 +53,10 @@ func (m directoryMigrationManifest) encode() ([]byte, error) {
 	if err := m.validateIntent(); err != nil {
 		return nil, err
 	}
+	return m.encodeFiles()
+}
+
+func (m directoryMigrationManifest) encodeFiles() ([]byte, error) {
 	if err := validateMigrationFiles(m.Files); err != nil {
 		return nil, err
 	}
@@ -73,6 +77,16 @@ func invalidMigrationIntent(field string) error {
 }
 
 func (m directoryMigrationManifest) validateIntent() error {
+	if err := m.validateIdentity(); err != nil {
+		return err
+	}
+	if !absoluteMigrationPath(m.SourceDirectory) || !absoluteMigrationPath(m.TargetDirectory) || migrationPathsOverlap(m.SourceDirectory, m.TargetDirectory) {
+		return invalidMigrationIntent("directories")
+	}
+	return nil
+}
+
+func (m directoryMigrationManifest) validateIdentity() error {
 	if m.SchemaVersion != 1 {
 		return invalidMigrationIntent("schema_version")
 	}
@@ -80,9 +94,6 @@ func (m directoryMigrationManifest) validateIntent() error {
 		if value == "" || len(value) > migrationIdentityMaxBytes || strings.TrimSpace(value) != value || !utf8.ValidString(value) || strings.ContainsFunc(value, unicode.IsControl) {
 			return invalidMigrationIntent(field)
 		}
-	}
-	if !absoluteMigrationPath(m.SourceDirectory) || !absoluteMigrationPath(m.TargetDirectory) || migrationPathsOverlap(m.SourceDirectory, m.TargetDirectory) {
-		return invalidMigrationIntent("directories")
 	}
 	if err := m.Owner.Validate(); err != nil {
 		return err
