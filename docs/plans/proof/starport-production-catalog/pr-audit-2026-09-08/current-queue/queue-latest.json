@@ -2019,10 +2019,11 @@
   },
   "owner_replay": {
     "head": "84d9a9a557f46146c40d25ed25875eec783fffa1",
-    "state": "LOCAL_FINAL_CHECKS",
+    "state": "DRAFT_CI_RUNNING",
     "owner": "this chat",
-    "proof": "csp13/operator-inspection-2026-09-29/verification.json",
-    "next_action": "Finish final qualification, structured review and publication of replay/inspection. Continue independent history, typed file/asset recovery and offline catalog topology transfer before activation."
+    "proof": "csp13/integration-final-2026-09-29/verification.json",
+    "next_action": "Inspect required native CI and review threads for exact84d9a9a5; merge under branch protection when eligible. Continue independent history, typed file/asset recovery and offline catalog topology transfer before activation.",
+    "pr": "https://github.com/agentstation/starport/pull/392"
   },
   "starport391_completion": {
     "state": "MERGED",

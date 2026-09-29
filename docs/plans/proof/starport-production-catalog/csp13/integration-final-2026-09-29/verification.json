@@ -948,8 +948,32 @@
     },
     "verify-v1-architecture-final.log.gz": {
       "sha256_uncompressed": "0a74729c61b008083dd93b18442bd813f9cc0b0b205f85f3449ec427dec0de88"
+    },
+    "autoreview.log.gz": {
+      "sha256_uncompressed": "55d7cf49ca00c8e6687b71265b598574f2a2de3f861dd26cdba240bea22e22ce"
+    },
+    "pr392-initial.json.gz": {
+      "sha256_uncompressed": "abf896ebfcfa20fd053b0c216ff8283d2fe1418546be6d2239b1ff3c29a482ed"
+    },
+    "pr-body.md.gz": {
+      "sha256_uncompressed": "edf9034815f0afefe5916cc83dc8a7b218c70fb93d6fb0481f1dce9d16be07ca"
     }
   },
-  "review": "running; no verdict yet",
-  "publication": "not published"
+  "review": {
+    "status": "clean",
+    "exit_code": 0,
+    "engine": "claude",
+    "model": "claude-opus-5-5",
+    "effort": "high",
+    "passes": 4,
+    "bundle_bytes": 703611,
+    "findings": 0,
+    "threshold": "configured P0"
+  },
+  "publication": {
+    "pr": "https://github.com/agentstation/starport/pull/392",
+    "head": "84d9a9a557f46146c40d25ed25875eec783fffa1",
+    "base": "03b09b21ae62c5eded76c132e2e3bc04335a7a0e",
+    "state": "DRAFT_CI_RUNNING"
+  }
 }
