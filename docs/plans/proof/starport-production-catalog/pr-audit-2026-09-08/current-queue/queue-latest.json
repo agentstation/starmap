@@ -2076,10 +2076,10 @@
     }
   },
   "history_coordination": {
-    "head": "3e96860e340f7073dd93ca8a50779aade730ad0e",
+    "head": "91cd47f60ea62a0f603eedc829ec826dd136fe36",
     "owner": "this chat",
     "worktree": "/private/tmp/starport-clock-review-20260926",
-    "branch": "codex/recovery-history-coordination",
+    "branch": "codex/recovery-catalog-activation",
     "proof": "csp13/history-final-qualification-2026-09-29/verification.json",
     "state": "REVIEWED_PUBLISHED_NATIVE_PENDING",
     "next_action": "Await exact-head native CI and protected merge. Review the offline catalog materializer and closed-final capability; compose topology transfer and coordinated activation.",
@@ -2092,6 +2092,10 @@
       "activation_coordinator": {
         "worktree": "/private/tmp/starport-recovery-activation-20260929",
         "branch": "codex/recovery-activation-coordinator"
+      },
+      "operator_recovery_inputs": {
+        "worktree": "/private/tmp/starport-recovery-operator-inputs-20260929",
+        "branch": "codex/recovery-operator-inputs"
       }
     },
     "pr": "https://github.com/agentstation/starport/pull/393",
@@ -2106,7 +2110,10 @@
       "secret_scan": "clean",
       "threshold": "P0",
       "initial_secret_scan": "Failed before model invocation: synthetic URI fixture caused a verification error. Fixed with net/url construction; all assertions preserved, no scanner exception."
-    }
+    },
+    "published_head": "3e96860e340f7073dd93ca8a50779aade730ad0e",
+    "published_branch": "codex/recovery-history-coordination",
+    "successor_state": "CLOSED_FINAL_INTEGRATED_AWAITING_COMPOSITION_TEST"
   },
   "catalog_topology": {
     "state": "REPAIRED_REVIEWED_PUBLISHED_NATIVE_PENDING",
