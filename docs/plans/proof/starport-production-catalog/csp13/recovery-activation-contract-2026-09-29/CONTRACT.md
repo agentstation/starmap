@@ -132,3 +132,17 @@ The coordinator must combine related owner changes in one bounded native step.
 SQL identity changes and blob publication retain their separate receipts.
 Final activation must verify those receipts and the complete reviewed interval.
 Existing audit records and nonempty evidence references do not establish interval completeness.
+
+
+## Prepared accounting and retained work
+
+Local `9d97ae2a9` prepares accounting writes from typed later records and new correction receipts.
+It requires the same immutable pre-step snapshot for every exact retry.
+It preserves original windows, prices, other consumption, pending reservations, and the first settlement time.
+Missing original windows and saturated source totals still require reconstruction or continued restriction.
+The coordinator must establish independent interval completeness before it uses these writes.
+
+Local `f6430984` validates job-slot counts, history markers, and both directions of each work reference.
+An existing claim key does not prove that its job, kind, account, or attachment matches retained work.
+These checks do not reconstruct missing post-backup execution or grant dispatch permission.
+Complete execution replay and controlled activation remain required.

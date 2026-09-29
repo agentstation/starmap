@@ -1,0 +1,144 @@
+{
+  "state": "LOCAL_COMPONENT_VERIFIED",
+  "head": "9d97ae2a9343666bcda290a58b6fc778f9b043b2",
+  "parent": "f6430984650058149895a61569d33c865ce26be9",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "task": "CSP13",
+  "task_completed": false,
+  "checked_at": "2026-09-29T10:24:12.014481+00:00",
+  "behavior": [
+    "Typed accounting replay preserves original windows, seed and other-attempt contributions, pinned valuations, and first settlement time.",
+    "Immutable pre-step source makes conditional writes deterministic for exact native retries.",
+    "Unknown original windows and saturated captured totals refuse replay. Uncertain capacity remains reserved.",
+    "Badger and Valkey import barriers stay closed during the native integration test."
+  ],
+  "commands": [
+    "python3 run.py race-reviewed.jsonl . (GOWORK=off, TEST_VALKEY_URL=task fixture; go test -race -json -count=1 -timeout=5m ./internal/limits/reservation -run .)",
+    "python3 run-pure.py pure-reviewed.jsonl TestAccountingReplay (GOWORK=off, CGO_ENABLED=0, same task fixture)",
+    "GOWORK=off go vet ./internal/limits/reservation",
+    "GOWORK=off make lint",
+    "technical-writing lint internal/limits/reservation/replay.go internal/limits/reservation/replay_test.go internal/recovery/README.md --format text",
+    "git diff --check"
+  ],
+  "checks": {
+    "race": {
+      "counts": {
+        "pass": 223,
+        "skip": 1
+      },
+      "skips": [
+        "TestTeamBudgetHistoryHandoff/postgres-valkey"
+      ]
+    },
+    "pure_go": {
+      "counts": {
+        "pass": 20
+      },
+      "skips": []
+    },
+    "canonical_fail_before": {
+      "counts": {
+        "fail": 1
+      },
+      "skips": []
+    },
+    "vet": 0,
+    "lint": 0,
+    "prose": 0,
+    "diff": 0
+  },
+  "manual_review": {
+    "reviewer": "recovery_contract",
+    "findings": 1,
+    "fixed": 1,
+    "detail": "Canonicalize decoded token-only records before transition comparison. The regression failed before repair."
+  },
+  "limits": [
+    "The optional PostgreSQL team-history handoff fixture was absent. Its single race result is UNVERIFIED.",
+    "This operation requires an immutable pre-step source and independent interval completeness proof from the coordinator.",
+    "Missing windows and saturated source totals need full reconstruction or continued restriction.",
+    "Execution replay, affected-scope enforcement, final operator coordination, pre-PR qualification and publication remain open."
+  ],
+  "artifacts": {
+    "run.py": {
+      "file": "run.py.gz",
+      "sha256": "75d0d609adb9ea20b24ddc893c46fa211f1490fadf6ee108cfef0011ff947781",
+      "gzip_sha256": "880b6487d2518ac2ca92bf90256b2d81ccca206fa69c5c61dfec91c9e80f5275"
+    },
+    "run-pure.py": {
+      "file": "run-pure.py.gz",
+      "sha256": "71a582673cddfa889b24b52628b022af059c980a479b2200864a0f23520860d1",
+      "gzip_sha256": "bc58fda0085f6c990bff69fac1cffcfe83af8fa34f0f5a116ec9f1846a056c3f"
+    },
+    "fail-before.jsonl": {
+      "file": "fail-before.jsonl.gz",
+      "sha256": "54142df58afe91f3d9b13abba07ee94d1981c4c066652700ae461c3614b99daa",
+      "gzip_sha256": "ab1c391b3cc5c6e8fa22ee9129b9f4173c6e457979a965d761675da414710694"
+    },
+    "initial.jsonl": {
+      "file": "initial.jsonl.gz",
+      "sha256": "4162fd2edd0e5815043fd4e8e30e7dea4ed29d9d419145a53bf80e2661d2ebe1",
+      "gzip_sha256": "1cd58f002b1733b4bc59aa29d95055082b89c025b0772e3ae9407a6ad22c080d"
+    },
+    "expanded.jsonl": {
+      "file": "expanded.jsonl.gz",
+      "sha256": "6754257faeb12d106de7134ae40fbe24d4973d21f1da32d8f5deb5f73ef580bb",
+      "gzip_sha256": "4b904e349f8c406ddf8a18e3dfc5a5d9219b609ff0069aebc868973fc3939315"
+    },
+    "canonical-before.jsonl": {
+      "file": "canonical-before.jsonl.gz",
+      "sha256": "9c6b348d726ea8fa916e7f7d3b0d3f841f2b51c5dedc1110e8a6cb1daa1a36dc",
+      "gzip_sha256": "115ee21796cf9a4c5bf01a8b32f118f5ac62179b5ac2c665a5e584f9bb42bcf0"
+    },
+    "race-reviewed.jsonl": {
+      "file": "race-reviewed.jsonl.gz",
+      "sha256": "9ab2f821d7c5d9b2563a16526a6826cc3fc8f453ccac57f693835958fe22cb43",
+      "gzip_sha256": "03ed9706f1856fb3c618715e0a88c77fa633d5301291d13838ca5b1b0ebd2fb1"
+    },
+    "pure-reviewed.jsonl": {
+      "file": "pure-reviewed.jsonl.gz",
+      "sha256": "b948f96e89848e49d2359e597e56599439fafce19fa4088d6cff0be6750e8e62",
+      "gzip_sha256": "cb7e2b3f676a2c7a0e84d109722b81bdf15930569c707641dd088884cd2b59e6"
+    },
+    "vet-reviewed.log": {
+      "file": "vet-reviewed.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "lint-reviewed.log": {
+      "file": "lint-reviewed.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "prose-reviewed.log": {
+      "file": "prose-reviewed.log.gz",
+      "sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618",
+      "gzip_sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b"
+    },
+    "ci-status.json": {
+      "file": "ci-status.json.gz",
+      "sha256": "3d7dff0d1efabfa95b0339aa09061d4b6d19433e4e91f958d57a83aab3846e9e",
+      "gzip_sha256": "2aac3a33d5e4d2eaeb8cded73b79dde8bb0f707c3e097bb5c3a70e941688ad48"
+    },
+    "pr-status.json": {
+      "file": "pr-status.json.gz",
+      "sha256": "c26f702443e8765f7e64fa03f9f3b7ad3d3fd0fefce471a89c823b73672e8bfc",
+      "gzip_sha256": "fedb91b60a67d2629c1afe6dea94e4f1efff4dda0f87e9fbba00814ca093681b"
+    },
+    "pr-premerge.json": {
+      "file": "pr-premerge.json.gz",
+      "sha256": "faf4d816ceadf236775efb4b2ee3d553779dd3154408a74a2623c05b1feb5929",
+      "gzip_sha256": "c37571375bf850cb47d1776a0800154254cb3dc9e362de70a8897e445129d457"
+    },
+    "protection.json": {
+      "file": "protection.json.gz",
+      "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+      "gzip_sha256": "f1a3ecaa02a381e3f7e2d73913df084cd9732f93e6ca7646f650f2bc1b3f34e5"
+    },
+    "review-threads.json": {
+      "file": "review-threads.json.gz",
+      "sha256": "f9fe7db53a0db3ab94df955feca3b90f6d6b7022d0caae7268986abd168bbf68",
+      "gzip_sha256": "1fe5b7619e5a12d5ae229140f1103e5076cf1d31806791460cbf937368c859a0"
+    }
+  }
+}

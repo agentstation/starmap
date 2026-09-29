@@ -1,0 +1,180 @@
+{
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "worktree": "/private/tmp/starport-blob-activation-20260929",
+  "base": "222a21535d813f490ec2fe1ad0a13e32406592bc",
+  "checks": {
+    "race": {
+      "counts": {
+        "pass": 311,
+        "skip": 19
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/limits/jobslots",
+          "Action": "pass",
+          "Elapsed": 2.439
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 158.784
+        }
+      ],
+      "skips": [
+        "TestImportedAuthorityKeepsSQLClosedUntilActivation",
+        "TestBudgetAuthorityRequiresBothApprovals",
+        "TestBudgetAuthorityFencesDelayedWrites/before-native-write",
+        "TestBudgetAuthorityFencesDelayedWrites/after-native-write",
+        "TestBudgetAuthorityClosedAndChangedEpoch",
+        "TestFreshFleetBootstrapPermission",
+        "TestPrepareBundleLocalAndSharedRecipes/shared",
+        "TestBackupBundleSharedRecipe",
+        "TestFreshFleetInitialization",
+        "TestFreshFleetRefusesExistingState/kv",
+        "TestFreshFleetRefusesExistingState/sql",
+        "TestFreshFleetRefusesExistingState/approval",
+        "TestFreshFleetRefusesExistingState/closed-approval",
+        "TestFreshFleetRefusesExistingState/row-security",
+        "TestFreshFleetRefusesExistingState/unknown-table",
+        "TestFreshFleetInterruptedClaim",
+        "TestFreshFleetConcurrentInitialization",
+        "TestFreshFleetRefusesChangedIncarnation",
+        "TestFreshFleetSQLFailureRetainsOnlyRetryClaim"
+      ]
+    },
+    "race-final": {
+      "counts": {
+        "pass": 87
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/limits/jobslots",
+          "Action": "pass",
+          "Elapsed": 1.2469999999999999
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 69.152
+        }
+      ],
+      "skips": []
+    },
+    "purego-final": {
+      "counts": {
+        "pass": 87
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/limits/jobslots",
+          "Action": "pass",
+          "Elapsed": 0.208
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 37.767
+        }
+      ],
+      "skips": []
+    }
+  },
+  "final_test_filter": "Test(RecoverySlot|BackupJobSlot|BackupBatchSlot|BackupRejectsAccounting|BackupAccounting|BackupJobReservation|BundleReferences)",
+  "commands": [
+    "TEST_VALKEY_URL=<task fixture> go test -race -json -count=1 ./internal/limits/jobslots ./internal/recovery -run <final_test_filter>",
+    "CGO_ENABLED=0 TEST_VALKEY_URL=<task fixture> go test -json -count=1 ./internal/limits/jobslots ./internal/recovery -run <final_test_filter>",
+    "go vet ./internal/limits/jobslots ./internal/recovery",
+    "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/limits/jobslots/... ./internal/recovery/...",
+    "technical-writing lint internal/recovery/README.md internal/limits/jobslots/recovery_validation.go internal/recovery/jobslot_index.go internal/recovery/execution_references.go internal/recovery/references.go --format text",
+    "git diff --check"
+  ],
+  "fail_before": [
+    "fail-before.log",
+    "reverse-fail-before.log"
+  ],
+  "limits": [
+    "Full affected-package race run preceded final scratch-index/join changes. Final source passed the targeted race and pure-Go runs.",
+    "The full run skipped 19 pre-existing SQL/object-store cases because their fixtures were unavailable.",
+    "Native platform execution was macOS arm64 only.",
+    "Verification does not prove missing post-backup history, release capacity, or activate a store."
+  ],
+  "commit": "8dd1c79f45ef751752d6106d9c34258be6103d72",
+  "fixture": "csp13-unprefixed-valkey-20260929 stopped after checks; no Nimbus services changed",
+  "artifacts": {
+    "regression.log": {
+      "file": "regression.log.gz",
+      "sha256": "7edfc486593466c6730252a51a7e4bd3f7954f88d2b74942467b571a84551323",
+      "gzip_sha256": "b6ac17f0b1ec8488788204fa91006e9813a5051c0e63015979403c3891b367e8"
+    },
+    "reverse-regression.log": {
+      "file": "reverse-regression.log.gz",
+      "sha256": "aab914fb93a023f0ca91cea350f1486f1af0eea227edc420003c120eb387df42",
+      "gzip_sha256": "9e5a2845001a0a2b1d72e1b6755a86f1c3e5ddc629488eaa48d6035c1d2d42fb"
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "race.jsonl": {
+      "file": "race.jsonl.gz",
+      "sha256": "a3a422e9d8f454eb2873368f8ad62c1a1693f16d0796c3e6d45ad699eaaeeb2a",
+      "gzip_sha256": "7fc0536614dd492eb42da36ad2888abccbc6b4fbec05c362ec9b18ce5918470d"
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "2ce815dee352d841237ca9c0a0a012a77afaf99e351ed8d7c77dcae3cccc03ec",
+      "gzip_sha256": "60a313f94c047d10dcff66b6af277416253dcded484fd48559678122d46d37a3"
+    },
+    "race-intermediate.jsonl": {
+      "file": "race-intermediate.jsonl.gz",
+      "sha256": "538c572e8459bf2b64ff44901444e18397b178d5d6a9060f3e92e14449b49bd9",
+      "gzip_sha256": "3f32d15681dd0185f7eb554d643c3d9a9e9793ec814b79e305b1e0d397b75d86"
+    },
+    "purego-final.jsonl": {
+      "file": "purego-final.jsonl.gz",
+      "sha256": "5aa2b8fce32cc77498266902e5b7773e9b7863f18991f2399eb599d16d568f30",
+      "gzip_sha256": "88e3e5aa930063534f23ed09082fb046c339f7ecb365fd26b29e606f02848eb2"
+    },
+    "lint-final.log": {
+      "file": "lint-final.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    "purego-intermediate.jsonl": {
+      "file": "purego-intermediate.jsonl.gz",
+      "sha256": "ffa953ee72c1171819d93502291f8b9d4ec7556c7a64f389da79a2cae88410d2",
+      "gzip_sha256": "ca36aba728024bc984d2c445e15737fade4778166ff2cd288beea6e5a486a99d"
+    },
+    "race-final.jsonl": {
+      "file": "race-final.jsonl.gz",
+      "sha256": "37937aaeb2d075ea29f08a2795ec27d94faf48917527c8d23d3ec5aa30199c1e",
+      "gzip_sha256": "73801b3045782974e7153313b42f77dc5e0dc1a8424a235ce999a5d2db3bcfc0"
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668",
+      "gzip_sha256": "03ac755e03fb41d530185275e4afde066bd01a05131a816cc20a3963cb9db778"
+    },
+    "targeted.jsonl": {
+      "file": "targeted.jsonl.gz",
+      "sha256": "9a6b40347db2025b4fc937acce8c7f581c08a497b2a9840fb0e2fb8f8ca55c30",
+      "gzip_sha256": "5f6468d1c9176105b801524c8383e144ca90cb0f3d35585a0c6ed3ed5bb8d41e"
+    },
+    "fail-before.log": {
+      "file": "fail-before.log.gz",
+      "sha256": "97630c7bb751eb75d5d0bd356cdc5be8810974b4dfb5625cc8b4784bfb1bb5b4",
+      "gzip_sha256": "11b9385be6ed55e62caec21bc0bb4e2d20575e2db4f4c136959a979cb721b775"
+    },
+    "reverse-fail-before.log": {
+      "file": "reverse-fail-before.log.gz",
+      "sha256": "105444e11e1ac341140c0f6d18308b4619ab7ccd6419f96f6544c8d3d4716a38",
+      "gzip_sha256": "830afe73eddcd2ced2d006bf53036af963f44d3e3c3c9bf1bed2341fe8100748"
+    },
+    "vet-final.log": {
+      "file": "vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    }
+  }
+}

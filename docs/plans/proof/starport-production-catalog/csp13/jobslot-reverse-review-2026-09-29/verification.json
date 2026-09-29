@@ -1,0 +1,98 @@
+{
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "base": "8dd1c79f45ef751752d6106d9c34258be6103d72",
+  "results": {
+    "fail-before": {
+      "counts": {
+        "fail": 7
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "fail",
+          "Elapsed": 2.303
+        }
+      ]
+    },
+    "race": {
+      "counts": {
+        "pass": 70
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/limits/jobslots",
+          "Action": "pass",
+          "Elapsed": 1.255
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 48.354
+        }
+      ]
+    },
+    "purego": {
+      "counts": {
+        "pass": 70
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/limits/jobslots",
+          "Action": "pass",
+          "Elapsed": 0.209
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 26.522
+        }
+      ]
+    }
+  },
+  "test_filter": "Test(RecoverySlot|BackupJobSlot|BackupBatchSlot|BundleReferences)",
+  "commands": [
+    "TEST_VALKEY_URL=<task fixture> go test -race -json -count=1 ./internal/limits/jobslots ./internal/recovery -run <test_filter>",
+    "CGO_ENABLED=0 TEST_VALKEY_URL=<task fixture> go test -json -count=1 ./internal/limits/jobslots ./internal/recovery -run <test_filter>",
+    "go vet ./internal/limits/jobslots ./internal/recovery",
+    "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/limits/jobslots/... ./internal/recovery/...",
+    "technical-writing lint internal/recovery/jobslot_index.go --format text",
+    "git diff --check"
+  ],
+  "fixture": "csp13-unprefixed-valkey-20260929 left running for parent accounting work",
+  "limitations": [
+    "Native execution on macOS arm64 only.",
+    "Targeted checks only; no full suite or autoreview."
+  ],
+  "artifacts": {
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "race.jsonl": {
+      "file": "race.jsonl.gz",
+      "sha256": "ad09e771b72162914ee5b4c749104d409dc85b5935be4f5a38588065f04030aa",
+      "gzip_sha256": "b5f5b75ddcb928e141f0a6216fb85e39cfe6aeedd682db65537da3ec4c0f79b1"
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    "fail-before.jsonl": {
+      "file": "fail-before.jsonl.gz",
+      "sha256": "3279a2edfa3fcf8bd981b8a6d4f14c97bb91eab9b1d8b3e68bb68dddec59175a",
+      "gzip_sha256": "29a799db89e64b4a1d27aa939e5e70fb2f25f74be74ce6995d25f2a8359231a5"
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "gzip_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    },
+    "purego.jsonl": {
+      "file": "purego.jsonl.gz",
+      "sha256": "8f0d0152cc8ce730db9eb7841be255fc5e3ef8bcaf1775961d1a511a1b8d6c30",
+      "gzip_sha256": "f58f1428f9abe0d21393273865895048a22ff1d1e95131f1bff927c2e4cd5952"
+    }
+  }
+}
