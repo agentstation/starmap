@@ -26,3 +26,20 @@ func ExportEmbeddedBaseline(ctx context.Context, directory string) (BaselineExpo
 func InspectBaselineExports(ctx context.Context, directory string) error {
 	return bootstrap.InspectExports(ctx, directory)
 }
+
+// BaselineRetainedFile identifies captured bytes in a verified baseline inventory.
+type BaselineRetainedFile = bootstrap.BaselineRetainedFile
+
+// BaselineRecordReader reads bounded metadata from a verified backup.
+type BaselineRecordReader = bootstrap.BaselineRecordReader
+
+// InspectRetainedBaselinePublications selects matching baseline stages for inactive retention.
+// Include the baseline files and the separate .starmap-baseline recovery records.
+// Preserve selected files and all recovery records in inactive evidence. Validate completed exports separately.
+// This check never promotes staging bytes or authorizes native cleanup or admission.
+func InspectRetainedBaselinePublications(ctx context.Context, files map[string]BaselineRetainedFile, read BaselineRecordReader) ([]string, error) {
+	return bootstrap.InspectRetainedBaselinePublications(ctx, files, read)
+}
+
+// BaselineRecoveryDirectoryName identifies the journal directory within a baseline export tree.
+const BaselineRecoveryDirectoryName = bootstrap.BaselineRecoveryDirectoryName

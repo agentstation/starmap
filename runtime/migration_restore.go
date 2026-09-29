@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	stderrors "errors"
+	"github.com/agentstation/starmap/internal/privatefiles"
 	"os"
 	"strings"
 	"unicode"
@@ -14,7 +15,7 @@ import (
 
 // RetainedRecordReader reads a record from a verified backup with the supplied byte limit.
 // An absent record must return an error that matches os.ErrNotExist.
-type RetainedRecordReader func(context.Context, string, int64) ([]byte, error)
+type RetainedRecordReader = privatefiles.RetainedRecordReader
 
 // InspectRetainedMigration identifies completed migration records to keep inactive during restore.
 // The caller supplies the captured directory name, configured owner and explicit scheduler identity.

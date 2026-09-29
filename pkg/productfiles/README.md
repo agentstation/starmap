@@ -64,3 +64,10 @@ The caller also owns recovery if its operation spans multiple roots.
 It uses the existing native writer lock and refuses pending journals.
 `PublicationDirectoryName` identifies metadata owned by this package.
 Hosts must preserve that metadata and fence writers before copying inspected state.
+
+`InspectRetainedPublications` validates captured publication evidence without filesystem operations.
+The caller supplies verified file sizes and digests, a bounded reader, and a destination owner check.
+The result selects journals and matching staging files for inactive retention.
+The caller must preserve those bytes and validate all remaining destination records separately.
+Historical native identities cannot authorize cleanup on a restore host.
+This check never promotes staged bytes or approves application permission.

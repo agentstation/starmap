@@ -6,7 +6,9 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	stderrors "errors"
 	"os"
+	"time"
 
 	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -14,9 +16,11 @@ import (
 )
 
 const (
-	policyRecordLimit  = 4096
-	policyRecordName   = "policy.json"
-	policyRecordPrefix = ".policy-"
+	policyRecordLimit   = 4096
+	policyWriteTimeout  = 5 * time.Second
+	policyRetryInterval = 10 * time.Millisecond
+	policyRecordName    = "policy.json"
+	policyRecordPrefix  = ".policy-"
 )
 
 // PolicyStore retains the accepted selection policy without credential material.
@@ -166,7 +170,35 @@ func (s *FilePolicyStore) create(ctx context.Context, name string, record policy
 	if len(data) > policyRecordLimit {
 		return policyStoreError("policy record exceeds its size limit")
 	}
-	return s.directory.WriteFileIfAbsentContext(ctx, name, data, policyRecordPrefix)
+	writeCtx, cancel := context.WithTimeout(ctx, policyWriteTimeout)
+	defer cancel()
+	for {
+		err = s.directory.CompareAndPublishFileContext(writeCtx, name, nil, data, policyRecordPrefix)
+		if _, uncertain := stderrors.AsType[*errors.PublicationError](err); uncertain {
+			return err
+		}
+		conflict, ok := stderrors.AsType[*errors.ConflictError](err)
+		if !ok {
+			return err
+		}
+		if conflict.Resource != "private record writer" {
+			retained, readErr := s.read(name, record.Provider)
+			if readErr != nil {
+				return readErr
+			}
+			if retained == record {
+				return nil
+			}
+			return err
+		}
+		timer := time.NewTimer(policyRetryInterval)
+		select {
+		case <-writeCtx.Done():
+			timer.Stop()
+			return writeCtx.Err()
+		case <-timer.C:
+		}
+	}
 }
 
 func providerPolicyName(provider catalogs.ProviderID) string {

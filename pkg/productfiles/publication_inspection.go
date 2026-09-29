@@ -19,3 +19,17 @@ func (d *Directory) CheckNoPendingPublications(ctx context.Context) error {
 	}
 	return d.private.CheckNoPendingPublications(ctx)
 }
+
+// RetainedFile identifies bytes in a verified backup.
+type RetainedFile = privatefiles.RetainedFile
+
+// RetainedRecordReader reads bounded bytes from a verified backup.
+type RetainedRecordReader = privatefiles.RetainedRecordReader
+
+// InspectRetainedPublications selects matching journals and staging files for inactive retention.
+// The owner callback approves destination names and prefixes within each parent directory.
+// The caller preserves selected files and validates the remaining tree before publication.
+// This check never promotes staged bytes or approves current permission.
+func InspectRetainedPublications(ctx context.Context, files map[string]RetainedFile, read RetainedRecordReader, accepts func(parent, destination, prefix string) bool) ([]string, error) {
+	return privatefiles.InspectRetainedPublications(ctx, files, read, accepts)
+}
