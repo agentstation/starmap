@@ -185,3 +185,20 @@ The current ordinary KV enumerator refuses imported stores while their barrier e
 The coordinator needs an explicit read-only inspection path bound to the exact import claim and replay position.
 That inspection must retain the barrier, detect changed ownership or position, and expose no raw mutation authority.
 Complete independent interval proof and final operator activation remain required.
+
+## Closed inspection and typed permission replay
+
+Local `02dd77ad` adds closed native KV inspection bound to the exact import claim and replay position.
+It preserves startup barriers and refuses changed control state.
+Valkey can return identical records more than once. `SnapshotKV` must remove identical repeats before final counts or sorted census checks.
+External writer fencing remains mandatory throughout inspection.
+
+Local `35c8fba3` reconstructs complete account, API-key, and credential records through their owners.
+Local `2d4fc634` reconstructs SQL principals, membership, grants, and retained budget origins.
+Both preserve exact preimages and explicit ordered deletion or recreation.
+They do not initialize new budget history.
+
+The coordinator must include authorization revision changes in each related native transaction.
+It must validate untouched records with the same strict schemas as replayed records.
+Final checks must cover both request admission and background work before any activation.
+Complete interval evidence and coordinated operator commands remain unfinished.

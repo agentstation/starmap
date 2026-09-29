@@ -1,0 +1,87 @@
+{
+  "task": "CSP13",
+  "task_complete": false,
+  "component_commit": "02dd77ad",
+  "integrated_head": "2d4fc634007509e9f1046ed3b7a96879ecbdef84",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "checks": {
+    "race-expanded.jsonl": {
+      "results": {
+        "pass": 20
+      },
+      "skips": []
+    },
+    "pure.jsonl": {
+      "results": {
+        "pass": 20
+      },
+      "skips": []
+    },
+    "integrated-race.jsonl": {
+      "results": {
+        "pass": 361
+      },
+      "skips": []
+    }
+  },
+  "other_checks": {
+    "vet": "PASS",
+    "lint": "PASS (0 issues)",
+    "prose": "PASS (5 files, 0 diagnostics)"
+  },
+  "review": {
+    "owner": "job_replay",
+    "findings": 0,
+    "documentation_followup": "Documented repeated Valkey records and SnapshotKV deduplication."
+  },
+  "limits": [
+    "External fencing remains required. Guard checks cannot prove absence of uncoordinated ordinary writes.",
+    "Valkey SCAN can repeat records; materialize through SnapshotKV before count and sorted census validation.",
+    "Complete interval evidence, authorization revision replacement, final closed-state validation and operator activation remain required.",
+    "Native Linux/Windows and complete pre-PR qualification remain required."
+  ],
+  "artifacts": {
+    "fail-before.log.gz": {
+      "source_sha256": "45de5d21f172e5c54183241fb6c8f8ab2e23f907e199df5e653c073757041ffe"
+    },
+    "integrated-race.jsonl.gz": {
+      "source_sha256": "3c18d6fae7c43450f22487fe3aa8a2d2f7d3b173f40808492334ad6f2b6fb142"
+    },
+    "lint-integrated.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "lint-retry.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "lint.log.gz": {
+      "source_sha256": "18385cd4318d7ba047fb5d01e786ed4686332d853bc6fe4edc9a1370ea92b6f0"
+    },
+    "prose-final.log.gz": {
+      "source_sha256": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668"
+    },
+    "prose.log.gz": {
+      "source_sha256": "567c8115001b13263580ce4408207fb978c06045067e17e6b7a0ef41159026ca"
+    },
+    "pure.jsonl.gz": {
+      "source_sha256": "4c31576a63282f6cd2999c27ccea84c60adf68c42a6c333518f1133eaea0c6bd"
+    },
+    "race-expanded.jsonl.gz": {
+      "source_sha256": "09fdd86e64031e408be42ec680f05a8afaeac415cfe31d179c8bbd9b4c4341b3"
+    },
+    "race-initial.jsonl.gz": {
+      "source_sha256": "ddaf0ae4bbe0c3bc8172cb7020831eadbd289167b4c98b0a31f44549718bdb0f"
+    },
+    "run-integrated.py.gz": {
+      "source_sha256": "6f40a1a0caf0b39a924acb2416eef0ff163592cf80f95cda7e279534813bd34d"
+    },
+    "run-pure.py.gz": {
+      "source_sha256": "51e5bec693ab4d09eb8ca40a46d9c26f2a9256ede5985ece99bd372c2c34295e"
+    },
+    "vet-integrated.log.gz": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vet.log.gz": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

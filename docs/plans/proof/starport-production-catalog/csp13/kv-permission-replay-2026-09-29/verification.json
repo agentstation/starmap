@@ -1,0 +1,82 @@
+{
+  "base": "e7dde8138d6573302cf704bde706efbead78061a",
+  "go": "go1.27.1 darwin/arm64",
+  "race": {
+    "passed": 351,
+    "failed": 0,
+    "skipped": 0
+  },
+  "pure_go": {
+    "passed": 352,
+    "failed": 0,
+    "skipped": 0
+  },
+  "new_replay_cases_per_mode": 33,
+  "native_backends": [
+    "Badger persistent sync_writes",
+    "Valkey shared task container, isolated deployment prefixes"
+  ],
+  "checks": [
+    "go vet affected packages",
+    "make lint: 0 issues",
+    "technical-writing: 13 files, 0 diagnostics",
+    "git diff --cached --check"
+  ],
+  "manual_review": [
+    "Typed complete private raw bytes, strict unknown-member rejection, redacted formatting",
+    "Exact expected preimages; revisions and immutable identity; ordered deletion/recreation",
+    "Key hash indexes, collection count/revision, initial marker retention",
+    "Budget holder identity retained; no fresh history/window grants",
+    "Credential decryption and complete grant withdrawals; early native replay bounds",
+    "Failed native preconditions and exact earlier-step retries cannot reverse later state"
+  ],
+  "integration_requirements": [
+    "Coordinator authorization revision guard in same native step",
+    "Fresh final snapshot verifies account/team/key/grant links and budget history coverage",
+    "Strict final schema validation for untouched owner facts",
+    "Activation remains a separate closed-view decision"
+  ],
+  "task": "CSP13",
+  "task_complete": false,
+  "source_commit": "f03077ea8c4cc96126c0ea072e7bba55bbf630fe",
+  "integration_commit": "35c8fba3",
+  "integrated_head": "2d4fc634007509e9f1046ed3b7a96879ecbdef84",
+  "artifacts": {
+    "final-pure.jsonl.gz": {
+      "source_sha256": "316224fd9e55918be1dcca551ba5e64f7f1c4c57923a2a3a07fbaa475a146283"
+    },
+    "final-race.jsonl.gz": {
+      "source_sha256": "d09a3e7210f961f59f33f3b6cb323cd5787cb270bc29c56a27dd99afbe17c473"
+    },
+    "lint.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "prose.log.gz": {
+      "source_sha256": "70d87f38b312e4bfc7adf4625639cdc629c595b5ff7ffc8dbef52dec4d60bd62"
+    },
+    "pure.jsonl.gz": {
+      "source_sha256": "f756dc93673c5364c4ad991cb80c5ef88a6f05550d3f78605324a10d37cd9f35"
+    },
+    "pure.py.gz": {
+      "source_sha256": "9a645220fd8e910e8c3b9070dd4085b636c1ef8e0269a469bb9f12a906b8dbb0"
+    },
+    "qualified-pure.jsonl.gz": {
+      "source_sha256": "aeb42b99464e323de0fc96235a4ad0354afa8666a1a8a2eec3473e000c14e118"
+    },
+    "qualified-race.jsonl.gz": {
+      "source_sha256": "b16b88397cdbc11d1d934571dcc5db5e1e55f49e6e63ccf02a48ca124a0e3801"
+    },
+    "race.jsonl.gz": {
+      "source_sha256": "3526092c43e767e9c2df87383626484fb4439dd7727e63c9303e5b27559cf05f"
+    },
+    "run.py.gz": {
+      "source_sha256": "2dd5f8be544dae02635fb143c32df1caf3a7d73a0122b43b0e49da6af56bd89f"
+    },
+    "verification.json.gz": {
+      "source_sha256": "4a9e25d223cdd949d5497b43f54fe1c82d9dbb07c94b5d80a9472e942212c81a"
+    },
+    "vet.log.gz": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "toolchain": "go1.27.1 darwin/arm64",
+  "checks": {
+    "race": {
+      "results": {
+        "pass": 114
+      },
+      "new_identity_results": {
+        "pass": 58
+      },
+      "package_result": "pass",
+      "elapsed": 6.492,
+      "log": "/tmp/csp13-identity-replay-20260929/race-final.jsonl"
+    },
+    "purego": {
+      "results": {
+        "pass": 114
+      },
+      "new_identity_results": {
+        "pass": 58
+      },
+      "package_result": "pass",
+      "elapsed": 3.079,
+      "log": "/tmp/csp13-identity-replay-20260929/purego-final.jsonl"
+    },
+    "vet": "pass",
+    "lint": "golangci-lint v2.13.2: 0 issues",
+    "prose": "3 files; 0 diagnostics",
+    "diff_check": "pass"
+  },
+  "fixtures": "Isolated PostgreSQL schemas and MySQL databases; test SQLite files. Existing task services remain running. No credentials logged.",
+  "limits": "Typed SQL owner callback only. Coordinator still owns source coverage, authorization revision updates, cross-store policy and controlled activation. Native Linux/Windows not run by this task.",
+  "task": "CSP13",
+  "task_complete": false,
+  "source_commit": "c144f228d2cddf3a0c4816d1210e7bee96c69963",
+  "integration_commit": "2d4fc634",
+  "integrated_head": "2d4fc634007509e9f1046ed3b7a96879ecbdef84",
+  "artifacts": {
+    "initial.jsonl.gz": {
+      "source_sha256": "1d63e8c57f006fca3468856053f237ab094518d086e4bbf906be9eb636eaae66"
+    },
+    "lint.log.gz": {
+      "source_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "native-expanded.jsonl.gz": {
+      "source_sha256": "25ea0bf50c5b836772a57701a55a759198616aa6255f8f1a2b4d7ca2f48eb1a7"
+    },
+    "native-initial.jsonl.gz": {
+      "source_sha256": "ff902bbd5f8c4d25abaa93db4221bdb4b6815ed840bb153bcb24899177873098"
+    },
+    "prose.log.gz": {
+      "source_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    },
+    "purego-final.jsonl.gz": {
+      "source_sha256": "b8cec67e220a1c294052b170461a4218c65b6e58e0e88ebf74cb079ebfa1e74b"
+    },
+    "race-final.jsonl.gz": {
+      "source_sha256": "b2b4df9e27eaa0cd40ab5614b9a3feb22c8bd7572a624f32b268af0a6618f0fb"
+    },
+    "run-native.py.gz": {
+      "source_sha256": "5891147062a876a1ffc2f6571ed666807afe31df0ee69ff78f9b589a6ce879df"
+    },
+    "run-purego.py.gz": {
+      "source_sha256": "f5c4dfe33ae0c24238611873def472fc2e88430658d60d394c1ec021142cce97"
+    },
+    "verification.json.gz": {
+      "source_sha256": "432874013d20adc0f87bb9de1ef9140d70af30374eacd203c0877b60014e43cb"
+    },
+    "vet.log.gz": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}
