@@ -135,6 +135,14 @@ func (r *Runtime) publishGenerationPin(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	localPin := *record
+	if localPin.Phase == pinPrepared {
+		localPin.Phase, localPin.Receipt.AcceptedAt = pinAccepted, r.config.now().UTC()
+	}
+	ctx, err = r.prepareLocalRecovery(ctx, r.layers, &localPin)
+	if err != nil {
+		return err
+	}
 	pinContext := context.WithValue(r.authorityPublicationContext(ctx), generationPinContextKey{}, r.config.pinCapability)
 	if current.GenerationID != generation.Manifest.GenerationID || pendingPublication {
 		if err := r.lease.fence(r.lease.epoch()); err != nil {
@@ -160,7 +168,7 @@ func (r *Runtime) publishGenerationPin(ctx context.Context) error {
 	}
 	accepted := *record
 	if record.Phase != pinAccepted {
-		accepted.Phase, accepted.Receipt.AcceptedAt = pinAccepted, r.config.now().UTC()
+		accepted.Phase, accepted.Receipt.AcceptedAt = localPin.Phase, localPin.Receipt.AcceptedAt
 	}
 	// Reassert the same receipt to confirm durability after a possible directory flush failure.
 	if err := r.store.savePinRecord(ctx, accepted); err != nil {

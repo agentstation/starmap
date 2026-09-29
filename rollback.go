@@ -101,6 +101,9 @@ func (c *Client) Rollback(ctx context.Context, generationID string) (*RollbackRe
 		return result, nil
 	}
 
+	if err := c.retainGeneration(ctx, target); err != nil {
+		return nil, err
+	}
 	if err := c.options.catalogStore.Commit(ctx, target, expectedGenerationID); err != nil {
 		return nil, errors.WrapResource("rollback", "catalog generation", generationID, err)
 	}

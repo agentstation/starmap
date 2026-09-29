@@ -73,7 +73,7 @@ func knownRuntimeRecoveryDirectory(name string) bool {
 	switch name {
 	case layerDirectoryName, layerDirectoryName + "/" + providerLayerDirectoryName,
 		layerDirectoryName + "/" + providerLayerDirectoryName + "/" + bindingLayerDirectoryName,
-		layerDirectoryName + "/" + inputPublicationDirectory, "github-catalog-source":
+		layerDirectoryName + "/" + inputPublicationDirectory, layerDirectoryName + "/" + generationInputsDirectory, layerDirectoryName + "/" + generationBaselinesDirectory, "github-catalog-source":
 		return true
 	default:
 		return isRecordPublicationDirectory(name)
@@ -107,6 +107,14 @@ func runtimeRecoveryFileLimit(name string) (int64, bool, error) {
 	case layerDirectoryName + "/" + providerLayerDirectoryName, layerDirectoryName + "/" + providerLayerDirectoryName + "/" + bindingLayerDirectoryName:
 		if strings.HasSuffix(base, ".json") {
 			return maxLayerBytes, false, nil
+		}
+	case layerDirectoryName + "/" + generationBaselinesDirectory:
+		if validCatalogBaselineName(base) {
+			return MaxFleetRecoveryBytes, false, nil
+		}
+	case layerDirectoryName + "/" + generationInputsDirectory:
+		if validCatalogRecoveryName(base) {
+			return maxCatalogRecoveryBytes, false, nil
 		}
 	case layerDirectoryName + "/" + inputPublicationDirectory:
 		if validInputReference(base) {

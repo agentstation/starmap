@@ -4,6 +4,7 @@ import (
 	"context"
 	"slices"
 
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -37,6 +38,29 @@ func ValidateFleetReplay(ctx context.Context, snapshot FleetSnapshot, opts ...Op
 	if err := ctx.Err(); err != nil {
 		return err
 	}
+	if err := snapshot.Validate(); err != nil {
+		return err
+	}
+	return validateCatalogReplay(ctx, snapshot.Publication.Generation, snapshot.Publication.Recovery, opts...)
+}
+
+// ValidateCatalogReplay checks exact retained inputs against the supplied deployment settings.
+// It starts no acquisition, writes, clock observation, or lease operation.
+// Success grants no serving permission and does not prove independent recovery history.
+func ValidateCatalogReplay(ctx context.Context, generation catalogs.Generation, recovery CatalogRecovery, opts ...Option) error {
+	if ctx == nil {
+		return invalidInputPublication("replay requires a context")
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if err := recovery.Validate(generation); err != nil {
+		return err
+	}
+	return validateCatalogReplay(ctx, generation, recovery.Inputs, opts...)
+}
+
+func validateCatalogReplay(ctx context.Context, generation catalogs.Generation, recovery FleetRecovery, opts ...Option) error {
 	config := defaults()
 	if _, err := config.apply(opts...); err != nil {
 		return err
@@ -45,7 +69,7 @@ func ValidateFleetReplay(ctx context.Context, snapshot FleetSnapshot, opts ...Op
 	if err := config.validate(); err != nil {
 		return err
 	}
-	if err := config.validateStoredAuthoritySelection(snapshot.Publication.Generation.Manifest.AuthorityHead); err != nil {
+	if err := config.validateStoredAuthoritySelection(generation.Manifest.AuthorityHead); err != nil {
 		return err
 	}
 	description, err := describeSources(config)
@@ -59,7 +83,7 @@ func ValidateFleetReplay(ctx context.Context, snapshot FleetSnapshot, opts ...Op
 	}
 	local := layerSet{requireAuthority: probe.requiresAuthority(), providerBindings: config.providerBindings,
 		acquisitionSources: config.acquisitionSources, publisherAliases: slices.Clone(config.source.Aliases), sourceConfiguration: description}
-	recovered, pin, err := recoverFleetState(ctx, snapshot, local)
+	recovered, pin, err := recoverCatalogState(ctx, generation, recovery, local)
 	if err != nil {
 		return err
 	}

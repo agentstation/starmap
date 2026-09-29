@@ -129,6 +129,10 @@ func (r *Runtime) commitPrepared(ctx context.Context, prepared preparedPublicati
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}
+	ctx, err = r.prepareLocalRecovery(ctx, layers, nil)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
 	state, err := r.commitPreparedCatalog(ctx, prepared, epoch, evidence, source)
 	if err != nil {
 		return starmap.CatalogState{}, err

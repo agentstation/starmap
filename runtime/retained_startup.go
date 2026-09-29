@@ -48,7 +48,11 @@ func (config options) openServingClient(ctx context.Context) (*starmap.Client, *
 	if err != nil {
 		return nil, nil, err
 	}
-	client, err := starmap.NewContext(clientContext, config.acquisitionPolicyClientOptions()...)
+	clientOptions := config.acquisitionPolicyClientOptions()
+	if config.stateDirectory != "" && config.fleetStore == nil {
+		clientOptions = append(clientOptions, starmap.WithGenerationRetainer(retainLocalGeneration))
+	}
+	client, err := starmap.NewContext(clientContext, clientOptions...)
 	if err != nil {
 		return nil, nil, err
 	}
