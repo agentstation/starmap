@@ -4987,3 +4987,14 @@ Changed or unowned staging evidence causes refusal before target preparation. Ex
 Other journal owners, interrupted moves, independent history, controlled activation, and full native qualification remain open.
 
 The [native publication restore proof](../../plans/proof/starport-production-catalog/csp13/native-publication-restore-2026-09-28/verification.json) records source commits, final pinned tests, review, and remaining work.
+
+### Credential publication recovery (September 29, 2026)
+
+Local Starmap `5aefe198a` owns shared native publication inspection and journaled acquisition-policy writes. Each caller still defines its permitted destinations and staging prefixes.
+Restore preserves accepted acquisition and inference policy. Validated journals and matching staged bytes stay in the verified backup and inactive preparation.
+Complete legacy acquisition stages require the captured deployment, instance, and policy family. Partial, changed, or foreign stages cause refusal before preparation creates target stores.
+
+Exact retries retain the same selection. Publication does not accept a policy migration or authorize credential use. All admission barriers remain closed.
+
+The consumer implementation passes development and real-storage checks against a local module replacement. Published-module qualification and native checks remain open.
+The [credential publication proof](../../plans/proof/starport-production-catalog/csp13/credential-publication-journals-2026-09-29/verification.json) records source hashes, test counts, review scope, and remaining work.
