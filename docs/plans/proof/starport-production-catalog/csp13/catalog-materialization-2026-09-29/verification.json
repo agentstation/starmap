@@ -1,0 +1,209 @@
+{
+  "scope": "CSP13 offline retained catalog materialization producer slice; no plan completion claim",
+  "worktree": "/private/tmp/starmap-fleet-review-20260926",
+  "branch": "codex/catalog-recovery-materialization",
+  "base_commit": "819a8da9d1a6266fc56ce411088325808d5287ed",
+  "equivalent_reviewed_file_manifest_repair": "b6bf9c5d782f223152c0aa69ff9b2a51ef9ceb40",
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "platform": "macOS-15.7.2-arm64-arm-64bit-Mach-O",
+  "checks": [
+    {
+      "log": "pure-go.jsonl",
+      "exit_code": 0,
+      "test_counts": {
+        "github.com/agentstation/starmap/runtime": {
+          "run": 35,
+          "pass": 35,
+          "top_level_pass": 26
+        },
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "run": 1,
+          "pass": 1,
+          "top_level_pass": 1
+        }
+      },
+      "package_results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Elapsed": 1.758
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 21.955
+        }
+      ],
+      "command": "CGO_ENABLED=0 go test -json ./runtime ./internal/cli/app -run 'TestCatalogMaterialization|TestFileInspectionPreservesPrivateRecordStaging|TestCatalogRecovery|TestFleetReplayRetainsBaselineAcrossBinaryUpgrade|TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence' -count=1 -timeout=6m"
+    },
+    {
+      "log": "race.jsonl",
+      "exit_code": 0,
+      "test_counts": {
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "run": 1,
+          "pass": 1,
+          "top_level_pass": 1
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "run": 35,
+          "pass": 35,
+          "top_level_pass": 26
+        }
+      },
+      "package_results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Elapsed": 2.601
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 117.136
+        }
+      ],
+      "command": "go test -race -json ./runtime ./internal/cli/app -run 'TestCatalogMaterialization|TestFileInspectionPreservesPrivateRecordStaging|TestCatalogRecovery|TestFleetReplayRetainsBaselineAcrossBinaryUpgrade|TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence' -count=1 -timeout=6m"
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "log": "goago.json",
+      "exit_code": 0
+    },
+    {
+      "command": "go vet ./runtime ./runtime/status ./internal/cli/app",
+      "log": "vet.log",
+      "exit_code": 0
+    },
+    {
+      "command": "/private/tmp/csp13-lint-tools/golangci-lint run (repository pin 2.13.2, built with Go 1.27.1)",
+      "log": "golangci-lint.log",
+      "exit_code": 0
+    },
+    {
+      "command": "make godoc",
+      "log": "godoc.log",
+      "exit_code": 0
+    },
+    {
+      "command": "make docs-check",
+      "log": "docs-check.log",
+      "exit_code": 0
+    },
+    {
+      "command": "make technical-writing-check",
+      "log": "technical-writing.log",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "contracts": [
+    "Exact supplied catalog generation and recovery checksums; host owns catalog-store acceptance and selection.",
+    "Private owner and original seed preserved. Catalog PublisherID preserves fact lineage; scheduler, origin, and serving permission stay independent.",
+    "Pending or incomplete materialization refuses runtime startup. Changed request, current inputs, continuity, or native target refuses retry.",
+    "Completed exact retry returns immutable receipt without replacing later state. Missing active selection refuses startup but completed retry never recreates it.",
+    "New explicit operation can bind a separately restored owner/seed-verified directory; prior native receipts remain unchanged history. Automatic startup and old-operation retry reject the copied target.",
+    "Retains every supplied historical capsule, manual input checkpoint, original removals and accepted pin. Explicit historical baseline survives newer embedded binary and later semantic input capture.",
+    "No acquisition, provider/source reads, lease acquisition, clock callback, or serving permission issuance. Configured external role probes remain unused.",
+    "Private native record publication and real process-exit recovery tested at plan, selection, and baseline publication points.",
+    "Precise runtime file-inspection patterns retain reviewed generation-input/baseline repair and new materialization records; unknown files remain rejected and unchanged."
+  ],
+  "storage_bounds": {
+    "input_entries": 4096,
+    "combined_payload_and_compressed_inputs_bytes": 268435456,
+    "combined_decoded_inputs_bytes": 268435456,
+    "journal_encoded_and_decoded_bytes_each": 268435456,
+    "active_layer_record_bytes_each": 67108864,
+    "journal_changes_maximum": 4096,
+    "journal_operation_entries_maximum": 4096,
+    "historical_retention": "Historical capsules follow catalog-store generation retention; host must restore the generation inventory. Active recovery baseline is protected from collection.",
+    "journal_retention": "Immutable completed journals remain as history, with per-record and entry bounds; no automatic journal eviction is added."
+  },
+  "unverified": [
+    "Native Linux and Windows CI on final commit.",
+    "Whole-repository runtime test suite beyond the focused contracts.",
+    "Starport consumer coordinator, local/fleet closed import, SQL/KV topologies and activation guards.",
+    "Physical OS suspend/resume, which is outside this slice and non-blocking per accepted product decision."
+  ],
+  "artifacts": {
+    "goago.json": {
+      "file": "goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    "docs-check.log": {
+      "file": "docs-check.log.gz",
+      "sha256": "4294b4cb4ceb3464bd9fb14ef4fedda5aa882129ae90811dda1d27dc3dd030a6"
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "race.jsonl": {
+      "file": "race.jsonl.gz",
+      "sha256": "e6a8d9aa766a03c860b016f2d7084869802b2eb8156deddf0b3ac4474677d5f8"
+    },
+    "godoc.log": {
+      "file": "godoc.log.gz",
+      "sha256": "9b2521b9ddb59182b7cfa56dc1294d70fd6ddc36e099e502e3e2801f2010353a"
+    },
+    "pure-go.jsonl": {
+      "file": "pure-go.jsonl.gz",
+      "sha256": "71fea12a3eb231fd342114641ce02ea0d868e27534ebbca2a9f2b370a92f4cab"
+    },
+    "technical-writing.log": {
+      "file": "technical-writing.log.gz",
+      "sha256": "05f7321c604afdc9cd8c8b5cd3a15f92348c8612ae2627956a6477a74a3db9d6"
+    },
+    "root-verify-checks.log": {
+      "file": "root-verify-checks.log.gz",
+      "sha256": "84bb9c45bbd1caf5d77849e8e84bd9329dbce0a993171a97212954aeecc95af2"
+    },
+    "verification.json": {
+      "file": "verification.json.gz",
+      "sha256": "3aabeeac3e4108c4bec121e4cbcb8c50c5b6573b2d06008e44d07014e1002c0d"
+    },
+    "root-autoreview.log": {
+      "file": "root-autoreview.log.gz",
+      "sha256": "f084b69fa4dda88da3f1fbb60c3a8bbbe5761ff95de959e5670dde4a9fdd80cc"
+    },
+    "golangci-lint.log": {
+      "file": "golangci-lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    }
+  },
+  "commit": "f17c99d1b699c5c446294f1bac64c70092221996",
+  "git_status": "clean",
+  "state": "REVIEWED_PUBLISHED_NATIVE_PENDING",
+  "task_completed": false,
+  "published_head": "2923ad10c5957642a2fb9c309af7fd3a3365ea0b",
+  "published_pr": "https://github.com/agentstation/starmap/pull/199",
+  "source_tree_unchanged_after_parent_merge": true,
+  "source_tree": "f13dbba1c0ec70633ef9b4acc918a8d3b3cd4181",
+  "root_verification": {
+    "command": "make verify-checks",
+    "result": "PASS",
+    "marker": "repository verification passed (checks)",
+    "tested_head": "f17c99d1b699c5c446294f1bac64c70092221996"
+  },
+  "root_review": {
+    "gate": "pre-pr",
+    "mode": "auto",
+    "parts": 1,
+    "findings": 0,
+    "threshold": "P0",
+    "secret_scan": "clean",
+    "reviewer": "Opus5.5",
+    "effort": "high",
+    "exit_code": 0,
+    "tested_head": "2923ad10c5957642a2fb9c309af7fd3a3365ea0b"
+  },
+  "next_extension": {
+    "head": "b718ac16c",
+    "state": "LOCAL_FULL_VERIFICATION_RUNNING",
+    "contract": "Explicit recovery origin without a refresh lease",
+    "session": 6975
+  }
+}

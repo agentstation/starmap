@@ -1,0 +1,119 @@
+{
+  "recorded_utc": "2026-09-29T20:21:51.996388+00:00",
+  "commit": "530d4d8058da7cd08668066db128c35a8de13478",
+  "branch": "codex/recovery-activation-coordinator",
+  "worktree": "/private/tmp/starport-recovery-activation-20260929",
+  "go_version": "go version go1.27.1 darwin/arm64",
+  "test": "TestClosedFinalHistoryFullOwnerCompositionAndRestart",
+  "backends": [
+    "Badger",
+    "SQLite",
+    "filesystem",
+    "Valkey",
+    "PostgreSQL",
+    "objectstore"
+  ],
+  "history_steps": 8,
+  "replay_positions": {
+    "kv": 4,
+    "sql": 3,
+    "blobs": 1
+  },
+  "contract": [
+    "preserve original five-step history and three typed file/stored-byte steps",
+    "final graph verifies one file and one byte claim",
+    "typed identity grant creation and withdrawal leave one user and no grants",
+    "restart reconstructs package acceptance and replays exact native receipts",
+    "decision bytes, validation time, graph images remain exact",
+    "KV, SQL, and blob import barriers remain closed",
+    "all five separate activation requirements remain unsatisfied"
+  ],
+  "results": {
+    "verified-race": {
+      "test_results": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_result": "pass",
+      "seconds": 56.046,
+      "log": "/tmp/csp13-closed-final-composition-20260929/verified-race.jsonl"
+    },
+    "verified-pure": {
+      "test_results": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_result": "pass",
+      "seconds": 38.182,
+      "log": "/tmp/csp13-closed-final-composition-20260929/verified-pure.jsonl"
+    }
+  },
+  "checks": {
+    "vet": {
+      "exit": 0,
+      "log": "/tmp/csp13-closed-final-composition-20260929/vet.log"
+    },
+    "lint": {
+      "exit": 0,
+      "log": "/tmp/csp13-closed-final-composition-20260929/lint.log"
+    },
+    "prose": {
+      "exit": 0,
+      "log": "/tmp/csp13-closed-final-composition-20260929/prose.log"
+    },
+    "whitespace": {
+      "exit": 0,
+      "log": "/tmp/csp13-closed-final-composition-20260929/whitespace.log"
+    }
+  },
+  "source_sha256": {
+    "internal/recovery/history_final_test.go": "a20c6c27bff42ad742ffc33e574a3244ccacdc2a605f72cdde686bc2af2cd374",
+    "internal/recovery/history_runner_test.go": "c387b33490d1b670dab5081356ef7792d4990760df05c5ee1c0eebcc1f9f3ee7"
+  },
+  "prior_proof_preserved": "/tmp/csp13-closed-final-20260929/verification.json",
+  "earlier_run": "race.jsonl passed before stronger restart reconstruction; final qualification is verified-race.jsonl",
+  "limits": [
+    "No complete activation coordinator or ordinary admission permission",
+    "No broad suite repeat requested",
+    "New test covers local/shared recipes; prior MySQL evidence remains separate",
+    "Restart rebuilds application capabilities with native storage handles retained; this is not an OS process crash test"
+  ],
+  "artifacts": {
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    "race.jsonl": {
+      "file": "race.jsonl.gz",
+      "sha256": "4a9620195d2eed3a04e132c9d0da1a26c0b533c527e3ec89e01bfa7e3a6d0d78"
+    },
+    "verification.json": {
+      "file": "verification.json.gz",
+      "sha256": "7d27ccaac923d9aac4ffea015821d486b557825ae536006facdc86762668dc42"
+    },
+    "verified-pure.jsonl": {
+      "file": "verified-pure.jsonl.gz",
+      "sha256": "ddf1b5243b01c0df731a4449ed87ffd5a419a25bfc93f5af05b7fbfcf401dc3d"
+    },
+    "verified-race.jsonl": {
+      "file": "verified-race.jsonl.gz",
+      "sha256": "d46674571fc792a5f2e39158aa94c8a79dfee9bb3391977065bd575d81b628f2"
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "whitespace.log": {
+      "file": "whitespace.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "state": "LOCAL_COMPONENT_QUALIFIED",
+  "task_completed": false
+}

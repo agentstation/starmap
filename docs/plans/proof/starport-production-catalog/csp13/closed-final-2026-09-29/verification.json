@@ -1,0 +1,184 @@
+{
+  "source_commit": "6e8b687155553a67221685faeee622fc250d9b08",
+  "base": "497fbef223941d7efd00e22fb4fbfd633a396ec2",
+  "results": {
+    "vet": {
+      "command": [
+        "go",
+        "vet",
+        "./internal/recovery"
+      ],
+      "exit_code": 0,
+      "log": "/tmp/csp13-closed-final-20260929/vet-final.log"
+    },
+    "lint": {
+      "command": [
+        "go",
+        "run",
+        "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2",
+        "run",
+        "--allow-parallel-runners",
+        "./internal/recovery"
+      ],
+      "exit_code": 0,
+      "log": "/tmp/csp13-closed-final-20260929/lint-final.log"
+    },
+    "prose": {
+      "command": [
+        "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+        "lint",
+        "internal/recovery/history_final.go",
+        "internal/recovery/history_final_test.go",
+        "internal/recovery/history_runner_test.go",
+        "internal/recovery/history_package.go",
+        "internal/recovery/history_acceptance.go",
+        "internal/recovery/README.md",
+        "--format",
+        "text"
+      ],
+      "exit_code": 0,
+      "log": "/tmp/csp13-closed-final-20260929/prose-final.log"
+    },
+    "dependency": {
+      "command": [
+        "bash",
+        "scripts/verify-dependency-direction.sh"
+      ],
+      "exit_code": 0,
+      "log": "/tmp/csp13-closed-final-20260929/dependency-final.log"
+    },
+    "layout": {
+      "command": [
+        "bash",
+        "scripts/verify-package-layout.sh"
+      ],
+      "exit_code": 0,
+      "log": "/tmp/csp13-closed-final-20260929/layout-final.log"
+    },
+    "whitespace": {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "/tmp/csp13-closed-final-20260929/whitespace-final.log"
+    },
+    "race": {
+      "go_version": "go version go1.27.1 darwin/arm64",
+      "passed": 32,
+      "failed": 0,
+      "skipped": 0,
+      "package_result": "pass",
+      "seconds": 191.483,
+      "log": "/tmp/csp13-closed-final-20260929/verified-race.jsonl"
+    },
+    "pure": {
+      "go_version": "go version go1.27.1 darwin/arm64",
+      "passed": 32,
+      "failed": 0,
+      "skipped": 0,
+      "package_result": "pass",
+      "seconds": 136.449,
+      "log": "/tmp/csp13-closed-final-20260929/verified-pure.jsonl",
+      "CGO_ENABLED": "0"
+    }
+  },
+  "source_sha256": {
+    "internal/recovery/README.md": "fd6f4230fe71cb6235f1e9de486386c1e3440a91f0b5493034a8b1a8fd720183",
+    "internal/recovery/history_acceptance.go": "037212616ee13671e798a725f3b9d95ddd12b9d877d9971af60b92e5a0b7be7f",
+    "internal/recovery/history_final.go": "2576fee1b22373e1e66dc5fd37fa1c41e9709e173b826243cba214492238e748",
+    "internal/recovery/history_final_test.go": "9270abaaf85cab40a780227dc0a8b56676975a0a7e238b98af99211769230ba3",
+    "internal/recovery/history_package.go": "facae222472ba748fa2afddf2d1198e7c87174e4cb191cdbbe72f4d81f820e35",
+    "internal/recovery/history_runner_test.go": "d8832f7f567f1778fd260c38c7508349445bdd71538411b3f1dc65246335878b"
+  },
+  "native_backends": [
+    "Badger",
+    "Valkey",
+    "SQLite",
+    "PostgreSQL",
+    "MySQL",
+    "filesystem",
+    "objectstore"
+  ],
+  "limitations": [
+    "No activation or native barrier release",
+    "Requires settings, canonical files, catalog selection, transport trust, administrator credential owner capabilities",
+    "Physical native Linux/Windows qualification remains outside this Mac run",
+    "Known missing/corrupt final preparation refuses; deleting all final-stage artifacts while still closed cannot prove prior final preparation"
+  ],
+  "historical_failures": {
+    "initial_local": "fmt %p private fields leak, fixed with private state pointer",
+    "initial_race": "Retained KV revision inspection missed changed native revision, fixed with guarded native owner decoder",
+    "overlapping_final_runs": "Six-minute timeout from overlapping native checks and five-step fixtures; final closed-final fixtures now use two mandatory native revision rotations",
+    "stopped_qualified_runs": "Stopped this agent's overlapping binaries before final qualification"
+  },
+  "artifacts": {
+    "dependency-final.log": {
+      "file": "dependency-final.log.gz",
+      "sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    "final-pure.jsonl": {
+      "file": "final-pure.jsonl.gz",
+      "sha256": "dbe25f8a5b6e5288ab7dcc4f83aa058892adc2ee2c7914b9173860f36377b165"
+    },
+    "final-race.jsonl": {
+      "file": "final-race.jsonl.gz",
+      "sha256": "953db15f7e50ef6e33114e8d6bb1145116cd4c46c35bcebfca16eb31ad490079"
+    },
+    "layout-final.log": {
+      "file": "layout-final.log.gz",
+      "sha256": "38f931d186ffc7c2aebf37e21bbc30a766a78a75a7a6d691379ab8a7b82a1f89"
+    },
+    "lint-final.log": {
+      "file": "lint-final.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "69f207173e6f495ce1d9f97da675e18cfa3aa3ef975adf5fa5cb7305ba5e2fc3"
+    },
+    "prose-final.log": {
+      "file": "prose-final.log.gz",
+      "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087"
+    },
+    "pure.jsonl": {
+      "file": "pure.jsonl.gz",
+      "sha256": "15a167b1b272f3cdd3be5d433071649b56af3310b338ef537f98df67b8638df8"
+    },
+    "qualified-pure.jsonl": {
+      "file": "qualified-pure.jsonl.gz",
+      "sha256": "e1fb741ffc93f6ed314bcef8ee0a6769f433a45db8f011c6a945ac2eaf313b33"
+    },
+    "qualified-race.jsonl": {
+      "file": "qualified-race.jsonl.gz",
+      "sha256": "4e1b170be98e9f0e94060eec88246af7b539f384afeac2202dbe120de4a924bc"
+    },
+    "race.jsonl": {
+      "file": "race.jsonl.gz",
+      "sha256": "205a30ce20af3dbd951f0e65adcc903d60748cb8185249dc48f502f5bed8f01e"
+    },
+    "verification.json": {
+      "file": "verification.json.gz",
+      "sha256": "442e198bf43c209fca94228df377a8cea3b62112d4911b13d3e224529068f51c"
+    },
+    "verified-pure.jsonl": {
+      "file": "verified-pure.jsonl.gz",
+      "sha256": "926edd1be6c785707f92c969178836caba2555e22eee02018d5eea947a96f981"
+    },
+    "verified-race.jsonl": {
+      "file": "verified-race.jsonl.gz",
+      "sha256": "3c78313b97f77b4acf426b19be82c2294ddf5365d1bcff02dd27aa7b86d8fd5f"
+    },
+    "vet-final.log": {
+      "file": "vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "whitespace-final.log": {
+      "file": "whitespace-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "state": "LOCAL_COMPONENT_QUALIFIED",
+  "task_completed": false
+}

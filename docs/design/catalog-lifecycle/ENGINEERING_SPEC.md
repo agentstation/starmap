@@ -2660,6 +2660,7 @@ Migrate existing unprefixed records with counts, reference checks, and an explic
 Unprefixed capture requires the explicit operator option `backup create --unprefixed-valkey` and a dedicated, fenced source database.
 Ordinary startup and capture retain canonical deployment namespaces. They must never select unprefixed records as a fallback.
 The manifest binds the source layout. Capture reports record counts and applies the same reference validation as ordinary backups.
+
 Preparation imports into a separate canonical target namespace with startup barriers intact. Exact retries retain the original operation and expiration times.
 Capture and preparation do not switch running gateways. Independent history reconciliation and controlled activation must precede that switch.
 
@@ -5397,3 +5398,15 @@ Incomplete fleet uploads retain matching bytes as inactive evidence. Durable cat
 These checks establish captured-state consistency. Independent later history, deployment replay, controlled activation, and interrupted path recovery remain separate requirements.
 
 The [catalog reference proof](../../plans/proof/starport-production-catalog/csp13/catalog-reference-validation-2026-09-29/verification.json) records fail-before results, source commits, the actual #197 merge, and native qualification.
+
+### Server TLS during recovery activation (September 29, 2026)
+
+When the operator enables server TLS, composition must read the selected certificate and private key through their native file-access policies.
+Each read must have a size bound and an unchanged native identity. The parser must reject an invalid or mismatched pair.
+This validation must finish before storage opening, local setup, or recovery activation effects.
+
+The HTTP runtime must serve HTTPS with the validated pair. It must refuse an incomplete pair and never fall back to plaintext after TLS failure.
+Disabled server TLS permits HTTP, including explicit external TLS termination. Recovery checks must validate the selected deployment configuration without substituting captured TLS material.
+
+Required evidence covers the actual HTTPS listener, plaintext refusal, invalid material before storage effects, native access policies, and disabled TLS.
+The [activation findings](../../plans/proof/starport-production-catalog/csp13/activation-findings-2026-09-29/verification.json) record the runtime defect and repair state.

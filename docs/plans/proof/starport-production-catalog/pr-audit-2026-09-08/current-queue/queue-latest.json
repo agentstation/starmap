@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-29T20:08:35.779572+00:00",
+  "checked_at": "2026-09-29T20:32:23.784370+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -2076,26 +2076,38 @@
     }
   },
   "history_coordination": {
-    "head": "91cd47f60ea62a0f603eedc829ec826dd136fe36",
+    "head": "e2472d42",
     "owner": "this chat",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-catalog-activation",
     "proof": "csp13/history-final-qualification-2026-09-29/verification.json",
-    "state": "REVIEWED_PUBLISHED_NATIVE_PENDING",
-    "next_action": "Await exact-head native CI and protected merge. Review the offline catalog materializer and closed-final capability; compose topology transfer and coordinated activation.",
-    "processes": {},
+    "state": "PUBLISHED_NATIVE_FAILURE_REPAIR_ACTIVE",
+    "next_action": "Repair native Windows cumulative timeout on existing PR393. Complete TLS enforcement, review operator inputs, and compose topology activation.",
+    "processes": {
+      "producer_verify_checks": {
+        "session": 6975,
+        "log": "/tmp/csp13-recovery-origin-20260929/root-verify-checks.log"
+      },
+      "consumer_tls_checks": {
+        "session": 27361,
+        "log": "/tmp/csp13-tls-qualification-20260929/root-checks.json"
+      }
+    },
     "agents": {
       "catalog_materializer": {
-        "worktree": "/private/tmp/starmap-fleet-review-20260926",
-        "branch": "codex/catalog-recovery-materialization"
+        "worktree": "/private/tmp/starmap-recovery-origin-20260929",
+        "branch": "codex/catalog-recovery-origin",
+        "owner": "recovery publication origin"
       },
       "activation_coordinator": {
-        "worktree": "/private/tmp/starport-recovery-activation-20260929",
-        "branch": "codex/recovery-activation-coordinator"
+        "worktree": "/private/tmp/starport-history-ci-repair-20260929",
+        "branch": "codex/recovery-history-ci-repair",
+        "owner": "native recovery test partitioning"
       },
       "operator_recovery_inputs": {
         "worktree": "/private/tmp/starport-recovery-operator-inputs-20260929",
-        "branch": "codex/recovery-operator-inputs"
+        "branch": "codex/recovery-operator-inputs",
+        "owner": "verified operator input capability"
       }
     },
     "pr": "https://github.com/agentstation/starport/pull/393",
@@ -2113,10 +2125,11 @@
     },
     "published_head": "3e96860e340f7073dd93ca8a50779aade730ad0e",
     "published_branch": "codex/recovery-history-coordination",
-    "successor_state": "CLOSED_FINAL_INTEGRATED_AWAITING_COMPOSITION_TEST"
+    "successor_state": "CLOSED_FINAL_COMPOSITION_QUALIFIED_TLS_REPAIR_ACTIVE",
+    "activation_findings": "csp13/activation-findings-2026-09-29/verification.json"
   },
   "catalog_topology": {
-    "state": "REPAIRED_REVIEWED_PUBLISHED_NATIVE_PENDING",
+    "state": "MERGED",
     "pr": "https://github.com/agentstation/starmap/pull/198",
     "head": "1c2c05452edbbb9888685ac438eac86d5fd665d9",
     "base": "27fee03e33fd430c70f8235a08d665d24804c4b9",
@@ -2185,7 +2198,9 @@
       "full_prose": 0,
       "generated_docs": 0
     },
-    "next_action": "Await complete native CI. Recheck exact head, base, all checks and review threads before protected merge."
+    "next_action": "Qualify offline materialization and explicit topology recovery.",
+    "merge": "4bf9b0b83c47df46ea7f95476ec747a499f7b7a5",
+    "disposition": "Merged after all 32 checks passed."
   },
   "starport392_completion": {
     "state": "MERGED",
@@ -2225,5 +2240,73 @@
         "sha256": "0f7a8fd0cdb64614f4e1209f2ef839980b1e3c727f350cd8bf1fcd2cf4a33874"
       }
     }
+  },
+  "starmap198_completion": {
+    "state": "MERGED",
+    "task": "CSP13",
+    "task_completed": false,
+    "checked_at": "2026-09-29T20:28:53.406119+00:00",
+    "pr": "https://github.com/agentstation/starmap/pull/198",
+    "head": "b6bf9c5d782f223152c0aa69ff9b2a51ef9ceb40",
+    "base": "27fee03e33fd430c70f8235a08d665d24804c4b9",
+    "merge": "4bf9b0b83c47df46ea7f95476ec747a499f7b7a5",
+    "merged_at": "2026-09-29T20:28:50Z",
+    "checks": {
+      "pass": 32,
+      "fail": 0,
+      "pending": 0,
+      "review_threads": 0,
+      "review_pagination_complete": true,
+      "protection_preserved": true
+    },
+    "review": "one clean pre-PR part on b6bf9c5d; Opus5.5 high; configured P0",
+    "run": 36620785985,
+    "reviewed_tree_equals_merge_tree": true,
+    "merge_signature_verified": true,
+    "merge_method": "squash",
+    "reviewed_tree": "2ecaffb7afbb60eb66912718ad4907f6d3e7a42f",
+    "limits": "Complete recovery and topology activation remain open.",
+    "artifacts": {
+      "ancestry.json": {
+        "file": "ancestry.json.gz",
+        "sha256": "683c6685b2583952a302303e71c1d13aa7d453b454a44d701a1890d1887ab859"
+      },
+      "merge-commit.json": {
+        "file": "merge-commit.json.gz",
+        "sha256": "f56273b2d3acc0b508b7deae75e3ff27367b1d5acd702916adb54565cec40ab3"
+      },
+      "merged-pr.json": {
+        "file": "merged-pr.json.gz",
+        "sha256": "5aca0fa83aef7cf7e77a844b6bef29931739e6abc877cf186a9c15b6cc4cdc78"
+      },
+      "premerge.json": {
+        "file": "premerge.json.gz",
+        "sha256": "181cd0295095456ac79b71d3bbd084391587521f281d50bfdfca1a7b19cccc7f"
+      },
+      "protection.json": {
+        "file": "protection.json.gz",
+        "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e"
+      },
+      "reviewed-commit.json": {
+        "file": "reviewed-commit.json.gz",
+        "sha256": "b674509941ae82babe1f77942379e457391ce0bcd6bd0174886c5a46edf64bcc"
+      },
+      "threads.json": {
+        "file": "threads.json.gz",
+        "sha256": "41ce30512b55e7f5344cda549a243b70b29a3f770ebd8b5b7f0f7529ef23d48f"
+      },
+      "verification.json": {
+        "file": "verification.json.gz",
+        "sha256": "001c554f0a0bad088d9859c860f4a0ceb8fe00534d2c838c63966f04907d96f7"
+      }
+    }
+  },
+  "catalog_materialization": {
+    "pr": "https://github.com/agentstation/starmap/pull/199",
+    "head": "2923ad10c5957642a2fb9c309af7fd3a3365ea0b",
+    "state": "REVIEWED_PUBLISHED_NATIVE_PENDING",
+    "proof": "csp13/catalog-materialization-2026-09-29/verification.json",
+    "local_extension_head": "b718ac16c",
+    "next_action": "Qualify and review the explicit recovery-origin extension, update the existing PR, then qualify native CI."
   }
 }

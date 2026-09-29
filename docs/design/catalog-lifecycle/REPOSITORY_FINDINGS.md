@@ -5071,14 +5071,32 @@ PR #391 publishes the reviewed repair. Its native checks remain open.
 
 Windows ARM at `d9b502da2` passed 1,134 results and failed six application results. Git converted two canonical journal fixtures to CRLF.
 The validators correctly refused those bytes. Published `90ad16c2d` pins both fixtures to LF without changing production code or assertions.
+
 Forced CRLF checkout now preserves their exact repository bytes. Seven focused application race results pass.
 The [checkout proof](../../plans/proof/starport-production-catalog/csp13/windows-journal-checkout-2026-09-29/verification.json) retains native failures, the repair, and required review evidence.
 Replacement native qualification and merge remain open.
 
 Local `fa214f6a5` adds explicit unprefixed Valkey capture. Ordinary startup and capture retain canonical namespaces.
 The source exposes enumeration only and binds its observed backend incarnation. Mixed deployment namespaces and import barriers cause refusal.
+
 The manifest records the selected source layout. Capture and verification report counts and validate references.
 Preparation imports into the canonical target namespace under startup barriers. Exact retries preserve the result and original source bytes.
 
 The [local proof](../../plans/proof/starport-production-catalog/csp13/unprefixed-capture-2026-09-29/verification.json) records 27 storage and CLI passes and two application passes without skips.
 This branch remains unpublished. Required review, full repository checks, independent history, and controlled activation remain open.
+
+### Recovery activation and server TLS (September 29, 2026)
+
+Starmap #198 merged as `4bf9b0b83` after all 32 checks passed. The reviewed tree equals the merged tree.
+The [merge proof](../../plans/proof/starport-production-catalog/csp13/starmap198-merge-2026-09-29/verification.json) records unchanged branch protection and the actual commit.
+
+The activation audit found that Starport ignored selected server TLS material. Its HTTP runtime always served plaintext.
+Production composition also opened storage before rejecting invalid certificate material. The fail-before tests reproduce both defects.
+
+Local server regression tests now pass. The configuration helper checks native file access, bounds each input, and parses the matching certificate pair.
+Application composition must pass that pair to the HTTPS listener before any storage or setup effects.
+The complete repair still needs native CI and publication.
+
+Starport #393 native Windows reached the default ten-minute recovery package timeout. The captured run contains no assertion failure before that timeout.
+Its repair partitions the complete Windows recovery suite and checks the union of all test owners.
+The [activation findings](../../plans/proof/starport-production-catalog/csp13/activation-findings-2026-09-29/verification.json) retain the original failures and current repair ownership.

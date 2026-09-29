@@ -1,0 +1,85 @@
+{
+  "state": "IN_PROGRESS",
+  "task": "CSP13",
+  "task_completed": false,
+  "checked_at": "2026-09-29T20:32:23.784370+00:00",
+  "consumer_head": "e2472d42",
+  "tls": {
+    "finding": "Configured server TLS was ignored by HTTP runtime and application composition. Invalid PEM did not prevent storage opening.",
+    "server_fail_before": {
+      "tests": {
+        "fail": 1
+      },
+      "packages": {
+        "fail": 1
+      }
+    },
+    "server_race": {
+      "tests": {
+        "pass": 3
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    "composition_fail_before": {
+      "tests": {
+        "fail": 2
+      },
+      "packages": {
+        "fail": 1
+      }
+    },
+    "state": "Server repair is local and uncommitted. Application validation and wiring remain open."
+  },
+  "windows_timeout": {
+    "run": 36624007937,
+    "job": 109596226282,
+    "head": "3e96860e340f7073dd93ca8a50779aade730ad0e",
+    "census": {
+      "tests": {
+        "pass": 544,
+        "skip": 106
+      },
+      "packages": {
+        "pass": 2,
+        "fail": 1
+      }
+    },
+    "cause": "Cumulative recovery package execution reached the Go default ten-minute timeout. No assertion failure occurred before the timeout.",
+    "repair_owner": "activation_coordinator",
+    "worktree": "/private/tmp/starport-history-ci-repair-20260929",
+    "branch": "codex/recovery-history-ci-repair",
+    "next_action": "Partition Windows recovery tests with a complete owner census. Preserve every distinct contract and aggregate required coverage."
+  },
+  "artifacts": {
+    "/tmp/csp13-tls-qualification-20260929/fail-before.jsonl": {
+      "file": "tls-fail-before.jsonl.gz",
+      "sha256": "999b0e2afa1134c3e0354be4a009abc661a6b2cfb712060ed016877f6d7c5752"
+    },
+    "/tmp/csp13-tls-qualification-20260929/server-race.jsonl": {
+      "file": "tls-server-race.jsonl.gz",
+      "sha256": "9ff38addab59175c92ac5517f64f4752c2f20a37ce9fed4710a7c0f56f6bf180"
+    },
+    "/tmp/csp13-tls-qualification-20260929/composition-fail-before.jsonl": {
+      "file": "tls-composition-fail-before.jsonl.gz",
+      "sha256": "81968ee92ddc042c2efa49797f1cfbbf79495a7b3d0d57acf7df57aa4b19673b"
+    },
+    "/tmp/csp13-history-qualification-20260929/windows-native/toolchain.txt": {
+      "file": "windows-toolchain.txt.gz",
+      "sha256": "7c7c991e11d8577e1a64f7715e46b43e8612dfa5c12e54d4a54176d2335ac55d"
+    },
+    "/tmp/csp13-history-qualification-20260929/windows-native/packages.txt": {
+      "file": "windows-packages.txt.gz",
+      "sha256": "43ebe1a454505e91549b06887a28cf96dde7ee946ee223afbbc023430cc46dc8"
+    },
+    "/tmp/csp13-history-qualification-20260929/windows-native/tests.jsonl": {
+      "file": "windows-tests.jsonl.gz",
+      "sha256": "5a5b7d963a49f8b4946eb99940e809dab7804a56a95d622fb7fdf96fbf6cec03"
+    },
+    "/tmp/csp13-history-qualification-20260929/windows-native/compose.jsonl": {
+      "file": "windows-compose.jsonl.gz",
+      "sha256": "b7a516fcbe6b4cbc676e510a8363c9343944c1b7fb6f9b9fc1a8cee05ce7cbf9"
+    }
+  }
+}

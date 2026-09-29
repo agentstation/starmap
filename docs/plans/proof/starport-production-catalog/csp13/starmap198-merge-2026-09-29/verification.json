@@ -1,0 +1,60 @@
+{
+  "state": "MERGED",
+  "task": "CSP13",
+  "task_completed": false,
+  "checked_at": "2026-09-29T20:28:53.406119+00:00",
+  "pr": "https://github.com/agentstation/starmap/pull/198",
+  "head": "b6bf9c5d782f223152c0aa69ff9b2a51ef9ceb40",
+  "base": "27fee03e33fd430c70f8235a08d665d24804c4b9",
+  "merge": "4bf9b0b83c47df46ea7f95476ec747a499f7b7a5",
+  "merged_at": "2026-09-29T20:28:50Z",
+  "checks": {
+    "pass": 32,
+    "fail": 0,
+    "pending": 0,
+    "review_threads": 0,
+    "review_pagination_complete": true,
+    "protection_preserved": true
+  },
+  "review": "one clean pre-PR part on b6bf9c5d; Opus5.5 high; configured P0",
+  "run": 36620785985,
+  "reviewed_tree_equals_merge_tree": true,
+  "merge_signature_verified": true,
+  "merge_method": "squash",
+  "reviewed_tree": "2ecaffb7afbb60eb66912718ad4907f6d3e7a42f",
+  "limits": "Complete recovery and topology activation remain open.",
+  "artifacts": {
+    "ancestry.json": {
+      "file": "ancestry.json.gz",
+      "sha256": "683c6685b2583952a302303e71c1d13aa7d453b454a44d701a1890d1887ab859"
+    },
+    "merge-commit.json": {
+      "file": "merge-commit.json.gz",
+      "sha256": "f56273b2d3acc0b508b7deae75e3ff27367b1d5acd702916adb54565cec40ab3"
+    },
+    "merged-pr.json": {
+      "file": "merged-pr.json.gz",
+      "sha256": "5aca0fa83aef7cf7e77a844b6bef29931739e6abc877cf186a9c15b6cc4cdc78"
+    },
+    "premerge.json": {
+      "file": "premerge.json.gz",
+      "sha256": "181cd0295095456ac79b71d3bbd084391587521f281d50bfdfca1a7b19cccc7f"
+    },
+    "protection.json": {
+      "file": "protection.json.gz",
+      "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e"
+    },
+    "reviewed-commit.json": {
+      "file": "reviewed-commit.json.gz",
+      "sha256": "b674509941ae82babe1f77942379e457391ce0bcd6bd0174886c5a46edf64bcc"
+    },
+    "threads.json": {
+      "file": "threads.json.gz",
+      "sha256": "41ce30512b55e7f5344cda549a243b70b29a3f770ebd8b5b7f0f7529ef23d48f"
+    },
+    "verification.json": {
+      "file": "verification.json.gz",
+      "sha256": "001c554f0a0bad088d9859c860f4a0ceb8fe00534d2c838c63966f04907d96f7"
+    }
+  }
+}
