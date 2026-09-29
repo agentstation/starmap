@@ -5318,8 +5318,30 @@ Refuse different replicas and scheduler overrides before publication. Preserve e
 Keep every storage import barrier closed. The procedure does not establish accepted-catalog consistency or current authority permission.
 
 Validate and preserve pending semantic input publications without applying them.
-Refuse unknown files, incomplete references, pending native file publications, and path-bound migration records.
-Keep those records for their separate owner recovery procedures. Do not copy native filesystem identity as portable authority.
+Refuse unknown files, incomplete references, pending native file publications, and incomplete or conflicting migration records.
+Keep those records for their separate owner recovery procedures. Validated completed migrations follow the historical-record contract below. Do not copy native filesystem identity as portable authority.
 Independent post-backup history and controlled activation remain required before inference.
 
 The [runtime evidence proof](../../plans/proof/starport-production-catalog/csp13/runtime-evidence-recovery-2026-09-28/verification.json) records the current checks and remaining qualification.
+
+### Completed migration history during restore: September 28, 2026
+
+A completed runtime directory move leaves a receipt and completion record tied to its original paths.
+Do not install those records as native authority at a new restore location.
+Starmap validates the matching canonical records against the captured directory, configured owner, explicit scheduler identity, and retained seed.
+The validated inventory must contain the same seed digest. Mutable catalog layers still require their current owner checks.
+
+Treat historical paths as opaque identities. Compare the captured target path exactly without opening former source or target locations.
+Do not apply the current host's path rules to another platform's historical strings.
+The restore owner reads bounded records from the verified backup. It does not discover or trust arbitrary host files.
+
+Starport leaves both validated records in the original backup and inactive preparation.
+Report their disposition as `verified-history`, with no active destination.
+Publish the remaining runtime tree through its full inventory and owner checks.
+An exact retry must select the same files and retain the same historical dispositions.
+Missing or conflicting completion stops before target preparation. Other pending migration markers still prevent publication.
+
+This procedure does not complete an interrupted move or open admission.
+Native pending journals, accepted-catalog consistency, independent later history, and controlled activation remain separate requirements.
+
+The [completed migration restore proof](../../plans/proof/starport-production-catalog/csp13/completed-migration-restore-2026-09-28/verification.json) records checks, the actual prerequisite merge, and remaining qualification.

@@ -1,0 +1,298 @@
+{
+  "recorded_at": "2026-09-29T04:22:15.422974+00:00",
+  "status": "completed migration restore prerequisite; CSP13 remains in_progress",
+  "producer": {
+    "head": "f38ffa79513b652f069e511a3d284bf23ee8efac",
+    "tree": "a8ec1095b4831be0d4419f3484d862c90251cc9c",
+    "branch": "codex/retained-runtime-recovery",
+    "pull_request": 196,
+    "native_qualification": "pending"
+  },
+  "consumer": {
+    "head": "e886dbb500fbe69646c9fb642a821be6760ac31d",
+    "tree": "a7bd570fe151f03e95c42237a67103bc3fc0a543",
+    "branch": "codex/storage-recovery",
+    "published": false,
+    "module": "github.com/agentstation/starmap v0.16.6-0.20260929041405-f38ffa79513b",
+    "qualification": "GOWORK=off, published module, no replacement"
+  },
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "checks": {
+    "producer-final-race": {
+      "pass": 42
+    },
+    "producer-purego": {
+      "pass": 42
+    },
+    "consumer-pinned-race": {
+      "pass": 42,
+      "skip": 2
+    },
+    "consumer-pinned-purego": {
+      "pass": 42,
+      "skip": 2
+    },
+    "consumer-pinned-architecture": {
+      "pass": 8
+    }
+  },
+  "static_checks": "Repository checks, consumer pinned lint and vet, module verification, tidy diff, changed prose, and diff checks pass.",
+  "contract": [
+    "Compare completed receipt and completion bytes, canonical encoding, configured owner and scheduler identity, captured path, and seed digest.",
+    "Keep approved completed history in the verified backup and inactive preparation. Its disposition is verified-history, never active native authority.",
+    "Validate and publish the remaining runtime tree. Exact retries retain the same selection. All admission barriers remain closed.",
+    "Missing or conflicting completed history refuses before preparation. A pending move beside completed records still prevents publication.",
+    "Former paths need not exist. POSIX, Windows drive, and Windows share identities remain opaque historical strings."
+  ],
+  "review": {
+    "gate": "pre-pr",
+    "mode": "auto",
+    "base": "8020da753f2809d32cd4377e94abb7ecdea56b07",
+    "engine": "Claude Opus 5.5 high",
+    "threshold": "P0-only",
+    "passes": 1,
+    "findings": 0,
+    "bundle_bytes": 46636,
+    "secret_scan": "clean"
+  },
+  "merge": {
+    "repository": "agentstation/starmap",
+    "pull_request": 195,
+    "tested_head": "3b5d06a5f3c1de88b7a8de2d939cb0e58622ba38",
+    "actual_merge": "8020da753f2809d32cd4377e94abb7ecdea56b07",
+    "merged_at": "2026-09-29T04:06:22Z",
+    "tree": "4fab5d29ebe1c2dea3dd8f07f026c81e55239732",
+    "checks": 32,
+    "review_threads": 0,
+    "protection": "Strict checks and administrator enforcement retained. Exact-head squash merge, no bypass.",
+    "integration_commit": "f38ffa79513b652f069e511a3d284bf23ee8efac",
+    "integration_tree_unchanged": true
+  },
+  "earlier_ci_failure": {
+    "repository": "agentstation/starmap",
+    "pull_request": 196,
+    "head": "782d9d1e60d926c016e3c086554b32bb80fc9079",
+    "run": 36519180163,
+    "job": 109248093319,
+    "name": "Publication macos-15",
+    "status": "failure",
+    "failed_step": "Retain native publication evidence",
+    "annotation": "Unable to make request: ENOTFOUND",
+    "test_steps": "success",
+    "evidence": "artifact unavailable; this job does not qualify the candidate",
+    "next_action": "Require successful current-head native CI and retained artifacts."
+  },
+  "iteration_notes": [
+    "The initial full-catalog integration fixture was confirmed live and CPU-active, then stopped deliberately to remove unnecessary repeated capacity work. It is not passing evidence.",
+    "A small catalog now exercises the same actual migration, backup, local stores, and restore paths. Dedicated full-catalog capacity coverage remains.",
+    "The first lint rejected excess function complexity. The historical decoder now owns intrinsic and canonical validation. Final repository checks pass.",
+    "The final pinned runs include the verified-history disposition and the pending-move regression. Earlier development runs are supporting evidence only."
+  ],
+  "cleanup": {
+    "checked_at": "2026-09-29T04:19:05.042921+00:00",
+    "branches": [
+      {
+        "branch": "codex/recovery-credential-policy",
+        "local_head": "782d9d1e60d926c016e3c086554b32bb80fc9079",
+        "preserved_by": "f38ffa79513b652f069e511a3d284bf23ee8efac",
+        "remote": "already absent after merge",
+        "checked_out": false
+      },
+      {
+        "branch": "codex/recovery-file-access",
+        "local_head": "ef2b9fcec95dbc0f882507cab2274d10af41623d",
+        "preserved_by": "f38ffa79513b652f069e511a3d284bf23ee8efac",
+        "remote": "already absent after merge",
+        "checked_out": false
+      }
+    ]
+  },
+  "remaining": [
+    "Pending native journals and incomplete path migration recovery.",
+    "Accepted-catalog consistency and independent post-backup permission, spend, and uncertain-work history.",
+    "Controlled activation, populated migration, and full CSP13 acceptance.",
+    "Full consumer verification, required review, publication, native CI, and merge."
+  ],
+  "artifacts": [
+    {
+      "path": "producer-final-race.jsonl.gz",
+      "sha256": "d80465f9bb59de3cbde9c25d83fb86f4e33c03afa068f45ccb238913ef24f951",
+      "uncompressed_sha256": "c452af3a999f68591c96b4604948adb9a8ec481fdb7020bcdb2e8d5773d59502",
+      "uncompressed_bytes": 43073
+    },
+    {
+      "path": "producer-purego.jsonl.gz",
+      "sha256": "03aa435b9bd8562ec7e0d2bd62d7ed4dbf06c64c0225312b0af948b39b36f2b2",
+      "uncompressed_sha256": "87cbc66121ec3255d71cbe58d39e832eb63920516ae312fa257a49e7f11493c1",
+      "uncompressed_bytes": 43064
+    },
+    {
+      "path": "producer-checks.log.gz",
+      "sha256": "990cdd5054cdb22e2c363389465a54738a37c7188a6d3b4c7e47aff827caf2b5",
+      "uncompressed_sha256": "08ee09bdd252652dda4368fcb025c3dbb7573d79e28ed207e53c8947af92ccfa",
+      "uncompressed_bytes": 66070
+    },
+    {
+      "path": "producer-review.log.gz",
+      "sha256": "1c7dea5023e6efe233f7fd28d790859f1fd1ef41351318d32b6f3313535d591b",
+      "uncompressed_sha256": "de0aacdf4ede1f321f4f8cdcbc4075c559a0129e0bcdf9cc47f1b15e99ff3393",
+      "uncompressed_bytes": 1369
+    },
+    {
+      "path": "producer-lint.log.gz",
+      "sha256": "0fbba8fbc769d234ae10ae7547c88177ba9ab700b3d41c5e16954755638fac12",
+      "uncompressed_sha256": "bf822da8f6894d4b1c8916829193d7782673b5418947f6e650aaad4ee4d1bcd9",
+      "uncompressed_bytes": 308
+    },
+    {
+      "path": "consumer-race.jsonl.gz",
+      "sha256": "cf1358b908a788930309471ca327cc8168dc553eac1587c3f2cd5b71131a222a",
+      "uncompressed_sha256": "5dab47d2a01dfc870db62ff101f45611fdf824fbae336312719dc5415f13f094",
+      "uncompressed_bytes": 122028
+    },
+    {
+      "path": "consumer-focused-race.jsonl.gz",
+      "sha256": "e2a9d0a3d1f47fb7dfe5793c5860775b87a17a52d805b9c526c30744d330adde",
+      "uncompressed_sha256": "945b5a23b25bb8a6bcaa7b566dff07c3b75d07d46297cb25b26fd7f42f4f372d",
+      "uncompressed_bytes": 149421
+    },
+    {
+      "path": "consumer-purego.jsonl.gz",
+      "sha256": "2e717749183746ef2b5bfe888c1fc926b657adf8d0ecbb6b07e0db8b3f40c8c1",
+      "uncompressed_sha256": "9a747e15432baf7bfbfc6e03027750efa1e74189c7cbfa4f71b03054559d9d57",
+      "uncompressed_bytes": 150920
+    },
+    {
+      "path": "pending-race.jsonl.gz",
+      "sha256": "aa46b7e81d3877758b37f34a6eb667fdd12181a1c6a8cd3e0065bc28e68d74f1",
+      "uncompressed_sha256": "d3eed5013775d0c5991a1d4fb4b0def5ef49c14aeb2888bc8ff14b9dfc2ab7f4",
+      "uncompressed_bytes": 25017
+    },
+    {
+      "path": "consumer-pinned-race.jsonl.gz",
+      "sha256": "fbffece521735cec9a7d26131a3ecd04c206bf01b7159986172078d68df32563",
+      "uncompressed_sha256": "12f5115867423b9d5c1b0b08110a20592ff7effd7b9202ccf73391979f094dbd",
+      "uncompressed_bytes": 446607
+    },
+    {
+      "path": "consumer-pinned-purego.jsonl.gz",
+      "sha256": "d0c036b58f4e469ec36a4a0d6978367bd08003c6a4a831f7ce1066aa0038bebf",
+      "uncompressed_sha256": "c424cae6c56f9d4950a3797958d674cb7a49431205548d0a8e6d9a0fb19ce6ef",
+      "uncompressed_bytes": 446989
+    },
+    {
+      "path": "consumer-pinned-architecture.jsonl.gz",
+      "sha256": "1bb32c64616e44ebafc0fd8b8d572fb0330f639d725d4ab5255498c6d25366c3",
+      "uncompressed_sha256": "a3de821977d18730dc55b57c68203aa9f46b80595f3bac25a429a53f4d92c1bb",
+      "uncompressed_bytes": 8728
+    },
+    {
+      "path": "consumer-pinned-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "uncompressed_bytes": 10
+    },
+    {
+      "path": "consumer-pinned-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "consumer-tidy.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "consumer-modules.log.gz",
+      "sha256": "4699dce40a065353f016ef7eb2c309ee9dee73281263a6b29287016349618a1b",
+      "uncompressed_sha256": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+      "uncompressed_bytes": 21
+    },
+    {
+      "path": "consumer-writing.log.gz",
+      "sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b",
+      "uncompressed_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618",
+      "uncompressed_bytes": 33
+    },
+    {
+      "path": "consumer-pin.log.gz",
+      "sha256": "36e7fce1404fc2646e7ec7e819a81c46a451074f2c9d1f3d67878041c5bf82fa",
+      "uncompressed_sha256": "b6f18b8306911b015247631f055cda7928fd7b768d3fc417581930a73f192525",
+      "uncompressed_bytes": 210
+    },
+    {
+      "path": "plan-writing.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "uncompressed_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "uncompressed_bytes": 33
+    },
+    {
+      "path": "196-macos-failure.log.gz",
+      "sha256": "f948808e49fe050b98299947f06600e94201303d8d0012cc1fdff5c7656ae440",
+      "uncompressed_sha256": "b326fadda9186d29bf0a49bd2fab89ff6011b161a57d48af8279f0695971e909",
+      "uncompressed_bytes": 81
+    },
+    {
+      "path": "196-macos-job.log.gz",
+      "sha256": "32521142e10f28081842fe5dc0bb2ca446c3e49c8e06491ec1da57c236683237",
+      "uncompressed_sha256": "cb3528dde5f50db90a26e341e8f5331ee9697bbc3266ac7c8e5336d66d8cfde5",
+      "uncompressed_bytes": 228
+    },
+    {
+      "path": "196-macos-job.json.gz",
+      "sha256": "628a00fa95c7fee2403d5ca7b66a0a4da6cf4f9bf1ac745c1bde12692ffabc14",
+      "uncompressed_sha256": "6de73509104f4d75b93271e816cc248520e82ad07e7cbb752cd064e186584d84",
+      "uncompressed_bytes": 3362
+    },
+    {
+      "path": "196-macos-annotations.json.gz",
+      "sha256": "948567c69611234c46c2c1e7296013d4896dccc532d51e7831803b9e8f7100e8",
+      "uncompressed_sha256": "f3e2adc486b3cbba4a9c392db2c7a71c7ef09e130be4796997530c625edfc4fd",
+      "uncompressed_bytes": 931
+    },
+    {
+      "path": "branch-cleanup.json.gz",
+      "sha256": "459e024f49ae25e4e97e3a546bbd23197f12efd04f2ef1383c6b1daa7575c90d",
+      "uncompressed_sha256": "bcb89269d5b09ee8befeb19295f56126972cb774728ac0b4d3893f4caf12907d",
+      "uncompressed_bytes": 605
+    },
+    {
+      "path": "queue-starmap.json.gz",
+      "sha256": "2daf187d147891dedad9fabb30c59e15eff3c660775098c8eae8840986e487f2",
+      "uncompressed_sha256": "eeee4d61537db2fa7107038410a1e2ecd55403a205b9afa97e540e979d99c66c",
+      "uncompressed_bytes": 6708
+    },
+    {
+      "path": "queue-starport.json.gz",
+      "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+      "uncompressed_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "uncompressed_bytes": 3
+    },
+    {
+      "path": "195-ready.json.gz",
+      "sha256": "747f51789224910ef87e0be9dc6f917f22abfcf94c49ffc656ff5468ae3d7097",
+      "uncompressed_sha256": "3e3c1964d14becb1ce2cb79e49f2677a541f018bf92d6e286a205b2f0d74387a",
+      "uncompressed_bytes": 9805
+    },
+    {
+      "path": "195-protection.json.gz",
+      "sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce",
+      "uncompressed_sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+      "uncompressed_bytes": 1357
+    },
+    {
+      "path": "195-threads.json.gz",
+      "sha256": "dc1e9d7d2842722f84ec046c46c7c5a58a10de84d95427d4ad2b9a2fc79b2e58",
+      "uncompressed_sha256": "8e242c1c557e4e64fa8128ef32dd21ca9a5208329d06b858e6622682d0211672",
+      "uncompressed_bytes": 215
+    },
+    {
+      "path": "195-actual-merge.json.gz",
+      "sha256": "b38b2d643166fc0f96a7f423aecb3df6a018d4179c04e507d7512aecf6b7f013",
+      "uncompressed_sha256": "c4968b30ae9a5253ee271082cb5c5b9ca595775aac4ca8bfb61b9575dcdcd441",
+      "uncompressed_bytes": 231
+    }
+  ]
+}

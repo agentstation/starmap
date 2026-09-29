@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-29T03:57:57.274161+00:00",
+  "checked_at": "2026-09-29T04:22:15.422974+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -1268,37 +1268,22 @@
   },
   "remote_state_note": "Producer #187 merged. Consumer #387 awaits native CI at reviewed 6f97ba52. Eight dependency PRs retain their recorded review and repair actions.",
   "open_queue_snapshot": {
-    "checked_at": "2026-09-29T03:57:57.274161+00:00",
+    "checked_at": "2026-09-29T04:22:15.422974+00:00",
     "starmap": [
       {
         "baseRefName": "main",
-        "headRefOid": "782d9d1e60d926c016e3c086554b32bb80fc9079",
+        "headRefOid": "f38ffa79513b652f069e511a3d284bf23ee8efac",
         "isDraft": true,
         "number": 196,
-        "title": "recovery: validate retained runtime identity and replay evidence",
+        "title": "recovery: validate retained runtime and completed migration history",
         "checks_summary": {
           "SUCCESS": 11,
           "IN_PROGRESS": 11
         },
         "owner": "this chat",
-        "disposition": "Reviewed recovery prerequisite awaiting native CI.",
-        "next_action": "Merge #195 before #196. Require current exact head, base ancestry, passing checks, resolved threads, and protection.",
-        "current_proof": "../../csp13/runtime-evidence-recovery-2026-09-28/verification.json"
-      },
-      {
-        "baseRefName": "main",
-        "headRefOid": "3b5d06a5f3c1de88b7a8de2d939cb0e58622ba38",
-        "isDraft": true,
-        "number": 195,
-        "title": "recovery: inspect retained baseline exports without activation",
-        "checks_summary": {
-          "SUCCESS": 30,
-          "IN_PROGRESS": 2
-        },
-        "owner": "this chat",
-        "disposition": "Reviewed recovery prerequisite awaiting native CI.",
-        "next_action": "Merge #195 before #196. Require current exact head, base ancestry, passing checks, resolved threads, and protection.",
-        "current_proof": "../../csp13/runtime-evidence-recovery-2026-09-28/verification.json"
+        "disposition": "Reviewed runtime and completed migration recovery prerequisite. Native CI pending.",
+        "next_action": "Require all current-head checks and artifacts, resolved review threads, exact base ancestry, and protection before merge.",
+        "current_proof": "../../csp13/completed-migration-restore-2026-09-28/verification.json"
       }
     ],
     "starport": []
@@ -1366,7 +1351,7 @@
     "status": "done",
     "next_task": "CSP13"
   },
-  "starmap_open_count": 2,
+  "starmap_open_count": 1,
   "starport_open_count": 0,
   "dependency_189_completion": {
     "checked_at": "2026-09-28T17:04:54.239668+00:00",
@@ -1766,24 +1751,37 @@
     "disposition": "Repairs published on existing #388; fresh native CI pending."
   },
   "previous_open_snapshot": {
-    "checked_at": "2026-09-29T03:26:02.491656+00:00",
+    "checked_at": "2026-09-29T03:57:57.274161+00:00",
     "starmap": [
       {
         "baseRefName": "main",
-        "headRefName": "codex/recovery-credential-policy",
+        "headRefOid": "782d9d1e60d926c016e3c086554b32bb80fc9079",
+        "isDraft": true,
+        "number": 196,
+        "title": "recovery: validate retained runtime identity and replay evidence",
+        "checks_summary": {
+          "SUCCESS": 11,
+          "IN_PROGRESS": 11
+        },
+        "owner": "this chat",
+        "disposition": "Reviewed recovery prerequisite awaiting native CI.",
+        "next_action": "Merge #195 before #196. Require current exact head, base ancestry, passing checks, resolved threads, and protection.",
+        "current_proof": "../../csp13/runtime-evidence-recovery-2026-09-28/verification.json"
+      },
+      {
+        "baseRefName": "main",
         "headRefOid": "3b5d06a5f3c1de88b7a8de2d939cb0e58622ba38",
         "isDraft": true,
         "number": 195,
         "title": "recovery: inspect retained baseline exports without activation",
-        "url": "https://github.com/agentstation/starmap/pull/195",
         "checks_summary": {
-          "SUCCESS": 8,
-          "IN_PROGRESS": 14
+          "SUCCESS": 30,
+          "IN_PROGRESS": 2
         },
         "owner": "this chat",
-        "disposition": "Reviewed baseline inspection prerequisite. Draft while native CI runs.",
-        "next_action": "Require all checks, exact head and base, resolved threads, and protection before merge.",
-        "current_proof": "../../csp13/baseline-export-recovery-2026-09-28/verification.json"
+        "disposition": "Reviewed recovery prerequisite awaiting native CI.",
+        "next_action": "Merge #195 before #196. Require current exact head, base ancestry, passing checks, resolved threads, and protection.",
+        "current_proof": "../../csp13/runtime-evidence-recovery-2026-09-28/verification.json"
       }
     ],
     "starport": []
@@ -1884,10 +1882,24 @@
   "baseline_export_checkpoint": "../../csp13/baseline-export-recovery-2026-09-28/verification.json",
   "unpublished_local_recovery": {
     "repository": "agentstation/starport",
-    "head": "d73f1de3055afc1be7d0107223ca995a808e83e5",
+    "head": "e886dbb500fbe69646c9fb642a821be6760ac31d",
     "branch": "codex/storage-recovery",
     "owner": "this chat",
     "next_action": "Complete journals, independent history, activation, and populated migration before full checks and publication."
   },
-  "runtime_evidence_checkpoint": "../../csp13/runtime-evidence-recovery-2026-09-28/verification.json"
+  "runtime_evidence_checkpoint": "../../csp13/runtime-evidence-recovery-2026-09-28/verification.json",
+  "starmap195_completion": {
+    "repository": "agentstation/starmap",
+    "pull_request": 195,
+    "tested_head": "3b5d06a5f3c1de88b7a8de2d939cb0e58622ba38",
+    "actual_merge": "8020da753f2809d32cd4377e94abb7ecdea56b07",
+    "merged_at": "2026-09-29T04:06:22Z",
+    "tree": "4fab5d29ebe1c2dea3dd8f07f026c81e55239732",
+    "checks": 32,
+    "review_threads": 0,
+    "protection": "Strict checks and administrator enforcement retained. Exact-head squash merge, no bypass.",
+    "integration_commit": "f38ffa79513b652f069e511a3d284bf23ee8efac",
+    "integration_tree_unchanged": true
+  },
+  "completed_migration_restore_checkpoint": "../../csp13/completed-migration-restore-2026-09-28/verification.json"
 }

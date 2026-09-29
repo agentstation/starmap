@@ -4946,7 +4946,31 @@ The tests verify that all storage barriers remain closed after publication or va
 The different-replica case refuses before target stores exist.
 
 The inspector preserves a structurally valid pending semantic publication without applying it.
-It refuses path-bound migration and native publication journals. Their owner recovery, accepted-catalog consistency, independent later history, and controlled activation remain unfinished.
+Inspection alone refuses path-bound migration and native publication journals. The completed-history procedure below handles matching completed migration records.
+Other owner recovery, accepted-catalog consistency, independent later history, and controlled activation remain unfinished.
 Producer publication and final qualification against the published consumer module must precede completion claims.
 
 The [runtime evidence proof](../../plans/proof/starport-production-catalog/csp13/runtime-evidence-recovery-2026-09-28/verification.json) records the current checks and remaining qualification.
+
+### Completed migration history during restore: September 28, 2026
+
+The previous runtime publication path rejected all migration records, including records from a completed move.
+Copying those records unchanged would leave the replacement tied to paths on the former host.
+The new owner check identifies matching completed history without reopening those paths.
+It validates identity and seed binding before Starport excludes only the two approved historical records from the active tree.
+
+Tests complete a real runtime move, capture its state, and restore the remaining tree with admission closed.
+They preserve the historical records and exact retry behavior. They refuse incomplete history, conflicting history, and a pending move hidden beside completed history.
+A Starmap test validates captured records after both former directories move out of reach.
+Separate cases retain POSIX, Windows drive, and Windows share path strings without interpreting them as local paths.
+
+The first integration fixture used the full embedded catalog throughout each migration phase.
+It was still consuming CPU when stopped. The replacement fixture uses a small catalog through the same real migration, storage, backup, and restore paths.
+Dedicated capacity gates retain full-catalog coverage. The stopped run remains historical evidence and does not count as passing qualification.
+
+Starmap #195 merged as `8020da753f2809d32cd4377e94abb7ecdea56b07` after all 32 checks passed.
+The tested and merged trees match. The current producer branch includes that merge without changing its tested tree.
+An earlier #196 macOS job passed its test steps but failed evidence upload with `ENOTFOUND`.
+Its failed status and missing evidence remain recorded. The new head requires complete native qualification.
+
+The [completed migration restore proof](../../plans/proof/starport-production-catalog/csp13/completed-migration-restore-2026-09-28/verification.json) records checks, the actual prerequisite merge, and remaining qualification.
