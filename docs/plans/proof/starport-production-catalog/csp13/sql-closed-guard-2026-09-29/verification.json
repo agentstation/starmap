@@ -1,0 +1,224 @@
+{
+  "source": {
+    "worktree": "/private/tmp/starport-recovery-sql-guard-20260929",
+    "branch": "codex/recovery-sql-closed-guard",
+    "commit": "cb778d00433a1e210f90607045192f34c1c1c2a6",
+    "base": "35433b7084b7f493c887ff908ac7b0f5798c6c31",
+    "go": "go version go1.27.1 darwin/arm64",
+    "files": {
+      "internal/sqlstore/relational_guard.go": "6de9446dbf4e172ae84b8f1a522530ba94d450c05c7985277b13db1aa00fc6f6",
+      "internal/sqlstore/relational_guard_test.go": "3e620d6132d0fcd52ee149bd253a417b35f9fa9836920c7660abbd5a55b8307e",
+      "internal/recovery/closed_import_guard.go": "c07aba232fef000139032070536ffcbd577d46676f2b2527cef7dd2c30fedcb2",
+      "internal/recovery/closed_import_guard_test.go": "7385eae2d863a7dca5865989f1d8483413ca0781bbde40f7791cf9822cdf7d7f"
+    },
+    "clean_worktree": true
+  },
+  "results": [
+    {
+      "log": "/tmp/csp13-sql-closed-guard-20260929/native-race-final.jsonl",
+      "sha256": "859754de1ee3c10a9aef2d6f205aa44f911b69870fe9687d118a1c054f154f4f",
+      "test_results": {
+        "pass": 94
+      },
+      "package_results": {
+        "github.com/agentstation/starport/internal/sqlstore": {
+          "result": "pass",
+          "elapsed_seconds": 3.359
+        },
+        "github.com/agentstation/starport/internal/recovery": {
+          "result": "pass",
+          "elapsed_seconds": 11.003
+        }
+      },
+      "owners": [
+        {
+          "package": "github.com/agentstation/starport/internal/sqlstore",
+          "test": "TestRelationalGuardExactClosedPosition",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestClosedImportGuardNativeBoundary",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestClosedImportGuardIndependentKVCommitSurvivesFailure",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestClosedImportGuardOrdinaryApprovalWaitsForCallback",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "log": "/tmp/csp13-sql-closed-guard-20260929/native-pure-final.jsonl",
+      "sha256": "c8bca0d17e27b6478d62e517959c17361672c7ed55b174abf1ad820e09bebb5a",
+      "test_results": {
+        "pass": 94
+      },
+      "package_results": {
+        "github.com/agentstation/starport/internal/sqlstore": {
+          "result": "pass",
+          "elapsed_seconds": 1.568
+        },
+        "github.com/agentstation/starport/internal/recovery": {
+          "result": "pass",
+          "elapsed_seconds": 4.361
+        }
+      },
+      "owners": [
+        {
+          "package": "github.com/agentstation/starport/internal/sqlstore",
+          "test": "TestRelationalGuardExactClosedPosition",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestClosedImportGuardNativeBoundary",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestClosedImportGuardIndependentKVCommitSurvivesFailure",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestClosedImportGuardOrdinaryApprovalWaitsForCallback",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "log": "/tmp/csp13-sql-closed-guard-20260929/native-race-concurrency-repeated.jsonl",
+      "sha256": "00b83e3d2e2bade7a7d82006a873036c9ae964c2b15183d6fb37e1b3aac049e4",
+      "test_results": {
+        "pass": 12
+      },
+      "package_results": {
+        "github.com/agentstation/starport/internal/sqlstore": {
+          "result": "pass",
+          "elapsed_seconds": 1.322
+        },
+        "github.com/agentstation/starport/internal/recovery": {
+          "result": "pass",
+          "elapsed_seconds": 7.724
+        }
+      },
+      "owners": [
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestClosedImportGuardOrdinaryApprovalWaitsForCallback",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestClosedImportGuardOrdinaryApprovalWaitsForCallback",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "test": "TestClosedImportGuardOrdinaryApprovalWaitsForCallback",
+          "result": "pass"
+        }
+      ]
+    }
+  ],
+  "other_checks": [
+    {
+      "command": "go vet ./internal/sqlstore ./internal/recovery",
+      "exit": 0
+    },
+    {
+      "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run --allow-parallel-runners ./internal/sqlstore ./internal/recovery",
+      "exit": 0,
+      "issues": 0
+    },
+    {
+      "command": "technical-writing lint four owned Go files --format text",
+      "exit": 0,
+      "diagnostics": 0
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit": 0,
+      "passed": 6
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "exit": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    }
+  ],
+  "coverage": [
+    "Native SQLite, PostgreSQL and MySQL import guards with private file/schema/database fixtures",
+    "Same locked connection with one-connection target pool",
+    "Exact claim and nonzero replay cursor before/after callback",
+    "Full closed Record and disabled bootstrap before/after callback",
+    "Concurrent native replay/migration owner exclusion",
+    "Independent ordinary Witness.Approve cannot commit within callback; actual post-release outcome checked",
+    "Real Badger and namespaced Valkey commits survive callback loss/deadline and exact retry",
+    "SQL effects rollback on callback failure; both native import barriers remain restricted"
+  ],
+  "failed_evidence": [
+    {
+      "log": "/tmp/csp13-sql-closed-guard-20260929/native-race.jsonl",
+      "reason": "MySQL client timeout did not prove server UPDATE rollback; update committed after guard released. Test assumption repaired; native lock held correctly."
+    },
+    {
+      "log": "/tmp/csp13-sql-closed-guard-20260929/native-race-second.jsonl",
+      "reason": "SQLite writer lock rejects concurrent ordinary approval with SQLITE_BUSY instead of waiting. Test now verifies refusal or native wait and observes actual post-release state."
+    }
+  ],
+  "limitations": [
+    "No end-to-end activation or final coordinator integration in this slice. Guard never grants admission.",
+    "External writers must remain fenced across the full operation between guards.",
+    "Callback must use supplied SQL connection, no nested transaction, commit, schema change, or ordinary Witness methods.",
+    "Caller must bound independent non-SQL work by context deadline; guard cannot stop a callback that ignores cancellation.",
+    "Tests reconstruct Witness for exact retry but do not perform an OS process crash or inject lost SQL COMMIT transport replies.",
+    "Native test host is macOS arm64 Go1.27.1; Windows/Linux CI qualification remains parent-owned.",
+    "No structured autoreview, push, PR, or merge performed by subagent."
+  ],
+  "root_review": "All four source/test files reviewed. No accepted defect.",
+  "integrated_commit": "b51b79fb",
+  "integration_head": "49d791c7521b517e916c9f8c89e75e1a5f5410df",
+  "recorded_utc": "2026-09-29T21:20:40.878261+00:00",
+  "artifacts": {
+    "native-race-final.jsonl": {
+      "file": "native-race-final.jsonl.gz",
+      "sha256": "859754de1ee3c10a9aef2d6f205aa44f911b69870fe9687d118a1c054f154f4f",
+      "bytes": 123356
+    },
+    "native-race.jsonl": {
+      "file": "native-race.jsonl.gz",
+      "sha256": "72dbf54e4e743088ac51f6f43ce7191548e9b463ba14dbcba4a5b311b5522495",
+      "bytes": 105890
+    },
+    "native-race-concurrency-repeated.jsonl": {
+      "file": "native-race-concurrency-repeated.jsonl.gz",
+      "sha256": "00b83e3d2e2bade7a7d82006a873036c9ae964c2b15183d6fb37e1b3aac049e4",
+      "bytes": 48959
+    },
+    "native-pure-final.jsonl": {
+      "file": "native-pure-final.jsonl.gz",
+      "sha256": "c8bca0d17e27b6478d62e517959c17361672c7ed55b174abf1ad820e09bebb5a",
+      "bytes": 123352
+    },
+    "native-race-third.jsonl": {
+      "file": "native-race-third.jsonl.gz",
+      "sha256": "76d96056a56c7a6350e53c8540e632c5d13b8ba3461e74a422a9dddb26db4cd1",
+      "bytes": 116560
+    },
+    "native-race-second.jsonl": {
+      "file": "native-race-second.jsonl.gz",
+      "sha256": "8d8c2098544d57c936a4a90f94b5329ef50c872040b0fb5d7b1b0b75bd616abd",
+      "bytes": 105145
+    }
+  }
+}

@@ -267,3 +267,18 @@ Current directory inputs cannot stand in for missing input evidence from an olde
 Local-to-fleet recovery must preserve that distinction and must not fabricate a fleet lease.
 Starmap owns any offline export, retained input census, and explicit recovery-origin contract needed for this transfer.
 Starport owns selection under closed admission and the native import controls.
+
+## Guarded topology and activation continuation
+
+The engineering specification defines bounded capsule retention, native SQL guards, and strict final replay positions.
+These requirements remain part of CSP13 acceptance. Catalog transfer steps must occur before final authorization rotations.
+Digest-only typed steps refer to independently retained capsule assets. The 64 MiB history payload limit remains unchanged.
+
+A private activation decision binds the final graph, operator inputs, canonical file receipts, catalog selection, original operation, and native target identities.
+Phase-specific native receipts must support retry after a component removes its import barrier.
+Do not repeat target preparation, replay, file publication, materialization, or earlier selection after that point.
+Changed inputs or unknown scope keep the deployment restricted. Later withdrawals must remain effective.
+
+Early startup must reject partial recovery before maintenance or canonical policy writes.
+Fresh standalone startup retains its existing behavior. Local native identity cannot become a fabricated shared-storage incarnation.
+Actual process-loss, both topology directions, full native platform checks, and measured deployment recovery objectives remain required.

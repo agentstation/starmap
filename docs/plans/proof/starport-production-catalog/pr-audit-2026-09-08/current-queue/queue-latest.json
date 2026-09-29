@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-29T20:32:23.784370+00:00",
+  "checked_at": "2026-09-29T21:31:24.528572+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -2076,13 +2076,13 @@
     }
   },
   "history_coordination": {
-    "head": "2284da89e5b91455c3e9abd369bb3b775cfc0fd0",
+    "head": "49d791c7521b517e916c9f8c89e75e1a5f5410df",
     "owner": "this chat",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-catalog-activation",
     "proof": "csp13/history-final-qualification-2026-09-29/verification.json",
     "state": "REVIEWED_REPAIR_PUBLISHED_NATIVE_PENDING",
-    "next_action": "Qualify published5fc native CI. Integrate guarded typed topology and coordinated activation.",
+    "next_action": "Qualify published heads; integrate bounded catalog lane and complete native activation.",
     "processes": {},
     "agents": {
       "catalog_materializer": {
@@ -2093,11 +2093,11 @@
         "files": "runtime/catalog_retention*.go, shared materialization journal, recovery inventory and file manifest"
       },
       "activation_coordinator": {
-        "worktree": "/private/tmp/starport-recovery-sql-guard-20260929",
-        "branch": "codex/recovery-sql-closed-guard",
-        "base": "35433b7084b7f493c887ff908ac7b0f5798c6c31",
-        "owner": "native closed SQL guard",
-        "files": "new sqlstore/relational_guard.go and tests, recovery/closed_import_guard.go and tests"
+        "worktree": "/private/tmp/starport-recovery-startup-preflight-20260929",
+        "branch": "codex/recovery-startup-preflight",
+        "base": "49d791c7521b517e916c9f8c89e75e1a5f5410df",
+        "owner": "read-only recovery startup preflight",
+        "files": "new sqlstore and storage startup preflight owners, app startup wiring and contract tests"
       },
       "operator_recovery_inputs": {
         "worktree": "/private/tmp/starport-catalog-topology-compiler-20260929",
@@ -2122,7 +2122,7 @@
     },
     "published_head": "5fc5a60276ee921e4fc97ed19a230bddd308b9ef",
     "published_branch": "codex/recovery-history-coordination",
-    "successor_state": "TLS_OPERATOR_INPUTS_CI_REPAIR_INTEGRATED",
+    "successor_state": "NATIVE_GUARDS_INTEGRATED_PASSIVE_POSITION_RECEIPTS_IN_PROGRESS",
     "activation_findings": "csp13/activation-findings-2026-09-29/verification.json",
     "native_run": 36629564640,
     "repair_proof": "csp13/history-ci-repair-2026-09-29/verification.json",
@@ -2134,7 +2134,9 @@
         "pass": 37
       },
       "exit_code": 0
-    }
+    },
+    "strict_activation_proof": "csp13/position-activation-2026-09-29/verification.json",
+    "closed_sql_guard_proof": "csp13/sql-closed-guard-2026-09-29/verification.json"
   },
   "catalog_topology": {
     "state": "MERGED",
@@ -2315,7 +2317,8 @@
     "state": "REVIEWED_ORIGIN_PUBLISHED_NATIVE_PENDING",
     "proof": "csp13/recovery-origin-final-2026-09-29/verification.json",
     "local_extension_head": "e620da59972841528ff049bcd507d4d384704262",
-    "next_action": "Qualify native199 CI and CodeQL. Integrate separately owned retain-only extension after final review.",
-    "native_codeql_run": 36629677526
+    "next_action": "Native run pending. CodeQL passes. Review retain-only extension and its passive current-selection checks.",
+    "native_codeql_run": 36629677526,
+    "codeql": "PASS"
   }
 }

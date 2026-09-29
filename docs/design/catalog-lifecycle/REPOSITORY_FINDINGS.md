@@ -5100,3 +5100,21 @@ The complete repair still needs native CI and publication.
 Starport #393 native Windows reached the default ten-minute recovery package timeout. The captured run contains no assertion failure before that timeout.
 Its repair partitions the complete Windows recovery suite and checks the union of all test owners.
 The [activation findings](../../plans/proof/starport-production-catalog/csp13/activation-findings-2026-09-29/verification.json) retain the original failures and current repair ownership.
+
+### Native recovery guards and startup ordering (September 29, 2026)
+
+Local consumer `49d791c7` integrates checked operator inputs, actual HTTPS serving, and a native SQL guard.
+The [guard proof](../../plans/proof/starport-production-catalog/csp13/sql-closed-guard-2026-09-29/verification.json) records 94 passing results per mode across SQLite, PostgreSQL, and MySQL.
+Independent Badger and Valkey commits survive lost callback replies. Their exact native receipts support retry while admission remains closed.
+
+KV and SQL activation originally bound import claims without the final replay cursor. The new strict procedures check that cursor inside native release.
+The [activation proof](../../plans/proof/starport-production-catalog/csp13/position-activation-2026-09-29/verification.json) records 107 passing results per mode and preserved fail-before evidence.
+Complete coordinator qualification remains open.
+
+The startup audit found maintenance and inference-policy effects before the selected SQL import barrier check.
+After KV release during partial recovery, this order can change canonical state before SQL refuses startup.
+CSP13 owns an early read-only recovery preflight. It must preserve normal fresh startup and prevent these effects while recovery remains incomplete.
+
+Closed final-history checks require active import barriers. They cannot reconstruct the original capability after partial barrier release.
+Canonical file publication also repeats preparation and cannot serve as the post-release restart verifier.
+The activation coordinator needs retained owner receipts and phase-specific verification. Component release alone does not prove complete recovery.

@@ -1,0 +1,129 @@
+{
+  "source": "49d791c7521b517e916c9f8c89e75e1a5f5410df",
+  "toolchain": "Go1.27.1 darwin/arm64",
+  "worktree": "/private/tmp/starport-clock-review-20260926",
+  "branch": "codex/recovery-catalog-activation",
+  "baseline_failures": {
+    "KV": {
+      "pass": 0,
+      "fail": 4,
+      "skip": 2
+    },
+    "SQL": {
+      "pass": 0,
+      "fail": 4,
+      "skip": 0
+    }
+  },
+  "final_results": {
+    "race": {
+      "pass": 107,
+      "fail": 0,
+      "skip": 0
+    },
+    "pure_go": {
+      "pass": 107,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "checks": {
+    "vet": 0,
+    "pinned_lint_v2_13_2": 0,
+    "strict_prose": 0,
+    "whitespace": 0
+  },
+  "native_owners": [
+    "Badger",
+    "Valkey",
+    "SQLite",
+    "PostgreSQL",
+    "MySQL"
+  ],
+  "contract": [
+    "Strict activation checks the exact final replay cursor and retained receipt history inside the native release transaction.",
+    "SQL checks the cursor before and after approval and rolls back refused callback mutations.",
+    "Valkey checks all cursor/history preimages and write ACL permissions before its first write.",
+    "Stale, corrupt, expired or concurrently replaced controls keep barriers closed.",
+    "Exact completed retry preserves later ordinary state and withdrawal.",
+    "Existing component activation APIs retain their previous behavior; complete coordinator must use strict APIs."
+  ],
+  "limitations": [
+    "Focused real-backend qualification is not complete deployment recovery.",
+    "Complete successor repository gates, isolated review, publication and native Linux/Windows CI remain required.",
+    "Shared Go1.27.1 native runner qualification is pending on separate PR393 and PR199.",
+    "No Go tool goago is declared in this Starport module; no tool or policy was added."
+  ],
+  "commands": {
+    "tests": [
+      "python3 /tmp/csp13-position-activation-20260929/run-native.py /tmp/csp13-position-activation-20260929/final-native-race.jsonl race",
+      "python3 /tmp/csp13-position-activation-20260929/run-native.py /tmp/csp13-position-activation-20260929/final-native-pure.jsonl pure"
+    ],
+    "vet": "GOWORK=off go vet ./internal/storage ./internal/sqlstore ./internal/recovery",
+    "lint": "GOWORK=off go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/storage/... ./internal/sqlstore/... ./internal/recovery/...",
+    "prose": "technical-writing lint six changed activation files --format text"
+  },
+  "recorded_utc": "2026-09-29T21:20:40.897587+00:00",
+  "artifacts": {
+    "native-pure.jsonl": {
+      "file": "native-pure.jsonl.gz",
+      "sha256": "2249437e71b464dc028b75d5529c2e49bbb825e76d7a74f49b9c1b1bb6ddf021",
+      "bytes": 225746
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "2a908bf076c7a189ae3cb95fb5fca9f96d0135bc9561cca37531a9c78335632a",
+      "bytes": 412
+    },
+    "fail-before.jsonl": {
+      "file": "fail-before.jsonl.gz",
+      "sha256": "3598ffeb63afd64eff77c0c98f5f86c5c1902e1105a8365515e180c1ef0bae26",
+      "bytes": 17177
+    },
+    "native-race.jsonl": {
+      "file": "native-race.jsonl.gz",
+      "sha256": "570fe4c247e87d2496fa440ac45395bb0aa8e2304844443f85c97c1ee4b6c7fa",
+      "bytes": 225741
+    },
+    "lint-integrated.log": {
+      "file": "lint-integrated.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    "final-native-pure.jsonl": {
+      "file": "final-native-pure.jsonl.gz",
+      "sha256": "d26c0ea1fe4f63dd43281d51f86db0037150fc1a9e68e7b4b46ca43365a92248",
+      "bytes": 255856
+    },
+    "kv-local-race.jsonl": {
+      "file": "kv-local-race.jsonl.gz",
+      "sha256": "916b730d11d5f639e07ddb949a53f2576fcd0bec2d6b86dc2932799e6c91b930",
+      "bytes": 14420
+    },
+    "lint-final.log": {
+      "file": "lint-final.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087",
+      "bytes": 33
+    },
+    "sql-fail-before.jsonl": {
+      "file": "sql-fail-before.jsonl.gz",
+      "sha256": "976b3cda156464e2512c50bc005a8048f4c202e9bf1bad7cbddffaacfe014dec",
+      "bytes": 7270
+    },
+    "sql-local-race.jsonl": {
+      "file": "sql-local-race.jsonl.gz",
+      "sha256": "6ea67e11ff11002a74c1d818d528ac261936ac3479a920a6be911036333e0a33",
+      "bytes": 4494
+    },
+    "final-native-race.jsonl": {
+      "file": "final-native-race.jsonl.gz",
+      "sha256": "b1900d448f2c33dddcc29fcfbbdda7518fc4f53dcd6abef40951a734c91c1983",
+      "bytes": 255856
+    }
+  }
+}

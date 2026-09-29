@@ -5410,3 +5410,29 @@ Disabled server TLS permits HTTP, including explicit external TLS termination. R
 
 Required evidence covers the actual HTTPS listener, plaintext refusal, invalid material before storage effects, native access policies, and disabled TLS.
 The [activation findings](../../plans/proof/starport-production-catalog/csp13/activation-findings-2026-09-29/verification.json) record the runtime defect and repair state.
+
+### Guarded catalog transfer and final activation (September 29, 2026)
+
+Catalog transfer must preserve the full retained inventory, accepted and candidate generations, history order, pin, rollback evidence, and original reconstruction inputs.
+Historical retention does not prove semantic replay under current settings. Both selected generations require that separate replay check.
+A local descriptor digest and an exported reconstruction digest name different bytes. Preserve both identities and the original descriptor evidence.
+
+Starmap retains bounded batches without intermediate active selection. Each batch binds one whole transfer manifest and its exact contiguous range.
+Final selection requires complete retained coverage. Missing original capsules cause refusal, and current directory inputs cannot replace historical evidence.
+
+The fleet limit remains 96 entries and 2 GiB. Each producer batch remains bounded, and the history payload limit remains 64 MiB.
+Stream larger capsule bytes through independently retained assets or chunks. Never raise a limit silently or truncate the inventory.
+
+Catalog stages and materialization must finish before final authorization rotations. No catalog mutation follows completed history.
+Each bounded KV mutation must retain native SQL ownership and lock the exact closed recovery record.
+The guard checks the original SQL import claim, replay cursor, full record, and disabled bootstrap before and after the callback.
+External writer fencing must cover the whole operation between guards. A callback error or lost reply does not undo an independent KV commit.
+
+Native activation must bind the final KV, SQL, and blob replay positions inside their release procedures.
+Release KV and blob components while the SQL witness remains closed. Final SQL activation installs approval and removes its import barrier atomically.
+A durable private decision must support phase-specific restart checks after earlier barriers disappear.
+An exact completed retry must retain its original receipt without restoring an older selection or clearing a later revocation.
+
+Recovery preflight must run before maintenance, inference-policy writes, token creation, or setup effects. Normal fresh standalone startup retains its existing behavior.
+These guards belong to recovery. Warm inference continues to use its existing memory and admission contracts.
+Complete topology transfer, coordinated activation, native qualification, and deployment recovery objectives remain open.
