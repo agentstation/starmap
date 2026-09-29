@@ -5318,7 +5318,7 @@ Refuse different replicas and scheduler overrides before publication. Preserve e
 Keep every storage import barrier closed. The procedure does not establish accepted-catalog consistency or current authority permission.
 
 Validate and preserve pending semantic input publications without applying them.
-Refuse unknown files, incomplete references, pending native file publications, and incomplete or conflicting migration records.
+Refuse unknown files, incomplete references, unowned or malformed native publication evidence, and incomplete or conflicting migration records.
 Keep those records for their separate owner recovery procedures. Validated completed migrations follow the historical-record contract below. Do not copy native filesystem identity as portable authority.
 Independent post-backup history and controlled activation remain required before inference.
 
@@ -5342,6 +5342,19 @@ An exact retry must select the same files and retain the same historical disposi
 Missing or conflicting completion stops before target preparation. Other pending migration markers still prevent publication.
 
 This procedure does not complete an interrupted move or open admission.
-Native pending journals, accepted-catalog consistency, independent later history, and controlled activation remain separate requirements.
+The native journal procedure below handles captured runtime publications. Accepted-catalog consistency, independent later history, and controlled activation remain separate requirements.
 
 The [completed migration restore proof](../../plans/proof/starport-production-catalog/csp13/completed-migration-restore-2026-09-28/verification.json) records checks, the actual prerequisite merge, and remaining qualification.
+
+### Native runtime publication restore (September 28, 2026)
+
+Starmap `05501c597` validates bounded canonical journals and their runtime-owned destinations. Starport `100cd6c2b` composes this check with the verified backup inventory.
+
+Captured staging bytes must match the journal size and digest. The captured writer record must be present and empty.
+Keep validated journals and staging files in the verified backup and inactive preparation. Report `verified-staging` without an active destination.
+
+Never promote staging bytes or use historical native identities as current cleanup authority. Validate all destination records through their owners before publication.
+Changed or unowned staging evidence causes refusal before target preparation. Exact retries retain the same selection, and admission barriers remain closed.
+Other journal owners, interrupted moves, independent history, controlled activation, and full native qualification remain open.
+
+The [native publication restore proof](../../plans/proof/starport-production-catalog/csp13/native-publication-restore-2026-09-28/verification.json) records source commits, final pinned tests, review, and remaining work.

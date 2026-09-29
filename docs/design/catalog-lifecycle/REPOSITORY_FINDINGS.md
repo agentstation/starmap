@@ -4974,3 +4974,16 @@ An earlier #196 macOS job passed its test steps but failed evidence upload with 
 Its failed status and missing evidence remain recorded. The new head requires complete native qualification.
 
 The [completed migration restore proof](../../plans/proof/starport-production-catalog/csp13/completed-migration-restore-2026-09-28/verification.json) records checks, the actual prerequisite merge, and remaining qualification.
+
+### Native runtime publication restore (September 28, 2026)
+
+Starmap `05501c597` validates bounded canonical journals and their runtime-owned destinations. Starport `100cd6c2b` composes this check with the verified backup inventory.
+
+Captured staging bytes must match the journal size and digest. The captured writer record must be present and empty.
+Keep validated journals and staging files in the verified backup and inactive preparation. Report `verified-staging` without an active destination.
+
+Never promote staging bytes or use historical native identities as current cleanup authority. Validate all destination records through their owners before publication.
+Changed or unowned staging evidence causes refusal before target preparation. Exact retries retain the same selection, and admission barriers remain closed.
+Other journal owners, interrupted moves, independent history, controlled activation, and full native qualification remain open.
+
+The [native publication restore proof](../../plans/proof/starport-production-catalog/csp13/native-publication-restore-2026-09-28/verification.json) records source commits, final pinned tests, review, and remaining work.

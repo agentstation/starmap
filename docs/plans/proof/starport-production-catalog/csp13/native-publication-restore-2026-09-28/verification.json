@@ -1,0 +1,313 @@
+{
+  "recorded_at": "2026-09-29T04:45:24.141744+00:00",
+  "status": "runtime native publication recovery implemented; CSP13 remains in_progress",
+  "producer": {
+    "head": "05501c5970edbe8a0fd9e86dbe664b4350500ac3",
+    "tree": "794382e885237171e44746d89ea954b454431c06",
+    "branch": "codex/retained-runtime-recovery",
+    "pull_request": 196,
+    "published": true,
+    "native_qualification": "current-head CI pending"
+  },
+  "consumer": {
+    "head": "100cd6c2b35b272747ee0a863e1cf0bf98b9bae3",
+    "tree": "d3a3f57763ac03872761c40991b7aaa8bfc26e45",
+    "branch": "codex/storage-recovery",
+    "published": false,
+    "module": "github.com/agentstation/starmap v0.16.6-0.20260929043939-05501c5970ed",
+    "qualification": "GOWORK=off; published module; no local replacement"
+  },
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "checks": {
+    "private-race": {
+      "pass": 67
+    },
+    "runtime-race": {
+      "pass": 35
+    },
+    "producer-purego": {
+      "pass": 102
+    },
+    "consumer-pinned-race": {
+      "pass": 34,
+      "skip": 2
+    },
+    "consumer-pinned-purego": {
+      "pass": 34,
+      "skip": 2
+    },
+    "consumer-architecture": {
+      "pass": 8
+    }
+  },
+  "static_checks": "Full Starmap checks gate, goago, consumer pinned lint and vet, module verification, final tidy diff, architecture, and changed prose checks pass.",
+  "contract": [
+    "The private-file owner parses canonical bounded native journals without using their historical native identities as restore authority. Native cleanup retains all current identity checks.",
+    "The runtime owner allows only its five publication scopes and known destination/prefix pairs. Captured staging bytes must match the recorded size and digest; writer metadata must be present and empty.",
+    "Starport retains approved journals and staging bytes in the verified backup and inactive preparation, reports verified-staging, and never promotes a staged candidate.",
+    "Canonical destination records remain selected and require normal inventory and owner validation. Exact retries preserve the same selection.",
+    "Malformed or unowned journals, changed staging bytes, and incomplete migration history refuse. A mismatch stops before target stores are created. All admission barriers remain closed."
+  ],
+  "review": {
+    "gate": "pre-pr",
+    "mode": "auto",
+    "base": "8020da753f2809d32cd4377e94abb7ecdea56b07",
+    "engine": "Claude Opus 5.5 high",
+    "threshold": "P0-only",
+    "passes": 1,
+    "bundle_bytes": 69387,
+    "findings": 0,
+    "secret_scan": "clean"
+  },
+  "iteration_notes": [
+    "The initial consumer assertion omitted the files directory in the inactive preparation path. The test now checks the actual prepared bytes. The earlier failed development run remains supporting history, not passing evidence.",
+    "The module update retained two old checksum lines. Normal go mod tidy removed them; the final tidy diff is empty.",
+    "The prior PR head still had running checks when this coherent extension was published. Existing PR #196 was reused. Only checks for the new head can qualify the new change."
+  ],
+  "remaining": [
+    "Credential and baseline native journal recovery, and interrupted path migration recovery.",
+    "Accepted-catalog consistency, independent post-backup permission and spend history, and controlled activation.",
+    "Populated migration and all remaining CSP13 acceptance subcases.",
+    "Full consumer verification, required review, publication, current-head native qualification, and merge."
+  ],
+  "artifacts": [
+    {
+      "path": "compile.log.gz",
+      "sha256": "4a479f64de3802000edd647965ad00c9248adb92b9309619fe290ce6c8ac6bc2",
+      "uncompressed_sha256": "42448b718e5679bb987c334e2418fdd316389dab6ab773ac8427a8c0cebfc07a",
+      "uncompressed_bytes": 315
+    },
+    {
+      "path": "consumer-architecture.jsonl.gz",
+      "sha256": "d55245f8f399fc1c51933f9ac35b890335509ee8c36f2b2d189f2e88445a4875",
+      "uncompressed_sha256": "daea7b25e747303058f96bb0a7ce8446f9b0fd3f45ef1030e79b0941d64a158a",
+      "uncompressed_bytes": 8730
+    },
+    {
+      "path": "consumer-compile.log.gz",
+      "sha256": "750c71dbf0999f3a0d6b13a683030d8750329dbf219943199c7187a8e1ba44e8",
+      "uncompressed_sha256": "83b9ad1ff1055afb844707aa55e8549df4bd1633f2502c2ac20cc0ee83777133",
+      "uncompressed_bytes": 219
+    },
+    {
+      "path": "consumer-full-race.jsonl.gz",
+      "sha256": "fadadecb642f2e26b622ebdfce9a8baf4d9eff1de76cb4964d5c62e71d69ff12",
+      "uncompressed_sha256": "9ce573a1bfb496d8d3bb696070bdfffb0d420058e5695002f0b05eedef6ec62e",
+      "uncompressed_bytes": 470782
+    },
+    {
+      "path": "consumer-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "uncompressed_bytes": 10
+    },
+    {
+      "path": "consumer-modules.log.gz",
+      "sha256": "4699dce40a065353f016ef7eb2c309ee9dee73281263a6b29287016349618a1b",
+      "uncompressed_sha256": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+      "uncompressed_bytes": 21
+    },
+    {
+      "path": "consumer-pin.log.gz",
+      "sha256": "3324e882aa45a63ca9ff26d841a9b81bfc9765c326439594a4852447d211dc0d",
+      "uncompressed_sha256": "4a01490b0f3fea87b193e5002fb74cd7cd5fd5579133dd39ea1d5a620d2edacc",
+      "uncompressed_bytes": 210
+    },
+    {
+      "path": "consumer-pinned-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "uncompressed_bytes": 10
+    },
+    {
+      "path": "consumer-pinned-purego.jsonl.gz",
+      "sha256": "713557f3cb0ef2c9b68f698a07ae49dee2c418a4eb44482fac86818a394247db",
+      "uncompressed_sha256": "b3dc19a634ad93340724ad2770e81b348aa21fb4464997ad3c83570af0375aac",
+      "uncompressed_bytes": 482059
+    },
+    {
+      "path": "consumer-pinned-race.jsonl.gz",
+      "sha256": "c1a4781f069f6177e2533de80c0e4d447f9168559a788b380bc6a67a82848e00",
+      "uncompressed_sha256": "43b88e0e5eebee293c704abe39debc8fcdec522a5f151db71d45da173cf857a2",
+      "uncompressed_bytes": 480949
+    },
+    {
+      "path": "consumer-pinned-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "consumer-purego.jsonl.gz",
+      "sha256": "90d239085bec6222accb78126ee5c4e14e3c75e40c93a2be4e325c7fc0dab11f",
+      "uncompressed_sha256": "e9e705c09fbf57d3b72f6348fa550525af86e1f035cb2e433efeedade003568f",
+      "uncompressed_bytes": 45758
+    },
+    {
+      "path": "consumer-race.jsonl.gz",
+      "sha256": "940bf8e1ae42fe9d8577aa84ab9aec9913fa036aa8b7252047ac2f0a8c3d8dfd",
+      "uncompressed_sha256": "3774e3b049e48545f377d5a04610ba61442fbc71f502220fdf907d6d27a2823a",
+      "uncompressed_bytes": 35193
+    },
+    {
+      "path": "consumer-tidy-apply.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "consumer-tidy-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "consumer-tidy.log.gz",
+      "sha256": "ed79a636adc21067359398e922594258198abec698be3ee55d84bcfe27986f3d",
+      "uncompressed_sha256": "f22bf8f399b4cd1bdbc96377e0b4515ca6d364908017c5bbc63fd82ecc62d4a1",
+      "uncompressed_bytes": 961
+    },
+    {
+      "path": "consumer-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "consumer-writing.log.gz",
+      "sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7",
+      "uncompressed_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "uncompressed_bytes": 33
+    },
+    {
+      "path": "goago-policy.json.gz",
+      "sha256": "477da586dddff350de7ce0b741f802801710c9afe0372582d6b8f2292c695f45",
+      "uncompressed_sha256": "16baaa571b87aa21501669fe6da001a10afa3993b865fd79e93cbfb7e421ae04",
+      "uncompressed_bytes": 11882
+    },
+    {
+      "path": "godoc.log.gz",
+      "sha256": "f57f10f51a87164df96508561d5ecca38b40bbcd8890fb8a44a3d9123788c227",
+      "uncompressed_sha256": "9b2521b9ddb59182b7cfa56dc1294d70fd6ddc36e099e502e3e2801f2010353a",
+      "uncompressed_bytes": 447
+    },
+    {
+      "path": "modern-go.log.gz",
+      "sha256": "b9b89bd51ff316581c9fbfde366e86dcfb4520e9da4417c404e687f20be2e1c4",
+      "uncompressed_sha256": "e1ceb8f860e7f01387fd24557993a1a3873e982a99d30a7f2a365bd73b6661d9",
+      "uncompressed_bytes": 5107
+    },
+    {
+      "path": "pr-body.md.gz",
+      "sha256": "8213ee92f7a0595197fcbedc9870a12c28fd860aef9b22d841025cb60a348102",
+      "uncompressed_sha256": "6239850fa60455f7612e561f872d7404ff4091c0635cf04a8c422c9037ea6156",
+      "uncompressed_bytes": 1554
+    },
+    {
+      "path": "pr196-before.json.gz",
+      "sha256": "7cbb21419c12c595c6effcdaf84d2ed94000c907b15a872ca7c8201fc3b70b8a",
+      "uncompressed_sha256": "9070922774e0fbdce63a53fe3728c8e48d0def5c1b42836aa076dc64c3f07d58",
+      "uncompressed_bytes": 9432
+    },
+    {
+      "path": "private-race.jsonl.gz",
+      "sha256": "b201a493cf3c146dc23e1b1bcb3f6742a832405612f1f50d6da0b49d29515aae",
+      "uncompressed_sha256": "4127049c8f9f9dd438ebf50e184361da70fb84f0811d234e05366ab46ea95102",
+      "uncompressed_bytes": 68254
+    },
+    {
+      "path": "producer-checks.log.gz",
+      "sha256": "853b7e87548d2daf053107232855a7a5098d1897188f7a8a6a7c5f01656a78f3",
+      "uncompressed_sha256": "a2177e4863c36a8643fc4d5fe5fe370e614122fdf0e2f5f8247bef630bb8a86e",
+      "uncompressed_bytes": 66066
+    },
+    {
+      "path": "producer-goago.json.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "uncompressed_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "uncompressed_bytes": 289
+    },
+    {
+      "path": "producer-purego.jsonl.gz",
+      "sha256": "767cb7bf217280547b8c250ab2d3048eb60358f13ecd73f6cce6d629294d0e74",
+      "uncompressed_sha256": "c792f92115bb838b3d1c539b5b57f1fa1d5c903c9b12ce0c491b324af2179f92",
+      "uncompressed_bytes": 105447
+    },
+    {
+      "path": "producer-review.log.gz",
+      "sha256": "4a0bd1a930ae9da8f2f96355581efbbca2b791ce028a54871359d893a6750a3d",
+      "uncompressed_sha256": "abbd7f0bbe27e12478f7c0d5de78d7919e050e37beaee3be4a7810d5b57b54e4",
+      "uncompressed_bytes": 1349
+    },
+    {
+      "path": "queue-starmap.json.gz",
+      "sha256": "b708916dd5145b17a8d3824dce95fbcb2e2db3020c1a7ad3a76d2083f3b4fa4c",
+      "uncompressed_sha256": "e0862671c0e41208864207e06101a00eab76098cad224565ff1a4344facbef1d",
+      "uncompressed_bytes": 6896
+    },
+    {
+      "path": "queue-starport.json.gz",
+      "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+      "uncompressed_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "uncompressed_bytes": 3
+    },
+    {
+      "path": "runtime-race.jsonl.gz",
+      "sha256": "8af4c83bf0b3f0334684f9c9934dc7ee55b597056b6aa43c58c9d5b75a2fdc80",
+      "uncompressed_sha256": "8b5ab24f8554940ae16359fad55fa0eb9acb94eaa423e6b534f0e2037b45cf2a",
+      "uncompressed_bytes": 37206
+    },
+    {
+      "path": "plan-writing.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "uncompressed_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "uncompressed_bytes": 33
+    },
+    {
+      "path": "spec-writing.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "uncompressed_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "uncompressed_bytes": 33
+    },
+    {
+      "path": "plan-repository-writing.log.gz",
+      "sha256": "632eaa3204991f7745d36ce0efc0970fd7c95fa71966f6d05f1deebf9d101e55",
+      "uncompressed_sha256": "ca36d716b35e0b10887cd54d8f432d6e1de51cb62adbbe6a74b10ea313d6db92",
+      "uncompressed_bytes": 55465
+    },
+    {
+      "path": "plan-writing-audit.json.gz",
+      "sha256": "85db80045076f14630a392c383dd20f58ae8db5c7ac9dd06cac54b644b6a28db",
+      "uncompressed_sha256": "b6be93b6276e703ee3d9634da4621bb1c47add37f0b97e6526f6e4a655821737",
+      "uncompressed_bytes": 60108
+    }
+  ],
+  "commands": {
+    "producer_gate": "bash scripts/verify.sh checks",
+    "producer_race": [
+      "go test -race -json -count=1 -timeout 5m ./internal/privatefiles -run 'TestRetainedPublication|TestPrivateRecordRecovery|TestPrivatePublication'",
+      "go test -race -json -count=1 -timeout 5m ./runtime -run '^TestRetainedPublications'"
+    ],
+    "producer_purego": "CGO_ENABLED=0 go test -json -count=1 -timeout 5m ./internal/privatefiles ./runtime -run 'TestRetainedPublication|TestPrivateRecordRecovery|TestPrivatePublication'",
+    "consumer_race": "GOWORK=off go test -race -json -count=1 -timeout 5m ./internal/app ./internal/recovery ./internal/catalog -run 'TestRestorePublish|TestRestoreMetadata|TestRuntimeRestore'",
+    "consumer_purego": "GOWORK=off CGO_ENABLED=0 go test -json -count=1 -timeout 5m ./internal/app ./internal/recovery ./internal/catalog -run 'TestRestorePublish|TestRestoreMetadata|TestRuntimeRestore'"
+  },
+  "skipped_cases": [
+    {
+      "package": "github.com/agentstation/starport/internal/app",
+      "test": "TestRestorePublishFilesSharedRecipe/inference-credential-policy"
+    },
+    {
+      "package": "github.com/agentstation/starport/internal/app",
+      "test": "TestRestorePublishFilesSharedRecipe/credential-policy"
+    }
+  ],
+  "plan_repository_prose_check": {
+    "command": "make technical-writing-check",
+    "exit_code": 2,
+    "files": 1945,
+    "diagnostics": 227,
+    "introduced_diagnostic_lines": 0,
+    "assessment": "All 227 reported lines are present in the preceding plan commit. Changed prose passes scoped checks. Historical evidence remains unchanged."
+  }
+}
