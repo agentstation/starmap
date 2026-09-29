@@ -143,5 +143,7 @@
     "scoped_writing": "PASS: two files, zero diagnostics",
     "full_writing": "1929 files, 226 historical diagnostics, no new diagnostic identities against previous recorded full run",
     "full_writing_exit": 2
-  }
+  },
+  "valkey_follow_up": "valkey-verification.json",
+  "local_valkey_status": "Previously skipped outage/recovery and credential repository cases now pass against the CI-pinned Valkey 7.2.14 image. Three test results pass, with no failures or skips. Container removed."
 }

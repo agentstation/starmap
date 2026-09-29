@@ -1,0 +1,260 @@
+{
+  "checked_at": "2026-09-29T00:15:37.431399+00:00",
+  "owner": "Repository dependency maintenance",
+  "pr": 192,
+  "url": "https://github.com/agentstation/starmap/pull/192",
+  "worktree": "/private/tmp/starmap-action-review-20260928",
+  "branch": "codex/dependency-fixture-192",
+  "head": "8a016ad2d4d759afa0fbb3598815a4c31f1b2076",
+  "base": "d721eb88b71cb03c6faa4a617bbc171d633d6637",
+  "toolchain": "go1.27.1",
+  "source_sha256": {
+    "go.mod": "1aaaedfd88bf62da7b7f130dbfb076b21c0ea45fdd6734eaeac9dd042621e969",
+    "go.sum": "2eec8491664d4f29875fb4d8a1557756fb124440eebada399d9441179b0c237c",
+    "testdata/consumers/server-storage/go.mod": "3452d3392ccd23f7cb65591ca5094e3ffe6be5534df04b6db9dff1bd2b9136ff",
+    "testdata/consumers/server-storage/go.sum": "3af868332620524dffff8445e8d9bd00a2d4ba9e66c96aaf5d8ab637348741ca",
+    "testdata/consumers/server-storage/storage_test.go": "37e770d843f2a8a7ab4ba22feb8bf32596cad22009bf78af990f0d84c7094a78"
+  },
+  "changes": [
+    "Tidy the external S3 consumer module after the AWS module update. Root dependency choices stay with the existing Dependabot PR.",
+    "Use a bounded, self-validated generation for storage lifecycle checks. Keep full-catalog capacity in its dedicated required suite.",
+    "Retain all storage, remote update, and restart assertions. Add a check that the initial provider survives restart.",
+    "Keep all existing test and production deadlines unchanged."
+  ],
+  "before": {
+    "package_ownership": {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 bash scripts/verify-catalog-package-ownership.sh",
+      "exit_code": 1,
+      "pass": 12,
+      "fail": 1,
+      "failing_case": "CPO-V10: server-storage go.mod requires updates"
+    },
+    "fixture_race": {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout=2m ./...",
+      "cwd": "testdata/consumers/server-storage",
+      "exit_code": 1,
+      "pass": 8,
+      "fail": 3,
+      "seconds": 61.672,
+      "cause": "Full embedded-catalog transfers exceeded subscriber admission or propagation timeouts."
+    }
+  },
+  "rejected_attempts": [
+    "An intermediate helper used a string where ProviderID was required. The compiler rejected it.",
+    "An intermediate seed attempted to replace embedded membership through Update without source observations. The validator correctly refused it. Final seeding constructs an independent typed generation and validates it before storage."
+  ],
+  "after": {
+    "package_ownership": {
+      "exit_code": 0,
+      "pass": 13,
+      "fail": 0,
+      "external_modules": 6
+    },
+    "fixture_race": {
+      "exit_code": 0,
+      "pass": 11,
+      "fail": 0,
+      "skip": 0,
+      "seconds": 13.455
+    },
+    "fixture_vet": {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./...",
+      "exit_code": 0
+    },
+    "module_integrity": {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go mod verify",
+      "exit_code": 0
+    },
+    "fixture_tidy": {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go mod tidy -diff",
+      "exit_code": 0,
+      "diff": "empty"
+    },
+    "goago": {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "findings": 0,
+      "errors": 0
+    },
+    "writing": {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 make technical-writing-check",
+      "exit_code": 0,
+      "files": 1902,
+      "diagnostics": 0
+    }
+  },
+  "manual_dependency_review": {
+    "modules": 11,
+    "findings": [],
+    "assessment": "Each updated AWS module changes only dependency requirements, release notes, and its version constant. The AWS core and Smithy versions already match the selected graph. Module integrity verification passes. Fixture Google checksums match the already-merged root requirements."
+  },
+  "autoreview": {
+    "command": "autoreview --gate pre-pr --mode auto --base d721eb88b71cb03c6faa4a617bbc171d633d6637",
+    "exit_code": 0,
+    "reviewer": "claude-opus-5-5 high",
+    "threshold": "P0",
+    "passes": 1,
+    "bundle_bytes": 23207,
+    "findings": 0,
+    "secret_scan": "PASS",
+    "qualification_note": "A clean thresholded review does not imply that every lower-priority concern was examined."
+  },
+  "push": {
+    "exit_code": 0,
+    "previous_head": "c1b68b52b152b5f6725427cde2390f18a7d60458",
+    "method": "normal fast-forward to existing PR branch; no history rewrite"
+  },
+  "published": {
+    "baseRefOid": "d721eb88b71cb03c6faa4a617bbc171d633d6637",
+    "headRefOid": "8a016ad2d4d759afa0fbb3598815a4c31f1b2076",
+    "mergeStateStatus": "BLOCKED",
+    "number": 192,
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36502079816/job/109195027086",
+        "name": "Analyze (actions)",
+        "startedAt": "2026-09-29T00:14:15Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36502079816/job/109195027352",
+        "name": "Analyze (go)",
+        "startedAt": "2026-09-29T00:14:16Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36502079816/job/109195027475",
+        "name": "Analyze (python)",
+        "startedAt": "2026-09-29T00:14:17Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CodeQL"
+      }
+    ]
+  },
+  "successor_audit": {
+    "pr": 193,
+    "head": "ff3f1b0c7f44df361e6bdb2298587aa45f4faf86",
+    "base": "d721eb88b71cb03c6faa4a617bbc171d633d6637",
+    "successor_pr": 192,
+    "successor_head": "8a016ad2d4d759afa0fbb3598815a4c31f1b2076",
+    "changed_paths": [
+      "go.mod",
+      "go.sum"
+    ],
+    "module_changes": {
+      "github.com/aws/aws-sdk-go-v2/credentials": "v1.20.6",
+      "github.com/aws/aws-sdk-go-v2/feature/ec2/imds": "v1.20.1",
+      "github.com/aws/aws-sdk-go-v2/internal/configsources": "v1.5.4",
+      "github.com/aws/aws-sdk-go-v2/internal/endpoints/v2": "v2.8.4",
+      "github.com/aws/aws-sdk-go-v2/internal/v4a": "v1.5.4",
+      "github.com/aws/aws-sdk-go-v2/service/internal/presigned-url": "v1.14.4",
+      "github.com/aws/aws-sdk-go-v2/service/signin": "v1.10.1",
+      "github.com/aws/aws-sdk-go-v2/service/sso": "v1.38.1",
+      "github.com/aws/aws-sdk-go-v2/service/ssooidc": "v1.43.1",
+      "github.com/aws/aws-sdk-go-v2/service/sts": "v1.51.1"
+    },
+    "missing_versions": {},
+    "missing_added_checksums": [],
+    "candidate_preserves_all_changes": true,
+    "disposition": "Do not close until PR 192 merges with all required checks and reviewed tree equality."
+  },
+  "next_action": "Wait for exact-head native CI on #192, inspect threads and protection, then merge. Recheck #193 against the actual merge before closing it as superseded.",
+  "artifacts": {
+    "csp13-dependency192-before.log": {
+      "path": "csp13-dependency192-before.log.gz",
+      "source_sha256": "c5f2eedc24896ae04767bbd17a1037ee69c6b9bef07e74ac618268937acc5199",
+      "gzip_sha256": "4c5c09eb825f50495081599621a9050aade63bd710cc69cfb4b32e71af6c3a65"
+    },
+    "csp13-dependency192-after.log": {
+      "path": "csp13-dependency192-after.log.gz",
+      "source_sha256": "90211beeb264c62d8aae6ff32a749e3ef6ab0cec2fc694157858a82a36f9ce67",
+      "gzip_sha256": "daa1a01112146eaf590755cf1e388f58676d5e07877264c373abad96d0567cfe"
+    },
+    "csp13-dependency192-storage-race.jsonl": {
+      "path": "csp13-dependency192-storage-race.jsonl.gz",
+      "source_sha256": "25128b7412972db6a222c4da675a61c971d12d5f5fdb4d42df7733432e16bd1c",
+      "gzip_sha256": "a6ea107e63d82e8f3297982f62e4b78a058a6b8a397e500fe87a30d48a6c35de"
+    },
+    "csp13-dependency192-storage-race-fixed.jsonl": {
+      "path": "csp13-dependency192-storage-race-fixed.jsonl.gz",
+      "source_sha256": "bea229bf49113194ca1dd237091f40b94f0879b3650cac44847e12b931becd7b",
+      "gzip_sha256": "9e5cbd7512c9864c57d2d7b736fb86f2f33ae696c06fcfcb0f27f59c0a80a2df"
+    },
+    "csp13-dependency192-storage-race-final.jsonl": {
+      "path": "csp13-dependency192-storage-race-final.jsonl.gz",
+      "source_sha256": "edf34e15fbc6a5fdcf50ada9e286e2ce36efaace02730b0283935d044f2e15a0",
+      "gzip_sha256": "abb0e95acfcff41d6a0c393a917f218c7ceb7b9066fe9a207aad3c180087efb5"
+    },
+    "csp13-dependency192-final-package-ownership.log": {
+      "path": "csp13-dependency192-final-package-ownership.log.gz",
+      "source_sha256": "b4b70bd8607ad82a190de08608ac3e5cd96869a84a8130019f2a829d92c25b8b",
+      "gzip_sha256": "440e60a1b720381683c6ac4ad30976adb8a669eb2bbcc73deb56a5a24f2c37b5"
+    },
+    "csp13-dependency192-storage-race-bounded.jsonl": {
+      "path": "csp13-dependency192-storage-race-bounded.jsonl.gz",
+      "source_sha256": "184981fd37c3ba9be65a2c973a6e3c2416386acb71ea03401b7dff209a8fbae4",
+      "gzip_sha256": "5fa40f8e0f38d1b140bfb1fa07754d177f2d784016c99a9da10b4692b408906a"
+    },
+    "csp13-dependency192-bounded-package-ownership.log": {
+      "path": "csp13-dependency192-bounded-package-ownership.log.gz",
+      "source_sha256": "90211beeb264c62d8aae6ff32a749e3ef6ab0cec2fc694157858a82a36f9ce67",
+      "gzip_sha256": "daa1a01112146eaf590755cf1e388f58676d5e07877264c373abad96d0567cfe"
+    },
+    "csp13-dependency192-fixture-vet.log": {
+      "path": "csp13-dependency192-fixture-vet.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-dependency192-fixture-tidy.log": {
+      "path": "csp13-dependency192-fixture-tidy.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-dependency192-integrity.log": {
+      "path": "csp13-dependency192-integrity.log.gz",
+      "source_sha256": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+      "gzip_sha256": "4699dce40a065353f016ef7eb2c309ee9dee73281263a6b29287016349618a1b"
+    },
+    "csp13-dependency192-goago-final.json": {
+      "path": "csp13-dependency192-goago-final.json.gz",
+      "source_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "gzip_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    "csp13-dependency192-writing-final.log": {
+      "path": "csp13-dependency192-writing-final.log.gz",
+      "source_sha256": "bb7cc7fcb1f08027ff48da4129d7027459defe91432eff962dd56f1cf9b07d1c",
+      "gzip_sha256": "2eab264f9ea0698d6fe7c0ae298c2795b0dcd0ffe9dcc92e2ad2a8868d937d99"
+    },
+    "csp13-dependency192-module-source.diff": {
+      "path": "csp13-dependency192-module-source.diff.gz",
+      "source_sha256": "049d5da28635d06520ea72ad8a64fcb21f34318ae74c98b75a412188eb0f232a",
+      "gzip_sha256": "8a305744c53b5d3aa750644e7d22fbb583f9bb5dd1ab0603b9b4ea5cac043706"
+    },
+    "csp13-dependency192-module-audit.json": {
+      "path": "csp13-dependency192-module-audit.json.gz",
+      "source_sha256": "d111f9bfd0e74dfe7f0297e6c5e73c05fa1ee57660b3b46f7fb38838e19e3e01",
+      "gzip_sha256": "2ffa75341c283b4b35717a3bd10ff7ccd28a04a90e3973ec1b101ca04bbb129a"
+    },
+    "csp13-dependency192-review.log": {
+      "path": "csp13-dependency192-review.log.gz",
+      "source_sha256": "24666d15c10c1be042ec29500778b8f5a57967530cb38cd1ad6ae23024065414",
+      "gzip_sha256": "0814d76d7489d303c3d21eaaf1c5048e7429fc29d5c5c3e9b8604a6453884630"
+    },
+    "csp13-dependency192-push.log": {
+      "path": "csp13-dependency192-push.log.gz",
+      "source_sha256": "bebfb6e5270ce60018d05465545459721843f4c4221112c53e0e0d765783482f",
+      "gzip_sha256": "4dfe0a6704a0a829032859cee0b47cdc2a749ad01cde974dbdfc05399b23c291"
+    }
+  }
+}

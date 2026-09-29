@@ -1,0 +1,252 @@
+{
+  "task": "CSP13",
+  "checked_at": "2026-09-29T00:01:57.774038+00:00",
+  "status": "partial candidate evidence; not task completion",
+  "toolchain": "go1.27.1",
+  "producer": {
+    "worktree": "/private/tmp/starmap-fleet-review-20260926",
+    "branch": "codex/recovery-file-access",
+    "head": "0cb6a7cc8690bf0eccc0e4573bd7945d9267171c",
+    "changes": [
+      "Native nonmutating pending-publication inspection delegates to the existing internal filesystem owner.",
+      "Reserved publication-directory name is public. Caller must fence writers."
+    ],
+    "clean": true
+  },
+  "consumer": {
+    "worktree": "/private/tmp/starport-clock-review-20260926",
+    "branch": "codex/storage-recovery",
+    "head": "b07d68207e736d3a0f830c3069c4320992b71b90",
+    "uncommitted_sha256": {
+      "internal/credentials/policy_store.go": "989276698c22920d46282e1a7140e25219126647e8a330801fff26884a9e1d86",
+      "internal/credentials/policy_restore.go": "daa72fa32cf5082df28fe84e8fe8d677de1c7d0639ff0244fb4ff7f186ae896e",
+      "internal/credentials/policy_restore_test.go": "d8f74c1de06825019e209d89c80cf8180cf215dae57d26ab697cdc78486efcd9",
+      "internal/recovery/file_tree.go": "c2a422c580eeea54be98cb9b8042224ff6325b811c8cb0fd1febf60cb2db80bc",
+      "internal/recovery/file_tree_verify.go": "49ef74915fa5655b30ecd411a24fde62d7ccca1caa3eb43702ee2bf73703d0d0",
+      "internal/recovery/file_tree_test.go": "803b9c3c87e7335f1ad4ca4151e8288077751fcfd04078fe73db647e71569a62",
+      "internal/recovery/file_tree_process_test.go": "de411d5b591c70540179eb43b01e01b29e93b7df4265af6c0514a58a9bafc4fe",
+      "internal/recovery/file_tree_policy_test.go": "a20cbfcb2844cadb5b4a56e31f3a326299411a2ee4ddfeb424f75f90a7f3869a"
+    },
+    "module_integration": "Temporary /tmp/csp13-native.mod or /tmp/csp13-lint.work. Committed module remains v0.16.6-0.20260928105604-485b543761c7."
+  },
+  "behavior": [
+    "Read-only inference policy validation checks product, deployment, instance, schema, provider filename, canonical JSON, entry limits, and pending journals.",
+    "Invalid or pending files remain unchanged. The validator creates no missing state.",
+    "File-tree integration refuses another replica and preserves accepted provider policy and the legacy default through publication and exact retry."
+  ],
+  "checks": {
+    "producer_race": {
+      "pass": 141,
+      "fail": 0,
+      "skip": 0,
+      "package": "./pkg/productfiles"
+    },
+    "producer_purego": {
+      "pass": 141,
+      "fail": 0,
+      "skip": 0
+    },
+    "consumer_focused_race": {
+      "pass": 24,
+      "fail": 0,
+      "skip": 0
+    },
+    "consumer_tree_race_before_fixture_deployment_correction": {
+      "pass": 32,
+      "fail": 0,
+      "skip": 0
+    },
+    "consumer_final_integration_race": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "consumer_final_purego": {
+      "pass": 56,
+      "fail": 0,
+      "skip": 0
+    },
+    "consumer_complete_credentials_race": {
+      "pass": 207,
+      "fail": 0,
+      "skip": 1,
+      "skip_note": "Valkey repository test lacks TEST_VALKEY_URL. Separate real Valkey results at committed b07 are linked, not claimed as a final-candidate full-suite run."
+    },
+    "producer_lint": "PASS: golangci and goago zero issues; writing 1921 files zero diagnostics",
+    "consumer_lint": "Initial overlapping linter process refused the global lock. Sequential retry passed with zero issues.",
+    "vet": "PASS: both changed owner packages",
+    "windows": "Pure-Go amd64 compilation PASS. Native execution remains UNVERIFIED.",
+    "fail_before": "Both new API test captures fail to compile because the required function is absent."
+  },
+  "real_valkey_followup": "../native-test-deadlines-2026-09-28/valkey-verification.json",
+  "full_gate": {
+    "session": 7562,
+    "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 make verify",
+    "log": "/tmp/csp13-private-stream-verify.log",
+    "status": "running in application group",
+    "started_head": "a055f88ff6222663bd96443a62c28f023e4f0f8c",
+    "chronology": "README ffb and additive inspection API 0cb landed after start. Client group was already running when 0cb landed. Changed-package checks, vet, lint, goago, and writing were repeated. Do not attribute the whole run to final head.",
+    "runtime_shards_pass": 1344,
+    "runtime_shards_skip": 3,
+    "client_pass": 443,
+    "client_fail": 0,
+    "client_skip": 0
+  },
+  "remaining": [
+    "Finish producer gate, integrate main d721eb88, verify changed workflow and dependency, review and publish producer.",
+    "Requalify consumer with published producer module before commit, review, native CI, and merge.",
+    "Owner-specific canonical placement, independent later history, deployment activation, native qualification, and complete A16/A33 remain open."
+  ],
+  "artifacts": {
+    "csp13-publication-inspection-before.jsonl": {
+      "raw": "csp13-publication-inspection-before.jsonl.gz",
+      "source_sha256": "93296331a38134d5f1550d9234b87d4e34d58cda318f4a9d98f921690a25b993",
+      "gzip_sha256": "d0089dd4fb3e81e915a03d66fb05957280a698b78040df6798d48d8988148c60",
+      "counts": {},
+      "skips": [],
+      "failures": []
+    },
+    "csp13-publication-inspection-race.jsonl": {
+      "raw": "csp13-publication-inspection-race.jsonl.gz",
+      "source_sha256": "57a832713bd9cecdf31085f579eb3887f804ac6bb2940c6607e5652257f11e26",
+      "gzip_sha256": "990b0b1e74255c5d417fa008632b561fb321e2c5da1a27e421ea81530177d6e0",
+      "counts": {
+        "pass": 141
+      },
+      "skips": [],
+      "failures": []
+    },
+    "csp13-publication-inspection-purego.jsonl": {
+      "raw": "csp13-publication-inspection-purego.jsonl.gz",
+      "source_sha256": "232216aa2905f35579c923a02ec9c2e48a9939043011a4d554a113830fc736de",
+      "gzip_sha256": "1cab7cc163699ce22fe8f048d161f77aa457f69e916a4d28858b194f8189fef4",
+      "counts": {
+        "pass": 141
+      },
+      "skips": [],
+      "failures": []
+    },
+    "csp13-publication-inspection-lint.log": {
+      "raw": "csp13-publication-inspection-lint.log.gz",
+      "source_sha256": "476ad020cc4d1973894625a8f39701659e76f4473da1e694c6af78a9811f2c60",
+      "gzip_sha256": "4c4663a558e5195e28e3cdd425aa8aa284aff907ee4957f53dc397123cf9cb49"
+    },
+    "csp13-publication-inspection-goago.json": {
+      "raw": "csp13-publication-inspection-goago.json.gz",
+      "source_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "gzip_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    "csp13-publication-check-policy.json": {
+      "raw": "csp13-publication-check-policy.json.gz",
+      "source_sha256": "16baaa571b87aa21501669fe6da001a10afa3993b865fd79e93cbfb7e421ae04",
+      "gzip_sha256": "477da586dddff350de7ce0b741f802801710c9afe0372582d6b8f2292c695f45"
+    },
+    "csp13-publication-inspection-vet-final.log": {
+      "raw": "csp13-publication-inspection-vet-final.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-publication-inspection-windows.log": {
+      "raw": "csp13-publication-inspection-windows.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-policy-restore-before.jsonl": {
+      "raw": "csp13-policy-restore-before.jsonl.gz",
+      "source_sha256": "25c6dedee8e22116cf554e9b3c5c8349ef0c4f7452e2667fc98a396f3af36f1f",
+      "gzip_sha256": "1533c4ac284f5f18b82dbb754487c15a59eaa5104b18c369c5e3ef850322f6c6",
+      "counts": {},
+      "skips": [],
+      "failures": []
+    },
+    "csp13-policy-restore-race.jsonl": {
+      "raw": "csp13-policy-restore-race.jsonl.gz",
+      "source_sha256": "6c31c7726fe4f2a22a942451fef5abb5df4fe3e0258fe8855bc67f0689d7b0f3",
+      "gzip_sha256": "ef2868076370ee42911bbf6f418e31bae3d79988defe05138a5e7d9293175c51",
+      "counts": {
+        "pass": 24
+      },
+      "skips": [],
+      "failures": []
+    },
+    "csp13-tree-owner-race.jsonl": {
+      "raw": "csp13-tree-owner-race.jsonl.gz",
+      "source_sha256": "f0eea6bad5a9f943c1b663e116e81369313ec9e923d0951b32d5104ded6e4bf8",
+      "gzip_sha256": "e9bc91d9a53c0265a99f72d77e15c6e3cb28022033705072ee2961a071e9222d",
+      "counts": {
+        "pass": 32
+      },
+      "skips": [],
+      "failures": []
+    },
+    "csp13-tree-policy-final-race.jsonl": {
+      "raw": "csp13-tree-policy-final-race.jsonl.gz",
+      "source_sha256": "ab9ab3df932eb2822c8e5594c8e5635991d947e805b7f972b3be38ed5e088782",
+      "gzip_sha256": "4c58372dc4d3ba553995828fd404f4624942f5aabf5b7a1e29451be7d45605b6",
+      "counts": {
+        "pass": 1
+      },
+      "skips": [],
+      "failures": []
+    },
+    "csp13-policy-tree-purego.jsonl": {
+      "raw": "csp13-policy-tree-purego.jsonl.gz",
+      "source_sha256": "df97ee0a9a1626a17ae76a86e2b8033f2457e6d12e65f295c6fca8668739db13",
+      "gzip_sha256": "73d73e146ff0cd9c0d634c6cc25369cce034de817bcd1877c14f6056d64eed09",
+      "counts": {
+        "pass": 56
+      },
+      "skips": [],
+      "failures": []
+    },
+    "csp13-policy-owner-all-race.jsonl": {
+      "raw": "csp13-policy-owner-all-race.jsonl.gz",
+      "source_sha256": "dff0b0cbfe6b9c4e19c079cb0668cc7c6cefabea4aa9943abe23e98a84f553de",
+      "gzip_sha256": "34b6c8dec869204140742bf8068d1999d015967652df159a637ef223781ce608",
+      "counts": {
+        "pass": 207,
+        "skip": 1
+      },
+      "skips": [
+        "TestProviderCredentialRepositoryContract/valkey"
+      ],
+      "failures": []
+    },
+    "csp13-policy-restore-lint.log": {
+      "raw": "csp13-policy-restore-lint.log.gz",
+      "source_sha256": "18385cd4318d7ba047fb5d01e786ed4686332d853bc6fe4edc9a1370ea92b6f0",
+      "gzip_sha256": "0ccc356c70fc0fa500b13d2a33beddd06a5257c22d89526ded9e7c441a2f6c65"
+    },
+    "csp13-policy-restore-lint-final.log": {
+      "raw": "csp13-policy-restore-lint-final.log.gz",
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "csp13-policy-owner-vet-final.log": {
+      "raw": "csp13-policy-owner-vet-final.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-policy-owner-writing.log": {
+      "raw": "csp13-policy-owner-writing.log.gz",
+      "source_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618",
+      "gzip_sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b"
+    }
+  },
+  "plan_checks": {
+    "structure": "plan-validation.json",
+    "scoped_writing": "PASS: 3 files, zero diagnostics",
+    "full_writing": "1931 files, 226 pre-existing diagnostics, exit 2. Final pass adds no normalized diagnostic identities.",
+    "first_full_writing": "1931 files, 227 diagnostics. Repaired the new paragraph-length diagnostic, then reran.",
+    "current_prose": "PASS: extracted current resume, CSP13 ledger, and new execution entry; zero diagnostics"
+  },
+  "review_tool_reconfirmation": {
+    "helper_sha256": "ca72abe7187e08ce7dc415bdc3dd8e1b3be44b8d11a62866fd5f668a531752e9",
+    "equals_accepted_helper": true,
+    "command": "python3 -m unittest discover -s /Users/jack/.agents/skills/autoreview/tests -p test_json_gzip_review.py",
+    "exit_code": 0,
+    "pass": 20,
+    "fail": 0,
+    "historical_full_proof": "../../csp12.2/final-source-2026-09-28/review-tool/verification.json"
+  }
+}

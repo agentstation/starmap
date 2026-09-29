@@ -26,3 +26,13 @@ Producer publication and native qualification must precede final consumer qualif
 This additive Starmap prerequisite belongs to CSP13 because the existing bounded byte reader cannot stream large private recovery files.
 It does not expand catalog authority or move recovery policy into the filesystem layer.
 The task retains every existing acceptance requirement.
+
+Starmap also exposes `CheckNoPendingPublications` and the reserved publication-directory name.
+The check delegates to native journal inspection without recovery or state creation.
+It does not validate all metadata or replace the caller's complete inventory check.
+
+The candidate inference-policy validator belongs to Starport's credential owner.
+It checks retained policy before tree publication and refuses a different recorded replica.
+It preserves accepted provider choices and the legacy default.
+This check does not approve replica reuse, credential use, or deployment admission.
+The [owner proof](../policy-file-owner-2026-09-28/verification.json) records tests and source hashes.
