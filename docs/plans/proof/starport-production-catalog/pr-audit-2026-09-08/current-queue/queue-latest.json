@@ -2076,38 +2076,35 @@
     }
   },
   "history_coordination": {
-    "head": "e2472d42",
+    "head": "2284da89e5b91455c3e9abd369bb3b775cfc0fd0",
     "owner": "this chat",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-catalog-activation",
     "proof": "csp13/history-final-qualification-2026-09-29/verification.json",
-    "state": "PUBLISHED_NATIVE_FAILURE_REPAIR_ACTIVE",
-    "next_action": "Repair native Windows cumulative timeout on existing PR393. Complete TLS enforcement, review operator inputs, and compose topology activation.",
-    "processes": {
-      "producer_verify_checks": {
-        "session": 6975,
-        "log": "/tmp/csp13-recovery-origin-20260929/root-verify-checks.log"
-      },
-      "consumer_tls_checks": {
-        "session": 27361,
-        "log": "/tmp/csp13-tls-qualification-20260929/root-checks.json"
-      }
-    },
+    "state": "REVIEWED_REPAIR_PUBLISHED_NATIVE_PENDING",
+    "next_action": "Qualify published5fc native CI. Integrate guarded typed topology and coordinated activation.",
+    "processes": {},
     "agents": {
       "catalog_materializer": {
-        "worktree": "/private/tmp/starmap-recovery-origin-20260929",
-        "branch": "codex/catalog-recovery-origin",
-        "owner": "recovery publication origin"
+        "worktree": "/private/tmp/starmap-recovery-retention-20260929",
+        "branch": "codex/catalog-recovery-retention",
+        "base": "e620da59972841528ff049bcd507d4d384704262",
+        "owner": "bounded retain-only catalog recovery",
+        "files": "runtime/catalog_retention*.go, shared materialization journal, recovery inventory and file manifest"
       },
       "activation_coordinator": {
-        "worktree": "/private/tmp/starport-history-ci-repair-20260929",
-        "branch": "codex/recovery-history-ci-repair",
-        "owner": "native recovery test partitioning"
+        "worktree": "/private/tmp/starport-recovery-sql-guard-20260929",
+        "branch": "codex/recovery-sql-closed-guard",
+        "base": "35433b7084b7f493c887ff908ac7b0f5798c6c31",
+        "owner": "native closed SQL guard",
+        "files": "new sqlstore/relational_guard.go and tests, recovery/closed_import_guard.go and tests"
       },
       "operator_recovery_inputs": {
-        "worktree": "/private/tmp/starport-recovery-operator-inputs-20260929",
-        "branch": "codex/recovery-operator-inputs",
-        "owner": "verified operator input capability"
+        "worktree": "/private/tmp/starport-catalog-topology-compiler-20260929",
+        "branch": "codex/catalog-topology-compiler",
+        "base": "35433b7084b7f493c887ff908ac7b0f5798c6c31",
+        "owner": "catalog topology compiler and historical archive",
+        "files": "catalog/topology_inventory.go, topology_replay.go, topology_archive.go, tests and archive backup inspection"
       }
     },
     "pr": "https://github.com/agentstation/starport/pull/393",
@@ -2123,10 +2120,21 @@
       "threshold": "P0",
       "initial_secret_scan": "Failed before model invocation: synthetic URI fixture caused a verification error. Fixed with net/url construction; all assertions preserved, no scanner exception."
     },
-    "published_head": "3e96860e340f7073dd93ca8a50779aade730ad0e",
+    "published_head": "5fc5a60276ee921e4fc97ed19a230bddd308b9ef",
     "published_branch": "codex/recovery-history-coordination",
-    "successor_state": "CLOSED_FINAL_COMPOSITION_QUALIFIED_TLS_REPAIR_ACTIVE",
-    "activation_findings": "csp13/activation-findings-2026-09-29/verification.json"
+    "successor_state": "TLS_OPERATOR_INPUTS_CI_REPAIR_INTEGRATED",
+    "activation_findings": "csp13/activation-findings-2026-09-29/verification.json",
+    "native_run": 36629564640,
+    "repair_proof": "csp13/history-ci-repair-2026-09-29/verification.json",
+    "tls_proof": "csp13/tls-final-2026-09-29/verification.json",
+    "operator_proof": "csp13/operator-inputs-2026-09-29/verification.json",
+    "integration_race": {
+      "source": "2284da89e5b91455c3e9abd369bb3b775cfc0fd0",
+      "results": {
+        "pass": 37
+      },
+      "exit_code": 0
+    }
   },
   "catalog_topology": {
     "state": "MERGED",
@@ -2303,10 +2311,11 @@
   },
   "catalog_materialization": {
     "pr": "https://github.com/agentstation/starmap/pull/199",
-    "head": "2923ad10c5957642a2fb9c309af7fd3a3365ea0b",
-    "state": "REVIEWED_PUBLISHED_NATIVE_PENDING",
-    "proof": "csp13/catalog-materialization-2026-09-29/verification.json",
-    "local_extension_head": "b718ac16c",
-    "next_action": "Qualify and review the explicit recovery-origin extension, update the existing PR, then qualify native CI."
+    "head": "e620da59972841528ff049bcd507d4d384704262",
+    "state": "REVIEWED_ORIGIN_PUBLISHED_NATIVE_PENDING",
+    "proof": "csp13/recovery-origin-final-2026-09-29/verification.json",
+    "local_extension_head": "e620da59972841528ff049bcd507d4d384704262",
+    "next_action": "Qualify native199 CI and CodeQL. Integrate separately owned retain-only extension after final review.",
+    "native_codeql_run": 36629677526
   }
 }

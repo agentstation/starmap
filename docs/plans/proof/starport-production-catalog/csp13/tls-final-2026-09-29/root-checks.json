@@ -1,0 +1,86 @@
+[
+  {
+    "name": "config-server-race",
+    "command": [
+      "go",
+      "test",
+      "-json",
+      "-race",
+      "-count=1",
+      "-timeout",
+      "3m",
+      "./internal/config",
+      "./internal/server"
+    ],
+    "exit_code": 0,
+    "seconds": 113.254,
+    "log": "/tmp/csp13-tls-qualification-20260929/config-server-race.jsonl"
+  },
+  {
+    "name": "composition-race-final",
+    "command": [
+      "go",
+      "test",
+      "-json",
+      "-race",
+      "-count=1",
+      "-timeout",
+      "3m",
+      "./internal/app",
+      "-run",
+      "^(TestProductionCompositionPassesSelectedServerCertificate|TestProductionCompositionRefusesInvalidTLSBeforeOpeningStorage)$"
+    ],
+    "exit_code": 0,
+    "seconds": 31.032,
+    "log": "/tmp/csp13-tls-qualification-20260929/composition-race-final.jsonl"
+  },
+  {
+    "name": "vet",
+    "command": [
+      "go",
+      "vet",
+      "./internal/config",
+      "./internal/server",
+      "./internal/app"
+    ],
+    "exit_code": 0,
+    "seconds": 2.172,
+    "log": "/tmp/csp13-tls-qualification-20260929/vet.log"
+  },
+  {
+    "name": "lint",
+    "command": [
+      "go",
+      "run",
+      "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2",
+      "run",
+      "./internal/config/...",
+      "./internal/server/...",
+      "./internal/app/..."
+    ],
+    "exit_code": 0,
+    "seconds": 5.194,
+    "log": "/tmp/csp13-tls-qualification-20260929/lint.log"
+  },
+  {
+    "name": "prose",
+    "command": [
+      "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+      "lint",
+      "internal/config/selected_input.go",
+      "internal/config/transport_trust.go",
+      "internal/config/transport_trust_test.go",
+      "internal/config/transport_trust_posix_test.go",
+      "internal/server/config.go",
+      "internal/server/server.go",
+      "internal/server/tls_test.go",
+      "internal/app/app.go",
+      "internal/app/server_tls_test.go",
+      "--format",
+      "text"
+    ],
+    "exit_code": 1,
+    "seconds": 0.519,
+    "log": "/tmp/csp13-tls-qualification-20260929/prose.log"
+  }
+]

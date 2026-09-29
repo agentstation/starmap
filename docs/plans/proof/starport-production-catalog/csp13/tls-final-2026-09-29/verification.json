@@ -1,0 +1,133 @@
+{
+  "source_commit": "35433b7084b7f493c887ff908ac7b0f5798c6c31",
+  "toolchain": "Go1.27.1 darwin/arm64",
+  "fail_before": {
+    "actual_listener": {
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "composition": {
+      "pass": 0,
+      "fail": 2,
+      "skip": 0
+    }
+  },
+  "checks": {
+    "config_server_race": {
+      "pass": 805,
+      "fail": 0,
+      "skip": 4
+    },
+    "composed_race": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "composed_pure": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "final_server_race": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    },
+    "final_composition_race": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "vet_exit": 0,
+    "pinned_lint_exit": 0,
+    "new_file_prose_exit": 0,
+    "added_existing_file_prose_exit": 0
+  },
+  "contract": [
+    "Selected TLS material is parsed before opening storage or setup.",
+    "Actual listener serves HTTPS with selected certificate and TLS1.2 minimum.",
+    "Invalid material fails; no plaintext fallback.",
+    "Private key uses native owner-only policy; public certificate follows deployment-controlled policy.",
+    "Certificate objects do not enter JSON diagnostics."
+  ],
+  "limits": [
+    "Native Linux/Windows qualification remains required.",
+    "Full-file prose check rejected74 pre-existing comments in existing large files. New files and changed comments separately pass without changing prose policy.",
+    "TLS source is not yet independently published or reviewed as the complete successor scope.",
+    "Complete recovery and activation remain open."
+  ],
+  "recorded_at_utc": "2026-09-29T20:59:53.730243+00:00",
+  "files": {
+    "fail-before.jsonl": {
+      "file": "fail-before.jsonl.gz",
+      "bytes": 2861,
+      "sha256": "999b0e2afa1134c3e0354be4a009abc661a6b2cfb712060ed016877f6d7c5752"
+    },
+    "composition-fail-before.jsonl": {
+      "file": "composition-fail-before.jsonl.gz",
+      "bytes": 14226,
+      "sha256": "81968ee92ddc042c2efa49797f1cfbbf79495a7b3d0d57acf7df57aa4b19673b"
+    },
+    "config-server-race.jsonl": {
+      "file": "config-server-race.jsonl.gz",
+      "bytes": 1271686,
+      "sha256": "f829ee834375ada8d060c0a44ff1eeb15a9214cf43605e72fcdfd517b0c23915"
+    },
+    "composed-race.jsonl": {
+      "file": "composed-race.jsonl.gz",
+      "bytes": 20285,
+      "sha256": "3a1a4efd8e406a09c5a74c9e5ae25fc75ac86b926fe901ce9bf68fb32e7d66ac"
+    },
+    "composed-pure.jsonl": {
+      "file": "composed-pure.jsonl.gz",
+      "bytes": 20289,
+      "sha256": "af196d30235b1ca02dbfdcc6575479656c48b5c72ce9b748923f3cbfc158b684"
+    },
+    "server-race-final.jsonl": {
+      "file": "server-race-final.jsonl.gz",
+      "bytes": 5321,
+      "sha256": "a5b4a346e910d338815d6b5fc6a7d24b5082bf892ebcc7d5b2a7d3c213f69ddb"
+    },
+    "composition-race-final.jsonl": {
+      "file": "composition-race-final.jsonl.gz",
+      "bytes": 11533,
+      "sha256": "93b6fa1a86bf62ad0a6030a1e531f4dc4ec554792b736f85b2ef9bb1d98e9e7e"
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "bytes": 10,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "bytes": 9999,
+      "sha256": "e6aa1bac7a4b183edfe89bf1af51b2628f8399a6ed7fe535a22970de49965a91"
+    },
+    "new-source-prose.log": {
+      "file": "new-source-prose.log.gz",
+      "bytes": 33,
+      "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087"
+    },
+    "added-prose.md": {
+      "file": "added-prose.md.gz",
+      "bytes": 175,
+      "sha256": "467e96853a0179f3d3f14eda97263717feeca5c347b05d9d18278e80be21dc6d"
+    },
+    "added-prose.log": {
+      "file": "added-prose.log.gz",
+      "bytes": 33,
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66"
+    },
+    "root-checks.json": {
+      "file": "root-checks.json",
+      "bytes": 2074,
+      "sha256": "8c5031d8b3ef1ac8a64777d5ed5b14f42c47cc1fd338b1d0fba3baf555f2c1d1"
+    }
+  }
+}

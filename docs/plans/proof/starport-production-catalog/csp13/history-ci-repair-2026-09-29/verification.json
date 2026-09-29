@@ -1,0 +1,138 @@
+{
+  "recorded_utc": "2026-09-29T20:43:55.224926+00:00",
+  "commit": "5fc5a60276ee921e4fc97ed19a230bddd308b9ef",
+  "base": "3e96860e340f7073dd93ca8a50779aade730ad0e",
+  "branch": "codex/recovery-history-ci-repair",
+  "worktree": "/private/tmp/starport-history-ci-repair-20260929",
+  "change": "Four native recovery shards per Windows architecture; exact discovered-owner census; retained race/pure modes; mandatory evidence and Build dependencies; native capture format 3 retains old-format reads.",
+  "source_sha256": {
+    ".github/workflows/ci.yml": "36e342352028c2b5984aef4dc275331e5d945dddd87d8dcddba5c5cc6cfb578d",
+    "docs/CONTRIBUTING.md": "792fba7231c7ffdc2bf63e942af0248a09b779e6cf86141e01ca92bd1da9ceac",
+    "scripts/app_shards.py": "5fe34b5f486582dc7bb53c94f800c0473b4f8f205db0071fa1ca8f52c3daf067",
+    "scripts/native_catalog.py": "df9cec0796a82e92ec6e5e613289d503d7b0172de9ffc2705743673d22281fc1",
+    "scripts/test-app-shards.py": "7e21da3a61500f9fa42e6da544248d13b35219b55790d71ed26b59007ecd4418",
+    "scripts/test-native-catalog.py": "82c3d5389de145474ca6dcefb398e2c108d7ed5d41da2c6342703b99ad04334f"
+  },
+  "go_source_unchanged_from": "3e96860e340f7073dd93ca8a50779aade730ad0e",
+  "native_local_full_race": {
+    "source": "3e96860e340f7073dd93ca8a50779aade730ad0e",
+    "toolchain": "go version go1.27.1 darwin/arm64\ndarwin\narm64\ndarwin\narm64\n1\n",
+    "counts": {
+      "pass": 397,
+      "fail": 0,
+      "skip": 70
+    },
+    "shards": [
+      {
+        "index": 0,
+        "owners": 19,
+        "seconds": 62.794
+      },
+      {
+        "index": 1,
+        "owners": 39,
+        "seconds": 145.252
+      },
+      {
+        "index": 2,
+        "owners": 26,
+        "seconds": 48.152
+      },
+      {
+        "index": 3,
+        "owners": 29,
+        "seconds": 115.682
+      }
+    ],
+    "owner_union": 113
+  },
+  "pure_local_cli_shard": {
+    "owners": 19,
+    "counts": {
+      "pass": 33,
+      "fail": 0,
+      "skip": 10
+    },
+    "seconds": 20.295,
+    "cgo": 0,
+    "race": false,
+    "toolchain": "go version go1.27.1 darwin/arm64\ndarwin\narm64\ndarwin\narm64\n0\n"
+  },
+  "checks": {
+    "shard-unit": 0,
+    "evidence-unit": 0,
+    "actionlint": 0,
+    "developer-experience": 0,
+    "doc-links": 0,
+    "prose": 0,
+    "whitespace": 0
+  },
+  "python_contract_tests": 31,
+  "developer_experience_conditions": 47,
+  "historical_windows_failure": {
+    "run": 36624007937,
+    "job": 109596226282,
+    "source": "3e96860e340f7073dd93ca8a50779aade730ad0e",
+    "raw_evidence": "/tmp/csp13-history-qualification-20260929/windows-native/tests.jsonl",
+    "raw_sha256": "5a5b7d963a49f8b4946eb99940e809dab7804a56a95d622fb7fdf96fbf6cec03",
+    "reason": "Default 10-minute package timeout; no test assertion failure",
+    "test_results": {
+      "pass": 544,
+      "fail": 0,
+      "skip": 106
+    },
+    "completed_recovery_owners": 86,
+    "slowest_completed_owner_seconds": 149.71,
+    "four_shard_completed_owner_seconds": [
+      75.59,
+      274.78000000000003,
+      77.21,
+      131.19
+    ]
+  },
+  "limits": [
+    "Local evidence is darwin/arm64 on Go 1.27.1, not native Windows evidence.",
+    "Native Go source and module inputs remain exactly those of the published base. New helper inputs match this commit. Local rosters correctly retain the pre-commit base HEAD.",
+    "Shared-service cases without configured credentials remain optional skips; unchanged shared-storage CI supplies separate real-service qualification.",
+    "Full pure-Go execution remains mandatory on native Windows ARM CI; local --no-race CLI qualification ran one complete shard."
+  ],
+  "root_next_action": [
+    "Review exact commit; run root-owned pre-PR autoreview.",
+    "Publish onto existing PR393 with exact remote-head verification.",
+    "Require all Windows recovery shards, both census aggregates, all prior native/shared jobs, and Build to pass before merge.",
+    "Capture final native artifacts as format 3; preserve the historical timed-out run."
+  ],
+  "root_review": {
+    "manual": "all six changed files reviewed; no accepted defect",
+    "isolated": {
+      "reviewer": "Opus5.5",
+      "effort": "high",
+      "parts": 2,
+      "threshold": "P0",
+      "findings": 0,
+      "secret_scan": "clean",
+      "exit_code": 0
+    }
+  },
+  "publication": {
+    "pr": "https://github.com/agentstation/starport/pull/393",
+    "head": "5fc5a60276ee921e4fc97ed19a230bddd308b9ef",
+    "push": "ordinary fast-forward; previous remote verified3e96860e",
+    "run": 36629564640,
+    "native_state": "PENDING",
+    "merged": false
+  },
+  "recorded_at_utc": "2026-09-29T20:59:53.730243+00:00",
+  "files": {
+    "root-autoreview.log": {
+      "file": "root-autoreview.log.gz",
+      "bytes": 670,
+      "sha256": "4a6b1790f800361234ef4ce6326c80b08f19ea50f684c23fdee336edb41651fa"
+    },
+    "published-pr.json": {
+      "file": "published-pr.json",
+      "bytes": 10432,
+      "sha256": "6a5db887b1e0f9e4c146a692f52d8cba6b8ecaa10e83360e816a6c781a38a7da"
+    }
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "recorded_at_utc": "2026-09-29T20:59:53.730243+00:00",
+  "source_commit": "67aaba895aabd1c2392494a691b40c942a353c5a",
+  "transport_commit": "216d40309f28efba98ee485505ac14aa361d7050",
+  "base_commit": "91cd47f60ea62a0f603eedc829ec826dd136fe36",
+  "worktree": "/private/tmp/starport-recovery-operator-inputs-20260929",
+  "branch": "codex/recovery-operator-inputs",
+  "clean_worktree": true,
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "race": {
+    "pass": 45,
+    "fail": 0,
+    "skip": 0,
+    "packages": [
+      "github.com/agentstation/starport/internal/identity",
+      "github.com/agentstation/starport/internal/localauth",
+      "github.com/agentstation/starport/internal/credentials",
+      "github.com/agentstation/starport/internal/config",
+      "github.com/agentstation/starport/internal/app"
+    ]
+  },
+  "pure_go": {
+    "pass": 45,
+    "fail": 0,
+    "skip": 0,
+    "packages": [
+      "github.com/agentstation/starport/internal/identity",
+      "github.com/agentstation/starport/internal/credentials",
+      "github.com/agentstation/starport/internal/localauth",
+      "github.com/agentstation/starport/internal/config",
+      "github.com/agentstation/starport/internal/app"
+    ]
+  },
+  "supplemental_identity_race": {
+    "pass": 8,
+    "fail": 0,
+    "skip": 0,
+    "packages": [
+      "github.com/agentstation/starport/internal/identity"
+    ]
+  },
+  "supplemental_identity_pure": {
+    "pass": 8,
+    "fail": 0,
+    "skip": 0,
+    "packages": [
+      "github.com/agentstation/starport/internal/identity"
+    ]
+  },
+  "architecture_race": {
+    "pass": 1,
+    "fail": 0,
+    "skip": 0,
+    "packages": [
+      "github.com/agentstation/starport/internal/architecture"
+    ]
+  },
+  "checks": {
+    "race_exit": 0,
+    "pure_exit": 0,
+    "vet_exit": 0,
+    "pinned_golangci_v2_13_2_exit": 0,
+    "prose_exit": 0,
+    "diff_check_exit": 0
+  },
+  "native_scope": [
+    "Badger directory identity",
+    "SQLite file identity",
+    "PostgreSQL live database/schema selection",
+    "MySQL live database selection with local Badger",
+    "observed Valkey process incarnation and configured scope",
+    "constructed object owner scope; no bucket readiness claim",
+    "selected native primary/dotenv/TLS/CA/token/policy files"
+  ],
+  "contract": [
+    "Existing persistent targets and a private journal only",
+    "Config values and loaded-file digests retain operator selections",
+    "No captured config, secrets, or trust files replace active target inputs",
+    "No credential resolution, cloud acquisition, token rotation, listener startup, background work, or admission",
+    "Repeated construction and Check revalidate exact retained bytes and native identities",
+    "Changed settings, inputs, native targets, operation, or journal identity refuse",
+    "Private evidence retains selected paths, native identities, and digests but no raw credential or file bytes",
+    "Selected policy tree requires owner validation, not presence alone"
+  ],
+  "limits": [
+    "Catalog baseline/runtime/acquisition policy/workspace selection remains separate catalog ownership",
+    "This capability does not prove complete recovery or activate a deployment",
+    "Provider credential validity, cloud identity, remote SSO reachability, and external TLS termination remain normal runtime owner checks",
+    "Custom MaterialSource implementations lack an owner recovery binding and refuse",
+    "A configured Valkey/MySQL fleet remains unsupported by current production recipe validation",
+    "Actual external writer fencing and native import barriers remain coordinator requirements"
+  ],
+  "retained_failures": [
+    "Initial compile used the duration option from json/v2 instead of encoding/json",
+    "Initial tests passed an active filesystem store rather than its restore target",
+    "Absent default primary manifest entry required loaded-state handling",
+    "Initial fleet tests incorrectly expected local blobs and MySQL to pass current fleet recipe",
+    "Initial lint found one over-complex function and the name copy shadowed a built-in"
+  ],
+  "files": {
+    "race-complete.jsonl": {
+      "file": "race-complete.jsonl.gz",
+      "bytes": 114704,
+      "sha256": "f8e6f663ef41fed897c73968cce16ed49c3bc1bbecf63176b739d50ded76d480"
+    },
+    "pure-complete.jsonl": {
+      "file": "pure-complete.jsonl.gz",
+      "bytes": 114684,
+      "sha256": "ff204672c28c7c2b41a18b8d5952d7d21ab7c7295c0c1202aebfd94b6ca76137"
+    },
+    "identity-constructor-race.jsonl": {
+      "file": "identity-constructor-race.jsonl.gz",
+      "bytes": 8325,
+      "sha256": "ee49831c3f479b1a9aef25eafc6c02e7f1ecc6b56cf2be85d40bab6faefacd3d"
+    },
+    "identity-constructor-pure.jsonl": {
+      "file": "identity-constructor-pure.jsonl.gz",
+      "bytes": 8321,
+      "sha256": "7b09dc50c8e01b5170f58ff141b0100643126b4a306d1941017599e071638c45"
+    },
+    "architecture-race.jsonl": {
+      "file": "architecture-race.jsonl.gz",
+      "bytes": 1475,
+      "sha256": "9aaf6b5910714133db6687ea1ea316049a89130c5dd67834c493af46f551bd64"
+    },
+    "vet-complete.log": {
+      "file": "vet-complete.log.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lint-complete.log": {
+      "file": "lint-complete.log.gz",
+      "bytes": 10,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "prose-complete.log": {
+      "file": "prose-complete.log.gz",
+      "bytes": 34,
+      "sha256": "0b59c8f5bd29d838a41b0a821a79c1d0378ad7dbc35f5ec9807d7a3df7dd40f5"
+    },
+    "root-integrated-race.jsonl": {
+      "file": "root-integrated-race.jsonl.gz",
+      "sha256": "b890da05fc7f40cccd6de553e63e91a03b3439d9f0677e8c60f3fffc68ebf0c5",
+      "bytes": 116855
+    }
+  },
+  "root_manual_review": "All source and tests reviewed against owner contracts; no accepted defect.",
+  "integrated_commit": "853c94eb",
+  "integration_source": "2284da89e5b91455c3e9abd369bb3b775cfc0fd0",
+  "integration_qualification": {
+    "source": "2284da89e5b91455c3e9abd369bb3b775cfc0fd0",
+    "results": {
+      "pass": 37
+    },
+    "exit_code": 0,
+    "native_services": [
+      "Badger",
+      "SQLite",
+      "Valkey",
+      "PostgreSQL",
+      "MySQL"
+    ],
+    "scope": "Operator selection and TLS construction only; not complete recovery."
+  }
+}

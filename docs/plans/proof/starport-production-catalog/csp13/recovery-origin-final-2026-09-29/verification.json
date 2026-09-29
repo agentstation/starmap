@@ -1,0 +1,196 @@
+{
+  "scope": "CSP13 typed recovery-origin publication producer contract; native host import authority is separate",
+  "worktree": "/private/tmp/starmap-recovery-origin-20260929",
+  "branch": "codex/catalog-recovery-origin",
+  "base_commit": "f17c99d1b699c5c446294f1bac64c70092221996",
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "platform": "macOS-15.7.2-arm64-arm-64bit-Mach-O",
+  "checks": [
+    {
+      "command": "CGO_ENABLED=0 go test -json ./runtime -run '^Test(Fleet|ValidateFleet|CatalogMaterialization)' -count=1 -timeout=12m",
+      "log": "pure-go.jsonl",
+      "exit_code": 0,
+      "test_counts": {
+        "run": 174,
+        "pass": 174
+      },
+      "top_level_pass": 63,
+      "package_results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 28.525
+        }
+      ]
+    },
+    {
+      "command": "go test -race -json ./runtime -run '^Test(Fleet|ValidateFleet|CatalogMaterialization)' -count=1 -timeout=12m",
+      "log": "race.jsonl",
+      "exit_code": 0,
+      "test_counts": {
+        "run": 174,
+        "pass": 174
+      },
+      "top_level_pass": 63,
+      "package_results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 106.488
+        }
+      ]
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "log": "goago.json",
+      "exit_code": 0
+    },
+    {
+      "command": "go vet ./...",
+      "log": "vet.log",
+      "exit_code": 0
+    },
+    {
+      "command": "/private/tmp/csp13-lint-tools/golangci-lint run (repository pin 2.13.2, built with Go 1.27.1)",
+      "log": "golangci-lint.log",
+      "exit_code": 0
+    },
+    {
+      "command": "make godoc",
+      "log": "godoc.log",
+      "exit_code": 0
+    },
+    {
+      "command": "make docs-check",
+      "log": "docs-check.log",
+      "exit_code": 0
+    },
+    {
+      "command": "make technical-writing-check",
+      "log": "technical-writing.log",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "api": {
+    "constant": "FleetRecoveryOriginVersion = 1",
+    "type": "FleetRecoveryOrigin",
+    "fields": [
+      "Version int",
+      "Identity FleetIdentity",
+      "OperationID string",
+      "AcceptedDecisionSHA256 string",
+      "ClosedImportSHA256 string",
+      "GenerationManifestSHA256 string",
+      "RecoverySHA256 string"
+    ],
+    "publication_field": "FleetPublication.RecoveryOrigin *FleetRecoveryOrigin",
+    "ordinary_commit_validation": "FleetPublication.ValidateRefreshPublication() error",
+    "structural_read_validation": "FleetPublication.Validate() error; FleetSnapshot.Validate() error",
+    "capsule_mapping": {
+      "GenerationManifestSHA256": "CatalogRecovery.ManifestChecksum",
+      "RecoverySHA256": "CatalogRecovery.Inputs.Checksum"
+    }
+  },
+  "contracts": [
+    "Normal publication JSON omits recovery_origin and preserves original grant semantics.",
+    "Recovery origin requires version, bounded operation, complete fleet identity and four canonical SHA256 digests.",
+    "Actual generation manifest and complete private recovery inputs must match their origin digests.",
+    "RecoveryOrigin is mutually exclusive with every nonzero Lease field, including expiry alone.",
+    "Expected predecessor identity and revision stay exact; no revision overflow or identity replacement.",
+    "Read, ValidateFleetRecovery and ValidateFleetReplay remain passive and confer no approval, lease, authority receipt or inference permission.",
+    "Adoption preserves original recovery-origin identity and complete catalog/input bytes while selecting a later approved identity.",
+    "fleetCommitStore.Commit and both normal test store adapters call ValidateRefreshPublication; recovery-origin requests never reach ordinary publication dispatch.",
+    "Runtime retains zero publication grant for imported facts. Later refresh requires a real lease and publishes a normal grant under a new revision, preserving old evidence unchanged."
+  ],
+  "audit": {
+    "normal_commit_sites": [
+      "runtime/fleet_commit.go: fleetCommitStore.Commit",
+      "runtime/fleet_runtime_test.go: fleetTestSession.CommitPublication",
+      "runtime/fleet_store_test.go: fleetRecordingStore.CommitPublication"
+    ],
+    "ownership_read_sites": [
+      "initializeFleetLayers",
+      "refreshFleetInputs",
+      "needsFleetOwnershipPublication",
+      "prepareFleetCommitWithPin",
+      "finishFleetCommit"
+    ],
+    "permission_grant_coupling": "No authority or permission path depends on FleetPublication.Grant; none changed.",
+    "consumer_followups": [
+      "Starport normal FleetStore.CommitPublication must call ValidateRefreshPublication.",
+      "Starport native closed-import operation must independently validate accepted decision, closed import, target approval, exact import claim/cursor and SQL boundary before exposing origin.",
+      "Starport route acceptance of recovery origins must use the native closed-import evidence, never manufacture or encode a refresh Lease.",
+      "Candidate epoch and captured maximum grant remain honestly zero for recovery origins; provenance is separate."
+    ]
+  },
+  "unverified": [
+    "Native Linux and Windows CI on final commit.",
+    "Starport native KV/SQL closed import and topology activation checks.",
+    "Actual independent decision and closed-import approval; producer validation checks retained structure and byte identity only.",
+    "Full repository test suite outside the covered runtime contracts."
+  ],
+  "artifacts": {
+    "pure-go.jsonl": "e4c1d2285090a9d78b9485a104df0d45468fc896f4a0ac187bb150c7e2e13fd9",
+    "race.jsonl": "f01813e37b9b326b06eeef44ab72593fd56f83fed5531d7c0355286e88df3438",
+    "goago.json": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+    "vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "golangci-lint.log": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "godoc.log": "74be905c5f7645ec248b4bbd25fea04481fd4098f999fcb31d282997cc1c0ce4",
+    "docs-check.log": "2d0b6ad6f9afa78585822444514643779fccc8c5446cbd9ef661d68f25c024b9",
+    "technical-writing.log": "8962592cb3f1e6e99bac20c3c96bf549d8157de977bdd88ba28702ca7fd405cc"
+  },
+  "commit": "8e5d095270ec5e957e532244972cd8f1bd2fa995",
+  "git_status": "clean",
+  "root_final_source": "e620da59972841528ff049bcd507d4d384704262",
+  "root_final_checks": {
+    "make verify-checks": 0,
+    "allocation_focused_race": 0,
+    "pre_pr_autoreview": 0,
+    "reviewer": "Opus5.5 high",
+    "parts": 1,
+    "threshold": "P0",
+    "findings": 0,
+    "secret_scan": "clean"
+  },
+  "root_source_change": "Removed unchecked map-capacity sum after native CodeQL allocation alert. Map growth preserves behavior.",
+  "publication": {
+    "pr": "https://github.com/agentstation/starmap/pull/199",
+    "head": "e620da59972841528ff049bcd507d4d384704262",
+    "push": "ordinary fast-forward; previous remote verified2923ad10",
+    "native_state": "PENDING",
+    "codeql_run": 36629677526,
+    "merged": false
+  },
+  "recorded_at_utc": "2026-09-29T20:59:53.730243+00:00",
+  "files": {
+    "root-final-verify-checks.log": {
+      "file": "root-final-verify-checks.log.gz",
+      "bytes": 66070,
+      "sha256": "a0a41f19d6cad5725cb086a751aec2e47553a45779c2f24177ff07a9a45e596d"
+    },
+    "root-final-autoreview.log": {
+      "file": "root-final-autoreview.log.gz",
+      "bytes": 1613,
+      "sha256": "83793c4b269ce9cac2a32f8467ba54258e997300ee5f6361ccd695fa20c2890e"
+    },
+    "allocation-race.jsonl": {
+      "file": "allocation-race.jsonl.gz",
+      "bytes": 21590,
+      "sha256": "464c881ea884ad3cdb2102f9bd6ee2972b8bd6907b4f346d835956b77542f3fd"
+    },
+    "codeql-allocation-fail-before.json": {
+      "file": "codeql-allocation-fail-before.json",
+      "bytes": 488,
+      "sha256": "55e15044ff4362d212efeb2cdd128128b48f73da2e29f0df9b91a92ced56a50a"
+    },
+    "published-pr.json": {
+      "file": "published-pr.json",
+      "bytes": 8344,
+      "sha256": "c506f8db084f991b9c1ae74d45f9c48cdac761c77ccc8ad127c722aaa45cf2c7"
+    }
+  }
+}
