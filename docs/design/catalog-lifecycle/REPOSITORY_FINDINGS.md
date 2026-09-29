@@ -5058,3 +5058,11 @@ Application recovery passes 73 race results with three service-dependent skips.
 The workflow now runs storage recovery before long runtime suites. All 76 packages still run once.
 The [repair proof](../../plans/proof/starport-production-catalog/csp13/windows-directory-publication-2026-09-29/verification.json) retains the failed native evidence and local checks.
 Fixed-source native qualification remains required before merge.
+
+The next Windows storage run passed 332 results and failed one parent-replacement test.
+The test assumed that an open parent could move during validation. Windows correctly refused the rename with `ERROR_SHARING_VIOLATION`.
+Repair `d9b502da2` preserves the POSIX replacement case and verifies Windows handle protection, unchanged bytes, and handle release after the operation.
+No production code changed in this repair. The Windows case remains required.
+
+The [parent contract proof](../../plans/proof/starport-production-catalog/csp13/windows-parent-contract-2026-09-29/verification.json) records 33 local race passes, Windows ARM compilation, and the fresh review.
+PR #391 publishes the reviewed repair. Its native checks remain open.

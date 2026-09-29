@@ -1,0 +1,319 @@
+{
+  "state": "REVIEWED_PUBLISHED_NATIVE_CI_RUNNING",
+  "head": "d9b502da27da2b072ba261196858992b2353ce7f",
+  "published_head": "d9b502da27da2b072ba261196858992b2353ce7f",
+  "failure": {
+    "run": 36536392471,
+    "platform": "windows-arm64",
+    "pass": 332,
+    "fail": 1,
+    "skip": 48,
+    "test": "TestRestoreFileTreeRetryRefusesReplacedParent",
+    "error": "ERROR_SHARING_VIOLATION while the test tries to rename an open parent directory",
+    "cause": "The test assumed POSIX rename behavior. Windows pins an open parent, which prevents the attempted replacement."
+  },
+  "repair": {
+    "files": [
+      "internal/recovery/file_tree_test.go",
+      "internal/recovery/file_tree_parent_posix_test.go",
+      "internal/recovery/file_tree_parent_windows_test.go"
+    ],
+    "posix": "Preserve the original replacement-during-validation test unchanged.",
+    "windows": "Require ERROR_SHARING_VIOLATION during validation, retain exact leaf identity and file bytes, allow a retry of unchanged state, and verify the parent can move after the method returns.",
+    "production_changes": false,
+    "skipped_platform_test": false
+  },
+  "checks": {
+    "file_tree_race": {
+      "command": "GOWORK=off go test -race -json -count=1 -timeout 3m ./internal/recovery -run ^TestRestoreFileTree",
+      "pass": 33,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0
+    },
+    "windows_arm_compile": {
+      "command": "GOWORK=off GOOS=windows GOARCH=arm64 CGO_ENABLED=0 go test -c ./internal/recovery",
+      "exit_code": 0,
+      "scope": "Compilation only. Native behavior remains unverified."
+    },
+    "windows_arm_vet": {
+      "exit_code": 0
+    },
+    "lint": {
+      "exit_code": 0,
+      "issues": 0
+    },
+    "review": {
+      "exit_code": 0,
+      "reviewer": "claude-opus-5-5 high",
+      "threshold": "configured P0 only",
+      "passes": 4,
+      "bundle_bytes": 863547,
+      "findings": 0,
+      "secret_scan": "clean",
+      "tools": "on",
+      "web_search": "on"
+    }
+  },
+  "artifacts": {
+    "tests.jsonl": {
+      "file": "tests.jsonl.gz",
+      "sha256": "c6a1fa32f08ac1512b3363003a45f3a71ea8495091cdf0d48f3ca40df23549a0",
+      "gzip_sha256": "b61448ebd9bc6c770682b71e8ec6d397525591d83d5e98f4d67801937267de65"
+    },
+    "toolchain.txt": {
+      "file": "toolchain.txt.gz",
+      "sha256": "b3f5d419e25e24ddcdc67f96ff1acfc592a620446319ef63967cd923d8630a8b",
+      "gzip_sha256": "60c59f8759a34774f8a7ca9bbaef5e11415dfe39dedacc1d97a99c2e1159505b"
+    },
+    "ci-parent-failure.json": {
+      "file": "ci-parent-failure.json.gz",
+      "sha256": "b7dbf32d3ef93db402b258a33c94a8a3988887d00ad0abcba4b45cc7da2ee344",
+      "gzip_sha256": "191f68906f2eace71bb964586078b4f8b058594ccc8de5e63ebc58768a905d3f"
+    },
+    "parent-race.jsonl": {
+      "file": "parent-race.jsonl.gz",
+      "sha256": "b1186df3a5f7b117e11931126c7c9c0217f705704c49103fcf6073d9bab9c08f",
+      "gzip_sha256": "9d902927ed5b1da4134c3015671bf3e09e4fe59a77f2c8913e693dd3770d1016"
+    },
+    "parent-lint.log": {
+      "file": "parent-lint.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "parent-autoreview.log": {
+      "file": "parent-autoreview.log.gz",
+      "sha256": "4831c121fa2239144a6f37913534112862ce840ad3f9c4fbed1e3126bdd73574",
+      "gzip_sha256": "69c48a9e165451b17af164256deab1022480ecad616b380b6aaff06b90709870"
+    },
+    "parent-pr391-published.json": {
+      "file": "parent-pr391-published.json.gz",
+      "sha256": "2525ff1d0a654245116132f626c8f48da9cec3b319321733999a9770c33f808e",
+      "gzip_sha256": "1f8980d537256b9ecd81ce1b6576b9a193a299000d07c9e2c57f91bf273370b3"
+    },
+    "parent-pr391-review-state.json": {
+      "file": "parent-pr391-review-state.json.gz",
+      "sha256": "3f2108b93c06bab396a429f9ec73a3d7e92010e82bd65bbc8aed8f7397e57075",
+      "gzip_sha256": "ca7660a1e571765bf4094f3babc942f8a454dbb7f78bae8122faa8a855127ad9"
+    },
+    "ci-parent-repaired.json": {
+      "file": "ci-parent-repaired.json.gz",
+      "sha256": "66ce481de24087f9f8dbbbc93ed73e728e31585303dc2d240f7b42aa78557ccf",
+      "gzip_sha256": "2d2a44f806a47959dd42c4a51b966b42705426ef97fb3acc95f84e79c83cc063"
+    },
+    "ci-parent-superseded.json": {
+      "file": "ci-parent-superseded.json.gz",
+      "sha256": "199e6b8901e302ba847fd614766888c2e8ad5e0c8fdf04a6ce530a44ae828348",
+      "gzip_sha256": "4183f84e524dff5530687bd754097efa25393ef6959a1834584f328b2fc9263f"
+    },
+    "pr-body.md": {
+      "file": "pr-body.md.gz",
+      "sha256": "2e02259cc87aaba4b70563776fa50d1984cf1938f13fac1c0cf1fa3f9b1e52f4",
+      "gzip_sha256": "d81fc0de9068065b471c6a74e35adf19e20fee7987a8b0cdc027f3be86a0ec0f"
+    }
+  },
+  "publication": {
+    "pr": {
+      "baseRefOid": "41160fbf55f74a6659ff0ac488a4378524437be7",
+      "headRefOid": "d9b502da27da2b072ba261196858992b2353ce7f",
+      "isDraft": true,
+      "number": 391,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809350",
+          "name": "Lint",
+          "startedAt": "2026-09-29T07:35:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809695",
+          "name": "Test (ubuntu-24.04)",
+          "startedAt": "2026-09-29T07:35:05Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809692",
+          "name": "Test (ubuntu-24.04-arm)",
+          "startedAt": "2026-09-29T07:35:09Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809626",
+          "name": "Test (macos-15)",
+          "startedAt": "2026-09-29T07:35:11Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809710",
+          "name": "Test (windows-2025)",
+          "startedAt": "2026-09-29T07:35:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809652",
+          "name": "Test (windows-11-arm)",
+          "startedAt": "2026-09-29T07:35:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809407",
+          "name": "Shared Storage Startup",
+          "startedAt": "2026-09-29T07:35:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809174",
+          "name": "Catalog Fleet Recovery",
+          "startedAt": "2026-09-29T07:35:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809616",
+          "name": "Durable Work Recovery",
+          "startedAt": "2026-09-29T07:35:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809443",
+          "name": "Authorization Capacity",
+          "startedAt": "2026-09-29T07:35:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809669",
+          "name": "Storage Recipes",
+          "startedAt": "2026-09-29T07:35:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809590",
+          "name": "Security Scan",
+          "startedAt": "2026-09-29T07:35:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809591",
+          "name": "Release Contract",
+          "startedAt": "2026-09-29T07:35:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809589",
+          "name": "OpenRouter SDK Compatibility",
+          "startedAt": "2026-09-29T07:35:05Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809569",
+          "name": "Release Snapshot",
+          "startedAt": "2026-09-29T07:35:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-29T07:35:12Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36537498008/job/109304809584",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-29T07:35:04Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        }
+      ],
+      "url": "https://github.com/agentstation/starport/pull/391"
+    },
+    "review_state": {
+      "data": {
+        "repository": {
+          "pullRequest": {
+            "headRefOid": "d9b502da27da2b072ba261196858992b2353ce7f",
+            "baseRefOid": "41160fbf55f74a6659ff0ac488a4378524437be7",
+            "reviewThreads": {
+              "totalCount": 0,
+              "nodes": []
+            },
+            "commits": {
+              "nodes": [
+                {
+                  "commit": {
+                    "oid": "d9b502da27da2b072ba261196858992b2353ce7f",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "run": 36537498008,
+    "superseded_run": 36536392471,
+    "superseded_disposition": "Cancelled after the next run was queued. Native failure evidence remains retained.",
+    "merged": false
+  },
+  "remaining": "Latest native CI, exact-head merge checks, actual merge commit, and the remaining CSP13 acceptance work."
+}
