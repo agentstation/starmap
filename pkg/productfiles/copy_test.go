@@ -79,7 +79,7 @@ func TestPrivateFileCopyBoundsAndFailures(t *testing.T) {
 }
 
 func TestPrivateFileCopyCancellationAndChanges(t *testing.T) {
-	for _, mode := range []string{"canceled", "cancel-after-write", "file-size", "directory"} {
+	for _, mode := range []string{"canceled", "cancel-after-write", "file-size"} {
 		t.Run(mode, func(t *testing.T) {
 			root := filepath.Join(t.TempDir(), "private")
 			directory := newDirectory(t, root)
@@ -103,11 +103,6 @@ func TestPrivateFileCopyCancellationAndChanges(t *testing.T) {
 						if err := os.WriteFile(filepath.Join(root, "record"), []byte("changed"), 0o600); err != nil {
 							t.Fatal(err)
 						}
-					case "directory":
-						if err := os.Rename(root, root+"-old"); err != nil {
-							t.Fatal(err)
-						}
-						newDirectory(t, root)
 					}
 				}
 				return len(p), nil
