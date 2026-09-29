@@ -1,0 +1,148 @@
+{
+  "state": "LOCAL_IMPLEMENTATION_UNPUBLISHED",
+  "checked_at": "2026-09-29T08:42:42.233091+00:00",
+  "tested_commit": "3a6dccc9c4973840f2ec869284106bdbddf9251e",
+  "current_head": "d043d3eada4619c0c7e90b2bf26d998bfea6cdd1",
+  "branch": "codex/recovery-migration",
+  "worktree": "/private/tmp/starport-clock-review-20260926",
+  "base_integration": "The current merge incorporates reviewed e9dfb890e. That merge changes only badger_backup.go; its tests and native run are in the Windows Badger proof.",
+  "toolchain": "go1.27.1",
+  "local_platform": "darwin/arm64",
+  "contract": [
+    "SQL restore may clear the closed boundary backend identity. Source approval and the selected replacement still require identities.",
+    "PrepareFleetAdoption validates and selects catalog state while SQL authority remains closed. Exact retries and lost selection replies cannot open admission.",
+    "Native Badger and Valkey activation bind the exact import claim and recovery decision digest. Receipt publication and barrier release are atomic in that native store.",
+    "Portable historical receipts cannot authorize a restored deployment. The native current marker is excluded from backup and import.",
+    "An exact activation retry preserves later records. A changed decision, revived barrier, missing receipt, or changed incarnation conflicts.",
+    "The coordinator still must prove history, fencing, and cross-store prerequisites. These component APIs do not establish complete recovery."
+  ],
+  "checks": {
+    "catalog_final_fixture": {
+      "command": "GOWORK=off go test -race -json -count=1 -timeout=10m ./internal/catalog -run '^TestFleetAdoptionAcceptsRestoredClosedBoundary$'",
+      "results": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed": [],
+      "skipped": [],
+      "exit_code": 0
+    },
+    "catalog_other_results": {
+      "source": "preparation-final-race.jsonl",
+      "pass": 23,
+      "fail": 1,
+      "explanation": "The 17 request-validation and six lost-response results pass. The new fixture failed because it selected provider acquisition without credentials. The final fixture explicitly selects no acquisition sources and passes separately. Do not report this intermediate run as all green."
+    },
+    "kv_race": {
+      "results": {
+        "pass": 86,
+        "fail": 0,
+        "skip": 1
+      },
+      "failed": [],
+      "skipped": [
+        "TestRecordTransferRejectsReplacementBackend"
+      ],
+      "exit_code": 0,
+      "activation_pass": 65,
+      "activation_skip": 0,
+      "skip_reason": "TEST_VALKEY_REPLACEMENT_URL was not configured for the existing replacement-backend test."
+    },
+    "vet": "PASS: catalog and storage",
+    "lint": "PASS: zero issues",
+    "prose": "PASS: recovery README and activation contract",
+    "diff_check": "PASS"
+  },
+  "failed_evidence": [
+    "The original validator rejects the restored empty backend identity.",
+    "Preparation regression initially failed to compile before its API existed.",
+    "Initial native fixture lacked PostgreSQL authentication; a later version mismatched collector policy; another omitted explicit empty acquisition sources. These fixture failures remain in the raw logs.",
+    "One intermediate fixture used an invalid configuration package import.",
+    "The first KV implementation allowed a new Valkey claim when only the native completion marker remained. The final implementation checks that marker atomically and its regression passes.",
+    "An initial lint run found an unused parameter, which was removed."
+  ],
+  "remaining": [
+    "Complete owner reconciliation and bound recovery decision.",
+    "Blob and SQL activation, application coordinator, operator CLI and procedures.",
+    "Actual migration in both directions, later revocation and spend replay, interrupted activation, old-primary fencing, RPO/RTO, and every remaining assigned acceptance subcase.",
+    "Full pre-PR checks, required review, publication, native qualification, and merge."
+  ],
+  "artifacts": {
+    "catalog-race-native.jsonl": {
+      "file": "catalog-race-native.jsonl.gz",
+      "sha256": "dc505d2510469de620ab12c9b40d91caf84ee0579e4f68fdeb8cdbfb04eaeb2e",
+      "gzip_sha256": "66abf00b4e254e5de4eabd7ecad4832b2bbe91859e77613a34d481f389834faa"
+    },
+    "catalog-race.jsonl": {
+      "file": "catalog-race.jsonl.gz",
+      "sha256": "0e11c9d25abb9d7d3c35d83aea136e5478da4fa8ba1c2f87dec96943307e051e",
+      "gzip_sha256": "563a61adf0c11db83c0d17f00130b03090acb3cbc7e5eb153ac625e7d6b15b18"
+    },
+    "catalog-fail-before.jsonl": {
+      "file": "catalog-fail-before.jsonl.gz",
+      "sha256": "760cfecdaf828294bde635d27e765811c7814992105e60329da17136ea3638ba",
+      "gzip_sha256": "28b2d0da1153451b86172b3fde1919efb33dc12ea04499b5d405f171c762cdc7"
+    },
+    "catalog-preparation-final-race.jsonl": {
+      "file": "catalog-preparation-final-race.jsonl.gz",
+      "sha256": "92469570a17dab0cd7efabb5c03a87ac857aa8bbcaa72e9962a73c0b5973dcbd",
+      "gzip_sha256": "28e73678272540fbfa13f2b07d66d398662addf1acd427cbf5037f92a13fafb6"
+    },
+    "catalog-preparation-configured-race.jsonl": {
+      "file": "catalog-preparation-configured-race.jsonl.gz",
+      "sha256": "cd95e1ebde22cd8900fbf8ff6f7949fd1b8aded82087ea6c3221a17816defa3f",
+      "gzip_sha256": "d1b20d74f5dd7ce5f7a39da5273c4e19f24b0bb0b0f0eefa870260e263e2e57d"
+    },
+    "catalog-preparation-race.jsonl": {
+      "file": "catalog-preparation-race.jsonl.gz",
+      "sha256": "080215fa8a785ed2093b4076b53ac6057403ca3519d4b7d52f5bc399efa1b264",
+      "gzip_sha256": "3cc13ef8f5ae296b2ac93b341dbf3d54a9e49d40df6dd85f21f18994cfa22e07"
+    },
+    "catalog-preparation-configured-final-race.jsonl": {
+      "file": "catalog-preparation-configured-final-race.jsonl.gz",
+      "sha256": "a52c2c81ae48d6a5319b3bf8a1c329b124eb1e66e7885af9f3e39e15012c854b",
+      "gzip_sha256": "0699a2d35f1d8bc7c6669ac3d214a465be25041f95a4161a1bdc3178249f0f43"
+    },
+    "catalog-preparation-fail-before.jsonl": {
+      "file": "catalog-preparation-fail-before.jsonl.gz",
+      "sha256": "186722360887ace6a2dacf91dad90234fa6ee4d8fac8367a7c31a1b2a78b3914",
+      "gzip_sha256": "abb9e821d9a260d2a298600df280374e94d7e55bf0f9600617f3a922253d5431"
+    },
+    "kv-first-pass.jsonl": {
+      "file": "kv-first-pass.jsonl.gz",
+      "sha256": "321f85b3e2a852a9cc45a24504d66ad9f632d60f4f4aabdda60cd49b9604e8f7",
+      "gzip_sha256": "91ad96d134797038665832100ddee3b99f691a362e161db8fd259ede150dd13d"
+    },
+    "kv-race.jsonl": {
+      "file": "kv-race.jsonl.gz",
+      "sha256": "333c18493d9fea5b3d1339e694adf5ccd178ed338c7121d9fb19866ec856f1f9",
+      "gzip_sha256": "198af37d301dd4cd6d13a5ab1c8e1813c853a18700deebbaf25175eeed887925"
+    },
+    "kv-fail-before.jsonl": {
+      "file": "kv-fail-before.jsonl.gz",
+      "sha256": "38e44e3f3f130ec5b8e19818cfa32e64ecf2a1536d6409428d0b859ef249324c",
+      "gzip_sha256": "4c15a2360f48cb8262c1973a905cdd1993019cff7e88ed915b8aba9fa1e40c5e"
+    },
+    "kv-final-race.jsonl": {
+      "file": "kv-final-race.jsonl.gz",
+      "sha256": "dd8604ff727a522609a746c618696df8505da4df25ab02a60862c9f7987ef533",
+      "gzip_sha256": "3c90664291faf43a747123383a3e4f165aa71aacae557b809932f8b091ee595e"
+    },
+    "catalog-lint-final.log": {
+      "file": "catalog-lint-final.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "catalog-vet-final.log": {
+      "file": "catalog-vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "kv-vet.log": {
+      "file": "kv-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    }
+  }
+}
