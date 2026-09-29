@@ -31,6 +31,11 @@ Windows uses the native owner and DACL checks.
 New files have private access from creation.
 
 `ReadFile` requires a byte limit and reads one regular private file.
+`CopyFile` streams one regular private file into a caller-owned writer under an explicit byte limit.
+It checks native access and identity before and after the copy and supports context cancellation.
+The caller must discard partial output after an error, fence writers, and verify content hashes when required.
+Streaming does not create a snapshot or approve recovery.
+
 `CompareAndPublish` requires matching previous bytes before it replaces a file.
 A nil previous value means absence. An empty, non-nil value means an empty file.
 `CompareAndRemove` also requires matching bytes and allows retries after removal.
@@ -54,3 +59,8 @@ It refuses any existing destination, including an empty directory.
 The caller must sync staged contents before the move and both parent directories afterward.
 The caller also owns recovery if its operation spans multiple roots.
 `SyncDirectory` reports native synchronization errors without claiming hardware power-loss qualification.
+
+`CheckNoPendingPublications` inspects existing publication journals without creating files or recovering writes.
+It uses the existing native writer lock and refuses pending journals.
+`PublicationDirectoryName` identifies metadata owned by this package.
+Hosts must preserve that metadata and fence writers before copying inspected state.

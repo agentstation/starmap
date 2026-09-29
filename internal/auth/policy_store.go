@@ -131,15 +131,25 @@ func (s *FilePolicyStore) read(name string, provider catalogs.ProviderID) (polic
 	if err != nil {
 		return policyRecord{}, err
 	}
+	record, err := decodePolicyRecord(data, s.owner, s.current)
+	if err != nil {
+		return policyRecord{}, err
+	}
+	if record.Provider != provider {
+		return policyRecord{}, policyStoreError("policy record does not match its provider")
+	}
+	return record, nil
+}
+
+func decodePolicyRecord(data []byte, owner PolicyOwner, current EnvironmentPolicy) (policyRecord, error) {
 	var record policyRecord
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(&record); err != nil {
 		return policyRecord{}, policyStoreError("policy record is invalid")
 	}
-	if err := rejectTrailingJSON(decoder); err != nil || record.SchemaVersion != 1 || record.Owner != s.owner ||
-		record.Provider != provider || record.Policy.current() != s.current {
-		return policyRecord{}, policyStoreError("policy record does not match its owner, provider, or supported schema")
+	if err := rejectTrailingJSON(decoder); err != nil || record.SchemaVersion != 1 || record.Owner != owner || record.Policy.current() != current {
+		return policyRecord{}, policyStoreError("policy record does not match its owner or supported schema")
 	}
 	canonical, err := json.Marshal(record)
 	if err != nil || !bytes.Equal(data, canonical) {
