@@ -2019,10 +2019,10 @@
   },
   "owner_replay": {
     "head": "84d9a9a557f46146c40d25ed25875eec783fffa1",
-    "state": "DRAFT_CI_RUNNING",
+    "state": "READY_CI_RUNNING",
     "owner": "this chat",
     "proof": "csp13/integration-final-2026-09-29/verification.json",
-    "next_action": "Inspect required native CI and review threads for exact84d9a9a5; merge under branch protection when eligible. Continue independent history, typed file/asset recovery and offline catalog topology transfer before activation.",
+    "next_action": "Wait for the complete CI run, including the required Build aggregate. Verify exact84d9a9a5 and review threads before a protected merge. A successful required-check watch can omit checks that have not registered yet.",
     "pr": "https://github.com/agentstation/starport/pull/392"
   },
   "starport391_completion": {
@@ -2072,5 +2072,17 @@
         "sha256": "9f57d54f83599b3fb95558f3dab81eb0c0c522279dc13c20bb97daf80fb7ede2"
       }
     }
+  },
+  "history_coordination": {
+    "owner": "this chat",
+    "branch": "codex/recovery-history-coordination",
+    "worktree": "/private/tmp/starport-clock-review-20260926",
+    "base": "84d9a9a557f46146c40d25ed25875eec783fffa1",
+    "state": "in_progress",
+    "owned_uncommitted": [
+      "internal/recovery/history_package.go",
+      "internal/recovery/history_package_test.go"
+    ],
+    "next_action": "Complete independent history acceptance and ordered owner replay while target stores remain restricted."
   }
 }

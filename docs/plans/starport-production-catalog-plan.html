@@ -16,7 +16,7 @@
 
 <p>Producer <code>/private/tmp/starmap-fleet-review-20260926</code> starts offline catalog transfer from actual #197 merge <code>27fee03e3</code>. Its 32 recorded checks passed.</p>
 
-<p>Consumer <code>/private/tmp/starport-clock-review-20260926</code> is clean on <code>codex/recovery-migration</code> at local <code>84d9a9a5</code>. The Starmap pin remains <code>9ab700ad9</code>, with no local replacement.</p>
+<p>Consumer <code>/private/tmp/starport-clock-review-20260926</code> is on <code>codex/recovery-history-coordination</code> from reviewed <code>84d9a9a5</code>. This chat owns two uncommitted history-package files in <code>internal/recovery</code>. The Starmap pin remains <code>9ab700ad9</code>, with no local replacement.</p>
 
 <p><a href="proof/starport-production-catalog/csp13/final-graph-2026-09-29/verification.json">Final imported graph inspection</a> entered the branch in <code>d7da3c9d</code>. Broad owner checks pass 248 results per mode. Final focused checks pass 21 results per mode, without skips. Inspection preserves closed admission and uncertain reservations.</p>
 
@@ -24,9 +24,9 @@
 
 <p>The <a href="proof/starport-production-catalog/csp13/reader-dependencies-2026-09-29/verification.json">dependency repair</a> removes the import cycle and passes all eight architecture tests per mode. <a href="proof/starport-production-catalog/csp13/operator-inspection-2026-09-29/verification.json">Operator inspection</a> passes 48 results per mode without skips. All 26 verification scripts now pass across the recorded runs. The <a href="proof/starport-production-catalog/csp13/integration-final-2026-09-29/verification.json">final Go run</a> passes 6,527 results with 497 optional or platform skips at <code>84d9a9a5</code>. All other required local checks pass.</p>
 
-<p>The isolated review passes all four parts with no actionable findings at the configured threshold. <a href="https://github.com/agentstation/starport/pull/392">Draft #392</a> runs native CI at that exact head.</p>
+<p>The isolated review passes all four parts with no actionable findings at the configured threshold. <a href="https://github.com/agentstation/starport/pull/392">PR #392</a> is ready for review and runs native CI at that exact head. Several native jobs and the required Build check remain pending.</p>
 
-<p>Starport #391 merged as <code>03b09b21a</code> after all 22 checks passed. Starport #392 is the only open product PR. Task Valkey, PostgreSQL, MySQL, and object storage remain active. No owner decision remains open. Required review, publication, native qualification, and complete operator recovery remain open.</p>
+<p>Starport #391 merged as <code>03b09b21a</code> after all 22 checks passed. Starport #392 is the only open product PR. Task Valkey, PostgreSQL, MySQL, and object storage remain active. No owner decision remains open. Native qualification, merge, and complete operator recovery remain open.</p>
 
 <p>Preserve unrelated plan changes in <code>AGENTS.md</code>, <code>Makefile</code>, <code>go.mod</code>, <code>go.sum</code>, and <code>scripts/verify.sh</code>.</p>
 </section>
