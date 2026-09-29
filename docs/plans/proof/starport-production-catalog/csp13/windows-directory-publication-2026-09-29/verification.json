@@ -1,5 +1,5 @@
 {
-  "state": "FIX_COMMITTED_REVIEW_RUNNING",
+  "state": "REPAIR_REVIEWED_PUBLISHED_NATIVE_CI_RUNNING",
   "source_head": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401",
   "pr": "https://github.com/agentstation/starport/pull/391",
   "failure": {
@@ -65,7 +65,17 @@
       "shell": "PASS",
       "release_contract": "PASS"
     },
-    "review": "RUNNING",
+    "review": {
+      "exit_code": 0,
+      "reviewer": "claude-opus-5-5 high",
+      "threshold": "configured P0 only",
+      "passes": 4,
+      "bundle_bytes": 861022,
+      "findings": 0,
+      "secret_scan": "clean",
+      "tools": "on",
+      "web_search": "on"
+    },
     "native_fixed_source": "UNVERIFIED"
   },
   "artifacts": {
@@ -118,6 +128,311 @@
       "file": "release-workflow.log.gz",
       "sha256": "3af64345cf73b6a90728f3dbd6f529a4f24f691be4265d3652343b6f5505a8d2",
       "gzip_sha256": "4b89fc853ec2738ca4a1ccab9c645d38af00579d326840c59b4de0201ffe8567"
+    },
+    "autoreview.log": {
+      "file": "autoreview.log.gz",
+      "sha256": "069a8355d69649e872d0f51b0efe38207a39eba48423c38bba4e6d7ed520fdd4",
+      "gzip_sha256": "73fc057eba64729a93abface103613879561d7e850d65293663454a9c75abbf0"
+    },
+    "pr391-published.json": {
+      "file": "pr391-published.json.gz",
+      "sha256": "a745f294b8d53a04427e6abdf8684e1eba681f2efb43e318a62127f050cf82f4",
+      "gzip_sha256": "d143ca2e0a91f9c2296ff3968a47c80c3130f5acb87ccc5622a509109a7ad14e"
+    },
+    "pr391-review-state.json": {
+      "file": "pr391-review-state.json.gz",
+      "sha256": "d290d90f6abce51e824a0a8d4cb4383eed52d27a5abe413a6b314dbb4539c7aa",
+      "gzip_sha256": "0e7e17dfac443d322fa3f7b0936b8ab575707df2357a3a47cee953d89d32d2a0"
+    },
+    "ci-repaired.json": {
+      "file": "ci-repaired.json.gz",
+      "sha256": "b8879adee873eb918f17a51cdc02d37d2a2e9136c0e87d5136afc80fb7412579",
+      "gzip_sha256": "4a67a462a205475ea9b0a033053fca35ac27d618064f5e916d79a4eabc0c6a53"
+    },
+    "ci-superseded.json": {
+      "file": "ci-superseded.json.gz",
+      "sha256": "0687d3aac826537616982a4158b4404118c307624047497478d458f548abdf4d",
+      "gzip_sha256": "2d3196a1e32f5b92fdcaca52bf4d01ac4f9ba81051841dda8d9d8c2eca9abfc9"
+    },
+    "pr-body.md": {
+      "file": "pr-body.md.gz",
+      "sha256": "86251ce1411637c2373e24b3aa28fa62ce789578b3ae1bf3d8f9e631b50c3c96",
+      "gzip_sha256": "5b7b172dd11477b77973e0878fe47d428d8be9d4f721d1a7f5c30816c8b4c857"
+    },
+    "backup-application.jsonl": {
+      "file": "backup-application.jsonl.gz",
+      "sha256": "21d9313baa2319d66eea90ee7095d5e73ba5c46e906f18629b350127877361ab",
+      "gzip_sha256": "f7cb284cfa0551678617321c51d13106f9f9d342997575ce81fc432e880bf16f",
+      "counts": {
+        "pass": 4
+      },
+      "source_commit": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401"
+    },
+    "backup-catalog.jsonl": {
+      "file": "backup-catalog.jsonl.gz",
+      "sha256": "c2269b28ba9e80547e8390832c28d509e9b588e4625aff691a2c7e436b502061",
+      "gzip_sha256": "c950fca4a068619d8ff819af462cc88f700baff1f084697cb27136ad14e34644",
+      "counts": {
+        "pass": 16
+      },
+      "source_commit": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401"
+    },
+    "backup-storage.jsonl": {
+      "file": "backup-storage.jsonl.gz",
+      "sha256": "b350f05f684fef102b0f1c9b60e646f848f66634aecbd783fe774afaec257a1b",
+      "gzip_sha256": "81ef7d418bab9498747730caa0c6c19c89bd2d596d3188e9849a3e0cce5c8174",
+      "counts": {
+        "pass": 736
+      },
+      "source_commit": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401"
+    },
+    "fleet-reservation-jobs.jsonl": {
+      "file": "fleet-reservation-jobs.jsonl.gz",
+      "sha256": "72e39eee36e4da66672f88de6401b4e253718b6562f36ca309a936dfd814fc16",
+      "gzip_sha256": "d63d86975cdcc882e438c3c96a87a67c0bcd179be6bb9538aef05b5c3a495edf",
+      "counts": {
+        "pass": 706
+      },
+      "source_commit": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401"
+    },
+    "fleet-adoption.jsonl": {
+      "file": "fleet-adoption.jsonl.gz",
+      "sha256": "56d259163f543b2fa3b7d2dba12345a5ff0997c3fbe8da3111ace68b45c4a88c",
+      "gzip_sha256": "a0eabf21d195481afed3671a74e3ab6b1791d394aa471fd39002fb7d78e6db40",
+      "counts": {
+        "pass": 22
+      },
+      "source_commit": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401"
+    },
+    "fleet-budget.jsonl": {
+      "file": "fleet-budget.jsonl.gz",
+      "sha256": "15e98e810e784b0b76e1028eca9210213cf46bcfcf414ad548dfac4075ed06fa",
+      "gzip_sha256": "ecb8a4667a562c17331ef3e40196d45b7029ef83faf28de753750d177ec594fc",
+      "counts": {
+        "pass": 8
+      },
+      "source_commit": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401"
+    },
+    "fleet-catalog.jsonl": {
+      "file": "fleet-catalog.jsonl.gz",
+      "sha256": "9e4447f6d307837ff53547131910f77b8fc01fc2c5a222f3dbd6891d244f44e2",
+      "gzip_sha256": "0f4191e5fd9d667c5f6e611fca378b1ad6aec7fb665126514ac133f9e3832b26",
+      "counts": {
+        "pass": 80
+      },
+      "source_commit": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401"
+    },
+    "fleet-initialization.jsonl": {
+      "file": "fleet-initialization.jsonl.gz",
+      "sha256": "6ba7fb4d7365077c9210e4186a94f96ad3aaf62b3c3d63c39fa42ba4e45592ba",
+      "gzip_sha256": "546e18f16cac924e638f49b710b68ffeea2725c79c1754fe177fdd30afff4381",
+      "counts": {
+        "pass": 7
+      },
+      "source_commit": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401"
     }
+  },
+  "publication": {
+    "pr": {
+      "baseRefOid": "41160fbf55f74a6659ff0ac488a4378524437be7",
+      "headRefOid": "6b36dfdf563377259c2338f4371a5ea3ec0e5599",
+      "isDraft": true,
+      "number": 391,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313637",
+          "name": "Lint",
+          "startedAt": "2026-09-29T07:24:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313993",
+          "name": "Test (ubuntu-24.04)",
+          "startedAt": "2026-09-29T07:24:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313945",
+          "name": "Test (ubuntu-24.04-arm)",
+          "startedAt": "2026-09-29T07:24:06Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301314094",
+          "name": "Test (macos-15)",
+          "startedAt": "2026-09-29T07:24:08Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313534",
+          "name": "Test (windows-2025)",
+          "startedAt": "2026-09-29T07:24:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301314051",
+          "name": "Test (windows-11-arm)",
+          "startedAt": "2026-09-29T07:24:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313228",
+          "name": "Shared Storage Startup",
+          "startedAt": "2026-09-29T07:24:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313593",
+          "name": "Catalog Fleet Recovery",
+          "startedAt": "2026-09-29T07:24:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313901",
+          "name": "Durable Work Recovery",
+          "startedAt": "2026-09-29T07:24:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313965",
+          "name": "Authorization Capacity",
+          "startedAt": "2026-09-29T07:24:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313640",
+          "name": "Storage Recipes",
+          "startedAt": "2026-09-29T07:24:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313555",
+          "name": "Security Scan",
+          "startedAt": "2026-09-29T07:24:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313750",
+          "name": "Release Contract",
+          "startedAt": "2026-09-29T07:24:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313649",
+          "name": "OpenRouter SDK Compatibility",
+          "startedAt": "2026-09-29T07:24:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313680",
+          "name": "Release Snapshot",
+          "startedAt": "2026-09-29T07:24:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-29T07:24:13Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36536392471/job/109301313727",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-29T07:24:04Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        }
+      ],
+      "url": "https://github.com/agentstation/starport/pull/391"
+    },
+    "review_state": {
+      "data": {
+        "repository": {
+          "pullRequest": {
+            "headRefOid": "6b36dfdf563377259c2338f4371a5ea3ec0e5599",
+            "baseRefOid": "41160fbf55f74a6659ff0ac488a4378524437be7",
+            "reviewThreads": {
+              "totalCount": 0,
+              "nodes": []
+            },
+            "commits": {
+              "nodes": [
+                {
+                  "commit": {
+                    "oid": "6b36dfdf563377259c2338f4371a5ea3ec0e5599",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "run": 36536392471,
+    "superseded_run": 36533804653,
+    "superseded_disposition": "Cancelled after the repaired head started CI. The failed Windows evidence and completed real-storage results remain retained.",
+    "merge": "NOT_MERGED"
   }
 }
