@@ -2068,7 +2068,7 @@
     "head": "3938ed15fad0fa0039b91edec73834bcabe694e8",
     "branch": "codex/storage-recovery",
     "owner": "this chat",
-    "next_action": "Collect exact3938 native results, then verify head, base, review threads and required checks before merge.",
+    "next_action": "Collect completion of run36550634369, verify exact head/base/checks/review threads, then merge reviewed3938 without bypassing protection.",
     "pull_request": 391,
     "url": "https://github.com/agentstation/starport/pull/391",
     "run": 36550634369,
@@ -2109,7 +2109,15 @@
       "failed_jobs": 1,
       "skipped_jobs": 1
     },
-    "disposition": "Reviewed repair published; native CI pending."
+    "disposition": "Ready for review; four native platform jobs remain before Build and merge.",
+    "draft": false,
+    "current_qualification": {
+      "head": "3938ed15fad0fa0039b91edec73834bcabe694e8",
+      "run": 36550634369,
+      "proof": "csp13/windows-app-native-2026-09-29/ready-status.json",
+      "successful_jobs": 17,
+      "active_jobs": 4
+    }
   },
   "windows_publication_repair": {
     "proof": "proof/starport-production-catalog/csp13/windows-directory-publication-2026-09-29/verification.json",
@@ -2160,5 +2168,11 @@
     "head": "3938ed15fad0fa0039b91edec73834bcabe694e8",
     "proof": "csp13/windows-app-shards-2026-09-29/verification.json",
     "run": 36550634369
+  },
+  "ordered_replay": {
+    "head": "222a21535d813f490ec2fe1ad0a13e32406592bc",
+    "worktree": "/private/tmp/starport-clock-review-20260926",
+    "proof": "csp13/ordered-kv-replay-2026-09-29/verification.json",
+    "disposition": "Local, verified component; full recovery remains open."
   }
 }
