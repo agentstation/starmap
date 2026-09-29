@@ -1,0 +1,9 @@
+{
+  "moved_entries": 1,
+  "preserved_sha256": [
+    "b1757ac76d8a45c48bd9de566b67a635d1eaed9e028c403423cad526a7737413"
+  ],
+  "history": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-29-recovery-ci.html",
+  "remaining_entries": 10,
+  "cold_resume": "Active task, source, running checks, pending review, and remaining acceptance obligations are explicit. Existing full task contracts remain required."
+}

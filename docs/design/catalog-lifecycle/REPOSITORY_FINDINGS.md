@@ -5019,3 +5019,25 @@ Incomplete fleet uploads retain matching bytes as inactive evidence. Durable cat
 These checks establish captured-state consistency. Independent later history, deployment replay, controlled activation, and interrupted path recovery remain separate requirements.
 
 The [catalog reference proof](../../plans/proof/starport-production-catalog/csp13/catalog-reference-validation-2026-09-29/verification.json) records fail-before results, source commits, the actual #197 merge, and native qualification.
+
+### Recovery CI coverage (September 29, 2026)
+
+The previous workflow did not run the new backup tests with shared storage fixtures.
+Starport `1d5ea68ab` adds the storage, catalog, and application tests to the required recovery job.
+It supplies pinned PostgreSQL, MySQL, and two Valkey instances alongside the existing object store.
+
+Local checks pass all nine SQL transfer pairs. The [readiness proof](../../plans/proof/starport-production-catalog/csp13/recovery-ci-readiness-2026-09-29/verification.json) retains the exact counts and skipped replacement tests, which passed separately.
+Native CI and full deployment recovery remain unverified for this consumer branch.
+
+The first full Go suite reached its ten-minute package limit. Aggregate local and release commands now match the existing native 30-minute allowance.
+Individual contract deadlines remain unchanged.
+
+The final Go suite passes 5,974 results with 369 skips.
+Starport `3f5aa9b4c` removes the duplicate full-suite invocation from the architecture command. Eleven focused contracts pass.
+Separate full-suite requirements remain in local checks, native CI, and release verification.
+
+The operator guide previously claimed runtime migration never opened SQL. Badger migration leaves SQL closed, but shared migration requires the existing PostgreSQL recovery witness.
+The guide now states that distinction. Incomplete migration backup records still cause refusal before runtime publication.
+
+Draft [Starport #391](https://github.com/agentstation/starport/pull/391) publishes the reviewed head.
+The required review reports no findings across four parts at the configured P0-only threshold. Native CI remains in progress.

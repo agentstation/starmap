@@ -1,0 +1,2695 @@
+{
+  "recorded_at": "2026-09-29T06:40:41.057564+00:00",
+  "task": "CSP13",
+  "status": "in_progress",
+  "source_commit": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401",
+  "base_commit": "41160fbf55f74a6659ff0ac488a4378524437be7",
+  "starmap_merge": "27fee03e33fd430c70f8235a08d665d24804c4b9",
+  "published_starmap_module": "v0.16.6-0.20260929053147-9ab700ad930f",
+  "changes": [
+    "Add portable backup and restore tests to required Durable Work Recovery CI with pinned PostgreSQL, MySQL, two Valkey services, and the existing pinned object store.",
+    "Align aggregate local and release test allowances with the existing native application allowance of 30 minutes. Individual contract deadlines remain unchanged.",
+    "Correct runtime migration documentation: Badger leaves SQL closed; shared migration reads the existing PostgreSQL recovery witness.",
+    "Remove the duplicate full Go invocation from the architecture command. Eleven focused contracts remain. The full suite remains required separately before a PR, on all native CI platforms, and for release."
+  ],
+  "checks": {
+    "storage": {
+      "go-00.log": {
+        "counts": {
+          "pass": 5930,
+          "skip": 366
+        },
+        "failed": [
+          [
+            "github.com/agentstation/starport/internal/app",
+            null
+          ]
+        ],
+        "skipped": [
+          [
+            "github.com/agentstation/starport/examples",
+            null
+          ],
+          [
+            "github.com/agentstation/starport/internal/account",
+            "TestAccountRepositoryRecordBounds/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/account",
+            "TestAccountRepositoryContract/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/account",
+            "TestEnsureDefaultIsIdempotent/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/account",
+            "TestEnsureDefaultUnderConcurrentBoot/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/account",
+            "TestDefaultAccountCannotBeDeleted/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/account",
+            "TestRepositoryRejectsInvalidAccounts/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/apikey",
+            "TestAPIKeyRepositoryRecordBounds/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/apikey",
+            "TestAPIKeyRepositoryContract/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/authmode",
+            "TestRepositoryContract/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/authorization",
+            "TestAuthorizationTenantChurnCapacity"
+          ],
+          [
+            "github.com/agentstation/starport/internal/authorization",
+            "TestFleetDurableReceiptPrecedesReplicaEnforcement"
+          ],
+          [
+            "github.com/agentstation/starport/internal/authorization",
+            "TestRepositorySourceRealStoresAndLocalMutation/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/authorization/revision",
+            "TestKVRevisionCommitsWithMutation/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/authorization/revision",
+            "TestKVRevisionConcurrentIndependentMutations/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/authorization/revision",
+            "TestRepositoriesPublishEveryAuthorizationMutation/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/cache",
+            "TestDefaultCacheMemoryBudget"
+          ],
+          [
+            "github.com/agentstation/starport/internal/cache",
+            "TestSharedCachePausedServiceDeadlineAndRecovery"
+          ],
+          [
+            "github.com/agentstation/starport/internal/cache",
+            "TestSharedCacheRealService"
+          ],
+          [
+            "github.com/agentstation/starport/internal/cache",
+            "TestSharedCacheURIAuthenticationAndDatabase"
+          ],
+          [
+            "github.com/agentstation/starport/internal/cache",
+            "TestSharedCacheTLSWithRealService"
+          ],
+          [
+            "github.com/agentstation/starport/internal/blob",
+            "TestBlobSnapshotTransfer/filesystem/objectstore"
+          ],
+          [
+            "github.com/agentstation/starport/internal/blob",
+            "TestBlobSnapshotTransfer/objectstore"
+          ],
+          [
+            "github.com/agentstation/starport/internal/blob",
+            "TestBlobSnapshotLegacyObjectsRequireExplicitMigration"
+          ],
+          [
+            "github.com/agentstation/starport/internal/blob",
+            "TestBlobSnapshotInterruptedObjectImport"
+          ],
+          [
+            "github.com/agentstation/starport/internal/blob",
+            "TestBlobSnapshotObjectImportRefusesConflictingBytes"
+          ],
+          [
+            "github.com/agentstation/starport/internal/blob",
+            "TestBlobSnapshotObjectImportValidatesBeforeClaim"
+          ],
+          [
+            "github.com/agentstation/starport/internal/blob",
+            "TestBlobSnapshotObjectImportCompetingOwners"
+          ],
+          [
+            "github.com/agentstation/starport/internal/blob",
+            "TestBlobSnapshotObjectImportRefusesUnlistedObject"
+          ],
+          [
+            "github.com/agentstation/starport/internal/blob",
+            "TestRealObjectStoreConditionalRetirement"
+          ],
+          [
+            "github.com/agentstation/starport/internal/blob",
+            "TestRealObjectStorePublicationReadiness"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog/disclosure",
+            null
+          ],
+          [
+            "github.com/agentstation/starport/internal/config",
+            "TestContainerRecipePersistence"
+          ],
+          [
+            "github.com/agentstation/starport/internal/credentials",
+            "TestProviderCredentialRepositoryContract/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/files",
+            "TestRetirementFencesDelayedOutputPublication/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/files",
+            "TestPreparedOutputRetainsIdentityBytesAndQuota/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/files",
+            "TestPreparedOutputAcceptsOneConcurrentResult/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestAdministratorReconciliationRestartAndIsolation/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestAdministratorAuditPrecedesRelease/before_commit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestAdministratorAuditPrecedesRelease/lost_acknowledgement/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestConcurrentAdministratorDecisions/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestLateProviderEvidenceCannotReplaceAdministratorDecision/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestAdministratorDecisionSurvivesSettlementFailure/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestLateEvidenceSurvivesAuditWriteFailureAndAssetExpiry/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestMatchingLateEvidencePreservesResolvedDecision/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestAssetSurvivesLostRecordAcknowledgement/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestBatchAggregateSharedProcessRecovery"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestBatchAggregateRecoversLostPublicationWithoutReplay/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/metadata/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/confirmation/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestBatchAggregateRecoveryRetainsResultsAcrossFailures/cleanup/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestBatchAggregateConcurrentRecovery/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestBatchLineClaimIsDurableAndExclusive/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestBatchClaimFailureCannotDispatch/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestBatchCancellationAcrossWorkersPreventsNextLine/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestBatchResultEvidenceIsImmutable/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestResultStorageFailureStopsDispatchAndRetainsCapacity/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestResultConfirmationLostAckDoesNotDispatchAgain/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestBatchResumeOnlyProvenUnstartedLines/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestUnboundedBatchPreservesOutstandingVideoSlot/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestCancellationRetainsProviderOutcomeAndCapacity/queued/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestCancellationRetainsProviderOutcomeAndCapacity/running/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestCancellationRetainsProviderOutcomeAndCapacity/completed/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestCancellationRetainsProviderOutcomeAndCapacity/cancelled/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestCancellationRetainsProviderOutcomeAndCapacity/failed/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestCancellationRetainsProviderOutcomeAndCapacity/missing_state/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestCancellationRetainsProviderOutcomeAndCapacity/unknown_state/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestCancellationRetainsProviderOutcomeAndCapacity/lost_response/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestReleasedClaimCannotPublishJob/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionHorizon/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionHistoryAndOrderedReports/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionSupersedesOnlyPendingIntent/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionConcurrentIntentHasOneWinner/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionCommitFailurePreservesIntent/false/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionCommitFailurePreservesIntent/true/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionServiceReportingRecovery/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionExpiredReportDoesNotUndoSettlement/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionStaleIntentRetainsNewEvidence/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionIntentRecoversLostAcknowledgement/before/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionIntentRecoversLostAcknowledgement/after/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionMissingHistoryRefusesApplication/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionResolvesUnmeasuredLateEvidence/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobCorrectionExpiredOriginalStopsReportingRetries/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestNativeExternalRecoveryPreservesBilling/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestCapturedFleetCatalogNativeReferences"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestNativeConcurrentReplicasBindOneAsset/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestNativeRetirementWithRealObjectStore"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestNativeReceiptRecoversWithoutProviderReplay/none/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestNativeReceiptRecoversWithoutProviderReplay/record_before_commit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestNativeReceiptRecoversWithoutProviderReplay/record_after_commit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestNativeReceiptRecoversWithoutProviderReplay/receipt_after_commit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestNativeReceiptRecoversWithoutProviderReplay/asset_before_commit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestNativeReceiptRecoversWithoutProviderReplay/asset_after_commit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestNativeLostResponseRetainsUncertainJob/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestNativeRetirementFencesDelayedPublication/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestExplicitReconciliationPreservesAndResolvesCapacity/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestPollingExhaustionRetainsProviderWork/read/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestPollingExhaustionRetainsProviderWork/sweep/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestProviderAssetPreparationRecoversAndExpires/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestProviderRetirementFencesDelayedPublication/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestRecoveryReachesBeyondFirstThousandRecords/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestRecoverySkipsCorruptionAndReleasesUnreadFinishedBatches/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestTerminalNotificationDoesNotWaitForSettlement/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestOptionalJobAccountingRetriesAfterReopen/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestJobReportingRecoversMarkerFailureWithoutDuplicateTotals/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestConcurrentTerminalNotificationClaimsOneAttempt/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestStaleJobCannotEraseAccountingOrAssetState/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestConcurrentJobAccountingClaimsHaveOneWinner/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestPreparedJobReplacementPreservesTransaction/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestRequiredReservationCannotUseOptionalAccounting/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestRequiredJobBindingPrecedesDispatch/missing_owner/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestRequiredJobBindingPrecedesDispatch/binding_unavailable/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestRequiredSettlementDoesNotRetainTerminalSlot/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestVideoSlotReleaseRecoversWhileReportingRemainsPending/before_commit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestVideoSlotReleaseRecoversWhileReportingRemainsPending/after_commit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestVideoReleaseSurvivesLostJobStamp/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestCancelledBatchRetainsItsSlotUntilLinesDrain/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestFinishedBatchSlotReleaseRecoversAfterRestart/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestDuplicateVideoIdentityCannotReleaseExistingWork/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestLegacyJobSchemasRequireMigration/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestSubmissionPersistenceFailurePreventsProviderCall/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestAmbiguousSubmissionRetainsRecordAndSlot/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestSubmissionAcceptanceWriteRecovery/before_commit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestSubmissionAcceptanceWriteRecovery/after_commit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs",
+            "TestSubmissionAcceptanceSurvivesCallerCancellation/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/app",
+            "TestProductionBudgetAcrossProcesses"
+          ],
+          [
+            "github.com/agentstation/starport/internal/jobs/fileio",
+            null
+          ],
+          [
+            "github.com/agentstation/starport/internal/kvconnection/kvtest",
+            null
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetAdoptionRepeatedRecoveryAndConcurrentSelection"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetAdoptionRecoversLostSelectionResponse"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetBootstrapConcurrentExactPublication"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetBootstrapWriteBoundaries/before-sql"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetBootstrapWriteBoundaries/after-sql"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetBootstrapWriteBoundaries/before-kv"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetBootstrapWriteBoundaries/after-kv"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionRequiresExplicitCollection"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionHonorsLimitsAndRequiredGenerations"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionCountsGenerationsSeparatelyFromReceipts"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionDryRunPreservesPendingRecovery"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionResumesInterruptedCollection"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRuntimeProcessesRecoverAfterLeaderDirectoryLoss"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionRefusesUnownedStaging"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionBoundsCommittedSnapshots"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionProtectsPinnedGeneration"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionRecoversInterruptedUploadAndDeletion"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionFencesExpiredMaintenance"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionConcurrentReadersAndCollection"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionCapacityRefusesWithoutMovingHead"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionRejectsOverlappingDeletionRecord"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/current"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/accepted"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/rollback"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRetentionCorruptionCannotDeleteSelectedBytes/inventory-missing"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetAcceptanceRetainsDistinctRollbackGenerations"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetStoreCompleteKeyLossRequiresRecovery"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetStoreNativePublication"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetStoreRefusesExpiredGrant"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetStoreSeparateProcessTakeover"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetStoreMissingSelectedPublicationIsNotAnEmptyStore"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetStoreAcceptanceUsesOriginalGrant"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetStoreNamespaceAndMalformedDescriptor"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetStoreLeaseExpiresDuringSelection/publication"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetStoreLeaseExpiresDuringSelection/acceptance"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetStoreLostHeadCannotBootstrapAgain"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestAttachmentAndRecoveryResolveLostPublication/false/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestAttachmentAndRecoveryResolveLostPublication/true/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestAttachmentCompetesAtomicallyWithRecovery/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestRecoveryRetainsRecentClaimsAndOriginalTimestamp/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestPendingRecoverySurvivesLostAcknowledgement/false/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestPendingRecoverySurvivesLostAcknowledgement/true/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestOlderClaimFormatRequiresMigration/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetMigrationRequiresSameRecoveryIdentity"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestRepeatedJobReleaseCannotFreeAnotherClaim/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestClaimRetriesPreserveIdentityAndCapacity/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestLostClaimAcknowledgementsRecoverWithoutChangingOtherWork/false/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestLostClaimAcknowledgementsRecoverWithoutChangingOtherWork/true/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestConcurrentClaimsAndReleasesPreserveTheBound/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/jobslots",
+            "TestLegacyAndMissingCountsRequireRecovery/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionHorizon/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestUncertainReservationHasNoCorrectionDeadline/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionDeadlineGuardsAtomicWrite/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionRejectsStalePublication/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionPublicationCommitsAndRetries/valkey/success"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionPublicationCommitsAndRetries/valkey/before"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionPublicationCommitsAndRetries/valkey/after"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionPublicationRacesLateEvidence/valkey/correction_first"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionPublicationRacesLateEvidence/valkey/late_first"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionPublicationRacesLateEvidence/valkey/late_during_commit"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionPreservesOtherDisputesAndAudit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionConcurrentRetriesAndLostAcknowledgement/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionRefusesUnsafeCapacityRelease/valkey/write-failure"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionRefusesUnsafeCapacityRelease/valkey/overflow"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionRefusesUnsafeCapacityRelease/valkey/new-overflow"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionRefusesUnsafeCapacityRelease/valkey/counter-missing"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionRefusesUnsafeCapacityRelease/valkey/old-window-version"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionRefusesUnsafeCapacityRelease/valkey/unknown-charge"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionRefusesUnsafeCapacityRelease/valkey/unaudited"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestConcurrentCorrectionsRequireCurrentBinding/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestCorrectionConcurrentExactFirstSubmission/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestDisputePublicationRejectsStaleJob/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestDisputePublicationAtomicWrite/valkey/success"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestDisputePublicationAtomicWrite/valkey/before"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestDisputePublicationAtomicWrite/valkey/after"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestDisputePublicationAtomicWrite/valkey/race"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestDisputePublicationAtomicWrite/valkey/existing_dispute"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestDisputePublicationCannotAttachResolvedEvidence/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestDisputedChargeBlocksOriginalWindows/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestDisputeCountRetainsEveryAttempt/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestBudgetHistoryRollover/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestBudgetHistoryDoesNotInventZero/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestJobBindingIsExclusiveAndSurvivesSettlement/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestJobBindingRecoversLostAcknowledgement/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestExplicitNoChargeSettlement/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestNoChargeRetainedRecovery/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestRetainedUsageCannotChangeEvidenceOrRefund/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestReservationSnapshotRefreshAfterConflict/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestReservationSnapshotRefusesExpiringHistory/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestValkeyReservationAcrossProcesses"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestReservationContract/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestRecoveryPreservesUnmeasuredAndCorruptAttempts/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestRecoveryConcurrentWorkersSettleOnce/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestRecoveryRetriesLostSettlementAcknowledgement/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestRecoveryNativePaginationReachesEveryAttempt/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestRecoveryHandlesConcurrentSettlementBetweenReads/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestReconciliationRetention/valkey/none"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestReconciliationRetention/valkey/attempt"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestReconciliationRetention/valkey/correction"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestTeamBudgetHistoryHandoff/postgres-valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/reservation",
+            "TestHolderCreationAndBudgetHistory/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/storedbytes",
+            "TestConcurrentReservationsCannotBothPassABoundThatAdmitsOne/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/storedbytes",
+            "TestStoredByteClaimsPreserveIdentityAndCapacity/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/storedbytes",
+            "TestStoredByteHistoryCannotResetImplicitly/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/storedbytes",
+            "TestUnattachedByteRecoveryFencesDelayedPublication/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/storedbytes",
+            "TestByteReservationLostAckAndBackendFailure/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/limits/storedbytes",
+            "TestByteClaimRecoveryReachesLaterPages/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/presets",
+            "TestPresetRepositoryContract/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/presets",
+            "TestPresetRevisionHistoryAndRollback/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/presets",
+            "TestPresetRollbackNeedsATarget/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/protocol/mediaform",
+            null
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRuntimeRejectsUnapprovedBackend"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRuntimePreservesOriginalGrantThroughAcceptance"
+          ],
+          [
+            "github.com/agentstation/starport/internal/catalog",
+            "TestFleetRuntimeLiveTakeoverAcceptance"
+          ],
+          [
+            "github.com/agentstation/starport/internal/app",
+            "TestSettledJobRequiresOriginalSharedApproval"
+          ],
+          [
+            "github.com/agentstation/starport/internal/app",
+            "TestProductionBudgetBackendOperations"
+          ],
+          [
+            "github.com/agentstation/starport/internal/providers/keyring",
+            "TestManagedMaterialValkeyOutageAndRecovery"
+          ],
+          [
+            "github.com/agentstation/starport/internal/ratelimit",
+            "TestRateLimitRepositoryContract/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/files",
+            "TestFilePagesReachPublicFilesAndExpiredPreparations/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/files",
+            "TestFilesRefuseUnqualifiedPublication/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/files",
+            "TestLostRetirementAcknowledgmentRetainsCharge/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/files",
+            "TestFileClaimsRecoverLostSuccessfulAcknowledgments/attached/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/files",
+            "TestFileClaimsRecoverLostSuccessfulAcknowledgments/measured/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/files",
+            "TestFileClaimsRecoverLostSuccessfulAcknowledgments/released/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/files",
+            "TestFilePublicationCannotReviveDeletingMetadata/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/files",
+            "TestConcurrentFileRetirementPreservesOtherStoredBytes/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/proxy",
+            "TestJobCorrectionsPreserveOriginalUsage/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/proxy",
+            "TestJobCorrectionRefusesUnsupportedOrInvalidReporting/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/proxy",
+            "TestJobCorrectionExpiredHistoryDoesNotRecreateUsage/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestBudgetAuthorityRequiresBothApprovals"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestBudgetAuthorityFencesDelayedWrites/before-native-write"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestBudgetAuthorityFencesDelayedWrites/after-native-write"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestBudgetAuthorityClosedAndChangedEpoch"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestFreshFleetBootstrapPermission"
+          ],
+          [
+            "github.com/agentstation/starport/internal/server",
+            "TestAuthorizationWarmRequestsAvoidStableReads/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/server",
+            "TestAuthorizationUnknownAccountRefusesAdmission/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestPrepareBundleLocalAndSharedRecipes/shared"
+          ],
+          [
+            "github.com/agentstation/starport/internal/server",
+            "TestSDKCanonicalRemovalAfterSuccessfulInference"
+          ],
+          [
+            "github.com/agentstation/starport/internal/server/controllers",
+            "TestGatewayOverheadBenchmark"
+          ],
+          [
+            "github.com/agentstation/starport/internal/server/dto",
+            null
+          ],
+          [
+            "github.com/agentstation/starport/internal/sqlstore",
+            "TestMySQLPartialMigrationRequiresReconciliation"
+          ],
+          [
+            "github.com/agentstation/starport/internal/sqlstore",
+            "TestMySQLMigrationReconciliationAppliedDoesNotRepeatDDL"
+          ],
+          [
+            "github.com/agentstation/starport/internal/sqlstore",
+            "TestMySQLMigrationReconciliationRevertedAllowsExplicitRetry"
+          ],
+          [
+            "github.com/agentstation/starport/internal/sqlstore",
+            "TestMySQLMigrationReconciliationRejectsUnboundEvidence"
+          ],
+          [
+            "github.com/agentstation/starport/internal/sqlstore",
+            "TestMySQLMigrationReconciliationSerializesConflictingOperators"
+          ],
+          [
+            "github.com/agentstation/starport/internal/sqlstore",
+            "TestMySQLMigrationReconciliationRollsBackReceiptFailure"
+          ],
+          [
+            "github.com/agentstation/starport/internal/sqlstore",
+            "TestMySQLMigrationReconciliationRequiresTransactionalRecords/schema_migrations"
+          ],
+          [
+            "github.com/agentstation/starport/internal/sqlstore",
+            "TestMySQLMigrationReconciliationRequiresTransactionalRecords/schema_migration_attempts"
+          ],
+          [
+            "github.com/agentstation/starport/internal/sqlstore",
+            "TestMySQLMigrationReconciliationRequiresTransactionalRecords/schema_migration_reconciliations"
+          ],
+          [
+            "github.com/agentstation/starport/internal/sqlstore",
+            "TestRelationalTransferMySQLPendingIntent"
+          ],
+          [
+            "github.com/agentstation/starport/internal/sqlstore",
+            "TestRelationalTransferMySQLIncompatibleKeysRollBack"
+          ],
+          [
+            "github.com/agentstation/starport/internal/sqlstore",
+            "TestRelationalTransferRestoresMySQLSessionSettings"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestOpenImportTargetPreservesRestrictedRetry/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestLifetimeBatch/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValueLifetimeSnapshot/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestTimeBoundStore/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestSnapshotSourceSharedEnumerationAndImportBarrier"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestRecordTransferExpiryAndConditionalImport/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestRecordTransferRefusesExistingAndConcurrentClaims/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestRecordTransferEnumeratesExactRecords/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestRecordTransferRequiresApprovedIncarnation"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestRecordTransferRejectsReplacementBackend"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestBudgetAuthorityNativeOperationCommands"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValkeyTLSIdentity"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValkeyUsernamePassword"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValkeyEffectiveConnectionOptions"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValkeyURLDatabaseSelection"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValkeyIncarnationAtomicContract"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValkeyIncarnationRejectsReplacementBackend"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValkeyDeploymentNamespace"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValkeyDeploymentNotificationIsolation"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValkeySmallResultLimitBoundsScanRoundTrips"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValkeyStore"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValkeyPubSub"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestBoundedStorageRead/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestScanPagesPreserveEveryKeyAndLiteralPrefix/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestBackupBundleSharedRecipe"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageCorrectionPreservesRequestCount/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageAdjustmentsPreserveEvidenceAndWindows/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageAdjustmentFailureIsAtomic/false/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageAdjustmentFailureIsAtomic/true/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestConcurrentUsageAdjustments/false/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestConcurrentUsageAdjustments/true/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageAdjustmentRefusesCorruptTotals/missing/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageAdjustmentRefusesCorruptTotals/negative/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageAdjustmentRefusesCorruptTotals/overflow/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageAdjustmentResolvesUnknownCostWithoutInventingMeasurements/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageAdjustmentCorruptionDoesNotAffectOtherAccounts/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestARecognizedDocumentCountsAgainstTheSpendBudget/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestARecognizedDocumentReportsItsPagesAndItsCost/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestANativelyReadDocumentCostsNothing/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestACachedReadIsRecordedAsCachedRatherThanFree/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestTheExtractionDurationSurvivesTheRoundTrip/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestATurnThatAttachedNoDocumentReportsNoExtraction/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestRecognitionMeasurementsPersistWithUnknownTotal/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageReplayDoesNotIncreaseTotals/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageAtomicWriteAndLostAcknowledgement/before_commit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageAtomicWriteAndLostAcknowledgement/after_commit/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageConcurrentReplayAndConflictingContents/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageExpiredReplayCannotRecreateTotals/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageCounterFailureLeavesEveryWriteUnchanged/not-an-integer/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageCounterFailureLeavesEveryWriteUnchanged/-1/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageCounterFailureLeavesEveryWriteUnchanged/9223372036854775807/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestUsageConcurrentEventsPreserveAllContributions/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestAPricedMediaTurnCountsAgainstTheSpendBudget/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestMediaUnitsSurviveTheRoundTrip/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestATextRecordReadsBackWithoutMedia/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestRepositoryPutAndListByKey/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestListByKeyOrdersNewestFirstAcrossBackends/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestListFiltersAndCursorPagination/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestAdminListSpansKeys/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestAggregateCountersAccumulate/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestCostlessRecordCarriesReasonNotZero/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestRetentionTTLApplied/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestAccountCounterSumsEveryKeyItHolds/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestTeamCounterSumsEveryAttributedKey/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestListByAccountSpansEveryKey/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/usage",
+            "TestListFiltersByGuardrailVerdictAndKeepsCacheFields/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/scripts/doclinks",
+            null
+          ],
+          [
+            "github.com/agentstation/starport/scripts/sdk-smoke-server",
+            null
+          ],
+          [
+            "github.com/agentstation/starport/skills/starport",
+            null
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestFreshFleetInitialization"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestFreshFleetRefusesExistingState/kv"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestFreshFleetRefusesExistingState/sql"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestFreshFleetRefusesExistingState/approval"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestFreshFleetRefusesExistingState/closed-approval"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestFreshFleetRefusesExistingState/row-security"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestFreshFleetRefusesExistingState/unknown-table"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestFreshFleetInterruptedClaim"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestFreshFleetConcurrentInitialization"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestFreshFleetRefusesChangedIncarnation"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestFreshFleetSQLFailureRetainsOnlyRetryClaim"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestKVSnapshotTransfersAllBackendPairs/badger_to_valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestKVSnapshotTransfersAllBackendPairs/valkey_to_badger"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestKVSnapshotTransfersAllBackendPairs/valkey_to_valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestKVSnapshotInterruptedImportRetainsBarrierAndExactRetry/valkey_interrupted"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestKVSnapshotInterruptedImportRetainsBarrierAndExactRetry/valkey_lost_ack"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestKVSnapshotConcurrentImportsChooseOneOperation/valkey"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestKVSnapshotReadsEveryNativeScanPage"
+          ],
+          [
+            "github.com/agentstation/starport/internal/recovery",
+            "TestRecoveryRequiresOriginalIndependentApproval"
+          ],
+          [
+            "github.com/agentstation/starport/internal/app",
+            "TestSharedCacheCompositionUsesSeparateService"
+          ],
+          [
+            "github.com/agentstation/starport/internal/app",
+            "TestSharedCacheCanonicalDeploymentIsolation"
+          ],
+          [
+            "github.com/agentstation/starport/internal/app",
+            "TestDeploymentIsolationIncludesGatewayRecords"
+          ],
+          [
+            "github.com/agentstation/starport/internal/app",
+            "TestInitializeFleetFreshStartup"
+          ],
+          [
+            "github.com/agentstation/starport/internal/app",
+            "TestRestorePublishFilesSharedRecipe/inference-credential-policy"
+          ],
+          [
+            "github.com/agentstation/starport/internal/app",
+            "TestRestorePublishFilesSharedRecipe/credential-policy"
+          ]
+        ]
+      },
+      "storage-0.jsonl": {
+        "counts": {
+          "pass": 734,
+          "skip": 2
+        },
+        "failed": [],
+        "skipped": [
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestRecordTransferRejectsReplacementBackend"
+          ],
+          [
+            "github.com/agentstation/starport/internal/storage",
+            "TestValkeyIncarnationRejectsReplacementBackend"
+          ]
+        ]
+      },
+      "storage-1.jsonl": {
+        "counts": {
+          "pass": 16
+        },
+        "failed": [],
+        "skipped": []
+      },
+      "storage-2.jsonl": {
+        "counts": {
+          "pass": 4
+        },
+        "failed": [],
+        "skipped": []
+      },
+      "storage-replacement.jsonl": {
+        "counts": {
+          "pass": 2
+        },
+        "failed": [],
+        "skipped": []
+      }
+    },
+    "console_tests": 464,
+    "product_commands": [
+      {
+        "command": "pnpm -C console check",
+        "exit_code": 0,
+        "seconds": 36.07,
+        "log": "/tmp/csp13-consumer-prepr-20260929/product-00.log"
+      },
+      {
+        "command": "make build",
+        "exit_code": 0,
+        "seconds": 20.04,
+        "log": "/tmp/csp13-consumer-prepr-20260929/product-01.log"
+      },
+      {
+        "command": "bash scripts/benchmark-overhead.sh",
+        "exit_code": 0,
+        "seconds": 9.95,
+        "log": "/tmp/csp13-consumer-prepr-20260929/product-02.log"
+      },
+      {
+        "command": "bash scripts/smoke-first-run.sh",
+        "exit_code": 0,
+        "seconds": 47.16,
+        "log": "/tmp/csp13-consumer-prepr-20260929/product-03.log"
+      },
+      {
+        "command": "bash scripts/smoke-openrouter-sdks.sh",
+        "exit_code": 0,
+        "seconds": 148.56,
+        "log": "/tmp/csp13-consumer-prepr-20260929/product-04.log"
+      }
+    ],
+    "go_vet_exit": 0,
+    "make_lint_exit": 0,
+    "native_verifier_tests": 10,
+    "changed_prose_exit": 0,
+    "whole_operator_guide_diagnostics": 51,
+    "contract_commands": [
+      {
+        "command": "bash scripts/verify-starmap-ownership.sh",
+        "exit_code": 0,
+        "seconds": 126.64,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-00.log"
+      },
+      {
+        "command": "bash scripts/verify-v1-architecture.sh",
+        "exit_code": 0,
+        "seconds": 703.5,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-01.log"
+      },
+      {
+        "command": "bash scripts/test-dependency-direction-verifier.sh",
+        "exit_code": 0,
+        "seconds": 1.6,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-02.log"
+      },
+      {
+        "command": "bash scripts/verify-dependency-direction.sh",
+        "exit_code": 0,
+        "seconds": 0.77,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-03.log"
+      },
+      {
+        "command": "bash scripts/verify-catalog-driven-providers.sh",
+        "exit_code": 0,
+        "seconds": 297.24,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-04.log"
+      },
+      {
+        "command": "bash scripts/verify-package-layout.sh",
+        "exit_code": 0,
+        "seconds": 11.26,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-05.log"
+      },
+      {
+        "command": "bash scripts/verify-readme-quickstart.sh",
+        "exit_code": 0,
+        "seconds": 0.14,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-06.log"
+      },
+      {
+        "command": "bash scripts/verify-v1-release.sh",
+        "exit_code": 0,
+        "seconds": 0.29,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-07.log"
+      },
+      {
+        "command": "bash scripts/verify-release-workflow.sh",
+        "exit_code": 0,
+        "seconds": 10.52,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-08.log"
+      },
+      {
+        "command": "bash scripts/verify-developer-experience.sh",
+        "exit_code": 0,
+        "seconds": 5.39,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-09.log"
+      },
+      {
+        "command": "bash scripts/verify-doc-links.sh",
+        "exit_code": 0,
+        "seconds": 0.54,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-10.log"
+      },
+      {
+        "command": "bash scripts/test-doc-link-verifier.sh",
+        "exit_code": 0,
+        "seconds": 0.35,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-11.log"
+      },
+      {
+        "command": "bash scripts/verify-openrouter-parity.sh",
+        "exit_code": 0,
+        "seconds": 0.18,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-12.log"
+      },
+      {
+        "command": "bash scripts/verify-console-modernization.sh",
+        "exit_code": 0,
+        "seconds": 0.08,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-13.log"
+      },
+      {
+        "command": "bash scripts/verify-auth-onboarding.sh",
+        "exit_code": 0,
+        "seconds": 0.18,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-14.log"
+      },
+      {
+        "command": "bash scripts/verify-console-session-grants.sh",
+        "exit_code": 0,
+        "seconds": 0.49,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-15.log"
+      },
+      {
+        "command": "bash scripts/verify-model-modalities.sh",
+        "exit_code": 0,
+        "seconds": 0.34,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-16.log"
+      },
+      {
+        "command": "bash scripts/verify-files-api.sh",
+        "exit_code": 0,
+        "seconds": 0.18,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-17.log"
+      },
+      {
+        "command": "bash scripts/verify-async-media-jobs.sh",
+        "exit_code": 0,
+        "seconds": 0.24,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-18.log"
+      },
+      {
+        "command": "bash scripts/verify-document-parser.sh",
+        "exit_code": 0,
+        "seconds": 0.29,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-19.log"
+      },
+      {
+        "command": "bash scripts/verify-reranking.sh",
+        "exit_code": 0,
+        "seconds": 0.44,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-20.log"
+      },
+      {
+        "command": "bash scripts/verify-catalog-performance.sh",
+        "exit_code": 0,
+        "seconds": 0.34,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-21.log"
+      },
+      {
+        "command": "bash scripts/verify-credential-sharing.sh",
+        "exit_code": 0,
+        "seconds": 0.23,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-22.log"
+      },
+      {
+        "command": "bash scripts/verify-enterprise-readiness.sh",
+        "exit_code": 0,
+        "seconds": 0.99,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-23.log"
+      },
+      {
+        "command": "bash scripts/verify-console-polish.sh",
+        "exit_code": 0,
+        "seconds": 0.28,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-24.log"
+      },
+      {
+        "command": "bash scripts/verify-action-pins.sh",
+        "exit_code": 0,
+        "seconds": 5.36,
+        "log": "/tmp/csp13-consumer-prepr-20260929/contracts-25.log"
+      }
+    ],
+    "contract_commands_validated": 26,
+    "architecture_final_status": "PASS: 11 focused contracts, zero failures.",
+    "final_build_exit": 0,
+    "full_go": {
+      "command": "GOWORK=off GOMAXPROCS=4 go test -json -timeout 30m ./...",
+      "exit_code": 0,
+      "tests": {
+        "pass": 5974,
+        "skip": 369,
+        "fail": 0
+      },
+      "packages": {
+        "pass": 67,
+        "skip": 9,
+        "fail": 0
+      }
+    }
+  },
+  "limitations": [
+    "The first full Go suite reached its default ten-minute application package deadline. Its failed output remains retained.",
+    "The first architecture invocation read a script during the timeout edit. It printed an unexpected shell command error despite exit zero. Treat this invocation as invalid evidence; final-source verification is running.",
+    "Two replacement tests skipped in the broad storage run and passed in a separate two-Valkey run.",
+    "Full local checks and required review pass. Draft Starport #391 is published. Native CI, independent later history, interrupted migration recovery and activation remain open.",
+    "Native migration publication already has process-exit tests. Incomplete migration backup records remain refused; this checkpoint adds no offline bypass."
+  ],
+  "review": {
+    "status": "pass",
+    "planned_max_passes": 32,
+    "reason": "The accumulated coherent consumer recovery diff is 843241 bytes across 180 files. A 32-pass ceiling permits complete bounded review without truncating owner checks or secret scanning.",
+    "threshold": "configured P0-only; not a general defect-free verdict",
+    "command": "/Users/jack/.agents/skills/autoreview/scripts/autoreview --gate pre-pr --mode auto --base 41160fbf55f74a6659ff0ac488a4378524437be7 --max-passes 32",
+    "log": "/tmp/csp13-consumer-prepr-20260929/autoreview.log",
+    "exit_code": 0,
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "actual_passes": 4,
+    "bundle_bytes": 857524,
+    "findings": 0,
+    "secret_scan": "TruffleHog clean",
+    "reported_tools": "on",
+    "reported_web_search": "on"
+  },
+  "artifacts": [
+    {
+      "path": "go-00.log.gz",
+      "raw_sha256": "11976279797637950d332ccd608d34d318ea0914de7f96933eda5c6edc04b212",
+      "gzip_sha256": "7e8da869b0d42b8af46e88f21310006deacf6cc73b17399ee6b691ff54d3d190",
+      "raw_bytes": 12662130
+    },
+    {
+      "path": "storage-0.jsonl.gz",
+      "raw_sha256": "b6597459f2b0af3002b57670ca1c317bb93ff874a3fa5b2786ba980674d27eb5",
+      "gzip_sha256": "45dee0c09c86ad1f3705285662f2da616b47c8a86cd174bf812ea772f43a4125",
+      "raw_bytes": 1895633
+    },
+    {
+      "path": "storage-1.jsonl.gz",
+      "raw_sha256": "c1a9916ee1e98c10319852321c4ce60544a90f67832e62bbee91d26ec6ac2616",
+      "gzip_sha256": "2bcff63ff7c3876bf1e9dfecf404ba97a02c9f57093ab1ac8c3fef292737fad4",
+      "raw_bytes": 16733
+    },
+    {
+      "path": "storage-2.jsonl.gz",
+      "raw_sha256": "bdea2190a96c4a6111ac22ee71bf6c689ae5bd6a6b692e139359e7f9e0681259",
+      "gzip_sha256": "f9ee80bb715494a78e33a8ba3e2de4d2e242a58c2d1f99e7e2110c2821a2b4e4",
+      "raw_bytes": 32235
+    },
+    {
+      "path": "storage-replacement.jsonl.gz",
+      "raw_sha256": "c4e12e526497307cd5e93e6a9077d701fd5f84aeaba391413a1816c9fa35bf3a",
+      "gzip_sha256": "ab3bb64a954ef2041da70bdaf074528ed6693eb7d309daa1059ec4bcc3fb3460",
+      "raw_bytes": 4885
+    },
+    {
+      "path": "storage-fixture.log.gz",
+      "raw_sha256": "ecf6cc35dec943ba9080e7330158248ed930d639a1de5bcea811e62824e03787",
+      "gzip_sha256": "5a5128347409558c9889ab3823c2ce23b6a8bc8525d06d2afe4e42d104cf6128",
+      "raw_bytes": 2638
+    },
+    {
+      "path": "replacement-fixture.log.gz",
+      "raw_sha256": "3d8403a77495b2c093e698bfb524239130cff604db777351a1b66529023a51b9",
+      "gzip_sha256": "1b70d6574bfa58f1171bf70129437be51dc28fa92a46e6d5c9dc1d7e6c7baa13",
+      "raw_bytes": 401
+    },
+    {
+      "path": "replacement-result.json.gz",
+      "raw_sha256": "2cb3d6e03cc25188458811e6be8b098acf0524bf8e1dadecd6db7afc984368c8",
+      "gzip_sha256": "74ea011571725dc020c7fbee1bbc800764ed9f3a7c51004746b5807c7d770eb6",
+      "raw_bytes": 296
+    },
+    {
+      "path": "product-results.json.gz",
+      "raw_sha256": "c16853b8d6a169a650317664bdcb7b0abf641d16b6ae06cf19db45a815b00038",
+      "gzip_sha256": "7b42197cf21bf6b3c528948c11654603e8fb74a8d19a6a7443a4d2bbd564f5b9",
+      "raw_bytes": 801
+    },
+    {
+      "path": "product-00.log.gz",
+      "raw_sha256": "291d08ec1baa42d3d2809aa5c49e0e51557595da0aa16413a0eeafb498ee0d4c",
+      "gzip_sha256": "db454534b509e7355b40d192bf05c0ab34177be30ac523efd930545cc035f41c",
+      "raw_bytes": 69932
+    },
+    {
+      "path": "product-01.log.gz",
+      "raw_sha256": "fbde0e05b335d270167debdb5d286af6d5854bd65eff17e43639f2a5a0b5bc41",
+      "gzip_sha256": "1a804e360ef2f3676447dc207589019754c772331baee5154d57cd6fcbc53462",
+      "raw_bytes": 64702
+    },
+    {
+      "path": "product-02.log.gz",
+      "raw_sha256": "3e82205d8d64fb5fc4d6a4e0cff6a7d139ec6e8beefa06fdb4b4d879e1337473",
+      "gzip_sha256": "4084410f13f256f1b59cf1f8c641f545d17ba2fa6774bab413d491602b9ad09c",
+      "raw_bytes": 233
+    },
+    {
+      "path": "product-03.log.gz",
+      "raw_sha256": "13df9cf24049e80dbd789601314d6896dc1a5674feff1997aab89e9fff49ff03",
+      "gzip_sha256": "73aeca9385b2be30b5083c4aaa04a6a8abf540e3b94874f83a07d2f5c633257e",
+      "raw_bytes": 103
+    },
+    {
+      "path": "product-04.log.gz",
+      "raw_sha256": "425814e3cf72527df577ac3ccbf9d7107e09f39e281320afde56cf7b76cfd284",
+      "gzip_sha256": "0ce10b4a24c0e5aaad4cb12eb0ff6e7a503e8ccc70c6145fe7d4279a8c275ec8",
+      "raw_bytes": 30339
+    },
+    {
+      "path": "vet.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "raw_bytes": 0
+    },
+    {
+      "path": "lint.log.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "raw_bytes": 40
+    },
+    {
+      "path": "native-verifier.log.gz",
+      "raw_sha256": "f5ee00b0f8595b5acf40774d15035d1ee3f23ca8d3dcd59c3a99428d10625c24",
+      "gzip_sha256": "853028c4cb86b24d75ec6d51359850635472a6f8f697c5fe3c063f8b420d0c5b",
+      "raw_bytes": 109
+    },
+    {
+      "path": "mysql-manifest.json.gz",
+      "raw_sha256": "8194e78f511cb240164ac1b04860b33ba8bb953a6b6f4d128ffd1fc7d7d76f94",
+      "gzip_sha256": "f1d7fa1933cb18595c1a5355b348b7222b21c7c6a9e88abab8682bcaa2b5e652",
+      "raw_bytes": 1339
+    },
+    {
+      "path": "operator-writing.log.gz",
+      "raw_sha256": "8047e6c5c01b5774e1273eb57cfd2638a9a4d3d1cead9f88b38d979d91683857",
+      "gzip_sha256": "bda625fd928f63c2bbe2d020a66e1be72b4cc80349474e03c5e5d8a817591119",
+      "raw_bytes": 6859
+    },
+    {
+      "path": "operator-change-writing.log.gz",
+      "raw_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "gzip_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "raw_bytes": 33
+    },
+    {
+      "path": "operator-change.md.gz",
+      "raw_sha256": "4029c3d15b93c4fc248decf1f73b8db4f104892dbc5fe4e966d2722168b65e1c",
+      "gzip_sha256": "e33de7efb231a3872107b8278a34b68e9636c20fe46cb2f019cf35bf0bddce15",
+      "raw_bytes": 151
+    },
+    {
+      "path": "contracts-00.log.gz",
+      "raw_sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed",
+      "gzip_sha256": "cac58828c90bd4cd35ddd46ae076a72f1ca8dbb56fd79c94e584283ea907849e",
+      "raw_bytes": 850
+    },
+    {
+      "path": "contracts-01.log.gz",
+      "raw_sha256": "6577e0db4eb05a284358db9b1543c21403b6d506ce1e612c34bb6ba45500b9fb",
+      "gzip_sha256": "dea900e066157c23445d98385b8a5a00cf6e312dc57c575550dfe674286c0da3",
+      "raw_bytes": 655
+    },
+    {
+      "path": "contracts-results.json.gz",
+      "raw_sha256": "ee736e0c924a0a7eeb13df1debf85b5381cf7f52012e28292b3f4346532bfa1b",
+      "gzip_sha256": "6c4632150ff2798928a11c298eda47c18f560736e1eec38fd35af363d509fee5",
+      "raw_bytes": 4517
+    },
+    {
+      "path": "contracts-02.log.gz",
+      "raw_sha256": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651",
+      "gzip_sha256": "33c729e27eb33e08196e79f9590428e34f29bb411037d9d823d0a755b41dc926",
+      "raw_bytes": 52
+    },
+    {
+      "path": "contracts-03.log.gz",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027",
+      "gzip_sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "raw_bytes": 380
+    },
+    {
+      "path": "contracts-04.log.gz",
+      "raw_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19",
+      "gzip_sha256": "622beb4f11d3ebd11a20b7a12a7b6658f30bd20db8d9cf07e35c32d2bf693d57",
+      "raw_bytes": 1333
+    },
+    {
+      "path": "contracts-05.log.gz",
+      "raw_sha256": "e9bd80d9bc97f953ecc2167d9d20b3d74611946f5dfd8156bdc345d6a0f09ffa",
+      "gzip_sha256": "a82f69f1887c2fb0db81008a77dc330c9a8b1833543038fdefbc891a1b8f8eb1",
+      "raw_bytes": 102
+    },
+    {
+      "path": "contracts-06.log.gz",
+      "raw_sha256": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0",
+      "gzip_sha256": "590e58248ac4493ca7bf0f5323d3fb399a7e4640bd622db8acd636497532c3f4",
+      "raw_bytes": 60
+    },
+    {
+      "path": "contracts-07.log.gz",
+      "raw_sha256": "75074e58905a5ca1cb126c5686d11dc26445ae78dade9e1333a6429781ca7d81",
+      "gzip_sha256": "e0ffa922a0e60d1f57f604679052119ac27586bb940535165b7a1f1c5da42d83",
+      "raw_bytes": 781
+    },
+    {
+      "path": "contracts-08.log.gz",
+      "raw_sha256": "443fdab3b3f2129185df44559642377b1bcadf8925026ec97083db400745679b",
+      "gzip_sha256": "dfc1dad902fe7dece4119b31acc369b2bf4d1ca77939171b576e6da5c5bcf308",
+      "raw_bytes": 240
+    },
+    {
+      "path": "contracts-09.log.gz",
+      "raw_sha256": "12eff7bbf8e6a811b5df25a1f769e20485bfede7fc273666bb0ae2d139691d5f",
+      "gzip_sha256": "7990f59883eecc2272b54726ccf2077b9f71573708757dc97f4dfbb4fa1ff8f0",
+      "raw_bytes": 768
+    },
+    {
+      "path": "contracts-10.log.gz",
+      "raw_sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
+      "gzip_sha256": "1e8b495a4813c7aee62176073ceb333331f989692202f925e8399959191eeee2",
+      "raw_bytes": 25
+    },
+    {
+      "path": "contracts-11.log.gz",
+      "raw_sha256": "69ea9d7375bbb4907e620ae48e022bb88f04aae68545a8942d01ddcf6744f9ec",
+      "gzip_sha256": "5917a4c6b3042bde9f5bb59ea1433ab5fddfe3daefe9e7f918198db3830fc9aa",
+      "raw_bytes": 44
+    },
+    {
+      "path": "contracts-12.log.gz",
+      "raw_sha256": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd",
+      "gzip_sha256": "1310b938dc434b2558b9f6cd4139ad9cdda706c10d20c82b5540f14a827e10f4",
+      "raw_bytes": 952
+    },
+    {
+      "path": "contracts-13.log.gz",
+      "raw_sha256": "185cebeb477b2b21b6a132c98b99abd3d13ee8aacf9346c35de5eb139e00e518",
+      "gzip_sha256": "f2412ad75efc942430b8de45a3f8f1b8eab6ac66bb66820a0066525f05699d01",
+      "raw_bytes": 1025
+    },
+    {
+      "path": "contracts-14.log.gz",
+      "raw_sha256": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0",
+      "gzip_sha256": "947455903500d8627ced609e2b9075a2bb3ec8df5d16c76f1109211ca53d883c",
+      "raw_bytes": 1640
+    },
+    {
+      "path": "contracts-15.log.gz",
+      "raw_sha256": "2ca175ead00523a30b79eef397b9c4405addfd7282e54eba83bbaa9b458cfcb0",
+      "gzip_sha256": "9e9a34f7885a1705e83c6b36627eaf138ad8ac6451f11e60bbf3cce65725c4c5",
+      "raw_bytes": 993
+    },
+    {
+      "path": "contracts-16.log.gz",
+      "raw_sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a",
+      "gzip_sha256": "3738b2d3c25d14e3da51f208030a04c8450ad39d5ccfba1461f9ad2b4c7d6be1",
+      "raw_bytes": 1870
+    },
+    {
+      "path": "contracts-17.log.gz",
+      "raw_sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986",
+      "gzip_sha256": "9c6c662407490bef317cfb3e2c57aa66b7f2da180dad489172f8a168c59841f0",
+      "raw_bytes": 1464
+    },
+    {
+      "path": "contracts-18.log.gz",
+      "raw_sha256": "2e320c6c7a59d3ce3e3736f1918c22033814cc4647f54233f1de03ac2948951d",
+      "gzip_sha256": "6d6c9b7c72a002478f74e1c1d62915ed2b6caebd448f8388f2f2a40af447e33c",
+      "raw_bytes": 1412
+    },
+    {
+      "path": "contracts-19.log.gz",
+      "raw_sha256": "9102e2e6af83927ed3051459833af3605153fe54ab9f830e479a843ed783a7e7",
+      "gzip_sha256": "fb42eabc791f554f50ea1ed022737d831e52d2f246276862257e578c80e78d7b",
+      "raw_bytes": 1534
+    },
+    {
+      "path": "contracts-20.log.gz",
+      "raw_sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c",
+      "gzip_sha256": "bd3044b6cc5ce3ae1f99d444db24c19d0c427c982c69980d6ea5f2ca98b24e29",
+      "raw_bytes": 1894
+    },
+    {
+      "path": "contracts-21.log.gz",
+      "raw_sha256": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be",
+      "gzip_sha256": "06c429bbb540f43cfbe30b00008f47f24860ecc90dbb1a18bd3ffb879cb8b46a",
+      "raw_bytes": 1172
+    },
+    {
+      "path": "contracts-22.log.gz",
+      "raw_sha256": "c74926b4e4352f4c6e5f688d628e76d44bb7d84f422900408de977ca33a4bec2",
+      "gzip_sha256": "99ea064348720c3dc2d12e46c0768ccf3f95ff7287a7ff3769ee2cd77caf2b84",
+      "raw_bytes": 1716
+    },
+    {
+      "path": "contracts-23.log.gz",
+      "raw_sha256": "466350440fbde6b80d1f91c8d8bdfac58d3af69453ff4d5696862584e5a4207b",
+      "gzip_sha256": "095728a5bf92a10964b93dccfd9b67cab272c29c51e71b176c38bc40f98c217d",
+      "raw_bytes": 2282
+    },
+    {
+      "path": "contracts-24.log.gz",
+      "raw_sha256": "664858a2c06adebacd61ca8ce09a3cec33b5c758fe7f7d7635dc428db7f1556e",
+      "gzip_sha256": "68bb9095fdebb20cda82dd3f8b42eb209ba0bd9d4b37da08694d253f4333ef8d",
+      "raw_bytes": 2583
+    },
+    {
+      "path": "contracts-25.log.gz",
+      "raw_sha256": "701c20a649c43ac8fd858a1a973496a1df170169addd67f1a5f10619eca19328",
+      "gzip_sha256": "08467da5d4dd3f984b6748c27bab6f45ae64af186812430362b32bdfe425ae99",
+      "raw_bytes": 1197
+    },
+    {
+      "path": "architecture-deferred.json.gz",
+      "raw_sha256": "db2ae4e26a796dea0a38adf48daef52be29024e7163bd8bdfbfcc1b357656c62",
+      "gzip_sha256": "cb7c2f5c4c3c18824842ba042ad3760f15ab67d66f8c19d6e9b339d56888e4f1",
+      "raw_bytes": 228
+    },
+    {
+      "path": "architecture-final.log.gz",
+      "raw_sha256": "6ce72e97d8aff3bdab21af6542e076d830edbc359217791fcab788cda0af97c6",
+      "gzip_sha256": "f61c58f5ad9f948cca1dc67a088e8a788db0fe32e7c5fdcaef6e19696cf8b67d",
+      "raw_bytes": 531
+    },
+    {
+      "path": "plan-change-writing-final.log.gz",
+      "raw_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "gzip_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "raw_bytes": 33
+    },
+    {
+      "path": "go-final.jsonl.gz",
+      "raw_sha256": "13d29173a99c48e7447a4a9dd62261dcce41907bb631105fa9c4011f34db318e",
+      "gzip_sha256": "d5ed9d57700bca7f79e33569b88cece1597a0dcbaac7476a99c5c39a1bb0cda4",
+      "raw_bytes": 13024273
+    },
+    {
+      "path": "architecture-focused-final.log.gz",
+      "raw_sha256": "0a74729c61b008083dd93b18442bd813f9cc0b0b205f85f3449ec427dec0de88",
+      "gzip_sha256": "f4a27dd5746066f6b2462da1648a2112d5398956642c9bb9ef5fca0bc2884805",
+      "raw_bytes": 560
+    },
+    {
+      "path": "architecture-duplicate-stopped.json.gz",
+      "raw_sha256": "0e082642e0072d23c282d186b59a086af1190f15559e9aab8bfa66584b8cf340",
+      "gzip_sha256": "09857b655d1da41a12786c9b0a8913645f16ff78626f2e7686be89ebb0720cbf",
+      "raw_bytes": 232
+    },
+    {
+      "path": "doc-links-final.log.gz",
+      "raw_sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
+      "gzip_sha256": "1e8b495a4813c7aee62176073ceb333331f989692202f925e8399959191eeee2",
+      "raw_bytes": 25
+    },
+    {
+      "path": "build-published-head.log.gz",
+      "raw_sha256": "028c5b18979c05f338f8e2fde8c577e71bd54050ff551eb4eca913b444a9bc1a",
+      "gzip_sha256": "fae5b5a77b8579b2bad07a199e63169296d19a08a14a9a2e6e6034776b575016",
+      "raw_bytes": 64601
+    },
+    {
+      "path": "autoreview.log.gz",
+      "raw_sha256": "c1975225ec7136eaaec4578fb408fe1858a0f721f19e30bf52af4dd68ce4329a",
+      "gzip_sha256": "15904c1054062e4e86140332cd3d32adec4bdbe641f6a272fa50f165dcd87373",
+      "raw_bytes": 817
+    },
+    {
+      "path": "pr391.json.gz",
+      "raw_sha256": "287c76a2d78b0ae658cb97c2c6fff887fc29f383148a35dac9768bd495522559",
+      "gzip_sha256": "f2648d3af315050c6afb0f3f5a726c51c81dcc395325bbdb79956aa544603694",
+      "raw_bytes": 4849
+    },
+    {
+      "path": "pr391-review-state.json.gz",
+      "raw_sha256": "195d14b2baf32045af88d0885fc0c93fa3622d7c7edf197bc6ebc580b8594935",
+      "gzip_sha256": "c2c492927827162e98b81aa828d39b2cd076b5b3eb74a0102aff019c4c1c5e99",
+      "raw_bytes": 3761
+    },
+    {
+      "path": "pr391-runs.json.gz",
+      "raw_sha256": "5fefd6807bf0da2a8b9c91359355dc2b6b031602e98cf8fa28f1d39a43dbdb8c",
+      "gzip_sha256": "65cca7e53171708a3f09d0158aa1183be0da33b6f44199abc7ad5d371d673a0b",
+      "raw_bytes": 207
+    },
+    {
+      "path": "pr-body.md.gz",
+      "raw_sha256": "04dcba518f921a442e28c2057e1317ea6da95bd444d7851a7d27cd068c22e864",
+      "gzip_sha256": "c7dd9580f0ea9ddb090cd2821cc2f649d8400be0b6d1cdef690b8e6ac815eb92",
+      "raw_bytes": 2844
+    },
+    {
+      "path": "plan-change-final-writing.log.gz",
+      "raw_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "gzip_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "raw_bytes": 33
+    }
+  ],
+  "work_commits": [
+    "1d5ea68abead3d90c8ad02638d89a4249e95fa58",
+    "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401"
+  ],
+  "go_source_unchanged_since": "d96a11fff195543339e68b0c071bb1cf25c08220",
+  "publication": {
+    "pull_request": {
+      "baseRefName": "main",
+      "baseRefOid": "41160fbf55f74a6659ff0ac488a4378524437be7",
+      "headRefOid": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401",
+      "isDraft": true,
+      "mergeStateStatus": "BLOCKED",
+      "number": 391,
+      "reviewDecision": "",
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186345",
+          "name": "Lint",
+          "startedAt": "2026-09-29T06:57:07Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186907",
+          "name": "Test (ubuntu-24.04)",
+          "startedAt": "2026-09-29T06:57:07Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186543",
+          "name": "Test (ubuntu-24.04-arm)",
+          "startedAt": "2026-09-29T06:57:09Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186717",
+          "name": "Test (macos-15)",
+          "startedAt": "2026-09-29T06:57:12Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186713",
+          "name": "Test (windows-2025)",
+          "startedAt": "2026-09-29T06:57:09Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186889",
+          "name": "Test (windows-11-arm)",
+          "startedAt": "2026-09-29T06:57:08Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186693",
+          "name": "Shared Storage Startup",
+          "startedAt": "2026-09-29T06:57:08Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186550",
+          "name": "Catalog Fleet Recovery",
+          "startedAt": "2026-09-29T06:57:08Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186474",
+          "name": "Durable Work Recovery",
+          "startedAt": "2026-09-29T06:57:07Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186679",
+          "name": "Authorization Capacity",
+          "startedAt": "2026-09-29T06:57:07Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186497",
+          "name": "Storage Recipes",
+          "startedAt": "2026-09-29T06:57:07Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186586",
+          "name": "Security Scan",
+          "startedAt": "2026-09-29T06:57:07Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186551",
+          "name": "Release Contract",
+          "startedAt": "2026-09-29T06:57:07Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186648",
+          "name": "OpenRouter SDK Compatibility",
+          "startedAt": "2026-09-29T06:57:07Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186722",
+          "name": "Release Snapshot",
+          "startedAt": "2026-09-29T06:57:07Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-29T06:57:18Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186696",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-29T06:57:08Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        }
+      ],
+      "url": "https://github.com/agentstation/starport/pull/391"
+    },
+    "review_state": {
+      "data": {
+        "repository": {
+          "pullRequest": {
+            "commits": {
+              "totalCount": 34,
+              "nodes": [
+                {
+                  "commit": {
+                    "oid": "44eee9614d3cd2a44b4a69c7b596a31f0ef24b54",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "af6868e5703bf21f9d57ed1fda37a50369fbb781",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "42125d54477042eb132c5b7d8e722901158f6c22",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "48e92eb6585c65aa04c48a141f37c55c323ef067",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "e6cf20934f0dee02f2eebf46276b38229d581f62",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "3a0331b0759123600ce4f86b16ce6194e7e8a5d6",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "08f3e1e38fd00aeb2135054d0d6dfa1f1fa7f20a",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "a01d8c44b367c98259fa6833649abe55c5995b9f",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "339883cfae31db9807b1ce773d56c8d2b718f47c",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "31616bb68899816e06a3a6109f61270e21dcf16c",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "e02671ac93164038f507354e2daa3e56f9d8049b",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "bca519227d0f66185fae1f3500e3398b9d8c1cac",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "1e69e4f1682b7bbe7eb402d86682fb38b02f2691",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "f5d5558ff83b88ee104cadddbe157be7899a0801",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "2a4e9216dad52fd8cbac7d7b6cfc68d0acc038fe",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "edc7771cb284ca6e1e0c0dbe44585a4daa354658",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "7237a692c543b51f00178a3353969d5093b2f32c",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "3c48670d5cf76f4a2c507998dbdefa88cf2943f8",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "9cde42bf621aa581b3fe7319778319ad959d34a4",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "b07d68207e736d3a0f830c3069c4320992b71b90",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "1251d867d1e35fa2dd80d16b8ce293426a86917a",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "b4b83664b5922683f6ed8e8a5416f662b970e15e",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "42deac84a7d14495109deebca5ebd06169c6492d",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "2bcb0991030b3e6b08ecf6dc1d14f3c89fcdb527",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "f58b04c2010ac99e3bd383ccf75fe8447c7fc28e",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "d4af6a52b59b6dae917d0564bedd0009100671ad",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "e02e04f47255dccf85b435f34e60dcb05d65938d",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "d73f1de3055afc1be7d0107223ca995a808e83e5",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "e886dbb500fbe69646c9fb642a821be6760ac31d",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "100cd6c2b35b272747ee0a863e1cf0bf98b9bae3",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "f8f69220aede18f81b82f2755c3aa991110d74c3",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "d96a11fff195543339e68b0c071bb1cf25c08220",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "1d5ea68abead3d90c8ad02638d89a4249e95fa58",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                },
+                {
+                  "commit": {
+                    "oid": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401",
+                    "signature": {
+                      "isValid": true,
+                      "state": "VALID"
+                    }
+                  }
+                }
+              ]
+            },
+            "reviewThreads": {
+              "totalCount": 0,
+              "nodes": []
+            }
+          }
+        }
+      }
+    },
+    "runs": [
+      {
+        "conclusion": "",
+        "databaseId": 36533804653,
+        "headSha": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401",
+        "name": "CI",
+        "status": "in_progress",
+        "url": "https://github.com/agentstation/starport/actions/runs/36533804653"
+      }
+    ]
+  }
+}

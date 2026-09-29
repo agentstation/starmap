@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-29T06:14:40.981289+00:00",
+  "checked_at": "2026-09-29T06:59:35.750797+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -890,13 +890,12 @@
     "consumer_merge": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7"
   },
   "next_task": {
-    "task": "CSP12.2",
-    "next_action": "Collect current native CI, verify exact consumer head and review threads, merge PR #387, record merge commit, and close CSP12.2.",
-    "worktree": "/tmp/starport-fleet-review-20260926",
-    "branch": "codex/atomic-budget-admission",
-    "base": "cfee741fd00c8ff7b5e790c87df6eae7b16de2f7",
-    "head": "0f536c92c85f675e24bd1862ae37fa1534b8661f",
-    "action": "Collect current native CI, verify exact consumer head and review threads, merge PR #387, record merge commit, and close CSP12.2."
+    "task": "CSP13",
+    "owner": "this chat",
+    "worktree": "/private/tmp/starport-clock-review-20260926",
+    "branch": "codex/storage-recovery",
+    "head": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401",
+    "next_action": "Collect native CI for exact head 3f5aa9b4c, resolve findings, verify review threads and required checks, then merge and record the actual merge commit. Broader CSP13 remains open."
   },
   "merged_followups": {
     "tasks": [
@@ -1072,7 +1071,7 @@
     "status": "MERGED",
     "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-28T17:47:22.571896+00:00",
+  "local_updated_at": "2026-09-29T06:59:35.750797+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -1268,9 +1267,183 @@
   },
   "remote_state_note": "Producer #187 merged. Consumer #387 awaits native CI at reviewed 6f97ba52. Eight dependency PRs retain their recorded review and repair actions.",
   "open_queue_snapshot": {
-    "checked_at": "2026-09-29T06:14:40.981289+00:00",
+    "checked_at": "2026-09-29T06:59:35.750797+00:00",
     "starmap": [],
-    "starport": []
+    "starport": [
+      {
+        "baseRefName": "main",
+        "baseRefOid": "41160fbf55f74a6659ff0ac488a4378524437be7",
+        "headRefOid": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401",
+        "isDraft": true,
+        "mergeStateStatus": "BLOCKED",
+        "number": 391,
+        "reviewDecision": "",
+        "state": "OPEN",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186345",
+            "name": "Lint",
+            "startedAt": "2026-09-29T06:57:07Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186907",
+            "name": "Test (ubuntu-24.04)",
+            "startedAt": "2026-09-29T06:57:07Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186543",
+            "name": "Test (ubuntu-24.04-arm)",
+            "startedAt": "2026-09-29T06:57:09Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186717",
+            "name": "Test (macos-15)",
+            "startedAt": "2026-09-29T06:57:12Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186713",
+            "name": "Test (windows-2025)",
+            "startedAt": "2026-09-29T06:57:09Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186889",
+            "name": "Test (windows-11-arm)",
+            "startedAt": "2026-09-29T06:57:08Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186693",
+            "name": "Shared Storage Startup",
+            "startedAt": "2026-09-29T06:57:08Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186550",
+            "name": "Catalog Fleet Recovery",
+            "startedAt": "2026-09-29T06:57:08Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186474",
+            "name": "Durable Work Recovery",
+            "startedAt": "2026-09-29T06:57:07Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186679",
+            "name": "Authorization Capacity",
+            "startedAt": "2026-09-29T06:57:07Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186497",
+            "name": "Storage Recipes",
+            "startedAt": "2026-09-29T06:57:07Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186586",
+            "name": "Security Scan",
+            "startedAt": "2026-09-29T06:57:07Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186551",
+            "name": "Release Contract",
+            "startedAt": "2026-09-29T06:57:07Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186648",
+            "name": "OpenRouter SDK Compatibility",
+            "startedAt": "2026-09-29T06:57:07Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186722",
+            "name": "Release Snapshot",
+            "startedAt": "2026-09-29T06:57:07Z",
+            "status": "IN_PROGRESS",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-29T06:57:18Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/36533804653/job/109293186696",
+            "name": "Action Pin Provenance",
+            "startedAt": "2026-09-29T06:57:08Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          }
+        ],
+        "url": "https://github.com/agentstation/starport/pull/391"
+      }
+    ]
   },
   "dependency_queue": {
     "checked_at": "2026-09-29T00:15:37.431399+00:00",
@@ -1336,7 +1509,7 @@
     "next_task": "CSP13"
   },
   "starmap_open_count": 0,
-  "starport_open_count": 0,
+  "starport_open_count": 1,
   "dependency_189_completion": {
     "checked_at": "2026-09-28T17:04:54.239668+00:00",
     "premerge": {
@@ -1849,13 +2022,6 @@
     "integration_qualification": "The integration tree is identical to the tested baseline implementation commit. No source change followed the completed checks."
   },
   "baseline_export_checkpoint": "../../csp13/baseline-export-recovery-2026-09-28/verification.json",
-  "unpublished_local_recovery": {
-    "repository": "agentstation/starport",
-    "head": "d96a11fff195543339e68b0c071bb1cf25c08220",
-    "branch": "codex/storage-recovery",
-    "owner": "this chat",
-    "next_action": "Finish interrupted migration, independent history, activation, and full checks before publication."
-  },
   "runtime_evidence_checkpoint": "../../csp13/runtime-evidence-recovery-2026-09-28/verification.json",
   "starmap195_completion": {
     "repository": "agentstation/starmap",
@@ -1900,5 +2066,15 @@
     "required_restore_roots": 7,
     "native_scope": "All seven roots pass without skips on macOS arm64, Linux amd64/arm64, and Windows amd64/arm64. Unrelated native skips remain recorded in the artifact audit."
   },
-  "catalog_reference_checkpoint": "../../csp13/catalog-reference-validation-2026-09-29/verification.json"
+  "catalog_reference_checkpoint": "../../csp13/catalog-reference-validation-2026-09-29/verification.json",
+  "recovery_ci_readiness_checkpoint": "../../csp13/recovery-ci-readiness-2026-09-29/verification.json",
+  "published_recovery": {
+    "repository": "agentstation/starport",
+    "head": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401",
+    "branch": "codex/storage-recovery",
+    "owner": "this chat",
+    "next_action": "Collect native CI for exact head 3f5aa9b4c, resolve findings, verify review threads and required checks, then merge and record the actual merge commit. Broader CSP13 remains open.",
+    "pull_request": 391,
+    "url": "https://github.com/agentstation/starport/pull/391"
+  }
 }
