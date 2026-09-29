@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "commit": "5931f5d2388d2e9c718715eb35ebc60cbfb64ecd",
+  "toolchain": "go1.27.1",
+  "go_work": "off",
+  "scope": "typed retained file, stored-byte, and blob replay owners plus exact blob-position inspection/activation",
+  "native_backends": [
+    "Badger",
+    "Valkey",
+    "filesystem",
+    "S3-compatible objectstore",
+    "SQLite",
+    "PostgreSQL"
+  ],
+  "checks": {
+    "race": {
+      "final_test_cases": {
+        "pass": 325
+      },
+      "runs": [
+        {
+          "path": "/tmp/csp13-file-asset-replay-20260929/race.jsonl",
+          "events": {
+            "pass": 322,
+            "fail": 3
+          }
+        },
+        {
+          "path": "/tmp/csp13-file-asset-replay-20260929/index-race.jsonl",
+          "events": {
+            "pass": 3
+          }
+        }
+      ],
+      "note": "Initial broad suite failed only new duplicate/overflow fixture because mode=rw SQLite path was absent. Fixed fixture creates private empty file. Affected tests rerun without changing production code."
+    },
+    "pure": {
+      "final_test_cases": {
+        "pass": 325
+      },
+      "runs": [
+        {
+          "path": "/tmp/csp13-file-asset-replay-20260929/pure.jsonl",
+          "events": {
+            "pass": 322,
+            "fail": 3
+          }
+        },
+        {
+          "path": "/tmp/csp13-file-asset-replay-20260929/index-pure.jsonl",
+          "events": {
+            "pass": 3
+          }
+        }
+      ],
+      "note": "Initial broad suite failed only new duplicate/overflow fixture because mode=rw SQLite path was absent. Fixed fixture creates private empty file. Affected tests rerun without changing production code."
+    },
+    "lint": {
+      "exit_status": 0,
+      "path": "/tmp/csp13-file-asset-replay-20260929/lint.log"
+    },
+    "vet": {
+      "exit_status": 0,
+      "path": "/tmp/csp13-file-asset-replay-20260929/vet.log"
+    },
+    "prose": {
+      "exit_status": 0,
+      "path": "/tmp/csp13-file-asset-replay-20260929/prose.log"
+    }
+  },
+  "limitations": [
+    "All writers remain externally fenced and admission remains closed.",
+    "Independent evidence acceptance and interval completeness belong to the coordinator.",
+    "Unavailable required unexpired bytes refuse recovery. No provider retry or fabricated asset.",
+    "One independent asset is bounded to 1 GiB; claims stage at most 64 per native step.",
+    "Full census and asset verification stream through disk and have not qualified complete-deployment RPO/RTO."
+  ],
+  "integration_commit": "3427fb9eac2f5be16cfe682c3e505f77a06ecede",
+  "artifacts": {
+    "race.jsonl": {
+      "file": "race.jsonl.gz",
+      "sha256": "c176a8fe158151a45be36eeba2c81f58098943f555bcfe88033177db78f51e8d"
+    },
+    "pure.jsonl": {
+      "file": "pure.jsonl.gz",
+      "sha256": "b73cb84891abfabe6c2e7b7768bf22f19265bf942b2c07517eb95484fd9aa57b"
+    },
+    "index-race.jsonl": {
+      "file": "index-race.jsonl.gz",
+      "sha256": "a9bd992626f069609169a237222aa3d0e5595d4c4b0570d095dc07d5d5fac16c"
+    },
+    "index-pure.jsonl": {
+      "file": "index-pure.jsonl.gz",
+      "sha256": "9108d482ff8f876454b0d67dc8a568a287488982e036aee1d7b677f16c664f74"
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "69a2f872785e8dd440717978a1f909d4fa1ebecc317183d912c5e0b023383e46"
+    },
+    "architecture-before.log": {
+      "file": "architecture-before.log.gz",
+      "sha256": "da1a4783577eb1b37aa8c51c51807b335f338592e61e61403d087217ecd5a9b0"
+    },
+    "architecture-after.jsonl": {
+      "file": "architecture-after.jsonl.gz",
+      "sha256": "e1e4d733e513e3f7da6928a9e686e4dc2157f7141d751fef280924af54bcebbb"
+    },
+    "architecture-final.jsonl": {
+      "file": "architecture-final.jsonl.gz",
+      "sha256": "96a57db23b38241d84e2c540cefbf845211898d4e645383a6cc607ff90cf7eb9"
+    }
+  },
+  "architecture_integration": {
+    "pass": 8,
+    "fail": 0,
+    "skip": 0,
+    "changes": "Permit exact recovery/files dependencies on the stored-byte owner. Preserve all other architecture checks."
+  }
+}

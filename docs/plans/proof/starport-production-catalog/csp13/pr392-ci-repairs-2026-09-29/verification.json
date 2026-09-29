@@ -1,0 +1,103 @@
+{
+  "original_head": "84d9a9a557f46146c40d25ed25875eec783fffa1",
+  "run": 36565373466,
+  "state": "REVIEWED_PUBLISHED_NATIVE_PENDING",
+  "repair_head": "aad21f345ed8f4174cfbe23d67062ba5711bde95",
+  "failures": [
+    "Catalog Fleet Recovery timed out at420.12s after26 passing adoption results.",
+    "Windows x64/ARM64 and Linux x64 controller jobs rejected4 expired Aug30 activity-export fixtures."
+  ],
+  "repairs": [
+    "Retain one full embedded catalog test. Use genuine tiny Starmap retained-input fixtures for repeated protocol cases.",
+    "Use recent event timestamps for the4 export fixtures. Keep every export/filter/privacy assertion."
+  ],
+  "validation": {
+    "fleet_race": {
+      "pass": 27,
+      "fail": 0,
+      "skip": 0,
+      "seconds": 139.064
+    },
+    "fleet_pure": {
+      "pass": 27,
+      "fail": 0,
+      "skip": 0,
+      "seconds": 14.359
+    },
+    "controllers_race": {
+      "pass": 220,
+      "fail": 0,
+      "skip": 1
+    },
+    "controllers_pure": {
+      "pass": 220,
+      "fail": 0,
+      "skip": 1
+    },
+    "note": "Local timings and CI timings are different environments. The controller skip is an existing optional fixture."
+  },
+  "native_requalification": "UNVERIFIED",
+  "artifacts": {
+    "activity-fixture-fail-before.log": {
+      "file": "activity-fixture-fail-before.log.gz",
+      "sha256": "2aa0784b7c27db40b61ef43e21886b089042977d3f0b9694a2cc696979243903"
+    },
+    "activity-fixture-race.jsonl": {
+      "file": "activity-fixture-race.jsonl.gz",
+      "sha256": "3b0c4b3596926418606ab88e1029faa9ca05ce8855f2795384750c25f8afbd4e"
+    },
+    "activity-fixture-pure.jsonl": {
+      "file": "activity-fixture-pure.jsonl.gz",
+      "sha256": "a2b70f54c80c0375d21ed675cd389146b5089a4389044d0c6dce374fdbfc6af2"
+    },
+    "autoreview.log": {
+      "file": "autoreview.log.gz",
+      "sha256": "292446232d189a7d2c3a5becbba5ef8441297eab57742478bc9d491770efdc92"
+    }
+  },
+  "fleet_artifacts": {
+    "full-race.jsonl": {
+      "file": "full-race.jsonl.gz",
+      "sha256": "f255762b1ce4555decb2859e76915cbc706b37123256e316e940eae22346f56f"
+    },
+    "full-pure.jsonl": {
+      "file": "full-pure.jsonl.gz",
+      "sha256": "3b412542ab72a5044e32ac61fafef0d5d86f73cff1810db87953d7087a2d042e"
+    },
+    "summary.json": {
+      "file": "summary.json.gz",
+      "sha256": "15aec836dbcc2ab51b8f5ec41b75a0b6a3c1da41629ee68a70927dcf61bc02a0"
+    },
+    "lint.txt": {
+      "file": "lint.txt.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "vet-final.txt": {
+      "file": "vet-final.txt.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prose.txt": {
+      "file": "prose.txt.gz",
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    }
+  },
+  "failed_fleet_artifacts": {
+    "fleet-catalog.jsonl": {
+      "file": "fleet-catalog.jsonl.gz",
+      "sha256": "b6cc24887aec379971c11ebb923275259f1454ef0c782258d5c2b0d3248c2d77"
+    },
+    "fleet-adoption.jsonl": {
+      "file": "fleet-adoption.jsonl.gz",
+      "sha256": "1fb8053b75064cd164e59da259e728339fa28834e5adb8f02ea82c360f94e4d6"
+    }
+  },
+  "replacement_run": 36568833884,
+  "review": {
+    "exit_status": 0,
+    "passes": 4,
+    "actionable_findings": 0,
+    "threshold": "P0",
+    "base": "03b09b21ae62c5eded76c132e2e3bc04335a7a0e"
+  },
+  "old_run_disposition": "Cancel requested after the reviewed successor started; old unfinished checks remain unverified."
+}

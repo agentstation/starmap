@@ -1,0 +1,69 @@
+{
+  "source_commit": "117a61b41d2e62bd90a1400a8b02a7a07161148b",
+  "toolchain": "go1.27.1",
+  "checks": {
+    "race": {
+      "pass": 48,
+      "fail": 0,
+      "skip": 0
+    },
+    "pure_go": {
+      "pass": 48,
+      "fail": 0,
+      "skip": 0
+    },
+    "vet": "pass",
+    "lint": "pass",
+    "prose": "pass"
+  },
+  "native_storage": [
+    "Badger",
+    "SQLite",
+    "filesystem",
+    "Valkey",
+    "PostgreSQL",
+    "objectstore"
+  ],
+  "regression": "Removing the accepted-journal loss guard reproduces a failing native test. Restoring it passes. Changed or missing accepted journals confer no replay capability.",
+  "limits": {
+    "manifest_bytes": 1048576,
+    "payload_bytes": 8388608,
+    "aggregate_json_bytes": 67108864,
+    "steps": 4096
+  },
+  "limitations": [
+    "Byte integrity does not prove external history completeness or fencing.",
+    "Acceptance retains closed SQL authority and all import barriers.",
+    "Complete typed replay, operator activation and CSP13 acceptance remain unverified."
+  ],
+  "artifacts": {
+    "native-race.jsonl": {
+      "file": "native-race.jsonl.gz",
+      "sha256": "6b4c1d748d3940addb042c54127ff30d74a2709ae3af7c1efa51eb35fb165a03"
+    },
+    "native-pure.jsonl": {
+      "file": "native-pure.jsonl.gz",
+      "sha256": "10e49f0fddb1bf21a9599261e7c726d6240d1759e88e289bf58f875de8d4fa43"
+    },
+    "fail-before.log": {
+      "file": "fail-before.log.gz",
+      "sha256": "da8a2025f0bb24ec3320ab5caa331b10355bfa796777f505e7aa7f426951fcac"
+    },
+    "lost-journal-fail-before.log": {
+      "file": "lost-journal-fail-before.log.gz",
+      "sha256": "58b938d93f3da2b8ffc75315b5bfa1c6d3c95c5787116f415800f22ca6832982"
+    },
+    "lost-journal-pass-after.log": {
+      "file": "lost-journal-pass-after.log.gz",
+      "sha256": "b66a797364c722d9fb14ba62990a850efac1fb8df46ce12d2539067f7bb72e00"
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "80d8e90946171daaa1c41ec011299415d8867dce43c4b1084ccf693f782af04a"
+    },
+    "lint-complete.log": {
+      "file": "lint-complete.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    }
+  }
+}

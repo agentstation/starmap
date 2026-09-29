@@ -2018,12 +2018,13 @@
     "disposition": "Local, verified component; full recovery remains open."
   },
   "owner_replay": {
-    "head": "84d9a9a557f46146c40d25ed25875eec783fffa1",
-    "state": "READY_CI_RUNNING",
+    "head": "aad21f345ed8f4174cfbe23d67062ba5711bde95",
+    "state": "REPAIR_NATIVE_PENDING",
     "owner": "this chat",
-    "proof": "csp13/integration-final-2026-09-29/verification.json",
-    "next_action": "Wait for the complete CI run, including the required Build aggregate. Verify exact84d9a9a5 and review threads before a protected merge. A successful required-check watch can omit checks that have not registered yet.",
-    "pr": "https://github.com/agentstation/starport/pull/392"
+    "proof": "csp13/pr392-ci-repairs-2026-09-29/verification.json",
+    "next_action": "Wait for the complete CI run, including required Build. Recheck exact aad21f34, base and review threads, then merge under unchanged protection. Continue complete recovery on the separate history-coordination branch.",
+    "pr": "https://github.com/agentstation/starport/pull/392",
+    "run": 36568833884
   },
   "starport391_completion": {
     "state": "MERGED",
@@ -2079,10 +2080,9 @@
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "base": "84d9a9a557f46146c40d25ed25875eec783fffa1",
     "state": "in_progress",
-    "owned_uncommitted": [
-      "internal/recovery/history_package.go",
-      "internal/recovery/history_package_test.go"
-    ],
-    "next_action": "Complete independent history acceptance and ordered owner replay while target stores remain restricted."
+    "owned_uncommitted": [],
+    "next_action": "Complete independent history acceptance and ordered owner replay while target stores remain restricted.",
+    "head": "3427fb9eac2f5be16cfe682c3e505f77a06ecede",
+    "proof": "csp13/history-acceptance-2026-09-29/verification.json"
   }
 }
