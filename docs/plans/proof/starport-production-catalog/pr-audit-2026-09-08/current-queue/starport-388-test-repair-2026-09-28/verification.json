@@ -1,0 +1,131 @@
+{
+  "checked_at": "2026-09-29T00:41:11.278076+00:00",
+  "state": "REVIEWED_PUBLISHED_NATIVE_CI_PENDING",
+  "pr": 388,
+  "base": "a1a08df86c31c73cfd38d49e03ceb3571c86a86c",
+  "original_head": "67dd98b1613168d61cb37c562ea1a8ef234a8f6e",
+  "head": "182a16c1c696efa7ca4fef7b98bf3b03be319e07",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-starmap-main",
+  "branch": "codex/dependency-native-repair-388",
+  "worktree_reuse": "Clean idle checkout reused. Prior codex/catalog-starmap-main branch and d45bb30c commit preserved. No other process or active chat used this checkout.",
+  "change": "Publish the existing credential test repairs independently of unfinished recovery code. Controlled time preserves concurrency and permission assertions. A held native lock verifies the unchanged production deadline and recovery after unlock.",
+  "toolchain": "go1.27.1",
+  "production_code_changed": false,
+  "dependency": "Uses the committed published Starmap dependency; no temporary module or workspace override.",
+  "checks": {
+    "race": {
+      "exit_code": 0,
+      "pass": 300,
+      "fail": 0,
+      "skip": 2,
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout=5m ./internal/credentials ./internal/providers/keyring"
+    },
+    "purego": {
+      "exit_code": 0,
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "tests": [
+        "TestInferencePolicyConcurrentAcceptance",
+        "TestInferencePolicyPublicationDeadline",
+        "TestGrantedSharedCredentialResolution"
+      ]
+    },
+    "vet": "PASS: standalone final command for both changed packages",
+    "lint": "PASS: repository make lint, zero issues",
+    "action_pins": "PASS: 14 references match advertised tags",
+    "release_workflow": "PASS: 2 action-pin tests and 10 release-workflow tests",
+    "remaining": "Full repository and native platform checks run on the updated PR. No merge until required exact-head checks pass."
+  },
+  "review": {
+    "exit_code": 0,
+    "reviewer": "claude-opus-5-5 high",
+    "gate": "pre-pr",
+    "mode": "auto",
+    "threshold": "P0 default; not a claim of review at every lower severity",
+    "passes": 1,
+    "bundle_bytes": 9916,
+    "secret_scan": "clean",
+    "findings": 0,
+    "manual_followup": "Independently verified the Homebrew tag and source diff. Local tests exercise fake time with the real flock and exact deadline. Native CI remains required."
+  },
+  "upstream_action": {
+    "before": "848c272c7bfe984a197bd4d16383f4c106ec61e6",
+    "after": "e99025eb970cfa124b8284a35463d87426917478",
+    "tag": "2026.09.28.1",
+    "changed_files": 19,
+    "commits": 5,
+    "assessment": "Setup action files and runtime contract unchanged. The complete comparison changes upstream workflow pins and vendored content-type and js-yaml dependencies. Reviewed readable runtime changes preserve full-range validation defaults and constrain forced YAML quotes to the default scalar tag. Action runtime remains node24."
+  },
+  "publication": "Normal fast-forward push after fresh exact-head, clean-tree, and ancestry checks. No force, release, merge, or public review comment.",
+  "next_action": "Wait for exact-head native CI, inspect review threads and protection, then merge. Update #389 and #390 from the actual merge to inherit the repairs.",
+  "artifacts": {
+    "csp13-starport388-race.jsonl": {
+      "raw": "csp13-starport388-race.jsonl.gz",
+      "source_sha256": "90195ebb4d0eaeff977141ffa4ab33f3695cc53b94bd1cd93efed8f133a971ff",
+      "gzip_sha256": "10735d5d1b54774652be3253fd3c2c4de5855032fc25db4ffb9befab6ccbac06",
+      "counts": {
+        "pass": 300,
+        "skip": 2
+      },
+      "skips": [
+        "TestManagedMaterialValkeyOutageAndRecovery",
+        "TestProviderCredentialRepositoryContract/valkey"
+      ]
+    },
+    "csp13-starport388-purego.jsonl": {
+      "raw": "csp13-starport388-purego.jsonl.gz",
+      "source_sha256": "cc3c6a7508c0100cbaef097142a4fd93031431b877eba14b003cce2a8f9df28c",
+      "gzip_sha256": "97ea072a343d66f82fa9c0c6d5cc01b5fceded3cacad5ef675323295c1518b8d",
+      "counts": {
+        "pass": 3
+      },
+      "skips": []
+    },
+    "csp13-starport388-vet-final.log": {
+      "raw": "csp13-starport388-vet-final.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-starport388-lint.log": {
+      "raw": "csp13-starport388-lint.log.gz",
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "csp13-starport388-action-pins.log": {
+      "raw": "csp13-starport388-action-pins.log.gz",
+      "source_sha256": "701c20a649c43ac8fd858a1a973496a1df170169addd67f1a5f10619eca19328",
+      "gzip_sha256": "08467da5d4dd3f984b6748c27bab6f45ae64af186812430362b32bdfe425ae99"
+    },
+    "csp13-starport388-release-workflow.log": {
+      "raw": "csp13-starport388-release-workflow.log.gz",
+      "source_sha256": "15886959bf5a88ab70b7169830e3fa9cb7f71b2798f18ed3fd2b68627c873718",
+      "gzip_sha256": "3cd1244346dd2ee3e51002a214e25bded9a15285e778d5a1b98ead40665f2929"
+    },
+    "csp13-starport388-review.log": {
+      "raw": "csp13-starport388-review.log.gz",
+      "source_sha256": "bf311c9f9e28bf5ce997482151cf23d47e5a6104797bfad483c65ad2c762a866",
+      "gzip_sha256": "0bf9929fd789dd27f22662464c23d73bb49a78f7a30f77f0286b0c8d7e49a70e"
+    },
+    "csp13-starport388-homebrew-compare.json": {
+      "raw": "csp13-starport388-homebrew-compare.json.gz",
+      "source_sha256": "dc88ddaba7fad1d8cc5acc90cd476c79d935ab47b7a036c2ca00c16573075117",
+      "gzip_sha256": "6041e4a2a4fb19e1fc7bb67d35e09c2758a8b99eeed6c48ac46041cd654210bf"
+    },
+    "csp13-starport388-homebrew-action.json": {
+      "raw": "csp13-starport388-homebrew-action.json.gz",
+      "source_sha256": "f2bb0dcf407bcc4c9befc65798506ed6e41141d390d1a5b2c2fea8ff52afa714",
+      "gzip_sha256": "4698135070db0b8a6682d821fe7b72d94f1e7e23276c06b50f5939f000fc0861"
+    },
+    "csp13-starport388-published.json": {
+      "raw": "csp13-starport388-published.json.gz",
+      "source_sha256": "7a8692c0e0f6348563a8e8d15f9cfe8a4764816325700a8f1935cc4663dc5dc5",
+      "gzip_sha256": "be92a20f3834ca90d5b3173bc6523b2443ed269e60ffc963760c4d0c8347275d"
+    }
+  },
+  "plan_checks": {
+    "structure": "plan-validation.json",
+    "scoped_writing": "PASS: current resume and new entry, zero diagnostics",
+    "full_writing": "1934 files, 226 historical diagnostics, exit 2. No new normalized diagnostic identities."
+  }
+}

@@ -112,5 +112,16 @@
     "structure": "plan-validation.json",
     "scoped_writing": "PASS: README and extracted current resume, ledger, and new log entry; zero diagnostics",
     "full_writing": "1933 files, 226 pre-existing diagnostics, exit 2. No new normalized diagnostic identities relative to the previous 226-diagnostic result."
+  },
+  "gate_event_collection": {
+    "previous_session": 37371,
+    "previous_exit_code": 1,
+    "reason": "A test created a directory with .json in its name. The collector glob attempted to open it as a file. Test execution was unaffected.",
+    "repair": "Skip non-files. Verify each existing saved prefix before appending unread source bytes. The source directory remained available.",
+    "session": 9245,
+    "script": "/tmp/csp13-preserve-gate-events.py",
+    "destination": "/tmp/csp13-private-stream-verify-events",
+    "status": "running",
+    "verifier_session": 7562
   }
 }
