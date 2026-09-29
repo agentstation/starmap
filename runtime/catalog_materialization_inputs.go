@@ -44,7 +44,7 @@ func prepareMaterializationPlan(ctx context.Context, store *layerStore, request 
 	if err != nil {
 		return nil, err
 	}
-	names := make(map[string]bool, len(previous)+len(desired))
+	names := make(map[string]bool)
 	for name := range previous {
 		names[name] = true
 	}
