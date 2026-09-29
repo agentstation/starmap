@@ -49,18 +49,19 @@ func (h FleetHead) Validate() error {
 	return nil
 }
 
-// FleetPublication carries the original grant and predecessor for one commit attempt.
-// A retry preserves all fields. It must not substitute a newer grant or predecessor.
+// FleetPublication retains one refresh grant or explicit recovery origin and its predecessor.
+// A retry preserves all fields. It must not substitute newer ownership evidence or a predecessor.
 type FleetPublication struct {
-	Generation catalogs.Generation `json:"generation"`
-	Recovery   FleetRecovery       `json:"recovery"`
-	Grant      Lease               `json:"grant"`
-	Expected   FleetHead           `json:"expected"`
+	Generation     catalogs.Generation  `json:"generation"`
+	Recovery       FleetRecovery        `json:"recovery"`
+	Grant          Lease                `json:"grant"`
+	Expected       FleetHead            `json:"expected"`
+	RecoveryOrigin *FleetRecoveryOrigin `json:"recovery_origin,omitempty"`
 }
 
-// Validate checks publication content and identity before a backend operation.
-// The backend must still compare the live grant, expiry, approved identity, and head atomically.
-// No local clock reading can replace that comparison.
+// Validate checks retained publication content and structural ownership evidence.
+// It does not establish independent recovery approval, live lease ownership, or serving permission.
+// Ordinary commit adapters must use ValidateRefreshPublication before their native transaction.
 func (p FleetPublication) Validate() error {
 	if err := p.Generation.Validate(); err != nil {
 		return err
@@ -68,13 +69,17 @@ func (p FleetPublication) Validate() error {
 	if err := p.Recovery.Validate(p.Generation); err != nil {
 		return err
 	}
-	if err := p.Grant.validateFleet(); err != nil {
+	if p.RecoveryOrigin == nil {
+		if err := p.Grant.validateFleet(); err != nil {
+			return err
+		}
+	} else if err := p.RecoveryOrigin.validate(p); err != nil {
 		return err
 	}
 	if err := p.Expected.Validate(); err != nil {
 		return err
 	}
-	if p.Expected != (FleetHead{}) && p.Expected.Identity != p.Grant.Identity {
+	if p.Expected != (FleetHead{}) && p.Expected.Identity != p.publicationIdentity() {
 		return fleetConflict("the predecessor belongs to a different recovery identity")
 	}
 	if p.Expected.Revision == math.MaxUint64 {
@@ -83,21 +88,37 @@ func (p FleetPublication) Validate() error {
 	return nil
 }
 
+// ValidateRefreshPublication refuses recovery imports through the ordinary refresh commit path.
+// The backend must still compare the original live grant, expiry, approved identity, and head atomically.
+func (p FleetPublication) ValidateRefreshPublication() error {
+	if p.RecoveryOrigin != nil {
+		return fleetConflict("recovery publication requires the host's closed import procedure")
+	}
+	return p.Validate()
+}
+
+func (p FleetPublication) publicationIdentity() FleetIdentity {
+	if p.RecoveryOrigin != nil {
+		return p.RecoveryOrigin.Identity
+	}
+	return p.Grant.Identity
+}
+
 // nextHead describes the result of one successful commit without granting ownership.
 func (p FleetPublication) nextHead() FleetHead {
-	return FleetHead{Identity: p.Grant.Identity, Revision: p.Expected.Revision + 1,
+	return FleetHead{Identity: p.publicationIdentity(), Revision: p.Expected.Revision + 1,
 		GenerationID: p.Generation.Manifest.GenerationID, RecoveryChecksum: p.Recovery.Checksum}
 }
 
 // FleetSnapshot retains the accepted publication and its original ownership evidence.
-// Reading a snapshot does not prove that its grant remains valid.
+// Reading a snapshot proves neither a live grant nor independent recovery approval.
 type FleetSnapshot struct {
 	Head        FleetHead        `json:"head"`
 	Publication FleetPublication `json:"publication"`
 	Adoption    *FleetAdoption   `json:"adoption,omitempty"`
 }
 
-// FleetAdoption identifies explicit host recovery without changing the original publication grant.
+// FleetAdoption identifies explicit host recovery without changing the original publication ownership evidence.
 // The host must verify the receipt and independent approval before exposing this snapshot.
 // This record grants no refresh lease or inference permission.
 type FleetAdoption struct {
@@ -163,7 +184,8 @@ type FleetStore interface {
 	// Get retrieves a retained immutable catalog without exposing recovery inputs.
 	Get(context.Context, string) (catalogs.Generation, error)
 
-	// CommitPublication selects the catalog and recovery reference in one backend transaction.
+	// CommitPublication selects a refresh publication and recovery reference in one backend transaction.
+	// It refuses RecoveryOrigin through ValidateRefreshPublication. Hosts import recovery separately.
 	// It compares Expected, the exact holder, process session, epoch, live expiry, and recovery identity.
 	// A refusal changes neither the head nor the recovery reference. Staged bytes confer no permission.
 	//

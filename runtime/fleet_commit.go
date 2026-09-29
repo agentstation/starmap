@@ -109,7 +109,7 @@ func (s *fleetCommitStore) Commit(ctx context.Context, generation catalogs.Gener
 	publication := FleetPublication{Generation: generation, Expected: commit.expected, Grant: commit.grant,
 		Recovery: FleetRecovery{GenerationID: generation.Manifest.GenerationID, PayloadChecksum: generation.Manifest.Payload.Checksum,
 			Checksum: commit.checksum, Data: commit.data}}
-	if err := publication.Validate(); err != nil {
+	if err := publication.ValidateRefreshPublication(); err != nil {
 		return err
 	}
 	manifest, err := json.Marshal(generation.Manifest, json.Deterministic(true))

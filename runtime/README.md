@@ -117,8 +117,10 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(i FleetIdentity\) Validate\(\) error](<#FleetIdentity.Validate>)
 - [type FleetPublication](<#FleetPublication>)
   - [func \(p FleetPublication\) Validate\(\) error](<#FleetPublication.Validate>)
+  - [func \(p FleetPublication\) ValidateRefreshPublication\(\) error](<#FleetPublication.ValidateRefreshPublication>)
 - [type FleetRecovery](<#FleetRecovery>)
   - [func \(r FleetRecovery\) Validate\(generation catalogs.Generation\) error](<#FleetRecovery.Validate>)
+- [type FleetRecoveryOrigin](<#FleetRecoveryOrigin>)
 - [type FleetSnapshot](<#FleetSnapshot>)
   - [func \(s FleetSnapshot\) Validate\(\) error](<#FleetSnapshot.Validate>)
 - [type FleetStatus](<#FleetStatus>)
@@ -448,6 +450,12 @@ const (
     // DefaultAcquisitionInterval is the acquisition period.
     DefaultAcquisitionInterval = 4 * time.Hour
 )
+```
+
+<a name="FleetRecoveryOriginVersion"></a>FleetRecoveryOriginVersion identifies the explicit closed\-import evidence schema.
+
+```go
+const FleetRecoveryOriginVersion = 1
 ```
 
 <a name="MaxFleetRecoveryBytes"></a>MaxFleetRecoveryBytes bounds both encoded and decoded private inputs for one fleet publication.
@@ -968,9 +976,9 @@ type FleetAcquisitionRequirements struct {
 ```
 
 <a name="FleetAdoption"></a>
-## type [FleetAdoption](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L103-L106>)
+## type [FleetAdoption](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L124-L127>)
 
-FleetAdoption identifies explicit host recovery without changing the original publication grant. The host must verify the receipt and independent approval before exposing this snapshot. This record grants no refresh lease or inference permission.
+FleetAdoption identifies explicit host recovery without changing the original publication ownership evidence. The host must verify the receipt and independent approval before exposing this snapshot. This record grants no refresh lease or inference permission.
 
 ```go
 type FleetAdoption struct {
@@ -1025,27 +1033,37 @@ func (i FleetIdentity) Validate() error
 Validate requires a complete identity. It does not establish external approval.
 
 <a name="FleetPublication"></a>
-## type [FleetPublication](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L54-L59>)
+## type [FleetPublication](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L54-L60>)
 
-FleetPublication carries the original grant and predecessor for one commit attempt. A retry preserves all fields. It must not substitute a newer grant or predecessor.
+FleetPublication retains one refresh grant or explicit recovery origin and its predecessor. A retry preserves all fields. It must not substitute newer ownership evidence or a predecessor.
 
 ```go
 type FleetPublication struct {
-    Generation catalogs.Generation `json:"generation"`
-    Recovery   FleetRecovery       `json:"recovery"`
-    Grant      Lease               `json:"grant"`
-    Expected   FleetHead           `json:"expected"`
+    Generation     catalogs.Generation  `json:"generation"`
+    Recovery       FleetRecovery        `json:"recovery"`
+    Grant          Lease                `json:"grant"`
+    Expected       FleetHead            `json:"expected"`
+    RecoveryOrigin *FleetRecoveryOrigin `json:"recovery_origin,omitempty"`
 }
 ```
 
 <a name="FleetPublication.Validate"></a>
-### func \(FleetPublication\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L64>)
+### func \(FleetPublication\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L65>)
 
 ```go
 func (p FleetPublication) Validate() error
 ```
 
-Validate checks publication content and identity before a backend operation. The backend must still compare the live grant, expiry, approved identity, and head atomically. No local clock reading can replace that comparison.
+Validate checks retained publication content and structural ownership evidence. It does not establish independent recovery approval, live lease ownership, or serving permission. Ordinary commit adapters must use ValidateRefreshPublication before their native transaction.
+
+<a name="FleetPublication.ValidateRefreshPublication"></a>
+### func \(FleetPublication\) [ValidateRefreshPublication](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L93>)
+
+```go
+func (p FleetPublication) ValidateRefreshPublication() error
+```
+
+ValidateRefreshPublication refuses recovery imports through the ordinary refresh commit path. The backend must still compare the original live grant, expiry, approved identity, and head atomically.
 
 <a name="FleetRecovery"></a>
 ## type [FleetRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L26-L31>)
@@ -1070,10 +1088,27 @@ func (r FleetRecovery) Validate(generation catalogs.Generation) error
 
 Validate checks the generation binding and the complete input checksum. Runtime recovery separately validates the input schema and acquisition policy.
 
-<a name="FleetSnapshot"></a>
-## type [FleetSnapshot](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L94-L98>)
+<a name="FleetRecoveryOrigin"></a>
+## type [FleetRecoveryOrigin](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery_origin.go#L15-L23>)
 
-FleetSnapshot retains the accepted publication and its original ownership evidence. Reading a snapshot does not prove that its grant remains valid.
+FleetRecoveryOrigin binds catalog facts to a host\-owned closed recovery import. The host must independently verify the accepted decision and closed import before exposing the publication. These digests describe retained evidence. They grant no refresh lease, authority receipt, or inference permission.
+
+```go
+type FleetRecoveryOrigin struct {
+    Version                  int           `json:"version"`
+    Identity                 FleetIdentity `json:"identity"`
+    OperationID              string        `json:"operation_id"`
+    AcceptedDecisionSHA256   string        `json:"accepted_decision_sha256"`
+    ClosedImportSHA256       string        `json:"closed_import_sha256"`
+    GenerationManifestSHA256 string        `json:"generation_manifest_sha256"`
+    RecoverySHA256           string        `json:"recovery_sha256"`
+}
+```
+
+<a name="FleetSnapshot"></a>
+## type [FleetSnapshot](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L115-L119>)
+
+FleetSnapshot retains the accepted publication and its original ownership evidence. Reading a snapshot proves neither a live grant nor independent recovery approval.
 
 ```go
 type FleetSnapshot struct {
@@ -1084,7 +1119,7 @@ type FleetSnapshot struct {
 ```
 
 <a name="FleetSnapshot.Validate"></a>
-### func \(FleetSnapshot\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L109>)
+### func \(FleetSnapshot\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L130>)
 
 ```go
 func (s FleetSnapshot) Validate() error
@@ -1106,7 +1141,7 @@ type FleetStatus struct {
 ```
 
 <a name="FleetStore"></a>
-## type [FleetStore](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L150-L176>)
+## type [FleetStore](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_store.go#L171-L198>)
 
 FleetStore owns shared publication, retained inputs, and refresh ownership. Hosts supply the adapter. Standalone stores keep the separate storage.Store contract. Each method uses one deployment namespace and the approved backend incarnation. New or recovered connections must validate that incarnation before application operations.
 
@@ -1127,7 +1162,8 @@ type FleetStore interface {
     // Get retrieves a retained immutable catalog without exposing recovery inputs.
     Get(context.Context, string) (catalogs.Generation, error)
 
-    // CommitPublication selects the catalog and recovery reference in one backend transaction.
+    // CommitPublication selects a refresh publication and recovery reference in one backend transaction.
+    // It refuses RecoveryOrigin through ValidateRefreshPublication. Hosts import recovery separately.
     // It compares Expected, the exact holder, process session, epoch, live expiry, and recovery identity.
     // A refusal changes neither the head nor the recovery reference. Staged bytes confer no permission.
     //
