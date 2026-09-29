@@ -33,9 +33,12 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 - [func EmbeddedBuilder\(\) \(\*catalogs.Builder, error\)](<#EmbeddedBuilder>)
 - [func EmbeddedGeneration\(\) \(catalogs.Generation, error\)](<#EmbeddedGeneration>)
 - [func InspectBaselineExports\(ctx context.Context, directory string\) error](<#InspectBaselineExports>)
+- [func InspectRetainedBaselinePublications\(ctx context.Context, files map\[string\]BaselineRetainedFile, read BaselineRecordReader\) \(\[\]string, error\)](<#InspectRetainedBaselinePublications>)
 - [type BaselineExport](<#BaselineExport>)
   - [func ExportEmbeddedBaseline\(ctx context.Context, directory string\) \(BaselineExport, error\)](<#ExportEmbeddedBaseline>)
+- [type BaselineRecordReader](<#BaselineRecordReader>)
 - [type BaselineRecovery](<#BaselineRecovery>)
+- [type BaselineRetainedFile](<#BaselineRetainedFile>)
 - [type Candidate](<#Candidate>)
   - [func NewCandidate\(catalog \*catalogs.Catalog, evidence CandidateEvidence, opts ...CandidateOption\) \(\*Candidate, error\)](<#NewCandidate>)
   - [func \(c \*Candidate\) Generation\(runID string, generatedAt time.Time\) \(catalogs.Generation, error\)](<#Candidate.Generation>)
@@ -113,6 +116,12 @@ const (
 )
 ```
 
+<a name="BaselineRecoveryDirectoryName"></a>BaselineRecoveryDirectoryName identifies the journal directory within a baseline export tree.
+
+```go
+const BaselineRecoveryDirectoryName = bootstrap.BaselineRecoveryDirectoryName
+```
+
 <a name="EmbeddedBuilder"></a>
 ## func [EmbeddedBuilder](<https://github.com/agentstation/starmap/blob/main/embedded.go#L12>)
 
@@ -140,6 +149,15 @@ func InspectBaselineExports(ctx context.Context, directory string) error
 
 InspectBaselineExports validates a private tree of completed baseline exports without writes. Each child must have its generation\-derived name, manifest, and compatible catalog payload. The caller must fence writers and verify complete inventory before and after inspection. Exclude journals and unfinished stages. This check does not approve provenance or activation.
 
+<a name="InspectRetainedBaselinePublications"></a>
+## func [InspectRetainedBaselinePublications](<https://github.com/agentstation/starmap/blob/main/baseline_export.go#L40>)
+
+```go
+func InspectRetainedBaselinePublications(ctx context.Context, files map[string]BaselineRetainedFile, read BaselineRecordReader) ([]string, error)
+```
+
+InspectRetainedBaselinePublications selects matching baseline stages for inactive retention. Include the baseline files and the separate .starmap\-baseline recovery records. Preserve selected files and all recovery records in inactive evidence. Validate completed exports separately. This check never promotes staging bytes or authorizes native cleanup or admission.
+
 <a name="BaselineExport"></a>
 ## type [BaselineExport](<https://github.com/agentstation/starmap/blob/main/baseline_export.go#L10>)
 
@@ -158,6 +176,15 @@ func ExportEmbeddedBaseline(ctx context.Context, directory string) (BaselineExpo
 
 ExportEmbeddedBaseline writes the binary's catalog to an explicit host directory. It preserves conflicting files and never changes an accepted catalog or starts acquisition. The directory must be absolute. Repeated calls verify the existing export.
 
+<a name="BaselineRecordReader"></a>
+## type [BaselineRecordReader](<https://github.com/agentstation/starmap/blob/main/baseline_export.go#L34>)
+
+BaselineRecordReader reads bounded metadata from a verified backup.
+
+```go
+type BaselineRecordReader = bootstrap.BaselineRecordReader
+```
+
 <a name="BaselineRecovery"></a>
 ## type [BaselineRecovery](<https://github.com/agentstation/starmap/blob/main/baseline_export.go#L13>)
 
@@ -165,6 +192,15 @@ BaselineRecovery reports recovered operations and preserved paths within the exp
 
 ```go
 type BaselineRecovery = bootstrap.BaselineRecovery
+```
+
+<a name="BaselineRetainedFile"></a>
+## type [BaselineRetainedFile](<https://github.com/agentstation/starmap/blob/main/baseline_export.go#L31>)
+
+BaselineRetainedFile identifies captured bytes in a verified baseline inventory.
+
+```go
+type BaselineRetainedFile = bootstrap.BaselineRetainedFile
 ```
 
 <a name="Candidate"></a>
