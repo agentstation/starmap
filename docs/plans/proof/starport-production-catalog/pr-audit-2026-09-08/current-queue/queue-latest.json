@@ -1071,7 +1071,7 @@
     "status": "MERGED",
     "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-29T06:59:35.750797+00:00",
+  "local_updated_at": "2026-09-29T07:15:37.208696+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -2073,8 +2073,16 @@
     "head": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401",
     "branch": "codex/storage-recovery",
     "owner": "this chat",
-    "next_action": "Collect native CI for exact head 3f5aa9b4c, resolve findings, verify review threads and required checks, then merge and record the actual merge commit. Broader CSP13 remains open.",
+    "next_action": "Complete required review of 6b36dfdf5, update PR391, and qualify native CI.",
     "pull_request": 391,
     "url": "https://github.com/agentstation/starport/pull/391"
+  },
+  "windows_publication_repair": {
+    "proof": "proof/starport-production-catalog/csp13/windows-directory-publication-2026-09-29/verification.json",
+    "head": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401",
+    "disposition": "hold merge for native failure",
+    "owner": "this chat",
+    "next_action": "Complete required review of 6b36dfdf5, update PR391, and qualify native CI.",
+    "local_head": "6b36dfdf563377259c2338f4371a5ea3ec0e5599"
   }
 }

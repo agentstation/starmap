@@ -5041,3 +5041,20 @@ The guide now states that distinction. Incomplete migration backup records still
 
 Draft [Starport #391](https://github.com/agentstation/starport/pull/391) publishes the reviewed head.
 The required review reports no findings across four parts at the configured P0-only threshold. Native CI remains in progress.
+
+### Windows recovery publication (September 29, 2026)
+
+Native Windows ARM tests at Starport `3f5aa9b4c` produced 72 failed results.
+SQLite backup publication retained an open staging-directory handle during rename.
+Go opens that root without delete sharing on Windows. Native rename therefore failed.
+The same handle lifetime existed in blob restore and both recovery-file publishers.
+
+Repair `6b36dfdf5` closes each staging root before publication and retains identity checks and exclusive destination publication.
+Cleanup still removes only the original staging directory.
+Existing publication, concurrent-writer, process-loss, and replacement tests cover these paths.
+
+Local storage suites pass 333 results in race mode and 333 in pure-Go mode, each with 48 service-dependent skips.
+Application recovery passes 73 race results with three service-dependent skips.
+The workflow now runs storage recovery before long runtime suites. All 76 packages still run once.
+The [repair proof](../../plans/proof/starport-production-catalog/csp13/windows-directory-publication-2026-09-29/verification.json) retains the failed native evidence and local checks.
+Fixed-source native qualification remains required before merge.

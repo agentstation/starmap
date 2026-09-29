@@ -1,0 +1,123 @@
+{
+  "state": "FIX_COMMITTED_REVIEW_RUNNING",
+  "source_head": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401",
+  "pr": "https://github.com/agentstation/starport/pull/391",
+  "failure": {
+    "run": 36533804653,
+    "job": 109293186889,
+    "platform": "windows-arm64",
+    "toolchain": "go1.27.1",
+    "test_results": {
+      "pass": 735,
+      "fail": 72,
+      "skip": 53
+    },
+    "error": "publish directory: The process cannot access the file because it is being used by another process.",
+    "cause": "An open os.Root for the staging directory blocks native directory rename on Windows. Go syscall.Open selects FILE_SHARE_READ | FILE_SHARE_WRITE without FILE_SHARE_DELETE."
+  },
+  "fix": {
+    "files": [
+      "internal/sqlstore/sqlite_snapshot.go",
+      "internal/blob/snapshot_image.go",
+      "internal/blob/snapshot_restore.go",
+      "internal/recovery/file_tree.go",
+      "internal/recovery/restore_files.go",
+      ".github/workflows/ci.yml"
+    ],
+    "behavior": "Close staging roots before publication. Retain parent handles, identity checks, no-replace publication, and identity-bound failure cleanup.",
+    "regression_evidence": "Existing native SQLite, blob, and file-tree publication tests exercise these paths. Windows application capture failed before its downstream tests could run.",
+    "commit": "6b36dfdf563377259c2338f4371a5ea3ec0e5599",
+    "ci_order": "Run sqlstore, blob, and recovery before catalog and app, then run the other 71 packages. All 76 packages run exactly once."
+  },
+  "verification": {
+    "storage_race": {
+      "pass": 333,
+      "fail": 0,
+      "skip": 48,
+      "exit_code": 0
+    },
+    "storage_purego": {
+      "pass": 333,
+      "fail": 0,
+      "skip": 48,
+      "exit_code": 0
+    },
+    "application_race": {
+      "pass": 73,
+      "fail": 0,
+      "skip": 3,
+      "exit_code": 0
+    },
+    "skips": "Service-dependent tests need native CI fixtures. No failure is counted as a skip.",
+    "vet": {
+      "exit_code": 0,
+      "command": "GOWORK=off GOMAXPROCS=4 go vet ./internal/sqlstore ./internal/blob ./internal/recovery ./internal/app"
+    },
+    "lint": {
+      "exit_code": 0,
+      "issues": 0
+    },
+    "workflow": {
+      "exit_code": 0,
+      "packages": 76,
+      "duplicates": 0,
+      "yaml": "PASS",
+      "shell": "PASS",
+      "release_contract": "PASS"
+    },
+    "review": "RUNNING",
+    "native_fixed_source": "UNVERIFIED"
+  },
+  "artifacts": {
+    "tests.jsonl": {
+      "file": "tests.jsonl.gz",
+      "sha256": "6fbc9e1f1e704995d16da4b1fdd008a706ed681571edde82804ab9b91485a475",
+      "gzip_sha256": "614b89429699e8305802accb754da079c64d1d44454e96410ab3e7c9856c1dc2"
+    },
+    "toolchain.txt": {
+      "file": "toolchain.txt.gz",
+      "sha256": "b3f5d419e25e24ddcdc67f96ff1acfc592a620446319ef63967cd923d8630a8b",
+      "gzip_sha256": "60c59f8759a34774f8a7ca9bbaef5e11415dfe39dedacc1d97a99c2e1159505b"
+    },
+    "ci-before.json": {
+      "file": "ci-before.json.gz",
+      "sha256": "71a2ba030523c0e31c690d92e39eb22024cb4a860d1ca3ee231bccc629466541",
+      "gzip_sha256": "cf9f160dce11134fac7acac6199002749ddd7a176fa102fb309629d5f49e25bd"
+    },
+    "storage-race.jsonl": {
+      "file": "storage-race.jsonl.gz",
+      "sha256": "30ee2207006b04626f0a1a8999841ea4a0d932b9ad13f9046cd46fc67f62a954",
+      "gzip_sha256": "dad5581dd931ce504ffd57b3c66a07d533f2b06cae092f57032d8f67f859e466"
+    },
+    "storage-purego.jsonl": {
+      "file": "storage-purego.jsonl.gz",
+      "sha256": "d1870b8d9b73e31bd3ecf9e56e4bc6a886df93111e949d0ec319caa2239a9aae",
+      "gzip_sha256": "c8121d219c68ddea45283bc3c4fa99846019d50ad5d45f0d3a4fcf34a0608d3f"
+    },
+    "application-race.jsonl": {
+      "file": "application-race.jsonl.gz",
+      "sha256": "ed6a95f099614130a64353d4aeb060bea3aa1825159f1eb0005e288cc69e02cb",
+      "gzip_sha256": "ee2d316e1bf6c34d63f6147325cffc9678e5cfc33aa52d4904f3c1265b1a972a"
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "workflow-partition.json": {
+      "file": "workflow-partition.json.gz",
+      "sha256": "0baee45d2e5dda96d308f79048bebee3785b53ad8f423debf67cbd8800e88c1f",
+      "gzip_sha256": "b268b62b5248cea096bbcd845cf05d86914dabedfd7afadb4900e0f37253db6f"
+    },
+    "release-workflow.log": {
+      "file": "release-workflow.log.gz",
+      "sha256": "3af64345cf73b6a90728f3dbd6f529a4f24f691be4265d3652343b6f5505a8d2",
+      "gzip_sha256": "4b89fc853ec2738ca4a1ccab9c645d38af00579d326840c59b4de0201ffe8567"
+    }
+  }
+}
