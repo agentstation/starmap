@@ -97,6 +97,9 @@ func (c *Client) commitAndPublish(
 	c.mu.RLock()
 	expectedGenerationID := c.generationID
 	c.mu.RUnlock()
+	if err := c.retainGeneration(ctx, generation); err != nil {
+		return Publication{}, err
+	}
 	if err := c.options.catalogStore.Commit(ctx, generation, expectedGenerationID); err != nil {
 		return Publication{}, errors.WrapResource(
 			"commit",
@@ -141,6 +144,9 @@ func (c *Client) commitReceivedGeneration(
 	}
 	currentPayloadChecksum := c.generationPayloadChecksum
 	c.mu.RUnlock()
+	if err := c.retainGeneration(ctx, generation); err != nil {
+		return Publication{}, err
+	}
 	if err := c.options.catalogStore.Commit(ctx, generation, expectedGenerationID); err != nil {
 		return Publication{}, errors.WrapResource("commit", "catalog generation", generation.Manifest.GenerationID, err)
 	}

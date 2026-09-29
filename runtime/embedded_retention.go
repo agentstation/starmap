@@ -25,6 +25,10 @@ func (r *Runtime) retainEmbeddedStartup(ctx context.Context, state starmap.Catal
 	if err := r.lease.fence(r.lease.epoch()); err != nil {
 		return err
 	}
+	ctx, err = r.prepareLocalRecovery(ctx, r.layers, nil)
+	if err != nil {
+		return err
+	}
 	// Activate preserves the immutable identity and bytes. The store's CAS is
 	// idempotent on restart and refuses a conflicting retained head.
 	if _, err := r.client.Activate(ctx, generation); err != nil {

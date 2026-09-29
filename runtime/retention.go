@@ -110,6 +110,15 @@ func (r *Runtime) collectRetainedState(ctx context.Context) (resultErr error) {
 		report.Reason = "generation_collection_failed"
 		return err
 	}
+
+	scanned, inputBytes, removed, err := r.collectCatalogRecovery(ctx, policy.ScanEntries, policy.InputMaxBytes)
+	report.ScannedInputs += scanned
+	report.InputBytes += inputBytes
+	report.RemovedInputs += removed
+	if err != nil {
+		report.Reason = "catalog_recovery_collection_failed"
+		return err
+	}
 	return nil
 }
 

@@ -14,6 +14,8 @@ func isRecordPublicationDirectory(path string) bool {
 		layerDirectoryName + "/" + providerLayerDirectoryName + "/" + privatefiles.PublicationDirectoryName,
 		layerDirectoryName + "/" + providerLayerDirectoryName + "/" + bindingLayerDirectoryName + "/" + privatefiles.PublicationDirectoryName,
 		layerDirectoryName + "/" + inputPublicationDirectory + "/" + privatefiles.PublicationDirectoryName,
+		layerDirectoryName + "/" + generationInputsDirectory + "/" + privatefiles.PublicationDirectoryName,
+		layerDirectoryName + "/" + generationBaselinesDirectory + "/" + privatefiles.PublicationDirectoryName,
 		"github-catalog-source/" + privatefiles.PublicationDirectoryName:
 		return true
 	default:
@@ -32,6 +34,20 @@ func (s *layerStore) recoverRecordPublications(ctx context.Context) error {
 	}
 	if inputs != nil {
 		directories = append(directories, inputs)
+	}
+	baseline, err := s.directory.ExistingChild(generationBaselinesDirectory)
+	if err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	if baseline != nil {
+		directories = append(directories, baseline)
+	}
+	recovery, err := s.directory.ExistingChild(generationInputsDirectory)
+	if err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	if recovery != nil {
+		directories = append(directories, recovery)
 	}
 	for _, directory := range directories {
 		if directory != nil {

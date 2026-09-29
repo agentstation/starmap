@@ -97,6 +97,9 @@ func (s *layerStore) inspectRetainedRecords(ctx context.Context) error {
 	if _, err := s.loadPinRecord(); err != nil {
 		return err
 	}
+	if err := s.inspectCatalogRecovery(ctx); err != nil {
+		return err
+	}
 	if err := s.inspectRetainedPermission(); err != nil {
 		return err
 	}

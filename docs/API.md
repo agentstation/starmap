@@ -81,6 +81,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func \(c \*Client\) Update\(ctx context.Context, update UpdateFunc\) \(Publication, error\)](<#Client.Update>)
   - [func \(c \*Client\) WorkspacePath\(\) string](<#Client.WorkspacePath>)
 - [type EmbeddedBootstrapInfo](<#EmbeddedBootstrapInfo>)
+- [type GenerationRetainer](<#GenerationRetainer>)
 - [type HookDeliveryStats](<#HookDeliveryStats>)
 - [type ModelAddedHook](<#ModelAddedHook>)
 - [type ModelRemovedHook](<#ModelRemovedHook>)
@@ -90,6 +91,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func WithCatalogStore\(store storage.Store\) Option](<#WithCatalogStore>)
   - [func WithEmbeddedBootstrapMaxAge\(maxAge time.Duration\) Option](<#WithEmbeddedBootstrapMaxAge>)
   - [func WithEmbeddedBootstrapMaxSizeBytes\(maxSizeBytes int64\) Option](<#WithEmbeddedBootstrapMaxSizeBytes>)
+  - [func WithGenerationRetainer\(retainer GenerationRetainer\) Option](<#WithGenerationRetainer>)
   - [func WithPublicationGuard\(guard PublicationGuard\) Option](<#WithPublicationGuard>)
 - [type Publication](<#Publication>)
 - [type PublicationGuard](<#PublicationGuard>)
@@ -224,7 +226,7 @@ func NewCandidate(catalog *catalogs.Catalog, evidence CandidateEvidence, opts ..
 NewCandidate validates and returns a publication candidate. Custom acquisition can omit evidence. Client.Update records a deterministic custom\-update observation in that case. Update also retains the receipts required by unchanged provider membership. Membership changes require explicit source observations.
 
 <a name="Candidate.Generation"></a>
-### func \(\*Candidate\) [Generation](<https://github.com/agentstation/starmap/blob/main/generation.go#L262>)
+### func \(\*Candidate\) [Generation](<https://github.com/agentstation/starmap/blob/main/generation.go#L268>)
 
 ```go
 func (c *Candidate) Generation(runID string, generatedAt time.Time) (catalogs.Generation, error)
@@ -465,7 +467,7 @@ func (c *Client) HookStats() HookDeliveryStats
 HookStats returns a lock\-free snapshot of callback delivery health.
 
 <a name="Client.NextID"></a>
-### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L354>)
+### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L360>)
 
 ```go
 func (c *Client) NextID() (string, error)
@@ -619,6 +621,15 @@ type EmbeddedBootstrapInfo struct {
 }
 ```
 
+<a name="GenerationRetainer"></a>
+## type [GenerationRetainer](<https://github.com/agentstation/starmap/blob/main/generation_retention.go#L14>)
+
+GenerationRetainer retains caller\-owned evidence before a catalog store commit. An error prevents the commit. Invocation does not prove that the commit succeeded. Retainers must support retries and must not call mutations on the same client. The generation is a private copy. Changing it cannot change the publication.
+
+```go
+type GenerationRetainer func(context.Context, catalogs.Generation) error
+```
+
 <a name="HookDeliveryStats"></a>
 ## type [HookDeliveryStats](<https://github.com/agentstation/starmap/blob/main/hooks.go#L41-L55>)
 
@@ -670,7 +681,7 @@ type ModelUpdatedHook func(old, updated catalogs.Model)
 ```
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/main/options.go#L70>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/options.go#L71>)
 
 Option is a function that configures a Starmap instance.
 
@@ -679,7 +690,7 @@ type Option func(*options) error
 ```
 
 <a name="WithCatalogPath"></a>
-### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/options.go#L85>)
+### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/options.go#L86>)
 
 ```go
 func WithCatalogPath(path string) Option
@@ -688,7 +699,7 @@ func WithCatalogPath(path string) Option
 WithCatalogPath configures the human\-editable provider YAML workspace used for both local observation and post\-commit materialization. Immutable generation state remains in the separately supplied CatalogStore.
 
 <a name="WithCatalogStore"></a>
-### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L43>)
+### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L44>)
 
 ```go
 func WithCatalogStore(store storage.Store) Option
@@ -697,7 +708,7 @@ func WithCatalogStore(store storage.Store) Option
 WithCatalogStore configures the writable catalog store used by non\-dry sync, manual, remote, and scheduled catalog updates. Read\-only access and dry runs do not require a store. Starmap provides memory, filesystem, and conditional object\-storage implementations. Embedding applications own and inject any database\-backed implementation.
 
 <a name="WithEmbeddedBootstrapMaxAge"></a>
-### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L94>)
+### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L95>)
 
 ```go
 func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
@@ -706,13 +717,22 @@ func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
 WithEmbeddedBootstrapMaxAge fails readiness while the active catalog is the embedded bootstrap and its generation age exceeds maxAge.
 
 <a name="WithEmbeddedBootstrapMaxSizeBytes"></a>
-### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L106>)
+### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L107>)
 
 ```go
 func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
 ```
 
 WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded bootstrap canonical payload exceeds maxSizeBytes.
+
+<a name="WithGenerationRetainer"></a>
+### func [WithGenerationRetainer](<https://github.com/agentstation/starmap/blob/main/generation_retention.go#L18>)
+
+```go
+func WithGenerationRetainer(retainer GenerationRetainer) Option
+```
+
+WithGenerationRetainer adds an explicit evidence retention step to catalog commits. Construction and reads do not retain evidence. Each callback runs inside the mutation transaction.
 
 <a name="WithPublicationGuard"></a>
 ### func [WithPublicationGuard](<https://github.com/agentstation/starmap/blob/main/publication_guard.go#L17>)

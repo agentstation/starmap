@@ -5,6 +5,7 @@ import (
 	"encoding/json/v2"
 	"slices"
 
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -44,19 +45,26 @@ func recoverFleetState(ctx context.Context, snapshot FleetSnapshot, local layerS
 	if err := snapshot.Validate(); err != nil {
 		return layerSet{}, nil, err
 	}
-	record, err := readFleetRecovery(ctx, snapshot.Publication.Recovery.Data)
+	return recoverCatalogState(ctx, snapshot.Publication.Generation, snapshot.Publication.Recovery, local)
+}
+
+func recoverCatalogState(ctx context.Context, generation catalogs.Generation, recovery FleetRecovery, local layerSet) (layerSet, *generationPinRecord, error) {
+	if err := recovery.Validate(generation); err != nil {
+		return layerSet{}, nil, err
+	}
+	record, err := readFleetRecovery(ctx, recovery.Data)
 	if err != nil {
 		return layerSet{}, nil, err
 	}
-	if record.Pin != nil && !pinRecordMatches(*record.Pin, snapshot.Publication.Generation) {
+	if record.Pin != nil && !pinRecordMatches(*record.Pin, generation) {
 		return layerSet{}, nil, pinRecordConflict("the shared pin receipt differs from the selected generation")
 	}
-	layers, err := recoverFleetLayers(ctx, snapshot, local, record)
+	layers, err := recoverFleetLayers(ctx, generation, local, record)
 	return layers, record.Pin, err
 }
 
 // recoverFleetLayers validates acquisition replay independently of a valid pin receipt.
-func recoverFleetLayers(ctx context.Context, snapshot FleetSnapshot, local layerSet, record fleetRecoveryRecord) (layerSet, error) {
+func recoverFleetLayers(ctx context.Context, generation catalogs.Generation, local layerSet, record fleetRecoveryRecord) (layerSet, error) {
 	recovered, err := decodeFleetRecoveryRecord(ctx, record, local)
 	if err != nil {
 		return layerSet{}, err
@@ -82,7 +90,7 @@ func recoverFleetLayers(ctx context.Context, snapshot FleetSnapshot, local layer
 	if err != nil {
 		return layerSet{}, err
 	}
-	expectedChecksum := snapshot.Publication.Generation.Manifest.Payload.Checksum
+	expectedChecksum := generation.Manifest.Payload.Checksum
 	if record.Pin != nil {
 		expectedChecksum = record.ReplayChecksum
 	}

@@ -70,11 +70,13 @@ The default source is the attested public GitHub channel. A caller that opens th
 ## Index
 
 - [Constants](<#constants>)
+- [func CatalogRecoveryChecksums\(ctx context.Context, path string, owner DirectoryOwner, identity string, generation catalogs.Generation\) \(\[\]string, error\)](<#CatalogRecoveryChecksums>)
 - [func InspectRetainedDirectory\(ctx context.Context, path string, owner DirectoryOwner, identity string\) error](<#InspectRetainedDirectory>)
 - [func InspectRetainedMigration\(ctx context.Context, originalDirectory string, owner DirectoryOwner, identity string, read RetainedRecordReader\) \(\[\]string, error\)](<#InspectRetainedMigration>)
 - [func InspectRetainedPublications\(ctx context.Context, files map\[string\]RetainedFile, read RetainedRecordReader\) \(\[\]string, error\)](<#InspectRetainedPublications>)
 - [func PrepareAcquisitionReplay\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation, runID string, completedAt time.Time\) \(catalogs.Generation, \[\]sources.Observation, error\)](<#PrepareAcquisitionReplay>)
 - [func ReplayAcquisition\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation\) \(\*starmap.Candidate, error\)](<#ReplayAcquisition>)
+- [func ValidateCatalogReplay\(ctx context.Context, generation catalogs.Generation, recovery CatalogRecovery, opts ...Option\) error](<#ValidateCatalogReplay>)
 - [func ValidateDirectoryPermissions\(ctx context.Context, directory string\) error](<#ValidateDirectoryPermissions>)
 - [func ValidateFleetRecovery\(ctx context.Context, snapshot FleetSnapshot\) error](<#ValidateFleetRecovery>)
 - [func ValidateFleetReplay\(ctx context.Context, snapshot FleetSnapshot, opts ...Option\) error](<#ValidateFleetReplay>)
@@ -87,6 +89,10 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type AcquisitionRequest](<#AcquisitionRequest>)
 - [type AcquisitionResult](<#AcquisitionResult>)
 - [type BindingAcquirer](<#BindingAcquirer>)
+- [type CatalogRecovery](<#CatalogRecovery>)
+  - [func CaptureFleetCatalogRecovery\(ctx context.Context, snapshot FleetSnapshot\) \(CatalogRecovery, error\)](<#CaptureFleetCatalogRecovery>)
+  - [func ReadCatalogRecovery\(ctx context.Context, path string, owner DirectoryOwner, identity string, generation catalogs.Generation, recordChecksum string\) \(CatalogRecovery, error\)](<#ReadCatalogRecovery>)
+  - [func \(r CatalogRecovery\) Validate\(generation catalogs.Generation\) error](<#CatalogRecovery.Validate>)
 - [type DirectoryMigrationCompletion](<#DirectoryMigrationCompletion>)
   - [func ReadDirectoryMigrationCompletion\(ctx context.Context, directory string\) \(DirectoryMigrationCompletion, error\)](<#ReadDirectoryMigrationCompletion>)
 - [type DirectoryMigrationPreparation](<#DirectoryMigrationPreparation>)
@@ -446,6 +452,15 @@ const (
 const MaxFleetRecoveryBytes = storage.DefaultRetentionInputMaxBytes
 ```
 
+<a name="CatalogRecoveryChecksums"></a>
+## func [CatalogRecoveryChecksums](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery_inventory.go#L23>)
+
+```go
+func CatalogRecoveryChecksums(ctx context.Context, path string, owner DirectoryOwner, identity string, generation catalogs.Generation) ([]string, error)
+```
+
+CatalogRecoveryChecksums lists immutable input\-record identities for an exact generation. These checksums name compressed local descriptors, not exported FleetRecovery bytes. The caller must fence writers. Multiple results require an explicit selection. Listing never proves which publication committed or whether independent history is complete.
+
 <a name="InspectRetainedDirectory"></a>
 ## func [InspectRetainedDirectory](<https://github.com/agentstation/starmap/blob/main/runtime/recovery_inspection.go#L20>)
 
@@ -491,6 +506,15 @@ func ReplayAcquisition(ctx context.Context, baseline catalogs.Generation, publis
 
 ReplayAcquisition rebuilds an ordered observation history above an explicit baseline. The caller authenticates the baseline and observations, and selects the active bindings. The baseline can contain this publisher's prior scopes but cannot carry enterprise authority. This function reads no sources or storage and starts no runtime workers.
 
+<a name="ValidateCatalogReplay"></a>
+## func [ValidateCatalogReplay](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_validation.go#L50>)
+
+```go
+func ValidateCatalogReplay(ctx context.Context, generation catalogs.Generation, recovery CatalogRecovery, opts ...Option) error
+```
+
+ValidateCatalogReplay checks exact retained inputs against the supplied deployment settings. It starts no acquisition, writes, clock observation, or lease operation. Success grants no serving permission and does not prove independent recovery history.
+
 <a name="ValidateDirectoryPermissions"></a>
 ## func [ValidateDirectoryPermissions](<https://github.com/agentstation/starmap/blob/main/runtime/directory_permissions.go#L24>)
 
@@ -505,7 +529,7 @@ Linux and macOS also check ancestor ownership, directory\-entry protection, and 
 An empty directory selects in\-memory state. Missing paths remain absent.
 
 <a name="ValidateFleetRecovery"></a>
-## func [ValidateFleetRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_validation.go#L12>)
+## func [ValidateFleetRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_validation.go#L13>)
 
 ```go
 func ValidateFleetRecovery(ctx context.Context, snapshot FleetSnapshot) error
@@ -514,7 +538,7 @@ func ValidateFleetRecovery(ctx context.Context, snapshot FleetSnapshot) error
 ValidateFleetRecovery checks retained input structure without opening a runtime. It grants no permission and does not check compatibility with deployment settings.
 
 <a name="ValidateFleetReplay"></a>
-## func [ValidateFleetReplay](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_validation.go#L33>)
+## func [ValidateFleetReplay](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_validation.go#L34>)
 
 ```go
 func ValidateFleetReplay(ctx context.Context, snapshot FleetSnapshot, opts ...Option) error
@@ -681,6 +705,45 @@ type BindingAcquirer interface {
     AcquireProviderBindings(context.Context, AcquisitionRequest, []sources.ProviderAcquisitionBinding) (AcquisitionResult, error)
 }
 ```
+
+<a name="CatalogRecovery"></a>
+## type [CatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery.go#L20-L23>)
+
+CatalogRecovery binds retained private inputs to one complete catalog manifest. It records reconstruction evidence, not publication success or serving permission. Inputs use the same private encoding as fleet publications.
+
+```go
+type CatalogRecovery struct {
+    ManifestChecksum string        `json:"manifest_checksum"`
+    Inputs           FleetRecovery `json:"inputs"`
+}
+```
+
+<a name="CaptureFleetCatalogRecovery"></a>
+### func [CaptureFleetCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery.go#L166>)
+
+```go
+func CaptureFleetCatalogRecovery(ctx context.Context, snapshot FleetSnapshot) (CatalogRecovery, error)
+```
+
+CaptureFleetCatalogRecovery copies a validated fleet publication's private inputs. The result preserves the complete generation binding without inventing local ownership. The host must retain the original fleet selection and verify deployment settings separately.
+
+<a name="ReadCatalogRecovery"></a>
+### func [ReadCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery.go#L114>)
+
+```go
+func ReadCatalogRecovery(ctx context.Context, path string, owner DirectoryOwner, identity string, generation catalogs.Generation, recordChecksum string) (CatalogRecovery, error)
+```
+
+ReadCatalogRecovery reads exact private inputs without opening a runtime. The caller must fence writers and supply an independently retained generation and record checksum. Missing history refuses recovery. Current directory inputs never replace missing historical inputs.
+
+<a name="CatalogRecovery.Validate"></a>
+### func \(CatalogRecovery\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery.go#L26>)
+
+```go
+func (r CatalogRecovery) Validate(generation catalogs.Generation) error
+```
+
+Validate checks the complete generation binding and bounded input bytes.
 
 <a name="DirectoryMigrationCompletion"></a>
 ## type [DirectoryMigrationCompletion](<https://github.com/agentstation/starmap/blob/main/runtime/migration_completion.go#L17-L24>)
@@ -924,7 +987,7 @@ func (p FleetPublication) Validate() error
 Validate checks publication content and identity before a backend operation. The backend must still compare the live grant, expiry, approved identity, and head atomically. No local clock reading can replace that comparison.
 
 <a name="FleetRecovery"></a>
-## type [FleetRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L25-L30>)
+## type [FleetRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L26-L31>)
 
 FleetRecovery binds private acquisition inputs to one immutable generation. Stores retain these bytes with the generation and never expose them as public catalog data. The runtime owns the encoding. Hosts preserve the bytes without modification.
 
@@ -938,7 +1001,7 @@ type FleetRecovery struct {
 ```
 
 <a name="FleetRecovery.Validate"></a>
-### func \(FleetRecovery\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L34>)
+### func \(FleetRecovery\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L35>)
 
 ```go
 func (r FleetRecovery) Validate(generation catalogs.Generation) error
@@ -2222,7 +2285,7 @@ func (r *Runtime) ReplaceRemovalTargets(ctx context.Context, expected starmap.Ca
 ReplaceRemovalTargets replaces this runtime's operator removal snapshot. Expected generation identity and checksum prevent stale edits. An empty target list restores local removals. The caller authorizes the operator action. Other publishers retain their own policies.
 
 <a name="Runtime.RetentionSnapshot"></a>
-### func \(\*Runtime\) [RetentionSnapshot](<https://github.com/agentstation/starmap/blob/main/runtime/retention.go#L117>)
+### func \(\*Runtime\) [RetentionSnapshot](<https://github.com/agentstation/starmap/blob/main/runtime/retention.go#L126>)
 
 ```go
 func (r *Runtime) RetentionSnapshot() RetentionStatus

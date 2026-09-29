@@ -21,6 +21,7 @@ func TestNewRejectsRuntimeOptions(t *testing.T) {
 		"WithCatalogStore",
 		"WithEmbeddedBootstrapMaxAge",
 		"WithEmbeddedBootstrapMaxSizeBytes",
+		"WithGenerationRetainer",
 		"WithPublicationGuard",
 	}
 	if got := optionConstructors(t, "."); !slices.Equal(got, offline) {
