@@ -122,7 +122,10 @@ func (s *stateStore) decode(data []byte) (State, error) {
 	if err := json.Unmarshal(data, &state); err != nil {
 		return State{}, errors.NewParseError("json", "catalog source state", "cannot decode the state", err)
 	}
-	if state.SchemaVersion != StateSchemaVersion || state.Repository != s.repository || state.Channel != s.channel {
+	if state.SchemaVersion != StateSchemaVersion {
+		return State{}, sourceValidation("state.schema_version", state.SchemaVersion, "is unsupported")
+	}
+	if state.Repository != s.repository || state.Channel != s.channel {
 		return State{}, nil
 	}
 	return state, nil

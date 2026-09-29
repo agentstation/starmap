@@ -70,6 +70,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 ## Index
 
 - [Constants](<#constants>)
+- [func InspectRetainedDirectory\(ctx context.Context, path string, owner DirectoryOwner, identity string\) error](<#InspectRetainedDirectory>)
 - [func PrepareAcquisitionReplay\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation, runID string, completedAt time.Time\) \(catalogs.Generation, \[\]sources.Observation, error\)](<#PrepareAcquisitionReplay>)
 - [func ReplayAcquisition\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation\) \(\*starmap.Candidate, error\)](<#ReplayAcquisition>)
 - [func ValidateDirectoryPermissions\(ctx context.Context, directory string\) error](<#ValidateDirectoryPermissions>)
@@ -440,6 +441,15 @@ const (
 ```go
 const MaxFleetRecoveryBytes = storage.DefaultRetentionInputMaxBytes
 ```
+
+<a name="InspectRetainedDirectory"></a>
+## func [InspectRetainedDirectory](<https://github.com/agentstation/starmap/blob/main/runtime/recovery_inspection.go#L20>)
+
+```go
+func InspectRetainedDirectory(ctx context.Context, path string, owner DirectoryOwner, identity string) error
+```
+
+InspectRetainedDirectory validates private runtime records without opening a runtime. The caller must fence writers and verify the complete inventory around inspection. This check preserves identity and replay evidence. It does not approve replica reuse, deployment settings, accepted\-catalog consistency, permission freshness, or admission. Path\-bound migration records require their separate recovery procedure.
 
 <a name="PrepareAcquisitionReplay"></a>
 ## func [PrepareAcquisitionReplay](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_compaction.go#L20>)
