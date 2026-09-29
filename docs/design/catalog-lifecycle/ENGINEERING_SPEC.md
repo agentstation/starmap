@@ -5369,3 +5369,14 @@ Exact retries retain the same selection. Publication does not accept a policy mi
 
 The consumer implementation passes development and real-storage checks against a local module replacement. Published-module qualification and native checks remain open.
 The [credential publication proof](../../plans/proof/starport-production-catalog/csp13/credential-publication-journals-2026-09-29/verification.json) records source hashes, test counts, review scope, and remaining work.
+
+### Baseline publication recovery (September 29, 2026)
+
+Starmap `9ab700ad9` validates the captured baseline and journal inventory. Starport `f8f69220a` uses that published module with workspace overrides disabled.
+Canonical journals and an empty writer record identify matching stage files by name, size, and digest. Complete journal updates and interrupted collection retain their evidence.
+Completed exports require separate owner validation. Historical native identities never authorize cleanup, and staging bytes never become an active catalog.
+
+Keep staged files as `verified-staging` and journal records as `verified-history`, with no active destination. Exact retries preserve selection and every admission barrier.
+Unknown, malformed, or changed stages cause refusal before target preparation. Interrupted path migration, independent history, controlled activation, and full qualification remain open.
+
+The [baseline publication proof](../../plans/proof/starport-production-catalog/csp13/baseline-publication-journals-2026-09-29/verification.json) records the actual #196 merge, new #197, source commits, and final pinned qualification.

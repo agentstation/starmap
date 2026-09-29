@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-29T05:17:49.307904+00:00",
+  "checked_at": "2026-09-29T05:38:59.928217+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -1268,26 +1268,22 @@
   },
   "remote_state_note": "Producer #187 merged. Consumer #387 awaits native CI at reviewed 6f97ba52. Eight dependency PRs retain their recorded review and repair actions.",
   "open_queue_snapshot": {
-    "checked_at": "2026-09-29T05:17:49.307904+00:00",
+    "checked_at": "2026-09-29T05:38:59.928217+00:00",
     "starmap": [
       {
         "baseRefName": "main",
-        "baseRefOid": "8020da753f2809d32cd4377e94abb7ecdea56b07",
-        "headRefName": "codex/retained-runtime-recovery",
-        "headRefOid": "05501c5970edbe8a0fd9e86dbe664b4350500ac3",
+        "headRefOid": "9ab700ad930f9f7aba4b592e1d3919bad296c68f",
         "isDraft": true,
-        "number": 196,
-        "title": "recovery: validate retained runtime and publication history",
-        "updatedAt": "2026-09-29T04:41:44Z",
-        "url": "https://github.com/agentstation/starmap/pull/196",
+        "number": 197,
+        "title": "recovery: preserve credential and baseline publication evidence",
         "checks_summary": {
-          "SUCCESS": 29,
-          "IN_PROGRESS": 2
+          "SUCCESS": 11,
+          "IN_PROGRESS": 11
         },
         "owner": "this chat",
-        "disposition": "Published runtime recovery qualifies while its reviewed credential-policy successor stays local.",
-        "next_action": "Finish current-head native CI. Verify retained artifacts, review threads, ancestry, and protection before exact-head merge. Then publish the reviewed successor.",
-        "current_proof": "../../csp13/credential-publication-journals-2026-09-29/verification.json"
+        "disposition": "Reviewed credential and baseline journal recovery. Native qualification pending.",
+        "next_action": "Require current-head checks, retained native artifacts, resolved review threads, exact base ancestry, and protection before merge.",
+        "current_proof": "../../csp13/baseline-publication-journals-2026-09-29/verification.json"
       }
     ],
     "starport": []
@@ -1755,22 +1751,26 @@
     "disposition": "Repairs published on existing #388; fresh native CI pending."
   },
   "previous_open_snapshot": {
-    "checked_at": "2026-09-29T04:22:15.422974+00:00",
+    "checked_at": "2026-09-29T05:17:49.307904+00:00",
     "starmap": [
       {
         "baseRefName": "main",
-        "headRefOid": "f38ffa79513b652f069e511a3d284bf23ee8efac",
+        "baseRefOid": "8020da753f2809d32cd4377e94abb7ecdea56b07",
+        "headRefName": "codex/retained-runtime-recovery",
+        "headRefOid": "05501c5970edbe8a0fd9e86dbe664b4350500ac3",
         "isDraft": true,
         "number": 196,
-        "title": "recovery: validate retained runtime and completed migration history",
+        "title": "recovery: validate retained runtime and publication history",
+        "updatedAt": "2026-09-29T04:41:44Z",
+        "url": "https://github.com/agentstation/starmap/pull/196",
         "checks_summary": {
-          "SUCCESS": 11,
-          "IN_PROGRESS": 11
+          "SUCCESS": 29,
+          "IN_PROGRESS": 2
         },
         "owner": "this chat",
-        "disposition": "Reviewed runtime and completed migration recovery prerequisite. Native CI pending.",
-        "next_action": "Require all current-head checks and artifacts, resolved review threads, exact base ancestry, and protection before merge.",
-        "current_proof": "../../csp13/completed-migration-restore-2026-09-28/verification.json"
+        "disposition": "Published runtime recovery qualifies while its reviewed credential-policy successor stays local.",
+        "next_action": "Finish current-head native CI. Verify retained artifacts, review threads, ancestry, and protection before exact-head merge. Then publish the reviewed successor.",
+        "current_proof": "../../csp13/credential-publication-journals-2026-09-29/verification.json"
       }
     ],
     "starport": []
@@ -1871,19 +1871,10 @@
   "baseline_export_checkpoint": "../../csp13/baseline-export-recovery-2026-09-28/verification.json",
   "unpublished_local_recovery": {
     "repository": "agentstation/starport",
-    "head": "100cd6c2b35b272747ee0a863e1cf0bf98b9bae3",
+    "head": "f8f69220aede18f81b82f2755c3aa991110d74c3",
     "branch": "codex/storage-recovery",
-    "working_tree_sha256": {
-      "internal/app/restore_publish.go": "14c3ff411c3e64304e62e8be47e783f73480589ee7360e477fe24e898ed8a926",
-      "internal/app/restore_publish_test.go": "38e901b1b4f695b694a9d2710ed5cf0a1b5cb493c78d7c4b1c9c4ad48d4067b1",
-      "internal/app/restore_runtime.go": "d3dc7ecb82879b9ca39131f205f411076eac41dfd306a7cd27e930856900e6fc",
-      "internal/catalog/credential_policy.go": "58714600ab4a7379c182bc1ff3c8f183efa51664d8eaba62a5a60f5274a961bc",
-      "internal/recovery/README.md": "57fbf4f5509b06b74ee5d31dc31bf0d58b6f47cd3f5334b27e0944dfab71851a",
-      "internal/app/restore_staging.go": "bbf813bfc726ec6d82e85fda46e8f04ec85ad87373900c14e330167ae52ff644",
-      "internal/credentials/policy_publication_restore.go": "afc201672f9d91e5ae8b7d7bf0d9687bd6357b79720107b67c9d6bedd3ab9a6a"
-    },
     "owner": "this chat",
-    "next_action": "Pin the published producer and run final qualification before committing these changes."
+    "next_action": "Finish interrupted migration, independent history, activation, and full checks before publication."
   },
   "runtime_evidence_checkpoint": "../../csp13/runtime-evidence-recovery-2026-09-28/verification.json",
   "starmap195_completion": {
@@ -1902,11 +1893,17 @@
   "completed_migration_restore_checkpoint": "../../csp13/completed-migration-restore-2026-09-28/verification.json",
   "native_publication_restore_checkpoint": "../../csp13/native-publication-restore-2026-09-28/verification.json",
   "credential_publication_journals_checkpoint": "../../csp13/credential-publication-journals-2026-09-29/verification.json",
-  "unpublished_local_producer": {
-    "head": "5aefe198aa82f27312c4fb079ab32b5ee4dba9f3",
-    "branch": "codex/retained-runtime-recovery",
-    "owner": "this chat",
-    "review": "PASS; P0-only",
-    "next_action": "Preserve the current native CI run, then publish this reviewed successor with separate qualification."
-  }
+  "starmap196_completion": {
+    "pr": 196,
+    "head": "05501c5970edbe8a0fd9e86dbe664b4350500ac3",
+    "commit": "01bc939e43c7fdc8642e853550351dd6e890e1c1",
+    "merged_at": "2026-09-29T05:31:10Z",
+    "checks_pass": 32,
+    "review_threads": 0,
+    "protection": "strict required checks, enforced administrator protection, signed commits, conversation resolution; no bypass",
+    "tested_tree_matches_merged_tree": true,
+    "native_artifacts": 10,
+    "required_restore_roots": "passed on Linux amd64/arm64, macOS arm64, Windows amd64/arm64"
+  },
+  "baseline_publication_journals_checkpoint": "../../csp13/baseline-publication-journals-2026-09-29/verification.json"
 }
