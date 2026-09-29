@@ -1,0 +1,197 @@
+{
+  "recorded_utc": "2026-09-29T21:53:48.430706+00:00",
+  "task": "CSP13",
+  "task_completed": false,
+  "source": {
+    "native_receipts": "49b2e0c543b4c3b55a0610bf1075a3efb53cb6a7",
+    "bounded_reader": "b35edd5246b6846f5c41ba9bcb673e6d7cbde4d9",
+    "integration": "4573d9d2",
+    "worktree": "/private/tmp/starport-clock-review-20260926",
+    "branch": "codex/recovery-catalog-activation",
+    "toolchain": "go1.27.1 darwin/arm64"
+  },
+  "behavior": [
+    "Strict native v2 activation receipts retain the approved final replay position. Ordinary v1 receipts remain unpositioned.",
+    "Passive native inspection checks exact current and historical receipts, final native positions, original claims, and absent barriers without granting permission or replaying domain changes.",
+    "The bounded closed-import reader checks the exact native claim, cursor, history, and incarnation before reading one requested record. It does not enumerate unrelated catalog records."
+  ],
+  "commands": {
+    "native_receipts": "python3 run-native.py <log> race|pure; native storage/sqlstore activation contract suites",
+    "bounded_reader": "go test -json -count=1 -timeout=6m ./internal/storage -run '^(TestImportRecordRead|TestImportInspection)' with real Valkey; add -race or CGO_ENABLED=0",
+    "vet": "go vet ./internal/storage",
+    "lint": "make lint",
+    "prose": "technical-writing lint three reader files --mode strict --format text",
+    "whitespace": "git diff --check"
+  },
+  "counts": {
+    "passive-fail-before.jsonl": {
+      "named_results": {
+        "fail": 6,
+        "skip": 2
+      },
+      "top_level_tests": {
+        "fail": 3
+      },
+      "packages": {
+        "fail": 2
+      }
+    },
+    "passive-final-native-race.jsonl": {
+      "named_results": {
+        "pass": 117
+      },
+      "top_level_tests": {
+        "pass": 24
+      },
+      "packages": {
+        "pass": 2
+      }
+    },
+    "passive-final-native-pure.jsonl": {
+      "named_results": {
+        "pass": 117
+      },
+      "top_level_tests": {
+        "pass": 24
+      },
+      "packages": {
+        "pass": 2
+      }
+    },
+    "reader-fail-before.jsonl": {
+      "named_results": {
+        "fail": 4,
+        "skip": 2
+      },
+      "top_level_tests": {
+        "fail": 2
+      },
+      "packages": {
+        "fail": 1
+      }
+    },
+    "reader-local-after.jsonl": {
+      "named_results": {
+        "pass": 4,
+        "skip": 2
+      },
+      "top_level_tests": {
+        "pass": 2
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    "reader-native-race.jsonl": {
+      "named_results": {
+        "pass": 26
+      },
+      "top_level_tests": {
+        "pass": 4
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    "reader-native-pure.jsonl": {
+      "named_results": {
+        "pass": 26
+      },
+      "top_level_tests": {
+        "pass": 4
+      },
+      "packages": {
+        "pass": 1
+      }
+    }
+  },
+  "checks": {
+    "vet": 0,
+    "lint": 0,
+    "strict_prose": 0,
+    "whitespace": 0
+  },
+  "manual_review": [
+    "Checked the native v2 receipt format and 512-byte ceiling, exact-position completed retries, and passive SQL/KV transaction behavior.",
+    "Checked Badger one-view and Valkey guarded Lua reads, bounds, cancellation, returned byte ownership, and refusal after activation."
+  ],
+  "limits": [
+    "These are native component contracts. They do not establish complete coordinated activation or current catalog permission.",
+    "Linux and Windows evidence for this local source remains UNVERIFIED until final native CI.",
+    "Full repository checks and isolated pre-PR review belong to the coherent parent change."
+  ],
+  "files": {
+    "passive-fail-before.jsonl": {
+      "file": "passive-fail-before.jsonl.gz",
+      "bytes": 22328,
+      "sha256": "1dfffdba3acb331bc06a4efdccddf50db9dae3e1ea747c9f4cbe31b48345b20a",
+      "gzip_sha256": "253d29431a27ac813c034a1b60ef2df39cf07145bae22a9cd3223e6d08ae21ad"
+    },
+    "passive-final-native-race.jsonl": {
+      "file": "passive-final-native-race.jsonl.gz",
+      "bytes": 275230,
+      "sha256": "a150455c3b1d0a51ed958034c5049a0a5cfb0bee6ff7a22c7ea5bd9c958d84d3",
+      "gzip_sha256": "2f8750cbd9c3deb3e7ddb3992bd6dada60cedbc05497a12c65538eae4052cf52"
+    },
+    "passive-final-native-pure.jsonl": {
+      "file": "passive-final-native-pure.jsonl.gz",
+      "bytes": 275217,
+      "sha256": "5e5c1884610686f95c0cf1c1a319d67e90d8ce27ee42c550977cb46c7fc73743",
+      "gzip_sha256": "80906d46a9f902727ad4a2b385acbabf1917963343439f3e73da805ae900943e"
+    },
+    "passive-lint-final.log": {
+      "file": "passive-lint-final.log.gz",
+      "bytes": 40,
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "passive-prose-final.log": {
+      "file": "passive-prose-final.log.gz",
+      "bytes": 33,
+      "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087",
+      "gzip_sha256": "64831690ac5141b2b28f093403ddbc2140ff3c485ebb18aa39bb4443808ee3be"
+    },
+    "reader-fail-before.jsonl": {
+      "file": "reader-fail-before.jsonl.gz",
+      "bytes": 17547,
+      "sha256": "63dd9d8b031de032a1bb851cbeba7e9730bbb040c37ebdd1bc9b94d45c49b80f",
+      "gzip_sha256": "eb314ac75bf9225dd95b9a4a72c25bcb35db5709a0605048fb270b862f9d5c04"
+    },
+    "reader-local-after.jsonl": {
+      "file": "reader-local-after.jsonl.gz",
+      "bytes": 14725,
+      "sha256": "9a02691548c4a422f7428966fda72341213ba8a19550f7cbf3ca15fdc3b94d69",
+      "gzip_sha256": "08d8c8cbf70aa7f358745dcd04ead924cc46f8f2fef363e2df8746a237773780"
+    },
+    "reader-native-race.jsonl": {
+      "file": "reader-native-race.jsonl.gz",
+      "bytes": 70369,
+      "sha256": "b0b831ad561d82894131a7750d811c5a4f1a7a6d47b95867988bb3bc3a7e6b13",
+      "gzip_sha256": "78eaafebca0ce83fc6c3843acb2b41cd6805e99af9cc3d5ee224acb58ec79185"
+    },
+    "reader-native-pure.jsonl": {
+      "file": "reader-native-pure.jsonl.gz",
+      "bytes": 70372,
+      "sha256": "bd03ef4e4d8ac31075aa471e95382539626e3073f10135f5bf106e38da045ca7",
+      "gzip_sha256": "27b8105dc33d90217d4d1558605523e9d1de5bee5335b8e4d88ea5bbc305a668"
+    },
+    "reader-vet.log": {
+      "file": "reader-vet.log.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "reader-lint.log": {
+      "file": "reader-lint.log.gz",
+      "bytes": 40,
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "reader-prose.log": {
+      "file": "reader-prose.log.gz",
+      "bytes": 33,
+      "sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618",
+      "gzip_sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b"
+    }
+  }
+}

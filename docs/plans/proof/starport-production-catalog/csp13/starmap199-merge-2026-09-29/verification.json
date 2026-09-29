@@ -1,0 +1,64 @@
+{
+  "recorded_utc": "2026-09-29T21:53:48.479924+00:00",
+  "task": "CSP13",
+  "task_completed": false,
+  "repository": "agentstation/starmap",
+  "pr": 199,
+  "head": "e620da59972841528ff049bcd507d4d384704262",
+  "base": "4bf9b0b83c47df46ea7f95476ec747a499f7b7a5",
+  "merge": "af57ed3fb99e9323ac513ff9889ecd3a5b6cee00",
+  "merged_at": "2026-09-29T21:50:40Z",
+  "checks": {
+    "success": 32,
+    "fail": 0,
+    "pending": 0
+  },
+  "reviewed_tree": "4de9688454ea4d4d14735145e3159e6efa91e0f5",
+  "merged_tree": "4de9688454ea4d4d14735145e3159e6efa91e0f5",
+  "reviewed_tree_equals_merge_tree": true,
+  "merge_signature_verified": true,
+  "protection_unchanged": true,
+  "strict_protection": true,
+  "unresolved_review_threads": 0,
+  "merge_method": "protected squash with exact head match; no admin bypass",
+  "scope": "Reviewed history and catalog-origin components. Complete CSP13 recovery remains open.",
+  "local_integration": "cff5f361a",
+  "integration_tree_unchanged": true,
+  "artifacts": {
+    "starmap-final-premerge.json": {
+      "file": "starmap-final-premerge.json.gz",
+      "sha256": "f1f9fa16e092c075d15ba57ad1ad054c80b658b24d14682cc5a69dff092cb93a",
+      "gzip_sha256": "9a5de1eae6068388291e21dc3f89771fcc27e88da87b048b8e95be7bac70cd4c"
+    },
+    "starmap-final-threads.json": {
+      "file": "starmap-final-threads.json.gz",
+      "sha256": "a1bbf5c66c5ae9ad2c2378c0174592420776fdad4716d14c20a65ad971616001",
+      "gzip_sha256": "8cf01cb2caccfa9d758d68e19c7cf4c9c9f721253239156201d228ba97620bb2"
+    },
+    "starmap-final-protection.json": {
+      "file": "starmap-final-protection.json.gz",
+      "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+      "gzip_sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce"
+    },
+    "starmap-after-protection.json": {
+      "file": "starmap-after-protection.json.gz",
+      "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+      "gzip_sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce"
+    },
+    "starmap-head-commit.json": {
+      "file": "starmap-head-commit.json.gz",
+      "sha256": "eb31f00a6b47809b7b867dabfe9ff6cbaa22079a37d14a0d08fed22add9041b2",
+      "gzip_sha256": "8d4dc3b1316d97cd3d03c23a7599e555864b7c6109db388ed689e68433e7ebba"
+    },
+    "starmap-merged-pr.json": {
+      "file": "starmap-merged-pr.json.gz",
+      "sha256": "4455a92e28001052407c17f9790c04c48d19a0d4aaedbe77f082bad8d24205ce",
+      "gzip_sha256": "3e97c2c7e8e81a77053d9fde75b9ea4f2aa647cedd8a6482697ca1acb953aac8"
+    },
+    "starmap-merge-commit.json": {
+      "file": "starmap-merge-commit.json.gz",
+      "sha256": "de9081331a885b5d57ac75d91b4f191ee391cd3982198e9851b6dd4051373b73",
+      "gzip_sha256": "6914ab1af5881f046bdf92a6446f61bb7c7887041c31712ee75ca4f890b629b8"
+    }
+  }
+}

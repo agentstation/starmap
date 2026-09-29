@@ -1,0 +1,178 @@
+{
+  "recorded_utc": "2026-09-29T22:00:01.746354+00:00",
+  "task": "CSP13",
+  "task_completed": false,
+  "agent_proof": "agent-verification.json.gz",
+  "artifacts": {
+    "verification.json": {
+      "file": "agent-verification.json.gz",
+      "sha256": "924fa3c5a69ea722813453d2e76c48a8ee3876eca7f62bac79042408c078d506",
+      "gzip_sha256": "d5218de58a8eafded8749f54f13c36b371658c3be4ce75f9373a80caca768496"
+    },
+    "CONTRACT.md": {
+      "file": "CONTRACT.md.gz",
+      "sha256": "29e03f6d80a504396133fca2b898fbdeccd25670cb5f53a81312cbd144daafc4",
+      "gzip_sha256": "b21e19a3be8bf7b2bae2fa269d5eacb3729d70c0d9ab663d1dd62021a018d994"
+    },
+    "race-qualified.jsonl": {
+      "file": "race-qualified.jsonl.gz",
+      "sha256": "7ffeb44ad9f1c2143846dccfed1f0a5a5fbe7609176ae1f41ad0abe63c7749a9",
+      "gzip_sha256": "bc9ba0c61d6a506bf3a257ba261de4ec1ce2fe2a2aa58e1af9fc19807867511f"
+    },
+    "pure-qualified.jsonl": {
+      "file": "pure-qualified.jsonl.gz",
+      "sha256": "2f4d263253b9c9246e90a1036cb1c9b3865c75bd883df4039d3c1b36c3fc876b",
+      "gzip_sha256": "cd499e21ff0bc2afd4651fc6615a5bad20153541b88229c4976bdea850207e00"
+    },
+    "verify-checks-qualified.log": {
+      "file": "verify-checks-qualified.log.gz",
+      "sha256": "524d391f253bb9c5044914122798d3268c62d5363e0617ca32e38f0165473c68",
+      "gzip_sha256": "579efab3a2d5eb16d0f951dedc79acb10393697f95b883b3ae11e9b7e5b67543"
+    },
+    "godoc-qualified.log": {
+      "file": "godoc-qualified.log.gz",
+      "sha256": "517d87f9b3987f8150122e977eb025cc35ea6e06ba95cee70f1c2e044f567b56",
+      "gzip_sha256": "7d20a37d116283a734f8e20e217c228f8c0733a2203c6af13ca0afa77d39aa5b"
+    },
+    "root-autoreview.log": {
+      "file": "root-autoreview.log.gz",
+      "sha256": "868cb03d7b8a2b1d93067e21f0af9e7a356dd768a7aca6655898b01962e1b25c",
+      "gzip_sha256": "2c34a6556def7c78376e8c8252e6f2b377e49dfe3293cbc442e32b3b4b16f323"
+    },
+    "published-pr.json": {
+      "file": "published-pr.json.gz",
+      "sha256": "6d6d4c8e02f4a5d933eb9f85975c87b8c53ea219ebececb79fe08b3076d1461f",
+      "gzip_sha256": "19e9d5ec2773438d96d010e531e90a385e34d883aaada8f0be466ba8e546750b"
+    },
+    "consumer-module.json": {
+      "file": "consumer-module.json.gz",
+      "sha256": "63bd526ffec41541217f8b1490b69a0bcd1e8430e9d92af61a96f9a1ac2d04be",
+      "gzip_sha256": "e79b4c30239b58d016fb9fe3e49a769537ed4314f768ae9c0b7420dd76c4bc83"
+    }
+  },
+  "source_commit": "a7fc34520ee93c128679278685388cee72198d61",
+  "integration_commit": "cff5f361af012c030555e72c607f30d5c415a284",
+  "integration_tree_unchanged": true,
+  "checks": [
+    {
+      "command": "go test -race -json ./runtime ./internal/cli/app -run ^Test(CatalogRetention|CatalogMaterialization|FileManifest) -count=1 -timeout=15m",
+      "exit_code": 0,
+      "events": "race-qualified.jsonl",
+      "results": {
+        "top_level": {
+          "pass": 37,
+          "fail": 0,
+          "skip": 0
+        },
+        "including_subtests": {
+          "pass": 51,
+          "fail": 0,
+          "skip": 0
+        },
+        "packages": [
+          {
+            "package": "github.com/agentstation/starmap/internal/cli/app",
+            "result": "pass",
+            "elapsed_seconds": 37.917
+          },
+          {
+            "package": "github.com/agentstation/starmap/runtime",
+            "result": "pass",
+            "elapsed_seconds": 215.956
+          }
+        ]
+      }
+    },
+    {
+      "command": "CGO_ENABLED=0 go test -json ./runtime ./internal/cli/app -run ^Test(CatalogRetention|CatalogMaterialization|FileManifest) -count=1 -timeout=12m",
+      "exit_code": 0,
+      "events": "pure-qualified.jsonl",
+      "results": {
+        "top_level": {
+          "pass": 37,
+          "fail": 0,
+          "skip": 0
+        },
+        "including_subtests": {
+          "pass": 51,
+          "fail": 0,
+          "skip": 0
+        },
+        "packages": [
+          {
+            "package": "github.com/agentstation/starmap/internal/cli/app",
+            "result": "pass",
+            "elapsed_seconds": 7.817
+          },
+          {
+            "package": "github.com/agentstation/starmap/runtime",
+            "result": "pass",
+            "elapsed_seconds": 53.365
+          }
+        ]
+      }
+    },
+    {
+      "command": "make godoc",
+      "exit_code": 0,
+      "log": "godoc-qualified.log"
+    },
+    {
+      "command": "make verify-checks",
+      "exit_code": 0,
+      "log": "verify-checks-qualified.log",
+      "workflow_tests": {
+        "pass": 56,
+        "fail": 0,
+        "skip": 0
+      },
+      "lint_version": "2.13.2",
+      "lint_issues": 0,
+      "go_vet": "pass",
+      "goago_including_stale_ignores": "pass",
+      "technical_writing": {
+        "files": 1962,
+        "diagnostics": 0
+      },
+      "consumer_contracts": "pure-Go read-only, store-only, pinned artifact, server embed, remote subscriber, server storage and S3",
+      "container_smoke": "linux/amd64 read-only root with writable state volume passed",
+      "performance_catalog_snapshot": {
+        "ns_op": [
+          9.725,
+          8.676,
+          8.54
+        ],
+        "bytes_op": 0,
+        "allocs_op": 0
+      },
+      "critical_seam_coverage": "all repository-owned minimums passed"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "root_review": {
+    "command": "autoreview --gate pre-pr --mode auto --base origin/main",
+    "exit_code": 0,
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "parts": 1,
+    "threshold": "P0",
+    "findings": 0,
+    "secret_scan": "clean"
+  },
+  "publication": {
+    "pr": 200,
+    "url": "https://github.com/agentstation/starmap/pull/200",
+    "head": "cff5f361af012c030555e72c607f30d5c415a284",
+    "state": "DRAFT_NATIVE_PENDING"
+  },
+  "consumer_pin": "v0.16.6-0.20260929215215-cff5f361af01",
+  "consumer_replacement": false,
+  "published_module_files_byte_equal": 12,
+  "limits": [
+    "Complete catalog transfer and activation remain open. Native Linux and Windows checks remain pending.",
+    "Historical structural retention grants no serving permission. Current selections require target semantic replay."
+  ]
+}

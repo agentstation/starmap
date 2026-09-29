@@ -1,0 +1,64 @@
+{
+  "recorded_utc": "2026-09-29T21:53:48.472539+00:00",
+  "task": "CSP13",
+  "task_completed": false,
+  "repository": "agentstation/starport",
+  "pr": 393,
+  "head": "5fc5a60276ee921e4fc97ed19a230bddd308b9ef",
+  "base": "046d86bc6c0c219fd51a520dccf37b1612516300",
+  "merge": "b256a14faf1af9d316031723a9f8cfc4f55d2f28",
+  "merged_at": "2026-09-29T21:49:03Z",
+  "checks": {
+    "success": 31,
+    "fail": 0,
+    "pending": 0
+  },
+  "reviewed_tree": "5747cd059e47508a8b5fc2a4e0bc3fa32c92374a",
+  "merged_tree": "5747cd059e47508a8b5fc2a4e0bc3fa32c92374a",
+  "reviewed_tree_equals_merge_tree": true,
+  "merge_signature_verified": true,
+  "protection_unchanged": true,
+  "strict_protection": true,
+  "unresolved_review_threads": 0,
+  "merge_method": "protected squash with exact head match; no admin bypass",
+  "scope": "Reviewed history and catalog-origin components. Complete CSP13 recovery remains open.",
+  "local_integration": "4573d9d2",
+  "integration_tree_unchanged": true,
+  "artifacts": {
+    "starport-final-premerge.json": {
+      "file": "starport-final-premerge.json.gz",
+      "sha256": "a52ff31c9b94e7a4666ab2adcacedba464c1c567ec3df24b38c68bb54dc699f6",
+      "gzip_sha256": "2b4e53fdb3a220878d28179b66200fb9e0c919758e3d8dffba0b23e9908512ad"
+    },
+    "starport-final-threads.json": {
+      "file": "starport-final-threads.json.gz",
+      "sha256": "d71900e5708aa68bf292847f4738d6af3acdf280483d9cda2c16364f97b9dfdd",
+      "gzip_sha256": "05a6f4977497ab74747a390f4e68bb621b4aec56acff44dacfae1aae8594c832"
+    },
+    "starport-final-protection.json": {
+      "file": "starport-final-protection.json.gz",
+      "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+      "gzip_sha256": "f1a3ecaa02a381e3f7e2d73913df084cd9732f93e6ca7646f650f2bc1b3f34e5"
+    },
+    "starport-after-protection.json": {
+      "file": "starport-after-protection.json.gz",
+      "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+      "gzip_sha256": "f1a3ecaa02a381e3f7e2d73913df084cd9732f93e6ca7646f650f2bc1b3f34e5"
+    },
+    "starport-head-commit.json": {
+      "file": "starport-head-commit.json.gz",
+      "sha256": "bdab9c51e7c145ea309dc0fa283048a33be86fd7aed74b154c1047fb939451ec",
+      "gzip_sha256": "692b81c9d793f52a3c3ba5ae816750c9a073a4439c551453008839cf36e654b9"
+    },
+    "starport-merged-pr.json": {
+      "file": "starport-merged-pr.json.gz",
+      "sha256": "144797284581c0072d941a2d7c58809bcf1909f414926dde4f3f16039d8c2ad3",
+      "gzip_sha256": "2621206431c90d885105c62cb5ac481fca74df3ecfdba225fddb12ef4db2b0f0"
+    },
+    "starport-merge-commit.json": {
+      "file": "starport-merge-commit.json.gz",
+      "sha256": "22a340c0c100b184d89d600b268f0050da8df842b7ae5919546bd5b8ad39878f",
+      "gzip_sha256": "035bfee9d9d7c41c93d52a58a6e027b7a032f53c58899454c3864fca10382974"
+    }
+  }
+}

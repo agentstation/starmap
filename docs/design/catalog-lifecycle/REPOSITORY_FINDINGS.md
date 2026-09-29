@@ -5118,3 +5118,24 @@ CSP13 owns an early read-only recovery preflight. It must preserve normal fresh 
 Closed final-history checks require active import barriers. They cannot reconstruct the original capability after partial barrier release.
 Canonical file publication also repeats preparation and cannot serve as the post-release restart verifier.
 The activation coordinator needs retained owner receipts and phase-specific verification. Component release alone does not prove complete recovery.
+
+### Native receipts and reviewed recovery components (September 29, 2026)
+
+Starport #393 merged as `b256a14f` with 31 passing checks. Starmap #199 merged as `af57ed3f` with 32 passing checks.
+Both merges preserve the reviewed tree and branch protection. They do not complete CSP13.
+
+Strict native activation receipts now retain the approved final replay position. Passive checks do not repeat owner changes or grant permission.
+The [native proof](../../plans/proof/starport-production-catalog/csp13/native-activation-inspection-2026-09-29/verification.json) records 117 results per mode.
+Bounded catalog reads pass 26 results per mode. They read one record under exact native recovery guards.
+
+The local consumer includes the [startup preflight](../../plans/proof/starport-production-catalog/csp13/startup-preflight-2026-09-29/verification.json).
+It reads selected SQL before setup and joins native owners before maintenance or policy writes. Integrated race and pure-Go checks each pass 26 results.
+These consistency checks cannot replace the complete retained activation decision.
+
+Starmap [PR #200](https://github.com/agentstation/starmap/pull/200) adds structural retention and passive selected-input checks.
+Its [proof](../../plans/proof/starport-production-catalog/csp13/catalog-retention-2026-09-29/verification.json) records complete checks and a clean isolated review. Native CI remains pending.
+The consumer uses the published module without a replacement. All twelve changed module files match the reviewed producer bytes.
+
+The topology review found incomplete selected-publication binding when different inputs share a generation ID.
+The final inventory identity encoding also lacked a bound after the compiler added archive metadata.
+Both repairs belong to the catalog owner before integration. Complete native activation and measured recovery remain open.

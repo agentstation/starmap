@@ -1,0 +1,250 @@
+{
+  "recorded_utc": "2026-09-29T22:00:01.754249+00:00",
+  "task": "CSP13",
+  "task_completed": false,
+  "agent_proof": "agent-verification.json.gz",
+  "artifacts": {
+    "verification.json": {
+      "file": "agent-verification.json.gz",
+      "sha256": "53f628a0d03ee0cf60389f1fb15e9364eec9e7a5d1c9c192582e99f2a978a6c4",
+      "gzip_sha256": "393bde3b04c901b9e2bb7585abf03684c65fc0bb866c60d2f344b257c443d34e"
+    },
+    "REVIEW.md": {
+      "file": "REVIEW.md.gz",
+      "sha256": "6d4ff60442c01945c92f9c6c67230a2aa3e7c9f9f9ff57cea5512752cb85a137",
+      "gzip_sha256": "25509b3f810310d34007bb706c7a19c7736c91d13660e325e807fa4be4745e85"
+    },
+    "final-race.jsonl": {
+      "file": "final-race.jsonl.gz",
+      "sha256": "212dce29c9ceac372615d6cab0532e613ee77f8fd7c0ac1585050c5ab14c1ea8",
+      "gzip_sha256": "dec8a1e54e20ecc8ad3fa03ca7f3615de2ab7fc5fb12c5c729f4dbbbff95eb20"
+    },
+    "final-pure.jsonl": {
+      "file": "final-pure.jsonl.gz",
+      "sha256": "523b34f4f549fba711fe4f5c138312a2d818cfe504f49d4146bbe4406bf062f7",
+      "gzip_sha256": "538d039a2750c22a0d189c91faa87cc37140f90a71864646493733feeec1e2da"
+    },
+    "expiration-race.jsonl": {
+      "file": "expiration-race.jsonl.gz",
+      "sha256": "9c78b0acfb687b23051019800944929ecb83bfef04df353349f6ac558848c8b0",
+      "gzip_sha256": "ae30362aff9ffdc4b6dfe58358d0251bc75a2fec46f01cf7ec197fcbf05de71a"
+    },
+    "expiration-pure.jsonl": {
+      "file": "expiration-pure.jsonl.gz",
+      "sha256": "61d675ade5a65f86d1a08289ca9132caaf97e4a0bc73185c8af810d81c3803fc",
+      "gzip_sha256": "17874e45bb949579848d7408fa387178960af88c5dedd83d8a8b2e45857f3220"
+    },
+    "affected-app-race.jsonl": {
+      "file": "affected-app-race.jsonl.gz",
+      "sha256": "0162ee539c026a86a63b23327e8d86098bf7e745d1c71d697d29296857df2463",
+      "gzip_sha256": "038dedb5c9b9697838487404b9f37b528ad10a0950f87573eff7df1be2983553"
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "lint.log.final": {
+      "file": "lint.log.final.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    "prose-final.log": {
+      "file": "prose-final.log.gz",
+      "sha256": "0115cc50e23e7055e762ef7b12faf37fb81b34f3e81365314340b6d2523a7870",
+      "gzip_sha256": "53bc47c63c991a93e85751194bfc2b225ce51b48d186b4e5ba150ee59e2b23aa"
+    }
+  },
+  "source": {
+    "repository": "agentstation/starport",
+    "worktree": "/private/tmp/starport-recovery-startup-preflight-20260929",
+    "branch": "codex/recovery-startup-preflight",
+    "base": "49d791c7521b517e916c9f8c89e75e1a5f5410df",
+    "strict_receipt_parent": "ddbe0736b8e4be81c01c0713fe1d3addf63b6085",
+    "commit": "e6dcdc095f45279d46697d1ab1b7552a7dd306f7",
+    "toolchain": "go version go1.27.1 darwin/arm64"
+  },
+  "integration_commit": "c1fcb913",
+  "checks": {
+    "native_race": {
+      "log": "/tmp/csp13-startup-preflight-20260929/final-race.jsonl",
+      "test_actions": {
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Action": "pass",
+          "Elapsed": 1.974
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/sqlstore",
+          "Action": "pass",
+          "Elapsed": 7.486
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 3.517
+        }
+      ]
+    },
+    "native_pure": {
+      "log": "/tmp/csp13-startup-preflight-20260929/final-pure.jsonl",
+      "test_actions": {
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Action": "pass",
+          "Elapsed": 0.774
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/sqlstore",
+          "Action": "pass",
+          "Elapsed": 4.453
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 1.483
+        }
+      ]
+    },
+    "added_expiration_race": {
+      "log": "/tmp/csp13-startup-preflight-20260929/expiration-race.jsonl",
+      "test_actions": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/sqlstore",
+          "Action": "pass",
+          "Elapsed": 1.342
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Action": "pass",
+          "Elapsed": 1.491
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 2.106
+        }
+      ]
+    },
+    "added_expiration_pure": {
+      "log": "/tmp/csp13-startup-preflight-20260929/expiration-pure.jsonl",
+      "test_actions": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/sqlstore",
+          "Action": "pass",
+          "Elapsed": 0.277
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Action": "pass",
+          "Elapsed": 0.399
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 0.952
+        }
+      ]
+    },
+    "affected_startup_race": {
+      "log": "/tmp/csp13-startup-preflight-20260929/affected-app-race.jsonl",
+      "test_actions": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 34.516
+        }
+      ]
+    },
+    "vet": {
+      "command": "go vet ./internal/storage ./internal/sqlstore ./internal/app",
+      "exit": 0,
+      "log": "/tmp/csp13-startup-preflight-20260929/vet.log"
+    },
+    "lint": {
+      "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run --allow-parallel-runners ./internal/storage/... ./internal/sqlstore/... ./internal/app/...",
+      "exit": 0,
+      "log": "/tmp/csp13-startup-preflight-20260929/lint.log.final"
+    },
+    "prose": {
+      "exit": 0,
+      "files": 8,
+      "diagnostics": 0,
+      "log": "/tmp/csp13-startup-preflight-20260929/prose-final.log"
+    },
+    "dependency_direction": {
+      "exit": 0,
+      "conditions_passed": 6
+    },
+    "package_layout": {
+      "exit": 0
+    },
+    "whitespace": {
+      "exit": 0
+    }
+  },
+  "manual_review": [
+    "Root checked SQL read-only/no-create behavior, missing-schema refusals, exact native receipt and position checks, KV lifetime and orphan-history checks, and Badger maintenance order.",
+    "The application joins both native owners before policy writes. This early check does not replace a complete sealed activation decision."
+  ],
+  "limits": [
+    "Refusal and native consistency checks only; not complete activation permission.",
+    "Complete sealed decision, original selected targets, canonical files, current catalog and permission checks remain coordinator-owned.",
+    "Unpositioned v1 receipts are historical evidence only; strict receipt position comes from v2 native owner.",
+    "Low-level OpenBadger constructor behavior retained; application startup uses deferred maintenance.",
+    "No structured autoreview or publication performed by this subagent."
+  ],
+  "root_integration_checks": {
+    "startup-integration-race.jsonl": {
+      "command": "go test -json -count=1 -timeout=6m ./internal/storage ./internal/sqlstore ./internal/app -run '^Test(RecoveryStartup|SQLRecoveryStartup|AppRecoveryStartup|BadgerMaintenance|OpenForStartup)' with native Valkey/PostgreSQL/MySQL; race or pure-Go",
+      "counts": {
+        "pass": 26
+      },
+      "top_level": {
+        "pass": 11
+      },
+      "exit_code": 0,
+      "file": "startup-integration-race.jsonl.gz",
+      "sha256": "f1ec21b747c9f7ab6a3888e247d5907bfc033ed4d902f18cee51715b1a1b4c3b"
+    },
+    "startup-integration-pure.jsonl": {
+      "command": "go test -json -count=1 -timeout=6m ./internal/storage ./internal/sqlstore ./internal/app -run '^Test(RecoveryStartup|SQLRecoveryStartup|AppRecoveryStartup|BadgerMaintenance|OpenForStartup)' with native Valkey/PostgreSQL/MySQL; race or pure-Go",
+      "counts": {
+        "pass": 26
+      },
+      "top_level": {
+        "pass": 11
+      },
+      "exit_code": 0,
+      "file": "startup-integration-pure.jsonl.gz",
+      "sha256": "e1d49cbc4f003c8d18f759af0c81d6ed326f7620a93d986462879385feeba4a3"
+    }
+  },
+  "published_module": "v0.16.6-0.20260929215215-cff5f361af01",
+  "consumer_source": "3fd20e2f"
+}
