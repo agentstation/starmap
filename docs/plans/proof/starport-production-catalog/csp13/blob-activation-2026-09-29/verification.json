@@ -1,0 +1,183 @@
+{
+  "state": "LOCAL_IMPLEMENTATION_UNPUBLISHED",
+  "component_head": "29603933973d50a951cefd34d13206dd08aad094",
+  "integrated_head": "c096921a9d1586fb1e3c86711abc6463ac93b52e",
+  "worktree": "/private/tmp/starport-clock-review-20260926",
+  "branch": "codex/recovery-migration",
+  "checked_at": "2026-09-29T09:09:25.284433+00:00",
+  "toolchain": "go1.27.1",
+  "platform": "darwin/arm64",
+  "contract": [
+    "Filesystem and object-store restore targets expose decision-bound ImportActivator operations.",
+    "Activation preserves the exact import identity and retains historical, preparing, and active receipts. Every partial state refuses ordinary startup.",
+    "Conditional PUT replaces the import barrier. Exact retry preserves later payloads and refuses a competing decision.",
+    "Portable historical receipts cannot establish current authority. Backup includes historical receipts but excludes native current markers.",
+    "Activation retries recover owned filesystem publication journals. Unknown or corrupt journals remain and cause refusal.",
+    "An interrupted condition probe leaves ordinary inert payload bytes. Backup preserves those bytes without interpreting them as permission.",
+    "The recovery coordinator still owns independent history, external fencing, complete file placement, and final SQL admission."
+  ],
+  "verification": {
+    "fail_before": {
+      "pass": 0,
+      "fail": 3,
+      "skip": 0,
+      "failed": [
+        "TestBlobImportActivation/filesystem",
+        "TestBlobImportActivation/objectstore",
+        "TestBlobImportActivation"
+      ]
+    },
+    "conditional_delete_probe": {
+      "pass": 0,
+      "fail": 2,
+      "skip": 0,
+      "failed": [
+        "TestBlobImportActivation/objectstore",
+        "TestBlobImportActivation"
+      ],
+      "finding": "The pinned native MinIO service does not enforce a mismatched If-Match DELETE. The design uses qualified conditional PUT replacement instead."
+    },
+    "blob_race": {
+      "command": "GOWORK=off TEST_BLOB_S3_ENDPOINT=http://127.0.0.1:19013 go test -race -json -count=1 -timeout=5m ./internal/blob",
+      "pass": 158,
+      "fail": 0,
+      "skip": 0,
+      "failed": [],
+      "exit_code": 0
+    },
+    "publication_owner_race": {
+      "command": "GOWORK=off go test -race -json -count=1 -timeout=2m github.com/agentstation/starmap/internal/privatefiles -run '^TestPrivateRecordRecoveryAfterProcessExit$'",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "failed": [],
+      "exit_code": 0,
+      "scope": "Native process-exit recovery in the pinned publication dependency, not full Starport recovery."
+    },
+    "integrated_consumer_race": {
+      "command": "GOWORK=off go test -race -json -count=1 -timeout=6m ./internal/recovery -run '^Test(BackupBundle|PrepareBundle|BundleReferences|RestoreFiles)'",
+      "pass": 46,
+      "fail": 0,
+      "skip": 0,
+      "failed": [],
+      "exit_code": 0,
+      "services": [
+        "Badger",
+        "SQLite",
+        "filesystem",
+        "Valkey",
+        "PostgreSQL",
+        "MinIO"
+      ]
+    },
+    "vet": {
+      "command": "GOWORK=off go vet ./internal/blob ./internal/recovery ./internal/sqlstore",
+      "exit_code": 0
+    },
+    "lint": {
+      "command": "GOWORK=off make lint",
+      "exit_code": 0,
+      "issues": 0
+    },
+    "prose": {
+      "files": [
+        "internal/blob/README.md"
+      ],
+      "exit_code": 0,
+      "diagnostics": 0
+    },
+    "windows_arm64": "Cross-compilation passes. Native execution of this new component remains UNVERIFIED.",
+    "manual_review": [
+      "Reviewed activation ordering, conditional writes, history versus current authority, startup refusal, retry semantics, and archive integration.",
+      "Fixed the discovered orphan-probe and abandoned-publication-journal cases before integration."
+    ]
+  },
+  "fixture": {
+    "minio_module": "github.com/minio/minio@v0.0.0-20250907161309-07c3a429bfed",
+    "minio_binary_sha256": "31196eda23bb0c84551e57d894dc0a24f61418c430aaa69a048f0b8ffa577a3a",
+    "state": "The MinIO process and task-owned Valkey/PostgreSQL/MySQL containers are stopped."
+  },
+  "remaining": [
+    "Complete recovery decision, independent history reconciliation, operator commands, and canonical file activation.",
+    "Cross-store interruption, old-primary and stale-replica fencing, fresh startup, and measured RPO/RTO.",
+    "Full repository pre-PR gates, required review, publication, native platform qualification, and merge.",
+    "Fifteen assigned CSP13 subcases remain UNVERIFIED."
+  ],
+  "artifacts": {
+    "initial.jsonl": {
+      "file": "initial.jsonl.gz",
+      "sha256": "b05cd83e3f0063b25640c257898e030f0f808a2a354a06f507daff98ff76be29",
+      "gzip_sha256": "78d6090d4106d5267a4a33066fcf711fa01544097dd80643d61606ba90e9cdd8"
+    },
+    "race.jsonl": {
+      "file": "race.jsonl.gz",
+      "sha256": "6140bce29ef5821de2e4ec03c8b4f5ef380ad0153f86c6f3b2542cebeb4e31b8",
+      "gzip_sha256": "1d52d37d6507bb32a4f9b4f431f71668af8285cd20a757ecbc111e3ffc0d36e2"
+    },
+    "fail-before.jsonl": {
+      "file": "fail-before.jsonl.gz",
+      "sha256": "1d971606e28bda7710744530ec2fde20a67d3c1fe69b94036072434eae74916f",
+      "gzip_sha256": "c4b21caa757e9f093b3f10f8b97b8d79a318ff6451576720d01c7741507e0d20"
+    },
+    "initial-put.jsonl": {
+      "file": "initial-put.jsonl.gz",
+      "sha256": "d72f67b01a6a7f60eb14f390b34006cb59388b78337f0f397b185c0d7d6d790b",
+      "gzip_sha256": "0ee3a7595002ba189b481c52e66ad20ea8b83203e77e6520398ce6e95e310fc8"
+    },
+    "consumer-race.jsonl": {
+      "file": "consumer-race.jsonl.gz",
+      "sha256": "c970bc11ef7f7943034b760f2d5987dff8834b331211cacdf573cbc15d86bbe1",
+      "gzip_sha256": "b26fbb13ec492b1d9518de01e7dcd6e1ff1f236615c3c8076145cb0b4ec91dd5"
+    },
+    "probe.jsonl": {
+      "file": "probe.jsonl.gz",
+      "sha256": "7f6239693306d56dd5abb4bcc375ddc40f143b97af41ec6e2e5382e3497c06f7",
+      "gzip_sha256": "395679b7c3922851face6c5ee4575fc0aeabbc89b0fb0078ed7f271ad43d8c0d"
+    },
+    "publication-owner-race.jsonl": {
+      "file": "publication-owner-race.jsonl.gz",
+      "sha256": "7b7fa232fb04550fcbe45b5ba319a11475c5925d598f3d7553d378bc8883529b",
+      "gzip_sha256": "ea223aa34ccf8f159b108c0aab2fe6d036a306933a4dffbd28e8ff3a6b2f4256"
+    },
+    "final-race.jsonl": {
+      "file": "final-race.jsonl.gz",
+      "sha256": "3f6756207ce5e985bc633699de0486f9f04427ba7bf867b10f8859c298796541",
+      "gzip_sha256": "e385c3bbe7bd84cb77ecfa56c0681ba93e4c52d8f517f4cfdb13c01bdebea3ba"
+    },
+    "components.jsonl": {
+      "file": "components.jsonl.gz",
+      "sha256": "e54596bb7ac028f46e12c8e27f80821daf365eb3e44ae0cb906e34f52f91e0ed",
+      "gzip_sha256": "90181e650439fe07685f9695d6eb04d5843a3a966f0e159ddce596545eb4b41c"
+    },
+    "final-vet.log": {
+      "file": "final-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    "windows-compile.log": {
+      "file": "windows-compile.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "gzip_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    },
+    "integrated-vet.log": {
+      "file": "integrated-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "integrated-lint.log": {
+      "file": "integrated-lint.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    }
+  }
+}

@@ -77,6 +77,8 @@ Uncertain execution retains its reservation until the existing settlement or adm
 
 Every intermediate state must refuse ordinary startup or inference.
 An exact retry can finish the same operation.
+After the first component release, the coordinator must resume activation from retained receipts.
+It must not repeat preparation against active components.
 A changed backup, target identity, decision, or operation must conflict.
 The coordinator must not delete marker keys or files directly.
 
