@@ -90,7 +90,14 @@
     "manual_review": [
       "Reviewed activation ordering, conditional writes, history versus current authority, startup refusal, retry semantics, and archive integration.",
       "Fixed the discovered orphan-probe and abandoned-publication-journal cases before integration."
-    ]
+    ],
+    "repository_prose": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "files": 1958,
+      "diagnostics": 231,
+      "disposition": "The broad check reports existing historical prose and two HTML paragraph-boundary findings. The plan boundaries are repaired. Direct lint of the changed plan and contract passes. Historical source text remains unchanged."
+    }
   },
   "fixture": {
     "minio_module": "github.com/minio/minio@v0.0.0-20250907161309-07c3a429bfed",
