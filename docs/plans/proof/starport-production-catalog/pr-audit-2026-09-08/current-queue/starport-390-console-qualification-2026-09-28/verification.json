@@ -1,0 +1,87 @@
+{
+  "checked_at": "2026-09-29T01:05:22.670517+00:00",
+  "pr": 390,
+  "head": "8e9dc4a3dd3c124250d290cb25af8cffdaed2fbb",
+  "state": "LOCAL_CONSOLE_PASS_NATIVE_REPAIR_PENDING",
+  "source": "git archive into /tmp/csp13-console-390-qualification; no repository edits",
+  "tools": {
+    "package_manager": "pnpm 11.22.0",
+    "install": "frozen lockfile"
+  },
+  "checks": {
+    "lint": "PASS",
+    "build": "PASS",
+    "typecheck": "PASS",
+    "tests": {
+      "command": "pnpm test",
+      "files": 74,
+      "pass": 464,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0
+    },
+    "design_rule_probe": {
+      "command": "pnpm exec oxlint --format json src/dependency-lint-probe.tsx",
+      "expected_exit_code": 1,
+      "observed_exit_code": 1,
+      "rules": [
+        "shadcn(no-arbitrary-values)",
+        "shadcn(no-inline-styles)",
+        "shadcn(no-raw-colors)",
+        "shadcn(no-restyle)",
+        "shadcn(no-unknown-classes)",
+        "shadcn(require-static-classes)"
+      ],
+      "probe_removed": true
+    },
+    "initial_harness_failure": "The first archive omitted internal/usage/model.go, which one console test imports. Added that unchanged file from the exact PR head and reran all console tests. Initial output retained."
+  },
+  "warnings": "Build chunk-size and route-test-file warnings, plus jsdom scrollTo notices, remain in raw output. This is not a browser UX qualification.",
+  "dependency_audit": {
+    "packages": [
+      "cn 0.3.2 to 0.4.0",
+      "@shadcn/lint 0.1.5 to 0.2.0"
+    ],
+    "registry_integrity_checks": 4,
+    "assessment": "The cn runtime imports the changed cache engine. Vite does not use cn build plugins. The lint update adds template readers while retaining JSX rules. The negative probe verifies all six configured rules on actual console settings. The complete dependency PR still requires final integration and CI.",
+    "remaining": "Finish full dependency disposition after #388 merges. Current audit does not claim every changed upstream line was reviewed."
+  },
+  "next_action": "Integrate the actual #388 merge without changing the qualified console content, complete required review, and require native CI before merge.",
+  "artifacts": {
+    "csp13-console390-install.log": {
+      "file": "csp13-console390-install.log.gz",
+      "sha256": "c7e94ba8a195fd7ff13424dc52cb6690750b9b85faf60d915ac394eeaa2b1d15",
+      "gzip_sha256": "2cb3b6cc73b28f8190c6570f6b29f56323468fbdd7c4a74d471d39387ad2a488"
+    },
+    "csp13-console390-check.log": {
+      "file": "csp13-console390-check.log.gz",
+      "sha256": "9215a1447ff672e39f4ee5c376f11e7d89dfbef81b8736dc528f585e0a534614",
+      "gzip_sha256": "a357e833f3637892330a31ec3e6086987083d4126524af1b0676a4b46c9649fe"
+    },
+    "csp13-console390-test-complete.log": {
+      "file": "csp13-console390-test-complete.log.gz",
+      "sha256": "80157b26eb42fa08e8b59e61ed19edb3bef4b054acfa73c24889dafd64d8ea6e",
+      "gzip_sha256": "f77728f1245066eec3fb7cbe090fb907d1d3e26718d346140744da5030fb3633"
+    },
+    "csp13-console390-lint-negative.json": {
+      "file": "csp13-console390-lint-negative.json.gz",
+      "sha256": "624815e79ee46f1993870f7d3ea479c15ce20be6858d1bda06a52f4ee4930bd2",
+      "gzip_sha256": "d45e57a128358ae4d99e5ac7ba492be41aba07224beb3168bf8b6ab87efcc191"
+    },
+    "csp13-console390-lint-negative-fixture.tsx": {
+      "file": "csp13-console390-lint-negative-fixture.tsx.gz",
+      "sha256": "4796720979faf19c214a23da21ef1f38b0bb41a7656ceded5641a0b9da03c7bc",
+      "gzip_sha256": "8a6e355754947ef670be6bc675c750c0ae3e3980b9c2b6512e5d89c9b61aeff2"
+    },
+    "csp13-starport390-artifact-audit.json": {
+      "file": "csp13-starport390-artifact-audit.json.gz",
+      "sha256": "cc30d531478f612ccf8e6b9f3cce38967cbf2274f6239a6a70f35d7d771234c8",
+      "gzip_sha256": "75fa9c23ce65233ba0ddd0b556792cb058ad7d5719895f11490cc9a941fd4aa4"
+    },
+    "csp13-starport390-runtime.diff": {
+      "file": "csp13-starport390-runtime.diff.gz",
+      "sha256": "d6c064ca8463213d7c9a04e091637b21040731d99ba2f973bf9c2f353aa257c6",
+      "gzip_sha256": "0299634d4490c5c923378ed99f98241944503ee7943b909fedba9a2b3b94a106"
+    }
+  }
+}
