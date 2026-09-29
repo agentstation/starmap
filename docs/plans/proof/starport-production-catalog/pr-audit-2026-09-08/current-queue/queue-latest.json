@@ -1797,5 +1797,6 @@
     "proof": "starport-388-test-repair-2026-09-28/verification.json",
     "disposition": "Repairs published on existing #388; fresh native CI pending."
   },
-  "previous_open_snapshot": "queue-snapshot-before-190-merge-2026-09-28.json"
+  "previous_open_snapshot": "queue-snapshot-before-190-merge-2026-09-28.json",
+  "dependency_review_389": "starport-389-source-audit-2026-09-28/verification.json"
 }

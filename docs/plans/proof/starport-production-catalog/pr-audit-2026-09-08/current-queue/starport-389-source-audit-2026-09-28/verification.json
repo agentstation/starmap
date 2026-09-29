@@ -1,0 +1,41 @@
+{
+  "checked_at": "2026-09-29T00:49:23.331601+00:00",
+  "pr": 389,
+  "head": "8cb829ac7124a8fb143606baca3c6f1d6b78cfa7",
+  "status": "manual source audit complete; not merge qualification",
+  "modules": 20,
+  "checksum_matches": 40,
+  "checksums_checked": 40,
+  "runtime_changes": {
+    "google_auth": "Propagates synchronous and early refresh settings through supported credential types. Starport explicitly uses DisableAsyncRefresh=true in cloudchain/google.go. The change restores that requested contract across the upstream paths.",
+    "google_secretmanager": "Moves iterator helpers from the Go 1.23 build-tagged file to the main generated file. Starport uses AccessSecretVersion. The required Go version remains below the project pin.",
+    "aws_core": "Adds a chunked decoding implementation. Caller changes and object tests still require qualification.",
+    "aws_s3": "Adds the existing embedded-error handler to nine operations, including Starport PutObject, HeadObject, and DeleteObject paths. Error normalization and object storage checks remain required.",
+    "aws_checksum": "Enables supported checksum validation for successful partial-content responses. Missing-checksum logs move to debug. The caller must consume the response for checksum verification.",
+    "urfave_cli": "Adds opt-in deprecation warnings, fixes Unicode option classification, inverse-boolean occurrence counts, and configured string-map key trimming. Starport does not use inverse flags or map flags in its CLI. CLI and generated documentation checks remain required.",
+    "remaining_modules": "Version metadata, dependency declarations, and changelog updates."
+  },
+  "next_action": "After #388 merges, update #389 from actual main. Run affected cloudchain, secret, object, and CLI checks with the PR dependency graph. Complete the pre-PR gate and exact-head native CI before merge.",
+  "artifacts": {
+    "csp13-starport389.diff": {
+      "raw": "csp13-starport389.diff.gz",
+      "sha256": "1b6082cbab7056ebab0c854fd85b26cb9db0319d4951b9782a65a6a62282b3e9",
+      "gzip_sha256": "845d1d7664bf88cd62d176628714dd43e94efd1e0ce919fc7343ae2fe054ba0b"
+    },
+    "csp13-starport389-module-audit.json": {
+      "raw": "csp13-starport389-module-audit.json.gz",
+      "sha256": "d9f0b4c45cd2810a9b986c578b13a71b3d72d96226f3e1327c1deaf799e13573",
+      "gzip_sha256": "209263798cdff80f91e88595e191103bc19e0acd68742c65890e98e492af20dd"
+    },
+    "csp13-starport389-runtime.diff": {
+      "raw": "csp13-starport389-runtime.diff.gz",
+      "sha256": "8aa75de9381c45c898bf391d543e42289e5f51ae7ce0edf9070ad07796009d3c",
+      "gzip_sha256": "d0ce9490dd889a9188adc49e62b6da70ca90f2309bc5f0f5dc08ec182a6583a4"
+    },
+    "csp13-starport389-checksum-audit.json": {
+      "raw": "csp13-starport389-checksum-audit.json.gz",
+      "sha256": "aee1f7c4fcf5df7fb7914776212d70692ce96c86c39997c0ff031b8e8895253e",
+      "gzip_sha256": "6c0b5bf0e9c34e61320adf6485ce77b75905ab5dabd53c8e8e3628e5332a7500"
+    }
+  }
+}

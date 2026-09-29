@@ -1,0 +1,186 @@
+{
+  "task": "CSP13",
+  "checked_at": "2026-09-29T00:47:07.217283+00:00",
+  "status": "local full gate passed; producer publication and native CI remain open",
+  "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 make verify",
+  "session": 7562,
+  "exit_code": 0,
+  "worktree": "/private/tmp/starmap-fleet-review-20260926",
+  "branch": "codex/recovery-file-access",
+  "started_head": "a055f88ff6222663bd96443a62c28f023e4f0f8c",
+  "finished_head": "0cb6a7cc8690bf0eccc0e4573bd7945d9267171c",
+  "source_chronology": "README ffb and additive publication-inspection API 0cb landed during execution. Client group was already running before 0cb. Changed-package race, pure-Go, vet, lint, goago, and writing checks cover the new API. Contracts compiled afterward. The full run is not proof of a frozen final head.",
+  "final_api_checks": "../policy-file-owner-2026-09-28/verification.json",
+  "counts": {
+    "pass": 7754,
+    "fail": 0,
+    "skip": 24
+  },
+  "groups": {
+    "starmap-tests-gqzsj8jd.jsonl": {
+      "counts": {
+        "pass": 887
+      },
+      "skips": []
+    },
+    "starmap-tests-2bei742m.jsonl": {
+      "counts": {
+        "pass": 1
+      },
+      "skips": []
+    },
+    "starmap-tests-l_ey78bc.jsonl": {
+      "counts": {
+        "pass": 5023,
+        "skip": 21
+      },
+      "skips": [
+        "github.com/agentstation/starmap/internal/providers/anthropic:TestRefreshAnthropicProviderFixture",
+        "github.com/agentstation/starmap/internal/providers/anthropic:TestAnthropicProviderFixtureCurrency",
+        "github.com/agentstation/starmap/internal/providers/openai:TestClientErrors/missing_provider_configuration",
+        "github.com/agentstation/starmap/internal/providers/openai:TestRefreshOpenAICompatibleProviderFixture",
+        "github.com/agentstation/starmap/internal/providers/openai:TestOpenAICompatibleProviderFixtureCurrency",
+        "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock:TestWindowsMonitorFactoryRequiresSourceBounds",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinationBackendConditionalRecords",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinationBackendConcurrentCAS",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinationBackendRefusesInvalidAndExpiredRecords/type",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinationBackendRefusesInvalidAndExpiredRecords/shape",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinationBackendRefusesInvalidAndExpiredRecords/version",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinationBackendRefusesInvalidAndExpiredRecords/schema",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinationBackendRefusesInvalidAndExpiredRecords/size",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinationBackendRefusesInvalidAndExpiredRecords/expiration",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinationBackendRefusesCancellationAndUnconditionalWrites",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinationBackendRefusesReplicaReadsAndWrites",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinationBackendConfigurationIsInert",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinationBackendRetainsStateAcrossServerRestart",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinatedCatalogSurvivesProcessAndServiceRestart",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinatedCatalogProcess",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/valkey:TestCoordinatedCatalogUsesNativeObjectAndCoordinationServices"
+      ]
+    },
+    "starmap-tests-jaeybulx.jsonl": {
+      "counts": {
+        "pass": 454,
+        "skip": 1
+      },
+      "skips": [
+        "github.com/agentstation/starmap/runtime:TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
+      ]
+    },
+    "starmap-tests-oloxvu3o.jsonl": {
+      "counts": {
+        "pass": 443
+      },
+      "skips": []
+    },
+    "starmap-tests-bti5dvzy.jsonl": {
+      "counts": {
+        "pass": 358,
+        "skip": 2
+      },
+      "skips": [
+        "github.com/agentstation/starmap/runtime:TestPublicChannelUpgradeRetainsAcceptedCatalogBeforeRefresh",
+        "github.com/agentstation/starmap/runtime:TestPublicCatalogActivatesWithoutProviderCredentials"
+      ]
+    },
+    "go-check-events.jsonl": {
+      "counts": {
+        "pass": 56
+      },
+      "skips": []
+    },
+    "starmap-tests-hkucrxc4.jsonl": {
+      "counts": {
+        "pass": 532
+      },
+      "skips": []
+    }
+  },
+  "capacity": {
+    "test": "TestPublicPublicationProfileRetainsBoundedState",
+    "pass": 1,
+    "elapsed_seconds": 218.7
+  },
+  "collection": {
+    "first_session": 37371,
+    "first_exit_code": 1,
+    "reason": "A test directory matched the JSON filename glob. The collector refused to open it. Tests were unaffected.",
+    "repaired_session": 9245,
+    "repaired_exit_code": 0,
+    "repair": "Skipped directories and verified existing saved prefixes before appending. Source handles drained after verifier cleanup.",
+    "source_removed": true
+  },
+  "artifacts": {
+    "csp13-private-stream-verify.log": {
+      "raw": "csp13-private-stream-verify.log.gz",
+      "sha256": "1a9e530eb3af1e2974ba5483dd2846bb1c5c843ab2132a0fa643aef1bea34e50",
+      "gzip_sha256": "ad59afe13c22d6f3087a29b38b20f0c109fb0f784895ca2defe0060183980630"
+    },
+    "capture-status.json": {
+      "raw": "capture-status.json.gz",
+      "sha256": "d8bf2e5fa265f777a87a89f655e09ccb88521973ba8ded97509ec0727b4421ee",
+      "gzip_sha256": "aad026bad9558dab7b6f53ce25d1a9c202ee63f1aa5948e2e0dad58d4d1dfdc0"
+    },
+    "go-check-events.jsonl": {
+      "raw": "go-check-events.jsonl.gz",
+      "sha256": "8f933aceceb46ffb082b1a3b71254f7f8eb299ea7e881b70f2c12e8ae3cb66a5",
+      "gzip_sha256": "6d749a7b4256a5c036377f935810d9d61559d67a3212b03d1aed89718ddd43a4"
+    },
+    "starmap-tests-2bei742m.jsonl": {
+      "raw": "starmap-tests-2bei742m.jsonl.gz",
+      "sha256": "c6b8e483470dcf64fab5d2fee3d4a72326fa042e7eb31dfd9bde7dc0c5f25e89",
+      "gzip_sha256": "f49e39ac4b734ad8313a4d6410fbb663f447d68e9dc7966aee7f9c8940358bee"
+    },
+    "starmap-tests-bti5dvzy.inventory.json": {
+      "raw": "starmap-tests-bti5dvzy.inventory.json.gz",
+      "sha256": "bc5b6b443d449be82bb7c7a1862d06e878573509c18e419ba941468d4565c68d",
+      "gzip_sha256": "762525a76cbe4cae231f5d69cfc1943b685dead56b8e348897c46c3eeb9c9677"
+    },
+    "starmap-tests-bti5dvzy.jsonl": {
+      "raw": "starmap-tests-bti5dvzy.jsonl.gz",
+      "sha256": "12d5c2ff739d82959fbc11347d6f02d734d41e846808a02252b3524f40c3dfbf",
+      "gzip_sha256": "8bc45b7edaddf46124f2252652a4502d736c327cd0f75c6716875b2360b40bbd"
+    },
+    "starmap-tests-gqzsj8jd.jsonl": {
+      "raw": "starmap-tests-gqzsj8jd.jsonl.gz",
+      "sha256": "745f1cd78e05d6ff674d86fc82fb8a7971f42c1cf2dbfc2470c2ef0b9590876b",
+      "gzip_sha256": "9330b4c1313dc2f49db10250e894eca992b837954fbc7decc0ba33f8f9fcdbf3"
+    },
+    "starmap-tests-hkucrxc4.inventory.json": {
+      "raw": "starmap-tests-hkucrxc4.inventory.json.gz",
+      "sha256": "b1d222e9b6b46788641b8c24b9c975403a6b19c7c04a1d2d14631709cac1f4e6",
+      "gzip_sha256": "d23466e59a617b26aa5ccc0d84fe532a83d3533414d2238f9e94d8bcf1aec625"
+    },
+    "starmap-tests-hkucrxc4.jsonl": {
+      "raw": "starmap-tests-hkucrxc4.jsonl.gz",
+      "sha256": "a53be74b23a63489079b98b62817444bbde21da7c02a11d01b2cf167d89409e9",
+      "gzip_sha256": "04f0b6b195c5afffab0b42069d6598622f741325f9ae1ef1bdbb638ad49f9052"
+    },
+    "starmap-tests-jaeybulx.inventory.json": {
+      "raw": "starmap-tests-jaeybulx.inventory.json.gz",
+      "sha256": "bb5adaef8690698c934cabfd9f61057e7a5ba9c7339835993ad90f2042ca0c3f",
+      "gzip_sha256": "927dd0ab2deb4abb9f7643e17f34724d2b628cb43225ae4692e14d5f89815f65"
+    },
+    "starmap-tests-jaeybulx.jsonl": {
+      "raw": "starmap-tests-jaeybulx.jsonl.gz",
+      "sha256": "4e54f15ce25bc994793b6fd436181445d39df7e34376bf20793e7f1ee1a80b3f",
+      "gzip_sha256": "00a473e7a25775d0d21955d38c523bc87443305a1a3d0f0441ba02e7a937e9a8"
+    },
+    "starmap-tests-l_ey78bc.jsonl": {
+      "raw": "starmap-tests-l_ey78bc.jsonl.gz",
+      "sha256": "cb8bf292ba4c20b804f659124c7fc7ba65523ee9352fbfe795616b2b9943cbb8",
+      "gzip_sha256": "ecc48fe3648625fe4a0cbc90a620112a595a10ad2aeddf808d91c712108268fa"
+    },
+    "starmap-tests-oloxvu3o.jsonl": {
+      "raw": "starmap-tests-oloxvu3o.jsonl.gz",
+      "sha256": "b0cecd7eb2d873b1db6e0b19ba9bcb9bfac7bab7c9e1fccedd0d546aa21c6920",
+      "gzip_sha256": "8e0c5b124989a9fd5544f8fa5e8561781364cdf3b70edf681d03720aabfc7831"
+    }
+  },
+  "next_action": "Finish #192 native qualification and merge if checks pass. Integrate the actual main merge, run checks for changed dependencies and workflows, run required pre-PR review, then publish the producer for native CI.",
+  "plan_checks": {
+    "structure": "plan-validation.json",
+    "scoped_writing": "PASS: current resume, ledger, and newest entry; zero diagnostics",
+    "full_writing": "1935 files, 226 historical diagnostics, exit 2. No new normalized diagnostic identities."
+  }
+}
