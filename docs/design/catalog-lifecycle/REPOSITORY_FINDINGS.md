@@ -4933,3 +4933,20 @@ This checkpoint does not recover runtime identity, replay floors, or path-bound 
 Independent later history, admission, and full recovery remain unfinished.
 
 Publish the producer API before final consumer qualification. Use the published module without a local replacement.
+
+### Retained runtime publication: September 28, 2026
+
+The retained runtime contains more than its owner record. It also holds its instance seed, catalog inputs, pending publication references, and upstream replay evidence.
+The new Starmap inspector validates these through their existing owners without opening a runtime, reading credentials, or acquiring source data.
+Review found that an unsupported discovery schema previously returned empty state. The regression test verifies refusal. The source reader now refuses it and preserves the saved file.
+
+Starport's candidate runtime publication checks the configured owner and scheduler identity before installing the private tree.
+Local integration tests use real Badger, SQLite, and file storage. They cover preserved identity, exact retry, invalid seeds, different replicas, and changed scheduler overrides.
+The tests verify that all storage barriers remain closed after publication or validation failure.
+The different-replica case refuses before target stores exist.
+
+The inspector preserves a structurally valid pending semantic publication without applying it.
+It refuses path-bound migration and native publication journals. Their owner recovery, accepted-catalog consistency, independent later history, and controlled activation remain unfinished.
+Producer publication and final qualification against the published consumer module must precede completion claims.
+
+The [runtime evidence proof](../../plans/proof/starport-production-catalog/csp13/runtime-evidence-recovery-2026-09-28/verification.json) records the current checks and remaining qualification.

@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-29T03:26:02.491656+00:00",
+  "checked_at": "2026-09-29T03:57:57.274161+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -1268,24 +1268,37 @@
   },
   "remote_state_note": "Producer #187 merged. Consumer #387 awaits native CI at reviewed 6f97ba52. Eight dependency PRs retain their recorded review and repair actions.",
   "open_queue_snapshot": {
-    "checked_at": "2026-09-29T03:26:02.491656+00:00",
+    "checked_at": "2026-09-29T03:57:57.274161+00:00",
     "starmap": [
       {
         "baseRefName": "main",
-        "headRefName": "codex/recovery-credential-policy",
+        "headRefOid": "782d9d1e60d926c016e3c086554b32bb80fc9079",
+        "isDraft": true,
+        "number": 196,
+        "title": "recovery: validate retained runtime identity and replay evidence",
+        "checks_summary": {
+          "SUCCESS": 11,
+          "IN_PROGRESS": 11
+        },
+        "owner": "this chat",
+        "disposition": "Reviewed recovery prerequisite awaiting native CI.",
+        "next_action": "Merge #195 before #196. Require current exact head, base ancestry, passing checks, resolved threads, and protection.",
+        "current_proof": "../../csp13/runtime-evidence-recovery-2026-09-28/verification.json"
+      },
+      {
+        "baseRefName": "main",
         "headRefOid": "3b5d06a5f3c1de88b7a8de2d939cb0e58622ba38",
         "isDraft": true,
         "number": 195,
         "title": "recovery: inspect retained baseline exports without activation",
-        "url": "https://github.com/agentstation/starmap/pull/195",
         "checks_summary": {
-          "SUCCESS": 8,
-          "IN_PROGRESS": 14
+          "SUCCESS": 30,
+          "IN_PROGRESS": 2
         },
         "owner": "this chat",
-        "disposition": "Reviewed baseline inspection prerequisite. Draft while native CI runs.",
-        "next_action": "Require all checks, exact head and base, resolved threads, and protection before merge.",
-        "current_proof": "../../csp13/baseline-export-recovery-2026-09-28/verification.json"
+        "disposition": "Reviewed recovery prerequisite awaiting native CI.",
+        "next_action": "Merge #195 before #196. Require current exact head, base ancestry, passing checks, resolved threads, and protection.",
+        "current_proof": "../../csp13/runtime-evidence-recovery-2026-09-28/verification.json"
       }
     ],
     "starport": []
@@ -1353,7 +1366,7 @@
     "status": "done",
     "next_task": "CSP13"
   },
-  "starmap_open_count": 1,
+  "starmap_open_count": 2,
   "starport_open_count": 0,
   "dependency_189_completion": {
     "checked_at": "2026-09-28T17:04:54.239668+00:00",
@@ -1753,26 +1766,24 @@
     "disposition": "Repairs published on existing #388; fresh native CI pending."
   },
   "previous_open_snapshot": {
-    "checked_at": "2026-09-29T03:00:30.567174+00:00",
+    "checked_at": "2026-09-29T03:26:02.491656+00:00",
     "starmap": [
       {
         "baseRefName": "main",
-        "headRefName": "codex/recovery-file-access",
-        "headRefOid": "f53f8bef0fc220e00f553c0135df6438e099d544",
+        "headRefName": "codex/recovery-credential-policy",
+        "headRefOid": "3b5d06a5f3c1de88b7a8de2d939cb0e58622ba38",
         "isDraft": true,
-        "number": 194,
-        "title": "recovery: inspect credential policies and stream private files",
-        "url": "https://github.com/agentstation/starmap/pull/194",
+        "number": 195,
+        "title": "recovery: inspect retained baseline exports without activation",
+        "url": "https://github.com/agentstation/starmap/pull/195",
         "checks_summary": {
-          "SUCCESS": 23,
-          "IN_PROGRESS": 8
+          "SUCCESS": 8,
+          "IN_PROGRESS": 14
         },
         "owner": "this chat",
-        "proof": "../../csp13/owner-publication-command-2026-09-28/verification.json",
-        "baseRefOid": "ddd19c1217d90c359ba75f669efb547f16bb421a",
-        "current_proof": "../../csp13/credential-policy-publication-2026-09-28/verification.json",
-        "disposition": "Reviewed #194 remains in native and race CI at f53f8bef. No new failure reported.",
-        "next_action": "Require all native and required checks, then verify exact head, base, threads, and protection before merge."
+        "disposition": "Reviewed baseline inspection prerequisite. Draft while native CI runs.",
+        "next_action": "Require all checks, exact head and base, resolved threads, and protection before merge.",
+        "current_proof": "../../csp13/baseline-export-recovery-2026-09-28/verification.json"
       }
     ],
     "starport": []
@@ -1873,9 +1884,10 @@
   "baseline_export_checkpoint": "../../csp13/baseline-export-recovery-2026-09-28/verification.json",
   "unpublished_local_recovery": {
     "repository": "agentstation/starport",
-    "head": "e02e04f47255dccf85b435f34e60dcb05d65938d",
+    "head": "d73f1de3055afc1be7d0107223ca995a808e83e5",
     "branch": "codex/storage-recovery",
     "owner": "this chat",
-    "next_action": "Complete remaining recovery owners and activation before full checks and publication."
-  }
+    "next_action": "Complete journals, independent history, activation, and populated migration before full checks and publication."
+  },
+  "runtime_evidence_checkpoint": "../../csp13/runtime-evidence-recovery-2026-09-28/verification.json"
 }

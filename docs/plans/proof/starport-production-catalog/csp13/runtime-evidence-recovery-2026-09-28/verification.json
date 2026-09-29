@@ -1,0 +1,240 @@
+{
+  "recorded_at": "2026-09-29T03:57:57.274161+00:00",
+  "status": "candidate prerequisite; CSP13 remains in_progress",
+  "producer": {
+    "repository": "agentstation/starmap",
+    "head": "782d9d1e60d926c016e3c086554b32bb80fc9079",
+    "tree": "d665afd3bee419b1323acc902fb721d881026997",
+    "branch": "codex/retained-runtime-recovery",
+    "pull_request": 196,
+    "native_qualification": "pending"
+  },
+  "consumer": {
+    "repository": "agentstation/starport",
+    "head": "d73f1de3055afc1be7d0107223ca995a808e83e5",
+    "tree": "983936739609b295ad51de6fc5d23131e3654445",
+    "branch": "codex/storage-recovery",
+    "published": false,
+    "starmap_module": "github.com/agentstation/starmap v0.16.6-0.20260929035210-782d9d1e60d9",
+    "qualification": "GOWORK=off, published module, no replacement"
+  },
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "checks": {
+    "inspection-race": {
+      "pass": 21
+    },
+    "github-race": {
+      "pass": 66
+    },
+    "discovery-integration-fixed-race": {
+      "pass": 1
+    },
+    "producer-purego": {
+      "pass": 37
+    },
+    "schema-purego": {
+      "pass": 1
+    },
+    "consumer-pinned-race": {
+      "pass": 37,
+      "skip": 2
+    },
+    "consumer-pinned-purego": {
+      "pass": 37,
+      "skip": 2
+    },
+    "consumer-pinned-architecture": {
+      "pass": 8
+    },
+    "repository_checks": "pass",
+    "consumer_static": "pinned lint, vet, module verification, tidy diff, changed prose, and git diff check pass"
+  },
+  "review": {
+    "gate": "pre-pr",
+    "mode": "auto",
+    "base": "3b5d06a5f3c1de88b7a8de2d939cb0e58622ba38",
+    "engine": "Claude Opus 5.5 high",
+    "threshold": "P0-only",
+    "passes": 1,
+    "findings": 0,
+    "bundle_bytes": 32347,
+    "secret_scan": "clean"
+  },
+  "contract": [
+    "Read-only owner inspection validates runtime identity, seed, retained inputs, permission structure, pending semantic references, and GitHub replay evidence.",
+    "Unsupported GitHub discovery schemas fail without clearing the saved replay floor.",
+    "Runtime publication requires the configured owner and scheduler identity. Complete inventory checks bracket validation. Exact retries preserve the existing tree.",
+    "All storage import barriers remain closed. Inspection grants no permission and does not reconcile accepted catalog state or later history.",
+    "Pending native file publications and path-bound migration records require separate owner recovery."
+  ],
+  "failures_retained": [
+    "The first discovery integration fixture used the public helper return shape with the internal helper. The compile check caught the mismatch. The corrected regression passes.",
+    "A concurrent first repository check reached that incomplete fixture. The final complete checks run passed after the fix.",
+    "The initial focused lint rejected a redundant io.Writer type. Type inference resolved it.",
+    "The initial PR prose lint rejected a semicolon. The corrected body passes and is published."
+  ],
+  "remaining": [
+    "Merge prerequisite #195 and qualify #196 on native CI before merge.",
+    "Path-bound journals, accepted-catalog consistency, independent later history, and controlled activation.",
+    "Populated migration and full CSP13 acceptance.",
+    "Full consumer verification, required review, publication, native CI, and merge."
+  ],
+  "artifacts": [
+    {
+      "path": "inspection-race.jsonl.gz",
+      "sha256": "06e3deec283dfaee77cac1b5337085520cbe2d9e8c49c73587ce23a335c7a4fc",
+      "uncompressed_sha256": "dd06926b72cf1de5ab2d281f2079b1f0526b32ba5659cf684b1f0ef315f3d5e3",
+      "uncompressed_bytes": 22539
+    },
+    {
+      "path": "github-race.jsonl.gz",
+      "sha256": "e6a76c74a679f5218278389b2c91e0c4e20c658c626213bd2a7466f9c37c856c",
+      "uncompressed_sha256": "cf42cba41518ac64350953d3a4f3889e316c66daf7eed139c3923c6284147acd",
+      "uncompressed_bytes": 91740
+    },
+    {
+      "path": "discovery-integration-race.jsonl.gz",
+      "sha256": "419fff20a7bfe0cb2c008aa6181ba567aad0f13bff9fe4d52fed2a886471faee",
+      "uncompressed_sha256": "f05e0afecf167cb64673db213820919ac3cbaab0efda2887c15de02351d2ce57",
+      "uncompressed_bytes": 1171
+    },
+    {
+      "path": "discovery-integration-fixed-race.jsonl.gz",
+      "sha256": "50540e84ef205f09a4992d731725873848e90f99ae71ea3a54e4b5051807eeee",
+      "uncompressed_sha256": "f4e061079b2b24fefb57043b7ebde7776e3c847aa0ae3099965ab9d89a78f495",
+      "uncompressed_bytes": 1537
+    },
+    {
+      "path": "producer-purego.jsonl.gz",
+      "sha256": "5e6891fe23b7feeeb0cf77ac743f328a1a2f8c560ca405453c1f07e4cc3059f6",
+      "uncompressed_sha256": "d34f93005786f8fa0430d3d1500a1bc4f0430434315ca65105836203e01ec31f",
+      "uncompressed_bytes": 38824
+    },
+    {
+      "path": "schema-purego.jsonl.gz",
+      "sha256": "eb8ff6aae84ffd9f66e86093c86ae82f46c139d99045547cb0f9883a3aeeecf5",
+      "uncompressed_sha256": "1e8d8ed2036622e26ed2d57913dcd2246f30f5435f726e7e20e96e2aff15fbd5",
+      "uncompressed_bytes": 1641
+    },
+    {
+      "path": "producer-checks.log.gz",
+      "sha256": "abbd70ca02a3cd9b1ff25ad99c5b19a66892c0b976ebf3b2e439a6d43f3950ed",
+      "uncompressed_sha256": "0f7181baa659e1e7f5f1da51cb95aa1a60353d872d61c029aff3f7392ca68af9",
+      "uncompressed_bytes": 21754
+    },
+    {
+      "path": "producer-final-checks.log.gz",
+      "sha256": "e57d2d30130d5f7e3a7cd7f050a337ac045e2e8c5f4c10f4c04de5650a69dafb",
+      "uncompressed_sha256": "6708291ba14236c11d0242430ed40b384aebe177470e9ee0983e0fa2c277532a",
+      "uncompressed_bytes": 66071
+    },
+    {
+      "path": "producer-review.log.gz",
+      "sha256": "2b309b4fce434304c42c06df306074b76a35cb9a97d0aa104659ff4b589b161f",
+      "uncompressed_sha256": "5ab196fede6412c6ca21ead3e486e4010648c3bf27b95737cef9af82d52c8847",
+      "uncompressed_bytes": 1336
+    },
+    {
+      "path": "consumer-race.jsonl.gz",
+      "sha256": "9b439270228022ed307048e3a426d136ed13b2167b11042220ec09844ec3fa85",
+      "uncompressed_sha256": "6de975047ab88a93d795825c6150820f77c663ae363490f8e48149bb4714957d",
+      "uncompressed_bytes": 351974
+    },
+    {
+      "path": "consumer-purego.jsonl.gz",
+      "sha256": "2921fcdd5cbf36985eb2a60e1544bb0e97e2e988e9c7165c1537d6ea1ac2c00d",
+      "uncompressed_sha256": "324d1e583c4fc9c79e078242b3b513dd0290820162cc7f1ea296b719df1214a5",
+      "uncompressed_bytes": 352327
+    },
+    {
+      "path": "consumer-pinned-race.jsonl.gz",
+      "sha256": "aa71699d4e022c3df5fe75020fe2a7fc53952888bcfb52efd945e3028a0d8070",
+      "uncompressed_sha256": "8a80eccbf1321ef7c8af9f271968efd4e6913ea5f37f85907249705b97fa30d8",
+      "uncompressed_bytes": 351976
+    },
+    {
+      "path": "consumer-pinned-purego.jsonl.gz",
+      "sha256": "af99c73f32afd164a1cb624f26bd54ab8a05b562f2b2ff688ac5013a119ef018",
+      "uncompressed_sha256": "dd0470fdb0c453413179fe63fcfb3999be3959107aa1add222d1e84dc9975370",
+      "uncompressed_bytes": 352695
+    },
+    {
+      "path": "consumer-pinned-architecture.jsonl.gz",
+      "sha256": "7bcf8f359199f7d0dafd1d0211c3152e47462154f709c3f830ad00df8e374284",
+      "uncompressed_sha256": "2900b857752677e7b99cacc7d6e9eff1051c8c1e142b6f33973a1f8f36a2f69a",
+      "uncompressed_bytes": 8725
+    },
+    {
+      "path": "consumer-pinned-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "uncompressed_bytes": 10
+    },
+    {
+      "path": "consumer-pinned-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "consumer-final-tidy.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "consumer-modules.log.gz",
+      "sha256": "4699dce40a065353f016ef7eb2c309ee9dee73281263a6b29287016349618a1b",
+      "uncompressed_sha256": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+      "uncompressed_bytes": 21
+    },
+    {
+      "path": "consumer-writing.log.gz",
+      "sha256": "03ac755e03fb41d530185275e4afde066bd01a05131a816cc20a3963cb9db778",
+      "uncompressed_sha256": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668",
+      "uncompressed_bytes": 33
+    },
+    {
+      "path": "consumer-pin.log.gz",
+      "sha256": "9654b91463d8845f0bfa3915bfec79fc55305e2d11646e22dea8ab430d2741f5",
+      "uncompressed_sha256": "382f80eb8f979fd5ba77252b7908a9b173688d65f896010a2c9135837a92ffcc",
+      "uncompressed_bytes": 210
+    },
+    {
+      "path": "plan-writing.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "uncompressed_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "uncompressed_bytes": 33
+    },
+    {
+      "path": "queue-starmap.json.gz",
+      "sha256": "52ce63927133a4f8f490476dfdaedee5815450664f664358fa773585cd852305",
+      "uncompressed_sha256": "eabbbe5a796470134734e97d61d1ca838cd59bab73f5ab01a48d2a165f0f4da9",
+      "uncompressed_bytes": 16480
+    },
+    {
+      "path": "queue-starport.json.gz",
+      "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+      "uncompressed_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "uncompressed_bytes": 3
+    },
+    {
+      "path": "195-protection.json.gz",
+      "sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce",
+      "uncompressed_sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+      "uncompressed_bytes": 1357
+    },
+    {
+      "path": "195-threads.json.gz",
+      "sha256": "dc1e9d7d2842722f84ec046c46c7c5a58a10de84d95427d4ad2b9a2fc79b2e58",
+      "uncompressed_sha256": "8e242c1c557e4e64fa8128ef32dd21ca9a5208329d06b858e6622682d0211672",
+      "uncompressed_bytes": 215
+    },
+    {
+      "path": "focused-lint.log.gz",
+      "sha256": "c95f750b024218d0463d9b92c8a89e88299019204ec4a7ddd8a239537ada54aa",
+      "uncompressed_sha256": "c71d8a3b03c33fbe5ef90d31db49aad9bd6412e7a66089c782cc521f9c2f3c44",
+      "uncompressed_bytes": 240
+    }
+  ]
+}

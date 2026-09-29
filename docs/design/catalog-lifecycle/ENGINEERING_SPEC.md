@@ -5303,3 +5303,23 @@ That startup changes the inventory, so a later publication retry must not replac
 Source and target writers must remain fenced throughout publication.
 The caller verifies the complete backup inventory before and after component validation.
 This procedure does not establish independent post-backup history or authorize inference.
+
+### Retained runtime publication: September 28, 2026
+
+Starmap's read-only retained-directory inspection owns runtime record validation.
+Require the expected product, deployment, replica, scheduler override, and retained instance seed.
+Validate source and provider inputs, manual ancestry, removal policy, generation pins, permission checkpoints, and pending input references.
+The GitHub source owner validates retained discovery records, including their sequence floors and content identities.
+An unsupported discovery schema must cause an error. It must not reset the source to an empty replay floor.
+
+Starport's `backup publish-files --role runtime-evidence` composes this inspection with complete inventory checks and native private-tree publication.
+Select the configured target path and require the captured replica's owner action.
+Refuse different replicas and scheduler overrides before publication. Preserve exact retries and conflicting destinations.
+Keep every storage import barrier closed. The procedure does not establish accepted-catalog consistency or current authority permission.
+
+Validate and preserve pending semantic input publications without applying them.
+Refuse unknown files, incomplete references, pending native file publications, and path-bound migration records.
+Keep those records for their separate owner recovery procedures. Do not copy native filesystem identity as portable authority.
+Independent post-backup history and controlled activation remain required before inference.
+
+The [runtime evidence proof](../../plans/proof/starport-production-catalog/csp13/runtime-evidence-recovery-2026-09-28/verification.json) records the current checks and remaining qualification.
