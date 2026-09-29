@@ -1,0 +1,315 @@
+{
+  "toolchain": "go1.27.1 darwin/arm64",
+  "scope": "closed imported graph inspection and strict owner recovery schemas",
+  "checks": {
+    "owners-race": {
+      "log": "/tmp/csp13-final-graph-20260929/owners-race.jsonl",
+      "results": {
+        "pass": 248
+      },
+      "top_level": 39,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/account",
+          "Action": "pass",
+          "Elapsed": 1.595
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/apikey",
+          "Action": "pass",
+          "Elapsed": 2.301
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Action": "pass",
+          "Elapsed": 5.307
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 175.593
+        }
+      ]
+    },
+    "owners-purego": {
+      "log": "/tmp/csp13-final-graph-20260929/owners-purego.jsonl",
+      "results": {
+        "pass": 248
+      },
+      "top_level": 39,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/apikey",
+          "Action": "pass",
+          "Elapsed": 0.629
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/account",
+          "Action": "pass",
+          "Elapsed": 1.225
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Action": "pass",
+          "Elapsed": 6.038
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 103.784
+        }
+      ]
+    },
+    "imported-final-race": {
+      "log": "/tmp/csp13-final-graph-20260929/imported-final-race.jsonl",
+      "results": {
+        "pass": 21
+      },
+      "top_level": 4,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/account",
+          "Action": "pass",
+          "Elapsed": 1.365
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Action": "pass",
+          "Elapsed": 1.655
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/apikey",
+          "Action": "pass",
+          "Elapsed": 2.416
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 46.254
+        }
+      ]
+    },
+    "imported-final-purego": {
+      "log": "/tmp/csp13-final-graph-20260929/imported-final-purego.jsonl",
+      "results": {
+        "pass": 21
+      },
+      "top_level": 4,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/apikey",
+          "Action": "pass",
+          "Elapsed": 0.246
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/account",
+          "Action": "pass",
+          "Elapsed": 0.48
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Action": "pass",
+          "Elapsed": 1.1280000000000001
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 27.525
+        }
+      ]
+    },
+    "policy-fail-before": {
+      "log": "/tmp/csp13-final-graph-20260929/policy-fail-before.jsonl",
+      "results": {
+        "fail": 10
+      },
+      "top_level": 0,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "fail",
+          "Elapsed": 4.718
+        }
+      ]
+    },
+    "template-fail-before": {
+      "log": "/tmp/csp13-final-graph-20260929/template-fail-before.jsonl",
+      "results": {
+        "fail": 2
+      },
+      "top_level": 0,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "fail",
+          "Elapsed": 1.149
+        }
+      ]
+    },
+    "boundary-fail-before": {
+      "log": "/tmp/csp13-final-graph-20260929/boundary-fail-before.jsonl",
+      "results": {
+        "fail": 2
+      },
+      "top_level": 0,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "fail",
+          "Elapsed": 1.841
+        }
+      ]
+    },
+    "privacy-fail-before": {
+      "log": "/tmp/csp13-final-graph-20260929/privacy-fail-before.jsonl",
+      "results": {
+        "pass": 1
+      },
+      "top_level": 1,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Action": "pass",
+          "Elapsed": 0.277
+        }
+      ]
+    },
+    "privacy-final": {
+      "log": "/tmp/csp13-final-graph-20260929/privacy-final.jsonl",
+      "results": {
+        "pass": 1
+      },
+      "top_level": 1,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/identity",
+          "Action": "pass",
+          "Elapsed": 0.277
+        }
+      ]
+    }
+  },
+  "qualification": {
+    "native_graph_recipes": [
+      "Badger + SQLite + filesystem",
+      "Valkey + PostgreSQL + MinIO object storage"
+    ],
+    "native_identity_owner_backends": [
+      "SQLite",
+      "PostgreSQL",
+      "MySQL"
+    ],
+    "windows_linux_application": "not run in this slice",
+    "activation": "not performed",
+    "services": "left running for parent",
+    "external_fencing": "required caller precondition; not established by inspection"
+  },
+  "manual_review": "No remaining finding in final graph/native adapter seam. History completeness and fleet fencing remain coordinator-owned.",
+  "notes": [
+    "Nine unknown policy field/TTL cases failed before strict recovery validation. Template unknown-field and post-capture witness-change regressions also failed before fixes.",
+    "Malformed identity pointer formatting did not reproduce disclosure. Original value representation retained; added regression passes.",
+    "Broad owner checks ran before final witness recheck. Final focused race/pure-Go checks qualify that change and final identity formatting regression.",
+    "One intermediate fixture panic used raw ValkeyStore as TimeBoundStore; fixed by native incarnation binding.",
+    "One initial lint finding was reduced by extracting strict account and credential record validation; final lint has zero findings."
+  ],
+  "commands": [
+    "python3 run-native.py owners-race.jsonl 'Test(ImportedReferences|References|Backup|IdentityReplay|Recovery|.*Replay)'",
+    "python3 run-purego.py owners-purego.jsonl 'Test(ImportedReferences|References|Backup|IdentityReplay|Recovery|.*Replay)'",
+    "python3 run-native.py imported-final-race.jsonl 'Test(ImportedReferences|IdentityReplayCanonicalPrivatePayload)'",
+    "python3 run-purego.py imported-final-purego.jsonl 'Test(ImportedReferences|IdentityReplayCanonicalPrivatePayload)'",
+    "go vet ./internal/recovery ./internal/account ./internal/apikey ./internal/identity",
+    "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/recovery ./internal/account ./internal/apikey ./internal/identity",
+    "technical-writing lint (11 changed Go files) --format text",
+    "git diff --check"
+  ],
+  "static_checks": {
+    "vet-final": {
+      "exit_code": 0,
+      "log": "/tmp/csp13-final-graph-20260929/vet-final.log"
+    },
+    "lint-final": {
+      "exit_code": 0,
+      "log": "/tmp/csp13-final-graph-20260929/lint-final.log"
+    },
+    "prose-final": {
+      "exit_code": 0,
+      "log": "/tmp/csp13-final-graph-20260929/prose-final.log"
+    }
+  },
+  "task": "CSP13",
+  "task_complete": false,
+  "source_commit": "4a9ce55c5d20a9e6f22dcec8cf0df5178be53b86",
+  "integration_commit": "d7da3c9d",
+  "integrated_head": "2250f314",
+  "artifacts": {
+    "native-race-final2.jsonl.gz": {
+      "sha256_uncompressed": "7c5732fd3ad0d3ad6430f290014d832ddbd1ab5ffbe7e9742844cf2f97ba4cb4"
+    },
+    "imported-final-race.jsonl.gz": {
+      "sha256_uncompressed": "0fbf49ce859d35d673c5830a061bdf1b9c966f1d2c63889d93131a1f8ccd3527"
+    },
+    "vet.log.gz": {
+      "sha256_uncompressed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "privacy-fail-before.jsonl.gz": {
+      "sha256_uncompressed": "b6919a9b40361132a18660c3f115acd279ffba33fa8cf00da83b8d5c19352597"
+    },
+    "template-fail-before.jsonl.gz": {
+      "sha256_uncompressed": "310cd0383d642140ce7ab10efb042da65bc0fc22c2383b87c0822d9ab41581eb"
+    },
+    "lint.log.gz": {
+      "sha256_uncompressed": "f0eafe49c214b2f931556c7f4614cf2769e08f3a179da4d51ca427a603e4baf2"
+    },
+    "owners-purego.jsonl.gz": {
+      "sha256_uncompressed": "7f74d2bc958923fc82a9d0185cd7590a875d8752670945cd6890cf97e8662c78"
+    },
+    "native-race-final.jsonl.gz": {
+      "sha256_uncompressed": "813c9689033d3f942b01de70d4d71de341ce4f64ce8d039ecad7fa37e2b9fd8d"
+    },
+    "native-race.jsonl.gz": {
+      "sha256_uncompressed": "dedfb455c09e2cb5f35aae62cbc6b10885d25eb1dfe188585a00d195318ece4d"
+    },
+    "policy-fail-before.jsonl.gz": {
+      "sha256_uncompressed": "79e736da6bfd55adf7e2cf8349a439b9df0cf861f286a9a42b275079d9c443e3"
+    },
+    "edit.py.gz": {
+      "sha256_uncompressed": "7a937dd48aea9b2762c4b6f74aff8b2ddab12c8ae293e18ac0d8d7c573280734"
+    },
+    "imported-final-purego.jsonl.gz": {
+      "sha256_uncompressed": "cc7fbc84d989e29939042c9c8b0ee66f342cb1f2f09048c004ba728b74992952"
+    },
+    "privacy-final.jsonl.gz": {
+      "sha256_uncompressed": "b110decd55b8521405421f13f249b5645f943edec86204ce09534e483936f85e"
+    },
+    "run-purego.py.gz": {
+      "sha256_uncompressed": "affe8eeaf69940fcfaeb15f97d46010ae0302afb4524d97b5ff0ea567306eecb"
+    },
+    "imported-first.jsonl.gz": {
+      "sha256_uncompressed": "3af823d465a05618eb0c03a1503f1dc52ef4b4dc0f7678f415a4da4d03314938"
+    },
+    "run-native.py.gz": {
+      "sha256_uncompressed": "b7cee0b32041cb61c0edbda6c1c13b2ebf74ea3682dc52761bd4235e938d130a"
+    },
+    "lint-final.log.gz": {
+      "sha256_uncompressed": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "policy-fixed.jsonl.gz": {
+      "sha256_uncompressed": "5bc0c506097dc48466ecc34953ab51aa552e2a846f1ba2e2f1939c8db2bb7afc"
+    },
+    "prose.log.gz": {
+      "sha256_uncompressed": "00bba2437677bb9b56f3edacd34520511af2242d4a8ee1f3ec3a20d5fbc05f03"
+    },
+    "owners-race.jsonl.gz": {
+      "sha256_uncompressed": "73c84cc71c5a70683e0482680be70d70053ae3e2a1aefce62b44323aa945fc8e"
+    },
+    "vet-final.log.gz": {
+      "sha256_uncompressed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prose-final.log.gz": {
+      "sha256_uncompressed": "0b59c8f5bd29d838a41b0a821a79c1d0378ad7dbc35f5ec9807d7a3df7dd40f5"
+    },
+    "boundary-fail-before.jsonl.gz": {
+      "sha256_uncompressed": "c81901793d1e927d392fcdfb3bbfe0ad1f7473a206c4a07f1e76c595b9b11edd"
+    }
+  }
+}

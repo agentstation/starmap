@@ -1,0 +1,42 @@
+{
+  "task": "CSP13",
+  "task_complete": false,
+  "source_commit": "56aceaf59cfe597f1231d4cc82001cce4725b12c",
+  "go_command": "GOWORK=off go test -json -timeout=8m ./...",
+  "go_exit_code": 1,
+  "go_test_results": {
+    "pass": 6223,
+    "fail": 1,
+    "skip": 437
+  },
+  "go_package_results": {
+    "pass": 64,
+    "fail": 3,
+    "skip": 9
+  },
+  "failures": [
+    "reservation test import cycle via identity and authorization/revision",
+    "architecture forbidden credentials dependency on reservation",
+    "application package exceeded the selected eight-minute timeout; incomplete qualification"
+  ],
+  "static_scripts": {
+    "pass": 25,
+    "fail": 1,
+    "failed": "verify-v1-architecture.sh"
+  },
+  "artifacts": {
+    "go-test.jsonl.gz": {
+      "sha256_uncompressed": "0c187b249d9067a601559cf91e9c2c00d2626a746fb81c18cc9cd0ecae4e3b91"
+    },
+    "static-checks.json.gz": {
+      "sha256_uncompressed": "7474dfbc2b7f41cce81879a9d78336d9fe8cc7f642dea74724eb8bad97642a2f"
+    },
+    "static-checks.py.gz": {
+      "sha256_uncompressed": "17188442257bdd802899c5191ddd00cd0deded3f003c3e8fe8e3b77b95955d5e"
+    },
+    "verify-v1-architecture.log.gz": {
+      "sha256_uncompressed": "1e9f8895ade3e72fa666b3a04c57b4b367a744839c855d58077136a8a1ec0f5c"
+    }
+  },
+  "next_action": "Repair reader ownership and intended recovery dependency declaration; rerun affected checks and final Go suite with a longer bounded timeout."
+}

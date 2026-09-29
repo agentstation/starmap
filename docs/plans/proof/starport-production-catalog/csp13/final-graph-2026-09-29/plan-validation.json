@@ -1,0 +1,10 @@
+{
+  "status": "pass",
+  "anchors": 97,
+  "links": 161,
+  "ledger_rows": 40,
+  "done": 27,
+  "in_progress": "CSP13",
+  "resume_words": 258,
+  "context_note": "The plan retains all forty task contracts. Resume reads current state, the active contract, and current linked evidence. Historical logs remain reference material."
+}
