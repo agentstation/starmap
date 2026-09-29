@@ -1,0 +1,140 @@
+{
+  "state": "LOCAL_COMPONENT_VERIFIED",
+  "task": "CSP13",
+  "task_complete": false,
+  "head": "e7dde8138d6573302cf704bde706efbead78061a",
+  "sql_commit": "7545cb42",
+  "window_integration": "b4c4d3be",
+  "marker_and_bound_commit": "e7dde813",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "backends": [
+    "SQLite",
+    "PostgreSQL",
+    "MySQL",
+    "Badger",
+    "Valkey"
+  ],
+  "checks": {
+    "race-final.jsonl": {
+      "results": {
+        "pass": 43
+      },
+      "skips": []
+    },
+    "race-expanded.jsonl": {
+      "results": {
+        "pass": 38
+      },
+      "skips": []
+    },
+    "pure-final.jsonl": {
+      "results": {
+        "pass": 38
+      },
+      "skips": []
+    },
+    "cursor-before.jsonl": {
+      "results": {
+        "fail": 4
+      },
+      "skips": []
+    },
+    "window-marker-before.jsonl": {
+      "results": {
+        "fail": 3
+      },
+      "skips": []
+    },
+    "window-marker-race.jsonl": {
+      "results": {
+        "pass": 10
+      },
+      "skips": []
+    },
+    "replay-bound-race.jsonl": {
+      "results": {
+        "pass": 64
+      },
+      "skips": []
+    }
+  },
+  "other_checks": {
+    "vet": "PASS",
+    "lint": "PASS (0 issues)",
+    "prose": "PASS (5 files, 0 diagnostics)",
+    "diff": "PASS"
+  },
+  "manual_review": {
+    "reviewer": "recovery_contract",
+    "scope": "ordered SQL replay, import cleanup, transaction owner and tests",
+    "findings": 0
+  },
+  "behavior": [
+    "SQL replay binds exact import identity, sequence, previous receipt, independent evidence digest and typed transition digest.",
+    "Callback writes, receipt and cursor commit atomically. Failed callbacks leave the previous state. Exact old retries do not reapply old permission.",
+    "Later imports preserve historical receipts and remove source cursor authority.",
+    "Final bundle inspection rejects unfinished window-replay markers.",
+    "Domain owners share the native4MiB aggregate key/preimage/new-value bound through storage.ImportReplayMaxBytes."
+  ],
+  "limits": [
+    "Complete interval evidence, typed policy integration, final imported-view validation, authorization revision replacement and coordinated operator commands remain unfinished.",
+    "The SQL owner trusts its in-process domain callback to obey its contract. The transition digest must derive from complete canonical typed input.",
+    "Native Linux and Windows plus full pre-PR checks and structured review remain required."
+  ],
+  "artifacts": {
+    "vet.log.gz": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lint.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "race-expanded.jsonl.gz": {
+      "source_sha256": "d2d908c50d25a9894c1b4c641606c270b7e5c5865ea66a263f01ee7e1deb54ed"
+    },
+    "race-initial.jsonl.gz": {
+      "source_sha256": "c1275a5f90d689653d5dc4a655f50be6f0664d6cc6a309d0df5b1176a7e16abb"
+    },
+    "cursor-before.jsonl.gz": {
+      "source_sha256": "f0c7a3f2e5d0e297a0b5264300f5b8ae21a8540b00b4aae911f305c9871b4907"
+    },
+    "prose-combined.log.gz": {
+      "source_sha256": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668"
+    },
+    "pure-final.jsonl.gz": {
+      "source_sha256": "393d06c9e4652d310063e23484c83f645734fa4c5dce9061096a4ce4e73ff4fb"
+    },
+    "run-storage.py.gz": {
+      "source_sha256": "54a57bb2449459d64bfbe47a168f08acfbdd9698bc6ce7d9fa67e61fe96f99fa"
+    },
+    "lint-final.log.gz": {
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    "race-final.jsonl.gz": {
+      "source_sha256": "53a45c14d475577f5fbec1383fe854a33845dd17cd3c6dacd3dd3e039f4a1fc2"
+    },
+    "prose.log.gz": {
+      "source_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    },
+    "window-marker-before.jsonl.gz": {
+      "source_sha256": "38382db5092c44eec74f0978af9ecc468e50750ee8336ed892c3c1c19b6c7242"
+    },
+    "replay-bound-race.jsonl.gz": {
+      "source_sha256": "dd3ce661ea5f2524d0b7b3c90288b1e2f12bf2da9f9a5b99fc00bfddc712e265"
+    },
+    "fail-before.log.gz": {
+      "source_sha256": "806615f792470a979357a2f9b54d055efad3157a89343b0520ea268c3c513c58"
+    },
+    "run-pure.py.gz": {
+      "source_sha256": "cbd15ec6318de2a131b0f473acf9849f08c3b7caa6d5f4457766733322030792"
+    },
+    "vet-final.log.gz": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "window-marker-race.jsonl.gz": {
+      "source_sha256": "9db114d69b2b71454d4e19f44762f22ab10ca148252b3565d2fc5dabe673efea"
+    },
+    "prose-final.log.gz": {
+      "source_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "toolchain": "go1.27.1 darwin/arm64",
+  "checks": {
+    "race": {
+      "all_results": {
+        "pass": 258,
+        "skip": 1
+      },
+      "new_window_results": {
+        "pass": 35
+      },
+      "skips": [
+        "TestTeamBudgetHistoryHandoff/postgres-valkey"
+      ],
+      "package_result": "pass",
+      "elapsed": 13.811,
+      "log": "/tmp/csp13-window-replay-20260929/race.jsonl"
+    },
+    "purego": {
+      "all_results": {
+        "pass": 258,
+        "skip": 1
+      },
+      "new_window_results": {
+        "pass": 35
+      },
+      "skips": [
+        "TestTeamBudgetHistoryHandoff/postgres-valkey"
+      ],
+      "package_result": "pass",
+      "elapsed": 7.279,
+      "log": "/tmp/csp13-window-replay-20260929/purego.jsonl"
+    },
+    "vet": "pass",
+    "lint": "golangci-lint v2.13.2: 0 issues",
+    "prose": "2 files, 0 diagnostics"
+  },
+  "fixture": "csp13-unprefixed-valkey-20260929 remains running; isolated namespaces; no flush",
+  "limits": "Owner preparation only. Final source coverage, cross-window/cross-owner accounting and SQL policy validation, and activation remain coordinator-owned. Native Linux and Windows not run in this task.",
+  "source_commit": "43813a9dc7fd88f244bd206273f42a367c3c0530",
+  "integration_commit": "b4c4d3be",
+  "task_complete": false,
+  "manual_root_review": "No correctness finding in staged base, full census, or retained correction-chain logic.",
+  "artifacts": {
+    "initial.jsonl.gz": {
+      "source_sha256": "bbc6c0e485b2790d543878b670be30efcfd36d3bb857473dbc25a56b885bed37"
+    },
+    "vet.log.gz": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "race.jsonl.gz": {
+      "source_sha256": "3da62116b0c38816f8d32f8c3de29c8bd2b5335dcfbbaf34136551afda17c37c"
+    },
+    "lint.log.gz": {
+      "source_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "refactor.log.gz": {
+      "source_sha256": "787144faa2247210ce3051a827437fb8a0c74e7b970b80191bec36afc33c5228"
+    },
+    "expanded.jsonl.gz": {
+      "source_sha256": "e259519bdc1b42247bd28e37acda5a0926693c9cc37b8f35ab808ba2f086df06"
+    },
+    "prose.log.gz": {
+      "source_sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    "verification.json.gz": {
+      "source_sha256": "e5a735e453566c0ac5c6154687c114ea5d184480bf8478cb01756fb957aacf1f"
+    },
+    "purego.jsonl.gz": {
+      "source_sha256": "64cf06e718ab2bb7443189352fab7263fb48e7625a75310553b2383cf35db456"
+    }
+  }
+}

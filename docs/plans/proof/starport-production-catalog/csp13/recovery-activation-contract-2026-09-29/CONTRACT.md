@@ -161,3 +161,27 @@ This behavior follows the existing service contract. It does not refund the char
 Long accounting correction histories use bounded intermediate owner states from the retained receipt chain.
 Each step retains the same immutable pre-step view for exact retry.
 Complete permission replay, missing or saturated window reconstruction, and operator activation remain required.
+
+## Original windows and ordered SQL transitions
+
+Local `b4c4d3be` reconstructs missing or saturated original windows from complete independent history.
+Capture and final census verify every retained attempt and correction for that window.
+Staging binds the original target preimage and preserves history identity, seed consumption, and first settlement time.
+The final view must refuse `budget-replay:v1:window:` markers.
+
+Local `7545cb42` adds ordered SQL replay under the exact relational import barrier.
+Each receipt binds sequence, previous receipt, independent evidence, and canonical typed transition digest.
+A callback failure rolls back domain changes, the receipt, and the cursor together.
+An exact old retry returns its retained receipt without applying earlier state.
+Later imports retain historical receipts and remove the source replay cursor.
+
+Permission replay must preserve account and key budget holders, API-key indexes, collection metadata, and the initial-key marker.
+SQL identity replay must preserve subjects, membership and grant tuples, and retained team budget origins.
+Ordinary creation methods cannot reconstruct these records because they can grant fresh history or create new timestamps.
+Delete and recreate require distinct ordered evidence.
+The coordinator must also rotate authorization revision authority and validate the complete final graph.
+
+The current ordinary KV enumerator refuses imported stores while their barrier exists.
+The coordinator needs an explicit read-only inspection path bound to the exact import claim and replay position.
+That inspection must retain the barrier, detect changed ownership or position, and expose no raw mutation authority.
+Complete independent interval proof and final operator activation remain required.
