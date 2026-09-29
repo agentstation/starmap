@@ -84,6 +84,9 @@ The coordinator must not delete marker keys or files directly.
 
 Final activation must choose an epoch above the independently retained highest epoch.
 Unknown epoch continuity keeps the deployment restricted.
+Local `352d468af` implements this closed-state step through `Witness.PrepareImportedEpoch`.
+Its SQL repair and evidence receipt commit together under the retained import barrier.
+The operator still owns the completeness of the external epoch evidence.
 Reachable gateway acknowledgments cannot prove that external controls fenced unreachable gateways or a former primary.
 
 ## Required evidence

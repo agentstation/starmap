@@ -1,0 +1,55 @@
+{
+  "state": "NATIVE_FAILURE_REPAIR_IN_PROGRESS",
+  "head": "e9dfb890e199b4e1066ba3cdd8440d911df6a2c8",
+  "base": "41160fbf55f74a6659ff0ac488a4378524437be7",
+  "pull_request": 391,
+  "run": 36543355770,
+  "checks": {
+    "success": 15,
+    "failure": 1,
+    "skipped": 1
+  },
+  "failure": {
+    "job": "Test (windows-2025)",
+    "package": "github.com/agentstation/starport/internal/app",
+    "timeout_seconds": 1800,
+    "completed_top_level_tests": 170,
+    "completed_test_seconds": 1794.07,
+    "test_at_timeout": "TestRuntimeMigrationOperatorLifecycle",
+    "test_age_seconds": 6,
+    "stack": "Runnable allocation in Badger skiplist initialization. No single-test deadlock is established."
+  },
+  "comparison": {
+    "windows_arm_top_level_tests": 179,
+    "windows_arm_top_level_seconds": 567.69
+  },
+  "disposition": "Hold merge. Agent recovery_contract repairs the measured Windows amd64 suite bottleneck in the published repair worktree. Preserve all native and behavioral coverage.",
+  "artifacts": {
+    "failed-jobs.log": {
+      "file": "failed-jobs.log.gz",
+      "sha256": "005fe7cabfa13bd2311b6302afe3947b7474a38c3ba03018b7b201ec21f74d2a",
+      "gzip_sha256": "bff1c4313d06ba0316533a9d68e18aa0fe3d77fcf2bd77cbb1789577c6ef9071"
+    },
+    "pr-latest.json": {
+      "file": "pr-latest.json.gz",
+      "sha256": "19432f17f9ca9b6dcdf6e833a2b12bb1bf1c8b1a1a59560adfc15c5610770459",
+      "gzip_sha256": "ee129b152d60f8f663a48a888c19b2d55c37cd0c30dcc0b0b7da0c50b9fc96a6"
+    },
+    "tests.jsonl": {
+      "file": "tests.jsonl.gz",
+      "sha256": "46547e3a088107888a0dcac813fd98a59fa6f561c1f714267598f53426767c2a",
+      "gzip_sha256": "85c935f7cb6810c019c65e281b1eae8740ab4e5f5a4a426d9a5b2ccb99e290c0"
+    },
+    "compose.jsonl": {
+      "file": "compose.jsonl.gz",
+      "sha256": "4069aadb85c3978c630d52b7d7654c16845a69771750155e243116bd40104101",
+      "gzip_sha256": "66c6e36e3295f8ddc140eac6bc23f91e829e3252f8db807b6c1a18c930a82dd2"
+    }
+  },
+  "windows_artifact_counts": {
+    "pass": 1129,
+    "fail": 0,
+    "skip": 99,
+    "note": "Partial artifact before the package timeout. A package-level failure is additional to these test/subtest results."
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "state": "LOCAL_IMPLEMENTATION_UNPUBLISHED",
+  "head": "352d468afc7842d55929e92c118265d07067b96b",
+  "worktree": "/private/tmp/starport-clock-review-20260926",
+  "branch": "codex/recovery-migration",
+  "checked_at": "2026-09-29T09:27:18.608020+00:00",
+  "toolchain": "go1.27.1",
+  "platform": "darwin/arm64",
+  "contract": [
+    "ReconcileRelationalImport commits one domain repair and its immutable receipt under native migration ownership while retaining the exact import barrier.",
+    "Exact retries do not repeat the callback. Conflicting evidence, another import, or an activated target cause refusal.",
+    "PrepareImportedEpoch binds the closed restored record to the independently retained highest epoch, evidence digest, reference, and accepting operator.",
+    "The chosen epoch exceeds the retained highest epoch and leaves capacity for later withdrawal. Unknown, older, and exhausted evidence cause refusal.",
+    "A changed or later recovery boundary causes refusal. This step grants no admission permission.",
+    "The operator must establish the completeness of external evidence. The digest alone does not establish truth."
+  ],
+  "checks": {
+    "fail_before": {
+      "command": "GOWORK=off go test -race -json -count=1 ./internal/sqlstore -run '^TestRelationalReconciliationRetainsBarrier$'",
+      "pass": 0,
+      "fail": 2,
+      "skip": 0,
+      "exit_code": 1
+    },
+    "native_sql": {
+      "command": "GOWORK=off go test -race -json -count=1 -timeout=6m ./internal/sqlstore -run '^TestRelational(Reconciliation|Activation)'",
+      "pass": 20,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "backends": [
+        "SQLite",
+        "PostgreSQL",
+        "MySQL"
+      ]
+    },
+    "authority_race": {
+      "command": "GOWORK=off go test -race -json -count=1 -timeout=6m ./internal/recovery -run '^Test(ImportedEpoch|ImportedAuthority|RecoveryWitness|FreshFleet|Authority)'",
+      "pass": 33,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "services": [
+        "Valkey",
+        "PostgreSQL",
+        "MySQL",
+        "SQLite"
+      ],
+      "note": "The new epoch tests use native SQLite. Existing authority and witness cases also exercise the named services."
+    },
+    "pure_go": {
+      "command": "CGO_ENABLED=0 GOWORK=off go test -json -count=1 -timeout=3m ./internal/sqlstore ./internal/recovery -run '^Test(RelationalReconciliation|ImportedEpoch)'",
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0
+    },
+    "vet": {
+      "command": "GOWORK=off go vet ./internal/recovery ./internal/sqlstore",
+      "exit_code": 0
+    },
+    "lint": {
+      "command": "GOWORK=off make lint",
+      "exit_code": 0,
+      "issues": 0
+    },
+    "prose": {
+      "exit_code": 0,
+      "files": 4,
+      "diagnostics": 0
+    }
+  },
+  "remaining": [
+    "Complete typed permission, accounting, and execution-history reconciliation.",
+    "Complete operator activation, native platform qualification, full pre-PR checks, required review, publication, and merge.",
+    "CSP13 retains one passing assigned subcase and fifteen UNVERIFIED subcases."
+  ],
+  "artifacts": {
+    "fail-before.jsonl": {
+      "file": "fail-before.jsonl.gz",
+      "sha256": "ba531ebdf34de6131ebba05a55328da65fa676786db1000d4fbcda670d6364f0",
+      "gzip_sha256": "ca0d8f8edd9060c9da5e4ccb08fa01fd9599e54874219449615ec3e886d8330e"
+    },
+    "initial.jsonl": {
+      "file": "initial.jsonl.gz",
+      "sha256": "2d34c76a8bd9df1c64ae174dcf5628db300fb1aa0ef93e2b9d6dada3ec2f0a44",
+      "gzip_sha256": "1ea9a0356b857aaff49406bc98500ba432f637ba8c604403e287e419c4aefd05"
+    },
+    "native-sql.jsonl": {
+      "file": "native-sql.jsonl.gz",
+      "sha256": "84d5891e8cbf454b95dd53ae7fc419cc60035f48a22358017e14421777da816a",
+      "gzip_sha256": "b32b9fe4548f92fd01473b9315dc0ef0b061ae7b0774d0280418479f47a5c79b"
+    },
+    "native-sql-final.jsonl": {
+      "file": "native-sql-final.jsonl.gz",
+      "sha256": "4f5709b5eafb7626f4ae830d9642fb07e180534f198236c96d6e24e1db570073",
+      "gzip_sha256": "ca2cce3d42ffab5b992a92a72fb1417d231177eb01508dd717b278f20e7a0be7"
+    },
+    "authority-race.jsonl": {
+      "file": "authority-race.jsonl.gz",
+      "sha256": "04ec4b1025cb019c890086dc53203ec0291cc1cb67abb3406f7320afc30eda9e",
+      "gzip_sha256": "2bb1038ca8f82b23c085bcf5c712f9309e6e553fc4cad8b512898be586563dd9"
+    },
+    "pure-go.jsonl": {
+      "file": "pure-go.jsonl.gz",
+      "sha256": "8f16e9495ef68d8d8ca2c5418c3fdeed433c46c02421a97ef28ae2983dea38ee",
+      "gzip_sha256": "af8447ef381bbe47026986089c2bdeaf72a29e89f38740a926a78778cbafd4a6"
+    },
+    "vet-final.log": {
+      "file": "vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "lint-final.log": {
+      "file": "lint-final.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "a648904293776129ffece9c2ad6da52f54b402038a515e2db25835338dbc4236",
+      "gzip_sha256": "cf419954a0aed5acbb25eaf67c533c66ceaa38448ebfa4e6826b441f0184be64"
+    },
+    "prose-final.log": {
+      "file": "prose-final.log.gz",
+      "sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "gzip_sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    }
+  }
+}
