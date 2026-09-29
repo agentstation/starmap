@@ -1,0 +1,184 @@
+{
+  "go": "go1.27.1 darwin/arm64",
+  "original_windows_failure": {
+    "source": "e9dfb890e",
+    "completed_top_level_tests": 170,
+    "elapsed_seconds": 1794.07,
+    "log": "/tmp/csp13-e9df-native-20260929/failed-jobs.log"
+  },
+  "partition": {
+    "discovered_owners": 189,
+    "owner_counts": [
+      56,
+      48,
+      47,
+      38
+    ],
+    "known_windows_elapsed_seconds": [
+      592.35,
+      455.9,
+      266.81,
+      479.01
+    ],
+    "qualification": "Projection from completed historical tests only; native rerun required."
+  },
+  "baseline_targeted": {
+    "passed": 21,
+    "failed": 0,
+    "skipped": 0,
+    "elapsed_seconds": 130.069,
+    "log": "before.jsonl"
+  },
+  "actual_app_shard_2": {
+    "owners": 47,
+    "passed": 112,
+    "failed": 0,
+    "skipped": [
+      "TestProductionBudgetAcrossProcesses"
+    ],
+    "elapsed_seconds": 150.435,
+    "log": "actual-shard-2/tests.jsonl"
+  },
+  "real_go_shard_fixture": {
+    "owners": 28,
+    "passed": 52,
+    "failed": 0,
+    "intentional_optional_skips": 1,
+    "elapsed_seconds": 3.362,
+    "log": "native-fixture-run-final.log"
+  },
+  "python_shard_verifier_tests": 8,
+  "python_native_verifier_tests": 15,
+  "checks": {
+    "shard-verifier-tests": 0,
+    "native-verifier-tests": 0,
+    "actionlint": 0,
+    "prose": 0,
+    "developer-experience": 0,
+    "release-workflow": 0,
+    "action-pins": 0
+  },
+  "limitations": [
+    "No native Windows execution after this repair.",
+    "No full repository Go suite rerun; no Go production or test source changed.",
+    "CI sharding reduces critical-path latency, not the total behavioral test workload."
+  ],
+  "state": "REVIEWED_PUBLISHED_NATIVE_PENDING",
+  "head": "3938ed15fad0fa0039b91edec73834bcabe694e8",
+  "integrated_local_head": "74117b6b0b831b0d48808aafc46a0be7c0c9e17c",
+  "pull_request": 391,
+  "run": 36550634369,
+  "checked_at": "2026-09-29T09:42:17.903448+00:00",
+  "review": {
+    "profile": "auto",
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "P0",
+    "parts": 4,
+    "findings": 0,
+    "exit_code": 0
+  },
+  "signature": "GitHub verified, valid",
+  "manual_review": [
+    "Verified disjoint discovery, failure propagation, Build dependencies, and unchanged platform coverage.",
+    "Required explicit UTF-8, separate compilation limits, source binding, and the Starmap path-import regression before publication."
+  ],
+  "local_source_note": "Local checks ran before the commit. Go application inputs remain unchanged from e9df. Native CI must qualify immutable3938ed15f.",
+  "artifacts": {
+    "shard-verifier-tests.log": {
+      "file": "shard-verifier-tests.log.gz",
+      "sha256": "152440adccca28b9c86d43d5b424678709efb1cf59ac44c8da719b2b1a5186a1",
+      "gzip_sha256": "471e9dc8cb97447f137d0565bb973e9e8538b58ea7baf21c2a383a06eafef50b"
+    },
+    "native-verifier-tests.log": {
+      "file": "native-verifier-tests.log.gz",
+      "sha256": "343990f02ba6eb137fb305eb7a9e3493b36764c2e1073fb6d3eecfd52b3ff32a",
+      "gzip_sha256": "c23883d81778299d106c24fd7e1826cb07c6a8ab813039fe6c5368f4912fdead"
+    },
+    "release-workflow.log": {
+      "file": "release-workflow.log.gz",
+      "sha256": "cf5d748743f22b600f607404de6fa37e9ad4b3d0294596df38e31ce2d1095596",
+      "gzip_sha256": "9f984192a633d557196ae690a20ac87a1534759d729fc34b049e773169849a0a"
+    },
+    "signature.log": {
+      "file": "signature.log.gz",
+      "sha256": "247ad6b3eb4b3a400fe8f120fbe9ca7420fcd402fb02829c809195666e775441",
+      "gzip_sha256": "c9105e0fef4496a5a3da85ad8f66869585022de7f7e404c3ed562744524281be"
+    },
+    "actual-shard-2.log": {
+      "file": "actual-shard-2.log.gz",
+      "sha256": "8dd4d6591bd24fff473d652d0b19da36c188afbbde2962d472492a6e50ea2217",
+      "gzip_sha256": "d760595866135748b00bfafed4a1eb853e4e77662f3c4b01753fc81180da34fb"
+    },
+    "autoreview.log": {
+      "file": "autoreview.log.gz",
+      "sha256": "33227a6df2a06ff7e244ab6f911f2a7466320cc9b69cb1ea8d86cbaa0ce78816",
+      "gzip_sha256": "00bb475d4b09b740d7943ea7827ce7f1c4e8f1842c6a5cd013661c552f728764"
+    },
+    "native-fixture-run.log": {
+      "file": "native-fixture-run.log.gz",
+      "sha256": "7fdf411e43cfba9b32d7ea0aa8c992174989fb5e091e3076fa964ba8d822edcf",
+      "gzip_sha256": "188d876d19e8f38d061bc86c0a65f24bd9f0deea91dc2bbf4dafde81b5dbc957"
+    },
+    "native-fixture-run-final.log": {
+      "file": "native-fixture-run-final.log.gz",
+      "sha256": "b9b062195c3fd3550b70ed7b37e1a63188e5f945999c60c91fbe38e7ca232e6d",
+      "gzip_sha256": "322cd3b1d3c0e019b143604d4cfa56d108c52cd6523180dc56d92a3b57085489"
+    },
+    "developer-experience.log": {
+      "file": "developer-experience.log.gz",
+      "sha256": "07b72f98f4ce048eb0b42dd947b71a8a70943ad2fc8b818002a980586a8b31ff",
+      "gzip_sha256": "d7658ee0a69abe2bcb0aae7b631722f56d0f4a4057dd5874b88a34a1e28e19e8"
+    },
+    "roster.txt": {
+      "file": "roster.txt.gz",
+      "sha256": "0369c0f00434647d8c090fa62f4e2cfab69c1c592af0c080324b9449d2a39606",
+      "gzip_sha256": "a2b59eeb86ed6c5b2cdbf4236898631202312f8c7eabefd71729d5d70cd676db"
+    },
+    "before.jsonl": {
+      "file": "before.jsonl.gz",
+      "sha256": "0060bcda6f1b8f451a8f6d7276667a4d1fbc0dc846e61fd1ae30fcd4668c0126",
+      "gzip_sha256": "7acfe8ad6baf420862e7521103e26103706300568ee8f36d40fd803aa45cb9a3"
+    },
+    "github-signature.json": {
+      "file": "github-signature.json.gz",
+      "sha256": "a05bd978ad288e26266e20276f972588467d58a04833c13c1dbd3a0b43eae6f7",
+      "gzip_sha256": "6da0f12cb6f09cb2d7ceda8288ec68bee2946ddb3ae8d9148248518ab8b50ee8"
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "gzip_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    },
+    "actionlint.log": {
+      "file": "actionlint.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "action-pins.log": {
+      "file": "action-pins.log.gz",
+      "sha256": "701c20a649c43ac8fd858a1a973496a1df170169addd67f1a5f10619eca19328",
+      "gzip_sha256": "08467da5d4dd3f984b6748c27bab6f45ae64af186812430362b32bdfe425ae99"
+    },
+    "check-status.json": {
+      "file": "check-status.json.gz",
+      "sha256": "a2a1a42c838acce770532c82aff7dba81768c5eb5558408ed704f2f600c3ef13",
+      "gzip_sha256": "f4a5e06433020580e6a939b31d484871de716a2e3c84b9a321ed10fb0357cc67"
+    },
+    "actual-shard-2/tests.jsonl": {
+      "file": "actual-shard-2-tests.jsonl.gz",
+      "sha256": "0c6e9f1af8ed57a2b38814dc4bc8db604665237ca0ad5a22acd76b1ab264a89f",
+      "gzip_sha256": "24b8e44b2fc3a57c9ebf8abe4045de5d84ec424366a8adcb004197da947bcf02"
+    },
+    "actual-shard-2/roster.json": {
+      "file": "actual-shard-2-roster.json.gz",
+      "sha256": "e7d8066250994bd759b109428c657cfd014f572500eaa7d9c5584465d84bd707",
+      "gzip_sha256": "bcd8b0a6e6fd5bce81755de3552201ad998deaa5c54c9ad8d2a3a86e0a30b50d"
+    },
+    "actual-shard-2/toolchain.txt": {
+      "file": "actual-shard-2-toolchain.txt.gz",
+      "sha256": "58851c565fad6114a77bd29552aa9d867ddb2aa1d20adfcf188621592456fe0f",
+      "gzip_sha256": "3db4097d5959d0022026fd971505fc6896170fc769fa169e58b292d2dbab4e58"
+    }
+  }
+}

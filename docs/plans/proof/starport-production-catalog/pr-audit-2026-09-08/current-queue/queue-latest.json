@@ -2065,13 +2065,13 @@
   "recovery_ci_readiness_checkpoint": "../../csp13/recovery-ci-readiness-2026-09-29/verification.json",
   "published_recovery": {
     "repository": "agentstation/starport",
-    "head": "e9dfb890e199b4e1066ba3cdd8440d911df6a2c8",
+    "head": "3938ed15fad0fa0039b91edec73834bcabe694e8",
     "branch": "codex/storage-recovery",
     "owner": "this chat",
-    "next_action": "Review and publish the measured test-cost repair, then collect native evidence before merge.",
+    "next_action": "Collect exact3938 native results, then verify head, base, review threads and required checks before merge.",
     "pull_request": 391,
     "url": "https://github.com/agentstation/starport/pull/391",
-    "run": 36543355770,
+    "run": 36550634369,
     "current_head_storage": {
       "proof": "csp13/current-head-storage-2026-09-29/verification.json",
       "pass": 1462,
@@ -2109,7 +2109,7 @@
       "failed_jobs": 1,
       "skipped_jobs": 1
     },
-    "disposition": "HOLD: Windows amd64 app package exceeds aggregate timeout."
+    "disposition": "Reviewed repair published; native CI pending."
   },
   "windows_publication_repair": {
     "proof": "proof/starport-production-catalog/csp13/windows-directory-publication-2026-09-29/verification.json",
@@ -2155,5 +2155,10 @@
     "head": "352d468afc7842d55929e92c118265d07067b96b",
     "proof": "csp13/imported-epoch-2026-09-29/verification.json",
     "state": "local, unpublished"
+  },
+  "windows_app_repair": {
+    "head": "3938ed15fad0fa0039b91edec73834bcabe694e8",
+    "proof": "csp13/windows-app-shards-2026-09-29/verification.json",
+    "run": 36550634369
   }
 }
