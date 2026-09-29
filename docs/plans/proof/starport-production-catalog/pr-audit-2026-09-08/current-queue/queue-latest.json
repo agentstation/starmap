@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-29T01:34:10.485937+00:00",
+  "checked_at": "2026-09-29T01:55:43.045703+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -1268,65 +1268,25 @@
   },
   "remote_state_note": "Producer #187 merged. Consumer #387 awaits native CI at reviewed 6f97ba52. Eight dependency PRs retain their recorded review and repair actions.",
   "open_queue_snapshot": {
-    "checked_at": "2026-09-29T01:34:10.485937+00:00",
+    "checked_at": "2026-09-29T01:55:43.045703+00:00",
     "starmap": [
       {
         "baseRefName": "main",
-        "baseRefOid": "d721eb88b71cb03c6faa4a617bbc171d633d6637",
+        "baseRefOid": "ddd19c1217d90c359ba75f669efb547f16bb421a",
         "headRefName": "codex/recovery-file-access",
-        "headRefOid": "5564b4908ea29fb31521990e8cc55e5d10c55dd2",
+        "headRefOid": "ef2b9fcec95dbc0f882507cab2274d10af41623d",
         "isDraft": true,
         "mergeStateStatus": "BLOCKED",
         "number": 194,
         "title": "files: stream private recovery data and inspect pending publications",
         "url": "https://github.com/agentstation/starmap/pull/194",
         "owner": "CSP13, this chat",
-        "disposition": "Reviewed producer API published as a draft. Windows fixture download returned HTTP 500 before tests.",
-        "next_action": "Retry failed publication job when its workflow ends. Merge #192 first, then integrate its actual merge and qualify #194.",
-        "proof": "../../csp13/published-file-tree-2026-09-28/verification.json",
+        "disposition": "Actual #192 merge integrated. Source tree unchanged. Required review passes. Fresh native CI pending.",
+        "next_action": "Require final native checks at ef2b9fcec. Then inspect head, base, threads, and protection before merge.",
+        "proof": "../../csp13/owner-publication-command-2026-09-28/verification.json",
         "checks_summary": {
-          "FAILURE": 1,
-          "IN_PROGRESS": 12,
-          "SUCCESS": 18
-        }
-      },
-      {
-        "baseRefName": "main",
-        "baseRefOid": "d721eb88b71cb03c6faa4a617bbc171d633d6637",
-        "headRefName": "dependabot/go_modules/go_modules-02c0f48f7e",
-        "headRefOid": "ff3f1b0c7f44df361e6bdb2298587aa45f4faf86",
-        "isDraft": false,
-        "mergeStateStatus": "BLOCKED",
-        "number": 193,
-        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/credentials in /",
-        "url": "https://github.com/agentstation/starmap/pull/193",
-        "owner": "Repository dependency maintenance",
-        "next_action": "Recheck complete diff after #192 merges, then close only if no required work remains.",
-        "disposition": "Candidate successor #192 preserves all versions and added checksums. Retain until its actual merge passes the same check.",
-        "checks_summary": {
-          "FAILURE": 2,
-          "NEUTRAL": 1,
-          "SKIPPED": 2,
-          "SUCCESS": 17
-        }
-      },
-      {
-        "baseRefName": "main",
-        "baseRefOid": "d721eb88b71cb03c6faa4a617bbc171d633d6637",
-        "headRefName": "dependabot/go_modules/go_modules-9b3906e02d",
-        "headRefOid": "2390d79c64325db7786e3c33e56d15a50d432e7a",
-        "isDraft": false,
-        "mergeStateStatus": "BLOCKED",
-        "number": 192,
-        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
-        "url": "https://github.com/agentstation/starmap/pull/192",
-        "owner": "Repository dependency maintenance",
-        "next_action": "Require new native CI at this head. Then inspect current head, base, threads, and protection before merging. Compare #193 against the actual merge before closure.",
-        "disposition": "Withdrawal test synchronization repair published after Windows failure. Native CI pending.",
-        "proof": "starmap-192-withdrawal-repair-2026-09-28/verification.json",
-        "checks_summary": {
-          "IN_PROGRESS": 6,
-          "SUCCESS": 25
+          "QUEUED": 16,
+          "IN_PROGRESS": 3
         }
       }
     ],
@@ -1347,8 +1307,8 @@
         "proof": "starport-390-console-qualification-2026-09-28/verification.json",
         "integration_proof": "dependency-integration-2026-09-28/verification.json",
         "checks_summary": {
-          "IN_PROGRESS": 8,
-          "SUCCESS": 8
+          "SUCCESS": 14,
+          "IN_PROGRESS": 2
         }
       },
       {
@@ -1366,8 +1326,8 @@
         "disposition": "Actual #388 merge integrated and pushed. Native CI pending.",
         "integration_proof": "dependency-integration-2026-09-28/verification.json",
         "checks_summary": {
-          "IN_PROGRESS": 8,
-          "SUCCESS": 8
+          "SUCCESS": 15,
+          "IN_PROGRESS": 1
         }
       }
     ]
@@ -1435,7 +1395,7 @@
     "status": "done",
     "next_task": "CSP13"
   },
-  "starmap_open_count": 3,
+  "starmap_open_count": 1,
   "starport_open_count": 2,
   "dependency_189_completion": {
     "checked_at": "2026-09-28T17:04:54.239668+00:00",
@@ -1835,24 +1795,54 @@
     "disposition": "Repairs published on existing #388; fresh native CI pending."
   },
   "previous_open_snapshot": {
-    "checked_at": "2026-09-29T01:05:22.670517+00:00",
+    "checked_at": "2026-09-29T01:34:10.485937+00:00",
     "starmap": [
       {
+        "baseRefName": "main",
+        "baseRefOid": "d721eb88b71cb03c6faa4a617bbc171d633d6637",
+        "headRefName": "codex/recovery-file-access",
+        "headRefOid": "5564b4908ea29fb31521990e8cc55e5d10c55dd2",
+        "isDraft": true,
+        "mergeStateStatus": "BLOCKED",
+        "number": 194,
+        "title": "files: stream private recovery data and inspect pending publications",
+        "url": "https://github.com/agentstation/starmap/pull/194",
+        "owner": "CSP13, this chat",
+        "disposition": "Reviewed producer API published as a draft. Windows fixture download returned HTTP 500 before tests.",
+        "next_action": "Retry failed publication job when its workflow ends. Merge #192 first, then integrate its actual merge and qualify #194.",
+        "proof": "../../csp13/published-file-tree-2026-09-28/verification.json",
+        "checks_summary": {
+          "FAILURE": 1,
+          "IN_PROGRESS": 12,
+          "SUCCESS": 18
+        }
+      },
+      {
+        "baseRefName": "main",
         "baseRefOid": "d721eb88b71cb03c6faa4a617bbc171d633d6637",
         "headRefName": "dependabot/go_modules/go_modules-02c0f48f7e",
         "headRefOid": "ff3f1b0c7f44df361e6bdb2298587aa45f4faf86",
-        "mergeStateStatus": "UNKNOWN",
+        "isDraft": false,
+        "mergeStateStatus": "BLOCKED",
         "number": 193,
         "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/credentials in /",
         "url": "https://github.com/agentstation/starmap/pull/193",
         "owner": "Repository dependency maintenance",
         "next_action": "Recheck complete diff after #192 merges, then close only if no required work remains.",
-        "disposition": "Candidate successor #192 preserves all versions and added checksums. Retain until its actual merge passes the same check."
+        "disposition": "Candidate successor #192 preserves all versions and added checksums. Retain until its actual merge passes the same check.",
+        "checks_summary": {
+          "FAILURE": 2,
+          "NEUTRAL": 1,
+          "SKIPPED": 2,
+          "SUCCESS": 17
+        }
       },
       {
+        "baseRefName": "main",
         "baseRefOid": "d721eb88b71cb03c6faa4a617bbc171d633d6637",
         "headRefName": "dependabot/go_modules/go_modules-9b3906e02d",
         "headRefOid": "2390d79c64325db7786e3c33e56d15a50d432e7a",
+        "isDraft": false,
         "mergeStateStatus": "BLOCKED",
         "number": 192,
         "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
@@ -1860,47 +1850,52 @@
         "owner": "Repository dependency maintenance",
         "next_action": "Require new native CI at this head. Then inspect current head, base, threads, and protection before merging. Compare #193 against the actual merge before closure.",
         "disposition": "Withdrawal test synchronization repair published after Windows failure. Native CI pending.",
-        "proof": "starmap-192-withdrawal-repair-2026-09-28/verification.json"
+        "proof": "starmap-192-withdrawal-repair-2026-09-28/verification.json",
+        "checks_summary": {
+          "IN_PROGRESS": 6,
+          "SUCCESS": 25
+        }
       }
     ],
     "starport": [
       {
-        "baseRefOid": "a1a08df86c31c73cfd38d49e03ceb3571c86a86c",
+        "baseRefName": "main",
+        "baseRefOid": "3d54c99d3a833744a53e03a40ebcac69d1a9746a",
         "headRefName": "dependabot/npm_and_yarn/console/console-packages-590881ce15",
-        "headRefOid": "8e9dc4a3dd3c124250d290cb25af8cffdaed2fbb",
-        "mergeStateStatus": "UNSTABLE",
+        "headRefOid": "9a793e612a4f69ec08f532d9350616490ea844ad",
+        "isDraft": false,
+        "mergeStateStatus": "BLOCKED",
         "number": 390,
         "title": "chore(deps): bump the console-packages group in /console with 10 updates",
         "url": "https://github.com/agentstation/starport/pull/390",
         "owner": "Repository dependency maintenance",
-        "next_action": "After #388 merges, update this branch from main, qualify its dependency changes, and require exact-head native CI.",
-        "disposition": "Local console qualification passes. Native test repairs await #388 merge.",
-        "proof": "starport-390-console-qualification-2026-09-28/verification.json"
+        "next_action": "Require native checks and current head, base, threads, and protection before each merge. Update a remaining PR after any main change.",
+        "disposition": "Actual #388 merge integrated and pushed. Native CI pending.",
+        "proof": "starport-390-console-qualification-2026-09-28/verification.json",
+        "integration_proof": "dependency-integration-2026-09-28/verification.json",
+        "checks_summary": {
+          "IN_PROGRESS": 8,
+          "SUCCESS": 8
+        }
       },
       {
-        "baseRefOid": "a1a08df86c31c73cfd38d49e03ceb3571c86a86c",
+        "baseRefName": "main",
+        "baseRefOid": "3d54c99d3a833744a53e03a40ebcac69d1a9746a",
         "headRefName": "dependabot/go_modules/go-modules-2346b439a7",
-        "headRefOid": "8cb829ac7124a8fb143606baca3c6f1d6b78cfa7",
-        "mergeStateStatus": "UNSTABLE",
+        "headRefOid": "26f3b92eed3634cc3a0aef82dec82080723683a7",
+        "isDraft": false,
+        "mergeStateStatus": "BLOCKED",
         "number": 389,
         "title": "chore(deps): bump the go-modules group across 1 directory with 9 updates",
         "url": "https://github.com/agentstation/starport/pull/389",
         "owner": "Repository dependency maintenance",
-        "next_action": "After #388 merges, update this branch from main, qualify its dependency changes, and require exact-head native CI.",
-        "disposition": "Retain. Inherit test repairs after #388 merges."
-      },
-      {
-        "baseRefOid": "a1a08df86c31c73cfd38d49e03ceb3571c86a86c",
-        "headRefName": "dependabot/github_actions/github-actions-45de2ffcd4",
-        "headRefOid": "182a16c1c696efa7ca4fef7b98bf3b03be319e07",
-        "mergeStateStatus": "BLOCKED",
-        "number": 388,
-        "title": "chore(deps): bump Homebrew/actions/setup-homebrew from 2026.09.21.1 to 2026.09.28.1 in the github-actions group across 1 directory",
-        "url": "https://github.com/agentstation/starport/pull/388",
-        "owner": "Repository dependency maintenance",
-        "next_action": "Wait for exact-head native CI, inspect review threads and protection, then merge. Update #389 and #390 from the actual merge to inherit the repairs.",
-        "disposition": "Reviewed test repairs published. Fresh native CI is running.",
-        "proof": "starport-388-test-repair-2026-09-28/verification.json"
+        "next_action": "Require native checks and current head, base, threads, and protection before each merge. Update a remaining PR after any main change.",
+        "disposition": "Actual #388 merge integrated and pushed. Native CI pending.",
+        "integration_proof": "dependency-integration-2026-09-28/verification.json",
+        "checks_summary": {
+          "IN_PROGRESS": 8,
+          "SUCCESS": 8
+        }
       }
     ]
   },
@@ -1929,5 +1924,24 @@
     "review_threads": 0,
     "protection": "Required checks and conversation resolution preserved. No bypass, release, branch deletion, or review comment.",
     "method": "Exact-head squash merge"
-  }
+  },
+  "starmap192_completion": {
+    "baseRefOid": "d721eb88b71cb03c6faa4a617bbc171d633d6637",
+    "headRefOid": "2390d79c64325db7786e3c33e56d15a50d432e7a",
+    "mergeCommit": {
+      "oid": "ddd19c1217d90c359ba75f669efb547f16bb421a"
+    },
+    "mergedAt": "2026-09-29T01:51:14Z",
+    "state": "MERGED",
+    "url": "https://github.com/agentstation/starmap/pull/192",
+    "tested_tree": "1e2b6ac880d8b477fe7c0b49d81347a62ad312dd",
+    "merged_tree": "1e2b6ac880d8b477fe7c0b49d81347a62ad312dd",
+    "tested_tree_matches_merge": true
+  },
+  "starmap193_disposition": {
+    "state": "CLOSED",
+    "complete_diff_preserved_in": 192,
+    "proof": "csp13-starmap193-successor-proof.json.gz"
+  },
+  "owner_publication": "../../csp13/owner-publication-command-2026-09-28/verification.json"
 }

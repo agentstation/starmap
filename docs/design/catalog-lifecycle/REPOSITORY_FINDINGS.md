@@ -4866,3 +4866,18 @@ Twenty configuration tests pass under race detection and pure Go after the final
 The report identifies required file procedures. Actual file publication and activation remain open.
 
 The [inventory proof](../../plans/proof/starport-production-catalog/csp13/file-plan-2026-09-28/verification.json) records exact results and remaining requirements.
+
+
+### Canonical inference-policy publication: September 28, 2026
+
+Consumer `b4b83664` adds `backup publish-files --role inference-credential-policy`.
+The command verifies or resumes restricted preparation before publishing a canonical policy tree.
+Current target configuration selects the destination. The credential owner validates the captured deployment and replica identity.
+Unsupported roles, conflicting targets, pending journals, and different replica identities cause refusal.
+Exact retries verify the complete existing tree without replacing it.
+
+The operation preserves accepted provider choices and the legacy default.
+KV, SQL, and blob barriers remain closed. Administrator credentials and other file roles retain their separate owner procedures.
+Independent later history and activation remain required. This local checkpoint does not qualify complete recovery.
+
+The [owner publication proof](../../plans/proof/starport-production-catalog/csp13/owner-publication-command-2026-09-28/verification.json) records source, tests, and remaining requirements.
