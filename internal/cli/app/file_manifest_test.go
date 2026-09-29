@@ -127,6 +127,19 @@ func TestFileManifestCoversColdStartupAndPublication(t *testing.T) {
 	if !manifestCoversFile(t, report, filepath.Join(paths.Runtime.Path, "catalog-runtime", "providers", "bindings", strings.Repeat("a", 64)+".json")) {
 		t.Fatal("scoped provider record is absent from the manifest")
 	}
+	for _, name := range []string{
+		"retained-catalog/" + strings.Repeat("a", 64) + "/manifest.json",
+		"retained-catalog/" + strings.Repeat("a", 64) + "/" + strings.Repeat("b", 64) + ".json.gz",
+		"retained-catalog/" + strings.Repeat("a", 64) + "/.record-publications/.owner.lock",
+		"retained-catalog/" + strings.Repeat("a", 64) + "/.record-publications/record.jsonl",
+	} {
+		if !manifestCoversFile(t, report, filepath.Join(paths.Runtime.Path, "catalog-runtime", filepath.FromSlash(name))) {
+			t.Fatal("retained catalog evidence missing from manifest", name)
+		}
+	}
+	if manifestCoversFile(t, report, filepath.Join(paths.Runtime.Path, "catalog-runtime", "retained-catalog", strings.Repeat("a", 64), "unowned.txt")) {
+		t.Fatal("retained catalog manifest hides unknown content")
+	}
 	if manifestCoversFile(t, report, filepath.Join(paths.Runtime.Path, "catalog-runtime", "unexpected-file")) {
 		t.Fatal("broad evidence entry hides an unknown managed file")
 	}

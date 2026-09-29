@@ -71,6 +71,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 
 - [Constants](<#constants>)
 - [func CatalogRecoveryChecksums\(ctx context.Context, path string, owner DirectoryOwner, identity string, generation catalogs.Generation\) \(\[\]string, error\)](<#CatalogRecoveryChecksums>)
+- [func InspectRetainedCatalogMaterialization\(ctx context.Context, request CatalogRetainedMaterializationRequest, expected CatalogMaterializationReceipt, opts ...Option\) \(resultErr error\)](<#InspectRetainedCatalogMaterialization>)
 - [func InspectRetainedDirectory\(ctx context.Context, path string, owner DirectoryOwner, identity string\) error](<#InspectRetainedDirectory>)
 - [func InspectRetainedMigration\(ctx context.Context, originalDirectory string, owner DirectoryOwner, identity string, read RetainedRecordReader\) \(\[\]string, error\)](<#InspectRetainedMigration>)
 - [func InspectRetainedPublications\(ctx context.Context, files map\[string\]RetainedFile, read RetainedRecordReader\) \(\[\]string, error\)](<#InspectRetainedPublications>)
@@ -92,11 +93,23 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type CatalogMaterializationInput](<#CatalogMaterializationInput>)
 - [type CatalogMaterializationReceipt](<#CatalogMaterializationReceipt>)
   - [func MaterializeCatalogRecovery\(ctx context.Context, request CatalogMaterializationRequest, opts ...Option\) \(receipt CatalogMaterializationReceipt, resultErr error\)](<#MaterializeCatalogRecovery>)
+  - [func MaterializeRetainedCatalogRecovery\(ctx context.Context, request CatalogRetainedMaterializationRequest, opts ...Option\) \(CatalogMaterializationReceipt, error\)](<#MaterializeRetainedCatalogRecovery>)
 - [type CatalogMaterializationRequest](<#CatalogMaterializationRequest>)
 - [type CatalogRecovery](<#CatalogRecovery>)
   - [func CaptureFleetCatalogRecovery\(ctx context.Context, snapshot FleetSnapshot\) \(CatalogRecovery, error\)](<#CaptureFleetCatalogRecovery>)
   - [func ReadCatalogRecovery\(ctx context.Context, path string, owner DirectoryOwner, identity string, generation catalogs.Generation, recordChecksum string\) \(CatalogRecovery, error\)](<#ReadCatalogRecovery>)
   - [func \(r CatalogRecovery\) Validate\(generation catalogs.Generation\) error](<#CatalogRecovery.Validate>)
+- [type CatalogRetainedMaterializationRequest](<#CatalogRetainedMaterializationRequest>)
+- [type CatalogRetainedReadRequest](<#CatalogRetainedReadRequest>)
+- [type CatalogRetainedRecord](<#CatalogRetainedRecord>)
+- [type CatalogRetentionBatch](<#CatalogRetentionBatch>)
+- [type CatalogRetentionEntry](<#CatalogRetentionEntry>)
+- [type CatalogRetentionInput](<#CatalogRetentionInput>)
+  - [func ReadRetainedCatalogRecovery\(ctx context.Context, request CatalogRetainedReadRequest\) \(input CatalogRetentionInput, resultErr error\)](<#ReadRetainedCatalogRecovery>)
+- [type CatalogRetentionOrigin](<#CatalogRetentionOrigin>)
+- [type CatalogRetentionReceipt](<#CatalogRetentionReceipt>)
+  - [func RetainCatalogRecovery\(ctx context.Context, request CatalogRetentionRequest\) \(receipt CatalogRetentionReceipt, resultErr error\)](<#RetainCatalogRecovery>)
+- [type CatalogRetentionRequest](<#CatalogRetentionRequest>)
 - [type DirectoryMigrationCompletion](<#DirectoryMigrationCompletion>)
   - [func ReadDirectoryMigrationCompletion\(ctx context.Context, directory string\) \(DirectoryMigrationCompletion, error\)](<#ReadDirectoryMigrationCompletion>)
 - [type DirectoryMigrationPreparation](<#DirectoryMigrationPreparation>)
@@ -473,6 +486,15 @@ func CatalogRecoveryChecksums(ctx context.Context, path string, owner DirectoryO
 
 CatalogRecoveryChecksums lists immutable input\-record identities for an exact generation. These checksums name compressed local descriptors, not exported FleetRecovery bytes. The caller must fence writers. Multiple results require an explicit selection. Listing never proves which publication committed or whether independent history is complete.
 
+<a name="InspectRetainedCatalogMaterialization"></a>
+## func [InspectRetainedCatalogMaterialization](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L293>)
+
+```go
+func InspectRetainedCatalogMaterialization(ctx context.Context, request CatalogRetainedMaterializationRequest, expected CatalogMaterializationReceipt, opts ...Option) (resultErr error)
+```
+
+InspectRetainedCatalogMaterialization verifies the current pre\-activation input selection. It requires existing complete journals, exact batch coverage, and compatible target settings. A later input update refuses this check. Historical completed retries still return their original receipt. Inspection never repairs records, changes selection, or renews permission.
+
 <a name="InspectRetainedDirectory"></a>
 ## func [InspectRetainedDirectory](<https://github.com/agentstation/starmap/blob/main/runtime/recovery_inspection.go#L20>)
 
@@ -751,13 +773,22 @@ type CatalogMaterializationReceipt struct {
 ```
 
 <a name="MaterializeCatalogRecovery"></a>
-### func [MaterializeCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_materialization.go#L90>)
+### func [MaterializeCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_materialization.go#L92>)
 
 ```go
 func MaterializeCatalogRecovery(ctx context.Context, request CatalogMaterializationRequest, opts ...Option) (receipt CatalogMaterializationReceipt, resultErr error)
 ```
 
 MaterializeCatalogRecovery replaces catalog inputs through a private operation journal. It preserves owner, instance seed, permission checkpoints, and origin discovery records. Pending work blocks runtime startup. An exact completed retry returns its original receipt without replacing later state.
+
+<a name="MaterializeRetainedCatalogRecovery"></a>
+### func [MaterializeRetainedCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L272>)
+
+```go
+func MaterializeRetainedCatalogRecovery(ctx context.Context, request CatalogRetainedMaterializationRequest, opts ...Option) (CatalogMaterializationReceipt, error)
+```
+
+MaterializeRetainedCatalogRecovery checks complete retained coverage and selects one capsule. Only the selected capsule must reproduce its generation under the supplied target settings. Completed retries return the original receipt without loading or recreating old envelopes.
 
 <a name="CatalogMaterializationRequest"></a>
 ## type [CatalogMaterializationRequest](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_materialization.go#L40-L47>)
@@ -813,6 +844,164 @@ func (r CatalogRecovery) Validate(generation catalogs.Generation) error
 ```
 
 Validate checks the complete generation binding and bounded input bytes.
+
+<a name="CatalogRetainedMaterializationRequest"></a>
+## type [CatalogRetainedMaterializationRequest](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L92-L100>)
+
+CatalogRetainedMaterializationRequest selects one entry from complete retained batch coverage. Batches must cover the full manifest once, in order, without gaps or overlaps.
+
+```go
+type CatalogRetainedMaterializationRequest struct {
+    Directory         string                  `json:"directory"`
+    Owner             DirectoryOwner          `json:"owner"`
+    SchedulerIdentity string                  `json:"scheduler_identity"`
+    OperationID       string                  `json:"operation_id"`
+    TransferID        string                  `json:"transfer_id"`
+    Batches           []CatalogRetentionBatch `json:"batches"`
+    Selected          int                     `json:"selected"`
+}
+```
+
+<a name="CatalogRetainedReadRequest"></a>
+## type [CatalogRetainedReadRequest](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L104-L111>)
+
+CatalogRetainedReadRequest selects one entry within an exact completed batch. Index is an absolute index in the complete transfer manifest.
+
+```go
+type CatalogRetainedReadRequest struct {
+    Directory         string                `json:"directory"`
+    Owner             DirectoryOwner        `json:"owner"`
+    SchedulerIdentity string                `json:"scheduler_identity"`
+    TransferID        string                `json:"transfer_id"`
+    Batch             CatalogRetentionBatch `json:"batch"`
+    Index             int                   `json:"index"`
+}
+```
+
+<a name="CatalogRetainedRecord"></a>
+## type [CatalogRetainedRecord](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L60-L63>)
+
+CatalogRetainedRecord binds an immutable envelope to its manifest entry. Structural validation does not establish compatibility with current settings.
+
+```go
+type CatalogRetainedRecord struct {
+    Entry        CatalogRetentionEntry `json:"entry"`
+    RecordSHA256 string                `json:"record_sha256"`
+}
+```
+
+<a name="CatalogRetentionBatch"></a>
+## type [CatalogRetentionBatch](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L85-L88>)
+
+CatalogRetentionBatch selects an exact retained batch completion receipt.
+
+```go
+type CatalogRetentionBatch struct {
+    OperationID   string `json:"operation_id"`
+    ReceiptSHA256 string `json:"receipt_sha256"`
+}
+```
+
+<a name="CatalogRetentionEntry"></a>
+## type [CatalogRetentionEntry](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L29-L34>)
+
+CatalogRetentionEntry binds original descriptor bytes and exported reconstruction inputs. InputsSHA256 is CatalogRecovery.Inputs.Checksum, not the local descriptor checksum.
+
+```go
+type CatalogRetentionEntry struct {
+    ManifestSHA256         string                 `json:"manifest_sha256"`
+    InputsSHA256           string                 `json:"inputs_sha256"`
+    SourceOrigin           CatalogRetentionOrigin `json:"source_origin"`
+    SourceDescriptorSHA256 string                 `json:"source_descriptor_sha256"`
+}
+```
+
+<a name="CatalogRetentionInput"></a>
+## type [CatalogRetentionInput](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L39-L42>)
+
+CatalogRetentionInput supplies exact historical bytes without current deployment settings. Local descriptors use the original compressed localCatalogRecovery representation. The host validates fleet descriptors against their original publication inventory.
+
+```go
+type CatalogRetentionInput struct {
+    CatalogMaterializationInput
+    SourceDescriptor []byte `json:"source_descriptor"`
+}
+```
+
+<a name="ReadRetainedCatalogRecovery"></a>
+### func [ReadRetainedCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L116>)
+
+```go
+func ReadRetainedCatalogRecovery(ctx context.Context, request CatalogRetainedReadRequest) (input CatalogRetentionInput, resultErr error)
+```
+
+ReadRetainedCatalogRecovery exports original historical bytes without selection or repair. It verifies the native owner, completed batch, manifest, and immutable envelope. Returned data belongs to the caller. Success confers no current permission.
+
+<a name="CatalogRetentionOrigin"></a>
+## type [CatalogRetentionOrigin](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L18>)
+
+CatalogRetentionOrigin identifies the supplied historical descriptor format. Descriptors remain evidence and confer no current permission.
+
+```go
+type CatalogRetentionOrigin string
+```
+
+<a name="CatalogRetentionLocalDescriptor"></a>Descriptor origin values distinguish original bytes from explicitly absent evidence.
+
+```go
+const (
+    CatalogRetentionLocalDescriptor CatalogRetentionOrigin = "local-descriptor"
+    CatalogRetentionFleetDescriptor CatalogRetentionOrigin = "fleet-publication"
+    CatalogRetentionNoDescriptor    CatalogRetentionOrigin = "no-descriptor"
+)
+```
+
+<a name="CatalogRetentionReceipt"></a>
+## type [CatalogRetentionReceipt](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L67-L78>)
+
+CatalogRetentionReceipt records structural retention without selection or serving permission. It binds one native directory, the full manifest, and an exact batch range.
+
+```go
+type CatalogRetentionReceipt struct {
+    Version           int                       `json:"version"`
+    Validation        string                    `json:"validation"`
+    OperationID       string                    `json:"operation_id"`
+    TransferID        string                    `json:"transfer_id"`
+    RequestSHA256     string                    `json:"request_sha256"`
+    PlanSHA256        string                    `json:"plan_sha256"`
+    ManifestSHA256    string                    `json:"manifest_sha256"`
+    BatchStart        int                       `json:"batch_start"`
+    DirectoryIdentity privatefiles.EntryReceipt `json:"directory_identity"`
+    Records           []CatalogRetainedRecord   `json:"records"`
+}
+```
+
+<a name="RetainCatalogRecovery"></a>
+### func [RetainCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L177>)
+
+```go
+func RetainCatalogRecovery(ctx context.Context, request CatalogRetentionRequest) (receipt CatalogRetentionReceipt, resultErr error)
+```
+
+RetainCatalogRecovery preserves original historical capsules through a private operation journal. Validation is structural only. Pending retention blocks startup and selection. An exact completed retry returns its receipt without recreating missing records or changing later state.
+
+<a name="CatalogRetentionRequest"></a>
+## type [CatalogRetentionRequest](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L47-L56>)
+
+CatalogRetentionRequest retains one contiguous batch from a complete transfer manifest. All batches share TransferID and Manifest, and use distinct OperationID values. Writers must remain fenced. This operation never changes the active catalog inputs.
+
+```go
+type CatalogRetentionRequest struct {
+    Directory         string                  `json:"directory"`
+    Owner             DirectoryOwner          `json:"owner"`
+    SchedulerIdentity string                  `json:"scheduler_identity"`
+    OperationID       string                  `json:"operation_id"`
+    TransferID        string                  `json:"transfer_id"`
+    Manifest          []CatalogRetentionEntry `json:"manifest"`
+    BatchStart        int                     `json:"batch_start"`
+    Inputs            []CatalogRetentionInput `json:"inputs"`
+}
+```
 
 <a name="DirectoryMigrationCompletion"></a>
 ## type [DirectoryMigrationCompletion](<https://github.com/agentstation/starmap/blob/main/runtime/migration_completion.go#L17-L24>)

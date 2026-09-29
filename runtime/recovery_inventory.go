@@ -62,7 +62,11 @@ func inspectRuntimeInventory(ctx context.Context, directory *privatefiles.Direct
 		if _, err := parent.CopyFile(ctx, entry.Name(), output, limit); err != nil {
 			return err
 		}
-		if immutable && entry.Name() != hex.EncodeToString(digest.Sum(nil))+".json" {
+		suffix := ".json"
+		if _, retained := retainedCatalogFileLimit(name); retained && entry.Name() != "manifest.json" {
+			suffix = ".json.gz"
+		}
+		if immutable && entry.Name() != hex.EncodeToString(digest.Sum(nil))+suffix {
 			return invalidInputPublication("immutable retained input differs from its content identity")
 		}
 		return nil
@@ -70,7 +74,7 @@ func inspectRuntimeInventory(ctx context.Context, directory *privatefiles.Direct
 }
 
 func knownRuntimeRecoveryDirectory(name string) bool {
-	if materializationJournalDirectory(name) {
+	if materializationJournalDirectory(name) || retainedCatalogDirectoryName(name) {
 		return true
 	}
 	switch name {
@@ -84,6 +88,9 @@ func knownRuntimeRecoveryDirectory(name string) bool {
 }
 
 func runtimeRecoveryFileLimit(name string) (int64, bool, error) {
+	if limit, known := retainedCatalogFileLimit(name); known {
+		return limit, path.Base(name) != "manifest.json", nil
+	}
 	if limit, known := materializationJournalFileLimit(name); known {
 		return limit, false, nil
 	}

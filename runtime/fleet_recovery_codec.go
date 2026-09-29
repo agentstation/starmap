@@ -10,7 +10,11 @@ import (
 
 // compressFleetRecovery bounds private recovery storage without changing its decoded contract.
 func compressFleetRecovery(data []byte) ([]byte, error) {
-	if len(data) == 0 || len(data) > MaxFleetRecoveryBytes {
+	return compressRecoveryRecord(data, MaxFleetRecoveryBytes)
+}
+
+func compressRecoveryRecord(data []byte, maximum int) ([]byte, error) {
+	if len(data) == 0 || len(data) > maximum {
 		return nil, invalidInputPublication("fleet recovery exceeds the decoded input byte bound")
 	}
 	var output bytes.Buffer
@@ -24,17 +28,21 @@ func compressFleetRecovery(data []byte) ([]byte, error) {
 	if err := writer.Close(); err != nil {
 		return nil, err
 	}
-	if output.Len() > MaxFleetRecoveryBytes {
+	if output.Len() > maximum {
 		return nil, invalidInputPublication("fleet recovery exceeds the compressed input byte bound")
 	}
 	return output.Bytes(), nil
 }
 
 func decompressFleetRecovery(ctx context.Context, data []byte, limit int64) ([]byte, error) {
+	return decompressRecoveryRecord(ctx, data, MaxFleetRecoveryBytes, limit)
+}
+
+func decompressRecoveryRecord(ctx context.Context, data []byte, maximum int, limit int64) ([]byte, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
-	if len(data) == 0 || len(data) > MaxFleetRecoveryBytes || limit <= 0 || limit > MaxFleetRecoveryBytes {
+	if len(data) == 0 || len(data) > maximum || limit <= 0 || limit > int64(maximum) {
 		return nil, invalidInputPublication("fleet recovery exceeds the compressed input byte bound")
 	}
 	input := bytes.NewReader(data)
