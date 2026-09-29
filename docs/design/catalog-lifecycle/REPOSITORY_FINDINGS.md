@@ -4902,3 +4902,16 @@ The broader architecture suite exposed two stale import contracts from earlier C
 Recovery now composes domain-owner checks over captured state. Batch recovery reads file records through the file owner.
 The contract now names those owners explicitly. It still rejects application, provider, and request orchestration imports at these boundaries.
 The production validators and their record checks remain unchanged.
+
+### Local administrator recovery: September 28, 2026
+
+The existing rotation command printed the new administrator secret. Its new `--no-secret` option reports only metadata.
+Existing default output remains unchanged. Both text and JSON metadata modes rotate the stored credential.
+Tests verify that neither secret enters output and that old signed sessions fail against the replacement token.
+
+A native local-storage test captures a valid old token, prepares the backup, and rotates the target credential through the CLI.
+The test then retries preparation and verifies that the fresh target token and original source token remain unchanged.
+KV, SQL, and blob barriers stay closed. The independent recovery witness also stays closed.
+Full recovery and activation remain open.
+
+The [local-access proof](../../plans/proof/starport-production-catalog/csp13/local-access-recovery-2026-09-28/verification.json) also records the actual Starport #390 merge and its integration.

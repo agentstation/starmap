@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-29T02:46:34.837284+00:00",
+  "checked_at": "2026-09-29T03:00:30.567174+00:00",
   "starmap": [
     {
       "baseRefName": "main",
@@ -1268,7 +1268,7 @@
   },
   "remote_state_note": "Producer #187 merged. Consumer #387 awaits native CI at reviewed 6f97ba52. Eight dependency PRs retain their recorded review and repair actions.",
   "open_queue_snapshot": {
-    "checked_at": "2026-09-29T02:46:34.837284+00:00",
+    "checked_at": "2026-09-29T03:00:30.567174+00:00",
     "starmap": [
       {
         "baseRefName": "main",
@@ -1279,39 +1279,18 @@
         "title": "recovery: inspect credential policies and stream private files",
         "url": "https://github.com/agentstation/starmap/pull/194",
         "checks_summary": {
-          "IN_PROGRESS": 13,
-          "SUCCESS": 7
+          "SUCCESS": 23,
+          "IN_PROGRESS": 8
         },
         "owner": "this chat",
         "proof": "../../csp13/owner-publication-command-2026-09-28/verification.json",
-        "disposition": "Updated existing #194 with read-only acquisition-policy inspection and the Windows copy-test correction. Required P0 review passed. New native CI pending.",
-        "next_action": "Require native Windows correction evidence and all required checks at f53f8bef before exact-head merge.",
         "baseRefOid": "ddd19c1217d90c359ba75f669efb547f16bb421a",
-        "current_proof": "../../csp13/credential-policy-publication-2026-09-28/verification.json"
+        "current_proof": "../../csp13/credential-policy-publication-2026-09-28/verification.json",
+        "disposition": "Reviewed #194 remains in native and race CI at f53f8bef. No new failure reported.",
+        "next_action": "Require all native and required checks, then verify exact head, base, threads, and protection before merge."
       }
     ],
-    "starport": [
-      {
-        "baseRefName": "main",
-        "headRefName": "dependabot/npm_and_yarn/console/console-packages-590881ce15",
-        "headRefOid": "6f43261f4a70405b6ecb6a5ffaacd1347f1cb664",
-        "isDraft": false,
-        "number": 390,
-        "title": "chore(deps): bump the console-packages group in /console with 10 updates",
-        "url": "https://github.com/agentstation/starport/pull/390",
-        "checks_summary": {
-          "SUCCESS": 15,
-          "IN_PROGRESS": 1
-        },
-        "owner": "this chat",
-        "proof": "starport-390-console-qualification-2026-09-28/verification.json",
-        "integration_proof": "../../csp13/dependency-main-integration-2026-09-28/verification.json",
-        "disposition": "Reviewed dependency integration at 6f43261f. Windows amd64 test remains running. No merge yet.",
-        "next_action": "Require the Windows result and Build, then recheck head, base, threads, and protection before merge.",
-        "baseRefOid": "09713ef2dfea85d5eb26712b51b82804505aea2a",
-        "current_proof": "../../csp13/credential-policy-publication-2026-09-28/verification.json"
-      }
-    ]
+    "starport": []
   },
   "dependency_queue": {
     "checked_at": "2026-09-29T00:15:37.431399+00:00",
@@ -1377,7 +1356,7 @@
     "next_task": "CSP13"
   },
   "starmap_open_count": 1,
-  "starport_open_count": 1,
+  "starport_open_count": 0,
   "dependency_189_completion": {
     "checked_at": "2026-09-28T17:04:54.239668+00:00",
     "premerge": {
@@ -1776,25 +1755,26 @@
     "disposition": "Repairs published on existing #388; fresh native CI pending."
   },
   "previous_open_snapshot": {
-    "checked_at": "2026-09-29T02:10:16.789550+00:00",
+    "checked_at": "2026-09-29T02:46:34.837284+00:00",
     "starmap": [
       {
         "baseRefName": "main",
         "headRefName": "codex/recovery-file-access",
-        "headRefOid": "ef2b9fcec95dbc0f882507cab2274d10af41623d",
+        "headRefOid": "f53f8bef0fc220e00f553c0135df6438e099d544",
         "isDraft": true,
-        "mergeStateStatus": "BLOCKED",
         "number": 194,
-        "title": "files: stream private recovery data and inspect pending publications",
+        "title": "recovery: inspect credential policies and stream private files",
         "url": "https://github.com/agentstation/starmap/pull/194",
         "checks_summary": {
-          "SUCCESS": 19,
-          "IN_PROGRESS": 12
+          "IN_PROGRESS": 13,
+          "SUCCESS": 7
         },
-        "owner": "CSP13, this chat",
-        "disposition": "Actual #192 merge integrated. Source tree unchanged. Required review passes. Fresh native CI pending.",
-        "next_action": "Require final native checks at ef2b9fcec. Then inspect head, base, threads, and protection before merge.",
-        "proof": "../../csp13/owner-publication-command-2026-09-28/verification.json"
+        "owner": "this chat",
+        "proof": "../../csp13/owner-publication-command-2026-09-28/verification.json",
+        "disposition": "Updated existing #194 with read-only acquisition-policy inspection and the Windows copy-test correction. Required P0 review passed. New native CI pending.",
+        "next_action": "Require native Windows correction evidence and all required checks at f53f8bef before exact-head merge.",
+        "baseRefOid": "ddd19c1217d90c359ba75f669efb547f16bb421a",
+        "current_proof": "../../csp13/credential-policy-publication-2026-09-28/verification.json"
       }
     ],
     "starport": [
@@ -1803,20 +1783,20 @@
         "headRefName": "dependabot/npm_and_yarn/console/console-packages-590881ce15",
         "headRefOid": "6f43261f4a70405b6ecb6a5ffaacd1347f1cb664",
         "isDraft": false,
-        "mergeStateStatus": "BLOCKED",
         "number": 390,
         "title": "chore(deps): bump the console-packages group in /console with 10 updates",
         "url": "https://github.com/agentstation/starport/pull/390",
         "checks_summary": {
-          "IN_PROGRESS": 15,
-          "SUCCESS": 1
+          "SUCCESS": 15,
+          "IN_PROGRESS": 1
         },
-        "owner": "Repository dependency maintenance",
-        "next_action": "Require fresh checks and exact head, base, threads, and protection before merge.",
-        "disposition": "Actual #389 merge integrated. Console content unchanged. Risk-based dependency review complete. Fresh native CI pending.",
+        "owner": "this chat",
         "proof": "starport-390-console-qualification-2026-09-28/verification.json",
         "integration_proof": "../../csp13/dependency-main-integration-2026-09-28/verification.json",
-        "baseRefOid": "09713ef2dfea85d5eb26712b51b82804505aea2a"
+        "disposition": "Reviewed dependency integration at 6f43261f. Windows amd64 test remains running. No merge yet.",
+        "next_action": "Require the Windows result and Build, then recheck head, base, threads, and protection before merge.",
+        "baseRefOid": "09713ef2dfea85d5eb26712b51b82804505aea2a",
+        "current_proof": "../../csp13/credential-policy-publication-2026-09-28/verification.json"
       }
     ]
   },
@@ -1880,5 +1860,24 @@
     "review_threads": 0
   },
   "consumer_main_integration": "../../csp13/dependency-main-integration-2026-09-28/verification.json",
-  "credential_policy_publication": "../../csp13/credential-policy-publication-2026-09-28/verification.json"
+  "credential_policy_publication": "../../csp13/credential-policy-publication-2026-09-28/verification.json",
+  "starport390_completion": {
+    "pull_request": 390,
+    "repository": "agentstation/starport",
+    "tested_head": "6f43261f4a70405b6ecb6a5ffaacd1347f1cb664",
+    "actual_merge": "41160fbf55f74a6659ff0ac488a4378524437be7",
+    "merged_at": "2026-09-29T02:50:24Z",
+    "tree": "38ea7a84f40e0eec8d86922c9c7a8daff6c170c6",
+    "checks": 17,
+    "review_threads": 0,
+    "protection": "Strict status checks and administrator enforcement retained. No bypass.",
+    "integration_commit": "f58b04c2010ac99e3bd383ccf75fe8447c7fc28e",
+    "integration_scope": [
+      "console/package.json",
+      "console/pnpm-lock.yaml"
+    ],
+    "qualification": "Reviewed dependency files only. Every recovery source hash from the previous checkpoint matched before the new local-access implementation. No duplicate recovery suite was run for the dependency-only merge.",
+    "prior_review": "../dependency-main-integration-2026-09-28/verification.json"
+  },
+  "local_access_checkpoint": "../../csp13/local-access-recovery-2026-09-28/verification.json"
 }

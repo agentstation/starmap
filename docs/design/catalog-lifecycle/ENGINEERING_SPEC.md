@@ -5266,3 +5266,17 @@ An exact publication retry verifies the existing tree. KV, SQL, and blob barrier
 This procedure does not restore other file roles, approve independent recovery history, or permit inference.
 
 The [acquisition-policy proof](../../plans/proof/starport-production-catalog/csp13/credential-policy-publication-2026-09-28/verification.json) binds the producer and consumer checks.
+
+### Local administrator recovery: September 28, 2026
+
+Keep captured administrator tokens inactive during restore. Use the local authentication owner to create a fresh target token.
+`starport auth rotate --no-secret --json` reports the path, generation, and rotation time without printing either secret.
+Confirm the target path before rotation. Preserve the service account and path-selection environment across recovery commands.
+Each successful rotation replaces the secret again. After an output failure, inspect status before another rotation.
+
+Old tokens and their signed console sessions fail against the new token.
+Running gateways retain their old in-memory token until restart, so external fencing remains required.
+Rotation does not open KV, SQL, blob, or recovery approval barriers. Preparation retries preserve the fresh target token.
+Record only rotation metadata with the recovery incident. Gateway keys, provider credentials, and SSO grants retain their separate recovery requirements.
+
+The [local-access proof](../../plans/proof/starport-production-catalog/csp13/local-access-recovery-2026-09-28/verification.json) records command tests and the native local-storage procedure.

@@ -1,0 +1,196 @@
+{
+  "checked_at": "2026-09-29T03:00:30.567174+00:00",
+  "task": "CSP13",
+  "status": "LOCAL_ADMINISTRATOR_PROCEDURE_QUALIFIED_FULL_RECOVERY_OPEN",
+  "consumer_head": "d4af6a52b59b6dae917d0564bedd0009100671ad",
+  "consumer_branch": "codex/storage-recovery",
+  "published": false,
+  "source_hashes": {
+    "internal/app/restore_local_access_test.go": "4da619f555060c5d7bd1600310b29b1491190421af7734235d537ec265979535",
+    "internal/cli/auth.go": "8a22bb2874cd3e53791698497337ebc55ce79f6f0c85a1e1da4d3c2715523b9c",
+    "internal/cli/auth_rotation_metadata.go": "11e989187d11a93c97982a98d392e19cec4152d6cd7b95d8fb31d483841a7e2f",
+    "internal/cli/auth_rotation_metadata_test.go": "e5ae6e60b639404c97c9e966ece1b6caa2c4704ae125cbbcfa45c8dff44357e8",
+    "internal/recovery/README.md": "0c3c943104273b089920da0e5fc190867a3fc8dc2c29dffdd23a8a0932e35869"
+  },
+  "commands": [
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -race -json -count=1 -timeout=10m ./internal/app ./internal/cli ./internal/localauth -run ^Test(RestoreLocalAccess|Auth|.*Session)",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 go test -json -count=1 -timeout=10m ./internal/app ./internal/cli ./internal/localauth -run ^Test(RestoreLocalAccess|Auth|.*Session)",
+    "golangci-lint 2.13.2 run ./internal/cli/... ./internal/app/...",
+    "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet ./internal/cli ./internal/app",
+    "bash scripts/verify-auth-onboarding.sh"
+  ],
+  "checks": {
+    "race": {
+      "pass": 47,
+      "fail": 0,
+      "skip": 0
+    },
+    "purego": {
+      "pass": 47,
+      "fail": 0,
+      "skip": 0
+    },
+    "onboarding": {
+      "pass": 26,
+      "fail": 0
+    },
+    "pinned_lint": "PASS, zero issues",
+    "vet": "PASS",
+    "writing": "Four new or changed prose files pass. auth.go retains thirteen identical historical diagnostics before and after. No new diagnostic.",
+    "native_scope": "Local macOS arm64 uses real Badger, SQLite, and filesystem blob storage. This checkpoint does not qualify native Windows or Linux, full shared recovery, or activation."
+  },
+  "behavior": [
+    "Existing rotation output remains unchanged unless --no-secret is selected.",
+    "Metadata output includes no credential value and directs a running gateway to restart.",
+    "Old local tokens and their signed sessions fail against the new token.",
+    "Backup preparation keeps the saved administrator token inactive. An exact preparation retry preserves the fresh target token.",
+    "All three import barriers and the independent SQL recovery gate stay closed.",
+    "Rotation is deliberately not idempotent. Inspect status after an output failure before another rotation."
+  ],
+  "failures": [
+    "The new option regression failed before implementation because --no-secret was unknown.",
+    "The first integration fixture omitted required CLI dependency slots. Supplying rejecting callbacks completed the fixture. No gateway or diagnostics callback ran."
+  ],
+  "merge": {
+    "pull_request": 390,
+    "repository": "agentstation/starport",
+    "tested_head": "6f43261f4a70405b6ecb6a5ffaacd1347f1cb664",
+    "actual_merge": "41160fbf55f74a6659ff0ac488a4378524437be7",
+    "merged_at": "2026-09-29T02:50:24Z",
+    "tree": "38ea7a84f40e0eec8d86922c9c7a8daff6c170c6",
+    "checks": 17,
+    "review_threads": 0,
+    "protection": "Strict status checks and administrator enforcement retained. No bypass.",
+    "integration_commit": "f58b04c2010ac99e3bd383ccf75fe8447c7fc28e",
+    "integration_scope": [
+      "console/package.json",
+      "console/pnpm-lock.yaml"
+    ],
+    "qualification": "Reviewed dependency files only. Every recovery source hash from the previous checkpoint matched before the new local-access implementation. No duplicate recovery suite was run for the dependency-only merge.",
+    "prior_review": "../dependency-main-integration-2026-09-28/verification.json"
+  },
+  "remaining": [
+    "Other canonical file-owner procedures and path-bound journal recovery",
+    "Independent post-backup permission, spending, and uncertain-work evidence",
+    "Controlled activation and populated migration",
+    "Full consumer checks, required review, publication, and native qualification",
+    "Full CSP13 task acceptance"
+  ],
+  "artifacts": {
+    "csp13-next390-ready.json": {
+      "file": "csp13-next390-ready.json.gz",
+      "sha256": "0ee70bdd2d494e09fb0882707589ea5bb5f71c4e14ce2f56631e571f734df273",
+      "gzip_sha256": "dce102d19b2b60c317d03bfca76ff17421c4a26d36931a343ba9f97adc3b0385"
+    },
+    "csp13-390-final-protection.json": {
+      "file": "csp13-390-final-protection.json.gz",
+      "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+      "gzip_sha256": "f1a3ecaa02a381e3f7e2d73913df084cd9732f93e6ca7646f650f2bc1b3f34e5"
+    },
+    "csp13-390-final-threads.json": {
+      "file": "csp13-390-final-threads.json.gz",
+      "sha256": "76e36f7e95afcf1c0c6bed618ea5b302a39f12c7a687f53f8424c32b8036ba54",
+      "gzip_sha256": "ec4c03ad8c11f85052a6c728af707fc2447619427b615e8a30f00db595c114d6"
+    },
+    "csp13-390-actual-merge.json": {
+      "file": "csp13-390-actual-merge.json.gz",
+      "sha256": "fcab56d5a957039a50265544bab9772d4c17f021a35ce8ee1bafbf94b896d8f3",
+      "gzip_sha256": "64db31a72198b072f468ec9ee2d7f70cf23b666ca5b6e2889b0f07d942beda1d"
+    },
+    "csp13-operator-auth-red.jsonl": {
+      "file": "csp13-operator-auth-red.jsonl.gz",
+      "sha256": "0e2a65cdd99e3e8354c423acba3c23c2942f14140f5de62cfa5f24fa1145969f",
+      "gzip_sha256": "2f1310a0539634dfdf5e4d7cc1ff6843940adb87d6c32aafc05ffc058d18baa3",
+      "counts": {
+        "pass": 0,
+        "fail": 4,
+        "skip": 0
+      }
+    },
+    "csp13-operator-auth-race.jsonl": {
+      "file": "csp13-operator-auth-race.jsonl.gz",
+      "sha256": "d597812e7b611642b11ec3316794915f11845d452695dc2e7fe5d482c4a5c5cb",
+      "gzip_sha256": "12939006b61d417529cfdc65c84909b575089afd9400777268f2138c0f4bfb86",
+      "counts": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-operator-local-access-race.jsonl": {
+      "file": "csp13-operator-local-access-race.jsonl.gz",
+      "sha256": "06e76df3c65c8f277b05e01459c8a21bc6b273546fbe3b1f4c73c836e88341eb",
+      "gzip_sha256": "0b21abe80ed9532603b9fae434bd3cb541eb65955c296943dbae65bea6f5742d",
+      "counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      }
+    },
+    "csp13-operator-access-final-race.jsonl": {
+      "file": "csp13-operator-access-final-race.jsonl.gz",
+      "sha256": "fa2f038ecd5ee38a90ffa53d6b61038a9f0049e5753172ec3baf798f9420466e",
+      "gzip_sha256": "9349ef145f49999b7951bb26957eb2589790304db70072009ec63034d46cd91b",
+      "counts": {
+        "pass": 47,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-operator-access-final-purego.jsonl": {
+      "file": "csp13-operator-access-final-purego.jsonl.gz",
+      "sha256": "71d1b62dbb82209942b1dc808fe8f6b16c32cbccd913257e3e057c8cda9691ca",
+      "gzip_sha256": "8a25c2d980c485546c6cfbd79ac17132450c07d7893039c5cec90b5075d59a6f",
+      "counts": {
+        "pass": 47,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-operator-access-lint.log": {
+      "file": "csp13-operator-access-lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    "csp13-operator-access-vet.log": {
+      "file": "csp13-operator-access-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-operator-access-onboarding.log": {
+      "file": "csp13-operator-access-onboarding.log.gz",
+      "sha256": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0",
+      "gzip_sha256": "947455903500d8627ced609e2b9075a2bb3ec8df5d16c76f1109211ca53d883c"
+    },
+    "csp13-operator-access-writing.log": {
+      "file": "csp13-operator-access-writing.log.gz",
+      "sha256": "4e2e1208e468d80f48b359730eb0fddeda840c2d4fbd7ea1d6d17593f435e480",
+      "gzip_sha256": "bf00f618f3068418c84ed5c4441b582ba31117ab7b7fdbe94e20dda66b839258"
+    },
+    "csp13-operator-access-writing-new.log": {
+      "file": "csp13-operator-access-writing-new.log.gz",
+      "sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+      "gzip_sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    },
+    "csp13-operator-auth-writing-before.json": {
+      "file": "csp13-operator-auth-writing-before.json.gz",
+      "sha256": "4ca074c93460b85ef9a587632da80c5e4af8419df8d0bd629dbbb66eb6f0c300",
+      "gzip_sha256": "9c7b5dc50fe186ec746cffbb948366b9cfd77bedf969ebc204093a06b6b3b443"
+    },
+    "csp13-operator-auth-writing-after.json": {
+      "file": "csp13-operator-auth-writing-after.json.gz",
+      "sha256": "4daf01cbbc5a36637e2d6c3c9acb3ee1cf2029e4095924de57750c1df58daa12",
+      "gzip_sha256": "18360a841f19877f8fced27737b63d41e427b89890f05c19d6fb6bf50c415c32"
+    },
+    "csp13-operator-queue-starmap.json": {
+      "file": "csp13-operator-queue-starmap.json.gz",
+      "sha256": "d3b697e4105b9a630b0683c5e90622379cd800a608846763981823cb0cc4ed7e",
+      "gzip_sha256": "d4938bcb4a9d4ad95423a49a55187fc1918fda056c1e3b6b761f524354ffb342"
+    },
+    "csp13-operator-queue-starport.json": {
+      "file": "csp13-operator-queue-starport.json.gz",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "gzip_sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80"
+    }
+  }
+}
