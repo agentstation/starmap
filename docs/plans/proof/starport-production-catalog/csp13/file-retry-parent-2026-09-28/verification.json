@@ -1,0 +1,116 @@
+{
+  "task": "CSP13",
+  "checked_at": "2026-09-29T00:31:20.646857+00:00",
+  "status": "candidate regression evidence; not task completion",
+  "toolchain": "go1.27.1",
+  "consumer": {
+    "worktree": "/private/tmp/starport-clock-review-20260926",
+    "branch": "codex/storage-recovery",
+    "head": "b07d68207e736d3a0f830c3069c4320992b71b90",
+    "uncommitted_sha256": {
+      "internal/credentials/policy_store.go": "989276698c22920d46282e1a7140e25219126647e8a330801fff26884a9e1d86",
+      "internal/credentials/policy_restore.go": "daa72fa32cf5082df28fe84e8fe8d677de1c7d0639ff0244fb4ff7f186ae896e",
+      "internal/credentials/policy_restore_test.go": "d8f74c1de06825019e209d89c80cf8180cf215dae57d26ab697cdc78486efcd9",
+      "internal/recovery/file_tree.go": "23fed663bdb9f9f002e131a7160fd74986895cffd8cbd3d859fed156134dccb9",
+      "internal/recovery/file_tree_verify.go": "49ef74915fa5655b30ecd411a24fde62d7ccca1caa3eb43702ee2bf73703d0d0",
+      "internal/recovery/file_tree_test.go": "2fa67ec9e887a80c8b2550d6104d82bcfdd8d75889666090bf398e4125e6eaf9",
+      "internal/recovery/file_tree_process_test.go": "de411d5b591c70540179eb43b01e01b29e93b7df4265af6c0514a58a9bafc4fe",
+      "internal/recovery/file_tree_policy_test.go": "a20cbfcb2844cadb5b4a56e31f3a326299411a2ee4ddfeb424f75f90a7f3869a"
+    },
+    "module_integration": "Temporary /tmp/csp13-native.mod or /tmp/csp13-lint.work. Committed module remains v0.16.6-0.20260928105604-485b543761c7."
+  },
+  "producer": {
+    "worktree": "/private/tmp/starmap-fleet-review-20260926",
+    "branch": "codex/recovery-file-access",
+    "head": "0cb6a7cc8690bf0eccc0e4573bd7945d9267171c",
+    "changes": [
+      "Native nonmutating pending-publication inspection delegates to the existing internal filesystem owner.",
+      "Reserved publication-directory name is public. Caller must fence writers."
+    ],
+    "clean": true
+  },
+  "defect": "A retry could validate an unchanged target leaf under a replaced parent, then sync the previously opened parent and report success.",
+  "repair": "Check the bound parent identity after owner validation and before reporting reuse. Preserve both trees on refusal. Caller fencing remains required.",
+  "checks": {
+    "before": {
+      "exit_code": 1,
+      "fail": 1
+    },
+    "race": {
+      "exit_code": 0,
+      "pass": 33,
+      "fail": 0,
+      "skip": 0,
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go test -modfile=/tmp/csp13-native.mod -race -json -count=1 -timeout=2m ./internal/recovery -run ^TestRestoreFileTree"
+    },
+    "purego": {
+      "exit_code": 0,
+      "pass": 33,
+      "fail": 0,
+      "skip": 0,
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 go test -modfile=/tmp/csp13-native.mod -json -count=1 -timeout=2m ./internal/recovery -run ^TestRestoreFileTree"
+    },
+    "lint": {
+      "exit_code": 0,
+      "command": "GOWORK=/tmp/csp13-lint.work GOTOOLCHAIN=go1.27.1 make lint"
+    },
+    "vet": {
+      "exit_code": 0,
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 go vet -modfile=/tmp/csp13-native.mod ./internal/recovery"
+    },
+    "source_writing": "PASS: regression source comment. One passive-voice diagnostic repaired after tests; no executable code changed."
+  },
+  "previous_owner_proof": "../policy-file-owner-2026-09-28/verification.json",
+  "artifacts": {
+    "csp13-tree-retry-parent-before.jsonl": {
+      "raw": "csp13-tree-retry-parent-before.jsonl.gz",
+      "source_sha256": "b066e827e5b4460fcdd3d4e0b2793ad45f12260d2447b9d54ffae7d4288c9ed3",
+      "gzip_sha256": "61d0f4528ccd56ba487387dbdfbbf9f4dc84c7cea3d3fe053b612c1be8e628ce",
+      "counts": {
+        "fail": 1
+      },
+      "failed": [
+        "TestRestoreFileTreeRetryRefusesReplacedParent"
+      ]
+    },
+    "csp13-tree-retry-parent-race.jsonl": {
+      "raw": "csp13-tree-retry-parent-race.jsonl.gz",
+      "source_sha256": "f1d6c1c8a1df2668996cce0dcbfeba101acc6ad0229a553f5acba25f7340f049",
+      "gzip_sha256": "d3980ed51a8608eb57634c2ec8097adc7e29125d671ad621cc4c14e974f1359f",
+      "counts": {
+        "pass": 33
+      },
+      "failed": []
+    },
+    "csp13-tree-retry-parent-purego.jsonl": {
+      "raw": "csp13-tree-retry-parent-purego.jsonl.gz",
+      "source_sha256": "ee127d509b0ac1a4ec96b72990645df38b7051074ea9408e6056cbbfad8f8f0e",
+      "gzip_sha256": "0bbf62e9bd289d9ae09c41b8de7c7c78684c4091b56def4b7abbf6ca46ae2e41",
+      "counts": {
+        "pass": 33
+      },
+      "failed": []
+    },
+    "csp13-tree-retry-parent-lint.log": {
+      "raw": "csp13-tree-retry-parent-lint.log.gz",
+      "source_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "gzip_sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda"
+    },
+    "csp13-tree-retry-parent-vet.log": {
+      "raw": "csp13-tree-retry-parent-vet.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    }
+  },
+  "remaining": [
+    "Finish producer gate, integrate main d721eb88, verify changed workflow and dependency, review and publish producer.",
+    "Requalify consumer with published producer module before commit, review, native CI, and merge.",
+    "Owner-specific canonical placement, independent later history, deployment activation, native qualification, and complete A16/A33 remain open."
+  ],
+  "test_source_before_comment_edit_sha256": "cc4bd680793b9074e1d4c12eac21b383df8ab2ad8ffa3c2cbdee075280a95773",
+  "plan_checks": {
+    "structure": "plan-validation.json",
+    "scoped_writing": "PASS: README and extracted current resume, ledger, and new log entry; zero diagnostics",
+    "full_writing": "1933 files, 226 pre-existing diagnostics, exit 2. No new normalized diagnostic identities relative to the previous 226-diagnostic result."
+  }
+}
