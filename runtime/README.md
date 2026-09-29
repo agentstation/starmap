@@ -71,6 +71,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 
 - [Constants](<#constants>)
 - [func InspectRetainedDirectory\(ctx context.Context, path string, owner DirectoryOwner, identity string\) error](<#InspectRetainedDirectory>)
+- [func InspectRetainedMigration\(ctx context.Context, originalDirectory string, owner DirectoryOwner, identity string, read RetainedRecordReader\) \(\[\]string, error\)](<#InspectRetainedMigration>)
 - [func PrepareAcquisitionReplay\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation, runID string, completedAt time.Time\) \(catalogs.Generation, \[\]sources.Observation, error\)](<#PrepareAcquisitionReplay>)
 - [func ReplayAcquisition\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation\) \(\*starmap.Candidate, error\)](<#ReplayAcquisition>)
 - [func ValidateDirectoryPermissions\(ctx context.Context, directory string\) error](<#ValidateDirectoryPermissions>)
@@ -197,6 +198,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type PublicationStatus](<#PublicationStatus>)
 - [type Random](<#Random>)
 - [type RefreshReport](<#RefreshReport>)
+- [type RetainedRecordReader](<#RetainedRecordReader>)
 - [type RetentionPolicy](<#RetentionPolicy>)
   - [func DefaultRetentionPolicy\(\) RetentionPolicy](<#DefaultRetentionPolicy>)
   - [func \(p RetentionPolicy\) Validate\(\) error](<#RetentionPolicy.Validate>)
@@ -450,6 +452,15 @@ func InspectRetainedDirectory(ctx context.Context, path string, owner DirectoryO
 ```
 
 InspectRetainedDirectory validates private runtime records without opening a runtime. The caller must fence writers and verify the complete inventory around inspection. This check preserves identity and replay evidence. It does not approve replica reuse, deployment settings, accepted\-catalog consistency, permission freshness, or admission. Path\-bound migration records require their separate recovery procedure.
+
+<a name="InspectRetainedMigration"></a>
+## func [InspectRetainedMigration](<https://github.com/agentstation/starmap/blob/main/runtime/migration_restore.go#L24>)
+
+```go
+func InspectRetainedMigration(ctx context.Context, originalDirectory string, owner DirectoryOwner, identity string, read RetainedRecordReader) ([]string, error)
+```
+
+InspectRetainedMigration identifies completed migration records to keep inactive during restore. The caller supplies the captured directory name, configured owner and explicit scheduler identity. Paths in historical records are opaque identities. This check never opens those paths. The caller must verify the complete backup and the remaining runtime tree separately. This result does not approve current permission, external fencing, or replica reuse.
 
 <a name="PrepareAcquisitionReplay"></a>
 ## func [PrepareAcquisitionReplay](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_compaction.go#L20>)
@@ -1918,6 +1929,15 @@ type RefreshReport struct {
     // GenerationID identifies the published effective catalog.
     GenerationID string
 }
+```
+
+<a name="RetainedRecordReader"></a>
+## type [RetainedRecordReader](<https://github.com/agentstation/starmap/blob/main/runtime/migration_restore.go#L17>)
+
+RetainedRecordReader reads a record from a verified backup with the supplied byte limit. An absent record must return an error that matches os.ErrNotExist.
+
+```go
+type RetainedRecordReader func(context.Context, string, int64) ([]byte, error)
 ```
 
 <a name="RetentionPolicy"></a>
