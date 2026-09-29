@@ -1,0 +1,218 @@
+{
+  "checked_at": "2026-09-29T02:10:16.789550+00:00",
+  "task": "CSP13",
+  "status": "DEPENDENCY_INTEGRATION_QUALIFIED_FULL_RECOVERY_OPEN",
+  "consumer_head": "42deac84a7d14495109deebca5ebd06169c6492d",
+  "consumer_previous_head": "b4b83664b5922683f6ed8e8a5416f662b970e15e",
+  "merged_main": "09713ef2dfea85d5eb26712b51b82804505aea2a",
+  "source_hashes": {
+    ".github/workflows/ci.yml": "b9939dfa6d037a831ccb5192d097247e68640bb2ae9590b129a086081d3b5108",
+    ".github/workflows/release.yaml": "a9c1f83786a908b60fde54fe0a63a754888f54ab0d1c9046f4fab33d0da2fec3",
+    "go.mod": "b1ba8b3ad1dbf9355a118de2d92fdef18c041c8152c50bb6eca045ea3ca20ddc",
+    "go.sum": "b772a265b56fbd6b6bbe857028aac6c6eded39d7e0b9c463186026cbb4bf8a32"
+  },
+  "resolution": "Retain the published Starmap recovery API pin. Select the exact merged main versions for every other module. Both workflows match main. No handwritten source changes.",
+  "checks": {
+    "race": {
+      "pass": 129,
+      "fail": 0,
+      "skip": 3
+    },
+    "real_shared_storage": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "services": [
+        "Valkey",
+        "PostgreSQL",
+        "MinIO"
+      ],
+      "cleanup": "PASS"
+    },
+    "tidy_diff": "PASS, empty output",
+    "module_verification": "PASS",
+    "vet": "PASS",
+    "diff_check": "PASS",
+    "purego": "Not repeated for this integration. Earlier source behavior remains historical evidence. Full final consumer qualification remains open."
+  },
+  "queue": {
+    "starport389": {
+      "headRefOid": "26f3b92eed3634cc3a0aef82dec82080723683a7",
+      "mergeCommit": {
+        "oid": "09713ef2dfea85d5eb26712b51b82804505aea2a"
+      },
+      "mergedAt": "2026-09-29T02:03:32Z",
+      "state": "MERGED",
+      "url": "https://github.com/agentstation/starport/pull/389",
+      "tested_tree": "b06a0a1f64523f034a02517d049ff24e12266d39",
+      "merged_tree": "b06a0a1f64523f034a02517d049ff24e12266d39",
+      "tested_tree_matches_merge": true,
+      "checks_pass": 17,
+      "review_threads": 0
+    },
+    "starport390": {
+      "baseRefOid": "09713ef2dfea85d5eb26712b51b82804505aea2a",
+      "headRefName": "dependabot/npm_and_yarn/console/console-packages-590881ce15",
+      "headRefOid": "6f43261f4a70405b6ecb6a5ffaacd1347f1cb664",
+      "state": "OPEN",
+      "url": "https://github.com/agentstation/starport/pull/390"
+    },
+    "console_disposition": {
+      "checked_at": "2026-09-29T02:08:08.326844+00:00",
+      "pr": 390,
+      "head": "6f43261f4a70405b6ecb6a5ffaacd1347f1cb664",
+      "base": "09713ef2dfea85d5eb26712b51b82804505aea2a",
+      "disposition": "Reviewed dependency update. Require current-head CI and branch protection before merge.",
+      "scope": "Risk-based dependency review, installed package behavior, prior frozen console tests, lockfile and integration diff. This is not a line-by-line audit of every upstream package or browser UX qualification.",
+      "review": {
+        "cn": "Reviewed argument-cache churn and equality checks in the distributed runtime. All 61,440 cached/direct merge comparisons pass. Vite configuration does not select the new cn build plugin.",
+        "shadcn_lint": "Reviewed parser selection, JSX adapter, rule wrapping, and unchanged six configured rule names. The prior negative probe rejects all six prohibited designs. New Vue/Svelte readers do not select themselves for this JSX project.",
+        "react_query": "Patch updates query-core and matching devtools. The recorded console tests exercise existing queries and routes.",
+        "react_router": "Patch addresses hash-sensitive hydration. Existing route checks pass. No application route API changes enter this PR.",
+        "katex": "Updates array-row handling and type declarations. No Starport rendering configuration changes enter the PR.",
+        "lucide_react": "Adds icons and exported node data. Existing imports compile and console tests pass.",
+        "jsdom_vitest": "Test-only updates affect focus, DOM behavior, reporting, and matchers. All 464 console tests pass under the new graph.",
+        "vite": "Patch updates build and dependency processing. Recorded console build and type checks pass.",
+        "lockfile": "Frozen installation passed. No application source or linter configuration changed.",
+        "integration": "Actual #389 merge updates Go dependencies only. Every console byte remains equal to the qualified #390 source.",
+        "gate": "Required autoreview --gate pre-pr --mode auto exits 0 without a model call because the diff contains metadata only."
+      },
+      "findings": [],
+      "remaining": [
+        "Fresh native CI at the integrated head",
+        "Exact head, base, reviews, and branch-protection check before merge"
+      ]
+    },
+    "push_correction": "An incorrect new remote branch was created before the existing #390 branch name was checked. The correct branch now contains the integration. The accidental branch had no PR and retained the exact created head. A lease-protected deletion removed only that accidental branch. No published history was replaced."
+  },
+  "review_tool": {
+    "approval": "Owner approved bounded JSON-gzip support. No further helper changes were needed.",
+    "helper_sha256": "ca72abe7187e08ce7dc415bdc3dd8e1b3be44b8d11a62866fd5f668a531752e9",
+    "evidence": "../../csp12.2/final-source-2026-09-28/review-tool/verification.json",
+    "confirmed": "Current helper hash matches the qualified implementation: twenty focused passes, 376 full-suite passes, three skips."
+  },
+  "remaining": [
+    "Other canonical file-owner procedures",
+    "Independent post-backup recovery history",
+    "Controlled activation",
+    "Complete consumer verification, required review, publication, and native qualification"
+  ],
+  "artifacts": {
+    "csp13-starport389-merge-ready.json": {
+      "file": "csp13-starport389-merge-ready.json.gz",
+      "sha256": "bcb18e8b89c15ff6b172fae88bbb807263912b94e91f26675708f37b96fb9935",
+      "gzip_sha256": "152530419bc018ed875c199c1b06f4cd974f70ef5df14d448a4dc78c1427dc38"
+    },
+    "csp13-starport389-merge-threads.json": {
+      "file": "csp13-starport389-merge-threads.json.gz",
+      "sha256": "5135e2ee8ab0372ee34ff5dfdbef518e06837970aedfc4cab4facd0ebfd91453",
+      "gzip_sha256": "9f9bf431e9a48e102b6b26c16e1410b7ace744069ced81cb71bbc167d8529343"
+    },
+    "csp13-starport389-merge-protection.json": {
+      "file": "csp13-starport389-merge-protection.json.gz",
+      "sha256": "5782e61f4043401462a078b00fa9c1cca6caa670cc9ddb4bcd49b4ff220dc1c4",
+      "gzip_sha256": "6af9dc54853d9714835b70157b70074557dae703a09fb9f94281e558ee1ab7c2"
+    },
+    "csp13-starport389-merged.json": {
+      "file": "csp13-starport389-merged.json.gz",
+      "sha256": "381110e3fe512fd866db0de544a7efcc6c79fe15b795b2910270d4b1b0d83bdb",
+      "gzip_sha256": "caff8430b004383d483c825efa11cdbf93b6be4241396a1e926dd24eb7716fd8"
+    },
+    "csp13-starport390-go-main-review.log": {
+      "file": "csp13-starport390-go-main-review.log.gz",
+      "sha256": "12bbf64de628b1299e17cb70dcdf7f21a4c4320237e3f2f5c15618a9d00cbac4",
+      "gzip_sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4"
+    },
+    "csp13-starport390-go-main-published.json": {
+      "file": "csp13-starport390-go-main-published.json.gz",
+      "sha256": "7adeac278ce7fcaba1992c1599ff5552e029aac9d65e7e04d5db89217e7d22f3",
+      "gzip_sha256": "1de61a68693780e2079bdef407c9b0bfe15dbbe65f85d133cbcff7f3ab3f4827"
+    },
+    "csp13-starport390-final-disposition.json": {
+      "file": "csp13-starport390-final-disposition.json.gz",
+      "sha256": "1a84a900e0416e9d1f498725f6e7a248b13ccb3c105238f237e52cf19078415a",
+      "gzip_sha256": "004d80adbff81c1f3280f75cc717de96b0e6d49d6e6c5f8696f7e2c79ad03813"
+    },
+    "csp13-starport390-cache-probe.json": {
+      "file": "csp13-starport390-cache-probe.json.gz",
+      "sha256": "69c642008575429f731c1f8eace0dc6ee4d3ede2bc3de467d765a1e6eb4f110a",
+      "gzip_sha256": "fff2a8ce6b04350a30f39e905fdc7a3fb86cad1a56fa445c9b1e30e33cf6bc30"
+    },
+    "csp13-consumer-main-race.jsonl": {
+      "file": "csp13-consumer-main-race.jsonl.gz",
+      "sha256": "2c79df8eec02380bf14bb559d23e76ce32dd23791c8ffc737a2acf82ee5cb7fd",
+      "gzip_sha256": "26b4f9c659ba91e0e3ba4aaf3f5b1970194b437fcecafbb43a1cdbb823e84092",
+      "counts": {
+        "pass": 129,
+        "fail": 0,
+        "skip": 3
+      }
+    },
+    "csp13-consumer-main-published-storage-race.jsonl": {
+      "file": "csp13-consumer-main-published-storage-race.jsonl.gz",
+      "sha256": "b399271e2d1ad0e79d307e43a11fea0cbcb66492d16d8a74b413f581b57a4aa3",
+      "gzip_sha256": "65425d2ee582d33a484901b1f4881139aea5e1bdf1b9e4b66edc6597455ae0be",
+      "counts": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp13-consumer-main-storage-fixture.json": {
+      "file": "csp13-consumer-main-storage-fixture.json.gz",
+      "sha256": "1a11215956042efd4463ca1696448e08b81bb2256ca4fb4573420fac6d55d37c",
+      "gzip_sha256": "ee8ebf7e07025fd41d66f97ccbdb068f293e77bc9705c57b5897f7480f497035"
+    },
+    "csp13-consumer-main-storage-run.log": {
+      "file": "csp13-consumer-main-storage-run.log.gz",
+      "sha256": "4695cb669fdb03c13d6c3ea26dc10d09af4accbd378e1a1d99bd4b8a765f1de3",
+      "gzip_sha256": "17970627921ce125c6d607708c53c6f9ca801260ffda41f87435cd459f2557c4"
+    },
+    "csp13-consumer-main-storage-object-build.txt": {
+      "file": "csp13-consumer-main-storage-object-build.txt.gz",
+      "sha256": "8cb168ef4b59cee073d1b52548cc1b2699051efd7fca7356dbede69d445ca778",
+      "gzip_sha256": "a50f744a6feb4899cd62ae63da3f05dfde21f5f726cd655fa9c357c450b0db68"
+    },
+    "csp13-consumer-main-tidy.log": {
+      "file": "csp13-consumer-main-tidy.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-consumer-main-modverify.log": {
+      "file": "csp13-consumer-main-modverify.log.gz",
+      "sha256": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+      "gzip_sha256": "4699dce40a065353f016ef7eb2c309ee9dee73281263a6b29287016349618a1b"
+    },
+    "csp13-consumer-main-vet.log": {
+      "file": "csp13-consumer-main-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-qualify-consumer-main-storage.py": {
+      "file": "csp13-qualify-consumer-main-storage.py.gz",
+      "sha256": "20407ac25cdc2100501f64cb7b64e4c6599f6e80ced384b62809be925272e52d",
+      "gzip_sha256": "867b7150f501c21ae120f3599c6b8c46604f120071553ce053c1cb26bb571be8"
+    },
+    "csp13-queue-resume-starmap.json": {
+      "file": "csp13-queue-resume-starmap.json.gz",
+      "sha256": "687d40d8d4b370f5966ec7b2a19429cec996fbb236c82483dc629c0151d1c158",
+      "gzip_sha256": "b9bf1b05affa7132ea55772e4d12181c05ec15f4c56b92de7df814e75145918d"
+    },
+    "csp13-queue-resume-starport.json": {
+      "file": "csp13-queue-resume-starport.json.gz",
+      "sha256": "59bf182e66b89fe347c8bb7645dc1bba5aebc23fc373bf1b25fe0ad47052ca80",
+      "gzip_sha256": "61690517699b4c16ab35bf981538475507776451b199c47fc8802690f0defdef"
+    },
+    "dependency-cache-probe.mjs": {
+      "file": "dependency-cache-probe.mjs.gz",
+      "sha256": "884caeb6cefc1d6bbbe964d6f7b866e82778103620d3a00effdbf1d372cf0830",
+      "gzip_sha256": "1e84e3420ff6a769b160ef05447f621a315a90990f635c81a7cf4307152c3f3a"
+    },
+    "csp13-main-integration-prose-check.log": {
+      "file": "csp13-main-integration-prose-check.log.gz",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "gzip_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    }
+  },
+  "documentation": "Updated plan and current queue. Scoped prose passes. Historical repository-wide prose diagnostics remain unchanged."
+}
