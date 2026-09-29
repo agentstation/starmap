@@ -39,7 +39,7 @@
       "gzip_sha256": "c3a8e85d10e1887304defd95e64f7d4d4ca1cb7291f564ab02d175415ffae6f9"
     },
     "windows-arm/tests.jsonl": {
-      "file": "windows-arm-tests.jsonl.gz",
+      "file": "e9df-windows-arm-tests.jsonl.gz",
       "sha256": "ed0c33fa53a02a8a89c1c53c7079efcfabf4b9d6f6a406f725cf8b17237f2e43",
       "gzip_sha256": "af367e787be0c523a7f9ef975e66102fa44eb915744e740cc98baa36d58adc30"
     },
