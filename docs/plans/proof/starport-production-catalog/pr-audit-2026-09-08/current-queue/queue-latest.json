@@ -2081,8 +2081,14 @@
     "base": "84d9a9a557f46146c40d25ed25875eec783fffa1",
     "state": "in_progress",
     "owned_uncommitted": [],
-    "next_action": "Complete independent history acceptance and ordered owner replay while target stores remain restricted.",
-    "head": "3427fb9eac2f5be16cfe682c3e505f77a06ecede",
-    "proof": "csp13/history-acceptance-2026-09-29/verification.json"
+    "next_action": "Complete the durable typed runner, operator commands, final graph checks, and coordinated activation. Keep all target writers fenced.",
+    "head": "bd2271babe2c790b9a15b7ea337784c0a731c841",
+    "proof": "csp13/history-coordination-2026-09-29/verification.json"
+  },
+  "catalog_topology": {
+    "owner": "recovery_contract",
+    "head": "152055fe7d6589375879a9572289312755a89c49",
+    "state": "REFERENCE_DOC_REPAIR",
+    "next_action": "Regenerate API docs, finish repository checks and required review, then publish for native CI."
   }
 }

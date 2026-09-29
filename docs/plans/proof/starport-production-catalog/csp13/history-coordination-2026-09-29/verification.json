@@ -1,0 +1,107 @@
+{
+  "head": "bd2271babe2c790b9a15b7ea337784c0a731c841",
+  "state": "COMPONENTS_VERIFIED_OPERATOR_RECOVERY_PENDING",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "commits": {
+    "absent_total": "503bb303",
+    "streamed_assets": "9cc6f27d",
+    "typed_dispatch": "64b37018",
+    "target_binding": "bd2271babe2c790b9a15b7ea337784c0a731c841"
+  },
+  "checks": {
+    "streamed_assets": {
+      "race_pass": 59,
+      "pure_pass": 59,
+      "fail": 0,
+      "skip": 0,
+      "vet_exit": 0,
+      "lint_exit": 0
+    },
+    "typed_dispatch": {
+      "agent_source": "74d6149fbfa231cb6dc4e23486f07da23cc7c971",
+      "race_pass": 33,
+      "pure_pass": 33,
+      "fail": 0,
+      "skip": 0,
+      "lint": "32 unused-only findings await production runner callers"
+    },
+    "absent_total": {
+      "race_pass": 11,
+      "pure_pass": 11,
+      "fail": 0,
+      "skip": 0
+    },
+    "target_binding": {
+      "race_pass": 9,
+      "pure_pass": 9,
+      "fail": 0,
+      "skip": 0,
+      "vet_exit": 0,
+      "focused_lint_exit": 0,
+      "prose_exit": 0,
+      "packages": [
+        "internal/storage",
+        "internal/sqlstore",
+        "internal/blob",
+        "internal/app"
+      ],
+      "test_selector": "TestRecoveryTarget|TestInspectImportedBackupRetainsCompletePrivateReceipt"
+    }
+  },
+  "limitations": [
+    "Only component tests passed. Complete operator recovery remains UNVERIFIED.",
+    "The typed dispatcher still needs its production runner. Final rotation payloads must avoid a digest fixed-point by supplying only expected preimages.",
+    "Target binding identifies selected scopes, not remote physical continuity or external fencing.",
+    "Native Linux and Windows qualification remains pending for these new commits."
+  ],
+  "artifacts": {
+    "assets-race.jsonl": {
+      "file": "assets-race.jsonl.gz",
+      "sha256": "7e2de4c0e910b3523bcf9200a211005b06848a7548d7a70b0d74356a137c1af3"
+    },
+    "assets-pure.jsonl": {
+      "file": "assets-pure.jsonl.gz",
+      "sha256": "b823e0ae95032aa733292f5ca5a0148598efbd8e8699d55f2843d44e89ab8507"
+    },
+    "assets-lint.log": {
+      "file": "assets-lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "target-final-race.jsonl": {
+      "file": "target-final-race.jsonl.gz",
+      "sha256": "973b244c5f8c3277e60edc10bf78fe00ac3db57675a73b59f64565ea9cf766b3"
+    },
+    "target-pure.jsonl": {
+      "file": "target-pure.jsonl.gz",
+      "sha256": "550172f4e6addcb52f12d20e42d96657791809bac9006ed5ea0e1a3866f464f3"
+    },
+    "target-lint.log": {
+      "file": "target-lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "target-prose.log": {
+      "file": "target-prose.log.gz",
+      "sha256": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668"
+    },
+    "payload-race.jsonl": {
+      "file": "payload-race.jsonl.gz",
+      "sha256": "8e3c9fc7df2d4ca84f547b677132a682bfcd017c7426fbeba43965737aa43e14"
+    },
+    "payload-pure.jsonl": {
+      "file": "payload-pure.jsonl.gz",
+      "sha256": "2014d7eff21da3818717f590b002419e1e86541202d3ff01747b4a580e579056"
+    },
+    "payload-absent-race.jsonl": {
+      "file": "payload-absent-race.jsonl.gz",
+      "sha256": "59b56c79ec5a7b930e1f56f9a2997c177d9e0cf54e05e2807a633e43c26f4aa2"
+    },
+    "payload-absent-pure.jsonl": {
+      "file": "payload-absent-pure.jsonl.gz",
+      "sha256": "a46adcafb9f84ed3a8bb40c10e6917191df99a18302210ba1585bec1bd3e4e02"
+    },
+    "payload-verification.json": {
+      "file": "payload-verification.json.gz",
+      "sha256": "7ab32b551000e4dc5ddbfc43903d1055ba59773419de0dca0967e2d6367a1f3d"
+    }
+  }
+}
