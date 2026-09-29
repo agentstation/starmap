@@ -148,14 +148,29 @@ func (w *publicationWriter) readJournal(name string) (*publicationJournal, error
 	if err != nil {
 		return nil, err
 	}
-	if publicationDigest(raw) != receipt.Digest || len(raw) == 0 || raw[len(raw)-1] != '\n' {
+	if publicationDigest(raw) != receipt.Digest {
+		return nil, changed(name)
+	}
+	journal, err := decodePublicationJournal(name, raw)
+	if err != nil {
+		return nil, err
+	}
+	journal.receipt = receipt
+	if err := journal.validateHeader(w, nonce, receipt.Entry); err != nil {
+		return nil, err
+	}
+	return journal, nil
+}
+
+func decodePublicationJournal(name string, raw []byte) (*publicationJournal, error) {
+	if len(raw) == 0 || len(raw) > publicationJournalMaxBytes || raw[len(raw)-1] != '\n' {
 		return nil, changed(name)
 	}
 	lines := bytes.Split(raw[:len(raw)-1], []byte{'\n'})
 	if len(lines) > publicationJournalMaxEvents {
 		return nil, oversized(name, publicationJournalMaxBytes)
 	}
-	journal := &publicationJournal{name: name, receipt: receipt}
+	journal := &publicationJournal{name: name}
 	for index, line := range lines {
 		event, err := decodePublicationEvent(name, line)
 		if err != nil {
@@ -167,10 +182,7 @@ func (w *publicationWriter) readJournal(name string) (*publicationJournal, error
 			}
 			journal.header = *event.Header
 		} else {
-			if event.Header != nil || event.Record == nil {
-				return nil, changed(name)
-			}
-			if !validPublicationRecord(*event.Record) {
+			if event.Header != nil || event.Record == nil || !validPublicationRecord(*event.Record) {
 				return nil, changed(name)
 			}
 			if index == 1 && (event.Record.Size != 0 || event.Record.Digest != publicationDigest(nil)) {
@@ -181,9 +193,6 @@ func (w *publicationWriter) readJournal(name string) (*publicationJournal, error
 			}
 			journal.state = event.Record
 		}
-	}
-	if err := journal.validateHeader(w, nonce, receipt.Entry); err != nil {
-		return nil, err
 	}
 	return journal, nil
 }

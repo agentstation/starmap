@@ -72,6 +72,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [Constants](<#constants>)
 - [func InspectRetainedDirectory\(ctx context.Context, path string, owner DirectoryOwner, identity string\) error](<#InspectRetainedDirectory>)
 - [func InspectRetainedMigration\(ctx context.Context, originalDirectory string, owner DirectoryOwner, identity string, read RetainedRecordReader\) \(\[\]string, error\)](<#InspectRetainedMigration>)
+- [func InspectRetainedPublications\(ctx context.Context, files map\[string\]RetainedFile, read RetainedRecordReader\) \(\[\]string, error\)](<#InspectRetainedPublications>)
 - [func PrepareAcquisitionReplay\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation, runID string, completedAt time.Time\) \(catalogs.Generation, \[\]sources.Observation, error\)](<#PrepareAcquisitionReplay>)
 - [func ReplayAcquisition\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation\) \(\*starmap.Candidate, error\)](<#ReplayAcquisition>)
 - [func ValidateDirectoryPermissions\(ctx context.Context, directory string\) error](<#ValidateDirectoryPermissions>)
@@ -198,6 +199,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type PublicationStatus](<#PublicationStatus>)
 - [type Random](<#Random>)
 - [type RefreshReport](<#RefreshReport>)
+- [type RetainedFile](<#RetainedFile>)
 - [type RetainedRecordReader](<#RetainedRecordReader>)
 - [type RetentionPolicy](<#RetentionPolicy>)
   - [func DefaultRetentionPolicy\(\) RetentionPolicy](<#DefaultRetentionPolicy>)
@@ -461,6 +463,15 @@ func InspectRetainedMigration(ctx context.Context, originalDirectory string, own
 ```
 
 InspectRetainedMigration identifies completed migration records to keep inactive during restore. The caller supplies the captured directory name, configured owner and explicit scheduler identity. Paths in historical records are opaque identities. This check never opens those paths. The caller must verify the complete backup and the remaining runtime tree separately. This result does not approve current permission, external fencing, or replica reuse.
+
+<a name="InspectRetainedPublications"></a>
+## func [InspectRetainedPublications](<https://github.com/agentstation/starmap/blob/main/runtime/publication_restore.go#L26>)
+
+```go
+func InspectRetainedPublications(ctx context.Context, files map[string]RetainedFile, read RetainedRecordReader) ([]string, error)
+```
+
+InspectRetainedPublications selects native journals and matching staging files to keep inactive. The caller must supply the complete verified runtime inventory and preserve all selected bytes. Destination records remain active and require separate owner validation. This check never promotes staging files. Native file identities are historical. This result does not authorize cleanup or admission.
 
 <a name="PrepareAcquisitionReplay"></a>
 ## func [PrepareAcquisitionReplay](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_compaction.go#L20>)
@@ -1928,6 +1939,18 @@ type RefreshReport struct {
 
     // GenerationID identifies the published effective catalog.
     GenerationID string
+}
+```
+
+<a name="RetainedFile"></a>
+## type [RetainedFile](<https://github.com/agentstation/starmap/blob/main/runtime/publication_restore.go#L17-L20>)
+
+RetainedFile identifies bytes in a verified backup. Names are slash\-separated relative paths.
+
+```go
+type RetainedFile struct {
+    Size   int64
+    SHA256 string
 }
 ```
 
