@@ -10,9 +10,13 @@
 <h1>Starmap and Starport production catalog</h1>
 
 <section id="current-resume"><h2>Current resume state</h2>
-<p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. One required task subcase passes. Fifteen remain UNVERIFIED.</p>
+<p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: publish Starport layer one after its roster passes, then layers two and three. Merge Starmap branch <code>catalog-decode-reuse</code> after <code>make verify</code>, pin it in layer four, open the scope in <code>ActivateRecovery</code>, and repeat the unchanged full native pure and race test. Land the acceptance registration branch. Then integrate populated adoption by phase.</p>
+<p>Next: merge Starport layer one when hosted CI passes, then layers two and three. Merge Starmap pull requests #206 (decode reuse) and #207 (acceptance registration) after CI. Pin #206 in layer four, open the scope in <code>ActivateRecovery</code>, and repeat the unchanged full native pure and race test. Then integrate populated adoption by phase.</p>
+
+<p>Acceptance run on 2026-09-30 with <code>--task CSP13</code> against the integrated head: ten subcases PASS. <code>A16.sqlite_wal_backup</code> and <code>A16.concurrent_migration_owner</code> stay UNVERIFIED. Their <code>native_ci</code> checks need a captured successful hosted run at the exact Starport source. That capture follows the landing merges. Four A33 subcases have no registration and wait for populated adoption.</p>
+
+<p>The local Starmap <code>make verify</code> for #206 passed every gate up to the last race shard. The two hour session limit stopped that shard without a failure. That shard runs again in the background. Hosted CI is the merge gate.</p>
 
 <p id="delivery-method">Delivery method, from the owner on 2026-09-30: land before adding. The integrated Starport branch holds 29,333 unpublished added lines in 232 files. It has 57 commits after the #393 merge. Publish it before new scope enters it. Report progress as passing subcases and merged pull requests.</p>
 
