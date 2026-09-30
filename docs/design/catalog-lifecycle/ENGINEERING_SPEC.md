@@ -5539,3 +5539,16 @@ Public passive inspection and process restart must inspect the complete original
 CSP13 must supply a separate populated adoption procedure while retaining empty-target import checks. The [adoption contract](../../plans/proof/starport-production-catalog/csp13/populated-adoption-contract-2026-09-30/CONTRACT.md) requires independent history and exact owner-derived live state. Private offline projection may reconstruct expected state in bounded scratch storage. It cannot grant native adoption or admission. Native approval, complete history, all-writer fencing, and coordinated release remain separate required evidence.
 
 An observed recovery withdrawal must remain effective in the old authority owner. Restoring an equal SQL approval must not renew that owner's admission or mutations. Transient authority-query failure does not itself prove a withdrawal. Diagnostics remain available.
+
+
+## D42 recovery measurements and production limits
+
+D42 requires measurements before the owner agrees to numeric recovery limits. RPO is maximum acknowledged data loss. RTO is maximum restoration time.
+
+Record the outage start and restored readiness for each supported reference deployment. Compare restored state with independently recorded acknowledged operations. Record hardware, topology, workload, backup and history age, fencing, native identities, and retained permission.
+
+Component test durations do not establish deployment RTO. A laboratory zero-loss result does not establish a general production RPO guarantee. Present measured results and proposed limits for owner approval before production readiness.
+
+Missing independent security or budget history keeps affected admission restricted. A recovery objective cannot permit lost revocations, invented budget capacity, or repeated uncertain provider work.
+
+The [owner decision](../../plans/proof/starport-production-catalog/csp13/recovery-target-decision-2026-09-30/decision.json) records the sequence. Numeric limits remain UNVERIFIED.

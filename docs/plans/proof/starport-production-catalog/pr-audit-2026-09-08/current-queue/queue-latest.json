@@ -866,7 +866,7 @@
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-catalog-activation",
     "head": "cee3f1ae88dc0afa8c89d1c0ac3d5adf4cb7b983",
-    "next_action": "Finish exclusive full embedded race profile; qualify maximum capacity; integrate populated operator commands and gateway history barriers; complete exact acceptance."
+    "next_action": "Finish maximum capacity; repair full embedded race deadline at its owner; integrate namespace tests and fresh-history qualification; complete populated adoption and measured recovery."
   },
   "merged_followups": {
     "tasks": [
@@ -3313,9 +3313,10 @@
     "required_next": "Qualify checked-source repair with unchanged deadline."
   },
   "native_window": {
-    "owner": "starmap_ci_repair",
-    "next_owner": "root maximum capacity",
-    "root_activity": "read-only profile analysis"
+    "owner": "root",
+    "session_id": 82202,
+    "activity": "maximum capacity",
+    "next_owner": "root qualification scheduling"
   },
   "populated_adoption_extension": {
     "owner": "operator_recovery_inputs",
@@ -3325,5 +3326,12 @@
   },
   "checked_source_integration": "../../csp13/checked-source-integration-2026-09-30/verification.json",
   "gateway_integration": "../../csp13/gateway-integration-2026-09-30/verification.json",
-  "full_checked_source_profile": "../../csp13/full-embedded-checked-source-2026-09-30/verification.json"
+  "full_checked_source_profile": "../../csp13/full-embedded-checked-source-2026-09-30/verification.json",
+  "maximum_capacity": {
+    "session_id": 82202,
+    "status": "RUNNING",
+    "head": "cee3f1ae88dc0afa8c89d1c0ac3d5adf4cb7b983",
+    "output": "/private/tmp/csp13-maximum-capacity-cee3-20260930"
+  },
+  "recovery_target_decision": "../../csp13/recovery-target-decision-2026-09-30/decision.json"
 }

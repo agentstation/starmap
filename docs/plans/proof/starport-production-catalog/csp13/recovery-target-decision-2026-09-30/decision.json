@@ -1,0 +1,22 @@
+{
+  "status": "CONFIRMED",
+  "decision": "D42",
+  "date": "2026-09-30",
+  "owner_answer": "Measure first, then approve numeric targets (Recommended)",
+  "contract": {
+    "sequence": [
+      "Measure recovery on supported reference deployments",
+      "Present source-bound measurements and proposed numeric RPO and RTO limits",
+      "Obtain owner approval before production readiness"
+    ],
+    "rpo": "Maximum acknowledged data loss",
+    "rto": "Maximum restoration time",
+    "numeric_targets": "UNVERIFIED; not yet agreed",
+    "permission": "Missing independent security or budget history keeps affected admission restricted regardless of a recovery objective."
+  },
+  "measurement_limits": [
+    "Component test duration is not deployment RTO.",
+    "A laboratory zero-loss result is not a blanket production RPO guarantee.",
+    "Record outage start, restored readiness, restored acknowledged state, hardware, topology, load, backup/history age, fencing and native identities."
+  ]
+}

@@ -5280,3 +5280,8 @@ Starport `2a7cd1a1` reuses the privately checked source during one activation. I
 Root integrated operator-command tests at `11afee4c` after source and evidence review. Their original source passes two native results per mode. A shipping binary proves status and completed exact retry. Actual CLI handlers resume in a fresh test process after a lost blob commit reply. Combined-source native qualification remains required.
 
 The empty-target import and catalog adoption primitives lack a complete populated restart adoption procedure. The [extension contract](../../plans/proof/starport-production-catalog/csp13/populated-adoption-contract-2026-09-30/CONTRACT.md) assigns that procedure to CSP13. Offline expected-state reconstruction and restricted native ownership remain required. Coordinated operator activation and real restart or loss cases also remain required. Empty-target restore after a restart cannot qualify the complete procedure.
+
+
+## Recovery target decision on 2026-09-30
+
+The owner confirmed D42: measure supported reference deployments first, then agree to numeric RPO and RTO limits before production readiness. The [decision record](../../plans/proof/starport-production-catalog/csp13/recovery-target-decision-2026-09-30/decision.json) defines required measurement context and permission limits. Numeric recovery targets remain UNVERIFIED.

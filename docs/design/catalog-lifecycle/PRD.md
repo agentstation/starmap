@@ -67,6 +67,7 @@ The [latency revision](../../plans/proof/starport-production-catalog/latency-rev
 | D39 | Both products support macOS only on Apple silicon. Linux and Windows retain x86-64 and ARM64 support. Preserve historical Intel Mac releases and evidence. | User confirmed on 2026-09-26. |
 | D40 | Physical suspend/resume tests are optional platform qualification. Require documented OS clock behavior, native adapter checks, and deterministic expiry tests. Preserve the 60-second authorization limit and stricter catalog authority receipts. | User confirmed on 2026-09-26. |
 | D41 | Binary upgrades retain the fleet baseline and reconstruction inputs. Configured updates remain automatic. Acquisition-policy changes require one coordinated apply. Embedded-only baseline promotion is explicit. | User approved the refined third option on 2026-09-26. |
+| D42 | Measure recovery on supported reference deployments first. Agree to numeric RPO and RTO limits before production readiness. Missing independent permission history keeps affected admission restricted. | User confirmed on 2026-09-30. |
 
 D23 permits checked, explicitly selected, administrator-owned primary configuration for service deployments. Catalog state and dotenv files retain private-access requirements.
 The [owner decision record](../../plans/proof/starport-production-catalog/csp2/owner-decisions-2026-09-06.md) defines its implementation and qualification limits.
