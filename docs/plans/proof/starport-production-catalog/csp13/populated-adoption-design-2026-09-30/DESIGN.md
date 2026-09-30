@@ -141,6 +141,11 @@ The residual race is two concurrent retries of the same claim with an activation
 
 ## Recovery owner: `internal/recovery`
 
+Delivered in Starport commit `596bcccb` on `codex/recovery-populated-recovery-20260930`.
+The lead review found three deviations. Item 7 needed no change, because both functions already accept a closed record with a backend identity.
+The SQL restrict callback places the adoption-prepared record at the captured epoch plus one, so it is the prior epoch plus two.
+The retained activation runner also refuses a mode mismatch. It reopens only an import journal, so the application owner supplies the adoption path.
+
 1. **Adoption identity.** Derive the claims from C and the adoption binding. Check the H manifest against `C.ImportIdentity(operation)`.
 2. **Prior approval binding.** The operator supplies the prior approval record. The captured witness in C must equal that record after `Close`. The KV authority record in C must hold the same approval. A lower SQL witness epoch refuses, because it shows a restored SQL database. Different independent epochs refuse.
 3. **Closed-adoption epoch.** New `ClosedAdoptionEpochRequest{Closed, PriorApproval, Snapshot, Import, Evidence}`. It requires a closed record with the backend identity of the prior approval, and `PriorApproval.Epoch < Closed.Epoch`. It requires `HighestEpoch >= Closed.Epoch-1`. The next epoch is `max(Closed.Epoch, HighestEpoch+1)`. The closed record keeps the old backend identity, and evidence is `"adoption-epoch:" + digest`. The flow never simulates an imported empty witness.
