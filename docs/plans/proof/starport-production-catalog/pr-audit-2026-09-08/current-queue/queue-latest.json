@@ -1,16 +1,6 @@
 {
   "checked_at": "2026-09-30T10:03:10.147692+00:00",
-  "starmap": [
-    {
-      "number": 205,
-      "url": "https://github.com/agentstation/starmap/pull/205",
-      "head": "7ddf5c5c7ab96be704ce7acafbc1997a37c0e2e6",
-      "base": "1c03a457a14f6f28691207ed79f0e24cf944adcc",
-      "disposition": "retain; reviewed native CI pending",
-      "owner": "root",
-      "next_action": "Require exact-head native checks and unchanged protection, then merge."
-    }
-  ],
+  "starmap": [],
   "starport": [],
   "completed_merges": [
     {
@@ -876,7 +866,7 @@
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-catalog-activation",
     "head": "0e52e853dc797cf31a0d80da5082c6a10d390e87",
-    "next_action": "Qualify retained-input comparison at producer-owned seam, integrate private consumer proofs, then measure unchanged full application and maximum capacity; complete native recovery acceptance."
+    "next_action": "Integrate actual merged producer comparison vector, qualify full embedded and maximum capacity, complete operator procedures and exact acceptance registration."
   },
   "merged_followups": {
     "tasks": [
@@ -1323,7 +1313,7 @@
     "status": "done",
     "next_task": "CSP13"
   },
-  "starmap_open_count": 1,
+  "starmap_open_count": 0,
   "starport_open_count": 0,
   "dependency_189_completion": {
     "checked_at": "2026-09-28T17:04:54.239668+00:00",
@@ -3244,7 +3234,7 @@
       }
     }
   },
-  "last_producer_merge": "1c03a457a14f6f28691207ed79f0e24cf944adcc",
+  "last_producer_merge": "2bb99571227518efcb67aa64f9b78bf9079fab27",
   "starmap202_merge_proof": "csp13/starmap202-merge-2026-09-30/verification.json",
   "merged_producer_module": "v0.16.6-0.20260930103856-1c03a457a14f",
   "starmap203_completion": {
@@ -3310,5 +3300,6 @@
   },
   "starmap203_merge_proof": "csp13/starmap203-merge-2026-09-30/verification.json",
   "last_starmap204_merge_proof": "../../csp13/starmap204-merge-2026-09-30/verification.json",
-  "diagnostic_integration": "../../csp13/diagnostic-integration-2026-09-30/verification.json"
+  "diagnostic_integration": "../../csp13/diagnostic-integration-2026-09-30/verification.json",
+  "starmap205_completion": "../../csp13/starmap205-merge-2026-09-30/verification.json"
 }
