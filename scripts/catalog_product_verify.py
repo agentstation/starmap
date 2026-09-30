@@ -111,6 +111,12 @@ def go_check_input(entry, roots):
             or not re.fullmatch(r"Test[A-Za-z0-9_]+", test) or not package.startswith("./")
             or any(part in ("..", "...") for part in package.split("/")[1:])):
         return None, {"status": "FAIL", "reason": "Invalid named Go behavior check."}
+    required = entry.get("required_subtests", [])
+    if (not isinstance(required, list) or len(required) > 64
+            or any(not isinstance(name, str) or len(name) > 256
+                   or not re.fullmatch(r"[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*", name) for name in required)
+            or len(required) != len(set(required))):
+        return None, {"status": "FAIL", "reason": "Invalid required Go subtests."}
     return (root.resolve(), package, test), None
 
 
@@ -211,9 +217,13 @@ def run_go_tests(root, package, names):
     failed = result.returncode or any(event.get("Action") == "fail" for event in events)
     package_passes = sum(event.get("Action") == "pass" and event.get("Package") == import_path
                          and not event.get("Test") for event in events)
+    test_events = {}
+    for event in events:
+        if event.get("Package") == import_path and event.get("Test"):
+            test_events.setdefault(event["Test"], []).append(event)
     results = {}
     for name in names:
-        matched = [event for event in events if event.get("Package") == import_path and event.get("Test") == name]
+        matched = test_events.get(name, [])
         skipped = any(event.get("Action") == "skip" and event.get("Package") == import_path
                       and (event.get("Test") == name or event.get("Test", "").startswith(name + "/"))
                       for event in events)
@@ -228,7 +238,14 @@ def run_go_tests(root, package, names):
             status, reason = "UNVERIFIED", "The named behavior test did not run and pass exactly once."
         else:
             status, reason = "PASS", "The named behavior test passed in this invocation."
-        results[name] = dict(evidence, status=status, reason=reason)
+        subtests = {}
+        for child, child_events in sorted(test_events.items()):
+            if not child.startswith(name + "/"):
+                continue
+            actions = [event["Action"] for event in child_events]
+            subtests[child[len(name) + 1:]] = (actions.count("run") == 1 and actions.count("pass") == 1
+                                            and "skip" not in actions and "fail" not in actions)
+        results[name] = dict(evidence, status=status, reason=reason, subtests=subtests)
     return retain_go_run(evidence, results)
 
 
@@ -327,14 +344,21 @@ def run_check(identity, entry, roots, go_evidence=None):
         return error
     root, package, test = inputs
     if isinstance(go_evidence, GoEvidence):
-        return go_evidence.check(root, package, test)
-    evidence_key = (root, package, test)
-    if go_evidence is not None and evidence_key in go_evidence:
-        return dict(go_evidence[evidence_key])
-    evidence = run_go_tests(root, package, [test])[test]
-    if go_evidence is not None:
-        go_evidence[evidence_key] = evidence
-    return dict(evidence)
+        evidence = go_evidence.check(root, package, test)
+    else:
+        evidence_key = (root, package, test)
+        if go_evidence is not None and evidence_key in go_evidence:
+            evidence = dict(go_evidence[evidence_key])
+        else:
+            evidence = run_go_tests(root, package, [test])[test]
+            if go_evidence is not None:
+                go_evidence[evidence_key] = evidence
+    result = dict(evidence)
+    missing = [name for name in entry.get("required_subtests", []) if evidence.get("subtests", {}).get(name) is not True]
+    if missing and result["status"] == "PASS":
+        result.update(status="UNVERIFIED", reason="Required Go subtests did not run and pass exactly once.",
+                      missing_subtests=missing)
+    return result
 
 
 def run_vitest(entry, roots):

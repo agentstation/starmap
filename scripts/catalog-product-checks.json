@@ -7372,6 +7372,222 @@
           "test": "TestBatchSessionReceipt"
         }
       ]
+    },
+    "A16.sqlite_wal_backup": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestSQLiteRawFileCopyLosesCommittedWAL"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestSQLiteSnapshotPreservesWALAndRestoresExactBytes"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestSQLiteSnapshotKeepsConcurrentTransactionWhole"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestSQLiteSnapshotRejectsCorruptOrUnknownImages"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestSQLiteSnapshotRefusesExistingDestination"
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "linux",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteRawFileCopyLosesCommittedWAL"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteSnapshotPreservesWALAndRestoresExactBytes"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteSnapshotKeepsConcurrentTransactionWhole"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteSnapshotRejectsCorruptOrUnknownImages"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteSnapshotRefusesExistingDestination"
+            }
+          ]
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "darwin",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteRawFileCopyLosesCommittedWAL"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteSnapshotPreservesWALAndRestoresExactBytes"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteSnapshotKeepsConcurrentTransactionWhole"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteSnapshotRejectsCorruptOrUnknownImages"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteSnapshotRefusesExistingDestination"
+            }
+          ]
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "windows",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteRawFileCopyLosesCommittedWAL"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteSnapshotPreservesWALAndRestoresExactBytes"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteSnapshotKeepsConcurrentTransactionWhole"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteSnapshotRejectsCorruptOrUnknownImages"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestSQLiteSnapshotRefusesExistingDestination"
+            }
+          ]
+        }
+      ]
+    },
+    "A16.concurrent_migration_owner": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestConcurrentSQLiteMigrationStartupHasOneOwner"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestConcurrentNetworkMigrationStartupHasOneOwner",
+          "required_subtests": [
+            "postgres",
+            "mysql"
+          ]
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMigrationOwnershipAcrossProcesses",
+          "required_subtests": [
+            "sqlite",
+            "postgres",
+            "mysql"
+          ]
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMigrationOwnerCancellationAndRelease",
+          "required_subtests": [
+            "sqlite",
+            "postgres",
+            "mysql"
+          ]
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "linux",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestConcurrentSQLiteMigrationStartupHasOneOwner"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestMigrationOwnershipAcrossProcesses"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestMigrationOwnerCancellationAndRelease"
+            }
+          ]
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "darwin",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestConcurrentSQLiteMigrationStartupHasOneOwner"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestMigrationOwnershipAcrossProcesses"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestMigrationOwnerCancellationAndRelease"
+            }
+          ]
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "windows",
+          "tests": [
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestConcurrentSQLiteMigrationStartupHasOneOwner"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestMigrationOwnershipAcrossProcesses"
+            },
+            {
+              "package": "github.com/agentstation/starport/internal/sqlstore",
+              "test": "TestMigrationOwnerCancellationAndRelease"
+            }
+          ]
+        }
+      ]
     }
   },
   "task_component_checks": {
