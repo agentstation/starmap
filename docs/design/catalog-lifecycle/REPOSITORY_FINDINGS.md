@@ -5170,3 +5170,13 @@ Separate contract groups retain the same tests and limit. The recovery-owner rac
 
 A separate local task clears the default Go cache during compilation. An owned cache removes that build interference without changing source assertions.
 Complete application activation, process-loss qualification, and deployment recovery objectives remain open.
+
+## Published recovery contracts, September 30, 2026
+
+Starmap PR #200 now publishes `2453d21b72f91dc7597bedc672ad4dc0b234a690`. The final isolated review reports no actionable findings. Canonical option resolution supplies the passive permission inspector without another settings parser. The artifact-pattern regression prevents Linux ARM artifacts from entering the Linux x86 aggregate. Final native Actions remain unverified.
+
+Consumer `8726cc0b` integrates application canonical-file checks from `8997b1ec`. Its source contract passes 45 results per mode. A fresh child process checks sealed original evidence after a real blob release without target writes. Final integrated qualification remains required.
+
+The unchanged full embedded-catalog test passes with published Starmap `975bcb6426ca`: 355.622 package seconds under race detection and 25.186 with pure Go. The earlier combined five-minute run timed out. These durations came from concurrent checks and do not qualify deployment RTO or maximum capacity. The proof retains source and dependency identities.
+
+The source-file selection contract previously omitted file contents and native identity. It now retains both, using Starmap's catalog payload bound. Configuration and token files retain their smaller bound. Selected YAML workspace recovery still needs its owner procedure. Complete coordinated activation and the fresh-process loss matrix remain open.

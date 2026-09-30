@@ -1,0 +1,1151 @@
+{
+  "source": "2453d21b72f91dc7597bedc672ad4dc0b234a690",
+  "worktree": "/private/tmp/starmap-recovery-catalog-permission-20260929",
+  "branch": "codex/recovery-catalog-permission",
+  "original_published_head": "cff5f361af012c030555e72c607f30d5c415a284",
+  "ci_source": "874aaa15dd9f324fecf040ef02e163014cea71bf",
+  "ci_integration": "ec57f2c02346df70a334c65b6b98db99e216f528",
+  "permission_source": "a23de11ab9e1e4a8a9f6f44aaee17db53514cdac",
+  "status": "REVIEWED_PUBLISHED_NATIVE_QUALIFICATION_RUNNING",
+  "platform": "darwin/arm64",
+  "go": "1.27.1",
+  "checks": {
+    "complete_verify_checks": {
+      "source": "ec57f2c02346df70a334c65b6b98db99e216f528",
+      "exit_code": 0
+    },
+    "artifact_pattern_race": {
+      "pass": 64,
+      "fail": 0,
+      "skip": 0
+    },
+    "artifact_pattern_pure": {
+      "pass": 64,
+      "fail": 0,
+      "skip": 0
+    },
+    "python_contracts": {
+      "new": 8,
+      "existing": 9
+    },
+    "vet": {
+      "exit_code": 0
+    },
+    "lint": {
+      "exit_code": 0,
+      "issues": 0
+    },
+    "goago": {
+      "exit_code": 0,
+      "findings": 0
+    },
+    "prose": {
+      "exit_code": 0,
+      "files": 1966,
+      "diagnostics": 0
+    },
+    "source_policy": {
+      "source": "2453d21b72f91dc7597bedc672ad4dc0b234a690",
+      "pure_results": 40,
+      "race_runtime_results": 39,
+      "race_external_config_results": 1,
+      "fail": 0,
+      "skip": 0,
+      "vet_exit": 0,
+      "lint_exit": 0,
+      "goago_exit": 0,
+      "prose_files": 1967,
+      "prose_exit": 0,
+      "docs_exit": 0,
+      "fail_before": "Missing consumer-facing resolver; compilation failed before implementation."
+    }
+  },
+  "review": {
+    "initial": {
+      "profile": "auto",
+      "reviewer": "claude-opus-5-5",
+      "effort": "high",
+      "passes": 1,
+      "findings": 1,
+      "secret_scan": "clean"
+    },
+    "accepted_finding": "Ubuntu x86 aggregate glob also selected ARM group artifacts. The actual-pattern regression fails before repair. A double-hyphen delimiter isolates every platform.",
+    "final": {
+      "status": "clean",
+      "source": "2453d21b72f91dc7597bedc672ad4dc0b234a690",
+      "profile": "auto",
+      "reviewer": "claude-opus-5-5",
+      "effort": "high",
+      "passes": 1,
+      "secret_scan": "clean",
+      "bundle_bytes": 223041
+    },
+    "intermediate": {
+      "source": "975bcb6426ca2ae3091709b9920c99a302364b49",
+      "status": "clean",
+      "bundle_bytes": 216608
+    }
+  },
+  "native_qualification": "UNVERIFIED: final exact-head Actions are running; no merge yet.",
+  "native_inventory": {
+    "source_base": "cff5f361af012c030555e72c607f30d5c415a284",
+    "original_package_patterns_match": true,
+    "local_toolchain": "go version go1.27.1 darwin/arm64",
+    "local_packages": [
+      "github.com/agentstation/starmap",
+      "github.com/agentstation/starmap/runtime",
+      "github.com/agentstation/starmap/server",
+      "github.com/agentstation/starmap/server/administration",
+      "github.com/agentstation/starmap/internal/server/middleware",
+      "github.com/agentstation/starmap/internal/cli/commands/serve",
+      "github.com/agentstation/starmap/internal/auth",
+      "github.com/agentstation/starmap/internal/bootstrap",
+      "github.com/agentstation/starmap/internal/filepublish",
+      "github.com/agentstation/starmap/internal/privatefiles",
+      "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "github.com/agentstation/starmap/internal/sources/github",
+      "github.com/agentstation/starmap/internal/cli/app",
+      "github.com/agentstation/starmap/pkg/productfiles",
+      "github.com/agentstation/starmap/pkg/productpaths",
+      "github.com/agentstation/starmap/pkg/productpaths/policy",
+      "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "github.com/agentstation/starmap/pkg/catalogs/permission",
+      "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+      "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+      "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile",
+      "github.com/agentstation/starmap/internal/catalog/workspace",
+      "github.com/agentstation/starmap/internal/test/gitfixture"
+    ],
+    "local_complete_top_level_tests": 1417,
+    "local_group_counts": {
+      "client": 280,
+      "application": 188,
+      "filesystem": 402,
+      "runtime-1": 174,
+      "runtime-2": 169,
+      "runtime-3": 204
+    },
+    "local_complete_disjoint_union": true,
+    "local_inventory_sha256": "01745b609ce69138b0ff53931abdd3ac54476800a845de6824a77c77809fbc6c",
+    "historical_run": 36636540075,
+    "original_native_observations": {
+      "native-runtime-macos-15": {
+        "events_sha256": "00d7950c6544411c7adf3e82ac76193edf77f3f31f3915e71abe2147857e6966",
+        "observed_top_level_tests": 1411,
+        "group_counts": {
+          "client": 280,
+          "application": 188,
+          "filesystem": 402,
+          "runtime-1": 173,
+          "runtime-2": 166,
+          "runtime-3": 202
+        },
+        "terminal_test_results": {
+          "pass": 3791,
+          "skip": 1
+        },
+        "package_results": [
+          {
+            "package": "github.com/agentstation/starmap",
+            "status": "pass",
+            "elapsed_seconds": 131.648
+          },
+          {
+            "package": "github.com/agentstation/starmap/runtime",
+            "status": "pass",
+            "elapsed_seconds": 471.329
+          },
+          {
+            "package": "github.com/agentstation/starmap/server",
+            "status": "pass",
+            "elapsed_seconds": 8.36
+          },
+          {
+            "package": "github.com/agentstation/starmap/server/administration",
+            "status": "pass",
+            "elapsed_seconds": 3.79
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/server/middleware",
+            "status": "pass",
+            "elapsed_seconds": 0.382
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/cli/commands/serve",
+            "status": "pass",
+            "elapsed_seconds": 0.026
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/auth",
+            "status": "pass",
+            "elapsed_seconds": 2.947
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/bootstrap",
+            "status": "pass",
+            "elapsed_seconds": 30.672
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/filepublish",
+            "status": "pass",
+            "elapsed_seconds": 0.065
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/privatefiles",
+            "status": "pass",
+            "elapsed_seconds": 2.097
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+            "status": "pass",
+            "elapsed_seconds": 0.013
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/sources/github",
+            "status": "pass",
+            "elapsed_seconds": 1.241
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/cli/app",
+            "status": "pass",
+            "elapsed_seconds": 175.991
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productfiles",
+            "status": "pass",
+            "elapsed_seconds": 0.348
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productpaths",
+            "status": "pass",
+            "elapsed_seconds": 0.042
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+            "status": "pass",
+            "elapsed_seconds": 0.01
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+            "status": "pass",
+            "elapsed_seconds": 4.484
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+            "status": "pass",
+            "elapsed_seconds": 0.144
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+            "status": "pass",
+            "elapsed_seconds": 0.012
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+            "status": "pass",
+            "elapsed_seconds": 0.042
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile",
+            "status": "pass",
+            "elapsed_seconds": 0.007
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+            "status": "pass",
+            "elapsed_seconds": 66.524
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/test/gitfixture",
+            "status": "pass",
+            "elapsed_seconds": 0.419
+          }
+        ]
+      },
+      "native-runtime-ubuntu-24.04": {
+        "events_sha256": "e1f8ceb6f16d29f173c5a1c4c6e7ffb9835fc9db5bc96926d62d966bb96c5f4b",
+        "observed_top_level_tests": 1403,
+        "group_counts": {
+          "client": 280,
+          "application": 185,
+          "filesystem": 400,
+          "runtime-1": 170,
+          "runtime-2": 166,
+          "runtime-3": 202
+        },
+        "terminal_test_results": {
+          "pass": 3744,
+          "skip": 2
+        },
+        "package_results": [
+          {
+            "package": "github.com/agentstation/starmap",
+            "status": "pass",
+            "elapsed_seconds": 110.185
+          },
+          {
+            "package": "github.com/agentstation/starmap/runtime",
+            "status": "pass",
+            "elapsed_seconds": 391.224
+          },
+          {
+            "package": "github.com/agentstation/starmap/server",
+            "status": "pass",
+            "elapsed_seconds": 5.4719999999999995
+          },
+          {
+            "package": "github.com/agentstation/starmap/server/administration",
+            "status": "pass",
+            "elapsed_seconds": 1.492
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/server/middleware",
+            "status": "pass",
+            "elapsed_seconds": 0.269
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/cli/commands/serve",
+            "status": "pass",
+            "elapsed_seconds": 0.011
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/auth",
+            "status": "pass",
+            "elapsed_seconds": 1.8010000000000002
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/bootstrap",
+            "status": "pass",
+            "elapsed_seconds": 28.701999999999998
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/filepublish",
+            "status": "pass",
+            "elapsed_seconds": 0.011
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/privatefiles",
+            "status": "pass",
+            "elapsed_seconds": 0.782
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+            "status": "pass",
+            "elapsed_seconds": 0.004
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/sources/github",
+            "status": "pass",
+            "elapsed_seconds": 0.592
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/cli/app",
+            "status": "pass",
+            "elapsed_seconds": 139.158
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productfiles",
+            "status": "pass",
+            "elapsed_seconds": 0.143
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productpaths",
+            "status": "pass",
+            "elapsed_seconds": 0.015
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+            "status": "pass",
+            "elapsed_seconds": 0.003
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+            "status": "pass",
+            "elapsed_seconds": 1.623
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+            "status": "pass",
+            "elapsed_seconds": 0.059
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+            "status": "pass",
+            "elapsed_seconds": 0.004
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+            "status": "pass",
+            "elapsed_seconds": 0.025
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile",
+            "status": "pass",
+            "elapsed_seconds": 0.003
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+            "status": "pass",
+            "elapsed_seconds": 30.928
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/test/gitfixture",
+            "status": "pass",
+            "elapsed_seconds": 0.079
+          }
+        ]
+      },
+      "native-runtime-ubuntu-24.04-arm": {
+        "events_sha256": "124824fb8ca908e0181ea9c2a446e9ad8142e86201c6bc8c7a43c113a3e1450b",
+        "observed_top_level_tests": 1403,
+        "group_counts": {
+          "client": 280,
+          "application": 185,
+          "filesystem": 400,
+          "runtime-1": 170,
+          "runtime-2": 166,
+          "runtime-3": 202
+        },
+        "terminal_test_results": {
+          "pass": 3744,
+          "skip": 2
+        },
+        "package_results": [
+          {
+            "package": "github.com/agentstation/starmap",
+            "status": "pass",
+            "elapsed_seconds": 107.898
+          },
+          {
+            "package": "github.com/agentstation/starmap/runtime",
+            "status": "pass",
+            "elapsed_seconds": 378.083
+          },
+          {
+            "package": "github.com/agentstation/starmap/server",
+            "status": "pass",
+            "elapsed_seconds": 5.077
+          },
+          {
+            "package": "github.com/agentstation/starmap/server/administration",
+            "status": "pass",
+            "elapsed_seconds": 1.092
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/server/middleware",
+            "status": "pass",
+            "elapsed_seconds": 0.25
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/cli/commands/serve",
+            "status": "pass",
+            "elapsed_seconds": 0.009
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/auth",
+            "status": "pass",
+            "elapsed_seconds": 1.634
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/bootstrap",
+            "status": "pass",
+            "elapsed_seconds": 30.138
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/filepublish",
+            "status": "pass",
+            "elapsed_seconds": 0.007
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/privatefiles",
+            "status": "pass",
+            "elapsed_seconds": 0.525
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+            "status": "pass",
+            "elapsed_seconds": 0.002
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/sources/github",
+            "status": "pass",
+            "elapsed_seconds": 0.485
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/cli/app",
+            "status": "pass",
+            "elapsed_seconds": 132.809
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productfiles",
+            "status": "pass",
+            "elapsed_seconds": 0.112
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productpaths",
+            "status": "pass",
+            "elapsed_seconds": 0.009
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+            "status": "pass",
+            "elapsed_seconds": 0.002
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+            "status": "pass",
+            "elapsed_seconds": 1.246
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+            "status": "pass",
+            "elapsed_seconds": 0.043
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+            "status": "pass",
+            "elapsed_seconds": 0.003
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+            "status": "pass",
+            "elapsed_seconds": 0.024
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile",
+            "status": "pass",
+            "elapsed_seconds": 0.002
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+            "status": "pass",
+            "elapsed_seconds": 28.092
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/test/gitfixture",
+            "status": "pass",
+            "elapsed_seconds": 0.058
+          }
+        ]
+      },
+      "native-runtime-windows-11-arm": {
+        "events_sha256": "0429504fd88e81dc638660c48fa652aa585b5d4d089d591fd8f5c58c4aac27fc",
+        "observed_top_level_tests": 1390,
+        "group_counts": {
+          "client": 276,
+          "application": 174,
+          "filesystem": 406,
+          "runtime-1": 170,
+          "runtime-2": 165,
+          "runtime-3": 199
+        },
+        "terminal_test_results": {
+          "pass": 3739,
+          "skip": 7
+        },
+        "package_results": [
+          {
+            "package": "github.com/agentstation/starmap",
+            "status": "pass",
+            "elapsed_seconds": 286.324
+          },
+          {
+            "package": "github.com/agentstation/starmap/runtime",
+            "status": "pass",
+            "elapsed_seconds": 1412.996
+          },
+          {
+            "package": "github.com/agentstation/starmap/server",
+            "status": "pass",
+            "elapsed_seconds": 21.279
+          },
+          {
+            "package": "github.com/agentstation/starmap/server/administration",
+            "status": "pass",
+            "elapsed_seconds": 16.268
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/server/middleware",
+            "status": "pass",
+            "elapsed_seconds": 1.013
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/cli/commands/serve",
+            "status": "pass",
+            "elapsed_seconds": 0.05
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/auth",
+            "status": "pass",
+            "elapsed_seconds": 7.555
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/bootstrap",
+            "status": "pass",
+            "elapsed_seconds": 49.896
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/filepublish",
+            "status": "pass",
+            "elapsed_seconds": 0.111
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/privatefiles",
+            "status": "pass",
+            "elapsed_seconds": 9.136
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+            "status": "pass",
+            "elapsed_seconds": 0.034
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/sources/github",
+            "status": "pass",
+            "elapsed_seconds": 4.761
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/cli/app",
+            "status": "pass",
+            "elapsed_seconds": 362.144
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productfiles",
+            "status": "pass",
+            "elapsed_seconds": 1.512
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productpaths",
+            "status": "pass",
+            "elapsed_seconds": 0.146
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+            "status": "pass",
+            "elapsed_seconds": 0.029
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+            "status": "pass",
+            "elapsed_seconds": 15.584
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+            "status": "pass",
+            "elapsed_seconds": 0.692
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+            "status": "pass",
+            "elapsed_seconds": 0.066
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+            "status": "pass",
+            "elapsed_seconds": 0.114
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile",
+            "status": "pass",
+            "elapsed_seconds": 0.031
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+            "status": "pass",
+            "elapsed_seconds": 259.593
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/test/gitfixture",
+            "status": "pass",
+            "elapsed_seconds": 1.009
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/test/windowstoken",
+            "status": "pass",
+            "elapsed_seconds": 0.038
+          }
+        ]
+      },
+      "native-runtime-windows-2025": {
+        "events_sha256": "ff51a2fbb2a7645887433689253a737709f067cf5e3adbe57dfae929224c1d18",
+        "observed_top_level_tests": 1381,
+        "group_counts": {
+          "client": 276,
+          "application": 174,
+          "filesystem": 406,
+          "runtime-1": 165,
+          "runtime-2": 164,
+          "runtime-3": 196
+        },
+        "terminal_test_results": {
+          "pass": 3397,
+          "skip": 7
+        },
+        "package_results": [
+          {
+            "package": "github.com/agentstation/starmap",
+            "status": "pass",
+            "elapsed_seconds": 688.666
+          },
+          {
+            "package": "github.com/agentstation/starmap/runtime",
+            "status": "fail",
+            "elapsed_seconds": 1800.204
+          },
+          {
+            "package": "github.com/agentstation/starmap/server",
+            "status": "pass",
+            "elapsed_seconds": 33.094
+          },
+          {
+            "package": "github.com/agentstation/starmap/server/administration",
+            "status": "pass",
+            "elapsed_seconds": 27.676
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/server/middleware",
+            "status": "pass",
+            "elapsed_seconds": 0.864
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/cli/commands/serve",
+            "status": "pass",
+            "elapsed_seconds": 0.033
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/auth",
+            "status": "pass",
+            "elapsed_seconds": 9.829
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/bootstrap",
+            "status": "pass",
+            "elapsed_seconds": 52.036
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/filepublish",
+            "status": "pass",
+            "elapsed_seconds": 0.122
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/privatefiles",
+            "status": "pass",
+            "elapsed_seconds": 7.896
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+            "status": "pass",
+            "elapsed_seconds": 0.083
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/sources/github",
+            "status": "pass",
+            "elapsed_seconds": 8.18
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/cli/app",
+            "status": "pass",
+            "elapsed_seconds": 502.236
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productfiles",
+            "status": "pass",
+            "elapsed_seconds": 2.212
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productpaths",
+            "status": "pass",
+            "elapsed_seconds": 0.119
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+            "status": "pass",
+            "elapsed_seconds": 0.016
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+            "status": "pass",
+            "elapsed_seconds": 26.091
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+            "status": "pass",
+            "elapsed_seconds": 1.4809999999999999
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+            "status": "pass",
+            "elapsed_seconds": 0.049
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+            "status": "pass",
+            "elapsed_seconds": 0.055
+          },
+          {
+            "package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile",
+            "status": "pass",
+            "elapsed_seconds": 0.081
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+            "status": "pass",
+            "elapsed_seconds": 622.893
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/test/gitfixture",
+            "status": "pass",
+            "elapsed_seconds": 2.2359999999999998
+          },
+          {
+            "package": "github.com/agentstation/starmap/internal/test/windowstoken",
+            "status": "pass",
+            "elapsed_seconds": 0.017
+          }
+        ]
+      }
+    },
+    "remaining_native_qualification": "New native groups have not run in GitHub Actions. Historical timings do not qualify the new jobs.",
+    "source": "975bcb6426ca2ae3091709b9920c99a302364b49",
+    "qualification_scope": "Historical local inventory before three source-policy runtime tests. Final CI derives its own exact disjoint inventory."
+  },
+  "published_head": "2453d21b72f91dc7597bedc672ad4dc0b234a690",
+  "pr": 200,
+  "artifacts": {
+    "combined-autoreview-final.log": {
+      "file": "combined-autoreview-final.log.gz",
+      "sha256": "902975c80f477246cb822ce593a7ac44bb88515b098553247a1ce6d54775250d",
+      "gzip_sha256": "f5dfcebcde033dbeba8298919bb611f978c4b6475deff5554e1e6d0c2dba3001"
+    },
+    "source-policy-autoreview.log": {
+      "file": "source-policy-autoreview.log.gz",
+      "sha256": "a5484287748f5568006c45be9b8d3baa268da3ba3075ab7f48284e1e8be90ddf",
+      "gzip_sha256": "6e5891a9e0f4665455f0654920a86c8003ee5b956afc863f4cebeef04cd3d812"
+    },
+    "source-policy-before.jsonl": {
+      "file": "source-policy-before.jsonl.gz",
+      "sha256": "9ca71d0092f302f66289fdc6bd89c1b5860957e6a5ca2fdd305943517a99f241",
+      "gzip_sha256": "8cd9065c211f39c26176449f88930973a7a0e42160d9b068c7d7f95cce637bcf"
+    },
+    "source-policy-canonical-race.jsonl": {
+      "file": "source-policy-canonical-race.jsonl.gz",
+      "sha256": "b4cb25dd221c14fe68adccfb3c8d1a0cfaed110edd90aba96ff1cb10900f29ab",
+      "gzip_sha256": "c85dd188c1acabe65d95b7b9a302cd0b7aa2ca742339e16853e28b083ed67fb4"
+    },
+    "source-policy-docs.log": {
+      "file": "source-policy-docs.log.gz",
+      "sha256": "9dd25b2570c3738c74665f2ddc16103a0140f00fb672e1fc553bb008ec341852",
+      "gzip_sha256": "30047b7b54cb852d2cc0d02682dc801df6bbc216348c25570210e070015aa569"
+    },
+    "source-policy-generated.log": {
+      "file": "source-policy-generated.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "source-policy-goago.json": {
+      "file": "source-policy-goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "gzip_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    "source-policy-prose.log": {
+      "file": "source-policy-prose.log.gz",
+      "sha256": "8324e55fb9a6bb51cb6fba2f2c50c7e62695a0f0713ae629c2e72eda71b3f0a2",
+      "gzip_sha256": "7d11bd843c29d924e5f03ded7c1c3bf9805e17b1620b74101f9833ba24874633"
+    },
+    "source-policy-pure.jsonl": {
+      "file": "source-policy-pure.jsonl.gz",
+      "sha256": "2e70654661583cdc80a452218c92e10bf3211c69736c960456f3c8c60d083e27",
+      "gzip_sha256": "598526a30f749c862a28cdc43586553a8ab4af77d72280a70acf0aa3fa5b7c4f"
+    },
+    "source-policy-race.jsonl": {
+      "file": "source-policy-race.jsonl.gz",
+      "sha256": "8188857ba1ec76fee978e25028928812f635d1e5ca61a5e77ed6dcfdcfb23713",
+      "gzip_sha256": "70e9a332e36993bb668190ebbf55afedfc3dca4a421814cf27531e53871d5d44"
+    }
+  },
+  "native_snapshot": {
+    "checks": [
+      {
+        "conclusion": "SUCCESS",
+        "name": "Analyze (actions)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Build pinned object fixture",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Analyze (go)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Analyze (python)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Constructor Network Passivity",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Offline Server Persistence",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Verification Checks",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Security & Reliability",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Action Pin Provenance",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Publication windows-2025",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "",
+        "name": "Publication windows-11-arm",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Publication ubuntu-24.04",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Publication ubuntu-24.04-arm",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Publication macos-15",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Coordinated Storage valkey",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Coordinated Storage redis",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "",
+        "name": "Go 1.27.1 race runtime-1",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Go 1.27.1 race runtime-2",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Go 1.27.1 race runtime-3",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Go 1.27.1 race client",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Go 1.27.1 race application-1",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Go 1.27.1 race application-2",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Go 1.27.1 race application-3",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Go 1.27.1 race contracts",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Full Catalog Capacity",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Native windows-2025 / client",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Native windows-11-arm / client",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Native ubuntu-24.04 / client",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Native ubuntu-24.04-arm / client",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Native macos-15 / client",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native windows-2025 / application",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Native windows-11-arm / application",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Native ubuntu-24.04 / application",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Native ubuntu-24.04-arm / application",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "Native macos-15 / application",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native windows-2025 / filesystem",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Native windows-11-arm / filesystem",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Native ubuntu-24.04 / filesystem",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Native ubuntu-24.04-arm / filesystem",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Native macos-15 / filesystem",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "conclusion": "",
+        "name": "Native windows-2025 / runtime-1",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native windows-11-arm / runtime-1",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native ubuntu-24.04 / runtime-1",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native ubuntu-24.04-arm / runtime-1",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native macos-15 / runtime-1",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native windows-2025 / runtime-2",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native windows-11-arm / runtime-2",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native ubuntu-24.04 / runtime-2",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native ubuntu-24.04-arm / runtime-2",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native macos-15 / runtime-2",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native windows-2025 / runtime-3",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native windows-11-arm / runtime-3",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native ubuntu-24.04 / runtime-3",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native ubuntu-24.04-arm / runtime-3",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "",
+        "name": "Native macos-15 / runtime-3",
+        "status": "QUEUED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "CodeQL",
+        "status": "COMPLETED"
+      }
+    ],
+    "head": "2453d21b72f91dc7597bedc672ad4dc0b234a690"
+  }
+}

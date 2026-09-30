@@ -1,0 +1,70 @@
+{
+  "source": "17ddf17c06d8632237160b43a2258724aa06132a",
+  "platform": "darwin/arm64",
+  "go": "1.27.1",
+  "status": "INTEGRATED_CONTRACTS_PASS_COMPLETE_ACTIVATION_UNVERIFIED",
+  "groups": {
+    "owners-race": {
+      "pass": 189,
+      "top_level": 20,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "sha256": "14e9c90d8df45a9d9a6149f9c3a9c3b33a6aa48af0e55c3b3937903b44f31739"
+    },
+    "catalog-race": {
+      "pass": 24,
+      "top_level": 12,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "sha256": "6d56564301a28df59ca569514a48dbf3bd2fdcfd807a6f8d7cc9f8b2ad57657e"
+    },
+    "owners-pure": {
+      "pass": 189,
+      "top_level": 20,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "sha256": "89a4ec28bbcfd8fe09b09d05f1f4fd6bb241746c7dfb9810a4154d65ffd85f01"
+    },
+    "catalog-pure": {
+      "pass": 24,
+      "top_level": 12,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "sha256": "a316ffdd7df94eaf4ea797e4f00f4e7f16dcfba83fcccbb8649071059eef502f"
+    }
+  },
+  "inventory": {
+    "race": {
+      "top_level": 32,
+      "pass": 213,
+      "exact_inventory_union": true,
+      "disjoint": true
+    },
+    "pure": {
+      "top_level": 32,
+      "pass": 213,
+      "exact_inventory_union": true,
+      "disjoint": true
+    }
+  },
+  "native_fixtures": [
+    "Badger",
+    "Valkey",
+    "SQLite",
+    "PostgreSQL",
+    "MySQL",
+    "S3-compatible object storage"
+  ],
+  "commands": [
+    "python3 run-native-integration.py <events> race owners",
+    "python3 run-native-integration.py <events> race catalog",
+    "python3 run-native-integration.py <events> pure owners",
+    "python3 run-native-integration.py <events> pure catalog"
+  ],
+  "failed_combined_run": "Original combined race selection reached the unchanged six-minute limit after 184 passing results. The separate groups retain all 32 selected top-level tests and the same package timeout.",
+  "complete_recovery": "UNVERIFIED; application capability composition, original current permission, coordinator, commands, fresh-process matrix, native CI and deployment RPO/RTO remain required."
+}

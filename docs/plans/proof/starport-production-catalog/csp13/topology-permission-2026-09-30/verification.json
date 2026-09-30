@@ -1,0 +1,118 @@
+{
+  "source_base": "8726cc0b",
+  "go": "go1.27.1",
+  "module": {
+    "Path": "github.com/agentstation/starmap",
+    "Version": "v0.16.6-0.20260930043638-2453d21b72f9",
+    "Time": "2026-09-30T04:36:38Z",
+    "Dir": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260930043638-2453d21b72f9",
+    "GoMod": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260930043638-2453d21b72f9.mod",
+    "GoVersion": "1.27.1",
+    "Sum": "h1:C83ab/zthigmsLaMyE9jGopIY5i1fJ5ypTuRks5Ljiw=",
+    "GoModSum": "h1:cCNBcKDllsycjRvn7WPAz9YmT33ydFoVURpGta+veQg="
+  },
+  "scope": "Passive original permission evidence, derived from canonical settings and the checked accepted topology. This grants no materialization, selection, fencing, or admission. Complete application activation remains separate.",
+  "source_sha256": {
+    "internal/catalog/topology_permission.go": "fdfa024b102fe55e30c9ff44c6e6b7346e614e1c106a0cac2007880572cb9126",
+    "internal/catalog/topology_permission_test.go": "c28b25d28852d64dc6bf8cb796bad64097f9d0189f98a506e171243028df91e4",
+    "go.mod": "38e6ecf7bf5d3cd477202f2ac783a2469c0bbb548f9870e1acd51d026548b597",
+    "go.sum": "e15a30b21c1a7e9b771b701d8d8a9816b15bfc8fe9b3782eeb506ef75ec29082"
+  },
+  "checks": {
+    "race": {
+      "exit": 0,
+      "results": {
+        "pass": 13
+      },
+      "top_level_tests": 3,
+      "package_seconds": 35.733,
+      "events_sha256": "db4f56aa66920b5b0a9fe66f41432a931157093512910e1a3dd4c3f2696b2d35",
+      "raw": "/tmp/csp13-topology-permission-race-final.jsonl",
+      "command": "GOCACHE=/private/tmp/csp13-go-build-20260929 GOWORK=off go test -race -json -count=1 -timeout=10m ./internal/catalog -run ^TestTopologyPermission"
+    },
+    "pure": {
+      "exit": 0,
+      "results": {
+        "pass": 13
+      },
+      "top_level_tests": 3,
+      "package_seconds": 3.885,
+      "events_sha256": "5aa4e732f9c87c8cb3f320247651f983a72aa857b2eec751343e88dc33e69757",
+      "raw": "/tmp/csp13-topology-permission-pure-final.jsonl",
+      "command": "GOCACHE=/private/tmp/csp13-go-build-20260929 GOWORK=off CGO_ENABLED=0 go test -json -count=1 -timeout=10m ./internal/catalog -run ^TestTopologyPermission"
+    },
+    "vet-final": {
+      "exit": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw": "/tmp/csp13-topology-permission-vet-final.log"
+    },
+    "lint": {
+      "exit": 0,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "raw": "/tmp/csp13-topology-permission-lint.log"
+    },
+    "prose-final": {
+      "exit": 0,
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "raw": "/tmp/csp13-topology-permission-prose-final.log"
+    },
+    "module": {
+      "exit": 0,
+      "sha256": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+      "raw": "/tmp/csp13-topology-permission-module.log"
+    }
+  },
+  "remaining_uncertainty": [
+    "No final native Windows or Linux consumer qualification yet.",
+    "Complete coupled activation and fresh-process loss matrix remain open."
+  ],
+  "fail_before": {
+    "exit": 1,
+    "reason": "Consumer permission API is absent before implementation; contract tests fail to compile.",
+    "sha256": "c3650ca2a8ecf05a54563a855e2fd14cb90d49946a16b390ef8632f2ed1126b3",
+    "raw": "/tmp/csp13-topology-permission-before.jsonl"
+  },
+  "fixture_repairs": [
+    "The first fixture named a nonexistent offline-baseline option. It now uses caller-supplied memory storage.",
+    "An unchanged ordinary runtime does not create a new reconstruction descriptor. The ordinary fixture uses its complete no-descriptor baseline capsule. The authority fixture retains its actual producer descriptor.",
+    "A pure-Go run overlapped the temporary fail-before source removal and failed compilation. Final pure-Go qualification ran after full source restoration."
+  ],
+  "source_commit": "45d6d4d9",
+  "artifacts": {
+    "csp13-topology-permission-race-final.jsonl": {
+      "file": "csp13-topology-permission-race-final.jsonl.gz",
+      "sha256": "db4f56aa66920b5b0a9fe66f41432a931157093512910e1a3dd4c3f2696b2d35",
+      "gzip_sha256": "0483a53c16130cf8dca54b2676e094df4c729c84b5a89983839ae7e1970349aa"
+    },
+    "csp13-topology-permission-pure-final.jsonl": {
+      "file": "csp13-topology-permission-pure-final.jsonl.gz",
+      "sha256": "5aa4e732f9c87c8cb3f320247651f983a72aa857b2eec751343e88dc33e69757",
+      "gzip_sha256": "9374b399aaff207c8e8ba6246137bdf46bf74ae6c2e1f2791f4aafd517840f60"
+    },
+    "csp13-topology-permission-vet-final.log": {
+      "file": "csp13-topology-permission-vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "csp13-topology-permission-lint.log": {
+      "file": "csp13-topology-permission-lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    "csp13-topology-permission-prose-final.log": {
+      "file": "csp13-topology-permission-prose-final.log.gz",
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "gzip_sha256": "3a8a4461ab82bcabf697e5461b5c91a9d9b762e9b528b2e8ce4797850849e7fb"
+    },
+    "csp13-topology-permission-module.log": {
+      "file": "csp13-topology-permission-module.log.gz",
+      "sha256": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+      "gzip_sha256": "4699dce40a065353f016ef7eb2c309ee9dee73281263a6b29287016349618a1b"
+    },
+    "csp13-topology-permission-before.jsonl": {
+      "file": "csp13-topology-permission-before.jsonl.gz",
+      "sha256": "c3650ca2a8ecf05a54563a855e2fd14cb90d49946a16b390ef8632f2ed1126b3",
+      "gzip_sha256": "49b7932b803c891cf73fe51f0a800f0c4e8a2a4dab00aafd33b89e4b34a639db"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "source": "17ddf17c06d8632237160b43a2258724aa06132a",
+  "module": "v0.16.6-0.20260930042152-975bcb6426ca",
+  "go": "go1.27.1",
+  "test": "TestTopologyFullEmbeddedRetainsAndMaterializesActualProducerEvidence",
+  "checks": {
+    "race": {
+      "exit": 0,
+      "counts": {
+        "pass": 1
+      },
+      "package_seconds": 355.622,
+      "sha256": "a70741b0ede2ee1ab0a983d07d8c57a8dc29d424449a691bc2e8c71451591323",
+      "artifact": "race.jsonl.gz",
+      "timeout": "30m",
+      "command": "GOCACHE=/private/tmp/csp13-go-build-20260929 GOWORK=off go test -race -json -count=1 -timeout=30m ./internal/catalog -run ^TestTopologyFullEmbeddedRetainsAndMaterializesActualProducerEvidence$"
+    },
+    "pure": {
+      "exit": 0,
+      "counts": {
+        "pass": 1
+      },
+      "package_seconds": 25.186,
+      "sha256": "1655827e2a9f745a59263d1b4a848107c16a01e5b8d0d5fdaf853688e0f62804",
+      "artifact": "pure.jsonl.gz",
+      "timeout": "30m",
+      "command": "GOCACHE=/private/tmp/csp13-go-build-20260929 GOWORK=off CGO_ENABLED=0 go test -json -count=1 -timeout=30m ./internal/catalog -run ^TestTopologyFullEmbeddedRetainsAndMaterializesActualProducerEvidence$"
+    }
+  },
+  "scope": "Actual full embedded catalog retention, materialization, selection, sealed reopen, retry, and changed-input refusal. No maximum-capacity or deployment RPO/RTO claim.",
+  "earlier_timeout": {
+    "process_bound": "5m",
+    "package_seconds": 301.047,
+    "completed_other_results": 12,
+    "active_test": "TestTopologyFullEmbeddedRetainsAndMaterializesActualProducerEvidence",
+    "disposition": "Preserve required full workload and use the existing 30m verification bound. No assertions changed."
+  }
+}

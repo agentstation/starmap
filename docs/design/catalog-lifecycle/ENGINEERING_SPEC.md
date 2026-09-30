@@ -5457,3 +5457,13 @@ Local completion must use the actual persistent writable Badger target and exact
 The final SQLite transaction retains the native completion receipt and opens approval together. A lost commit reply requires an exact retry.
 A historical completion receipt cannot clear a later withdrawal.
 These components remain prerequisites for the complete coordinator and its fresh-process interruption tests.
+
+## Original permission evidence during recovery
+
+The recovery decision retains the producer's original native permission record. The host derives source policy through canonical options and the accepted authority head through the checked catalog inventory. The host separately checks materialization, selection, and writer fencing.
+
+After a component release, passive inspection must compare current evidence with the sealed original record. It must preserve receipt expiry and uncertainty. It must refuse changed native identities, source policy, owner, or selected authority. It must start no acquisition and issue no permission. Ordinary catalogs require no qualified UTC sample. Internal authority receipts retain their qualified-clock contract.
+
+The application retains each canonical role's actual publication result. The same role selectors and semantic validators govern publication and passive inspection. Current configuration, source files, credentials, TLS, and administrator inputs receive explicit target dispositions. An unresolved selected owner role prevents activation.
+
+The full embedded-catalog workload remains mandatory. Run its race qualification separately with the existing 30-minute verification bound. A short combined process timeout does not justify smaller fixtures or weaker assertions. Complete recovery, maximum capacity, and deployment RPO/RTO require separate acceptance evidence.
