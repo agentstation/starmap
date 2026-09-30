@@ -12,7 +12,15 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. One required task subcase passes. Fifteen remain UNVERIFIED.</p>
 
-<p>Next: merge Starmap branch <code>catalog-decode-reuse</code>, pin it in Starport, open the scope in <code>ActivateRecovery</code>, and repeat the unchanged full native pure and race test. Then implement populated adoption.</p>
+<p>Next: merge Starmap branch <code>catalog-decode-reuse</code>, pin it in Starport, open the scope in <code>ActivateRecovery</code>, and repeat the unchanged full native pure and race test. Then publish the integrated Starport branch as reviewable pull requests in dependency order. Register the six missing acceptance mappings. Then integrate populated adoption by phase.</p>
+
+<p id="delivery-method">Delivery method, from the owner on 2026-09-30: land before adding. The integrated Starport branch holds 155 unpublished commits and 29,333 added lines. Publish it before new scope enters it. Report progress as passing subcases and merged pull requests.</p>
+
+<p>A new finding gets a refusal, a documented limit, and a ledger entry unless a named subcase requires it. Write one proof record for each delivery. Run broad checks one time for each delivery. Keep actual backends, unchanged assertions, UNVERIFIED labels, and lead review.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp13/populated-adoption-design-2026-09-30/DESIGN.md">populated adoption design</a> records the owner boundaries. No product command reopens a closed populated deployment today. The first delivery supports only a zero prefix, where the fenced capture is the base. Software then cannot detect an acknowledged write that Valkey lost in a restart. The operator attests the interval. Pending owner decision under D42: require typed activation-effect history before production readiness, or accept the attested limit.</p>
+
+<p>Phase A owners run in parallel from <code>c6b10232</code> and do not commit. <code>adopt-kv</code> owns <code>/private/tmp/starport-populated-kv-20260930</code>. <code>adopt-sql</code> owns <code>/private/tmp/starport-populated-sql-20260930</code>. <code>adopt-blob</code> owns <code>/private/tmp/starport-populated-blob-20260930</code>. Each branch has the matching <code>codex/recovery-populated-*-20260930</code> name. Root reviews and commits each delivery.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp13/decode-reuse-diagnosis-2026-09-30/verification.json">decode diagnosis</a> records 66 payload decodes and two distinct payloads in one activation. A private prototype passes the unchanged race test in 311.16 seconds. Worktree <code>/private/tmp/starmap-decode-reuse-20260930</code> holds commit <code>c27e08aa1</code> with <code>catalogs.RetainDecodedCatalogs</code>. The prototype qualifies no source.</p>
 
@@ -728,6 +736,8 @@
 </section>
 
 <section id="execution-log"><h2>Execution log</h2>
+<p>2026-09-30: The owner reported that earlier execution added scope without delivered value. Root confirmed it: 155 unpublished Starport commits, no pull request, and 1 of 16 passing subcases. <a href="#delivery-method">The delivery method</a> now applies. The <a href="proof/starport-production-catalog/csp13/populated-adoption-design-2026-09-30/DESIGN.md">adoption design</a> limits the first delivery to a zero prefix. Three Phase A owners started. No task or subcase changes status.</p>
+
 <p>2026-09-30: The <a href="proof/starport-production-catalog/csp13/full-embedded-checked-source-2026-09-30/verification.json">full checked-source profile</a> passes pure mode in 61.33 seconds. Race mode fails in 482.93 seconds at the unchanged activation deadline. Exact binary and CPU evidence remain private with recorded hashes. Further semantic decoding remains in the measured path. Root owns its analysis. No acceptance status changes.</p>
 
 <p>2026-09-30: Root integrated the <a href="proof/starport-production-catalog/csp13/gateway-integration-2026-09-30/verification.json">gateway withdrawal repair</a> at <code>cee3f1ae</code> after complete source review. The old authority also refuses mutation after restored SQL approval. Initial gateway checks pass 24 results per mode. Final authority checks pass seven. Complete exact-source activation passes pure mode but fails race mode. Maximum capacity remains open.</p>
