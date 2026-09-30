@@ -926,6 +926,52 @@ class CatalogGoBatchTests(unittest.TestCase):
                 self.assertEqual(result['status'], 'FAIL')
                 run.assert_not_called()
 
+    def test_required_subtests_refuse_missing_partial_or_duplicate_children(self):
+        entry = dict(self.entry('TestAlpha'), required_subtests=['sqlite', 'postgres', 'mysql'])
+        children = self.events(['TestAlpha/sqlite', 'TestAlpha/postgres', 'TestAlpha/mysql'])[:-1]
+        good = self.events(['TestAlpha'])[:-1] + children + self.events([])
+        variants = [children[:-2], children[1:], children + [children[0]], children + [children[1]],
+                    [dict(event, Package='example.test/other') for event in children],
+                    [dict(event, Test=event['Test'] + 'Extra') for event in children]]
+        roots = {'starmap': verifier.ROOT}
+        with patch.object(verifier.subprocess, 'run', return_value=self.result(good)):
+            evidence = verifier.GoEvidence([entry], roots)
+            self.assertEqual(verifier.run_check('complete', entry, roots, evidence)['status'], 'PASS')
+        for children in variants:
+            events = self.events(['TestAlpha'])[:-1] + children + self.events([])
+            with self.subTest(children=children), patch.object(verifier.subprocess, 'run', return_value=self.result(events)):
+                evidence = verifier.GoEvidence([entry], roots)
+                self.assertEqual(verifier.run_check('incomplete', entry, roots, evidence)['status'], 'UNVERIFIED')
+
+    def test_required_subtests_share_parent_execution_without_sharing_requirements(self):
+        basic = self.entry('TestAlpha')
+        required = dict(basic, required_subtests=['postgres'])
+        roots = {'starmap': verifier.ROOT}
+        with patch.object(verifier.subprocess, 'run', return_value=self.result(self.events(['TestAlpha']))) as run:
+            evidence = verifier.GoEvidence([basic, required], roots)
+            self.assertEqual(verifier.run_check('local', basic, roots, evidence)['status'], 'PASS')
+            self.assertEqual(verifier.run_check('shared', required, roots, evidence)['status'], 'UNVERIFIED')
+            self.assertEqual(run.call_count, 1)
+
+    def test_required_subtests_reject_invalid_declarations_before_execution(self):
+        invalid = [None, '', {}, [''], ['../postgres'], ['postgres', 'postgres'], [1],
+                   ['postgres\n'], ['x' * 257], ['x' + str(i) for i in range(65)]]
+        for required in invalid:
+            with self.subTest(required=required), patch.object(verifier.subprocess, 'run') as run:
+                entry = dict(self.entry('TestAlpha'), required_subtests=required)
+                result = verifier.run_check('invalid', entry, {'starmap': verifier.ROOT})
+                self.assertEqual(result['status'], 'FAIL')
+                run.assert_not_called()
+
+    def test_required_subtests_apply_to_direct_and_legacy_cached_checks(self):
+        entry = dict(self.entry('TestAlpha'), required_subtests=['postgres'])
+        roots = {'starmap': verifier.ROOT}
+        for cache in [None, {}]:
+            with self.subTest(cache=cache), patch.object(verifier.subprocess, 'run', return_value=self.result(self.events(['TestAlpha']))) as run:
+                self.assertEqual(verifier.run_check('required', entry, roots, cache)['status'], 'UNVERIFIED')
+                self.assertEqual(verifier.run_check('basic', self.entry('TestAlpha'), roots, cache)['status'], 'PASS')
+                self.assertEqual(run.call_count, 2 if cache is None else 1)
+
     def test_real_go_selection_skip_and_invocation_lifetime(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -950,6 +996,10 @@ func TestSkipped(t *testing.T) { t.Skip("fixture skip") }
                 for entry in entries:
                     result = verifier.run_check(entry['test'], entry, roots, evidence)
                     self.assertEqual(result['status'], 'PASS', result)
+                required = dict(entries[0], required_subtests=['child'])
+                missing = dict(entries[0], required_subtests=['postgres'])
+                self.assertEqual(verifier.run_check('child', required, roots, evidence)['status'], 'PASS')
+                self.assertEqual(verifier.run_check('missing', missing, roots, evidence)['status'], 'UNVERIFIED')
                 self.assertEqual((root / 'processes').read_text().splitlines(), ['run'] * invocation)
             skipped = dict(self.entry('TestSkipped'), package='./')
             evidence = verifier.GoEvidence([entries[0], skipped], roots)
