@@ -1,0 +1,145 @@
+{
+  "schema": 1,
+  "scope": "catalog-owned original/final captured inspection; no admission permission",
+  "producer_module": "v0.16.6-0.20260930065056-79852bf7ddee",
+  "go": "1.27.1",
+  "api": "CompiledTopology.InspectPreparedCapturedCatalog",
+  "source": "Unchanged strict inspector, exact original closed boundary and absent transfer marker",
+  "destination": "Exact sealed destination boundary, staged bytes, retired absences, final controls, marker and selection receipt; future identity must equal the compiled native identity at the closed epoch",
+  "proof_boundaries": [
+    "No original SQL boundary rewrite",
+    "No source acquisition, target writes, permission renewal or admission approval",
+    "Low-level topology compiler without verified original-backup provenance refused"
+  ],
+  "checks": [
+    {
+      "command": "CGO_ENABLED=0 go test -json ./internal/catalog -run ^TestPrepared(CatalogInspection|FleetIdentity) -count=1 -timeout=6m",
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "log": "/tmp/csp13-prepared-inspection-pure-qualified.jsonl"
+    },
+    {
+      "command": "go test -race -json ./internal/catalog -run ^TestPreparedCatalogInspection -count=1 -timeout=6m",
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "log": "/tmp/csp13-prepared-inspection-race-final.jsonl",
+      "revision_note": "Before lint-requested explicit positive-epoch guard; final delta verified separately below"
+    },
+    {
+      "command": "go test -race -json ./internal/catalog -run ^TestPreparedFleetIdentity -count=1 -timeout=1m",
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "log": "/tmp/csp13-prepared-inspection-epoch-race.jsonl",
+      "scope": "Final explicit epoch guard, negative/zero/older/exact/newer boundaries"
+    },
+    {
+      "command": "go vet ./internal/catalog",
+      "exit_code": 0,
+      "log": "/tmp/csp13-prepared-inspection-vet-final.log"
+    },
+    {
+      "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run --allow-serial-runners ./internal/catalog/...",
+      "exit_code": 0,
+      "log": "/tmp/csp13-prepared-inspection-lint-final.log"
+    },
+    {
+      "command": "technical-writing lint changed catalog files --format text",
+      "exit_code": 0,
+      "files": 4,
+      "diagnostics": 0,
+      "log": "/tmp/csp13-prepared-inspection-writing-qualified.log"
+    }
+  ],
+  "preserved_failures": [
+    {
+      "log": "/tmp/csp13-activation-full-embedded-pure-source-accepted.jsonl",
+      "finding": "Original generic fleet inspector rejects the independently verified future incarnation before activation"
+    },
+    {
+      "log": "/tmp/csp13-prepared-inspection-pure.jsonl",
+      "finding": "Small test adapter uses8MiB Badger memtable, insufficient for4MiB native transaction; final fixture uses actual product64MiB configuration"
+    },
+    {
+      "log": "/tmp/csp13-prepared-inspection-lint.log",
+      "finding": "G115 signed-epoch conversion guard absent; fixed explicitly without suppression"
+    }
+  ],
+  "remaining": "Complete coordinator, CLI, disaster-recovery and capacity acceptance remains unverified",
+  "root_commit": "ac9bddda8034dfd79aa085a2fc75d8876d867c5d",
+  "root_guarded_lane_commit": "e5a036be",
+  "raw": {
+    "csp13-prepared-inspection-pure-qualified.jsonl": {
+      "raw": "csp13-prepared-inspection-pure-qualified.jsonl.gz",
+      "sha256": "e6791390390f68b397069556935f94cdbe3d336b1e2ab469fbf0ebfabe5816df"
+    },
+    "csp13-prepared-inspection-race-final.jsonl": {
+      "raw": "csp13-prepared-inspection-race-final.jsonl.gz",
+      "sha256": "9be862e22259c1ddd4e0d4dc7d85045153015f531b6d834a0c50f246a365f68f"
+    },
+    "csp13-prepared-inspection-epoch-race.jsonl": {
+      "raw": "csp13-prepared-inspection-epoch-race.jsonl.gz",
+      "sha256": "1c5fbe07dacacb0076ef8066581bd0b8be0fbfbfd76cb94a14d512ae2369e318"
+    },
+    "csp13-prepared-inspection-vet-final.log": {
+      "raw": "csp13-prepared-inspection-vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "csp13-prepared-inspection-lint-final.log": {
+      "raw": "csp13-prepared-inspection-lint-final.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "csp13-prepared-inspection-writing-qualified.log": {
+      "raw": "csp13-prepared-inspection-writing-qualified.log.gz",
+      "sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7"
+    },
+    "csp13-activation-full-embedded-pure-source-accepted.jsonl": {
+      "raw": "csp13-activation-full-embedded-pure-source-accepted.jsonl.gz",
+      "sha256": "d0232822b303887b59609bdf483595d3208ed120c6f366184de3e5d2b223717d"
+    },
+    "csp13-prepared-inspection-pure.jsonl": {
+      "raw": "csp13-prepared-inspection-pure.jsonl.gz",
+      "sha256": "6fc3f51a0fdd9e6ec40696dba2413ae4a3faa5c13b883dad26997e78f79e6c38"
+    },
+    "csp13-prepared-inspection-lint.log": {
+      "raw": "csp13-prepared-inspection-lint.log.gz",
+      "sha256": "1d21942f5cac905e38e1bdc7b772b2b4409cd9513a23e2fd9e744f03871d17ce"
+    },
+    "csp13-root-native-expiry-lane-race.jsonl": {
+      "raw": "csp13-root-native-expiry-lane-race.jsonl.gz",
+      "sha256": "cc05ede61398bc952e606dcad981ea06845a89614182e6048eec52b3d54093c5"
+    },
+    "csp13-root-native-expiry-lane-and-original-inspection-pure.jsonl": {
+      "raw": "csp13-root-native-expiry-lane-and-original-inspection-pure.jsonl.gz",
+      "sha256": "b1f68f38c8360da02e3ae710770fb6d669d5df33819156bffbc737f7b30d8512"
+    }
+  },
+  "native_owner_checks": [
+    {
+      "package": "github.com/agentstation/starport/internal/recovery",
+      "results": {
+        "pass": 6
+      },
+      "raw": "csp13-root-native-expiry-lane-race.jsonl.gz",
+      "scope": "Actual Badger/SQLite, Valkey/PostgreSQL and Valkey/MySQL expiry lane; original fleet inspector uses actual Valkey/PostgreSQL"
+    },
+    {
+      "package": "github.com/agentstation/starport/internal/recovery",
+      "results": {
+        "pass": 6
+      },
+      "raw": "csp13-root-native-expiry-lane-and-original-inspection-pure.jsonl.gz",
+      "scope": "Actual Badger/SQLite, Valkey/PostgreSQL and Valkey/MySQL expiry lane; original fleet inspector uses actual Valkey/PostgreSQL"
+    },
+    {
+      "package": "github.com/agentstation/starport/internal/catalog",
+      "results": {
+        "pass": 16
+      },
+      "raw": "csp13-root-native-expiry-lane-and-original-inspection-pure.jsonl.gz",
+      "scope": "Actual Badger/SQLite, Valkey/PostgreSQL and Valkey/MySQL expiry lane; original fleet inspector uses actual Valkey/PostgreSQL"
+    }
+  ]
+}

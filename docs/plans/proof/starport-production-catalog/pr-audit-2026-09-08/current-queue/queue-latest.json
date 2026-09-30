@@ -1131,7 +1131,7 @@
     "consumer_merge": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d"
   },
   "local_consumer_checkpoint": {
-    "head": "24c52eca22138a607d7a548de2aceab7db136bd5",
+    "head": "ac9bddda8034dfd79aa085a2fc75d8876d867c5d",
     "branch": "codex/recovery-catalog-activation",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "starmap_module": "v0.16.6-0.20260930065056-79852bf7ddee",
@@ -1140,7 +1140,9 @@
     "next_action": "integrate complete application coordinator and typed expiring catalog stages; qualify full recovery",
     "census_proof": "csp13/original-backup-census-2026-09-30/verification.json",
     "native_expiry_proof": "csp13/expiring-import-owner-2026-09-30/verification.json",
-    "expiry_composition_proof": "csp13/expiring-catalog-stages-2026-09-30/verification.json"
+    "expiry_composition_proof": "csp13/expiring-catalog-stages-2026-09-30/verification.json",
+    "prepared_inspection_proof": "csp13/prepared-catalog-inspection-2026-09-30/verification.json",
+    "acceptance_gap_audit": "csp13/prepared-catalog-inspection-2026-09-30/acceptance-gap-audit.json"
   },
   "storage_recipe_preparation": {
     "owner": "CSP12",

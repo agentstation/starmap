@@ -1,0 +1,36 @@
+{
+  "status": "read-only audit",
+  "as_of_consumer": "ac9bddda8034dfd79aa085a2fc75d8876d867c5d",
+  "task": "CSP13",
+  "assigned_subcases": 16,
+  "registered_pass": 1,
+  "unverified": 15,
+  "findings": [
+    {
+      "scope": "Operator commands",
+      "finding": "Complete activation and status commands are absent; existing apply-history completes rotations without a catalog preparation declaration",
+      "next": "Wire ActivateRecovery/InspectRecoveryActivation and refuse incompatible completed replay journals"
+    },
+    {
+      "scope": "Disaster recovery",
+      "finding": "Current coordinator planned-migration fixture has no post-backup revocation or spend; component completion cannot qualify the independent history contract",
+      "next": "Capture backup then revoke, spend, change grants and retain uncertain work; replay independent evidence, refuse gaps and verify dispatch behavior"
+    },
+    {
+      "scope": "Native fencing",
+      "finding": "Current component approvals are separate from old-process refusal and fresh gateway readiness",
+      "next": "Measure real old/fresh process dispatch behavior, restart/promotion and replacement connections"
+    },
+    {
+      "scope": "Capacity and recovery objectives",
+      "finding": "Small 96-entry and full embedded fixtures do not prove maximum96-entry/2GiB retained workload or deployment RPO/RTO",
+      "next": "Measure complete inventory, memory/disk, operation counts, interruption/retry and operator start through fresh readiness; declare deployment-specific objectives"
+    },
+    {
+      "scope": "Independent A16 SQL registration",
+      "finding": "Existing WAL-preserving snapshot and concurrent migration-owner tests may satisfy two exact native subcases",
+      "next": "Delegated owner verifies contracts and registers only satisfied cases in an isolated worktree"
+    }
+  ],
+  "policy": "No acceptance reduction; no task completion claimed"
+}

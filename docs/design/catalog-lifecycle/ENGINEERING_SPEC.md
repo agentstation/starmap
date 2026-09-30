@@ -5505,3 +5505,9 @@ Initial preparation may retain the private compiled capability from the same che
 The compiler seals lease and maintenance retirement as distinct stages with original keys, values, value presence, and absolute expiry. Each stage retains the existing 128-record and 4 MiB raw limits. The native owner advances its durable receipt chain before a separate persistent marker stage. Final selection requires the retired controls to remain absent.
 
 JSON normalization must not merge nil and empty value identities in a receipt or retained asset. Explicit value-presence fields preserve the original contract. Generic transfer encoding and persistent receipts retain their existing format. The full application must qualify these stages under its SQL guard before releasing admission.
+
+## Prepared catalog inspection
+
+Original backup inspection retains the original closed SQL boundary and its prior fleet identity. Final prepared catalog inspection requires the sealed compiler from that verified backup. It checks the exact destination boundary, staged bytes, retired absences, final controls, stage marker, and selection receipt. The future fleet identity must equal the compiled identity at the closed epoch.
+
+The destination SQL record can retain an empty backend identity until coordinated activation. Inspection must not rewrite that record or relax the original backup inspector. The host separately verifies native incarnation, materialization, permission, and final SQL approval. Inspection grants no admission permission.
