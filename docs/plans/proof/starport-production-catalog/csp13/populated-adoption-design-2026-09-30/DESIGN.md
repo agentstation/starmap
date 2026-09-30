@@ -114,13 +114,23 @@ A direct server-ordered census is acceptable only with native tests that prove e
 
 New capability for a populated blob claim. Object storage has no atomic multiple-object write.
 
-1. Verify the live contents against the C image through `verifyImportContents`.
-2. Check the exact preimage of `blobActivationCurrent`.
-3. Write the closure receipt with `IfNoneMatch`.
-4. Put the import claim with `IfNoneMatch`.
-5. Retire the activation-current root.
+Delivered in Starport commit `545895a3` on `codex/recovery-populated-blob-20260930`.
 
-A retry continues from the closure receipt. Each step is idempotent for the same operation and refuses a different one.
+1. Verify every retained object against the C image with `GET If-Match` on the listed ETag. Compare the object count and retired count with C.
+2. Check the exact preimage of `.starport/import`, `.starport/activation-current`, `.starport/replay-current`, and `.starport/adoption-closure`. `ObservePopulatedControls` supplies the preimage with bytes and ETags.
+3. Write the closure receipt `{"version":1,"claim_sha256","controls_sha256"}` with `If-Match` on the observed ETag, or `If-None-Match: *` when absent.
+4. Put the import claim over the observed import bytes with `If-Match`, or with `If-None-Match: *`.
+5. Retire the replay cursor, then the activation-current root. Each delete carries `If-Match` on the observed ETag after a byte and ETag check, and an absence check follows.
+6. Confirm the closure and claim, the absence of both current roots and of this claim's history, and an unchanged listing.
+
+A retry continues from an equal closure receipt. Each step is idempotent for the same operation and refuses a different one.
+The claim retires the replay cursor because `readReplayCursor` refuses a cursor bound to the prior claim. This matches the SQL design.
+Activation history for the claim consumes the closure. A pending closure restricts the barrier, ordinary open, activation inspection, and repeated activation.
+
+Documented limit: the object storage fixture ignores `If-Match` on `DELETE`. The SDK sends it, and AWS documents a 412 on mismatch. No test ran against AWS.
+On a service that ignores it, safety depends on the mandatory writer fence and on the claim barrier. The barrier permits no other writer of these keys.
+
+The residual race is two concurrent retries of the same claim with an activation between them. It fails closed: the store stays restricted and needs manual repair.
 
 ## Recovery owner: `internal/recovery`
 
