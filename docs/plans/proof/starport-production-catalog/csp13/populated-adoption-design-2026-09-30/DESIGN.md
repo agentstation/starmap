@@ -56,7 +56,12 @@ Thus a populated claim and an empty-target import claim of the same capture are 
 
 ## Scope
 
-- Destinations: Valkey fleet storage with PostgreSQL or MySQL, and object storage.
+- Destinations: Valkey fleet storage with PostgreSQL and object storage.
+- Deviation, recorded 2026-09-30: `internal/config/storage_recipe.go` (Starport #386) refuses shared storage with MySQL.
+  The product command therefore cannot adopt a populated deployment on MySQL.
+  The `internal/sqlstore` and `internal/recovery` tests still cover the MySQL native claim.
+  The operator command test proves the MySQL refusal with an unchanged census.
+  Application-level MySQL adoption stays UNVERIFIED because the product configuration refuses it.
 - Badger and local filesystem destinations refuse populated adoption.
 - The ordinary empty-target `Claim`, `ImportRelationalOnce`, and blob `claimImport` contracts do not change.
 - The projection and `CompareCaptured` do not change.
