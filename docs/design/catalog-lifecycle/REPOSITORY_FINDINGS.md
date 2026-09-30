@@ -5230,3 +5230,15 @@ The application fixture also found a missing stopped-directory preparation API. 
 Starmap #201 merged as `c384ccb103fbd64e5d1fba5333f486c669ad74ba`. All 62 checks pass at reviewed head `79852bf7ddee936c4dee2a741f1c1c5c4d30dadb`. The [merge proof](../../plans/proof/starport-production-catalog/csp13/starmap201-merge-2026-09-30/verification.json) records exact tree equality, verified head signature, resolved review threads, and unchanged strict protection. Earlier pending snapshots remain historical evidence.
 
 The stopped-directory preparation API now has a separate unpublished follow-up branch. It builds on the merged producer tree. Its current owner tests pass 23 results per mode, without failures or skips. Full repository checks and pre-PR review remain required before publication.
+
+## Integrated typed expiry stages, September 30, 2026
+
+Starport `ed404cea` integrates compiler delivery `75528147`. `24c52eca` integrates the native receipt presence correction. The [integrated proof](../../plans/proof/starport-production-catalog/csp13/expiring-catalog-stages-2026-09-30/verification.json) records 32 compiler and 43 native results per mode. Root reproduces these counts without failures or skips.
+
+The compiler checks actual persistent Badger import and selection. The native owner checks actual Badger and Valkey retirement, with durable close-and-reopen retries. An explicit presence field prevents nil and empty byte slices from sharing a receipt identity. The original failing regression remains in the proof. These results do not qualify the application's SQL guard, release ordering, process-loss matrix, or recovery objectives.
+
+## Explicit stopped-directory preparation publication, September 30, 2026
+
+[Starmap #202](https://github.com/agentstation/starmap/pull/202) publishes `1846721f445f24a6d2df7f3dab120ef16f3fba5a` on the actual #201 merge. The resolved module contains the new API. It prepares native owner, seed, and empty layer directories under the directory lock. It creates no runtime, source refresh, selection, or permission. Migration markers, conflicting owners, missing retained seeds, and selected recovery materialization refuse preparation.
+
+The [publication proof](../../plans/proof/starport-production-catalog/csp13/stopped-directory-preparation-2026-09-30/verification.json) records 23 results per mode, complete repository checks, generated API documentation, and one clean isolated P0 review. Root also inspected the unchanged private helpers. The proof preserves the missing-API failure and both intermediate documentation-check failures. Native qualification remains pending.

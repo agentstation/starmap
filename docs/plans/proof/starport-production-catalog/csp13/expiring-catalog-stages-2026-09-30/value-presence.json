@@ -1,0 +1,59 @@
+{
+  "source_base": "7a23b0b979e1e087309587ceb2a6e31fd03af46d",
+  "go": "go1.27.1",
+  "platform": "darwin/arm64",
+  "scope": "Exact expiring import receipt fingerprints retain original byte-slice presence. Generic persistent receipts and the global TransferRecord codec remain unchanged.",
+  "source_sha256": {
+    "internal/storage/transfer_expiring_retirement.go": "ec3a8d1b14c8c5cd9af138682b9bd99bd1509df6de2b1a424fd7137df83e30ac",
+    "internal/storage/transfer_expiring_retirement_test.go": "239ae3713788ab95c9719149fe93e433834b3d48ce2ac91c14c7e94c49264732"
+  },
+  "checks": {
+    "race": {
+      "exit": 0,
+      "results": {
+        "pass": 43
+      },
+      "raw": "/tmp/csp13-expiring-import-presence-race.jsonl",
+      "sha256": "3439b700cec898c041c51f0c6ed5a075b46b881b511f848632e70ee667d46f7a",
+      "durable_raw": "csp13-expiring-import-presence-race.jsonl.gz"
+    },
+    "pure": {
+      "exit": 0,
+      "results": {
+        "pass": 43
+      },
+      "raw": "/tmp/csp13-expiring-import-presence-pure.jsonl",
+      "sha256": "9e889567f67005fb05229cb0260de406dc9d0b2a886bb7bda5742b030d5801aa",
+      "durable_raw": "csp13-expiring-import-presence-pure.jsonl.gz"
+    },
+    "fail_before": {
+      "exit": 1,
+      "raw": "/tmp/csp13-expiry-presence-before.jsonl",
+      "sha256": "721cb89f97fd1f7b2f38e54f7ffd3a58ffd540ea0e7113bb89d319699d0bd5d6",
+      "reason": "The original helper produces identical receipts for nil and empty values; the regression rejects that normalization.",
+      "durable_raw": "csp13-expiry-presence-before.jsonl.gz"
+    },
+    "lint": {
+      "exit": 0,
+      "raw": "/tmp/csp13-activation-lint-presence.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "durable_raw": "csp13-activation-lint-presence.log.gz"
+    },
+    "vet": {
+      "exit": 0,
+      "raw": "/tmp/csp13-activation-vet-owner-capability.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "durable_raw": "csp13-activation-vet-owner-capability.log.gz"
+    },
+    "prose": {
+      "exit": 0,
+      "raw": "/tmp/csp13-activation-prose-presence.log",
+      "sha256": "2400ba049c78c104ea06bfbbc66e6a0f14493329b62b380d6eb8a9169630f60f",
+      "durable_raw": "csp13-activation-prose-presence.log.gz"
+    }
+  },
+  "remaining_uncertainty": [
+    "The consumer catalog lane composition and application procedure have separate evidence.",
+    "Native Linux and Windows qualification remains with parent publication."
+  ]
+}

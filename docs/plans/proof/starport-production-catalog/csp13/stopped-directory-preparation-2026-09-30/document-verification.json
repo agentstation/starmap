@@ -1,0 +1,8 @@
+{
+  "exit": 0,
+  "files": 4,
+  "diagnostics": 0,
+  "raw": "document-prose.log.gz",
+  "sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7",
+  "scope_note": "Whole-repository pre-existing historical prose findings remain in earlier proof; this check covers changed maintained documents and contract."
+}

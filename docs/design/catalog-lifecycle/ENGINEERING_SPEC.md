@@ -5499,3 +5499,9 @@ The integrated compiler derives every selected catalog input from the checked or
 The checked source now supports the producer's 512 MiB retained-envelope bound. Smaller descriptor, baseline, and metadata bounds remain in effect. The actual persistent embedded-catalog fixture captures Badger, SQLite, blobs, and canonical files. Its passing results prove reconstruction and passive reopening. They do not prove maximum capacity or recovery-time objectives.
 
 Initial preparation may retain the private compiled capability from the same checked source. Its canonical record must match the sealed decision exactly. A restart without that capability must recompile the original checked backup. This avoids repeated initial decoding without permitting digest-only validation or target preimage replacement.
+
+## Typed native expiry stages
+
+The compiler seals lease and maintenance retirement as distinct stages with original keys, values, value presence, and absolute expiry. Each stage retains the existing 128-record and 4 MiB raw limits. The native owner advances its durable receipt chain before a separate persistent marker stage. Final selection requires the retired controls to remain absent.
+
+JSON normalization must not merge nil and empty value identities in a receipt or retained asset. Explicit value-presence fields preserve the original contract. Generic transfer encoding and persistent receipts retain their existing format. The full application must qualify these stages under its SQL guard before releasing admission.

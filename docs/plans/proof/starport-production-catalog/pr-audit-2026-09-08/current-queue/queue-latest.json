@@ -1,6 +1,169 @@
 {
   "checked_at": "2026-09-30T07:30:53Z",
-  "starmap": [],
+  "starmap": [
+    {
+      "baseRefName": "main",
+      "baseRefOid": "c384ccb103fbd64e5d1fba5333f486c669ad74ba",
+      "headRefName": "codex/recovery-directory-preparation",
+      "headRefOid": "1846721f445f24a6d2df7f3dab120ef16f3fba5a",
+      "isDraft": true,
+      "number": 202,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685329975/job/109789763022",
+          "name": "Analyze (actions)",
+          "startedAt": "2026-09-30T07:43:20Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685333161/job/109789767914",
+          "name": "Build pinned object fixture",
+          "startedAt": "2026-09-30T07:43:22Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685329975/job/109789762652",
+          "name": "Analyze (go)",
+          "startedAt": "2026-09-30T07:43:20Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685329975/job/109789762924",
+          "name": "Analyze (python)",
+          "startedAt": "2026-09-30T07:43:20Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T07:44:03Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685333161/job/109789767864",
+          "name": "Constructor Network Passivity",
+          "startedAt": "2026-09-30T07:43:22Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685333161/job/109789767577",
+          "name": "Offline Server Persistence",
+          "startedAt": "2026-09-30T07:43:22Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685333161/job/109789768003",
+          "name": "Verification Checks",
+          "startedAt": "2026-09-30T07:43:22Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685333161/job/109789767829",
+          "name": "Security & Reliability",
+          "startedAt": "2026-09-30T07:43:21Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T07:43:34Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685333161/job/109789767922",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-30T07:43:22Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685333161/job/109789768129",
+          "name": "Publication windows-2025",
+          "startedAt": "2026-09-30T07:43:23Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685333161/job/109789768132",
+          "name": "Publication windows-11-arm",
+          "startedAt": "2026-09-30T07:43:21Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685333161/job/109789767969",
+          "name": "Publication ubuntu-24.04",
+          "startedAt": "2026-09-30T07:43:26Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685333161/job/109789768036",
+          "name": "Publication ubuntu-24.04-arm",
+          "startedAt": "2026-09-30T07:43:23Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/36685333161/job/109789768047",
+          "name": "Publication macos-15",
+          "startedAt": "2026-09-30T07:43:27Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T07:44:02Z",
+          "conclusion": "NEUTRAL",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/109789975269",
+          "name": "CodeQL",
+          "startedAt": "2026-09-30T07:43:58Z",
+          "status": "COMPLETED",
+          "workflowName": ""
+        }
+      ],
+      "url": "https://github.com/agentstation/starmap/pull/202"
+    }
+  ],
   "starport": [],
   "completed_merges": [
     {
@@ -815,9 +978,13 @@
     "branch": "codex/recovery-directory-preparation",
     "worktree": "/private/tmp/starmap-captured-catalog-recovery-20260930",
     "owner": "root",
-    "state": "unpublished owner API qualification",
+    "state": "draft PR202; native checks pending",
     "base": "c384ccb103fbd64e5d1fba5333f486c669ad74ba",
-    "next_action": "finish repository checks, commit, review and publish explicit stopped-directory preparation"
+    "next_action": "merge reviewed exact head after required native checks pass",
+    "head": "1846721f445f24a6d2df7f3dab120ef16f3fba5a",
+    "proof": "csp13/stopped-directory-preparation-2026-09-30/verification.json",
+    "pr": 202,
+    "published_module": "v0.16.6-0.20260930074127-1846721f445f"
   },
   "csp10_preparation": {
     "session": 21026,
@@ -964,7 +1131,7 @@
     "consumer_merge": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d"
   },
   "local_consumer_checkpoint": {
-    "head": "fd3b0ba7943b77121a1cab2be3faef53b8602888",
+    "head": "24c52eca22138a607d7a548de2aceab7db136bd5",
     "branch": "codex/recovery-catalog-activation",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "starmap_module": "v0.16.6-0.20260930065056-79852bf7ddee",
@@ -972,7 +1139,8 @@
     "owner": "root",
     "next_action": "integrate complete application coordinator and typed expiring catalog stages; qualify full recovery",
     "census_proof": "csp13/original-backup-census-2026-09-30/verification.json",
-    "native_expiry_proof": "csp13/expiring-import-owner-2026-09-30/verification.json"
+    "native_expiry_proof": "csp13/expiring-import-owner-2026-09-30/verification.json",
+    "expiry_composition_proof": "csp13/expiring-catalog-stages-2026-09-30/verification.json"
   },
   "storage_recipe_preparation": {
     "owner": "CSP12",
@@ -1312,7 +1480,7 @@
     "status": "done",
     "next_task": "CSP13"
   },
-  "starmap_open_count": 0,
+  "starmap_open_count": 1,
   "starport_open_count": 0,
   "dependency_189_completion": {
     "checked_at": "2026-09-28T17:04:54.239668+00:00",
