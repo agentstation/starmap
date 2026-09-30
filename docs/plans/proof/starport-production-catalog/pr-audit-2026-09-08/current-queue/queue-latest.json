@@ -876,8 +876,8 @@
     "owner": "root and delegated recovery owners",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-catalog-activation",
-    "head": "d5607156",
-    "next_action": "Repair full embedded activation deadline, finish DR and capacity qualification, then final consumer checks/review/publication."
+    "head": "303fdef6bbef20717bbb3c921a050979456c4505",
+    "next_action": "Measure sealed prepared-census repair under unchanged full embedded deadline; qualify four topology directions, post-backup activity and capacity against published producer."
   },
   "merged_followups": {
     "tasks": [

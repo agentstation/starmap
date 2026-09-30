@@ -1,0 +1,66 @@
+{
+  "status": "PASS_COMPONENT_ONLY_WAIT_FULL_APPLICATION",
+  "work_commit": "fc3b9074391b47c06cffe8a503c1eb6620934e06",
+  "integrated_head": "303fdef6bbef20717bbb3c921a050979456c4505",
+  "producer_module": "v0.16.6-0.20260930082412-e0845d601fb5",
+  "toolchain": "Go 1.27.1 darwin/arm64",
+  "fail_before": "Prepared final inspector accepted an extra valid catalog chunk absent from the original sealed transfer. The regression fails before the repair.",
+  "tests": {
+    "race": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    },
+    "pure": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "scoped_checks": {
+    "vet": 0,
+    "pinned_lint": 0,
+    "prose": 0
+  },
+  "contract": [
+    "Original backup and reconstruction bytes retain full source semantic validation.",
+    "Private compiled census derives original surviving records plus exact staged and selected bytes.",
+    "Final immutable snapshot compares complete catalog namespace membership, SHA256, byte size and recorded expiry.",
+    "Missing, additional, substituted and newly expiring records are refused.",
+    "Boundary, marker, selection receipt, permission, native release and owner checks remain mandatory.",
+    "The unchanged seven-minute application operation remains unqualified until actual full-case execution passes."
+  ],
+  "whole_task_complete": false,
+  "raw": {
+    "fail-before.jsonl": {
+      "file": "fail-before.jsonl.gz",
+      "sha256": "e333701fb1fc6490f8dfb45e3934ed7fe0e43eb1a33ec6112af0a4eaba4bac1f",
+      "gzip_sha256": "3b1e2b9b84f8375ba736049661aa169e897c80e3cf54222e090d8b309f5d84ca"
+    },
+    "final-pure2.jsonl": {
+      "file": "final-pure2.jsonl.gz",
+      "sha256": "b7c4a0cb64a3a95c35eb77b879a2f2b2713bb07de3c2d368f4d2bbe3fde37481",
+      "gzip_sha256": "ae4671dfd1d5264657320c79af31a7c959b7b600184ce73013eb5afe9c640249"
+    },
+    "final-race.jsonl": {
+      "file": "final-race.jsonl.gz",
+      "sha256": "0daa37c822c0a272a7de597456d7463fc71a854b59b6cfec364912dc8fcc0d31",
+      "gzip_sha256": "717f036d1e6218f25d649ca225bdc96cfab8d29db286b66e48eb5b9eae66776f"
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "lint.log": {
+      "file": "lint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "gzip_sha256": "3a8a4461ab82bcabf697e5461b5c91a9d9b762e9b528b2e8ce4797850849e7fb"
+    }
+  }
+}
