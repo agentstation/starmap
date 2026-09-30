@@ -184,6 +184,12 @@ The retained activation runner also refuses a mode mismatch. It reopens only an 
 | Application | Populated adoption through the operator command, exact sealed retry, coherent approvals, refusal without change |
 | Process | Actual Valkey restart with persistent data, promotion, acknowledged-data loss, restored SQL witness, old primary reachable with closed permission that blocks dispatch |
 
+## Documented limits from Phase C
+
+- A capture against a restored SQL witness publishes the manifest, and then `InspectBundleReferences` refuses it.
+  The `VerifyBackup` check refuses that bundle with the same fleet identity mismatch.
+  The refused bundle bytes stay on disk. The operator deletes them. `CaptureBackup` does not change.
+
 ## External requirements that software does not supply
 
 External process and network fencing of all writers stays mandatory until fresh gateway readiness.
