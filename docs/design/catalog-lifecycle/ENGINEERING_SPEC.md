@@ -5517,3 +5517,13 @@ The destination SQL record can retain an empty backend identity until coordinate
 The producer owns raw and decoded recovery size accounting. Both dimensions must fit each retained batch independently. The host must use producer-owned passive inspection before packing original capsules. Final retention must revalidate the complete batch. Input count, raw bytes, and decoded bytes use separate bounds. Encoded JSON size alone cannot establish those bounds.
 
 Operator activation must use a bounded private request and current target configuration. Sealed retries and status require the independently retained original decision digest. Historical completion and current admission permission remain separate results. Fresh gateway readiness remains a separate check after coordinated native release. Complete CSP13 qualification remains required.
+
+## Sealed prepared snapshot census
+
+The original backup compiler retains full catalog and reconstruction validation. Its private capability also records every catalog key, byte count, SHA256, and captured expiry. The final census includes original surviving records and exact native stage and selection changes.
+
+Prepared snapshot inspection compares the complete catalog namespace against that census. It rejects missing, additional, substituted, and newly expiring records. This check avoids another semantic decode of already validated publication bytes. It cannot replace original backup validation or reconstruct a capability from a caller-supplied digest.
+
+The destination boundary, future identity, stage marker, selection receipt, current permission, and native release checks remain required. Restart recompiles the original verified backup before using the private census. This optimization applies to recovery inspection, not inference authorization.
+
+The seven-minute full-catalog operation deadline remains unchanged. Its initial failure remains evidence until a source-bound repaired run passes. Component checks cannot establish deployment RPO/RTO or complete recovery qualification.

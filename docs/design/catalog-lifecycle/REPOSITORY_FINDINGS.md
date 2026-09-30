@@ -5258,3 +5258,15 @@ Starmap [PR #203](https://github.com/agentstation/starmap/pull/203) registers ac
 The coverage gate previously hid failing Go test output. A reproducing regression now checks the diagnostic and exact exit status. The final complete gate passes. The original coverage failure remains unexplained and preserved. It does not establish a product defect or a passing initial run.
 
 Two structurally valid highly compressed original capsules exceed the producer's decoded batch limit when packed by encoded size. The provisional paired repair uses producer-owned raw and decoded accounting. Published-module and maximum combined capacity qualification remain open. Component success does not complete CSP13.
+
+## Native application deadline and prepared census, September 30, 2026
+
+Starmap #203 merged as `f7831606686da65c13d1f639a3ac6da94e9de08d` after all 62 CI checks passed. Its reviewed and merged trees match. Branch protection remains unchanged. Full A16 still requires final consumer native and shared SQL evidence.
+
+The [native application audit](../../plans/proof/starport-production-catalog/csp13/application-native-audit-2026-09-30/verification.json) records 32 passing bounded race results and one required full-catalog failure. The full case exceeded its existing seven-minute operation deadline. CPU evidence identifies repeated semantic publication decoding during final prepared inspection. The original test binary was unavailable, so the first sample uses a rebuilt same-source binary with a recorded address adjustment.
+
+Starport `fc3b9074` retains a private complete byte census from the verified original backup and compiled transfer. The [component proof](../../plans/proof/starport-production-catalog/csp13/prepared-census-repair-2026-09-30/verification.json) records three results per mode and unchanged strict source validation. A regression proves the prior prepared inspector accepted an additional valid chunk outside the sealed transfer. The repair rejects that chunk and missing, substituted, or newly expiring original records. The full application measurement retains the same deadline and an actual CPU profile.
+
+Starport `303fdef6` integrates the [observed post-backup DR test](../../plans/proof/starport-production-catalog/csp13/post-backup-activity-2026-09-30/verification.json). One result passes per mode with actual Badger, SQLite, complete backup, independent history, and activation. It preserves 700 nanoUSD spent and 200 nanoUSD held. Withdrawn keys and grants remain denied while an unaffected key works. An uncertain provider dispatch never repeats.
+
+This observed interval does not prove continuous history completeness, shared DR, old-primary fencing, native Linux/Windows behavior, maximum capacity, or deployment RPO/RTO. CSP13 remains in progress.
