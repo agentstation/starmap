@@ -1,0 +1,161 @@
+{
+  "qualification": "PASS for stated component scopes only; full fresh-history child remains UNVERIFIED",
+  "base": "0c2cf5d4a3c1e33f4124a05984a42f32694f87c3",
+  "worktree": "/private/tmp/starport-recovery-gateway-history-20260930",
+  "branch": "codex/recovery-gateway-history-barriers",
+  "source_sha256": {
+    "internal/app/app.go": "5a7187d62738f59602364b10c8837205f1eae98dbdf680f139d414c9d0a0c67d",
+    "internal/app/readiness.go": "ae38980a128c965cf8511b7010bbd9e99ca672e7c2e212eb1a05ed8cd73425a4",
+    "internal/recovery/authority.go": "0e49eafed55f852f851a122c8ca5dbb253c252107f68ff3a1428586b26df5a3c",
+    "internal/server/authorization.go": "dfb9a0af8b9916d0c6cc4898cf049cd0d7c07ffcbc5b46f5686fe19102eb9a95",
+    "internal/server/middleware.go": "5ad40e4a369a7a41e16ebc4c91c38f650b1bc604fb145796603ba9be1712e160",
+    "internal/server/server.go": "5f66caf1e74a1bb3d8c2ac6ef282ea909434778d56a3d4af7a1ecbaee5915077",
+    "internal/app/recovery_gateway_history_test.go": "59c9d072444a837f39c126a531478d2e234412f8cbd793ce0a568ea0da762f97",
+    "internal/app/recovery_gateway_process_test.go": "36e83fa4a89c94a7773228658e7f46ba281805143ecc784e6b352ba04d13cfc9",
+    "internal/recovery/authority_admission_test.go": "6b3b5c0dcc6e328f6e0596931977574358d037b0d6efe5fa6fea3bab8be5d241",
+    "internal/server/authorization_recovery_test.go": "d143d420191c8e0bcaf1fc1971cc4842a9c3bab8c6fafbbb19db6efed897cb57"
+  },
+  "toolchain": "go1.27.1 darwin/arm64",
+  "module": "v0.16.6-0.20260930115749-2bb995712275",
+  "gowork": "off",
+  "module_replace": false,
+  "profiles": {
+    "complete-pure": {
+      "test_events": {
+        "pass": 24,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_pass": 12,
+      "packages_seconds": {
+        "github.com/agentstation/starport/internal/recovery": 0.777,
+        "github.com/agentstation/starport/internal/server": 0.725,
+        "github.com/agentstation/starport/internal/app": 23.262
+      },
+      "wall_seconds": 34.25,
+      "time_maximum_resident_set_size_bytes": 1252737024,
+      "memory_measurement_scope": "command resource accounting, not sampled simultaneous process-tree peak",
+      "log": "/tmp/csp13-gateway-history-barriers-20260930/complete-pure.log",
+      "log_sha256": "8c47e879daf868c889e288df24e35e32b4e94bc06beae641a04902eae46646a3",
+      "source_scope": "before final restored-approval Check guard and regression",
+      "archive": "complete-pure.json.gz"
+    },
+    "complete-race": {
+      "test_events": {
+        "pass": 24,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_pass": 12,
+      "packages_seconds": {
+        "github.com/agentstation/starport/internal/recovery": 2.014,
+        "github.com/agentstation/starport/internal/server": 2.156,
+        "github.com/agentstation/starport/internal/app": 178.336
+      },
+      "wall_seconds": 209.67,
+      "time_maximum_resident_set_size_bytes": 3099410432,
+      "memory_measurement_scope": "command resource accounting, not sampled simultaneous process-tree peak",
+      "log": "/tmp/csp13-gateway-history-barriers-20260930/complete-race.log",
+      "log_sha256": "517373df77459d8a13c2a5173b7a5b6d14d13a73d0c3179171f3d23f759e9228",
+      "source_scope": "before final restored-approval Check guard and regression",
+      "archive": "complete-race.json.gz"
+    },
+    "final-authority-pure": {
+      "test_events": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_pass": 5,
+      "packages_seconds": {
+        "github.com/agentstation/starport/internal/recovery": 0.785
+      },
+      "wall_seconds": 4.0,
+      "time_maximum_resident_set_size_bytes": 762298368,
+      "memory_measurement_scope": "command resource accounting, not sampled simultaneous process-tree peak",
+      "log": "/tmp/csp13-gateway-history-barriers-20260930/final-authority-pure.log",
+      "log_sha256": "7749dfde62eac8c647ada373a7a9c668c2e97f9e0f382e59b8cde13e51b7b00b",
+      "source_scope": "final behavior source; final added godoc does not change behavior",
+      "archive": "final-authority-pure.json.gz"
+    },
+    "final-authority-race": {
+      "test_events": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_pass": 5,
+      "packages_seconds": {
+        "github.com/agentstation/starport/internal/recovery": 2.069
+      },
+      "wall_seconds": 6.89,
+      "time_maximum_resident_set_size_bytes": 895434752,
+      "memory_measurement_scope": "command resource accounting, not sampled simultaneous process-tree peak",
+      "log": "/tmp/csp13-gateway-history-barriers-20260930/final-authority-race.log",
+      "log_sha256": "a9d92d86ab5886c2425801bd0ad66a9387a6976342e16ea010ffb35838a8ed82",
+      "source_scope": "final behavior source; final added godoc does not change behavior",
+      "archive": "final-authority-race.json.gz"
+    }
+  },
+  "containers": [
+    "csp13-unprefixed-valkey-20260929",
+    "csp13-adoption-replacement-20260929",
+    "starport-csp13-postgres"
+  ],
+  "distinct_native_run_ids_verified": true,
+  "fixture_ownership": "unique deployment namespaces and SQL schemas; no shared reset",
+  "native_limits": {
+    "package_go_timeout": "30m",
+    "child_timeout": "5m",
+    "child_readiness_timeout": "90s",
+    "exchange_timeout": "10s",
+    "native_census_key_limit": 10000
+  },
+  "checks": {
+    "pure_vet": "PASS, exact final behavior source, Go1.27.1",
+    "pinned_lint": "PASS, v2.13.2, 0 issues, source packages",
+    "prose": "PASS, 7 full conforming source files plus contract,0 diagnostics; newly added server dependency comment conforms; inherited prose findings in server/server.go and middleware.go remain unchanged",
+    "gofmt": "PASS",
+    "diff_check": "PASS"
+  },
+  "failures_preserved": {
+    "fail-before-no-budget.log": "fixture InitializeFleet refused nonempty shared physical DB; no product conclusion",
+    "fail-before-admission-no-budget.log": "actual no-budget warmed request returned200 after known SQL closure",
+    "final-pure.log": "initial authority-test conversion build error and startup mutated catalog native census before missing native approval; corrected assertions no longer print private byte maps"
+  },
+  "scope_limits": [
+    "ordinary fleet independent approval refusal, not actual retained HistoryPackage/native import-barrier qualification",
+    "known retained budget authority observations; no autonomous propagation claim for every catalog owner",
+    "external fencing every old writer remains mandatory",
+    "no full application, full deployment fencing, failover or RPO/RTO acceptance",
+    "fresh owner trust after identical SQL restoration remains unqualified",
+    "no paid provider calls",
+    "60-second authorization lifetime and2-second target unchanged"
+  ],
+  "commit": "c90f6732e283edafea22a2b506475353eee262b6",
+  "tree": "d29d1b88ad4c4d01c6eb4ff128a721d0b54f7347",
+  "clean_worktree": true,
+  "integrated_commit": "cee3f1ae88dc0afa8c89d1c0ac3d5adf4cb7b983",
+  "root_review": "Root inspected complete production diff, startup ordering, authority mutations and all new test files before integration.",
+  "combined_source_native_qualification": "Full activation pure PASS; race currently running. Complete gateway/history qualification remains required.",
+  "preserved_failure_files": {
+    "fail-before-no-budget.log": {
+      "private_local_path": "/tmp/csp13-gateway-history-barriers-20260930/fail-before-no-budget.log",
+      "sha256": "774754859ff4c9ae52813dbfffbdba25bebc3c9559702b28389e96ebbcd583e8",
+      "bytes": 6078,
+      "reason": "fixture InitializeFleet refused nonempty shared physical DB; no product conclusion"
+    },
+    "fail-before-admission-no-budget.log": {
+      "private_local_path": "/tmp/csp13-gateway-history-barriers-20260930/fail-before-admission-no-budget.log",
+      "sha256": "61996c2ebca64aaccbe590c0303d343e230e727d6431ac4522d2bdd17f325f9c",
+      "bytes": 9036,
+      "reason": "actual no-budget warmed request returned200 after known SQL closure"
+    },
+    "final-pure.log": {
+      "private_local_path": "/tmp/csp13-gateway-history-barriers-20260930/final-pure.log",
+      "sha256": "b73fe770db04d85d2eab1644492f4a4ba52bcbdceacd81c5a8b0df5b4c449866",
+      "bytes": 914836723,
+      "reason": "initial authority-test conversion build error and startup mutated catalog native census before missing native approval; corrected assertions no longer print private byte maps"
+    }
+  }
+}
