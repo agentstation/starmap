@@ -1,0 +1,49 @@
+{
+ "recorded_utc": "2026-09-30T18:37:19.833995+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 394,
+ "head": "91f579d804d1bf347ca374235b7ee3b825c719eb",
+ "base": "b256a14faf1af9d316031723a9f8cfc4f55d2f28",
+ "merge": "c2013cd9981e99b520d23a0749281cef962d2f95",
+ "merged_at": "2026-09-30T18:35:45Z",
+ "checks": {
+  "success": 31,
+  "not_success": 0,
+  "total": 31
+ },
+ "reviewed_tree": "fb338848cb2d0f9a856ee5b24bb2a86b883ce45a",
+ "merged_tree": "fb338848cb2d0f9a856ee5b24bb2a86b883ce45a",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "merge_method": "protected squash with exact head match after a failed-job rerun; no admin bypass",
+ "first_attempt": "Catalog Fleet Recovery failed on a module proxy stream error; App test (windows-2025, 3) exhausted its 12 minute shard budget. The rerun of the failed jobs passed. The same Windows shard budget failed on main runs 36556071487, 36619600671, and 36635758835 before this change.",
+ "scope": "Landing layer one of four: native owner controls (internal/storage, internal/sqlstore, internal/blob). Layers two through four and complete CSP13 recovery remain open.",
+ "layer_source": "c6b10232 integrated branch; internal/recovery layer regenerates from this merge as 4015a33a.",
+ "artifacts": {
+  "starport-merged-pr.json": {
+   "file": "starport-merged-pr.json.gz",
+   "sha256": "b8996479e16fd9b50835c84796352d720655c0b9a252b1c466558f1c01bbb636",
+   "gzip_sha256": "6b8c80a4de9bbbf881a8bf92bd8c1f318ff89483ba4923a7850ff6306c7030cc"
+  },
+  "starport-after-protection.json": {
+   "file": "starport-after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "d72ac3aca373c07404edeec7e5aef496634c14ad26f3cf53ea641530cb72c37b"
+  },
+  "starport-merge-commit.json": {
+   "file": "starport-merge-commit.json.gz",
+   "sha256": "bcffe6d6c01994e546aab9619fcdb9facdbc4e8d6b75eb0ffee1bd29c5b17528",
+   "gzip_sha256": "bdbc339c3250aad020c0523c77707011c54e97ba989cbf700becf27d8939e0b7"
+  }
+ }
+}
