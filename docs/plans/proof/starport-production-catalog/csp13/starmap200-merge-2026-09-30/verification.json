@@ -1,0 +1,61 @@
+{
+  "task": "CSP13",
+  "task_completed": false,
+  "repository": "agentstation/starmap",
+  "pr": 200,
+  "head": "2453d21b72f91dc7597bedc672ad4dc0b234a690",
+  "base": "af57ed3fb99e9323ac513ff9889ecd3a5b6cee00",
+  "merge": "cf45526ef644d56642d61920c4dde7751d9012d2",
+  "merged_at": "2026-09-30T05:24:25Z",
+  "checks": {
+    "success": 62,
+    "fail": 0,
+    "pending": 0
+  },
+  "reviewed_tree": "0c10bf1de2c73988c72251e059c3cb7540e8cb19",
+  "merged_tree": "0c10bf1de2c73988c72251e059c3cb7540e8cb19",
+  "reviewed_tree_equals_merge_tree": true,
+  "merge_signature_verified": true,
+  "protection_unchanged": true,
+  "strict_protection": true,
+  "unresolved_review_threads": 0,
+  "merge_method": "protected squash with exact head match; no administrator bypass",
+  "scope": "Producer retained catalog, passive original permission checks, canonical source policy resolution, and exact native test partition coverage. Complete recovery remains open.",
+  "artifacts": {
+    "merged.json": {
+      "file": "merged.json.gz",
+      "sha256": "b646366ef62bdcec5e3be8b833b2f466dccfaba846cad8bf854da91d958130eb",
+      "gzip_sha256": "9db1aa58074d4806f83554de30c649f80561be7f789e398881c3be2611ed5b96"
+    },
+    "protection-before.json": {
+      "file": "protection-before.json.gz",
+      "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+      "gzip_sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce"
+    },
+    "premerge.json": {
+      "file": "premerge.json.gz",
+      "sha256": "72aac6d40632fa27067ad64afc30c275afcbd92883fbcbd149a80f063cedeabb",
+      "gzip_sha256": "13a71c78639247eee57d95a9cedf2fbc0121485312e2eecfee9fa565c5bf99ef"
+    },
+    "merge-commit.json": {
+      "file": "merge-commit.json.gz",
+      "sha256": "13d143ef912490b472f38b2f5ca29e92e8abb2580cf88846571169c67dd498b7",
+      "gzip_sha256": "1e60827d9e0841edebc1f78128c28be0e50469c4924f44a00d349957e069fc59"
+    },
+    "threads.json": {
+      "file": "threads.json.gz",
+      "sha256": "598719be810102f811b9d57c872e78da2bc86ed4a95c3282b7cc80a12d109f5c",
+      "gzip_sha256": "d2d164f5ac3910fca30eb5da744df030175d68f6a53c912c20419cebe9cd1c56"
+    },
+    "head-commit.json": {
+      "file": "head-commit.json.gz",
+      "sha256": "d74f656a53b2de7e839633cc609d2b9f8d6a113e301fa161b43a4de8a9b8a352",
+      "gzip_sha256": "e165f21c797305da3a2a19305d866031650bc8512bbdea15bbc823c78a64dae8"
+    },
+    "protection-after.json": {
+      "file": "protection-after.json.gz",
+      "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+      "gzip_sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce"
+    }
+  }
+}

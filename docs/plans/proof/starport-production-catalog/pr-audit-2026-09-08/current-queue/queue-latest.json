@@ -1,297 +1,6 @@
 {
-  "checked_at": "2026-09-30T05:08:49.926702+00:00",
-  "starmap": [
-    {
-      "number": 200,
-      "headRefOid": "2453d21b72f91dc7597bedc672ad4dc0b234a690",
-      "headRefName": "codex/catalog-recovery-retention",
-      "baseRefName": "main",
-      "baseRefOid": "af57ed3fb99e9323ac513ff9889ecd3a5b6cee00",
-      "isDraft": true,
-      "statusCheckRollup": [
-        {
-          "conclusion": "SUCCESS",
-          "name": "Analyze (actions)",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Build pinned object fixture",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Analyze (go)",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Analyze (python)",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Constructor Network Passivity",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Offline Server Persistence",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Verification Checks",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Security & Reliability",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Action Pin Provenance",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Publication windows-2025",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Publication windows-11-arm",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Publication ubuntu-24.04",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Publication ubuntu-24.04-arm",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Publication macos-15",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Coordinated Storage valkey",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Coordinated Storage redis",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Go 1.27.1 race runtime-1",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "",
-          "name": "Go 1.27.1 race runtime-2",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "",
-          "name": "Go 1.27.1 race runtime-3",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "",
-          "name": "Go 1.27.1 race client",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "",
-          "name": "Go 1.27.1 race application-1",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Go 1.27.1 race application-2",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Go 1.27.1 race application-3",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "",
-          "name": "Go 1.27.1 race contracts",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Full Catalog Capacity",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native windows-2025 / client",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native windows-11-arm / client",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native ubuntu-24.04 / client",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native ubuntu-24.04-arm / client",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native macos-15 / client",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native windows-2025 / application",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native windows-11-arm / application",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native ubuntu-24.04 / application",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native ubuntu-24.04-arm / application",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native macos-15 / application",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native windows-2025 / filesystem",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "",
-          "name": "Native windows-11-arm / filesystem",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native ubuntu-24.04 / filesystem",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native ubuntu-24.04-arm / filesystem",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native macos-15 / filesystem",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "",
-          "name": "Native windows-2025 / runtime-1",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "",
-          "name": "Native windows-11-arm / runtime-1",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native ubuntu-24.04 / runtime-1",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native ubuntu-24.04-arm / runtime-1",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native macos-15 / runtime-1",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "",
-          "name": "Native windows-2025 / runtime-2",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "",
-          "name": "Native windows-11-arm / runtime-2",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "",
-          "name": "Native ubuntu-24.04 / runtime-2",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "Native ubuntu-24.04-arm / runtime-2",
-          "status": "COMPLETED"
-        },
-        {
-          "conclusion": "",
-          "name": "Native macos-15 / runtime-2",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "",
-          "name": "Native windows-2025 / runtime-3",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "",
-          "name": "Native windows-11-arm / runtime-3",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "",
-          "name": "Native ubuntu-24.04 / runtime-3",
-          "status": "IN_PROGRESS"
-        },
-        {
-          "conclusion": "",
-          "name": "Native ubuntu-24.04-arm / runtime-3",
-          "status": "QUEUED"
-        },
-        {
-          "conclusion": "",
-          "name": "Native macos-15 / runtime-3",
-          "status": "QUEUED"
-        },
-        {
-          "conclusion": "SUCCESS",
-          "name": "CodeQL",
-          "status": "COMPLETED"
-        }
-      ]
-    }
-  ],
+  "checked_at": "2026-09-30T05:28:40.664349+00:00",
+  "starmap": [],
   "starport": [],
   "completed_merges": [
     {
@@ -2419,15 +2128,16 @@
       "worktree": "/private/tmp/starmap-recovery-catalog-permission-20260929",
       "branch": "codex/recovery-catalog-permission",
       "base": "cff5f361af012c030555e72c607f30d5c415a284",
-      "state": "REVIEWED_PUBLISHED_NATIVE_QUALIFICATION_RUNNING",
+      "state": "MERGED",
       "contract": "/tmp/csp13-catalog-permission-inspection-20260929/CONTRACT.md",
       "head": "2453d21b72f91dc7597bedc672ad4dc0b234a690",
-      "proof": "csp13/producer-permission-publication-2026-09-29/verification.json"
+      "proof": "csp13/producer-permission-publication-2026-09-29/verification.json",
+      "merge": "cf45526ef644d56642d61920c4dde7751d9012d2"
     },
     "native_partition_repair": {
       "owner": "starmap_ci_repair",
       "worktree": "/private/tmp/starmap-native-runtime-partition-20260929",
-      "state": "INTEGRATED_REVIEWED_PUBLISHED",
+      "state": "MERGED",
       "source": "874aaa15dd9f324fecf040ef02e163014cea71bf",
       "integration": "ec57f2c02346df70a334c65b6b98db99e216f528"
     },
@@ -2451,7 +2161,15 @@
       "state": "IMPLEMENTING_COMPLETE_COORDINATOR",
       "next_action": "Integrate root45d6 permission capability, then implement actual sealed phase decisions and native release sequence with fresh-process recovery."
     },
-    "current_permission_proof": "csp13/topology-permission-2026-09-30/verification.json"
+    "current_permission_proof": "csp13/topology-permission-2026-09-30/verification.json",
+    "captured_catalog_adapter": {
+      "owner": "this chat",
+      "worktree": "/private/tmp/starmap-captured-catalog-recovery-20260930",
+      "branch": "codex/captured-catalog-recovery",
+      "base": "cf45526ef644d56642d61920c4dde7751d9012d2",
+      "state": "IMPLEMENTING_PRODUCER_ARCHIVE_READER_AND_CONSUMER_TOPOLOGY_CENSUS",
+      "next_action": "Keep descriptor decoding in Starmap. Derive complete catalog census from verified backup role files and original KV image; seal passive topology record."
+    }
   },
   "catalog_topology": {
     "state": "MERGED",
@@ -2768,19 +2486,20 @@
   "catalog_retention": {
     "pr": 200,
     "head": "2453d21b72f91dc7597bedc672ad4dc0b234a690",
-    "state": "REVIEWED_PUBLISHED_NATIVE_QUALIFICATION_RUNNING",
+    "state": "MERGED",
     "worktree": "/private/tmp/starmap-recovery-catalog-permission-20260929",
     "branch": "codex/catalog-recovery-retention",
     "owner": "this chat",
-    "proof": "csp13/producer-permission-publication-2026-09-29/verification.json",
-    "next_action": "Review complete native partition and permission component; update existing PR; merge only after all exact-head required checks pass.",
+    "proof": "csp13/starmap200-merge-2026-09-30/verification.json",
+    "next_action": "Producer component merged. Complete consumer recovery remains open.",
     "native_run": 36636540075,
     "native_checks": {
       "SUCCESS": 22,
       "IN_PROGRESS": 19,
       "QUEUED": 15
     },
-    "native_failure_proof": "csp13/starmap200-native-timeout-2026-09-29/verification.json"
+    "native_failure_proof": "csp13/starmap200-native-timeout-2026-09-29/verification.json",
+    "merge": "cf45526ef644d56642d61920c4dde7751d9012d2"
   },
   "previous_open_snapshot_final_producer": [
     {
@@ -3017,6 +2736,359 @@
       "owner": "CSP13 / this chat",
       "disposition": "Retain reviewed retention successor for native qualification.",
       "next_action": "Check exact-head CI, reviews, and protection before merge."
+    }
+  ],
+  "starmap200_completion": {
+    "task": "CSP13",
+    "task_completed": false,
+    "repository": "agentstation/starmap",
+    "pr": 200,
+    "head": "2453d21b72f91dc7597bedc672ad4dc0b234a690",
+    "base": "af57ed3fb99e9323ac513ff9889ecd3a5b6cee00",
+    "merge": "cf45526ef644d56642d61920c4dde7751d9012d2",
+    "merged_at": "2026-09-30T05:24:25Z",
+    "checks": {
+      "success": 62,
+      "fail": 0,
+      "pending": 0
+    },
+    "reviewed_tree": "0c10bf1de2c73988c72251e059c3cb7540e8cb19",
+    "merged_tree": "0c10bf1de2c73988c72251e059c3cb7540e8cb19",
+    "reviewed_tree_equals_merge_tree": true,
+    "merge_signature_verified": true,
+    "protection_unchanged": true,
+    "strict_protection": true,
+    "unresolved_review_threads": 0,
+    "merge_method": "protected squash with exact head match; no administrator bypass",
+    "scope": "Producer retained catalog, passive original permission checks, canonical source policy resolution, and exact native test partition coverage. Complete recovery remains open.",
+    "artifacts": {
+      "merged.json": {
+        "file": "merged.json.gz",
+        "sha256": "b646366ef62bdcec5e3be8b833b2f466dccfaba846cad8bf854da91d958130eb",
+        "gzip_sha256": "9db1aa58074d4806f83554de30c649f80561be7f789e398881c3be2611ed5b96"
+      },
+      "protection-before.json": {
+        "file": "protection-before.json.gz",
+        "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+        "gzip_sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce"
+      },
+      "premerge.json": {
+        "file": "premerge.json.gz",
+        "sha256": "72aac6d40632fa27067ad64afc30c275afcbd92883fbcbd149a80f063cedeabb",
+        "gzip_sha256": "13a71c78639247eee57d95a9cedf2fbc0121485312e2eecfee9fa565c5bf99ef"
+      },
+      "merge-commit.json": {
+        "file": "merge-commit.json.gz",
+        "sha256": "13d143ef912490b472f38b2f5ca29e92e8abb2580cf88846571169c67dd498b7",
+        "gzip_sha256": "1e60827d9e0841edebc1f78128c28be0e50469c4924f44a00d349957e069fc59"
+      },
+      "threads.json": {
+        "file": "threads.json.gz",
+        "sha256": "598719be810102f811b9d57c872e78da2bc86ed4a95c3282b7cc80a12d109f5c",
+        "gzip_sha256": "d2d164f5ac3910fca30eb5da744df030175d68f6a53c912c20419cebe9cd1c56"
+      },
+      "head-commit.json": {
+        "file": "head-commit.json.gz",
+        "sha256": "d74f656a53b2de7e839633cc609d2b9f8d6a113e301fa161b43a4de8a9b8a352",
+        "gzip_sha256": "e165f21c797305da3a2a19305d866031650bc8512bbdea15bbc823c78a64dae8"
+      },
+      "protection-after.json": {
+        "file": "protection-after.json.gz",
+        "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+        "gzip_sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce"
+      }
+    }
+  },
+  "previous_open_snapshot_starmap200": [
+    {
+      "number": 200,
+      "headRefOid": "2453d21b72f91dc7597bedc672ad4dc0b234a690",
+      "headRefName": "codex/catalog-recovery-retention",
+      "baseRefName": "main",
+      "baseRefOid": "af57ed3fb99e9323ac513ff9889ecd3a5b6cee00",
+      "isDraft": true,
+      "statusCheckRollup": [
+        {
+          "conclusion": "SUCCESS",
+          "name": "Analyze (actions)",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Build pinned object fixture",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Analyze (go)",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Analyze (python)",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Constructor Network Passivity",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Offline Server Persistence",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Verification Checks",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Security & Reliability",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Action Pin Provenance",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Publication windows-2025",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Publication windows-11-arm",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Publication ubuntu-24.04",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Publication ubuntu-24.04-arm",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Publication macos-15",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Coordinated Storage valkey",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Coordinated Storage redis",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Go 1.27.1 race runtime-1",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "",
+          "name": "Go 1.27.1 race runtime-2",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "",
+          "name": "Go 1.27.1 race runtime-3",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "",
+          "name": "Go 1.27.1 race client",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "",
+          "name": "Go 1.27.1 race application-1",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Go 1.27.1 race application-2",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Go 1.27.1 race application-3",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "",
+          "name": "Go 1.27.1 race contracts",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Full Catalog Capacity",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native windows-2025 / client",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native windows-11-arm / client",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native ubuntu-24.04 / client",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native ubuntu-24.04-arm / client",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native macos-15 / client",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native windows-2025 / application",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native windows-11-arm / application",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native ubuntu-24.04 / application",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native ubuntu-24.04-arm / application",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native macos-15 / application",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native windows-2025 / filesystem",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "",
+          "name": "Native windows-11-arm / filesystem",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native ubuntu-24.04 / filesystem",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native ubuntu-24.04-arm / filesystem",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native macos-15 / filesystem",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "",
+          "name": "Native windows-2025 / runtime-1",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "",
+          "name": "Native windows-11-arm / runtime-1",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native ubuntu-24.04 / runtime-1",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native ubuntu-24.04-arm / runtime-1",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native macos-15 / runtime-1",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "",
+          "name": "Native windows-2025 / runtime-2",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "",
+          "name": "Native windows-11-arm / runtime-2",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "",
+          "name": "Native ubuntu-24.04 / runtime-2",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "Native ubuntu-24.04-arm / runtime-2",
+          "status": "COMPLETED"
+        },
+        {
+          "conclusion": "",
+          "name": "Native macos-15 / runtime-2",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "",
+          "name": "Native windows-2025 / runtime-3",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "",
+          "name": "Native windows-11-arm / runtime-3",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "",
+          "name": "Native ubuntu-24.04 / runtime-3",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "conclusion": "",
+          "name": "Native ubuntu-24.04-arm / runtime-3",
+          "status": "QUEUED"
+        },
+        {
+          "conclusion": "",
+          "name": "Native macos-15 / runtime-3",
+          "status": "QUEUED"
+        },
+        {
+          "conclusion": "SUCCESS",
+          "name": "CodeQL",
+          "status": "COMPLETED"
+        }
+      ]
     }
   ]
 }
