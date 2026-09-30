@@ -1014,5 +1014,112 @@ func TestSkipped(t *testing.T) { t.Skip("fixture skip") }
             self.assertEqual((root / 'processes').read_text().splitlines(), ['run'] * 5)
 
 
+class RecoveryRegistrationTests(unittest.TestCase):
+    def setUp(self):
+        self.roster = verifier.read_json(verifier.ROSTER)
+        self.registry = verifier.read_json(verifier.REGISTRY)
+
+    def leaves(self, identity):
+        return list(verifier.leaf_checks(self.registry['checks'].get(identity)))
+
+    def test_backup_references_require_native_shared_and_relational_pairs(self):
+        leaves = self.leaves('A16.kv_sql_file_references')
+        tests = {entry.get('test'): entry for entry in leaves}
+        self.assertIn('TestPrepareBundleLocalAndSharedRecipes', tests)
+        self.assertEqual(tests['TestPrepareBundleLocalAndSharedRecipes']['required_subtests'], ['local', 'shared'])
+        self.assertEqual(tests['TestBackupStoredByteReferences']['required_subtests'], ['badger', 'valkey'])
+        pairs = tests['TestRelationalTransferAllBackendPairs']['required_subtests']
+        self.assertEqual(set(pairs), {source + '/' + target for source in ('sqlite', 'postgres', 'mysql')
+                                     for target in ('sqlite', 'postgres', 'mysql')})
+
+    def test_backup_manifest_requires_key_access_and_complete_inventory(self):
+        tests = {entry.get('test') for entry in self.leaves('A16.complete_backup_manifest')}
+        self.assertTrue({'TestBackupBundleBindsStoresFilesAndKeyAccess', 'TestBackupBundleSharedRecipe',
+                         'TestBackupBundleDetectsChangedArtifacts', 'TestBackupInventoryAccountsForEveryCanonicalRole',
+                         'TestRecoveryTopologyRuntimeObservationsRequireCompletePortableCensus',
+                         'TestBackupApplicationRefusesInvalidCatalog'} <= tests)
+        self.assertTrue({'TestRecoveryTopologyActualPersistentBackupSealsAndReopens',
+                         'TestRecoveryTopologyRefusesIncompleteOriginalBackupCensus'}.isdisjoint(tests))
+
+    def test_interrupted_migration_requires_rollback_and_partial_ddl_reconciliation(self):
+        tests = {entry.get('test'): entry for entry in self.leaves('A16.interrupted_migration')}
+        self.assertEqual(tests['TestRelationalImportReceiptRollsBackWithRestriction']['required_subtests'],
+                         ['sqlite', 'postgres', 'mysql'])
+        self.assertTrue({'TestMySQLPartialMigrationRequiresReconciliation',
+                         'TestMySQLMigrationReconciliationAppliedDoesNotRepeatDDL',
+                         'TestMySQLMigrationReconciliationRejectsUnboundEvidence'} <= set(tests))
+
+    def test_post_backup_replay_does_not_substitute_empty_history(self):
+        tests = {entry.get('test'): entry for entry in self.leaves('A33.backup_then_revoke_and_spend')}
+        self.assertIn('TestRecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch', tests)
+        self.assertIs(tests['TestRecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch']['batch'], False)
+        replay = {entry.get('test'): entry for entry in self.leaves('A33.independent_record_replay')}
+        self.assertEqual(replay['TestHistoryRunnerNativeFiniteManifestAndRestart']['required_subtests'], ['false', 'true'])
+        self.assertIn('TestHistoryRunnerRejectsChangedInputsAndRetainedEvidence', replay)
+
+    def test_old_writer_fence_requires_real_process_and_reachable_primary(self):
+        tests = {entry.get('test'): entry for entry in self.leaves('A33.old_writer_fenced')}
+        self.assertEqual(tests['TestRecoveryAuthorityAcrossRealProcesses']['required_subtests'],
+                         ['same-backend', 'reachable-old-primary'])
+        self.assertIn('TestHistoryAcceptanceRequiresExplicitExternalFacts', tests)
+
+    def test_missing_evidence_cannot_pass_from_valid_history_alone(self):
+        tests = {entry.get('test'): entry for entry in self.leaves('A33.missing_evidence_restricted')}
+        self.assertTrue({'TestRecoveryActivationCurrentChoiceOrOriginalEvidenceFailureKeepsRemainingOwnersClosed',
+                         'TestHistoryRunnerEmptyIntervalStaysRestricted', 'TestRecoveryStartupRefusesBeforeApplicationEffects'}
+                        <= set(tests))
+        choices = tests['TestRecoveryActivationCurrentChoiceOrOriginalEvidenceFailureKeepsRemainingOwnersClosed']
+        self.assertIn('original-history', choices['required_subtests'])
+
+    def test_identity_recovery_requires_both_products_and_original_file_owners(self):
+        leaves = self.leaves('A04.identity_and_journal_recovery')
+        self.assertEqual({entry['repository'] for entry in leaves}, {'starmap', 'starport'})
+        tests = {entry.get('test'): entry for entry in leaves}
+        self.assertEqual(tests['TestMigrationPhaseProcessRecovery']['required_subtests'], ['stage', 'publish', 'complete'])
+        self.assertTrue({'TestRestorePublishRuntimeRetainsIdentityWithoutAdmission',
+                         'TestRecoveryCanonicalFilesFreshProcessAfterBlobRelease',
+                         'TestBackupBundleBindsStoresFilesAndKeyAccess'} <= set(tests))
+
+    def test_required_native_backend_result_cannot_be_omitted(self):
+        for identity, name in [('A16.kv_sql_file_references', 'TestRelationalTransferAllBackendPairs'),
+                               ('A33.old_writer_fenced', 'TestRecoveryAuthorityAcrossRealProcesses'),
+                               ('A33.independent_record_replay', 'TestHistoryRunnerNativeFiniteManifestAndRestart')]:
+            entry = next(entry for entry in self.leaves(identity) if entry.get('test') == name)
+            complete = {child: True for child in entry['required_subtests']}
+            with self.subTest(identity=identity), patch.object(verifier, 'run_go_tests') as run:
+                evidence = {'status': 'PASS', 'subtests': complete}
+                run.return_value = {name: evidence}
+                roots = {'starport': verifier.ROOT}
+                self.assertEqual(verifier.run_check(identity, entry, roots)['status'], 'PASS')
+                omitted = entry['required_subtests'][-1]
+                del complete[omitted]
+                result = verifier.run_check(identity, entry, roots)
+                self.assertEqual(result['status'], 'UNVERIFIED')
+                self.assertEqual(result['missing_subtests'], [omitted])
+
+    def test_remaining_recovery_contracts_stay_unverified_for_every_selector(self):
+        missing = {'A33.operator_reconciliation', 'A33.measured_rpo_rto', 'A33.fresh_replica_history_barrier',
+                   'A33.old_primary_admission_fence', 'A33.restart_and_recovery_epoch', 'A41.unprefixed_record_migration'}
+        self.assertTrue(missing <= set(self.roster['task_checks']['CSP13']))
+        self.assertTrue(missing.isdisjoint(self.registry['checks']))
+        arguments = [('CSP13', None, None), (None, None, ['A16', 'A33']), (None, None, ['A04', 'A41']),
+                     (None, 'candidate', None), (None, 'final', None)]
+        for task, gate, cases in arguments:
+            with self.subTest(task=task, gate=gate, cases=cases):
+                args = argparse.Namespace(task=task, gate=gate, case=cases, released_assets=False,
+                                          recipes=False, backends='all')
+                selected = verifier.select_checks(args, self.roster)
+                results = {}
+                for identity in selected:
+                    entry, _ = verifier.registered_check(args, self.registry, identity)
+                    results[identity] = {'status': 'PASS'} if entry else verifier.run_check(identity, None, {})
+                report = verifier.aggregate(self.roster, selected, results, bool(gate))
+                for identity in missing.intersection(selected):
+                    self.assertEqual(results[identity]['status'], 'UNVERIFIED')
+                for case in report['cases']:
+                    if case['id'] == 'A33':
+                        self.assertEqual(case['status'], 'UNVERIFIED')
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

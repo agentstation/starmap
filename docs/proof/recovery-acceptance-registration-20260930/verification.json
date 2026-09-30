@@ -1,0 +1,902 @@
+{
+  "schema_version": 1,
+  "scope": "Acceptance registration and verifier regression checks only. No product acceptance or release qualification is claimed.",
+  "starmap_base_commit": "2bb99571227518efcb67aa64f9b78bf9079fab27",
+  "starport_inspected_commit": "0e52e853dc797cf31a0d80da5082c6a10d390e87",
+  "go_version": "go version go1.27.1 darwin/arm64",
+  "roster_sha256": "8302aff9787f8f1d6f88668ca8e1c3948b28e50bcf37634e0e296415b026861b",
+  "registry_sha256": "597abb7aef3f43822c0d168f90bd7575870ff60a50c4df338420b136d04f6271",
+  "regression_tests_sha256": "2a0e9b4d695e338c2edc07d7b0fdf07e06adab20a7fd2d1a8009b79e893c1f32",
+  "original_registry_sha256": "d442fb23d00049183d62dd295d62dfb92f37f869f39d52ef0d558d9be98b601f",
+  "originally_registered_csp13_subcases": 3,
+  "newly_registered_csp13_subcases": 7,
+  "registered_csp13_subcases": 10,
+  "required_csp13_subcases": 16,
+  "unregistered_csp13_subcases": 6,
+  "new_or_extended_mappings": {
+    "A16.kv_sql_file_references": {
+      "proved_contract": "Verified backups check historical credential decryption, file/job/batch blob links, account and SQL identity references, stored-byte claims and totals. Local and shared restore preserve selected files and closed native barriers. All nine SQL source/target pairs compare table records and reference-bearing identity state.",
+      "limits": [
+        "No published fleet recipe or whole deployment recovery qualification is claimed."
+      ],
+      "registration": "registered",
+      "qualification": "UNVERIFIED",
+      "source_tests": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBundleReferencesRequireMoreThanArtifactDigestsAndKeyChallenge",
+          "source_file": "internal/recovery/references_test.go",
+          "source_sha256": "f0ebeb90971fd5d0299cf2adf2bf58ae6530b49037e1373d6ae6618728c96c74"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBundleReferencesRejectInvalidSQLIdentity",
+          "source_file": "internal/recovery/references_test.go",
+          "source_sha256": "f0ebeb90971fd5d0299cf2adf2bf58ae6530b49037e1373d6ae6618728c96c74"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBundleIdentityReferencesPreserveGrantsAndRefuseCorruption",
+          "source_file": "internal/recovery/references_test.go",
+          "source_sha256": "f0ebeb90971fd5d0299cf2adf2bf58ae6530b49037e1373d6ae6618728c96c74"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupStoredByteReferences",
+          "required_subtests": [
+            "badger",
+            "valkey"
+          ],
+          "batch": false,
+          "source_file": "internal/recovery/storedbyte_references_test.go",
+          "source_sha256": "7e44af797ab49d07d48410463a21b691dfed9e4467ccd48eb899838f12e73db3"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupJobReservationLinks",
+          "source_file": "internal/recovery/execution_links_test.go",
+          "source_sha256": "b47f8cb6714109a8afd128f638a86d084c118e7ebcdd04a1afbb044dde2ec3f0"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestPrepareBundleLocalAndSharedRecipes",
+          "required_subtests": [
+            "local",
+            "shared"
+          ],
+          "source_file": "internal/recovery/bundle_restore_test.go",
+          "source_sha256": "74496127597aae2afa0ab35f40a5c390485b4a24277f691ae26abd6f624091a6"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestRelationalTransferAllBackendPairs",
+          "required_subtests": [
+            "sqlite/sqlite",
+            "sqlite/postgres",
+            "sqlite/mysql",
+            "postgres/sqlite",
+            "postgres/postgres",
+            "postgres/mysql",
+            "mysql/sqlite",
+            "mysql/postgres",
+            "mysql/mysql"
+          ],
+          "batch": false,
+          "source_file": "internal/sqlstore/relational_transfer_test.go",
+          "source_sha256": "492fa08f85c810438c611d219398d1df87002d94dea215304daa17519cf7604b"
+        }
+      ]
+    },
+    "A16.interrupted_migration": {
+      "proved_contract": "Native SQL imports retry the same receipt, roll back failed restrictions and serialize concurrent retries on SQLite, PostgreSQL and MySQL. Unsupported SQL history refuses. Partial MySQL DDL requires explicit immutable reconciliation; exact applied/reverted decisions preserve the recorded outcome. Local KV/blob/file preparation resumes from lost replies while SQL and KV stay restricted.",
+      "limits": [
+        "The MySQL fixture creates the exact durable post-DDL/pre-receipt state; it does not kill the SQL server.",
+        "Unprefixed namespace interruption remains a separate unregistered contract."
+      ],
+      "registration": "registered",
+      "qualification": "UNVERIFIED",
+      "source_tests": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestRelationalImportReceiptRetriesWithoutRepeatingRestrictions",
+          "required_subtests": [
+            "sqlite",
+            "postgres",
+            "mysql"
+          ],
+          "source_file": "internal/sqlstore/relational_import_receipt_test.go",
+          "source_sha256": "6a19cd68d089c001aa6d8f668845d8d753a22135d3ef967abad4c0d3559fabe7"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestRelationalImportReceiptRollsBackWithRestriction",
+          "required_subtests": [
+            "sqlite",
+            "postgres",
+            "mysql"
+          ],
+          "source_file": "internal/sqlstore/relational_import_receipt_test.go",
+          "source_sha256": "6a19cd68d089c001aa6d8f668845d8d753a22135d3ef967abad4c0d3559fabe7"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestRelationalImportReceiptConcurrentRetry",
+          "required_subtests": [
+            "sqlite",
+            "postgres",
+            "mysql"
+          ],
+          "source_file": "internal/sqlstore/relational_import_receipt_test.go",
+          "source_sha256": "6a19cd68d089c001aa6d8f668845d8d753a22135d3ef967abad4c0d3559fabe7"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMigrationRejectsUnknownHistory",
+          "required_subtests": [
+            "sqlite",
+            "postgres",
+            "mysql"
+          ],
+          "source_file": "internal/sqlstore/migration_ownership_test.go",
+          "source_sha256": "e98494c8e7b8fac300ddd7e1170ad2e66bc1d52b8756da7ec640a0b9ffacc4ee"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMySQLPartialMigrationRequiresReconciliation",
+          "source_file": "internal/sqlstore/migration_ownership_test.go",
+          "source_sha256": "e98494c8e7b8fac300ddd7e1170ad2e66bc1d52b8756da7ec640a0b9ffacc4ee"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMySQLMigrationReconciliationAppliedDoesNotRepeatDDL",
+          "source_file": "internal/sqlstore/migration_reconcile_test.go",
+          "source_sha256": "8821def435c1b8a3eb923b01af688bf44b400a88ba31df0d3ca83242c189b77a"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMySQLMigrationReconciliationRevertedAllowsExplicitRetry",
+          "source_file": "internal/sqlstore/migration_reconcile_test.go",
+          "source_sha256": "8821def435c1b8a3eb923b01af688bf44b400a88ba31df0d3ca83242c189b77a"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMySQLMigrationReconciliationRejectsUnboundEvidence",
+          "source_file": "internal/sqlstore/migration_reconcile_test.go",
+          "source_sha256": "8821def435c1b8a3eb923b01af688bf44b400a88ba31df0d3ca83242c189b77a"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMySQLMigrationReconciliationRollsBackReceiptFailure",
+          "source_file": "internal/sqlstore/migration_reconcile_test.go",
+          "source_sha256": "8821def435c1b8a3eb923b01af688bf44b400a88ba31df0d3ca83242c189b77a"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMySQLMigrationReconciliationRequiresTransactionalRecords",
+          "required_subtests": [
+            "schema_migrations",
+            "schema_migration_attempts",
+            "schema_migration_reconciliations"
+          ],
+          "source_file": "internal/sqlstore/migration_reconcile_test.go",
+          "source_sha256": "8821def435c1b8a3eb923b01af688bf44b400a88ba31df0d3ca83242c189b77a"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestPrepareBundleResumesAfterInterruptedComponents",
+          "required_subtests": [
+            "kv",
+            "before-blobs",
+            "after-blobs",
+            "files"
+          ],
+          "source_file": "internal/recovery/bundle_restore_test.go",
+          "source_sha256": "74496127597aae2afa0ab35f40a5c390485b4a24277f691ae26abd6f624091a6"
+        }
+      ]
+    },
+    "A16.complete_backup_manifest": {
+      "proved_contract": "Native local/shared manifests bind KV, SQL, blob bytes, selected files, recovery boundary and key-access challenge. Missing/changed/extra/unsafe artifacts and changed boundary refuse. Application capture remains readable after live stores are removed; invalid accepted/candidate/generation/history/fleet references refuse capture, verification and preparation. Actual canonical inventory accounts for every role; bounded portable census checks require exact observed and captured file membership.",
+      "limits": [
+        "Selected secret-manager references still require operator-provided external access.",
+        "A backup manifest and key challenge do not grant activation authority.",
+        "The full embedded original-backup compiler/reopen cases are excluded from the fixed five-minute acceptance runner. They retain separate source/restart qualification and are not replaced by this manifest registration."
+      ],
+      "registration": "registered",
+      "qualification": "UNVERIFIED",
+      "source_tests": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupBundleBindsStoresFilesAndKeyAccess",
+          "source_file": "internal/recovery/bundle_test.go",
+          "source_sha256": "4361582ba2ea53a2a7987d82d5f8de8cae0d7514ab9077934e4068deec06faeb"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupBundleSharedRecipe",
+          "source_file": "internal/recovery/bundle_test.go",
+          "source_sha256": "4361582ba2ea53a2a7987d82d5f8de8cae0d7514ab9077934e4068deec06faeb"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupBundleDetectsChangedArtifacts",
+          "source_file": "internal/recovery/bundle_test.go",
+          "source_sha256": "4361582ba2ea53a2a7987d82d5f8de8cae0d7514ab9077934e4068deec06faeb"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupBundleLeavesNoManifestAfterBoundaryChange",
+          "source_file": "internal/recovery/bundle_test.go",
+          "source_sha256": "4361582ba2ea53a2a7987d82d5f8de8cae0d7514ab9077934e4068deec06faeb"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupBundleRefusesIncompleteInputs",
+          "source_file": "internal/recovery/bundle_test.go",
+          "source_sha256": "4361582ba2ea53a2a7987d82d5f8de8cae0d7514ab9077934e4068deec06faeb"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBackupInventoryAccountsForEveryCanonicalRole",
+          "source_file": "internal/config/backup_inventory_test.go",
+          "source_sha256": "cb2475cdb5888cb68b7488fe0af9076352cdc493be7d5d216613fd2d80023e88"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBackupInventoryTracksLoadedConfigurationDigest",
+          "source_file": "internal/config/backup_inventory_test.go",
+          "source_sha256": "cb2475cdb5888cb68b7488fe0af9076352cdc493be7d5d216613fd2d80023e88"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBackupInventoryPreservesSelectedWorkspaceAndRecoveryFiles",
+          "source_file": "internal/config/backup_inventory_test.go",
+          "source_sha256": "cb2475cdb5888cb68b7488fe0af9076352cdc493be7d5d216613fd2d80023e88"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBackupInventoryRefusesIncompleteOrUnsafeScan",
+          "source_file": "internal/config/backup_inventory_test.go",
+          "source_sha256": "cb2475cdb5888cb68b7488fe0af9076352cdc493be7d5d216613fd2d80023e88"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBackupInventoryRefusesUnknownActiveRole",
+          "source_file": "internal/config/backup_inventory_test.go",
+          "source_sha256": "cb2475cdb5888cb68b7488fe0af9076352cdc493be7d5d216613fd2d80023e88"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestBackupApplicationCapturesExistingDeployment",
+          "source_file": "internal/app/backup_test.go",
+          "source_sha256": "2efc417141d595d3c627713e56b40c1465030eb1c5c170aeb9d88a3597748826"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestBackupCommandsUseNativeApplicationCapture",
+          "source_file": "internal/app/backup_test.go",
+          "source_sha256": "2efc417141d595d3c627713e56b40c1465030eb1c5c170aeb9d88a3597748826"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestRecoveryTopologyRuntimeObservationsRequireCompletePortableCensus",
+          "source_file": "internal/catalog/topology_backup_census_test.go",
+          "source_sha256": "b6c42c8f2c574ac941c58ae5d82b7fb965f1101f9d5312a5a61885d6f620524d"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestBackupApplicationRefusesInvalidCatalog",
+          "required_subtests": [
+            "accepted-pointer",
+            "candidate-pointer",
+            "generation",
+            "history",
+            "fleet-head"
+          ],
+          "source_file": "internal/app/backup_catalog_test.go",
+          "source_sha256": "b478f52c69bd53582e13babbfd21c0dfb973a46d9ab2321dc0401c1233eff74b"
+        }
+      ]
+    },
+    "A33.backup_then_revoke_and_spend": {
+      "proved_contract": "The actual local source commits key and SQL grant revocation, budget settlement, uncertain dispatch and pending job changes after backup. Independent history drives complete local activation; fresh App authorization rejects revoked identities, preserves the survivor, consumes spent capacity, retains uncertain reservations and does not repeat provider submission.",
+      "limits": [
+        "The post-backup DR source/destination case uses Badger/SQLite; shared owner replay is separately required under independent_record_replay.",
+        "Populated shared shipping-command DR and production deployment objectives remain unverified."
+      ],
+      "registration": "registered",
+      "qualification": "UNVERIFIED",
+      "source_tests": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch",
+          "batch": false,
+          "source_file": "internal/app/recovery_post_backup_activity_test.go",
+          "source_sha256": "2a91e567e2f064a1456a1a148103ceddd2f012e9a414c7b39250e89d71cd5d9c"
+        }
+      ]
+    },
+    "A33.old_writer_fenced": {
+      "proved_contract": "A real native authority child writes under current approval, refuses writes after the independent gate closes, then is killed and waited on before a replacement epoch opens. The former primary stays reachable. Old retained authority and the wrong primary refuse; a new owner uses the approved replacement. External fence and admitted-work facts remain mandatory.",
+      "limits": [
+        "This is a real OS process test of the authority owner, not proof that every gateway or network path in a deployment is fenced.",
+        "The complete old-primary gateway admission/dispatch contract remains unregistered."
+      ],
+      "registration": "registered",
+      "qualification": "UNVERIFIED",
+      "source_tests": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestRecoveryAuthorityAcrossRealProcesses",
+          "required_subtests": [
+            "same-backend",
+            "reachable-old-primary"
+          ],
+          "batch": false,
+          "source_file": "internal/recovery/authority_process_test.go",
+          "source_sha256": "4cf0713edfacbb029d0c25c7c640668a065f8d3e6eb47aa1807b5080f80d75ab"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryAcceptanceRequiresExplicitExternalFacts",
+          "source_file": "internal/recovery/history_acceptance_test.go",
+          "source_sha256": "c379aa57630b2e832ba490dfe885de13005ad0ebd9a1b953eea0965c3760dc2e"
+        }
+      ]
+    },
+    "A33.independent_record_replay": {
+      "proved_contract": "Actual post-backup activity and a finite original history package replay native KV, SQL and blob changes under original claims on local and shared owners. Exact retries retain original images and completed positions. Changed originals, missing assets and invalid rotation order refuse and keep restrictions.",
+      "limits": [
+        "The history owner tests do not replace complete operator command and deployment recovery qualification."
+      ],
+      "registration": "registered",
+      "qualification": "UNVERIFIED",
+      "source_tests": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch",
+          "batch": false,
+          "source_file": "internal/app/recovery_post_backup_activity_test.go",
+          "source_sha256": "2a91e567e2f064a1456a1a148103ceddd2f012e9a414c7b39250e89d71cd5d9c"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerNativeFiniteManifestAndRestart",
+          "required_subtests": [
+            "false",
+            "true"
+          ],
+          "batch": false,
+          "source_file": "internal/recovery/history_runner_test.go",
+          "source_sha256": "c387b33490d1b670dab5081356ef7792d4990760df05c5ee1c0eebcc1f9f3ee7"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerLostNativeRepliesReuseOriginalImages",
+          "required_subtests": [
+            "false-kv",
+            "false-blob",
+            "true-kv",
+            "true-blob"
+          ],
+          "batch": false,
+          "source_file": "internal/recovery/history_runner_test.go",
+          "source_sha256": "c387b33490d1b670dab5081356ef7792d4990760df05c5ee1c0eebcc1f9f3ee7"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerRejectsRotationOrder",
+          "source_file": "internal/recovery/history_runner_test.go",
+          "source_sha256": "c387b33490d1b670dab5081356ef7792d4990760df05c5ee1c0eebcc1f9f3ee7"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerRejectsChangedInputsAndRetainedEvidence",
+          "batch": false,
+          "source_file": "internal/recovery/history_runner_test.go",
+          "source_sha256": "c387b33490d1b670dab5081356ef7792d4990760df05c5ee1c0eebcc1f9f3ee7"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerMissingAssetKeepsNativeClaimClosed",
+          "source_file": "internal/recovery/history_runner_recovery_test.go",
+          "source_sha256": "7857c9bacec6dd13688a3fe640a85821b449a8d5a1257d2372a1278b18c373d4"
+        }
+      ]
+    },
+    "A33.missing_evidence_restricted": {
+      "proved_contract": "Incomplete actual post-backup history keeps native KV/SQL restricted. Empty intervals and missing assets cannot reconstruct permission. Changed original history, decision, runtime, token, source file or current settings keep remaining owners closed. Startup refuses inconsistent released native state before policy/catalog initialization or maintenance.",
+      "limits": [
+        "Fresh replicated incarnation/epoch mismatch after successful restored startup remains a separate unregistered contract."
+      ],
+      "registration": "registered",
+      "qualification": "UNVERIFIED",
+      "source_tests": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch",
+          "batch": false,
+          "source_file": "internal/app/recovery_post_backup_activity_test.go",
+          "source_sha256": "2a91e567e2f064a1456a1a148103ceddd2f012e9a414c7b39250e89d71cd5d9c"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryAcceptanceRequiresExplicitExternalFacts",
+          "source_file": "internal/recovery/history_acceptance_test.go",
+          "source_sha256": "c379aa57630b2e832ba490dfe885de13005ad0ebd9a1b953eea0965c3760dc2e"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerEmptyIntervalStaysRestricted",
+          "source_file": "internal/recovery/history_runner_test.go",
+          "source_sha256": "c387b33490d1b670dab5081356ef7792d4990760df05c5ee1c0eebcc1f9f3ee7"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerMissingAssetKeepsNativeClaimClosed",
+          "source_file": "internal/recovery/history_runner_recovery_test.go",
+          "source_sha256": "7857c9bacec6dd13688a3fe640a85821b449a8d5a1257d2372a1278b18c373d4"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryActivationCurrentChoiceOrOriginalEvidenceFailureKeepsRemainingOwnersClosed",
+          "required_subtests": [
+            "settings",
+            "token",
+            "source-file",
+            "runtime",
+            "original-history",
+            "decision"
+          ],
+          "batch": false,
+          "source_file": "internal/app/recovery_activation_test.go",
+          "source_sha256": "a2f4e53b70dcd9dd1d25674e72e9dc49d4125c2f530f60653de56bd7b442f59e"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryStartupRefusesBeforeApplicationEffects",
+          "required_subtests": [
+            "closed-import",
+            "corrupt-receipt"
+          ],
+          "source_file": "internal/app/recovery_startup_test.go",
+          "source_sha256": "029af54cb57b5be3f4b088dac7eac1609cee5c9fdc2980fd7bd57515e73ec2c0"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryStartupJoinsNativeOwnersBeforeMaintenance",
+          "source_file": "internal/app/recovery_startup_test.go",
+          "source_sha256": "029af54cb57b5be3f4b088dac7eac1609cee5c9fdc2980fd7bd57515e73ec2c0"
+        }
+      ]
+    },
+    "A04.identity_and_journal_recovery": {
+      "proved_contract": "Existing producer migration process-exit tests remain required. Consumer migration journal and stage/publish/complete process-exit cases preserve original source checksums, accepted generation and identity. Native runtime restore retains seed/owner evidence, rejects mismatched identity or uncertain publication, and keeps completed migration history inactive. Fresh-process canonical inspection preserves original owner evidence after blob release. The backup key-access challenge remains required.",
+      "limits": [
+        "This mapping covers the exact identity/journal subcase; A04 platform interruption and human workspace cases remain separate required entries.",
+        "Successful selected workspace restoration is not claimed from refusal-only canonical tests."
+      ],
+      "registration": "registered",
+      "qualification": "UNVERIFIED",
+      "source_tests": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestStageDirectoryMigrationRecoversProcessExit"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestPublishDirectoryMigrationRecoversProcessExit",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestDirectoryMigrationCompletionRecoversProcessExit",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestMigrationJournalRecoversEveryPartialEventBoundary"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestDirectoryMigrationCompletionRefusesChangedEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestCompletedMigrationStartupRefusesReplacedTarget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestMigrationJournalProcessRecovery",
+          "required_subtests": [
+            "before-checkpoint",
+            "after-checkpoint"
+          ],
+          "source_file": "internal/catalog/migration_crash_test.go",
+          "source_sha256": "c0d5e91c1fd9fa235345a86eecd81c816408f9a5ebd3feef0be6435dff6f9490"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestMigrationPhaseProcessRecovery",
+          "required_subtests": [
+            "stage",
+            "publish",
+            "complete"
+          ],
+          "batch": false,
+          "source_file": "internal/catalog/migration_phase_crash_test.go",
+          "source_sha256": "3a8b95002017bfc6aa84dafa56b8bdef5d685397480e125f47f7f99f4c2474f1"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRestorePublishRuntimeRetainsIdentityWithoutAdmission",
+          "batch": false,
+          "source_file": "internal/app/restore_runtime_test.go",
+          "source_sha256": "5b2d2fe2a59826189cae98fd9159f2542d65d43d0b8f449f53eebee7ad45e8a4"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRestorePublishRuntimeRefusesInvalidIdentity",
+          "required_subtests": [
+            "corrupt",
+            "different-replica",
+            "different-override"
+          ],
+          "batch": false,
+          "source_file": "internal/app/restore_runtime_test.go",
+          "source_sha256": "5b2d2fe2a59826189cae98fd9159f2542d65d43d0b8f449f53eebee7ad45e8a4"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRestorePublishRuntimeKeepsCompletedMigrationHistoryInactive",
+          "batch": false,
+          "source_file": "internal/app/restore_runtime_test.go",
+          "source_sha256": "5b2d2fe2a59826189cae98fd9159f2542d65d43d0b8f449f53eebee7ad45e8a4"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRestorePublishRuntimeRefusesIncompleteMigrationHistoryBeforePreparation",
+          "batch": false,
+          "source_file": "internal/app/restore_runtime_test.go",
+          "source_sha256": "5b2d2fe2a59826189cae98fd9159f2542d65d43d0b8f449f53eebee7ad45e8a4"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRestorePublishRuntimePreservesNativePublicationEvidence",
+          "batch": false,
+          "source_file": "internal/app/restore_runtime_test.go",
+          "source_sha256": "5b2d2fe2a59826189cae98fd9159f2542d65d43d0b8f449f53eebee7ad45e8a4"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRestorePublishRuntimeRejectsChangedNativeStagingBeforePreparation",
+          "batch": false,
+          "source_file": "internal/app/restore_runtime_test.go",
+          "source_sha256": "5b2d2fe2a59826189cae98fd9159f2542d65d43d0b8f449f53eebee7ad45e8a4"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryCanonicalFilesFreshProcessAfterBlobRelease",
+          "source_file": "internal/app/recovery_canonical_files_test.go",
+          "source_sha256": "5e3e27b555dce41e7b3676c793143aaa7610dbe7bc5aa6d872b3c8afe997c974"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupBundleBindsStoresFilesAndKeyAccess",
+          "source_file": "internal/recovery/bundle_test.go",
+          "source_sha256": "4361582ba2ea53a2a7987d82d5f8de8cae0d7514ab9077934e4068deec06faeb"
+        }
+      ]
+    }
+  },
+  "csp13_roster": {
+    "A16.sqlite_wal_backup": {
+      "registered": true,
+      "qualification": "UNVERIFIED"
+    },
+    "A16.kv_sql_file_references": {
+      "registered": true,
+      "qualification": "UNVERIFIED"
+    },
+    "A16.concurrent_migration_owner": {
+      "registered": true,
+      "qualification": "UNVERIFIED"
+    },
+    "A16.interrupted_migration": {
+      "registered": true,
+      "qualification": "UNVERIFIED"
+    },
+    "A33.backup_then_revoke_and_spend": {
+      "registered": true,
+      "qualification": "UNVERIFIED"
+    },
+    "A33.old_writer_fenced": {
+      "registered": true,
+      "qualification": "UNVERIFIED"
+    },
+    "A33.independent_record_replay": {
+      "registered": true,
+      "qualification": "UNVERIFIED"
+    },
+    "A33.missing_evidence_restricted": {
+      "registered": true,
+      "qualification": "UNVERIFIED"
+    },
+    "A33.operator_reconciliation": {
+      "registered": false,
+      "qualification": "UNVERIFIED",
+      "gap": "Existing acceptance primitives and local CLI handlers retain operator evidence. The populated shared shipping-command DR/reconciliation procedure has not landed at the inspected source commit."
+    },
+    "A33.measured_rpo_rto": {
+      "registered": false,
+      "qualification": "UNVERIFIED",
+      "gap": "No deployment-specific objectives and measured recovery point/time through fresh readiness are registered. Go test elapsed time is not RPO or RTO."
+    },
+    "A16.complete_backup_manifest": {
+      "registered": true,
+      "qualification": "UNVERIFIED"
+    },
+    "A41.unprefixed_record_migration": {
+      "registered": false,
+      "qualification": "UNVERIFIED",
+      "gap": "Existing unprefixed capture/prepare retains raw source records and refuses corrupt references. Exact interruption/restart recovery with namespace records, all durable references and no dual authority is not covered."
+    },
+    "A04.identity_and_journal_recovery": {
+      "registered": true,
+      "qualification": "UNVERIFIED"
+    },
+    "A33.fresh_replica_history_barrier": {
+      "registered": false,
+      "qualification": "UNVERIFIED",
+      "gap": "Fresh shared App success is tested. Complete fresh gateway refusal for restored epoch/incarnation mismatch is not proved by that success or the isolated authority child."
+    },
+    "A33.old_primary_admission_fence": {
+      "registered": false,
+      "qualification": "UNVERIFIED",
+      "gap": "The native authority child is fenced and the old primary remains reachable. Complete populated gateway admission/dispatch prevention through the operator procedure remains unqualified."
+    },
+    "A33.restart_and_recovery_epoch": {
+      "registered": false,
+      "qualification": "UNVERIFIED",
+      "gap": "Actual controlled KV restart, promotion, rollback, acknowledged-write loss and restored SQL-witness recovery require complete validated history/restriction procedures, not synthetic epoch changes alone."
+    }
+  },
+  "distinct_inspected_starport_tests": 53,
+  "publication_rules": [
+    "Use current source and execute exact named tests in the same verifier invocation. Historical passes cannot qualify the final source.",
+    "Any skipped child, omitted required backend/subtest, missing match, truncated package stream or command failure cannot pass.",
+    "Do not register a successful fresh gateway as proof of mismatch refusal.",
+    "Do not grant whole case or production credit from these mappings. The six missing contracts remain UNVERIFIED."
+  ],
+  "bounded_operation_policy": {
+    "runner_process_timeout_seconds": 330,
+    "go_test_timeout": "5m",
+    "changes": "None. Heavy native source tests use existing batch:false to keep separate process budgets. The runner deduplicates exact shared leaves within one invocation.",
+    "application_product_contexts": "Unchanged; no operation deadline increase.",
+    "excluded_full_source_tests": [
+      "TestRecoveryTopologyActualPersistentBackupSealsAndReopens",
+      "TestRecoveryTopologyRefusesIncompleteOriginalBackupCensus"
+    ]
+  },
+  "registration_regressions": {
+    "new_tests": 9,
+    "fail_before": {
+      "tests": 8,
+      "failures": 5,
+      "errors": 2,
+      "passes": 1,
+      "exit_code": 1,
+      "scope": "The eight initial mapping regressions ran before registration. The remaining-gap regression already passed."
+    },
+    "final_unit_suite": {
+      "command": "env GOWORK=off GOTOOLCHAIN=go1.27.1 GOCACHE=/private/tmp/csp13-go-build-20260929 PYTHONPATH=scripts python3 -m unittest -v test_catalog_product_verify test_catalog_component_checks",
+      "tests": 126,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 10.65,
+      "log": "/tmp/csp13-recovery-registration-final-bounded-verifier-tests.log"
+    },
+    "actual_missing_source_command": {
+      "argv": [
+        "python3",
+        "scripts/catalog_product_verify.py",
+        "--starport-root",
+        "/tmp/csp13-no-product-repository",
+        "--case",
+        "A33",
+        "--json"
+      ],
+      "exit_code": 1,
+      "selected_subcases": 9,
+      "unverified_subcases": 9,
+      "gate_status": "FAIL",
+      "log": "/tmp/csp13-recovery-registration-final-missing-source-report.json"
+    },
+    "historical_pre_bound_suite": {
+      "log": "/tmp/csp13-recovery-registration-final-verifier-tests.log",
+      "sha256": "a9ed388e180f3d822977832055b2f0dc859feeb8dd0ce9766c20c7f3222cf156",
+      "tests": 126,
+      "exit_code": 0,
+      "note": "Full-source catalog fixture mappings were removed after the root timing audit. This is historical registry-only evidence."
+    }
+  },
+  "evidence": {
+    "/tmp/csp13-recovery-registration-fail-before.log": {
+      "sha256": "402d675f973684f434d3e5a53d9fe339913d6a24b01fbfe18e998333f1ab99fa"
+    },
+    "/tmp/csp13-recovery-registration-focused.log": {
+      "sha256": "3b8470fa50960485409f38636a3c67f7ec2135e6ff8ca0374676aa63b8126da1"
+    },
+    "/tmp/csp13-recovery-registration-final-verifier-tests.log": {
+      "sha256": "a9ed388e180f3d822977832055b2f0dc859feeb8dd0ce9766c20c7f3222cf156"
+    },
+    "/tmp/csp13-recovery-registration-missing-source-report.json": {
+      "sha256": "b5689dfa67ac46ff7ce72cd6ec5b421144b55861f35adc00b60aaea9628c4e7a"
+    },
+    "/tmp/csp13-recovery-registration-final-bounded-verifier-tests.log": {
+      "sha256": "f470c7ed8afc3cb3c2de5377cd00bcaffadd3124d57fe9208b320173033a2c0b"
+    },
+    "/tmp/csp13-recovery-registration-final-bounded-prose.log": {
+      "sha256": "5683b42322a8dc0ccb4a82e31f1f036fec60e5e14aad9246b7aaa8066fcb02b2"
+    },
+    "/tmp/csp13-recovery-registration-final-missing-source-report.json": {
+      "sha256": "3178c2b5eaf918f2541786f6bf4ec2ddfaaf8356e7157a99f84c4af8df67304f"
+    }
+  },
+  "checks": {
+    "diff_check": "PASS",
+    "product_suites": "Not rerun by this registration lane. Root owns final source and native qualification.",
+    "go_source": "No Go source, module, workflow, operation codec or product behavior changed.",
+    "technical_writing": {
+      "command": "make HAS_DEVBOX= RUN_PREFIX= technical-writing-check",
+      "exit_code": 0,
+      "files": 1970,
+      "diagnostics": 0,
+      "log": "/tmp/csp13-recovery-registration-final-bounded-prose.log",
+      "sha256": "5683b42322a8dc0ccb4a82e31f1f036fec60e5e14aad9246b7aaa8066fcb02b2",
+      "scope": "Final bounded registration source."
+    },
+    "full_source_restart": "Separate required qualification under repository whole-Go timeout. No acceptance timeout increase or full-source qualification claim."
+  },
+  "remaining_work": [
+    "Root audit of every named mapping and required backend contract.",
+    "Integrate exact populated CLI tests only after they land and prove their contracts.",
+    "Execute the required --case A16 --case A33 and --task CSP13 commands against the final consumer source with native fixtures and no skips.",
+    "Keep the six explicit missing contracts UNVERIFIED until their actual tests and final-source evidence exist."
+  ],
+  "pending_cli_source": {
+    "test": "TestRecoveryPopulatedOperatorCommandsAcrossNativePhaseCut",
+    "file": "internal/app/recovery_operator_native_command_test.go",
+    "disposition": "Not registered: uncommitted and not native-qualified at this audit. Later root integration must inspect its actual shipping-command and native-phase proof."
+  }
+}
