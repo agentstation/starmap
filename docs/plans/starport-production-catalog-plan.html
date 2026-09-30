@@ -12,7 +12,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: merge Starport #396 (layer three, head <code>478f46be</code>) after its hosted run is green. Then rebase layer four onto <code>main</code>, publish it, merge it at its exact head, and delete the integrated branch. Then integrate populated adoption by phase.</p>
+<p>Next: merge Starport #396 (layer three, head <code>ac50ad62</code>) after its hosted run is green. Then rebase layer four onto <code>main</code>, publish it, merge it at its exact head, and delete the integrated branch. Then integrate populated adoption by phase.</p>
 
 <p>Starport #395 (layer two, <code>d06c47b0</code>) merged as <code>86041546</code> on 2026-09-30 after all 31 checks passed on attempt 2. The <a href="proof/starport-production-catalog/csp13/starport395-merge-2026-09-30/verification.json">merge proof</a> records tree equality and strict protection. It also records zero unresolved threads and the first-attempt Windows flake. Root removed the layer two worktree and branch.</p>
 
@@ -21,6 +21,10 @@
 <p>The first layer three run (36774950397) stopped the catalog package at Go's default ten-minute allowance on all three Test runners. Each completed 156 to 158 of 221 top-level catalog tests. No test failed. The package takes 236 seconds on the local host. Commit <code>478f46be</code> gives the hosted catalog step a thirty-minute allowance with unchanged assertions and deadlines.</p>
 
 <p>The twelve roster checks that read the workflows pass at that head. Root rebased layer four onto it as <code>16ecf9d8</code>. Its only delta from the verified tree is that workflow hunk.</p>
+
+<p>The second layer three run (36777919807) passed the catalog step on every runner. Windows application shard 3 stopped at its twelve-minute allowance with 31 owners passed, 2 skipped, and 7 left of 40. No test failed. Commit <code>ac50ad62</code> moves the Windows shard allowance from layer four into layer three. Each shard gets twenty-five minutes, the subprocess cap thirty, and the job forty-five. The shard script test and the twelve workflow-reading checks pass.</p>
+
+<p>Root rebased layer four onto it as <code>29575bcb</code> with a reworded allowance commit. Its only delta from the verified tree is still the catalog allowance hunk.</p>
 
 <p>The first hosted run of layer two (run 36762241543) stopped the recovery package at Go's default ten-minute allowance. macOS completed 108 of 180 top-level tests. Windows recovery shard 1 completed 30 of 56 owners. No test failed. Layer two grows the recovery package from 114 to 180 top-level tests.</p>
 
