@@ -1,22 +1,14 @@
 {
-  "checked_at": "2026-09-30T09:17:26.782395+00:00",
+  "checked_at": "2026-09-30T09:52:25.827972+00:00",
   "starmap": [
-    {
-      "number": 203,
-      "head": "dfd724ccad45a59f7fe38400845272c8cf944deb",
-      "base": "main",
-      "owner": "root",
-      "disposition": "reviewed; ready; native CI running",
-      "next_action": "exact-head protected merge after checks pass",
-      "proof": "../../csp13/sql-acceptance-publication-2026-09-30/verification.json"
-    },
     {
       "number": 204,
       "head": "3e1068952936b26fd5bcb58fdc267f6ec6fb30c1",
+      "local_head": "7052d7e70ba4e70fc2d0e326a57b1a4e893201d0",
       "base": "main",
       "owner": "root",
-      "disposition": "reviewed; ready; native CI running",
-      "next_action": "exact-head protected merge after checks pass",
+      "disposition": "Keep. Native Windows helper failure retained. Signed main merge under final local qualification.",
+      "next_action": "Complete local checks and review of main merge, publish without history rewrite, qualify final CI and protected merge.",
       "proof": "../../csp13/retention-usage-publication-2026-09-30/verification.json"
     }
   ],
@@ -881,11 +873,11 @@
   },
   "next_task": {
     "task": "CSP13",
-    "owner": "this chat",
+    "owner": "root and delegated recovery owners",
     "worktree": "/private/tmp/starport-clock-review-20260926",
-    "branch": "codex/storage-recovery",
-    "head": "3f5aa9b4c993b19fbfc3542e2a3afe68284b3401",
-    "next_action": "Complete CSP13 owner replay and coordinated recovery. PR391 merged as03b09b21a."
+    "branch": "codex/recovery-catalog-activation",
+    "head": "d5607156",
+    "next_action": "Repair full embedded activation deadline, finish DR and capacity qualification, then final consumer checks/review/publication."
   },
   "merged_followups": {
     "tasks": [
@@ -1264,7 +1256,18 @@
   },
   "remote_state_note": "PR391 has the reviewed Windows Badger repair and active native CI. The migration branch remains local. Historical tested heads retain their own evidence.",
   "open_queue_snapshot": {
-    "starmap": [],
+    "starmap": [
+      {
+        "number": 204,
+        "head": "3e1068952936b26fd5bcb58fdc267f6ec6fb30c1",
+        "local_head": "7052d7e70ba4e70fc2d0e326a57b1a4e893201d0",
+        "base": "main",
+        "owner": "root",
+        "disposition": "Keep. Native Windows helper failure retained. Signed main merge under final local qualification.",
+        "next_action": "Complete local checks and review of main merge, publish without history rewrite, qualify final CI and protected merge.",
+        "proof": "../../csp13/retention-usage-publication-2026-09-30/verification.json"
+      }
+    ],
     "starport": []
   },
   "dependency_queue": {
@@ -1330,7 +1333,7 @@
     "status": "done",
     "next_task": "CSP13"
   },
-  "starmap_open_count": 2,
+  "starmap_open_count": 1,
   "starport_open_count": 0,
   "dependency_189_completion": {
     "checked_at": "2026-09-28T17:04:54.239668+00:00",
@@ -3251,7 +3254,69 @@
       }
     }
   },
-  "last_producer_merge": "e0845d601fb5408f5f206076c9fbb8b0cbc08ecf",
+  "last_producer_merge": "f7831606686da65c13d1f639a3ac6da94e9de08d",
   "starmap202_merge_proof": "csp13/starmap202-merge-2026-09-30/verification.json",
-  "merged_producer_module": "v0.16.6-0.20260930082412-e0845d601fb5"
+  "merged_producer_module": "v0.16.6-0.20260930082412-e0845d601fb5",
+  "starmap203_completion": {
+    "pr": 203,
+    "repo": "agentstation/starmap",
+    "head": "dfd724ccad45a59f7fe38400845272c8cf944deb",
+    "base": "e0845d601fb5408f5f206076c9fbb8b0cbc08ecf",
+    "merge_commit": "f7831606686da65c13d1f639a3ac6da94e9de08d",
+    "merged_at": "2026-09-30T09:50:03Z",
+    "checks": {
+      "success": 62,
+      "failure": 0,
+      "pending": 0
+    },
+    "reviewed_tree": "0ef6ee80be2dffd56626d74a80fea86f6e3d47e2",
+    "merged_tree": "0ef6ee80be2dffd56626d74a80fea86f6e3d47e2",
+    "tree_equality": true,
+    "strict_protection_unchanged": true,
+    "verified_head_signature": true,
+    "verified_merge_signature": true,
+    "unresolved_threads": 0,
+    "autoreview_proof": "../sql-acceptance-publication-2026-09-30/verification.json",
+    "limits": [
+      "A16 registrations and failed coverage diagnostics are merged. Full A16 requires source-bound Starport native and shared SQL qualification. CSP13 remains open."
+    ],
+    "raw": {
+      "premerge": {
+        "file": "premerge.json.gz",
+        "sha256": "16e1545b25123e7a671ce7126d9d6c4c8e66ea45f1fc7b819352f0619883dbd1",
+        "gzip_sha256": "baa6093cdef325dbcab52b30414afb6b6106e16d76b0480a85d35417cc1ac646"
+      },
+      "threads": {
+        "file": "threads.json.gz",
+        "sha256": "70ee6cc08632433396fe087d8cc261a28ca3ca75b4615d8567230dc5381e261d",
+        "gzip_sha256": "dd687913b53ee295d9763733cc35881ea1ccc4338f64a630ee8c01c7f2d3f79b"
+      },
+      "head-commit": {
+        "file": "head-commit.json.gz",
+        "sha256": "0a49f30770c8b0211e6f6ad0d7b586b3d8bbd7a3b196e0f3992a2a330f5741b8",
+        "gzip_sha256": "0e3952e09fd4d68d319540e1b699db63623efa62ac292f26fa527ab5a407846e"
+      },
+      "merge-commit": {
+        "file": "merge-commit.json.gz",
+        "sha256": "4bbf7040c6493d6b5276fbcd238ccfde0f77928f9d52e30b60b199f8ab636bab",
+        "gzip_sha256": "5fa286dbac6656cac3889cadceac2431750ee3c3d2dd93243b46232629c00933"
+      },
+      "protection-before": {
+        "file": "protection-before.json.gz",
+        "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+        "gzip_sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce"
+      },
+      "protection-after": {
+        "file": "protection-after.json.gz",
+        "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+        "gzip_sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce"
+      },
+      "merged": {
+        "file": "merged.json.gz",
+        "sha256": "c166104cb6589398b913fab84d4b6df612b298b2da8047f35567d44d88f0abf4",
+        "gzip_sha256": "0c6db384b649f6babc12fb5ea5b2883dd6ecd084dc21a10cf58a5e563b740bb0"
+      }
+    }
+  },
+  "starmap203_merge_proof": "csp13/starmap203-merge-2026-09-30/verification.json"
 }

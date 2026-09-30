@@ -1,0 +1,28 @@
+{
+  "status": "FAIL_REQUIRED_FULL_EMBEDDED_CASE",
+  "source_head": "b7ba377b440b1cee33888cb062f506c3396193e0",
+  "producer_module": "v0.16.6-0.20260930082412-e0845d601fb5",
+  "toolchain": "Go 1.27.1 darwin/arm64",
+  "race": true,
+  "bounded_matrix": {
+    "pass": 32,
+    "fail": 0,
+    "skip": 0
+  },
+  "full_embedded": {
+    "pass": 0,
+    "fail": 1,
+    "skip": 0,
+    "operation_deadline_minutes": 7,
+    "fixture_case_elapsed_seconds": 459.65,
+    "failure": "context deadline exceeded",
+    "cause": "UNVERIFIED; owner profiles the actual native path before changing source."
+  },
+  "process_elapsed_seconds": 1740.74,
+  "whole_task_complete": false,
+  "evidence": {
+    "file": "matrix.jsonl.gz",
+    "sha256": "c787b2ae32994620355e1a0e4d7a7ea5c7e23a95ab239b5d578120560b332590",
+    "gzip_sha256": "dfa66729474fd469c25358f1ac33d2d37319e24ac8a61e1a5099ffe6d5d9beb5"
+  }
+}
