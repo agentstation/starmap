@@ -1097,9 +1097,24 @@ class RecoveryRegistrationTests(unittest.TestCase):
                 self.assertEqual(result['status'], 'UNVERIFIED')
                 self.assertEqual(result['missing_subtests'], [omitted])
 
+    def test_fresh_replica_barrier_requires_epoch_and_incarnation_refusals(self):
+        tests = {entry.get('test'): entry for entry in self.leaves('A33.fresh_replica_history_barrier')}
+        self.assertEqual(tests['TestRecoveryFreshGatewayRejectsUnapprovedHistoryBeforeEffects']['required_subtests'],
+                         ['missing-sql-approval', 'missing-native-approval', 'stale-native-epoch', 'replacement-incarnation'])
+        self.assertEqual(tests['TestRecoveryFreshReplicaActualHistoryBarriers']['required_subtests'],
+                         ['completed-import-missing-sql-approval', 'completed-import-missing-native-approval',
+                          'completed-import-prior-native-epoch', 'completed-import-distinct-native-incarnation'])
+        for entry in tests.values():
+            self.assertIs(entry['batch'], False)
+
+    def test_unprefixed_migration_requires_the_process_exit_test(self):
+        tests = {entry.get('test'): entry for entry in self.leaves('A41.unprefixed_record_migration')}
+        self.assertEqual(set(tests), {'TestUnprefixedMigrationPreservesRecordsAcrossProcessExit'})
+        self.assertIs(tests['TestUnprefixedMigrationPreservesRecordsAcrossProcessExit']['batch'], False)
+
     def test_remaining_recovery_contracts_stay_unverified_for_every_selector(self):
-        missing = {'A33.operator_reconciliation', 'A33.measured_rpo_rto', 'A33.fresh_replica_history_barrier',
-                   'A33.old_primary_admission_fence', 'A33.restart_and_recovery_epoch', 'A41.unprefixed_record_migration'}
+        missing = {'A33.operator_reconciliation', 'A33.measured_rpo_rto',
+                   'A33.old_primary_admission_fence', 'A33.restart_and_recovery_epoch'}
         self.assertTrue(missing <= set(self.roster['task_checks']['CSP13']))
         self.assertTrue(missing.isdisjoint(self.registry['checks']))
         arguments = [('CSP13', None, None), (None, None, ['A16', 'A33']), (None, None, ['A04', 'A41']),

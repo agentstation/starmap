@@ -8085,6 +8085,49 @@
           "test": "TestRecoveryStartupJoinsNativeOwnersBeforeMaintenance"
         }
       ]
+    },
+    "A33.fresh_replica_history_barrier": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryFreshGatewayRejectsUnapprovedHistoryBeforeEffects",
+          "required_subtests": [
+            "missing-sql-approval",
+            "missing-native-approval",
+            "stale-native-epoch",
+            "replacement-incarnation"
+          ],
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryFreshReplicaActualHistoryBarriers",
+          "required_subtests": [
+            "completed-import-missing-sql-approval",
+            "completed-import-missing-native-approval",
+            "completed-import-prior-native-epoch",
+            "completed-import-distinct-native-incarnation"
+          ],
+          "batch": false
+        }
+      ]
+    },
+    "A41.unprefixed_record_migration": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+          "batch": false
+        }
+      ]
     }
   },
   "task_component_checks": {
