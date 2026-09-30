@@ -224,6 +224,13 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type PublicationStatus](<#PublicationStatus>)
 - [type Random](<#Random>)
 - [type RefreshReport](<#RefreshReport>)
+- [type RetainedCatalogPermission](<#RetainedCatalogPermission>)
+  - [func InspectRetainedCatalogPermission\(ctx context.Context, request RetainedCatalogPermissionRequest, clock permission.ClockReading\) \(\*RetainedCatalogPermission, error\)](<#InspectRetainedCatalogPermission>)
+  - [func \(p \*RetainedCatalogPermission\) Check\(ctx context.Context, request RetainedCatalogPermissionRequest, clock permission.ClockReading\) error](<#RetainedCatalogPermission.Check>)
+  - [func \(p \*RetainedCatalogPermission\) Digest\(\) string](<#RetainedCatalogPermission.Digest>)
+  - [func \(p \*RetainedCatalogPermission\) Format\(state fmt.State, \_ rune\)](<#RetainedCatalogPermission.Format>)
+  - [func \(p \*RetainedCatalogPermission\) Record\(\) \[\]byte](<#RetainedCatalogPermission.Record>)
+- [type RetainedCatalogPermissionRequest](<#RetainedCatalogPermissionRequest>)
 - [type RetainedFile](<#RetainedFile>)
 - [type RetainedRecordReader](<#RetainedRecordReader>)
 - [type RetentionPolicy](<#RetentionPolicy>)
@@ -2288,6 +2295,77 @@ type RefreshReport struct {
 
     // GenerationID identifies the published effective catalog.
     GenerationID string
+}
+```
+
+<a name="RetainedCatalogPermission"></a>
+## type [RetainedCatalogPermission](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_permission_inspection.go#L35-L37>)
+
+RetainedCatalogPermission holds original passive permission evidence for a stopped consumer. It grants no permission renewal, source acquisition, catalog activation, or replica ownership.
+
+```go
+type RetainedCatalogPermission struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="InspectRetainedCatalogPermission"></a>
+### func [InspectRetainedCatalogPermission](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_permission_inspection.go#L53>)
+
+```go
+func InspectRetainedCatalogPermission(ctx context.Context, request RetainedCatalogPermissionRequest, clock permission.ClockReading) (*RetainedCatalogPermission, error)
+```
+
+InspectRetainedCatalogPermission checks original retained permission without opening a connected runtime. Writers must remain fenced throughout inspection and rechecks. Internal authority receipts require a qualified current clock sample. An uncertain checkpoint requires separate source\-owner verification. This operation does not clear uncertainty or extend expiry.
+
+<a name="RetainedCatalogPermission.Check"></a>
+### func \(\*RetainedCatalogPermission\) [Check](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_permission_inspection.go#L113>)
+
+```go
+func (p *RetainedCatalogPermission) Check(ctx context.Context, request RetainedCatalogPermissionRequest, clock permission.ClockReading) error
+```
+
+Check verifies the original evidence and current expiry without changing files or receipt deadlines. After restart, compare fresh inspection with the record sealed in the original recovery decision.
+
+<a name="RetainedCatalogPermission.Digest"></a>
+### func \(\*RetainedCatalogPermission\) [Digest](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_permission_inspection.go#L103>)
+
+```go
+func (p *RetainedCatalogPermission) Digest() string
+```
+
+Digest returns the SHA\-256 digest of the original record, or an empty string for an absent capability.
+
+<a name="RetainedCatalogPermission.Format"></a>
+### func \(\*RetainedCatalogPermission\) [Format](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_permission_inspection.go#L128>)
+
+```go
+func (p *RetainedCatalogPermission) Format(state fmt.State, _ rune)
+```
+
+Format hides private native evidence from diagnostic output.
+
+<a name="RetainedCatalogPermission.Record"></a>
+### func \(\*RetainedCatalogPermission\) [Record](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_permission_inspection.go#L95>)
+
+```go
+func (p *RetainedCatalogPermission) Record() []byte
+```
+
+Record returns a private, caller\-owned copy of the original native evidence. Seal this record with the complete recovery decision before releasing any component.
+
+<a name="RetainedCatalogPermissionRequest"></a>
+## type [RetainedCatalogPermissionRequest](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_permission_inspection.go#L25-L31>)
+
+RetainedCatalogPermissionRequest binds a selected catalog to its configured consumer and private runtime state. The host must verify the catalog payload, source policy, and deployment fence independently.
+
+```go
+type RetainedCatalogPermissionRequest struct {
+    Directory         string
+    Owner             DirectoryOwner
+    SchedulerIdentity string
+    SourcePolicy      SourcePolicy
+    AcceptedHead      catalogs.CatalogAuthorityHead
 }
 ```
 

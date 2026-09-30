@@ -1297,6 +1297,30 @@ The runtime keeps four layers and rebuilds the effective catalog from them.
 A restart reloads the retained layers, so the runtime serves the last upstream
 catalog with no network reply. One retained layer record is at most 64 MiB.
 
+### Passive recovery permission
+
+`InspectRetainedDirectory` verifies private runtime structure. It does not
+establish current admission permission.
+
+`InspectRetainedCatalogPermission` checks a stopped consumer against its
+configured source policy and selected authority head. The host separately
+verifies the selected catalog payload and fences writers. The inspector reads
+existing owner, seed, and permission records. It starts no connected runtime
+or source acquisition.
+
+The returned capability retains the original native identities and record
+digests. Its `Check` method rereads those records and checks current expiry.
+The host seals `Record` and `Digest` with the complete recovery decision before
+releasing components. After restart, fresh inspection must match that sealed
+record. Inspection never creates or repairs evidence, clears uncertainty, or
+extends receipt expiry.
+
+Ordinary catalogs need no qualified UTC sample. Internal authority catalogs
+require their original configured authority and a qualified current sample.
+Missing, uncertain, expired, changed, or withdrawn permission refuses the
+affected activation. An uncertain checkpoint needs separate source-owner
+verification. A cache lifetime cannot replace the authority receipt contract.
+
 ### Source kinds
 
 `STARMAP_CATALOG_SOURCE` selects exactly one source kind.
