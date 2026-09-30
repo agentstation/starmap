@@ -866,7 +866,7 @@
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-catalog-activation",
     "head": "4805e6d4091720f43075d71d0136a30a192dd24d",
-    "next_action": "Finish maximum capacity; repair full embedded race deadline at its owner; integrate namespace tests and fresh-history qualification; complete populated adoption and measured recovery."
+    "next_action": "Qualify fresh-history barriers; repair full embedded race deadline at owner; complete populated adoption, native CI coverage and measured recovery."
   },
   "merged_followups": {
     "tasks": [
@@ -3314,9 +3314,9 @@
   },
   "native_window": {
     "owner": "root",
-    "session_id": 60340,
-    "activity": "maximum capacity repeated original workload",
-    "next_owner": "root qualification scheduling"
+    "activity": "shared-service fresh-history qualification",
+    "session_id": null,
+    "independent_owner": "operator_recovery_inputs local-only projection"
   },
   "populated_adoption_extension": {
     "owner": "operator_recovery_inputs",
@@ -3337,9 +3337,10 @@
   "recovery_target_decision": "../../csp13/recovery-target-decision-2026-09-30/decision.json",
   "maximum_capacity_retry": {
     "session_id": 60340,
-    "status": "RUNNING",
+    "status": "PASS",
     "head": "4805e6d4091720f43075d71d0136a30a192dd24d",
-    "output": "/private/tmp/csp13-maximum-capacity-4805-20260930"
+    "output": "/private/tmp/csp13-maximum-capacity-4805-20260930",
+    "proof": "../../csp13/maximum-capacity-qualification-2026-09-30/verification.json"
   },
   "unprefixed_integration": "../../csp13/unprefixed-integration-2026-09-30/verification.json"
 }

@@ -1,0 +1,963 @@
+{
+  "profile": "maximum-pure",
+  "qualification": "published-module",
+  "source": {
+    "head": "4805e6d4091720f43075d71d0136a30a192dd24d",
+    "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "untracked_sha256": {}
+  },
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "producer_module": {
+    "Path": "github.com/agentstation/starmap",
+    "Version": "v0.16.6-0.20260930115749-2bb995712275",
+    "Time": "2026-09-30T11:57:49Z",
+    "Dir": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260930115749-2bb995712275",
+    "GoMod": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260930115749-2bb995712275.mod",
+    "GoVersion": "1.27.1",
+    "Sum": "h1:sEg3/nzKoGXIvoZ1kvwvyNoIHJDlFSVcL0WlOzoYs98=",
+    "GoModSum": "h1:cCNBcKDllsycjRvn7WPAz9YmT33ydFoVURpGta+veQg="
+  },
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-tags=catalogcapacity",
+    "-count=1",
+    "-p=1",
+    "-timeout=28m",
+    "-run=^TestRecoveryCatalogMaximumSerializedInventoryRoundTrip$",
+    "./internal/catalog"
+  ],
+  "host_memory_bytes": 34359738368,
+  "bounds": {
+    "go_memory_target_bytes": 12884901888,
+    "sampled_tree_rss_bytes": 17179869184,
+    "scratch_allocated_bytes": 25769803776,
+    "deadline_seconds": 1800
+  },
+  "measurements": {
+    "exit_code": 0,
+    "elapsed_seconds": 786.1748347920366,
+    "largest_process_high_water_rss_bytes": 7771095040,
+    "sampled_tree_peak_rss_bytes": 7714865152,
+    "sampled_scratch_allocated_peak_bytes": 1238368256
+  },
+  "native_workload": {
+    "entries": 96,
+    "serialized_fleet_snapshot_bytes": 2143303963,
+    "accepted_generation": "whisper-operation-correction-47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9",
+    "candidate_generation": "whisper-operation-correction-47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9.local.85ec4d5bcb27",
+    "original_manifest_sha256": "0578818af8c61703b94a35cfcadff3d853845ba36c041a5a74e921b749201002",
+    "fleet_manifest_sha256": "a9fb404d70562da3db6468cb7f8b1586bbb7563aaeed488faa0d801af0a003c0",
+    "reverse_manifest_sha256": "9d1e60090cd51b2571ecf717a241a5066f69e887c24d9ef80f0c00af456ce82c",
+    "producer_batches": [
+      {
+        "inputs": 11,
+        "raw_bytes": 195072579,
+        "decoded_recovery_bytes": 254788684
+      },
+      {
+        "inputs": 11,
+        "raw_bytes": 193151127,
+        "decoded_recovery_bytes": 254789506
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197710172,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197710168,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197710170,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197710169,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197710172,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197710168,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 2,
+        "raw_bytes": 32951696,
+        "decoded_recovery_bytes": 43874960
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197784549,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197784559,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197784558,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197784558,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197784557,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197784557,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 12,
+        "raw_bytes": 197784559,
+        "decoded_recovery_bytes": 263249760
+      },
+      {
+        "inputs": 11,
+        "raw_bytes": 195145243,
+        "decoded_recovery_bytes": 254788684
+      },
+      {
+        "inputs": 1,
+        "raw_bytes": 28402117,
+        "decoded_recovery_bytes": 35414706
+      }
+    ],
+    "forward_stages": [
+      {
+        "index": 0,
+        "mutations": 18,
+        "bytes": 4153995
+      },
+      {
+        "index": 1,
+        "mutations": 17,
+        "bytes": 3942959
+      },
+      {
+        "index": 2,
+        "mutations": 17,
+        "bytes": 3942959
+      },
+      {
+        "index": 3,
+        "mutations": 17,
+        "bytes": 4147283
+      },
+      {
+        "index": 4,
+        "mutations": 16,
+        "bytes": 3936002
+      },
+      {
+        "index": 5,
+        "mutations": 16,
+        "bytes": 3936002
+      },
+      {
+        "index": 6,
+        "mutations": 16,
+        "bytes": 3936002
+      },
+      {
+        "index": 7,
+        "mutations": 16,
+        "bytes": 3936002
+      },
+      {
+        "index": 8,
+        "mutations": 17,
+        "bytes": 4189560
+      },
+      {
+        "index": 9,
+        "mutations": 16,
+        "bytes": 3936002
+      },
+      {
+        "index": 10,
+        "mutations": 16,
+        "bytes": 3936003
+      },
+      {
+        "index": 11,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 12,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 13,
+        "mutations": 17,
+        "bytes": 3994042
+      },
+      {
+        "index": 14,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 15,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 16,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 17,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 18,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 19,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 20,
+        "mutations": 17,
+        "bytes": 4042839
+      },
+      {
+        "index": 21,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 22,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 23,
+        "mutations": 17,
+        "bytes": 4045123
+      },
+      {
+        "index": 24,
+        "mutations": 17,
+        "bytes": 3942957
+      },
+      {
+        "index": 25,
+        "mutations": 18,
+        "bytes": 4154242
+      },
+      {
+        "index": 26,
+        "mutations": 17,
+        "bytes": 3994040
+      },
+      {
+        "index": 27,
+        "mutations": 18,
+        "bytes": 4154242
+      },
+      {
+        "index": 28,
+        "mutations": 18,
+        "bytes": 4154242
+      },
+      {
+        "index": 29,
+        "mutations": 18,
+        "bytes": 4154240
+      },
+      {
+        "index": 30,
+        "mutations": 18,
+        "bytes": 4154240
+      },
+      {
+        "index": 31,
+        "mutations": 17,
+        "bytes": 3942806
+      },
+      {
+        "index": 32,
+        "mutations": 18,
+        "bytes": 4154240
+      },
+      {
+        "index": 33,
+        "mutations": 17,
+        "bytes": 3942960
+      },
+      {
+        "index": 34,
+        "mutations": 18,
+        "bytes": 4154242
+      },
+      {
+        "index": 35,
+        "mutations": 17,
+        "bytes": 3942961
+      },
+      {
+        "index": 36,
+        "mutations": 110,
+        "bytes": 3826638
+      },
+      {
+        "index": 37,
+        "mutations": 12,
+        "bytes": 643787
+      }
+    ],
+    "reverse_stages": [
+      {
+        "index": 0,
+        "mutations": 20,
+        "bytes": 3959518
+      },
+      {
+        "index": 1,
+        "mutations": 21,
+        "bytes": 4017124
+      },
+      {
+        "index": 2,
+        "mutations": 21,
+        "bytes": 4170906
+      },
+      {
+        "index": 3,
+        "mutations": 25,
+        "bytes": 4047046
+      },
+      {
+        "index": 4,
+        "mutations": 20,
+        "bytes": 4113001
+      },
+      {
+        "index": 5,
+        "mutations": 20,
+        "bytes": 4064655
+      },
+      {
+        "index": 6,
+        "mutations": 19,
+        "bytes": 4106714
+      },
+      {
+        "index": 7,
+        "mutations": 18,
+        "bytes": 4049345
+      },
+      {
+        "index": 8,
+        "mutations": 19,
+        "bytes": 4106713
+      },
+      {
+        "index": 9,
+        "mutations": 20,
+        "bytes": 4164083
+      },
+      {
+        "index": 10,
+        "mutations": 18,
+        "bytes": 3998265
+      },
+      {
+        "index": 11,
+        "mutations": 19,
+        "bytes": 4055634
+      },
+      {
+        "index": 12,
+        "mutations": 21,
+        "bytes": 4010929
+      },
+      {
+        "index": 13,
+        "mutations": 20,
+        "bytes": 4004654
+      },
+      {
+        "index": 14,
+        "mutations": 29,
+        "bytes": 4170135
+      },
+      {
+        "index": 15,
+        "mutations": 21,
+        "bytes": 4161823
+      },
+      {
+        "index": 16,
+        "mutations": 21,
+        "bytes": 4017130
+      },
+      {
+        "index": 17,
+        "mutations": 19,
+        "bytes": 3944669
+      },
+      {
+        "index": 18,
+        "mutations": 21,
+        "bytes": 4068209
+      },
+      {
+        "index": 19,
+        "mutations": 22,
+        "bytes": 4119751
+      },
+      {
+        "index": 20,
+        "mutations": 18,
+        "bytes": 3947183
+      },
+      {
+        "index": 21,
+        "mutations": 18,
+        "bytes": 4100425
+      },
+      {
+        "index": 22,
+        "mutations": 20,
+        "bytes": 4059639
+      },
+      {
+        "index": 23,
+        "mutations": 20,
+        "bytes": 4117186
+      },
+      {
+        "index": 24,
+        "mutations": 19,
+        "bytes": 4157797
+      },
+      {
+        "index": 25,
+        "mutations": 21,
+        "bytes": 3965508
+      },
+      {
+        "index": 26,
+        "mutations": 19,
+        "bytes": 4157797
+      },
+      {
+        "index": 27,
+        "mutations": 19,
+        "bytes": 4004554
+      },
+      {
+        "index": 28,
+        "mutations": 21,
+        "bytes": 4113110
+      },
+      {
+        "index": 29,
+        "mutations": 23,
+        "bytes": 4103396
+      },
+      {
+        "index": 30,
+        "mutations": 18,
+        "bytes": 3844905
+      },
+      {
+        "index": 31,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 32,
+        "mutations": 9,
+        "bytes": 4030098
+      },
+      {
+        "index": 33,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 34,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 35,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 36,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 37,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 38,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 39,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 40,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 41,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 42,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 43,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 44,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 45,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 46,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 47,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 48,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 49,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 50,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 51,
+        "mutations": 9,
+        "bytes": 3719932
+      },
+      {
+        "index": 52,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 53,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 54,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 55,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 56,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 57,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 58,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 59,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 60,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 61,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 62,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 63,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 64,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 65,
+        "mutations": 9,
+        "bytes": 3949078
+      },
+      {
+        "index": 66,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 67,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 68,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 69,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 70,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 71,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 72,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 73,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 74,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 75,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 76,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 77,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 78,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 79,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 80,
+        "mutations": 8,
+        "bytes": 3671234
+      },
+      {
+        "index": 81,
+        "mutations": 106,
+        "bytes": 4181920
+      },
+      {
+        "index": 82,
+        "mutations": 17,
+        "bytes": 3942957
+      },
+      {
+        "index": 83,
+        "mutations": 17,
+        "bytes": 3942961
+      },
+      {
+        "index": 84,
+        "mutations": 17,
+        "bytes": 3942961
+      },
+      {
+        "index": 85,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 86,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 87,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 88,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 89,
+        "mutations": 17,
+        "bytes": 4189562
+      },
+      {
+        "index": 90,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 91,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 92,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 93,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 94,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 95,
+        "mutations": 17,
+        "bytes": 3994042
+      },
+      {
+        "index": 96,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 97,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 98,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 99,
+        "mutations": 16,
+        "bytes": 3936004
+      },
+      {
+        "index": 100,
+        "mutations": 16,
+        "bytes": 3936005
+      },
+      {
+        "index": 101,
+        "mutations": 16,
+        "bytes": 3936006
+      },
+      {
+        "index": 102,
+        "mutations": 17,
+        "bytes": 4042841
+      },
+      {
+        "index": 103,
+        "mutations": 16,
+        "bytes": 3936006
+      },
+      {
+        "index": 104,
+        "mutations": 16,
+        "bytes": 3936006
+      },
+      {
+        "index": 105,
+        "mutations": 17,
+        "bytes": 4045125
+      },
+      {
+        "index": 106,
+        "mutations": 18,
+        "bytes": 4154240
+      },
+      {
+        "index": 107,
+        "mutations": 18,
+        "bytes": 4154244
+      },
+      {
+        "index": 108,
+        "mutations": 17,
+        "bytes": 3942961
+      },
+      {
+        "index": 109,
+        "mutations": 18,
+        "bytes": 4154244
+      },
+      {
+        "index": 110,
+        "mutations": 17,
+        "bytes": 3942963
+      },
+      {
+        "index": 111,
+        "mutations": 17,
+        "bytes": 3942961
+      },
+      {
+        "index": 112,
+        "mutations": 18,
+        "bytes": 4154242
+      },
+      {
+        "index": 113,
+        "mutations": 18,
+        "bytes": 4154089
+      },
+      {
+        "index": 114,
+        "mutations": 17,
+        "bytes": 3942961
+      },
+      {
+        "index": 115,
+        "mutations": 17,
+        "bytes": 3942962
+      },
+      {
+        "index": 116,
+        "mutations": 18,
+        "bytes": 4154244
+      },
+      {
+        "index": 117,
+        "mutations": 18,
+        "bytes": 4154244
+      },
+      {
+        "index": 118,
+        "mutations": 113,
+        "bytes": 3958049
+      },
+      {
+        "index": 119,
+        "mutations": 5,
+        "bytes": 35639
+      }
+    ],
+    "forward_compiler_seal_bytes": 1526,
+    "reverse_compiler_seal_bytes": 1448,
+    "rollback_entries": 32,
+    "lost_reply_exact_retries": 2
+  },
+  "status": "PASS",
+  "test_evidence_sha256": "42d7ffab5766b8c2b4a81c9636972e2cb2be20ad6214ad69dcd5c7c9a08d0417",
+  "scope": "Native maximum catalog capacity component on macOS arm64 with pure Go. Complete application recovery and other platforms remain UNVERIFIED.",
+  "final_source_unchanged": {
+    "head": "4805e6d4091720f43075d71d0136a30a192dd24d",
+    "git_status": "clean",
+    "checked_after_process_exit": true
+  },
+  "initial_failure": "../maximum-capacity-initial-2026-09-30/verification.json",
+  "retained_logs": {
+    "tests.jsonl": {
+      "path": "tests.jsonl.gz",
+      "sha256": "42d7ffab5766b8c2b4a81c9636972e2cb2be20ad6214ad69dcd5c7c9a08d0417"
+    },
+    "stderr.log": {
+      "path": "stderr.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}
