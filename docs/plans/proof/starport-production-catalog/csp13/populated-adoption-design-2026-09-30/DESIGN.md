@@ -96,19 +96,26 @@ Historical reconciliation and activation receipts stay in place.
 
 ### SQL: `internal/sqlstore`, PostgreSQL and MySQL
 
-New capability for a populated relational claim. Define `relationalPopulatedPrefix = "relational-populated-v1:"`.
+New capability `ClaimPopulatedRelational` for a populated relational claim. `relationalPopulatedPrefix = "relational-populated-v1:"`.
 
-1. Hold the migration owner and one transaction with the portable tables locked.
-2. Compute the live recovery census and require equality with the C census in all four classes.
+Delivered in Starport commit `a9ee090f` on `codex/recovery-populated-sql-20260930`.
+
+1. Hold the migration owner and one transaction with the portable tables locked. PostgreSQL takes `ACCESS EXCLUSIVE` table locks. MySQL uses `SERIALIZABLE` row and gap locks from the census reads.
+2. Export the locked live rows through the portable copy into a private SQLite candidate under the caller's scratch directory. Read the census from the candidate. Require equality with the C census in all four classes and counts.
 3. Install `relationalImportMarker` with `relationalImportClaim(C.SQL, identity)`. Do not call `checkRelationalEmpty`. Copy no rows.
-4. Delete only `relationalActivationCurrent` and `relationalReplayCurrent` after an exact preimage check.
-5. Write the closure receipt row under the populated prefix.
+4. Delete only `relationalActivationCurrent` and `relationalReplayCurrent`. The control class digest covers both values, so the census equality is their exact preimage check.
+5. Write the closure receipt `{"version":1,"claim_sha256","census_sha256"}` under `relational-populated-v1:<claim sha256>`.
 6. Run the `restrict` callback in the same transaction. The recovery owner uses it for the witness transition.
 
-The live census must not depend on server collation.
-The preferred method exports the locked rows through the existing portable copy into a private SQLite candidate.
-The existing `RecoveryCensus` then reads that candidate.
-A direct server-ordered census is acceptable only with native tests that prove equal digests on both servers.
+An exact retry compares the marker and the receipt. It does not compute the census again and does not run `restrict` again.
+SQLite returns `ErrPopulatedBackend`. A census difference returns `ErrPopulatedCensus`.
+Startup inspection refuses a closure receipt without a marker or an activation. The census counts the receipt as a control row.
+
+The candidate census uses SQLite binary order, so server collation cannot change the digests.
+A native test proves equal digests on both servers with a server sort order that differs from binary order.
+
+Known fact for the recovery owner: the marker bytes equal the ordinary import claim.
+The adoption identity must differ from the empty-target import identity of the same capture.
 
 ### Blob: `internal/blob`, object storage
 
