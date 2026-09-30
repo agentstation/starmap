@@ -1,15 +1,15 @@
 {
-  "checked_at": "2026-09-30T09:52:25.827972+00:00",
+  "checked_at": "2026-09-30T10:03:10.147692+00:00",
   "starmap": [
     {
       "number": 204,
-      "head": "3e1068952936b26fd5bcb58fdc267f6ec6fb30c1",
+      "head": "7052d7e70ba4e70fc2d0e326a57b1a4e893201d0",
       "local_head": "7052d7e70ba4e70fc2d0e326a57b1a4e893201d0",
       "base": "main",
       "owner": "root",
-      "disposition": "Keep. Native Windows helper failure retained. Signed main merge under final local qualification.",
-      "next_action": "Complete local checks and review of main merge, publish without history rewrite, qualify final CI and protected merge.",
-      "proof": "../../csp13/retention-usage-publication-2026-09-30/verification.json"
+      "disposition": "Reviewed signed main merge published. Exact native CI required.",
+      "next_action": "Inspect new exact-head native evidence, then protected merge when required checks pass.",
+      "proof": "../../csp13/retention-main-merge-2026-09-30/verification.json"
     }
   ],
   "starport": [],
@@ -1259,13 +1259,13 @@
     "starmap": [
       {
         "number": 204,
-        "head": "3e1068952936b26fd5bcb58fdc267f6ec6fb30c1",
+        "head": "7052d7e70ba4e70fc2d0e326a57b1a4e893201d0",
         "local_head": "7052d7e70ba4e70fc2d0e326a57b1a4e893201d0",
         "base": "main",
         "owner": "root",
-        "disposition": "Keep. Native Windows helper failure retained. Signed main merge under final local qualification.",
-        "next_action": "Complete local checks and review of main merge, publish without history rewrite, qualify final CI and protected merge.",
-        "proof": "../../csp13/retention-usage-publication-2026-09-30/verification.json"
+        "disposition": "Reviewed signed main merge published. Exact native CI required.",
+        "next_action": "Inspect new exact-head native evidence, then protected merge when required checks pass.",
+        "proof": "../../csp13/retention-main-merge-2026-09-30/verification.json"
       }
     ],
     "starport": []

@@ -1,0 +1,70 @@
+{
+  "status": "PASS_LOCAL_WAIT_NATIVE_CI",
+  "pr": 204,
+  "source_head": "7052d7e70ba4e70fc2d0e326a57b1a4e893201d0",
+  "base": "f7831606686da65c13d1f639a3ac6da94e9de08d",
+  "history": "Normal signed merge of actual main. No published history rewrite.",
+  "complete_local_checks": "PASS make verify-checks on Go 1.27.1 darwin/arm64",
+  "pre_pr_review": {
+    "status": "PASS",
+    "profile": "auto",
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "P0",
+    "passes": 1,
+    "findings": 0
+  },
+  "prior_windows_failure": {
+    "head": "3e1068952936b26fd5bcb58fdc267f6ec6fb30c1",
+    "job": 109824339499,
+    "test": "TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable",
+    "failure": "Timed out waiting for helper readiness. Captured helper output is unavailable on this path. Root cause remains unknown.",
+    "disposition": "Preserved. New exact-source native run required. No deadline or assertion weakened."
+  },
+  "consumer_unchanged_console": {
+    "head": "d5607156",
+    "test_files": 74,
+    "pass": 464,
+    "fail": 0,
+    "skip": 0,
+    "check_exit_code": 0
+  },
+  "consumer_catalog_performance_guard": {
+    "head": "d5607156",
+    "conditions": 20,
+    "exit_code": 0
+  },
+  "whole_csp13_complete": false,
+  "raw": {
+    "csp13-retention-main-merge-verify-checks.log": {
+      "file": "csp13-retention-main-merge-verify-checks.log.gz",
+      "sha256": "0a18fbbcb1993cf537aaed3e5e831c76822e8bfc37bebaf2bb0727ec593628f4",
+      "gzip_sha256": "cbf7131378e73b5df963c5266adb1f2e0a7cfa5f497fbd8399998e091f483547"
+    },
+    "csp13-retention-main-merge-autoreview.log": {
+      "file": "csp13-retention-main-merge-autoreview.log.gz",
+      "sha256": "4ee48f0356c382402c333ae6d24646868c59e6a7f34e7058504c2590ce945643",
+      "gzip_sha256": "6f36a463ac7a07ead664c58366b4eb985764734acecd8b001f2c2c1b888e05c2"
+    },
+    "csp13-204-main-merge-published.json": {
+      "file": "csp13-204-main-merge-published.json.gz",
+      "sha256": "eb155d90ae23e018a675a2647dcbbbc4c13388f068b16214de097ed6437a775b",
+      "gzip_sha256": "556fb4b26faaf14415c7a1ac6db0c6a1d448c2e8c1dba94e6155bd1bc1b686d6"
+    },
+    "csp13-204-windows-filesystem-failure.log": {
+      "file": "csp13-204-windows-filesystem-failure.log.gz",
+      "sha256": "2516f2e3ec10d6f0f70514b5936ba4ad4c2d10b8a4b2a380eed4503618c0a8a1",
+      "gzip_sha256": "da7b7d343ba6d955f7dd302a942130612488520163300956eaf0e2b520032a54"
+    },
+    "csp13-root-console-check-20260930.log": {
+      "file": "csp13-root-console-check-20260930.log.gz",
+      "sha256": "3df3ba4a181fc6d3d942016ce40165fdafd5092110337fa0523c3869e3dbc279",
+      "gzip_sha256": "2ee4b88570767e1720dad0395c1779ded102d32c33a28f5f7aeee938543464b1"
+    },
+    "csp13-root-catalog-performance-20260930.log": {
+      "file": "csp13-root-catalog-performance-20260930.log.gz",
+      "sha256": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be",
+      "gzip_sha256": "06c429bbb540f43cfbe30b00008f47f24860ecc90dbb1a18bd3ffb879cb8b46a"
+    }
+  }
+}
