@@ -95,5 +95,20 @@
   ],
   "consumer_commit": "2e573bdc499e2fa2b772243afbf7777984579bc4",
   "complete_CLI_pure_results": 205,
-  "documentation_links": "PASS"
+  "documentation_links": "PASS",
+  "strict_selector_delivery": {
+    "agent_commit": "b7ba377b440b1cee33888cb062f506c3396193e0",
+    "integrated_commit": "2523768d",
+    "race_results": 3,
+    "pure_results": 3,
+    "remaining": "Complete native/platform qualification remains separate."
+  },
+  "consumer_current_commit": "d5607156d2bede95d4bf653addb345bd7b77529c",
+  "local_cli_after_strict_selector": "1 native pure result; pass",
+  "structural_checks": {
+    "passed_commands": 13,
+    "preserved_invocation_failure": "Initial ownership command selected missing /private/tmp/starmap. Explicit selected-module root passed all12 ownership checks.",
+    "concept_commands_passed": 12,
+    "remaining_pre_PR": "Other repository-required execution, build, console, SDK and performance checks remain required after final integration."
+  }
 }

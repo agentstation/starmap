@@ -1,0 +1,74 @@
+{
+  "scope": "Exact retained decision selector for sealed activation retries",
+  "go": "go1.27.1 darwin/arm64",
+  "producer": "github.com/agentstation/starmap v0.16.6-0.20260930082412-e0845d601fb5",
+  "source": {
+    "internal/app/recovery_activation.go": "6976a3a66357d3260431e30a33e5ea5a33c8edcc5050af6b78e629457ac38c81",
+    "internal/app/recovery_activation_selector_test.go": "552611b88831bafe46f556aba8392d50b46409c3162ee91d80213435d2230ded",
+    "internal/recovery/activation_request.go": "de7f3c6ed2ee720298061a79c9f09034dae6312003e3c14b59442021c1c96675"
+  },
+  "contract": "Initial unsealed activation has no decision selector. Every sealed retry must independently identify the exact retained decision. A digest alone still does not confer authority; all original owner evidence and current checks remain required.",
+  "fail_before": {
+    "path": "/tmp/csp13-activation-selector-fail-before.jsonl",
+    "sha256": "c4a1da054914f8ebf63933cc332809345a924ad7171b6501e74946d648dcf96e",
+    "tests": {
+      "pass": 0,
+      "fail": 3,
+      "skip": 0
+    },
+    "package_result": [
+      "fail"
+    ]
+  },
+  "fail_before_observation": "Missing selector returned success and completed three releases; the following mismatch assertion observed those releases.",
+  "qualified": [
+    {
+      "path": "/tmp/csp13-activation-selector-final-race.jsonl",
+      "sha256": "826c82e9e7a8ff454c604701f07efd553907f5fa7ee80a71d1dbf1974ef862b2",
+      "tests": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_result": [
+        "pass"
+      ]
+    },
+    {
+      "path": "/tmp/csp13-activation-selector-final-pure.jsonl",
+      "sha256": "a49281e6892086326936d5b4ba2ec34252688cf65441a516b3f06523e807cbf0",
+      "tests": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_result": [
+        "pass"
+      ]
+    }
+  ],
+  "checks": {
+    "vet": "pass: go vet ./internal/app ./internal/recovery",
+    "lint": "pass: golangci-lint v2.13.2, zero issues",
+    "prose": "pass: three source files, zero diagnostics"
+  },
+  "assertions": [
+    "Missing and mismatched selectors return recovery.ErrConflict.",
+    "Original decision bytes are unchanged.",
+    "No application phases are published.",
+    "Actual blob, KV and SQL owners remain positively closed."
+  ],
+  "historical_matrix": {
+    "path": "/tmp/csp13-activation-boundaries-final-source-race.jsonl",
+    "sha256": "1d9f85ada323b6cde3733e9571092295874c5ffbc4f5b31c823793e44076b943",
+    "tests": {
+      "pass": 5,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_result": [
+      "pass"
+    ]
+  },
+  "historical_matrix_source": "57c83c8dc7ed487470e740db12b8f15912c8852f before this selector repair; all four correct-selector boundary cases passed."
+}
