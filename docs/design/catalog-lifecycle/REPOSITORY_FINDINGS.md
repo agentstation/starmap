@@ -5180,3 +5180,47 @@ Consumer `8726cc0b` integrates application canonical-file checks from `8997b1ec`
 The unchanged full embedded-catalog test passes with published Starmap `975bcb6426ca`: 355.622 package seconds under race detection and 25.186 with pure Go. The earlier combined five-minute run timed out. These durations came from concurrent checks and do not qualify deployment RTO or maximum capacity. The proof retains source and dependency identities.
 
 The source-file selection contract previously omitted file contents and native identity. It now retains both, using Starmap's catalog payload bound. Configuration and token files retain their smaller bound. Selected YAML workspace recovery still needs its owner procedure. Complete coordinated activation and the fresh-process loss matrix remain open.
+
+## Original backup input qualification, September 30, 2026
+
+Starmap #200 merged as `cf45526ef644d56642d61920c4dde7751d9012d2`. All 62 final checks pass. The merge proof preserves the exact reviewed tree and branch protection. Earlier timeout and pending-check snapshots remain historical evidence.
+
+Starmap #201 publishes `86c169a0d93be9d4d2941caa4f6122f7a0b84553`. Portable inspection validates actual producer descriptors, baseline archives, and immutable retained envelopes without opening a runtime. Both new regression probes fail against the prior implementation. Final contract runs pass 50 results each with race detection and pure Go, without failures or skips. Complete repository checks pass.
+
+The isolated pre-PR review is clean at its configured P0 threshold. Native CI remains pending. The [component proof](../../plans/proof/starport-production-catalog/csp13/captured-catalog-publication-2026-09-30/verification.json) preserves intermediate failures and final source hashes.
+
+Starport `631ce329` preserves a prepared SQL boundary with an empty backend identity and validates the future fleet identity separately. Its five results per mode pass. `e53d174f` exposes checked original backup boundaries, KV snapshots, and bounded payload reads. Its 30 results per mode pass. Its initial 256 MiB payload cap needs the producer-owned 512 MiB envelope correction before full integration. These tests do not qualify maximum-capacity transfer.
+
+Starport `77b4eade` projects canonical passive recovery settings. Its five results per mode pass without runtime creation or acquisition.
+
+ `34ecd941` corrects the lint proof after an initial process-lock refusal. The terminal pinned lint run passes. The original failure remains disclosed.
+
+The original-backup compiler and complete application coordinator remain under qualification. Existing topology transfer covers two cross-topology directions. Same-backend complete recovery still needs its own checked path and acceptance evidence. CSP13 remains in progress, with one required subcase passing and fifteen unverified.
+
+## Exact phase write and expiring lease findings, September 30, 2026
+
+Starmap #201 now publishes `79852bf7ddee936c4dee2a741f1c1c5c4d30dadb`. The published Go module contains the portable archive readers and exact pending-write inspection and completion APIs. GitHub verifies the commit signature. Native run `36680574306` qualifies that final head. Workflow concurrency cancelled the preceding run after the update. Its earlier results remain historical evidence.
+
+The complete private-file and public host-file owners pass 183 results each under race detection and pure Go. Actual child processes stop with header, empty, prepared, and published journals. Completion retains exact phase bytes and checks original native evidence. Foreign, changed, unowned, or incomplete stages remain pending after refusal.
+
+A regression proves callback mutation cannot alter the requested bytes. Complete repository checks and the final isolated P0 review pass. The [proof](../../plans/proof/starport-production-catalog/csp13/exact-phase-publication-2026-09-30/verification.json) preserves the complexity failure and final results.
+
+The fleet compiler also exposed expiring control records. Native transfer retains absolute expiry, omits expired records, and refuses expiring values in ordinary persistent comparison. Treating original leases as ordinary retirement preimages would therefore refuse valid recovery. The native owner owns the separate deletion-only repair with original expiry and exact replay receipts. Its full coordinator and real-storage qualification remain open.
+
+## Integrated original backup census, September 30, 2026
+
+Starport `b016190f` integrates the original-backup compiler. `52f9455d` pins the final published producer module. The compiler now covers both same-backend directions and the producer-owned 512 MiB envelope bound. It derives original inventory, reconstruction inputs, and ordered stages from the verified backup. Missing or ambiguous historical inputs refuse activation.
+
+The [compiler proof](../../plans/proof/starport-production-catalog/csp13/original-backup-census-2026-09-30/verification.json) records 37 passing results per mode, without failures or skips. Race qualification separates 32 small-contract results from five actual embedded-backup results. The combined six-minute timeout remains historical evidence. The split preserves every assertion and timeout.
+
+Root independently passes 18 pure-Go results and three boundary results in each mode against the final published module. The first selector did not match every boundary test, so the separate command covers those tests explicitly. The original-source, same-backend, and passive-settings checks preserve their exact selectors and counts.
+
+Complete native activation, process-loss recovery, maximum capacity, and RPO/RTO remain unverified. CSP13 still has one passing required subcase and fifteen unverified subcases.
+
+## Native expiring control retirement, September 30, 2026
+
+Starport `fd3b0ba7` integrates the deletion-only native retirement owner. Original bytes, absolute expiry, claim, incarnation, and replay cursor bind durable receipts. Both Badger and Valkey reject changed values, changed expiry, and unexplained absence. Exact retries preserve later state. Generic persistent comparison remains unchanged.
+
+The [native owner proof](../../plans/proof/starport-production-catalog/csp13/expiring-import-owner-2026-09-30/verification.json) records 42 passing results per mode. Root independently reproduces those counts against actual stores. Close-and-reopen tests preserve the original receipt and closed import barrier. Final application composition and native Linux/Windows qualification remain open.
+
+The application fixture also found a missing stopped-directory preparation API. Producer tests establish owner, seed, and inert layer directories through private functions before materialization. The consumer cannot copy those private codecs or open an acquiring runtime. The producer must expose explicit preparation before the application seals its release decision. Restart inspection remains passive.

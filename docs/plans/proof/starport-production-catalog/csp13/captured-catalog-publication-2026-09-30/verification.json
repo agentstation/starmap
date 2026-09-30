@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-30",
+  "status": "PASS_COMPONENT_ONLY",
+  "task": "CSP13",
+  "base_commit": "cf45526ef644d56642d61920c4dde7751d9012d2",
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "platform": "darwin/arm64",
+  "contract": "Read and structurally validate original immutable local descriptors, baseline inputs, and retained envelopes without opening a runtime or obtaining permission. Archive census, target semantics, native ownership, publication, selection, and current permission remain separate contracts.",
+  "bounds": {
+    "local_descriptor_and_baseline_bytes": 268435456,
+    "encoded_and_decoded_retention_envelope_bytes": 536870912,
+    "changed_existing_storage_format": false
+  },
+  "source_sha256": {
+    "runtime/catalog_recovery_captured.go": "793fa20606c51888d05e3cd8288d51478b3a1d4fd3eba7b485760fa1bff4620b",
+    "runtime/catalog_recovery_captured_test.go": "0b419c1fbd3c50919cdb434ff705c730547f2231db8bd00b83b3377927225253",
+    "runtime/catalog_recovery_storage.go": "8f6d64b90fd2dfe3d144bf4dd8099624202923c52f66ecc7fb39a34734ced79f",
+    "runtime/catalog_retention_captured_test.go": "adea23fc2859badc8d12598b236ed050546d98aa7dc3140a0dbb28bde687bf4e",
+    "runtime/catalog_retention_storage.go": "d86581ba09a1963a8f29c0f66c1f2bf095cd700abb90f54c2c1dc582f3012cd1",
+    "runtime/README.md": "b3bd832b0d12c2f64b927f6303c74a9fbad3503640ba27d1e6ce64141a468342"
+  },
+  "checks": [
+    {
+      "mode": "race",
+      "status": "PASS",
+      "test_results": {
+        "pass": 50,
+        "fail": 0,
+        "skip": 0
+      },
+      "selector": "^Test(CapturedCatalog|CatalogRecovery|CatalogRetention)",
+      "command": "go test -race -count=1 -json -timeout=10m ./runtime -run '^Test(CapturedCatalog|CatalogRecovery|CatalogRetention)'",
+      "raw_evidence": "/tmp/csp13-captured-archive-race-final.jsonl",
+      "raw_sha256": "4e95c680383b2b9a6fafd51fade4fd0548cedde41ab01e947ad5bab255edd2ca"
+    },
+    {
+      "mode": "pure",
+      "status": "PASS",
+      "test_results": {
+        "pass": 50,
+        "fail": 0,
+        "skip": 0
+      },
+      "selector": "^Test(CapturedCatalog|CatalogRecovery|CatalogRetention)",
+      "command": "CGO_ENABLED=0 go test -count=1 -json -timeout=10m ./runtime -run '^Test(CapturedCatalog|CatalogRecovery|CatalogRetention)'",
+      "raw_evidence": "/tmp/csp13-captured-archive-pure-final2.jsonl",
+      "raw_sha256": "a9b4647134067ab1c6aba6c43efed39f3890c56403bb318027f74cc62e01d53b"
+    },
+    {
+      "command": "go vet ./runtime",
+      "status": "PASS"
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "status": "PASS",
+      "raw_evidence": "/tmp/csp13-captured-archive-goago-final.json"
+    },
+    {
+      "command": "golangci-lint v2.13.2 run --allow-serial-runners",
+      "status": "PASS",
+      "issues": 0,
+      "raw_evidence": "/tmp/csp13-captured-archive-lint-final.log"
+    },
+    {
+      "command": "make godoc",
+      "status": "PASS"
+    },
+    {
+      "command": "make verify-checks",
+      "status": "PASS",
+      "raw_evidence": "/tmp/csp13-captured-archive-verify-checks.log",
+      "exit_code": 0,
+      "technical_writing": {
+        "files": 1970,
+        "diagnostics": 0
+      }
+    }
+  ],
+  "regression_before": {
+    "status": "EXPECTED_FAIL",
+    "local_api": "/tmp/csp13-captured-catalog-fail-before.jsonl",
+    "retention_api": "/tmp/csp13-captured-retention-fail-before.jsonl",
+    "retention_method": "Go overlay of unchanged prior owner file; actual checked source remained in place"
+  },
+  "preserved_intermediate_failures": [
+    {
+      "raw": "/tmp/csp13-captured-catalog-race-final.jsonl",
+      "cause": "Test variable redeclaration; corrected without changing assertions"
+    },
+    {
+      "raw": "/tmp/csp13-captured-retention-race.jsonl",
+      "cause": "DeepEqual compared normalized runtime representations; replaced with byte-exact re-encoding of the actual immutable envelope"
+    },
+    {
+      "raw": "/tmp/csp13-captured-archive-pure-final.jsonl",
+      "cause": "Earlier run of the same representation comparison before correction"
+    }
+  ],
+  "unverified": [
+    "Native Linux and Windows qualification of this new diff",
+    "Complete Starport recovery coordinator integration",
+    "Maximum-capacity transfer, RPO, and RTO",
+    "All remaining complete CSP13 subcases"
+  ],
+  "whole_csp13_complete": false,
+  "published_head": "86c169a0d93be9d4d2941caa4f6122f7a0b84553",
+  "pr": "https://github.com/agentstation/starmap/pull/201",
+  "published_module": "v0.16.6-0.20260930061603-86c169a0d93b",
+  "review": {
+    "status": "PASS",
+    "exit_code": 0,
+    "gate": "pre-pr",
+    "profile": "auto",
+    "engine": "claude",
+    "model": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "P0",
+    "passes": 1,
+    "accepted_actionable_findings": 0,
+    "secret_scan": "clean",
+    "attestation_key": "b1eb1b43a10c348a365e731e22aeb61fa7527406e036d4b834f377ae050f75f3"
+  },
+  "raw_archives": [
+    {
+      "path": "csp13-captured-archive-race-final.jsonl.gz",
+      "raw_sha256": "4e95c680383b2b9a6fafd51fade4fd0548cedde41ab01e947ad5bab255edd2ca",
+      "gzip_sha256": "1a99a9e6e03d5e7f0dfad9a41764e2d75d6183de50b64ccab0465dc8fb38eb62"
+    },
+    {
+      "path": "csp13-captured-archive-pure-final2.jsonl.gz",
+      "raw_sha256": "a9b4647134067ab1c6aba6c43efed39f3890c56403bb318027f74cc62e01d53b",
+      "gzip_sha256": "7ffeb6442773be4c0efb656d10915d614b4274c8c8d4e9ff88bfad3d83c879ce"
+    },
+    {
+      "path": "csp13-captured-archive-verify-checks.log.gz",
+      "raw_sha256": "8818b8299a51256db3bb7b390b58580f80807c80d2b36a6758821633e79a7278",
+      "gzip_sha256": "9954ba3a72aed22bd88014cb3de8e6109acc28ecc7de62fc30561c9e11035613"
+    },
+    {
+      "path": "csp13-captured-archive-goago-final.json.gz",
+      "raw_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "gzip_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    {
+      "path": "csp13-captured-archive-lint-final.log.gz",
+      "raw_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "csp13-captured-catalog-fail-before.jsonl.gz",
+      "raw_sha256": "258854346721559b0f20a3b02f0ccbd98b88eb6dd1d9588f29429c6624496399",
+      "gzip_sha256": "9cabfceca23b03432e299107798859144531c53ec8a5cb85badf3ea9adef17a4"
+    },
+    {
+      "path": "csp13-captured-retention-fail-before.jsonl.gz",
+      "raw_sha256": "79a5398409db8d2808f07e8d4d8f1e0ff915bebc3dc3e035a699b94b55fb5907",
+      "gzip_sha256": "ca4452535082f0143301c0805b8ae901f95ab8f607b7d2195ac8ded7efb23563"
+    },
+    {
+      "path": "csp13-captured-catalog-race-final.jsonl.gz",
+      "raw_sha256": "be72318b68be3d3e0a9b072e8643ed8f3ecaabd15d6323d6703604854ed95ecd",
+      "gzip_sha256": "e4589c2351d24e383783a24405955401c0ac69fd7eb44bf95d45bc25da9f7425"
+    },
+    {
+      "path": "csp13-captured-retention-race.jsonl.gz",
+      "raw_sha256": "fb8c8f8b7cc1b3d5c618c9f7a77b2aeed2c60a4f17d7effdd55a66476e4b78d5",
+      "gzip_sha256": "8bad9f36a5e218be9b2761e821ec085c630b6477fb48b09bf0a75781365b59c0"
+    },
+    {
+      "path": "csp13-captured-archive-pure-final.jsonl.gz",
+      "raw_sha256": "869b5114f62c5fdf8bb128e0938506ceefd1c5c63c169852a2628e6d02bed337",
+      "gzip_sha256": "0b4134d435639d0f3fc976a8929b8f254343e21ea22ed966136af2f607c0d407"
+    }
+  ]
+}

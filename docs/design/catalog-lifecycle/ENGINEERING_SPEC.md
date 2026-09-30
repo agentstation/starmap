@@ -5467,3 +5467,35 @@ After a component release, passive inspection must compare current evidence with
 The application retains each canonical role's actual publication result. The same role selectors and semantic validators govern publication and passive inspection. Current configuration, source files, credentials, TLS, and administrator inputs receive explicit target dispositions. An unresolved selected owner role prevents activation.
 
 The full embedded-catalog workload remains mandatory. Run its race qualification separately with the existing 30-minute verification bound. A short combined process timeout does not justify smaller fixtures or weaker assertions. Complete recovery, maximum capacity, and deployment RPO/RTO require separate acceptance evidence.
+
+## Original backup catalog inputs during recovery
+
+The host must derive catalog evidence from the verified original backup. Current target directories, source refresh, and renewed permission cannot substitute for missing historical inputs. Starmap owns the private descriptor and retention-envelope codecs. Their portable inspection APIs check immutable identities, size bounds, strict structure, complete baseline identity, and the separately retained generation binding. These checks prove neither complete archive coverage nor current selection or permission.
+
+The bounded compilation record binds the complete file census, verified backup manifest, original closed boundary, and original KV state. It also binds ordered catalog stages and distinct selected-publication identity. Passive reopen must reproduce that record from the same checked backup. It must not recapture target preimages or fetch sources. Original private history with no activation proof remains inactive. Ambiguous selected descriptors cause refusal.
+
+A prepared SQL boundary can have no backend identity before activation. Preserve that original record unchanged. Validate the future fleet identity separately against the deployment, epoch, and actual Valkey incarnation. An established original backend identity must still match. Shared storage does not justify replacing the original boundary.
+
+Passive target settings use the canonical Starmap configuration parser and inert replay options. They must create no directories, transports, scheduler, runtime, acquisition, or clock monitor. Native publication and current permission remain separate activation requirements.
+
+The existing retention format permits an encoded and decoded envelope of 512 MiB because JSON expands bounded raw inputs. The checked backup payload reader must support that exact owner limit with an explicit caller bound. Descriptor and baseline readers retain their 256 MiB limits. Configuration and metadata retain their smaller limits. This does not raise the fleet's 2 GiB inventory or 64 MiB history payload limits.
+
+Complete same-backend recovery and both cross-topology directions remain required. Component test results cannot satisfy full recovery, process-loss, maximum-capacity, or deployment RPO/RTO criteria.
+
+## Exact recovery phase publication after a crash
+
+After native release, the host must inspect the original sealed decision while an exact phase write remains pending. The file owner supplies passive pending-write inspection and checked stage names. The host must reject foreign stages and validate the original native completion receipt before publication cleanup.
+
+The file owner can complete only the same destination, expected prior value, stage identities, and exact canonical phase bytes. It checks the host decision and native receipt under the writer lock before cleanup and before the final write. It never invokes generic publication recovery. Callback changes to caller buffers cannot change the retained phase bytes. Missing or incomplete stage ownership requires refusal and explicit operator recovery.
+
+Original writer leases retain their absolute expiry in a backup. Native import omits an already-expired value. Ordinary persistent-record comparison cannot retire expiring leases.
+
+A separate deletion-only native retirement contract must preserve original value, expiry, claim, incarnation, and replay cursor. It must accept absent records only when the native owner proves their original expiry passed. It must never renew or recreate a lease, or weaken generic persistent comparison. Complete coordinator qualification must exercise this contract against actual stores.
+
+## Original backup compiler qualification
+
+The integrated compiler derives every selected catalog input from the checked original backup. It seals the complete file census and ordered stage identities. Local restore preserves accepted and candidate selection separately. Fleet restore archives original authority and creates the future identity without a refresh grant. These compiler contracts cover same-backend and cross-topology directions. Actual native activation remains a separate requirement.
+
+The checked source now supports the producer's 512 MiB retained-envelope bound. Smaller descriptor, baseline, and metadata bounds remain in effect. The actual persistent embedded-catalog fixture captures Badger, SQLite, blobs, and canonical files. Its passing results prove reconstruction and passive reopening. They do not prove maximum capacity or recovery-time objectives.
+
+Initial preparation may retain the private compiled capability from the same checked source. Its canonical record must match the sealed decision exactly. A restart without that capability must recompile the original checked backup. This avoids repeated initial decoding without permitting digest-only validation or target preimage replacement.

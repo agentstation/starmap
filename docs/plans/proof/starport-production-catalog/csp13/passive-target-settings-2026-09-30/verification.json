@@ -1,0 +1,22 @@
+{
+  "task": "CSP13",
+  "task_completed": false,
+  "contract": "Current Settings use canonical parser and native owner projection without opening a runtime, source transport, permission clock monitor, or automatic acquisition. Passive provider and metadata constructors retain original source capability declarations for semantic replay.",
+  "fail_before": "/tmp/csp13-topology-settings-fail-before.jsonl",
+  "vet": "PASS",
+  "lint": "PASS golangci-lint v2.13.2 with serialized runner",
+  "prose": "PASS 2 files 0 diagnostics",
+  "results": {
+    "race": {
+      "pass": 5,
+      "fail": 0,
+      "skip": 0
+    },
+    "pure": {
+      "pass": 5,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "lint_history": "Initial check refused the shared process lock (exit 3). Final sequential source check passed. The initial proof recorded PASS before its terminal result; this corrected record supersedes that claim."
+}

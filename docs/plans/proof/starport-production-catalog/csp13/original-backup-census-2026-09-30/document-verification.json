@@ -1,0 +1,8 @@
+{
+  "exit": 0,
+  "files": 5,
+  "diagnostics": 0,
+  "raw": "document-prose.log.gz",
+  "sha256": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668",
+  "whole_repository": "Previously recorded 229 diagnostics outside these changed files remain; no unrelated prose cleanup."
+}

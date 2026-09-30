@@ -1,0 +1,419 @@
+{
+  "commit": "2ce5f5ea4568131cd0656ddd3f5412d9bc8413d3",
+  "base": "e53d174fdc27b5759bf7cd046324f8169c32fd0e",
+  "branch": "codex/recovery-topology-census",
+  "worktree": "/private/tmp/starport-recovery-topology-census-20260930",
+  "toolchain": "go1.27.1",
+  "platform": "darwin/arm64",
+  "GOWORK": "off",
+  "starmap_pin": "v0.16.6-0.20260930065056-79852bf7ddee",
+  "source_sha256": {
+    "go.mod": "761adf804c53317a0198dd25fb78d906d5608fa28c3358836b41c164f38e304f",
+    "go.sum": "3aeb6398f73423f08ea4c116fe6bd958210a44addd3aa90e5bb290ac8ac8ed3c",
+    "internal/catalog/topology_backup_census.go": "3cab6a0c89ce6031eb7785a7ac8dab0146e6b6957b6e2fd0e500edddf8812eb1",
+    "internal/catalog/topology_backup_census_test.go": "b6c42c8f2c574ac941c58ae5d82b7fb965f1101f9d5312a5a61885d6f620524d",
+    "internal/catalog/topology_backup_inputs.go": "d34a8de0c68a31afb07b7dec2fd824546f36bbf67ddf1b6b0273d9ade570b463",
+    "internal/catalog/topology_materialization.go": "f3560269ea55eaf6bdbe888c033559d40415062e57527604566e22c89647183f",
+    "internal/catalog/topology_recovery_record.go": "646a8d8537ac0785c2f7a2dcba1a3d80d5515700c7ff906ce59d44b4ab67a2be",
+    "internal/catalog/topology_recovery_record_test.go": "aa42676c1fa355ff39b375ae79bfe0f93d76a2db4fdbdcaf40e45093f924d92e",
+    "internal/catalog/topology_replay.go": "5f1387502ab1d91e2d327a641d85f070d69a7390adbec19b2d206b609a7c0a8e",
+    "internal/catalog/topology_restore_test.go": "39fe1d14f02c455b9abf46567cbf5bd7fd15995f1b795bdbdbdfc64c66168ec5",
+    "internal/recovery/restore_catalog_source.go": "943a5229888955c1b6c4ca02bf6a0d0f37b3ad74ec881f1a8ad9414944c958df",
+    "internal/recovery/restore_catalog_source_test.go": "c157c70f5012ef3076ff66c9f5e0f5f50904bff24fd830639f233f2ad7b87794"
+  },
+  "tests": {
+    "pure-final-pin": {
+      "top_level": 23,
+      "results": {
+        "pass": 37,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "seconds": 1.31
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "result": "pass",
+          "seconds": 41.792
+        }
+      ],
+      "sha256": "1a4a8633fa9e5830a8d6a1196511b3b6c2ecc4cabdc2548de41cdac3bc95792f"
+    },
+    "race-contracts-final-pin": {
+      "top_level": 22,
+      "results": {
+        "pass": 32,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "seconds": 5.78
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "result": "pass",
+          "seconds": 115.902
+        }
+      ],
+      "sha256": "03002629e586b7310a3033e8b033071f2d1e3fcd447f0373c78a081e948a7e7b"
+    },
+    "race-full-final-pin": {
+      "top_level": 1,
+      "results": {
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "result": "pass",
+          "seconds": 286.713
+        }
+      ],
+      "sha256": "9bc37b1821055286da59dd20882752c4be03c38de41de0043bd6dfc3fdd864ec"
+    }
+  },
+  "checks": {
+    "vet": "vet-final-pin.log passed",
+    "lint": "lint-final-pin.log pinnedv2.13.2 passed",
+    "prose": "prose-final.log 10 files zero diagnostics",
+    "contract_prose": "contract-prose-final.log passed",
+    "ownership": "ownership-final-pin.log12passed0failed exact final published producer module",
+    "dependencies": "dependencies.log6passed0failed",
+    "callers": "callers-final-pin.log app/config build passed"
+  },
+  "historical_failures": [
+    "payload-bound-before.jsonl real512MiB-cap refusal on old256MiB reader",
+    "pure-fixture-initial.jsonl wrong regex ran no catalog tests",
+    "pure-fixture-v2.jsonl fixture build error Badger has no ObserveIncarnation",
+    "pure-fixture-v3.jsonl fixture omitted required Badger settings",
+    "pure-fixture-v4.jsonl normal private publication lock treated as descriptor",
+    "pure-fixture-v5.jsonl same original private-lock refusal with context",
+    "pure-fixture-v6.jsonl baseline private lock refusal",
+    "same-backend-before.jsonl two missing same-backend direction refusals",
+    "pure-v1.jsonl test used stage expected-map for final controls; archive check used current rather than next closed epoch; record privacy assertion included harmless disposition label",
+    "lint-v1.log three complexity reports",
+    "lint-v2.log positive epoch conversion proof missing in extracted helper",
+    "ownership.log default sibling producer path absent",
+    "contract-prose.log six mechanical prose reports",
+    "race-final.jsonl combined six-minute timeout after full backup case passed"
+  ],
+  "limits": [
+    "No2GiB capacity or RPO measurement",
+    "Native Valkey/PostgreSQL/MySQL guarded activation belongs application/native owner",
+    "Expiring lease/maintenance retirement is separate pending owner work; ordinary persistent CAS is unchanged",
+    "Private producer journals/manifests preserved as inactive fingerprints; no active selection inferred",
+    "Missing old original reconstruction history and ambiguous selected original references safely refuse",
+    "No autoreview push or merge performed"
+  ],
+  "api_commit": "ed576d854385cd154892d55da2730cee071fc2ca",
+  "historical_tests": {
+    "pure-final": {
+      "top_level": 23,
+      "results": {
+        "pass": 37,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "seconds": 1.6320000000000001
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "result": "pass",
+          "seconds": 27.867
+        }
+      ],
+      "sha256": "8cd7906f524a4e3ad4b21ea671d84a83ea83d7efa1bd804ba796411bc4005b5a"
+    },
+    "race-contracts": {
+      "top_level": 22,
+      "results": {
+        "pass": 32,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "seconds": 4.822
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "result": "pass",
+          "seconds": 96.887
+        }
+      ],
+      "sha256": "d1f9af2b17021b5be2fcd5d3f4d84e8ae6259b3f98f63881c9762c9a560f06ed"
+    },
+    "race-full-embedded": {
+      "top_level": 1,
+      "results": {
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "result": "pass",
+          "seconds": 263.481
+        }
+      ],
+      "sha256": "30af976be54e0b3f27d957a9df6159abe7df105f7545115882425902cce9117a"
+    }
+  },
+  "durable_raw": {
+    "build-final.log": {
+      "file": "build-final.log.gz",
+      "sha256": "3c30354fb7d2b35d9fdc5e3d6ba081f0aa1ea907a37723935e3dea7b3afcfe5e"
+    },
+    "build-v2.log": {
+      "file": "build-v2.log.gz",
+      "sha256": "5cdb41334c4e22048158500083273a1e4adf04284d6f457a8e304180c8daa00c"
+    },
+    "callers-final-pin.log": {
+      "file": "callers-final-pin.log.gz",
+      "sha256": "c8df7bbc94c4341af922a7fb474a66d0ed4e95831519fd224f77f5cdd8d0867d"
+    },
+    "callers.log": {
+      "file": "callers.log.gz",
+      "sha256": "ec7f58c7d4921fd4e059357a269d47cf3e0e5e24441b1a568b36b14b316831ea"
+    },
+    "contract-prose-final.log": {
+      "file": "contract-prose-final.log.gz",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66"
+    },
+    "contract-prose.log": {
+      "file": "contract-prose.log.gz",
+      "sha256": "3dd91934357aac7e68c8f133adde110c4e1e8ef79f64ea7e4026253974d90db7"
+    },
+    "dependencies.log": {
+      "file": "dependencies.log.gz",
+      "sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    "final-pin.log": {
+      "file": "final-pin.log.gz",
+      "sha256": "9ac8bd023e8ddb392666eab3270fc5b2bff8f62ee7045b0088ffcd68223e6a3c"
+    },
+    "initial-build.log": {
+      "file": "initial-build.log.gz",
+      "sha256": "3fcebe022cb03338ea7a7e2c490cb645ecbc9d2f6079e8515d868e8fa7768da1"
+    },
+    "lint-final-pin.log": {
+      "file": "lint-final-pin.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "lint-final.log": {
+      "file": "lint-final.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "lint-v1.log": {
+      "file": "lint-v1.log.gz",
+      "sha256": "aea24ec6073b3354b9bb07a5b2b364ea8c7b51b2d13bbddbc188e18cb73ba74d"
+    },
+    "lint-v2.log": {
+      "file": "lint-v2.log.gz",
+      "sha256": "70e83d52bdd38b4e5aaf304baeef38b8281f2375d58665154c0352acc4cca3b9"
+    },
+    "ownership-final-pin.log": {
+      "file": "ownership-final-pin.log.gz",
+      "sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    "ownership-final.log": {
+      "file": "ownership-final.log.gz",
+      "sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    "ownership.log": {
+      "file": "ownership.log.gz",
+      "sha256": "660e1e44493609fb9ff0f272512ded71e7a1e798e83fea8b01de9fb77d53a342"
+    },
+    "payload-bound-before.jsonl": {
+      "file": "payload-bound-before.jsonl.gz",
+      "sha256": "2c87c20c363893476e41b544c1c4709576bc8d07d7055de3bf9c90c503cef766"
+    },
+    "prose-final.log": {
+      "file": "prose-final.log.gz",
+      "sha256": "13cd837bdffe4f0e4de7cf85a9a0966221b406a4fd150eabd7fdd37b5877ebed"
+    },
+    "prose-v1.log": {
+      "file": "prose-v1.log.gz",
+      "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087"
+    },
+    "pure-final-pin.jsonl": {
+      "file": "pure-final-pin.jsonl.gz",
+      "sha256": "1a4a8633fa9e5830a8d6a1196511b3b6c2ecc4cabdc2548de41cdac3bc95792f"
+    },
+    "pure-final.jsonl": {
+      "file": "pure-final.jsonl.gz",
+      "sha256": "8cd7906f524a4e3ad4b21ea671d84a83ea83d7efa1bd804ba796411bc4005b5a"
+    },
+    "pure-fixture-initial.jsonl": {
+      "file": "pure-fixture-initial.jsonl.gz",
+      "sha256": "c85d08a65dd635d0be8d0ba4a8974c3a830dfd4ed7dbea16df2f339bd7029e9b"
+    },
+    "pure-fixture-v2.jsonl": {
+      "file": "pure-fixture-v2.jsonl.gz",
+      "sha256": "ecb09d80eeca2047cef3f95acfd3bc37457eab536d50e4972cea0f1e28bd07da"
+    },
+    "pure-fixture-v3.jsonl": {
+      "file": "pure-fixture-v3.jsonl.gz",
+      "sha256": "73270762cce9f8a422b7c799093f68066ba2bae6c5e3ad40209011cc4dce1856"
+    },
+    "pure-fixture-v4.jsonl": {
+      "file": "pure-fixture-v4.jsonl.gz",
+      "sha256": "9235fecabddce202c501dc219f8084c0bf495a0b25cc8e7c7598ccc0e17a43bb"
+    },
+    "pure-fixture-v5.jsonl": {
+      "file": "pure-fixture-v5.jsonl.gz",
+      "sha256": "95994a8b7816e241d65c830e1233f56ce52028743e0a2bcd9f26a9c5b2723e14"
+    },
+    "pure-fixture-v6.jsonl": {
+      "file": "pure-fixture-v6.jsonl.gz",
+      "sha256": "9c637c2ed39fe685c8aa514a908abfe11f065a2bb187f99515c08e26de276735"
+    },
+    "pure-fixture-v7.jsonl": {
+      "file": "pure-fixture-v7.jsonl.gz",
+      "sha256": "0fe0a446e8b61c6c8c55721f6e263dca91d5cd601c972ca23bf39dfaf2fd2d91"
+    },
+    "pure-v1.jsonl": {
+      "file": "pure-v1.jsonl.gz",
+      "sha256": "ad28fa41c923aad27da0ad62d30f9e8ea01c9e31b44d1714b3fc0ed20d6de268"
+    },
+    "pure-v2.jsonl": {
+      "file": "pure-v2.jsonl.gz",
+      "sha256": "8efc3aa1d25db1a2f4c981e90c6b23ce0c4ad00e95c4391840abfd62fff2deba"
+    },
+    "pure-v3.jsonl": {
+      "file": "pure-v3.jsonl.gz",
+      "sha256": "4674995a07d9c95c5c7e346bf59d5f1548127c22f3abca8753da3efb6cdbbcc6"
+    },
+    "race-contracts-final-pin.jsonl": {
+      "file": "race-contracts-final-pin.jsonl.gz",
+      "sha256": "03002629e586b7310a3033e8b033071f2d1e3fcd447f0373c78a081e948a7e7b"
+    },
+    "race-contracts.jsonl": {
+      "file": "race-contracts.jsonl.gz",
+      "sha256": "d1f9af2b17021b5be2fcd5d3f4d84e8ae6259b3f98f63881c9762c9a560f06ed"
+    },
+    "race-final.jsonl": {
+      "file": "race-final.jsonl.gz",
+      "sha256": "4e082a970b5ef829f60fa93e82ee7cd083f612d06cc17bfec5966e03372d20e4"
+    },
+    "race-full-embedded.jsonl": {
+      "file": "race-full-embedded.jsonl.gz",
+      "sha256": "30af976be54e0b3f27d957a9df6159abe7df105f7545115882425902cce9117a"
+    },
+    "race-full-final-pin.jsonl": {
+      "file": "race-full-final-pin.jsonl.gz",
+      "sha256": "9bc37b1821055286da59dd20882752c4be03c38de41de0043bd6dfc3fdd864ec"
+    },
+    "race-v1.jsonl": {
+      "file": "race-v1.jsonl.gz",
+      "sha256": "f3ba7df24b47d779926960f260913b520a557c1bb9a35d1d84a7a2ac650d3910"
+    },
+    "same-backend-before.jsonl": {
+      "file": "same-backend-before.jsonl.gz",
+      "sha256": "d5478c5dbbc96f1b761ad5f12a42d22946a9d403d3d0162af10f8e9a8420daa3"
+    },
+    "vet-final-pin.log": {
+      "file": "vet-final-pin.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vet-final.log": {
+      "file": "vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "root_integration": {
+    "api_commit": "b016190f48c9a571f7912e4c66b5b8b4bbe75028",
+    "published_pin_commit": "52f9455dbf42170ab922e1bd76cbb315a6b40b39",
+    "starmap_pin": "v0.16.6-0.20260930065056-79852bf7ddee",
+    "GOWORK": "off",
+    "replace_directives": false
+  },
+  "root_independent_checks": {
+    "census-final-pin-pure": {
+      "selector": "Test(RecoveryTopology|TopologyBackup|TopologyLocalRestore|TopologyFleetRestore|RestoreSource)",
+      "test_results": {
+        "pass": 18
+      },
+      "top_level_tests": 8,
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "seconds": 0.539
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "result": "pass",
+          "seconds": 27.84
+        }
+      ],
+      "raw": "csp13-root-census-final-pin-pure.jsonl.gz",
+      "sha256": "3c803ed496f91d7acb4222563b9e9ae70edd509a5e2a98282c6fdef7a953ab43",
+      "exit": 0
+    },
+    "census-boundaries-race": {
+      "selector": "^Test(TopologySameBackend|RestoreCatalogSource)",
+      "test_results": {
+        "pass": 3
+      },
+      "top_level_tests": 3,
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "seconds": 3.3689999999999998
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "result": "pass",
+          "seconds": 3.653
+        }
+      ],
+      "raw": "csp13-root-census-boundaries-race.jsonl.gz",
+      "sha256": "57cb6f35c30ed78b75b0d73032618e63d955b631132d961fe380d447ea4bbe1d",
+      "exit": 0
+    },
+    "census-boundaries-pure": {
+      "selector": "^Test(TopologySameBackend|RestoreCatalogSource)",
+      "test_results": {
+        "pass": 3
+      },
+      "top_level_tests": 3,
+      "packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/catalog",
+          "result": "pass",
+          "seconds": 1.55
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/recovery",
+          "result": "pass",
+          "seconds": 2.273
+        }
+      ],
+      "raw": "csp13-root-census-boundaries-pure.jsonl.gz",
+      "sha256": "6e52c6f6bee0278ec490cdf2343acb272170935454bbee113ffaaa35eecc276c",
+      "exit": 0
+    }
+  }
+}

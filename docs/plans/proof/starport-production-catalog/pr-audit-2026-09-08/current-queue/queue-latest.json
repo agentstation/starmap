@@ -1,6 +1,17 @@
 {
-  "checked_at": "2026-09-30T05:28:40.664349+00:00",
-  "starmap": [],
+  "checked_at": "2026-09-30T06:57:01.181967+00:00",
+  "starmap": [
+    {
+      "number": 201,
+      "state": "OPEN",
+      "isDraft": true,
+      "headRefOid": "79852bf7ddee936c4dee2a741f1c1c5c4d30dadb",
+      "baseRefOid": "cf45526ef644d56642d61920c4dde7751d9012d2",
+      "headRefName": "codex/captured-catalog-recovery",
+      "baseRefName": "main",
+      "url": "https://github.com/agentstation/starmap/pull/201"
+    }
+  ],
   "starport": [],
   "completed_merges": [
     {
@@ -963,12 +974,15 @@
     "consumer_merge": "6bd7fcf4e9fbf4bb1d92ff67266dbd0ce1c41e2d"
   },
   "local_consumer_checkpoint": {
-    "head": "92b3b5f4",
-    "worktree": "/private/tmp/starport-clock-review-20260926",
+    "head": "fd3b0ba7943b77121a1cab2be3faef53b8602888",
     "branch": "codex/recovery-catalog-activation",
-    "state": "UNPUBLISHED_INTEGRATION",
-    "owner": "this chat",
-    "next_action": "Integrate catalog lane/local completion/canonical proofs; seal complete application decision before component releases."
+    "worktree": "/private/tmp/starport-clock-review-20260926",
+    "starmap_module": "v0.16.6-0.20260930065056-79852bf7ddee",
+    "state": "local qualification; no consumer PR",
+    "owner": "root",
+    "next_action": "integrate complete application coordinator and typed expiring catalog stages; qualify full recovery",
+    "census_proof": "csp13/original-backup-census-2026-09-30/verification.json",
+    "native_expiry_proof": "csp13/expiring-import-owner-2026-09-30/verification.json"
   },
   "storage_recipe_preparation": {
     "owner": "CSP12",
@@ -2494,12 +2508,18 @@
     "next_action": "Producer component merged. Complete consumer recovery remains open.",
     "native_run": 36636540075,
     "native_checks": {
+      "SUCCESS": 62,
+      "IN_PROGRESS": 0,
+      "QUEUED": 0
+    },
+    "native_failure_proof": "csp13/starmap200-native-timeout-2026-09-29/verification.json",
+    "merge": "cf45526ef644d56642d61920c4dde7751d9012d2",
+    "previous_native_checks": {
       "SUCCESS": 22,
       "IN_PROGRESS": 19,
       "QUEUED": 15
     },
-    "native_failure_proof": "csp13/starmap200-native-timeout-2026-09-29/verification.json",
-    "merge": "cf45526ef644d56642d61920c4dde7751d9012d2"
+    "native_checks_note": "Final exact-head merge proof, replacing the earlier pending snapshot."
   },
   "previous_open_snapshot_final_producer": [
     {
@@ -3090,5 +3110,72 @@
         }
       ]
     }
-  ]
+  ],
+  "previous_open_snapshot_captured_catalog": {
+    "checked_at": "2026-09-30T05:28:40.664349+00:00",
+    "starmap": [],
+    "starport": []
+  },
+  "captured_catalog_inspection": {
+    "pr": 201,
+    "head": "79852bf7ddee936c4dee2a741f1c1c5c4d30dadb",
+    "base": "cf45526ef644d56642d61920c4dde7751d9012d2",
+    "owner": "this chat",
+    "disposition": "Keep; qualify native checks and merge under existing protection.",
+    "next_action": "Native qualification; producer merge precedes dependent consumer merge.",
+    "proof": "csp13/exact-phase-publication-2026-09-30/verification.json",
+    "review": {
+      "status": "PASS",
+      "exit_code": 0,
+      "gate": "pre-pr",
+      "profile": "auto",
+      "engine": "claude",
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "threshold": "P0",
+      "passes": 1,
+      "accepted_actionable_findings": 0,
+      "secret_scan": "clean"
+    },
+    "published_module": "v0.16.6-0.20260930065056-79852bf7ddee",
+    "whole_csp13_complete": false,
+    "native_run": 36680574306,
+    "native_status": "PENDING",
+    "signature": {
+      "verified": true,
+      "reason": "valid",
+      "source": "GitHub commit verification"
+    },
+    "superseded_run": {
+      "run": 36677545844,
+      "head": "86c169a0d93be9d4d2941caa4f6122f7a0b84553",
+      "status": "CANCELLED_BY_WORKFLOW_CONCURRENCY",
+      "qualification": "Historical; does not qualify final head"
+    }
+  },
+  "previous_captured_catalog_inspection": {
+    "pr": 201,
+    "head": "86c169a0d93be9d4d2941caa4f6122f7a0b84553",
+    "base": "cf45526ef644d56642d61920c4dde7751d9012d2",
+    "owner": "this chat",
+    "disposition": "Keep; qualify native checks and merge under existing protection.",
+    "next_action": "Native qualification; producer merge precedes dependent consumer merge.",
+    "proof": "csp13/captured-catalog-publication-2026-09-30/verification.json",
+    "review": {
+      "status": "PASS",
+      "exit_code": 0,
+      "gate": "pre-pr",
+      "profile": "auto",
+      "engine": "claude",
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "threshold": "P0",
+      "passes": 1,
+      "accepted_actionable_findings": 0,
+      "secret_scan": "clean",
+      "attestation_key": "b1eb1b43a10c348a365e731e22aeb61fa7527406e036d4b834f377ae050f75f3"
+    },
+    "published_module": "v0.16.6-0.20260930061603-86c169a0d93b",
+    "whole_csp13_complete": false
+  }
 }

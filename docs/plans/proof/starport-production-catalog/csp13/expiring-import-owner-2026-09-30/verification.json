@@ -1,0 +1,114 @@
+{
+  "source_base": "c4575e0bc4d5311ff236d1e1567d2750245e5138",
+  "go": "go1.27.1",
+  "platform": "darwin/arm64",
+  "source_sha256": {
+    "internal/storage/transfer_expiring_retirement.go": "35d586ca748f93b81eab4e73ad208d787baa1c0e68bea512f8128bc55b0c9d59",
+    "internal/storage/transfer_expiring_retirement_badger.go": "8240ef88ef49e7eb8e9a1bc0651d4dbaa79893d361752c6dc45920c74713b655",
+    "internal/storage/transfer_expiring_retirement_valkey.go": "62728b82c5463c05cc594e718b9d322d1b5b4faf115da2b785155ca45878215d",
+    "internal/storage/transfer_expiring_retirement_test.go": "b6b497397476972e3f7b56dda5e2b40a36dbd144563f4bad59d4ebd0fd6df306",
+    "internal/storage/transfer_reconciliation_valkey.go": "e93514f3028570c59d16106c8655f4e9ab2748225f43a08876cef05b1d0d62e9",
+    "internal/storage/transfer_activation_valkey.go": "f393c22656378f0c8c7dea63f2fbe9e68fdd1f20d95e8d838ea7def038ae9caf"
+  },
+  "scope": "Deletion-only retirement of exact original imported expiring records. Generic persistent import CAS remains unchanged. Original absolute expiry, claim, incarnation, cursor and evidence bind durable receipts.",
+  "checks": {
+    "race": {
+      "exit": 0,
+      "results": {
+        "pass": 42
+      },
+      "top_level_tests": 4,
+      "package_seconds": 2.749,
+      "raw": "/tmp/csp13-expiring-import-race-qualified.jsonl",
+      "sha256": "8bb99aa5acf9daf2dbefc9fae7f793559b9f213b44526d53bce5359e64862689",
+      "command": "go test -race -json -count=1 -timeout=6m ./internal/storage -run ^TestExpiringImportRetirement",
+      "environment": {
+        "GOCACHE": "/private/tmp/csp13-go-build-20260929",
+        "GOWORK": "off",
+        "CGO_ENABLED": "1"
+      },
+      "native_backends": [
+        "persistent Badger",
+        "Valkey"
+      ],
+      "durable_raw": "csp13-expiring-import-race-qualified.jsonl.gz"
+    },
+    "pure": {
+      "exit": 0,
+      "results": {
+        "pass": 42
+      },
+      "top_level_tests": 4,
+      "package_seconds": 1.626,
+      "raw": "/tmp/csp13-expiring-import-pure-qualified.jsonl",
+      "sha256": "9a1fe024c31ad99126f5b616c45dc25edf90b2c5a8475a94e3761e0b84a8f2d9",
+      "command": "go test -json -count=1 -timeout=6m ./internal/storage -run ^TestExpiringImportRetirement",
+      "environment": {
+        "GOCACHE": "/private/tmp/csp13-go-build-20260929",
+        "GOWORK": "off",
+        "CGO_ENABLED": "0"
+      },
+      "native_backends": [
+        "persistent Badger",
+        "Valkey"
+      ],
+      "durable_raw": "csp13-expiring-import-pure-qualified.jsonl.gz"
+    },
+    "vet": {
+      "exit": 0,
+      "raw": "/tmp/csp13-expiring-import-vet-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "durable_raw": "csp13-expiring-import-vet-final.log.gz"
+    },
+    "lint": {
+      "exit": 0,
+      "raw": "/tmp/csp13-expiring-import-lint-final.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "durable_raw": "csp13-expiring-import-lint-final.log.gz"
+    },
+    "prose": {
+      "exit": 0,
+      "raw": "/tmp/csp13-expiring-import-prose-final.log",
+      "sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618",
+      "durable_raw": "csp13-expiring-import-prose-final.log.gz"
+    },
+    "fail_before": {
+      "exit": 1,
+      "raw": "/tmp/csp13-expiring-import-failbefore.jsonl",
+      "sha256": "6a66ccc66675e9a9a625c2501a31cfddc11682a61e49a536478f785e7bac2692",
+      "reason": "Both original native import owners lack expiring retirement; ordinary CAS refuses expiring controls.",
+      "durable_raw": "csp13-expiring-import-failbefore.jsonl.gz"
+    }
+  },
+  "remaining_uncertainty": [
+    "Final native Linux and Windows qualification remains with the parent publication workflow.",
+    "Complete application activation and catalog expiring-stage composition remain separate qualification tasks."
+  ],
+  "durable_restart": "Both persistent Badger and Valkey close and reopen their native connections after the retirement commit; the exact original receipt remains idempotent and the import barrier remains closed.",
+  "agent_commit": "7a23b0b9",
+  "root_commit": "fd3b0ba7943b77121a1cab2be3faef53b8602888",
+  "root_checks": {
+    "race": {
+      "exit": 0,
+      "results": {
+        "pass": 42
+      },
+      "selector": "^TestExpiringImportRetirement",
+      "raw": "csp13-root-expiring-import-race.jsonl.gz",
+      "sha256": "6d482dab731cb53f852513f39e47aa571f96fe9062a0ef22605c711509d048a9",
+      "GOWORK": "off",
+      "Go": "1.27.1"
+    },
+    "pure": {
+      "exit": 0,
+      "results": {
+        "pass": 42
+      },
+      "selector": "^TestExpiringImportRetirement",
+      "raw": "csp13-root-expiring-import-pure.jsonl.gz",
+      "sha256": "f478556a1a4e371f2943ddda97c52ab8c6f77e80fc8846de0dc6a171d00cb0ff",
+      "GOWORK": "off",
+      "Go": "1.27.1"
+    }
+  }
+}

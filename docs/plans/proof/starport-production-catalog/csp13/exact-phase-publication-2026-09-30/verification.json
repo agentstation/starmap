@@ -1,0 +1,162 @@
+{
+  "status": "PASS_COMPONENT_ONLY",
+  "task": "CSP13",
+  "date": "2026-09-30",
+  "base_commit": "86c169a0d93be9d4d2941caa4f6122f7a0b84553",
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "contract": "Passive exact pending-write inspection and native-checked completion of only matching immutable phase bytes. No generic publication recovery, source acquisition, history replacement, or permission issuance. Host verifies original sealed decision and native completion receipt under the writer lock.",
+  "source_sha256": {
+    "internal/privatefiles/record_publication.go": "d34aa728eb60fc7106c337738dec73ff6e7576037dd14928ddc00f68e31ef9a9",
+    "internal/privatefiles/record_completion.go": "b0fb6d5ca80b67ae59288e258fffea02ea4f4945f6aae836cd707bf963d1dea4",
+    "internal/privatefiles/record_completion_inspection.go": "921fa40336a67a5e02fbde31db67390b6f26d785ae7a55c78ea8cfea5ccd9c4a",
+    "internal/privatefiles/record_completion_test.go": "206b366a55c98b6e32a91e5d91aa88ccce159ab43cd2358158f18b63445c539a",
+    "pkg/productfiles/publication_completion.go": "4d15bf57eef43fb0748273210e0fa18d634d9393d5275c41bc59762f92b405ef",
+    "pkg/productfiles/publication_completion_test.go": "3c119c8a071a4766659717837c533d299146f0d55c81b8cd85af7aa8e7d80867"
+  },
+  "checks": [
+    {
+      "mode": "race",
+      "counts": {
+        "pass": 183,
+        "fail": 0,
+        "skip": 0
+      },
+      "status": "PASS",
+      "command": "go test -race -count=1 -json -timeout=10m ./internal/privatefiles ./pkg/productfiles",
+      "raw_evidence": "/tmp/csp13-exact-phase-completion-race-final-owners.jsonl",
+      "raw_sha256": "edfb0f32836b705a6f6ea68e527c0b2d0a94d3071e11effb40dc285e0c83046f"
+    },
+    {
+      "mode": "pure",
+      "counts": {
+        "pass": 183,
+        "fail": 0,
+        "skip": 0
+      },
+      "status": "PASS",
+      "command": "CGO_ENABLED=0 go test -count=1 -json -timeout=10m ./internal/privatefiles ./pkg/productfiles",
+      "raw_evidence": "/tmp/csp13-exact-phase-completion-pure-final-owners.jsonl",
+      "raw_sha256": "396bc83a73ece7c58acf9623d6f59e8bca34780fe655d235d953fdc8c190f1e7"
+    },
+    {
+      "command": "make verify-checks",
+      "status": "PASS",
+      "exit_code": 0,
+      "raw_evidence": "/tmp/csp13-exact-phase-completion-verify-checks-final.log",
+      "raw_sha256": "00082cac104a487183b1f483382898235e350667158e66392c1a710032acf6d6",
+      "includes": [
+        "Go vet",
+        "pinned golangci-lint2.13.2",
+        "goago",
+        "full technical writing",
+        "native coverage manifest contracts",
+        "pure-Go consumers",
+        "catalog/schema/budget/performance and ownership checks"
+      ]
+    },
+    {
+      "command": "make godoc",
+      "status": "PASS",
+      "exit_code": 0,
+      "raw_evidence": "/tmp/csp13-exact-phase-completion-godoc.log"
+    }
+  ],
+  "regressions_before": [
+    {
+      "status": "EXPECTED_FAIL",
+      "raw": "/tmp/csp13-phase-api-fail-before.jsonl",
+      "condition": "Former public API cannot compile the new completion contracts"
+    },
+    {
+      "status": "EXPECTED_FAIL",
+      "raw": "/tmp/csp13-phase-byte-detachment-fail-before.jsonl",
+      "condition": "Host callback mutates caller input; detached bytes preserve exact publication"
+    }
+  ],
+  "preserved_intermediate_failures": [
+    {
+      "raw": "/tmp/csp13-exact-phase-completion-verify-checks.log",
+      "cause": "Cyclomatic complexity 38 exceeded owner limit30; separated destination contract without changing assertions"
+    },
+    {
+      "condition": "Regression harness expected compiler error on stderr, but Go JSON emitted it on stdout; actual compile failure is preserved and verified"
+    }
+  ],
+  "limitations": [
+    "Unrecorded or changed staging ownership remains a refusal and requires explicit operator recovery",
+    "Final application phase-journal integration and fresh-process matrix remain unverified",
+    "Native Linux/Windows CI must qualify the final published head",
+    "Maximum-capacity, RPO and RTO remain unverified"
+  ],
+  "whole_csp13_complete": false,
+  "published_head": "79852bf7ddee936c4dee2a741f1c1c5c4d30dadb",
+  "published_module": "v0.16.6-0.20260930065056-79852bf7ddee",
+  "pr": "https://github.com/agentstation/starmap/pull/201",
+  "native_run": 36680574306,
+  "native_status": "PENDING",
+  "signature": {
+    "verified": true,
+    "reason": "valid",
+    "source": "GitHub commit verification"
+  },
+  "review": {
+    "status": "PASS",
+    "exit_code": 0,
+    "gate": "pre-pr",
+    "profile": "auto",
+    "engine": "claude",
+    "model": "claude-opus-5-5",
+    "effort": "high",
+    "threshold": "P0",
+    "passes": 1,
+    "accepted_actionable_findings": 0,
+    "secret_scan": "clean"
+  },
+  "raw_archives": [
+    {
+      "path": "csp13-exact-phase-completion-race-final-owners.jsonl.gz",
+      "raw_sha256": "edfb0f32836b705a6f6ea68e527c0b2d0a94d3071e11effb40dc285e0c83046f",
+      "gzip_sha256": "77c644b50d3ffc87e85eb3b20ba246570d5dd9236cb54493829419a7fe016f41"
+    },
+    {
+      "path": "csp13-exact-phase-completion-pure-final-owners.jsonl.gz",
+      "raw_sha256": "396bc83a73ece7c58acf9623d6f59e8bca34780fe655d235d953fdc8c190f1e7",
+      "gzip_sha256": "491536b57c821c74afda7b184e4c8dc0d12a9541f2f0748dc1d86fade726c5dd"
+    },
+    {
+      "path": "csp13-exact-phase-completion-verify-checks-final.log.gz",
+      "raw_sha256": "00082cac104a487183b1f483382898235e350667158e66392c1a710032acf6d6",
+      "gzip_sha256": "396939c5bad64e2bf2c3cd23f7f31e3bb366524cfacca00fa3b6df8eda4b6df3"
+    },
+    {
+      "path": "csp13-exact-phase-completion-verify-checks.log.gz",
+      "raw_sha256": "df150f56d81e52e1ac2448c1036fd8e439b3aa502ca83be5400547b4c2d52dc6",
+      "gzip_sha256": "68d6de5449337de8f3d0c591bab32c0e6ad8ea283c54a1d12dfbc1929f5c8c3e"
+    },
+    {
+      "path": "csp13-phase-api-fail-before.jsonl.gz",
+      "raw_sha256": "e6ee7e06bb223027ed7e8111b77d396053325ee42ac46e434c708c44e4e1adf5",
+      "gzip_sha256": "6f5acda5c72b3170c8ca1ced56e2659a4e826f8e6f28d699c8bcfcfd9f33874b"
+    },
+    {
+      "path": "csp13-phase-byte-detachment-fail-before.jsonl.gz",
+      "raw_sha256": "7bb113a25244bb05ca821b5838c6538025455a2bf7a11855b5d9c08bb2bbb6c3",
+      "gzip_sha256": "4fa7c06f03c94ca1031c39678aedb36a9af08c062a32e8f6990f9039e7fc5d76"
+    },
+    {
+      "path": "csp13-exact-phase-completion-autoreview.log.gz",
+      "raw_sha256": "722bfd91e573d79af45042ce503f191bf5bae9ed57d8a8b70b19ee6202f87c81",
+      "gzip_sha256": "c4c588f4d73443f7edca9effe527fcf1bf424151dbed0eed90567a62cbce37cf"
+    },
+    {
+      "path": "csp13-starmap201-before-exact-phase-update.json.gz",
+      "raw_sha256": "959d90a9985dc3d30853ec85db55e782b98def087e7a79aa1116e61344b9c5de",
+      "gzip_sha256": "16cc823326741c9eb4984260bd9947ba1189c2f78f31ebb8374a66566dd9a4bd"
+    },
+    {
+      "path": "csp13-starmap201-final-module.json.gz",
+      "raw_sha256": "998b8cc08c9eb99394e67737c95dab3669fb876412a258cbf8f7880b85735e62",
+      "gzip_sha256": "6b5cbb577d9ed8478f20e57055e7bbca9d04e1d07679422873e31f802ce7d565"
+    }
+  ]
+}

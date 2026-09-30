@@ -1,0 +1,22 @@
+{
+  "status": "PASS_CHANGED_PROSE_WITH_EXISTING_REPOSITORY_FAILURES",
+  "changed_prose_files": 4,
+  "changed_prose_diagnostics": 0,
+  "repository_technical_writing": {
+    "command": "make technical-writing-check",
+    "exit_code": 2,
+    "files": 1986,
+    "diagnostics": 229,
+    "scope": "All final diagnostics are outside the four changed prose files; existing historical proof prose remains unchanged."
+  },
+  "raw_evidence": [
+    {
+      "path": "csp13-captured-documents-focused-writing-20260930.log.gz",
+      "raw_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7"
+    },
+    {
+      "path": "csp13-captured-documents-writing-final-20260930.log.gz",
+      "raw_sha256": "33fe87b5bd42ab708700a35ce42e167464928847bf139d1581efd15895a1ee91"
+    }
+  ]
+}

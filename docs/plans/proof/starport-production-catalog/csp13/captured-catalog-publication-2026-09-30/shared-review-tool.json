@@ -1,0 +1,23 @@
+{
+  "status": "PASS_COMPONENT_ONLY",
+  "scope": "Owner-authorized shared JSON-gzip review support",
+  "date": "2026-09-30",
+  "regression_tests": 20,
+  "failures": 0,
+  "contract": [
+    "Bound compressed and expanded input",
+    "Validate UTF-8 JSON and produce readable diffs",
+    "Scan decoded changed content for secrets",
+    "Retain rejection of unsupported binary formats"
+  ],
+  "source_sha256": {
+    "/Users/jack/.agents/skills/autoreview/scripts/autoreview": "71e80abdd6ee7b44e08c73ae0e80e8ed9d4e80b0402d71d05c031dad006c1064",
+    "/Users/jack/.agents/skills/autoreview/tests/test_json_gzip_review.py": "8cc125408ca14a775d818546523b3636aad1c5e72356aae89760960ac2398d12"
+  },
+  "evidence": {
+    "path": "json-gzip-review-tests.log.gz",
+    "raw_sha256": "0d601ba79fe3f43560934ab2c468bcefb26b009b29270cb0e92031ea0d1c0fb6",
+    "gzip_sha256": "90e65b5867d9751381550bea6f34be0ab6a45f46ce66d2cea238b8c60418f0ba"
+  },
+  "product_task_complete": false
+}

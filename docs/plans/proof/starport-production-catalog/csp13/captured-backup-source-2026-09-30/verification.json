@@ -1,0 +1,22 @@
+{
+  "task": "CSP13",
+  "task_completed": false,
+  "contract": "RestoreSource reopens only original cryptographically checked backup KV and payload bytes. Current target stores and current clocks do not participate. Metadata stays bounded to 16 MiB. Catalog payload reads use an explicit limit at most the producer 256 MiB bound. Pure portable backup record types move to recovery; config aliases preserve the exact wire record and owner collection logic.",
+  "fail_before": "/tmp/csp13-restore-catalog-source-fail-before.jsonl",
+  "verification": {
+    "race": {
+      "pass": 30,
+      "fail": 0,
+      "skip": 0
+    },
+    "pure": {
+      "pass": 30,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "vet": "PASS",
+  "prose": "PASS 5 files 0 diagnostics",
+  "lint": "PASS golangci-lint v2.13.2",
+  "inconclusive_lint": "Earlier parallel invocation refused its process lock with exit 3. Sequential final run passed."
+}

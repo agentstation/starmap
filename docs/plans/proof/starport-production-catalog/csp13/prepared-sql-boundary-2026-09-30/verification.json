@@ -1,0 +1,22 @@
+{
+  "task": "CSP13",
+  "task_completed": false,
+  "problem": "Prepared imported SQL boundary omits BackendID until final activation. Compiler incorrectly required it to equal the future fleet identity.",
+  "contract": "Keep original closed boundary unchanged. Future destination identity is bound separately to compilation. The host must check it against actual native incarnation before any release. Established nonempty boundary identity still must match.",
+  "fail_before": "/tmp/csp13-prepared-boundary-fail-before.jsonl",
+  "verification": {
+    "race": {
+      "pass": 5,
+      "fail": 0,
+      "skip": 0
+    },
+    "pure": {
+      "pass": 5,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "vet": "PASS",
+  "lint": "PASS golangci-lint v2.13.2",
+  "prose": "PASS 2 files 0 diagnostics"
+}
