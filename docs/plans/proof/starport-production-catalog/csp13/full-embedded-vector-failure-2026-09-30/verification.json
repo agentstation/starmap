@@ -1,0 +1,41 @@
+{
+  "status": "FAIL",
+  "source_head": "0c2cf5d4a3c1e33f4124a05984a42f32694f87c3",
+  "published_module": "v0.16.6-0.20260930115749-2bb995712275",
+  "workspace": "GOWORK=off",
+  "replace": "absent",
+  "go_version": "go1.27.1",
+  "command": "private native wrapper: go test -json -race -count=1 -p=1 -timeout=30m -cpuprofile=cpu.pprof -o app.test ./internal/app -run ^TestRecoveryActivationFullEmbeddedApplication$",
+  "operation_limit_seconds": 420,
+  "package_limit_minutes": 30,
+  "test_elapsed_seconds": 486.24,
+  "package_elapsed_seconds": 488.055,
+  "counts": {
+    "pass": 0,
+    "fail": 1,
+    "skip": 0
+  },
+  "error": "context deadline exceeded",
+  "raw_log_sha256": "81d80015967ef5e616816cc92a908158b5af515ab41956004300a41924568db0",
+  "archive": "race.json.gz",
+  "exact_binary": {
+    "local_private_path": "/tmp/csp13-full-embedded-vector-20260930/app.test",
+    "sha256": "d500ad2a93f9409e80e9c5912fc4cab141d330f08b80e6aab0c1133eba0e63ee"
+  },
+  "cpu_profile": {
+    "local_private_path": "/tmp/csp13-full-embedded-vector-20260930/cpu.pprof",
+    "sha256": "31393a19fc63228c8a42ac274e1aa11858b6e30259e58cab3683d492bf44cdcc",
+    "duration_seconds": 486.44,
+    "sample_seconds": 450.1
+  },
+  "observed_stacks": {
+    "prepareRecoveryActivationDecision_cpu_seconds": 84.14,
+    "CompileRecoveryTopology_cpu_seconds": 24.43,
+    "InspectRecoveryCanonicalFiles_cpu_seconds": 8.31,
+    "InspectRestoreSource_under_canonical_checks_cpu_seconds": 7.6,
+    "DecodeCatalogPayload_cpu_seconds": 61.88,
+    "unattributed_external_race_runtime_cpu_seconds": 251.55
+  },
+  "interpretation": "Repeated canonical checks reconstruct the already verified source reference graph. CPU samples establish repeated work, not a full wall-time attribution. A bounded in-process checked-source reuse with fresh complete artifact/key checks is being tested. No operation deadline or acceptance criterion changes.",
+  "required_next": "Qualify repaired complete activation and maximum inventory separately; task remains in_progress."
+}
