@@ -71,6 +71,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 
 - [Constants](<#constants>)
 - [func CatalogRecoveryChecksums\(ctx context.Context, path string, owner DirectoryOwner, identity string, generation catalogs.Generation\) \(\[\]string, error\)](<#CatalogRecoveryChecksums>)
+- [func CheckRetainedCatalogRecovery\(ctx context.Context, request CatalogRetainedReadRequest, comparison \*CatalogRetentionComparison\) \(resultErr error\)](<#CheckRetainedCatalogRecovery>)
 - [func InspectCapturedCatalogRetention\(ctx context.Context, name string, raw \[\]byte\) \(CatalogRetentionEntry, CatalogRetentionInput, error\)](<#InspectCapturedCatalogRetention>)
 - [func InspectRetainedCatalogMaterialization\(ctx context.Context, request CatalogRetainedMaterializationRequest, expected CatalogMaterializationReceipt, opts ...Option\) \(resultErr error\)](<#InspectRetainedCatalogMaterialization>)
 - [func InspectRetainedDirectory\(ctx context.Context, path string, owner DirectoryOwner, identity string\) error](<#InspectRetainedDirectory>)
@@ -111,6 +112,10 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type CatalogRetainedReadRequest](<#CatalogRetainedReadRequest>)
 - [type CatalogRetainedRecord](<#CatalogRetainedRecord>)
 - [type CatalogRetentionBatch](<#CatalogRetentionBatch>)
+- [type CatalogRetentionComparison](<#CatalogRetentionComparison>)
+  - [func InspectCatalogRetentionComparison\(ctx context.Context, entry CatalogRetentionEntry, input CatalogRetentionInput\) \(\*CatalogRetentionComparison, error\)](<#InspectCatalogRetentionComparison>)
+  - [func \(p CatalogRetentionComparison\) Format\(state fmt.State, \_ rune\)](<#CatalogRetentionComparison.Format>)
+  - [func \(p \*CatalogRetentionComparison\) Usage\(\) CatalogRetentionUsage](<#CatalogRetentionComparison.Usage>)
 - [type CatalogRetentionEntry](<#CatalogRetentionEntry>)
 - [type CatalogRetentionInput](<#CatalogRetentionInput>)
   - [func ReadRetainedCatalogRecovery\(ctx context.Context, request CatalogRetainedReadRequest\) \(input CatalogRetentionInput, resultErr error\)](<#ReadRetainedCatalogRecovery>)
@@ -522,6 +527,15 @@ func CatalogRecoveryChecksums(ctx context.Context, path string, owner DirectoryO
 
 CatalogRecoveryChecksums lists immutable input\-record identities for an exact generation. These checksums name compressed local descriptors, not exported FleetRecovery bytes. The caller must fence writers. Multiple results require an explicit selection. Listing never proves which publication committed or whether independent history is complete.
 
+<a name="CheckRetainedCatalogRecovery"></a>
+## func [CheckRetainedCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_comparison.go#L56>)
+
+```go
+func CheckRetainedCatalogRecovery(ctx context.Context, request CatalogRetainedReadRequest, comparison *CatalogRetentionComparison) (resultErr error)
+```
+
+CheckRetainedCatalogRecovery compares current retained bytes with checked original input. It checks the native owner, completed batch, manifest, exact entry, and bounded envelope hash. It does not decode unchanged input, repair files, select a catalog, or establish current permission.
+
 <a name="InspectCapturedCatalogRetention"></a>
 ## func [InspectCapturedCatalogRetention](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_storage.go#L231>)
 
@@ -532,7 +546,7 @@ func InspectCapturedCatalogRetention(ctx context.Context, name string, raw []byt
 InspectCapturedCatalogRetention checks original immutable envelope bytes without opening a runtime. It checks structure and generation identity. It proves no completed batch, selection, ownership, or permission. The host must verify the complete original archive census and publication records separately.
 
 <a name="InspectRetainedCatalogMaterialization"></a>
-## func [InspectRetainedCatalogMaterialization](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L293>)
+## func [InspectRetainedCatalogMaterialization](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L256>)
 
 ```go
 func InspectRetainedCatalogMaterialization(ctx context.Context, request CatalogRetainedMaterializationRequest, expected CatalogMaterializationReceipt, opts ...Option) (resultErr error)
@@ -898,7 +912,7 @@ func MaterializeCatalogRecovery(ctx context.Context, request CatalogMaterializat
 MaterializeCatalogRecovery replaces catalog inputs through a private operation journal. It preserves owner, instance seed, permission checkpoints, and origin discovery records. Pending work blocks runtime startup. An exact completed retry returns its original receipt without replacing later state.
 
 <a name="MaterializeRetainedCatalogRecovery"></a>
-### func [MaterializeRetainedCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L272>)
+### func [MaterializeRetainedCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L235>)
 
 ```go
 func MaterializeRetainedCatalogRecovery(ctx context.Context, request CatalogRetainedMaterializationRequest, opts ...Option) (CatalogMaterializationReceipt, error)
@@ -1018,6 +1032,44 @@ type CatalogRetentionBatch struct {
 }
 ```
 
+<a name="CatalogRetentionComparison"></a>
+## type [CatalogRetentionComparison](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_comparison.go#L14-L19>)
+
+CatalogRetentionComparison binds structurally checked original input to its canonical envelope. It retains private hashes and byte counts. It grants no ownership, selection, replay, or permission. Only InspectCatalogRetentionComparison can create a usable value.
+
+```go
+type CatalogRetentionComparison struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="InspectCatalogRetentionComparison"></a>
+### func [InspectCatalogRetentionComparison](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_comparison.go#L38>)
+
+```go
+func InspectCatalogRetentionComparison(ctx context.Context, entry CatalogRetentionEntry, input CatalogRetentionInput) (*CatalogRetentionComparison, error)
+```
+
+InspectCatalogRetentionComparison checks original input and binds its canonical compressed envelope. The result contains no original data and has no serialized constructor. This inspection writes no files and contacts no sources.
+
+<a name="CatalogRetentionComparison.Format"></a>
+### func \(CatalogRetentionComparison\) [Format](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_comparison.go#L22>)
+
+```go
+func (p CatalogRetentionComparison) Format(state fmt.State, _ rune)
+```
+
+Format excludes private entry identities and envelope hashes from diagnostics.
+
+<a name="CatalogRetentionComparison.Usage"></a>
+### func \(\*CatalogRetentionComparison\) [Usage](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_comparison.go#L28>)
+
+```go
+func (p *CatalogRetentionComparison) Usage() CatalogRetentionUsage
+```
+
+Usage returns the immutable byte counts from the original complete structural check. A nil or empty comparison returns zero counts.
+
 <a name="CatalogRetentionEntry"></a>
 ## type [CatalogRetentionEntry](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L29-L34>)
 
@@ -1093,7 +1145,7 @@ type CatalogRetentionReceipt struct {
 ```
 
 <a name="RetainCatalogRecovery"></a>
-### func [RetainCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L177>)
+### func [RetainCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L140>)
 
 ```go
 func RetainCatalogRecovery(ctx context.Context, request CatalogRetentionRequest) (receipt CatalogRetentionReceipt, resultErr error)
