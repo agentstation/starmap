@@ -1,0 +1,83 @@
+{
+  "recorded_at": "2026-09-30T15:49:31.324352+00:00",
+  "owner_request": "Transition implementation to Fable and provide continuation prompt.",
+  "goal_api_status": "blocked",
+  "plan_status": "active",
+  "task": "CSP13",
+  "ledger_done": 27,
+  "ledger_total": 40,
+  "owner_interruption": "Both delegated agents stopped at safe checkpoints. No qualification session remains live.",
+  "worktrees": [
+    {
+      "role": "consumer",
+      "path": "/private/tmp/starport-clock-review-20260926",
+      "head": "c6b102327482e1a7337ca76720520cc52e28519b",
+      "branch": "codex/recovery-catalog-activation",
+      "status": [],
+      "unfinished_source_sha256": {}
+    },
+    {
+      "role": "semantic repair",
+      "path": "/private/tmp/starport-recovery-canonical-semantic-20260930",
+      "head": "4805e6d4091720f43075d71d0136a30a192dd24d",
+      "branch": "codex/recovery-canonical-semantic-proof",
+      "status": [
+        " M internal/recovery/canonical_files_inspection.go",
+        "?? internal/recovery/artifact_identity.go",
+        "?? internal/recovery/original_artifacts.go"
+      ],
+      "unfinished_source_sha256": {
+        "internal/recovery/canonical_files_inspection.go": "2cb9ead06b6a25291e5ab15c35eb9d32f3f261ce7ac9106a3c3c0e6efa539c6b",
+        "internal/recovery/artifact_identity.go": "bc89af6dda4f273e4873e0232f4b373d8ea3f31c75a58515d29b12b38a1a60a1",
+        "internal/recovery/original_artifacts.go": "ae5da99204cafb9fcf3b8c39afcecb9df5f814c558b2f75517e65489899a5aa4"
+      }
+    },
+    {
+      "role": "native adoption",
+      "path": "/private/tmp/starport-recovery-restart-epoch-20260930",
+      "head": "39c7cb9eaad2c38b44c3d6d2196c8ef3a0f8b6a8",
+      "branch": "codex/recovery-restart-epoch-20260930",
+      "status": [
+        " M internal/sqlstore/relational_recovery_census.go",
+        "?? internal/app/recovery_restart_container_test.go",
+        "?? internal/app/recovery_restart_epoch_test.go"
+      ],
+      "unfinished_source_sha256": {
+        "internal/sqlstore/relational_recovery_census.go": "1b0142215651d2892fe441f93db1df1869b1d93fb0c3edc980b9480f2fcc14e0",
+        "internal/app/recovery_restart_container_test.go": "52f2aa9f94541cb817696a601d5beecd188013eae4d5b6b3e4262515a61ef20e",
+        "internal/app/recovery_restart_epoch_test.go": "b4ab2dd1550203f6b48c00f99a71a5b0ae0888cdeaff145510edc77711cabc1b"
+      }
+    }
+  ],
+  "latest_results": {
+    "combined_native_pure": {
+      "parent_pass": 13,
+      "test_pass": 38,
+      "failure": 0,
+      "skip": 0,
+      "package_seconds": 275.332,
+      "proof": "../combined-application-retry-2026-09-30/verification.json"
+    },
+    "integrated_projection_pure": {
+      "test_pass": 57,
+      "parents": 12,
+      "packages": 4,
+      "failure": 0,
+      "skip": 0
+    },
+    "combined_native_race": "UNVERIFIED",
+    "full_embedded_race": "FAIL: unchanged 420-second activation deadline",
+    "complete_populated_adoption": "UNVERIFIED"
+  },
+  "pending_owner_question": null,
+  "confirmed_latest_decision": "D42: measure supported recovery deployments first, then approve numeric RPO/RTO before production readiness.",
+  "unrelated_plan_changes_to_preserve": [
+    "AGENTS.md",
+    "Makefile",
+    "go.mod",
+    "go.sum",
+    "scripts/verify.sh"
+  ],
+  "handoff_sha256": "266d4aae7b547426ba8264c75dbb5aef9e8de035498c7ac6f403142d99e82953",
+  "conversation": "/Users/jack/.codex/sessions/2026/09/09/rollout-2026-09-09T10-40-41-01a06e82-a5e3-7370-a2bc-6955da68c236_01a086d4-14eb-74c0-8eff-950f7307284e.jsonl"
+}

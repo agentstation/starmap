@@ -16,16 +16,19 @@
   "prior_delivery_other_regressions_pass": 31,
   "native_hosted_qualification": "UNVERIFIED",
   "combined_native": {
-    "status": "RUNNING",
-    "session_id": 21981,
-    "source_head": "8740bb7122dfff7e87d4ce081e530d817a238f39",
+    "status": "PASS_PURE_COMPONENT_GROUPS",
+    "source_head": "c6b102327482e1a7337ca76720520cc52e28519b",
     "groups": [
       "namespace",
       "operator",
       "gateway"
     ],
-    "parents": 13,
-    "platform": "darwin/arm64"
+    "parents_pass": 13,
+    "test_pass": 38,
+    "failure": 0,
+    "skip": 0,
+    "race": "UNVERIFIED",
+    "proof": "../combined-application-retry-2026-09-30/verification.json"
   },
   "limits": [
     "Original platform checks and protected job names remain unchanged.",

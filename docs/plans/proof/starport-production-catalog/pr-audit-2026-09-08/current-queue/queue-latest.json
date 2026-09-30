@@ -3313,10 +3313,9 @@
     "required_next": "Qualify checked-source repair with unchanged deadline."
   },
   "native_window": {
-    "owner": "root",
-    "activity": "combined namespace/operator/gateway pure qualification",
-    "session_id": 21981,
-    "independent_owner": "operator_recovery_inputs local-only projection; starmap_ci_repair isolated semantic proof repair"
+    "owner": null,
+    "activity": "Idle after completed native pure retry. Owner requested Fable transition.",
+    "session_id": null
   },
   "populated_adoption_extension": {
     "owner": "operator_recovery_inputs",
@@ -3344,13 +3343,22 @@
   },
   "unprefixed_integration": "../../csp13/unprefixed-integration-2026-09-30/verification.json",
   "current_consumer": {
-    "head": "8740bb7122dfff7e87d4ce081e530d817a238f39",
+    "head": "c6b102327482e1a7337ca76720520cc52e28519b",
     "owner": "root",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-catalog-activation",
     "status": "LOCAL_QUALIFICATION",
-    "next_action": "Complete combined native groups, private semantic timeout repair, populated adoption, and measured recovery before final review/publication."
+    "next_action": "Resume with Fable from the handoff, preserving partial worktrees. Complete semantic timeout repair and native adoption."
   },
   "fresh_history_qualification": "../../csp13/fresh-history-qualification-2026-09-30/verification.json",
-  "application_ci_integration": "../../csp13/application-ci-integration-2026-09-30/verification.json"
+  "application_ci_integration": "../../csp13/application-ci-integration-2026-09-30/verification.json",
+  "projection_integration": {
+    "commit": "c6b10232",
+    "delivery": "39c7cb9e",
+    "component": "Independent offline history projection",
+    "integrated_pure_pass": 57,
+    "skip": 0,
+    "full_populated_adoption": "UNVERIFIED"
+  },
+  "handoff": "../../csp13/fable-handoff-2026-09-30/HANDOFF.md"
 }

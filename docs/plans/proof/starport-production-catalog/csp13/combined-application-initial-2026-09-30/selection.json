@@ -1,0 +1,23 @@
+{
+  "source": "8740bb7122dfff7e87d4ce081e530d817a238f39",
+  "groups": [
+    "namespace",
+    "operator",
+    "gateway"
+  ],
+  "parents": [
+    "TestUnprefixedBackupRequiresValkeyBeforeOpeningStores",
+    "TestUnprefixedBackupMigratesVerifiedRecordsUnderBarriers",
+    "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+    "TestRecoveryActivationLocalOperatorCommands",
+    "TestRecoveryPopulatedOperatorCommandsAcrossNativePhaseCut",
+    "TestRecoveryOperatorInputsSharedNativeTargets",
+    "TestRecoveryOperatorInputsInspectionNeverCreatesMissingDecision",
+    "TestRecoveryOperatorInputsInspectionReopensOriginalEvidence",
+    "TestRecoveryFreshGatewayRejectsUnapprovedHistoryBeforeEffects",
+    "TestRecoveryOldWarmedGatewayRefusesAfterKnownClosure",
+    "TestRecoveredSharedGatewayFreshStartupAndBudgetAdmission",
+    "TestRecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch",
+    "TestRecoveryFreshReplicaActualHistoryBarriers"
+  ]
+}

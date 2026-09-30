@@ -1,0 +1,28 @@
+{
+  "status": "FAIL",
+  "source_head": "8740bb7122dfff7e87d4ce081e530d817a238f39",
+  "tests_pass": 37,
+  "parent_pass": 12,
+  "parent_fail": 1,
+  "skip": 0,
+  "failed_owner": "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+  "package_seconds": 210.066,
+  "toolchain": {
+    "CGO_ENABLED": "0",
+    "GOARCH": "arm64",
+    "GOHOSTARCH": "arm64",
+    "GOHOSTOS": "darwin",
+    "GOOS": "darwin",
+    "GOVERSION": "go1.27.1",
+    "GOWORK": "off"
+  },
+  "raw_sha256": "0703c6e16a60f035a35bb57983668d683da4680eb5166f94f6c668bf91e72350",
+  "cause": "The default private child-output fixture used an unchecked temporary directory. Runtime correctly rejected its group and other access.",
+  "repair_commit": "0a5119a3c56388e614ca3977db1dbdf0d02567e0",
+  "repair": "Create a private directory through the existing productfiles owner. Keep checks on externally selected evidence directories.",
+  "required_next": "Focused actual namespace regression and final combined-source qualification.",
+  "limits": [
+    "The failed package does not qualify the thirteen-parent combined group.",
+    "Provider access, budget history and recovery assertions remain unchanged."
+  ]
+}

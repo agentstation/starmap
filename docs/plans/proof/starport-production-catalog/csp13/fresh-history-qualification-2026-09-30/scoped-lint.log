@@ -1,0 +1,18 @@
+internal/app/recovery_fresh_history_census_test.go:211:19: string `absent` has 8 occurrences, make it a constant (goconst)
+			result[root] = "absent"
+			               ^
+internal/app/recovery_fresh_history_census_test.go:228:18: G304: Potential file inclusion via variable (gosec)
+				file, err := os.Open(path)
+				             ^
+internal/app/recovery_fresh_history_process_test.go:37:15: G304: Potential file inclusion via variable (gosec)
+	body, err := os.ReadFile(path)
+	             ^
+internal/app/recovery_fresh_history_process_test.go:73:14: G304: Potential file inclusion via variable (gosec)
+	log, err := os.OpenFile(logPath, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+	            ^
+internal/app/recovery_fresh_history_process_test.go:75:13: G204: Subprocess launched with a potential tainted input or cmd arguments (gosec)
+	command := exec.CommandContext(t.Context(), os.Args[0], "-test.run=^TestRecoveryFreshHistoryProcess$", "-test.timeout=2m")
+	           ^
+5 issues:
+* goconst: 1
+* gosec: 4
