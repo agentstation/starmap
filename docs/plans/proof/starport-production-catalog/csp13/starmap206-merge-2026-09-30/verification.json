@@ -1,0 +1,57 @@
+{
+ "recorded_utc": "2026-09-30T19:45:54.788674+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starmap",
+ "pr": 206,
+ "head": "c27e08aa12fdd118b15f08987febb57a171c57ab",
+ "base": "2bb99571227518efcb67aa64f9b78bf9079fab27",
+ "merge": "8e7fdef8aede9fda9688792efbebcb5e7dd10c13",
+ "merged_at": "2026-09-30T19:05:49Z",
+ "checks": {
+  "success": 62,
+  "not_success": 0,
+  "total": 62
+ },
+ "reviewed_tree": "2ba5ecfce974e20cf5a6b2b6f2f9c2a1bfe4c574",
+ "merged_tree": "2ba5ecfce974e20cf5a6b2b6f2f9c2a1bfe4c574",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Security & Reliability",
+  "Verification Gate"
+ ],
+ "linear_history": false,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "Bounded decoded catalog reuse (catalogs.RetainDecodedCatalogs, EncodeCatalogPayload). The scope supplies no authority. Starport layer four pins this merge. Complete CSP13 recovery remains open.",
+ "local_verify": "make verify passed every gate up to the last race shard, which the two-hour session limit stopped; the shard alone then passed with 29 packages ok. Hosted CI was the merge gate.",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "68fdbcf7db88bdf28c20a93ee737cbe4fb0f8fc6b070da5822f664a9843f837a",
+   "gzip_sha256": "56bcf76652f1e5f62b69aa1e4181ac5bf96fb922f82f84bd443c170778f79a99"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "faf0ba481e35501f4fd8bb5fc683341c3b3dbc03e568e00167f2adff2ee4933b",
+   "gzip_sha256": "211aa54c3f73905eddf476ed54898992f384e90af1e5104a9301f9de8aebd187"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "a7cdd4b842078d3b08c2ced98dc2913e004ba4aa046176fbcc8eb755288b1501",
+   "gzip_sha256": "209a845b2e82b2da656e725adc6816840f06fdb8d46cac368bb0add2ef6476b7"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+   "gzip_sha256": "da95be86de467295689c40b6350ff741a6659382857d1f52272e7dc99b40ed85"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}

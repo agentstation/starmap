@@ -12,13 +12,17 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: merge Starport #395 (layer two) after the CI of its head <code>d06c47b0</code>, then rebase and publish layer three. Merge Starmap #207 (acceptance registration) after the CI of its rebased head <code>d7928c7c</code>. Repeat the unchanged full native pure and race test on layer four. Then integrate populated adoption by phase.</p>
+<p>Next: merge Starport #395 (layer two) after the CI of its head <code>d06c47b0</code>, then rebase and publish layer three. Complete the layer four roster, both reviews, and the unchanged full native pure and race test. Then integrate populated adoption by phase.</p>
 
 <p>The first hosted run of layer two (run 36762241543) stopped the recovery package at Go's default ten-minute allowance. macOS completed 108 of 180 top-level tests. Windows recovery shard 1 completed 30 of 56 owners. No test failed. Layer two grows the recovery package from 114 to 180 top-level tests.</p>
 
 <p>Commit <code>d06c47b0</code> gives the native storage batch a thirty-minute allowance and each Windows recovery shard twenty minutes. Assertions and individual contract deadlines do not change. The Sol 6.1 review of the branch is clean (0.93). Windows application shard 0 also stopped at its twelve-minute allowance, as it did on <code>main</code> run 36635758835 before layer two. Layer four owns that allowance because it grows the application package.</p>
 
-<p>Layer four commit <code>56f75354</code> pins Starmap <code>8e7fdef8</code> and opens the decoded catalog scope in <code>ActivateRecovery</code>. The new pure test <code>TestRecoveryActivationReleasesDecodedCatalogScope</code> passes in 144 seconds. Lint reports 0 issues.</p>
+<p>Root rebased layer three onto <code>d06c47b0</code> as <code>b1437724</code> with unchanged owner trees, and layer four onto it. Layer four commit <code>a779f9b8</code> pins Starmap <code>8e7fdef8</code> and opens the decoded catalog scope in <code>ActivateRecovery</code>. The new pure test <code>TestRecoveryActivationReleasesDecodedCatalogScope</code> passes in 144 seconds. Lint reports 0 issues.</p>
+
+<p>Commit <code>2bf1665b</code> gives the native application package sixty minutes and each Windows application shard twenty-five minutes. The layer four roster runs at <code>2bf1665b</code>.</p>
+
+<p>Starmap #207 (acceptance registration, <code>d7928c7c</code>) merged as <code>8e3d4538</code> on 2026-09-30 after all 62 checks passed. The <a href="proof/starport-production-catalog/csp13/starmap207-merge-2026-09-30/verification.json">merge proof</a> and the <a href="proof/starport-production-catalog/csp13/starmap206-merge-2026-09-30/verification.json">#206 merge proof</a> record tree equality, strict protection, and zero unresolved threads.</p>
 
 <p>Starmap #206 (decode reuse, <code>c27e08aa</code>) merged as <code>8e7fdef8</code> on 2026-09-30 after all 62 checks passed. The lead review of populated adoption phase B found the delivery coherent with the seven recovery owner design items. The lead focused native run passes 9 tests with 0 failures and 0 skips. Lint reports 0 issues. The lead committed phase B as Starport <code>596bcccb</code> on <code>codex/recovery-populated-recovery-20260930</code>. Phase C (application, command, documentation, process tests) is in progress in <code>/private/tmp/starport-populated-app-20260930</code> on <code>codex/recovery-populated-app-20260930</code>.</p>
 

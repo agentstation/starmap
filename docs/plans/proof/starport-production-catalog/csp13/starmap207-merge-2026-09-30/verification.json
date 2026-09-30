@@ -1,0 +1,56 @@
+{
+ "recorded_utc": "2026-09-30T19:45:51.742356+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starmap",
+ "pr": 207,
+ "head": "d7928c7cec7809e00678803717638f9d9d6d4874",
+ "base": "8e7fdef8aede9fda9688792efbebcb5e7dd10c13",
+ "merge": "8e3d4538f23e76828de5d6bf6ed64e7ab798931b",
+ "merged_at": "2026-09-30T19:43:34Z",
+ "checks": {
+  "success": 62,
+  "not_success": 0,
+  "total": 62
+ },
+ "reviewed_tree": "5eda701f4e7d7af5ef24e36a874622d556879ac6",
+ "merged_tree": "5eda701f4e7d7af5ef24e36a874622d556879ac6",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Security & Reliability",
+  "Verification Gate"
+ ],
+ "linear_history": false,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "Acceptance registration for CSP13: scripts/verify-catalog-product.sh --task CSP13 registers the recovery subcases. Four A33 subcases stay unregistered until populated adoption lands. Complete CSP13 recovery remains open.",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "465326cb3d0de80c6440284c4ed482c50cec93b2312bb8eb06c6039048f73c2b",
+   "gzip_sha256": "e848dd005177e377cbac225b237995194fcd20a6b9c432722ede821d325b56f4"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "dfe215eb0fbbbf5b809b5d90bb08ae24e711af8ea3ad68dc84bacade2b3497e4",
+   "gzip_sha256": "313630dc22d0f22e72e195f52d92c05be83f62e2c71f6272e2d9fe853e3868bc"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "42ae14c5ea45770b96521e57c02fa1a81c92e11a3084b12d039213c53dedde86",
+   "gzip_sha256": "631338eb7c4d787087ab32bc9be42e47288f4f40306c3c4e9c3df7663e92bff8"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+   "gzip_sha256": "da95be86de467295689c40b6350ff741a6659382857d1f52272e7dc99b40ed85"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
