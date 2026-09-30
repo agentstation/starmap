@@ -136,6 +136,17 @@ func readFleetRecovery(ctx context.Context, data []byte) (fleetRecoveryRecord, e
 	if err != nil {
 		return record, err
 	}
+	return decodeFleetRecoveryData(ctx, decoded)
+}
+
+func decodeFleetRecoveryData(ctx context.Context, decoded []byte) (fleetRecoveryRecord, error) {
+	var record fleetRecoveryRecord
+	if err := ctx.Err(); err != nil {
+		return record, err
+	}
+	if len(decoded) == 0 || len(decoded) > MaxFleetRecoveryBytes {
+		return record, invalidInputPublication("fleet recovery exceeds its decoded input byte bound")
+	}
 	if err := json.Unmarshal(decoded, &record, json.RejectUnknownMembers(true), jsonv1.FormatDurationAsNano(true)); err != nil {
 		return record, err
 	}

@@ -118,6 +118,11 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type CatalogRetentionReceipt](<#CatalogRetentionReceipt>)
   - [func RetainCatalogRecovery\(ctx context.Context, request CatalogRetentionRequest\) \(receipt CatalogRetentionReceipt, resultErr error\)](<#RetainCatalogRecovery>)
 - [type CatalogRetentionRequest](<#CatalogRetentionRequest>)
+- [type CatalogRetentionUsage](<#CatalogRetentionUsage>)
+  - [func InspectCatalogRetentionUsage\(ctx context.Context, entry CatalogRetentionEntry, input CatalogRetentionInput\) \(CatalogRetentionUsage, error\)](<#InspectCatalogRetentionUsage>)
+  - [func \(u CatalogRetentionUsage\) DecodedBytes\(\) int64](<#CatalogRetentionUsage.DecodedBytes>)
+  - [func \(u CatalogRetentionUsage\) Inputs\(\) int](<#CatalogRetentionUsage.Inputs>)
+  - [func \(u CatalogRetentionUsage\) RawBytes\(\) int64](<#CatalogRetentionUsage.RawBytes>)
 - [type DirectoryMigrationCompletion](<#DirectoryMigrationCompletion>)
   - [func ReadDirectoryMigrationCompletion\(ctx context.Context, directory string\) \(DirectoryMigrationCompletion, error\)](<#ReadDirectoryMigrationCompletion>)
 - [type DirectoryMigrationPreparation](<#DirectoryMigrationPreparation>)
@@ -309,6 +314,15 @@ The default source is the attested public GitHub channel. A caller that opens th
 
 
 ## Constants
+
+<a name="MaxCatalogRetentionBatchBytes"></a>These bounds apply independently to raw capsule bytes, decoded recovery bytes, and input count.
+
+```go
+const (
+    MaxCatalogRetentionBatchBytes  = storage.DefaultRetentionInputMaxBytes
+    MaxCatalogRetentionBatchInputs = storage.DefaultRetentionScanEntries
+)
+```
 
 <a name="LeaseTTL"></a>Lease timing. One holder renews well inside the expiry, so a short pause never drops the lease and a stopped holder expires quickly.
 
@@ -509,7 +523,7 @@ func CatalogRecoveryChecksums(ctx context.Context, path string, owner DirectoryO
 CatalogRecoveryChecksums lists immutable input\-record identities for an exact generation. These checksums name compressed local descriptors, not exported FleetRecovery bytes. The caller must fence writers. Multiple results require an explicit selection. Listing never proves which publication committed or whether independent history is complete.
 
 <a name="InspectCapturedCatalogRetention"></a>
-## func [InspectCapturedCatalogRetention](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_storage.go#L236>)
+## func [InspectCapturedCatalogRetention](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_storage.go#L231>)
 
 ```go
 func InspectCapturedCatalogRetention(ctx context.Context, name string, raw []byte) (CatalogRetentionEntry, CatalogRetentionInput, error)
@@ -1104,6 +1118,53 @@ type CatalogRetentionRequest struct {
     Inputs            []CatalogRetentionInput `json:"inputs"`
 }
 ```
+
+<a name="CatalogRetentionUsage"></a>
+## type [CatalogRetentionUsage](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_usage.go#L17-L19>)
+
+CatalogRetentionUsage contains immutable byte counts without catalog data or private identities. It grants no retention, selection, current permission, or target ownership.
+
+```go
+type CatalogRetentionUsage struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="InspectCatalogRetentionUsage"></a>
+### func [InspectCatalogRetentionUsage](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_usage.go#L38>)
+
+```go
+func InspectCatalogRetentionUsage(ctx context.Context, entry CatalogRetentionEntry, input CatalogRetentionInput) (CatalogRetentionUsage, error)
+```
+
+InspectCatalogRetentionUsage checks one capsule through the producer's original codecs. Hosts can pack against both byte dimensions and the count bound without another decoder. RetainCatalogRecovery independently checks each final batch. This inspection writes no files and contacts no sources.
+
+<a name="CatalogRetentionUsage.DecodedBytes"></a>
+### func \(CatalogRetentionUsage\) [DecodedBytes](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_usage.go#L25>)
+
+```go
+func (u CatalogRetentionUsage) DecodedBytes() int64
+```
+
+DecodedBytes counts the decompressed original recovery record before JSON parsing.
+
+<a name="CatalogRetentionUsage.Inputs"></a>
+### func \(CatalogRetentionUsage\) [Inputs](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_usage.go#L28>)
+
+```go
+func (u CatalogRetentionUsage) Inputs() int
+```
+
+Inputs reports the one structurally checked input. An empty result reports zero.
+
+<a name="CatalogRetentionUsage.RawBytes"></a>
+### func \(CatalogRetentionUsage\) [RawBytes](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_usage.go#L22>)
+
+```go
+func (u CatalogRetentionUsage) RawBytes() int64
+```
+
+RawBytes counts the serialized manifest, payload, compressed recovery, and original descriptor bytes.
 
 <a name="DirectoryMigrationCompletion"></a>
 ## type [DirectoryMigrationCompletion](<https://github.com/agentstation/starmap/blob/main/runtime/migration_completion.go#L17-L24>)
