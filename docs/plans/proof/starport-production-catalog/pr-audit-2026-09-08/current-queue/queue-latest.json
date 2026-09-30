@@ -3304,15 +3304,7 @@
   "starmap205_completion": "../../csp13/starmap205-merge-2026-09-30/verification.json",
   "comparison_integration": "../../csp13/comparison-integration-2026-09-30/verification.json",
   "starmap205_cleanup": "../../csp13/starmap205-cleanup-2026-09-30/verification.json",
-  "active_native_profile": {
-    "owner": "root",
-    "session": 64022,
-    "source_head": "cee3f1ae88dc0afa8c89d1c0ac3d5adf4cb7b983",
-    "directory": "/tmp/csp13-full-embedded-checked-source-20260930",
-    "operation_deadline_seconds": 420,
-    "pure": "PASS; one result; zero failures or skips",
-    "race": "in_progress"
-  },
+  "active_native_profile": null,
   "full_embedded_vector_profile": {
     "status": "FAIL",
     "source_head": "0c2cf5d4a3c1e33f4124a05984a42f32694f87c3",
@@ -3321,9 +3313,9 @@
     "required_next": "Qualify checked-source repair with unchanged deadline."
   },
   "native_window": {
-    "owner": "root",
-    "next": "maximum capacity, then frozen namespace qualification",
-    "other_owners": "source-only work"
+    "owner": "starmap_ci_repair",
+    "next_owner": "root maximum capacity",
+    "root_activity": "read-only profile analysis"
   },
   "populated_adoption_extension": {
     "owner": "operator_recovery_inputs",
@@ -3332,5 +3324,6 @@
     "constraint": "Independent complete history and native census before coordinated permission; import emptiness unchanged."
   },
   "checked_source_integration": "../../csp13/checked-source-integration-2026-09-30/verification.json",
-  "gateway_integration": "../../csp13/gateway-integration-2026-09-30/verification.json"
+  "gateway_integration": "../../csp13/gateway-integration-2026-09-30/verification.json",
+  "full_checked_source_profile": "../../csp13/full-embedded-checked-source-2026-09-30/verification.json"
 }

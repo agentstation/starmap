@@ -1,0 +1,76 @@
+{
+  "status": "FAIL; required race profile did not pass",
+  "source_head": "cee3f1ae88dc0afa8c89d1c0ac3d5adf4cb7b983",
+  "source_worktree_clean_at_start": true,
+  "go_version": "go1.27.1",
+  "workspace": "GOWORK=off; no replacement",
+  "published_producer": "v0.16.6-0.20260930115749-2bb995712275",
+  "test": "TestRecoveryActivationFullEmbeddedApplication",
+  "operation_deadline_seconds": 420,
+  "go_package_timeout": "30m",
+  "profiles": [
+    {
+      "mode": "pure",
+      "status": "PASS",
+      "test_elapsed_seconds": 61.33,
+      "counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 62.402
+        }
+      ],
+      "raw_sha256": "09c33f6acd9aa184f7a4d0b01024e3dae6e6a7c06670a04faea042ba7caac225",
+      "archive": "pure.json.gz"
+    },
+    {
+      "mode": "race",
+      "status": "FAIL",
+      "test_elapsed_seconds": 482.93,
+      "counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "fail",
+          "Elapsed": 484.958
+        }
+      ],
+      "raw_sha256": "07486f36fd026f8257e0aa08bb3a1853d8ade91d958d0488718658e893fe0c04",
+      "archive": "race.json.gz"
+    }
+  ],
+  "error": "context deadline exceeded",
+  "exact_binary": {
+    "private_local_path": "/tmp/csp13-full-embedded-checked-source-20260930/app.test",
+    "sha256": "c22fd81d8e5fade9d38d4856de205b4aadbf4e1cbf71165256490bed0fc1a1c2"
+  },
+  "cpu_profile": {
+    "private_local_path": "/tmp/csp13-full-embedded-checked-source-20260930/cpu.pprof",
+    "sha256": "f39fceb0522e5d6b317c2547abbc3c8c8976e4d4e92db63bf94c47bf11d9a7b8"
+  },
+  "sample_summary": {
+    "duration_seconds": 483.04,
+    "cpu_sample_seconds": 438.87,
+    "unattributed_external_race_cpu_seconds": 256.8,
+    "prepareRecoveryActivationDecision_cpu_seconds": 69.93,
+    "DecodeCatalogPayload_cpu_seconds": 55.11,
+    "decodeFleetRecoveryRecord_cpu_seconds": 24.49,
+    "baseline_export_inspection_cpu_seconds": 11.96
+  },
+  "interpretation": "Checked-source reuse reduced repeated original graph decoding, but did not make complete race activation meet its original deadline. Retained samples show additional semantic catalog decode paths. They do not establish full wall-time attribution.",
+  "required_next": [
+    "Find and remove redundant validated semantic decoding at its owner without weakening current selection, permission or original-evidence checks.",
+    "Repeat required full activation at unchanged420-second limit.",
+    "Qualify maximum inventory separately."
+  ],
+  "task_status": "CSP13 remains in_progress; no full subcase credit."
+}
