@@ -1,6 +1,7 @@
 package ciworkflow
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -415,4 +416,32 @@ func readFixture(t testing.TB, path string) string {
 		t.Fatalf("ReadFile(%q): %v", path, err)
 	}
 	return string(data)
+}
+
+func TestVerificationCoverageReportsFailedTestOutput(t *testing.T) {
+	script, err := filepath.Abs("../../scripts/verify.sh")
+	if err != nil {
+		t.Fatal(err)
+	}
+	bin := t.TempDir()
+	stub := "#!/usr/bin/env bash\nprintf 'deliberate coverage test failure\\n' >&2\nexit 23\n"
+	if err := os.WriteFile(filepath.Join(bin, "go"), []byte(stub), 0700); err != nil {
+		t.Fatal(err)
+	}
+	command := exec.CommandContext(t.Context(), "bash", script, "checks")
+	command.Env = append(os.Environ(), "PATH="+bin+string(os.PathListSeparator)+os.Getenv("PATH"), "STARMAP_VERIFY_COVERAGE_ONLY=1")
+	output, err := command.CombinedOutput()
+	if err == nil {
+		t.Fatal("failed coverage tests must fail verification")
+	}
+	var exit *exec.ExitError
+	if !errors.As(err, &exit) || exit.ExitCode() != 23 {
+		t.Fatalf("verification changed the test exit status: %v", err)
+	}
+	if !strings.Contains(string(output), "deliberate coverage test failure") {
+		t.Fatalf("verification hid failed test output: %s", output)
+	}
+	if strings.Contains(string(output), "critical seam coverage passed") {
+		t.Fatal("failed coverage tests reported success")
+	}
 }
