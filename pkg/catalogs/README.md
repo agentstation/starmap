@@ -587,6 +587,7 @@ func main() {
 - [func EncodeCatalogPayload\(reader Reader\) \(\[\]byte, error\)](<#EncodeCatalogPayload>)
 - [func IsMediaOperation\(operation ProviderOperation\) bool](<#IsMediaOperation>)
 - [func NormalizeExtensionFields\(fields map\[string\]any\) map\[string\]any](<#NormalizeExtensionFields>)
+- [func RetainDecodedCatalogs\(\) \(release func\(\)\)](<#RetainDecodedCatalogs>)
 - [func ShallowCopyProviderModels\(models map\[string\]\*Model\) map\[string\]\*Model](<#ShallowCopyProviderModels>)
 - [func SupportsCatalogSchema\(version uint64\) bool](<#SupportsCatalogSchema>)
 - [func ValidateCatalogAuthorityIdentity\(authorityID, policyID string\) error](<#ValidateCatalogAuthorityIdentity>)
@@ -1318,6 +1319,21 @@ func NormalizeExtensionFields(fields map[string]any) map[string]any
 ```
 
 NormalizeExtensionFields returns a copy with maps, slices, and numbers normalized to stable dynamic types after JSON/YAML round trips.
+
+<a name="RetainDecodedCatalogs"></a>
+## func [RetainDecodedCatalogs](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/decode_reuse.go#L43>)
+
+```go
+func RetainDecodedCatalogs() (release func())
+```
+
+RetainDecodedCatalogs opens a reuse scope for one bounded operation. Use it when the operation decodes the same catalog payload many times.
+
+In an open scope, DecodeCatalogPayload first compares the complete payload bytes. Equal bytes return the immutable catalog from the earlier complete decode. DecodeCatalogGeneration then applies each manifest check to that catalog. A changed byte selects a full decode.
+
+The scope retains a bounded count of complete catalogs. It never retains a failed decode or a partial diagnostic result. It never retains a source observation. The scope supplies no authority and replaces no caller check.
+
+Call release when the operation ends. The last release drops every retained catalog. More than one call to the same release function has no effect. Without an open scope, each call decodes the payload in full.
 
 <a name="ShallowCopyProviderModels"></a>
 ## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L490>)
@@ -2488,16 +2504,16 @@ func DecodeCatalogGeneration(generation Generation) (*Catalog, error)
 DecodeCatalogGeneration verifies exact bytes and matching manifest and payload schemas. Only a complete immutable catalog may cross a generation activation boundary.
 
 <a name="DecodeCatalogPayload"></a>
-### func [DecodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload_decode.go#L42>)
+### func [DecodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload_decode.go#L44>)
 
 ```go
 func DecodeCatalogPayload(data []byte) (*Catalog, error)
 ```
 
-DecodeCatalogPayload decodes the current catalog payload. A non\-nil catalog with \*sourcepayload.QuarantineError is only a partial diagnostic result. Callers must not activate it as the manifest\-bound generation.
+DecodeCatalogPayload decodes the current catalog payload. A non\-nil catalog with \*sourcepayload.QuarantineError is only a partial diagnostic result. Callers must not activate it as the manifest\-bound generation. An open RetainDecodedCatalogs scope returns the retained complete catalog for equal bytes.
 
 <a name="DecodeSourceObservationPayload"></a>
-### func [DecodeSourceObservationPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload_decode.go#L55>)
+### func [DecodeSourceObservationPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload_decode.go#L72>)
 
 ```go
 func DecodeSourceObservationPayload(data []byte) (*Catalog, error)

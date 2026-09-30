@@ -2,6 +2,7 @@ package catalogs
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -38,8 +39,24 @@ func (r payloadDecodeReport) err() error {
 
 // DecodeCatalogPayload decodes the current catalog payload. A non-nil catalog
 // with *sourcepayload.QuarantineError is only a partial diagnostic result. Callers
-// must not activate it as the manifest-bound generation.
+// must not activate it as the manifest-bound generation. An open
+// RetainDecodedCatalogs scope returns the retained complete catalog for equal bytes.
 func DecodeCatalogPayload(data []byte) (*Catalog, error) {
+	if !decodedCatalogs.active() {
+		return decodeCompleteCatalogPayload(data)
+	}
+	digest := sha256.Sum256(data)
+	if catalog := decodedCatalogs.load(digest); catalog != nil {
+		return catalog, nil
+	}
+	catalog, err := decodeCompleteCatalogPayload(data)
+	if err != nil {
+		return catalog, err
+	}
+	return decodedCatalogs.store(digest, catalog), nil
+}
+
+func decodeCompleteCatalogPayload(data []byte) (*Catalog, error) {
 	catalog, report, err := decodeCatalogPayload(data, resourcepolicy.MaxProviders, (*Builder).Build)
 	if err != nil {
 		return nil, err

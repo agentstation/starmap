@@ -14,6 +14,8 @@ const (
 	MaxProviders = 100
 	// MaxPayloadBytes bounds one canonical catalog JSON payload.
 	MaxPayloadBytes = 32 << 20
+	// MaxRetainedDecodedCatalogs bounds the catalogs that one decode reuse scope retains.
+	MaxRetainedDecodedCatalogs = 4
 )
 
 const (
