@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-30",
+  "status": "PASS_COMPONENT_ONLY",
+  "task": "CSP13",
+  "base_commit": "cf45526ef644d56642d61920c4dde7751d9012d2",
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "platform": "darwin/arm64",
+  "contract": "Read and structurally validate original immutable local descriptors, baseline inputs, and retained envelopes without opening a runtime or obtaining permission. Archive census, target semantics, native ownership, publication, selection, and current permission remain separate contracts.",
+  "bounds": {
+    "local_descriptor_and_baseline_bytes": 268435456,
+    "encoded_and_decoded_retention_envelope_bytes": 536870912,
+    "changed_existing_storage_format": false
+  },
+  "source_sha256": {
+    "runtime/catalog_recovery_captured.go": "793fa20606c51888d05e3cd8288d51478b3a1d4fd3eba7b485760fa1bff4620b",
+    "runtime/catalog_recovery_captured_test.go": "0b419c1fbd3c50919cdb434ff705c730547f2231db8bd00b83b3377927225253",
+    "runtime/catalog_recovery_storage.go": "8f6d64b90fd2dfe3d144bf4dd8099624202923c52f66ecc7fb39a34734ced79f",
+    "runtime/catalog_retention_captured_test.go": "adea23fc2859badc8d12598b236ed050546d98aa7dc3140a0dbb28bde687bf4e",
+    "runtime/catalog_retention_storage.go": "d86581ba09a1963a8f29c0f66c1f2bf095cd700abb90f54c2c1dc582f3012cd1",
+    "runtime/README.md": "b3bd832b0d12c2f64b927f6303c74a9fbad3503640ba27d1e6ce64141a468342"
+  },
+  "checks": [
+    {
+      "mode": "race",
+      "status": "PASS",
+      "test_results": {
+        "pass": 50,
+        "fail": 0,
+        "skip": 0
+      },
+      "selector": "^Test(CapturedCatalog|CatalogRecovery|CatalogRetention)",
+      "command": "go test -race -count=1 -json -timeout=10m ./runtime -run '^Test(CapturedCatalog|CatalogRecovery|CatalogRetention)'",
+      "raw_evidence": "/tmp/csp13-captured-archive-race-final.jsonl",
+      "raw_sha256": "4e95c680383b2b9a6fafd51fade4fd0548cedde41ab01e947ad5bab255edd2ca"
+    },
+    {
+      "mode": "pure",
+      "status": "PASS",
+      "test_results": {
+        "pass": 50,
+        "fail": 0,
+        "skip": 0
+      },
+      "selector": "^Test(CapturedCatalog|CatalogRecovery|CatalogRetention)",
+      "command": "CGO_ENABLED=0 go test -count=1 -json -timeout=10m ./runtime -run '^Test(CapturedCatalog|CatalogRecovery|CatalogRetention)'",
+      "raw_evidence": "/tmp/csp13-captured-archive-pure-final2.jsonl",
+      "raw_sha256": "a9b4647134067ab1c6aba6c43efed39f3890c56403bb318027f74cc62e01d53b"
+    },
+    {
+      "command": "go vet ./runtime",
+      "status": "PASS"
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "status": "PASS",
+      "raw_evidence": "/tmp/csp13-captured-archive-goago-final.json"
+    },
+    {
+      "command": "golangci-lint v2.13.2 run --allow-serial-runners",
+      "status": "PASS",
+      "issues": 0,
+      "raw_evidence": "/tmp/csp13-captured-archive-lint-final.log"
+    },
+    {
+      "command": "make godoc",
+      "status": "PASS"
+    },
+    {
+      "command": "make verify-checks",
+      "status": "PASS",
+      "raw_evidence": "/tmp/csp13-captured-archive-verify-checks.log",
+      "exit_code": 0,
+      "technical_writing": {
+        "files": 1970,
+        "diagnostics": 0
+      }
+    }
+  ],
+  "regression_before": {
+    "status": "EXPECTED_FAIL",
+    "local_api": "/tmp/csp13-captured-catalog-fail-before.jsonl",
+    "retention_api": "/tmp/csp13-captured-retention-fail-before.jsonl",
+    "retention_method": "Go overlay of unchanged prior owner file; actual checked source remained in place"
+  },
+  "preserved_intermediate_failures": [
+    {
+      "raw": "/tmp/csp13-captured-catalog-race-final.jsonl",
+      "cause": "Test variable redeclaration; corrected without changing assertions"
+    },
+    {
+      "raw": "/tmp/csp13-captured-retention-race.jsonl",
+      "cause": "DeepEqual compared normalized runtime representations; replaced with byte-exact re-encoding of the actual immutable envelope"
+    },
+    {
+      "raw": "/tmp/csp13-captured-archive-pure-final.jsonl",
+      "cause": "Earlier run of the same representation comparison before correction"
+    }
+  ],
+  "unverified": [
+    "Native Linux and Windows qualification of this new diff",
+    "Complete Starport recovery coordinator integration",
+    "Maximum-capacity transfer, RPO, and RTO",
+    "All remaining complete CSP13 subcases"
+  ],
+  "whole_csp13_complete": false
+}
