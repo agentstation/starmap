@@ -1,0 +1,69 @@
+{
+  "status": "DIAGNOSIS; no subcase credit",
+  "owner": "Fable 5.1 lead session after the 2026-09-30 handoff",
+  "source_head": "c6b102327482e1a7337ca76720520cc52e28519b",
+  "source_worktree_clean": true,
+  "go_version": "go1.27.1",
+  "workspace": "GOWORK=off",
+  "published_producer": "v0.16.6-0.20260930115749-2bb995712275",
+  "test": "TestRecoveryActivationFullEmbeddedApplication",
+  "operation_deadline_seconds": 420,
+  "private_artifacts": "/private/tmp/csp13-decode-reuse-diagnosis-20260930",
+  "pure_profile_without_change": {
+    "test_elapsed_seconds": 75.12,
+    "cpu_sample_seconds": 41.83,
+    "ActivateRecovery_cpu_seconds": 25.5,
+    "prepareRecoveryActivationDecision_cpu_seconds": 17.83,
+    "release_cpu_seconds": 7.12,
+    "DecodeCatalogPayload_cpu_seconds": 10.51,
+    "canonical_file_inspection_cpu_seconds": 2.86,
+    "raw_sha256": "d45ceec79a4de31384d42e95b6102b00dae46e2d6c823d9d2abec23cb0be2458",
+    "cpu_profile_sha256": "2768e7d5360dea43bec045638a92855eb8777dcc64e9597cc17e1291cc3f8378"
+  },
+  "decode_census": {
+    "method": "A private copy of the pinned Starmap module printed one line for each DecodeCatalogPayload call. The copy never ships.",
+    "calls": 66,
+    "distinct_payloads": 2,
+    "payloads": [
+      {"bytes": 26428039, "decodes": 31, "pure_decode_seconds_total": 12.32},
+      {"bytes": 143800, "decodes": 35}
+    ],
+    "callers": {
+      "starport catalog.fleetIndexEntry from capturedCatalog.generation": 16,
+      "starmap DecodeCatalogGeneration from runtime.decodeFleetRecoveryRecord": 13,
+      "starmap sourceLayer.decodeCatalog from validateSourceInput": 12,
+      "starmap sourceLayer.decodeCatalog from layerSet.selectedBaseline": 8,
+      "starmap DecodeCatalogGeneration from bootstrap.inspectExport": 6
+    },
+    "raw_sha256": "8d8eeb7bbafbd80d3cb80506f16f5e528a5d0cf2e7a2f0f865a14e7db7baab0b"
+  },
+  "prototype_measurements": {
+    "method": "The private module copy returned the first complete decoded catalog for equal SHA-256 payload digests. The test source, assertions, full catalog, and 420-second deadline did not change. A replacement module file selected the copy. These runs measure the design only. They qualify no source.",
+    "pure": {"status": "PASS", "test_elapsed_seconds": 53.48, "without_reuse_seconds": 67.67, "raw_sha256": "195e88e0b998d7e861d579b89675f59c620d79324982f0d00a2dd00ee80f5530"},
+    "race": {"status": "PASS", "test_elapsed_seconds": 311.16, "package_elapsed_seconds": 313.471, "recorded_failure_without_reuse_seconds": 482.93, "raw_sha256": "6a2ed410b26423d7784e636fe3cfc6da65a1fff797b2846e367fb4a3f24697aa"},
+    "race_with_cpu_profile": {"status": "PASS", "test_elapsed_seconds": 334.35, "full_decodes": 2, "reused_decodes": 81, "cpu_sample_seconds": 258.01, "unattributed_external_race_cpu_seconds": 159.73, "ActivateRecovery_cpu_seconds": 52.34, "raw_sha256": "4445eec7fb668b205a7ef5f78a827e23d4464239c694e761353c6e246b6a4dc4", "cpu_profile_sha256": "5893245d9861929338adc6ba94766cef487f45b2046204229494c7c964e0f0c1"}
+  },
+  "decision": {
+    "summary": "Repair the repeated decode at its owner, Starmap pkg/catalogs, through an explicit bounded reuse scope. Starport opens the scope for one recovery activation.",
+    "reasons": [
+      "One activation decodes one 26 MB payload 31 times through about 45 call sites in two repositories.",
+      "Canonical file inspection uses 2.86 of 25.5 activation CPU seconds. The stopped Starport semantic proof repair cannot supply enough margin alone.",
+      "A decoded catalog is immutable and its complete bytes determine it."
+    ],
+    "retained_checks": [
+      "The scope key is the SHA-256 digest of the complete current payload bytes.",
+      "DecodeCatalogGeneration validates each generation, schema agreement, and membership evidence on each call.",
+      "The scope retains no failed decode, no partial diagnostic result, and no source observation.",
+      "The scope retains at most four catalogs and drops all of them at the last release.",
+      "A call without an open scope decodes in full. Restart and public inspection in another operation or process get no reuse.",
+      "The scope grants no authority and uses no timer. Each manifest, selection, identity, permission, and file check still runs."
+    ],
+    "stopped_semantic_proof_worktree": "The three unfinished files in /private/tmp/starport-recovery-canonical-semantic-20260930 stay preserved and unintegrated."
+  },
+  "required_next": [
+    "Merge the Starmap scope through review and native CI.",
+    "Pin it in Starport and open the scope in ActivateRecovery.",
+    "Repeat the unchanged full native pure and race test on the final source."
+  ],
+  "task_status": "CSP13 remains in_progress; no subcase credit."
+}
