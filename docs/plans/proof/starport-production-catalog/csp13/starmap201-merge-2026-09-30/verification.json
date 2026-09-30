@@ -1,0 +1,53 @@
+{
+  "pr": 201,
+  "repo": "agentstation/starmap",
+  "head": "79852bf7ddee936c4dee2a741f1c1c5c4d30dadb",
+  "base": "cf45526ef644d56642d61920c4dde7751d9012d2",
+  "merge_commit": "c384ccb103fbd64e5d1fba5333f486c669ad74ba",
+  "merged_at": "2026-09-30T07:30:53Z",
+  "checks": {
+    "success": 62,
+    "failure": 0,
+    "pending": 0
+  },
+  "reviewed_tree": "0244e692ea0e4f8d7a049ffae5eb7d65f9148627",
+  "merged_tree": "0244e692ea0e4f8d7a049ffae5eb7d65f9148627",
+  "tree_equality": true,
+  "strict_protection_unchanged": true,
+  "verified_head_signature": true,
+  "unresolved_threads": 0,
+  "autoreview_proof": "../exact-phase-publication-2026-09-30/verification.json",
+  "limits": [
+    "Producer component merge does not complete CSP13 application recovery or capacity qualification."
+  ],
+  "raw": {
+    "merged.json": {
+      "raw": "merged.json.gz",
+      "sha256": "4af4866483aaa8536a45c8c7e6681f3a31b1082172fbf51a6589ef040a374f5b"
+    },
+    "protection-before.json": {
+      "raw": "protection-before.json.gz",
+      "sha256": "def81981945f046a854c34d02c9e0f65e63068f443e20911240988b0120390c2"
+    },
+    "premerge.json": {
+      "raw": "premerge.json.gz",
+      "sha256": "645475d0590a8dccdfaed12c90a4d1fd799be2d5487385bef47a6a612a1f5c79"
+    },
+    "merge-commit.json": {
+      "raw": "merge-commit.json.gz",
+      "sha256": "ae90fa4d0b67da9838de47ad8efa0071490f4bb0d19cd6b953a840038244b089"
+    },
+    "threads.json": {
+      "raw": "threads.json.gz",
+      "sha256": "5458efd6bc5095250d5e3885a45af0b380cbee5f945c110e39f7caabcb65ffb5"
+    },
+    "head-commit.json": {
+      "raw": "head-commit.json.gz",
+      "sha256": "92a4f145a362208ecfe3bf497b5e33d5418845895e87f43f0e64150a0734008f"
+    },
+    "protection-after.json": {
+      "raw": "protection-after.json.gz",
+      "sha256": "def81981945f046a854c34d02c9e0f65e63068f443e20911240988b0120390c2"
+    }
+  }
+}

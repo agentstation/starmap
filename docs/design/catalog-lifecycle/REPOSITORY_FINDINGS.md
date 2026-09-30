@@ -5224,3 +5224,9 @@ Starport `fd3b0ba7` integrates the deletion-only native retirement owner. Origin
 The [native owner proof](../../plans/proof/starport-production-catalog/csp13/expiring-import-owner-2026-09-30/verification.json) records 42 passing results per mode. Root independently reproduces those counts against actual stores. Close-and-reopen tests preserve the original receipt and closed import barrier. Final application composition and native Linux/Windows qualification remain open.
 
 The application fixture also found a missing stopped-directory preparation API. Producer tests establish owner, seed, and inert layer directories through private functions before materialization. The consumer cannot copy those private codecs or open an acquiring runtime. The producer must expose explicit preparation before the application seals its release decision. Restart inspection remains passive.
+
+## Starmap archive and phase API merge, September 30, 2026
+
+Starmap #201 merged as `c384ccb103fbd64e5d1fba5333f486c669ad74ba`. All 62 checks pass at reviewed head `79852bf7ddee936c4dee2a741f1c1c5c4d30dadb`. The [merge proof](../../plans/proof/starport-production-catalog/csp13/starmap201-merge-2026-09-30/verification.json) records exact tree equality, verified head signature, resolved review threads, and unchanged strict protection. Earlier pending snapshots remain historical evidence.
+
+The stopped-directory preparation API now has a separate unpublished follow-up branch. It builds on the merged producer tree. Its current owner tests pass 23 results per mode, without failures or skips. Full repository checks and pre-PR review remain required before publication.
