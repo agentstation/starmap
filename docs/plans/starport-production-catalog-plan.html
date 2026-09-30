@@ -12,7 +12,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. One required task subcase passes. Fifteen remain UNVERIFIED.</p>
 
-<p>Next: merge Starmap branch <code>catalog-decode-reuse</code>, pin it in Starport, open the scope in <code>ActivateRecovery</code>, and repeat the unchanged full native pure and race test. Then publish the integrated Starport branch as reviewable pull requests in dependency order. Register the six missing acceptance mappings. Then integrate populated adoption by phase.</p>
+<p>Next: publish Starport layer one after its roster passes, then layers two and three. Merge Starmap branch <code>catalog-decode-reuse</code> after <code>make verify</code>, pin it in layer four, open the scope in <code>ActivateRecovery</code>, and repeat the unchanged full native pure and race test. Land the acceptance registration branch. Then integrate populated adoption by phase.</p>
 
 <p id="delivery-method">Delivery method, from the owner on 2026-09-30: land before adding. The integrated Starport branch holds 29,333 unpublished added lines in 232 files. It has 57 commits after the #393 merge. Publish it before new scope enters it. Report progress as passing subcases and merged pull requests.</p>
 
@@ -20,13 +20,13 @@
 
 <p>The <a href="proof/starport-production-catalog/csp13/populated-adoption-design-2026-09-30/DESIGN.md">populated adoption design</a> records the owner boundaries. No product command reopens a closed populated deployment today. The first delivery supports only a zero prefix, where the fenced capture is the base. Software then cannot detect an acknowledged write that Valkey lost in a restart. The operator attests the interval. Pending owner decision under D42: require typed activation-effect history before production readiness, or accept the attested limit.</p>
 
-<p>Phase A owners run in parallel from <code>c6b10232</code> and do not commit. <code>adopt-kv</code> owns <code>/private/tmp/starport-populated-kv-20260930</code>. <code>adopt-sql</code> owns <code>/private/tmp/starport-populated-sql-20260930</code>. <code>adopt-blob</code> owns <code>/private/tmp/starport-populated-blob-20260930</code>. Each branch has the matching <code>codex/recovery-populated-*-20260930</code> name. Root reviews and commits each delivery.</p>
+<p>Phase A owners run in parallel from <code>c6b10232</code> and do not commit. <code>adopt-kv</code> owns <code>/private/tmp/starport-populated-kv-20260930</code>. <code>adopt-sql</code> owns <code>/private/tmp/starport-populated-sql-20260930</code>. <code>adopt-blob</code> owns <code>/private/tmp/starport-populated-blob-20260930</code>. Each branch has the matching <code>codex/recovery-populated-*-20260930</code> name. Root reviews and commits each delivery. Root committed the KV delivery at <code>b1aba2ef</code> after 22 native tests passed. SQL and blob deliveries remain open.</p>
 
 <p>The integrated branch lands in four layers that each compile: native owners, recovery, catalog and config, and application. Local branches <code>codex/recovery-land-1-native-owners</code> at <code>91f579d8</code>, <code>codex/recovery-land-2-recovery-owner</code> at <code>29d8b602</code>, and <code>codex/recovery-land-3-catalog-config</code> at <code>04ceddcc</code> exist in <code>/private/tmp/starport-land-split-20260930</code> and <code>/private/tmp/starport-land-stack-20260930</code>. Layer four waits in the stack index and equals <code>c6b10232</code>. After each squash merge, root regenerates the next branch from the new <code>main</code>.</p>
 
-<p>Layer one passes the structured review with two reviewers. Its roster runs under <code>/private/tmp/starport-land-proof-20260930/L1</code>. Explorer <code>accept-map</code> judges the six unregistered subcases. The <code>adoption-map</code> report confirms the design: no populated owner code exists, and four boundaries need new owner primitives.</p>
+<p>Layer one passes the structured review with two reviewers. Its roster runs under <code>/private/tmp/starport-land-proof-20260930/L1</code>. The <code>adoption-map</code> report confirms the design: no populated owner code exists, and four boundaries need new owner primitives.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp13/decode-reuse-diagnosis-2026-09-30/verification.json">decode diagnosis</a> records 66 payload decodes and two distinct payloads in one activation. A private prototype passes the unchanged race test in 311.16 seconds. Worktree <code>/private/tmp/starmap-decode-reuse-20260930</code> holds commit <code>c27e08aa1</code> with <code>catalogs.RetainDecodedCatalogs</code>. The prototype qualifies no source.</p>
+<p>The <a href="proof/starport-production-catalog/csp13/decode-reuse-diagnosis-2026-09-30/verification.json">decode diagnosis</a> records 66 payload decodes and two distinct payloads in one activation. A private prototype passes the unchanged race test in 311.16 seconds. Worktree <code>/private/tmp/starmap-decode-reuse-20260930</code> holds commit <code>c27e08aa1</code> with <code>catalogs.RetainDecodedCatalogs</code>. The commit passes the structured review with two reviewers. The prototype qualifies no source.</p>
 
 <p>Root owns <code>/private/tmp/starport-clock-review-20260926</code>, branch <code>codex/recovery-catalog-activation</code>, clean at <code>c6b10232</code>. The published module is <code>v0.16.6-0.20260930115749-2bb995712275</code>. Require <code>GOWORK=off</code>, no replacement, Go 1.27.1, and <code>GOCACHE=/private/tmp/csp13-go-build-20260929</code>.</p>
 
@@ -46,7 +46,13 @@
 
 <p>Its unfinished SQL helper references undefined <code>relationalPopulatedPrefix</code>. Two restart drafts remain unrun. Complete restart, promotion, loss, restored-SQL, and measured recovery remain required. Coordinate shared services before native tests.</p>
 
-<p>Earlier acceptance registration <code>58a157d5</code> still needs six mappings. Source presence grants no qualification.</p>
+<p>Acceptance registration <code>24a237e5</code> in <code>/private/tmp/starmap-recovery-acceptance-registration-20260930</code> maps 12 of 16 CSP13 subcases. The <code>accept-map</code> audit at <code>c6b10232</code> added <code>A33.fresh_replica_history_barrier</code> and <code>A41.unprefixed_record_migration</code> from existing tests. Four remain unregistered with named gaps. Source presence grants no qualification.</p>
+<ul>
+<li>The <code>A33.old_primary_admission_fence</code> gap: a request-path closure test without the forced observe command, and a job-dispatch stop test.</li>
+<li>The <code>A33.operator_reconciliation</code> gap: the shipping binary through the missing-evidence, partial, and completing steps, and decision record fields.</li>
+<li>The <code>A33.restart_and_recovery_epoch</code> gap: the Phase C process tests.</li>
+<li>The <code>A33.measured_rpo_rto</code> gap: a Phase D measurement record, not a Go test.</li>
+</ul>
 
 <p>The <a href="proof/starport-production-catalog/csp13/recovery-target-decision-2026-09-30/decision.json">D42 owner decision</a> requires measurements before numeric recovery targets and approval before production readiness. Preserve unrelated changes in <code>AGENTS.md</code>, <code>Makefile</code>, <code>go.mod</code>, <code>go.sum</code>, and <code>scripts/verify.sh</code>. No component result grants current permission.</p>
 </section>
