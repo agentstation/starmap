@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "scope": "Existing approved shared-tool support verified; no new shared-tool edit",
+  "command": "python3 -m unittest discover -s tests -p test_json_gzip_review.py -v",
+  "tests": 20,
+  "fail": 0,
+  "skip": 0,
+  "elapsed_seconds": 3.028,
+  "limits": {
+    "compressed_bytes": 8388608,
+    "decoded_bytes": 33554432,
+    "formatted_bytes": 67108864,
+    "depth": 64,
+    "files_per_target": 16
+  },
+  "contracts": [
+    "Readable committed JSON-gzip diffs",
+    "Decoded additions and deletions scanned",
+    "JSON tokens and duplicate keys preserved",
+    "Other binaries/local binary review/invalid UTF-8/optional headers/concatenated members refused",
+    "No truncation for oversized input"
+  ],
+  "source_sha256": {
+    "scripts/autoreview": "71e80abdd6ee7b44e08c73ae0e80e8ed9d4e80b0402d71d05c031dad006c1064",
+    "tests/test_json_gzip_review.py": "8cc125408ca14a775d818546523b3636aad1c5e72356aae89760960ac2398d12",
+    "UPSTREAM.md": "7ba88c3fd3e18f8e1a3aa76fc7f708d4ae4763596459631ffde02a8d15f7b710"
+  }
+}

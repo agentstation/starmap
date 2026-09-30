@@ -1,0 +1,66 @@
+{
+  "status": "PASS: component integration only",
+  "consumer_head": "0c2cf5d4a3c1e33f4124a05984a42f32694f87c3",
+  "integration_commit": "0c2cf5d4a3c1e33f4124a05984a42f32694f87c3",
+  "delivery_commit": "9edaf6e27dfef7659b5560ee3be9281cf992f4ef",
+  "producer_merge": "2bb99571227518efcb67aa64f9b78bf9079fab27",
+  "published_module": "v0.16.6-0.20260930115749-2bb995712275",
+  "toolchain": "go1.27.1",
+  "workspace": "GOWORK=off",
+  "replace": "absent",
+  "qualification": [
+    {
+      "mode": "race",
+      "raw_log_sha256": "06072c669d61f8a510c2d6178c29a2f93234accda623e6a4bd4f558859a31e62",
+      "archive": "integrated-race.json.gz",
+      "results": {
+        "pass": 28,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-30T07:21:34.674944-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 7.445
+        },
+        {
+          "Time": "2026-09-30T07:21:45.750843-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Elapsed": 8.229
+        }
+      ]
+    },
+    {
+      "mode": "pure",
+      "raw_log_sha256": "d55b7684882889dfba84d06166c8208705213a2d05a8056177695445d418bc8e",
+      "archive": "integrated-pure.json.gz",
+      "results": {
+        "pass": 28,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-30T07:23:26.608979-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 3.6959999999999997
+        },
+        {
+          "Time": "2026-09-30T07:23:32.277837-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Elapsed": 4.094
+        }
+      ]
+    }
+  ],
+  "component_results_per_mode": 54,
+  "manual_review": "Private comparison derives from checked detached original inputs. Exact native envelope/receipt verification remains read-only. Selected semantic materialization and replay inspection remain unchanged. Copied-value diagnostic redaction remains intact.",
+  "full_embedded": "running separately; no PASS claim",
+  "maximum_96_near_2GiB": "UNVERIFIED",
+  "CSP13": "in_progress; required merged-pair acceptance remains open"
+}

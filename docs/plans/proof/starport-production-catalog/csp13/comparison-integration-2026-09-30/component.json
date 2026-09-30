@@ -1,0 +1,234 @@
+{
+  "qualification": "PASS: published-module bounded race/pure and scoped static checks; maximum/full embedded UNVERIFIED",
+  "toolchain": "Go 1.27.1",
+  "consumer_base": "ac448034478f511c40eeb8fffaf74a9bd96a3719",
+  "producer_commit": "7ddf5c5c7ab96be704ce7acafbc1997a37c0e2e6",
+  "workspace": "/tmp/csp13-comparison-pair-20260930.work",
+  "logs": [
+    {
+      "path": "/tmp/csp13-comparison-consumer-development-pure-fourth-20260930.jsonl",
+      "sha256": "0a471de7266da49c3a1d063c12d33fbd558b5f500d4d913c818122c2addc0a1a",
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 5,
+      "package_results": [
+        {
+          "Time": "2026-09-30T06:29:41.054545-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 4.021
+        }
+      ]
+    },
+    {
+      "path": "/tmp/csp13-comparison-consumer-development-race-20260930.jsonl",
+      "sha256": "c9697809b81fc15460ca2561956c6fd70d78cd663372d838a1e8c47c45a218d9",
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 5,
+      "package_results": [
+        {
+          "Time": "2026-09-30T06:31:13.421657-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 8.007
+        }
+      ]
+    }
+  ],
+  "maximum": "UNVERIFIED; not run",
+  "full_embedded": "not run in this lane",
+  "published_module": {
+    "Path": "github.com/agentstation/starmap",
+    "Version": "v0.16.6-0.20260930115749-2bb995712275",
+    "Time": "2026-09-30T11:57:49Z",
+    "Dir": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260930115749-2bb995712275",
+    "GoMod": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260930115749-2bb995712275.mod",
+    "GoVersion": "1.27.1",
+    "Sum": "h1:sEg3/nzKoGXIvoZ1kvwvyNoIHJDlFSVcL0WlOzoYs98=",
+    "GoModSum": "h1:cCNBcKDllsycjRvn7WPAz9YmT33ydFoVURpGta+veQg="
+  },
+  "failed_published_attempt": {
+    "path": "/tmp/csp13-topology-comparisons-20260930/published-race.jsonl",
+    "sha256": "a97f0c45866309edeec2743feb70bfb7372c1fde1160bf9959ff887cb6e06528",
+    "command": "GOCACHE=/private/tmp/csp13-go-build-20260929 GOWORK=off go test -json -race -count=1 -p=1 -timeout=3m -run bounded-roster ./internal/catalog",
+    "package_elapsed_seconds": 181.06,
+    "pass_events": 11,
+    "fail_events": 1,
+    "cause": "child-selected three-minute aggregate timeout; original-backup goroutine running with unavailable stack; repository package allowance is 30m; no root-cause defect established"
+  },
+  "published_qualification": [
+    {
+      "path": "/tmp/csp13-topology-comparisons-20260930/published-backup-race.jsonl",
+      "sha256": "bcc9b3b318f12af44f275c454ee30415f02456a8d43829f78281796816275ff8",
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 1,
+      "package_results": [
+        {
+          "Time": "2026-09-30T07:13:59.45551-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 204.79
+        }
+      ],
+      "test_names": [
+        "TestRecoveryTopologyActualPersistentBackupSealsAndReopens"
+      ],
+      "time_log": "/tmp/csp13-topology-comparisons-20260930/published-backup-race.time",
+      "wall_seconds": 209.26,
+      "native_largest_process_max_rss_bytes": 3831169024
+    },
+    {
+      "path": "/tmp/csp13-topology-comparisons-20260930/published-backup-pure.jsonl",
+      "sha256": "2d9e23062dd25d6ba316bed77c995cce14f02d944cf154cb9a97b61835417925",
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 1,
+      "package_results": [
+        {
+          "Time": "2026-09-30T07:14:40.414959-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 13.475
+        }
+      ],
+      "test_names": [
+        "TestRecoveryTopologyActualPersistentBackupSealsAndReopens"
+      ],
+      "time_log": "/tmp/csp13-topology-comparisons-20260930/published-backup-pure.time",
+      "wall_seconds": 26.51,
+      "native_largest_process_max_rss_bytes": 1210777600
+    },
+    {
+      "path": "/tmp/csp13-topology-comparisons-20260930/published-small-race.jsonl",
+      "sha256": "9f9fbf98421e2d383ec2bd2f832fa584185be58378685ac339ef94058fae8445",
+      "pass": 49,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 24,
+      "package_results": [
+        {
+          "Time": "2026-09-30T07:15:18.124823-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 18.138
+        }
+      ],
+      "test_names": [
+        "TestTopologyExpiringNativeRetirementKeepsSealedInputsAndLaterState",
+        "TestTopologyExpiringSourceControlsUseDistinctSealedStages",
+        "TestTopologyExpiringStagesKeepNativeBoundsAndOriginalExpiry",
+        "TestTopologyExpiringStageFingerprintPreservesValuePresence",
+        "TestTopologyCompilerLocalToFleetPreservesSelectionsAndFencing",
+        "TestTopologyCompilerRefusesChangedStagingAndRecoversLostReply",
+        "TestTopologyInventoryRefusesMissingAndConflictingOriginalEvidence",
+        "TestTopologyCompilerBoundsAndPrivateImmutableClaims",
+        "TestTopologyFleetToLocalPreservesHistoricalEvidenceAndRetiresAuthority",
+        "TestTopologyCompilerRetainsComplete96Capsules",
+        "TestTopologyArchiveRepresentationPreservesRawChunksAndCheckedBounds",
+        "TestTopologyReplayChecksEveryDistinctSelection",
+        "TestTopologyArchiveMetadataOverheadStaysWithinRepresentationBound",
+        "TestTopologyInventoryBoundsFinalCanonicalIdentity",
+        "TestTopologyFleetSelectionRequiresExactSameGenerationPublication",
+        "TestTopologyInventoryStreamingIdentityMatchesCanonicalEncoding",
+        "TestTopologyCompilerKeepsPreparedSQLBoundaryAndSeparateFleetIdentity",
+        "TestTopologySameBackendLocalPreservesAcceptedCandidate",
+        "TestTopologySameBackendFleetRebindsAndArchivesOriginalAuthority",
+        "TestTopologyRetentionComparisonsBindOriginalInventory",
+        "TestTopologyRetentionComparisonsRefuseIncompletePrivateCoverage",
+        "TestTopologyRetentionComparisonsRefuseMalformedOriginalInput",
+        "TestTopologyRetentionComparisonsCheckActualNativeRetention",
+        "TestTopologyRetentionComparisonsRefuseChangedNativeEvidence"
+      ],
+      "time_log": "/tmp/csp13-topology-comparisons-20260930/published-small-race.time",
+      "wall_seconds": 23.26,
+      "native_largest_process_max_rss_bytes": 1367015424
+    },
+    {
+      "path": "/tmp/csp13-topology-comparisons-20260930/published-small-pure.jsonl",
+      "sha256": "47e05ed6076267af7800a8bbf00a6584dbb82dd128167e5d3e017bd01930f518",
+      "pass": 49,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 24,
+      "package_results": [
+        {
+          "Time": "2026-09-30T07:16:01.293919-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 10.993
+        }
+      ],
+      "test_names": [
+        "TestTopologyExpiringNativeRetirementKeepsSealedInputsAndLaterState",
+        "TestTopologyExpiringSourceControlsUseDistinctSealedStages",
+        "TestTopologyExpiringStagesKeepNativeBoundsAndOriginalExpiry",
+        "TestTopologyExpiringStageFingerprintPreservesValuePresence",
+        "TestTopologyCompilerLocalToFleetPreservesSelectionsAndFencing",
+        "TestTopologyCompilerRefusesChangedStagingAndRecoversLostReply",
+        "TestTopologyInventoryRefusesMissingAndConflictingOriginalEvidence",
+        "TestTopologyCompilerBoundsAndPrivateImmutableClaims",
+        "TestTopologyFleetToLocalPreservesHistoricalEvidenceAndRetiresAuthority",
+        "TestTopologyCompilerRetainsComplete96Capsules",
+        "TestTopologyArchiveRepresentationPreservesRawChunksAndCheckedBounds",
+        "TestTopologyReplayChecksEveryDistinctSelection",
+        "TestTopologyArchiveMetadataOverheadStaysWithinRepresentationBound",
+        "TestTopologyInventoryBoundsFinalCanonicalIdentity",
+        "TestTopologyFleetSelectionRequiresExactSameGenerationPublication",
+        "TestTopologyInventoryStreamingIdentityMatchesCanonicalEncoding",
+        "TestTopologyCompilerKeepsPreparedSQLBoundaryAndSeparateFleetIdentity",
+        "TestTopologySameBackendLocalPreservesAcceptedCandidate",
+        "TestTopologySameBackendFleetRebindsAndArchivesOriginalAuthority",
+        "TestTopologyRetentionComparisonsBindOriginalInventory",
+        "TestTopologyRetentionComparisonsRefuseIncompletePrivateCoverage",
+        "TestTopologyRetentionComparisonsRefuseMalformedOriginalInput",
+        "TestTopologyRetentionComparisonsCheckActualNativeRetention",
+        "TestTopologyRetentionComparisonsRefuseChangedNativeEvidence"
+      ],
+      "time_log": "/tmp/csp13-topology-comparisons-20260930/published-small-pure.time",
+      "wall_seconds": 14.14,
+      "native_largest_process_max_rss_bytes": 1039056896
+    }
+  ],
+  "source": {
+    "head": "ac448034478f511c40eeb8fffaf74a9bd96a3719",
+    "files": {
+      "go.mod": "4ac567fdc024d751492c207c88b1542f4fb5a895a3614ee6bee124a8fc10ec4a",
+      "go.sum": "08bda2dfe3cc0ffed934cad27e398de428e08f4cf1fba4dc3ea4389abbb56168",
+      "docs/CATALOG_CAPACITY.md": "4f7e0c9593aa496b14a520e699c4e97605055cee7aaddd48c96992c0cc51b8a9",
+      "internal/catalog/topology_replay.go": "d9a826ff7708208af0ee85af3e26531c8ac47e77e7fb733ff4966549b76e2e64",
+      "internal/catalog/topology_materialization.go": "1d429b78f9a7cd5946d45ac081bbad77d20bae85a8b4e07d240e5c8cf38ee97f",
+      "internal/catalog/topology_maximum_capacity_test.go": "80793f5ea5f25ac453f62634e9b93be7d24bca44de387a77a91994026bf72755",
+      "internal/catalog/topology_recovery_record_test.go": "b130042c245ce8c64c02f7109303dc9b540a6dc548abb921cf760f22611be55b",
+      "internal/catalog/topology_retention_comparisons.go": "fafab776f96411dfb08cac66604af072d980554ada3967745f15688966ff2cf6",
+      "internal/catalog/topology_retention_comparisons_test.go": "1902220cbd0e08f1b09892b09d5aa0fc8bc0b21734a18c31cafbd61d369804c6"
+    },
+    "patch_sha256": "3b0a0a88f90fe93089c0ca8aa921c43aaf5299b878656557c1dfb8a1864f5feb"
+  },
+  "final_workspace": "GOWORK=off",
+  "final_replace": "absent",
+  "original_backup_restart": "actual persistent BackupBundle + CompileRecoveryTopology + InspectRecoveryTopology and fresh original-derived comparison pointers/equal usage; admitted boundary unchanged; race and pure qualified",
+  "static_checks": {
+    "vet": "PASS; GOWORK=off CGO_ENABLED=0 go vet -tags catalogcapacity ./internal/catalog",
+    "prose": "PASS: 3 files, 0 diagnostics",
+    "lint": "PASS: v2.13.2 run --build-tags catalogcapacity ./internal/catalog; repository tests:false policy; 0 issues",
+    "goago": "not declared or configured in this consumer module; no installation/adoption performed",
+    "gofmt": "PASS: changed handwritten source, no output",
+    "diff_check": "PASS: no whitespace errors"
+  },
+  "commands": {
+    "backup_race": "/usr/bin/time -l env GOCACHE=/private/tmp/csp13-go-build-20260929 GOWORK=off go test -json -race -count=1 -p=1 -timeout=30m -run '^TestRecoveryTopologyActualPersistentBackupSealsAndReopens$' ./internal/catalog",
+    "backup_pure": "same backup command with CGO_ENABLED=0 and without -race",
+    "small_race": "/usr/bin/time -l env GOCACHE=/private/tmp/csp13-go-build-20260929 GOWORK=off go test -json -race -count=1 -p=1 -timeout=30m -run '^(TestTopology(Compiler|Inventory|FleetToLocal|SameBackend|Expiring|Archive|ReplayChecks|FleetSelection|RetentionComparisons))' ./internal/catalog",
+    "small_pure": "same small command with CGO_ENABLED=0 and without -race"
+  },
+  "coverage_boundary": "Historical exact retained-input checks and real original-backup restart covered. Selected semantic inspection code remains unchanged. Full materialization/activation and 96-entry near-2GiB maximum workload not executed in this successor lane.",
+  "delivery_commit": "9edaf6e27dfef7659b5560ee3be9281cf992f4ef",
+  "delivery_tree": "2717e3780a0b9249b1003a5688f015e5e34b287c",
+  "delivery_status": "clean; no publication"
+}

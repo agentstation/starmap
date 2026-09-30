@@ -865,8 +865,8 @@
     "owner": "root and delegated recovery owners",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-catalog-activation",
-    "head": "0e52e853dc797cf31a0d80da5082c6a10d390e87",
-    "next_action": "Integrate actual merged producer comparison vector, qualify full embedded and maximum capacity, complete operator procedures and exact acceptance registration."
+    "head": "0c2cf5d4a3c1e33f4124a05984a42f32694f87c3",
+    "next_action": "Finish exclusive full embedded race profile; qualify maximum capacity; integrate populated operator commands and gateway history barriers; complete exact acceptance."
   },
   "merged_followups": {
     "tasks": [
@@ -1049,7 +1049,7 @@
     "status": "MERGED",
     "completion_proof": "../../csp12/merged-pair-2026-09-27/verification.json"
   },
-  "local_updated_at": "2026-09-30T11:36:39.680070+00:00",
+  "local_updated_at": "2026-09-30T12:41:50.646123+00:00",
   "storage_preparation_review": "../../csp12/prepared-lint-repair-2026-09-27/STORAGE_REVIEW.md",
   "consumer_test_repair": {
     "head": "a819276e23a126c3eae159d5e2b2744db8bba619",
@@ -3236,7 +3236,7 @@
   },
   "last_producer_merge": "2bb99571227518efcb67aa64f9b78bf9079fab27",
   "starmap202_merge_proof": "csp13/starmap202-merge-2026-09-30/verification.json",
-  "merged_producer_module": "v0.16.6-0.20260930103856-1c03a457a14f",
+  "merged_producer_module": "v0.16.6-0.20260930115749-2bb995712275",
   "starmap203_completion": {
     "pr": 203,
     "repo": "agentstation/starmap",
@@ -3301,5 +3301,14 @@
   "starmap203_merge_proof": "csp13/starmap203-merge-2026-09-30/verification.json",
   "last_starmap204_merge_proof": "../../csp13/starmap204-merge-2026-09-30/verification.json",
   "diagnostic_integration": "../../csp13/diagnostic-integration-2026-09-30/verification.json",
-  "starmap205_completion": "../../csp13/starmap205-merge-2026-09-30/verification.json"
+  "starmap205_completion": "../../csp13/starmap205-merge-2026-09-30/verification.json",
+  "comparison_integration": "../../csp13/comparison-integration-2026-09-30/verification.json",
+  "starmap205_cleanup": "../../csp13/starmap205-cleanup-2026-09-30/verification.json",
+  "active_native_profile": {
+    "owner": "root",
+    "session": 49248,
+    "source_head": "0c2cf5d4a3c1e33f4124a05984a42f32694f87c3",
+    "directory": "/tmp/csp13-full-embedded-vector-20260930",
+    "operation_deadline_seconds": 420
+  }
 }
