@@ -46,8 +46,12 @@ check_coverage() {
 	profile="$TMPDIR/$(printf '%s' "$pkg" | tr '/.' '__').out"
 
 	printf '\n==> coverage %s >= %s%%\n' "$pkg" "$min"
-	output="$(go test -count=1 -covermode=atomic -coverprofile="$profile" "$pkg" 2>&1)"
+	local status=0
+	output="$(go test -count=1 -covermode=atomic -coverprofile="$profile" "$pkg" 2>&1)" || status=$?
 	printf '%s\n' "$output"
+	if [ "$status" -ne 0 ]; then
+		return "$status"
+	fi
 	coverage="$(printf '%s\n' "$output" | awk '/coverage:/ { for (i = 1; i <= NF; i++) if ($i ~ /%$/) { gsub("%", "", $i); print $i; exit } }')"
 
 	if [ -z "$coverage" ]; then
