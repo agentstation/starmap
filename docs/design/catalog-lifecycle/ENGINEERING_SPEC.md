@@ -5511,3 +5511,9 @@ JSON normalization must not merge nil and empty value identities in a receipt or
 Original backup inspection retains the original closed SQL boundary and its prior fleet identity. Final prepared catalog inspection requires the sealed compiler from that verified backup. It checks the exact destination boundary, staged bytes, retired absences, final controls, stage marker, and selection receipt. The future fleet identity must equal the compiled identity at the closed epoch.
 
 The destination SQL record can retain an empty backend identity until coordinated activation. Inspection must not rewrite that record or relax the original backup inspector. The host separately verifies native incarnation, materialization, permission, and final SQL approval. Inspection grants no admission permission.
+
+## Recovery retention packing and operator activation
+
+The producer owns raw and decoded recovery size accounting. Both dimensions must fit each retained batch independently. The host must use producer-owned passive inspection before packing original capsules. Final retention must revalidate the complete batch. Input count, raw bytes, and decoded bytes use separate bounds. Encoded JSON size alone cannot establish those bounds.
+
+Operator activation must use a bounded private request and current target configuration. Sealed retries and status require the independently retained original decision digest. Historical completion and current admission permission remain separate results. Fresh gateway readiness remains a separate check after coordinated native release. Complete CSP13 qualification remains required.

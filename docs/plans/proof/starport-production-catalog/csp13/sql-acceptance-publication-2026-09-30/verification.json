@@ -1,0 +1,137 @@
+{
+  "status": "component publication; native CI pending",
+  "pr": "https://github.com/agentstation/starmap/pull/203",
+  "head": "dfd724ccad45a59f7fe38400845272c8cf944deb",
+  "base": "e0845d601fb5408f5f206076c9fbb8b0cbc08ecf",
+  "host": "darwin/arm64",
+  "toolchain": "go1.27.1",
+  "root_checks": {
+    "make verify-checks": "PASS",
+    "runner_regressions": 105,
+    "ciworkflow_race_results": 65,
+    "goago": "0 findings and errors",
+    "prose": "2 changed files; 0 diagnostics"
+  },
+  "original_sql_owner_evidence": {
+    "scope": [
+      "A16.sqlite_wal_backup",
+      "A16.concurrent_migration_owner"
+    ],
+    "toolchain": "go1.27.1",
+    "host": "darwin/arm64",
+    "sql_owner_results": {
+      "race": {
+        "top_level": 9,
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0
+      },
+      "pure": {
+        "top_level": 9,
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "runner_tests": {
+      "passed": 105,
+      "failed": 0,
+      "skipped": 0
+    },
+    "qualification_split": {
+      "behavior": "Existing actual SQLite, PostgreSQL, and MySQL SQL tests. The shared SQL check requires each declared child to run and pass exactly once.",
+      "native_platforms": "Existing Starport native CI covers Linux amd64/arm64, macOS arm64, and Windows amd64/arm64. PostgreSQL and MySQL fixtures belong to the separate Linux durable-work-recovery job.",
+      "missing_fixtures": "An actual invocation without PostgreSQL and MySQL produced UNVERIFIED for shared migration ownership.",
+      "remaining": "Fresh source-bound native CI evidence remains required. Both complete A16 checks remain UNVERIFIED. No whole CSP13 completion, capacity, RPO, or RTO claim."
+    },
+    "checks": [
+      "python3 -m unittest discover -s scripts -p test_catalog_product_verify.py",
+      "go test -json -race -count=1 -timeout 3m ./internal/sqlstore -run selected-nine-tests",
+      "CGO_ENABLED=0 go test -json -count=1 -timeout 3m ./internal/sqlstore -run selected-nine-tests",
+      "Scoped technical-writing lint",
+      "git diff --check"
+    ],
+    "changes": "Two registry entries and required_subtests validation in the existing acceptance runner. No Starport source, tests, workflows, module pins, or fixtures changed.",
+    "manual_audit": [
+      "Existing SQL fixtures create and remove private schemas and databases. No shared schema reset.",
+      "Named native checks omit optional network fixture requirements.",
+      "Batch execution reuses parent test results without sharing different child requirements.",
+      "Failed evidence remains intact.",
+      "Existing registry entries and roster remain unchanged."
+    ],
+    "evidence_sha256": {
+      "runner-suite.txt": "e51ff1cc8b88e7dfd002420574f3916b6fbe5c4055e928080e389044313b7cef",
+      "native-selection.json": "ea6c66199bfecce974d7534f3e034b2db3952e41e551e0aab78da6df2066462f",
+      "registration-shared.json": "95b3fbb6194ae2fcafbbf5d1d3f610a3e22f6b67b6586bf4f87dc54256eb49e9",
+      "registration-without-shared.txt": "a0bc10b3b0665b8869b1f7e11da1a763b6d5df0b9bcd5019fad6fbc2c555b5aa",
+      "check-registration.py": "665d76f3d4d096339b4c43d6b1b29d9858919ac8d406bd645a9a99a1dac8a507",
+      "runner-suite-final.txt": "d7c02afbd2d65f0242d4954662f1218d44d5e46f2cc916017e24ca04e62cf5e2",
+      "prose.txt": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "registration-without-shared.json": "838b5e3c434ab5a168b52fec196cbf96d5fd2705d36ed27614b83e7a46efb265",
+      "registration-shared.txt": "f7eee05914cd2a0edeac437fdf234f5fa40874331bde2071466b9b8c75d42b8c",
+      "fail-before.txt": "2f7dbc327cc7eb21cc2f516174c3cf54d40518cb48ff06822aeef15ce45567aa",
+      "prose-final.txt": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "sql-pure.jsonl": "b8f1d3a119abdb655e1ed380f5047e05da639ddfc9bd574cd8f5d4269f55d6a0",
+      "registration-shared-final.json": "e4dc1b7dd6385dc587f69d1f611102ebff4efde2f73599d699499cda606192ce",
+      "runner-suite-final2.txt": "e5460f2a852dafaf80ae2ba6f09821bccfaecb156d34972047d062d68a870472",
+      "source-identities.json": "f36781f834badff97b3ce07241debc33a3531b425d8816379328191bb952978b",
+      "sql-race.jsonl": "48115518c7b740d6ce85f372d6e6c9914381dfff2842b5a7c9b94cd221342e67",
+      "registration-shared-final.txt": "f7eee05914cd2a0edeac437fdf234f5fa40874331bde2071466b9b8c75d42b8c",
+      "required-subtests.txt": "27c4a39d34ece4cbc66cc59cb0870c7abe4cc0a5f009205bdd0ea06a93f8b3ac"
+    },
+    "delivery": {
+      "commit": "5007710a755be0997ea554df1a093f998c27192b",
+      "base": "e0845d601fb5408f5f206076c9fbb8b0cbc08ecf",
+      "branch": "codex/a16-sql-acceptance",
+      "worktree": "/private/tmp/starmap-a16-acceptance-20260930",
+      "rebase": "The checked source tree is unchanged after rebasing onto the actual PR202 merge.",
+      "source_files": [
+        "scripts/catalog-product-checks.json",
+        "scripts/catalog_product_verify.py",
+        "scripts/test_catalog_product_verify.py"
+      ]
+    }
+  },
+  "preserved_failure": "Initial verification exited in pipeline coverage before printing its Go output. Focused pipeline passed at 86.9 percent. No cause is claimed for the original failure. A reproducing diagnostic regression fails before the repair and passes with exact exit 23 afterward. Final complete checks pass.",
+  "review": "One isolated P0 pre-PR pass against fetched actual origin/main; clean",
+  "whole_A16": "UNVERIFIED until fresh source-bound native and shared SQL evidence",
+  "whole_CSP13": "UNVERIFIED",
+  "raw_evidence": [
+    {
+      "file": "csp13-a16-root-verify-checks.log.gz",
+      "sha256": "743a9d58030d947414ae21afeb100a131a73e8a34942093b41e415098d785e8b"
+    },
+    {
+      "file": "csp13-a16-root-verify-checks-final.log.gz",
+      "sha256": "be5a5160a0fcd4e031fed6c49682aeb1edab573df53f875e10a6000d3bd97a95"
+    },
+    {
+      "file": "csp13-a16-root-coverage-final.log.gz",
+      "sha256": "9fe201c10db77e4e7a5b91b3092253d7551d9e9cf02689bf1db94aae809433e0"
+    },
+    {
+      "file": "csp13-coverage-output-fail-before.jsonl.gz",
+      "sha256": "60809082653ae480de8451365f3089525331de2e05f3b0bb5649c4b4681801ad"
+    },
+    {
+      "file": "csp13-a16-ciworkflow-race.jsonl.gz",
+      "sha256": "31cecb132e478a016307d0e4f2aa9f20a08ec327e82c8c254eb281bddc30ac7b"
+    },
+    {
+      "file": "csp13-a16-root-python-final.log.gz",
+      "sha256": "75e4df28dd7e33adcfc7f1f16cb1219b80a8933e73f389544e9075f4ca526771"
+    },
+    {
+      "file": "csp13-a16-pre-pr-review-final.json.gz",
+      "sha256": "c2cf56da37d6faf635e75cdd18773a6b2a6cc5051358cdd522e67df3bdbbda9e"
+    },
+    {
+      "file": "csp13-a16-pre-pr-review-final.log.gz",
+      "sha256": "2d1d60fb6ebde2401c2b0e23d8987478a7856af6fc62c1abb6bf3f8d04104d6e"
+    },
+    {
+      "file": "csp13-a16-pr-current.json.gz",
+      "sha256": "26c96abf2eca25b775005703440f3d41c7cb45b977761460b5c28751296d20f5"
+    }
+  ]
+}

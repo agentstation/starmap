@@ -1,0 +1,164 @@
+{
+  "scope": "Bounded source fixture optimization and native connection qualification; whole CSP13 remains in progress",
+  "producer": "github.com/agentstation/starmap v0.16.6-0.20260930082412-e0845d601fb5",
+  "go": "go1.27.1 darwin/arm64",
+  "source": {
+    "internal/app/recovery_activation_bounded_fixture_test.go": "99d46ad90ca94a27f75eacd2c4f220f061e070e42afe0e57ba6fba8f385bc90d",
+    "internal/app/recovery_activation_test.go": "d2a585b0737165493fdbcd60705e0df66cf3981dffb6d272be7bfca5b6323929",
+    "internal/app/testdata/activation_connection_probe_test.go": "543855c5eac9f7e785368139178a151d0c7856e340b78af8b2b03f66a568df23"
+  },
+  "qualified": [
+    {
+      "path": "/tmp/csp13-activation-bounded-direct-native-source-pure.jsonl",
+      "sha256": "fb452243c8b4d8209970e926e6321c81409ee0d97cbbb505fa3622be38f7cd90",
+      "tests": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "path": "/tmp/csp13-activation-bounded-normal-startup-pure.jsonl",
+      "sha256": "dea19d29565fc74138d3dda38606c55052675147041a68036ee68053ec75590f",
+      "tests": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "path": "/tmp/csp13-activation-current-evidence-withdrawal-pure.jsonl",
+      "sha256": "56aa1ac61040d28755807015a9e90ee99a9ea390d07eabf45045194d1b7c9b56",
+      "tests": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "path": "/tmp/csp13-activation-pending-native-pure.jsonl",
+      "sha256": "4d885ad0c2f6f1e009d5b5cb9410278266130452865bdf9dbac851ddba491678",
+      "tests": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "path": "/tmp/csp13-activation-sql-boundary-race-final.jsonl",
+      "sha256": "b1a0189d5ca045695c4233e14cd6de8b4082076854c34e9589f6f7508789a1ca",
+      "tests": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "path": "/tmp/csp13-blob-transport-owner-connections.jsonl",
+      "sha256": "f0b10a7f6b8130be8af272d1d52cb95df0254e681ad39dfa1db0f2454d861911",
+      "tests": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  ],
+  "preserved_failures": [
+    {
+      "path": "/tmp/csp13-activation-boundaries-race.jsonl",
+      "sha256": "0da09bc0b1b97e1848c82728ffddff75612d00d4531fcd4e4a548b005b0290b7",
+      "tests": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "path": "/tmp/csp13-activation-bounded-direct-native-source-race.jsonl",
+      "sha256": "f0d648a1b3e38ba295f45ed45f2e4056be40baf32a24b66e5312dd18c0ad948e",
+      "tests": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 0
+      }
+    },
+    {
+      "path": "/tmp/csp13-activation-full-embedded-instrumented-race.jsonl",
+      "sha256": "4d59163a832dc8101d7e9c3bb7d40dcadaf6266b6b89e9fb8cc3aed8f594d91c",
+      "tests": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      }
+    }
+  ],
+  "contracts": {
+    "bounded_direct_source": "Actual GenerationStore accepted/candidate writes plus producer-owned stopped-directory materialization preserve original descriptors. Capture and complete backup census remain mandatory. This fixture does not qualify connected normal startup.",
+    "normal_source": "Separate mandatory actual normal-startup historical-baseline case, plus retained full embedded normal-runtime application case.",
+    "phase_matrix": "All12 exact native phase publication crashes and fresh-process retries pass13 pure results without assertion changes.",
+    "withdrawal": "Six original/current input substitutions and completed later withdrawal pass8 pure results.",
+    "race_boundary": "Timed group passed three exact boundary cases before10-minute process timeout. The remaining SQL case passed in an isolated5-minute process on the merged producer. No invariant assertion failed in the timed group.",
+    "full_fixture_budget": "The full embedded fixture now uses7 minutes, matching existing native recovery instrumentation policy. Its former3-minute value was a test budget, not a product RTO. Repository test-process policy remains30 minutes; other matrix operation budgets are unchanged.",
+    "logical_fleet_scope": "Fleet restore targets DB9. It is a distinct logical import scope and can share source physical Valkey incarnation. Exact selected database, higher recovery epoch, original fencing and backend identity remain bound."
+  },
+  "socket_diagnosis": {
+    "failure": "OS cannot assign a local address before native PostgreSQL connection/activation",
+    "observed_peak": {
+      "TIME_WAIT": 15360,
+      "FIN_WAIT_2": 866
+    },
+    "isolated_actual_activation": {
+      "minio_requests": 433,
+      "downstream_tcp_connections": 4,
+      "postgres_session_delta": 5,
+      "valkey_session_delta": 5,
+      "result": "pass"
+    },
+    "external_processes": {
+      "owner_project": "/Users/jack/src/github.com/open-e2ee/relay",
+      "process": "workerd",
+      "historical_pids": [
+        49759,
+        55215
+      ],
+      "observed_connections": [
+        4636,
+        2318
+      ],
+      "action": "untouched"
+    },
+    "conclusion": "The isolated bounded activation did not reproduce high-rate connection churn. Unrelated worker load exhausted the host socket range. Further native qualification requires isolated networking or low-pressure host access.",
+    "executed_probe": {
+      "source_path": "/tmp/csp13-blob-transport-probe_test.go",
+      "source_sha256": "92ae9900818e6458811384d56be30224b2fcaae8ddad0693f79fcc88ee4de5f5",
+      "overlay_path": "/tmp/csp13-blob-transport-probe-overlay.json",
+      "overlay_sha256": "6c26bf467e8326704b615b6151d41ba574f1b3df21bb42dd54f2ce91c6b856bb",
+      "tracked_gofmt_equivalent": true
+    }
+  },
+  "remaining": [
+    "All final-source native race matrix cases, normal startup and full embedded instrumented case on an isolated or low-pressure host",
+    "Native Linux/Windows app qualification",
+    "Root-owned CLI and whole CSP13 deployment acceptance/review"
+  ],
+  "static_checks": [
+    {
+      "name": "vet",
+      "result": "pass",
+      "path": "/tmp/csp13-activation-fixture-vet-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "lint",
+      "result": "pass",
+      "path": "/tmp/csp13-activation-fixture-lint-final.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "name": "prose",
+      "result": "pass",
+      "path": "/tmp/csp13-activation-fixture-prose-final.log",
+      "sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    }
+  ]
+}

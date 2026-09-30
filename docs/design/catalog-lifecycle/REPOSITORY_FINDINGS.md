@@ -5248,3 +5248,13 @@ The [publication proof](../../plans/proof/starport-production-catalog/csp13/stop
 Starport `ac9bddda` separates final prepared inspection from original backup inspection. The [component proof](../../plans/proof/starport-production-catalog/csp13/prepared-catalog-inspection-2026-09-30/verification.json) records three final pure tests, two full race tests, and the final epoch-guard race test. It preserves the original application failure and the intermediate fixture and lint failures. Native expiry replay under the SQL guard passes six results per mode. The unchanged original fleet inspector passes 16 native pure results.
 
 The [acceptance audit](../../plans/proof/starport-production-catalog/csp13/prepared-catalog-inspection-2026-09-30/acceptance-gap-audit.json) retains all 15 incomplete subcases. Complete CLI activation, post-backup revocation and spend, process fencing, fresh readiness, maximum capacity, and measured recovery objectives remain required. Component success does not complete CSP13.
+
+## Coordinated application and operator delivery, September 30, 2026
+
+Starport `2e573bdc` integrates the application coordinator and adds `backup activate` and `backup activation-status`. The [operator proof](../../plans/proof/starport-production-catalog/csp13/operator-activation-delivery-2026-09-30/verification.json) records 20 CLI results per mode and actual local Badger/SQLite activation, status, and exact retry. All 205 CLI pure results pass. Native platform qualification, post-backup activity, old-writer fencing, fresh readiness, maximum capacity, and actual RPO/RTO remain open.
+
+Starmap [PR #203](https://github.com/agentstation/starmap/pull/203) registers actual WAL backup and migration ownership evidence. Required SQL children must each run and pass exactly once. The [publication proof](../../plans/proof/starport-production-catalog/csp13/sql-acceptance-publication-2026-09-30/verification.json) records complete local checks, 105 runner results, 65 workflow race results, and clean review. Fresh native CI remains pending.
+
+The coverage gate previously hid failing Go test output. A reproducing regression now checks the diagnostic and exact exit status. The final complete gate passes. The original coverage failure remains unexplained and preserved. It does not establish a product defect or a passing initial run.
+
+Two structurally valid highly compressed original capsules exceed the producer's decoded batch limit when packed by encoded size. The provisional paired repair uses producer-owned raw and decoded accounting. Published-module and maximum combined capacity qualification remain open. Component success does not complete CSP13.

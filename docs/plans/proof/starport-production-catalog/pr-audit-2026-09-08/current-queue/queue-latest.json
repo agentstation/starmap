@@ -1,6 +1,16 @@
 {
-  "checked_at": "2026-09-30T08:24:13Z",
-  "starmap": [],
+  "checked_at": "2026-09-30T09:17:26.782395+00:00",
+  "starmap": [
+    {
+      "number": 203,
+      "head": "dfd724ccad45a59f7fe38400845272c8cf944deb",
+      "base": "main",
+      "owner": "root",
+      "disposition": "reviewed; ready; native CI running",
+      "next_action": "exact-head protected merge after checks pass",
+      "proof": "../../csp13/sql-acceptance-publication-2026-09-30/verification.json"
+    }
+  ],
   "starport": [],
   "completed_merges": [
     {
@@ -282,16 +292,8 @@
     }
   },
   "active_publication": {
-    "run": 36221483290,
-    "source": "1cd0d9b8b4ef95eaa3619219f6a13344cb8cd753",
-    "status": "completed",
-    "conclusion": "success",
-    "owner": "CSP6",
-    "retry_run": 36222128051,
-    "retry_status": "success",
-    "qualification_session": 83644,
-    "qualification_status": "PASS",
-    "result": "CSP6 complete: all six subcases pass at merged source."
+    "starmap": "#203",
+    "starport": "local recovery coordinator and CLI 2e573bdc; final publication checks pending"
   },
   "starport_preparation": {
     "head": "0a110339856b5cef3fac11da012e43b41482dab7",

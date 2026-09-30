@@ -1,0 +1,99 @@
+{
+  "status": "local component checks pass; publication pending",
+  "consumer_base": "52a53dc0207b03261a5e774c98fdfa48ecf1a897",
+  "producer_module": "v0.16.6-0.20260930082412-e0845d601fb5",
+  "GOWORK": "off",
+  "toolchain": "go1.27.1",
+  "host": "darwin/arm64",
+  "commands": [
+    "backup activate",
+    "backup activation-status"
+  ],
+  "contracts": [
+    "private bounded JSON before configuration",
+    "one bounded application handler",
+    "no gateway startup or provider replay",
+    "independent digest for status and exact retries",
+    "historical completion separate from current permission"
+  ],
+  "checks": {
+    "cli-activation-pure-final": {
+      "pass": 20
+    },
+    "cli-activation-race": {
+      "pass": 20
+    },
+    "cli-local-native-pure-final": {
+      "pass": 1
+    },
+    "cli-local-native-race-final": {
+      "pass": 1
+    },
+    "cli-command-fail-before": {
+      "fail": 1
+    }
+  },
+  "static_checks": {
+    "vet": "PASS",
+    "pinned_lint": "0 issues",
+    "new_guide_and_link": "0 diagnostics",
+    "existing_operator_guide": "51 unchanged baseline diagnostics remain"
+  },
+  "source_sha256": {
+    "cmd/starport/run.go": "6514122c61ff3e35d321c005324ce018e13a1431415d98d9aa717bb860c0c483",
+    "internal/cli/app.go": "c34963ea8237d7f5eddd53a8c0fb9c1c71cd5bb6e28a4b748c465a223ae11924",
+    "internal/cli/backup.go": "bdf9c157c3c89bbeda48cc3d2fbbd485e9d2185357bf14d7105748b188ea0d32",
+    "internal/cli/recovery_activation.go": "9a30b1ea6df5fd27b5e3973201516b26fcc4e64f492e86e5a5704df9938d4b35",
+    "internal/cli/recovery_activation_test.go": "3a3422289cbc8e7cc2777a5ba2f88c3c73fbbbdbc41ffae922309e8344dcec0c",
+    "internal/app/recovery_activation_cli_test.go": "80051a1bb28d0a834eed6c49d6faaefe4e1ef977c5ee3f8c89b646add3a0b332",
+    "docs/RECOVERY.md": "286496943c9f27c66de1d1d690b054f266564f3a7470e80db3338a60248e5d77",
+    "docs/OPERATOR-GUIDE.md": "8c911055d9f259c396ad1e29058856e17c64049fbf41ec8a007393911f3097d6"
+  },
+  "remaining": [
+    "exact sealed selector repair under qualification",
+    "complete application race and native platform CI",
+    "DR activity, old-writer fencing, maximum capacity and actual RPO/RTO"
+  ],
+  "whole_CSP13": "UNVERIFIED",
+  "raw_evidence": [
+    {
+      "file": "csp13-cli-activation-pure-final.jsonl.gz",
+      "sha256": "3f39b738cc1a05cca60f9a98bdd65afb844c44e53e3d7c1316e8e1573ba5a0e3"
+    },
+    {
+      "file": "csp13-cli-activation-race.jsonl.gz",
+      "sha256": "46bbf40ea789ada8c3a8345858c422849defa668a19b944d0189f46d614588e7"
+    },
+    {
+      "file": "csp13-cli-local-native-pure-final.jsonl.gz",
+      "sha256": "b2bf90886d2bfa2a4c0dad421a85f7f353878664d0909e1962a281e3af7e692e"
+    },
+    {
+      "file": "csp13-cli-local-native-race-final.jsonl.gz",
+      "sha256": "304dbb0e84e7c7bac23689683afdaad83090358990487880e0c930f27327e813"
+    },
+    {
+      "file": "csp13-cli-command-fail-before.jsonl.gz",
+      "sha256": "0409dc7d42e3aa8a4f9d8dd1a4b133ba3af37ac02b45beb7bb658454a4e00a8c"
+    },
+    {
+      "file": "csp13-cli-activation-vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "csp13-cli-activation-lint-final.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "file": "csp13-recovery-guide-and-link-writing.log.gz",
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    {
+      "file": "csp13-prior-operator-writing.log.gz",
+      "sha256": "a596f31c047e49c7bf3bfc995648d5a5b132353decde24f3fb39a8a1f0aff73b"
+    }
+  ],
+  "consumer_commit": "2e573bdc499e2fa2b772243afbf7777984579bc4",
+  "complete_CLI_pure_results": 205,
+  "documentation_links": "PASS"
+}
