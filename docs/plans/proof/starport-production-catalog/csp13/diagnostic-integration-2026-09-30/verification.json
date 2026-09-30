@@ -1,0 +1,24 @@
+{
+  "scope": "CSP13 copied-value diagnostic repair integration; not complete recovery qualification",
+  "delivery_commit": "822881f5103eab9acf75d20c1ef7d890f2aa44ee",
+  "integration_commit": "0e52e853dc797cf31a0d80da5082c6a10d390e87",
+  "manual_review": "Root read all changed capability owners and regression tests. Immutable values have opaque formatters. Mutable journal and lane copies keep one stable private state pointer. Lane copies share one original mutex; formatting reads no mutable state. Nil and zero operations remain closed.",
+  "component_evidence": "component.json",
+  "component_results": {
+    "race": {
+      "pass": 29,
+      "fail": 0,
+      "skip": 0
+    },
+    "pure": {
+      "pass": 29,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "limits": [
+    "Focused macOS arm64 component evidence is bound to its original source and published producer.",
+    "Final integrated source and native platform qualification remain required.",
+    "No PR or merge claimed."
+  ]
+}

@@ -875,7 +875,7 @@
     "owner": "root and delegated recovery owners",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-catalog-activation",
-    "head": "b71bf74908a24e7c4b592300afa2ccfc707bbe6c",
+    "head": "0e52e853dc797cf31a0d80da5082c6a10d390e87",
     "next_action": "Qualify retained-input comparison at producer-owned seam, integrate private consumer proofs, then measure unchanged full application and maximum capacity; complete native recovery acceptance."
   },
   "merged_followups": {
@@ -3309,5 +3309,6 @@
     }
   },
   "starmap203_merge_proof": "csp13/starmap203-merge-2026-09-30/verification.json",
-  "last_starmap204_merge_proof": "../../csp13/starmap204-merge-2026-09-30/verification.json"
+  "last_starmap204_merge_proof": "../../csp13/starmap204-merge-2026-09-30/verification.json",
+  "diagnostic_integration": "../../csp13/diagnostic-integration-2026-09-30/verification.json"
 }

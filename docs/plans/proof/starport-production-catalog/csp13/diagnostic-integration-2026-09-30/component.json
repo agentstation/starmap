@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "scope": "Private recovery capability diagnostics; no recovery protocol or release authority change.",
+  "base_commit": "7e2a007ef5785fe76a31d15812b89cca7666a396",
+  "go_version": "go version go1.27.1 darwin/arm64",
+  "platform": {
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "starmap_module": "v0.16.6-0.20260930103856-1c03a457a14f",
+  "module_source_commit": "1c03a457a14f6f28691207ed79f0e24cf944adcc",
+  "go_work": "off",
+  "source_sha256": {
+    "internal/catalog/capability_diagnostics_test.go": "56b33a5406bc911317c63968e67b4cc95d83553cb8e89b27f85c61564c779cb9",
+    "internal/catalog/topology_archive.go": "e17a59dc61fd9b8a338b385d659446d65215b1c093d0b0fe43cacf25409083ed",
+    "internal/catalog/topology_inventory.go": "d96254caba58d3dc31dbd638b768f16661caf2d545082f84c3345027cdb43364",
+    "internal/catalog/topology_materialization.go": "cad65fba7ad79bc8153d87fa68af0e1be3b289d714fbb607910f424cb76bc35f",
+    "internal/catalog/topology_permission.go": "a11cc50157b263c3e1cbd4a64a6469eb960d61b166f770d0007648302c688a65",
+    "internal/catalog/topology_replay.go": "86db8473ac63755b2d3adb8c10f67f9ae316bbadc7263c2cc7e9f9c29a72fa17",
+    "internal/recovery/activation_journal.go": "4859bb5893f978cb5956bd3184d314fd2ae33f38233c3a3b354871609de2c98f",
+    "internal/recovery/capability_diagnostics_test.go": "19da5c2bbee43ff9f0145391e27166e3cebcc30009995bc64e432e78f9c7675b",
+    "internal/recovery/catalog_preparation.go": "722a3029f864618570b556aa5c5d32ffca1ab96e4b5f074ad6ed6acf7e101ea0",
+    "internal/recovery/history_prefix.go": "f54cf10f5aea3ec7a9ea66deceb0ff995669c201331ace85fa0be959f3c52cb0"
+  },
+  "contract": {
+    "formatter": "Pointer and copied-value formatting returns only the original opaque text for %v, %+v, %#v and %s. Nil pointers remain safe.",
+    "immutable_capabilities": [
+      "HistoryPrefix",
+      "FleetHistoricalArchive",
+      "TopologyInventory",
+      "TopologyMaterialization",
+      "CompiledTopology",
+      "TopologyPermission"
+    ],
+    "mutable_capabilities": [
+      "ActivationJournal",
+      "CatalogPreparationLane"
+    ],
+    "mutable_ownership": "Each mutable capability contains one stable private state pointer. Formatting copies only this pointer and reads no mutable state. Copied catalog lanes share the original state and mutex.",
+    "concurrency_limit": "Concurrent diagnostic formatting with native state transitions is tested. Concurrent journal accessors and mutation are not a new API guarantee.",
+    "empty_state": "Nil and zero-state journal/lane operations remain closed and cannot invoke native or host callbacks."
+  },
+  "fail_before": {
+    "path": "/tmp/csp13-capability-diagnostics-fail-before.jsonl",
+    "sha256": "5d4a0d3d40f95d4765993f268f6f0ad796e5948a97544d75c3a5244dc85b86d0",
+    "results": {
+      "pass": 0,
+      "fail": 10,
+      "skip": 0
+    },
+    "packages": [
+      {
+        "Package": "github.com/agentstation/starport/internal/recovery",
+        "Action": "fail",
+        "Elapsed": 0.458
+      },
+      {
+        "Package": "github.com/agentstation/starport/internal/catalog",
+        "Action": "fail",
+        "Elapsed": 0.747
+      }
+    ],
+    "top_level_tests": [
+      "TestRecoveryCapabilityDiagnosticsRedactCopiedValues",
+      "TestCatalogCapabilityDiagnosticsRedactCopiedValues"
+    ]
+  },
+  "qualified_final": {
+    "race": {
+      "exit_code": 0,
+      "path": "/tmp/csp13-capability-diagnostics-final-source-race.jsonl",
+      "sha256": "0fbfaeb8691bacfc2e2293f5b95e6b65dbe1492bac4bfb89d677a39e12fd926f",
+      "results": {
+        "pass": 29,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 2.171
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 48.668
+        }
+      ],
+      "top_level_tests": [
+        "TestCatalogCapabilityDiagnosticsRedactCopiedValues",
+        "TestActivationJournalPreservesOriginalDecisionAndPhaseOrder",
+        "TestActivationJournalRejectsSubstitutedAndUnexpectedEvidence",
+        "TestActivationJournalFreshProcessReopensOriginalPhases",
+        "TestRecoveryCapabilityDiagnosticsRedactCopiedValues",
+        "TestRecoveryCapabilityDiagnosticsDuringNativeJournalTransitions",
+        "TestRecoveryCapabilityDiagnosticsDuringNativeCatalogTransitions",
+        "TestRecoveryCapabilityDiagnosticsEmptyStateRemainsClosed",
+        "TestCatalogPreparationNativeOwnersBridgeFinalHistory",
+        "TestCatalogPreparationLostRepliesRecoverOriginalAssetsAndSelection",
+        "TestCatalogPreparationConcurrentExactStageDoesNotAdvanceTwice"
+      ],
+      "argv": [
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/recovery",
+        "./internal/catalog",
+        "-run",
+        "CapabilityDiagnostics|^TestActivationJournal|^TestCatalogPreparation(ConcurrentExactStageDoesNotAdvanceTwice|LostRepliesRecoverOriginalAssetsAndSelection|NativeOwnersBridgeFinalHistory)$",
+        "-count=1",
+        "-timeout=6m"
+      ],
+      "environment": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.27.1",
+        "GOCACHE": "/private/tmp/csp13-go-build-20260929"
+      },
+      "fixture_credentials": "Established credential-private native wrapper; no credential contents retained in this evidence."
+    },
+    "pure": {
+      "exit_code": 0,
+      "path": "/tmp/csp13-capability-diagnostics-final-source-pure.jsonl",
+      "sha256": "05992f40f2ff421b1bd30fca9e4c61bb58f32087c6be6b1946d8b241fce439e1",
+      "results": {
+        "pass": 29,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 1.008
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 26.376
+        }
+      ],
+      "top_level_tests": [
+        "TestActivationJournalPreservesOriginalDecisionAndPhaseOrder",
+        "TestCatalogCapabilityDiagnosticsRedactCopiedValues",
+        "TestActivationJournalRejectsSubstitutedAndUnexpectedEvidence",
+        "TestActivationJournalFreshProcessReopensOriginalPhases",
+        "TestRecoveryCapabilityDiagnosticsRedactCopiedValues",
+        "TestRecoveryCapabilityDiagnosticsDuringNativeJournalTransitions",
+        "TestRecoveryCapabilityDiagnosticsDuringNativeCatalogTransitions",
+        "TestRecoveryCapabilityDiagnosticsEmptyStateRemainsClosed",
+        "TestCatalogPreparationNativeOwnersBridgeFinalHistory",
+        "TestCatalogPreparationLostRepliesRecoverOriginalAssetsAndSelection",
+        "TestCatalogPreparationConcurrentExactStageDoesNotAdvanceTwice"
+      ],
+      "argv": [
+        "go",
+        "test",
+        "-json",
+        "./internal/recovery",
+        "./internal/catalog",
+        "-run",
+        "CapabilityDiagnostics|^TestActivationJournal|^TestCatalogPreparation(ConcurrentExactStageDoesNotAdvanceTwice|LostRepliesRecoverOriginalAssetsAndSelection|NativeOwnersBridgeFinalHistory)$",
+        "-count=1",
+        "-timeout=6m"
+      ],
+      "environment": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.27.1",
+        "GOCACHE": "/private/tmp/csp13-go-build-20260929",
+        "CGO_ENABLED": "0"
+      },
+      "fixture_credentials": "Established credential-private native wrapper; no credential contents retained in this evidence."
+    }
+  },
+  "native_storage_scope": [
+    "Badger with SQLite",
+    "Valkey with PostgreSQL",
+    "Valkey with MySQL"
+  ],
+  "static_checks": {
+    "vet": {
+      "command": "go vet ./internal/recovery ./internal/catalog",
+      "exit_code": 0
+    },
+    "lint": {
+      "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run",
+      "exit_code": 0,
+      "log": "/tmp/csp13-capability-diagnostics-final-lint.log",
+      "log_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "issues": 0
+    },
+    "affected_prose": {
+      "files": 10,
+      "exit_code": 0,
+      "diagnostics": 0,
+      "log": "/tmp/csp13-capability-diagnostics-scoped-prose.log",
+      "log_sha256": "13cd837bdffe4f0e4de7cf85a9a0966221b406a4fd150eabd7fdd37b5877ebed"
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    "goago": "Not applicable: Starport has no goago module tool or policy.",
+    "generated_docs": "No generated documentation source changed."
+  },
+  "preserved_intermediate_evidence": {
+    "direct_race_without_fixture_environment": {
+      "path": "/tmp/csp13-capability-diagnostics-final-race.jsonl",
+      "sha256": "71b94bd376199dafa4d0625d2ac9c9764c663abf4cbf50d87c5f2315e64595c1",
+      "results": {
+        "pass": 24,
+        "fail": 0,
+        "skip": 1
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 2.122
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 24.537
+        }
+      ],
+      "top_level_tests": [
+        "TestCatalogCapabilityDiagnosticsRedactCopiedValues",
+        "TestActivationJournalPreservesOriginalDecisionAndPhaseOrder",
+        "TestActivationJournalRejectsSubstitutedAndUnexpectedEvidence",
+        "TestActivationJournalFreshProcessReopensOriginalPhases",
+        "TestRecoveryCapabilityDiagnosticsRedactCopiedValues",
+        "TestRecoveryCapabilityDiagnosticsDuringNativeJournalTransitions",
+        "TestRecoveryCapabilityDiagnosticsDuringNativeCatalogTransitions",
+        "TestRecoveryCapabilityDiagnosticsEmptyStateRemainsClosed",
+        "TestCatalogPreparationLostRepliesRecoverOriginalAssetsAndSelection",
+        "TestCatalogPreparationConcurrentExactStageDoesNotAdvanceTwice"
+      ]
+    },
+    "lint_before_initialized_predicate": {
+      "exit_code": 1,
+      "log": "/tmp/csp13-capability-diagnostics-lint.log",
+      "sha256": "af10ae9116e360b369f3cf8b740f0aabe660f9eac222cd5f40ee92949c165941",
+      "reason": "New state-null check raised existing CompletedCatalogTopology complexity to 31. Shared initialized predicate restored the existing threshold without suppression."
+    },
+    "whole_repository_prose": {
+      "exit_code": 1,
+      "files": 2078,
+      "diagnostics": 4129,
+      "log": "/tmp/csp13-capability-diagnostics-prose.log",
+      "sha256": "70bee2e08039a5e42b4679c31f6d40ed975d7e0308f148d4fee08b55149fdc78",
+      "disposition": "Inherited broad prose failures are outside this diagnostics repair. The ten affected Go files pass strict prose."
+    }
+  },
+  "remaining_qualification": [
+    "Final combined consumer source needs root integration and qualification.",
+    "This focused macOS arm64 run does not qualify native Linux or Windows.",
+    "No full embedded recovery, maximum capacity, provider request, publication or merge is claimed."
+  ]
+}
