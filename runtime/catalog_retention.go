@@ -114,17 +114,7 @@ type CatalogRetainedReadRequest struct {
 // It verifies the native owner, completed batch, manifest, and immutable envelope.
 // Returned data belongs to the caller. Success confers no current permission.
 func ReadRetainedCatalogRecovery(ctx context.Context, request CatalogRetainedReadRequest) (input CatalogRetentionInput, resultErr error) {
-	if ctx == nil || !filepath.IsAbs(request.Directory) || filepath.Clean(request.Directory) != request.Directory || !validRecoveryOperationID(request.TransferID) || !validRecoveryOperationID(request.Batch.OperationID) || !validFleetChecksum(request.Batch.ReceiptSHA256) || request.Index < 0 || request.Index >= storage.DefaultRetentionScanEntries {
-		return input, invalidInputPublication("retained read requires an exact bounded entry reference")
-	}
-	if err := ctx.Err(); err != nil {
-		return input, err
-	}
-	if err := request.Owner.Validate(); err != nil {
-		return input, err
-	}
-	owner := CatalogMaterializationRequest{Directory: request.Directory, Owner: request.Owner, SchedulerIdentity: request.SchedulerIdentity}
-	directoryOwner, lock, entry, store, err := openCatalogRecoveryOwner(ctx, owner)
+	directory, lock, reference, err := openRetainedCatalogRecord(ctx, request)
 	if err != nil {
 		return input, err
 	}
@@ -134,33 +124,6 @@ func ReadRetainedCatalogRecovery(ctx context.Context, request CatalogRetainedRea
 			input = CatalogRetentionInput{}
 		}
 	}()
-	receipt, err := readRetainedBatch(ctx, directoryOwner, store, request.Batch)
-	if err != nil {
-		return input, err
-	}
-	if receipt.TransferID != request.TransferID || receipt.DirectoryIdentity != entry || request.Index < receipt.BatchStart || request.Index-receipt.BatchStart >= len(receipt.Records) {
-		return input, invalidInputPublication("retained read differs from its batch scope or native owner")
-	}
-	directory, err := catalogTransferDirectory(store, request.TransferID, false)
-	if err != nil {
-		return input, err
-	}
-	raw, err := directory.ReadFile("manifest.json", maxLayerBytes)
-	if err != nil {
-		return input, err
-	}
-	var manifest retainedCatalogManifest
-	if err := json.Unmarshal(raw, &manifest, json.RejectUnknownMembers(true)); err != nil {
-		return input, err
-	}
-	canonical, err := catalogRetentionManifestBytes(request.TransferID, manifest.Entries)
-	if err != nil || manifest.TransferID != request.TransferID || manifest.Version != materializationVersion || !bytes.Equal(raw, canonical) || fleetRecoveryChecksum(raw) != receipt.ManifestSHA256 || request.Index >= len(manifest.Entries) {
-		return input, invalidInputPublication("retained read manifest changed")
-	}
-	reference := receipt.Records[request.Index-receipt.BatchStart]
-	if reference.Entry != manifest.Entries[request.Index] {
-		return input, invalidInputPublication("retained read entry changed")
-	}
 	input, err = readRetainedCatalogEnvelope(ctx, directory, reference)
 	if err != nil {
 		return CatalogRetentionInput{}, err
@@ -444,4 +407,55 @@ func validateCatalogRetentionPlan(plan materializationPlan) error {
 		prior = change.Name
 	}
 	return nil
+}
+
+func openRetainedCatalogRecord(ctx context.Context, request CatalogRetainedReadRequest) (transfer *privatefiles.Directory, retainedLock *flock.Flock, reference CatalogRetainedRecord, resultErr error) {
+	if ctx == nil || !filepath.IsAbs(request.Directory) || filepath.Clean(request.Directory) != request.Directory || !validRecoveryOperationID(request.TransferID) || !validRecoveryOperationID(request.Batch.OperationID) || !validFleetChecksum(request.Batch.ReceiptSHA256) || request.Index < 0 || request.Index >= storage.DefaultRetentionScanEntries {
+		return nil, nil, CatalogRetainedRecord{}, invalidInputPublication("retained read requires an exact bounded entry reference")
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, nil, CatalogRetainedRecord{}, err
+	}
+	if err := request.Owner.Validate(); err != nil {
+		return nil, nil, CatalogRetainedRecord{}, err
+	}
+	owner := CatalogMaterializationRequest{Directory: request.Directory, Owner: request.Owner, SchedulerIdentity: request.SchedulerIdentity}
+	directoryOwner, lock, entry, store, err := openCatalogRecoveryOwner(ctx, owner)
+	if err != nil {
+		return nil, nil, CatalogRetainedRecord{}, err
+	}
+	defer func() {
+		if resultErr != nil {
+			resultErr = stderrors.Join(resultErr, lock.Close())
+		}
+	}()
+
+	receipt, err := readRetainedBatch(ctx, directoryOwner, store, request.Batch)
+	if err != nil {
+		return nil, nil, CatalogRetainedRecord{}, err
+	}
+	if receipt.TransferID != request.TransferID || receipt.DirectoryIdentity != entry || request.Index < receipt.BatchStart || request.Index-receipt.BatchStart >= len(receipt.Records) {
+		return nil, nil, CatalogRetainedRecord{}, invalidInputPublication("retained read differs from its batch scope or native owner")
+	}
+	directory, err := catalogTransferDirectory(store, request.TransferID, false)
+	if err != nil {
+		return nil, nil, CatalogRetainedRecord{}, err
+	}
+	raw, err := directory.ReadFile("manifest.json", maxLayerBytes)
+	if err != nil {
+		return nil, nil, CatalogRetainedRecord{}, err
+	}
+	var manifest retainedCatalogManifest
+	if err := json.Unmarshal(raw, &manifest, json.RejectUnknownMembers(true)); err != nil {
+		return nil, nil, CatalogRetainedRecord{}, err
+	}
+	canonical, err := catalogRetentionManifestBytes(request.TransferID, manifest.Entries)
+	if err != nil || manifest.TransferID != request.TransferID || manifest.Version != materializationVersion || !bytes.Equal(raw, canonical) || fleetRecoveryChecksum(raw) != receipt.ManifestSHA256 || request.Index >= len(manifest.Entries) {
+		return nil, nil, CatalogRetainedRecord{}, invalidInputPublication("retained read manifest changed")
+	}
+	reference = receipt.Records[request.Index-receipt.BatchStart]
+	if reference.Entry != manifest.Entries[request.Index] {
+		return nil, nil, CatalogRetainedRecord{}, invalidInputPublication("retained read entry changed")
+	}
+	return directory, lock, reference, nil
 }
