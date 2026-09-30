@@ -35,6 +35,12 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- `catalogs.RetainDecodedCatalogs` opens a bounded reuse scope for one
+  operation that decodes the same catalog payload many times. In an open
+  scope, `DecodeCatalogPayload` returns the retained immutable catalog for
+  equal complete bytes. `DecodeCatalogGeneration` still applies each manifest
+  check. The scope retains no failed decode, no partial diagnostic result, and
+  no source observation. Without an open scope, each call decodes in full.
 - `starmap.WithCandidateGenerationID` binds one publication candidate to a
   generation ID that the caller derives. `Client.Update` publishes that
   identity. A candidate without the option still gets one fresh identity.

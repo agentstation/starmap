@@ -550,6 +550,8 @@ Credential references and resolved values do not appear in these scope records.
 The current decoder accepts schemas 6 through 9. Schema 6 has no scope records. Schema 7 adds effective scopes. Consumers reject schemas beyond their declared support.
 Legacy receipts keep their original payload bytes and identity during restore. Older binaries cannot read the new format merely because the new decoder reads old formats.
 
+An operation can open a `RetainDecodedCatalogs` scope to decode equal complete payload bytes one time. The scope changes no manifest, schema, or receipt check.
+
 The selected trusted source supplies the authority for imported publisher claims.
 A publisher ID is not an authentication credential. Upstream records cannot claim the local runtime publisher ID or its configured aliases.
 Derivative publication and restart preserve accepted upstream IDs and original receipts.
