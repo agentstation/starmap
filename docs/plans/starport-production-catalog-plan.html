@@ -12,7 +12,11 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: merge Starport #395 (layer two) after the CI of its head <code>d06c47b0</code>, then rebase and publish layer three. Complete the layer four roster, both reviews, and the unchanged full native pure and race test. Then integrate populated adoption by phase.</p>
+<p>Next: merge Starport #396 (layer three, head <code>690d3df9</code>) after its hosted run is green. Then rebase layer four onto <code>main</code>, publish it, merge it at its exact head, and delete the integrated branch. Then integrate populated adoption by phase.</p>
+
+<p>Starport #395 (layer two, <code>d06c47b0</code>) merged as <code>86041546</code> on 2026-09-30 after all 31 checks passed on attempt 2. The <a href="proof/starport-production-catalog/csp13/starport395-merge-2026-09-30/verification.json">merge proof</a> records tree equality and strict protection. It also records zero unresolved threads and the first-attempt Windows flake. Root removed the layer two worktree and branch.</p>
+
+<p>Root rebased layer three onto <code>86041546</code> as <code>690d3df9</code> with unchanged owner trees and published it as draft #396. Root rebased layer four onto <code>690d3df9</code> as <code>e8359480</code>. Its tree equals the verified tree at <code>d7e49079</code>, so the layer four roster, reviews, and full embedded test results transfer to it.</p>
 
 <p>The first hosted run of layer two (run 36762241543) stopped the recovery package at Go's default ten-minute allowance. macOS completed 108 of 180 top-level tests. Windows recovery shard 1 completed 30 of 56 owners. No test failed. Layer two grows the recovery package from 114 to 180 top-level tests.</p>
 

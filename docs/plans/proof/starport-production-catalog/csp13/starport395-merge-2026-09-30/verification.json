@@ -1,0 +1,67 @@
+{
+ "recorded_utc": "2026-09-30T20:45:46.557379+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 395,
+ "head": "d06c47b0b5980c9333b6aa26b5890eb0f6a23237",
+ "base": "c2013cd9981e99b520d23a0749281cef962d2f95",
+ "merge": "860415465fd004ed756cbc81b2513f55a2089672",
+ "merged_at": "2026-09-30T20:45:28Z",
+ "checks": {
+  "success": 31,
+  "not_success": 0,
+  "total": 31
+ },
+ "reviewed_tree": "4385cd7d9d7ef1f6f23d5a3cc72cf80bd282fe35",
+ "merged_tree": "4385cd7d9d7ef1f6f23d5a3cc72cf80bd282fe35",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "Layer two of the recovery activation landing: the recovery owner (internal/recovery, internal/storage batch allowances, Windows recovery shard allowances).",
+ "first_attempt": {
+  "run": 36766602708,
+  "attempt": 1,
+  "failed_job": "Test (windows-2025)",
+  "failed_test": "internal/files TestConcurrentFileRetirementPreservesOtherStoredBytes/badger",
+  "cause": "Windows rename of a retained blob returned Access is denied; the test came from #387 on main and layer two does not change internal/files or internal/blob",
+  "resolution": "rerun of failed jobs as attempt 2 passed"
+ },
+ "local_verify": "full pre-PR roster and Sol 6.1 review (0.93) at d06c47b0",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "e369e7666304dc3745e357f8ea205603e580b7c70bfa841ffb0229d04a54dad8",
+   "gzip_sha256": "a462b578e48c52900d39d4877650b924024e59c340e01efe948b7fce278432ac"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "0bf30033dbe276ac19514d026cf42348d9282f384146851611d7a564b6424195",
+   "gzip_sha256": "24494973c45cb9096b8d93ebb63030284b26cea110e11b598fe0757eeafa5933"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "47a073804e0ce70bc4fbd70a0ace99a5e1c6d9f709bb41ecec53dba4079aebd4",
+   "gzip_sha256": "2529b12c50cf8e253ea00c63f816faa5dbc77ac8a1c5ea33bd17357140c601d7"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
