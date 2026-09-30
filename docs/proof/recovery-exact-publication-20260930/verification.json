@@ -1,0 +1,92 @@
+{
+  "status": "PASS_COMPONENT_ONLY",
+  "task": "CSP13",
+  "date": "2026-09-30",
+  "base_commit": "86c169a0d93be9d4d2941caa4f6122f7a0b84553",
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "contract": "Passive exact pending-write inspection and native-checked completion of only matching immutable phase bytes. No generic publication recovery, source acquisition, history replacement, or permission issuance. Host verifies original sealed decision and native completion receipt under the writer lock.",
+  "source_sha256": {
+    "internal/privatefiles/record_publication.go": "d34aa728eb60fc7106c337738dec73ff6e7576037dd14928ddc00f68e31ef9a9",
+    "internal/privatefiles/record_completion.go": "b0fb6d5ca80b67ae59288e258fffea02ea4f4945f6aae836cd707bf963d1dea4",
+    "internal/privatefiles/record_completion_inspection.go": "921fa40336a67a5e02fbde31db67390b6f26d785ae7a55c78ea8cfea5ccd9c4a",
+    "internal/privatefiles/record_completion_test.go": "206b366a55c98b6e32a91e5d91aa88ccce159ab43cd2358158f18b63445c539a",
+    "pkg/productfiles/publication_completion.go": "4d15bf57eef43fb0748273210e0fa18d634d9393d5275c41bc59762f92b405ef",
+    "pkg/productfiles/publication_completion_test.go": "3c119c8a071a4766659717837c533d299146f0d55c81b8cd85af7aa8e7d80867"
+  },
+  "checks": [
+    {
+      "mode": "race",
+      "counts": {
+        "pass": 183,
+        "fail": 0,
+        "skip": 0
+      },
+      "status": "PASS",
+      "command": "go test -race -count=1 -json -timeout=10m ./internal/privatefiles ./pkg/productfiles",
+      "raw_evidence": "/tmp/csp13-exact-phase-completion-race-final-owners.jsonl",
+      "raw_sha256": "edfb0f32836b705a6f6ea68e527c0b2d0a94d3071e11effb40dc285e0c83046f"
+    },
+    {
+      "mode": "pure",
+      "counts": {
+        "pass": 183,
+        "fail": 0,
+        "skip": 0
+      },
+      "status": "PASS",
+      "command": "CGO_ENABLED=0 go test -count=1 -json -timeout=10m ./internal/privatefiles ./pkg/productfiles",
+      "raw_evidence": "/tmp/csp13-exact-phase-completion-pure-final-owners.jsonl",
+      "raw_sha256": "396bc83a73ece7c58acf9623d6f59e8bca34780fe655d235d953fdc8c190f1e7"
+    },
+    {
+      "command": "make verify-checks",
+      "status": "PASS",
+      "exit_code": 0,
+      "raw_evidence": "/tmp/csp13-exact-phase-completion-verify-checks-final.log",
+      "raw_sha256": "00082cac104a487183b1f483382898235e350667158e66392c1a710032acf6d6",
+      "includes": [
+        "Go vet",
+        "pinned golangci-lint2.13.2",
+        "goago",
+        "full technical writing",
+        "native coverage manifest contracts",
+        "pure-Go consumers",
+        "catalog/schema/budget/performance and ownership checks"
+      ]
+    },
+    {
+      "command": "make godoc",
+      "status": "PASS",
+      "exit_code": 0,
+      "raw_evidence": "/tmp/csp13-exact-phase-completion-godoc.log"
+    }
+  ],
+  "regressions_before": [
+    {
+      "status": "EXPECTED_FAIL",
+      "raw": "/tmp/csp13-phase-api-fail-before.jsonl",
+      "condition": "Former public API cannot compile the new completion contracts"
+    },
+    {
+      "status": "EXPECTED_FAIL",
+      "raw": "/tmp/csp13-phase-byte-detachment-fail-before.jsonl",
+      "condition": "Host callback mutates caller input; detached bytes preserve exact publication"
+    }
+  ],
+  "preserved_intermediate_failures": [
+    {
+      "raw": "/tmp/csp13-exact-phase-completion-verify-checks.log",
+      "cause": "Cyclomatic complexity 38 exceeded owner limit30; separated destination contract without changing assertions"
+    },
+    {
+      "condition": "Regression harness expected compiler error on stderr, but Go JSON emitted it on stdout; actual compile failure is preserved and verified"
+    }
+  ],
+  "limitations": [
+    "Unrecorded or changed staging ownership remains a refusal and requires explicit operator recovery",
+    "Final application phase-journal integration and fresh-process matrix remain unverified",
+    "Native Linux/Windows CI must qualify the final published head",
+    "Maximum-capacity, RPO and RTO remain unverified"
+  ],
+  "whole_csp13_complete": false
+}

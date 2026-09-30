@@ -58,6 +58,10 @@ func (d *Directory) publishRecordContext(ctx context.Context, name string, data 
 	if err := writer.recover(ctx); err != nil {
 		return err
 	}
+	return d.publishWithWriter(ctx, writer, name, data, prefix, syncDirectory, expected)
+}
+
+func (d *Directory) publishWithWriter(ctx context.Context, writer *publicationWriter, name string, data []byte, prefix string, syncDirectory func(*os.Root) error, expected *publicationExpectation) (resultErr error) {
 	var before *publicationRecord
 	record, err := publicationRecordOf(writer.root, name, publicationRecordMaxBytes)
 	if err != nil && !os.IsNotExist(err) {
