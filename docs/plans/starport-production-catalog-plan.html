@@ -21,7 +21,11 @@
 
 <p>Starmap <a href="https://github.com/agentstation/starmap/pull/203">PR #203</a> publishes two A16 registrations and failed-coverage diagnostics. Owner: root. Worktree <code>/private/tmp/starmap-a16-acceptance-20260930</code>, branch <code>codex/a16-sql-acceptance</code>, head <code>dfd724cca</code>. Complete checks, 105 Python results, 65 workflow race results, and isolated pre-PR review pass. <a href="proof/starport-production-catalog/csp13/starmap203-merge-2026-09-30/verification.json">Merged as <code>f78316066</code></a> after all 62 CI checks passed. Full A16 remains unqualified until its consumer runs pass.</p>
 
-<p>Agent <code>catalog_materializer</code> owns <code>/private/tmp/starport-recovery-capacity-20260930</code>, branch <code>codex/recovery-capacity-qualification</code>. Producer repair <code>3e1068952</code> is in <code>/private/tmp/starmap-retention-usage-20260930</code>, branch <code>codex/catalog-retention-usage</code>. The reproduced decoded-size packing defect passes provisional paired regression. Root reviewed and published <a href="https://github.com/agentstation/starmap/pull/204">Starmap #204</a>. Its <a href="proof/starport-production-catalog/csp13/retention-usage-publication-2026-09-30/verification.json">producer proof</a> records 57 results per mode and complete checks. </p><p>One Windows workspace helper timed out. Signed merge <code>7052d7e70</code> incorporates actual main after #203. Root runs final checks before publication. </p>
+<p>Agent <code>catalog_materializer</code> owns <code>/private/tmp/starport-recovery-capacity-20260930</code>, branch <code>codex/recovery-capacity-qualification</code>. Producer repair <code>3e1068952</code> is in <code>/private/tmp/starmap-retention-usage-20260930</code>, branch <code>codex/catalog-retention-usage</code>.</p>
+
+<p>The reproduced decoded-size packing defect passes provisional paired regression. Root reviewed and published <a href="https://github.com/agentstation/starmap/pull/204">Starmap #204</a>. Its <a href="proof/starport-production-catalog/csp13/retention-usage-publication-2026-09-30/verification.json">producer proof</a> records 57 results per mode and complete checks. </p>
+
+<p>One Windows workspace helper timed out. Signed merge <code>7052d7e70</code> incorporates actual main after #203. Root runs final checks before publication. </p>
 
 <p>Final consumer checks require its published module with <code>GOWORK=off</code>. The combined 96-record, 2 GiB lane waits for an exclusive low-contention window.</p>
 
@@ -41,7 +45,9 @@
 </div>
 <p>Public and internal sources are alternatives. An internal subscriber has no implicit public fallback.</p></section>
 <nav aria-label="Plan navigation"><a href="#ledger">Tasks</a><a href="#verification">Verification</a><a href="#goal">Execution goal</a><a href="proof/starport-production-catalog/readme-demo-brief.md">README and demo brief</a></nav>
-</header><main><section id="scope"><h2>Scope</h2><p><strong>Owns:</strong> PRD P01–P38 and specification A01–A50 contracts. Include G01–G26 repository findings and U01–U09 UX findings. Include SR01–SR14 storage findings, LR01–LR07 latency findings, and verified audit findings.</p><p>The plan also owns the README demonstration and truthful performance claims.</p>
+</header><main><section id="scope"><h2>Scope</h2><p><strong>Owns:</strong> PRD P01–P38 and specification A01–A50 contracts. Include G01–G26 repository findings and U01–U09 UX findings. Include SR01–SR14 storage findings, LR01–LR07 latency findings, and verified audit findings.</p>
+
+<p>The plan also owns the README demonstration and truthful performance claims.</p>
 
 <p><strong>Exclusions and owners:</strong> the product owner owns a future multi-region design. Deployment operators own customer infrastructure and provider access. The release owner approves external publication. No sibling plan owns these excluded outcomes today. This plan does not deploy into customer production or add model hosting.</p></section>
 
@@ -67,12 +73,16 @@
 <tr id="CSP0" data-status="done"><td><a href="#task-CSP0">CSP0</a></td><td>Establish the baseline and red verifier (SM + SP)</td><td><code>done</code></td><td><a href="proof/starport-production-catalog/csp0.md">CSP0 proof</a>. 14 verifier tests passed. Product baseline: 50 UNVERIFIED. Starmap #132 merged at <code>12fca002</code>. The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/approved-merges/starmap-132-task-closeout.json">merged-source closeout</a> passes 30 verifier regression tests.</td></tr><tr id="CSP0.1" data-status="done"><td><a href="#task-CSP0.1">CSP0.1</a></td><td>Improve current documentation access and readability (SP)</td><td><code>done</code></td><td><a href="proof/starport-production-catalog/csp0.1.md">CSP0.1 proof</a>. E01 passes after the main integration. Nine behavior tests, 12 renewed browser views, and keyboard checks pass. All 457 combined console tests pass. Starport #366 merged at <code>cffa9300</code> after 16 passing checks. All 220 reviewed browser inputs match the merge.</td></tr><tr id="CSP0.2" data-status="done"><td><a href="#task-CSP0.2">CSP0.2</a></td><td>Deliver the current-release first-use README (SM + SP)</td><td><code>done</code></td><td><a href="proof/starport-production-catalog/csp0.3/first-use-media-publication-2026-09-08/verification.json">Merged-source acceptance</a>. Starport #369 and #370 merged at <code>7db1cf8</code> and <code>55629266</code>. The final tree matches the reviewed tree. E02 and E03 pass against the merge. Ten CI checks pass. Final campaign recording remains UNVERIFIED.</td></tr><tr id="CSP0.3" data-status="done"><td><a href="#task-CSP0.3">CSP0.3</a></td><td>Record current-release first value (SP)</td><td><code>done</code></td><td><a href="proof/starport-production-catalog/csp0.3/first-use-media-publication-2026-09-08/verification.json">Merged-source acceptance</a>. Starport #369 and #370 merged at <code>7db1cf8</code> and <code>55629266</code>. The final tree matches the reviewed tree. E02 and E03 pass against the merge. Ten CI checks pass. Final campaign recording remains UNVERIFIED.</td></tr>
 <tr id="CSP0.4" data-status="done"><td><a href="#task-CSP0.4">CSP0.4</a></td><td>Establish complete request performance measurements (SP)</td><td><code>done</code></td><td><a href="proof/starport-production-catalog/csp0.4/merged-qualification-2026-09-08/verification.json">Merged-source acceptance</a> passes both assigned A50 subcases against Starmap <code>12fca002</code> and Starport <code>cffa9300</code>. Fresh evidence records 200 warm pairs, 473 server and execution test passes, and component benchmarks. Production A50 remains UNVERIFIED.</td></tr>
 <tr id="CSP1" data-status="done"><td><a href="#task-CSP1">CSP1</a></td><td>Publish the shared catalog settings contract (SM)</td><td><code>done</code></td><td><a href="proof/starport-production-catalog/csp1.md">CSP1 proof</a>. Six subcases and 217 race test events passed. Go 1.25.12 passed. Historical command-output classification is resolved. Starmap #132 merged at <code>12fca002</code>. The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/approved-merges/starmap-132-task-closeout.json">merged-source closeout</a> passes all six assigned subcases.</td></tr>
-<tr id="CSP2" data-status="done"><td><a href="#task-CSP2">CSP2</a></td><td>Persist the baseline and resolve product paths (SM)</td><td><code>done</code></td><td><p>PR #136 merged at <code>7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e</code> on 2026-09-09 UTC. All fifteen CI checks pass. The <a href="proof/starport-production-catalog/csp2/merged-qualification-2026-09-09/verification.json">merged qualification</a> passes all 22 selected subcases. Six native jobs cover Linux, macOS, and Windows on both architectures. Required review reports zero findings.</p><p>The <a href="proof/starport-production-catalog/csp2/native-qualification/verification.json">earlier qualification</a> retains its original source and results. Component completion does not qualify the released product pair. CSP18 owns unrecognized-journal guidance. CSP5 owns abandoned-stage cleanup and errors after publication.</p></td></tr>
+<tr id="CSP2" data-status="done"><td><a href="#task-CSP2">CSP2</a></td><td>Persist the baseline and resolve product paths (SM)</td><td><code>done</code></td><td><p>PR #136 merged at <code>7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e</code> on 2026-09-09 UTC. All fifteen CI checks pass. The <a href="proof/starport-production-catalog/csp2/merged-qualification-2026-09-09/verification.json">merged qualification</a> passes all 22 selected subcases. Six native jobs cover Linux, macOS, and Windows on both architectures. Required review reports zero findings.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp2/native-qualification/verification.json">earlier qualification</a> retains its original source and results. Component completion does not qualify the released product pair. CSP18 owns unrecognized-journal guidance. CSP5 owns abandoned-stage cleanup and errors after publication.</p></td></tr>
 <tr id="CSP3" data-status="done"><td><a href="#task-CSP3">CSP3</a></td><td>Reconcile scoped evidence and deletions (SM)</td><td><code>done</code></td><td><p>PR #145 merged at <code>a87262e3b830f285eee2a82ebd85e3816d7d94c5</code>. All fifteen checks pass, including six native jobs. The <a href="proof/starport-production-catalog/csp3/merged-qualification-2026-09-10/verification.json">merged qualification</a> proves exact tree equality with reviewed <code>b5af1e9c</code>. All ten CSP3 subcases, 111 commands, and 907 test events pass. Complete repository verification passes. Both required reviewers report zero findings.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp3.md">CSP3 proof</a> preserves source, pricing, membership, removal, and alias evidence. <a href="proof/starport-production-catalog/execution-history-2026-09-10-0907.html#csp3-ledger">Prior ledger evidence</a> preserves earlier merges. Starport integration remains subject to its later task criteria.</p></td></tr>
 <tr id="CSP3.1" data-status="done"><td><a href="#task-CSP3.1">CSP3.1</a></td><td>Remove unrelated provider copies from offering lookup (SM)</td><td><code>done</code></td><td><a href="proof/starport-production-catalog/csp3.1/merged-qualification-2026-09-08/verification.json">Merged-source acceptance</a>. Starmap #133 merged at <code>46767fb7</code> after fifteen successful checks. Both assigned A44 subcases pass against the merge. Six fresh benchmarks retain 11 allocations and 1,104 bytes per operation. Full A44 and released-pair acceptance remain UNVERIFIED.</td></tr>
-<tr id="CSP4" data-status="done"><td><a href="#task-CSP4">CSP4</a></td><td>Enforce internal authority and retained startup (SM + SP)</td><td><code>done</code></td><td><p>Starmap PRs #146, #148, #149, #150, #151, and #152 merged. Starport PR #373 merged afterward. Final merges <code>f9951ee6</code> and <code>cb6f03a2</code> equal their reviewed trees. The <a href="proof/starport-production-catalog/csp4/merged-qualification-2026-09-11/verification.json">completion proof</a> binds all eight passing task subcases, 56 mapped race events, and 986 broad race events to those merges. Both final reviews report zero findings. All fifteen Starmap checks and ten Starport checks pass.</p><p>The <a href="proof/starport-production-catalog/csp4.md">CSP4 proof</a> preserves failed attempts and native qualification limits. Full A09, A10, and A21 qualification remains with CSP10. CSP11 owns complete fleet recovery and fencing.</p></td></tr>
+<tr id="CSP4" data-status="done"><td><a href="#task-CSP4">CSP4</a></td><td>Enforce internal authority and retained startup (SM + SP)</td><td><code>done</code></td><td><p>Starmap PRs #146, #148, #149, #150, #151, and #152 merged. Starport PR #373 merged afterward. Final merges <code>f9951ee6</code> and <code>cb6f03a2</code> equal their reviewed trees. The <a href="proof/starport-production-catalog/csp4/merged-qualification-2026-09-11/verification.json">completion proof</a> binds all eight passing task subcases, 56 mapped race events, and 986 broad race events to those merges. Both final reviews report zero findings. All fifteen Starmap checks and ten Starport checks pass.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp4.md">CSP4 proof</a> preserves failed attempts and native qualification limits. Full A09, A10, and A21 qualification remains with CSP10. CSP11 owns complete fleet recovery and fencing.</p></td></tr>
 <tr id="CSP5" data-status="done"><td><a href="#task-CSP5">CSP5</a></td><td>Separate update controls and retain pinned state (SM)</td><td><code>done</code></td><td>PR #162 merged as <code>8c35fe891</code>. All nineteen CI checks pass. The <a href="proof/starport-production-catalog/csp5/coordinated-store-2026-09-15/merged-qualification.json">merge proof</a> records reviewed-tree equality and twelve passing task subcases. Starport adoption and fleet fencing remain with CSP8 and CSP11.</td></tr>
 <tr id="CSP6" data-status="done"><td><a href="#task-CSP6">CSP6</a></td><td>Promote published catalog input into releases (SM)</td><td><code>done</code></td><td>PR #181 merged at <code>1cd0d9b8b</code> after all 30 CI jobs passed. The <a href="proof/starport-production-catalog/csp6/promotion-181/completion-verification.json">completion proof</a> verifies all six assigned subcases, five attestations, checkpoint replay, and embedded bytes. Both channels and all five immutable assets remain unchanged after retry <code>36222128051</code>. Earlier failures remain in the <a href="proof/starport-production-catalog/csp6/promotion-181/pre-completion-plan.json">transition history</a>. Final released embedding remains with CSP23.</td></tr>
 <tr id="CSP6.1" data-status="done"><td><a href="#task-CSP6.1">CSP6.1</a></td><td>Reduce verification latency and align Go toolchains (SM + SP)</td><td><code>done</code></td><td>Starmap #164 and Starport #375/#376 merged. The <a href="proof/starport-production-catalog/csp6.1/verification-speed-2026-09-16/go127-qualification.json">proof</a> records reviews, all hosted checks, merged-source checks, and 71–85% cohort improvements. Go 1.27.1 is the only supported compiler. The 48m42s hosted duration missed the 30-minute target.</td></tr>
@@ -91,7 +101,9 @@
 <tr id="CSP12" data-status="done"><td><a href="#task-CSP12">CSP12</a></td><td>Validate complete storage recipes (SP)</td><td><code>done</code></td><td>Starmap #186 merged as <code>024c24c22</code>. Starport #386 merged as <code>cfee741fd</code>. The <a href="proof/starport-production-catalog/csp12/merged-pair-2026-09-27/verification.json">completion proof</a> records all 48 passing PR checks, fifteen task subcases, and exact merged-tree equality. Populated migration and complete failure qualification remain with CSP13 and CSP15.</td></tr>
 <tr id="CSP12.1" data-status="done"><td><a href="#task-CSP12.1">CSP12.1</a></td><td>Separate caches from durable KV records (SP)</td><td><code>done</code></td><td>The <a href="proof/starport-production-catalog/csp12.1/final-pair-2026-09-27/verification.json">completion proof</a> binds all seventeen passing subcases and 139 named results to Starport merge <code>cfee741fd</code>. Native checks and independent review pass. CSP15 retains complete backend failure qualification. CSP22 retains full gateway performance qualification.</td></tr>
 <tr id="CSP12.2" data-status="done"><td><a href="#task-CSP12.2">CSP12.2</a></td><td>Reserve budget capacity through atomic admission (SM + SP)</td><td><code>done</code></td><td>Starmap #187 merged as <code>4586667a3</code>. Starport #387 merged as <code>a1a08df86</code>. The <a href="proof/starport-production-catalog/csp12.2/merged-pair-2026-09-28/verification.json">completion proof</a> records reviewed-tree equality, 49 passing PR checks, 23 passing task cases, and 443 passing task results. Final native checks pass 117 fleet results, 685 durable-work results, and three required Windows Compose results without failures or skips. CSP13 owns populated migration and complete restore.</td></tr>
-<tr id="CSP13" data-status="in_progress"><td><a href="#task-CSP13">CSP13</a></td><td>Migrate and restore all persistent state (SM + SP)</td><td><code>in_progress</code></td><td><p>Owner: this chat and the delegated owners in <a href="#current-resume">Current resume state</a>. Starmap #197 merged as <code>27fee03e3</code>. Starport #391 merged as <code>03b09b21a</code>. Its <a href="proof/starport-production-catalog/csp13/starport391-merge-2026-09-29/verification.json">actual merge proof</a> records all 22 passing checks and the exact reviewed tree.</p><p>Local <code>2d4fc6340</code> contains <a href="proof/starport-production-catalog/csp13/execution-replay-2026-09-29/verification.json">typed execution replay</a>, accounting replay, job-slot validation, ordered KV replay, catalog preparation and <a href="proof/starport-production-catalog/csp13/blob-activation-2026-09-29/verification.json">KV, SQL, and blob activation components</a>. The <a href="proof/starport-production-catalog/csp13/recovery-activation-contract-2026-09-29/CONTRACT.md">recovery activation contract</a> preserves independent history and coordinated admission. One task subcase passes. Fifteen remain UNVERIFIED.</p></td></tr>
+<tr id="CSP13" data-status="in_progress"><td><a href="#task-CSP13">CSP13</a></td><td>Migrate and restore all persistent state (SM + SP)</td><td><code>in_progress</code></td><td><p>Owner: this chat and the delegated owners in <a href="#current-resume">Current resume state</a>. Starmap #197 merged as <code>27fee03e3</code>. Starport #391 merged as <code>03b09b21a</code>. Its <a href="proof/starport-production-catalog/csp13/starport391-merge-2026-09-29/verification.json">actual merge proof</a> records all 22 passing checks and the exact reviewed tree.</p>
+
+<p>Local <code>2d4fc6340</code> contains <a href="proof/starport-production-catalog/csp13/execution-replay-2026-09-29/verification.json">typed execution replay</a>, accounting replay, job-slot validation, ordered KV replay, catalog preparation and <a href="proof/starport-production-catalog/csp13/blob-activation-2026-09-29/verification.json">KV, SQL, and blob activation components</a>. The <a href="proof/starport-production-catalog/csp13/recovery-activation-contract-2026-09-29/CONTRACT.md">recovery activation contract</a> preserves independent history and coordinated admission. One task subcase passes. Fifteen remain UNVERIFIED.</p></td></tr>
 <tr id="CSP14" data-status="done"><td><a href="#task-CSP14">CSP14</a></td><td>Separate Starmap subscriber and administrator access (SM)</td><td><code>done</code></td><td>PR #163 merged as <code>e7a6abdf7</code> after nineteen successful checks. The <a href="proof/starport-production-catalog/csp14/merged-2026-09-16/verification.json">merge proof</a> verifies tree equality, eight A32 subcases, and every named A32 test on six native platforms. Required reviews pass. Released-pair qualification remains open.</td></tr>
 <tr id="CSP15" data-status="todo"><td><a href="#task-CSP15">CSP15</a></td><td>Qualify shared backend compatibility (SP)</td><td><code>todo</code></td><td>UNVERIFIED. Planned proof: <code>csp15.md</code>. The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/starport-dependencies/README.md">dependency checks</a> reproduce a preexisting MySQL fixture reset defect. CSP15 owns its repair before shared-backend qualification.</td></tr>
 <tr id="CSP16" data-status="todo"><td><a href="#task-CSP16">CSP16</a></td><td>Establish shared configuration authority (SM + SP)</td><td><code>todo</code></td><td>UNVERIFIED. Planned proof: <code>csp16.md</code></td></tr>
@@ -188,7 +200,9 @@
 
 <strong>Steps:</strong><ol><li>Separate current static docs from authenticated deployment data.</li><li>Improve prose, headings, anchors, contrast, and narrow layouts.</li><li>Verify current command accuracy without advertising future contracts.</li></ol>
 
-<p><strong>Acceptance:</strong> E01 passes on the current product. Record desktop, 320 px, keyboard, and unauthenticated recovery evidence.</p><p><strong>Fail-before:</strong> Retain U01, U02, U05, U08, and the current route guard.</p>
+<p><strong>Acceptance:</strong> E01 passes on the current product. Record desktop, 320 px, keyboard, and unauthenticated recovery evidence.</p>
+
+<p><strong>Fail-before:</strong> Retain U01, U02, U05, U08, and the current route guard.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;pnpm --dir console run check&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP0.1</code></pre></article>
 <article class="task" id="task-CSP0.2"><h3>CSP0.2 Deliver the current-release first-use README</h3><p><strong>Problem:</strong> The README requires a provider key before showing catalog access.</p>
@@ -197,15 +211,21 @@
 
 <strong>Steps:</strong><ol><li>Use current commands to show installation and catalog access before provider setup.</li><li>Verify one real inference path and every advertised installer.</li><li>Document current persistent development exceptions and remove those selectors from the recording environment. Link current persistent and enterprise limits. Qualify or remove unsupported whole-gateway latency claims.</li></ol>
 
-<p><strong>Acceptance:</strong> E02 passes. Permit one Starport README PR and one Starmap alignment PR.</p><p><strong>Fail-before:</strong> Run the existing quickstart verifier and record the current README order.</p>
+<p><strong>Acceptance:</strong> E02 passes. Permit one Starport README PR and one Starmap alignment PR.</p>
+
+<p><strong>Fail-before:</strong> Run the existing quickstart verifier and record the current README order.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;bash scripts/verify-readme-quickstart.sh&#10;bash scripts/verify-doc-links.sh&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP0.2</code></pre></article>
 
-<article class="task" id="task-CSP0.3"><h3>CSP0.3 Record current-release first value</h3><p><strong>Problem:</strong> The existing GIF shows a console tour without installation or inference.</p><p><strong>Owning concept and paths:</strong> SP · docs/assets, recording sources, transcript, README. <strong>Depends on:</strong> CSP0.2.</p>
+<article class="task" id="task-CSP0.3"><h3>CSP0.3 Record current-release first value</h3><p><strong>Problem:</strong> The existing GIF shows a console tour without installation or inference.</p>
+
+<p><strong>Owning concept and paths:</strong> SP · docs/assets, recording sources, transcript, README. <strong>Depends on:</strong> CSP0.2.</p>
 
 <strong>Steps:</strong><ol><li>Capture the current published release with authorized inference resources.</li><li>Show install, catalog, provider setup, and a real streamed answer.</li><li>Retain artifact identity, cuts, poster, transcript, and human readability review. Preserve real inference timing.</li></ol>
 
-<p><strong>Acceptance:</strong> E03 passes for that exact current release. It does not qualify the final campaign recording.</p><p><strong>Fail-before:</strong> Compare the existing eleven-frame tour with the scene checklist.</p>
+<p><strong>Acceptance:</strong> E03 passes for that exact current release. It does not qualify the final campaign recording.</p>
+
+<p><strong>Fail-before:</strong> Compare the existing eleven-frame tour with the scene checklist.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP0.3</code></pre></article>
 
@@ -217,7 +237,9 @@
 
 <strong>Steps:</strong><ol><li>Create full HTTP and streaming measurements with controlled upstream timing and actual middleware.</li><li>Capture the catalog and stored-credential baselines with raw profiles.</li><li>Record reviewed numeric limits, workload, backend topology, validity, and resource bounds before optimization.</li></ol>
 
-<p><strong>Acceptance:</strong> A50 baseline and numeric-profile subcases pass. Preserve unqualified results. Define submillisecond timing boundaries without subtracting whole connector calls.</p><p><strong>Fail-before:</strong> Preserve the measured copy and Argon2 profiles, timer omissions, and a full-path baseline before product optimizations.</p>
+<p><strong>Acceptance:</strong> A50 baseline and numeric-profile subcases pass. Preserve unqualified results. Define submillisecond timing boundaries without subtracting whole connector calls.</p>
+
+<p><strong>Fail-before:</strong> Preserve the measured copy and Argon2 profiles, timer omissions, and a full-path baseline before product optimizations.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;go test -count=1 -timeout 5m ./internal/server/... ./internal/execution&#10;go test -run ^$ -bench . -benchmem ./internal/router ./internal/credentials&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP0.4</code></pre></article>
 
@@ -229,17 +251,23 @@
 
 <strong>Steps:</strong><ol><li>Publish typed descriptors, defaults, presence semantics, and option conversion.</li><li>Include aliases, coalescing, source binding, and compatibility metadata.</li><li>Complete YAML parity and explicit dotenv precedence with upgrade diagnostics. Generate the standalone reference and preserve passive library reads.</li></ol>
 
-<p><strong>Acceptance:</strong> Descriptors cover every supported setting. Tests reject unknown keys and preserve false, zero, and explicit empty values. Supports A24 and A25. ER01 leaves cross-product file selection and path inventory at their existing CSP8 gate.</p><p><strong>Fail-before:</strong> Capture missing public contract and current descriptor coverage gaps.</p>
+<p><strong>Acceptance:</strong> Descriptors cover every supported setting. Tests reject unknown keys and preserve false, zero, and explicit empty values. Supports A24 and A25. ER01 leaves cross-product file selection and path inventory at their existing CSP8 gate.</p>
+
+<p><strong>Fail-before:</strong> Capture missing public contract and current descriptor coverage gaps.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 5m ./pkg/catalogs/config ./internal/catalog/settings ./runtime&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP1</code></pre></article>
 
-<article class="task" id="task-CSP2"><h3>CSP2 Persist the baseline and resolve product paths</h3><p><strong>Problem:</strong> Fresh persistent startup leaves its baseline in memory and uses inconsistent platform roots.</p><p><strong>Owning concept and paths:</strong> SM · <code>internal/bootstrap, internal/cli/app, internal/constants, public embedded accessor</code>. <strong>Depends on:</strong> CSP1.</p>
+<article class="task" id="task-CSP2"><h3>CSP2 Persist the baseline and resolve product paths</h3><p><strong>Problem:</strong> Fresh persistent startup leaves its baseline in memory and uses inconsistent platform roots.</p>
+
+<p><strong>Owning concept and paths:</strong> SM · <code>internal/bootstrap, internal/cli/app, internal/constants, public embedded accessor</code>. <strong>Depends on:</strong> CSP1.</p>
 
 <strong>Steps:</strong><ol><li>Expose the verified embedded generation through a passive accessor.</li><li>Materialize persistent application state and report resolved roots.</li><li>Implement the complete file manifest, primary config file, relative anchors, and runtime ownership. Add conflict-aware migration with journals.</li><li>Use one semantic file-role policy for runtime enforcement and diagnostic declarations. Preserve editable workspace inputs, access policy, and passive inspection.</li></ol>
 
 <p><strong>Acceptance:</strong> A02 and Starmap portions of A01 through A04 pass. Native Linux, macOS, and Windows path and interruption checks run before completion.</p>
 
-<p>Publication uses the <a href="proof/starport-production-catalog/csp2/review-stack-2026-09-07.md">two-part code review stack</a>, with review of both complete diffs. Required planned checks: <code>TestFileRolePolicyMatchesRuntimeEnforcement</code> and <code>TestWorkspaceReplacementPreservesAccessPolicy</code>. Both named checks pass native Linux, macOS, and Windows qualification.</p><p><strong>Fail-before:</strong> Retain the passive-constructor test and add a failing persistent cold-start test.</p>
+<p>Publication uses the <a href="proof/starport-production-catalog/csp2/review-stack-2026-09-07.md">two-part code review stack</a>, with review of both complete diffs. Required planned checks: <code>TestFileRolePolicyMatchesRuntimeEnforcement</code> and <code>TestWorkspaceReplacementPreservesAccessPolicy</code>. Both named checks pass native Linux, macOS, and Windows qualification.</p>
+
+<p><strong>Fail-before:</strong> Retain the passive-constructor test and add a failing persistent cold-start test.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 20m ./internal/bootstrap ./internal/cli/app ./runtime&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP2</code></pre></article>
 
@@ -251,7 +279,9 @@
 
 <li>Apply D30 alias retention without automatic expiry.</li><li>Preserve the <a href="proof/starport-production-catalog/csp3/nested-range-current-state-2026-09-09.json">merged nested-range repair</a> during A08 qualification.</li><li>Integrate provider and non-provider inputs through CLI, publisher, and server entry points.</li><li>Preserve permitted retained evidence and produce verified source receipts. Journal manual observations and D24 reset scopes while preserving the selected baseline and unrelated scopes.</li><li>Verify the <a href="proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp3">CSP3 discovery audit criteria</a> before task completion.</li></ol>
 
-<p><strong>Acceptance:</strong> A08 passes. Starmap ingestion subcases of A20 pass. Missing dependencies and partial replies cannot masquerade as source success. A08 alias checks cover time beyond thirty days, restart, explicit removal, and authoritative baseline replacement.</p><p><strong>Fail-before:</strong> Use fixtures where newer authorized pricing stays stale and partial replies resemble deletion.</p>
+<p><strong>Acceptance:</strong> A08 passes. Starmap ingestion subcases of A20 pass. Missing dependencies and partial replies cannot masquerade as source success. A08 alias checks cover time beyond thirty days, restart, explicit removal, and authoritative baseline replacement.</p>
+
+<p><strong>Fail-before:</strong> Use fixtures where newer authorized pricing stays stale and partial replies resemble deletion.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 30m ./runtime ./acquisition ./internal/catalog/reconciler&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP3</code></pre></article>
 
@@ -261,7 +291,9 @@
 
 <strong>Steps:</strong><ol><li>Build an immutable canonical-provider and alias index.</li><li>Use the index for offering lookup without copying unrelated models.</li><li>Preserve caller ownership, aliases, missing-record errors, and immutable catalogs.</li></ol>
 
-<p><strong>Acceptance:</strong> A44 canonical lookup and caller-ownership subcases pass. Measured allocations exclude full-provider copies. Starport completes A44 in CSP10.1.</p><p><strong>Fail-before:</strong> Capture allocation growth for canonical and alias lookups across increasing provider model counts.</p>
+<p><strong>Acceptance:</strong> A44 canonical lookup and caller-ownership subcases pass. Measured allocations exclude full-provider copies. Starport completes A44 in CSP10.1.</p>
+
+<p><strong>Fail-before:</strong> Capture allocation growth for canonical and alias lookups across increasing provider model counts.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 5m ./pkg/catalogs/...&#10;go test -run ^$ -bench . -benchmem ./pkg/catalogs&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP3.1</code></pre></article>
 
@@ -275,7 +307,9 @@
 
 <strong>Steps:</strong><ol><li>Bind generations to stable authority and policy identities.</li><li>Implement cold refusal, warm retained startup, and explicit authority transitions.</li><li>Reject incompatible schema, replay, invalid trust, and source-chain cycles.</li></ol>
 
-<p><strong>Acceptance:</strong> A07 passes with positive public download and rejection cases. Authority envelopes support cold refusal, retained startup, and permission-validity enforcement. Starport completes A09, A10, and A21.</p><p><strong>Fail-before:</strong> Cold and warm internal starts currently share an online source requirement.</p>
+<p><strong>Acceptance:</strong> A07 passes with positive public download and rejection cases. Authority envelopes support cold refusal, retained startup, and permission-validity enforcement. Starport completes A09, A10, and A21.</p>
+
+<p><strong>Fail-before:</strong> Cold and warm internal starts currently share an online source requirement.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 30m ./runtime ./remote ./pkg/catalogs/artifact&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP4</code></pre></article>
 
@@ -285,7 +319,9 @@
 
 <strong>Steps:</strong><ol><li>Implement automatic, manual, offline, and pin contracts across every trigger.</li><li>Cancel superseded workers and enforce authority before manual operations.</li><li>Recover baseline, migration, workspace, evidence, and discovery stages. Exclude active writers, preserve unknown files, bound scans, and retain required generations during collection.</li><li>Compact acquisition history before its 64 MiB or 4,096-batch limits stop updates, preserving omitted offerings and original receipts through restart.</li><li>Classify errors after pointer publication and verify retries after an ambiguous directory flush.</li></ol>
 
-<p><strong>Acceptance:</strong> A19 passes. Runtime fixtures cover A22 and A23, including watcher events and restart. Owned-stage recovery must pass process-exit, active-writer, changed-file, and scan-limit checks. Add TestFilesystemCommitAmbiguousFlushOutcome for publication, flush failure, reopen, and idempotent retry.</p><p><strong>Fail-before:</strong> Show watcher refresh with zero polling and manual acquisition with automatic acquisition disabled.</p>
+<p><strong>Acceptance:</strong> A19 passes. Runtime fixtures cover A22 and A23, including watcher events and restart. Owned-stage recovery must pass process-exit, active-writer, changed-file, and scan-limit checks. Add TestFilesystemCommitAmbiguousFlushOutcome for publication, flush failure, reopen, and idempotent retry.</p>
+
+<p><strong>Fail-before:</strong> Show watcher refresh with zero polling and manual acquisition with automatic acquisition disabled.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 30m ./runtime ./pkg/catalogs/storage&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP5</code></pre></article>
 
@@ -295,7 +331,9 @@
 
 <strong>Steps:</strong><ol><li>Apply explicit required-source and retained-evidence admission rules.</li><li>Configure bot identity, required checks, and serialized branch promotion.</li><li>Bind immutable receipts, artifact bytes, merged source, channel sequence, and retry results.</li><li>Qualify the promoted catalog under unchanged constructor and cold-server limits. Preserve scalar decoding and membership observation links during custom updates.</li></ol>
 
-<p><strong>Acceptance:</strong> A05 passes at each failure boundary and in a controlled bot-PR test. Record actual required check identities. Final released embedding remains in CSP23.</p><p><strong>Fail-before:</strong> Record a successful channel publication whose embedded default-branch input remains older.</p>
+<p><strong>Acceptance:</strong> A05 passes at each failure boundary and in a controlled bot-PR test. Record actual required check identities. Final released embedding remains in CSP23.</p>
+
+<p><strong>Fail-before:</strong> Record a successful channel publication whose embedded default-branch input remains older.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;make catalog-generation-check&#10;# SM&#10;bash scripts/verify-catalog-distribution.sh&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP6</code></pre></article>
 
@@ -332,7 +370,9 @@
 
 <strong>Steps:</strong><ol><li>Implement explicit reference and ambient precedence by role.</li><li>Preserve secret backends, bounded refresh, and complete-version rotation.</li><li>Report origins without values and reject alias or scope collisions.</li></ol>
 
-<p><strong>Acceptance:</strong> Starmap satisfies its portion of A11 and A12. No inference or account repository enters acquisition.</p><p><strong>Fail-before:</strong> Capture current conventional-name precedence and explicit-reference failure behavior.</p>
+<p><strong>Acceptance:</strong> Starmap satisfies its portion of A11 and A12. No inference or account repository enters acquisition.</p>
+
+<p><strong>Fail-before:</strong> Capture current conventional-name precedence and explicit-reference failure behavior.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 30m ./internal/auth ./acquisition&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP7</code></pre></article>
 
@@ -344,7 +384,9 @@
 
 <strong>Steps:</strong><ol><li>Pin the compatible Starmap release and replace duplicate settings translation.</li><li>Apply product-local paths, baseline persistence, and allowlisted fallback.</li><li>Consume the shared file-role policy and report effective paths and storage origins. Preserve editable workspace inputs. Isolate development stores and reject persistent overrides before access.</li><li>Verify the <a href="proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp8">CSP8 discovery audit criteria</a> before task completion.</li></ol>
 
-<p><strong>Acceptance:</strong> A01, A03, A04, A20, A22, A23, A24, and A43 pass through Starport. Run native paths and interrupted migration before completion. Preserve bootstrap and deployment scopes.</p><p><strong>Fail-before:</strong> Reproduce acquisition interval zero and missing Starmap fallback with loader tests.</p>
+<p><strong>Acceptance:</strong> A01, A03, A04, A20, A22, A23, A24, and A43 pass through Starport. Run native paths and interrupted migration before completion. Preserve bootstrap and deployment scopes.</p>
+
+<p><strong>Fail-before:</strong> Reproduce acquisition interval zero and missing Starmap fallback with loader tests.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;go test -race -count=1 -timeout 5m ./internal/catalog&#10;go test -race -count=1 -timeout 5m ./internal/config ./internal/app&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP8</code></pre>
 
@@ -356,7 +398,9 @@
 
 <strong>Steps:</strong><ol><li>Add catalog-role secret references and environment precedence.</li><li>Implement resolver-policy migration and explicit conflict resolution for changed credential selections.</li><li>Keep BYOK outside acquisition and Starmap inference fallback off by default.</li></ol>
 
-<p><strong>Acceptance:</strong> A11 and A12 pass, including upgrade conflicts, fresh installs, identical values, explicit references, and complete multi-field handles.</p><p><strong>Fail-before:</strong> Capture an acquisition secret reference that the current environment-only resolver cannot resolve.</p>
+<p><strong>Acceptance:</strong> A11 and A12 pass, including upgrade conflicts, fresh installs, identical values, explicit references, and complete multi-field handles.</p>
+
+<p><strong>Fail-before:</strong> Capture an acquisition secret reference that the current environment-only resolver cannot resolve.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;go test -race -count=1 -timeout 5m ./internal/catalog ./internal/credentials/... ./internal/providers/keyring&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP9</code></pre></article>
 
@@ -366,7 +410,9 @@
 
 <strong>Steps:</strong><ol><li>Extend managed material to account and shared records with scoped revision identities.</li><li>Bound warm state, cold resolution, background refresh, and tenant concurrency.</li><li>Fence revocation and stale refresh while preserving encryption strength and shared grants.</li></ol>
 
-<p><strong>Acceptance:</strong> A45 passes for warm, cold, rotated, expired, and revoked material. Warm requests do not derive keys or read external material.</p><p><strong>Fail-before:</strong> Retain the isolated Argon2 measurement and repeated stored-record resolution before the lifecycle change.</p>
+<p><strong>Acceptance:</strong> A45 passes for warm, cold, rotated, expired, and revoked material. Warm requests do not derive keys or read external material.</p>
+
+<p><strong>Fail-before:</strong> Retain the isolated Argon2 measurement and repeated stored-record resolution before the lifecycle change.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;go test -race -count=1 -timeout 5m ./internal/credentials/... ./internal/providers/keyring ./internal/router&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP9.1</code></pre></article>
 
@@ -376,7 +422,9 @@
 
 <strong>Steps:</strong><ol><li>Enforce permission revision and destination grants before route selection, cache delivery, retries, and queued work.</li><li>Define protocol errors for aliases, removals, and unavailable offerings.</li><li>Bind each request to one runtime and report consistent activation and routing state.</li><li>Verify the <a href="proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp10">CSP10 discovery audit criteria</a> before task completion.</li></ol>
 
-<p><strong>Acceptance:</strong> A09, A10, A17, A18, A21, and A25 pass. Include SDK behavior, withdrawal during schema skew, denied destination changes, and identity transitions.</p><p><strong>Fail-before:</strong> Capture cold non-owner readiness and inconsistent-generation projection cases.</p>
+<p><strong>Acceptance:</strong> A09, A10, A17, A18, A21, and A25 pass. Include SDK behavior, withdrawal during schema skew, denied destination changes, and identity transitions.</p>
+
+<p><strong>Fail-before:</strong> Capture cold non-owner readiness and inconsistent-generation projection cases.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;go test -race -count=1 -timeout 5m ./internal/catalog ./internal/providers/... ./internal/execution ./internal/server&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP10</code></pre></article>
 
@@ -386,7 +434,9 @@
 
 <strong>Steps:</strong><ol><li>Construct static candidates and model indexes before runtime publication.</li><li>Select matching offerings and explicit fallbacks with current dynamic filters.</li><li>Bound retained generations and update pressure while preserving leases and withdrawal refusal.</li><li>Verify the <a href="proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp101">CSP10.1 discovery audit criteria</a> before task completion.</li></ol>
 
-<p><strong>Acceptance:</strong> A44 passes with embedded and synthetic catalogs. Exact-model work does not grow with unrelated routes. Auto and explicit fallback retain declared behavior.</p><p><strong>Fail-before:</strong> Retain repeated candidate construction and embedded-catalog allocation profiles.</p>
+<p><strong>Acceptance:</strong> A44 passes with embedded and synthetic catalogs. Exact-model work does not grow with unrelated routes. Auto and explicit fallback retain declared behavior.</p>
+
+<p><strong>Fail-before:</strong> Retain repeated candidate construction and embedded-catalog allocation profiles.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;go test -race -count=1 -timeout 5m ./internal/catalog ./internal/router ./internal/routing&#10;go test -run ^$ -bench . -benchmem ./internal/router&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP10.1</code></pre></article>
 
@@ -402,7 +452,9 @@
 
 <p>D40 makes physical OS sleep/wake testing optional. Native clock and deterministic expiry checks remain required.</p>
 
-<p>Readiness reflects common admission prerequisites. CSP16 owns applied configuration memory.</p><p><strong>Fail-before:</strong> Count current per-request key, account, and team reads and reproduce missed-update recovery gaps.</p>
+<p>Readiness reflects common admission prerequisites. CSP16 owns applied configuration memory.</p>
+
+<p><strong>Fail-before:</strong> Count current per-request key, account, and team reads and reproduce missed-update recovery gaps.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;go test -race -count=1 -timeout 5m ./internal/apikey ./internal/account ./internal/identity ./internal/authorization/... ./internal/registry ./internal/app ./internal/server/...&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP10.2</code></pre></article>
 
@@ -412,7 +464,9 @@
 
 <strong>Steps:</strong><ol><li>Move shared health and latency exchange into bounded lifecycle-owned workers.</li><li>Preserve immediate local breaker decisions and explicit stale-hint behavior.</li><li>Verify shutdown, reconnect, outages, and queue pressure without changing authority validity.</li></ol>
 
-<p><strong>Acceptance:</strong> A49 passes. Inference callbacks do not read or write remote advisory state, including cold peer state. Slow peer storage cannot stall unrelated requests.</p><p><strong>Fail-before:</strong> Block peer reads and publications to show current callback delay.</p>
+<p><strong>Acceptance:</strong> A49 passes. Inference callbacks do not read or write remote advisory state, including cold peer state. Slow peer storage cannot stall unrelated requests.</p>
+
+<p><strong>Fail-before:</strong> Block peer reads and publications to show current callback delay.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;go test -race -count=1 -timeout 5m ./internal/availability ./internal/router ./internal/app&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP10.3</code></pre></article>
 
@@ -426,7 +480,9 @@
 
 <p>The <a href="proof/starport-production-catalog/csp11/review-repairs-2026-09-26/REVIEW_RESOLUTION.md">fleet review resolution</a> assigns fresh initialization and bounded retention to CSP11. CSP16 owns policy transitions. Its evidence criteria remain mandatory. The <a href="proof/starport-production-catalog/csp11/upgrade-contract-2026-09-26/CONTRACT.md">D41 transition contract</a> assigns seventeen required conditions across CSP11, CSP16, and CSP16.1. CSP12 and CSP13 retain their broader storage and recovery requirements.</p>
 
-<p><strong>Acceptance:</strong> A13 and A14 pass with real concurrent processes. Preserve distinct accepted rollback generations across input-only revisions. Complete fleet-key loss must require recovery while the same Valkey process remains live. The independent witness must distinguish first use from established state and uncertain first publication. Permit one SM contract PR followed by one SP adapter PR.</p><p><strong>Fail-before:</strong> Force lease expiry between ownership validation and commit, then remove the former leader directory.</p>
+<p><strong>Acceptance:</strong> A13 and A14 pass with real concurrent processes. Preserve distinct accepted rollback generations across input-only revisions. Complete fleet-key loss must require recovery while the same Valkey process remains live. The independent witness must distinguish first use from established state and uncertain first publication. Permit one SM contract PR followed by one SP adapter PR.</p>
+
+<p><strong>Fail-before:</strong> Force lease expiry between ownership validation and commit, then remove the former leader directory.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --case A13 --case A14&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP11</code></pre></article>
 
@@ -436,7 +492,9 @@
 
 <strong>Steps:</strong><ol><li>Validate complete local, shared, and container recipes. Implement secure URI parsing, namespaces, effective adapter settings, and explicit durability. Supply explicit initialization for a fresh fleet. Retain and accept an unchanged embedded generation during ordinary offline startup. Preserve separate fleet and authority publication paths, with populated-state recovery owned by CSP13.</li><li>Distinguish unknown budget policy or usage from confirmed absence and exhausted quota.</li><li>Apply D14 to initial online and batch admission with redacted failure diagnostics.</li></ol>
 
-<p><strong>Acceptance:</strong> Incomplete fleet recipes fail validation. Unknown required policy or usage returns a retryable refusal. Known absent budgets avoid unnecessary usage reads. A41 implementation checks cover connection security, all gateway key and notification namespaces, and effective options. Fresh initialization must refuse existing or uncertain state instead of approving a restore. Real failure and alternative qualification follows in CSP15.</p><p><strong>Fail-before:</strong> Load a fleet configuration with Valkey and local SQLite and record its current acceptance.</p>
+<p><strong>Acceptance:</strong> Incomplete fleet recipes fail validation. Unknown required policy or usage returns a retryable refusal. Known absent budgets avoid unnecessary usage reads. A41 implementation checks cover connection security, all gateway key and notification namespaces, and effective options. Fresh initialization must refuse existing or uncertain state instead of approving a restore. Real failure and alternative qualification follows in CSP15.</p>
+
+<p><strong>Fail-before:</strong> Load a fleet configuration with Valkey and local SQLite and record its current acceptance.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;go test -race -count=1 -timeout 5m ./internal/config ./internal/storage ./internal/sqlstore ./internal/blob&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP12</code></pre></article>
 
@@ -487,9 +545,12 @@
 <p>The <a href="proof/starport-production-catalog/csp13/file-publication-2026-09-28/CONTRACT.md">file publication contract</a> adds native streaming as a Starmap prerequisite. Starport retains recovery policy and activation ownership. All task acceptance criteria remain mandatory.</p>
 
 <p>CSP12.2 owns the <a href="proof/starport-production-catalog/csp12.2/catalog-recovery-prerequisite-2026-09-28/CONTRACT.md">controlled catalog adoption prerequisite</a> for its production replacement test. CSP13 builds full backup, migration, and operator procedures on that contract. Catalog approval and budget approval must describe the same recovered deployment.</p>
+
 <p>The <a href="proof/starport-production-catalog/csp13/recovery-activation-contract-2026-09-29/CONTRACT.md">recovery activation contract</a> defines independent history, operator evidence, component receipts, and final admission order. Component preparation does not satisfy complete recovery.</p>
 
-<p><strong>Acceptance:</strong> A16 and A33 pass. Restore a snapshot taken before revocation and spending. Missing later evidence keeps affected access restricted until reconciliation. Test the operator commands that adopt populated shared deployments and recover after ordinary Valkey restart or failover. These procedures must work before the product claims production readiness.</p><p><strong>Fail-before:</strong> Show missing cross-store migration and concurrent SQL startup guarantees.</p>
+<p><strong>Acceptance:</strong> A16 and A33 pass. Restore a snapshot taken before revocation and spending. Missing later evidence keeps affected access restricted until reconciliation. Test the operator commands that adopt populated shared deployments and recover after ordinary Valkey restart or failover. These procedures must work before the product claims production readiness.</p>
+
+<p><strong>Fail-before:</strong> Show missing cross-store migration and concurrent SQL startup guarantees.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --case A16 --case A33&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP13</code></pre></article>
 
@@ -499,7 +560,9 @@
 
 <strong>Steps:</strong><ol><li>Create distinct first-admin bootstrap and subscriber permissions.</li><li>Persist administrative audit and operation receipts in the private Starmap state root.</li><li>Test key overlap, audit-write refusal, crash recovery, and listener precedence. Implement matching CLI and administrative API configuration reports, including cold authority startup.</li></ol>
 
-<p><strong>Acceptance:</strong> A32 passes without adding SQL to T1. Subscriber and Starport gateway credentials cannot administer upstream Starmap.</p><p><strong>Fail-before:</strong> Test subscriber attempts to mutate policy and the gap in single-key rotation availability.</p>
+<p><strong>Acceptance:</strong> A32 passes without adding SQL to T1. Subscriber and Starport gateway credentials cannot administer upstream Starmap.</p>
+
+<p><strong>Fail-before:</strong> Test subscriber attempts to mutate policy and the gap in single-key rotation availability.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 5m ./internal/server/... ./server ./internal/cli/commands/serve&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP14</code></pre></article>
 
@@ -523,7 +586,9 @@
 
 <strong>Steps:</strong><ol><li>Separate node bootstrap and file selection from shared deployment settings. Keep Starport storage and cache descriptors product-owned.</li><li>Implement local file authority and shared SQL initialization with transactional audit.</li><li>Load one shared revision, migrate authority explicitly, and reject outage-driven local fallback.</li><li>Apply acquisition-policy changes through the approved SQL revision and native Valkey publication fence. Recover partial apply and preserve every D41 transition condition.</li></ol>
 
-<p><strong>Acceptance:</strong> A28 and A40 pass with two replicas, conflicting files, initialization races, unavailable stores, and local-to-shared migration. Requests read the applied configuration revision in memory without per-request SQL or file access. D41 conditions 1–10, 15, and 17 are mandatory. Permit one Starmap contract PR followed by one Starport configuration PR.</p><p><strong>Fail-before:</strong> Capture the single-pass file and environment loader and absence of shared configuration revisions.</p>
+<p><strong>Acceptance:</strong> A28 and A40 pass with two replicas, conflicting files, initialization races, unavailable stores, and local-to-shared migration. Requests read the applied configuration revision in memory without per-request SQL or file access. D41 conditions 1–10, 15, and 17 are mandatory. Permit one Starmap contract PR followed by one Starport configuration PR.</p>
+
+<p><strong>Fail-before:</strong> Capture the single-pass file and environment loader and absence of shared configuration revisions.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;go test -race -count=1 -timeout 5m ./internal/config ./internal/server ./internal/catalog&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP16</code></pre></article>
 
@@ -533,7 +598,9 @@
 
 <strong>Steps:</strong><ol><li>Expose schema, effective state, validation, connection tests, and permitted saves.</li><li>Enforce expected revisions, idempotency, transactional audit, and deployment authorization.</li><li>Keep external controllers authoritative and migrations outside field saves.</li><li>Implement explicit embedded-only baseline promotion with exact retries, pins, authority checks, and separate software rollback. Qualify D41 conditions 13, 16, and 17.</li></ol>
 
-<p><strong>Acceptance:</strong> A26 and A27 pass for local, shared, and external management. Failed activation reports saved and applied state separately.</p><p><strong>Fail-before:</strong> Capture absent shared-edit operations and stale-revision behavior.</p>
+<p><strong>Acceptance:</strong> A26 and A27 pass for local, shared, and external management. Failed activation reports saved and applied state separately.</p>
+
+<p><strong>Fail-before:</strong> Capture absent shared-edit operations and stale-revision behavior.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;go test -race -count=1 -timeout 5m ./internal/config ./internal/server ./internal/catalog&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP16.1</code></pre></article>
 
@@ -543,7 +610,9 @@
 
 <strong>Steps:</strong><ol><li>Present a default recipe and task-based catalog and inference setup.</li><li>Show whether edits target a local file, shared revision, or external controller.</li><li>Show effective paths, storage lifetimes, cache roles, ignored bootstrap values, and applied replica revisions in accessible advanced details.</li><li>Preserve <a href="proof/starport-production-catalog/csp3/alias-retention-design-2026-09-10.md">stored removal targets</a> when a canonical rename changes the displayed identity.</li><li>Verify the <a href="proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp17">CSP17 discovery audit criteria</a> before task completion.</li></ol>
 
-<p><strong>Acceptance:</strong> J1 through J3 configuration journeys pass with local and shared saves, external diffs, cold authority, denied access, and failed apply. Restoring a renamed model clears the selected stored removal target and preserves other removals. Preserve early typography improvements. Expose timing boundaries, policy validity, admission failure, and bounded queue pressure without secrets.</p><p><strong>Fail-before:</strong> Retain the measured 14 px prose, missing origins, and 2.56:1 settings contrast.</p>
+<p><strong>Acceptance:</strong> J1 through J3 configuration journeys pass with local and shared saves, external diffs, cold authority, denied access, and failed apply. Restoring a renamed model clears the selected stored removal target and preserves other removals. Preserve early typography improvements. Expose timing boundaries, policy validity, admission failure, and bounded queue pressure without secrets.</p>
+
+<p><strong>Fail-before:</strong> Retain the measured 14 px prose, missing origins, and 2.56:1 settings contrast.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;pnpm --dir console run typecheck&#10;# SP&#10;pnpm --dir console test&#10;# SP&#10;bash scripts/verify-console-polish.sh&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP17</code></pre></article>
 
@@ -555,7 +624,9 @@
 
 <strong>Steps:</strong><ol><li>Build one versioned content tree, generated settings and file inventories, and offline search.</li><li>Prepare the proposed Pages artifact, protected deployment workflow, version paths, and rollback.</li><li>Keep static docs public and dynamic deployment data authenticated.</li><li>Verify the <a href="proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp18">CSP18 discovery audit criteria</a> before task completion.</li></ol>
 
-<p><strong>Acceptance:</strong> A30 and local A29 subcases pass. The release owner verifies hosting configuration. CSP23 supplies public-URL evidence for the complete A29 case.</p><p><strong>Fail-before:</strong> Record auth-gated docs, absent heading anchors, and no article-content search.</p>
+<p><strong>Acceptance:</strong> A30 and local A29 subcases pass. The release owner verifies hosting configuration. CSP23 supplies public-URL evidence for the complete A29 case.</p>
+
+<p><strong>Fail-before:</strong> Record auth-gated docs, absent heading anchors, and no article-content search.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;pnpm --dir console run check&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP18</code></pre></article>
 
@@ -565,7 +636,9 @@
 
 <strong>Steps:</strong><ol><li>Document T1 through T7 and independent catalog update controls.</li><li>Exercise configuration, backup, migration, restore, and GitHub-disabled procedures. Recreate containers and verify linked KV, SQL, and blob records.</li><li>Document durable owners, memory-serving state, strict admission operations, and qualified latency profiles beside each recipe.</li></ol>
 
-<p><strong>Acceptance:</strong> Each recipe has runnable checks and failure recovery. G11, G12, G20, G21, and G22 have evidence-backed dispositions. Permit one docs PR per repository.</p><p><strong>Fail-before:</strong> Retain the current per-replica polling, rotation, and generic SQL-adapter statements.</p>
+<p><strong>Acceptance:</strong> Each recipe has runnable checks and failure recovery. G11, G12, G20, G21, and G22 have evidence-backed dispositions. Permit one docs PR per repository.</p>
+
+<p><strong>Fail-before:</strong> Retain the current per-replica polling, rotation, and generic SQL-adapter statements.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;make technical-writing-check&#10;# SP&#10;bash scripts/verify-doc-links.sh&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --recipes&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP19</code></pre></article>
 
@@ -575,7 +648,9 @@
 
 <strong>Steps:</strong><ol><li>Lead Starport with outcome, installation, catalog inspection, and first inference.</li><li>Show A43 temporary behavior and resolved persistent paths. Explain database and cache roles through linked deployment recipes.</li><li>Align Starmap ownership and preserve meaningful quickstart verifier coverage. Link performance claims to qualified profiles and exact artifacts.</li><li>Verify the <a href="proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp20">CSP20 discovery audit criteria</a> before task completion.</li></ol>
 
-<p><strong>Acceptance:</strong> A34 passes. Candidate archives install natively and complete catalog and inference checks. Released-installer evidence completes A35 in CSP24. Permit an ordered README PR per repository.</p><p><strong>Fail-before:</strong> Capture the existing README flow and run its verifier before changing headings.</p>
+<p><strong>Acceptance:</strong> A34 passes. Candidate archives install natively and complete catalog and inference checks. Released-installer evidence completes A35 in CSP24. Permit an ordered README PR per repository.</p>
+
+<p><strong>Fail-before:</strong> Capture the existing README flow and run its verifier before changing headings.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;bash scripts/test-readme-quickstart-verifier.sh&#10;# SP&#10;bash scripts/verify-readme-quickstart.sh&#10;# SP&#10;bash scripts/verify-doc-links.sh&#10;# SM&#10;make technical-writing-check&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP20</code></pre></article>
 
@@ -585,7 +660,9 @@
 
 <strong>Steps:</strong><ol><li>Create recording and verification scripts with a candidate-artifact manifest.</li><li>Rehearse installation, catalog discovery, setup, and the streamed response sequence.</li><li>Define invalidation rules and prepare final capture after publication in CSP24.</li><li>Verify the <a href="proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp21">CSP21 discovery audit criteria</a> before task completion.</li></ol>
 
-<p><strong>Acceptance:</strong> R01 and R02 candidate rehearsal checks pass. Duration remains an editorial target. Final A36 through A39 evidence requires the shipped artifact in CSP24.</p><p><strong>Fail-before:</strong> Compare the existing 11-frame recording against the required scene checklist.</p>
+<p><strong>Acceptance:</strong> R01 and R02 candidate rehearsal checks pass. Duration remains an editorial target. Final A36 through A39 evidence requires the shipped artifact in CSP24.</p>
+
+<p><strong>Fail-before:</strong> Compare the existing 11-frame recording against the required scene checklist.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SP&#10;bash scripts/record-readme-demo.sh --rehearse --output .tmp/readme-demo&#10;# SP&#10;bash scripts/verify-readme-demo.sh --manifest docs/assets/starport-demo.json&#10;# SP&#10;bash scripts/verify-doc-links.sh&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP21</code></pre></article>
 <h3>Phase 6: Qualification and release</h3>
@@ -596,7 +673,9 @@
 
 <strong>Steps:</strong><ol><li>Run native path and interrupted-migration tests on Linux, macOS, and Windows.</li><li>Exercise the declared SDK surface during refresh and recovery.</li><li>Measure workload, memory, recovery objectives, and each supported topology. Require container recreation, all latency findings, and A50 full-path performance evidence for declared recipes.</li><li>Verify the <a href="proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp22">CSP22 discovery audit criteria</a> before task completion.</li></ol>
 
-<p><strong>Acceptance:</strong> The candidate gate passes 43 primary cases and eight additional local subcases against the exact final candidate. Report seven publication-dependent cases as UNVERIFIED. All required subcases name real platforms, services, and SDKs.</p><p><strong>Fail-before:</strong> List all unavailable platforms, SDKs, and services as UNVERIFIED before qualification.</p>
+<p><strong>Acceptance:</strong> The candidate gate passes 43 primary cases and eight additional local subcases against the exact final candidate. Report seven publication-dependent cases as UNVERIFIED. All required subcases name real platforms, services, and SDKs.</p>
+
+<p><strong>Fail-before:</strong> List all unavailable platforms, SDKs, and services as UNVERIFIED before qualification.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --gate candidate --json&#10;# SP&#10;make verify&#10;# SM&#10;make verify&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP22</code></pre><p><strong>Optional evidence:</strong> D40 tracks <a href="proof/starport-production-catalog/csp10.2/optional-suspend-qualification.md">physical suspend qualification</a> here. It remains UNVERIFIED and does not block completion or release.</p></article>
 
@@ -606,7 +685,9 @@
 
 <strong>Steps:</strong><ol><li>Bind the release pair to exact commits and catalog digests.</li><li>Publish authorized immutable releases and the matching public documentation.</li><li>Verify downloaded assets, embedded docs, baseline identity, and channel behavior.</li></ol>
 
-<p><strong>Acceptance:</strong> A06 and A29 pass against released modules and the public docs URL. CSP24 owns final installers and media. No complete production claim precedes its 50-case result.</p><p><strong>Fail-before:</strong> Compare old pinned binary bytes against the newly selected embedded generation.</p>
+<p><strong>Acceptance:</strong> A06 and A29 pass against released modules and the public docs URL. CSP24 owns final installers and media. No complete production claim precedes its 50-case result.</p>
+
+<p><strong>Fail-before:</strong> Compare old pinned binary bytes against the newly selected embedded generation.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;make release-check&#10;# SP&#10;make release-check&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --case A06 --released-assets&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP23</code></pre></article>
 
@@ -616,7 +697,9 @@
 
 <strong>Steps:</strong><ol><li>Verify every advertised installer and the released recovery recipes.</li><li>Record the final README demonstration against shipped assets and verify its transcript and media.</li><li>Run all 50 cases and record the final production claims and implementation PR merge.</li><li>Verify the <a href="proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp24">CSP24 discovery audit criteria</a> before task completion.</li></ol>
 
-<p><strong>Acceptance:</strong> A35 through A39 and all final regression cases pass. Capture real authorized inference and human pacing review. Changed installed behavior invalidates stale media and affected performance evidence. Preserve real inference timing and verify artifact-bound profiles.</p><p><strong>Fail-before:</strong> Record shipped-asset qualification as UNVERIFIED until those assets exist.</p>
+<p><strong>Acceptance:</strong> A35 through A39 and all final regression cases pass. Capture real authorized inference and human pacing review. Changed installed behavior invalidates stale media and affected performance evidence. Preserve real inference timing and verify artifact-bound profiles.</p>
+
+<p><strong>Fail-before:</strong> Record shipped-asset qualification as UNVERIFIED until those assets exist.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --released-assets --recipes&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP24</code></pre></article>
 <h3>Phase 7: Cleanup</h3>
@@ -627,7 +710,9 @@
 
 <strong>Steps:</strong><ol><li>Confirm every required result and the final PR merge.</li><li>Archive the plan and proofs under docs/reviews/catalog-lifecycle.</li><li>Update both indexes and validate all moved references.</li></ol>
 
-<p><strong>Acceptance:</strong> All 40 tasks are terminal. The archive records completion and the release pair. No proposed or active pointer remains.</p><p><strong>Fail-before:</strong> Not applicable. The merge event triggers cleanup.</p>
+<p><strong>Acceptance:</strong> All 40 tasks are terminal. The archive records completion and the release pair. No proposed or active pointer remains.</p>
+
+<p><strong>Fail-before:</strong> Not applicable. The merge event triggers cleanup.</p>
 
 <p><strong>Verification:</strong></p><pre><code># SM&#10;git grep -n starport-production-catalog-plan&#10;# SP&#10;bash scripts/verify-doc-links.sh&#10;# SM&#10;make technical-writing-check</code></pre></article>
 </section>
@@ -648,6 +733,7 @@
 <p>The <a href="proof/starport-production-catalog/execution-history-2026-09-29-permission-replay.html">permission replay history</a> preserves the oldest entry unchanged.</p>
 
 <p>The <a href="proof/starport-production-catalog/execution-history-2026-09-29-sql-window-replay.html">SQL and window replay history</a> preserves the oldest entry unchanged.</p>
+
 <p>The <a href="proof/starport-production-catalog/execution-history-2026-09-29-execution-replay.html">execution replay history</a> preserves the oldest entry unchanged.</p>
 
 <p>The <a href="proof/starport-production-catalog/execution-history-2026-09-29-starport391-merge.html">Starport391 merge history</a> preserves the oldest entry unchanged.</p>
