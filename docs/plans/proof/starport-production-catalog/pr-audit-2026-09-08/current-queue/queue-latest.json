@@ -2278,35 +2278,49 @@
     }
   },
   "history_coordination": {
-    "head": "92b3b5f4",
+    "head": "17ddf17c06d8632237160b43a2258724aa06132a",
     "owner": "this chat",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-catalog-activation",
     "proof": "csp13/history-final-qualification-2026-09-29/verification.json",
     "state": "LOCAL_ACTIVATION_INTEGRATION",
-    "next_action": "Integrate journaled catalog lane before final rotations; complete passive restart and coordinated activation.",
-    "processes": {},
+    "next_action": "Complete application activation decision; qualify integrated contracts; review and publish producer permission and native partition repair through existing PR #200.",
+    "processes": {
+      "catalog_race": {
+        "session": 96457,
+        "log": "/tmp/csp13-passive-catalog-bridge-20260929/catalog-race.jsonl"
+      }
+    },
     "agents": {
       "operator_recovery_inputs": {
         "worktree": "/private/tmp/starport-recovery-catalog-preparation-20260929",
         "branch": "codex/recovery-catalog-preparation",
         "base": "3fd20e2fca10f2bc9a0a6d5a992040a118c94807",
         "owner": "bounded catalog preparation lane and final history bridge",
-        "state": "IMPLEMENTING"
+        "state": "COMMITTED_REVIEWED_INTEGRATED",
+        "head": "2569868131b6e49ba31ce9f34213ede00d57f5da",
+        "integration_commit": "b8079e6d",
+        "proof": "csp13/catalog-preparation-2026-09-29/verification.json"
       },
       "catalog_materializer": {
         "worktree": "/private/tmp/starport-local-recovery-completion-20260929",
         "branch": "codex/recovery-local-completion",
         "base": "f3a8a2848615d815ea46e334878c2cc4b5389088",
         "owner": "sealed actual Badger target and strict local SQL completion",
-        "state": "IMPLEMENTING"
+        "state": "COMMITTED_REVIEWED_INTEGRATED",
+        "head": "afd9ce54bc5b55397d9b09d2f3fd6922bbb2d2ea",
+        "integration_commit": "1249adb2",
+        "proof": "csp13/local-recovery-completion-2026-09-29/verification.json"
       },
       "activation_coordinator": {
         "worktree": "/private/tmp/starport-canonical-files-inspection-20260929",
         "branch": "codex/canonical-files-passive-inspection",
         "base": "f3a8a2848615d815ea46e334878c2cc4b5389088",
         "owner": "original published target and parent identity, passive canonical tree inspection",
-        "state": "APPROVED_IMPLEMENTATION"
+        "state": "COMMITTED_REVIEWED_INTEGRATED",
+        "head": "16f483ef337e3a4bc17dfad06e7d1fab0195e44d",
+        "proof": "csp13/canonical-files-inspection-2026-09-29/verification.json",
+        "integration_commit": "cc73495b"
       }
     },
     "pr": "https://github.com/agentstation/starport/pull/393",
@@ -2324,7 +2338,7 @@
     },
     "published_head": "5fc5a60276ee921e4fc97ed19a230bddd308b9ef",
     "published_branch": "codex/recovery-history-coordination",
-    "successor_state": "SCOPED_COMPONENTS_INTEGRATED_CATALOG_LANE_AND_COMPLETE_ACTIVATION_OPEN",
+    "successor_state": "RETAINED_COMPONENTS_INTEGRATED_COMPLETE_ACTIVATION_OPEN",
     "activation_findings": "csp13/activation-findings-2026-09-29/verification.json",
     "native_run": 36629564640,
     "repair_proof": "csp13/history-ci-repair-2026-09-29/verification.json",
@@ -2349,7 +2363,22 @@
     "retained_history_proof": "csp13/retained-activation-history-2026-09-29/verification.json",
     "position_bound_approval_proof": "csp13/imported-authority-position-2026-09-29/verification.json",
     "root_pending_files": [],
-    "operator_input_inspection_proof": "csp13/operator-input-inspection-2026-09-29/verification.json"
+    "operator_input_inspection_proof": "csp13/operator-input-inspection-2026-09-29/verification.json",
+    "root_catalog_permission": {
+      "owner": "this chat",
+      "worktree": "/private/tmp/starmap-recovery-catalog-permission-20260929",
+      "branch": "codex/recovery-catalog-permission",
+      "base": "cff5f361af012c030555e72c607f30d5c415a284",
+      "state": "COMMITTED_LOCAL_CHECKS_PASS_REVIEW_NATIVE_CI_PENDING",
+      "contract": "/tmp/csp13-catalog-permission-inspection-20260929/CONTRACT.md",
+      "head": "a23de11ab9e1e4a8a9f6f44aaee17db53514cdac",
+      "proof": "csp13/catalog-permission-inspection-2026-09-29/verification.json"
+    },
+    "native_partition_repair": {
+      "owner": "starmap_ci_repair",
+      "worktree": "/private/tmp/starmap-native-runtime-partition-20260929",
+      "state": "FINAL_CHECKS_PASS_COMMIT_PENDING"
+    }
   },
   "catalog_topology": {
     "state": "MERGED",
@@ -2666,11 +2695,17 @@
   "catalog_retention": {
     "pr": 200,
     "head": "cff5f361af012c030555e72c607f30d5c415a284",
-    "state": "REVIEWED_DRAFT_NATIVE_PENDING",
+    "state": "NATIVE_WINDOWS_TIMEOUT_REPAIR_IN_PROGRESS",
     "worktree": "/private/tmp/starmap-recovery-retention-20260929",
     "branch": "codex/catalog-recovery-retention",
     "owner": "this chat",
     "proof": "csp13/catalog-retention-2026-09-29/verification.json",
-    "next_action": "Merge after all exact-head native checks pass and preflight remains valid."
+    "next_action": "Review complete native partition and permission component; update existing PR; merge only after all exact-head required checks pass.",
+    "native_run": 36636540075,
+    "native_checks": {
+      "success": 31,
+      "failure": 1
+    },
+    "native_failure_proof": "csp13/starmap200-native-timeout-2026-09-29/verification.json"
   }
 }

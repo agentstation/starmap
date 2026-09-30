@@ -5149,3 +5149,24 @@ The [retained-history proof](../../plans/proof/starport-production-catalog/csp13
 The [fleet approval proof](../../plans/proof/starport-production-catalog/csp13/imported-authority-position-2026-09-29/verification.json) records five results per mode across real Valkey and three SQL owners. It binds approval to the final SQL position and exact closed boundary. Later withdrawal refuses approval while passive inspection still verifies historical completion.
 
 The [operator-input proof](../../plans/proof/starport-production-catalog/csp13/operator-input-inspection-2026-09-29/verification.json) records 30 results per mode. Passive reopen rejects missing or changed original evidence without publication or repair. Each final check has no failures or skips. These components do not qualify complete recovery. The catalog lane, local completion, canonical-file inspection, application decision, and process-loss matrix remain open.
+
+### Retained component integration and native test timeout (September 29, 2026)
+
+Starport `17ddf17c` integrates passive canonical-file inspection, strict Badger and SQLite completion, and the journaled catalog preparation contract.
+Their source checks pass 62, 30, and 27 results per mode. Root review precedes each integration.
+The catalog bridge preserves the original run declaration after native barriers disappear. Missing or corrupt original assets still cause refusal.
+
+Starmap `a23de11a` separates current permission from structural retained-directory inspection.
+The [permission proof](../../plans/proof/starport-production-catalog/csp13/catalog-permission-inspection-2026-09-29/verification.json) records 69 results per mode and complete repository checks.
+Passive validation preserves original authority expiry, checkpoint uncertainty, source policy, and native record identities. It issues no permission and starts no acquisition.
+
+Starmap PR #200 passes 31 native checks and reaches the Windows runtime package timeout.
+The active source-reset subtest starts 2.674 seconds before the timeout. Its stack does not prove a thirty-minute individual test hang.
+The [failure proof](../../plans/proof/starport-production-catalog/csp13/starmap200-native-timeout-2026-09-29/verification.json) retains the original artifacts.
+The repair partitions the complete inventory and preserves required aggregate check names. Native qualification requires the reviewed replacement head.
+
+The combined Starport integration run reaches its six-minute limit after 184 passing results.
+Separate contract groups retain the same tests and limit. The recovery-owner race group passes 189 results. Catalog and pure-Go integration remain pending.
+
+A separate local task clears the default Go cache during compilation. An owned cache removes that build interference without changing source assertions.
+Complete application activation, process-loss qualification, and deployment recovery objectives remain open.

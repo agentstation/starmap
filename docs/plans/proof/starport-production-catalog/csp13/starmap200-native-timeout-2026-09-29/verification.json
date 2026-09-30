@@ -1,0 +1,14 @@
+{
+  "status": "NATIVE_WINDOWS_PACKAGE_TIMEOUT_REPAIR_IN_PROGRESS",
+  "pr": "https://github.com/agentstation/starmap/pull/200",
+  "head": "cff5f361af012c030555e72c607f30d5c415a284",
+  "run": 36636540075,
+  "checks": {
+    "success": 31,
+    "failure": 1
+  },
+  "failure": "Runtime windows-2025: runtime package timed out at 1800.204 seconds. The stack shows active native durable publication and queued parallel tests.",
+  "scope_note": "The timeout does not qualify this platform. No failed behavioral assertion was identified in the captured timeout. This is not proof that the implementation is correct.",
+  "owner": "starmap_ci_repair; root owns review and publication",
+  "next_action": "Partition the complete original native inventory into disjoint bounded jobs; keep all behavioral and platform coverage and the 30-minute process limit."
+}

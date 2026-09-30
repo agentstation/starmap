@@ -1,0 +1,71 @@
+{
+  "status": "COMPONENT_LOCAL_CHECKS_PASS_PARENT_REVIEW_AND_NATIVE_CI_UNVERIFIED",
+  "source": "a23de11ab9e1e4a8a9f6f44aaee17db53514cdac",
+  "worktree": "/private/tmp/starmap-recovery-catalog-permission-20260929",
+  "branch": "codex/recovery-catalog-permission",
+  "go": "1.27.1",
+  "platform": "darwin/arm64",
+  "race": {
+    "top_level_pass": 18,
+    "pass": 69
+  },
+  "pure_go": {
+    "top_level_pass": 18,
+    "pass": 69
+  },
+  "new_contract_results_per_mode": 36,
+  "new_contract_top_level_per_mode": 6,
+  "fail_before": {
+    "top_level_pass": 0,
+    "fail": 1
+  },
+  "fail_before_meaning": "The old structural-only inspector cannot prove current admission permission. It remains intentionally structural. The new API adds a separate owner check.",
+  "commands": [
+    "GOCACHE=/private/tmp/csp13-go-build-20260929 go test -json -count=1 -race -timeout=6m ./runtime -run ^TestAuthorityPermissions|^TestRetainedDirectory|^TestRetainedCatalogPermission",
+    "CGO_ENABLED=0 GOCACHE=/private/tmp/csp13-go-build-20260929 go test -json -count=1 -timeout=6m ./runtime -run ^TestAuthorityPermissions|^TestRetainedDirectory|^TestRetainedCatalogPermission",
+    "go tool goago -stale-ignores -format json ./...",
+    "go vet ./runtime",
+    "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./runtime",
+    "make technical-writing-check",
+    "go generate ./runtime",
+    "git diff --check"
+  ],
+  "checks": {
+    "goago": "pass, no findings or incomplete errors",
+    "vet": "pass",
+    "lint": "pass, zero issues",
+    "prose": "pass: full repository 1953 files; final four owned files zero diagnostics",
+    "generated_runtime_docs": "pass",
+    "verify_checks": "RUNNING"
+  },
+  "invariants": [
+    "Only existing stopped-consumer records are read; writers remain externally fenced.",
+    "Configured source policy and selected authority head are bound with original native directory, layer, owner, seed and checkpoint receipts.",
+    "Rechecks preserve original record bytes and receipt expiry. Uncertain or expired permission is never renewed.",
+    "Ordinary catalogs need no qualified clock. Internal authority requires a qualified current sample.",
+    "Structural history, current permission and complete coordinator approval remain separate contracts."
+  ],
+  "preserved_failures": [
+    "Shared default Go cache files were removed by another session during linking. Original build errors retained. The owned cache was used thereafter.",
+    "Initial new JSON-v2 request encoding omitted its required duration representation. Fixed with explicit duration-as-nanoseconds encoding; assertions unchanged.",
+    "A new pending-publication fixture initially used a non-journal .json filename. Corrected to the native owner 26-character nonce plus .jsonl suffix; refusal assertions unchanged."
+  ],
+  "source_sha256": {
+    "runtime/catalog_permission_inspection.go": "6eacbfc8a65b51e5002caecc39f7a130a14f5799e7b9258c6e6c21ec7efdf2e6",
+    "runtime/catalog_permission_inspection_test.go": "1bd6bfa5dc22a0ec9352ad429ead2b85584a11ee46062c257afa062f29490655",
+    "runtime/README.md": "dc9996e8b5d003b517d21a29d318a933461647d3664e8591e6fcafcecdd6f5f3",
+    "docs/ARCHITECTURE.md": "d352926a97d36197cc1b775a0d0500b88871ded227556f0dee320151bcbe3137"
+  },
+  "remaining": [
+    "Complete coordinator, current target selection, full graph and external fencing checks.",
+    "Internal uncertain crash checkpoints require separate verified source-owner evidence.",
+    "Whole parent review, native Linux/Windows CI and full recovery acceptance."
+  ],
+  "verify_checks": {
+    "command": "GOCACHE=/private/tmp/csp13-go-build-20260929 make verify-checks",
+    "exit_code": 0,
+    "log": "verify-checks.log.gz",
+    "source": "a23de11ab9e1e4a8a9f6f44aaee17db53514cdac",
+    "source_clean_after_checks": true
+  }
+}

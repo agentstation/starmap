@@ -1,0 +1,158 @@
+{
+  "source": {
+    "worktree": "/private/tmp/starport-canonical-files-inspection-20260929",
+    "branch": "codex/canonical-files-passive-inspection",
+    "base": "f3a8a2848615d815ea46e334878c2cc4b5389088",
+    "commit": "16f483ef337e3a4bc17dfad06e7d1fab0195e44d",
+    "go": "go version go1.27.1 darwin/arm64"
+  },
+  "evidence": {
+    "native_race": {
+      "log": "/tmp/csp13-canonical-files-inspection-20260929/native-race.jsonl",
+      "test_actions": {
+        "pass": 62,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_tests": [
+        "TestCanonicalFileInspectionRetainedRestart",
+        "TestCanonicalFileInspectionRefusesMissingOriginalEvidence",
+        "TestCanonicalFileInspectionRefusesChangedTree",
+        "TestCanonicalFileInspectionRetainsOriginalParent",
+        "TestCanonicalFileInspectionRejectsForgedRecord",
+        "TestRestoreFileTreeRetryRefusesReplacedParent",
+        "TestRestoreFileTreeValidatesInferencePolicyOwner",
+        "TestRestoreFileTreeProcessLoss",
+        "TestRestoreFileTreePublishesOnlyAfterOwnerValidation",
+        "TestRestoreFileTreePreservesConflictingTargets",
+        "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent",
+        "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging",
+        "TestRestoreFileTreeResumesAfterLostPublicationAcknowledgment",
+        "TestRestoreFileTreePreservesACompetingDirectory",
+        "TestRestoreFileTreeRejectsStagingReplacementWithoutDeletingIt",
+        "TestRestoreFileTreeConcurrentPublicationHasOneWinner",
+        "TestRestoreFileTreePortableNames"
+      ],
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 53.055
+        }
+      ]
+    },
+    "native_pure": {
+      "log": "/tmp/csp13-canonical-files-inspection-20260929/native-pure.jsonl",
+      "test_actions": {
+        "pass": 62,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_tests": [
+        "TestCanonicalFileInspectionRetainedRestart",
+        "TestCanonicalFileInspectionRefusesMissingOriginalEvidence",
+        "TestCanonicalFileInspectionRefusesChangedTree",
+        "TestCanonicalFileInspectionRetainsOriginalParent",
+        "TestCanonicalFileInspectionRejectsForgedRecord",
+        "TestRestoreFileTreeRetryRefusesReplacedParent",
+        "TestRestoreFileTreeValidatesInferencePolicyOwner",
+        "TestRestoreFileTreeProcessLoss",
+        "TestRestoreFileTreePublishesOnlyAfterOwnerValidation",
+        "TestRestoreFileTreePreservesConflictingTargets",
+        "TestRestoreFileTreeFailureBeforePublicationKeepsTargetAbsent",
+        "TestRestoreFileTreeRejectsUnsafeSelectionBeforeStaging",
+        "TestRestoreFileTreeResumesAfterLostPublicationAcknowledgment",
+        "TestRestoreFileTreePreservesACompetingDirectory",
+        "TestRestoreFileTreeRejectsStagingReplacementWithoutDeletingIt",
+        "TestRestoreFileTreeConcurrentPublicationHasOneWinner",
+        "TestRestoreFileTreePortableNames"
+      ],
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 35.772
+        }
+      ]
+    },
+    "actual_app_role_race": {
+      "log": "/tmp/csp13-canonical-files-inspection-20260929/app-role-race.jsonl",
+      "test_actions": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_tests": [
+        "TestRestorePublishBaselinePreservesExportAndLeavesJournalsInactive",
+        "TestRestorePublishAcquisitionPolicyRetainsDefaultAndAcceptedProvider",
+        "TestRestorePublishFilesSharedRecipe",
+        "TestRestorePublishRuntimeRetainsIdentityWithoutAdmission"
+      ],
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 130.065
+        }
+      ]
+    },
+    "vet": {
+      "exit": 0,
+      "log": "/tmp/csp13-canonical-files-inspection-20260929/vet.log"
+    },
+    "lint": {
+      "exit": 0,
+      "issues": 0,
+      "log": "/tmp/csp13-canonical-files-inspection-20260929/lint.log"
+    },
+    "prose": {
+      "exit": 0,
+      "log": "/tmp/csp13-canonical-files-inspection-20260929/prose-final.log"
+    },
+    "dependency_direction": {
+      "exit": 0,
+      "conditions": 6
+    },
+    "package_layout": {
+      "exit": 0
+    },
+    "whitespace": {
+      "exit": 0
+    }
+  },
+  "scope": [
+    "New recovery private VerifiedFileTree and read-only original/retained checks.",
+    "ParentIdentity captured and verified in actual publication/reuse owner path.",
+    "No app wrapper or activation coordinator changes."
+  ],
+  "review": "/tmp/csp13-canonical-files-inspection-20260929/REVIEW.md",
+  "qualification": {
+    "host": "darwin/arm64",
+    "native_fixtures": [
+      "Badger",
+      "Valkey",
+      "SQLite",
+      "PostgreSQL",
+      "filesystem",
+      "object storage"
+    ],
+    "linux_windows": "UNVERIFIED for this new slice; parent owns native CI"
+  },
+  "remaining_requirements": [
+    "App derives canonical role selection and passive semantics.",
+    "App retains actual successful publication result and seals original record before first native release.",
+    "Complete activation still checks original operation, targets, current operator inputs, catalog, permission, fencing and final SQL owner.",
+    "Older publication results without ParentIdentity are historical evidence only and cannot be recaptured by passive inspection.",
+    "Parent owns structured review and publication."
+  ],
+  "failed_evidence": {
+    "initial_compile": "/tmp/csp13-canonical-files-inspection-20260929/initial-tests.jsonl",
+    "complexity": "/tmp/csp13-canonical-files-inspection-20260929/lint-initial.log",
+    "zero_test_selector": "/tmp/csp13-canonical-files-inspection-20260929/affected-app-race.jsonl",
+    "note": "Initial app selector matched no tests and supplies no behavioral qualification. Corrected app role selector qualified the actual four owners."
+  },
+  "root_manual_review": "Production contracts, native owner guards, retained receipts, failure/retry behavior and tests reviewed before cherry-pick.",
+  "root_source_commit": "16f483ef337e3a4bc17dfad06e7d1fab0195e44d",
+  "root_integration_commit": "cc73495b",
+  "complete_recovery": "UNVERIFIED; complete application coordinator, current permission, native matrix and RPO/RTO remain separate."
+}

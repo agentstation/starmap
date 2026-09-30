@@ -5436,3 +5436,24 @@ An exact completed retry must retain its original receipt without restoring an o
 Recovery preflight must run before maintenance, inference-policy writes, token creation, or setup effects. Normal fresh standalone startup retains its existing behavior.
 These guards belong to recovery. Warm inference continues to use its existing memory and admission contracts.
 Complete topology transfer, coordinated activation, native qualification, and deployment recovery objectives remain open.
+
+### Passive evidence during complete recovery (September 29, 2026)
+
+Before the first native release, the application must seal original checked history, operator inputs, canonical publications, catalog selection, and permission.
+The recovery owner retains catalog stages and original native receipts before final authorization rotations.
+Every catalog stage uses the exact closed SQL owner guard and original KV cursor. A lost reply cannot recapture target preimages.
+
+After a component release, passive checks must reopen those same sealed records.
+Canonical files require their original leaf and parent native identities, exact bytes, role selection, and current owner semantics.
+No preparation, publication, repair, source refresh, or permission issuance belongs to passive inspection.
+Structural catalog evidence remains separate from current permission.
+
+Starmap owns passive current-permission validation. Its [local proof](../../plans/proof/starport-production-catalog/csp13/catalog-permission-inspection-2026-09-29/verification.json) records the separate API.
+Internal authority retains its original qualified-clock expiry contract and uncertain-checkpoint refusal.
+Ordinary embedded or public permission requires no custom qualified UTC. Shared storage does not change that rule.
+A changed or renewed permission record cannot replace evidence in a pending immutable decision.
+
+Local completion must use the actual persistent writable Badger target and exact final KV and SQLite positions.
+The final SQLite transaction retains the native completion receipt and opens approval together. A lost commit reply requires an exact retry.
+A historical completion receipt cannot clear a later withdrawal.
+These components remain prerequisites for the complete coordinator and its fresh-process interruption tests.

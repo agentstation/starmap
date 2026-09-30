@@ -1,0 +1,271 @@
+{
+  "schema": 1,
+  "base_commit": "3fd20e2fca10f2bc9a0a6d5a992040a118c94807",
+  "worktree": "/private/tmp/starport-recovery-catalog-preparation-20260929",
+  "branch": "codex/recovery-catalog-preparation",
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "platform": "darwin/arm64",
+  "native_storage": [
+    "Badger",
+    "Valkey",
+    "SQLite",
+    "PostgreSQL",
+    "MySQL"
+  ],
+  "source_sha256": {
+    "internal/recovery/history_runner.go": "52da2750c9eedc2a8692f736dbbd6b208fa10343ee3900bb9c44d5bb58b97992",
+    "internal/recovery/history_journal.go": "6b5302b7a58364a731e3494d9291b0c002c600b3dc99787121a39a1b8c4c384a",
+    "internal/recovery/history_prefix.go": "4f22a6c8233dc4a46382cea6fbc9e8d558d13304a3e8d8e91db82adce0d2c16d",
+    "internal/recovery/catalog_assets.go": "40a143e1d11fa474906650d2e5a467840e6ddb97eed76dc37d3cfc36aad97059",
+    "internal/recovery/catalog_journal.go": "f2bddd886dea26d2af4385c696161f08185a4f36c163b4ebb96f60d648d3b033",
+    "internal/recovery/catalog_preparation.go": "2b8492978d595c243ceaf7f2bd30e7597f8bfbbc4d5b5dd6b90d915952fefcab",
+    "internal/recovery/catalog_retry.go": "d15b9d5856c1035137cb9dd4454e34aa8c05a28819123ec17b2b011f1577e0cb",
+    "internal/recovery/catalog_preparation_test.go": "eaf822d9ca2e706cbdca7662afe5ca3230e5aeff5f16cd642c6b7289badd2969",
+    "internal/storage/transfer_position.go": "0b2468425ba1b1ff90a33268bab05a3d5294f54be8e834ca89c9f26b229299df",
+    "internal/storage/transfer_position_test.go": "f4e32a9981e3547f8e3a01308adf85c54a59f27c587c3f2161d10ba8b3b9f3c6"
+  },
+  "checks": [
+    {
+      "evidence": "/tmp/csp13-catalog-preparation-20260929/native-final-lane.jsonl",
+      "mode": "race",
+      "command": "GOWORK=off go test -race -json -count=1 -timeout=6m ./internal/recovery ./internal/storage -run ^(TestCatalogPreparation|TestImportPositionAndPureReceipt)",
+      "test_results": {
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_tests": {
+        "pass": 12,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Action": "pass",
+          "Elapsed": 2.084
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 220.144
+        }
+      ],
+      "exit_code": 0,
+      "sha256": "87873ace1a35826e72dacd436bd7b1b1a3066d1ba54844367ea5312310353fe2"
+    },
+    {
+      "evidence": "/tmp/csp13-catalog-preparation-20260929/pure-final-lane.jsonl",
+      "mode": "CGO_ENABLED=0",
+      "command": "GOWORK=off CGO_ENABLED=0 go test -json -count=1 -timeout=6m ./internal/recovery ./internal/storage -run ^(TestCatalogPreparation|TestImportPositionAndPureReceipt)",
+      "test_results": {
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_tests": {
+        "pass": 12,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Action": "pass",
+          "Elapsed": 0.923
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 145.569
+        }
+      ],
+      "exit_code": 0,
+      "sha256": "394ff97d93414bea9cb653cca27cbae62d836909fdd2e57e535e446a38f551ec"
+    },
+    {
+      "evidence": "/tmp/csp13-catalog-preparation-20260929/native-selection-only.jsonl",
+      "mode": "race",
+      "command": "GOWORK=off go test -race -json -count=1 -timeout=6m ./internal/recovery ./internal/storage -run ^TestCatalogPreparationSelectionOnlyPrecedesBothRotations$",
+      "test_results": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_tests": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Action": "pass",
+          "Elapsed": 1.897
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 8.964
+        }
+      ],
+      "exit_code": 0,
+      "sha256": "a6ac1b9877ce7f61dc5e736ffb264562365f85f15d873b38cbdce650b82a1ce9"
+    },
+    {
+      "evidence": "/tmp/csp13-catalog-preparation-20260929/pure-selection-only.jsonl",
+      "mode": "CGO_ENABLED=0",
+      "command": "GOWORK=off CGO_ENABLED=0 go test -json -count=1 -timeout=6m ./internal/recovery ./internal/storage -run ^TestCatalogPreparationSelectionOnlyPrecedesBothRotations$",
+      "test_results": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_tests": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Action": "pass",
+          "Elapsed": 0.69
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 3.591
+        }
+      ],
+      "exit_code": 0,
+      "sha256": "af09a7334b2a70281946399d34839fbbcfec18117c51d95e3b4d2fe1bd0fcc38"
+    },
+    {
+      "evidence": "/tmp/csp13-catalog-preparation-20260929/native-runner-regressions.jsonl",
+      "mode": "race",
+      "command": "GOWORK=off go test -race -json -count=1 -timeout=6m ./internal/recovery ./internal/storage -run ^(TestHistoryRunner|TestImportRecordRead|TestImportInspection|TestImportReconciliation|TestImportActivationBindsFinalReplayPosition|TestImportActivationRejectsChangedReplayControls)",
+      "test_results": {
+        "pass": 128,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_tests": {
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Action": "pass",
+          "Elapsed": 10.207
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 215.031
+        }
+      ],
+      "exit_code": 0,
+      "sha256": "d83a330bab01455605cabe72cb8a9618048b2b0cce886bc5e1f2105945473459"
+    },
+    {
+      "evidence": "/tmp/csp13-catalog-preparation-20260929/pure-runner-regressions.jsonl",
+      "mode": "CGO_ENABLED=0",
+      "command": "GOWORK=off CGO_ENABLED=0 go test -json -count=1 -timeout=6m ./internal/recovery ./internal/storage -run ^(TestHistoryRunner|TestImportRecordRead|TestImportInspection|TestImportReconciliation|TestImportActivationBindsFinalReplayPosition|TestImportActivationRejectsChangedReplayControls)",
+      "test_results": {
+        "pass": 128,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_tests": {
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Action": "pass",
+          "Elapsed": 4.4879999999999995
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 84.613
+        }
+      ],
+      "exit_code": 0,
+      "sha256": "6a0807b4585d48a8f762cc3dd6ad6800179440c6ea6e2727d5eaa34d545d0ff3"
+    }
+  ],
+  "additional_checks": {
+    "vet": {
+      "command": "GOWORK=off go vet ./internal/recovery ./internal/storage",
+      "exit_code": 0,
+      "evidence": "/tmp/csp13-catalog-preparation-20260929/vet-complete.log"
+    },
+    "lint": {
+      "command": "GOWORK=off go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/recovery ./internal/storage",
+      "exit_code": 0,
+      "evidence": "/tmp/csp13-catalog-preparation-20260929/lint-complete.log",
+      "diagnostics": 0
+    },
+    "prose": {
+      "command": "technical-writing lint <10 changed Go files> --format text",
+      "exit_code": 0,
+      "evidence": "/tmp/csp13-catalog-preparation-20260929/prose-complete.log",
+      "diagnostics": 0
+    },
+    "contract_prose": {
+      "exit_code": 0,
+      "evidence": "/tmp/csp13-catalog-preparation-20260929/contract-prose-complete.log",
+      "diagnostics": 0
+    },
+    "callers_build": {
+      "command": "GOWORK=off go test -run '^$' ./internal/app ./internal/catalog",
+      "exit_code": 0,
+      "evidence": "/tmp/csp13-catalog-preparation-20260929/callers-build.log",
+      "behavior_tests": false
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  },
+  "preserved_failed_evidence": [
+    "lane-before.jsonl",
+    "lane-initial-build.log",
+    "native-initial.jsonl",
+    "native-phase-diagnosis.jsonl",
+    "native-census-diagnosis.jsonl",
+    "native-audit-additions.jsonl",
+    "lint-initial.log",
+    "contract-prose.log",
+    "contract-prose-v2.log",
+    "contract-prose-final.log"
+  ],
+  "manual_audit": [
+    "Catalog declaration is immutable and excludes its distinct final selection stage. Ordinary replay refuses an incomplete declared lane.",
+    "Each native stage uses the actual closed SQL owner guard and exact KV native claim/incarnation/cursor, under an explicit deadline. The callback opens no SQL connection or nested transaction.",
+    "Exact private assets precede prepared pointers and native commit. Byte-presence bits retain nil versus empty. Lost native replies recover original receipts without recapturing targets.",
+    "Passive scanner retains original run time and consumes original prefix, assets, prepared/applied records, storage-owned receipt identities and completion chain. It has no native target or repair requirement.",
+    "Fast KV cursor inspection replaces prior no-op full-domain enumeration only. Final full graph/census requirements remain separate.",
+    "The lane refuses a changed prefix/pointer, missing/corrupt/reordered or extra assets, changed declaration, stale native successor and post-release retry. Later ordinary withdrawal is preserved.",
+    "The initial compiler must use its guarded native reader before declaration. Existing non-final typed history does not write catalog keys. Root must preserve this preimage invariant."
+  ],
+  "limits": [
+    "These native checks run on Darwin arm64. Linux and Windows final qualification belongs to root.",
+    "Lane fixtures use small catalog records. They do not qualify producer semantic replay, actual full catalog composition, current permission, full activation, or maximum2GiB memory/RPO.",
+    "Root must propagate the original decoded run plan into the passive retained-history request and enforce the checked state.catalog completion hook.",
+    "No structured autoreview, push, PR, merge or release was performed by this subagent."
+  ],
+  "contract": "/tmp/csp13-catalog-preparation-20260929/CONTRACT.md",
+  "source_commit": "2569868131b6e49ba31ce9f34213ede00d57f5da",
+  "status_after_commit": "",
+  "root_manual_review": "Production contracts, native owner guards, retained receipts, failure/retry behavior and tests reviewed before cherry-pick.",
+  "root_source_commit": "2569868131b6e49ba31ce9f34213ede00d57f5da",
+  "root_integration_commit": "b8079e6d",
+  "complete_recovery": "UNVERIFIED; complete application coordinator, current permission, native matrix and RPO/RTO remain separate."
+}

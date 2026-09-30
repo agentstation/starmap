@@ -1,0 +1,85 @@
+{
+  "base": "f3a8a2848615d815ea46e334878c2cc4b5389088",
+  "branch": "codex/recovery-local-completion",
+  "worktree": "/private/tmp/starport-local-recovery-completion-20260929",
+  "go": "go version go1.27.1 darwin/arm64",
+  "platform": "native darwin/arm64",
+  "scope": "Strict local Badger plus SQLite recovery component completion; no complete topology/history approval claimed",
+  "files": {
+    "internal/storage/recovery_local_target.go": "6f68d5a6968da3455f7eb04136c72f38210847a9b45b97607a867df6327ea3e1",
+    "internal/storage/recovery_local_target_test.go": "e0e428cdb1f3d258fc43530e35d482537b26905d9a15da88f63e8065670cf7cb",
+    "internal/recovery/imported_local_completion.go": "ca9dfad0c1e9ba88c3e4a902a6059b953586b7493e6ceea4b7ee6f4fcb7aa833",
+    "internal/recovery/imported_local_completion_test.go": "199d9aab3db733426c2e7fcb7ac25e3cc99e0a98c24801e298d22f9bddad4300",
+    "internal/recovery/imported_local_completion_reply_test.go": "529769550ed4d83ec5b200a9641168db84004088aea7799d4e63f1209f60fdda"
+  },
+  "checks": [
+    {
+      "mode": "race",
+      "command": "go test -json -race ./internal/storage ./internal/recovery -run '^(TestLocalRecoveryTarget|TestImportedLocalCompletion)' -count=1 -timeout=5m",
+      "exit_code": 0,
+      "top_level_tests": 7,
+      "passed_cases": 30,
+      "failed": 0,
+      "skipped": 0,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Elapsed": 2.281
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Elapsed": 6.036
+        }
+      ],
+      "log": "/tmp/csp13-local-recovery-completion-20260929/race.jsonl"
+    },
+    {
+      "mode": "pure",
+      "command": "CGO_ENABLED=0 go test -json ./internal/storage ./internal/recovery -run '^(TestLocalRecoveryTarget|TestImportedLocalCompletion)' -count=1 -timeout=5m",
+      "exit_code": 0,
+      "top_level_tests": 7,
+      "passed_cases": 30,
+      "failed": 0,
+      "skipped": 0,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/storage",
+          "Elapsed": 1.202
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Elapsed": 3.871
+        }
+      ],
+      "log": "/tmp/csp13-local-recovery-completion-20260929/pure.jsonl"
+    },
+    {
+      "command": "go vet ./internal/storage ./internal/recovery",
+      "exit_code": 0
+    },
+    {
+      "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/storage/... ./internal/recovery/...",
+      "exit_code": 0,
+      "issues": 0
+    },
+    {
+      "command": "technical-writing lint five owned source and test files --format text",
+      "exit_code": 0,
+      "diagnostics": 0
+    }
+  ],
+  "verification_bounds": [
+    "Tests use actual native Badger and SQLite, including a native SQLite COMMIT that succeeds before its reply fails.",
+    "The fixture proves exact final component cursors and atomic local SQL approval; the parent owns full retained decision/history/blob/catalog/permission/input/fence checks.",
+    "No Linux or Windows execution was performed in this child slice. The Windows readonly branch proves native ErrReadOnlyUnsupported instead of skipping when native CI executes it.",
+    "No ordinary local Witness budget hot-path checks were added; external fences and strict startup coordinator remain parent-owned.",
+    "The final prose-only comment edit follows behavioral test completion. The behavioral source and tests were unchanged.",
+    "goago is not a declared module tool in this Starport repository; no tool was added."
+  ],
+  "commit": "afd9ce54bc5b55397d9b09d2f3fd6922bbb2d2ea",
+  "working_tree_clean": true,
+  "root_manual_review": "Production contracts, native owner guards, retained receipts, failure/retry behavior and tests reviewed before cherry-pick.",
+  "root_source_commit": "afd9ce54bc5b55397d9b09d2f3fd6922bbb2d2ea",
+  "root_integration_commit": "1249adb2",
+  "complete_recovery": "UNVERIFIED; complete application coordinator, current permission, native matrix and RPO/RTO remain separate."
+}
