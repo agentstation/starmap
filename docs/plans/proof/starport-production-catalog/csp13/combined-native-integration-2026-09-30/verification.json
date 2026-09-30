@@ -1,0 +1,177 @@
+{
+  "source": "7e2a007ef5785fe76a31d15812b89cca7666a396",
+  "tree": "6b0e38b88964e9c6849b967868aec8bde6436898",
+  "branch": "codex/recovery-combined-native-20260930",
+  "files": {
+    "internal/app/recovery_activation_prepare.go": "d03019b9317cab2d8b3330d99b2c991c8ac91135defb58b78542b5508d96f409",
+    "internal/app/recovery_activation_release.go": "36e484ab261776675beb53ea9ac216b1edef5c0968e99b50f9173db9ebc9336c",
+    "internal/app/recovery_activation_test.go": "a2f4e53b70dcd9dd1d25674e72e9dc49d4125c2f530f60653de56bd7b442f59e",
+    "internal/app/recovery_fresh_gateway_test.go": "1a0c6edb00b46b67f53c957616ade3bc03a76549883e2dec40fa311b882db3ea",
+    "internal/app/recovery_post_backup_activity_test.go": "2a91e567e2f064a1456a1a148103ceddd2f012e9a414c7b39250e89d71cd5d9c",
+    "internal/recovery/authority_process_test.go": "4cf0713edfacbb029d0c25c7c640668a065f8d3e6eb47aa1807b5080f80d75ab",
+    "go.mod": "5c2fd13692292b66ae15ce3792ff1d3dfc7c9923eab22834df8241911618e78b",
+    "go.sum": "03ce732af75941e37cae40c1dd7682b41b24ae3df077c2cd4f273f13cfd836a3"
+  },
+  "recorded_at": "2026-09-30T11:24:55.005725+00:00",
+  "scope": "Combined checks cover SQL source-change refusal, fresh gateway admission, post-backup authorization, spending, uncertain reservations, process fencing, and stale native authority refusal.",
+  "go": "1.27.1",
+  "platform": "darwin/arm64",
+  "workspace": "GOWORK=off; no module replacement",
+  "producer": "v0.16.6-0.20260930103856-1c03a457a14f",
+  "qualification": [
+    {
+      "mode": "race",
+      "log": "/tmp/csp13-combined-native-20260930/race.jsonl",
+      "sha256": "ae7543863033453a2fb330850e1881e55d0c2efb4e9eb67e2b775db7ddec6bdf",
+      "counts": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "results": [
+        {
+          "Time": "2026-09-30T06:20:23.823126-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestRecoveryActivationSQLApprovalRejectsChangedCurrentSource",
+          "Elapsed": 39.75
+        },
+        {
+          "Time": "2026-09-30T06:21:18.065907-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestRecoveredSharedGatewayFreshStartupAndBudgetAdmission",
+          "Elapsed": 54.24
+        },
+        {
+          "Time": "2026-09-30T06:22:05.421839-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestRecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch",
+          "Elapsed": 47.36
+        },
+        {
+          "Time": "2026-09-30T06:22:12.975865-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Test": "TestRecoveryAuthorityAcrossRealProcesses/same-backend",
+          "Elapsed": 1.48
+        },
+        {
+          "Time": "2026-09-30T06:22:15.605412-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Test": "TestRecoveryAuthorityAcrossRealProcesses/reachable-old-primary",
+          "Elapsed": 2.63
+        },
+        {
+          "Time": "2026-09-30T06:22:15.60564-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Test": "TestRecoveryAuthorityAcrossRealProcesses",
+          "Elapsed": 4.11
+        }
+      ],
+      "packages": [
+        {
+          "Time": "2026-09-30T06:22:06.498056-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Elapsed": 143.508
+        },
+        {
+          "Time": "2026-09-30T06:22:16.622761-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Elapsed": 5.747
+        }
+      ],
+      "command": "TEST_VALKEY_REPLACEMENT_URL=<existing selected native process> python3 /tmp/csp13-application-activation-native-wrapper.py LOG go test -race -json -count=1 -p=1 -timeout=8m ./internal/app ./internal/recovery -run ^Test(RecoveredSharedGatewayFreshStartupAndBudgetAdmission|RecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch|RecoveryAuthorityAcrossRealProcesses|RecoveryActivationSQLApprovalRejectsChangedCurrentSource)$"
+    },
+    {
+      "mode": "pure",
+      "log": "/tmp/csp13-combined-native-20260930/pure.jsonl",
+      "sha256": "5d9af692bbfb46bc8d399a4cfa11c713a973a4405a756fd0b72afb00536c5d7b",
+      "counts": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "results": [
+        {
+          "Time": "2026-09-30T06:23:07.2753-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestRecoveryActivationSQLApprovalRejectsChangedCurrentSource",
+          "Elapsed": 20.85
+        },
+        {
+          "Time": "2026-09-30T06:23:28.120563-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestRecoveredSharedGatewayFreshStartupAndBudgetAdmission",
+          "Elapsed": 20.84
+        },
+        {
+          "Time": "2026-09-30T06:23:51.640498-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestRecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch",
+          "Elapsed": 23.52
+        },
+        {
+          "Time": "2026-09-30T06:23:53.984471-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Test": "TestRecoveryAuthorityAcrossRealProcesses/same-backend",
+          "Elapsed": 0.34
+        },
+        {
+          "Time": "2026-09-30T06:23:54.283374-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Test": "TestRecoveryAuthorityAcrossRealProcesses/reachable-old-primary",
+          "Elapsed": 0.3
+        },
+        {
+          "Time": "2026-09-30T06:23:54.283395-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Test": "TestRecoveryAuthorityAcrossRealProcesses",
+          "Elapsed": 0.64
+        }
+      ],
+      "packages": [
+        {
+          "Time": "2026-09-30T06:23:51.648897-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Elapsed": 66.152
+        },
+        {
+          "Time": "2026-09-30T06:23:54.284242-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Elapsed": 1.116
+        }
+      ],
+      "command": "CGO_ENABLED=0 TEST_VALKEY_REPLACEMENT_URL=<existing selected native process> python3 /tmp/csp13-application-activation-native-wrapper.py LOG go test -json -count=1 -p=1 -timeout=8m ./internal/app ./internal/recovery -run ^Test(RecoveredSharedGatewayFreshStartupAndBudgetAdmission|RecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch|RecoveryAuthorityAcrossRealProcesses|RecoveryActivationSQLApprovalRejectsChangedCurrentSource)$"
+    }
+  ],
+  "selection": {
+    "log": "/tmp/csp13-combined-native-20260930/selection.log",
+    "sha256": "3293c05cd3e313ac260b61d3b91059e0d411923d4e49c9828d0b910195f8ff39",
+    "top_level_tests": 4,
+    "process_subcases": 2
+  },
+  "constraints": [
+    "Tests use actual isolated Valkey, PostgreSQL, object storage, and source Badger/SQLite owners.",
+    "Native packages run serially with -p=1. Other owners held heavy checks during these runs.",
+    "Existing operation deadlines remain unchanged.",
+    "The runs do not reset services, run full embedded or maximum capacity workloads, call providers, or publish changes.",
+    "The actual OS Kill and Wait complete before approval reopens. A retained parent handle proves refusal after the next approval.",
+    "Admission.Start marks the attempt Dispatched. The test makes no provider call and supplies explicit no-charge evidence.",
+    "These results prove component contracts. Full CSP13, deployment network fencing, RPO/RTO, and Linux/Windows checks require separate evidence."
+  ],
+  "root_integration": "f69f460f"
+}
