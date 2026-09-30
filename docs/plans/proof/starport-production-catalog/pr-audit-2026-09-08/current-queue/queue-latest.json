@@ -865,7 +865,7 @@
     "owner": "root and delegated recovery owners",
     "worktree": "/private/tmp/starport-clock-review-20260926",
     "branch": "codex/recovery-catalog-activation",
-    "head": "0c2cf5d4a3c1e33f4124a05984a42f32694f87c3",
+    "head": "11afee4cf82e726328a7fbdd3a9a02f95c7d53d9",
     "next_action": "Finish exclusive full embedded race profile; qualify maximum capacity; integrate populated operator commands and gateway history barriers; complete exact acceptance."
   },
   "merged_followups": {
@@ -3313,8 +3313,8 @@
     "required_next": "Qualify checked-source repair with unchanged deadline."
   },
   "native_window": {
-    "owner": "catalog_materializer",
-    "next_owner": "starmap_ci_repair",
+    "owner": "starmap_ci_repair",
+    "next_owner": "root",
     "root_full_and_maximum": "pending exclusive window; UNVERIFIED"
   },
   "populated_adoption_extension": {
@@ -3322,5 +3322,6 @@
     "proof": "../../csp13/populated-adoption-contract-2026-09-30/CONTRACT.md",
     "status": "in_progress",
     "constraint": "Independent complete history and native census before coordinated permission; import emptiness unchanged."
-  }
+  },
+  "checked_source_integration": "../../csp13/checked-source-integration-2026-09-30/verification.json"
 }

@@ -1,0 +1,266 @@
+{
+  "status": "component_PASS",
+  "work_commit": "2a7cd1a1170ef5d31c10d467e7578deca0275a5e",
+  "base_head": "0c2cf5d4a3c1e33f4124a05984a42f32694f87c3",
+  "source_sha256": {
+    "internal/recovery/restore_source.go": "6c69fd53078c8130cf2290ca4bd22ee3eaf318a3dd7f6471382b884cffd4ecc3",
+    "internal/recovery/restore_source_artifacts_test.go": "4e1d6fca18bf7a97f67b3a7fa528d51160c6c1d8070eedddf81f021451b05f40",
+    "internal/app/recovery_canonical_files.go": "4535ef122ab4bc3b8c58037a41de575d60def4861a1402236c842831da4f79ec",
+    "internal/app/recovery_canonical_source_test.go": "1c452dc7097194ea0a299199786c7ef824b21917442760813b55b946a80282eb",
+    "internal/app/recovery_activation.go": "cab5fb9ce72ae417d1e1c5188459a49d45386ae0b5b0b48dcb8bd22c5886ea5d",
+    "internal/app/recovery_activation_prepare.go": "b2fd885f5427d34f4f630eff707db340e1484ef98cc090cbd47e132059e19316",
+    "internal/app/recovery_activation_release.go": "fb3ce511e885a88340f9d155e9bb005e6d81ca79e83fcb1dba0dbfd3a14844e4"
+  },
+  "go_version": "go1.27.1",
+  "workspace": "GOWORK=off",
+  "module": "v0.16.6-0.20260930115749-2bb995712275",
+  "module_replace": "absent",
+  "qualification": [
+    {
+      "mode": "focused-race",
+      "counts": {
+        "pass": 12,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 10.503
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 5.8870000000000005
+        }
+      ],
+      "test_names": [
+        "TestRecoveryCanonicalCheckedSourceRefusesChangedOriginalBeforeRelease",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/backup-manifest.json",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/cancelled-context",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/changed-selection",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/encryption-key",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/kv/kv.db",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/relational-image",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/selected-configuration",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/unchanged",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/unexpected-artifact",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/uninitialized-source"
+      ],
+      "raw_sha256": "3cec6eecad87b155a7b09c03a786eb601ddc9bfe83452b8a0847124e2447741d",
+      "archive": "focused-race.json.gz"
+    },
+    {
+      "mode": "focused-pure",
+      "counts": {
+        "pass": 12,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 4.867
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 2.841
+        }
+      ],
+      "test_names": [
+        "TestRecoveryCanonicalCheckedSourceRefusesChangedOriginalBeforeRelease",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/backup-manifest.json",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/cancelled-context",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/changed-selection",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/encryption-key",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/kv/kv.db",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/relational-image",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/selected-configuration",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/unchanged",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/unexpected-artifact",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/uninitialized-source"
+      ],
+      "raw_sha256": "cc9d0dc970692cf91696f77a360e18f2012e8180f7fffe3dab4473ee03b3841f",
+      "archive": "focused-pure.json.gz"
+    },
+    {
+      "mode": "canonical-race",
+      "counts": {
+        "pass": 49,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 11.518
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 254.648
+        }
+      ],
+      "test_names": [
+        "TestCanonicalCurrentSourceSelectionBindsNativeFile",
+        "TestCanonicalCurrentSourceUsesCatalogByteBound",
+        "TestRecoveryCanonicalCheckedSourceRefusesChangedOriginalBeforeRelease",
+        "TestRecoveryCanonicalFilesChecksRoleOwnersAndInactiveEvidence",
+        "TestRecoveryCanonicalFilesChecksRoleOwnersAndInactiveEvidence/baseline",
+        "TestRecoveryCanonicalFilesChecksRoleOwnersAndInactiveEvidence/credential-policy",
+        "TestRecoveryCanonicalFilesChecksRoleOwnersAndInactiveEvidence/inference-credential-policy",
+        "TestRecoveryCanonicalFilesChecksRoleOwnersAndInactiveEvidence/runtime-evidence",
+        "TestRecoveryCanonicalFilesFreshProcessAfterBlobRelease",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/backup",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/bytes",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/corrupt-record",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/directory",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/missing-record",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/missing-tree",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/operation",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/parent",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/role-selection",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/settings",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/token",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/unresolved-role",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/wrong-seal",
+        "TestRecoveryCanonicalFilesRefusesBoundedPreflight",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/digest",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/duplicate",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/fence",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/manifest",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/missing",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/operation",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/outcome",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/parent",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/role",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/staging",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/tree",
+        "TestRecoveryCanonicalFilesRefusesUnresolvedSelectedRoleWithoutPreparation",
+        "TestVerifiedRestoreSourceRechecksChangedSQLBytes",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/backup-manifest.json",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/cancelled-context",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/changed-selection",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/encryption-key",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/kv/kv.db",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/relational-image",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/selected-configuration",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/unchanged",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/unexpected-artifact",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/uninitialized-source"
+      ],
+      "raw_sha256": "7c422cef608cbfd4143156f7417de5a555f5a51fbdcabb283f9144a1f4045b47",
+      "archive": "canonical-race.json.gz"
+    },
+    {
+      "mode": "canonical-pure",
+      "counts": {
+        "pass": 49,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Action": "pass",
+          "Elapsed": 5.367
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 53.927
+        }
+      ],
+      "test_names": [
+        "TestCanonicalCurrentSourceSelectionBindsNativeFile",
+        "TestCanonicalCurrentSourceUsesCatalogByteBound",
+        "TestRecoveryCanonicalCheckedSourceRefusesChangedOriginalBeforeRelease",
+        "TestRecoveryCanonicalFilesChecksRoleOwnersAndInactiveEvidence",
+        "TestRecoveryCanonicalFilesChecksRoleOwnersAndInactiveEvidence/baseline",
+        "TestRecoveryCanonicalFilesChecksRoleOwnersAndInactiveEvidence/credential-policy",
+        "TestRecoveryCanonicalFilesChecksRoleOwnersAndInactiveEvidence/inference-credential-policy",
+        "TestRecoveryCanonicalFilesChecksRoleOwnersAndInactiveEvidence/runtime-evidence",
+        "TestRecoveryCanonicalFilesFreshProcessAfterBlobRelease",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/backup",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/bytes",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/corrupt-record",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/directory",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/missing-record",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/missing-tree",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/operation",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/parent",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/role-selection",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/settings",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/token",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/unresolved-role",
+        "TestRecoveryCanonicalFilesPassiveRestartRefusesChangedEvidenceAndTargets/wrong-seal",
+        "TestRecoveryCanonicalFilesRefusesBoundedPreflight",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/digest",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/duplicate",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/fence",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/manifest",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/missing",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/operation",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/outcome",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/parent",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/role",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/staging",
+        "TestRecoveryCanonicalFilesRefusesDiagnosticOnlyOrSubstitutedOriginals/tree",
+        "TestRecoveryCanonicalFilesRefusesUnresolvedSelectedRoleWithoutPreparation",
+        "TestVerifiedRestoreSourceRechecksChangedSQLBytes",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/backup-manifest.json",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/cancelled-context",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/changed-selection",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/encryption-key",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/kv/kv.db",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/relational-image",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/selected-configuration",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/unchanged",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/unexpected-artifact",
+        "TestVerifiedSourceRechecksOriginalArtifactsAndKeyAccess/uninitialized-source"
+      ],
+      "raw_sha256": "51e0b5d7dd6535cfaa75d28a269214f630f69512b1501f1413b9ab4d40b6568d",
+      "archive": "canonical-pure.json.gz"
+    }
+  ],
+  "static_checks": {
+    "scoped_vet": "PASS",
+    "test_enabled_lint_v2.13.2": "PASS; 0 issues",
+    "changed_prose": "7 files; 0 diagnostics",
+    "git_diff_check": "PASS"
+  },
+  "contract": [
+    "Private in-process checked source retains prior domain references only after fresh complete manifest/artifact census and encryption-key checks.",
+    "Exact original selection, deployment and current canonical settings remain required.",
+    "Public inspection and restart still perform full reference inspection. No cross-operation cache or new permission."
+  ],
+  "limitations": [
+    "Full embedded activation remains failed on prior source until rerun at unchanged 420-second deadline.",
+    "Maximum near-2-GiB inventory remains UNVERIFIED.",
+    "Final combined source and required pre-PR review remain mandatory."
+  ],
+  "operator_delivery": {
+    "source_commit": "dc20ad6578955ffe41dca9b70748f2394897b904",
+    "integrated_commit": "11afee4cf82e726328a7fbdd3a9a02f95c7d53d9",
+    "review": "Root inspected complete test, command proof, scope and final source results before cherry-pick.",
+    "original_counts_per_mode": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "current_combined_native_qualification": "UNVERIFIED",
+    "scope": "Shipping binary status and completed exact retry; actual CLI handlers resume in a fresh test process after blob reply loss. Not an in-flight operating-system kill."
+  }
+}
