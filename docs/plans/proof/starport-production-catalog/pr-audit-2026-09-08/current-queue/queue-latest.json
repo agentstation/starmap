@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-30T10:03:10.147692+00:00",
+  "checked_at": "2026-09-30T15:22:58.041166+00:00",
   "starmap": [],
   "starport": [],
   "completed_merges": [
@@ -3314,9 +3314,9 @@
   },
   "native_window": {
     "owner": "root",
-    "activity": "shared-service fresh-history qualification",
-    "session_id": null,
-    "independent_owner": "operator_recovery_inputs local-only projection"
+    "activity": "combined namespace/operator/gateway pure qualification",
+    "session_id": 21981,
+    "independent_owner": "operator_recovery_inputs local-only projection; starmap_ci_repair isolated semantic proof repair"
   },
   "populated_adoption_extension": {
     "owner": "operator_recovery_inputs",
@@ -3342,5 +3342,15 @@
     "output": "/private/tmp/csp13-maximum-capacity-4805-20260930",
     "proof": "../../csp13/maximum-capacity-qualification-2026-09-30/verification.json"
   },
-  "unprefixed_integration": "../../csp13/unprefixed-integration-2026-09-30/verification.json"
+  "unprefixed_integration": "../../csp13/unprefixed-integration-2026-09-30/verification.json",
+  "current_consumer": {
+    "head": "8740bb7122dfff7e87d4ce081e530d817a238f39",
+    "owner": "root",
+    "worktree": "/private/tmp/starport-clock-review-20260926",
+    "branch": "codex/recovery-catalog-activation",
+    "status": "LOCAL_QUALIFICATION",
+    "next_action": "Complete combined native groups, private semantic timeout repair, populated adoption, and measured recovery before final review/publication."
+  },
+  "fresh_history_qualification": "../../csp13/fresh-history-qualification-2026-09-30/verification.json",
+  "application_ci_integration": "../../csp13/application-ci-integration-2026-09-30/verification.json"
 }

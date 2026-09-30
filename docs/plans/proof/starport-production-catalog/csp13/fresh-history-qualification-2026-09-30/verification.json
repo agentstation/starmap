@@ -1,0 +1,100 @@
+{
+  "status": "PASS",
+  "component": "Fresh replica actual history barriers",
+  "base_head": "cee3f1ae88dc0afa8c89d1c0ac3d5adf4cb7b983",
+  "delivery_head": "d4f3ff7db65fe729a854700fa6ac6da5c6ddde49",
+  "integration_head": "da58e084",
+  "current_consumer_head": "8740bb7122dfff7e87d4ce081e530d817a238f39",
+  "source_sha256": {
+    "internal/app/recovery_fresh_history_census_test.go": "c218b6c03492b72af5e5ffaff920e7ed28eaa2a78d736d8e4d3b0174fa666fb5",
+    "internal/app/recovery_fresh_history_process_test.go": "815b2b82ae4202156c432bef43560ace6a891cdf585da3d3e24ef4c0dfd517d0",
+    "internal/app/recovery_fresh_history_test.go": "2bde4077552e676091d6af645fb64e46a88993eebf0359d16642e476fed316f7"
+  },
+  "checks": {
+    "pure": {
+      "status": "PASS",
+      "test_pass": 10,
+      "parent_pass": 1,
+      "required_subcase_pass": 9,
+      "failure": 0,
+      "skip": 0,
+      "parent_seconds": 29.8,
+      "package_seconds": 30.787,
+      "toolchain": {
+        "CGO_ENABLED": "0",
+        "GOARCH": "arm64",
+        "GOHOSTARCH": "arm64",
+        "GOHOSTOS": "darwin",
+        "GOOS": "darwin",
+        "GOVERSION": "go1.27.1",
+        "GOWORK": "off"
+      },
+      "test_names": [
+        "TestRecoveryFreshReplicaActualHistoryBarriers/prepared-original-history-not-replayed",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/sealed-history-native-owners-closed",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/blob-native-completed-sql-kv-closed",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/kv-native-completed-sql-closed",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/completed-import-missing-sql-approval",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/completed-sql-original-kv-import-barrier",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/completed-import-missing-native-approval",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/completed-import-prior-native-epoch",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/completed-import-distinct-native-incarnation",
+        "TestRecoveryFreshReplicaActualHistoryBarriers"
+      ],
+      "raw": "pure.jsonl.gz",
+      "raw_sha256": "0afefa446ad8564bb81d8cf314f9e1494f7e37ebcacedb8811464619adefc0ee"
+    },
+    "race": {
+      "status": "PASS",
+      "test_pass": 10,
+      "parent_pass": 1,
+      "required_subcase_pass": 9,
+      "failure": 0,
+      "skip": 0,
+      "parent_seconds": 75.65,
+      "package_seconds": 77.935,
+      "toolchain": {
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOHOSTARCH": "arm64",
+        "GOHOSTOS": "darwin",
+        "GOOS": "darwin",
+        "GOVERSION": "go1.27.1",
+        "GOWORK": "off"
+      },
+      "test_names": [
+        "TestRecoveryFreshReplicaActualHistoryBarriers/prepared-original-history-not-replayed",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/sealed-history-native-owners-closed",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/blob-native-completed-sql-kv-closed",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/kv-native-completed-sql-closed",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/completed-import-missing-sql-approval",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/completed-sql-original-kv-import-barrier",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/completed-import-missing-native-approval",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/completed-import-prior-native-epoch",
+        "TestRecoveryFreshReplicaActualHistoryBarriers/completed-import-distinct-native-incarnation",
+        "TestRecoveryFreshReplicaActualHistoryBarriers"
+      ],
+      "raw": "race.jsonl.gz",
+      "raw_sha256": "19231535003e022dd2a2fde7965cae5f7e4d37c636414742da58e50866f9887f"
+    }
+  },
+  "limits": [
+    "Nine native refusal scenarios pass on macOS arm64. Other platforms and final combined source remain UNVERIFIED.",
+    "Each child uses normal App.New with decoded selected fixture configuration. This is not primary-file CLI proof.",
+    "Complete application recovery, populated in-place adoption, final released pair, and measured deployment RPO/RTO remain open."
+  ],
+  "historical_failures": {
+    "initial-pure.jsonl.gz": "Fixture passed a directory as the SQLite snapshot file.",
+    "second-pure.jsonl.gz": "Fixture scratch directory permissions were not private.",
+    "third-pure.jsonl.gz": "The expected error differed from the SQL owner refusal.",
+    "pre-explicit-cgo-pure.jsonl.gz": "Passed without race, but CGO was not explicitly disabled. This does not qualify pure-Go mode.",
+    "pre-explicit-cgo-race.jsonl.gz": "Passed race test before explicit toolchain metadata capture."
+  },
+  "static": {
+    "vet": "PASS",
+    "repository_lint": "PASS: pinned 2.13.2, tests disabled by repository policy",
+    "prose": "PASS: three files, zero diagnostics",
+    "gofmt_and_diff": "PASS",
+    "additional_test_enabled_scoped_lint": "Five diagnostics: four reviewed variable file/subprocess false positives on private fixtures and the current test executable, plus one duplicate sentinel string. This optional check did not pass."
+  }
+}

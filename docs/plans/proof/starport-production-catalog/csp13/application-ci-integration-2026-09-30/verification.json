@@ -1,0 +1,35 @@
+{
+  "status": "SOURCE_INTEGRATED",
+  "delivery_head": "1c95d5d8b5cc3823248e724ff43c9e804519ed3a",
+  "integration_head": "5dde9e99",
+  "review_fix_head": "8740bb7122dfff7e87d4ce081e530d817a238f39",
+  "root_review": "Manual source, workflow, fixtures, required events, binary binding, regression tests, and failure propagation reviewed.",
+  "review_finding": "The idle child dispatcher was removed from required parent counts. Actual parent subprocess behavior remains covered.",
+  "groups": 5,
+  "modes": [
+    "pure",
+    "race"
+  ],
+  "required_parent_owners": 29,
+  "required_subcase_suffixes": 71,
+  "new_regression_tests_pass": 16,
+  "prior_delivery_other_regressions_pass": 31,
+  "native_hosted_qualification": "UNVERIFIED",
+  "combined_native": {
+    "status": "RUNNING",
+    "session_id": 21981,
+    "source_head": "8740bb7122dfff7e87d4ce081e530d817a238f39",
+    "groups": [
+      "namespace",
+      "operator",
+      "gateway"
+    ],
+    "parents": 13,
+    "platform": "darwin/arm64"
+  },
+  "limits": [
+    "Original platform checks and protected job names remain unchanged.",
+    "Maximum capacity stays a separate measured component qualification.",
+    "Complete recovery and final paired release remain open."
+  ]
+}
