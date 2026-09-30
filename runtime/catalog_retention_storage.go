@@ -79,6 +79,17 @@ func catalogRetentionManifestBytes(transfer string, entries []CatalogRetentionEn
 	return json.Marshal(retainedCatalogManifest{Version: materializationVersion, TransferID: transfer, Entries: entries}, json.Deterministic(true))
 }
 func validateCatalogRetentionInput(ctx context.Context, entry CatalogRetentionEntry, input CatalogRetentionInput) error {
+	if err := validateCatalogRetentionInputBinding(entry, input); err != nil {
+		return err
+	}
+	record, err := readFleetRecovery(ctx, input.Recovery.Inputs.Data)
+	if err != nil {
+		return err
+	}
+	return validateCatalogRetentionInputRecord(ctx, entry, input, record)
+}
+
+func validateCatalogRetentionInputBinding(entry CatalogRetentionEntry, input CatalogRetentionInput) error {
 	if err := validateCatalogRetentionEntry(entry); err != nil {
 		return err
 	}
@@ -88,10 +99,10 @@ func validateCatalogRetentionInput(ctx context.Context, entry CatalogRetentionEn
 	if err := input.Recovery.Validate(input.Generation); err != nil {
 		return err
 	}
-	record, err := readFleetRecovery(ctx, input.Recovery.Inputs.Data)
-	if err != nil {
-		return err
-	}
+	return nil
+}
+
+func validateCatalogRetentionInputRecord(ctx context.Context, entry CatalogRetentionEntry, input CatalogRetentionInput, record fleetRecoveryRecord) error {
 	if record.Pin != nil && !pinRecordMatches(*record.Pin, input.Generation) {
 		return pinRecordConflict("retained capsule selects another pinned generation")
 	}
@@ -146,29 +157,13 @@ func validateCatalogRetentionRequest(ctx context.Context, request CatalogRetenti
 	var total, decodedTotal int64
 	records := make([]CatalogRetainedRecord, 0, len(request.Inputs))
 	for i, input := range request.Inputs {
-		manifestBytes, err := marshalCatalogRetention(input.Generation.Manifest, storage.MaxFilesystemManifestBytes)
-		if err != nil {
-			return nil, nil, err
-		}
-		if int64(len(manifestBytes)) > storage.DefaultRetentionInputMaxBytes-total {
-			return nil, nil, invalidInputPublication("retention manifests exceed their batch byte limit")
-		}
-		total += int64(len(manifestBytes))
-		for _, data := range [][]byte{input.Generation.Payload, input.Recovery.Inputs.Data, input.SourceDescriptor} {
-			if int64(len(data)) > storage.DefaultRetentionInputMaxBytes-total {
-				return nil, nil, invalidInputPublication("retention batch exceeds its byte limit")
-			}
-			total += int64(len(data))
-		}
-		decoded, err := decompressFleetRecovery(ctx, input.Recovery.Inputs.Data, storage.DefaultRetentionInputMaxBytes-decodedTotal)
-		if err != nil {
-			return nil, nil, err
-		}
-		decodedTotal += int64(len(decoded))
 		entry := request.Manifest[request.BatchStart+i]
-		if err := validateCatalogRetentionInput(ctx, entry, input); err != nil {
+		usage, err := inspectCatalogRetentionUsage(ctx, entry, input, MaxCatalogRetentionBatchBytes-total, MaxCatalogRetentionBatchBytes-decodedTotal)
+		if err != nil {
 			return nil, nil, err
 		}
+		total += usage.rawBytes
+		decodedTotal += usage.decodedBytes
 		encoded, err := encodeRetainedCatalogInput(entry, input)
 		if err != nil {
 			return nil, nil, err
