@@ -9,6 +9,15 @@
       "disposition": "reviewed; ready; native CI running",
       "next_action": "exact-head protected merge after checks pass",
       "proof": "../../csp13/sql-acceptance-publication-2026-09-30/verification.json"
+    },
+    {
+      "number": 204,
+      "head": "3e1068952936b26fd5bcb58fdc267f6ec6fb30c1",
+      "base": "main",
+      "owner": "root",
+      "disposition": "reviewed; ready; native CI running",
+      "next_action": "exact-head protected merge after checks pass",
+      "proof": "../../csp13/retention-usage-publication-2026-09-30/verification.json"
     }
   ],
   "starport": [],
@@ -1321,7 +1330,7 @@
     "status": "done",
     "next_task": "CSP13"
   },
-  "starmap_open_count": 1,
+  "starmap_open_count": 2,
   "starport_open_count": 0,
   "dependency_189_completion": {
     "checked_at": "2026-09-28T17:04:54.239668+00:00",

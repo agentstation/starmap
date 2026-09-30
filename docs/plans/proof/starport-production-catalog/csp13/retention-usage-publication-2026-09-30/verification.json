@@ -1,0 +1,143 @@
+{
+  "producer_commit": "3e1068952936b26fd5bcb58fdc267f6ec6fb30c1",
+  "producer_base": "e0845d601fb5408f5f206076c9fbb8b0cbc08ecf",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "producer_checks": {
+    "make_verify_checks": "passed",
+    "goago": {
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    "vet": "passed",
+    "golangci_lint": "2.13.2: 0 issues",
+    "technical_writing": "0 diagnostics"
+  },
+  "consumer_scope": "ac9bddda parent-only tree; paired API runs provisional through explicit GOWORK; final published-module qualification pending",
+  "maximum_combined_workload": "not run; awaiting exclusive low-contention host window",
+  "resource_budget": {
+    "processes": 1,
+    "go_memory_limit": "12GiB",
+    "max_rss": "16GiB",
+    "max_disk": "24GiB",
+    "deadline": "30 minutes"
+  },
+  "logs": [
+    {
+      "path": "/tmp/csp13-retention-usage-race.jsonl",
+      "sha256": "a93b4e7f953439620e159d06206d0821555ba90d016fb1cfa12a66280988e541",
+      "pass": 57,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 35,
+      "package_results": [
+        {
+          "Time": "2026-09-30T04:07:24.002564-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 201.893
+        }
+      ]
+    },
+    {
+      "path": "/tmp/csp13-retention-usage-pure.jsonl",
+      "sha256": "8644fac183eb4f2cecf3e10c608538e03db374057990ac74efc7db62d6188b9a",
+      "pass": 57,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 35,
+      "package_results": [
+        {
+          "Time": "2026-09-30T04:04:48.301441-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 53.4
+        }
+      ]
+    },
+    {
+      "path": "/tmp/csp13-retention-usage-verify-checks-final.log",
+      "sha256": "a9eda12bbfc5b3ca359f9339df4111eb3d062158a469f9e4407176a7a4b06900"
+    },
+    {
+      "path": "/tmp/csp13-capacity-decoded-fail-before.jsonl",
+      "sha256": "eda665cad495e491a0c2911829fa623b34d82e0868c97cca137457a9b566cbdc",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "top_level_pass": 0,
+      "package_results": [
+        {
+          "Time": "2026-09-30T03:44:41.66058-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 13.517
+        }
+      ]
+    },
+    {
+      "path": "/tmp/csp13-capacity-decoded-fixed-final.jsonl",
+      "sha256": "4e1edfde1820671a5fbce48ba66a2af7bd14eb9b6bb4daf04b3c0cb087867f4e",
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 1,
+      "package_results": [
+        {
+          "Time": "2026-09-30T04:04:36.912858-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 20.722
+        }
+      ]
+    },
+    {
+      "path": "/tmp/csp13-capacity-decoded-pure.jsonl",
+      "sha256": "2191645b4726a0d7971bf5a76de71737b847683e469475c63e9d91438861cd5c",
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 1,
+      "package_results": [
+        {
+          "Time": "2026-09-30T04:06:32.412701-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 16.544
+        }
+      ]
+    }
+  ],
+  "pr": "https://github.com/agentstation/starmap/pull/204",
+  "root_checks": {
+    "race": 11,
+    "pure": 11,
+    "fail": 0,
+    "skip": 0,
+    "manual_audit": "Producer retains decode/schema ownership, private numeric usage, subtraction-based limits and final-batch revalidation. No request-path acquisition or permission change."
+  },
+  "root_review": "Opus 5.5 high; one pre-PR pass; clean at P0",
+  "remaining": "Native CI and actual published producer pin; combined maximum workload and RPO/RTO remain unverified.",
+  "root_raw": [
+    {
+      "file": "csp13-retention-usage-root-race.jsonl.gz",
+      "sha256": "bc2d55403366f04477cf54cbf3b86b4bdad7de41e6fd9c5d8ec69481f60d146f"
+    },
+    {
+      "file": "csp13-retention-usage-root-pure.jsonl.gz",
+      "sha256": "caa9a189c679b85125994aa704764af5c7f3e7afde92e06d9ada24c21b45ba8c"
+    },
+    {
+      "file": "csp13-retention-usage-pre-pr-review.json.gz",
+      "sha256": "b06c6f5c4c7c8aea139ae2b2f6a30edbffb99d5169b12db387adca677b6e6fa8"
+    },
+    {
+      "file": "csp13-retention-usage-pre-pr-review.log.gz",
+      "sha256": "b0ab0dd6a051048cf71ce4ec9e941452d9b16c36926f707bf0b59a865ca32ab0"
+    },
+    {
+      "file": "csp13-capacity-decoded-fail-before.jsonl.gz",
+      "sha256": "eda665cad495e491a0c2911829fa623b34d82e0868c97cca137457a9b566cbdc"
+    }
+  ]
+}
