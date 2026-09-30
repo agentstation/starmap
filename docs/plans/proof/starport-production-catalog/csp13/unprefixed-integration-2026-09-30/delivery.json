@@ -1,0 +1,253 @@
+{
+  "schema": 1,
+  "scope": "A41.unprefixed_record_migration component qualification",
+  "recorded_at_utc": "2026-09-30T14:17:25.093080+00:00",
+  "base_commit": "0c2cf5d4a3c1e33f4124a05984a42f32694f87c3",
+  "base_tree": "0af045122f9b4d51bd53da4c40271c98770bc9fd",
+  "source_sha256": {
+    "internal/app/backup_unprefixed_restart_test.go": "da09b0d47653e036aa0676024b1845405563cbfa14bc9d6c2ecd53719ab81fe1",
+    "internal/app/recovery_activation_bounded_fixture_test.go": "6564d8e8471c4d3ebefdaa8c69db70f2ada6ff3b6d61e802216a580e6aa6e0cb",
+    "internal/app/recovery_activation_fixture_test.go": "edf92e088a1d6085506864f5b782eb5d1177f7d6274c4dd0dddcda25d9ad2fea",
+    "internal/app/recovery_post_backup_activity_test.go": "2a91e567e2f064a1456a1a148103ceddd2f012e9a414c7b39250e89d71cd5d9c",
+    "internal/app/recovery_activation.go": "6976a3a66357d3260431e30a33e5ea5a33c8edcc5050af6b78e629457ac38c81",
+    "internal/app/recovery_activation_prepare.go": "d03019b9317cab2d8b3330d99b2c991c8ac91135defb58b78542b5508d96f409",
+    "internal/app/recovery_activation_release.go": "36e484ab261776675beb53ea9ac216b1edef5c0968e99b50f9173db9ebc9336c",
+    "internal/app/recovery_activation_status.go": "1410a5d812f28861f763bb9c1baef6da184115a5d49e4683be00713298e0345f",
+    "internal/storage/transfer_unprefixed.go": "a41252effa745136e87820ecd91e545cc7eca394f7f3eaf05525038ec2bcb388",
+    "internal/storage/transfer_valkey.go": "368ba063a9b481dd60b572868dfb9ccbdf08f241d09a3d4f7029c82b061acf4e",
+    "internal/storage/transfer_inspection.go": "800c171894d4d6e421684334a5b87bfe3fc962f6026d119804af2dfbefb631f1",
+    "internal/recovery/restore_source.go": "08415041d2cb27b1c8b4d85f92e2f2b9ff5abece942900b8723ca39c26b16f0f"
+  },
+  "toolchain": {
+    "version": "go1.27.1",
+    "platform": "darwin/arm64",
+    "GOWORK": "off",
+    "replacement": false,
+    "GOCACHE": "/private/tmp/csp13-go-build-20260929"
+  },
+  "producer": {
+    "module": "github.com/agentstation/starmap",
+    "version": "v0.16.6-0.20260930115749-2bb995712275",
+    "commit": "2bb99571227518efcb67aa64f9b78bf9079fab27",
+    "sum": "h1:sEg3/nzKoGXIvoZ1kvwvyNoIHJDlFSVcL0WlOzoYs98=",
+    "go_mod_sum": "h1:cCNBcKDllsycjRvn7WPAz9YmT33ydFoVURpGta+veQg="
+  },
+  "test": "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+  "native_fixture": {
+    "source": "Dedicated raw Valkey DB13 populated from actual owner-built persistent Badger records. Original SQL owner is SQLite and linked payloads use the native file owner. Source SQL remains closed after transfer.",
+    "target": "Canonical namespace on Valkey DB14, isolated PostgreSQL schema, unique S3-compatible object-storage bucket. No shared fixture reset.",
+    "incarnation": "DB13 and DB14 can share the physical Valkey run_id:master_replid incarnation. Selected DB and canonical namespace bind the target scope; DB selection does not create a physical incarnation."
+  },
+  "final_runs": {
+    "pure": {
+      "command": "CGO_ENABLED=0 go test -json -p 1 -count=1 -timeout=10m -run ^TestUnprefixedMigrationPreservesRecordsAcrossProcessExit$ ./internal/app",
+      "results": {
+        "path": "/tmp/csp13-unprefixed-restart-20260930/pure-frozen.jsonl",
+        "sha256": "b59974fdc984e8f131c4fa062b46343a10eeda7b931ceec9538c84015282d9db",
+        "terminal_events": [
+          {
+            "Time": "2026-09-30T09:10:19.503497-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Test": "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+            "Elapsed": 24.71
+          },
+          {
+            "Time": "2026-09-30T09:10:19.515378-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Elapsed": 25.675
+          }
+        ]
+      },
+      "top_level_passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "race": {
+      "command": "CGO_ENABLED=1 go test -json -race -p 1 -count=1 -timeout=10m -run ^TestUnprefixedMigrationPreservesRecordsAcrossProcessExit$ ./internal/app",
+      "results": {
+        "path": "/tmp/csp13-unprefixed-restart-20260930/race-frozen.jsonl",
+        "sha256": "86fc543d34ccea99d967421df5b3fa8b63b9f0f5d44039108ebce5e4bf1f61fb",
+        "terminal_events": [
+          {
+            "Time": "2026-09-30T09:15:08.680843-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Test": "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+            "Elapsed": 63.34
+          },
+          {
+            "Time": "2026-09-30T09:15:09.708548-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Elapsed": 65.462
+          }
+        ]
+      },
+      "top_level_passed": 1,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "static_checks": [
+    {
+      "command": "go vet ./internal/app",
+      "result": "PASS on frozen source"
+    },
+    {
+      "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/app",
+      "result": "PASS; 0 issues on frozen source"
+    },
+    {
+      "command": "strict project technical prose lint on internal/app/backup_unprefixed_restart_test.go",
+      "result": "PASS; 1 file; 0 diagnostics on frozen source"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "proved": [
+    "Actual native import acknowledges exactly three writes before a child process exits with status 87. A fresh process resumes the original operation and preserves every captured record value and absolute expiry.",
+    "KV and SQL startup barriers remain closed while import is partial. A different operation cannot take over the target. Mixed canonical and raw source layout refuses without changing the foreign marker.",
+    "Ordinary canonical startup does not fall back to raw unprefixed keys. Source raw record count, bytes and expiry remain unchanged after explicit controlled activation.",
+    "Independent owner-built revocations, absent SQL grant, 700 consumed budget units, 200 held units, held provider attempt and unconfirmed job survive migration. The unconfirmed job cannot repeat submission, poll, cancel or fetch.",
+    "A committed native blob phase with a lost reply resumes in a fresh process from the sealed original decision. Passive status reports historical completion and current native admission state.",
+    "Surviving API key, linked file payload and stored-byte meter references remain valid. Original source SQL authority stays closed and target authority opens at a strictly newer epoch.",
+    "Activation refuses an explicit WritersFenced=false attestation under a bounded context."
+  ],
+  "private_child_outputs": [
+    {
+      "path": "/tmp/csp13-unprefixed-restart-20260930/child-output/unprefixed-child-1201102427.log",
+      "sha256": "c4ce33c455c1901b5f2fffd5521c7381714c296f1a34a6dd716f1f3e32e3cd9e",
+      "mode": "0o600"
+    },
+    {
+      "path": "/tmp/csp13-unprefixed-restart-20260930/child-output/unprefixed-child-1293951762.log",
+      "sha256": "80d23a1abdc3698771722c65751f9ed88c053e628b9ddff80e05b34fc7d84576",
+      "mode": "0o600"
+    },
+    {
+      "path": "/tmp/csp13-unprefixed-restart-20260930/child-output/unprefixed-child-182149263.log",
+      "sha256": "611adbf008c87b33119844e7bf00cac80e44fc688fb9cf24a2cef5ed50c95d8e",
+      "mode": "0o600"
+    },
+    {
+      "path": "/tmp/csp13-unprefixed-restart-20260930/child-output/unprefixed-child-2553368752.log",
+      "sha256": "a5574833a5a6e257ddb75cfccf621cfa47c2e269d2672659e4e0db8febb35846",
+      "mode": "0o600"
+    },
+    {
+      "path": "/tmp/csp13-unprefixed-restart-20260930/child-output/unprefixed-child-453958409.log",
+      "sha256": "038aa0062333fb4f4fb32431fd528344953905df26a2f1dcea102abbf9e2a8f6",
+      "mode": "0o600"
+    },
+    {
+      "path": "/tmp/csp13-unprefixed-restart-20260930/child-output/unprefixed-child-508355369.log",
+      "sha256": "1b556dce7176f4495e4789e2f530fefcb86ce94dce6af616d37d1fe6973075f3",
+      "mode": "0o600"
+    }
+  ],
+  "historical_runs": {
+    "pure_initial": {
+      "results": {
+        "path": "/tmp/csp13-unprefixed-restart-20260930/pure-initial.jsonl",
+        "sha256": "53c6b28f9c6e9c38ce6b052f72d67c16073a2eafdc4c5720dfd91bb42c85119c",
+        "terminal_events": [
+          {
+            "Time": "2026-09-30T08:32:53.753827-05:00",
+            "Action": "fail",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Test": "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+            "Elapsed": 26.53
+          },
+          {
+            "Time": "2026-09-30T08:32:53.762895-05:00",
+            "Action": "fail",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Elapsed": 27.461
+          }
+        ]
+      },
+      "disposition": "Fixture failure: passive status was called without its required bounded context. Corrected the fixture and exercised WritersFenced=false refusal under a bounded context."
+    },
+    "pure_context": {
+      "results": {
+        "path": "/tmp/csp13-unprefixed-restart-20260930/pure-context.jsonl",
+        "sha256": "9fbbdc1c7816cc2fa47149991cba9e846adcf25abf1201692c2ffc93d388d803",
+        "terminal_events": [
+          {
+            "Time": "2026-09-30T08:35:01.28181-05:00",
+            "Action": "fail",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Test": "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+            "Elapsed": 24.71
+          },
+          {
+            "Time": "2026-09-30T08:35:01.281873-05:00",
+            "Action": "fail",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Elapsed": 25.648
+          }
+        ]
+      },
+      "disposition": "Fixture failure: an existing local-only assertion expected TimeBoundStore from a Valkey target. Added target-native Witness.OpenAuthority assertions; existing helper remained unchanged."
+    },
+    "pure_authority": {
+      "results": {
+        "path": "/tmp/csp13-unprefixed-restart-20260930/pure-authority.jsonl",
+        "sha256": "f355ea0e300d4c4f1656823766b5c3004f9dfa609e24206a9b2cac23e04efd8e",
+        "terminal_events": [
+          {
+            "Time": "2026-09-30T08:39:47.078636-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Test": "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+            "Elapsed": 28.39
+          },
+          {
+            "Time": "2026-09-30T08:39:47.092312-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Elapsed": 29.35
+          }
+        ]
+      },
+      "source_sha256": "460a3dd2196d5741a711ec4f3cb9c50881b9fb95d4d878c926766d91f75fe50b",
+      "disposition": "Historical PASS before private-output and scope corrections."
+    },
+    "race_initial_final": {
+      "results": {
+        "path": "/tmp/csp13-unprefixed-restart-20260930/race-final.jsonl",
+        "sha256": "2bf2a0e7b1f1e33ce9e10e90b7c204adabe1032a49654c2720907fd1860273f5",
+        "terminal_events": [
+          {
+            "Time": "2026-09-30T08:41:50.673985-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Test": "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+            "Elapsed": 60.28
+          },
+          {
+            "Time": "2026-09-30T08:41:51.721393-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Elapsed": 62.424
+          }
+        ]
+      },
+      "source_sha256": "460a3dd2196d5741a711ec4f3cb9c50881b9fb95d4d878c926766d91f75fe50b",
+      "disposition": "Historical PASS before private-output and scope corrections."
+    }
+  },
+  "limits": [
+    "No production source changed. No production migration defect was reproduced.",
+    "Child configuration reconstructs exact library inputs from a private fixture after loader initialization; it does not prove an operator primary-file configuration procedure or shipping CLI behavior.",
+    "Passive recovery status is not a fresh gateway startup, HTTP readiness or inference admission test.",
+    "External all-writer fencing and complete independent history truth remain operator prerequisites; an attestation cannot prove that unreachable old writers stopped.",
+    "This native run covers the described raw namespace migration and local-to-fleet catalog transfer on macOS Apple silicon. It does not qualify every topology, backend or supported platform.",
+    "No physical power-loss, full catalog/capacity maximum, numerical RPO/RTO, paid inference or full A33/CSP13 completion claim is made.",
+    "Parent owns final combined-source qualification, acceptance registration review, publication and merge."
+  ]
+}

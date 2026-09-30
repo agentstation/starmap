@@ -1,0 +1,67 @@
+{
+  "scope": "Reviewed namespace migration test integration; complete acceptance remains UNVERIFIED.",
+  "delivery_commit": "eeb6f1c1b0534125c9c5a435825150241e9313a8",
+  "integrated_commit": "4805e6d4091720f43075d71d0136a30a192dd24d",
+  "manual_review": "Root read the complete 417-line test and its source-bound bounded proof. No production files changed.",
+  "delivery_sha256": "4bd57844752503047d9c1891727ab50fd3f0e36e6cf33f034df8d4ff7070123c",
+  "final_source_native_qualification": "UNVERIFIED",
+  "final_source_pre_pr_checks": "UNVERIFIED",
+  "limitations": [
+    "Library configuration continuity, not primary-file CLI construction.",
+    "No fresh gateway HTTP admission claim.",
+    "No numeric RPO or RTO claim.",
+    "No other-platform qualification claim."
+  ],
+  "historical_delivery_results": {
+    "pure": {
+      "command": "CGO_ENABLED=0 go test -json -p 1 -count=1 -timeout=10m -run ^TestUnprefixedMigrationPreservesRecordsAcrossProcessExit$ ./internal/app",
+      "results": {
+        "path": "/tmp/csp13-unprefixed-restart-20260930/pure-frozen.jsonl",
+        "sha256": "b59974fdc984e8f131c4fa062b46343a10eeda7b931ceec9538c84015282d9db",
+        "terminal_events": [
+          {
+            "Time": "2026-09-30T09:10:19.503497-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Test": "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+            "Elapsed": 24.71
+          },
+          {
+            "Time": "2026-09-30T09:10:19.515378-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Elapsed": 25.675
+          }
+        ]
+      },
+      "top_level_passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "race": {
+      "command": "CGO_ENABLED=1 go test -json -race -p 1 -count=1 -timeout=10m -run ^TestUnprefixedMigrationPreservesRecordsAcrossProcessExit$ ./internal/app",
+      "results": {
+        "path": "/tmp/csp13-unprefixed-restart-20260930/race-frozen.jsonl",
+        "sha256": "86fc543d34ccea99d967421df5b3fa8b63b9f0f5d44039108ebce5e4bf1f61fb",
+        "terminal_events": [
+          {
+            "Time": "2026-09-30T09:15:08.680843-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Test": "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+            "Elapsed": 63.34
+          },
+          {
+            "Time": "2026-09-30T09:15:09.708548-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starport/internal/app",
+            "Elapsed": 65.462
+          }
+        ]
+      },
+      "top_level_passed": 1,
+      "failed": 0,
+      "skipped": 0
+    }
+  }
+}
