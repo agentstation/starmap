@@ -1,0 +1,61 @@
+{
+  "profile": "maximum-pure",
+  "qualification": "published-module",
+  "source": {
+    "head": "cee3f1ae88dc0afa8c89d1c0ac3d5adf4cb7b983",
+    "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "untracked_sha256": {}
+  },
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "producer_module": {
+    "Path": "github.com/agentstation/starmap",
+    "Version": "v0.16.6-0.20260930115749-2bb995712275",
+    "Time": "2026-09-30T11:57:49Z",
+    "Dir": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260930115749-2bb995712275",
+    "GoMod": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260930115749-2bb995712275.mod",
+    "GoVersion": "1.27.1",
+    "Sum": "h1:sEg3/nzKoGXIvoZ1kvwvyNoIHJDlFSVcL0WlOzoYs98=",
+    "GoModSum": "h1:cCNBcKDllsycjRvn7WPAz9YmT33ydFoVURpGta+veQg="
+  },
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-tags=catalogcapacity",
+    "-count=1",
+    "-p=1",
+    "-timeout=28m",
+    "-run=^TestRecoveryCatalogMaximumSerializedInventoryRoundTrip$",
+    "./internal/catalog"
+  ],
+  "host_memory_bytes": 34359738368,
+  "bounds": {
+    "go_memory_target_bytes": 12884901888,
+    "sampled_tree_rss_bytes": 17179869184,
+    "scratch_allocated_bytes": 25769803776,
+    "deadline_seconds": 1800
+  },
+  "measurements": {
+    "exit_code": 1,
+    "elapsed_seconds": 248.0901441660244,
+    "largest_process_high_water_rss_bytes": 3983622144,
+    "sampled_tree_peak_rss_bytes": 4063019008,
+    "sampled_scratch_allocated_peak_bytes": 246611968
+  },
+  "status": "FAIL",
+  "error": "Capacity command failed; see its retained evidence.",
+  "test_evidence_sha256": "f111e02f7b06491cea5110079210ae40190993ddb54ccef704c07c3ddb1896b3",
+  "scope": "Maximum capacity attempt; required round trip incomplete.",
+  "observed_failure": "capacityCloneRuntimeFiles used exclusive single-directory creation before its nested target parent existed.",
+  "next_action": "Create the private target parent through the recursive checked owner API; preserve exclusive clone creation and rerun the original maximum workload.",
+  "retained_logs": {
+    "tests.jsonl": {
+      "sha256": "f111e02f7b06491cea5110079210ae40190993ddb54ccef704c07c3ddb1896b3",
+      "path": "tests.jsonl.gz"
+    },
+    "stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "path": "stderr.log.gz"
+    }
+  }
+}
