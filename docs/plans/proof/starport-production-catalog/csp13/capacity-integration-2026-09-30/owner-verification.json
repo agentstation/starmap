@@ -1,0 +1,192 @@
+{
+  "producer_commit": "3e1068952",
+  "producer_base": "e0845d601fb5408f5f206076c9fbb8b0cbc08ecf",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "producer_checks": {
+    "make_verify_checks": "passed",
+    "goago": {
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    "vet": "passed",
+    "golangci_lint": "2.13.2: 0 issues",
+    "technical_writing": "0 diagnostics"
+  },
+  "consumer_scope": "ac9bddda parent-only tree; final decoded race uses published module, GOWORK=off, no Replace; full application not qualified",
+  "maximum_combined_workload": "implemented and compiled; UNVERIFIED runtime; held pending private comparison-vector integration and exclusive host window",
+  "resource_budget": {
+    "processes": 1,
+    "go_memory_limit": "12GiB",
+    "max_rss": "16GiB",
+    "max_disk": "24GiB",
+    "deadline": "30 minutes"
+  },
+  "logs": [
+    {
+      "path": "/tmp/csp13-retention-usage-race.jsonl",
+      "sha256": "a93b4e7f953439620e159d06206d0821555ba90d016fb1cfa12a66280988e541",
+      "pass": 57,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 35,
+      "package_results": [
+        {
+          "Time": "2026-09-30T04:07:24.002564-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 201.893
+        }
+      ]
+    },
+    {
+      "path": "/tmp/csp13-retention-usage-pure.jsonl",
+      "sha256": "8644fac183eb4f2cecf3e10c608538e03db374057990ac74efc7db62d6188b9a",
+      "pass": 57,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 35,
+      "package_results": [
+        {
+          "Time": "2026-09-30T04:04:48.301441-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 53.4
+        }
+      ]
+    },
+    {
+      "path": "/tmp/csp13-retention-usage-verify-checks-final.log",
+      "sha256": "a9eda12bbfc5b3ca359f9339df4111eb3d062158a469f9e4407176a7a4b06900"
+    },
+    {
+      "path": "/tmp/csp13-capacity-decoded-fail-before.jsonl",
+      "sha256": "eda665cad495e491a0c2911829fa623b34d82e0868c97cca137457a9b566cbdc",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "top_level_pass": 0,
+      "package_results": [
+        {
+          "Time": "2026-09-30T03:44:41.66058-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 13.517
+        }
+      ]
+    },
+    {
+      "path": "/tmp/csp13-capacity-decoded-fixed-final.jsonl",
+      "sha256": "4e1edfde1820671a5fbce48ba66a2af7bd14eb9b6bb4daf04b3c0cb087867f4e",
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 1,
+      "package_results": [
+        {
+          "Time": "2026-09-30T04:04:36.912858-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 20.722
+        }
+      ]
+    },
+    {
+      "path": "/tmp/csp13-capacity-decoded-pure.jsonl",
+      "sha256": "2191645b4726a0d7971bf5a76de71737b847683e469475c63e9d91438861cd5c",
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "top_level_pass": 1,
+      "package_results": [
+        {
+          "Time": "2026-09-30T04:06:32.412701-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Elapsed": 16.544
+        }
+      ]
+    }
+  ],
+  "capacity_lane": {
+    "consumer_worktree": "/private/tmp/starport-recovery-capacity-20260930",
+    "published_module_qualification": "decoded race and pure passed on identical source hashes; GOWORK=off, no Replace",
+    "paired_pure_final_runner_evidence": "/tmp/csp13-capacity-measured-pure-final-runner-20260930/verification.json",
+    "paired_pure_final_runner_sha256": "5d9f23bfb5926079c9d6a5c396287df23d8ba26cf3f7ff21c6b9f3faf1465e0e",
+    "paired_pure_final_runner_measurements": {
+      "exit_code": 0,
+      "elapsed_seconds": 19.9063624170376,
+      "largest_process_high_water_rss_bytes": 2177204224,
+      "sampled_tree_peak_rss_bytes": 2257174528,
+      "sampled_scratch_allocated_peak_bytes": 222330880
+    },
+    "runner_regression_log": "/tmp/csp13-capacity-runner-regressions-final-20260930.log",
+    "runner_regression_sha256": "717e647d18ac24d0f747a0a381eb3a496bcd877a8e0921cee75176c107b807b7",
+    "runner_regressions": {
+      "tests": 7,
+      "failures": 0,
+      "skips": 0,
+      "module_workspace_refusal_cases": 7,
+      "setup_failure_cases": 4
+    },
+    "technical_writing": "five owned prose/source files and evidence contract: 0 diagnostics",
+    "ci_identity": "existing Authorization Capacity / authorization-capacity unchanged",
+    "repository_visibility": "PUBLIC, verified through gh repo view on 2026-09-30",
+    "maximum_combined_workload": "implemented and compiled; UNVERIFIED runtime; held pending private comparison-vector integration and exclusive host window",
+    "published_decoded_race": {
+      "path": "/tmp/csp13-capacity-published-decoded-race-20260930/verification.json",
+      "sha256": "177e60e60667665109675376a61d0553a8de3fd7d48b45ef2074132adeca76a9",
+      "measurements": {
+        "exit_code": 0,
+        "elapsed_seconds": 242.6426442079246,
+        "largest_process_high_water_rss_bytes": 5702303744,
+        "sampled_tree_peak_rss_bytes": 5781340160,
+        "sampled_scratch_allocated_peak_bytes": 404205568
+      },
+      "test_counts": {
+        "named_pass": 1,
+        "fail": 0,
+        "skip": 0,
+        "package_pass": 1
+      }
+    },
+    "runner_regressions_current": {
+      "tests": 8,
+      "failures": 0,
+      "skips": 0,
+      "module_workspace_refusal_cases": 7,
+      "setup_failure_cases": 4,
+      "maximum_record_negative_cases": 14
+    },
+    "published_decoded_pure": {
+      "path": "/tmp/csp13-capacity-published-decoded-pure-20260930/verification.json",
+      "sha256": "74802aa9105cdcd9708c4660ee4f605de1edb897f90f452b908f9c5c0194dc2a",
+      "measurements": {
+        "exit_code": 0,
+        "elapsed_seconds": 23.901746458024718,
+        "largest_process_high_water_rss_bytes": 2240069632,
+        "sampled_tree_peak_rss_bytes": 2321481728,
+        "sampled_scratch_allocated_peak_bytes": 310452224
+      },
+      "test_counts": {
+        "named_pass": 1,
+        "fail": 0,
+        "skip": 0,
+        "package_pass": 1
+      }
+    },
+    "delivery_commit": "b45f139d52c0e280d9f549117ec7a25ede95f8be",
+    "delivery_tree": "2fa52d8d96c5b2df34aff75295d3e332f97239cc",
+    "measured_source_preserved_in_delivery": true,
+    "scoped_final_checks": {
+      "tagged_pure_go_vet": "passed",
+      "pinned_golangci_lint": "v2.13.2 tagged internal/catalog: 0 issues; repository tests:false policy",
+      "gofmt": "0 files requiring changes",
+      "git_diff_check": "passed",
+      "runner_regressions": "8 top-level pass, 0 fail, 0 skip",
+      "technical_writing": "6 files: 0 diagnostics"
+    }
+  },
+  "producer_merge_commit": "1c03a457a14f6f28691207ed79f0e24cf944adcc",
+  "published_producer_module": "v0.16.6-0.20260930103856-1c03a457a14f"
+}

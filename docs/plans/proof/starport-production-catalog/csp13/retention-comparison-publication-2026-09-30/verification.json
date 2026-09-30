@@ -1,0 +1,25 @@
+{
+  "status": "published; native CI pending",
+  "repo": "agentstation/starmap",
+  "pr": 205,
+  "head": "7ddf5c5c7ab96be704ce7acafbc1997a37c0e2e6",
+  "base": "1c03a457a14f6f28691207ed79f0e24cf944adcc",
+  "url": "https://github.com/agentstation/starmap/pull/205",
+  "checks": "producer-checks.json",
+  "review": {
+    "file": "review.json",
+    "gate": "pre-pr",
+    "mode": "auto",
+    "reviewers": [
+      "codex:gpt-6.1-sol:high",
+      "claude:claude-opus-5-5:high"
+    ],
+    "findings": 0
+  },
+  "publication_sha256": "343c140a8167b5bc47d15ffeef76d393ff4370cd533771c5583f239ee28216d4",
+  "limits": [
+    "No merge or native CI completion claim.",
+    "Final consumer qualification requires actual published successor module; no replacement.",
+    "Current runtime selection, replay and permission guards remain required."
+  ]
+}

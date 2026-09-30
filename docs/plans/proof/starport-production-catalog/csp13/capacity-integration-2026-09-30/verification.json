@@ -1,0 +1,20 @@
+{
+  "status": "integrated component; maximum UNVERIFIED",
+  "delivery": "b45f139d52c0e280d9f549117ec7a25ede95f8be",
+  "integration": "64c4e2e6",
+  "proof": "owner-verification.json",
+  "decoded_profiles": [
+    "published-race.json",
+    "published-pure.json"
+  ],
+  "root_checks": {
+    "action_pins": 14,
+    "doc_links": "PASS",
+    "runner_regressions": 8,
+    "maximum_tagged_compile": "PASS; no runtime execution"
+  },
+  "limits": [
+    "Root integrated source requires final published comparison module and qualification.",
+    "Maximum workload and complete recovery acceptance remain UNVERIFIED."
+  ]
+}

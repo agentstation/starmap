@@ -1,0 +1,54 @@
+{
+  "profile": "decoded-race",
+  "qualification": "published-module",
+  "source": {
+    "head": "ac9bddda8034dfd79aa085a2fc75d8876d867c5d",
+    "diff_sha256": "0f02629b6f2d65b3957edf5afcbf45612c6755c9c76af3752fb96ca89eaab258",
+    "untracked_sha256": {
+      "docs/CATALOG_CAPACITY.md": "004e05b1f4256a97f6d1d962068c00a6e17fd80300595f9ecec68e5309484ce7",
+      "internal/catalog/topology_capacity_test.go": "c512a66d4c2b3dd9f5850cbf33403b12718804514df8331ec383e38a21322855",
+      "internal/catalog/topology_maximum_capacity_test.go": "47cd09d18a0164e702cc52e3b26c1fd788b3bb89e6bfc045a2444f1c4bb22043",
+      "scripts/catalog_capacity.py": "84e62d253eb0bb6a1e97d63a7ece6d843461470c9150db29c6178d58e69a0bf6",
+      "scripts/test-catalog-capacity.py": "f6b32ae0db5cbb31a1df286d33af5702294ef8400d643bbb4255c5490b086c11"
+    }
+  },
+  "toolchain": "go version go1.27.1 darwin/arm64",
+  "producer_module": {
+    "Path": "github.com/agentstation/starmap",
+    "Version": "v0.16.6-0.20260930103856-1c03a457a14f",
+    "Time": "2026-09-30T10:38:56Z",
+    "Dir": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260930103856-1c03a457a14f",
+    "GoMod": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260930103856-1c03a457a14f.mod",
+    "GoVersion": "1.27.1",
+    "Sum": "h1:RPP0Y7Ka73TJgz82YDEQgB9l/inD4v8lhBrCgg852QA=",
+    "GoModSum": "h1:cCNBcKDllsycjRvn7WPAz9YmT33ydFoVURpGta+veQg="
+  },
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-tags=catalogcapacity",
+    "-count=1",
+    "-p=1",
+    "-timeout=6m",
+    "-run=^TestRecoveryCatalogCapacityPacksDecodedProducerLimit$",
+    "-race",
+    "./internal/catalog"
+  ],
+  "host_memory_bytes": 34359738368,
+  "bounds": {
+    "go_memory_target_bytes": 4294967296,
+    "sampled_tree_rss_bytes": 8589934592,
+    "scratch_allocated_bytes": 1073741824,
+    "deadline_seconds": 480
+  },
+  "measurements": {
+    "exit_code": 0,
+    "elapsed_seconds": 242.6426442079246,
+    "largest_process_high_water_rss_bytes": 5702303744,
+    "sampled_tree_peak_rss_bytes": 5781340160,
+    "sampled_scratch_allocated_peak_bytes": 404205568
+  },
+  "status": "PASS",
+  "test_evidence_sha256": "028bcf956104d6b285d3919f20e26bf6b3265ddf57dc450086231acb334de547"
+}

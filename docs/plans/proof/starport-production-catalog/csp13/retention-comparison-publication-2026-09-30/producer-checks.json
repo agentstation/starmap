@@ -1,0 +1,113 @@
+{
+  "base": "1c03a457a14f6f28691207ed79f0e24cf944adcc",
+  "toolchain": "go1.27.1",
+  "platform": "darwin/arm64",
+  "workspace": "/private/tmp/starmap-retained-input-comparison-20260930",
+  "source_sha256": {
+    "runtime/catalog_retention.go": "2e2bb21589eca17c8471256a8f5af486994d3923aa1fe523c1eee3c82aeaa6a1",
+    "runtime/catalog_retention_comparison.go": "fc59798233c3dca052e780d9e13c6c21e5b69367c7eb5abb00f088418657a811",
+    "runtime/catalog_retention_comparison_test.go": "1601a1adba5e66cdca91e2643166e3bb8070da946edb88079c10ce334ef79123",
+    "runtime/README.md": "6f5d41da8dcbff4f3f15c9233f440279db8a056978629e3aa37f9aa7898fee21"
+  },
+  "api": {
+    "factory": "InspectCatalogRetentionComparison(ctx, entry, input) (*CatalogRetentionComparison, error)",
+    "check": "CheckRetainedCatalogRecovery(ctx, request, comparison) error",
+    "usage": "(*CatalogRetentionComparison).Usage() CatalogRetentionUsage",
+    "authority": "Complete structural validation and canonical envelope equality only. No serialization constructor, source acquisition, target preparation, mutation, selection, replay compatibility, or serving permission."
+  },
+  "checks": [
+    {
+      "mode": "race",
+      "exit": 0,
+      "result_counts": {
+        "pass": 39,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_tests": [
+        "TestCatalogRetentionComparisonChecksOriginalBytesWithoutMutation",
+        "TestCatalogRetentionComparisonRefusesChangedNativeEvidence",
+        "TestCatalogRetentionComparisonRequiresCompleteOriginalValidation",
+        "TestCatalogRetentionReaderRefusesChangedScopeAndReturnsPrivateCopies",
+        "TestCatalogRetentionInspectionRefusesPendingOrLaterSelection",
+        "TestCatalogRetentionCompletedBatchRefusesReplacedValidSeed",
+        "TestCatalogRetentionUsageMatchesActualCodecAndRetainsNothing",
+        "TestCatalogRetentionUsageRefusesUncertainOriginalBytes",
+        "TestCatalogRetentionUsageHighlyCompressedBatchUsesBothDimensions"
+      ],
+      "package_seconds": 42.773,
+      "log": "/tmp/csp13-retention-comparison-final-source-race.jsonl",
+      "sha256": "65af69e901797754b219d7dee9991acddfd734cfeda11c184336588b180d8d58",
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 GOCACHE=/private/tmp/csp13-go-build-20260929 go test -json -race ./runtime -run '^TestCatalogRetention(Comparison|ReaderRefusesChangedScopeAndReturnsPrivateCopies|Usage|CompletedBatchRefusesReplacedValidSeed|InspectionRefusesPendingOrLaterSelection)' -count=1 -timeout=6m"
+    },
+    {
+      "mode": "pure",
+      "exit": 0,
+      "result_counts": {
+        "pass": 39,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_tests": [
+        "TestCatalogRetentionComparisonChecksOriginalBytesWithoutMutation",
+        "TestCatalogRetentionComparisonRefusesChangedNativeEvidence",
+        "TestCatalogRetentionComparisonRequiresCompleteOriginalValidation",
+        "TestCatalogRetentionReaderRefusesChangedScopeAndReturnsPrivateCopies",
+        "TestCatalogRetentionInspectionRefusesPendingOrLaterSelection",
+        "TestCatalogRetentionCompletedBatchRefusesReplacedValidSeed",
+        "TestCatalogRetentionUsageMatchesActualCodecAndRetainsNothing",
+        "TestCatalogRetentionUsageRefusesUncertainOriginalBytes",
+        "TestCatalogRetentionUsageHighlyCompressedBatchUsesBothDimensions"
+      ],
+      "package_seconds": 17.639,
+      "log": "/tmp/csp13-retention-comparison-final-source-pure.jsonl",
+      "sha256": "b140b910da1ca3054c8ef3da2c56486793877c1734d89d9ec20370e41162d524",
+      "command": "CGO_ENABLED=0 GOWORK=off GOTOOLCHAIN=go1.27.1 GOCACHE=/private/tmp/csp13-go-build-20260929 go test -json ./runtime -run '^TestCatalogRetention(Comparison|ReaderRefusesChangedScopeAndReturnsPrivateCopies|Usage|CompletedBatchRefusesReplacedValidSeed|InspectionRefusesPendingOrLaterSelection)' -count=1 -timeout=6m"
+    },
+    {
+      "command": "GOWORK=off GOTOOLCHAIN=go1.27.1 GOCACHE=/private/tmp/csp13-go-build-20260929 make HAS_DEVBOX= RUN_PREFIX= verify-checks",
+      "exit": 0,
+      "log": "/tmp/csp13-retention-comparison-final-verify-checks.log",
+      "sha256": "ce946a7e46200e4d6b6d39e510aeff841d9c5bec54e1896ccaca9bf8a89a5a5d",
+      "scope": "Generated docs, structure, check-suite race, full vet, pinned golangci-lint 2.13.2, goago, strict prose, pure-Go consumer/dependency checks, catalog performance, container smoke, critical seam coverage, build and CLI contracts."
+    }
+  ],
+  "failure_evidence": [
+    {
+      "kind": "Missing owning API on original merged base; expected compile failure",
+      "exit": 1,
+      "log": "/tmp/csp13-retention-comparison-fail-before.log",
+      "sha256": "e0e660437bf69f74cf001c481c89b5e8cdb4ed946544a539f86bbf378cc13c43",
+      "overlay": "/tmp/csp13-retention-comparison-fail-before/overlay.json",
+      "base": "1c03a457a14f6f28691207ed79f0e24cf944adcc"
+    },
+    {
+      "kind": "Copied-value fmt bypassed pointer receiver; regression failed before value-receiver repair",
+      "exit": 1,
+      "log": "/tmp/csp13-retention-comparison-format-fail-before.jsonl",
+      "sha256": "3769a890de44f09818e140f20d3c1175943b87f6bf165d6f55e5c559150669f9"
+    },
+    {
+      "kind": "Initial fixture assumptions: JSON v2 rejects private-field structs; pending journal suffix must be .jsonl. Corrected fixtures, no relaxed native guard.",
+      "exit": 1,
+      "log": "/tmp/csp13-retention-comparison-race.jsonl",
+      "sha256": "ee91149b6a65a343dfdee2e749084b5253cc5e11daa1c191edc7cd93d018a283"
+    },
+    {
+      "kind": "Partial repository gate stopped for formatter repair after an exclusive sibling execution window. Not final qualification.",
+      "exit": 143,
+      "log": "/tmp/csp13-retention-comparison-verify-checks.log",
+      "sha256": "4a6f3868e6bacb677897c6e1f156b7765d7c7803239605ce346991967dbc7937"
+    }
+  ],
+  "unchanged_selected_runtime_inspection": {
+    "path": "runtime/catalog_retention_selection.go",
+    "sha256": "c77c6582b0dcc6aa2a90d67e61fdbaffffe1a6440ae19341e8e68d22ba190aff"
+  },
+  "remaining_qualification": [
+    "Native Linux and Windows CI on exact published head",
+    "Consumer integration uses private source-derived proof vectors; no unpublished replacement qualification",
+    "Repeat full embedded recovery race profile after integration; seven-minute activation budget unchanged",
+    "No end-to-end latency or RTO improvement claimed by this producer-only test result"
+  ]
+}

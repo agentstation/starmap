@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "recorded_at": "2026-09-30T11:04:33.551762+00:00",
+  "worktree": "/private/tmp/starport-recovery-old-writer-admission-20260930",
+  "branch": "codex/recovery-old-writer-admission",
+  "base": "303fdef6bbef20717bbb3c921a050979456c4505",
+  "reviewed_prerequisites": {
+    "aee21e5f": "a56de72f",
+    "bdcded14": "ea38af8e"
+  },
+  "go": "1.27.1",
+  "platform": "darwin/arm64",
+  "workspace": "GOWORK=off; no module replace",
+  "producer": "v0.16.6-0.20260930103856-1c03a457a14f",
+  "source_sha256": "1a0c6edb00b46b67f53c957616ade3bc03a76549883e2dec40fa311b882db3ea",
+  "checks": {
+    "gateway-race-third": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "results": [
+        {
+          "Time": "2026-09-30T05:59:51.54059-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestRecoveredSharedGatewayFreshStartupAndBudgetAdmission",
+          "Elapsed": 64.55
+        }
+      ],
+      "package": [
+        {
+          "Time": "2026-09-30T05:59:52.589669-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Elapsed": 66.686
+        }
+      ]
+    },
+    "gateway-pure-final": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "results": [
+        {
+          "Time": "2026-09-30T06:00:34.115906-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Test": "TestRecoveredSharedGatewayFreshStartupAndBudgetAdmission",
+          "Elapsed": 22.25
+        }
+      ],
+      "package": [
+        {
+          "Time": "2026-09-30T06:00:34.123912-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Elapsed": 23.195
+        }
+      ]
+    }
+  },
+  "commands": {
+    "race": "python3 /tmp/csp13-application-activation-native-wrapper.py LOG go test -race -json -count=1 -timeout=5m ./internal/app -run ^TestRecoveredSharedGatewayFreshStartupAndBudgetAdmission$",
+    "pure": "CGO_ENABLED=0 python3 /tmp/csp13-application-activation-native-wrapper.py LOG go test -json -count=1 -timeout=5m ./internal/app -run ^TestRecoveredSharedGatewayFreshStartupAndBudgetAdmission$"
+  },
+  "scoped_checks": {
+    "vet": {
+      "exit": 0,
+      "command": "go vet ./internal/app",
+      "log": "gateway-vet.log"
+    },
+    "pinnedlint": {
+      "exit": 0,
+      "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/app",
+      "log": "gateway-pinnedlint-final.log",
+      "issues": 0,
+      "tests": "repository configuration excludes test files; vet and native race/pure checks qualify changed source"
+    },
+    "prose": {
+      "exit": 0,
+      "diagnostics": 0,
+      "log": "gateway-prose-final.log"
+    },
+    "dependency_direction": {
+      "exit": 0,
+      "passed": 6,
+      "log": "gateway-dependencies.log"
+    },
+    "package_layout": {
+      "exit": 0,
+      "log": "gateway-layout.log"
+    },
+    "manual_audit": {
+      "complete": true,
+      "product_defect_found": false
+    },
+    "ownership": {
+      "exit": 0,
+      "passed": 12,
+      "log": "gateway-ownership-final.log",
+      "producer_source": "exact published immutable module directory"
+    },
+    "contract_prose": {
+      "exit": 0,
+      "diagnostics": 0,
+      "log": "gateway-contract-prose-clean.log"
+    }
+  },
+  "historical_failures": {
+    "gateway-build-first.log": "fixture used nonexistent application.identityStore; corrected to actual openBackupSQL owner",
+    "gateway-race-first.jsonl": "fixture read local GenerationStore.Current on fleet target; corrected to exact passive FleetStore.AcceptedPublication",
+    "gateway-race-second.jsonl": "fixture omitted FleetSnapshot.Publication field nesting",
+    "gateway-pinnedlint.log": "another owner held lint process lock; exact same command rerun after release",
+    "gateway-ownership.log": "isolated tree sibling default did not name Starmap source; final guard explicitly names exact pinned immutable module source"
+  },
+  "observations": [
+    "Actual source account/key/token budget history exists before immutable CaptureBackup",
+    "Complete recovery ActivateRecovery opens exact independently approved target",
+    "Fresh OS child constructs App using normal factories",
+    "Child approval equals parent-read exact Record",
+    "Child catalog snapshot equals parent-read exact accepted FleetStore publication",
+    "Restored gateway key resolves actual account/token policy",
+    "Shared budget admission reserves one token and marks durable attempt Dispatched",
+    "No provider call occurs; explicit fixture no-charge evidence settles this attempt"
+  ],
+  "limits": [
+    "Bounded local-to-fleet source fixture, not maximum catalog workload",
+    "Memory readiness and actual authorization/budget admission, not HTTP or upstream inference",
+    "No deployment external network/orchestrator fence or unreachable host qualification",
+    "No full disaster-recovery completeness, maximum capacity, or deployment RPO/RTO claim",
+    "Native macOS arm64 only; native Linux/Windows checks remain required",
+    "Final integrated source still needs root qualification",
+    "Private per-test schema, namespace and objectstore bucket; no service or shared fixture reset"
+  ],
+  "commit": "b6d264dedf3cfc852c85e61899a8f40ee289fbfe"
+}

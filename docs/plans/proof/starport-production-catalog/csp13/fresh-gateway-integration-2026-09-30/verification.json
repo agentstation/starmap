@@ -1,0 +1,20 @@
+{
+  "status": "integrated component; combined native checks running",
+  "delivery": "b6d264dedf3cfc852c85e61899a8f40ee289fbfe",
+  "integration": "125d11d8",
+  "proof": "owner-verification.json",
+  "race": {
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "pure": {
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "semantics": "Normal fresh App construction verifies exact independently approved SQL record and accepted fleet catalog; restored authorization admits and settles one actual shared token reservation. No provider call.",
+  "limits": [
+    "No HTTP, full disaster-recovery, maximum workload, RPO/RTO or other-platform claim."
+  ]
+}
