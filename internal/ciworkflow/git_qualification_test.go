@@ -21,7 +21,7 @@ func TestGitAcquisitionQualificationRequiresNativeTools(t *testing.T) {
 	if err := yaml.Unmarshal([]byte(readFixture(t, "../../.github/workflows/pr.yaml")), &workflow); err != nil {
 		t.Fatal(err)
 	}
-	for _, owner := range []string{"verification-tests", "native-runtime", "native-publication"} {
+	for _, owner := range []string{"verification-tests", "native-runtime-tests", "native-publication"} {
 		job, ok := workflow.Jobs[owner]
 		if !ok {
 			t.Fatalf("missing job %s", owner)
@@ -43,7 +43,7 @@ func TestGitAcquisitionQualificationRequiresNativeTools(t *testing.T) {
 					t.Errorf("%s runs the publisher before installing Bun", owner)
 				}
 			}
-			if strings.Contains(step.Run, "scripts/verification_tests.py") || strings.Contains(step.Run, "./acquisition") || strings.Contains(step.Run, "./internal/test/gitfixture") {
+			if strings.Contains(step.Run, "scripts/verification_tests.py") || strings.Contains(step.Run, "scripts/native_runtime.py run") || strings.Contains(step.Run, "./acquisition") || strings.Contains(step.Run, "./internal/test/gitfixture") {
 				reached = true
 				if !installed {
 					t.Errorf("%s runs acquisition before installing Bun", owner)

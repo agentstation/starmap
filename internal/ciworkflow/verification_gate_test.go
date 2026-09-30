@@ -4,7 +4,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
-	"slices"
 	"strings"
 	"testing"
 
@@ -17,8 +16,10 @@ type verificationWorkflow struct {
 		If       string
 		Needs    any
 		Strategy struct {
-			FailFast bool `yaml:"fail-fast"`
-			Matrix   struct {
+			FailFast    bool `yaml:"fail-fast"`
+			MaxParallel int  `yaml:"max-parallel"`
+			Matrix      struct {
+				Runner  []string
 				Group   []string
 				Go      []string
 				Suite   []string
@@ -28,6 +29,7 @@ type verificationWorkflow struct {
 		Env   map[string]string
 		Steps []struct {
 			Uses string
+			If   string
 			With map[string]string
 			Run  string
 			Env  map[string]string
@@ -172,22 +174,95 @@ func TestNativePublicationPreservesPlatformCoverage(t *testing.T) {
 
 func TestNativeRuntimeExercisesPublicHostFiles(t *testing.T) {
 	workflow := readVerificationWorkflow(t)
-	for _, step := range workflow.Jobs["native-runtime"].Steps {
-		after, found := strings.CutPrefix(strings.TrimSpace(step.Run), "native_packages=(")
-		if !found {
-			_, after, found = strings.Cut(step.Run, "\nnative_packages=(")
-		}
-		if !found {
-			continue
-		}
-		packages, _, found := strings.Cut(after, ")")
-		if !found || !slices.Contains(strings.Fields(packages), "./pkg/productfiles") {
-			t.Fatal("native runtime qualification omits the public host file contract")
-		}
-		if !strings.Contains(step.Run, `"${native_packages[@]}"`) {
-			t.Fatal("native runtime qualification does not execute its selected packages")
-		}
-		return
+	found := false
+	for _, step := range workflow.Jobs["native-runtime-tests"].Steps {
+		found = found || strings.Contains(step.Run, "scripts/native_runtime.py run")
 	}
-	t.Fatal("native runtime qualification has no package selection")
+	if !found {
+		t.Fatal("native runtime qualification does not execute its selected group")
+	}
+	script := readFixture(t, "../../scripts/native_runtime.py")
+	if !strings.Contains(script, `"./pkg/productfiles"`) || !strings.Contains(script, `subprocess.run(["go", "list", *patterns]`) {
+		t.Fatal("native qualification omits the public host file package inventory")
+	}
+}
+
+func TestNativeRuntimePartitionsKeepEveryRequiredPlatformAndAggregate(t *testing.T) {
+	workflow := readVerificationWorkflow(t)
+	groups := workflow.Jobs["native-runtime-tests"]
+	aggregate := workflow.Jobs["native-runtime"]
+	if aggregate.Name != "Runtime ${{ matrix.runner }}" || aggregate.Needs != "native-runtime-tests" || aggregate.If != "always()" {
+		t.Fatal("native aggregate must preserve required checks after every group outcome")
+	}
+	if !reflect.DeepEqual(groups.Strategy.Matrix.Include, aggregate.Strategy.Matrix.Include) {
+		t.Fatal("native groups and aggregates qualify different platforms")
+	}
+	if groups.Needs != "verification-checks" || groups.Strategy.FailFast || groups.Strategy.MaxParallel != 10 {
+		t.Fatal("native groups must preserve independent outcomes with bounded concurrency")
+	}
+	wantGroups := []string{"client", "application", "filesystem", "runtime-1", "runtime-2", "runtime-3"}
+	if !reflect.DeepEqual(groups.Strategy.Matrix.Group, wantGroups) {
+		t.Fatal("native matrix omits or repeats a required group")
+	}
+	var runners []string
+	for _, entry := range aggregate.Strategy.Matrix.Include {
+		runners = append(runners, entry["runner"])
+	}
+	if !reflect.DeepEqual(groups.Strategy.Matrix.Runner, runners) {
+		t.Fatal("native group runner axis differs from its platform definitions")
+	}
+	for _, item := range []struct{ contains, required string }{
+		{"filesystem-preflight.jsonl", "matrix.group == 'filesystem'"},
+		{"filesystem-race.jsonl", "matrix.group == 'filesystem'"},
+		{"windows-clock.jsonl", "matrix.group == 'filesystem'"},
+		{"service-owner.txt", "matrix.group == 'filesystem'"},
+	} {
+		var raw struct {
+			Jobs map[string]struct {
+				Steps []struct{ Run, If string }
+			}
+		}
+		if err := yaml.Unmarshal([]byte(readFixture(t, "../../.github/workflows/pr.yaml")), &raw); err != nil {
+			t.Fatal(err)
+		}
+		found := false
+		for _, step := range raw.Jobs["native-runtime-tests"].Steps {
+			if strings.Contains(step.Run, item.contains) {
+				found = strings.Contains(step.If, item.required)
+			}
+		}
+		if !found {
+			t.Fatalf("native preflight repeats or omits %s", item.contains)
+		}
+	}
+	outcome, retained := false, false
+	for _, step := range groups.Steps {
+		outcome = outcome || step.If == "always()" && strings.Contains(step.Run, `'${{ job.status }}' > native-evidence/job-status.txt`)
+		retained = retained || step.If == "always()" && strings.HasPrefix(step.Uses, "actions/upload-artifact@") && step.With["name"] == "native-runtime-${{ matrix.runner }}-${{ matrix.group }}"
+	}
+	verified, combined := false, false
+	for _, step := range aggregate.Steps {
+		verified = verified || strings.Contains(step.Run, "scripts/native_runtime.py combine")
+		combined = combined || strings.HasPrefix(step.Uses, "actions/upload-artifact@") && step.With["name"] == "native-runtime-${{ matrix.runner }}"
+	}
+	if !outcome || !retained || !verified || !combined {
+		t.Fatal("native aggregation omits outcomes, distinct input evidence, or complete output evidence")
+	}
+}
+
+func TestNativeRuntimeAggregateRejectsEveryUnsuccessfulGroupResult(t *testing.T) {
+	workflow := readVerificationWorkflow(t)
+	steps := workflow.Jobs["native-runtime"].Steps
+	if len(steps) == 0 || steps[0].Env["NATIVE_GROUPS"] != "${{ needs.native-runtime-tests.result }}" {
+		t.Fatal("native aggregate omits the authoritative matrix outcome")
+	}
+	for _, result := range []string{"success", "failure", "cancelled", "skipped", ""} {
+		t.Run(result, func(t *testing.T) {
+			command := exec.CommandContext(t.Context(), "sh", "-c", steps[0].Run)
+			command.Env = []string{"NATIVE_GROUPS=" + result}
+			if err := command.Run(); (err == nil) != (result == "success") {
+				t.Fatalf("native aggregate result for %q: %v", result, err)
+			}
+		})
+	}
 }

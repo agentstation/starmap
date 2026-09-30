@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "source_base": "cff5f361af012c030555e72c607f30d5c415a284",
+  "source_sha256": {
+    ".github/workflows/pr.yaml": "493ca4712e4309256d81e2d241702278b2d09fdc2522b461f2d595e44c250974",
+    "internal/ciworkflow/git_qualification_test.go": "d5927a002c93d0445d0e789a75d43fb0fdb6473792ea54cad7730ef5c9a91437",
+    "internal/ciworkflow/verification_gate_test.go": "ddd9f080fd1e13425779f88f214cd5160601e90416541556405c9587acc60019",
+    "scripts/verify.sh": "3b65cf43d2dd3aeda3b7166405e9a4e80752281ef3f62be5244138eab3adedb5",
+    "scripts/native_runtime.py": "33080f5d4b7217c18df3e7e8641710ab44a6d26a53e67ac1db2901a55706efc7",
+    "scripts/test_native_runtime.py": "693e6c744598e0466a0b06d309dce5ca443dfa230ec4554e88c648928408749b"
+  },
+  "commands": [
+    "python3 scripts/test_native_runtime.py",
+    "python3 scripts/test_verification_tests.py",
+    "GOCACHE=/private/tmp/csp13-go-build-20260929 GOWORK=off go test -race -json -count=1 -timeout=5m ./internal/ciworkflow",
+    "GOCACHE=/private/tmp/csp13-go-build-20260929 GOWORK=off CGO_ENABLED=0 go test -json -count=1 -timeout=5m ./internal/ciworkflow",
+    "GOCACHE=/private/tmp/csp13-go-build-20260929 GOWORK=off go vet ./internal/ciworkflow",
+    "GOCACHE=/private/tmp/csp13-go-build-20260929 GOWORK=off go tool goago -stale-ignores -format json ./...",
+    "GOCACHE=/private/tmp/csp13-go-build-20260929 GOWORK=off go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/ciworkflow/...",
+    "make technical-writing-check GOCMD=go RUN_PREFIX= HAS_DEVBOX="
+  ],
+  "checks": {
+    "ciworkflow-race-final2": {
+      "exit_status": 0,
+      "test_results": {
+        "pass": 63
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "elapsed_seconds": 3.432
+        }
+      ],
+      "events_sha256": "d26db0d83a0974176adea648d10d071d34c8eb1a02fe27e091966e35ead945cb"
+    },
+    "ciworkflow-pure-final2": {
+      "exit_status": 0,
+      "test_results": {
+        "pass": 63
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "elapsed_seconds": 1.851
+        }
+      ],
+      "events_sha256": "b34d099588d25e5c0bf7212128b496a305aa6bcf7d8681eacaa14cbe3b784fff"
+    },
+    "python-native-tests.log": {
+      "exit_status": 0,
+      "sha256": "c42839863dbfd23082ce6a11997c3a31550fd5cfba939f3a12000b4d620228ed"
+    },
+    "python-existing-tests.log": {
+      "exit_status": 0,
+      "sha256": "960da5fc1eb9cb5a2641bf51f826142d685bb57a0263278672f16391e5ced49c"
+    },
+    "vet-final.log": {
+      "exit_status": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "goago-final.json": {
+      "exit_status": 0,
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    "lint-final.log": {
+      "exit_status": 0,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "prose-final.log": {
+      "exit_status": 0,
+      "files_checked": 1953,
+      "diagnostics": 0,
+      "sha256": "3cca2acd6ec63752809eab6fe2a94cb7eb78d00306c7f673b1c533ea808e2b52"
+    },
+    "prose-proof.log": {
+      "exit_status": 0,
+      "files_checked": 6,
+      "diagnostics": 0,
+      "sha256": "a384e08f358c228404fdc475c7e37ec8a24065ecdc2b766414d6f70458d95087"
+    }
+  },
+  "historical_failure": {
+    "run": 36636540075,
+    "runtime_package_elapsed_seconds": 1800.204,
+    "active_subtest": "TestSourceResetPreservesPeerRecordsAliasesAndOperatorEdits/true",
+    "active_subtest_age_at_timeout_seconds": 2.673602,
+    "observed_unfinished_top_level_tests": 96,
+    "scope": "Historical unpartitioned Windows x86 native test process"
+  },
+  "policy": {
+    "groups_per_platform": 6,
+    "platforms": 5,
+    "matrix_max_parallel": 10,
+    "go_test_package_timeout": "30m",
+    "process_timeout_seconds": 5400,
+    "required_aggregate_names_preserved": true,
+    "combined_artifact_contract_preserved": true,
+    "durable_synchronization_unchanged": true,
+    "production_go_code_unchanged": true
+  },
+  "qualification_scope": [
+    "Native inventory compilation and exact disjoint coverage on local macOS arm64",
+    "Workflow and evidence contract tests",
+    "Parser and selection checks against historical native artifacts"
+  ],
+  "remaining_uncertainty": [
+    "The new native jobs have not run on GitHub Actions. No iteration-time improvement is measured yet.",
+    "The complete native behavioral suite is reserved for reviewed CI on the existing PR."
+  ],
+  "superseded_attempts": [
+    "The first workflow test compilation failed because of an unused slices import. The final source removed it and passed race and pure-Go checks."
+  ]
+}
