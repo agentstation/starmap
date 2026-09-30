@@ -281,6 +281,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type SourceManualReader](<#SourceManualReader>)
 - [type SourcePolicy](<#SourcePolicy>)
   - [func DefaultSourcePolicy\(\) SourcePolicy](<#DefaultSourcePolicy>)
+  - [func ResolveSourcePolicy\(opts ...Option\) \(SourcePolicy, error\)](<#ResolveSourcePolicy>)
   - [func \(p SourcePolicy\) SafeIdentity\(\) string](<#SourcePolicy.SafeIdentity>)
   - [func \(p SourcePolicy\) Validate\(\) error](<#SourcePolicy.Validate>)
 - [type SourcePublication](<#SourcePublication>)
@@ -2879,6 +2880,15 @@ func DefaultSourcePolicy() SourcePolicy
 ```
 
 DefaultSourcePolicy returns the canonical public\-channel source policy.
+
+<a name="ResolveSourcePolicy"></a>
+### func [ResolveSourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L429>)
+
+```go
+func ResolveSourcePolicy(opts ...Option) (SourcePolicy, error)
+```
+
+ResolveSourcePolicy returns the source policy from canonical runtime options. It starts no runtime, source, clock, file access, or background work. The caller receives detached aliases. Other configuration domains retain their own validation.
 
 <a name="SourcePolicy.SafeIdentity"></a>
 ### func \(SourcePolicy\) [SafeIdentity](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L231>)

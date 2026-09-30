@@ -422,3 +422,24 @@ func worseHealth(left, right Health) Health {
 	}
 	return left
 }
+
+// ResolveSourcePolicy returns the source policy from canonical runtime options.
+// It starts no runtime, source, clock, file access, or background work.
+// The caller receives detached aliases. Other configuration domains retain their own validation.
+func ResolveSourcePolicy(opts ...Option) (SourcePolicy, error) {
+	config := defaults()
+	for _, option := range opts {
+		if option == nil {
+			return SourcePolicy{}, &errors.ValidationError{Field: "catalog_source", Message: "source policy resolution requires non-nil options"}
+		}
+	}
+	if _, err := config.apply(opts...); err != nil {
+		return SourcePolicy{}, err
+	}
+	if err := config.source.Validate(); err != nil {
+		return SourcePolicy{}, err
+	}
+	policy := config.source
+	policy.Aliases = slices.Clone(policy.Aliases)
+	return policy, nil
+}
