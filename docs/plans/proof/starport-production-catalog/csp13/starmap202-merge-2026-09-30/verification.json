@@ -1,0 +1,79 @@
+{
+  "pr": 202,
+  "repo": "agentstation/starmap",
+  "head": "1846721f445f24a6d2df7f3dab120ef16f3fba5a",
+  "base": "c384ccb103fbd64e5d1fba5333f486c669ad74ba",
+  "merge_commit": "e0845d601fb5408f5f206076c9fbb8b0cbc08ecf",
+  "merged_at": "2026-09-30T08:24:13Z",
+  "checks": {
+    "success": 62,
+    "failure": 0,
+    "pending": 0
+  },
+  "reviewed_tree": "dc27d6b8abd199a1efdddab85be9df2916994529",
+  "merged_tree": "dc27d6b8abd199a1efdddab85be9df2916994529",
+  "tree_equality": true,
+  "strict_protection_unchanged": true,
+  "verified_head_signature": true,
+  "verified_merge_signature": true,
+  "unresolved_threads": 0,
+  "merged_module": "v0.16.6-0.20260930082412-e0845d601fb5",
+  "autoreview_proof": "../stopped-directory-preparation-2026-09-30/verification.json",
+  "limits": [
+    "Producer preparation merge does not complete CSP13 operator recovery, fresh readiness or capacity qualification."
+  ],
+  "raw": {
+    "merged.json": {
+      "raw": "merged.json.gz",
+      "sha256": "ae3f67052ad4578f424e701ef6cfce6f6d4e6c14688204969e6487ca9d08d9f9"
+    },
+    "protection-before.json": {
+      "raw": "protection-before.json.gz",
+      "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e"
+    },
+    "premerge.json": {
+      "raw": "premerge.json.gz",
+      "sha256": "9fb8f31652f6ce43d0c9fe9b35bd4181f94ade2775094c051652f2926fddf26a"
+    },
+    "premerge-final.json": {
+      "raw": "premerge-final.json.gz",
+      "sha256": "5ecd1fe1b8b35d09387e6db323039aac265fce0b9a0b478b74d54052ca96316a"
+    },
+    "merge-commit.json": {
+      "raw": "merge-commit.json.gz",
+      "sha256": "0e39c22e585383563b5eef1afc32c60b358c35a7042c4184139d98940836d7be"
+    },
+    "premerge-ready.json": {
+      "raw": "premerge-ready.json.gz",
+      "sha256": "697bb50a273da26fff68195b65954f81af1f6e3c5455a614bb0448ab233ecda3"
+    },
+    "threads.json": {
+      "raw": "threads.json.gz",
+      "sha256": "2393c5e063cf730a29f258a38b0429578ec5118b30a717c65f8610db9dde0259"
+    },
+    "premerge-current3.json": {
+      "raw": "premerge-current3.json.gz",
+      "sha256": "c6e89eb489a8799555475aefcb3c47a0cb2b5fa7560d82b6bea7faf9cbe77854"
+    },
+    "head-commit.json": {
+      "raw": "head-commit.json.gz",
+      "sha256": "b4cccf853092e3f61704c51663fddc2a1ce43e44188d7849f2cf5ef346b38211"
+    },
+    "protection-after.json": {
+      "raw": "protection-after.json.gz",
+      "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e"
+    },
+    "csp13-starmap202-merged-module.json": {
+      "raw": "csp13-starmap202-merged-module.json.gz",
+      "sha256": "587dfd6293cbdbfe85dfac0a3c0847c8ec62041088f0163cf1b24b8f127c6eb1"
+    },
+    "csp13-starmap-open-after202.json": {
+      "raw": "csp13-starmap-open-after202.json.gz",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "csp13-starport-open-after202.json": {
+      "raw": "csp13-starport-open-after202.json.gz",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  }
+}
