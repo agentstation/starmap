@@ -164,21 +164,35 @@ func readLocalCatalogRecovery(ctx context.Context, directory *privatefiles.Direc
 	if err != nil {
 		return localCatalogRecovery{}, nil, err
 	}
-	decoded, err := decompressFleetRecovery(ctx, data, maxCatalogRecoveryBytes)
+	record, err := decodeLocalCatalogRecovery(ctx, name, data)
 	if err != nil {
-		return localCatalogRecovery{}, nil, err
-	}
-	var record localCatalogRecovery
-	if err := json.Unmarshal(decoded, &record, json.RejectUnknownMembers(true), jsonv1.FormatDurationAsNano(true)); err != nil {
-		return record, nil, err
-	}
-	if !validCatalogRecoveryName(name) || name != record.ManifestChecksum+"-"+fleetRecoveryChecksum(data)+".json.gz" {
-		return record, nil, invalidInputPublication("catalog recovery differs from its immutable identity")
-	}
-	if err := record.validateStructure(); err != nil {
 		return record, nil, err
 	}
 	return record, data, nil
+}
+
+func decodeLocalCatalogRecovery(ctx context.Context, name string, data []byte) (localCatalogRecovery, error) {
+	if ctx == nil || !validCatalogRecoveryName(name) || len(data) == 0 || len(data) > maxCatalogRecoveryBytes {
+		return localCatalogRecovery{}, invalidInputPublication("catalog recovery requires bounded original descriptor bytes")
+	}
+	if err := ctx.Err(); err != nil {
+		return localCatalogRecovery{}, err
+	}
+	decoded, err := decompressFleetRecovery(ctx, data, maxCatalogRecoveryBytes)
+	if err != nil {
+		return localCatalogRecovery{}, err
+	}
+	var record localCatalogRecovery
+	if err := json.Unmarshal(decoded, &record, json.RejectUnknownMembers(true), jsonv1.FormatDurationAsNano(true)); err != nil {
+		return record, err
+	}
+	if !validCatalogRecoveryName(name) || name != record.ManifestChecksum+"-"+fleetRecoveryChecksum(data)+".json.gz" {
+		return record, invalidInputPublication("catalog recovery differs from its immutable identity")
+	}
+	if err := record.validateStructure(); err != nil {
+		return record, err
+	}
+	return record, ctx.Err()
 }
 
 func (s *layerStore) readCatalogRecoveryBaseline(ctx context.Context, checksum string) (catalogs.Generation, []byte, error) {

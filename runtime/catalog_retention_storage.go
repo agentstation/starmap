@@ -23,6 +23,10 @@ const retainedCatalogDirectory = "retained-catalog"
 // JSON base64 expansion fits within twice the bounded raw input inventory.
 const maxRetainedCatalogRecordBytes = 2 * storage.DefaultRetentionInputMaxBytes
 
+// MaxCatalogRetentionRecordBytes bounds encoded and decoded original retention envelopes.
+// JSON encoding can expand raw capsule bytes to twice the raw input bound.
+const MaxCatalogRetentionRecordBytes = maxRetainedCatalogRecordBytes
+
 type retainedCatalogManifest struct {
 	Version    int                     `json:"version"`
 	TransferID string                  `json:"transfer_id"`
@@ -216,25 +220,50 @@ func readRetainedCatalogEnvelope(ctx context.Context, directory *privatefiles.Di
 	if err != nil {
 		return CatalogRetentionInput{}, err
 	}
-	if fleetRecoveryChecksum(raw) != reference.RecordSHA256 {
-		return CatalogRetentionInput{}, invalidInputPublication("retained envelope differs from its immutable identity")
-	}
-	data, err := decompressRecoveryRecord(ctx, raw, maxRetainedCatalogRecordBytes, maxRetainedCatalogRecordBytes)
+	entry, input, err := InspectCapturedCatalogRetention(ctx, reference.RecordSHA256+".json.gz", raw)
 	if err != nil {
 		return CatalogRetentionInput{}, err
 	}
-	var envelope retainedCatalogEnvelope
-	if err := json.Unmarshal(data, &envelope, json.RejectUnknownMembers(true), jsonv1.FormatDurationAsNano(true)); err != nil {
-		return CatalogRetentionInput{}, err
-	}
-	if envelope.Version != materializationVersion || envelope.Entry != reference.Entry {
+	if entry != reference.Entry {
 		return CatalogRetentionInput{}, invalidInputPublication("retained envelope differs from its receipt")
 	}
-	if err := validateCatalogRetentionInput(ctx, envelope.Entry, envelope.Input); err != nil {
-		return CatalogRetentionInput{}, err
-	}
-	return envelope.Input, ctx.Err()
+	return input, nil
 }
+
+// InspectCapturedCatalogRetention checks original immutable envelope bytes without opening a runtime.
+// It checks structure and generation identity. It proves no completed batch, selection, ownership, or permission.
+// The host must verify the complete original archive census and publication records separately.
+func InspectCapturedCatalogRetention(ctx context.Context, name string, raw []byte) (CatalogRetentionEntry, CatalogRetentionInput, error) {
+	if ctx == nil || len(raw) == 0 || len(raw) > MaxCatalogRetentionRecordBytes {
+		return CatalogRetentionEntry{}, CatalogRetentionInput{}, invalidInputPublication("captured retention requires bounded original envelope bytes")
+	}
+	if err := ctx.Err(); err != nil {
+		return CatalogRetentionEntry{}, CatalogRetentionInput{}, err
+	}
+	checksum, ok := strings.CutSuffix(name, ".json.gz")
+	if !ok || !validFleetChecksum(checksum) || fleetRecoveryChecksum(raw) != checksum {
+		return CatalogRetentionEntry{}, CatalogRetentionInput{}, invalidInputPublication("retained envelope differs from its immutable identity")
+	}
+	data, err := decompressRecoveryRecord(ctx, raw, maxRetainedCatalogRecordBytes, maxRetainedCatalogRecordBytes)
+	if err != nil {
+		return CatalogRetentionEntry{}, CatalogRetentionInput{}, err
+	}
+	var envelope retainedCatalogEnvelope
+	if err := json.Unmarshal(data, &envelope, json.RejectUnknownMembers(true), jsonv1.FormatDurationAsNano(true)); err != nil {
+		return CatalogRetentionEntry{}, CatalogRetentionInput{}, err
+	}
+	if envelope.Version != materializationVersion {
+		return CatalogRetentionEntry{}, CatalogRetentionInput{}, invalidInputPublication("retained envelope has an unsupported version")
+	}
+	if err := validateCatalogRetentionInput(ctx, envelope.Entry, envelope.Input); err != nil {
+		return CatalogRetentionEntry{}, CatalogRetentionInput{}, err
+	}
+	if err := ctx.Err(); err != nil {
+		return CatalogRetentionEntry{}, CatalogRetentionInput{}, err
+	}
+	return envelope.Entry, envelope.Input, nil
+}
+
 func retainedCatalogFileLimit(name string) (int64, bool) {
 	prefix := layerDirectoryName + "/" + retainedCatalogDirectory
 	if path.Dir(path.Dir(name)) != prefix || !validFleetChecksum(path.Base(path.Dir(name))) {

@@ -71,6 +71,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 
 - [Constants](<#constants>)
 - [func CatalogRecoveryChecksums\(ctx context.Context, path string, owner DirectoryOwner, identity string, generation catalogs.Generation\) \(\[\]string, error\)](<#CatalogRecoveryChecksums>)
+- [func InspectCapturedCatalogRetention\(ctx context.Context, name string, raw \[\]byte\) \(CatalogRetentionEntry, CatalogRetentionInput, error\)](<#InspectCapturedCatalogRetention>)
 - [func InspectRetainedCatalogMaterialization\(ctx context.Context, request CatalogRetainedMaterializationRequest, expected CatalogMaterializationReceipt, opts ...Option\) \(resultErr error\)](<#InspectRetainedCatalogMaterialization>)
 - [func InspectRetainedDirectory\(ctx context.Context, path string, owner DirectoryOwner, identity string\) error](<#InspectRetainedDirectory>)
 - [func InspectRetainedMigration\(ctx context.Context, originalDirectory string, owner DirectoryOwner, identity string, read RetainedRecordReader\) \(\[\]string, error\)](<#InspectRetainedMigration>)
@@ -90,6 +91,12 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type AcquisitionRequest](<#AcquisitionRequest>)
 - [type AcquisitionResult](<#AcquisitionResult>)
 - [type BindingAcquirer](<#BindingAcquirer>)
+- [type CapturedCatalogBinding](<#CapturedCatalogBinding>)
+- [type CapturedCatalogRecovery](<#CapturedCatalogRecovery>)
+  - [func InspectCapturedCatalogRecovery\(ctx context.Context, name string, descriptor \[\]byte, readBaseline func\(context.Context, string, int64\) \(\[\]byte, error\)\) \(\*CapturedCatalogRecovery, error\)](<#InspectCapturedCatalogRecovery>)
+  - [func \(p \*CapturedCatalogRecovery\) Binding\(\) CapturedCatalogBinding](<#CapturedCatalogRecovery.Binding>)
+  - [func \(\*CapturedCatalogRecovery\) Format\(state fmt.State, \_ rune\)](<#CapturedCatalogRecovery.Format>)
+  - [func \(p \*CapturedCatalogRecovery\) RecoveryFor\(ctx context.Context, generation catalogs.Generation\) \(CatalogRecovery, error\)](<#CapturedCatalogRecovery.RecoveryFor>)
 - [type CatalogMaterializationInput](<#CatalogMaterializationInput>)
 - [type CatalogMaterializationReceipt](<#CatalogMaterializationReceipt>)
   - [func MaterializeCatalogRecovery\(ctx context.Context, request CatalogMaterializationRequest, opts ...Option\) \(receipt CatalogMaterializationReceipt, resultErr error\)](<#MaterializeCatalogRecovery>)
@@ -479,6 +486,12 @@ const (
 const FleetRecoveryOriginVersion = 1
 ```
 
+<a name="MaxCatalogRetentionRecordBytes"></a>MaxCatalogRetentionRecordBytes bounds encoded and decoded original retention envelopes. JSON encoding can expand raw capsule bytes to twice the raw input bound.
+
+```go
+const MaxCatalogRetentionRecordBytes = maxRetainedCatalogRecordBytes
+```
+
 <a name="MaxFleetRecoveryBytes"></a>MaxFleetRecoveryBytes bounds both encoded and decoded private inputs for one fleet publication.
 
 ```go
@@ -493,6 +506,15 @@ func CatalogRecoveryChecksums(ctx context.Context, path string, owner DirectoryO
 ```
 
 CatalogRecoveryChecksums lists immutable input\-record identities for an exact generation. These checksums name compressed local descriptors, not exported FleetRecovery bytes. The caller must fence writers. Multiple results require an explicit selection. Listing never proves which publication committed or whether independent history is complete.
+
+<a name="InspectCapturedCatalogRetention"></a>
+## func [InspectCapturedCatalogRetention](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention_storage.go#L236>)
+
+```go
+func InspectCapturedCatalogRetention(ctx context.Context, name string, raw []byte) (CatalogRetentionEntry, CatalogRetentionInput, error)
+```
+
+InspectCapturedCatalogRetention checks original immutable envelope bytes without opening a runtime. It checks structure and generation identity. It proves no completed batch, selection, ownership, or permission. The host must verify the complete original archive census and publication records separately.
 
 <a name="InspectRetainedCatalogMaterialization"></a>
 ## func [InspectRetainedCatalogMaterialization](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_retention.go#L293>)
@@ -747,6 +769,66 @@ type BindingAcquirer interface {
     AcquireProviderBindings(context.Context, AcquisitionRequest, []sources.ProviderAcquisitionBinding) (AcquisitionResult, error)
 }
 ```
+
+<a name="CapturedCatalogBinding"></a>
+## type [CapturedCatalogBinding](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery_captured.go#L18-L22>)
+
+CapturedCatalogBinding identifies the retained generation that the host must independently verify.
+
+```go
+type CapturedCatalogBinding struct {
+    ManifestChecksum string
+    GenerationID     string
+    PayloadChecksum  string
+}
+```
+
+<a name="CapturedCatalogRecovery"></a>
+## type [CapturedCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery_captured.go#L12-L15>)
+
+CapturedCatalogRecovery holds structurally checked original descriptor and baseline inputs. It proves no archive completeness, publication, target ownership, semantics, or permission.
+
+```go
+type CapturedCatalogRecovery struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="InspectCapturedCatalogRecovery"></a>
+### func [InspectCapturedCatalogRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery_captured.go#L27>)
+
+```go
+func InspectCapturedCatalogRecovery(ctx context.Context, name string, descriptor []byte, readBaseline func(context.Context, string, int64) ([]byte, error)) (*CapturedCatalogRecovery, error)
+```
+
+InspectCapturedCatalogRecovery checks original archive bytes without opening a runtime directory. The host supplies a bounded reader for the original baseline and verifies the complete archive census. Historical inputs receive structural validation. Target replay and permission checks remain separate.
+
+<a name="CapturedCatalogRecovery.Binding"></a>
+### func \(\*CapturedCatalogRecovery\) [Binding](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery_captured.go#L58>)
+
+```go
+func (p *CapturedCatalogRecovery) Binding() CapturedCatalogBinding
+```
+
+Binding returns checked identity fields without exposing private source inputs.
+
+<a name="CapturedCatalogRecovery.Format"></a>
+### func \(\*CapturedCatalogRecovery\) [Format](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery_captured.go#L85>)
+
+```go
+func (*CapturedCatalogRecovery) Format(state fmt.State, _ rune)
+```
+
+Format excludes private source configuration and baseline data from diagnostics.
+
+<a name="CapturedCatalogRecovery.RecoveryFor"></a>
+### func \(\*CapturedCatalogRecovery\) [RecoveryFor](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery_captured.go#L67>)
+
+```go
+func (p *CapturedCatalogRecovery) RecoveryFor(ctx context.Context, generation catalogs.Generation) (CatalogRecovery, error)
+```
+
+RecoveryFor binds the original inputs to an independently retained complete generation. It creates a separate encoded copy. It neither replays target state nor renews permission.
 
 <a name="CatalogMaterializationInput"></a>
 ## type [CatalogMaterializationInput](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_materialization.go#L32-L35>)
