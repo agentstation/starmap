@@ -1,0 +1,44 @@
+{
+  "status": "verified; cleanup pending",
+  "checked_at": "2026-09-30T11:02:34.900229+00:00",
+  "managed_worktrees": false,
+  "records": [
+    {
+      "pr": 203,
+      "worktree": "/private/tmp/starmap-a16-acceptance-20260930",
+      "branch": "codex/a16-sql-acceptance",
+      "head": "dfd724ccad45a59f7fe38400845272c8cf944deb",
+      "merge": "f7831606686da65c13d1f639a3ac6da94e9de08d",
+      "tree_equality": true,
+      "clean": true,
+      "ignored_derived_cache_entries": 32,
+      "active_consumer_confirmations": [
+        "starmap_ci_repair",
+        "catalog_materializer"
+      ],
+      "remote_head": null,
+      "open_prs": 0
+    },
+    {
+      "pr": 204,
+      "worktree": "/private/tmp/starmap-retention-usage-20260930",
+      "branch": "codex/catalog-retention-usage",
+      "head": "7052d7e70ba4e70fc2d0e326a57b1a4e893201d0",
+      "merge": "1c03a457a14f6f28691207ed79f0e24cf944adcc",
+      "tree_equality": true,
+      "clean": true,
+      "ignored_derived_cache_entries": 31,
+      "active_consumer_confirmations": [
+        "starmap_ci_repair",
+        "catalog_materializer"
+      ],
+      "remote_head": null,
+      "open_prs": 0
+    }
+  ],
+  "earlier_inspection_error": "Initial lookup assumed a remote branch existed; ls-remote returned no branch. No deletion occurred. Rechecked absent branches explicitly.",
+  "limits": [
+    "Unpublished comparison, application and capacity worktrees are excluded.",
+    "Historical provisional workspace file is retained but cannot be used for final qualification."
+  ]
+}

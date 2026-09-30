@@ -1,0 +1,64 @@
+{
+  "status": "merged",
+  "pr": 204,
+  "repo": "agentstation/starmap",
+  "head": "7052d7e70ba4e70fc2d0e326a57b1a4e893201d0",
+  "base": "f7831606686da65c13d1f639a3ac6da94e9de08d",
+  "reviewed_tree": "89a05b89b51ac34014198ccea1fb984fba11ca8a",
+  "checks": {
+    "success": 62,
+    "failure": 0,
+    "pending": 0
+  },
+  "verified_head_signature": true,
+  "unresolved_threads": 0,
+  "raw": {
+    "premerge": {
+      "file": "premerge.json.gz",
+      "sha256": "8a0a577c64203c1a4d2a0fa549eb9ce820d64d452d1d92e796faeef9b063152d",
+      "gzip_sha256": "3e0ac0bbc18c5218df2dbc2d7e971af0ad531681ed193d87f67e8d52ae1dfbf5"
+    },
+    "head-commit": {
+      "file": "head-commit.json.gz",
+      "sha256": "09b8466f5182d50218fc2ff50e3d9521b5a9b880c4e21a833d3b7a9b66d68dc4",
+      "gzip_sha256": "4390a0129d6e2e726c1ec44e588ea5ab484e2dfff9faf585907ff4339ae38d0a"
+    },
+    "protection-before": {
+      "file": "protection-before.json.gz",
+      "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+      "gzip_sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce"
+    },
+    "threads": {
+      "file": "threads.json.gz",
+      "sha256": "41aeb6f0b1637a4efc5c37cb0e47797c832b8582b70af2ac844f38a484b3a0b8",
+      "gzip_sha256": "0c7130b0d154f294eac422935f9f76d4f4eed868886b94220d578507ba6f902d"
+    },
+    "merged": {
+      "file": "merged.json.gz",
+      "sha256": "a9f4ec6387e6b2ec5b9dd81761438684fdf497ead223cab16bafc21baa241fb9",
+      "gzip_sha256": "1042109ffd6bbde5656c074c56cfc9c129e29b58352125b779e8c4562b3b7b02"
+    },
+    "merge-commit": {
+      "file": "merge-commit.json.gz",
+      "sha256": "2d2f71d7c3c19be2bc968baca7efcc54afddcbe2d2f9e83903cfa7ddaaa4177c",
+      "gzip_sha256": "32c3dd944c1309dcffb2d54894bb3163dfc4e3e8a44a657322838f2ece1e2ba0"
+    },
+    "protection-after": {
+      "file": "protection-after.json.gz",
+      "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+      "gzip_sha256": "a13317f7f38060ebf8e9ac4cdf50a5d0cf635d6f17b7492f08654a5c10cb65ce"
+    }
+  },
+  "merge_commit": "1c03a457a14f6f28691207ed79f0e24cf944adcc",
+  "merged_at": "2026-09-30T10:38:57Z",
+  "merged_tree": "89a05b89b51ac34014198ccea1fb984fba11ca8a",
+  "tree_equality": true,
+  "strict_protection_unchanged": true,
+  "verified_merge_signature": true,
+  "autoreview_proof": "../retention-main-merge-2026-09-30/verification.json",
+  "limits": [
+    "The bounded retention-usage API is merged. Final consumer packing, maximum capacity, full application deadline and complete CSP13 acceptance remain unqualified.",
+    "The earlier Windows helper failure remains preserved; final exact-head native CI passed."
+  ],
+  "published_module": "v0.16.6-0.20260930103856-1c03a457a14f"
+}
