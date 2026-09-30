@@ -2,6 +2,7 @@ package ciworkflow
 
 import (
 	"os/exec"
+	"path"
 	"path/filepath"
 	"reflect"
 	"strings"
@@ -238,7 +239,7 @@ func TestNativeRuntimePartitionsKeepEveryRequiredPlatformAndAggregate(t *testing
 	outcome, retained := false, false
 	for _, step := range groups.Steps {
 		outcome = outcome || step.If == "always()" && strings.Contains(step.Run, `'${{ job.status }}' > native-evidence/job-status.txt`)
-		retained = retained || step.If == "always()" && strings.HasPrefix(step.Uses, "actions/upload-artifact@") && step.With["name"] == "native-runtime-${{ matrix.runner }}-${{ matrix.group }}"
+		retained = retained || step.If == "always()" && strings.HasPrefix(step.Uses, "actions/upload-artifact@") && step.With["name"] == "native-runtime-${{ matrix.runner }}--${{ matrix.group }}"
 	}
 	verified, combined := false, false
 	for _, step := range aggregate.Steps {
@@ -264,5 +265,48 @@ func TestNativeRuntimeAggregateRejectsEveryUnsuccessfulGroupResult(t *testing.T)
 				t.Fatalf("native aggregate result for %q: %v", result, err)
 			}
 		})
+	}
+}
+
+func TestNativeRuntimeArtifactSelectionSeparatesEveryPlatform(t *testing.T) {
+	workflow := readVerificationWorkflow(t)
+	aggregate := workflow.Jobs["native-runtime"]
+	groups := workflow.Jobs["native-runtime-tests"]
+	var pattern, artifact string
+	for _, step := range aggregate.Steps {
+		if strings.HasPrefix(step.Uses, "actions/download-artifact@") {
+			pattern = step.With["pattern"]
+		}
+	}
+	for _, step := range groups.Steps {
+		if strings.HasPrefix(step.Uses, "actions/upload-artifact@") {
+			artifact = step.With["name"]
+		}
+	}
+	if pattern == "" || artifact == "" {
+		t.Fatal("native artifact selection is missing")
+	}
+	for _, destination := range aggregate.Strategy.Matrix.Include {
+		runner := destination["runner"]
+		selected := strings.ReplaceAll(pattern, "${{ matrix.runner }}", runner)
+		matches := 0
+		for _, source := range aggregate.Strategy.Matrix.Include {
+			for _, group := range groups.Strategy.Matrix.Group {
+				name := strings.NewReplacer("${{ matrix.runner }}", source["runner"], "${{ matrix.group }}", group).Replace(artifact)
+				matched, err := path.Match(selected, name)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if matched {
+					matches++
+					if runner != source["runner"] {
+						t.Errorf("%s selects another platform artifact: %s", runner, name)
+					}
+				}
+			}
+		}
+		if matches != len(groups.Strategy.Matrix.Group) {
+			t.Errorf("%s selects %d artifacts, require %d", runner, matches, len(groups.Strategy.Matrix.Group))
+		}
 	}
 }
