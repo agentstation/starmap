@@ -167,6 +167,12 @@ The retained activation runner also refuses a mode mismatch. It reopens only an 
 - The native opener omits `validateExistingImportedTargets`.
 - The flow verifies canonical files in place against C. It publishes no file.
 - Catalog identity moves through the existing topology compile and preparation lane. `AdoptFleet` alone is insufficient.
+- Deviation, recorded 2026-09-30: `validateTopologyDirection` in `internal/catalog` required the destination backend identity to equal the boundary backend identity.
+  The closed-adoption record keeps the old backend identity (item 3), so adoption after a restart or a promotion refused with `ErrConflict`.
+  A typed `Record.AdoptionBoundary()` predicate in `internal/recovery` owns the `"adoption-epoch:"` evidence prefix.
+  The catalog skips the equality check only for an adoption boundary and then requires a non-empty destination backend identity.
+  Every other boundary keeps the equality rule. No request field carries a prior identity, because a request value is caller authority.
+- After approval, the application binds the approved backend identity to the destination identity before any native release.
 - One new `starport backup` subcommand exposes the flow. `docs/RECOVERY.md` gains the procedure.
 
 ## Required tests
