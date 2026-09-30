@@ -747,6 +747,87 @@
           "repository": "starmap",
           "package": "./runtime",
           "test": "TestCompletedMigrationStartupRefusesReplacedTarget"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestMigrationJournalProcessRecovery",
+          "required_subtests": [
+            "before-checkpoint",
+            "after-checkpoint"
+          ]
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestMigrationPhaseProcessRecovery",
+          "required_subtests": [
+            "stage",
+            "publish",
+            "complete"
+          ],
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRestorePublishRuntimeRetainsIdentityWithoutAdmission",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRestorePublishRuntimeRefusesInvalidIdentity",
+          "required_subtests": [
+            "corrupt",
+            "different-replica",
+            "different-override"
+          ],
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRestorePublishRuntimeKeepsCompletedMigrationHistoryInactive",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRestorePublishRuntimeRefusesIncompleteMigrationHistoryBeforePreparation",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRestorePublishRuntimePreservesNativePublicationEvidence",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRestorePublishRuntimeRejectsChangedNativeStagingBeforePreparation",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryCanonicalFilesFreshProcessAfterBlobRelease"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupBundleBindsStoresFilesAndKeyAccess"
         }
       ]
     },
@@ -7586,6 +7667,465 @@
               "test": "TestMigrationOwnerCancellationAndRelease"
             }
           ]
+        }
+      ]
+    },
+    "A16.kv_sql_file_references": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBundleReferencesRequireMoreThanArtifactDigestsAndKeyChallenge"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBundleReferencesRejectInvalidSQLIdentity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBundleIdentityReferencesPreserveGrantsAndRefuseCorruption"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupStoredByteReferences",
+          "required_subtests": [
+            "badger",
+            "valkey"
+          ],
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupJobReservationLinks"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestPrepareBundleLocalAndSharedRecipes",
+          "required_subtests": [
+            "local",
+            "shared"
+          ]
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestRelationalTransferAllBackendPairs",
+          "required_subtests": [
+            "sqlite/sqlite",
+            "sqlite/postgres",
+            "sqlite/mysql",
+            "postgres/sqlite",
+            "postgres/postgres",
+            "postgres/mysql",
+            "mysql/sqlite",
+            "mysql/postgres",
+            "mysql/mysql"
+          ],
+          "batch": false
+        }
+      ]
+    },
+    "A16.interrupted_migration": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestRelationalImportReceiptRetriesWithoutRepeatingRestrictions",
+          "required_subtests": [
+            "sqlite",
+            "postgres",
+            "mysql"
+          ]
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestRelationalImportReceiptRollsBackWithRestriction",
+          "required_subtests": [
+            "sqlite",
+            "postgres",
+            "mysql"
+          ]
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestRelationalImportReceiptConcurrentRetry",
+          "required_subtests": [
+            "sqlite",
+            "postgres",
+            "mysql"
+          ]
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMigrationRejectsUnknownHistory",
+          "required_subtests": [
+            "sqlite",
+            "postgres",
+            "mysql"
+          ]
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMySQLPartialMigrationRequiresReconciliation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMySQLMigrationReconciliationAppliedDoesNotRepeatDDL"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMySQLMigrationReconciliationRevertedAllowsExplicitRetry"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMySQLMigrationReconciliationRejectsUnboundEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMySQLMigrationReconciliationRollsBackReceiptFailure"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestMySQLMigrationReconciliationRequiresTransactionalRecords",
+          "required_subtests": [
+            "schema_migrations",
+            "schema_migration_attempts",
+            "schema_migration_reconciliations"
+          ]
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestPrepareBundleResumesAfterInterruptedComponents",
+          "required_subtests": [
+            "kv",
+            "before-blobs",
+            "after-blobs",
+            "files"
+          ]
+        }
+      ]
+    },
+    "A16.complete_backup_manifest": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupBundleBindsStoresFilesAndKeyAccess"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupBundleSharedRecipe"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupBundleDetectsChangedArtifacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupBundleLeavesNoManifestAfterBoundaryChange"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestBackupBundleRefusesIncompleteInputs"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBackupInventoryAccountsForEveryCanonicalRole"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBackupInventoryTracksLoadedConfigurationDigest"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBackupInventoryPreservesSelectedWorkspaceAndRecoveryFiles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBackupInventoryRefusesIncompleteOrUnsafeScan"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestBackupInventoryRefusesUnknownActiveRole"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestBackupApplicationCapturesExistingDeployment"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestBackupCommandsUseNativeApplicationCapture"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestRecoveryTopologyRuntimeObservationsRequireCompletePortableCensus"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestBackupApplicationRefusesInvalidCatalog",
+          "required_subtests": [
+            "accepted-pointer",
+            "candidate-pointer",
+            "generation",
+            "history",
+            "fleet-head"
+          ]
+        }
+      ]
+    },
+    "A33.backup_then_revoke_and_spend": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch",
+          "batch": false
+        }
+      ]
+    },
+    "A33.old_writer_fenced": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestRecoveryAuthorityAcrossRealProcesses",
+          "required_subtests": [
+            "same-backend",
+            "reachable-old-primary"
+          ],
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryAcceptanceRequiresExplicitExternalFacts"
+        }
+      ]
+    },
+    "A33.independent_record_replay": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerNativeFiniteManifestAndRestart",
+          "required_subtests": [
+            "false",
+            "true"
+          ],
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerLostNativeRepliesReuseOriginalImages",
+          "required_subtests": [
+            "false-kv",
+            "false-blob",
+            "true-kv",
+            "true-blob"
+          ],
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerRejectsRotationOrder"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerRejectsChangedInputsAndRetainedEvidence",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerMissingAssetKeepsNativeClaimClosed"
+        }
+      ]
+    },
+    "A33.missing_evidence_restricted": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryActivationReplaysActualPostBackupRevocationSpendAndUncertainDispatch",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryAcceptanceRequiresExplicitExternalFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerEmptyIntervalStaysRestricted"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestHistoryRunnerMissingAssetKeepsNativeClaimClosed"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryActivationCurrentChoiceOrOriginalEvidenceFailureKeepsRemainingOwnersClosed",
+          "required_subtests": [
+            "settings",
+            "token",
+            "source-file",
+            "runtime",
+            "original-history",
+            "decision"
+          ],
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryStartupRefusesBeforeApplicationEffects",
+          "required_subtests": [
+            "closed-import",
+            "corrupt-receipt"
+          ]
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryStartupJoinsNativeOwnersBeforeMaintenance"
+        }
+      ]
+    },
+    "A33.fresh_replica_history_barrier": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryFreshGatewayRejectsUnapprovedHistoryBeforeEffects",
+          "required_subtests": [
+            "missing-sql-approval",
+            "missing-native-approval",
+            "stale-native-epoch",
+            "replacement-incarnation"
+          ],
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryFreshReplicaActualHistoryBarriers",
+          "required_subtests": [
+            "completed-import-missing-sql-approval",
+            "completed-import-missing-native-approval",
+            "completed-import-prior-native-epoch",
+            "completed-import-distinct-native-incarnation"
+          ],
+          "batch": false
+        }
+      ]
+    },
+    "A41.unprefixed_record_migration": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestUnprefixedMigrationPreservesRecordsAcrossProcessExit",
+          "batch": false
         }
       ]
     }
