@@ -5270,3 +5270,13 @@ Starport `fc3b9074` retains a private complete byte census from the verified ori
 Starport `303fdef6` integrates the [observed post-backup DR test](../../plans/proof/starport-production-catalog/csp13/post-backup-activity-2026-09-30/verification.json). One result passes per mode with actual Badger, SQLite, complete backup, independent history, and activation. It preserves 700 nanoUSD spent and 200 nanoUSD held. Withdrawn keys and grants remain denied while an unaffected key works. An uncertain provider dispatch never repeats.
 
 This observed interval does not prove continuous history completeness, shared DR, old-primary fencing, native Linux/Windows behavior, maximum capacity, or deployment RPO/RTO. CSP13 remains in progress.
+
+## Checked-source activation repair, September 30, 2026
+
+The [full embedded profile](../../plans/proof/starport-production-catalog/csp13/full-embedded-vector-failure-2026-09-30/verification.json) failed at Starport `0c2cf5d4` on the published Starmap `2bb99571` module. The test exceeded its unchanged 420-second activation limit. Its exact binary and CPU profile remain private with recorded hashes. The profile shows repeated original reference inspection during canonical checks. It does not establish complete wall-time attribution.
+
+Starport `2a7cd1a1` reuses the privately checked source during one activation. It retains fresh complete artifact and encryption-key checks. The [component proof](../../plans/proof/starport-production-catalog/csp13/checked-source-integration-2026-09-30/verification.json) records 49 canonical results per mode without failures or skips. Public inspectors and restarted processes still inspect all domain references. Complete activation and maximum capacity remain UNVERIFIED.
+
+Root integrated operator-command tests at `11afee4c` after source and evidence review. Their original source passes two native results per mode. A shipping binary proves status and completed exact retry. Actual CLI handlers resume in a fresh test process after a lost blob commit reply. Combined-source native qualification remains required.
+
+The empty-target import and catalog adoption primitives lack a complete populated restart adoption procedure. The [extension contract](../../plans/proof/starport-production-catalog/csp13/populated-adoption-contract-2026-09-30/CONTRACT.md) assigns that procedure to CSP13. Offline expected-state reconstruction and restricted native ownership remain required. Coordinated operator activation and real restart or loss cases also remain required. Empty-target restore after a restart cannot qualify the complete procedure.

@@ -5527,3 +5527,15 @@ Prepared snapshot inspection compares the complete catalog namespace against tha
 The destination boundary, future identity, stage marker, selection receipt, current permission, and native release checks remain required. Restart recompiles the original verified backup before using the private census. This optimization applies to recovery inspection, not inference authorization.
 
 The seven-minute full-catalog operation deadline remains unchanged. Its initial failure remains evidence until a source-bound repaired run passes. Component checks cannot establish deployment RPO/RTO or complete recovery qualification.
+
+## Checked original source during activation
+
+One activation may retain its privately constructed `RestoreSource` after complete domain reference inspection. Each canonical check must revalidate the complete original manifest, artifact census, hashes, and current encryption-key access. The original request and deployment must still match. Current file roles, target selections, native identities, and permission checks remain mandatory.
+
+Public passive inspection and process restart must inspect the complete original reference graph. A caller-supplied digest cannot construct this private capability. This optimization cannot cache current permission, renew a deadline, or replace selected catalog semantic inspection.
+
+## Populated restart adoption
+
+CSP13 must supply a separate populated adoption procedure while retaining empty-target import checks. The [adoption contract](../../plans/proof/starport-production-catalog/csp13/populated-adoption-contract-2026-09-30/CONTRACT.md) requires independent history and exact owner-derived live state. Private offline projection may reconstruct expected state in bounded scratch storage. It cannot grant native adoption or admission. Native approval, complete history, all-writer fencing, and coordinated release remain separate required evidence.
+
+An observed recovery withdrawal must remain effective in the old authority owner. Restoring an equal SQL approval must not renew that owner's admission or mutations. Transient authority-query failure does not itself prove a withdrawal. Diagnostics remain available.
