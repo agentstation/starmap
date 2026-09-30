@@ -1,0 +1,73 @@
+{
+  "base": "c384ccb103fbd64e5d1fba5333f486c669ad74ba",
+  "Go": "1.27.1",
+  "platform": "darwin/arm64",
+  "scope": "Explicit stopped catalog directory preparation before activation sealing. No runtime, source reads, acquisition, selection or permission creation.",
+  "source_sha256": {
+    "runtime/catalog_recovery_directory.go": "da0b3568a3cc607f0d308ca0ab86edfa3a95ee06aaa2c30cd32200a1dae6a5ac",
+    "runtime/catalog_recovery_directory_test.go": "0b4bb2cd7511ce78792ac831099ad09a970f5230defb549805ff0e23851e69b2",
+    "runtime/README.md": "fd2f4952a821f71fdb35399dd380316b71b7217052399075f218f2bf3c2aca9a"
+  },
+  "tests": {
+    "race": {
+      "exit": 0,
+      "results": {
+        "pass": 23
+      },
+      "selector": "^Test(PrepareCatalogRecoveryDirectory|DirectoryOwner|PersistentRuntimeRefusesConcurrentDirectoryOwner|RuntimeDirectoryOwnership)",
+      "raw": "/tmp/csp13-directory-preparation-race-final.jsonl",
+      "sha256": "7e83492c1c110e9ac28bbb34b89b2edb43753c6658c78afd2e5244d4f230727a",
+      "GOWORK": "off",
+      "Go": "1.27.1"
+    },
+    "pure": {
+      "exit": 0,
+      "results": {
+        "pass": 23
+      },
+      "selector": "^Test(PrepareCatalogRecoveryDirectory|DirectoryOwner|PersistentRuntimeRefusesConcurrentDirectoryOwner|RuntimeDirectoryOwnership)",
+      "raw": "/tmp/csp13-directory-preparation-pure-final.jsonl",
+      "sha256": "b55f78ed48f7f000e5cec37767b0735c3350e656bfed7a7f772d904dd2c3e75b",
+      "GOWORK": "off",
+      "Go": "1.27.1"
+    }
+  },
+  "full_checks": {
+    "command": "GOWORK=off GOCACHE=/private/tmp/csp13-go-build-20260929 make verify-checks",
+    "exit": 0,
+    "raw": "/tmp/csp13-directory-preparation-verify-checks-final2.log"
+  },
+  "historical_failures": {
+    "fail_before": "Public API is absent on prior producer; actual build failure.",
+    "initial_checks": "Generated API documentation missing; regenerated through make godoc.",
+    "second_checks": "Two source-comment prose diagnostics; fixed paragraph length and wording."
+  },
+  "limits": [
+    "Native Linux/Windows qualification remains pending until publication.",
+    "Host must fence writers and call only before sealing its activation decision. Restart uses passive inspection.",
+    "Complete application recovery, maximum capacity and RPO/RTO are separate criteria."
+  ],
+  "raw": {
+    "/tmp/csp13-directory-preparation-fail-before.jsonl": {
+      "sha256": "a65f88b4303505af82687e5bc354cab608b3e737deed2f390d5f1af12e6cf9a4"
+    },
+    "/tmp/csp13-directory-preparation-race-final.jsonl": {
+      "sha256": "7e83492c1c110e9ac28bbb34b89b2edb43753c6658c78afd2e5244d4f230727a"
+    },
+    "/tmp/csp13-directory-preparation-pure-final.jsonl": {
+      "sha256": "b55f78ed48f7f000e5cec37767b0735c3350e656bfed7a7f772d904dd2c3e75b"
+    },
+    "/tmp/csp13-directory-preparation-verify-checks.log": {
+      "sha256": "4d03567b536539268dcc5295a13983dbcb2eb48f00ff50a466471c9f5aa178ca"
+    },
+    "/tmp/csp13-directory-preparation-verify-checks-final.log": {
+      "sha256": "fcc5519956bc991f021d05e21990240a7570a047a41f8849740c0c57439723fd"
+    },
+    "/tmp/csp13-directory-preparation-verify-checks-final2.log": {
+      "sha256": "5bb5c6da0a25c9768bbfd0db9d4896260a95731abfcd74a3f5bff3b388a23a25"
+    },
+    "/tmp/csp13-directory-preparation-godoc-final.log": {
+      "sha256": "20acc7ff4e031492196297ef4e7023b35bbdfa4c0e7adae0088c7ec47e7bba59"
+    }
+  }
+}

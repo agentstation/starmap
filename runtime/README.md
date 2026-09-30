@@ -77,6 +77,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [func InspectRetainedMigration\(ctx context.Context, originalDirectory string, owner DirectoryOwner, identity string, read RetainedRecordReader\) \(\[\]string, error\)](<#InspectRetainedMigration>)
 - [func InspectRetainedPublications\(ctx context.Context, files map\[string\]RetainedFile, read RetainedRecordReader\) \(\[\]string, error\)](<#InspectRetainedPublications>)
 - [func PrepareAcquisitionReplay\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation, runID string, completedAt time.Time\) \(catalogs.Generation, \[\]sources.Observation, error\)](<#PrepareAcquisitionReplay>)
+- [func PrepareCatalogRecoveryDirectory\(ctx context.Context, path string, owner DirectoryOwner, identity string\) \(resultErr error\)](<#PrepareCatalogRecoveryDirectory>)
 - [func ReplayAcquisition\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation\) \(\*starmap.Candidate, error\)](<#ReplayAcquisition>)
 - [func ValidateCatalogReplay\(ctx context.Context, generation catalogs.Generation, recovery CatalogRecovery, opts ...Option\) error](<#ValidateCatalogReplay>)
 - [func ValidateDirectoryPermissions\(ctx context.Context, directory string\) error](<#ValidateDirectoryPermissions>)
@@ -560,6 +561,17 @@ func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation,
 ```
 
 PrepareAcquisitionReplay returns a catalog generation and the original inputs needed for later replay. It retains compacted inputs only when catalog facts, provenance, membership, and current reviews remain exact. Current metadata reviews retain their latest original observation. Omission preserves the last review. The caller authenticates the baseline and inputs. This function reads no sources or storage.
+
+<a name="PrepareCatalogRecoveryDirectory"></a>
+## func [PrepareCatalogRecoveryDirectory](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery_directory.go#L16>)
+
+```go
+func PrepareCatalogRecoveryDirectory(ctx context.Context, path string, owner DirectoryOwner, identity string) (resultErr error)
+```
+
+PrepareCatalogRecoveryDirectory establishes private owner, seed, and empty layer directories. It opens no runtime, reads no catalog source, and creates no selection or permission. Existing owner and seed records must match. Missing records in retained state require recovery. An already selected materialization requires passive inspection instead of preparation.
+
+The host must fence writers and call this only before sealing its native activation decision. Restart paths must inspect the retained directory instead of invoking preparation.
 
 <a name="ReplayAcquisition"></a>
 ## func [ReplayAcquisition](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_replay.go#L19>)
