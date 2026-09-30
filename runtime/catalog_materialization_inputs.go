@@ -325,8 +325,22 @@ func inspectMaterializationJournals(ctx context.Context, store *layerStore) erro
 		if plan == nil {
 			continue
 		}
-		if fleetRecoveryChecksum([]byte(plan.Receipt.OperationID)) != entry.Name() {
+		operation := plan.Receipt.OperationID
+		if plan.Retention != nil {
+			operation = plan.Retention.Receipt.OperationID
+		}
+		if fleetRecoveryChecksum([]byte(operation)) != entry.Name() {
 			return invalidInputPublication("materialization journal identity differs from its directory")
+		}
+		if plan.Retention != nil {
+			receipt, err := readCatalogRetentionReceipt(journal, *plan, encoded)
+			if err != nil {
+				return err
+			}
+			if receipt == nil {
+				return invalidInputPublication("complete historical catalog retention before runtime startup")
+			}
+			continue
 		}
 		receipt, err := readMaterializationReceipt(journal, *plan, encoded)
 		if err != nil {

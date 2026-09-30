@@ -33,3 +33,22 @@ func TestPublicAuthoritySettingsReachRuntime(t *testing.T) {
 		t.Fatalf("authority configuration lost at runtime: %+v", status)
 	}
 }
+
+func TestCanonicalAuthorityOptionsResolveForPassiveInspection(t *testing.T) {
+	parsed, err := config.Parse(map[string]string{
+		config.Source: "starmap", config.SourceURL: "https://authority.example",
+		config.SourceStartupPolicy: "require_authority", config.SourceAuthorityID: "enterprise", config.SourcePolicyID: "production",
+		config.SourceAliases: "primary,secondary", config.SourcePollInterval: "0s", config.SourceMaxAge: "2h", config.SourceMaxHops: "3",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	policy, err := runtime.ResolveSourcePolicy(parsed.Options()...)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if policy.Kind != runtime.SourceStarmap || policy.URL != "https://authority.example" || policy.StartupPolicy != runtime.StartupRequireAuthority ||
+		policy.AuthorityID != "enterprise" || policy.PolicyID != "production" || policy.PollInterval != 0 || policy.MaxAge.String() != "2h0m0s" || policy.MaxHops != 3 || len(policy.Aliases) != 2 || policy.Aliases[0] != "primary" || policy.Aliases[1] != "secondary" {
+		t.Fatal("canonical authority settings differ from passive inspection policy")
+	}
+}

@@ -100,6 +100,7 @@ run python3 ./scripts/test_catalog_rejection.py
 run python3 ./scripts/test_catalog_product_verify.py
 run python3 ./scripts/test_prepare_public_catalog_fixture.py
 run python3 ./scripts/test_verification_tests.py
+run python3 ./scripts/test_native_runtime.py
 run python3 ./scripts/verification_tests.py race --group checks --output "${STARMAP_VERIFY_EVENTS_DIR:-$TMPDIR}/go-check-events.jsonl"
 run go vet ./...
 run_lint

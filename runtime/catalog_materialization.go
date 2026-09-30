@@ -68,10 +68,12 @@ type materializationChange struct {
 }
 
 type materializationPlan struct {
-	Receipt           CatalogMaterializationReceipt         `json:"receipt"`
-	Continuity        map[string]privatefiles.RecordReceipt `json:"continuity"`
-	Changes           []materializationChange               `json:"changes"`
-	PreviousSelection []byte                                `json:"previous_selection"`
+	Receipt               CatalogMaterializationReceipt         `json:"receipt"`
+	Continuity            map[string]privatefiles.RecordReceipt `json:"continuity"`
+	Changes               []materializationChange               `json:"changes"`
+	PreviousSelection     []byte                                `json:"previous_selection"`
+	Retention             *catalogRetentionPlan                 `json:"retention,omitempty"`
+	RetainedBindingSHA256 string                                `json:"retained_binding_sha256,omitempty"`
 }
 
 type materializationSelection struct {
@@ -88,6 +90,10 @@ type recoveryBaselineRecord struct {
 // It preserves owner, instance seed, permission checkpoints, and origin discovery records.
 // Pending work blocks runtime startup. An exact completed retry returns its original receipt without replacing later state.
 func MaterializeCatalogRecovery(ctx context.Context, request CatalogMaterializationRequest, opts ...Option) (receipt CatalogMaterializationReceipt, resultErr error) {
+	return materializeCatalogRecovery(ctx, request, "", opts...)
+}
+
+func materializeCatalogRecovery(ctx context.Context, request CatalogMaterializationRequest, retainedBinding string, opts ...Option) (receipt CatalogMaterializationReceipt, resultErr error) {
 	if ctx == nil {
 		return receipt, invalidInputPublication("materialization requires a context")
 	}
@@ -98,11 +104,7 @@ func MaterializeCatalogRecovery(ctx context.Context, request CatalogMaterializat
 	if err != nil {
 		return receipt, err
 	}
-	directory, err := privatefiles.ExistingDirectory(request.Directory)
-	if err != nil {
-		return receipt, err
-	}
-	lock, err := acquireDirectory(ctx, request.Directory)
+	directory, lock, entry, store, err := openCatalogRecoveryOwner(ctx, request)
 	if err != nil {
 		return receipt, err
 	}
@@ -112,25 +114,18 @@ func MaterializeCatalogRecovery(ctx context.Context, request CatalogMaterializat
 			receipt = CatalogMaterializationReceipt{}
 		}
 	}()
-	root, err := directory.Open()
+	session, err := openCatalogRecoveryJournal(ctx, directory, store, request, fleetRecoveryChecksum(requestData), entry, retainedBinding, false, func() (*materializationPlan, error) {
+		plan, err := prepareMaterializationPlan(ctx, store, request, fleetRecoveryChecksum(requestData), entry)
+		if plan != nil {
+			plan.RetainedBindingSHA256 = retainedBinding
+		}
+		return plan, err
+	})
 	if err != nil {
 		return receipt, err
 	}
-	entry, err := privatefiles.CaptureEntry(root, ".", true)
-	closeErr := root.Close()
-	if err != nil || closeErr != nil {
-		return receipt, stderrors.Join(err, closeErr)
-	}
-	if err := inspectMaterializationOwner(ctx, directory, request); err != nil {
-		return receipt, err
-	}
-	store, err := existingLayerStore(request.Directory)
-	if err != nil || !store.durable() {
-		return receipt, stderrors.Join(err, invalidInputPublication("materialization requires retained catalog state"))
-	}
-	session, err := openMaterializationJournal(ctx, directory, store, request, fleetRecoveryChecksum(requestData), entry)
-	if err != nil {
-		return receipt, err
+	if session.retainedComplete != nil || session.plan != nil && session.plan.Retention != nil {
+		return receipt, invalidInputPublication("operation belongs to historical retention")
 	}
 	if session.complete != nil {
 		return *session.complete, nil
@@ -322,7 +317,16 @@ func readMaterializationPlan(ctx context.Context, directory *privatefiles.Direct
 	if err := json.Unmarshal(data, &plan, json.RejectUnknownMembers(true)); err != nil {
 		return nil, nil, err
 	}
+	if plan.Retention != nil {
+		if err := validateCatalogRetentionPlan(plan); err != nil {
+			return nil, nil, err
+		}
+		return &plan, raw, ctx.Err()
+	}
 	receipt := plan.Receipt
+	if plan.RetainedBindingSHA256 != "" && !validFleetChecksum(plan.RetainedBindingSHA256) {
+		return nil, nil, invalidInputPublication("materialization has invalid retained binding")
+	}
 	if receipt.Version != materializationVersion || receipt.OperationID == "" || !validFleetChecksum(receipt.RequestSHA256) || !validFleetChecksum(receipt.InventorySHA256) || !validFleetChecksum(receipt.SelectedManifestSHA256) || !validFleetChecksum(receipt.SelectedInputsSHA256) || !validFleetChecksum(receipt.BaselineManifestSHA256) || receipt.CatalogPublisherID == "" || receipt.PlanSHA256 != "" || receipt.DirectoryIdentity.Identity == "" || receipt.DirectoryIdentity.Access == "" || len(plan.Changes) > storage.DefaultRetentionScanEntries {
 		return nil, nil, invalidInputPublication("materialization journal has invalid identity or bounds")
 	}
@@ -434,13 +438,14 @@ func checkMaterializationSelection(ctx context.Context, directory string) (*Cata
 }
 
 type materializationSession struct {
-	plan      *materializationPlan
-	encoded   []byte
-	directory *privatefiles.Directory
-	complete  *CatalogMaterializationReceipt
+	plan             *materializationPlan
+	encoded          []byte
+	directory        *privatefiles.Directory
+	complete         *CatalogMaterializationReceipt
+	retainedComplete *CatalogRetentionReceipt
 }
 
-func openMaterializationJournal(ctx context.Context, directory *privatefiles.Directory, store *layerStore, request CatalogMaterializationRequest, requestSHA string, entry privatefiles.EntryReceipt) (*materializationSession, error) {
+func openCatalogRecoveryJournal(ctx context.Context, directory *privatefiles.Directory, store *layerStore, request CatalogMaterializationRequest, requestSHA string, entry privatefiles.EntryReceipt, retainedBinding string, retention bool, prepare func() (*materializationPlan, error)) (*materializationSession, error) {
 	// Recover only owner-owned file publication journals. No source, catalog store, or authority operation runs here.
 	if err := store.recoverRecordPublications(ctx); err != nil {
 		return nil, err
@@ -462,17 +467,9 @@ func openMaterializationJournal(ctx context.Context, directory *privatefiles.Dir
 		return nil, err
 	}
 	if plan != nil {
-		if plan.Receipt.RequestSHA256 != requestSHA || plan.Receipt.DirectoryIdentity != entry {
-			return nil, invalidInputPublication("materialization operation or native directory changed")
-		}
-		if complete, err := readMaterializationReceipt(journal, *plan, encoded); err != nil || complete != nil {
-			if complete != nil {
-				if identityErr := checkMaterializationIdentity(directory, plan.Continuity); identityErr != nil {
-					return nil, identityErr
-				}
-				return &materializationSession{complete: complete}, err
-			}
-			return nil, err
+		session, err := resumeCatalogRecoveryJournal(directory, journal, plan, encoded, requestSHA, entry, retainedBinding, retention)
+		if err != nil || session != nil {
+			return session, err
 		}
 	} else {
 		if _, err := checkMaterializationSelection(ctx, request.Directory); err != nil {
@@ -484,7 +481,7 @@ func openMaterializationJournal(ctx context.Context, directory *privatefiles.Dir
 		if err := store.refuseInputPublication(); err != nil {
 			return nil, err
 		}
-		plan, err = prepareMaterializationPlan(ctx, store, request, requestSHA, entry)
+		plan, err = prepare()
 		if err != nil {
 			return nil, err
 		}
@@ -495,6 +492,9 @@ func openMaterializationJournal(ctx context.Context, directory *privatefiles.Dir
 		if err := journal.CompareAndPublishFileContext(ctx, materializationPlanName, nil, encoded, ".materialization-plan-"); err != nil {
 			return nil, err
 		}
+	}
+	if plan.Retention != nil {
+		return &materializationSession{plan: plan, encoded: encoded, directory: journal}, nil
 	}
 	selection, err := json.Marshal(materializationSelection{Version: materializationVersion, OperationSHA256: operation}, json.Deterministic(true))
 	if err != nil {
@@ -513,4 +513,40 @@ func openMaterializationJournal(ctx context.Context, directory *privatefiles.Dir
 		}
 	}
 	return &materializationSession{plan: plan, encoded: encoded, directory: journal}, nil
+}
+
+func resumeCatalogRecoveryJournal(directory *privatefiles.Directory, journal *privatefiles.Directory, plan *materializationPlan, encoded []byte, requestSHA string, entry privatefiles.EntryReceipt, retainedBinding string, retention bool) (*materializationSession, error) {
+	if (plan.Retention != nil) != retention || plan.RetainedBindingSHA256 != retainedBinding {
+		return nil, invalidInputPublication("catalog recovery operation kind or retained binding changed")
+	}
+	if plan.Retention != nil {
+		if plan.Retention.Receipt.RequestSHA256 != requestSHA || plan.Retention.Receipt.DirectoryIdentity != entry {
+			return nil, invalidInputPublication("retention operation or native directory changed")
+		}
+		complete, err := readCatalogRetentionReceipt(journal, *plan, encoded)
+		if err != nil {
+			return nil, err
+		}
+		if complete != nil {
+			if err := checkMaterializationIdentity(directory, plan.Continuity); err != nil {
+				return nil, err
+			}
+			return &materializationSession{retainedComplete: complete}, nil
+		}
+	} else if plan.Receipt.RequestSHA256 != requestSHA || plan.Receipt.DirectoryIdentity != entry {
+		return nil, invalidInputPublication("materialization operation or native directory changed")
+	}
+	if plan.Retention == nil {
+		if complete, err := readMaterializationReceipt(journal, *plan, encoded); err != nil || complete != nil {
+			if complete != nil {
+				if identityErr := checkMaterializationIdentity(directory, plan.Continuity); identityErr != nil {
+					return nil, identityErr
+				}
+				return &materializationSession{complete: complete}, err
+			}
+			return nil, err
+		}
+	}
+
+	return nil, nil
 }

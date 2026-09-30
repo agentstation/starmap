@@ -9,7 +9,7 @@ import (
 )
 
 func isRecordPublicationDirectory(path string) bool {
-	if filepath.Base(path) == privatefiles.PublicationDirectoryName && materializationJournalDirectory(filepath.ToSlash(filepath.Dir(path))) {
+	if filepath.Base(path) == privatefiles.PublicationDirectoryName && (materializationJournalDirectory(filepath.ToSlash(filepath.Dir(path))) || retainedCatalogDirectoryName(filepath.ToSlash(filepath.Dir(path)))) {
 		return true
 	}
 	switch filepath.ToSlash(path) {
