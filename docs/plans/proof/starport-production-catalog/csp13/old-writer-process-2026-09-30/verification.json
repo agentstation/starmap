@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "recorded_at": "2026-09-30T10:32:03.430491+00:00",
+  "base": "303fdef6bbef20717bbb3c921a050979456c4505",
+  "worktree": "/private/tmp/starport-recovery-old-writer-admission-20260930",
+  "branch": "codex/recovery-old-writer-admission",
+  "go": "1.27.1",
+  "platform": "darwin/arm64",
+  "workspace": "GOWORK=off; no module replace",
+  "producer": "v0.16.6-0.20260930082412-e0845d601fb5",
+  "source_sha256": "4cf0713edfacbb029d0c25c7c640668a065f8d3e6eb47aa1807b5080f80d75ab",
+  "checks": {
+    "owner-race-second": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "results": [
+        {
+          "Time": "2026-09-30T05:28:20.53187-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Test": "TestRecoveryAuthorityAcrossRealProcesses/same-backend",
+          "Elapsed": 1.42
+        },
+        {
+          "Time": "2026-09-30T05:28:23.134419-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Test": "TestRecoveryAuthorityAcrossRealProcesses/reachable-old-primary",
+          "Elapsed": 2.61
+        },
+        {
+          "Time": "2026-09-30T05:28:23.13462-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Test": "TestRecoveryAuthorityAcrossRealProcesses",
+          "Elapsed": 4.03
+        }
+      ],
+      "package": [
+        {
+          "Time": "2026-09-30T05:28:24.147427-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Elapsed": 5.6370000000000005
+        }
+      ]
+    },
+    "owner-pure-final": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "results": [
+        {
+          "Time": "2026-09-30T05:29:11.682981-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Test": "TestRecoveryAuthorityAcrossRealProcesses/same-backend",
+          "Elapsed": 0.29
+        },
+        {
+          "Time": "2026-09-30T05:29:11.998984-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Test": "TestRecoveryAuthorityAcrossRealProcesses/reachable-old-primary",
+          "Elapsed": 0.32
+        },
+        {
+          "Time": "2026-09-30T05:29:11.999003-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Test": "TestRecoveryAuthorityAcrossRealProcesses",
+          "Elapsed": 0.61
+        }
+      ],
+      "package": [
+        {
+          "Time": "2026-09-30T05:29:12.000061-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starport/internal/recovery",
+          "Elapsed": 1.08
+        }
+      ]
+    }
+  },
+  "scoped_checks": {
+    "build": {
+      "exit": 0,
+      "log": "build.log"
+    },
+    "vet": {
+      "exit": 0,
+      "command": "go vet ./internal/recovery"
+    },
+    "pinnedlint": {
+      "exit": 0,
+      "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/recovery",
+      "issues": 0,
+      "tests": "repository configuration disables lint on test files; vet and behavioral tests cover changed source"
+    },
+    "prose": {
+      "exit": 0,
+      "diagnostics": 0
+    },
+    "manual_audit": {
+      "complete": true,
+      "root_review": true,
+      "scope": "Private child input, exact native approved owner, SQL closure, real OS kill/wait before reapproval, stale retained parent authority, fresh wrong-primary refusal, fresh exact owner permission",
+      "product_defect_found": false
+    }
+  },
+  "historical_failures": {
+    "owner-race-first.jsonl": "JSON fixture did not select time.Duration representation; corrected using existing legacy FormatDurationAsNano fixture option with json/v2"
+  },
+  "observations": [
+    "Child with retained PG and Valkey connections refuses a write while SQL is closed and old primary remains reachable",
+    "OS kill and completed wait occur while SQL remains closed, before new approval",
+    "The killed child does not attempt a post-reapproval write",
+    "Retained parent authority refuses the new epoch without adoption",
+    "Fresh process on former primary refuses different approved incarnation",
+    "Fresh process on selected primary reads exact next approval and completes guarded native mutation"
+  ],
+  "limits": [
+    "These are budget native-authority CAS contracts, not full gateway startup or inference tests",
+    "Generic gateway and administrator writes still require external process/network fencing",
+    "One actual process stop on this macOS host does not qualify an orchestrator or unreachable remote host",
+    "No complete DR, unknown-interval, lost-history, deployment RPO/RTO, or capacity claim",
+    "No service restart, reset, global ACL/network change, or paid provider call",
+    "Shared fixture data remains isolated by native deployment namespace and PostgreSQL schema"
+  ],
+  "owner_commit": "b176264637c93fd3b6b668ae5a89f01197a6ede7",
+  "integrated_commit": "e913d844b5b451015092574b324b1228a5831567",
+  "combined_consumer_qualification": "UNVERIFIED; owner-source native contract only",
+  "artifacts": {
+    "owner-race-first.jsonl": {
+      "file": "owner-race-first.jsonl.gz",
+      "sha256": "ed2a6724241ec13f70aeed939d6d855746d3782e7f71231cffad9c22bbce1850",
+      "gzip_sha256": "f25d8b4a8cb18a1ff8342d2bc584d0ba79a17e4de80c4d049083eb3b053ffe4e"
+    },
+    "owner-race-second.jsonl": {
+      "file": "owner-race-second.jsonl.gz",
+      "sha256": "ab3e597f4b72c029b170aeb63df1f1121b54e58b9e94348680d0330efff24a37",
+      "gzip_sha256": "8da62b3957659f5bda8aec1b95fa13db77e7333d5b9a19ffaac9af03a42cb847"
+    },
+    "owner-pure-final.jsonl": {
+      "file": "owner-pure-final.jsonl.gz",
+      "sha256": "45e49efcfe74b7543a8c02f22af1d07c380c7e4a97f14e70c853248ad1d9c244",
+      "gzip_sha256": "b37e50c006397c90c11efda7ca3368039c8fb47f7e0fabc26fb5dce4b0183888"
+    },
+    "vet.log": {
+      "file": "vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "pinnedlint.log": {
+      "file": "pinnedlint.log.gz",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "gzip_sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    "prose.log": {
+      "file": "prose.log.gz",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "gzip_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    }
+  }
+}
