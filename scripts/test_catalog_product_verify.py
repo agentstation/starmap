@@ -875,7 +875,8 @@ class CatalogGoBatchTests(unittest.TestCase):
             self.assertIn('^(TestAlpha|TestBravo)$', run.call_args.args[0])
             self.assertIn('-count=1', run.call_args.args[0])
             self.assertIn('-race', run.call_args.args[0])
-            self.assertIn('5m', run.call_args.args[0])
+            self.assertIn('300s', run.call_args.args[0])
+            self.assertEqual(run.call_args.kwargs['timeout'], 330)
 
     def test_skip_is_bound_to_its_named_parent(self):
         entries = [self.entry('TestAlpha'), self.entry('TestBravo')]
@@ -925,6 +926,46 @@ class CatalogGoBatchTests(unittest.TestCase):
                 result = verifier.run_check('alpha', entry, {'starmap': verifier.ROOT})
                 self.assertEqual(result['status'], 'FAIL')
                 run.assert_not_called()
+
+    def test_timeout_policy_requires_a_bounded_go_duration(self):
+        for value in [None, 60, '', '0s', '5', '5h', '31m', '1801s', '10000s', ' 5m', '5m ', '5.5m', ['5m']]:
+            with self.subTest(value=value), patch.object(verifier.subprocess, 'run') as run:
+                entry = dict(self.entry('TestAlpha'), timeout=value)
+                result = verifier.run_check('alpha', entry, {'starmap': verifier.ROOT})
+                self.assertEqual(result['status'], 'FAIL')
+                run.assert_not_called()
+        for value, seconds in [('30m', 1800), ('1800s', 1800), ('90s', 90), ('1s', 1)]:
+            with self.subTest(value=value):
+                self.assertEqual(verifier.go_check_budget(dict(self.entry('TestAlpha'), timeout=value)), seconds)
+        self.assertEqual(verifier.go_check_budget(self.entry('TestAlpha')), 60)
+
+    def test_process_budget_sums_selected_budgets_above_the_shared_floor(self):
+        roots = {'starmap': verifier.ROOT}
+        names = [f'TestBatch{index}' for index in range(7)]
+        entries = [self.entry(name) for name in names]
+        with patch.object(verifier.subprocess, 'run', return_value=self.result(self.events(names))) as run:
+            evidence = verifier.GoEvidence(entries[:3], roots)
+            self.assertEqual(verifier.run_check('batch', entries[0], roots, evidence)['status'], 'PASS')
+            self.assertIn('300s', run.call_args.args[0])
+            self.assertEqual(run.call_args.kwargs['timeout'], 330)
+            evidence = verifier.GoEvidence(entries, roots)
+            self.assertEqual(verifier.run_check('batch', entries[0], roots, evidence)['status'], 'PASS')
+            self.assertIn('420s', run.call_args.args[0])
+            self.assertEqual(run.call_args.kwargs['timeout'], 450)
+            declared = dict(entries[0], timeout='4m')
+            evidence = verifier.GoEvidence([declared] + entries[1:3], roots)
+            self.assertEqual(verifier.run_check('batch', declared, roots, evidence)['status'], 'PASS')
+            self.assertIn('360s', run.call_args.args[0])
+        isolated = dict(self.entry('TestAlpha'), batch=False, timeout='10m')
+        with patch.object(verifier.subprocess, 'run', return_value=self.result(self.events(['TestAlpha']))) as run:
+            evidence = verifier.GoEvidence([isolated, dict(isolated, timeout='2m'), self.entry('TestBravo')], roots)
+            self.assertEqual(verifier.run_check('alpha', isolated, roots, evidence)['status'], 'PASS')
+            self.assertIn('600s', run.call_args.args[0])
+            self.assertEqual(run.call_args.kwargs['timeout'], 630)
+            self.assertEqual(run.call_count, 1)
+            self.assertEqual(verifier.run_check('alpha', isolated, roots, {})['status'], 'PASS')
+            self.assertIn('600s', run.call_args.args[0])
+            self.assertEqual(run.call_args.kwargs['timeout'], 630)
 
     def test_required_subtests_refuse_missing_partial_or_duplicate_children(self):
         entry = dict(self.entry('TestAlpha'), required_subtests=['sqlite', 'postgres', 'mysql'])
@@ -1246,6 +1287,22 @@ class RecoveryRegistrationTests(unittest.TestCase):
         self.assertEqual(failover['TestPopulatedAdoptionProcess']['required_subtests'],
                          ['valkey-restart-with-persistent-data', 'promotion-acknowledged-loss-old-primary',
                           'restored-sql-witness-before-capture', 'restored-sql-witness-after-capture'])
+        self.assertIs(failover['TestPopulatedAdoptionProcess']['batch'], False)
+        self.assertEqual(failover['TestPopulatedAdoptionProcess']['timeout'], '10m')
+
+    def test_multi_process_real_backend_tests_declare_separate_ten_minute_budgets(self):
+        # Starport CI bounds each TestProductionBudgetAcrossProcesses scenario at seven minutes, and the
+        # populated adoption process needs about four and a half minutes with race detection.
+        long_tests = {'TestProductionBudgetAcrossProcesses': 2, 'TestPopulatedAdoptionProcess': 2}
+        found = {name: 0 for name in long_tests}
+        for check in self.registry['checks'].values():
+            for entry in verifier.leaf_checks(check):
+                if entry.get('kind') == 'go_test' and entry.get('test') in long_tests:
+                    self.assertEqual(entry['package'], './internal/app')
+                    self.assertIs(entry['batch'], False, entry)
+                    self.assertEqual(entry['timeout'], '10m', entry)
+                    found[entry['test']] += 1
+        self.assertEqual(found, long_tests)
         eviction = {entry['test'] for entry in self.leaves('A15.cache_eviction_isolation')}
         self.assertTrue({'TestSharedCacheEvictionIsolation', 'TestSharedCacheCompositionUsesSeparateService'} <= eviction)
         layout = {entry['test']: entry for entry in self.leaves('A15.hash_slot_layout')}
