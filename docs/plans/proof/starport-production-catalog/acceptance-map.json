@@ -1937,7 +1937,11 @@
     "A08.presence_zero_null": "Distinguish known zero, null, false, unknown, and missing fields. Preserve valid linked membership without optional pricing or limits.",
     "A20.starport_provider_nonprovider": "The committed compatible dependency must compile and reconcile provider and non-provider evidence through Starport startup, refresh, restart, and catalog projections.",
     "A18.consistent_counts_prices": "Counts, details, pages, and provider and author facets use one permitted catalog view. Serving-provider facets count distinct offering providers. Pricing retains one selected commercial record.",
-    "A18.unauthorized_membership_redaction": "Permitted discovery remains available without inference credentials. Disclosure policy excludes prohibited membership before lists, counts, details, facets, caches, or fallback. Structural support and caller readiness remain distinct."
+    "A18.unauthorized_membership_redaction": "Permitted discovery remains available without inference credentials. Disclosure policy excludes prohibited membership before lists, counts, details, facets, caches, or fallback. Structural support and caller readiness remain distinct.",
+    "A15.real_valkey_postgres": "Real-backend qualification names one Valkey release and one PostgreSQL release. A test service that runs another release fails the check instead of passing a mock.",
+    "A15.durability_failover": "On the qualified Valkey release, a persistent restart keeps every acknowledged durable write, a promoted replica keeps every replicated write, and a demoted old primary refuses bound product writes. Two documented limits: a write that only the old primary acknowledged after promotion is lost, and the first replica attachment to a primary without a replication backlog changes the incarnation identity, so the bound owner fails closed until re-admission.",
+    "A15.cache_eviction_isolation": "The product refuses a shared cache on the durable KV service. On a separate memory-bound cache service, eviction removes only cache keys while every durable record stays readable.",
+    "A15.hash_slot_layout": "Every durable key, control key, notification channel, and multi-key conditional mutation of one deployment hashes to one Cluster slot on the real service. Cache keys stay outside that slot, and Cluster mode stays refused until a qualification run records it."
   },
   "storage_review_mapping": {
     "SR01": {

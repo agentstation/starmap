@@ -1,20 +1,20 @@
 {
- "recorded_utc": "2026-10-01T19:46:49.632559+00:00",
+ "recorded_utc": "2026-10-01T21:29:50.320358+00:00",
  "task": "CSP15",
  "task_completed": false,
  "repository": "agentstation/starmap",
- "pr": 210,
- "head": "5c90740740de70fd9a2f5a44e2d9eb4305a0606c",
- "base": "327e60b3030fd664ed1699d71117f0815a020c82",
- "merge": "e75237a9e65a16892cbf071698527b875e330c9a",
- "merged_at": "2026-10-01T19:46:43Z",
+ "pr": 211,
+ "head": "aa452bbe9f05149724e3bd67177999ebc477181a",
+ "base": "e75237a9e65a16892cbf071698527b875e330c9a",
+ "merge": "0b627247bed2967f0ecad4c74d53447b0dad0511",
+ "merged_at": "2026-10-01T21:29:23Z",
  "checks": {
   "success": 62,
   "not_success": 0,
   "total": 62
  },
- "reviewed_tree": "08bcbba754ce0c892e399ed17a7106e02df0b86d",
- "merged_tree": "08bcbba754ce0c892e399ed17a7106e02df0b86d",
+ "reviewed_tree": "f8628658e0c5b0165412e43696658a8e4f1f98ec",
+ "merged_tree": "f8628658e0c5b0165412e43696658a8e4f1f98ec",
  "reviewed_tree_equals_merge_tree": true,
  "merge_commit_verified": true,
  "strict_protection": true,
@@ -25,22 +25,22 @@
  "linear_history": false,
  "unresolved_threads": 0,
  "merge_method": "protected squash with exact head match; no admin bypass",
- "scope": "CSP15",
+ "scope": "Starmap PR #211 verifier Go process budgets",
  "artifacts": {
   "merged-pr.json": {
    "file": "merged-pr.json.gz",
-   "sha256": "b8478f53e0160eea6fd8fc7b71b302d6ddc4b846277e4d88155a4a3b72670d7f",
-   "gzip_sha256": "f808fc294f6632e41d8ab45565780b7a58ef50e5f68d66092092ac4c7b8fd36a"
+   "sha256": "3765f9d5fa1dd50de349c55bd2c99ae5c97cc112eacd028fbc3ae6bb13a65b25",
+   "gzip_sha256": "48398104dd532e04658aa7b7be77c9670db7c5ca0673a84cbd787be7efb5dc7d"
   },
   "merge-commit.json": {
    "file": "merge-commit.json.gz",
-   "sha256": "f682267b8b7fd8f8f5c4570edc81f6cc8e67f84d012c9dc4825333df0e96bc9c",
-   "gzip_sha256": "17f211cf20870e13d24d536a0df43365f1764e97fb409269ad4ccfc017a3e699"
+   "sha256": "c6191e657c9fde34aa682e198527bddb1766b7dc31a2da4f9ccff6831c6fed1d",
+   "gzip_sha256": "b503485a6cb979776cbc1fb3af5052f049469761a89591349680b8c2e2870f44"
   },
   "head-commit.json": {
    "file": "head-commit.json.gz",
-   "sha256": "35a41a66fabdcb748b51eadaf9013edad0be383c40d9baa0b223ab411234ed4a",
-   "gzip_sha256": "7d1c1aaa38c0b9dbb69115baf33ac61260f546a478c9a3e9af5e3331a16a99cd"
+   "sha256": "b477edfeaf60c3b9fbc13644680f61cf87f0e8d84bdd3407636c14009ba71ce7",
+   "gzip_sha256": "f71ea6f1bdc1516b02d8c1f8c609e8b9ff46fff45d894fb68e35c213e6522140"
   },
   "after-protection.json": {
    "file": "after-protection.json.gz",

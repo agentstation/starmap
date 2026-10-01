@@ -1,0 +1,29 @@
+{
+ "recorded_utc": "2026-10-01T21:59:44.770183+00:00",
+ "task": "CSP16",
+ "kind": "fail-before capture",
+ "starmap": {
+  "head": "0b627247bed2967f0ecad4c74d53447b0dad0511",
+  "go_mod_go": "go 1.27.1"
+ },
+ "starport": {
+  "head": "77ffc26a0b29196d62c11e9478b5e46aa67ccecb",
+  "starmap_pin": "github.com/agentstation/starmap v0.16.6-0.20260930190548-8e7fdef8aede"
+ },
+ "observations": {
+  "config_management_selector_refs_starport_go_md": 0,
+  "config_management_selector_refs_starmap_code": 0,
+  "starport_last_migration": "0012_migration_reconciliation.sql",
+  "deployment_configuration_tables": 0,
+  "registry_a28_a40_subcases": 0,
+  "registry_csp16_registered": [
+   "A24.bootstrap_file_location",
+   "A03.effective_path_report"
+  ],
+  "acceptance_map_csp16_subcases": 14,
+  "starmap_resolve_authority_exported": 0,
+  "starmap_fleet_layer_compatibility_private": "14:func fleetLayerCompatibility(layers layerSet) (string, error) {",
+  "starport_loader_entry": "122:func (l *Loader) load(ctx context.Context, development bool, overrides []Override) (*Config, error) {",
+  "starport_admin_config_route": 0
+ }
+}

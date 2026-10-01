@@ -1,0 +1,177 @@
+{
+ "recorded_at": "2026-10-01T22:15:40.873695+00:00",
+ "task": "CSP15",
+ "starmap": {
+  "head": "0b627247bed2967f0ecad4c74d53447b0dad0511",
+  "tree": "f8628658e0c5b0165412e43696658a8e4f1f98ec",
+  "origin_main": "0b627247bed2967f0ecad4c74d53447b0dad0511"
+ },
+ "starport": {
+  "head": "77ffc26a0b29196d62c11e9478b5e46aa67ccecb",
+  "branch": "main"
+ },
+ "commands": {
+  "case": "bash scripts/verify-catalog-product.sh --starport-root <starport> --case A15 --backends primary --json",
+  "task": "bash scripts/verify-catalog-product.sh --starport-root <starport> --task CSP15 --json"
+ },
+ "environment": {
+  "toolchain": "GOTOOLCHAIN=go1.27.1 GOWORK=off CGO_ENABLED=1, go test -race through the verifier",
+  "fixture_urls": "derived privately from docker inspect by the wrapper; values omitted",
+  "variables_set": [
+   "TEST_VALKEY_URL",
+   "TEST_UNPREFIXED_VALKEY_URL",
+   "TEST_SHARED_CACHE_URL",
+   "TEST_VALKEY_REPLACEMENT_URL",
+   "TEST_POSTGRES_URL",
+   "TEST_MYSQL_DSN",
+   "TEST_DEFAULT_CACHE_CAPACITY=1",
+   "TEST_SHARED_CACHE_FAULT_URL",
+   "STARPORT_RECOVERY_OPERATOR_BINARY"
+  ],
+  "fault_fixture": "csp15-cache-fault-20261001 is a disposable Valkey on the qualified digest that only the paused-service test uses",
+  "fixtures": {
+   "starport-csp13-postgres": "f1c3376c26f2 running",
+   "csp13-unprefixed-valkey-20260929": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f running",
+   "starport-csp13-mysql": "3466ba4a4828 running",
+   "starport-csp122-retirement-objectstore": "quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z running",
+   "csp13-adoption-replacement-20260929": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f running",
+   "csp15-cache-fault-20261001": "absent"
+  }
+ },
+ "runner_output": [
+  "starmap head: 0b627247bed2967f0ecad4c74d53447b0dad0511 tree: f8628658e0c5b0165412e43696658a8e4f1f98ec starport head: 77ffc26a0b29196d62c11e9478b5e46aa67ccecb start: 2026-10-01T21:33:56Z",
+  "native test exit: 1",
+  "case exit 1 2026-10-01T21:41:15Z",
+  "native test exit: 1",
+  "task exit 1 2026-10-01T22:13:18Z"
+ ],
+ "case_a15": {
+  "subcases": 8,
+  "by_status": {
+   "PASS": [
+    "A15.budget_usage_unknown",
+    "A15.cache_eviction_isolation",
+    "A15.confirmed_no_budget",
+    "A15.durability_failover",
+    "A15.hash_slot_layout",
+    "A15.online_batch_retry",
+    "A15.real_valkey_postgres",
+    "A15.team_policy_unknown"
+   ]
+  },
+  "checks": 27,
+  "gate_status": "FAIL",
+  "backend_scope": "primary",
+  "roster_sha256": "5b59f7771324374c3a6fb2932664f5be8a752b5ec7de16039ed07ab6912a42bd",
+  "registry_sha256": "a4f7311e56fd763bf8c3420c97f853bc86ef6fcb02f17b36dace44649e7b4e8f",
+  "selected_subcases": 8,
+  "unverified_cases": 49
+ },
+ "task_csp15": {
+  "subcases": 62,
+  "by_status": {
+   "PASS": [
+    "A15.budget_usage_unknown",
+    "A15.cache_eviction_isolation",
+    "A15.confirmed_no_budget",
+    "A15.durability_failover",
+    "A15.hash_slot_layout",
+    "A15.online_batch_retry",
+    "A15.real_valkey_postgres",
+    "A15.team_policy_unknown",
+    "A33.fresh_replica_history_barrier",
+    "A33.old_primary_admission_fence",
+    "A33.restart_and_recovery_epoch",
+    "A41.badger_effective_options",
+    "A41.badger_write_sync_profile",
+    "A41.catalog_fleet_atomic_layout",
+    "A41.catalog_fleet_deployment_isolation",
+    "A41.deployment_key_channel_isolation",
+    "A41.namespace_atomic_layout",
+    "A41.unprefixed_record_migration",
+    "A41.unsupported_modes_refused",
+    "A41.valkey_effective_connection_options",
+    "A41.valkey_tls_identity",
+    "A41.valkey_url_contract",
+    "A41.valkey_username_password",
+    "A42.cache_only_cleanup",
+    "A42.cache_outage_admission",
+    "A42.capacity_and_entry_limits",
+    "A42.enablement_by_cache_kind",
+    "A42.expiry_preserving_refill",
+    "A42.generation_account_scope",
+    "A42.memory_and_shared_cache_selection",
+    "A42.memory_budget_measurement",
+    "A42.unknown_remaining_ttl",
+    "A47.analytics_drop_independence",
+    "A47.atomic_hierarchical_reservation",
+    "A47.backend_operation_evidence",
+    "A47.bounded_cost_and_tokens",
+    "A47.chargeable_operation_matrix",
+    "A47.clock_and_window_authority",
+    "A47.confirmed_absent_fast_path",
+    "A47.crash_failover_recovery",
+    "A47.idempotent_attempt_identity",
+    "A47.late_usage_pinned_valuation",
+    "A47.media_async_reconciliation",
+    "A47.policy_edit_preserves_spend",
+    "A47.quota_lease_support_boundary",
+    "A47.recognition_then_cancel",
+    "A47.reconciliation_retention",
+    "A47.rerank_billing_units",
+    "A47.retry_fallback_charges",
+    "A47.semantic_embedding_cache_hit",
+    "A47.stream_cancel_uncertainty",
+    "A47.unknown_cost_refusal",
+    "A47.usage_reconcile_once",
+    "A47.utc_window_boundaries",
+    "A48.admission_and_expiry_preserved",
+    "A48.bounded_cache_read_deadline",
+    "A48.cache_semantic_mode_matrix",
+    "A48.fill_queue_byte_entry_bounds",
+    "A48.nonblocking_fill_visibility",
+    "A48.stream_accumulation_bound",
+    "A48.stream_forwarding_errors",
+    "A48.worker_shutdown_ownership"
+   ]
+  },
+  "checks": 244,
+  "gate_status": "FAIL",
+  "backend_scope": "primary",
+  "roster_sha256": "5b59f7771324374c3a6fb2932664f5be8a752b5ec7de16039ed07ab6912a42bd",
+  "registry_sha256": "a4f7311e56fd763bf8c3420c97f853bc86ef6fcb02f17b36dace44649e7b4e8f",
+  "selected_subcases": 62,
+  "unverified_cases": 45
+ },
+ "go_evidence": {
+  "case": {
+   "processes": 9,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 436.6,
+   "longest_seconds": 258.186,
+   "test_statuses": {
+    "PASS": 27
+   }
+  },
+  "task": {
+   "processes": 36,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 1922.3,
+   "longest_seconds": 345.187,
+   "test_statuses": {
+    "PASS": 191
+   }
+  }
+ },
+ "limits": [
+  "A partial verifier run reports gate_status FAIL and summary counts over all cases; the subcase statuses carry the result.",
+  "Component test durations under the race detector are not deployment RTO or RPO targets.",
+  "The paused-service test pauses one disposable Valkey for one second; it is not network-partition evidence."
+ ],
+ "files": {
+  "case-a15.json.gz": "verifier JSON report for --case A15 --backends primary",
+  "task-csp15.json.gz": "verifier JSON report for --task CSP15",
+  "go-runs-case.json.gz": "per-process Go evidence for the case run",
+  "go-runs-task.json.gz": "per-process Go evidence for the task run"
+ }
+}
