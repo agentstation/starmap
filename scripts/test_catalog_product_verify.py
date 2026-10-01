@@ -1294,12 +1294,23 @@ class RecoveryRegistrationTests(unittest.TestCase):
             'kind': 'measurement_record', 'repository': 'starmap',
             'record': 'docs/plans/proof/starport-production-catalog/csp13/recovery-measurement-2026-10-01'})
 
-    def test_remaining_recovery_contracts_stay_unverified_for_every_selector(self):
-        missing = {'A33.old_primary_admission_fence'}
-        registered = {'A33.operator_reconciliation', 'A33.measured_rpo_rto', 'A33.restart_and_recovery_epoch'}
+    def test_old_primary_admission_fence_requires_both_gateway_refusals(self):
+        identity = 'A33.old_primary_admission_fence'
+        self.assertEqual(self.registry['checks'][identity]['kind'], 'all')
+        tests = {entry['test']: entry for entry in self.leaves(identity)}
+        self.assertEqual(set(tests), {'TestRecoveryRequestPathRefusesFileAdmissionWithoutObservation',
+                                     'TestRecoveryQueuedBatchLineRefusesDispatchAfterClosure'})
+        for entry in tests.values():
+            self.assertEqual(entry['repository'], 'starport')
+            self.assertEqual(entry['package'], './internal/app')
+            self.assertIs(entry['batch'], False)
+            self.assertNotIn('required_subtests', entry)
+
+    def test_every_recovery_contract_is_registered_for_every_selector(self):
+        registered = {'A33.operator_reconciliation', 'A33.measured_rpo_rto', 'A33.restart_and_recovery_epoch',
+                      'A33.old_primary_admission_fence'}
         self.assertTrue(registered <= set(self.registry['checks']))
-        self.assertTrue(missing <= set(self.roster['task_checks']['CSP13']))
-        self.assertTrue(missing.isdisjoint(self.registry['checks']))
+        self.assertTrue(registered <= set(self.roster['task_checks']['CSP13']))
         arguments = [('CSP13', None, None), (None, None, ['A16', 'A33']), (None, None, ['A04', 'A41']),
                      (None, 'candidate', None), (None, 'final', None)]
         for task, gate, cases in arguments:
@@ -1310,13 +1321,15 @@ class RecoveryRegistrationTests(unittest.TestCase):
                 results = {}
                 for identity in selected:
                     entry, _ = verifier.registered_check(args, self.registry, identity)
+                    if identity in registered:
+                        self.assertIsNotNone(entry, identity)
                     results[identity] = {'status': 'PASS'} if entry else verifier.run_check(identity, None, {})
                 report = verifier.aggregate(self.roster, selected, results, bool(gate))
-                for identity in missing.intersection(selected):
-                    self.assertEqual(results[identity]['status'], 'UNVERIFIED')
+                if registered.isdisjoint(selected):
+                    continue
                 for case in report['cases']:
                     if case['id'] == 'A33':
-                        self.assertEqual(case['status'], 'UNVERIFIED')
+                        self.assertEqual(case['status'], 'PASS')
 
 
 if __name__ == '__main__':

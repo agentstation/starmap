@@ -8189,6 +8189,25 @@
       "repository": "starmap",
       "record": "docs/plans/proof/starport-production-catalog/csp13/recovery-measurement-2026-10-01"
     },
+    "A33.old_primary_admission_fence": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryRequestPathRefusesFileAdmissionWithoutObservation",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryQueuedBatchLineRefusesDispatchAfterClosure",
+          "batch": false
+        }
+      ]
+    },
     "A41.unprefixed_record_migration": {
       "kind": "all",
       "checks": [
