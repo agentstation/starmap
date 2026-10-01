@@ -8219,6 +8219,85 @@
           "batch": false
         }
       ]
+    },
+    "A15.real_valkey_postgres": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestQualifiedValkeyVersion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestQualifiedPostgreSQLVersion"
+        }
+      ]
+    },
+    "A15.durability_failover": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestValkeyDurabilityAndFailover"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestPopulatedAdoptionProcess",
+          "required_subtests": [
+            "valkey-restart-with-persistent-data",
+            "promotion-acknowledged-loss-old-primary",
+            "restored-sql-witness-before-capture",
+            "restored-sql-witness-after-capture"
+          ]
+        }
+      ]
+    },
+    "A15.cache_eviction_isolation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestSharedCacheEvictionIsolation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestSharedCacheCompositionUsesSeparateService"
+        }
+      ]
+    },
+    "A15.hash_slot_layout": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyDeploymentHashSlotLayout",
+          "required_subtests": [
+            "multi-key_conditional_mutations_stay_in_the_slot",
+            "cache_keys_stay_outside_the_durable_slot",
+            "cluster_mode_stays_refused"
+          ]
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestValkeyDeploymentNamespace"
+        }
+      ]
     }
   },
   "task_component_checks": {

@@ -1228,6 +1228,32 @@ class RecoveryRegistrationTests(unittest.TestCase):
                 self.assertEqual(result['status'], 'UNVERIFIED')
                 self.assertEqual(result['missing_subtests'], [omitted])
 
+    def test_shared_backend_qualification_requires_real_release_and_failover_evidence(self):
+        for identity in ('A15.real_valkey_postgres', 'A15.durability_failover',
+                         'A15.cache_eviction_isolation', 'A15.hash_slot_layout'):
+            with self.subTest(identity=identity):
+                self.assertIn(identity, self.roster['required_subcases']['A15'])
+                self.assertIn(identity, self.roster['task_checks']['CSP15'])
+                self.assertIn(identity, self.roster['subcase_contracts'])
+                leaves = self.leaves(identity)
+                self.assertTrue(leaves)
+                self.assertTrue(all(entry['kind'] == 'go_test' and entry['repository'] == 'starport' for entry in leaves))
+        release = {entry['test']: entry['package'] for entry in self.leaves('A15.real_valkey_postgres')}
+        self.assertEqual(release, {'TestQualifiedValkeyVersion': './internal/storage',
+                                   'TestQualifiedPostgreSQLVersion': './internal/sqlstore'})
+        failover = {entry['test']: entry for entry in self.leaves('A15.durability_failover')}
+        self.assertIn('TestValkeyDurabilityAndFailover', failover)
+        self.assertEqual(failover['TestPopulatedAdoptionProcess']['required_subtests'],
+                         ['valkey-restart-with-persistent-data', 'promotion-acknowledged-loss-old-primary',
+                          'restored-sql-witness-before-capture', 'restored-sql-witness-after-capture'])
+        eviction = {entry['test'] for entry in self.leaves('A15.cache_eviction_isolation')}
+        self.assertTrue({'TestSharedCacheEvictionIsolation', 'TestSharedCacheCompositionUsesSeparateService'} <= eviction)
+        layout = {entry['test']: entry for entry in self.leaves('A15.hash_slot_layout')}
+        self.assertEqual(layout['TestValkeyDeploymentHashSlotLayout']['required_subtests'],
+                         ['multi-key_conditional_mutations_stay_in_the_slot', 'cache_keys_stay_outside_the_durable_slot',
+                          'cluster_mode_stays_refused'])
+        self.assertIn('TestValkeyDeploymentNamespace', layout)
+
     def test_fresh_replica_barrier_requires_epoch_and_incarnation_refusals(self):
         tests = {entry.get('test'): entry for entry in self.leaves('A33.fresh_replica_history_barrier')}
         self.assertEqual(tests['TestRecoveryFreshGatewayRejectsUnapprovedHistoryBeforeEffects']['required_subtests'],
