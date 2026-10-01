@@ -8117,6 +8117,78 @@
         }
       ]
     },
+    "A33.restart_and_recovery_epoch": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestPopulatedAdoptionProcess",
+          "required_subtests": [
+            "valkey-restart-with-persistent-data",
+            "promotion-acknowledged-loss-old-primary",
+            "restored-sql-witness-before-capture",
+            "restored-sql-witness-after-capture"
+          ],
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestClosedAdoptionEpochTransitions",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestPopulatedAdoptionNativeEpochSequenceAndApproval",
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/recovery",
+          "test": "TestPopulatedAdoptionNativeRefusesConflictingEpochs",
+          "batch": false
+        }
+      ]
+    },
+    "A33.operator_reconciliation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRecoveryPopulatedOperatorCommandsAcrossNativePhaseCut",
+          "required_subtests": [
+            "shipping-binary"
+          ],
+          "batch": false
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestPopulatedAdoptionOperatorCommands",
+          "required_subtests": [
+            "prepare-refusals",
+            "activation-refusals",
+            "sealed-refusals",
+            "shipping-binary"
+          ],
+          "batch": false
+        }
+      ]
+    },
+    "A33.measured_rpo_rto": {
+      "kind": "measurement_record",
+      "repository": "starmap",
+      "record": "docs/plans/proof/starport-production-catalog/csp13/recovery-measurement-2026-10-01"
+    },
     "A41.unprefixed_record_migration": {
       "kind": "all",
       "checks": [

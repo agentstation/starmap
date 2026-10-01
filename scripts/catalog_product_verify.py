@@ -315,6 +315,8 @@ def run_check(identity, entry, roots, go_evidence=None):
         return run_performance_baseline(entry, roots)
     if entry.get("kind") == "performance_profile":
         return reviewed_performance_profile(entry, roots)
+    if entry.get("kind") == "measurement_record":
+        return reviewed_measurement_record(entry, roots)
     if entry.get("kind") == "constructor_network":
         root = roots.get(entry.get("repository"))
         if root is None or not (root / "scripts/testdata/constructor-probe/main.go").is_file():
@@ -544,6 +546,80 @@ def contained_path(root, name):
     if Path(name).is_absolute() or not candidate.is_relative_to(root.resolve()):
         raise ValueError("Evidence paths must stay inside their repository.")
     return candidate
+
+
+def validate_measurement_record(measurement, decision):
+    if type(measurement.get("version")) is not int or measurement["version"] != 1:
+        raise ValueError("The measurement record needs version 1.")
+    if measurement.get("operator_vcs_modified") is not False or measurement.get("operator_race") is not True:
+        raise ValueError("The operator binary must be unmodified and use race instrumentation.")
+    runs = measurement.get("runs")
+    if not isinstance(runs, list) or len(runs) != 9:
+        raise ValueError("The measurement record needs nine runs.")
+    scenarios = {"empty-target-import": 0, "valkey-restart-persistent": 0,
+                 "replica-promotion-acknowledged-loss": 0}
+    outages = []
+    for run in runs:
+        scenario = run.get("scenario")
+        if scenario not in scenarios:
+            raise ValueError("The measurement record contains an unknown scenario.")
+        scenarios[scenario] += 1
+        if run.get("complete") is not True:
+            raise ValueError("Every measurement run must be complete.")
+        commands = run.get("commands")
+        if (not isinstance(commands, list) or not commands
+                or any(type(command.get("exit_status")) is not int or command["exit_status"] != 0
+                       for command in commands)):
+            raise ValueError("Every measurement command must exit with status zero.")
+        if type(run.get("readiness_http_status")) is not int or run["readiness_http_status"] != 200:
+            raise ValueError("Every measurement run needs HTTP readiness status 200.")
+        expected_loss = 1 if scenario == "replica-promotion-acknowledged-loss" else 0
+        if type(run.get("lost_writes")) is not int or run["lost_writes"] != expected_loss:
+            raise ValueError("A measurement run violates its scenario loss rule.")
+        if scenario == "replica-promotion-acknowledged-loss" and (
+                type(run.get("acknowledged_writes")) is not int or run["acknowledged_writes"] != 2):
+            raise ValueError("Every promotion run needs two acknowledged writes.")
+        outage = run.get("outage_to_ready_seconds")
+        if type(outage) not in (int, float) or not math.isfinite(outage) or outage < 0:
+            raise ValueError("Every measurement run needs a finite nonnegative readiness duration.")
+        outages.append(outage)
+    if any(count != 3 for count in scenarios.values()):
+        raise ValueError("Every measurement scenario needs three runs.")
+    if decision.get("status") != "CONFIRMED" or decision.get("decision") != "D42":
+        raise ValueError("The measurement decision must confirm D42.")
+    source_head, prefix = measurement.get("source_head"), decision.get("measurement_source_head")
+    if (not isinstance(source_head, str) or not isinstance(prefix, str) or not prefix
+            or not source_head.startswith(prefix)):
+        raise ValueError("The measurement decision must match the source head prefix.")
+    rto = decision.get("approved_targets", {}).get("reference_rto_seconds")
+    if type(rto) not in (int, float) or not math.isfinite(rto) or rto <= 0:
+        raise ValueError("The measurement decision needs a positive finite RTO target.")
+    maximum = max(outages)
+    if maximum > rto:
+        raise ValueError("A measurement run exceeds the approved RTO target.")
+    return {"rto_seconds": rto, "max_outage_to_ready_seconds": maximum, "runs": len(runs)}
+
+
+def reviewed_measurement_record(entry, roots):
+    root = roots.get(entry.get("repository"))
+    if root is None:
+        return {"status": "UNVERIFIED", "reason": "The measurement repository is unavailable."}
+    try:
+        record = contained_path(root, entry["record"])
+        measurement = read_json(contained_path(record, "measurement.json"))
+        decision = read_json(contained_path(record, "decision.json"))
+        proof = validate_measurement_record(measurement, decision)
+        return dict(proof, status="PASS", reason="The measurement record meets the confirmed loss and RTO targets.")
+    except FileNotFoundError:
+        return {"status": "UNVERIFIED", "reason": "A measurement record file is absent."}
+    except json.JSONDecodeError:
+        return {"status": "FAIL", "reason": "A measurement record file contains invalid JSON."}
+    except UnicodeError:
+        return {"status": "FAIL", "reason": "A measurement record file contains invalid text."}
+    except ValueError as error:
+        return {"status": "FAIL", "reason": str(error)}
+    except (OSError, KeyError, TypeError, AttributeError, OverflowError):
+        return {"status": "FAIL", "reason": "The measurement record cannot be read or has invalid fields."}
 
 
 def validate_performance_baseline(report, count):
