@@ -22,6 +22,8 @@
 
 <p>The fence delivery is commit <code>e0c29606</code> in <code>/private/tmp/starport-fence-tests-20261001</code>, based on the harness head <code>dca91f9c</code>. It holds the observation worker in <code>internal/app/budget.go</code> and two fence tests. Lint, vet, gosec, and a Sol autoreview against the harness base passed. The 49 related app tests passed with race detection against the real fixtures across two wrapper runs. The first run reached its 40 minute budget without a failure. The lead rebases it onto the final <code>main</code> after the harness merges, then publishes it.</p>
 
+<p>Commit <code>ee8d3c86e</code> in <code>/private/tmp/starmap-a33-fence-20261001</code> registers <code>A33.old_primary_admission_fence</code> on <code>codex/recovery-a33-fence-registration-20261001</code>. The 132 verifier tests pass. The lead publishes it after the Starport fence pull request merges.</p>
+
 <p>Starport #395 (layer two, <code>d06c47b0</code>) merged as <code>86041546</code> on 2026-09-30 after all 31 checks passed on attempt 2. The <a href="proof/starport-production-catalog/csp13/starport395-merge-2026-09-30/verification.json">merge proof</a> records tree equality and strict protection. It also records zero unresolved threads and the first-attempt Windows flake. Root removed the layer two worktree and branch.</p>
 
 <p>Root rebased layer three onto <code>86041546</code> as <code>690d3df9</code> with unchanged owner trees and published it as draft #396. Root rebased layer four onto <code>690d3df9</code> as <code>e8359480</code>. Its tree equals the verified tree at <code>d7e49079</code>, so the layer four roster, reviews, and full embedded test results transfer to it.</p>
