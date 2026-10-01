@@ -1,0 +1,60 @@
+version 1 head 53df341cbc10 binary 9798dbf72406 race True modified False darwin arm64 go1.27.1
+hardware Mac14,5 cpu 12 mem GiB 32.0 docker cpu 12 docker mem GiB 15.6 []
+topology ['valkey', 'postgresql', 's3'] appendonly yes; appendfsync always; save disabled
+   postgresql f1c3376c26f2 sha256:f1c3376c26f2
+   s3 quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z sha256:14cea493d9a3
+   valkey valkey/valkey:7-alpine sha256:9acdf6f0ae17
+limits:
+  - idle laboratory deployment; three repetitions per scenario; no production limits approved
+  - counts cover explicit Valkey probe writes only; not every domain record or provider acknowledgement
+  - capture and synthetic final-only history occur after the fence; negative age means after outage start
+  - source fleet setup is outside the outage interval; operator commands and fresh HTTP readiness are inside
+  - the test owns every writer; no external traffic, provider load, or worker dispatch load
+  - race instrumentation and child process exit overhead affect all command durations
+  - product records name the Valkey backend identity; SQL and S3 retain snapshot digests, not independent backend IDs
+runs 9 complete 9
+
+== empty-target-import repeats 3 complete 3
+  outage->ready s: min 47.64 median 50.73 max 53.18
+  outage->state s: min 47.68 median 50.76 max 53.22
+  acknowledged/present/lost: [(2, 2, 0), (2, 2, 0), (2, 2, 0)]
+  backup age at outage s: [-3.37, -2.02, -2.0]
+  history age at outage s: [-10.67, -9.25, -9.4]
+  readiness http: [200, 200, 200]
+  gateway start->ready s: [20.74, 20.63, 20.79]
+  cmd close            min 1.20 median 1.20 max 2.61 exit [0]
+  cmd capture          min 2.28 median 2.29 max 2.32 exit [0]
+  cmd prepare          min 2.05 median 2.06 max 2.08 exit [0]
+  cmd inspect-import   min 2.37 median 2.39 max 2.41 exit [0]
+  cmd activate         min 16.82 median 18.64 max 22.67 exit [0]
+  identities: deployment ['backup-test-JQ37', 'backup-test-KOW3', 'backup-test-U3IW'] epochs [(8, 12), (8, 12), (8, 12)] valkey changed [True, True, True]
+
+== valkey-restart-persistent repeats 3 complete 3
+  outage->ready s: min 52.33 median 52.49 max 54.82
+  outage->state s: min 52.36 median 52.52 max 54.85
+  acknowledged/present/lost: [(2, 2, 0), (2, 2, 0), (2, 2, 0)]
+  backup age at outage s: [-2.3, -2.65, -2.33]
+  history age at outage s: [-4.48, -5.12, -4.52]
+  readiness http: [200, 200, 200]
+  gateway start->ready s: [20.54, 20.48, 20.81]
+  cmd close            min 1.20 median 1.20 max 1.22 exit [0]
+  cmd capture          min 2.27 median 2.29 max 2.69 exit [0]
+  cmd adopt-prepare    min 2.28 median 2.43 max 2.54 exit [0]
+  cmd adopt-activate   min 18.91 median 19.18 max 19.87 exit [0]
+  cmd adopt-inspect    min 4.61 median 4.93 max 6.16 exit [0]
+  identities: deployment ['backup-test-5U2I', 'backup-test-FVIN', 'backup-test-ZA5F'] epochs [(7, 12), (7, 12), (7, 12)] valkey changed [True, True, True]
+
+== replica-promotion-acknowledged-loss repeats 3 complete 3
+  outage->ready s: min 53.11 median 53.27 max 53.54
+  outage->state s: min 53.15 median 53.30 max 53.58
+  acknowledged/present/lost: [(2, 1, 1), (2, 1, 1), (2, 1, 1)]
+  backup age at outage s: [-2.36, -2.03, -2.09]
+  history age at outage s: [-4.79, -4.21, -4.28]
+  readiness http: [200, 200, 200]
+  gateway start->ready s: [20.71, 20.98, 21.26]
+  cmd close            min 1.21 median 1.24 max 1.26 exit [0]
+  cmd capture          min 2.29 median 2.29 max 2.64 exit [0]
+  cmd adopt-prepare    min 2.27 median 2.27 max 2.47 exit [0]
+  cmd adopt-activate   min 19.67 median 19.77 max 20.17 exit [0]
+  cmd adopt-inspect    min 4.71 median 4.74 max 5.03 exit [0]
+  identities: deployment ['backup-test-4OVF', 'backup-test-7EAJ', 'backup-test-XR7H'] epochs [(7, 12), (7, 12), (7, 12)] valkey changed [True, True, True]

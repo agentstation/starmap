@@ -12,7 +12,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: merge Starport #398 (Phase A, head <code>a094302a</code>) at the exact head after its hosted run is green, and record the merge. Then integrate Phase B (<code>3bbe2634</code>) and Phase C (<code>0936fe4f</code>) the same way. Then measure the supported recovery deployments for D42, and publish the inspect-import fix (<code>da9425bd</code>) and the harness (<code>53df341c</code>) after Phase C.</p>
+<p>Next: merge Starport #399 (Phase B, head <code>07ba4eb5</code>) at the exact head after its hosted run is green, and record the merge. Then integrate Phase C (<code>0936fe4f</code>) the same way. Then publish the inspect-import fix (<code>da9425bd</code>) and the harness (<code>53df341c</code>) as two pull requests. The D42 numeric targets wait on the owner decision in the measurement record.</p>
 
 <p>Starport #395 (layer two, <code>d06c47b0</code>) merged as <code>86041546</code> on 2026-09-30 after all 31 checks passed on attempt 2. The <a href="proof/starport-production-catalog/csp13/starport395-merge-2026-09-30/verification.json">merge proof</a> records tree equality and strict protection. It also records zero unresolved threads and the first-attempt Windows flake. Root removed the layer two worktree and branch.</p>
 
@@ -63,6 +63,14 @@
 <p>Root committed the fix with its fleet regression test as <code>da9425bd</code> on branch <code>codex/recovery-inspect-import-fleet-20261001</code>. Root committed the harness as <code>53df341c</code> on <code>codex/recovery-measurement-20260930</code> above it. <code>TestRecoveryMeasurement</code> runs three idle fleet scenarios three times each through the shipping binary and a fresh gateway process. It skips visibly without <code>STARPORT_RECOVERY_MEASUREMENT_DIR</code>. gofmt, go vet, make lint, and local gosec pass. The harness background limit stopped the Codex run before it wrote <code>measurement.json</code>, so root reruns the harness from the committed head with the race detector. The fix and the harness publish as two pull requests after Phase C merges.</p>
 
 <p>Cleanup item: the ~25 component worktrees under <code>/private/tmp</code> from earlier CSP13 layers are not ancestors of <code>main</code>. Each needs a patch-level containment check before removal.</p>
+
+<p>Starport #398 (Phase A, <code>a094302a</code>) merged as <code>e3e14302</code> on 2026-10-01 UTC after all 42 checks passed on the first run. The <a href="proof/starport-production-catalog/csp13/starport398-merge-2026-10-01/verification.json">merge proof</a> records tree equality, strict protection, and zero unresolved threads. Root removed the Phase A worktree and branch. Root rebased Phase B onto <code>e3e14302</code> as <code>07ba4eb5</code> with an identical tree and published it as draft #399.</p>
+
+<p>The measurement harness passed at <code>53df341c</code> with the race detector: 9 of 9 runs complete in 855 seconds. Outage start to restored HTTP readiness took 47.6 to 54.8 seconds across the three scenarios. The import and the persistent restart lost zero of two acknowledged writes in every run. The promotion lost exactly the one write that only the old primary acknowledged, and the old primary refused authority. The <a href="proof/starport-production-catalog/csp13/recovery-measurement-2026-10-01/RECORD.md">measurement record</a> presents the measurements, the limits, and the proposed numeric targets for the D42 owner decision.</p>
+
+<p>Pending owner decision: approve, change, or reject the proposed reference RTO of 120 seconds and the reference RPO values. Production readiness waits on it. The fix and harness pull requests do not.</p>
+
+<p>The fleet regression test fails before the fix with <code>captured fleet identity differs from the closed recovery boundary</code> and passes after it. All 23 <code>TestInspectImported*</code> cases pass with the race detector against the native fixtures. The Sol 6.1 review of the fix delta above <code>0936fe4f</code> is clean at P0.</p>
 
 <p>Root rebased the populated adoption stack onto the layer four head. The commits are <code>24380a45</code> (Valkey), <code>b9bd4149</code> (blob), <code>4efe6121</code> (SQL), <code>eb400e92</code> (Phase B), and <code>8f5d9c9e</code> (Phase C). Branch <code>codex/recovery-populated-native-20260930</code> points at the SQL commit. Each native commit is patch-identical to its original.</p>
 

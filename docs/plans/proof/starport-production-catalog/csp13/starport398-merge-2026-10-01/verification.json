@@ -1,0 +1,58 @@
+{
+ "recorded_utc": "2026-10-01T05:31:00.861815+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 398,
+ "head": "a094302aa60e811ebc2f9e85441fb74a6bf3ac23",
+ "base": "d421322784c9fd3cc9125ca65d872198faf3c702",
+ "merge": "e3e14302c5c97e225de612a44242d46e0a1899cb",
+ "merged_at": "2026-10-01T05:30:22Z",
+ "checks": {
+  "success": 42,
+  "not_success": 0,
+  "total": 42
+ },
+ "reviewed_tree": "087959a0ef2f7b1c56279ea49197223bded4b40c",
+ "merged_tree": "087959a0ef2f7b1c56279ea49197223bded4b40c",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "Phase A of populated adoption in place: the native owners (storage, blob, sqlstore)",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "ca6806982f944c2e59352d4ff6795b0cbd32d8e7d7b29071d26d27e6bef28752",
+   "gzip_sha256": "1507f34ad2cd5888607aedbf25f6c4a5f5708db2a556db4a789dcb1c2337d765"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "e047671c42017b3e1d45f2e3f817cc07d0f7b60a9309e599804d2a5f3e6de158",
+   "gzip_sha256": "4c94b170edfbb77b99679c46f65a132d656a55cf98e56a0327fbb707fd23850f"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "85f133e66f0a35a8f9ab0d32a754f08e6de171b70463ee0bb142d1e1c6dfba5b",
+   "gzip_sha256": "9b5cd7d6e42445817f45a0c9527bbddb2d7b8059e10c412dbbe7bfc3c7dbe84a"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
