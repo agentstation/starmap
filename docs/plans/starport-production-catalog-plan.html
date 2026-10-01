@@ -12,7 +12,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: merge Starport #397 (layer four, head <code>b8a4e9bc</code>) after its hosted run is green. Then delete the integrated branch and worktree. Then rebase populated adoption Phase C onto <code>main</code>, rerun the full embedded test, commit it, and integrate it by phase.</p>
+<p>Next: merge Starport #397 (layer four, head <code>c0ae5bfc</code>, run 36798051361) after its hosted run is green. Then delete the integrated branch and worktree. Then rebase populated adoption Phase C onto <code>main</code>, rerun the full embedded test, commit it, and integrate it by phase.</p>
 
 <p>Starport #395 (layer two, <code>d06c47b0</code>) merged as <code>86041546</code> on 2026-09-30 after all 31 checks passed on attempt 2. The <a href="proof/starport-production-catalog/csp13/starport395-merge-2026-09-30/verification.json">merge proof</a> records tree equality and strict protection. It also records zero unresolved threads and the first-attempt Windows flake. Root removed the layer two worktree and branch.</p>
 
@@ -31,6 +31,18 @@
 <p>Phase C lead review is complete. The static checks pass on the Phase C worktree: gofmt, go vet, make lint, and the RECOVERY.md technical-writing lint. Lead runs use binaries built from the Phase C tree. The populated adoption tests pass with the race detector in 366 seconds. The recovery, catalog, cli, and cmd packages pass pure. A known non-gating item: gofmt lists <code>internal/recovery/catalog_expiring_preparation_test.go</code> on <code>main</code>.</p>
 
 <p>The full embedded activation test times out at 483 seconds on the Phase C head and on its base <code>596bcccb</code>. The same test passes in 309 seconds at the layer four head under the same load. The Phase C base pins Starmap <code>2bb99571</code> without the decode reuse that layer four commit <code>3367e8f9</code> carries. The rebase onto <code>main</code> after #397 merges resolves it, and the rerun is the acceptance evidence. The base control run at <code>596bcccb</code> fails at 490 seconds under the same load. Root committed Phase C as <code>31656fb7</code> on its pushed branch and recorded the limits in DESIGN.md.</p>
+
+<p>The first hosted run for #397 (36795450606) failed two jobs. The new application recovery matrix ran on a hosted runner for the first time. Security Scan failed before any rule ran. Gosec v2.29.0 walks <code>testdata</code>, and it refused one directory that held four overlay probes with four package names.</p>
+
+<p>Application Recovery (activation, pure) passed every owner, but the evidence script merged <code>go test</code> stderr into <code>tests.jsonl</code>, and the cold module cache wrote download notices into the stream.</p>
+
+<p>Root moved each probe to <code>internal/app/testdata/probes/&lt;kind&gt;/</code> (<code>c0ae5bfc</code>). Root wrote stderr to <code>tests.stderr.txt</code> with a regression assertion (<code>889a5615</code>). Local gosec reports 0 Go errors and 0 issues. The three probe-building tests pass with the race detector in 518 seconds. The script tests, lint, and build pass. The Sol 6.1 pre-PR review is clean at P0 across three passes.</p>
+
+<p>The hosted Security Scan is not in the local roster. Run gosec locally before a push that adds Go files under <code>testdata</code>.</p>
+
+<p>Root rebased the populated adoption stack onto the layer four head. The commits are <code>24380a45</code> (Valkey), <code>b9bd4149</code> (blob), <code>4efe6121</code> (SQL), <code>eb400e92</code> (Phase B), and <code>8f5d9c9e</code> (Phase C). Branch <code>codex/recovery-populated-native-20260930</code> points at the SQL commit. Each native commit is patch-identical to its original.</p>
+
+<p>The full embedded activation test passed with the race detector in 329 seconds on the stack at the previous layer four head. This result confirms the Starmap pin cause. Root removed the superseded phase worktrees. The Phase A roster runs in <code>/private/tmp/starport-populated-native-20260930</code> while the hosted run completes.</p>
 
 <p>The third layer three run (36785465076) failed only <code>Test (windows-2025)</code>. The compose recipe probe <code>docker compose version</code> reached its thirty-second deadline on the runner. The same step passed on the second run with the same test source. Root reruns the failed jobs once after the run completes. Phase C lead review of the core diff found no deviation from the three authorized rules. Its race run fails only the V08 fixture test that layer four fixes in <code>29575bcb</code>.</p>
 
