@@ -1,0 +1,13 @@
+autoreview target: branch
+branch: codex/recovery-a33-registration-20261001
+gate: pre-pr (configured cadence: pre-pr)
+profile: auto
+selection: sol=6.85
+reviewers: codex model=gpt-6.1-sol thinking=high
+ref: origin/main
+trufflehog: clean (2.7s)
+bundle: 72434 bytes; review passes: 1
+autoreview clean: no accepted/actionable findings reported
+overall: patch is correct (0.98)
+No defects meeting the required P0 reporting threshold were identified in the provided change bundle.
+autoreview clean attestation stored for this substantive diff

@@ -1,0 +1,56 @@
+{
+ "recorded_utc": "2026-10-01T08:24:29.074755+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starmap",
+ "pr": 208,
+ "head": "f58ae9770cd7f55da5573a82a762b1459586b971",
+ "base": "8e3d4538f23e76828de5d6bf6ed64e7ab798931b",
+ "merge": "7ecd952d5d5fd8b246a153586032deb86897690b",
+ "merged_at": "2026-10-01T08:24:12Z",
+ "checks": {
+  "success": 62,
+  "not_success": 0,
+  "total": 62
+ },
+ "reviewed_tree": "b03ce7b819989cdcee1669c08822bfb1605a1b07",
+ "merged_tree": "b03ce7b819989cdcee1669c08822bfb1605a1b07",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Security & Reliability",
+  "Verification Gate"
+ ],
+ "linear_history": false,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "A33 registration: restart and recovery epoch, operator reconciliation, and measured RPO/RTO subcases with the recovery-measurement-2026-10-01 record",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "4558dcdcdee0d24f58066d84fe6ad8b9d496110cdafaee007d8a36586fb6f57b",
+   "gzip_sha256": "a29d5ca8f4abc1a6743e4c2eb533ea49bea966a358cf408dc66d2ab5c4befaf7"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "aac1ed0d9c8425314aa789f239eb039c1820f3db7fc6c0d2bdda59eeb1481599",
+   "gzip_sha256": "3477df937b98c8100b2f468cadaadad641e87487b7cdeeebb66ad62478650cb7"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "cf9486dd715bb5bab1b8dd2f8853cfa27858b5c77de9a1a697d1970a193d4987",
+   "gzip_sha256": "a9a4651bcbd8d59cb01c51c264e7296c928222feb791e97bf41183725a35b42b"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+   "gzip_sha256": "da95be86de467295689c40b6350ff741a6659382857d1f52272e7dc99b40ed85"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
