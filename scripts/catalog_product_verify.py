@@ -102,12 +102,28 @@ def registered_check(args, registry, identity):
     return registry["checks"].get(identity), "product"
 
 
+GO_PROCESS_BUDGET_SECONDS = 300
+GO_TEST_BUDGET_SECONDS = 60
+GO_TEST_BUDGET_LIMIT_SECONDS = 1800
+
+
+def go_check_budget(entry):
+    """Return the declared per-test process budget in seconds, or None when it is invalid."""
+    value = entry.get("timeout", f"{GO_TEST_BUDGET_SECONDS}s")
+    match = re.fullmatch(r"([1-9][0-9]{0,3})([sm])", value) if isinstance(value, str) else None
+    if match is None:
+        return None
+    seconds = int(match.group(1)) * (60 if match.group(2) == "m" else 1)
+    return seconds if seconds <= GO_TEST_BUDGET_LIMIT_SECONDS else None
+
+
 def go_check_input(entry, roots):
     root = roots.get(entry.get("repository"))
     package, test = entry.get("package", ""), entry.get("test", "")
     if root is None or not (root / "go.mod").is_file():
         return None, {"status": "UNVERIFIED", "reason": "The required repository is unavailable."}
     if (not isinstance(test, str) or not isinstance(package, str) or type(entry.get("batch", True)) is not bool
+            or go_check_budget(entry) is None
             or not re.fullmatch(r"Test[A-Za-z0-9_]+", test) or not package.startswith("./")
             or any(part in ("..", "...") for part in package.split("/")[1:])):
         return None, {"status": "FAIL", "reason": "Invalid named Go behavior check."}
@@ -137,6 +153,7 @@ class GoEvidence:
         self.groups = {}
         self.results = {}
         self.isolated = set()
+        self.budgets = {}
         for entry in entries:
             for check in leaf_checks(entry):
                 if check.get("kind") != "go_test":
@@ -145,6 +162,7 @@ class GoEvidence:
                 if error is None:
                     root, package, test = inputs
                     self.groups.setdefault((root, package), set()).add(test)
+                    self.budgets[inputs] = max(self.budgets.get(inputs, 0), go_check_budget(check))
                     if not check.get("batch", True):
                         self.isolated.add(inputs)
         for root, package, test in self.isolated:
@@ -154,9 +172,15 @@ class GoEvidence:
         key = (root, package, test)
         if key not in self.results:
             names = [test] if key in self.isolated else sorted(self.groups.get((root, package), {test}))
-            for name, result in run_go_tests(root, package, names).items():
+            budget = go_process_budget(self.budgets.get((root, package, name), GO_TEST_BUDGET_SECONDS) for name in names)
+            for name, result in run_go_tests(root, package, names, budget).items():
                 self.results[(root, package, name)] = result
         return dict(self.results[key])
+
+
+def go_process_budget(budgets):
+    """One process budget covers every selected test, with the shared floor for short batches."""
+    return max(GO_PROCESS_BUDGET_SECONDS, sum(budgets))
 
 
 def retain_go_run(evidence, results):
@@ -178,9 +202,9 @@ def retain_go_run(evidence, results):
     return results
 
 
-def run_go_tests(root, package, names):
+def run_go_tests(root, package, names, budget_seconds=GO_PROCESS_BUDGET_SECONDS):
     pattern = "^(" + "|".join(names) + ")$"
-    command = ["go", "test", "-race", "-count=1", "-timeout", "5m", "-json", "-run", pattern, package]
+    command = ["go", "test", "-race", "-count=1", "-timeout", f"{budget_seconds}s", "-json", "-run", pattern, package]
     started = time.monotonic()
     try:
         module = re.search(r"(?m)^module[ \t]+([^\s]+)", (root / "go.mod").read_text())
@@ -189,7 +213,7 @@ def run_go_tests(root, package, names):
         import_path = module.group(1).strip('"')
         if package.rstrip("/") != ".":
             import_path += "/" + package[2:].rstrip("/")
-        result = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=330)
+        result = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=budget_seconds + 30)
     except (OSError, ValueError, subprocess.TimeoutExpired) as error:
         evidence = {"command": command, "cwd": str(root), "elapsed_seconds": time.monotonic() - started}
         if isinstance(error, subprocess.TimeoutExpired):
@@ -352,7 +376,7 @@ def run_check(identity, entry, roots, go_evidence=None):
         if go_evidence is not None and evidence_key in go_evidence:
             evidence = dict(go_evidence[evidence_key])
         else:
-            evidence = run_go_tests(root, package, [test])[test]
+            evidence = run_go_tests(root, package, [test], go_process_budget([go_check_budget(entry)]))[test]
             if go_evidence is not None:
                 go_evidence[evidence_key] = evidence
     result = dict(evidence)

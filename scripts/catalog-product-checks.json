@@ -6514,7 +6514,8 @@
           "repository": "starport",
           "package": "./internal/app",
           "test": "TestProductionBudgetAcrossProcesses",
-          "batch": false
+          "batch": false,
+          "timeout": "10m"
         },
         {
           "kind": "go_test",
@@ -6990,7 +6991,8 @@
           "repository": "starport",
           "package": "./internal/app",
           "test": "TestProductionBudgetAcrossProcesses",
-          "batch": false
+          "batch": false,
+          "timeout": "10m"
         },
         {
           "kind": "go_test",
@@ -8125,13 +8127,14 @@
           "repository": "starport",
           "package": "./internal/app",
           "test": "TestPopulatedAdoptionProcess",
+          "batch": false,
+          "timeout": "10m",
           "required_subtests": [
             "valkey-restart-with-persistent-data",
             "promotion-acknowledged-loss-old-primary",
             "restored-sql-witness-before-capture",
             "restored-sql-witness-after-capture"
-          ],
-          "batch": false
+          ]
         },
         {
           "kind": "go_test",
@@ -8251,6 +8254,8 @@
           "repository": "starport",
           "package": "./internal/app",
           "test": "TestPopulatedAdoptionProcess",
+          "batch": false,
+          "timeout": "10m",
           "required_subtests": [
             "valkey-restart-with-persistent-data",
             "promotion-acknowledged-loss-old-primary",
