@@ -1,0 +1,58 @@
+{
+ "recorded_utc": "2026-10-01T19:46:23.385348+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 404,
+ "head": "c3c0417343f73dac1d04fb3174ec748d25b56800",
+ "base": "70dbf7deddaf3e7b240ab0de5908c59625af1b73",
+ "merge": "77ffc26a0b29196d62c11e9478b5e46aa67ccecb",
+ "merged_at": "2026-10-01T19:45:33Z",
+ "checks": {
+  "success": 42,
+  "not_success": 0,
+  "total": 42
+ },
+ "reviewed_tree": "8570bc7d8658b82ed30696881ef2335bbec35e1e",
+ "merged_tree": "8570bc7d8658b82ed30696881ef2335bbec35e1e",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP15",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "a8c7bbeae5f4f79ace444a51129a28a5d1707defb1c7058a4325954b3011adca",
+   "gzip_sha256": "ba7265311034cfe08606774c24d1a105777bd419ef7f2f098f9286c9d44a08ce"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "40430fcc9404d8096e88d437e1ed754c5369c448f9f33575f3cb7168a243afdf",
+   "gzip_sha256": "e8492db692b9c8d3359e9c824ea41ebb38fe5d8971f9c590bda8afc2bb5b4fdb"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "50d188a4cd4a2bc8002b6acd433c9181556d914da59f1ec0ad56386f19726ced",
+   "gzip_sha256": "d0d8d765e2808da88fe072bb918d33d5b0cfc0e4a088e9a95a0b808d7dfff997"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
