@@ -1014,6 +1014,137 @@ func TestSkipped(t *testing.T) { t.Skip("fixture skip") }
             self.assertEqual((root / 'processes').read_text().splitlines(), ['run'] * 5)
 
 
+class MeasurementRecordTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        self.record = self.root / 'record'
+        self.record.mkdir()
+        self.entry = {'kind': 'measurement_record', 'repository': 'starmap', 'record': 'record'}
+        self.measurement = {
+            'version': 1, 'source_head': 'a' * 40, 'operator_vcs_modified': False, 'operator_race': True,
+            'runs': [{'scenario': scenario, 'complete': True, 'commands': [{'exit_status': 0}],
+                      'readiness_http_status': 200, 'outage_to_ready_seconds': repeat + 1,
+                      'lost_writes': 1 if scenario == 'replica-promotion-acknowledged-loss' else 0,
+                      'acknowledged_writes': 2}
+                     for scenario in ('empty-target-import', 'valkey-restart-persistent',
+                                      'replica-promotion-acknowledged-loss') for repeat in range(3)]}
+        self.decision = {'status': 'CONFIRMED', 'decision': 'D42', 'measurement_source_head': 'a' * 8,
+                         'approved_targets': {'reference_rto_seconds': 3}}
+
+    def check(self):
+        (self.record / 'measurement.json').write_text(json.dumps(self.measurement))
+        (self.record / 'decision.json').write_text(json.dumps(self.decision))
+        return verifier.run_check('A33.measured_rpo_rto', self.entry, {'starmap': self.root})
+
+    def test_confirmed_measurement_returns_only_the_proof_fields(self):
+        self.measurement['runs'][0]['commands'][0]['private_output'] = 'private-fixture-value'
+        result = self.check()
+        self.assertEqual(result['status'], 'PASS', result)
+        self.assertEqual(result['rto_seconds'], 3)
+        self.assertEqual(result['max_outage_to_ready_seconds'], 3)
+        self.assertEqual(result['runs'], 9)
+        self.assertEqual(set(result), {'status', 'reason', 'rto_seconds', 'max_outage_to_ready_seconds', 'runs'})
+        self.assertNotIn('private-fixture-value', json.dumps(result))
+
+    def test_nonzero_command_exit_fails(self):
+        self.measurement['runs'][-1]['commands'].append({'exit_status': 1})
+        self.assertEqual(self.check()['status'], 'FAIL')
+
+    def test_promotion_without_acknowledged_loss_fails(self):
+        self.measurement['runs'][-1]['lost_writes'] = 0
+        self.assertEqual(self.check()['status'], 'FAIL')
+
+    def test_rto_breach_fails(self):
+        self.measurement['runs'][-1]['outage_to_ready_seconds'] = 3.1
+        self.assertEqual(self.check()['status'], 'FAIL')
+
+    def test_missing_files_are_unverified(self):
+        self.check()
+        for name in ('measurement.json', 'decision.json'):
+            with self.subTest(file=name):
+                self.check()
+                (self.record / name).unlink()
+                result = verifier.run_check('A33.measured_rpo_rto', self.entry, {'starmap': self.root})
+                self.assertEqual(result['status'], 'UNVERIFIED', result)
+
+    def test_modified_binary_fails(self):
+        self.measurement['operator_vcs_modified'] = True
+        self.assertEqual(self.check()['status'], 'FAIL')
+
+    def test_measurement_contract_fields_cannot_be_omitted_or_changed(self):
+        original = deepcopy(self.measurement)
+        changes = [lambda m: m.update(version=2), lambda m: m.update(version=True),
+                   lambda m: m.pop('operator_vcs_modified'), lambda m: m.update(operator_race=False),
+                   lambda m: m['runs'].pop(),
+                   lambda m: m['runs'][0].update(scenario='unknown-private-fixture-value'),
+                   lambda m: m['runs'][0].update(scenario='valkey-restart-persistent'),
+                   lambda m: m['runs'][0].update(complete=False),
+                   lambda m: m['runs'][0].update(commands=[]),
+                   lambda m: m['runs'][0]['commands'][0].pop('exit_status'),
+                   lambda m: m['runs'][0].update(readiness_http_status=503),
+                   lambda m: m['runs'][0].update(lost_writes=1),
+                   lambda m: m['runs'][3].update(lost_writes=1),
+                   lambda m: m['runs'][-1].update(acknowledged_writes=1)]
+        for index, change in enumerate(changes):
+            with self.subTest(change=index):
+                self.measurement = deepcopy(original)
+                change(self.measurement)
+                result = self.check()
+                self.assertEqual(result['status'], 'FAIL', result)
+                self.assertNotIn('private-fixture-value', json.dumps(result))
+
+    def test_decision_requires_confirmation_and_source_binding(self):
+        original = deepcopy(self.decision)
+        changes = [lambda d: d.update(status='UNVERIFIED'), lambda d: d.update(decision='D41'),
+                   lambda d: d.update(measurement_source_head='b' * 8),
+                   lambda d: d.update(measurement_source_head=''),
+                   lambda d: d.pop('measurement_source_head')]
+        for index, change in enumerate(changes):
+            with self.subTest(change=index):
+                self.decision = deepcopy(original)
+                change(self.decision)
+                self.assertEqual(self.check()['status'], 'FAIL')
+        self.decision = original
+        self.measurement.pop('source_head')
+        self.assertEqual(self.check()['status'], 'FAIL')
+
+    def test_timing_values_require_finite_numbers(self):
+        for value in (None, True, '3', -1, float('nan'), float('inf'), 10 ** 400):
+            with self.subTest(outage=value):
+                self.measurement['runs'][0]['outage_to_ready_seconds'] = value
+                self.assertEqual(self.check()['status'], 'FAIL')
+        self.measurement['runs'][0]['outage_to_ready_seconds'] = 0
+        for value in (None, True, '3', 0, -1, float('nan'), float('inf'), 10 ** 400):
+            with self.subTest(rto=value):
+                self.decision['approved_targets']['reference_rto_seconds'] = value
+                self.assertEqual(self.check()['status'], 'FAIL')
+
+    def test_malformed_records_fail_without_private_values(self):
+        for name in ('measurement.json', 'decision.json'):
+            for content in ('{"private-fixture-value":', 'null', '[]'):
+                with self.subTest(file=name, content=content):
+                    self.check()
+                    (self.record / name).write_text(content)
+                    result = verifier.run_check('A33.measured_rpo_rto', self.entry, {'starmap': self.root})
+                    self.assertEqual(result['status'], 'FAIL', result)
+                    self.assertNotIn('private-fixture-value', json.dumps(result))
+        self.check()
+        (self.record / 'measurement.json').write_bytes(b'private-fixture-value\xff')
+        result = verifier.run_check('A33.measured_rpo_rto', self.entry, {'starmap': self.root})
+        self.assertEqual(result['status'], 'FAIL', result)
+        self.assertNotIn('private-fixture-value', json.dumps(result))
+
+    def test_missing_repository_is_unverified_and_external_path_fails(self):
+        self.assertEqual(verifier.run_check('A33.measured_rpo_rto', self.entry, {})['status'], 'UNVERIFIED')
+        for name in ('../record', str(self.record)):
+            with self.subTest(record=name):
+                entry = dict(self.entry, record=name)
+                self.assertEqual(verifier.run_check('A33.measured_rpo_rto', entry,
+                                                   {'starmap': self.root})['status'], 'FAIL')
+
+
 class RecoveryRegistrationTests(unittest.TestCase):
     def setUp(self):
         self.roster = verifier.read_json(verifier.ROSTER)
@@ -1112,9 +1243,61 @@ class RecoveryRegistrationTests(unittest.TestCase):
         self.assertEqual(set(tests), {'TestUnprefixedMigrationPreservesRecordsAcrossProcessExit'})
         self.assertIs(tests['TestUnprefixedMigrationPreservesRecordsAcrossProcessExit']['batch'], False)
 
+    def test_restart_and_recovery_epoch_requires_process_and_native_transitions(self):
+        identity = 'A33.restart_and_recovery_epoch'
+        self.assertEqual(self.registry['checks'][identity]['kind'], 'all')
+        tests = {entry['test']: entry for entry in self.leaves(identity)}
+        self.assertEqual(set(tests), {'TestPopulatedAdoptionProcess', 'TestClosedAdoptionEpochTransitions',
+                                     'TestPopulatedAdoptionNativeEpochSequenceAndApproval',
+                                     'TestPopulatedAdoptionNativeRefusesConflictingEpochs'})
+        self.assertEqual(tests['TestPopulatedAdoptionProcess']['required_subtests'],
+                         ['valkey-restart-with-persistent-data', 'promotion-acknowledged-loss-old-primary',
+                          'restored-sql-witness-before-capture', 'restored-sql-witness-after-capture'])
+        for name, entry in tests.items():
+            self.assertEqual(entry['repository'], 'starport')
+            self.assertEqual(entry['package'], './internal/app' if name == 'TestPopulatedAdoptionProcess'
+                             else './internal/recovery')
+            self.assertIs(entry['batch'], False)
+
+    def test_operator_reconciliation_requires_shipping_binary_and_refusals(self):
+        identity = 'A33.operator_reconciliation'
+        self.assertEqual(self.registry['checks'][identity]['kind'], 'all')
+        tests = {entry['test']: entry for entry in self.leaves(identity)}
+        self.assertEqual(set(tests), {'TestRecoveryPopulatedOperatorCommandsAcrossNativePhaseCut',
+                                     'TestPopulatedAdoptionOperatorCommands'})
+        self.assertEqual(tests['TestRecoveryPopulatedOperatorCommandsAcrossNativePhaseCut']['required_subtests'],
+                         ['shipping-binary'])
+        self.assertEqual(tests['TestPopulatedAdoptionOperatorCommands']['required_subtests'],
+                         ['prepare-refusals', 'activation-refusals', 'sealed-refusals', 'shipping-binary'])
+        for entry in tests.values():
+            self.assertEqual(entry['repository'], 'starport')
+            self.assertEqual(entry['package'], './internal/app')
+            self.assertIs(entry['batch'], False)
+
+    def test_new_recovery_checks_require_each_registered_subtest(self):
+        for identity in ('A33.restart_and_recovery_epoch', 'A33.operator_reconciliation'):
+            for entry in self.leaves(identity):
+                required = entry.get('required_subtests', [])
+                for omitted in required:
+                    with self.subTest(identity=identity, test=entry['test'], omitted=omitted):
+                        evidence = {'status': 'PASS', 'subtests': {name: True for name in required}}
+                        with patch.object(verifier, 'run_go_tests', return_value={entry['test']: evidence}):
+                            self.assertEqual(verifier.run_check(identity, entry,
+                                                               {'starport': verifier.ROOT})['status'], 'PASS')
+                            del evidence['subtests'][omitted]
+                            result = verifier.run_check(identity, entry, {'starport': verifier.ROOT})
+                            self.assertEqual(result['status'], 'UNVERIFIED')
+                            self.assertEqual(result['missing_subtests'], [omitted])
+
+    def test_measured_rpo_rto_requires_the_starmap_measurement_record(self):
+        self.assertEqual(self.registry['checks']['A33.measured_rpo_rto'], {
+            'kind': 'measurement_record', 'repository': 'starmap',
+            'record': 'docs/plans/proof/starport-production-catalog/csp13/recovery-measurement-2026-10-01'})
+
     def test_remaining_recovery_contracts_stay_unverified_for_every_selector(self):
-        missing = {'A33.operator_reconciliation', 'A33.measured_rpo_rto',
-                   'A33.old_primary_admission_fence', 'A33.restart_and_recovery_epoch'}
+        missing = {'A33.old_primary_admission_fence'}
+        registered = {'A33.operator_reconciliation', 'A33.measured_rpo_rto', 'A33.restart_and_recovery_epoch'}
+        self.assertTrue(registered <= set(self.registry['checks']))
         self.assertTrue(missing <= set(self.roster['task_checks']['CSP13']))
         self.assertTrue(missing.isdisjoint(self.registry['checks']))
         arguments = [('CSP13', None, None), (None, None, ['A16', 'A33']), (None, None, ['A04', 'A41']),
