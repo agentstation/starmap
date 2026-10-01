@@ -62,7 +62,7 @@
 
 <p>Root committed the fix with its fleet regression test as <code>da9425bd</code> on branch <code>codex/recovery-inspect-import-fleet-20261001</code>. Root committed the harness as <code>53df341c</code> on <code>codex/recovery-measurement-20260930</code> above it. <code>TestRecoveryMeasurement</code> runs three idle fleet scenarios three times each through the shipping binary and a fresh gateway process. It skips visibly without <code>STARPORT_RECOVERY_MEASUREMENT_DIR</code>. gofmt, go vet, make lint, and local gosec pass. The harness background limit stopped the Codex run before it wrote <code>measurement.json</code>, so root reruns the harness from the committed head with the race detector. The fix and the harness publish as two pull requests after Phase C merges.</p>
 
-<p>Cleanup item: the ~25 component worktrees under <code>/private/tmp</code> from earlier CSP13 layers are not ancestors of <code>main</code>. Each needs a patch-level containment check before removal.</p>
+<p>Root ran the file-level containment check on 2026-10-01. Every file that an old component branch changed now matches <code>main</code>. Root removed 23 clean worktrees under <code>/private/tmp</code> and kept their local branches, because the plan cites their commits as evidence. Root kept the two preserved dirty worktrees, the topology compiler worktree with a local <code>replace</code> in <code>go.mod</code>, and the prunable fleet review directory.</p>
 
 <p>Starport #398 (Phase A, <code>a094302a</code>) merged as <code>e3e14302</code> on 2026-10-01 UTC after all 42 checks passed on the first run. The <a href="proof/starport-production-catalog/csp13/starport398-merge-2026-10-01/verification.json">merge proof</a> records tree equality, strict protection, and zero unresolved threads. Root removed the Phase A worktree and branch. Root rebased Phase B onto <code>e3e14302</code> as <code>07ba4eb5</code> with an identical tree and published it as draft #399.</p>
 
@@ -71,6 +71,8 @@
 <p>Pending owner decision: approve, change, or reject the proposed reference RTO of 120 seconds and the reference RPO values. Production readiness waits on it. The fix and harness pull requests do not.</p>
 
 <p>The fleet regression test fails before the fix with <code>captured fleet identity differs from the closed recovery boundary</code> and passes after it. All 23 <code>TestInspectImported*</code> cases pass with the race detector against the native fixtures. The Sol 6.1 review of the fix delta above <code>0936fe4f</code> is clean at P0.</p>
+
+<p>The Sol 6.1 review of the harness delta above <code>da9425bd</code> is also clean at P0. Both pull request bodies are complete in the session scratchpad. The Starmap registry on <code>main</code> asserts the four A33 subcases as missing, so their registration is a separate Starmap delivery after the Starport stack lands.</p>
 
 <p>Root rebased the populated adoption stack onto the layer four head. The commits are <code>24380a45</code> (Valkey), <code>b9bd4149</code> (blob), <code>4efe6121</code> (SQL), <code>eb400e92</code> (Phase B), and <code>8f5d9c9e</code> (Phase C). Branch <code>codex/recovery-populated-native-20260930</code> points at the SQL commit. Each native commit is patch-identical to its original.</p>
 
