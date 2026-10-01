@@ -14,6 +14,8 @@
 
 <p>Next: merge Starport #401 (inspect-import fix, head <code>5b7e53f7</code>, rebased on <code>5d0cd809</code> with the tree of <code>415836dd</code>) at its exact head after its run is green. Then push the harness from <code>/private/tmp/starport-measurement-20260930</code>, already rebased as <code>94155706</code> with the tree of <code>dca91f9c</code>, rebase it on the #401 squash, and publish it. Then rebase and publish the fence commit. The owner approved the D42 numeric targets.</p>
 
+<p>The first #401 run failed its Complete Windows recovery coverage job seven seconds after start. The artifact download returned HTTP 503 with the text "Egress is over the account limit". This is a GitHub account artifact egress limit, not a source defect, and the lead reran the failed job on the unchanged head. The owner may need to review the account artifact egress quota if it recurs.</p>
+
 <p>Starport #400 (Phase C, head <code>fd3acd45</code>) merged as <code>5d0cd809</code> on 2026-10-01 after all 42 checks passed. The Durable Work Recovery job passed on its rerun of the unchanged head. The <a href="proof/starport-production-catalog/csp13/starport400-merge-2026-10-01/verification.json">proof</a> records the tree identity.</p>
 
 <p>The #400 hosted run failed its Durable Work Recovery job on a slow runner. Every package ran two to four times slower than on the <code>e4958b50</code> main run. The <code>internal/recovery</code> package hit its 10 minute budget with a test two seconds old. That package already uses 480 of 600 seconds on <code>main</code>. The lead recorded this limit and reruns the failed job on the unchanged head after the run completes.</p>
