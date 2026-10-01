@@ -12,7 +12,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: merge Starport #399 (Phase B, head <code>07ba4eb5</code>) at the exact head after its hosted run is green, and record the merge. Then integrate Phase C (<code>0936fe4f</code>) the same way. Then publish the inspect-import fix (<code>da9425bd</code>) and the harness (<code>53df341c</code>) as two pull requests. The D42 numeric targets wait on the owner decision in the measurement record.</p>
+<p>Next: merge Starport #399 (Phase B, head <code>07ba4eb5</code>) at the exact head after its hosted run is green, and record the merge. Then integrate Phase C (<code>0936fe4f</code>) the same way. Then publish the inspect-import fix (<code>da9425bd</code>) and the harness (<code>53df341c</code>) as two pull requests. The owner approved the D42 numeric targets. After the stack lands, register the four A33 subcases in the Starmap registry.</p>
 
 <p>Starport #395 (layer two, <code>d06c47b0</code>) merged as <code>86041546</code> on 2026-09-30 after all 31 checks passed on attempt 2. The <a href="proof/starport-production-catalog/csp13/starport395-merge-2026-09-30/verification.json">merge proof</a> records tree equality and strict protection. It also records zero unresolved threads and the first-attempt Windows flake. Root removed the layer two worktree and branch.</p>
 
@@ -68,7 +68,7 @@
 
 <p>The measurement harness passed at <code>53df341c</code> with the race detector: 9 of 9 runs complete in 855 seconds. Outage start to restored HTTP readiness took 47.6 to 54.8 seconds across the three scenarios. The import and the persistent restart lost zero of two acknowledged writes in every run. The promotion lost exactly the one write that only the old primary acknowledged, and the old primary refused authority. The <a href="proof/starport-production-catalog/csp13/recovery-measurement-2026-10-01/RECORD.md">measurement record</a> presents the measurements, the limits, and the proposed numeric targets for the D42 owner decision.</p>
 
-<p>Pending owner decision: approve, change, or reject the proposed reference RTO of 120 seconds and the reference RPO values. Production readiness waits on it. The fix and harness pull requests do not.</p>
+<p>On 2026-10-01 the owner approved the proposed D42 numeric targets. The reference RTO is 120 seconds. The RPO is zero after a persistent Valkey restart and after a fenced empty-target import. The promotion RPO stays unbounded as a documented limit. The <a href="proof/starport-production-catalog/csp13/recovery-measurement-2026-10-01/decision.json">approval record</a> binds both answers to the measurement record.</p>
 
 <p>The fleet regression test fails before the fix with <code>captured fleet identity differs from the closed recovery boundary</code> and passes after it. All 23 <code>TestInspectImported*</code> cases pass with the race detector against the native fixtures. The Sol 6.1 review of the fix delta above <code>0936fe4f</code> is clean at P0.</p>
 
@@ -104,7 +104,7 @@
 
 <p>A new finding gets a refusal, a documented limit, and a ledger entry unless a named subcase requires it. Write one proof record for each delivery. Run broad checks one time for each delivery. Keep actual backends, unchanged assertions, UNVERIFIED labels, and lead review.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp13/populated-adoption-design-2026-09-30/DESIGN.md">populated adoption design</a> records the owner boundaries. No product command reopens a closed populated deployment today. The first delivery supports only a zero prefix, where the fenced capture is the base. Software then cannot detect an acknowledged write that Valkey lost in a restart. The operator attests the interval. Pending owner decision under D42: require typed activation-effect history before production readiness, or accept the attested limit.</p>
+<p>The <a href="proof/starport-production-catalog/csp13/populated-adoption-design-2026-09-30/DESIGN.md">populated adoption design</a> records the owner boundaries. No product command reopens a closed populated deployment today. The first delivery supports only a zero prefix, where the fenced capture is the base. Software then cannot detect an acknowledged write that Valkey lost in a restart. The operator attests the interval. On 2026-10-01 the owner accepted the attested limit for production readiness under D42. Typed activation-effect history is not required.</p>
 
 <p>Phase A owners run in parallel from <code>c6b10232</code> and do not commit. <code>adopt-kv</code> owns <code>/private/tmp/starport-populated-kv-20260930</code>. <code>adopt-sql</code> owns <code>/private/tmp/starport-populated-sql-20260930</code>. <code>adopt-blob</code> owns <code>/private/tmp/starport-populated-blob-20260930</code>. Each branch has the matching <code>codex/recovery-populated-*-20260930</code> name. Root reviews and commits each delivery.</p>
 

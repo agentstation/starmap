@@ -75,20 +75,21 @@ Native identities per run: the prepared boundary holds the closed source epoch (
 - The harness runs on one host with local Docker. It is not in the hosted recovery roster.
 - Adoption supports Valkey, PostgreSQL, and object storage only. MySQL application-level adoption stays UNVERIFIED.
 
-## Proposed targets for owner approval
+## Approved targets
 
-These proposals derive from the table above. They are not approved.
+These targets derive from the table above. The owner approved them on 2026-10-01. See `decision.json`.
 
 - Reference RTO for the fenced operator procedure on the idle reference deployment: 120 seconds. This is about two times the observed maximum of 54.82 seconds. The margin covers a pure build, a cold cache, and operator latency between commands.
 - Reference RPO after a Valkey restart with `appendfsync always` persistent data: zero acknowledged writes. Measured zero in three runs.
 - Reference RPO after an empty-target import of a fenced capture: zero acknowledged writes after the fence. Measured zero in three runs.
 - Reference RPO after a replica promotion: the writes that only the old primary acknowledged after the divergence. The product does not bound this count. Measured one of two in three runs. A production target needs a replication lag bound or synchronous acknowledgement, which the product does not provide.
 
-Pending owner decision: approve, change, or reject these numeric targets. Production readiness waits on that decision. The pull requests for the fix and the harness do not wait on it.
+The owner also accepted the attested zero-prefix limit of populated adoption for production readiness. Production readiness no longer waits on a D42 decision.
 
 ## Evidence
 
 - `measurement.json`: the full record without endpoints or secrets.
+- `decision.json`: the owner approval of the targets and the attested limit.
 - `summary.txt`: the per-scenario summary of the record.
 - Private command outputs and gateway logs stay in `/private/tmp/starport-measurement-proof-20260930/final2/private/`.
 - Harness log: `/private/tmp/starport-measurement-proof-20260930/race-final2.log`.

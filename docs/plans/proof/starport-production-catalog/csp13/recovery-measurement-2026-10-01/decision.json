@@ -1,0 +1,26 @@
+{
+  "status": "CONFIRMED",
+  "decision": "D42",
+  "date": "2026-10-01",
+  "supersedes_numeric_targets_in": "../recovery-target-decision-2026-09-30/decision.json",
+  "measurement_record": "measurement.json",
+  "measurement_source_head": "53df341c",
+  "owner_answers": {
+    "numeric_targets": "Approve as proposed (Recommended)",
+    "populated_adoption_attested_limit": "Accept the attested limit (Recommended)"
+  },
+  "approved_targets": {
+    "reference_rto_seconds": 120,
+    "reference_rto_scope": "The fenced operator procedure on the idle reference deployment. About two times the observed maximum of 54.82 seconds.",
+    "rpo_valkey_restart_persistent": "Zero acknowledged writes with appendfsync always persistent data. Measured zero in three runs.",
+    "rpo_empty_target_import": "Zero acknowledged writes after the fence. Measured zero in three runs.",
+    "rpo_replica_promotion": "The writes that only the old primary acknowledged after the divergence. The product does not bound this count. Documented limit."
+  },
+  "accepted_limits": [
+    "Component test duration is not deployment RTO.",
+    "A laboratory zero-loss result is not a blanket production RPO guarantee.",
+    "Populated adoption supports only a zero prefix. The operator attests the interval between the fence and the capture. Software cannot detect an acknowledged write that Valkey lost in a restart.",
+    "The promotion RPO stays unbounded until the product bounds replication lag or adds synchronous acknowledgement. Neither is in scope."
+  ],
+  "permission": "Missing independent security or budget history keeps affected admission restricted regardless of a recovery objective."
+}
