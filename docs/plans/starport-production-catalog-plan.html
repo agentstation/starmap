@@ -12,7 +12,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: publish Phase A (<code>a094302a</code>) as a draft PR after its pre-PR review, merge it at the exact head, and record the merge. Then integrate Phase B (<code>3bbe2634</code>) and Phase C (<code>0936fe4f</code>) the same way. Then measure the supported recovery deployments for D42.</p>
+<p>Next: merge Starport #398 (Phase A, head <code>a094302a</code>) at the exact head after its hosted run is green, and record the merge. Then integrate Phase B (<code>3bbe2634</code>) and Phase C (<code>0936fe4f</code>) the same way. Then measure the supported recovery deployments for D42.</p>
 
 <p>Starport #395 (layer two, <code>d06c47b0</code>) merged as <code>86041546</code> on 2026-09-30 after all 31 checks passed on attempt 2. The <a href="proof/starport-production-catalog/csp13/starport395-merge-2026-09-30/verification.json">merge proof</a> records tree equality and strict protection. It also records zero unresolved threads and the first-attempt Windows flake. Root removed the layer two worktree and branch.</p>
 
@@ -49,6 +49,8 @@
 <p>Starport #397 (layer four, <code>f416c31b</code>) merged as <code>d4213227</code> on 2026-10-01 UTC after the rerun passed all 42 checks. The <a href="proof/starport-production-catalog/csp13/starport397-merge-2026-10-01/verification.json">merge proof</a> records tree equality, strict protection, zero unresolved threads, and the causes of the three runs. Root removed the layer four branch and worktree. Root removed the integrated branch <code>c6b10232</code> and its worktree. Its only delta from <code>main</code> is the set of hosted repairs and the newer Starmap pin that the landed layers carry.</p>
 
 <p>The <code>main</code> tree after the squash equals the <code>f416c31b</code> tree. Root rebased the populated adoption stack onto <code>d4213227</code> as <code>655ed363</code>, <code>c25021a5</code>, <code>a094302a</code>, <code>3bbe2634</code>, and <code>0936fe4f</code>. Each commit keeps the tree of its verified original, so the rosters, the owner and recovery race runs, and the full embedded test result transfer. The embedded test passed in 301 seconds at the Phase C tree with the full catalog, every assertion, and the 420-second deadline.</p>
+
+<p>The Sol 6.1 pre-PR review of Phase A against <code>origin/main</code> is clean at P0 in one pass. Root published Phase A as draft #398. The Phase B and Phase C reviews run on their own deltas above the previous phase. Each phase rebases onto <code>main</code> after the previous merge, and that rebase keeps its diff unchanged.</p>
 
 <p>The hosted Security Scan is not in the local roster. Run gosec locally before a push that adds Go files under <code>testdata</code>.</p>
 
