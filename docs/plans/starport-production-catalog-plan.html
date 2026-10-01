@@ -12,7 +12,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: merge Starport #398 (Phase A, head <code>a094302a</code>) at the exact head after its hosted run is green, and record the merge. Then integrate Phase B (<code>3bbe2634</code>) and Phase C (<code>0936fe4f</code>) the same way. Then measure the supported recovery deployments for D42.</p>
+<p>Next: merge Starport #398 (Phase A, head <code>a094302a</code>) at the exact head after its hosted run is green, and record the merge. Then integrate Phase B (<code>3bbe2634</code>) and Phase C (<code>0936fe4f</code>) the same way. Then measure the supported recovery deployments for D42, and publish the inspect-import fix (<code>da9425bd</code>) and the harness (<code>53df341c</code>) after Phase C.</p>
 
 <p>Starport #395 (layer two, <code>d06c47b0</code>) merged as <code>86041546</code> on 2026-09-30 after all 31 checks passed on attempt 2. The <a href="proof/starport-production-catalog/csp13/starport395-merge-2026-09-30/verification.json">merge proof</a> records tree equality and strict protection. It also records zero unresolved threads and the first-attempt Windows flake. Root removed the layer two worktree and branch.</p>
 
@@ -57,6 +57,12 @@
 <p>The Phase D scope report finds no harness that measures deployment RTO or RPO. No record holds outage start, restored readiness, or restored acknowledged state. The two <code>TestPopulatedAdoption*</code> tests are outside the hosted recovery roster, which the Phase C PR records as a documented limit. Owner <code>phase-d-harness</code> builds the measurement harness from <code>0936fe4f</code> in <code>/private/tmp/starport-measurement-20260930</code>, branch <code>codex/recovery-measurement-20260930</code>. Root reviews and commits it.</p>
 
 <p>The hosted Security Scan is not in the local roster. Run gosec locally before a push that adds Go files under <code>testdata</code>.</p>
+
+<p>Owner <code>phase-d-harness</code> (Opus 5.5) stopped before any work at its weekly limit, which resets on 2026-10-02 at 16:00 Chicago time. Root moved the harness to Codex (Sol 6.1) with the brief in the lead proof directory. The Codex job built the harness and found that <code>starport backup inspect-import</code> refused every fleet capture. The imported-reference catalog inspector received the target boundary, and <code>validateCapturedFleetIdentity</code> compares the captured fleet identity with that boundary. Every other product caller passes the captured source boundary. Root reviewed the change, accepted it as a defect fix from #392, and kept the native guards on the exact target boundary.</p>
+
+<p>Root committed the fix with its fleet regression test as <code>da9425bd</code> on branch <code>codex/recovery-inspect-import-fleet-20261001</code>. Root committed the harness as <code>53df341c</code> on <code>codex/recovery-measurement-20260930</code> above it. <code>TestRecoveryMeasurement</code> runs three idle fleet scenarios three times each through the shipping binary and a fresh gateway process. It skips visibly without <code>STARPORT_RECOVERY_MEASUREMENT_DIR</code>. gofmt, go vet, make lint, and local gosec pass. The harness background limit stopped the Codex run before it wrote <code>measurement.json</code>, so root reruns the harness from the committed head with the race detector. The fix and the harness publish as two pull requests after Phase C merges.</p>
+
+<p>Cleanup item: the ~25 component worktrees under <code>/private/tmp</code> from earlier CSP13 layers are not ancestors of <code>main</code>. Each needs a patch-level containment check before removal.</p>
 
 <p>Root rebased the populated adoption stack onto the layer four head. The commits are <code>24380a45</code> (Valkey), <code>b9bd4149</code> (blob), <code>4efe6121</code> (SQL), <code>eb400e92</code> (Phase B), and <code>8f5d9c9e</code> (Phase C). Branch <code>codex/recovery-populated-native-20260930</code> points at the SQL commit. Each native commit is patch-identical to its original.</p>
 
