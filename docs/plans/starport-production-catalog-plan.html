@@ -12,7 +12,9 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: merge Starport #400 (Phase C, head <code>fd3acd45</code>) at the exact head after its hosted run is green, and record the merge. Then publish the inspect-import fix and the harness as two pull requests from <code>/private/tmp/starport-inspect-import-fleet-20261001</code> and <code>/private/tmp/starport-measurement-20260930</code>, rebased in order on the new <code>main</code>. The owner approved the D42 numeric targets.</p>
+<p>Next: publish the inspect-import fix and the harness as two pull requests from <code>/private/tmp/starport-inspect-import-fleet-20261001</code> and <code>/private/tmp/starport-measurement-20260930</code>, rebased in order on <code>main</code>, and merge each at its exact head. Then rebase and publish the fence commit. The owner approved the D42 numeric targets.</p>
+
+<p>Starport #400 (Phase C, head <code>fd3acd45</code>) merged as <code>5d0cd809</code> on 2026-10-01 after all 42 checks passed. The Durable Work Recovery job passed on its rerun of the unchanged head. The <a href="proof/starport-production-catalog/csp13/starport400-merge-2026-10-01/verification.json">proof</a> records the tree identity.</p>
 
 <p>The #400 hosted run failed its Durable Work Recovery job on a slow runner. Every package ran two to four times slower than on the <code>e4958b50</code> main run. The <code>internal/recovery</code> package hit its 10 minute budget with a test two seconds old. That package already uses 480 of 600 seconds on <code>main</code>. The lead recorded this limit and reruns the failed job on the unchanged head after the run completes.</p>
 
