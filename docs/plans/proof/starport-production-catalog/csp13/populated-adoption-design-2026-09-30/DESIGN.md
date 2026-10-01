@@ -189,6 +189,28 @@ The retained activation runner also refuses a mode mismatch. It reopens only an 
 - A capture against a restored SQL witness publishes the manifest, and then `InspectBundleReferences` refuses it.
   The `VerifyBackup` check refuses that bundle with the same fleet identity mismatch.
   The refused bundle bytes stay on disk. The operator deletes them. `CaptureBackup` does not change.
+- The history package holds only the attestation and the two final authorization steps.
+  A prefix step refuses. The fenced live capture is the only base capture.
+- Adoption copies no record, so an acknowledged write that Valkey lost stays lost.
+  The attestation covers the complete interval, which includes each lost write.
+- The live catalog state directory belongs to the fenced gateway.
+  Adoption requires a new empty directory in `STARPORT_CATALOG_STATE_DIR`.
+  A directory with an owner record refuses before any claim. The error names the directory.
+- The shared storage recipe refuses MySQL with Valkey, so adoption on MySQL refuses at configuration.
+  Application-level MySQL adoption stays UNVERIFIED. The MySQL census stays unchanged on refusal.
+- No command reads the prior approval. The operator retains the last open witness record.
+- The target digest comes from the step that inspects the closed target in the activation procedure.
+
+## Phase C delivery state
+
+The lead reviewed Phase C and committed it as `31656fb7` on `codex/recovery-populated-app-20260930`.
+The branch base is `596bcccb`. Static checks pass: gofmt, go vet, make lint, and the technical-writing lint.
+The populated adoption tests pass with the race detector in 366 seconds against real fixtures.
+The recovery, catalog, cli, and cmd packages pass pure.
+
+The full embedded activation test times out at the base and at the Phase C head.
+The layer four head passes it in 309 seconds under the same load.
+The base pins Starmap `2bb99571` without decode reuse. The rebase onto `main` after #397 resolves it.
 
 ## External requirements that software does not supply
 
