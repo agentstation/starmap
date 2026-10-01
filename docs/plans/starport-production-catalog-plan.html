@@ -52,6 +52,8 @@
 
 <p>The Sol 6.1 pre-PR review of Phase A against <code>origin/main</code> is clean at P0 in one pass. Root published Phase A as draft #398. The Phase B and Phase C reviews run on their own deltas above the previous phase. Each phase rebases onto <code>main</code> after the previous merge, and that rebase keeps its diff unchanged.</p>
 
+<p>The Sol 6.1 review of Phase B above <code>a094302a</code> is clean at P0 in one pass. The Phase C delta above <code>3bbe2634</code> is clean at P0 with two reviewers, Sol 6.1 and Opus 5.5, one pass each. The review logs are in the lead proof directory and move into the proof root with each merge record.</p>
+
 <p>The hosted Security Scan is not in the local roster. Run gosec locally before a push that adds Go files under <code>testdata</code>.</p>
 
 <p>Root rebased the populated adoption stack onto the layer four head. The commits are <code>24380a45</code> (Valkey), <code>b9bd4149</code> (blob), <code>4efe6121</code> (SQL), <code>eb400e92</code> (Phase B), and <code>8f5d9c9e</code> (Phase C). Branch <code>codex/recovery-populated-native-20260930</code> points at the SQL commit. Each native commit is patch-identical to its original.</p>
