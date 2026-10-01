@@ -14,7 +14,9 @@
 
 <p>Next: merge Starport #402 (D42 harness, head <code>2b440ffc</code>, tree <code>803a9227</code>) at its exact head after its run is green. Then rebase the fence commit from <code>/private/tmp/starport-fence-tests-20261001</code> on the #402 squash and force-push it to Starport #403 with a lease. Run the pre-pr autoreview gate on the rebased fence commit and confirm the #403 base is main. Merge #403 at its exact head after its run is green. Then merge Starmap #209 at its exact head.</p>
 
-<p>The lead published the harness as draft Starport #402 after a clean pre-pr autoreview (Sol 6.1 high, 0 findings). The lead rebased the fence commit on the harness head as <code>aebd4982</code> with an identical patch id. The lead published it as draft Starport #403 with base <code>codex/recovery-measurement-20260930</code>. This stacked draft gives early hosted test signal for the fence tests. #403 keeps the earlier clean branch review of <code>e0c29606</code>. Its pre-pr gate runs again after the final rebase on main.</p>
+<p>The lead published the harness as draft Starport #402 after a clean pre-pr autoreview (Sol 6.1 high, 0 findings). The lead rebased the fence commit on the harness head as <code>aebd4982</code> with an identical patch id. The lead published it as draft Starport #403. The Starport CI workflow runs only for pull requests that target main. Starport #403 now targets main. It shows the harness commit and the fence commit until the rebase on the #402 squash. A base change does not start the workflow, so the lead closed and reopened #403.</p>
+
+<p>This early #403 run gives hosted test signal for the fence tests. The draft keeps the earlier clean branch review of <code>e0c29606</code>. Its pre-pr gate runs again after the final rebase on main.</p>
 
 <p>Starport #401 (D1 inspect-import fix, head <code>5b7e53f7</code>) merged as <code>1c657c11</code> after a rerun of the unchanged head. All 42 checks passed, the reviewed tree equals the merge tree, and no review threads remain. The proof is in <code>csp13/starport401-merge-2026-10-01</code>. The lead removed the D1 worktree and branch.</p>
 
