@@ -12,7 +12,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: merge Starport #396 (layer three, head <code>ac50ad62</code>) after its hosted run is green. Then rebase layer four onto <code>main</code>, publish it, merge it at its exact head, and delete the integrated branch. Then integrate populated adoption by phase.</p>
+<p>Next: merge Starport #397 (layer four, head <code>b8a4e9bc</code>) after its hosted run is green. Then delete the integrated branch and worktree. Then rebase populated adoption Phase C onto <code>main</code>, rerun the full embedded test, commit it, and integrate it by phase.</p>
 
 <p>Starport #395 (layer two, <code>d06c47b0</code>) merged as <code>86041546</code> on 2026-09-30 after all 31 checks passed on attempt 2. The <a href="proof/starport-production-catalog/csp13/starport395-merge-2026-09-30/verification.json">merge proof</a> records tree equality and strict protection. It also records zero unresolved threads and the first-attempt Windows flake. Root removed the layer two worktree and branch.</p>
 
@@ -25,6 +25,12 @@
 <p>The second layer three run (36777919807) passed the catalog step on every runner. Windows application shard 3 stopped at its twelve-minute allowance with 31 owners passed, 2 skipped, and 7 left of 40. No test failed. Commit <code>ac50ad62</code> moves the Windows shard allowance from layer four into layer three. Each shard gets twenty-five minutes, the subprocess cap thirty, and the job forty-five. The shard script test and the twelve workflow-reading checks pass.</p>
 
 <p>Root rebased layer four onto it as <code>29575bcb</code> with a reworded allowance commit. Its only delta from the verified tree is still the catalog allowance hunk.</p>
+
+<p>Starport #396 (layer three, <code>ac50ad62</code>) merged as <code>4be40dff</code> on 2026-10-01 UTC after attempt 2 passed all 31 checks. The <a href="proof/starport-production-catalog/csp13/starport396-merge-2026-09-30/verification.json">merge proof</a> records tree equality, strict protection, zero unresolved threads, and the three first-attempt causes. Root removed the layer three worktree and branch. Root rebased layer four onto <code>4be40dff</code> as <code>b8a4e9bc</code> with an identical tree and published it as draft #397 (run 36795450606).</p>
+
+<p>Phase C lead review is complete. The static checks pass on the Phase C worktree: gofmt, go vet, make lint, and the RECOVERY.md technical-writing lint. Lead runs use binaries built from the Phase C tree. The populated adoption tests pass with the race detector in 366 seconds. The recovery, catalog, cli, and cmd packages pass pure. A known non-gating item: gofmt lists <code>internal/recovery/catalog_expiring_preparation_test.go</code> on <code>main</code>.</p>
+
+<p>The full embedded activation test times out at 483 seconds on the Phase C head and on its base <code>596bcccb</code>. The same test passes in 309 seconds at the layer four head under the same load. The Phase C base pins Starmap <code>2bb99571</code> without the decode reuse that layer four commit <code>3367e8f9</code> carries. The rebase onto <code>main</code> after #397 merges resolves it, and the rerun is the acceptance evidence.</p>
 
 <p>The third layer three run (36785465076) failed only <code>Test (windows-2025)</code>. The compose recipe probe <code>docker compose version</code> reached its thirty-second deadline on the runner. The same step passed on the second run with the same test source. Root reruns the failed jobs once after the run completes. Phase C lead review of the core diff found no deviation from the three authorized rules. Its race run fails only the V08 fixture test that layer four fixes in <code>29575bcb</code>.</p>
 

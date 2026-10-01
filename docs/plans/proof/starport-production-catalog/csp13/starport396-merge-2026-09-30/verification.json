@@ -1,0 +1,81 @@
+{
+ "recorded_utc": "2026-10-01T00:18:42.645761+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 396,
+ "head": "ac50ad62f3d557d5495555a89099d8861b1bdeae",
+ "base": "860415465fd004ed756cbc81b2513f55a2089672",
+ "merge": "4be40dffe6dedb8684899fb95c158e434ef0b2cf",
+ "merged_at": "2026-10-01T00:16:54Z",
+ "checks": {
+  "success": 31,
+  "not_success": 0,
+  "total": 31
+ },
+ "reviewed_tree": "681a3cbab84cde0e45b6a33814dfe74ca2bf7c35",
+ "merged_tree": "681a3cbab84cde0e45b6a33814dfe74ca2bf7c35",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "Layer three of the recovery activation landing: the catalog and config owners (internal/catalog, internal/config, the catalog package allowance, and the Windows application shard allowances).",
+ "first_attempts": [
+  {
+   "run": 36774950397,
+   "failed_jobs": "Test on all three runners",
+   "cause": "the catalog package stopped at the default ten-minute allowance after 156 to 158 of 221 tests with no failure",
+   "resolution": "commit 478f46be gives the hosted catalog step a thirty-minute allowance"
+  },
+  {
+   "run": 36777919807,
+   "failed_job": "Test (windows-2025)",
+   "cause": "Windows application shard 3 stopped at its twelve-minute allowance with 31 passed, 2 skipped, 7 left, no failure",
+   "resolution": "commit ac50ad62 moves the twenty-five-minute Windows shard allowance from layer four into layer three"
+  },
+  {
+   "run": 36785465076,
+   "attempt": 1,
+   "failed_job": "Test (windows-2025)",
+   "failed_test": "internal/config TestComposeStorageRecipes",
+   "cause": "the docker compose version probe reached its thirty-second deadline on the runner with exit status 1 and empty output; the same step passed on run 36777919807 with the same test source",
+   "resolution": "rerun of failed jobs as attempt 2 passed"
+  }
+ ],
+ "local_verify": "owner trees unchanged from the reviewed layer three tree; the twelve workflow-reading roster checks and the shard script test pass at ac50ad62",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "111f148440a7fde81803e429abb11ecb09e60c7099dd205fe80b961d416fad4b",
+   "gzip_sha256": "721b0a6d23d8fd1575b544e514c2b366bd414d6623543d086e8e46a04911cdce"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "ba9d6b3cc6eca4cccbbf17e8c695e6603a7678c8d8ad1f4e2c6940716d6f5498",
+   "gzip_sha256": "e9418f599593541cf79cb91bb89ba09b577774b0a9a8e6bc984103f93cdf1f0c"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "8bac77c07f400d289ef5bc7ae3c6759536945b5bf7d095f5b6b2cbe30dac9393",
+   "gzip_sha256": "f6b7e4d9b200950f5af54d1a09bc54e6339442065d61486f1a92e1a4e8dc9cad"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
