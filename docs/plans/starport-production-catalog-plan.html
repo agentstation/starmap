@@ -14,6 +14,8 @@
 
 <p>Next: merge Starport #401 (inspect-import fix, head <code>5b7e53f7</code>, rebased on <code>5d0cd809</code> with the tree of <code>415836dd</code>) at its exact head after its run is green. Then push the harness from <code>/private/tmp/starport-measurement-20260930</code>, already rebased as <code>94155706</code> with the tree of <code>dca91f9c</code>, rebase it on the #401 squash, and publish it. Then rebase and publish the fence commit. The owner approved the D42 numeric targets.</p>
 
+<p>Starmap fence registration commit <code>ee8d3c86e</code> passed its pre-pr autoreview (Sol 6.1 high, 0 findings). The lead published it as draft Starmap #209 so its checks run in parallel. It merges only after the Starport fence pull request merges. Its registered tests do not exist on Starport main before that.</p>
+
 <p>The first #401 run failed its Complete Windows recovery coverage job seven seconds after start. The artifact download returned HTTP 503 with the text "Egress is over the account limit". This is a GitHub account artifact egress limit, not a source defect, and the lead reran the failed job on the unchanged head. The owner may need to review the account artifact egress quota if it recurs.</p>
 
 <p>Starport #400 (Phase C, head <code>fd3acd45</code>) merged as <code>5d0cd809</code> on 2026-10-01 after all 42 checks passed. The Durable Work Recovery job passed on its rerun of the unchanged head. The <a href="proof/starport-production-catalog/csp13/starport400-merge-2026-10-01/verification.json">proof</a> records the tree identity.</p>
