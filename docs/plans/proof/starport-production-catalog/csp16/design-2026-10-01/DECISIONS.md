@@ -10,7 +10,7 @@ Decision: no new bootstrap setting. The namespace is `deployment.KeyPrefix(STARP
 
 Reason: a new setting adds operator surface that no subcase requires. The key prefix is the real namespace that catalog state uses. The A28 contract names both the deployment identity and the authority namespace, so both fields satisfy it.
 
-## Decision 2: sensitive source values are sealed in the shared revision
+## Decision 2: the shared revision seals sensitive source values
 
 Question: `STARMAP_CATALOG_SOURCE_API_KEY` and `STARMAP_CATALOG_SOURCE_TOKEN` are deployment-scope and sensitive. The resolver ignores every local deployment-scope value under shared management, so a private catalog source needs the credential inside the shared revision.
 
