@@ -1,0 +1,15 @@
+autoreview target: branch
+branch: codex/recovery-admission-fence-tests-20261001
+gate: manual (configured cadence: pre-pr)
+profile: sol
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=6.85
+reviewers: codex model=gpt-6.1-sol thinking=high
+tools: on
+web_search: on
+ref: dca91f9cb2e961480cbce104afc298cb99435681
+trufflehog: clean (2.2s)
+bundle: 18594 bytes; review passes: 1
+autoreview clean: no accepted/actionable findings reported
+overall: patch is correct (0.95)
+The changes add periodic recovery-approval observation and request/job fencing tests. The provided bundle demonstrates no actionable defect meeting the required P0 threshold.
