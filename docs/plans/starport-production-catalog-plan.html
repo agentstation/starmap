@@ -12,7 +12,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: merge Starport #397 (layer four, head <code>c0ae5bfc</code>, run 36798051361) after its hosted run is green. Then delete the integrated branch and worktree. Then rebase populated adoption Phase C onto <code>main</code>, rerun the full embedded test, commit it, and integrate it by phase.</p>
+<p>Next: merge Starport #397 (layer four, head <code>f416c31b</code>, run 36800393183) after its hosted run is green. Then delete the integrated branch and worktree. Then rebase populated adoption Phase C onto <code>main</code>, rerun the full embedded test, commit it, and integrate it by phase.</p>
 
 <p>Starport #395 (layer two, <code>d06c47b0</code>) merged as <code>86041546</code> on 2026-09-30 after all 31 checks passed on attempt 2. The <a href="proof/starport-production-catalog/csp13/starport395-merge-2026-09-30/verification.json">merge proof</a> records tree equality and strict protection. It also records zero unresolved threads and the first-attempt Windows flake. Root removed the layer two worktree and branch.</p>
 
@@ -32,11 +32,13 @@
 
 <p>The full embedded activation test times out at 483 seconds on the Phase C head and on its base <code>596bcccb</code>. The same test passes in 309 seconds at the layer four head under the same load. The Phase C base pins Starmap <code>2bb99571</code> without the decode reuse that layer four commit <code>3367e8f9</code> carries. The rebase onto <code>main</code> after #397 merges resolves it, and the rerun is the acceptance evidence. The base control run at <code>596bcccb</code> fails at 490 seconds under the same load. Root committed Phase C as <code>31656fb7</code> on its pushed branch and recorded the limits in DESIGN.md.</p>
 
-<p>The first hosted run for #397 (36795450606) failed two jobs. The new application recovery matrix ran on a hosted runner for the first time. Security Scan failed before any rule ran. Gosec v2.29.0 walks <code>testdata</code>, and it refused one directory that held four overlay probes with four package names.</p>
+<p>The first hosted run for #397 (36795450606) failed three jobs. The new application recovery matrix ran on a hosted runner for the first time. Security Scan failed before any rule ran. Gosec v2.29.0 walks <code>testdata</code>, and it refused one directory that held four overlay probes with four package names.</p>
 
 <p>Application Recovery (activation, pure) passed every owner, but the evidence script merged <code>go test</code> stderr into <code>tests.jsonl</code>, and the cold module cache wrote download notices into the stream.</p>
 
 <p>Root moved each probe to <code>internal/app/testdata/probes/&lt;kind&gt;/</code> (<code>c0ae5bfc</code>). Root wrote stderr to <code>tests.stderr.txt</code> with a regression assertion (<code>889a5615</code>). Local gosec reports 0 Go errors and 0 issues. The three probe-building tests pass with the race detector in 518 seconds. The script tests, lint, and build pass. The Sol 6.1 pre-PR review is clean at P0 across three passes.</p>
+
+<p>The second run (36798051361, head <code>c0ae5bfc</code>) repaired both jobs and failed only <code>App test (windows-2025, 0)</code>. The earlier record missed the same failure in the first run. The subcase <code>TestRecoveryTargetCensusBindsNativeFilesAroundOwnerValidation/root</code> renames the selected directory while the census holds it through <code>os.Root</code>. Windows refuses that rename, so the census returns the refusal and fails closed. Root changed the subcase to assert that platform contract on Windows and the detected replacement elsewhere (<code>f416c31b</code>, test only). Lint, vet, and the census tests pass locally, and the Sol 6.1 review is clean across four passes.</p>
 
 <p>The hosted Security Scan is not in the local roster. Run gosec locally before a push that adds Go files under <code>testdata</code>.</p>
 
