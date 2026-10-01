@@ -1,0 +1,9 @@
+{"Time":"2026-10-01T14:25:57.0677524Z","Action":"start","Package":"github.com/agentstation/starport/internal/config"}
+{"Time":"2026-10-01T14:25:57.1574169Z","Action":"run","Package":"github.com/agentstation/starport/internal/config","Test":"TestComposeStorageRecipes"}
+{"Time":"2026-10-01T14:25:57.1574169Z","Action":"output","Package":"github.com/agentstation/starport/internal/config","Test":"TestComposeStorageRecipes","Output":"=== RUN   TestComposeStorageRecipes\n","OutputType":"frame"}
+{"Time":"2026-10-01T14:26:27.1682763Z","Action":"output","Package":"github.com/agentstation/starport/internal/config","Test":"TestComposeStorageRecipes","Output":"    compose_recipe_test.go:41: recipe qualification requires Docker Compose: exit status 1: \n","OutputType":"error"}
+{"Time":"2026-10-01T14:26:27.1687918Z","Action":"output","Package":"github.com/agentstation/starport/internal/config","Test":"TestComposeStorageRecipes","Output":"--- FAIL: TestComposeStorageRecipes (30.01s)\n","OutputType":"frame"}
+{"Time":"2026-10-01T14:26:27.1687918Z","Action":"fail","Package":"github.com/agentstation/starport/internal/config","Test":"TestComposeStorageRecipes","Elapsed":30.01}
+{"Time":"2026-10-01T14:26:27.1687918Z","Action":"output","Package":"github.com/agentstation/starport/internal/config","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-10-01T14:26:27.1748488Z","Action":"output","Package":"github.com/agentstation/starport/internal/config","Output":"FAIL\tgithub.com/agentstation/starport/internal/config\t30.106s\n","OutputType":"frame"}
+{"Time":"2026-10-01T14:26:27.1748488Z","Action":"fail","Package":"github.com/agentstation/starport/internal/config","Elapsed":30.106}

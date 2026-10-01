@@ -12,7 +12,11 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: wait for the Starport main run on <code>70dbf7de</code> and capture its native evidence for A16. Then run the CSP13 acceptance from the Starmap worktree <code>/private/tmp/starmap-acceptance-20261001</code> at <code>327e60b3</code>. Its Starport root is the Starport main checkout at <code>70dbf7de</code>. Record the acceptance result for every CSP13 subcase, then close CSP13 and start CSP15.</p>
+<p>Next: wait for the rerun of Starport main run <code>36875854901</code> on <code>70dbf7de</code>. Capture its native evidence into <code>docs/proof/catalog-native</code> with <code>scripts/native_catalog.py</code>. Then rerun the CSP13 acceptance from the Starmap worktree <code>/private/tmp/starmap-acceptance-20261001</code> at <code>327e60b3</code>. Record the final result in <code>csp13/acceptance-2026-10-01</code>, close CSP13, and start CSP15.</p>
+
+<p>The first CSP13 acceptance run on Starmap <code>327e60b3</code> with Starport root <code>70dbf7de</code> passed 14 of 16 subcases and the A33 case. The two A16 native subcases stayed UNVERIFIED because <code>docs/proof/catalog-native/capture.json</code> did not exist. The run output is in <code>csp13/acceptance-2026-10-01</code>.</p>
+
+<p>Starport main run <code>36875854901</code> failed only in <code>Test (windows-2025)</code>. Its Docker Compose probe exited 1 with empty output after 30 seconds before any Starport test ran. The same tree passed that job on the Starport #403 run. The lead classified the failure as a runner limit and reran the failed jobs on the unchanged head.</p>
 
 <p>Starport #403 (fence, head <code>f95b508d</code>) merged as <code>70dbf7de</code> after a rerun of the two failed jobs on the unchanged head. All 42 checks passed, the reviewed tree equals the merge tree, and no review threads remain. Starmap #209 (fence registration, head <code>ee8d3c86e</code>) then merged as <code>327e60b3</code> with 62 of 62 checks. The proofs are in <code>csp13/starport403-merge-2026-10-01</code> and <code>csp13/starmap209-merge-2026-10-01</code>. The lead removed both worktrees and branches and deleted the four <code>keep/*</code> backup branches in the Starport main repository.</p>
 
