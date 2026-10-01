@@ -12,7 +12,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: merge Starport #399 (Phase B, head <code>07ba4eb5</code>) at the exact head after its hosted run is green, and record the merge. Then integrate Phase C (<code>0936fe4f</code>) the same way. Then publish the inspect-import fix (<code>da9425bd</code>) and the harness (<code>53df341c</code>) as two pull requests. The owner approved the D42 numeric targets. After the stack lands, register the four A33 subcases in the Starmap registry.</p>
+<p>Next: merge Starport #400 (Phase C, head <code>fd3acd45</code>) at the exact head after its hosted run is green, and record the merge. Then publish the inspect-import fix and the harness as two pull requests from <code>/private/tmp/starport-inspect-import-fleet-20261001</code> and <code>/private/tmp/starport-measurement-20260930</code>, rebased in order on the new <code>main</code>. The owner approved the D42 numeric targets. After the stack lands, register three A33 subcases in the Starmap registry and close the admission-fence test gap in Starport.</p>
 
 <p>Starport #395 (layer two, <code>d06c47b0</code>) merged as <code>86041546</code> on 2026-09-30 after all 31 checks passed on attempt 2. The <a href="proof/starport-production-catalog/csp13/starport395-merge-2026-09-30/verification.json">merge proof</a> records tree equality and strict protection. It also records zero unresolved threads and the first-attempt Windows flake. Root removed the layer two worktree and branch.</p>
 
@@ -71,6 +71,8 @@
 <p>On 2026-10-01 the owner approved the proposed D42 numeric targets. The reference RTO is 120 seconds. The RPO is zero after a persistent Valkey restart and after a fenced empty-target import. The promotion RPO stays unbounded as a documented limit. The <a href="proof/starport-production-catalog/csp13/recovery-measurement-2026-10-01/decision.json">approval record</a> binds both answers to the measurement record.</p>
 
 <p>The fleet regression test fails before the fix with <code>captured fleet identity differs from the closed recovery boundary</code> and passes after it. All 23 <code>TestInspectImported*</code> cases pass with the race detector against the native fixtures. The Sol 6.1 review of the fix delta above <code>0936fe4f</code> is clean at P0.</p>
+
+<p>Starport #399 (Phase B, head <code>07ba4eb5</code>) merged as <code>e4958b50</code> after 42 passing checks. The <a href="proof/starport-production-catalog/csp13/starport399-merge-2026-10-01/verification.json">merge proof</a> records exact tree equality and unchanged strict protection. Root removed the Phase B worktree and branch. Root rebased Phase C to <code>fd3acd45</code> with an identical tree and published it as draft #400. The fix and harness branches follow it with identical trees. Local <code>keep/</code> branches retain the cited pre-rebase commits.</p>
 
 <p>The Sol 6.1 review of the harness delta above <code>da9425bd</code> is also clean at P0. Both pull request bodies are complete in the session scratchpad. The Starmap registry on <code>main</code> asserts the four A33 subcases as missing, so their registration is a separate Starmap delivery after the Starport stack lands.</p>
 

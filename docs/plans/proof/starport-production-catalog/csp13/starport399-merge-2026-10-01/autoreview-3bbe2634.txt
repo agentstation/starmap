@@ -1,0 +1,37 @@
+ERROR:root:code for hash blake2b was not found.
+Traceback (most recent call last):
+  File "/Users/jack/.pyenv/versions/3.12.1/lib/python3.12/hashlib.py", line 245, in <module>
+    globals()[__func_name] = __get_hash(__func_name)
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jack/.pyenv/versions/3.12.1/lib/python3.12/hashlib.py", line 129, in __get_openssl_constructor
+    return __get_builtin_constructor(name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jack/.pyenv/versions/3.12.1/lib/python3.12/hashlib.py", line 123, in __get_builtin_constructor
+    raise ValueError('unsupported hash type ' + name)
+ValueError: unsupported hash type blake2b
+ERROR:root:code for hash blake2s was not found.
+Traceback (most recent call last):
+  File "/Users/jack/.pyenv/versions/3.12.1/lib/python3.12/hashlib.py", line 245, in <module>
+    globals()[__func_name] = __get_hash(__func_name)
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jack/.pyenv/versions/3.12.1/lib/python3.12/hashlib.py", line 129, in __get_openssl_constructor
+    return __get_builtin_constructor(name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jack/.pyenv/versions/3.12.1/lib/python3.12/hashlib.py", line 123, in __get_builtin_constructor
+    raise ValueError('unsupported hash type ' + name)
+ValueError: unsupported hash type blake2s
+autoreview target: branch
+branch: codex/recovery-populated-recovery-20260930
+gate: manual (configured cadence: pre-pr)
+profile: auto
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=6.85
+reviewers: codex model=gpt-6.1-sol thinking=high
+tools: on
+web_search: on
+ref: a094302aa60e811ebc2f9e85441fb74a6bf3ac23
+trufflehog: clean (2.0s)
+bundle: 69486 bytes; review passes: 1
+autoreview clean: no accepted/actionable findings reported
+overall: patch is correct (0.93)
+The provided change bundle demonstrates no actionable P0 defect. Lower-priority issues are excluded by the requested finding threshold.
