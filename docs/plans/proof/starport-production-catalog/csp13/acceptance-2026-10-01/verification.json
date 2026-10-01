@@ -1,0 +1,108 @@
+{
+  "task": "CSP13",
+  "date": "2026-10-01",
+  "verdict": "PASS",
+  "starmap_commit": "327e60b3030fd664ed1699d71117f0815a020c82",
+  "starmap_worktree": "/private/tmp/starmap-acceptance-20261001",
+  "starport_commit": "70dbf7deddaf3e7b240ab0de5908c59625af1b73",
+  "starport_root": "/Users/jack/src/github.com/agentstation/starport",
+  "command": [
+    "bash",
+    "scripts/verify-catalog-product.sh",
+    "--starport-root",
+    "/Users/jack/src/github.com/agentstation/starport",
+    "--task",
+    "CSP13",
+    "--json"
+  ],
+  "go_env": {
+    "CGO_ENABLED": "1",
+    "GOARCH": "arm64",
+    "GOHOSTARCH": "arm64",
+    "GOHOSTOS": "darwin",
+    "GOOS": "darwin",
+    "GOVERSION": "go1.27.1",
+    "GOWORK": "off"
+  },
+  "fixtures": [
+    "starport-csp13-postgres",
+    "csp13-unprefixed-valkey-20260929",
+    "starport-csp13-mysql",
+    "starport-csp122-retirement-objectstore",
+    "csp13-adoption-replacement-20260929"
+  ],
+  "operator_binary": "race build of ./cmd/starport from the Starport root",
+  "native_run": {
+    "id": 36875854901,
+    "url": "https://github.com/agentstation/starport/actions/runs/36875854901",
+    "head": "70dbf7deddaf3e7b240ab0de5908c59625af1b73",
+    "jobs": 42,
+    "success": 41,
+    "skipped": [
+      "Release Snapshot"
+    ],
+    "rerun": "Test (windows-2025) after a Docker Compose probe failure on the first attempt",
+    "capture": "docs/proof/catalog-native (format 3, 46 digests)"
+  },
+  "runs": [
+    {
+      "name": "run1",
+      "file": "run1-acceptance.json.gz",
+      "subcases_pass": 14,
+      "subcases_unverified": 2,
+      "note": "A16 native subcases UNVERIFIED before the native capture existed"
+    },
+    {
+      "name": "run2",
+      "file": "run2-acceptance.json.gz",
+      "subcases_pass": 16,
+      "subcases_total": 16,
+      "go_runs": 34,
+      "named_tests": 79,
+      "named_tests_pass": 79,
+      "cases": {
+        "A04": "UNVERIFIED",
+        "A16": "PASS",
+        "A33": "PASS",
+        "A41": "UNVERIFIED"
+      },
+      "gate_status": "PASS",
+      "backend_scope": "primary"
+    }
+  ],
+  "subcases": {
+    "A16.sqlite_wal_backup": "PASS",
+    "A16.kv_sql_file_references": "PASS",
+    "A16.concurrent_migration_owner": "PASS",
+    "A16.interrupted_migration": "PASS",
+    "A33.backup_then_revoke_and_spend": "PASS",
+    "A33.old_writer_fenced": "PASS",
+    "A33.independent_record_replay": "PASS",
+    "A33.missing_evidence_restricted": "PASS",
+    "A33.operator_reconciliation": "PASS",
+    "A33.measured_rpo_rto": "PASS",
+    "A16.complete_backup_manifest": "PASS",
+    "A41.unprefixed_record_migration": "PASS",
+    "A04.identity_and_journal_recovery": "PASS",
+    "A33.fresh_replica_history_barrier": "PASS",
+    "A33.old_primary_admission_fence": "PASS",
+    "A33.restart_and_recovery_epoch": "PASS"
+  },
+  "roster_sha256": "8302aff9787f8f1d6f88668ca8e1c3948b28e50bcf37634e0e296415b026861b",
+  "registry_sha256": "fa6dafa9b8c7199da604e76fbeedac403df4f37322a5bb9b58636f89a1a03ed2",
+  "merged_deliveries": {
+    "starport": {
+      "401": "1c657c1197ac99a0507c46fea793f40677846dc3",
+      "402": "be30ad9633719dfcb58b88f377efcc842ceddb67",
+      "403": "70dbf7deddaf3e7b240ab0de5908c59625af1b73"
+    },
+    "starmap": {
+      "209": "327e60b3030fd664ed1699d71117f0815a020c82"
+    }
+  },
+  "limits": [
+    "A04 and A41 remain UNVERIFIED as primary cases in a task run because their other required subcases belong to other tasks.",
+    "Populated adoption readiness carries the owner-accepted attested limit recorded in CSP13.",
+    "The D42 promotion RPO is unbounded as a documented limit."
+  ]
+}
