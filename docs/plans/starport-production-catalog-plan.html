@@ -12,7 +12,9 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p id="next-action">Fable 5.1 leads CSP13 from the <a href="proof/starport-production-catalog/csp13/fable-handoff-2026-09-30/HANDOFF.md">checkpoint report</a>. CSP13 remains <code>in_progress</code>. The ledger has 27 completed tasks. Ten required task subcases pass. Six remain UNVERIFIED.</p>
 
-<p>Next: merge Starport #401 (inspect-import fix, head <code>5b7e53f7</code>, rebased on <code>5d0cd809</code> with the tree of <code>415836dd</code>) at its exact head after its run is green. Then push the harness from <code>/private/tmp/starport-measurement-20260930</code>, already rebased as <code>94155706</code> with the tree of <code>dca91f9c</code>, rebase it on the #401 squash, and publish it. Then rebase and publish the fence commit. The owner approved the D42 numeric targets.</p>
+<p>Next: publish the D42 harness from <code>/private/tmp/starport-measurement-20260930</code> as a draft pull request. The lead rebased the harness on the #401 squash as <code>2b440ffc</code> with the unchanged tree <code>803a9227</code>. Merge it at its exact head after its run is green. Then rebase the fence commit <code>e0c29606</code> from <code>/private/tmp/starport-fence-tests-20261001</code> on the harness squash and publish it. After the fence merge, merge Starmap #209.</p>
+
+<p>Starport #401 (D1 inspect-import fix, head <code>5b7e53f7</code>) merged as <code>1c657c11</code> after a rerun of the unchanged head. All 42 checks passed, the reviewed tree equals the merge tree, and no review threads remain. The proof is in <code>csp13/starport401-merge-2026-10-01</code>. The lead removed the D1 worktree and branch.</p>
 
 <p>Starmap fence registration commit <code>ee8d3c86e</code> passed its pre-pr autoreview (Sol 6.1 high, 0 findings). The lead published it as draft Starmap #209 so its checks run in parallel. It merges only after the Starport fence pull request merges. Its registered tests do not exist on Starport main before that.</p>
 

@@ -1,0 +1,16 @@
+autoreview target: branch
+branch: codex/recovery-inspect-import-fleet-20261001
+gate: pre-pr (configured cadence: pre-pr)
+profile: auto
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=6.85
+reviewers: codex model=gpt-6.1-sol thinking=high
+tools: on
+web_search: on
+ref: origin/main
+trufflehog: clean (2.4s)
+bundle: 4342 bytes; review passes: 1
+autoreview clean: no accepted/actionable findings reported
+overall: patch is correct (0.96)
+The provided diff introduces no demonstrated P0 defect. Catalog inspection now uses the captured source boundary, and the added test checks that inspection preserves the target boundary and import restrictions.
+autoreview clean attestation stored for this substantive diff
