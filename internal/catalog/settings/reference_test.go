@@ -258,6 +258,17 @@ A change class describes the required application action.
 It does not imply a live settings API in the current command.
 The command applies configuration at startup.
 
+` + "`ResolveAuthority`" + ` resolves values under shared management.
+Its shared layer is the persisted deployment configuration revision.
+The shared revision supplies every deployment-scope value and selects the source group.
+A node-scope name, an unknown name, or catalog_authority_origin in the shared layer fails validation.
+The resolver does not return a partial result after a failure.
+
+The resolver reports each local deployment-scope value as ignored with its origin and the ` + "`shared-authority`" + ` reason.
+Node-scope values and catalog_authority_origin stay local and use the ` + "`Resolve`" + ` precedence.
+` + "`Resolution.Authority`" + ` names the shared layer.
+It is empty after ` + "`Resolve`" + `.
+
 Platform roots, primary file selection, storage migration, and Starport shared configuration need their separate implementation and qualification.
 This reference does not qualify those features.
 `
