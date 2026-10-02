@@ -13,7 +13,7 @@ Single-node local mode keeps its current behavior. The plan ledger records that 
 ## Subcase contract text
 
 Register this text in `acceptance-map.json` under `subcase_contracts`.
-Add the five subcases to `required_subcases.A14`, to `task_checks.CSP16.2`, and to `task_checks.CSP22`.
+Add the five subcases to `required_subcases.A14` and to `task_checks` for CSP11, CSP16.2, CSP22, and CSP24. The roster validator requires each A14 subcase in all four tasks.
 
 | Subcase | Contract |
 | --- | --- |

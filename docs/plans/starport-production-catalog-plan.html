@@ -760,7 +760,7 @@
 
 <p><strong>Fail-before:</strong> Capture the absent promotion operation and the absent packaged-versus-retained status in both repositories.</p>
 
-<p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 10m ./runtime/...&#10;# SP&#10;go test -race -count=1 -timeout 5m ./internal/catalog ./internal/cli&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP16.2</code></pre></article>
+<p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 8m -run '^(TestPromoteEmbeddedBaseline.*|TestFleetReplayRestoresPromotedBaseline|TestFleetReplayAfterPromotionIgnoresOlderPackagedBaseline|TestFleetRecoveryRefusesUnsupportedRecordVersion)$' ./runtime&#10;make verify&#10;# SP&#10;go test -race -count=1 -timeout 5m ./internal/catalog ./internal/cli&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP16.2</code></pre></article>
 
 <article class="task" id="task-CSP17"><h3>CSP17 Build the operator configuration experience</h3><p><strong>Problem:</strong> The console shows partial facts and ambiguous refresh actions with weak instructional contrast.</p>
 

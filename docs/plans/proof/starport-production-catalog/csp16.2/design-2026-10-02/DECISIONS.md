@@ -9,8 +9,9 @@ None needs new owner authority. The owner can reverse any of them before the fin
 | 16.2-2 | Promotion is a manual run under the publication lease. | `ReplaceRemovalTargets` is the exemplar. The lease, the head compare-and-set, and the increasing revision come from the existing commit path. |
 | 16.2-3 | Promotion refuses while a source authority is configured. | D41 names promotion for embedded-only fleets. A configured source needs a coordinated apply, not a baseline promotion. |
 | 16.2-4 | A removal target absent from the promoted baseline stays recorded and inert. | Retained removals are explicit operator rules (condition 16). Dropping them silently would change policy without an operation. The receipt lists them. |
-| 16.2-5 | The five subcases register under A14 and join `task_checks.CSP22`. | A14 owns fleet replay across binary changes. The verifier requires every candidate-case subcase in CSP22. |
+| 16.2-5 | The five subcases register under A14 and join `task_checks` for CSP11, CSP16.2, CSP22, and CSP24. | A14 owns fleet replay across binary changes. The roster validator requires every A14 subcase in CSP11, CSP22, and CSP24. CSP11 is the primary owner of A14, CSP22 holds every candidate-case subcase, and CSP24 holds all subcases. |
 | 16.2-6 | Status compares packaged and retained identities in memory. | Operators see whether a promotion is available without a storage call (condition 17). |
+| 16.2-8 | Starmap verification runs the eight named runtime tests with the race detector, then `make verify`. | The complete runtime package exceeds 10 minutes under the race detector. The repository bounds its race suite at 30 minutes inside `make verify`. |
 | 16.2-7 | Two PRs: one Starmap PR with the runtime operation and the subcase registration, then one Starport PR. | Starmap #212 set the pattern. Starport pins the Starmap module, so the Starmap PR must merge and tag before the Starport PR can depend on it. |
 
 ## Pending
