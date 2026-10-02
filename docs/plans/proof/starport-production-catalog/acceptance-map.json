@@ -1941,7 +1941,18 @@
     "A15.real_valkey_postgres": "Real-backend qualification names one Valkey release and one PostgreSQL release. A test service that runs another release fails the check instead of passing a mock.",
     "A15.durability_failover": "On the qualified Valkey release, a persistent restart keeps every acknowledged durable write, a promoted replica keeps every replicated write, and a demoted old primary refuses bound product writes. Two documented limits: a write that only the old primary acknowledged after promotion is lost, and the first replica attachment to a primary without a replication backlog changes the incarnation identity, so the bound owner fails closed until re-admission.",
     "A15.cache_eviction_isolation": "The product refuses a shared cache on the durable KV service. On a separate memory-bound cache service, eviction removes only cache keys while every durable record stays readable.",
-    "A15.hash_slot_layout": "Every durable key, control key, notification channel, and multi-key conditional mutation of one deployment hashes to one Cluster slot on the real service. Cache keys stay outside that slot, and Cluster mode stays refused until a qualification run records it."
+    "A15.hash_slot_layout": "Every durable key, control key, notification channel, and multi-key conditional mutation of one deployment hashes to one Cluster slot on the real service. Cache keys stay outside that slot, and Cluster mode stays refused until a qualification run records it.",
+    "A28.desired_applied_drift": "Each replica reports the desired shared revision and its applied revision separately. A replica that still runs an older applied revision reports the drift without reading a file.",
+    "A28.shared_authority_mismatch": "A bootstrap deployment identity or authority namespace that differs from the stored shared head fails validation before leadership or activation and names the stored value. A shared revision that carries a node-scope, unknown, or bootstrap setting fails validation.",
+    "A28.leadership_config_revision": "A replica whose applied configuration revision differs from the fleet's applied policy record cannot acquire the runtime lease. It reports the policy mismatch and keeps serving under its applied revision.",
+    "A40.local_file_authority": "Local management reads deployment values from the product file and ignores shared configuration tables.",
+    "A40.shared_revision_beats_local_values": "Under shared management the persisted shared revision supplies every deployment-scope value. A conflicting local file or environment value is reported as ignored with its origin and the shared-authority reason.",
+    "A40.atomic_initialization_race": "Two concurrent initializers against one shared store create exactly one head and one first revision with one audit record. The loser reports the winner's head without writing.",
+    "A40.unavailable_not_empty": "An unavailable shared store refuses startup with an unavailable error. The product writes no initial revision and applies no file value in its place.",
+    "A40.bootstrap_connection_cycle": "Storage coordinates, deployment identity, node paths, listeners, trust roots, and the management selector come only from bootstrap inputs. A shared revision that names one of them fails validation.",
+    "A40.local_shared_migration": "Migration from local to shared management is an explicit operation. It previews the seed, writes the first shared revision with its audit record in one transaction, and the next startup reads that revision.",
+    "A40.retained_shared_revision": "After a successful load, a shared store outage keeps the last applied revision in process memory and reports it as retained shared authority with its sequence.",
+    "A40.no_outage_file_fallback": "During a shared store outage, a changed local file or environment value never becomes the applied configuration."
   },
   "storage_review_mapping": {
     "SR01": {
