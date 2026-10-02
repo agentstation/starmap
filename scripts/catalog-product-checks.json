@@ -8303,6 +8303,157 @@
           "test": "TestValkeyDeploymentNamespace"
         }
       ]
+    },
+    "A28.desired_applied_drift": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDesiredAndAppliedRevisionDrift",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A28.shared_authority_mismatch": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestResolveAuthorityRejectsNodeScopeValues"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestSharedAuthorityNamespaceMismatchRefusesStartup"
+        }
+      ]
+    },
+    "A28.leadership_config_revision": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestLeaseRefusesAppliedPolicyMismatch"
+        }
+      ]
+    },
+    "A40.local_file_authority": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLocalManagementReadsFileAuthority"
+        }
+      ]
+    },
+    "A40.shared_revision_beats_local_values": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestResolveAuthorityIgnoresLocalDeploymentValues"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestSharedAuthorityIgnoresLocalDeploymentValues"
+        }
+      ]
+    },
+    "A40.atomic_initialization_race": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/configrevision",
+          "test": "TestInitializeRaceCreatesOneHead",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A40.unavailable_not_empty": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/configrevision",
+          "test": "TestUnavailableStoreIsNotEmpty",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A40.bootstrap_connection_cycle": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestSharedRecordCannotSupplyBootstrapValues"
+        }
+      ]
+    },
+    "A40.local_shared_migration": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/configrevision",
+          "test": "TestMigrateLocalToSharedRecordsRevisionAndAudit",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A40.retained_shared_revision": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestStoreOutageRetainsAppliedRevision",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A40.no_outage_file_fallback": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestStoreOutageNeverAppliesFileValues",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A28.applied_config_memory": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestRequestsReadAppliedRevisionInMemory",
+          "timeout": "5m"
+        }
+      ]
     }
   },
   "task_component_checks": {

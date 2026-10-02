@@ -1290,6 +1290,33 @@ class RecoveryRegistrationTests(unittest.TestCase):
         self.assertIs(failover['TestPopulatedAdoptionProcess']['batch'], False)
         self.assertEqual(failover['TestPopulatedAdoptionProcess']['timeout'], '10m')
 
+    def test_shared_configuration_authority_registers_every_subcase(self):
+        identities = {
+            'A28': ('A28.desired_applied_drift', 'A28.shared_authority_mismatch',
+                    'A28.leadership_config_revision', 'A28.applied_config_memory'),
+            'A40': ('A40.local_file_authority', 'A40.shared_revision_beats_local_values',
+                    'A40.atomic_initialization_race', 'A40.unavailable_not_empty',
+                    'A40.bootstrap_connection_cycle', 'A40.local_shared_migration',
+                    'A40.retained_shared_revision', 'A40.no_outage_file_fallback'),
+        }
+        for case, group in identities.items():
+            for identity in group:
+                with self.subTest(identity=identity):
+                    self.assertIn(identity, self.roster['required_subcases'][case])
+                    self.assertIn(identity, self.roster['task_checks']['CSP16'])
+                    self.assertIn(identity, self.roster['subcase_contracts'])
+                    leaves = self.leaves(identity)
+                    self.assertTrue(leaves)
+                    self.assertTrue(all(entry['kind'] == 'go_test' for entry in leaves))
+                    for entry in leaves:
+                        if entry['package'] in ('./internal/app', './internal/configrevision'):
+                            self.assertEqual(entry['timeout'], '5m', entry)
+        starmap = {entry['test']: entry['package'] for identity in ('A28.shared_authority_mismatch',
+                                                                     'A40.shared_revision_beats_local_values')
+                   for entry in self.leaves(identity) if entry['repository'] == 'starmap'}
+        self.assertEqual(starmap, {'TestResolveAuthorityRejectsNodeScopeValues': './pkg/catalogs/config',
+                                   'TestResolveAuthorityIgnoresLocalDeploymentValues': './pkg/catalogs/config'})
+
     def test_multi_process_real_backend_tests_declare_separate_ten_minute_budgets(self):
         # Starport CI bounds each TestProductionBudgetAcrossProcesses scenario at seven minutes, and the
         # populated adoption process needs about four and a half minutes with race detection.

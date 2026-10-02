@@ -23,11 +23,65 @@ type Ignored struct {
 	Reason string
 }
 
+// IgnoredSharedAuthority reports a local deployment-scope value that the shared authority owns.
+const IgnoredSharedAuthority = "shared-authority"
+
 // Resolution binds parsed settings to their winning and ignored origins.
+// Authority names the shared layer from ResolveAuthority and is empty for Resolve.
 type Resolution struct {
-	Config  Config
-	Origins map[string]string
-	Ignored []Ignored
+	Config    Config
+	Origins   map[string]string
+	Ignored   []Ignored
+	Authority string
+}
+
+// ResolveAuthority resolves settings under one shared deployment configuration authority.
+// The shared layer supplies every deployment-scope value and selects the source group.
+// A node-scope name, an unknown name, or the authority origin in the shared layer fails.
+// It reports each local deployment-scope value as ignored with IgnoredSharedAuthority.
+// Node-scope values and the host authority origin resolve from the local layers as in Resolve.
+func ResolveAuthority(shared Layer, local ...Layer) (Resolution, error) {
+	descriptors := Descriptors()
+	shareable := make(map[string]bool, len(descriptors))
+	for _, descriptor := range descriptors {
+		shareable[descriptor.Name] = descriptor.Scope == DeploymentScope && descriptor.Name != AuthorityOrigin
+	}
+	for _, name := range slices.Sorted(maps.Keys(shared.Values)) {
+		allowed, known := shareable[name]
+		if !known {
+			return Resolution{}, &errors.ValidationError{Field: name, Message: "is not a supported catalog setting"}
+		}
+		if !allowed {
+			return Resolution{}, &errors.ValidationError{Field: name, Message: "cannot come from the shared configuration authority"}
+		}
+	}
+	layers := append(make([]Layer, 0, len(local)+1), shared)
+	var ignored []Ignored
+	for _, layer := range local {
+		if err := validateNames(layer.Values); err != nil {
+			return Resolution{}, err
+		}
+		values := make(map[string]string)
+		for _, descriptor := range descriptors {
+			value, present := layer.Values[descriptor.Name]
+			if !present {
+				continue
+			}
+			if shareable[descriptor.Name] {
+				ignored = append(ignored, Ignored{Name: descriptor.Name, Origin: layer.Name, Reason: IgnoredSharedAuthority})
+				continue
+			}
+			values[descriptor.Name] = value
+		}
+		layers = append(layers, Layer{Name: layer.Name, Values: values})
+	}
+	result, err := Resolve(layers...)
+	if err != nil {
+		return Resolution{}, err
+	}
+	result.Ignored = append(result.Ignored, ignored...)
+	result.Authority = shared.Name
+	return result, nil
 }
 
 // Resolve preserves explicit presence and binds transport credentials to one source.
