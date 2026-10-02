@@ -131,3 +131,12 @@ Do not enable shared acquisition-policy writes before the native transition requ
 
 This routing supersedes the earlier requirement to create a separate policy transition inside CSP11.
 It changes task ownership. It removes no product acceptance condition.
+
+## Ownership update (2026-10-02)
+
+The owner moved explicit baseline promotion from CSP16.1 to the new sibling task CSP16.2 in the plan ledger.
+CSP16.2 now owns condition 16 and the promotion part of condition 13 (explicit promotion and software rollback).
+CSP16.1 keeps the configuration-operation part of condition 17 in its scope.
+
+The owner limited condition 13 to fleet mode. Single-node local mode adopts the packaged baseline at each start (Starmap `runtime/runtime.go:377-379`).
+The plan ledger records that limit, and `csp16.1/design-2026-10-02/DECISIONS.md` holds the decision record.
