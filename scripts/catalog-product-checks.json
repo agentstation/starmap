@@ -8454,6 +8454,196 @@
           "timeout": "5m"
         }
       ]
+    },
+    "A26.local_file_stale_revision": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLocalConfigurationSaveRefusesStaleRevision",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAdminConfigSaveReportsStaleLocalRevision",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A26.shared_sql_stale_revision": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestSharedConfigurationSaveRefusesStaleRevision",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAdminConfigSaveReportsStaleSharedRevision",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A26.failed_save_activation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestFailedActivationReportsSavedAndAppliedRevisions",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAdminConfigReceiptSeparatesSavedAndApplied",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A26.idempotent_operation_receipt": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestConfigurationSaveExactRetryReturnsOriginalReceipt",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestConfigurationSaveRefusesReusedOperationID",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAdminConfigOperationReceiptSurvivesRestart",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A27.local_shared_authorization": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAdminConfigWritesRequireAdminScope",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestConfigurationSaveRefusesForeignDeployment",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A27.external_controller_lock": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestExternalManagementRefusesConfigurationWrites",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAdminConfigSaveRefusesExternalController",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A27.origin_protection": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAdminConfigWritesRefuseCrossSiteOrigin",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A27.transactional_audit": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/configrevision",
+          "test": "TestCommitAbortsWithoutAuditRecord",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLocalConfigurationSaveRetryCompletesFromPublishedChecksum",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A27.redaction": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAdminConfigResponsesRedactSensitiveValues",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestConfigurationAuditRecordsOmitValues",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A27.migration_boundary": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestFieldSaveRefusesManagementChange",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAdminConfigSaveRefusesMigration",
+          "timeout": "5m"
+        }
+      ]
     }
   },
   "task_component_checks": {

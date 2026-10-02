@@ -1317,6 +1317,39 @@ class RecoveryRegistrationTests(unittest.TestCase):
         self.assertEqual(starmap, {'TestResolveAuthorityRejectsNodeScopeValues': './pkg/catalogs/config',
                                    'TestResolveAuthorityIgnoresLocalDeploymentValues': './pkg/catalogs/config'})
 
+    def test_configuration_operations_register_every_subcase(self):
+        identities = {
+            'A26': ('A26.local_file_stale_revision', 'A26.shared_sql_stale_revision',
+                    'A26.failed_save_activation', 'A26.idempotent_operation_receipt'),
+            'A27': ('A27.local_shared_authorization', 'A27.external_controller_lock',
+                    'A27.origin_protection', 'A27.transactional_audit', 'A27.redaction',
+                    'A27.migration_boundary'),
+        }
+        args = argparse.Namespace(task='CSP16.1', gate=None, case=None, released_assets=False,
+                                  recipes=False, backends='all')
+        selected = verifier.select_checks(args, self.roster)
+        self.assertEqual(set(selected), {identity for group in identities.values() for identity in group})
+        for case, group in identities.items():
+            self.assertEqual(self.roster['primary_task'][case], 'CSP16.1')
+            for identity in group:
+                with self.subTest(identity=identity):
+                    self.assertIn(identity, self.roster['required_subcases'][case])
+                    self.assertIn(identity, self.roster['subcase_contracts'])
+                    entry, _ = verifier.registered_check(args, self.registry, identity)
+                    self.assertIsNotNone(entry)
+                    leaves = self.leaves(identity)
+                    self.assertTrue(leaves)
+                    for leaf in leaves:
+                        self.assertEqual((leaf['kind'], leaf['repository'], leaf['timeout']),
+                                         ('go_test', 'starport', '5m'), leaf)
+        stale = {entry['test']: entry['package'] for identity in ('A26.local_file_stale_revision',
+                                                                   'A26.shared_sql_stale_revision')
+                 for entry in self.leaves(identity)}
+        self.assertEqual(stale, {'TestLocalConfigurationSaveRefusesStaleRevision': './internal/config',
+                                 'TestAdminConfigSaveReportsStaleLocalRevision': './internal/server',
+                                 'TestSharedConfigurationSaveRefusesStaleRevision': './internal/app',
+                                 'TestAdminConfigSaveReportsStaleSharedRevision': './internal/server'})
+
     def test_multi_process_real_backend_tests_declare_separate_ten_minute_budgets(self):
         # Starport CI bounds each TestProductionBudgetAcrossProcesses scenario at seven minutes, and the
         # populated adoption process needs about four and a half minutes with race detection.

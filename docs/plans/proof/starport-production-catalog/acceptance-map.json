@@ -1952,7 +1952,17 @@
     "A40.bootstrap_connection_cycle": "Storage coordinates, deployment identity, node paths, listeners, trust roots, and the management selector come only from bootstrap inputs. A shared revision that names one of them fails validation.",
     "A40.local_shared_migration": "Migration from local to shared management is an explicit operation. It previews the seed, writes the first shared revision with its audit record in one transaction, and the next startup reads that revision.",
     "A40.retained_shared_revision": "After a successful load, a shared store outage keeps the last applied revision in process memory and reports it as retained shared authority with its sequence.",
-    "A40.no_outage_file_fallback": "During a shared store outage, a changed local file or environment value never becomes the applied configuration."
+    "A40.no_outage_file_fallback": "During a shared store outage, a changed local file or environment value never becomes the applied configuration.",
+    "A26.local_file_stale_revision": "A local-mode save names the expected file revision. The writer publishes only when the current file bytes match that revision. A stale revision refuses with the expected and current revisions and changes no bytes.",
+    "A26.shared_sql_stale_revision": "A shared-mode save names the expected head sequence. The store commits only at that sequence. A stale sequence refuses with the expected and current sequences and writes no revision.",
+    "A26.failed_save_activation": "A receipt reports the saved revision and the applied revision separately. A saved revision that the running replica cannot activate stays saved, reports the activation error, and leaves the applied revision unchanged.",
+    "A26.idempotent_operation_receipt": "Each save carries an operation ID. An exact retry returns the original receipt without a second write. The same operation ID with different edits, expected revision, or deployment refuses. A receipt is readable by operation ID after a process restart.",
+    "A27.local_shared_authorization": "Configuration writes require the admin scope and a deployment identity that matches the configured deployment. An anonymous caller, a key without the admin scope, or a foreign deployment identity refuses before any write.",
+    "A27.external_controller_lock": "External management refuses every configuration write operation, including save, initialize, and migrate. Read operations continue and report the external controller.",
+    "A27.origin_protection": "A configuration write with an Origin header succeeds only when the origin matches the gateway's own origin. A console session write requires that header. A cross-site origin refuses with 403 before any write.",
+    "A27.transactional_audit": "A shared write commits the head move, the revision row, and the audit record in one transaction. A failed audit record aborts the write and leaves the head unchanged. A local write publishes the file and its receipt under one writer lock. A retry with the original operation ID completes from the published checksum.",
+    "A27.redaction": "Schema, effective, validation, save, and receipt responses never include a sensitive value. Audit records carry setting names and revisions, never values. A sealed value appears only as a presence marker and a checksum.",
+    "A27.migration_boundary": "A field save cannot change the management mode or run a migration. The schema marks `STARPORT_CONFIG_MANAGEMENT` as migration-only. A save that includes it refuses. Initialization and migration remain separate operations with their own operation IDs."
   },
   "storage_review_mapping": {
     "SR01": {
