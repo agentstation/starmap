@@ -8,6 +8,12 @@ type Generation struct {
 	Payload  []byte
 }
 
+// GenerationIdentity names one immutable generation by its ID and exact payload checksum.
+type GenerationIdentity struct {
+	GenerationID    string `json:"generation_id"`
+	PayloadChecksum string `json:"payload_checksum"`
+}
+
 // Copy returns a generation that does not share mutable slices with g.
 func (g Generation) Copy() Generation {
 	return Generation{

@@ -160,7 +160,12 @@
       "A14.missed_events",
       "A14.follower_restart",
       "A14.leader_loss_with_local_files_removed",
-      "A14.equivalent_acquisition_capability"
+      "A14.equivalent_acquisition_capability",
+      "A14.explicit_baseline_promotion",
+      "A14.promotion_exact_retry",
+      "A14.promotion_preserves_pins_and_authority",
+      "A14.software_rollback_keeps_promoted_baseline",
+      "A14.promotion_request_path_memory"
     ],
     "A15": [
       "A15.real_valkey_postgres",
@@ -711,7 +716,12 @@
       "A03.two_instances_same_user",
       "A03.duplicate_owner_refusal",
       "A41.catalog_fleet_deployment_isolation",
-      "A41.catalog_fleet_atomic_layout"
+      "A41.catalog_fleet_atomic_layout",
+      "A14.explicit_baseline_promotion",
+      "A14.promotion_exact_retry",
+      "A14.promotion_preserves_pins_and_authority",
+      "A14.software_rollback_keeps_promoted_baseline",
+      "A14.promotion_request_path_memory"
     ],
     "CSP12": [
       "A15.budget_usage_unknown",
@@ -1202,7 +1212,12 @@
       "A35.clean_catalog_no_keys",
       "A35.documented_inference",
       "A41.catalog_fleet_deployment_isolation",
-      "A41.catalog_fleet_atomic_layout"
+      "A41.catalog_fleet_atomic_layout",
+      "A14.explicit_baseline_promotion",
+      "A14.promotion_exact_retry",
+      "A14.promotion_preserves_pins_and_authority",
+      "A14.software_rollback_keeps_promoted_baseline",
+      "A14.promotion_request_path_memory"
     ],
     "CSP23": [
       "A29.embedded_offline_search",
@@ -1542,7 +1557,12 @@
       "A47.clock_and_window_authority",
       "A47.reconciliation_retention",
       "A41.catalog_fleet_deployment_isolation",
-      "A41.catalog_fleet_atomic_layout"
+      "A41.catalog_fleet_atomic_layout",
+      "A14.explicit_baseline_promotion",
+      "A14.promotion_exact_retry",
+      "A14.promotion_preserves_pins_and_authority",
+      "A14.software_rollback_keeps_promoted_baseline",
+      "A14.promotion_request_path_memory"
     ],
     "CSP16.1": [
       "A26.local_file_stale_revision",
@@ -1649,6 +1669,13 @@
     "CSP3.1": [
       "A44.canonical_alias_lookup",
       "A44.caller_owned_values"
+    ],
+    "CSP16.2": [
+      "A14.explicit_baseline_promotion",
+      "A14.promotion_exact_retry",
+      "A14.promotion_preserves_pins_and_authority",
+      "A14.software_rollback_keeps_promoted_baseline",
+      "A14.promotion_request_path_memory"
     ]
   },
   "qualification": {
@@ -1962,7 +1989,12 @@
     "A27.origin_protection": "A configuration write with an Origin header succeeds only when the origin matches the gateway's own origin. A console session write requires that header. A cross-site origin refuses with 403 before any write.",
     "A27.transactional_audit": "A shared write commits the head move, the revision row, and the audit record in one transaction. A failed audit record aborts the write and leaves the head unchanged. A local write publishes the file and its receipt under one writer lock. A retry with the original operation ID completes from the published checksum.",
     "A27.redaction": "Schema, effective, validation, save, and receipt responses never include a sensitive value. Audit records carry setting names and revisions, never values. A sealed value appears only as a presence marker and a checksum.",
-    "A27.migration_boundary": "A field save cannot change the management mode or run a migration. The schema marks `STARPORT_CONFIG_MANAGEMENT` as migration-only. A save that includes it refuses. Initialization and migration remain separate operations with their own operation IDs."
+    "A27.migration_boundary": "A field save cannot change the management mode or run a migration. The schema marks `STARPORT_CONFIG_MANAGEMENT` as migration-only. A save that includes it refuses. Initialization and migration remain separate operations with their own operation IDs.",
+    "A14.explicit_baseline_promotion": "A fleet binary upgrade keeps the retained baseline. One explicit operation under the publication lease adopts the packaged baseline at the expected head with an increasing revision. Replay after promotion restores the promoted baseline on every replica.",
+    "A14.promotion_exact_retry": "A promotion binds a stable operation ID to the deployment, the expected head, and the packaged generation. An exact retry returns the original receipt without a second publication. A stale expected head, a reused operation ID with a different target, or a packaged generation that equals the retained baseline refuses.",
+    "A14.promotion_preserves_pins_and_authority": "Promotion refuses while a generation pin is active or a source authority is configured. Retained removal targets survive promotion. A target absent from the promoted baseline stays recorded, stays inert, and appears in the receipt.",
+    "A14.software_rollback_keeps_promoted_baseline": "After promotion, a binary with an older packaged baseline replays the promoted baseline and never falls back to its packaged baseline. A recovery record with an unsupported version refuses acquisition and names the version. The record format does not change for promotion.",
+    "A14.promotion_request_path_memory": "During promotion and the following replay, request admission reads the accepted catalog in memory. A counting store proves zero request-path storage calls."
   },
   "storage_review_mapping": {
     "SR01": {

@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	jsonv1 "encoding/json"
 	"encoding/json/v2"
+	"fmt"
 	"reflect"
 	"strings"
 
@@ -148,6 +149,13 @@ func decodeFleetRecoveryData(ctx context.Context, decoded []byte) (fleetRecovery
 		return record, invalidInputPublication("fleet recovery exceeds its decoded input byte bound")
 	}
 	if err := json.Unmarshal(decoded, &record, json.RejectUnknownMembers(true), jsonv1.FormatDurationAsNano(true)); err != nil {
+		// A newer format can add members. Name its version instead of the first unknown member.
+		var header struct {
+			Version int `json:"version"`
+		}
+		if json.Unmarshal(decoded, &header) == nil && header.Version != fleetRecoveryVersion {
+			return record, unsupportedFleetRecoveryVersion(header.Version)
+		}
 		return record, err
 	}
 	if err := validateFleetRecoveryRecord(record); err != nil {
@@ -157,8 +165,11 @@ func decodeFleetRecoveryData(ctx context.Context, decoded []byte) (fleetRecovery
 }
 
 func validateFleetRecoveryRecord(record fleetRecoveryRecord) error {
-	if record.Version != fleetRecoveryVersion || record.PublisherID == "" || !validFleetChecksum(record.Compatibility) {
-		return invalidInputPublication("fleet recovery has an unsupported version or incomplete identity")
+	if record.Version != fleetRecoveryVersion {
+		return unsupportedFleetRecoveryVersion(record.Version)
+	}
+	if record.PublisherID == "" || !validFleetChecksum(record.Compatibility) {
+		return invalidInputPublication("fleet recovery has an incomplete identity")
 	}
 	if record.Pin != nil {
 		if err := record.Pin.validate(); err != nil {
@@ -171,6 +182,10 @@ func validateFleetRecoveryRecord(record fleetRecoveryRecord) error {
 		return pinRecordConflict("an alternate replay checksum requires an accepted pin")
 	}
 	return nil
+}
+
+func unsupportedFleetRecoveryVersion(version int) error {
+	return invalidInputPublication(fmt.Sprintf("fleet recovery version %d is unsupported; this binary reads version %d", version, fleetRecoveryVersion))
 }
 
 func decodeFleetRecoveryRecord(ctx context.Context, record fleetRecoveryRecord, prior layerSet) (layerSet, error) {

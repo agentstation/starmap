@@ -715,6 +715,26 @@ The regression excludes provider evidence at the reconstruction boundary after r
 The excluded provider no longer returns through the baseline. This check does not exercise an operator revocation API or active binding policy.
 Explicit local inputs still need source evidence when the runtime reconstructs a generation. A previously merged head cannot substitute for that evidence.
 
+### Fleet baseline promotion
+
+A fleet replays the baseline that its accepted recovery record retains.
+It does not replay the baseline packaged in the binary.
+A binary upgrade or rollback does not change the retained baseline.
+The `Runtime.BaselineStatus` method compares the packaged and retained identities in memory.
+
+The `Runtime.PromoteEmbeddedBaseline` method adopts the packaged baseline at an expected fleet head.
+It runs under the publication lease and publishes the next revision. Replay on every replica then restores the promoted baseline.
+
+Promotion keeps the retained source, provider, manual, and removal inputs.
+A retained source still selects the effective catalog.
+A removal target that matches nothing in the promoted catalog stays recorded and inert.
+The result lists these targets. An explicit removal edit can replace them.
+
+Promotion refuses a stale head, a packaged generation that differs from the binary, and a packaged baseline equal to the retained baseline.
+It also refuses while a generation pin is active or while the runtime has a source authority or an origin.
+The recovery record format does not change.
+A replica refuses acquisition when a record has an unsupported version, and the error names that version.
+
 
 ## Interrupted baseline export
 
