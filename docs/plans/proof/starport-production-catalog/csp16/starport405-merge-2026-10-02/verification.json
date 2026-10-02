@@ -1,0 +1,58 @@
+{
+ "recorded_utc": "2026-10-02T20:20:57.947063+00:00",
+ "task": "CSP16",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 405,
+ "head": "b79463f7dacbd16ce0b1ebf75c8e4dfa83638353",
+ "base": "77ffc26a0b29196d62c11e9478b5e46aa67ccecb",
+ "merge": "a4e7e8fdcc06dafc5cb81d1dd939dfae87eb04a5",
+ "merged_at": "2026-10-02T20:20:15Z",
+ "checks": {
+  "success": 42,
+  "not_success": 0,
+  "total": 42
+ },
+ "reviewed_tree": "b4d89db4d9e6970ad7348af7b128bf250d9a8e00",
+ "merged_tree": "b4d89db4d9e6970ad7348af7b128bf250d9a8e00",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP16 Starport: one deployment configuration authority (STARPORT_CONFIG_MANAGEMENT local|shared|external), internal/configrevision shared SQL revisions with migration 0013 and audit RecordTx, startup head application with Starmap ResolveAuthority and no file fallback, 30s head observation, config init/migrate/apply/effective commands, lease-free apply fence checked at lease acquisition and renewal, sealed source credentials",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "be73e24e06989bf2d74122871a7696c59a0a6c04710e1aad8fb5341e942fe5eb",
+   "gzip_sha256": "4571d0d7daf0c4121b6918e8310d1cc2282d27fe2b1c53eb31475bb5df813e79"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "6aad8b6f5a79e780cbd92067b98dcd3fd87e364daaa9d0c2453c8463f06c32c1",
+   "gzip_sha256": "6bcc03408fc4abd56300724de39acb47cef009f1c7b5af83e51dd303ee6b417e"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "1ecfce4fc3bb7312d0bb2b3762752f566f7a4539dbe32a2f3b9c8883dc7a8a24",
+   "gzip_sha256": "825e1ea31369a21a91dc7ec36b354c61f95862222891332e585e199e71fb5df1"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
