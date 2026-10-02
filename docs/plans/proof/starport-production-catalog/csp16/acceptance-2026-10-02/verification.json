@@ -1,0 +1,167 @@
+{
+ "recorded_at": "2026-10-02T20:29:26.025640+00:00",
+ "task": "CSP16",
+ "starmap": {
+  "head": "80de6d830bf2b519420b7006d4e48cde552101c5",
+  "tree": "a546b97a4ca1bf4b071bfcaee1cc28f6e987758b"
+ },
+ "starport": {
+  "head": "a4e7e8fdcc06dafc5cb81d1dd939dfae87eb04a5",
+  "branch": "main",
+  "merged_pr": 405
+ },
+ "commands": {
+  "task_csp16": "bash scripts/verify-catalog-product.sh --task CSP16 --starport-root <starport> --json",
+  "case_a28": "bash scripts/verify-catalog-product.sh --case A28 --starport-root <starport> --json",
+  "case_a40": "bash scripts/verify-catalog-product.sh --case A40 --starport-root <starport> --json"
+ },
+ "environment": {
+  "toolchain": "GOTOOLCHAIN=go1.27.1 GOWORK=off CGO_ENABLED=1, go test -race through the verifier",
+  "fixture_urls": "derived privately from docker inspect by the wrapper; values omitted",
+  "variables_set": [
+   "TEST_VALKEY_URL",
+   "TEST_UNPREFIXED_VALKEY_URL",
+   "TEST_SHARED_CACHE_URL",
+   "TEST_VALKEY_REPLACEMENT_URL",
+   "TEST_POSTGRES_URL",
+   "TEST_MYSQL_DSN",
+   "TEST_BLOB_S3_ENDPOINT",
+   "STARPORT_RECOVERY_OPERATOR_BINARY"
+  ],
+  "fixtures": {
+   "starport-csp13-postgres": "f1c3376c26f2 running",
+   "csp13-unprefixed-valkey-20260929": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f running",
+   "starport-csp13-mysql": "3466ba4a4828 running",
+   "starport-csp122-retirement-objectstore": "quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z running",
+   "csp13-adoption-replacement-20260929": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f running"
+  }
+ },
+ "runner_exits": [
+  "task CSP16 exit=0",
+  "case A28 exit=0",
+  "case A40 exit=0"
+ ],
+ "reports": {
+  "task_csp16": {
+   "subcases": 14,
+   "by_status": {
+    "PASS": [
+     "A03.effective_path_report",
+     "A24.bootstrap_file_location",
+     "A28.applied_config_memory",
+     "A28.desired_applied_drift",
+     "A28.leadership_config_revision",
+     "A28.shared_authority_mismatch",
+     "A40.atomic_initialization_race",
+     "A40.bootstrap_connection_cycle",
+     "A40.local_file_authority",
+     "A40.local_shared_migration",
+     "A40.no_outage_file_fallback",
+     "A40.retained_shared_revision",
+     "A40.shared_revision_beats_local_values",
+     "A40.unavailable_not_empty"
+    ]
+   },
+   "gate_status": "PASS",
+   "backend_scope": "primary",
+   "roster_sha256": "599464e534ba2bd49cff3e0b9d1dd6591a8693d5dd1848ca0d3b92802b1b0b79",
+   "registry_sha256": "ef24b79e7d55f8bc68f1c423dfd9126ac339500f61761bb76f6b32ec9d287d6e",
+   "selected_subcases": 14,
+   "unverified_cases": 48,
+   "cases": {
+    "A28": "PASS",
+    "A40": "PASS"
+   }
+  },
+  "case_a28": {
+   "subcases": 4,
+   "by_status": {
+    "PASS": [
+     "A28.applied_config_memory",
+     "A28.desired_applied_drift",
+     "A28.leadership_config_revision",
+     "A28.shared_authority_mismatch"
+    ]
+   },
+   "gate_status": "PASS",
+   "backend_scope": "primary",
+   "roster_sha256": "599464e534ba2bd49cff3e0b9d1dd6591a8693d5dd1848ca0d3b92802b1b0b79",
+   "registry_sha256": "ef24b79e7d55f8bc68f1c423dfd9126ac339500f61761bb76f6b32ec9d287d6e",
+   "selected_subcases": 4,
+   "unverified_cases": 49,
+   "cases": {
+    "A28": "PASS"
+   }
+  },
+  "case_a40": {
+   "subcases": 8,
+   "by_status": {
+    "PASS": [
+     "A40.atomic_initialization_race",
+     "A40.bootstrap_connection_cycle",
+     "A40.local_file_authority",
+     "A40.local_shared_migration",
+     "A40.no_outage_file_fallback",
+     "A40.retained_shared_revision",
+     "A40.shared_revision_beats_local_values",
+     "A40.unavailable_not_empty"
+    ]
+   },
+   "gate_status": "PASS",
+   "backend_scope": "primary",
+   "roster_sha256": "599464e534ba2bd49cff3e0b9d1dd6591a8693d5dd1848ca0d3b92802b1b0b79",
+   "registry_sha256": "ef24b79e7d55f8bc68f1c423dfd9126ac339500f61761bb76f6b32ec9d287d6e",
+   "selected_subcases": 8,
+   "unverified_cases": 49,
+   "cases": {
+    "A40": "PASS"
+   }
+  }
+ },
+ "go_evidence": {
+  "task_csp16": {
+   "processes": 6,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 87.0,
+   "longest_seconds": 56.656,
+   "test_statuses": {
+    "pass": 40
+   }
+  },
+  "case_a28": {
+   "processes": 4,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 74.8,
+   "longest_seconds": 55.453,
+   "test_statuses": {
+    "pass": 8
+   }
+  },
+  "case_a40": {
+   "processes": 4,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 25.2,
+   "longest_seconds": 15.065,
+   "test_statuses": {
+    "pass": 26
+   }
+  }
+ },
+ "limits": [
+  "A partial verifier run reports summary counts over all 50 cases; the unselected cases are UNVERIFIED and the subcase statuses carry the result.",
+  "Component test durations under the race detector are not deployment RTO or RPO targets.",
+  "Offline recovery and restore paths apply file values. A later task owns recovery of shared revisions.",
+  "The HTTP configuration API and the console types belong to CSP16.1.",
+  "Valkey storage defaults to shared management. An existing distributed deployment runs starport config init --shared --yes once at upgrade.",
+  "config apply always commits a revision, because a change can touch only a sealed credential that the checksum excludes.",
+  "After config apply, a leader under the previous revision can publish until its next lease renewal (at most the 30-second renewal interval). After a refused renewal, the Starmap lease keeper holds the grant until the 90-second lease TTL, so a matching replica waits up to that long to lead."
+ ],
+ "files": {
+  "task_csp16.json.gz": "verifier JSON report for --task CSP16",
+  "case_a28.json.gz": "verifier JSON report for --case A28",
+  "case_a40.json.gz": "verifier JSON report for --case A40",
+  "go-runs-task_csp16.json.gz": "per-process Go evidence for --task CSP16",
+  "go-runs-case_a28.json.gz": "per-process Go evidence for --case A28",
+  "go-runs-case_a40.json.gz": "per-process Go evidence for --case A40"
+ }
+}
