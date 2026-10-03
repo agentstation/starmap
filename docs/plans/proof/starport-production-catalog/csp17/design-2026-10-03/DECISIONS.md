@@ -1,6 +1,6 @@
 # CSP17 decisions
 
-Date: 2026-10-03. Decisions 17-1, 17-2, 17-4, 17-5, and 17-6 are interpretations inside the accepted task scope.
+Date: 2026-10-03. Decisions 17-1, 17-2, 17-4, 17-5, 17-6, and 17-7 are interpretations inside the accepted task scope.
 Decision 17-3 is an owner decision. The owner can reverse any of them before the final acceptance run.
 
 | ID | Decision | Reason and consequence |
@@ -11,6 +11,7 @@ Decision 17-3 is an owner decision. The owner can reverse any of them before the
 | 17-4 | The light theme text-3 token changes once, from `#71717a` to `#66666e`. | Light text-3 on the raised background measured 4.40:1, below AA for prose in the catalog panel. The new value measures 5.18:1 on raised. The measured 2.56:1 settings pair was light text-4 on white, which CSP0.1 already moved to text-2 at 10.44:1. The implementation records both-theme ratios on each background. |
 | 17-5 | When several configuration files are layered, the console disables the local save control and states the reason. | The effective report has an empty `file_checksum` for a layered load, so no single local file is the save target. The CSP16.1 local writer saves to one file only. The console names the condition instead of a guess. |
 | 17-6 | The default recipe is the default first view of the Configuration section. The task groups "Catalog source" and "Inference access" show the current values. All other settings sit in the advanced disclosure. | The plan step names a default recipe and task-based setup. The console adds no separate guided flow, because the existing routes supply every fact and the first view already orders the tasks. |
+| 17-7 | Discovery audit criterion 1 needs no API change. The console proves with a test that a model without a usable credential stays in Explore. Criterion 4 gets a readiness statement with four cases in the chat composer, the Compare intro, and the model actions. | `GET /api/v1/models` drops offerings that are adapter-not-ready, unpriced, or unsupported. That is the catalog permission policy, not a credential filter, so permitted membership holds at the API. The discovery route reports readiness as a fixed "unknown", so the console does not read it. The four cases: ready through a named provider, no usable credential, credential state not known, and no chat model or no catalog. |
 
 ## Pending
 
