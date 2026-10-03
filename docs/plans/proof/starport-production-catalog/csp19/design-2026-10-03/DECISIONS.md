@@ -19,6 +19,24 @@ The owner selected the larger scope for `A31.upgrade_restore_workload`. The rele
 - The existing limits in `docs/site/storage/migration.md` lines 31 and 32 stay in place until the tooling merges. The fail-before record keeps the current text.
 - An existing shared deployment upgrade stays a separate question. The survey reports whether the same tooling covers it.
 
+Survey outcome (`MIGRATION_SURVEY.md`, 2026-10-03): the transport already exists. The commands `backup create`, `backup prepare`, and `backup activate` move a local source into Valkey, PostgreSQL, and object storage. Three tests exercise the path with minimal fixtures. The release documentation denies this in three lines. The sibling task therefore qualifies the existing path instead of adding a new tool. Decision 19-8 states its scope.
+
+## 19-8 CSP19.1 qualifies the existing move path with a populated workload
+
+The lead derived this scope from the survey. The owner chose the migration tooling in 19-2, and the survey showed that the tooling exists. The remaining work is smaller than a new tool. It keeps the owner's outcome: a tested procedure that moves a populated local recipe into the shared recipe.
+
+- CSP19.1 adds a populated local fixture (gateway keys, credentials, usage, identity, audit, budgets, files, and an accepted generation).
+- Parity: domain counts, credential decrypt with the same master key, gateway key authentication, and the accepted generation identity.
+- Refusals: a populated target, another deployment ID, an open boundary, a wrong key, and a restored-SQL witness.
+- CSP19.1 proves that a second replica joins after the activation.
+- CSP19.1 adds a recipe-image check through `scripts/test-storage-recipes.py` and a Go test, with the `TestContainerRecipePersistence` pattern.
+- Source retirement: the implementer reports whether the closed boundary already refuses a source start. A new retirement marker is a storage layout change and needs a pause and an owner decision. Without it, the procedure documents the external fence as mandatory.
+- Rollback: the source stays unchanged. The procedure documents the reopen, and a test proves it when the code permits it.
+- A cross-mode intent guard (G5) is out of scope. The deployment ID check and the external fence stay the controls.
+- The shared deployment upgrade and the legacy object prefix stay outside CSP19.1.
+- The three wrong documentation lines change in the CSP19.1 PR, not in the CSP19 docs slice.
+- `A31.upgrade_restore_workload` registers against the CSP19.1 test names after the Starport merge.
+
 ## 19-3 Target status comes from merged evidence
 
 The targets table marks a target "Supported" only when a merged task proof covers its durability, recovery, and replica behavior. T2 and T7 keep "Supported". T4 moves to the fleet qualification that CSP13 and CSP15 proved, with the CSP15 `master_replid` failover limit and the D42 promotion RPO limit stated beside it. T3 states the single-process recovery evidence that CSP13 and the storage recipe exercise provide. T1 is a Starmap recipe and lives in the Starmap guides.
