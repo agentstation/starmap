@@ -72,4 +72,6 @@ The writers compared the code with the repository Markdown and reported conflict
 
 ## Result
 
-Draft PR #409 is open at `f99695f8` with CI run 37130769293 pending. The lead roster at `f99695f8` passed with 35 checks. The check `goago` has its usual exit 2 and the other 34 have exit 0. The full `go test ./...` took 935 s. The head stayed unchanged and clean. The merge waits for the exact-head CI.
+Draft PR #409 is open at `f99695f8` with CI run 37130769293 pending. The lead roster at `f99695f8` passed with 35 checks. The check `goago` has its usual exit 2 and the other 34 have exit 0. The full `go test ./...` took 935 s. The head stayed unchanged and clean.
+
+CI run 37130769293 completed with 42 checks green. PR #409 merged at `e7a58541` on 2026-10-03 with the reviewed tree equal to the merge tree. The proof is in `starport409-merge-2026-10-03/`.
