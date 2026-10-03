@@ -150,14 +150,28 @@ The repository `docker-compose.yml` is a local starting point for one instance.
 It binds the published port to loopback. Provide a controlled ingress before exposing it to another host.
 The CLI version command does not test server health. Use the HTTP liveness and readiness endpoints.
 
-
-
 ```bash
 cp .env.example .env
 docker compose up -d
 docker compose logs -f starmap
 curl http://localhost:8080/api/v1/ready
 ```
+
+To start without GitHub, add these values to `.env` before the first start:
+
+```bash
+STARMAP_CATALOG_SOURCE=embedded
+STARMAP_CATALOG_ACQUISITION_ENABLED=false
+STARMAP_CATALOG_NETWORK_MODE=offline
+```
+
+Compose passes `.env` to the container through its `env_file` entry. The server
+then sends no catalog request to GitHub, models.dev, or a provider API. The
+Compose file already sets a read-only root filesystem and a writable `/tmp`
+mount. The `read_only` and `tmpfs` keys at lines 119 to 121 of
+[docker-compose.yml](../docker-compose.yml) set them. Keep both settings for
+this start. The [T1 recipe](ENTERPRISE_CATALOG_SERVER.md#operate-without-github)
+describes the `file` source and the readiness report in this mode.
 
 Before production use:
 
@@ -319,9 +333,12 @@ adapter accepts a caller-owned S3-compatible client and requires conditional
 ETag writes. It never falls back to last-writer-wins. The embedding application
 owns credentials, client transport/retries, update coordination, and shutdown.
 
-Starport may instead implement `storage.Store` with its own relational
-database. Starport, not Starmap, owns the driver, connection pool, schema,
-migrations, backups, transactions, CAS semantics, and lifecycle.
+Starmap ships memory, filesystem, and conditional object adapters, with S3 and
+Valkey object backends. Starmap ships no SQL adapter. An embedding application
+can implement `storage.Store` with its own database as an extension. That
+application then owns the driver, schema, migrations, backups, CAS semantics,
+and lifecycle. Starport keeps its catalog heads in its configured KV store. The
+[store contract](CATALOG_STORE_CONTRACT.md) lists each shipped adapter.
 
 ## Operations
 
