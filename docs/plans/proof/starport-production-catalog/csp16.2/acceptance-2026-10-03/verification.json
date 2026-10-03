@@ -1,0 +1,128 @@
+{
+ "recorded_at": "2026-10-03T22:05:07.416184+00:00",
+ "task": "CSP16.2",
+ "starmap": {
+  "head": "18766e474a7959b2e651fe8eecf6be82ffadec4a",
+  "tree": "80c7a96a8580760dc9e10020825cce83f1a53e5d"
+ },
+ "starport": {
+  "head": "491d92815cdf8b7c25c0e112a3e769282d052916",
+  "branch": "main",
+  "merged_pr": 407,
+  "merge_commit": "491d92815cdf8b7c25c0e112a3e769282d052916"
+ },
+ "commands": {
+  "task_csp162": "bash scripts/verify-catalog-product.sh --task CSP16.2 --starport-root <starport> --json",
+  "case_a14": "bash scripts/verify-catalog-product.sh --case A14 --starport-root <starport> --json"
+ },
+ "environment": {
+  "toolchain": "GOTOOLCHAIN=go1.27.1 GOWORK=off CGO_ENABLED=1, go test -race through the verifier",
+  "fixture_urls": "derived privately from docker inspect by the wrapper; values omitted",
+  "variables_set": [
+   "TEST_VALKEY_URL",
+   "TEST_UNPREFIXED_VALKEY_URL",
+   "TEST_SHARED_CACHE_URL",
+   "TEST_VALKEY_REPLACEMENT_URL",
+   "TEST_POSTGRES_URL",
+   "TEST_MYSQL_DSN",
+   "TEST_BLOB_S3_ENDPOINT",
+   "STARPORT_RECOVERY_OPERATOR_BINARY"
+  ],
+  "fixtures": {
+   "starport-csp13-postgres": "f1c3376c26f2 running",
+   "csp13-unprefixed-valkey-20260929": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f running",
+   "starport-csp13-mysql": "3466ba4a4828 running",
+   "starport-csp122-retirement-objectstore": "quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z running",
+   "csp13-adoption-replacement-20260929": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f running"
+  }
+ },
+ "runner_exits": [
+  "console build exit 0",
+  "native test exit: 0",
+  "task exit 0 2026-10-03T21:50:59Z",
+  "native test exit: 0",
+  "case exit 0 2026-10-03T22:03:54Z"
+ ],
+ "reports": {
+  "task_csp162": {
+   "subcases": 5,
+   "by_status": {
+    "PASS": [
+     "A14.explicit_baseline_promotion",
+     "A14.promotion_exact_retry",
+     "A14.promotion_preserves_pins_and_authority",
+     "A14.promotion_request_path_memory",
+     "A14.software_rollback_keeps_promoted_baseline"
+    ]
+   },
+   "gate_status": "PASS",
+   "backend_scope": "primary",
+   "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+   "registry_sha256": "641e04e513d8a1cdef09e6bbc11f8d6eff6bb96fcbf0333649ef37f627696cfc",
+   "selected_subcases": 5,
+   "unverified_cases": 50,
+   "cases": {}
+  },
+  "case_a14": {
+   "subcases": 9,
+   "by_status": {
+    "PASS": [
+     "A14.equivalent_acquisition_capability",
+     "A14.explicit_baseline_promotion",
+     "A14.follower_restart",
+     "A14.leader_loss_with_local_files_removed",
+     "A14.missed_events",
+     "A14.promotion_exact_retry",
+     "A14.promotion_preserves_pins_and_authority",
+     "A14.promotion_request_path_memory",
+     "A14.software_rollback_keeps_promoted_baseline"
+    ]
+   },
+   "gate_status": "PASS",
+   "backend_scope": "primary",
+   "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+   "registry_sha256": "641e04e513d8a1cdef09e6bbc11f8d6eff6bb96fcbf0333649ef37f627696cfc",
+   "selected_subcases": 9,
+   "unverified_cases": 49,
+   "cases": {
+    "A14": "PASS"
+   }
+  }
+ },
+ "go_evidence": {
+  "task_csp162": {
+   "processes": 4,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 619.3,
+   "longest_seconds": 488.139,
+   "test_statuses": {
+    "pass": 29
+   }
+  },
+  "case_a14": {
+   "processes": 7,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 740.5,
+   "longest_seconds": 600.898,
+   "test_statuses": {
+    "pass": 75
+   }
+  }
+ },
+ "limits": [
+  "A partial verifier run reports summary counts over all 50 cases; the unselected cases are UNVERIFIED and the subcase statuses carry the result.",
+  "Component test durations under the race detector are not deployment RTO or RPO targets.",
+  "A receipt write that fails after the head commits leaves the request pending. A re-run of the same operation reports a refused receipt because the head already moved.",
+  "Backups omit promotion receipts.",
+  "A forged baseline replaces a retained one only through the lease holder (decision 16.2-9).",
+  "A local deployment refuses both commands with ErrBaselinePromotionFleetOnly. The commands require Valkey and PostgreSQL storage.",
+  "Production-composition replay against a real multi-gateway fleet is UNVERIFIED.",
+  "The Starmap API runtime.PromoteEmbeddedBaseline merged in agentstation/starmap#214."
+ ],
+ "files": {
+  "task_csp162.json.gz": "verifier JSON report for --task CSP16.2",
+  "case_a14.json.gz": "verifier JSON report for --case A14",
+  "go-runs-task_csp162.json.gz": "per-process Go evidence for --task CSP16.2",
+  "go-runs-case_a14.json.gz": "per-process Go evidence for --case A14"
+ }
+}
