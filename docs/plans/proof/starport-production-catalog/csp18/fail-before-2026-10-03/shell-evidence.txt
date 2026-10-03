@@ -1,0 +1,41 @@
+head c99f0f094e0174e4587f2e8dfd3678687e320db7 2026-10-03T11:06:00Z
+## palette kinds
+3:// The palette indexes six kinds. Kind order is display order: pages
+15:  kind: PaletteItemKind;
+17:  // catalog kinds, an action id for actions.
+52:// paletteRank orders matches within a kind: label prefix, then label
+69:// searchPalette filters each kind by the fuzzy query, ranks within the
+70:// kind, and caps it, so a broad query never floods the list with one
+71:// kind. An empty query shows only pages and actions — the browsable
+80:  for (const kind of KIND_ORDER) {
+81:    if (!trimmed && kind !== "page" && kind !== "action") continue;
+83:      (item) => item.kind === kind && matchesPaletteQuery(trimmed, item),
+## palette docs entries
+68:  { path: "/docs", label: "Docs", icon: BookOpen },
+## spa embed
+1:// Package console provides the embedded web console for operating a
+4:// console is embedded in the binary so it works offline with a strict
+9:	"embed"
+23:// distFiles embeds the built single-page console from console/. The
+28://go:embed all:dist
+29:var distFiles embed.FS
+51:// NewSPAHandler creates a handler over the embedded console build.
+71:// Built reports whether the embedded build contains the console.
+86:		h.logger.Error().Err(err).Msg("failed to read embedded console index")
+125:	"/docs", "/documents", "/files", "/jobs", "/keys", "/members",
+## docs command
+No help topic for 'docs'. doctor
+exit status 2
+exit 0
+## docs.tsx anchors/toc/version
+109:      <h2 id={id} tabIndex={-1} className="font-semibold text-text-1"><a href={`#${id}`}>{title}</a></h2>
+493:          name the protocol, operation, provider, and model, never an
+514:          <Term>GET /health/live</Term> answers while the process runs, and{" "}
+515:          <Term>GET /health/ready</Term> answers when the gateway can serve
+## unpinned links
+console/src/components/members/IdentityRequired.tsx:6:  "https://github.com/agentstation/starport/blob/main/docs/OPERATOR-GUIDE.md#identity";
+## pages
+{"message":"Not Found","documentation_url":"https://docs.github.com/rest/pages/pages#get-a-apiname-pages-site","status":"404"}gh: Not Found (HTTP 404)
+0
+## docs size
+    5617 total

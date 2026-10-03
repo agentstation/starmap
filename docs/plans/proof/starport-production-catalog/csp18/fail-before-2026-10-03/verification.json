@@ -1,0 +1,36 @@
+{
+  "task": "CSP18",
+  "captured": "2026-10-03T11:06:00Z",
+  "starport_head": "c99f0f094e0174e4587f2e8dfd3678687e320db7",
+  "verifier_tree": "/private/tmp/starmap-acceptance-20261003 at 344eb64cf",
+  "command": "bash scripts/verify-catalog-product.sh --starport-root <starport main> --task CSP18 --json",
+  "native_test_exit": 1,
+  "gate_status": "FAIL",
+  "selected_subcases": 10,
+  "subcase_status": {
+    "A30.stable_links_history": "UNVERIFIED",
+    "A30.desktop_both_themes": "UNVERIFIED",
+    "A30.narrow_320": "UNVERIFIED",
+    "A30.zoom_text_spacing": "UNVERIFIED",
+    "A30.keyboard_screen_reader": "UNVERIFIED",
+    "A30.instruction_contrast": "PASS",
+    "A29.embedded_offline_search": "UNVERIFIED",
+    "A29.recovery_without_auth": "UNVERIFIED",
+    "A29.no_dynamic_data_disclosure": "UNVERIFIED",
+    "A24.generated_file_inventory": "PASS"
+  },
+  "counts": {
+    "pass": 2,
+    "unverified": 8
+  },
+  "registry_sha256": "641e04e513d8a1cdef09e6bbc11f8d6eff6bb96fcbf0333649ef37f627696cfc",
+  "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+  "plan_fail_before_text_corrections": [
+    "/docs is already public on the client and the server since CSP0.1 (Starport #366).",
+    "Heading anchors exist on h2 only. No table of contents, no current-section marker, no topic routes, no version display.",
+    "No article-content search exists. The palette indexes six kinds and one /docs page entry.",
+    "Docs need a running gateway. No offline export, no release docs asset, no starport docs command.",
+    "GitHub Pages is not configured (404) and the repository has no environments."
+  ],
+  "shell_evidence": "shell-evidence.txt"
+}
