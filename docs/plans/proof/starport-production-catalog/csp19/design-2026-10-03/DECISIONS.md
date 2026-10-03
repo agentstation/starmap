@@ -58,3 +58,16 @@ The CSP19 acceptance says each recipe has runnable checks. The verifier runs onl
 ## 19-7 Landing order
 
 Starport #410, then #407, then the CSP18 slice 3 PR, then the Starmap CSP18 registry PR land first. The Starport CSP19 slice branches from main after the slice 3 merge. The Starmap CSP19 docs slice runs now on `csp19-docs` from `344eb64cf` and rebases before its PR. The registry entries for CSP19 wait for the merged Starport test names.
+
+## 19-9 Open: no command writes the activation history package
+
+Found on 2026-10-03 during the CSP19 Starport slice. `docs/RECOVERY.md` lines 15, 196, and 240 tell the operator to bind an independent history package to the capture. Activation, `backup apply-history`, and populated adoption consume that package. Only `ProjectIndependentHistory` in `internal/recovery/history_projection.go` line 81 builds one, and only tests call it. The test helper `activationHistoryFixture` in `internal/app/recovery_activation_fixture_test.go` line 45 builds the package for the activation tests.
+
+Consequence: an operator cannot complete the documented restore activation or adoption with the shipped commands. The fleet harness in CSP19 therefore stops after `backup prepare` and `backup inspect-import`, and records activation as a limit that the `internal/app` activation tests cover.
+
+Options for the owner:
+
+- Add a `backup project-history` command that calls `ProjectIndependentHistory`. This is a new public command and takes a separate task after CSP19.
+- Document the limit in `docs/RECOVERY.md` and keep activation as a test-proven path until a later release.
+
+Owner decision: pending. The lead asked on 2026-10-03.
