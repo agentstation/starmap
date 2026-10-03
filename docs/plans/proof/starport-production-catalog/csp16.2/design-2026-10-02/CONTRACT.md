@@ -87,11 +87,14 @@ func (r *Runtime) PromoteEmbeddedBaseline(ctx context.Context, request BaselineP
 ## Starport promotion operation
 
 - Operation identity: `operation_id` from the operator, bound to `deployment_id`, the expected head revision, and the packaged generation ID.
-- Receipt store: a KV record under the deployment prefix `catalog:promotion:{operation_id}:v1`. Starport writes it after the Starmap result, fenced by the lease epoch.
+- Receipt store: a KV record `catalog:promotion:{<deployment digest>}:v1:<operation_id>`. It shares the hash tag of the lease key. Starport writes it after the Starmap result in one native transaction with the live lease grant.
 - Exact retry: a stored receipt with the same binding returns without a runtime call. A stored receipt with a different binding refuses with a conflict.
-- Leader rule: only the lease holder runs the promotion. A follower refuses with the current leader identity and the retry instruction.
+- Request record: the CLI writes one pending request `catalog:promotion-request:{<deployment digest>}:v1` with a bounded lifetime. It carries the operation ID, the expected revision, the packaged generation ID, the actor, and the request time. One pending request exists per deployment. A different pending operation ID refuses the write and names it.
+- Leader rule: only the lease holder executes a promotion. The leader reads the request at each lease renewal. It runs the promotion as a manual run under its lease. It replaces the request with the outcome. A follower never executes. The CLI never takes the lease and never opens the gateway state directory.
+- Binding check by the leader: a leader whose packaged generation differs from the request refuses and names both generations. An old binary cannot promote a request from a new binary.
 - Acceptance: the promoted head passes the existing fleet acceptance (`fleet_acceptance.go`) with an increasing revision before the receipt reports `applied`.
-- CLI: `starport catalog promote-baseline --operation-id <id> [--expected-revision <n>] [--json]` and `starport catalog baseline-status [--json]`.
+- CLI: `starport catalog promote-baseline --operation-id <id> [--expected-revision <n>] [--wait <duration>] [--json]` and `starport catalog baseline-status [--json]`. The promote command records the request and names the current lease holder. It polls the outcome inside the wait bound and prints the receipt. On a wait timeout it exits with status 1. It says that the request stays recorded. It says that the same operation ID continues the wait.
+- CLI without a leader: the command says that no gateway leads. The operator then starts a gateway with the new binary.
 - The receipt and the status never carry credentials. They carry generation IDs, checksums, revisions, the operation ID, the actor, and timestamps.
 
 ## Receipt
