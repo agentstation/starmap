@@ -12,10 +12,19 @@ type Store interface {
 }
 ```
 
-Starmap provides memory, filesystem, and conditional object-storage adapters.
-Starport may provide SQLite, MySQL, PostgreSQL, or other adapters. Starport owns
-each concrete driver, connection pool, schema, migration, credential, backup,
-close, and dialect-specific transaction concern.
+Starmap ships these adapters, and no SQL adapter:
+
+- `storage.NewMemory` keeps generations in process memory.
+- `storage.NewFilesystem` keeps generations under one private directory.
+- `storage.NewObject` and `storage.NewCoordinatedObject` use a conditional object backend.
+- `pkg/catalogs/storage/s3` supplies an S3-compatible object backend.
+- `pkg/catalogs/storage/valkey` supplies a Valkey or Redis backend.
+
+An embedding application can implement `storage.Store` with its own database.
+That option is an extension point, not shipped storage. The application then
+owns each driver, connection pool, schema, migration, credential, backup, close,
+and transaction concern. Starport keeps its catalog heads in its configured KV
+store through its own `storage.Store` adapter.
 
 ## Ownership and lifecycle
 
