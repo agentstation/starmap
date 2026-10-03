@@ -36,4 +36,4 @@ Reviewed 2026-10-03 by the lead (Fable 5.1). The implementer (Opus 5.5, high) co
 
 ## Result
 
-Accepted at `d1c470ae3`. Starmap PR #216 (draft) opened on 2026-10-03 ahead of the CSP18 registry PR. That PR waits on Starport #411, and the docs slice has no dependency on it. The merge record follows after CI.
+Accepted at `d1c470ae3`. Starmap PR #216 opened on 2026-10-03 ahead of the CSP18 registry PR. That PR waits on Starport #411, and the docs slice has no dependency on it. The squash merge landed on Starmap main as `18766e474` at the exact reviewed head with 62 of 62 checks green. The merge record is `starmap216-merge-2026-10-03/`.

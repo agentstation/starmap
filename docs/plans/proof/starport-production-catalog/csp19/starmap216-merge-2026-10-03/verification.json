@@ -1,0 +1,56 @@
+{
+ "recorded_utc": "2026-10-03T21:11:36.656752+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starmap",
+ "pr": 216,
+ "head": "d1c470ae38213c970806d5755a4362ca13f0a253",
+ "base": "344eb64cf58bee63af36edf155d17ae9fd625a12",
+ "merge": "18766e474a7959b2e651fe8eecf6be82ffadec4a",
+ "merged_at": "2026-10-03T21:08:21Z",
+ "checks": {
+  "success": 62,
+  "not_success": 0,
+  "total": 62
+ },
+ "reviewed_tree": "80c7a96a8580760dc9e10020825cce83f1a53e5d",
+ "merged_tree": "80c7a96a8580760dc9e10020825cce83f1a53e5d",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Security & Reliability",
+  "Verification Gate"
+ ],
+ "linear_history": false,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP19 Starmap docs slice: the T1 standalone server recipe, the G11 egress, G12 rotation, and G22 commit lock statements, the Compose start without GitHub, and the adapter list (decision 19-1)",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "d5c74a211ec5b105812fdbc72c45edae809a5098126a51dbf301d5e0b81c1668",
+   "gzip_sha256": "c358cd03cb956fdceaf3da8f197c84f5adeb783972a5c8dbc19ab5011d9c1185"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "080ba8e5102012da0110dc9913569717532a9a5bbd0a6c273628edf252130a2d",
+   "gzip_sha256": "b167b2361407ba0d954a1de16ab1ec3cdd290b7a9c85a6fd7b6f19c18e77b1d4"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "a5fcc89b30e0413b0aefe03e8b987af32df46fe983839432b7b82699c7ffe119",
+   "gzip_sha256": "0a9316559c40c2c7ab919986b4860bae6c13a8482489c5e5f3a5775708f6d572"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+   "gzip_sha256": "da95be86de467295689c40b6350ff741a6659382857d1f52272e7dc99b40ed85"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
