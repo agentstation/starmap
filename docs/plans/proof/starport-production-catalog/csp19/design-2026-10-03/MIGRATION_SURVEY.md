@@ -86,3 +86,25 @@ The same path covers an existing shared deployment only in part. Capture support
 - How a move sets `bootstrap_allowed`.
 - Key rotation.
 - The explorer ran no tests and no Docker.
+
+## Addendum from the explorer sub-surveys
+
+The explorer added these facts from its two sub-surveys. The lead verified the three process-scoped prefixes and the absent filter at main `ce1107d7`.
+
+### Process-scoped KV records (gap G9)
+
+- `provider-health:instance:` (`internal/availability/shared.go:37`).
+- `provider-latency:instance:` with a TTL of 1 minute (`internal/router/latency_shared.go:16-17`).
+- `catalog_migration:v1:<sha256(product, deployment, instance, operation)>` (`internal/catalog/migration_store.go:30-33`).
+- No filter for these prefixes exists in `internal/recovery`, `internal/storage`, or `internal/catalog/topology*.go`.
+- Inference: the import drops expired records (`internal/storage/transfer_badger.go:50,111,139`). The health and latency keys expire before a cold capture. The migration receipts move as orphans that the source instance owns.
+- CSP19.1 proves the observed outcome and documents it. A transfer filter changes the CSP13 transfer contract and needs an owner decision.
+
+### Other facts
+
+- KV key families (explorer, not re-read by the lead): `identity:v1:`, `account:v1:`, `credentials:v1:`, `usage:v1:`, `ratelimit:v1:`, `budget:v1:`, `limits:v1` and `limits:v2`, `jobs:v1:`, `batches:v1:`, `files:v1:`, `presets:v1:`, `authmode:v1:`, `authorization:v1:revision`, `recovery:authority:v1`, `catalog_generation:v1:`, `catalog_candidate_generation:v1:`, `catalog:runtime:lease`, `catalog:archive:v1:`, `catalog:topology:v1:`, and `catalog:config:`.
+- The blob address is `<objects|retained-v1>/<sha[0:2]>/<sha[2:4]>/<sha256(key)>` (`internal/blob/address.go`). The object prefix comes from `STARPORT_FILES_OBJECT_STORE_PREFIX`, not from the deployment ID.
+- The command `fleet init` is the only writer of `catalog_recovery` with `bootstrap_allowed` (`internal/recovery/fresh.go:38-54`). A restore does not go through it. How the activation sets `backend_id` and `bootstrap_allowed` stays open for CSP19.1.
+- Non-empty Valkey target (`internal/storage/transfer_valkey.go:97-135`): a byte-equal claim resumes the import. A different claim fails with `ErrConflict`. Records without a claim fail with `ErrDatabaseNotEmpty`.
+- Package tests already run KV and SQL transfer across backend pairs (`internal/recovery/kv_snapshot_test.go:79`, `internal/sqlstore/relational_transfer_test.go:72`).
+- Exemplars on disk cover same-kind moves only. Consul verifies a snapshot and then renames it. Badger v4 backup has no checksum or count check. The mc mirror command compares by size. LiteFS checks a checksum before and after apply. The Vault server code is not on disk.
