@@ -78,6 +78,29 @@
       "profile": "docs/performance-targets-v1.json",
       "proof": "docs/plans/proof/starport-production-catalog/csp0.4/numeric-profile-review.json"
     },
+    "A50.partial_complete_metric_surfaces": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestMetricsNameTimingBoundaries"
+        },
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/lib/timing.test.tsx"
+          ],
+          "tests": [
+            "timing labels a partial gateway measurement is labeled partial with its boundary",
+            "timing labels a complete client measurement is labeled complete",
+            "timing labels a truncated metrics sample is labeled partial"
+          ]
+        }
+      ]
+    },
     "A24.descriptor_parity": {
       "kind": "all",
       "checks": [
@@ -6260,6 +6283,23 @@
           "repository": "starport",
           "package": "./internal/server",
           "test": "TestBatchBudgetConfirmedAbsenceNeedsNoUsageReader"
+        }
+      ]
+    },
+    "A30.instruction_contrast": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/styles/contrast.test.tsx"
+          ],
+          "tests": [
+            "instruction contrast settings instructions meet WCAG AA in both themes",
+            "instruction contrast catalog panel instructions meet WCAG AA in both themes",
+            "instruction contrast settings prose is at least 16 px"
+          ]
         }
       ]
     },
