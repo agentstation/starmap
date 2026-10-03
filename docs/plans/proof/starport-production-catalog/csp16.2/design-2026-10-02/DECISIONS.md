@@ -14,6 +14,10 @@ None needs new owner authority. The owner can reverse any of them before the fin
 | 16.2-8 | Starmap verification runs the eight named runtime tests with the race detector, then `make verify`. | The complete runtime package exceeds 10 minutes under the race detector. The repository bounds its race suite at 30 minutes inside `make verify`. |
 | 16.2-7 | Two PRs: one Starmap PR with the runtime operation and the subcase registration, then one Starport PR. | Starmap #212 set the pattern. Starport pins the Starmap module, so the Starmap PR must merge and tag before the Starport PR can depend on it. |
 
+### Amendment to 16.2-7 (2026-10-02)
+
+Starmap #214 merged as `595e3c7ba` on 2026-10-02. Starport `go.mod` already pins a Starmap pseudo-version (`v0.16.6-0.20261002020739-80de6d830bf2`, Starport #405), so the Starport promotion PR pins the pseudo-version of `595e3c7ba`. The pin needs no tag or release. A release keeps its separate owner authorization.
+
 ## Pending
 
-None. The owner decided the fleet-only scope and the task split on 2026-10-02 (see `csp16.1/design-2026-10-02/DECISIONS.md`).
+Local journal inventory (from the CSP16.1 Starport PR #406 report). The local save journal `.starport-config-operations.json` has no file manifest or backup inventory entry. No inventory scans the configuration directory today. An entry changes public manifest output beyond the CSP16.1 contract, so it needs an owner decision.
