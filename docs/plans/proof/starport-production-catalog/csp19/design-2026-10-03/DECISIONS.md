@@ -70,4 +70,4 @@ Options for the owner:
 - Add a `backup project-history` command that calls `ProjectIndependentHistory`. This is a new public command and takes a separate task after CSP19.
 - Document the limit in `docs/RECOVERY.md` and keep activation as a test-proven path until a later release.
 
-Owner decision: pending. The lead asked on 2026-10-03.
+Owner decision on 2026-10-03: a new task after CSP19. The plan adds CSP19.2 for the command. CSP19 and CSP19.1 continue unchanged.
