@@ -92,6 +92,8 @@ Write routes add the deployment check, the origin check, and the management chec
 - The writer uses the Starmap `productfiles.Directory.CompareAndPublish` primitive with the expected bytes derived from the expected checksum.
 - The writer keeps an operation journal next to the configuration file under the same writer lock.
   An operation whose target checksum equals the current file checksum is complete. A retry returns its receipt.
+- The file manifest lists the journal as `config-operation-journal`, a sibling of the configuration file.
+  A backup captures it with the file. A restore gives it the `target-configuration` action, because each receipt binds to the file checksum.
 - The writer records the audit entry after the publish. The receipt reports a failed audit entry, and the writer never reverts the file.
 
 ## Shared management

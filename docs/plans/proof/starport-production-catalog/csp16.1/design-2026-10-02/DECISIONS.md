@@ -13,6 +13,7 @@ None needs new owner authority. The owner can reverse any of them before the fin
 | 16.1-6 | `db.Migrate` leaves the save path. | A field save must not change the schema. A store behind the current schema refuses the save and names the migrate operation. |
 | 16.1-7 | The console UI stays in CSP17. | CSP17 owns console settings, forms, and types. CSP16.1 owns the HTTP API, the writers, and the receipts. |
 | 16.1-8 | CSP16.1 lands as one Starmap contract PR and two Starport PRs. | The configuration operations and the baseline promotion are different concepts with different owners inside Starport. Two reviewable PRs keep each review bounded. The promotion PR follows its own survey. |
+| 16.1-9 | The journal is manifest entry `config-operation-journal`, and a backup captures it. | Owner choice on 2026-10-02 through the question tool. The manifest is Starport-owned, and A24 requires generated files at the configuration leaf. The journal holds no setting values. A restore gives it the `target-configuration` action, and canonical recovery keeps the captured journal inactive, because each receipt binds to the file checksum. |
 
 ## Promotion survey result (2026-10-02)
 

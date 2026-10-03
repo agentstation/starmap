@@ -20,4 +20,4 @@ Starmap #214 merged as `595e3c7ba` on 2026-10-02. Starport `go.mod` already pins
 
 ## Pending
 
-Local journal inventory (from the CSP16.1 Starport PR #406 report). The local save journal `.starport-config-operations.json` has no file manifest or backup inventory entry. No inventory scans the configuration directory today. An entry changes public manifest output beyond the CSP16.1 contract, so it needs an owner decision.
+None. The owner resolved the local journal inventory question on 2026-10-02. CSP16.1 decision 16.1-9 records it.
