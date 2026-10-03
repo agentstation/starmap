@@ -1,0 +1,100 @@
+{
+ "recorded_utc": "2026-10-03T10:31:36.873950+00:00",
+ "task": "CSP17",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 408,
+ "head": "001e47c984c59e8e57276a64433e07c6756a2f16",
+ "base": "9df4fb6f5f2b4d5976f38a7833b491a47561c196",
+ "merge": "c99f0f094e0174e4587f2e8dfd3678687e320db7",
+ "merged_at": "2026-10-03T10:30:15Z",
+ "checks": {
+  "success": 42,
+  "not_success": 0,
+  "total": 42
+ },
+ "reviewed_tree": "8c862af481bbd6027b512696e8408109a049bbff",
+ "merged_tree": "8c862af481bbd6027b512696e8408109a049bbff",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP17 console configuration view, refresh run state, and chat readiness",
+ "decisions": "csp17/design-2026-10-03/DECISIONS.md rows 17-1 through 17-7. Pending: none. Step 4 omitted by owner decision 17-3.",
+ "starmap_dependency": {
+  "pr": "agentstation/starmap#215",
+  "head": "085db594f150244a3db651548d353ea3f2f49166",
+  "merge_commit": "344eb64cf58bee63af36edf155d17ae9fd625a12",
+  "merged_at": "2026-10-03",
+  "registers": [
+   "A30.instruction_contrast",
+   "A50.partial_complete_metric_surfaces"
+  ],
+  "dry_run": "--task CSP17 at 4d7b1013 with the #215 registry: 16 of 16 subcases PASS, gate PASS"
+ },
+ "recorded_limits": [
+  "The console shows no removal targets. Starmap owns removal and rename behavior (decision 17-3).",
+  "Chat readiness counts operator credentials only. An account credential does not make a model ready.",
+  "The contrast and size facts come from computed tokens in jsdom, not from a rendered browser."
+ ],
+ "unverified": [
+  "No real-browser review of the new screens. Keyboard order, reflow, and zoom are unchecked.",
+  "The E01 reviewed_ui proof csp0.1/browser-review.json was already stale at the branch base (86 of 220 hashes mismatched, 89 at the branch head). E01 is not in the CSP17 roster. The branch changes tokens.css, Section.tsx, Deployment.tsx, and api.ts.",
+  "goago is not declared in the Starport go.mod, so the goago check did not run."
+ ],
+ "open_for_later_tasks": [
+  "/catalog/discovery reports readiness as a fixed unknown.",
+  "A removal store is needed only if decision 17-3 reverses.",
+  "Whether an account credential should count for chat readiness."
+ ],
+ "implementer_checks": {
+  "console": "pnpm -C console check: 79 files, 494 tests",
+  "go_race": "./internal/config ./internal/server ./internal/server/controllers ./internal/usage ok with -race",
+  "verify_console_polish": "48 passed"
+ },
+ "lead_review": "Fable 5.1 read the Go diff (14 files, +436/-17) in full and the console seams chatReadiness, CatalogRefresh.tsx, Readiness.tsx, and the readiness and contrast tests. Additive fields only, no secret in the effective report. No defect found.",
+ "rebase": "Rebased with --onto origin/main 6b372738 after Starport #406 and #407-independent main changes, no conflicts, head 001e47c9.",
+ "checks_at_001e47c9": {
+  "build": "ok",
+  "go_race": "./internal/config 105.7 s, ./internal/server 36.1 s, ./internal/server/controllers 17.5 s, ./internal/usage 11.4 s, all ok",
+  "console": "pnpm -C console check: 79 files, 494 tests",
+  "lint": "0 issues"
+ },
+ "structured_review": "autoreview --gate pre-pr --mode auto at 001e47c9: patch correct 0.97, no P0 findings, attestation stored.",
+ "ci": "Run 37111737030 at exact head 001e47c9: success, 42 jobs.",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "bc311e812d3a303be89cd3e7b31d683e9920353b1da5d69d490dd5afac0c6ba4",
+   "gzip_sha256": "351ec7a4930f6caf62dabf39bbdb719e2abb112e8e1ff4c99f23852a009c53d0"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "f945e7448c906a8f238683d85fef5e060ff1dc18b8eb65d2c047cf6c8c7d53f8",
+   "gzip_sha256": "1b385462aa9b67799ac139260d708d38ab9c3856fa1f2339e494ac31c394f7e4"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "43584190aeb63cd32f4d2b3ec19df3442bba4f9fae29124fa28c44e22d0d99e5",
+   "gzip_sha256": "13fbc7f2105f9174eecbcc8db008eb59e92a6c1e5e5b9922addd5f61b7ae415c"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}

@@ -1,0 +1,178 @@
+{
+ "recorded_at": "2026-10-03T10:39:17.803761+00:00",
+ "task": "CSP17",
+ "starmap": {
+  "head": "344eb64cf58bee63af36edf155d17ae9fd625a12",
+  "tree": "4140dc576d0f754326495a786c4d32dc1da70fcc"
+ },
+ "starport": {
+  "head": "c99f0f094e0174e4587f2e8dfd3678687e320db7",
+  "branch": "main",
+  "merged_pr": 408,
+  "merge_commit": "c99f0f094e0174e4587f2e8dfd3678687e320db7"
+ },
+ "commands": {
+  "task_csp17": "bash scripts/verify-catalog-product.sh --task CSP17 --starport-root <starport> --json",
+  "case_a30": "bash scripts/verify-catalog-product.sh --case A30 --starport-root <starport> --json",
+  "case_a50": "bash scripts/verify-catalog-product.sh --case A50 --starport-root <starport> --json"
+ },
+ "environment": {
+  "toolchain": "GOTOOLCHAIN=go1.27.1 GOWORK=off CGO_ENABLED=1, go test -race through the verifier",
+  "fixture_urls": "derived privately from docker inspect by the wrapper; values omitted",
+  "variables_set": [
+   "TEST_VALKEY_URL",
+   "TEST_UNPREFIXED_VALKEY_URL",
+   "TEST_SHARED_CACHE_URL",
+   "TEST_VALKEY_REPLACEMENT_URL",
+   "TEST_POSTGRES_URL",
+   "TEST_MYSQL_DSN",
+   "TEST_BLOB_S3_ENDPOINT",
+   "STARPORT_RECOVERY_OPERATOR_BINARY"
+  ],
+  "fixtures": {
+   "starport-csp13-postgres": "f1c3376c26f2 running",
+   "csp13-unprefixed-valkey-20260929": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f running",
+   "starport-csp13-mysql": "3466ba4a4828 running",
+   "starport-csp122-retirement-objectstore": "quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z running",
+   "csp13-adoption-replacement-20260929": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f running"
+  }
+ },
+ "runner_exits": [
+  "task CSP17 exit 0",
+  "case A30 exit 1",
+  "case A50 exit 1",
+  "chain-done"
+ ],
+ "reports": {
+  "task_csp17": {
+   "subcases": 16,
+   "by_status": {
+    "PASS": [
+     "A03.effective_path_report",
+     "A24.generated_file_inventory",
+     "A26.failed_save_activation",
+     "A26.idempotent_operation_receipt",
+     "A26.local_file_stale_revision",
+     "A26.shared_sql_stale_revision",
+     "A27.external_controller_lock",
+     "A27.local_shared_authorization",
+     "A27.migration_boundary",
+     "A27.origin_protection",
+     "A27.redaction",
+     "A27.transactional_audit",
+     "A30.instruction_contrast",
+     "A40.shared_revision_beats_local_values",
+     "A42.enablement_by_cache_kind",
+     "A50.partial_complete_metric_surfaces"
+    ]
+   },
+   "gate_status": "PASS",
+   "backend_scope": "primary",
+   "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+   "registry_sha256": "641e04e513d8a1cdef09e6bbc11f8d6eff6bb96fcbf0333649ef37f627696cfc",
+   "selected_subcases": 16,
+   "unverified_cases": 48,
+   "cases": {
+    "A26": "PASS",
+    "A27": "PASS"
+   }
+  },
+  "case_a30": {
+   "subcases": 6,
+   "by_status": {
+    "PASS": [
+     "A30.instruction_contrast"
+    ],
+    "UNVERIFIED": [
+     "A30.desktop_both_themes",
+     "A30.keyboard_screen_reader",
+     "A30.narrow_320",
+     "A30.stable_links_history",
+     "A30.zoom_text_spacing"
+    ]
+   },
+   "gate_status": "FAIL",
+   "backend_scope": "primary",
+   "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+   "registry_sha256": "641e04e513d8a1cdef09e6bbc11f8d6eff6bb96fcbf0333649ef37f627696cfc",
+   "selected_subcases": 6,
+   "unverified_cases": 50,
+   "cases": {}
+  },
+  "case_a50": {
+   "subcases": 10,
+   "by_status": {
+    "PASS": [
+     "A50.full_path_baseline",
+     "A50.partial_complete_metric_surfaces"
+    ],
+    "UNVERIFIED": [
+     "A50.allocations_cpu_gc",
+     "A50.connection_reuse_lifecycle",
+     "A50.current_artifact_evidence",
+     "A50.gateway_provider_boundaries",
+     "A50.percentiles_and_load",
+     "A50.real_recipe_matrix",
+     "A50.reviewed_numeric_profile",
+     "A50.stream_timing_memory"
+    ]
+   },
+   "gate_status": "FAIL",
+   "backend_scope": "primary",
+   "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+   "registry_sha256": "641e04e513d8a1cdef09e6bbc11f8d6eff6bb96fcbf0333649ef37f627696cfc",
+   "selected_subcases": 10,
+   "unverified_cases": 50,
+   "cases": {}
+  }
+ },
+ "go_evidence": {
+  "task_csp17": {
+   "processes": 10,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 57.2,
+   "longest_seconds": 26.052,
+   "test_statuses": {
+    "pass": 85
+   }
+  },
+  "case_a30": {
+   "processes": 1,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 0.0,
+   "longest_seconds": 0.0,
+   "test_statuses": {}
+  },
+  "case_a50": {
+   "processes": 4,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 32.5,
+   "longest_seconds": 26.419,
+   "test_statuses": {
+    "pass": 5
+   }
+  }
+ },
+ "limits": [
+  "A partial verifier run reports summary counts over all 50 cases; the unselected cases are UNVERIFIED and the subcase statuses carry the result.",
+  "Component test durations under the race detector are not deployment RTO or RPO targets.",
+  "The console shows no removal targets. Starmap owns removal and rename behavior (decision 17-3).",
+  "Chat readiness counts operator credentials only. An account credential does not make a model ready.",
+  "The contrast and size facts come from computed tokens in jsdom, not from a rendered browser. No real-browser review of the new screens ran.",
+  "The Starmap registry entries A30.instruction_contrast and A50.partial_complete_metric_surfaces merged in agentstation/starmap#215."
+ ],
+ "files": {
+  "task_csp17.json.gz": "verifier JSON report for --task CSP17",
+  "case_a30.json.gz": "verifier JSON report for --case A30",
+  "case_a50.json.gz": "verifier JSON report for --case A50",
+  "go-runs-task_csp17.json.gz": "per-process Go evidence for --task CSP17",
+  "go-runs-case_a30.json.gz": "per-process Go evidence for --case A30",
+  "go-runs-case_a50.json.gz": "per-process Go evidence for --case A50"
+ },
+ "exit_interpretation": {
+  "task_csp17": "exit 0, 16 of 16 CSP17 task checks PASS, cases A30 and A50 PASS at the task selection.",
+  "case_a30": "exit 1. The case selection covers all 6 A30 subcases. A30.instruction_contrast (CSP17) PASS. The 5 other subcases belong to later tasks and report UNVERIFIED with 'No behavior check is registered'. The verifier fails a case with an UNVERIFIED subcase.",
+  "case_a50": "exit 1. The case selection covers all 10 A50 subcases. The 2 CSP17 subcases PASS. The 8 other subcases belong to later tasks and report UNVERIFIED (7 unregistered checks, A50.reviewed_numeric_profile needs a current engineering review)."
+ },
+ "task_completed": true
+}
