@@ -42,6 +42,19 @@ The squash merge hides the stale-file test failure at `9a1249fb` alone.
 - At the rebase, change the plain-text settings reference in `docs/site/configure/precedence.md` to a link to `../generated/settings.md`.
 - The implementer ran `TestReferencePlatformMatchesUserDefaults` on macOS only. The CI matrix covers Linux and Windows.
 
+## Rebase onto slice 1
+
+The lead rebased the branch onto `csp18-docs` at `f99695f8` with no conflict. The duplicate `docs_fs.go`, `docs_fs_test.go`, and `.gitignore` lines dropped out. The lead changed the precedence page reference to a site link and kept the committed generated pages in the site test fixture. The result is `703d2988` with 6 commits.
+
+Checks at `703d2988`:
+
+- `go build ./...`, `go vet ./...`, and `make lint` with 0 issues.
+- `go test` on `internal/config`, `internal/cli`, `internal/console`, and `internal/server`: exit 0.
+- `pnpm -C console check` exit 0: 82 test files, 529 tests, 47 pages, 426 search sections.
+- `goreleaser release --snapshot --clean --skip=notarize` exit 0 in 1 m 55 s.
+- `verify-release-binaries.sh dist` and `verify-release-archives.sh dist`: PASS, 5 archives, 5 SBOMs, the docs archive, and the checksum manifest.
+- `verify-release-workflow`, `verify-doc-links`, `verify-console-polish`, `verify-v1-architecture`, `verify-package-layout`, and `verify-starmap-ownership`: exit 0.
+
 ## Result
 
-Accepted at `0dd750b0`. The pull request waits for slice 1.
+Accepted at `703d2988` on top of slice 1. After the slice 1 squash merge, the branch moves onto `main` with `git rebase --onto`. The roster, the structured review, and the pull request follow on `main`.
