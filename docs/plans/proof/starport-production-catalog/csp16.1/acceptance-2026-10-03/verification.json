@@ -1,0 +1,161 @@
+{
+ "recorded_at": "2026-10-03T09:01:22.172076+00:00",
+ "task": "CSP16.1",
+ "starmap": {
+  "head": "344eb64cf58bee63af36edf155d17ae9fd625a12",
+  "tree": "4140dc576d0f754326495a786c4d32dc1da70fcc"
+ },
+ "starport": {
+  "head": "9df4fb6f5f2b4d5976f38a7833b491a47561c196",
+  "branch": "main",
+  "merged_pr": 406,
+  "merge_commit": "9df4fb6f5f2b4d5976f38a7833b491a47561c196"
+ },
+ "commands": {
+  "task_csp161": "bash scripts/verify-catalog-product.sh --task CSP16.1 --starport-root <starport> --json",
+  "case_a26": "bash scripts/verify-catalog-product.sh --case A26 --starport-root <starport> --json",
+  "case_a27": "bash scripts/verify-catalog-product.sh --case A27 --starport-root <starport> --json"
+ },
+ "environment": {
+  "toolchain": "GOTOOLCHAIN=go1.27.1 GOWORK=off CGO_ENABLED=1, go test -race through the verifier",
+  "fixture_urls": "derived privately from docker inspect by the wrapper; values omitted",
+  "variables_set": [
+   "TEST_VALKEY_URL",
+   "TEST_UNPREFIXED_VALKEY_URL",
+   "TEST_SHARED_CACHE_URL",
+   "TEST_VALKEY_REPLACEMENT_URL",
+   "TEST_POSTGRES_URL",
+   "TEST_MYSQL_DSN",
+   "TEST_BLOB_S3_ENDPOINT",
+   "STARPORT_RECOVERY_OPERATOR_BINARY"
+  ],
+  "fixtures": {
+   "starport-csp13-postgres": "f1c3376c26f2 running",
+   "csp13-unprefixed-valkey-20260929": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f running",
+   "starport-csp13-mysql": "3466ba4a4828 running",
+   "starport-csp122-retirement-objectstore": "quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z running",
+   "csp13-adoption-replacement-20260929": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f running"
+  }
+ },
+ "runner_exits": [
+  "chain exit 0"
+ ],
+ "reports": {
+  "task_csp161": {
+   "subcases": 10,
+   "by_status": {
+    "PASS": [
+     "A26.failed_save_activation",
+     "A26.idempotent_operation_receipt",
+     "A26.local_file_stale_revision",
+     "A26.shared_sql_stale_revision",
+     "A27.external_controller_lock",
+     "A27.local_shared_authorization",
+     "A27.migration_boundary",
+     "A27.origin_protection",
+     "A27.redaction",
+     "A27.transactional_audit"
+    ]
+   },
+   "gate_status": "PASS",
+   "backend_scope": "primary",
+   "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+   "registry_sha256": "641e04e513d8a1cdef09e6bbc11f8d6eff6bb96fcbf0333649ef37f627696cfc",
+   "selected_subcases": 10,
+   "unverified_cases": 48,
+   "cases": {
+    "A26": "PASS",
+    "A27": "PASS"
+   }
+  },
+  "case_a26": {
+   "subcases": 4,
+   "by_status": {
+    "PASS": [
+     "A26.failed_save_activation",
+     "A26.idempotent_operation_receipt",
+     "A26.local_file_stale_revision",
+     "A26.shared_sql_stale_revision"
+    ]
+   },
+   "gate_status": "PASS",
+   "backend_scope": "primary",
+   "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+   "registry_sha256": "641e04e513d8a1cdef09e6bbc11f8d6eff6bb96fcbf0333649ef37f627696cfc",
+   "selected_subcases": 4,
+   "unverified_cases": 49,
+   "cases": {
+    "A26": "PASS"
+   }
+  },
+  "case_a27": {
+   "subcases": 6,
+   "by_status": {
+    "PASS": [
+     "A27.external_controller_lock",
+     "A27.local_shared_authorization",
+     "A27.migration_boundary",
+     "A27.origin_protection",
+     "A27.redaction",
+     "A27.transactional_audit"
+    ]
+   },
+   "gate_status": "PASS",
+   "backend_scope": "primary",
+   "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+   "registry_sha256": "641e04e513d8a1cdef09e6bbc11f8d6eff6bb96fcbf0333649ef37f627696cfc",
+   "selected_subcases": 6,
+   "unverified_cases": 49,
+   "cases": {
+    "A27": "PASS"
+   }
+  }
+ },
+ "go_evidence": {
+  "task_csp161": {
+   "processes": 4,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 50.4,
+   "longest_seconds": 26.68,
+   "test_statuses": {
+    "pass": 47
+   }
+  },
+  "case_a26": {
+   "processes": 3,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 41.2,
+   "longest_seconds": 22.328,
+   "test_statuses": {
+    "pass": 18
+   }
+  },
+  "case_a27": {
+   "processes": 4,
+   "nonzero_exits": 0,
+   "elapsed_seconds_total": 38.9,
+   "longest_seconds": 18.495,
+   "test_statuses": {
+    "pass": 29
+   }
+  }
+ },
+ "limits": [
+  "A partial verifier run reports summary counts over all 50 cases; the unselected cases are UNVERIFIED and the subcase statuses carry the result.",
+  "Component test durations under the race detector are not deployment RTO or RPO targets.",
+  "The local writer edits one configuration file under its private directory. With layered configuration files, the local save refuses and names the reason.",
+  "A shared save refuses when the relational schema is behind this binary. The store does not migrate during a save.",
+  "External management refuses every write. The config_management setting is migration-only.",
+  "Responses, receipts, and audit records never hold a setting value. The catalog source probe error never holds a credential or the source address.",
+  "The populated adoption fixture now seeds the first shared revision before any gateway starts. The seeding is a test fixture change, not a product change.",
+  "The console surface belongs to CSP17. The Starmap registry entries for A26 and A27 merged in agentstation/starmap#213."
+ ],
+ "files": {
+  "task_csp161.json.gz": "verifier JSON report for --task CSP16.1",
+  "case_a26.json.gz": "verifier JSON report for --case A26",
+  "case_a27.json.gz": "verifier JSON report for --case A27",
+  "go-runs-task_csp161.json.gz": "per-process Go evidence for --task CSP16.1",
+  "go-runs-case_a26.json.gz": "per-process Go evidence for --case A26",
+  "go-runs-case_a27.json.gz": "per-process Go evidence for --case A27"
+ }
+}

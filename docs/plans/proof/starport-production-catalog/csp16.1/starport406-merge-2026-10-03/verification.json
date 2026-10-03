@@ -1,0 +1,69 @@
+{
+ "recorded_utc": "2026-10-03T08:47:59.256787+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 406,
+ "head": "9130d9db1dc91ffd4055e89d74d819061997eef6",
+ "base": "a4e7e8fdcc06dafc5cb81d1dd939dfae87eb04a5",
+ "merge": "9df4fb6f5f2b4d5976f38a7833b491a47561c196",
+ "merged_at": "2026-10-03T08:47:33Z",
+ "checks": {
+  "success": 42,
+  "not_success": 0,
+  "total": 42
+ },
+ "reviewed_tree": "0b1625a49c7dfb2b06fa577926d5a2b49f2cd21e",
+ "merged_tree": "0b1625a49c7dfb2b06fa577926d5a2b49f2cd21e",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP16.1 configuration operations, field saves, and receipts",
+ "fixture_finding": {
+  "summary": "Four fixture-backed internal/app tests failed on main a4e7e8fd after CSP16 merged: TestRecoveryQueuedBatchLineRefusesDispatchAfterClosure, TestPopulatedAdoptionOperatorCommands, TestPopulatedAdoptionProcess, TestRecoveryRequestPathRefusesFileAdmissionWithoutObservation.",
+  "cause": "CSP16 made shared management the default for distributed storage and refuses startup without a stored shared head. The populated adoption fixture never seeded the first shared revision. The CSP16 acceptance ran only four targeted app tests, so the regression was not fixture-run before merge.",
+  "evidence": {
+   "main_run": "csp161-four-main-a4e7e8fd.txt: FAIL internal/app 477.734s, four failures with 'shared configuration is not initialized'",
+   "branch_first_attempt": "csp161-four-branch-fix.txt: seed before activation refused by sqlstore.ErrNotFresh (audit_log contains records)",
+   "branch_fix": "csp161-four-branch-fix2.txt: ok internal/app 464.506s at 9130d9db"
+  },
+  "fix": "Commit 9130d9db seeds the shared revision through InitializeSharedConfiguration after ActivateRecovery and before the first gateway start, the documented `starport config init --shared --yes` order.",
+  "code_change": "none in internal/config or internal/app production code"
+ },
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "7155908a4b6ae6a56274a9a82586ddc5ae763378b01e196042b5d3d8a5842427",
+   "gzip_sha256": "438aef71cfc342254138f8facbb9bafb0e6a396df3d1e503896c74135c67ce99"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "f05cbe63a9274fce760ca1afc02a01fcccb999d41daa7c704a5de3bd07e9ea38",
+   "gzip_sha256": "7f7876f14662635ba82909a2071a3f00a92df38de4548662160b1056399962b8"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "df7c72a3e093a3ebf46081a94e0497ff41a2777f44fb06b283ac6c7f7224392b",
+   "gzip_sha256": "2d20c4c828e7ecd16d22621d6e6d6e804e942c64d24001977a7e9128507b08d0"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
