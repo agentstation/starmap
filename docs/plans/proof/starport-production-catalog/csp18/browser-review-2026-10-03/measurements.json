@@ -1,0 +1,550 @@
+{
+  "browser": "Chromium 151.0.7922.34 (Playwright)",
+  "pages": {
+    "home:dark:1280": {
+      "samples": 148,
+      "min": 5.9
+    },
+    "troubleshoot/recovery/:dark:1280": {
+      "samples": 240,
+      "min": 5.9
+    },
+    "search/:dark:1280": {
+      "samples": 65,
+      "min": 5.9
+    },
+    "home:light:1280": {
+      "samples": 148,
+      "min": 4.92
+    },
+    "troubleshoot/recovery/:light:1280": {
+      "samples": 240,
+      "min": 4.92
+    },
+    "search/:light:1280": {
+      "samples": 65,
+      "min": 5.02
+    }
+  },
+  "results": {
+    "desktop_dark": {
+      "pass": true,
+      "evidence": {
+        "pages": 3,
+        "theme_applied": "dark",
+        "wrong": []
+      }
+    },
+    "contrast_dark": {
+      "pass": true,
+      "evidence": {
+        "samples": 453,
+        "min_ratio": 5.9,
+        "min_sample": {
+          "text": "Release",
+          "tag": "dt",
+          "cls": "",
+          "size": 14,
+          "ratio": 5.9,
+          "path": ""
+        }
+      }
+    },
+    "version_selector_dark": {
+      "pass": true,
+      "evidence": {
+        "open": true,
+        "chevron": "matrix(-0.707107, -0.707107, 0.707107, -0.707107, 0, 2)"
+      }
+    },
+    "desktop_light": {
+      "pass": true,
+      "evidence": {
+        "pages": 3,
+        "theme_applied": "light",
+        "wrong": []
+      }
+    },
+    "contrast_light": {
+      "pass": true,
+      "evidence": {
+        "samples": 453,
+        "min_ratio": 4.92,
+        "min_sample": {
+          "text": "Start",
+          "tag": "a",
+          "cls": "",
+          "size": 14,
+          "ratio": 4.92,
+          "path": ""
+        }
+      }
+    },
+    "version_selector_light": {
+      "pass": true,
+      "evidence": {
+        "open": true,
+        "chevron": "matrix(-0.707107, -0.707107, 0.707107, -0.707107, 0, 2)"
+      }
+    },
+    "reflow_320_dark": {
+      "pass": true,
+      "evidence": {
+        "pages": 3,
+        "overflow": []
+      }
+    },
+    "reflow_320_light": {
+      "pass": true,
+      "evidence": {
+        "pages": 3,
+        "overflow": []
+      }
+    },
+    "zoom_200": {
+      "pass": true,
+      "evidence": {
+        "layout_width": 640,
+        "device_scale": 2,
+        "overflow": []
+      }
+    },
+    "zoom_400": {
+      "pass": true,
+      "evidence": {
+        "layout_width": 320,
+        "device_scale": 4,
+        "clientWidth": 320,
+        "scrollWidth": 320,
+        "bodyScrollWidth": 320,
+        "wide": []
+      }
+    },
+    "text_spacing_1280": {
+      "pass": true,
+      "evidence": {
+        "pages": 3,
+        "problems": []
+      }
+    },
+    "text_spacing_320": {
+      "pass": true,
+      "evidence": {
+        "pages": 3,
+        "problems": []
+      }
+    },
+    "skip_link": {
+      "pass": true,
+      "evidence": {
+        "skip": {
+          "cls": "skip-link",
+          "href": "#content",
+          "transform": "none",
+          "visible": true
+        },
+        "afterSkip": {
+          "active": "content",
+          "hash": "#content"
+        }
+      }
+    },
+    "focus_order_and_outline": {
+      "pass": true,
+      "evidence": {
+        "stops": 60,
+        "first": [
+          {
+            "tag": "a",
+            "name": "Skip to content",
+            "role": null,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineColor": "rgb(240, 178, 62)",
+            "inView": true,
+            "h": 46
+          },
+          {
+            "tag": "a",
+            "name": "Starport docs",
+            "role": null,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineColor": "rgb(240, 178, 62)",
+            "inView": true,
+            "h": 44
+          },
+          {
+            "tag": "input",
+            "name": "",
+            "role": null,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineColor": "rgb(240, 178, 62)",
+            "inView": true,
+            "h": 54
+          },
+          {
+            "tag": "button",
+            "name": "Search",
+            "role": null,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineColor": "rgb(240, 178, 62)",
+            "inView": true,
+            "h": 54
+          },
+          {
+            "tag": "summary",
+            "name": "Documentation version: dev",
+            "role": null,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineColor": "rgb(240, 178, 62)",
+            "inView": true,
+            "h": 44
+          },
+          {
+            "tag": "button",
+            "name": "Switch to light theme",
+            "role": null,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineColor": "rgb(240, 178, 62)",
+            "inView": true,
+            "h": 44
+          }
+        ],
+        "no_outline": [],
+        "accent": "#f0b23e"
+      }
+    },
+    "keyboard_code_scroll": {
+      "pass": true,
+      "evidence": {
+        "blocks": 4,
+        "overflowing": 0,
+        "scrolled": {
+          "scrollLeft": 57,
+          "focused": true
+        },
+        "sample": {
+          "sw": 343,
+          "cw": 286,
+          "tabindex": "0",
+          "role": "group",
+          "label": "bash code example"
+        }
+      }
+    },
+    "screen_reader_semantics": {
+      "pass": true,
+      "evidence": {
+        "pages": 3,
+        "problems": []
+      }
+    },
+    "direct_fragment_reload_desktop": {
+      "pass": true,
+      "evidence": {
+        "checks": [
+          {
+            "width": 1024,
+            "id": "steps",
+            "fresh": {
+              "top": 141,
+              "headerBottom": 109
+            },
+            "top": 141,
+            "headerBottom": 109,
+            "headerHeight": 109,
+            "sticky": "sticky",
+            "atEnd": false,
+            "inView": true
+          },
+          {
+            "width": 1024,
+            "id": "coordinated-recovery",
+            "fresh": {
+              "top": 141,
+              "headerBottom": 109
+            },
+            "top": 141,
+            "headerBottom": 109,
+            "headerHeight": 109,
+            "sticky": "sticky",
+            "atEnd": false,
+            "inView": true
+          },
+          {
+            "width": 1024,
+            "id": "related-settings",
+            "fresh": {
+              "top": 611,
+              "headerBottom": 109
+            },
+            "top": 611,
+            "headerBottom": 109,
+            "headerHeight": 109,
+            "sticky": "sticky",
+            "atEnd": true,
+            "inView": true
+          },
+          {
+            "width": 1280,
+            "id": "steps",
+            "fresh": {
+              "top": 99,
+              "headerBottom": 67
+            },
+            "top": 99,
+            "headerBottom": 67,
+            "headerHeight": 67,
+            "sticky": "sticky",
+            "atEnd": false,
+            "inView": true
+          },
+          {
+            "width": 1280,
+            "id": "coordinated-recovery",
+            "fresh": {
+              "top": 99,
+              "headerBottom": 67
+            },
+            "top": 99,
+            "headerBottom": 67,
+            "headerHeight": 67,
+            "sticky": "sticky",
+            "atEnd": false,
+            "inView": true
+          },
+          {
+            "width": 1280,
+            "id": "related-settings",
+            "fresh": {
+              "top": 611,
+              "headerBottom": 67
+            },
+            "top": 611,
+            "headerBottom": 67,
+            "headerHeight": 67,
+            "sticky": "sticky",
+            "atEnd": true,
+            "inView": true
+          },
+          {
+            "width": 1440,
+            "id": "steps",
+            "fresh": {
+              "top": 89,
+              "headerBottom": 57
+            },
+            "top": 89,
+            "headerBottom": 57,
+            "headerHeight": 57,
+            "sticky": "sticky",
+            "atEnd": false,
+            "inView": true
+          },
+          {
+            "width": 1440,
+            "id": "coordinated-recovery",
+            "fresh": {
+              "top": 89,
+              "headerBottom": 57
+            },
+            "top": 89,
+            "headerBottom": 57,
+            "headerHeight": 57,
+            "sticky": "sticky",
+            "atEnd": false,
+            "inView": true
+          },
+          {
+            "width": 1440,
+            "id": "related-settings",
+            "fresh": {
+              "top": 611,
+              "headerBottom": 57
+            },
+            "top": 611,
+            "headerBottom": 57,
+            "headerHeight": 57,
+            "sticky": "sticky",
+            "atEnd": true,
+            "inView": true
+          }
+        ]
+      }
+    },
+    "direct_fragment_reload_320": {
+      "pass": true,
+      "evidence": {
+        "narrow": [
+          {
+            "id": "steps",
+            "before": 16,
+            "top": 16,
+            "atEnd": false,
+            "inView": true
+          },
+          {
+            "id": "coordinated-recovery",
+            "before": 16,
+            "top": 16,
+            "atEnd": false,
+            "inView": true
+          },
+          {
+            "id": "related-settings",
+            "before": 16,
+            "top": 16,
+            "atEnd": false,
+            "inView": true
+          }
+        ]
+      }
+    },
+    "sticky_columns_page_end": {
+      "pass": true,
+      "evidence": {
+        "columns": [
+          {
+            "width": 1024,
+            "headerBottom": 109,
+            "nav": {
+              "top": 125,
+              "bottom": 772,
+              "sticky": "sticky"
+            },
+            "toc": null,
+            "firstLink": {
+              "focused": true,
+              "top": 125,
+              "bottom": 169
+            },
+            "footerTop": 820,
+            "footerHeight": 80,
+            "atEnd": true,
+            "innerHeight": 900
+          },
+          {
+            "width": 1280,
+            "headerBottom": 67,
+            "nav": {
+              "top": 83,
+              "bottom": 772,
+              "sticky": "sticky"
+            },
+            "toc": {
+              "top": 83,
+              "bottom": 748,
+              "sticky": "sticky"
+            },
+            "firstLink": {
+              "focused": true,
+              "top": 83,
+              "bottom": 127
+            },
+            "footerTop": 820,
+            "footerHeight": 80,
+            "atEnd": true,
+            "innerHeight": 900
+          },
+          {
+            "width": 1440,
+            "headerBottom": 57,
+            "nav": {
+              "top": 73,
+              "bottom": 772,
+              "sticky": "sticky"
+            },
+            "toc": {
+              "top": 73,
+              "bottom": 738,
+              "sticky": "sticky"
+            },
+            "firstLink": {
+              "focused": true,
+              "top": 73,
+              "bottom": 117
+            },
+            "footerTop": 820,
+            "footerHeight": 80,
+            "atEnd": true,
+            "innerHeight": 900
+          }
+        ]
+      }
+    },
+    "history_marker": {
+      "pass": true,
+      "evidence": {
+        "toc": 14,
+        "h1": "#cli-inspection-commands",
+        "h2": "#local-admin-token-and-the-console",
+        "marker2": "#local-admin-token-and-the-console",
+        "back": {
+          "hash": "#cli-inspection-commands",
+          "marker": "#cli-inspection-commands"
+        },
+        "fwd": {
+          "hash": "#local-admin-token-and-the-console",
+          "marker": "#local-admin-token-and-the-console"
+        }
+      }
+    },
+    "stable_version_links": {
+      "pass": true,
+      "evidence": {
+        "links": [
+          {
+            "href": "../../",
+            "current": "true",
+            "text": "dev (this build)"
+          }
+        ],
+        "resolved": [
+          200
+        ],
+        "release": "dev"
+      }
+    },
+    "reduced_motion": {
+      "pass": true,
+      "evidence": {
+        "scroll": "auto",
+        "link": "0s",
+        "summary": "0s"
+      }
+    },
+    "static_docs_without_session": {
+      "pass": true,
+      "evidence": {
+        "requests": 26,
+        "outside": [],
+        "api": [],
+        "notOk": [],
+        "cookies": 0,
+        "storage": {
+          "local": [],
+          "session": []
+        },
+        "search_hits": 20
+      }
+    },
+    "protected_routes_remain_guarded": {
+      "pass": true,
+      "evidence": {
+        "docs_status": 200,
+        "title": "Recover without a console session | Starport documentation",
+        "probes": {
+          "/api/v1/models": 401,
+          "/api/v1/catalog/models": 404,
+          "/api/v1/deployment": 404,
+          "/api/v1/settings": 404
+        }
+      }
+    }
+  }
+}
