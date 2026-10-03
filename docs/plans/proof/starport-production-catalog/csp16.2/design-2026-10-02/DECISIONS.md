@@ -20,4 +20,16 @@ Starmap #214 merged as `595e3c7ba` on 2026-10-02. Starport `go.mod` already pins
 
 ## Pending
 
-None. The owner resolved the local journal inventory question on 2026-10-02. CSP16.1 decision 16.1-9 records it.
+### Promotion executor (asked on 2026-10-02)
+
+A gateway leader renews the publication lease every 30 seconds until it closes. Starmap `PromoteEmbeddedBaseline` runs only under that lease.
+The current Starport implementation opens the fleet runtime inside the CLI process. It refuses while a gateway holds the lease.
+In a running fleet, the operator must stop the gateways before a promotion. A fleet with two or more gateways has a new leader soon after the old leader stops.
+
+| Option | Work | Consequence |
+| --- | --- | --- |
+| (a) In-process CLI with a documented upgrade-window limit | Implemented. Documentation only. | A promotion needs a full fleet stop. A rolling upgrade cannot promote. |
+| (b) Leader-executed admin HTTP route, CLI as client | New public route, controller, admin audit entry, CLI HTTP client, tests. | A follower refuses with the leader identity. The gateway audit trail records the actor. The route is a new public API. |
+| (c) KV request record that the leader executes | New storage record, a gateway poll loop, CLI wait and poll, tests. | No new public API. More failure states: no leader, stale request, wait timeout. |
+
+Lead recommendation: (b). It follows the existing admin catalog refresh pattern, and the receipt JSON already defines the response schema. Option (a) lands first only when the owner accepts the fleet-stop limit for this release.
