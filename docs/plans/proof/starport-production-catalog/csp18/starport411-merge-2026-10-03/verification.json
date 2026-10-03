@@ -1,0 +1,62 @@
+{
+ "recorded_utc": "2026-10-03T23:31:29.048558+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 411,
+ "head": "68ed84df5085a729991b7963ace15c8ab3ef78bb",
+ "base": "491d92815cdf8b7c25c0e112a3e769282d052916",
+ "merge": "1f18b216e117bc43e294e4658a30da47cdac8d30",
+ "merged_at": "2026-10-03T23:30:58Z",
+ "checks": {
+  "success": 42,
+  "not_success": 0,
+  "total": 42
+ },
+ "reviewed_tree": "b39c55fc1bad4208f56496225e33ad60814b8ec6",
+ "merged_tree": "b39c55fc1bad4208f56496225e33ad60814b8ec6",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP18 slice 3: documentation site accessibility targets (section 10.3), the versioned Pages assembler and its test, the prepared manual Pages workflow (decision 18-1, not enabled), and the publication and rollback procedure",
+ "source_head": "c9b81f9aa55d1b95c2b8cd79c36d0c86014aca20",
+ "rebased_head": "68ed84df5085a729991b7963ace15c8ab3ef78bb",
+ "browser_proof": "csp18/browser-review-2026-10-03/ records source_head c9b81f9a; the rebases onto ce1107d7 and 491d9281 changed no reviewed input file, and the input hashes still match",
+ "rebase_history": "c9b81f9a reviewed; 69c3dd76 rebased onto ce1107d7 (42 of 42 checks green); 68ed84df rebased onto 491d9281 after the #407 merge under strict protection",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "9ef5e4d42b9370cc7807615d22069485f41fa66823d2e605fd510cd940139b66",
+   "gzip_sha256": "e86df3ab73f94667da67c0804f19e9e2486b14efb29e1379570e956465656b34"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "c4322a1a4eef4bd94ec62685b4d8873ab9836f18cc9c204a70d07d733083704c",
+   "gzip_sha256": "b50b1cad73979a5ff491e0d0a4547aa8e49489300b5cba68612e0168a0cbb539"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "00386d7d22430f056782958d05088ab67c2aab521a71d18737968766e59f15d1",
+   "gzip_sha256": "e3d7266fa12376c639d2879439ebbd0a30a3a79001bdca32ab4d015ca42c4544"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}

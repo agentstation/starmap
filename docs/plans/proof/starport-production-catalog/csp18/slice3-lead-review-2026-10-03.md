@@ -79,7 +79,7 @@ Measured at the end of the recovery topic in a 900 px viewport, both columns and
 
 ## Result
 
-Accepted at `c9b81f9a`. The slice waits for PR #410 to merge, then rebases onto main for its own PR.
+Accepted at `c9b81f9a`. The slice rebased to `69c3dd76` after the #410 merge and to `68ed84df` after the #407 merge. Neither rebase changed a reviewed input. Starport PR #411 merged on 2026-10-03 as `1f18b216` at that exact head with 42 of 42 checks green. One job needed a rerun after a GitHub HTTP 503. The merge record is `starport411-merge-2026-10-03/`.
 
 ## Deviations accepted as documented limits
 
