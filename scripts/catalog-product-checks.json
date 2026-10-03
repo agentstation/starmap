@@ -8,51 +8,60 @@
           "kind": "vitest",
           "repository": "starport",
           "files": [
-            "src/routes/docs.test.tsx"
+            "src/docs/site.test.ts",
+            "src/docs/recovery.test.ts",
+            "src/docs/client/behavior.test.ts"
           ],
           "tests": [
-            "the docs page links every sidebar destination",
-            "the operate persona names the real health paths and the two newer scopes",
-            "every snippet reads the key from STARPORT_API_KEY",
-            "static recovery docs load without a session or deployment requests",
-            "a public docs reader still needs authorization for deployment pages",
-            "documentation audience and section survive a copied URL and history",
-            "SDK setup never substitutes a local console token for a gateway key",
-            "public documentation supports both themes without deployment access",
-            "the access page links directly to public operator documentation"
+            "every page has a skip link, the landmarks, and one h1",
+            "pages carry no inline script and load only the build's own assets",
+            "the recovery topic is a page under Troubleshoot",
+            "the recovery topic names the liveness and readiness routes",
+            "the Troubleshoot area and the navigation link the recovery topic",
+            "search finds the recovery topic by the health routes",
+            "the client sends no request on a topic page",
+            "the theme toggle appears with the script and switches the theme"
           ]
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDocsServeWithoutASession"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDocsDoNotOpenTheDynamicEndpoints"
         },
         {
           "kind": "reviewed_ui",
           "repository": "starport",
-          "proof": "docs/plans/proof/starport-production-catalog/csp0.1/browser-review.json",
+          "proof": "docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/browser-review.json",
           "required_inputs": [
-            "console/src/routes/docs.tsx",
-            "console/src/routes/__root.tsx",
-            "console/src/styles/docs.css",
+            "console/src/docs/site.tsx",
+            "console/src/docs/site.css",
+            "console/src/docs/render.ts",
+            "console/src/docs/client/behavior.ts",
+            "console/src/docs/client/main.ts",
             "console/src/styles/tokens.css",
-            "console/src/components/auth/FirstContact.tsx",
-            "console/src/components/settings/Deployment.tsx",
-            "console/src/components/settings/Section.tsx",
-            "console/src/lib/api.ts",
-            "console/src/lib/theme.ts",
-            "console/src/router.tsx",
-            "console/src/main.tsx",
-            "console/package.json",
-            "console/pnpm-lock.yaml",
-            "internal/console/spa.go"
+            "console/scripts/build-docs.mjs",
+            "docs/site/troubleshoot/recovery.md"
           ],
           "observations": [
-            "desktop",
-            "reflow_320",
-            "keyboard_focus",
-            "keyboard_tabs",
+            "desktop_dark",
+            "desktop_light",
+            "reflow_320_dark",
+            "reflow_320_light",
+            "contrast_dark",
+            "contrast_light",
+            "skip_link",
+            "focus_order_and_outline",
             "keyboard_code_scroll",
-            "direct_fragment_reload",
-            "light_dark_contrast",
+            "direct_fragment_reload_desktop",
             "static_docs_without_session",
-            "protected_routes_remain_guarded",
-            "current_commands_reviewed"
+            "protected_routes_remain_guarded"
           ]
         }
       ]
@@ -8805,6 +8814,335 @@
           "package": "./internal/app",
           "test": "TestCatalogPromotionKeepsRequestPathInMemory",
           "timeout": "5m"
+        }
+      ]
+    },
+    "A29.embedded_offline_search": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/docs/site.test.ts",
+            "src/docs/client/behavior.test.ts",
+            "src/docs/recovery.test.ts"
+          ],
+          "tests": [
+            "search covers headings, prose, and setting names",
+            "a generated page joins the site and the search index",
+            "the search page reads the query from the address and lists results",
+            "the search page reports a query without results and an index that does not load",
+            "search finds the recovery topic by the health routes"
+          ]
+        },
+        {
+          "kind": "reviewed_ui",
+          "repository": "starport",
+          "proof": "docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/browser-review.json",
+          "required_inputs": [
+            "console/src/docs/site.tsx",
+            "console/src/docs/site.css",
+            "console/src/docs/render.ts",
+            "console/src/docs/client/behavior.ts",
+            "console/src/docs/client/main.ts",
+            "console/src/styles/tokens.css",
+            "console/scripts/build-docs.mjs",
+            "docs/site/troubleshoot/recovery.md"
+          ],
+          "observations": [
+            "static_docs_without_session"
+          ]
+        }
+      ]
+    },
+    "A29.recovery_without_auth": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDocsServeWithoutASession"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/console",
+          "test": "TestDocsFSReturnsTheDocsSubtree"
+        },
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/docs/recovery.test.ts"
+          ],
+          "tests": [
+            "the recovery topic is a page under Troubleshoot",
+            "the recovery topic names the liveness and readiness routes",
+            "the Troubleshoot area and the navigation link the recovery topic"
+          ]
+        },
+        {
+          "kind": "reviewed_ui",
+          "repository": "starport",
+          "proof": "docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/browser-review.json",
+          "required_inputs": [
+            "console/src/docs/site.tsx",
+            "console/src/docs/site.css",
+            "console/src/docs/render.ts",
+            "console/src/docs/client/behavior.ts",
+            "console/src/docs/client/main.ts",
+            "console/src/styles/tokens.css",
+            "console/scripts/build-docs.mjs",
+            "docs/site/troubleshoot/recovery.md"
+          ],
+          "observations": [
+            "static_docs_without_session"
+          ]
+        }
+      ]
+    },
+    "A29.no_dynamic_data_disclosure": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDocsDoNotOpenTheDynamicEndpoints"
+        },
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/docs/site.test.ts",
+            "src/docs/client/behavior.test.ts"
+          ],
+          "tests": [
+            "pages carry no inline script and load only the build's own assets",
+            "the client sends no request on a topic page"
+          ]
+        },
+        {
+          "kind": "reviewed_ui",
+          "repository": "starport",
+          "proof": "docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/browser-review.json",
+          "required_inputs": [
+            "console/src/docs/site.tsx",
+            "console/src/docs/site.css",
+            "console/src/docs/render.ts",
+            "console/src/docs/client/behavior.ts",
+            "console/src/docs/client/main.ts",
+            "console/src/styles/tokens.css",
+            "console/scripts/build-docs.mjs",
+            "docs/site/troubleshoot/recovery.md"
+          ],
+          "observations": [
+            "static_docs_without_session",
+            "protected_routes_remain_guarded"
+          ]
+        }
+      ]
+    },
+    "A30.stable_links_history": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/docs/site.test.ts",
+            "src/docs/client/behavior.test.ts",
+            "src/docs/site.a11y.test.ts"
+          ],
+          "tests": [
+            "every h2, h3, and h4 has a unique id and an anchor to itself",
+            "each table of contents lists the h2 and h3 headings in order and every entry resolves",
+            "every link is relative or a pinned repository link, and every relative link resolves",
+            "the same input gives the same site",
+            "the table of contents marks the section of the fragment on load",
+            "the marker follows fragment links, back, and forward",
+            "a reload of the same address marks the same entry",
+            "a link to a heading fragment resolves on every page, and the client brings the target into view after load"
+          ]
+        },
+        {
+          "kind": "reviewed_ui",
+          "repository": "starport",
+          "proof": "docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/browser-review.json",
+          "required_inputs": [
+            "console/src/docs/site.tsx",
+            "console/src/docs/site.css",
+            "console/src/docs/render.ts",
+            "console/src/docs/client/behavior.ts",
+            "console/src/docs/client/main.ts",
+            "console/src/styles/tokens.css",
+            "console/scripts/build-docs.mjs",
+            "docs/site/troubleshoot/recovery.md"
+          ],
+          "observations": [
+            "direct_fragment_reload_desktop",
+            "direct_fragment_reload_320",
+            "history_marker",
+            "stable_version_links"
+          ]
+        }
+      ]
+    },
+    "A30.desktop_both_themes": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/docs/site.a11y.test.ts",
+            "src/docs/client/behavior.test.ts"
+          ],
+          "tests": [
+            "the docs stylesheet states the typography, measure, and target sizes, a reduced-motion rule, and no fixed height on text",
+            "both themes meet 4.5:1 for the docs text, code, link, and help colors over the docs grounds, and 3:1 for the focus outline",
+            "the theme toggle appears with the script and switches the theme"
+          ]
+        },
+        {
+          "kind": "reviewed_ui",
+          "repository": "starport",
+          "proof": "docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/browser-review.json",
+          "required_inputs": [
+            "console/src/docs/site.tsx",
+            "console/src/docs/site.css",
+            "console/src/docs/render.ts",
+            "console/src/docs/client/behavior.ts",
+            "console/src/docs/client/main.ts",
+            "console/src/styles/tokens.css",
+            "console/scripts/build-docs.mjs",
+            "docs/site/troubleshoot/recovery.md"
+          ],
+          "observations": [
+            "desktop_dark",
+            "desktop_light",
+            "contrast_dark",
+            "contrast_light",
+            "version_selector_dark",
+            "version_selector_light"
+          ]
+        }
+      ]
+    },
+    "A30.narrow_320": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/docs/site.a11y.test.ts",
+            "src/docs/content.test.ts"
+          ],
+          "tests": [
+            "the docs stylesheet states the typography, measure, and target sizes, a reduced-motion rule, and no fixed height on text",
+            "every table and every code block scrolls in a focusable container with a role and an accessible name",
+            "code blocks get a language label and a hidden copy control, tables scroll on their own"
+          ]
+        },
+        {
+          "kind": "reviewed_ui",
+          "repository": "starport",
+          "proof": "docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/browser-review.json",
+          "required_inputs": [
+            "console/src/docs/site.tsx",
+            "console/src/docs/site.css",
+            "console/src/docs/render.ts",
+            "console/src/docs/client/behavior.ts",
+            "console/src/docs/client/main.ts",
+            "console/src/styles/tokens.css",
+            "console/scripts/build-docs.mjs",
+            "docs/site/troubleshoot/recovery.md"
+          ],
+          "observations": [
+            "reflow_320_dark",
+            "reflow_320_light",
+            "keyboard_code_scroll"
+          ]
+        }
+      ]
+    },
+    "A30.zoom_text_spacing": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/docs/site.a11y.test.ts"
+          ],
+          "tests": [
+            "the docs stylesheet states the typography, measure, and target sizes, a reduced-motion rule, and no fixed height on text"
+          ]
+        },
+        {
+          "kind": "reviewed_ui",
+          "repository": "starport",
+          "proof": "docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/browser-review.json",
+          "required_inputs": [
+            "console/src/docs/site.tsx",
+            "console/src/docs/site.css",
+            "console/src/docs/render.ts",
+            "console/src/docs/client/behavior.ts",
+            "console/src/docs/client/main.ts",
+            "console/src/styles/tokens.css",
+            "console/scripts/build-docs.mjs",
+            "docs/site/troubleshoot/recovery.md"
+          ],
+          "observations": [
+            "zoom_200",
+            "zoom_400",
+            "text_spacing_1280",
+            "text_spacing_320"
+          ]
+        }
+      ]
+    },
+    "A30.keyboard_screen_reader": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/docs/site.a11y.test.ts"
+          ],
+          "tests": [
+            "every docs page has one banner, one main, one contentinfo, named navigation, a labelled search, one h1, a skip link to #content, and lang",
+            "every table and every code block scrolls in a focusable container with a role and an accessible name",
+            "every h2, h3, and h4 has an id and an anchor with an accessible name",
+            "the table of contents, the navigation, and the version selector have accessible names, and the current page carries aria-current=page"
+          ]
+        },
+        {
+          "kind": "reviewed_ui",
+          "repository": "starport",
+          "proof": "docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/browser-review.json",
+          "required_inputs": [
+            "console/src/docs/site.tsx",
+            "console/src/docs/site.css",
+            "console/src/docs/render.ts",
+            "console/src/docs/client/behavior.ts",
+            "console/src/docs/client/main.ts",
+            "console/src/styles/tokens.css",
+            "console/scripts/build-docs.mjs",
+            "docs/site/troubleshoot/recovery.md"
+          ],
+          "observations": [
+            "skip_link",
+            "focus_order_and_outline",
+            "keyboard_code_scroll",
+            "screen_reader_semantics",
+            "reduced_motion",
+            "sticky_columns_page_end"
+          ]
         }
       ]
     }

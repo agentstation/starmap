@@ -1,0 +1,1004 @@
+==== /docs/
+- link "Skip to content":
+  - /url: "#content"
+- banner:
+  - link "Starport docs":
+    - /url: ./
+  - search "Documentation search":
+    - text: Search the documentation
+    - searchbox "Search the documentation"
+    - button "Search"
+  - group "Build information":
+    - term: Release
+    - definition: dev
+    - term: Starmap
+    - definition: v0.16.6-0.20261002020739-80de6d830bf2
+    - term: Content
+    - definition: 8114530ee6d8
+  - group: "Documentation version: dev"
+  - button "Switch to light theme": Light theme
+- navigation "Documentation":
+  - list:
+    - listitem:
+      - link "Start":
+        - /url: start/
+      - list:
+        - listitem:
+          - link "Run a persistent local gateway":
+            - /url: start/local-persistent/
+        - listitem:
+          - link "Run a temporary development gateway":
+            - /url: start/temporary-development/
+        - listitem:
+          - link "Keys and roles":
+            - /url: start/keys-and-roles/
+        - listitem:
+          - link "Inspect the catalog":
+            - /url: start/first-catalog-inspection/
+    - listitem:
+      - link "Choose an architecture":
+        - /url: architecture/
+      - list:
+        - listitem:
+          - link "Architecture targets":
+            - /url: architecture/targets/
+        - listitem:
+          - link "Catalog source topologies":
+            - /url: architecture/topologies/
+        - listitem:
+          - link "Select storage for a target":
+            - /url: architecture/storage-selection/
+    - listitem:
+      - link "Configure":
+        - /url: configure/
+      - list:
+        - listitem:
+          - link "Configuration sources and precedence":
+            - /url: configure/precedence/
+        - listitem:
+          - link "Secret references and secret managers":
+            - /url: configure/secret-references/
+        - listitem:
+          - link "Files and paths":
+            - /url: configure/paths/
+        - listitem:
+          - link "Manage configuration from the console":
+            - /url: configure/console-management/
+        - listitem:
+          - link "File reference":
+            - /url: configure/files/
+        - listitem:
+          - link "Settings reference":
+            - /url: configure/settings/
+    - listitem:
+      - link "Catalog lifecycle":
+        - /url: catalog-lifecycle/
+      - list:
+        - listitem:
+          - link "Sources and the baseline":
+            - /url: catalog-lifecycle/sources-and-baseline/
+        - listitem:
+          - link "Observations, authority, and acceptance":
+            - /url: catalog-lifecycle/observations-and-authority/
+        - listitem:
+          - link "Membership and routability":
+            - /url: catalog-lifecycle/routability/
+        - listitem:
+          - link "Model discovery and readiness":
+            - /url: catalog-lifecycle/discovery/
+    - listitem:
+      - link "Operate Starmap":
+        - /url: operate-starmap/
+      - list:
+        - listitem:
+          - link "Run a central Starmap server":
+            - /url: operate-starmap/central-server/
+        - listitem:
+          - link "Imports and the air-gapped mirror":
+            - /url: operate-starmap/imports-and-mirrors/
+        - listitem:
+          - link "Starmap state recovery and unrecognized journals":
+            - /url: operate-starmap/journals-and-recovery/
+    - listitem:
+      - link "Operate Starport":
+        - /url: operate-starport/
+      - list:
+        - listitem:
+          - link "Authentication and the local admin token":
+            - /url: operate-starport/authentication/
+        - listitem:
+          - link "Identity providers and account selection":
+            - /url: operate-starport/identity/
+        - listitem:
+          - link "Initialize and run a fleet":
+            - /url: operate-starport/fleet/
+        - listitem:
+          - link "Catalog updates":
+            - /url: operate-starport/catalog-updates/
+        - listitem:
+          - link "Diagnostics and observability":
+            - /url: operate-starport/observability/
+        - listitem:
+          - link "Upgrade and shut down":
+            - /url: operate-starport/upgrades/
+    - listitem:
+      - link "Storage":
+        - /url: storage/
+      - list:
+        - listitem:
+          - link "Storage backends":
+            - /url: storage/backends/
+        - listitem:
+          - link "Back up and restore":
+            - /url: storage/backup-and-restore/
+        - listitem:
+          - link "Move between storage modes":
+            - /url: storage/migration/
+        - listitem:
+          - link "Optional caches":
+            - /url: storage/caches/
+    - listitem:
+      - link "API compatibility":
+        - /url: api-compatibility/
+      - list:
+        - listitem:
+          - link "Supported API surfaces":
+            - /url: api-compatibility/surfaces/
+        - listitem:
+          - link "Connect an SDK":
+            - /url: api-compatibility/sdks/
+        - listitem:
+          - link "Errors and limits":
+            - /url: api-compatibility/errors-and-limits/
+    - listitem:
+      - link "Troubleshoot":
+        - /url: troubleshoot/
+      - list:
+        - listitem:
+          - link "Recover without a console session":
+            - /url: troubleshoot/recovery/
+        - listitem:
+          - link "Catalog failures":
+            - /url: troubleshoot/catalog-failures/
+        - listitem:
+          - link "Resource failures":
+            - /url: troubleshoot/resource-failures/
+- main:
+  - article:
+    - heading "Starport documentation" [level=1]
+    - paragraph: Find the area that answers your question and send a first request to a local gateway.
+    - paragraph:
+      - text: Starport is a self-hosted LLM inference gateway in one binary. It serves the OpenAI-compatible API at
+      - code: /v1
+      - text: and the OpenRouter-compatible API at
+      - code: /api/v1
+      - text: ", and Starmap supplies its provider and model facts."
+    - 'heading "Areas of this site Link to section: Areas of this site" [level=2]':
+      - text: Areas of this site
+      - 'link "Link to section: Areas of this site"':
+        - /url: "#areas-of-this-site"
+    - paragraph: Each area answers one kind of question. Start at the area that matches your task.
+    - region "Areas of this site table":
+      - table:
+        - rowgroup:
+          - row "Area Use it to":
+            - columnheader "Area"
+            - columnheader "Use it to"
+        - rowgroup:
+          - row "Start Run a first gateway, issue keys, and inspect the catalog.":
+            - cell "Start":
+              - link "Start":
+                - /url: start/
+            - cell "Run a first gateway, issue keys, and inspect the catalog."
+          - row "Choose an architecture Select a deployment target, a catalog topology, and storage.":
+            - cell "Choose an architecture":
+              - link "Choose an architecture":
+                - /url: architecture/
+            - cell "Select a deployment target, a catalog topology, and storage."
+          - row "Configure Set values, secret references, and paths.":
+            - cell "Configure":
+              - link "Configure":
+                - /url: configure/
+            - cell "Set values, secret references, and paths."
+          - row "Catalog lifecycle Learn how a catalog generation becomes routable.":
+            - cell "Catalog lifecycle":
+              - link "Catalog lifecycle":
+                - /url: catalog-lifecycle/
+            - cell "Learn how a catalog generation becomes routable."
+          - row "Operate Starmap Run a central Starmap server or an air-gapped mirror.":
+            - cell "Operate Starmap":
+              - link "Operate Starmap":
+                - /url: operate-starmap/
+            - cell "Run a central Starmap server or an air-gapped mirror."
+          - row "Operate Starport Manage authentication, identity, fleets, and upgrades.":
+            - cell "Operate Starport":
+              - link "Operate Starport":
+                - /url: operate-starport/
+            - cell "Manage authentication, identity, fleets, and upgrades."
+          - row "Storage Select backends, back up, restore, and tune caches.":
+            - cell "Storage":
+              - link "Storage":
+                - /url: storage/
+            - cell "Select backends, back up, restore, and tune caches."
+          - row "API compatibility Connect SDKs and read errors and limits.":
+            - cell "API compatibility":
+              - link "API compatibility":
+                - /url: api-compatibility/
+            - cell "Connect SDKs and read errors and limits."
+          - row "Troubleshoot Recover a gateway without a console session.":
+            - cell "Troubleshoot":
+              - link "Troubleshoot":
+                - /url: troubleshoot/
+            - cell "Recover a gateway without a console session."
+    - 'heading "Version facts in the page header Link to section: Version facts in the page header" [level=2]':
+      - text: Version facts in the page header
+      - 'link "Link to section: Version facts in the page header"':
+        - /url: "#version-facts-in-the-page-header"
+    - paragraph: The page header shows the facts of the build that made this site. Compare them with your gateway before you follow a procedure.
+    - list:
+      - listitem: The Starport release identifies the binary that these pages describe.
+      - listitem: The Starmap version identifies the Starmap module that this release pins. That module reconciles catalog records into one canonical catalog.
+    - paragraph:
+      - text: Run
+      - code: starport version
+      - text: to see the release of an installed binary. If the release differs from the header, read the pages for your release.
+    - 'heading "Fastest path to a first request Link to section: Fastest path to a first request" [level=2]':
+      - text: Fastest path to a first request
+      - 'link "Link to section: Fastest path to a first request"':
+        - /url: "#fastest-path-to-a-first-request"
+    - paragraph: This path uses a temporary development gateway. It keeps no data after the process stops.
+    - list:
+      - listitem:
+        - text: Install Starport. Refer to
+        - link "Run a persistent local gateway":
+          - /url: start/local-persistent/#install-starport
+        - text: .
+      - listitem:
+        - text: Set a provider inference credential, for example
+        - code: OPENAI_API_KEY
+        - text: .
+      - listitem:
+        - text: Run
+        - code: starport dev
+        - text: and keep the terminal open.
+      - listitem: Copy the gateway API key that the command prints.
+      - listitem: "In a second terminal, send a request:"
+    - text: bash
+    - button "Copy bash code": Copy
+    - group "bash code example":
+      - code: "export STARPORT_API_KEY=\"<printed-gateway-api-key>\" curl --fail-with-body \\ -H \"Authorization: Bearer $STARPORT_API_KEY\" \\ -H \"Content-Type: application/json\" \\ -d '{\"model\":\"openai/gpt-4o-mini\",\"messages\":[{\"role\":\"user\",\"content\":\"Hello\"}]}' \\ http://127.0.0.1:8080/api/v1/chat/completions"
+    - paragraph:
+      - text: A model in the catalog is not always a callable offering. The request succeeds only when the gateway can call a provider with a usable credential. Refer to
+      - link "Inspect the catalog":
+        - /url: start/first-catalog-inspection/
+      - text: for the difference.
+    - paragraph:
+      - text: For a gateway that keeps its data, read
+      - link "Run a persistent local gateway":
+        - /url: start/local-persistent/
+      - text: . The
+      - link "operator guide":
+        - /url: https://github.com/agentstation/starport/blob/c9b81f9aa55d1b95c2b8cd79c36d0c86014aca20/docs/OPERATOR-GUIDE.md#local-development
+      - text: holds the full reference.
+    - 'region "Documentation areas Link to section: Documentation areas"':
+      - 'heading "Documentation areas Link to section: Documentation areas" [level=2]':
+        - text: Documentation areas
+        - 'link "Link to section: Documentation areas"':
+          - /url: "#documentation-areas"
+      - list:
+        - listitem:
+          - link "Start":
+            - /url: start/
+          - paragraph: Run a first Starport gateway, issue gateway API keys, and inspect the catalog.
+        - listitem:
+          - link "Choose an architecture":
+            - /url: architecture/
+          - paragraph: Select a deployment target, a catalog source topology, and a storage recipe before you install.
+        - listitem:
+          - link "Configure":
+            - /url: configure/
+          - paragraph: Set configuration values, resolve provider secrets, find each file and directory, and manage settings from the console.
+        - listitem:
+          - link "Catalog lifecycle":
+            - /url: catalog-lifecycle/
+          - paragraph: Learn how a catalog generation moves from a source to an accepted head, a routable model, and a discovery response.
+        - listitem:
+          - link "Operate Starmap":
+            - /url: operate-starmap/
+          - paragraph: Run the Starmap catalog server and the catalog inputs that a Starport deployment reads.
+        - listitem:
+          - link "Operate Starport":
+            - /url: operate-starport/
+          - paragraph: Run a Starport gateway or fleet day to day, from authentication and identity to catalog updates, signals, and upgrades.
+        - listitem:
+          - link "Storage":
+            - /url: storage/
+          - paragraph: Select the storage backends, back up and restore a stopped deployment, move between storage modes, and set the optional caches.
+        - listitem:
+          - link "API compatibility":
+            - /url: api-compatibility/
+          - paragraph: Connect OpenAI and OpenRouter clients to Starport, and learn the routes, SDK versions, errors, and limits of each API family.
+        - listitem:
+          - link "Troubleshoot":
+            - /url: troubleshoot/
+          - paragraph: Find the cause of a gateway, catalog, or resource failure and recover with commands that need no console session.
+- navigation "On this page":
+  - paragraph: On this page
+  - list:
+    - listitem:
+      - link "Areas of this site":
+        - /url: "#areas-of-this-site"
+    - listitem:
+      - link "Version facts in the page header":
+        - /url: "#version-facts-in-the-page-header"
+    - listitem:
+      - link "Fastest path to a first request":
+        - /url: "#fastest-path-to-a-first-request"
+    - listitem:
+      - link "Documentation areas":
+        - /url: "#documentation-areas"
+- contentinfo:
+  - paragraph:
+    - text: Starport dev. Starmap module v0.16.6-0.20261002020739-80de6d830bf2. Content revision
+    - code: 8114530ee6d8
+    - text: .
+- status
+
+==== /docs/troubleshoot/recovery/
+- link "Skip to content":
+  - /url: "#content"
+- banner:
+  - link "Starport docs":
+    - /url: ../../
+  - search "Documentation search":
+    - text: Search the documentation
+    - searchbox "Search the documentation"
+    - button "Search"
+  - group "Build information":
+    - term: Release
+    - definition: dev
+    - term: Starmap
+    - definition: v0.16.6-0.20261002020739-80de6d830bf2
+    - term: Content
+    - definition: 8114530ee6d8
+  - group: "Documentation version: dev"
+  - button "Switch to light theme": Light theme
+- navigation "Documentation":
+  - list:
+    - listitem:
+      - link "Start":
+        - /url: ../../start/
+      - list:
+        - listitem:
+          - link "Run a persistent local gateway":
+            - /url: ../../start/local-persistent/
+        - listitem:
+          - link "Run a temporary development gateway":
+            - /url: ../../start/temporary-development/
+        - listitem:
+          - link "Keys and roles":
+            - /url: ../../start/keys-and-roles/
+        - listitem:
+          - link "Inspect the catalog":
+            - /url: ../../start/first-catalog-inspection/
+    - listitem:
+      - link "Choose an architecture":
+        - /url: ../../architecture/
+      - list:
+        - listitem:
+          - link "Architecture targets":
+            - /url: ../../architecture/targets/
+        - listitem:
+          - link "Catalog source topologies":
+            - /url: ../../architecture/topologies/
+        - listitem:
+          - link "Select storage for a target":
+            - /url: ../../architecture/storage-selection/
+    - listitem:
+      - link "Configure":
+        - /url: ../../configure/
+      - list:
+        - listitem:
+          - link "Configuration sources and precedence":
+            - /url: ../../configure/precedence/
+        - listitem:
+          - link "Secret references and secret managers":
+            - /url: ../../configure/secret-references/
+        - listitem:
+          - link "Files and paths":
+            - /url: ../../configure/paths/
+        - listitem:
+          - link "Manage configuration from the console":
+            - /url: ../../configure/console-management/
+        - listitem:
+          - link "File reference":
+            - /url: ../../configure/files/
+        - listitem:
+          - link "Settings reference":
+            - /url: ../../configure/settings/
+    - listitem:
+      - link "Catalog lifecycle":
+        - /url: ../../catalog-lifecycle/
+      - list:
+        - listitem:
+          - link "Sources and the baseline":
+            - /url: ../../catalog-lifecycle/sources-and-baseline/
+        - listitem:
+          - link "Observations, authority, and acceptance":
+            - /url: ../../catalog-lifecycle/observations-and-authority/
+        - listitem:
+          - link "Membership and routability":
+            - /url: ../../catalog-lifecycle/routability/
+        - listitem:
+          - link "Model discovery and readiness":
+            - /url: ../../catalog-lifecycle/discovery/
+    - listitem:
+      - link "Operate Starmap":
+        - /url: ../../operate-starmap/
+      - list:
+        - listitem:
+          - link "Run a central Starmap server":
+            - /url: ../../operate-starmap/central-server/
+        - listitem:
+          - link "Imports and the air-gapped mirror":
+            - /url: ../../operate-starmap/imports-and-mirrors/
+        - listitem:
+          - link "Starmap state recovery and unrecognized journals":
+            - /url: ../../operate-starmap/journals-and-recovery/
+    - listitem:
+      - link "Operate Starport":
+        - /url: ../../operate-starport/
+      - list:
+        - listitem:
+          - link "Authentication and the local admin token":
+            - /url: ../../operate-starport/authentication/
+        - listitem:
+          - link "Identity providers and account selection":
+            - /url: ../../operate-starport/identity/
+        - listitem:
+          - link "Initialize and run a fleet":
+            - /url: ../../operate-starport/fleet/
+        - listitem:
+          - link "Catalog updates":
+            - /url: ../../operate-starport/catalog-updates/
+        - listitem:
+          - link "Diagnostics and observability":
+            - /url: ../../operate-starport/observability/
+        - listitem:
+          - link "Upgrade and shut down":
+            - /url: ../../operate-starport/upgrades/
+    - listitem:
+      - link "Storage":
+        - /url: ../../storage/
+      - list:
+        - listitem:
+          - link "Storage backends":
+            - /url: ../../storage/backends/
+        - listitem:
+          - link "Back up and restore":
+            - /url: ../../storage/backup-and-restore/
+        - listitem:
+          - link "Move between storage modes":
+            - /url: ../../storage/migration/
+        - listitem:
+          - link "Optional caches":
+            - /url: ../../storage/caches/
+    - listitem:
+      - link "API compatibility":
+        - /url: ../../api-compatibility/
+      - list:
+        - listitem:
+          - link "Supported API surfaces":
+            - /url: ../../api-compatibility/surfaces/
+        - listitem:
+          - link "Connect an SDK":
+            - /url: ../../api-compatibility/sdks/
+        - listitem:
+          - link "Errors and limits":
+            - /url: ../../api-compatibility/errors-and-limits/
+    - listitem:
+      - link "Troubleshoot":
+        - /url: ../../troubleshoot/
+      - list:
+        - listitem:
+          - link "Recover without a console session":
+            - /url: ../../troubleshoot/recovery/
+        - listitem:
+          - link "Catalog failures":
+            - /url: ../../troubleshoot/catalog-failures/
+        - listitem:
+          - link "Resource failures":
+            - /url: ../../troubleshoot/resource-failures/
+- main:
+  - article:
+    - paragraph: Troubleshoot
+    - heading "Recover without a console session" [level=1]
+    - paragraph: Find the state of a gateway and recover it with health checks, CLI commands, logs, and these pages when the console is not available.
+    - paragraph: This topic is for an operator who cannot open a console session. Each step uses a health route, a CLI command on the gateway host, the logs, or a repository procedure.
+    - 'heading "Health checks Link to section: Health checks" [level=2]':
+      - text: Health checks
+      - 'link "Link to section: Health checks"':
+        - /url: "#health-checks"
+    - paragraph: Two health routes answer without a credential. They need no gateway API key and no console session.
+    - region "Health checks table":
+      - table:
+        - rowgroup:
+          - row "Route Question that it answers Response":
+            - columnheader "Route"
+            - columnheader "Question that it answers"
+            - columnheader "Response"
+        - rowgroup:
+          - 'row "GET /health/live Does the process run? 200 with \"status\": \"ok\"."':
+            - cell "GET /health/live":
+              - code: GET /health/live
+            - cell "Does the process run?"
+            - 'cell "200 with \"status\": \"ok\"."':
+              - code: "200"
+              - text: with
+              - code: "\"status\": \"ok\""
+              - text: .
+          - 'row "GET /health/ready Can the gateway serve requests now? 200 with \"status\": \"ok\", or 503 with \"status\": \"not_ready\" and Retry-After: 1."':
+            - cell "GET /health/ready":
+              - code: GET /health/ready
+            - cell "Can the gateway serve requests now?"
+            - 'cell "200 with \"status\": \"ok\", or 503 with \"status\": \"not_ready\" and Retry-After: 1."':
+              - code: "200"
+              - text: with
+              - code: "\"status\": \"ok\""
+              - text: ", or"
+              - code: "503"
+              - text: with
+              - code: "\"status\": \"not_ready\""
+              - text: and
+              - code: "Retry-After: 1"
+              - text: .
+    - paragraph: The readiness check reads only process memory. It does not send a request to storage or to a provider. A ready gateway does not prove that a caller key, an account permission, or a budget is valid.
+    - text: bash
+    - button "Copy bash code": Copy
+    - group "bash code example":
+      - code: curl -sS -i <gateway-url>/health/live curl -sS -i <gateway-url>/health/ready
+    - 'heading "CLI inspection commands Link to section: CLI inspection commands" [level=2]':
+      - text: CLI inspection commands
+      - 'link "Link to section: CLI inspection commands"':
+        - /url: "#cli-inspection-commands"
+    - paragraph: Run these commands on the gateway host with the same configuration as the gateway. Each command reads state. It does not change the deployment.
+    - region "CLI inspection commands table":
+      - table:
+        - rowgroup:
+          - row "Command Result":
+            - columnheader "Command"
+            - columnheader "Result"
+        - rowgroup:
+          - row "starport doctor --json Read-only startup checks. Add --probe to open configured storage in read-only mode.":
+            - cell "starport doctor --json":
+              - code: starport doctor --json
+            - cell "Read-only startup checks. Add --probe to open configured storage in read-only mode.":
+              - text: Read-only startup checks. Add
+              - code: "--probe"
+              - text: to open configured storage in read-only mode.
+          - row "starport config show --json The effective configuration with secrets redacted.":
+            - cell "starport config show --json":
+              - code: starport config show --json
+            - cell "The effective configuration with secrets redacted."
+          - row "starport config validate --json The validation result of the effective configuration.":
+            - cell "starport config validate --json":
+              - code: starport config validate --json
+            - cell "The validation result of the effective configuration."
+          - row "starport config effective --json Each catalog setting with its authority, origin, and revision.":
+            - cell "starport config effective --json":
+              - code: starport config effective --json
+            - cell "Each catalog setting with its authority, origin, and revision."
+          - row "starport config paths --files --inspect --json The files and directories that the configuration uses, with their state.":
+            - cell "starport config paths --files --inspect --json":
+              - code: starport config paths --files --inspect --json
+            - cell "The files and directories that the configuration uses, with their state."
+          - row "starport auth status --json The age, generation, and exposure of the local admin token.":
+            - cell "starport auth status --json":
+              - code: starport auth status --json
+            - cell "The age, generation, and exposure of the local admin token."
+    - 'heading "Local admin token and the console Link to section: Local admin token and the console" [level=2]':
+      - text: Local admin token and the console
+      - 'link "Link to section: Local admin token and the console"':
+        - /url: "#local-admin-token-and-the-console"
+    - paragraph: The local admin token is a file on the gateway host. It is not a gateway API key, and no account owns it. Use it to open the console from the host.
+    - list:
+      - listitem:
+        - code: starport ui
+        - text: makes a one-time launch link and opens it in a browser.
+      - listitem:
+        - code: starport ui --no-open
+        - text: prints the launch link. Use it on a host without a browser.
+      - listitem:
+        - code: starport auth url --copy
+        - text: copies a one-time launch link to the clipboard.
+    - paragraph:
+      - text: The console session uses a cookie. You do not paste a gateway API key into the browser. For token rotation, refer to
+      - link "Authentication":
+        - /url: ../../operate-starport/authentication/
+      - text: .
+    - 'heading "Logs and request IDs Link to section: Logs and request IDs" [level=2]':
+      - text: Logs and request IDs
+      - 'link "Link to section: Logs and request IDs"':
+        - /url: "#logs-and-request-ids"
+    - paragraph:
+      - text: Starport writes logs to a stream. The default format is JSON and the default output is
+      - code: stdout
+      - text: . Each request log line has a
+      - code: request_id
+      - text: field. Find the request ID of a failed request, and then search the logs for that value.
+    - text: bash
+    - button "Copy bash code": Copy
+    - group "bash code example":
+      - code: grep '"request_id":"<request-id>"' <log-file>
+    - paragraph:
+      - text: The
+      - code: <log-file>
+      - text: is the file where your process manager keeps the gateway output.
+    - 'heading "Read these pages without a session Link to section: Read these pages without a session" [level=2]':
+      - text: Read these pages without a session
+      - 'link "Link to section: Read these pages without a session"':
+        - /url: "#read-these-pages-without-a-session"
+    - paragraph:
+      - text: The gateway serves these pages at
+      - code: <gateway-url>/docs/
+      - text: . The pages need no session and no gateway API key. The same pages also open from disk with no network.
+    - 'heading "Coordinated recovery Link to section: Coordinated recovery" [level=2]':
+      - text: Coordinated recovery
+      - 'link "Link to section: Coordinated recovery"':
+        - /url: "#coordinated-recovery"
+    - paragraph:
+      - text: To restore a deployment or to adopt a populated deployment, use the coordinated recovery procedure in
+      - link "RECOVERY.md":
+        - /url: https://github.com/agentstation/starport/blob/c9b81f9aa55d1b95c2b8cd79c36d0c86014aca20/docs/RECOVERY.md
+      - text: . That procedure keeps every writer fenced until activation and gateway readiness succeed.
+    - 'heading "Recover a gateway Link to section: Recover a gateway" [level=2]':
+      - text: Recover a gateway
+      - 'link "Link to section: Recover a gateway"':
+        - /url: "#recover-a-gateway"
+    - 'heading "Audience Link to section: Audience" [level=3]':
+      - text: Audience
+      - 'link "Link to section: Audience"':
+        - /url: "#audience"
+    - paragraph: An operator with shell access to the gateway host.
+    - 'heading "Before you start Link to section: Before you start" [level=3]':
+      - text: Before you start
+      - 'link "Link to section: Before you start"':
+        - /url: "#before-you-start"
+    - list:
+      - listitem: Get the gateway address and shell access to the host.
+      - listitem: Use the configuration that the gateway uses.
+      - listitem: Keep every recovery file. Do not delete a journal or a lock.
+    - 'heading "Steps Link to section: Steps" [level=3]':
+      - text: Steps
+      - 'link "Link to section: Steps"':
+        - /url: "#steps"
+    - list:
+      - listitem:
+        - text: Send
+        - code: GET /health/live
+        - text: . If it fails, start the process and read its first log lines.
+      - listitem:
+        - text: Send
+        - code: GET /health/ready
+        - text: . Record the status and the
+        - code: Retry-After
+        - text: header.
+      - listitem:
+        - text: Run
+        - code: starport doctor --json
+        - text: and record each failed check.
+      - listitem:
+        - text: Run
+        - code: starport config validate --json
+        - text: . Correct each reported setting.
+      - listitem:
+        - text: Run
+        - code: starport ui
+        - text: to open the console with the local admin token.
+      - listitem:
+        - text: For a failed request, find its
+        - code: request_id
+        - text: in the logs.
+      - listitem:
+        - text: For a restore or an adoption, follow
+        - link "RECOVERY.md":
+          - /url: https://github.com/agentstation/starport/blob/c9b81f9aa55d1b95c2b8cd79c36d0c86014aca20/docs/RECOVERY.md
+        - text: .
+    - 'heading "Expected result Link to section: Expected result" [level=3]':
+      - text: Expected result
+      - 'link "Link to section: Expected result"':
+        - /url: "#expected-result"
+    - paragraph:
+      - text: The live route and the ready route both return
+      - code: "200"
+      - text: . The console opens from the launch link.
+    - 'heading "Verification Link to section: Verification" [level=3]':
+      - text: Verification
+      - 'link "Link to section: Verification"':
+        - /url: "#verification"
+    - text: bash
+    - button "Copy bash code": Copy
+    - group "bash code example":
+      - code: curl -sS <gateway-url>/health/ready
+    - text: json
+    - button "Copy json code": Copy
+    - group "json code example":
+      - code: "{\"status\":\"ok\",\"timestamp\":\"<time>\",\"service\":\"<service>\",\"version\":\"<release>\"}"
+    - 'heading "If it fails Link to section: If it fails" [level=3]':
+      - text: If it fails
+      - 'link "Link to section: If it fails"':
+        - /url: "#if-it-fails"
+    - list:
+      - listitem:
+        - text: If the ready route stays at
+        - code: "503"
+        - text: ", read"
+        - link "Catalog failures":
+          - /url: ../../troubleshoot/catalog-failures/
+        - text: .
+      - listitem:
+        - text: If storage, disk, lease, or schema errors appear, read
+        - link "Resource failures":
+          - /url: ../../troubleshoot/resource-failures/
+        - text: .
+      - listitem:
+        - text: If a command reports an unknown journal, read
+        - link "Starmap journals and recovery":
+          - /url: ../../operate-starmap/journals-and-recovery/
+        - text: .
+    - 'heading "Related settings Link to section: Related settings" [level=3]':
+      - text: Related settings
+      - 'link "Link to section: Related settings"':
+        - /url: "#related-settings"
+    - list:
+      - listitem:
+        - code: STARPORT_LOGGING_LEVEL
+        - text: sets the log level. The default is
+        - code: info
+        - text: .
+      - listitem:
+        - code: STARPORT_LOGGING_FORMAT
+        - text: sets the log format. The default is
+        - code: json
+        - text: .
+      - listitem:
+        - code: STARPORT_SERVER_HOST
+        - text: and
+        - code: STARPORT_SERVER_PORT
+        - text: set the listener. The defaults are
+        - code: 127.0.0.1
+        - text: and
+        - code: "8080"
+        - text: .
+- navigation "On this page":
+  - paragraph: On this page
+  - list:
+    - listitem:
+      - link "Health checks":
+        - /url: "#health-checks"
+    - listitem:
+      - link "CLI inspection commands":
+        - /url: "#cli-inspection-commands"
+    - listitem:
+      - link "Local admin token and the console":
+        - /url: "#local-admin-token-and-the-console"
+    - listitem:
+      - link "Logs and request IDs":
+        - /url: "#logs-and-request-ids"
+    - listitem:
+      - link "Read these pages without a session":
+        - /url: "#read-these-pages-without-a-session"
+    - listitem:
+      - link "Coordinated recovery":
+        - /url: "#coordinated-recovery"
+    - listitem:
+      - link "Recover a gateway":
+        - /url: "#recover-a-gateway"
+    - listitem:
+      - link "Audience":
+        - /url: "#audience"
+    - listitem:
+      - link "Before you start":
+        - /url: "#before-you-start"
+    - listitem:
+      - link "Steps":
+        - /url: "#steps"
+    - listitem:
+      - link "Expected result":
+        - /url: "#expected-result"
+    - listitem:
+      - link "Verification":
+        - /url: "#verification"
+    - listitem:
+      - link "If it fails":
+        - /url: "#if-it-fails"
+    - listitem:
+      - link "Related settings":
+        - /url: "#related-settings"
+- contentinfo:
+  - paragraph:
+    - text: Starport dev. Starmap module v0.16.6-0.20261002020739-80de6d830bf2. Content revision
+    - code: 8114530ee6d8
+    - text: .
+- status
+
+==== /docs/search/
+- link "Skip to content":
+  - /url: "#content"
+- banner:
+  - link "Starport docs":
+    - /url: ../
+  - search "Documentation search":
+    - text: Search the documentation
+    - searchbox "Search the documentation"
+    - button "Search"
+  - group "Build information":
+    - term: Release
+    - definition: dev
+    - term: Starmap
+    - definition: v0.16.6-0.20261002020739-80de6d830bf2
+    - term: Content
+    - definition: 8114530ee6d8
+  - group: "Documentation version: dev"
+  - button "Switch to light theme": Light theme
+- navigation "Documentation":
+  - list:
+    - listitem:
+      - link "Start":
+        - /url: ../start/
+      - list:
+        - listitem:
+          - link "Run a persistent local gateway":
+            - /url: ../start/local-persistent/
+        - listitem:
+          - link "Run a temporary development gateway":
+            - /url: ../start/temporary-development/
+        - listitem:
+          - link "Keys and roles":
+            - /url: ../start/keys-and-roles/
+        - listitem:
+          - link "Inspect the catalog":
+            - /url: ../start/first-catalog-inspection/
+    - listitem:
+      - link "Choose an architecture":
+        - /url: ../architecture/
+      - list:
+        - listitem:
+          - link "Architecture targets":
+            - /url: ../architecture/targets/
+        - listitem:
+          - link "Catalog source topologies":
+            - /url: ../architecture/topologies/
+        - listitem:
+          - link "Select storage for a target":
+            - /url: ../architecture/storage-selection/
+    - listitem:
+      - link "Configure":
+        - /url: ../configure/
+      - list:
+        - listitem:
+          - link "Configuration sources and precedence":
+            - /url: ../configure/precedence/
+        - listitem:
+          - link "Secret references and secret managers":
+            - /url: ../configure/secret-references/
+        - listitem:
+          - link "Files and paths":
+            - /url: ../configure/paths/
+        - listitem:
+          - link "Manage configuration from the console":
+            - /url: ../configure/console-management/
+        - listitem:
+          - link "File reference":
+            - /url: ../configure/files/
+        - listitem:
+          - link "Settings reference":
+            - /url: ../configure/settings/
+    - listitem:
+      - link "Catalog lifecycle":
+        - /url: ../catalog-lifecycle/
+      - list:
+        - listitem:
+          - link "Sources and the baseline":
+            - /url: ../catalog-lifecycle/sources-and-baseline/
+        - listitem:
+          - link "Observations, authority, and acceptance":
+            - /url: ../catalog-lifecycle/observations-and-authority/
+        - listitem:
+          - link "Membership and routability":
+            - /url: ../catalog-lifecycle/routability/
+        - listitem:
+          - link "Model discovery and readiness":
+            - /url: ../catalog-lifecycle/discovery/
+    - listitem:
+      - link "Operate Starmap":
+        - /url: ../operate-starmap/
+      - list:
+        - listitem:
+          - link "Run a central Starmap server":
+            - /url: ../operate-starmap/central-server/
+        - listitem:
+          - link "Imports and the air-gapped mirror":
+            - /url: ../operate-starmap/imports-and-mirrors/
+        - listitem:
+          - link "Starmap state recovery and unrecognized journals":
+            - /url: ../operate-starmap/journals-and-recovery/
+    - listitem:
+      - link "Operate Starport":
+        - /url: ../operate-starport/
+      - list:
+        - listitem:
+          - link "Authentication and the local admin token":
+            - /url: ../operate-starport/authentication/
+        - listitem:
+          - link "Identity providers and account selection":
+            - /url: ../operate-starport/identity/
+        - listitem:
+          - link "Initialize and run a fleet":
+            - /url: ../operate-starport/fleet/
+        - listitem:
+          - link "Catalog updates":
+            - /url: ../operate-starport/catalog-updates/
+        - listitem:
+          - link "Diagnostics and observability":
+            - /url: ../operate-starport/observability/
+        - listitem:
+          - link "Upgrade and shut down":
+            - /url: ../operate-starport/upgrades/
+    - listitem:
+      - link "Storage":
+        - /url: ../storage/
+      - list:
+        - listitem:
+          - link "Storage backends":
+            - /url: ../storage/backends/
+        - listitem:
+          - link "Back up and restore":
+            - /url: ../storage/backup-and-restore/
+        - listitem:
+          - link "Move between storage modes":
+            - /url: ../storage/migration/
+        - listitem:
+          - link "Optional caches":
+            - /url: ../storage/caches/
+    - listitem:
+      - link "API compatibility":
+        - /url: ../api-compatibility/
+      - list:
+        - listitem:
+          - link "Supported API surfaces":
+            - /url: ../api-compatibility/surfaces/
+        - listitem:
+          - link "Connect an SDK":
+            - /url: ../api-compatibility/sdks/
+        - listitem:
+          - link "Errors and limits":
+            - /url: ../api-compatibility/errors-and-limits/
+    - listitem:
+      - link "Troubleshoot":
+        - /url: ../troubleshoot/
+      - list:
+        - listitem:
+          - link "Recover without a console session":
+            - /url: ../troubleshoot/recovery/
+        - listitem:
+          - link "Catalog failures":
+            - /url: ../troubleshoot/catalog-failures/
+        - listitem:
+          - link "Resource failures":
+            - /url: ../troubleshoot/resource-failures/
+- main:
+  - article:
+    - heading "Search" [level=1]
+    - paragraph: Search the headings, prose, and setting names in this build.
+    - search "Search this build":
+      - text: Search terms
+      - searchbox "Search terms"
+      - button "Search"
+    - status: Type a word, a heading, or a setting name.
+    - list
+- contentinfo:
+  - paragraph:
+    - text: Starport dev. Starmap module v0.16.6-0.20261002020739-80de6d830bf2. Content revision
+    - code: 8114530ee6d8
+    - text: .

@@ -32,9 +32,11 @@ glossary_term = "error"
 # Catalog YAML contains structured product data instead of developer prose.
 # The CI checkout contains external skill sources.
 # A verifier fail-before capture is machine output, not prose.
+# A browser ARIA snapshot capture is machine output, not prose.
 exclude = [
   ".ci/**",
   "docs/proof/**/*-fail-before.txt",
+  "docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/aria-snapshots.txt",
   "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt",
   "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt",
   "docs/reviews/**",
