@@ -1,0 +1,132 @@
+{
+ "recorded_utc": "2026-10-03T21:34:08.432660+00:00",
+ "task": "CSP16.2",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 407,
+ "head": "bd49bbc439ccb226ae0ee546d7654f337b06c849",
+ "base": "ce1107d7a524a8a64c5b8188a3c7e0679768a81c",
+ "merge": "491d92815cdf8b7c25c0e112a3e769282d052916",
+ "merged_at": "2026-10-03T21:33:01Z",
+ "checks": {
+  "success": 42,
+  "not_success": 0,
+  "total": 42
+ },
+ "reviewed_tree": "97d3afd7c793c334849fe4651e951c00d2b016ad",
+ "merged_tree": "97d3afd7c793c334849fe4651e951c00d2b016ad",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP16.2: promote the packaged baseline through the fleet leader (promote-baseline command, leader executor, receipts, console surface, and the D42 promotion limits)",
+ "starmap_dependency": {
+  "pr": "agentstation/starmap#214",
+  "merge_commit": "595e3c7ba",
+  "pseudo_version": "v0.16.6-0.20261003000954-595e3c7ba959",
+  "api": [
+   "runtime.BaselineStatus",
+   "runtime.BaselinePromotion",
+   "runtime.BaselinePromotionResult",
+   "(*runtime.Runtime).PromoteEmbeddedBaseline"
+  ]
+ },
+ "deviations_from_contract": [
+  "The receipt key carries the hash tag of the deployment keys so the request, the lease, and the receipt share one Valkey slot.",
+  "The leader executes requests in a separate executePromotions goroutine signaled at the end of Renew, not inside the Renew call.",
+  "A leader that loses the lease before the outcome leaves the request pending for the next leader. The contract named a 'lease moved' refusal. The documentation now states the pending behavior.",
+  "A refused outcome is not durable. A retry with the same operation ID evaluates the request again.",
+  "The observer refuses every shared write and does not replay the fleet. Starmap schedules run in observe mode from open to Close (1.08 s pure, 19.8 s race) and stop at the lease check.",
+  "AcquireLease is refused before storage in observe mode, so the refused-write counter does not count it.",
+  "The test memory store has a one-time loseLeaseBefore hook on the head-initialized key for the lost-lease test.",
+  "Commit 5dc4cb7f carries the cli: prefix but also changes internal/app."
+ ],
+ "recorded_limits": [
+  "A receipt write that fails after the head commits leaves the request pending. A re-run of the same operation reports a refused receipt because the head already moved.",
+  "Backups omit promotion receipts.",
+  "A forged baseline replaces a retained one only through the lease holder, per decision 16.2-9.",
+  "A local deployment refuses both commands with ErrBaselinePromotionFleetOnly. The commands require Valkey and PostgreSQL storage."
+ ],
+ "unverified": [
+  "Production-composition replay against a real multi-gateway fleet.",
+  "Upstream permission refresh of an online observer that requires authority.",
+  "goago is not declared in the Starport go.mod, so the goago check did not run."
+ ],
+ "implementer_checks": {
+  "catalog_race_subset": "ok 1445.8 s, 18 PASS 2 SKIP",
+  "fixture_wrapper": "TestBaselineObserverReadsReadOnlyStorage and TestFleetRuntimeRollbackKeepsPromotedBaseline PASS with the Valkey and PostgreSQL fixtures",
+  "app": "ok 625.2 s with -race",
+  "cli_and_cmd": "ok without race",
+  "verify_v1_architecture": "11 of 11",
+  "verify_starmap_ownership": "12 of 12",
+  "verify_doc_links": "PASS"
+ },
+ "lead_review": "Fable 5.1 read promotion_request.go, baseline_promotion.go, baseline_observer.go, app/catalog_promotion.go, and cli/catalog.go in full. No defect found.",
+ "structured_review": "autoreview --gate pre-pr --mode auto at 900a1c3d (0.95) and again at 678b30b4 after the rebase and fixes: profile auto, reviewer codex gpt-6.1-sol high, trufflehog clean, patch correct 0.96, no P0 findings, attestation stored. Third run at cfeb79fd after the rebase onto c99f0f09 and the template fix: profile auto, reviewer codex gpt-6.1-sol high, trufflehog clean, patch correct 0.9, no P0 findings, attestation stored. Fourth run at 27ddd7f5 after the harness fix: profile auto, reviewer codex gpt-6.1-sol high, trufflehog clean, patch correct 0.94, no P0 findings, attestation stored. Fifth run at 3cd87897: workflow-only change, attestation reuse.",
+ "roster": "Starport pre-PR roster at 900a1c3d: every script exit 0, go test 1034 s, goago exit 2 (tool not declared).",
+ "ci_findings_at_900a1c3d": [
+  "Catalog Fleet Recovery: the package stopped at the 7 m test budget during TestFleetRuntimeRollbackKeepsPromotedBaseline. The package used 336 s on main and the promotion, rollback, and observer tests add about 430 s under the race detector. Fix: the fleet catalog step budget is 20 m (commit cdf7fa94 before the rebase).",
+  "Test (windows-11-arm): TestBaselineObserverWritesNothingBesideALiveLeader read state/.owner.lock while the live leader held the Starmap runtime directory lock. Windows locks the file range for every other process. Fix: the snapshot records .owner.lock by metadata only (commit 5980f628 before the rebase)."
+ ],
+ "rebase": "Rebased onto main 9df4fb6f (after Starport #406) with one docs/TASKS.md conflict resolved by keeping both task lines. Head 678b30b4 after the 20 minute budget amendment.",
+ "local_fleet_run_after_rebase": "go test -race with the real fixtures on ./internal/catalog ./internal/recovery ./internal/storage for the CI fleet selection plus TestBaselineObserver: 56 top-level tests pass, catalog package 893.9 s, rollback test 206.2 s, promotion head test 112.2 s. The CI selection without the observer tests is about 547 s locally.",
+ "ci_findings_at_678b30b4": [
+  "Test (every matrix platform): ./internal/catalog stopped at the 30 m package budget after 151 tests and 1661 s. The 12 new promotion and observer tests took 88 s to 160 s each on the Ubuntu runner (sum about 1529 s) because each promotable memory fleet opened a runtime over the full 618-model embedded catalog under the race detector. Fix: the harness builds the forged older baseline once per package and clones the store per test (commit c801f3c0 before the rebase); the catalog step budget is 45 m (commit 8e22a738 before the rebase).",
+  "Durable Work Recovery: the MinIO health check failed to connect to 127.0.0.1 port 9000 once. The step is rerun at the new head. The fix is not a source change."
+ ],
+ "template_fix_measurement": "Local race run of ^(TestPromotion|TestFleetPromotion|TestBaselineObserver|TestStartedLeader|TestLeaseRenewal) after the template fix: 18 top-level tests pass, 1 skip without fixtures, 0 failures, package 920.5 s. TestPromotionRequestLifetime 50.2 s (104.8 s before the fix). No-race profile before the fix: retainOlderBaseline took 54 percent of promotableFleet.",
+ "template_fix_controls": "The template asserts an empty local key-value store and no lifetime-bound key. Each promotable fleet gets a cloned incarnation store, a fresh MockStore, and a copied witness. Every assertion of the promotion and observer tests is unchanged.",
+ "rebase_2": "Rebased onto main c99f0f09 (after Starport #408) without conflict. 21 commits. Head cfeb79fd. make lint 0 issues, go build and go vet ok.",
+ "ci_findings_at_cfeb79fd": [
+  "Test (windows-2025), run 37118322369: TestPromotionRequestLeaseLossLeavesTheRequest passed every assertion and then failed in the TempDir cleanup because state/.owner.lock was still open. Starmap Runtime.Close joins its shutdown for 5 s (closeJoinTimeout) and returns a typed TimeoutError while the cancelled work and the directory release continue. The harness cleanup discarded that error, and Windows refuses to remove a locked file. Unix unlinks an open file, so only Windows reports it. Fix: the harness cleanup closeRuntimeDirectory waits after a TimeoutError until the .owner.lock flock is free, bounded by promotionRunTimeout, and fails the test when the lock stays held. No assertion changed.",
+  "Every other job passed at cfeb79fd: Test ubuntu-24.04 89.7 min, ubuntu-24.04-arm 75.8 min, macos-15 101 min, windows-11-arm, Catalog Fleet Recovery, Durable Work Recovery, Release Snapshot, Security Scan, Action Pin Provenance. Build was skipped because the matrix failed."
+ ],
+ "harness_fix": "Commit 27ddd7f5: closeRuntimeDirectory waits for the .owner.lock release after a Starmap close timeout. Local race run of TestPromotionRequestLeaseLossLeavesTheRequest and TestBaselineObserverReadsWithoutTheLease: ok 213.6 s. make lint 0 issues. A throwaway check proved in-process flock contention with gofrs/flock v0.13.1 on darwin. CI run 37125146156 at 27ddd7f5 carries the Windows evidence.",
+ "ci_findings_at_27ddd7f5": {
+  "run": 37125146156,
+  "windows_2025": "Test (windows-2025) passed. One bounded Close wait in TestPromotionRequestLeaseLossLeavesTheRequest added 4 s. The .owner.lock finding is closed.",
+  "macos_15": "Test (macos-15) failed: internal/catalog exceeded the 45-minute package budget (2700.4 s). The package measured 2436.7 s on the previous green macOS run and 2449.5 s on windows-2025 in this run. One bounded Close wait added 4 s. The slowdown is runner variance across the promotion tests (for example TestFleetPromotionAdvancesHeadWithIncreasingRevision 98 s to 150 s). No test failed on its own.",
+  "other_jobs": "Every other completed job passed. Test (ubuntu-24.04) was in progress when the push superseded the run.",
+  "fix": "Commit 3cd87897 raises the catalog package budget in the native suite from 45 to 60 minutes. Individual contract deadlines are unchanged.",
+  "evidence": [
+   "csp162-macos-evidence/tests.jsonl",
+   "csp162-macos-prev/tests.jsonl",
+   "csp162-native-catalog-windows-2025/tests.jsonl"
+  ]
+ },
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "2975ce28a1e54c49b8983ccdb27aeada023127530ee39467b49ec8282b46ca16",
+   "gzip_sha256": "351e6c9d15369a55f94853f5058b00104ec91de122f423b93dd60068d303cfb6"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "9425d0f66050c46979177980d19b24f6bb4915cd500e0acfdbb9ca02956d8f5e",
+   "gzip_sha256": "0ab61d2bfabf1d54ac0616d1d170839bf180def193bf885e87ca2893deac6102"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "e6481552902fa3b2e028302b58d784b95d420c3caf0daef225a45a8e5e568ad4",
+   "gzip_sha256": "48aa7a95a727a7cc7834ad22e59f2580b982a4832592136308665e0ebebe223a"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
