@@ -1,6 +1,6 @@
 # CSP17 decisions
 
-Date: 2026-10-03. Decisions 17-1, 17-2, and 17-4 are engineering interpretations inside the accepted task scope.
+Date: 2026-10-03. Decisions 17-1, 17-2, and 17-4 are interpretations inside the accepted task scope.
 Decision 17-3 is an owner decision. The owner can reverse any of them before the final acceptance run.
 
 | ID | Decision | Reason and consequence |
