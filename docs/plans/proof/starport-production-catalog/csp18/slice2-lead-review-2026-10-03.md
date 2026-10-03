@@ -55,6 +55,22 @@ Checks at `703d2988`:
 - `verify-release-binaries.sh dist` and `verify-release-archives.sh dist`: PASS, 5 archives, 5 SBOMs, the docs archive, and the checksum manifest.
 - `verify-release-workflow`, `verify-doc-links`, `verify-console-polish`, `verify-v1-architecture`, `verify-package-layout`, and `verify-starmap-ownership`: exit 0.
 
+## Rebase onto main
+
+After the slice 1 squash merge at `e7a58541`, the lead moved the branch onto `main` with `git rebase --onto`. The result is `b5e24637` with 6 commits and no content change against `703d2988`. Draft PR #410 opened at `b5e24637`.
+
+Checks at `b5e24637`:
+
+- The pre-PR roster passed with 35 checks. The check `goago` has its usual exit 2 and the other 34 have exit 0. The full `go test ./...` took 991 s. The head stayed unchanged and clean.
+- Structured review (Sol 6.1 high): no findings, patch correct 0.97.
+- CI run 37136565909: the `Security Scan` job failed. The other jobs stayed green while the run continued.
+
+## Finding 6: gosec file modes
+
+The `Security Scan` job runs gosec 2.29.0. It reported G301 and G306 in `scripts/docsgen/main.go` for the 0755 directory and the 0644 files. The generator writes committed documentation source, so the modes are correct. The lead added two `#nosec` comments with the reason, in the style of `internal/cli/docs.go`. The fix is `feb5934a`. The diff holds comments only, so the roster at `b5e24637` still covers the behavior. The lead reran `gofmt`, `go build ./...`, gosec on the touched packages, `make lint`, and the generator at `feb5934a`, all with exit 0 and no stale page.
+
+The structured review at `feb5934a` reported no findings, patch correct 0.98. CI run 37138162238 started at `feb5934a`.
+
 ## Result
 
-Accepted at `703d2988` on top of slice 1. After the slice 1 squash merge, the branch moves onto `main` with `git rebase --onto`. The roster, the structured review, and the pull request follow on `main`.
+Accepted at `feb5934a`. PR #410 merges at that head when CI run 37138162238 completes green. The merge record follows in `starport410-merge-2026-10-03/`.
