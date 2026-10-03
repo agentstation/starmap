@@ -764,6 +764,7 @@ func main() {
   - [func \(g Generation\) SemanticChecksum\(\) \(string, error\)](<#Generation.SemanticChecksum>)
   - [func \(g Generation\) Validate\(\) error](<#Generation.Validate>)
 - [type GenerationCompleteness](<#GenerationCompleteness>)
+- [type GenerationIdentity](<#GenerationIdentity>)
 - [type GenerationManifest](<#GenerationManifest>)
   - [func ParseGenerationManifestJSON\(data \[\]byte\) \(GenerationManifest, error\)](<#ParseGenerationManifestJSON>)
   - [func \(m GenerationManifest\) Copy\(\) GenerationManifest](<#GenerationManifest.Copy>)
@@ -3243,7 +3244,7 @@ func DecodeBootstrapGeneration(bootstrap BootstrapManifest, payload, data []byte
 DecodeBootstrapGeneration verifies retained generation evidence against the bootstrap identity and payload.
 
 <a name="Generation.Copy"></a>
-### func \(Generation\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L12>)
+### func \(Generation\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L18>)
 
 ```go
 func (g Generation) Copy() Generation
@@ -3252,7 +3253,7 @@ func (g Generation) Copy() Generation
 Copy returns a generation that does not share mutable slices with g.
 
 <a name="Generation.SemanticChecksum"></a>
-### func \(Generation\) [SemanticChecksum](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L35>)
+### func \(Generation\) [SemanticChecksum](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L41>)
 
 ```go
 func (g Generation) SemanticChecksum() (string, error)
@@ -3261,7 +3262,7 @@ func (g Generation) SemanticChecksum() (string, error)
 SemanticChecksum identifies catalog facts and effective scope state. It excludes field provenance. A scope evidence renewal changes this identity. The publisher keys the immutable release tag and the channel catalog digest by this value. The exact payload checksum stays in the manifest.
 
 <a name="Generation.Validate"></a>
-### func \(Generation\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L20>)
+### func \(Generation\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L26>)
 
 ```go
 func (g Generation) Validate() error
@@ -3288,6 +3289,18 @@ const (
     // absent. The generation must also have a degraded status.
     GenerationCompletenessPartial GenerationCompleteness = "partial"
 )
+```
+
+<a name="GenerationIdentity"></a>
+## type [GenerationIdentity](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L12-L15>)
+
+GenerationIdentity names one immutable generation by its ID and exact payload checksum.
+
+```go
+type GenerationIdentity struct {
+    GenerationID    string `json:"generation_id"`
+    PayloadChecksum string `json:"payload_checksum"`
+}
 ```
 
 <a name="GenerationManifest"></a>

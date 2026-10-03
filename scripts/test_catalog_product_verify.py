@@ -63,7 +63,7 @@ class CatalogVerifierTests(unittest.TestCase):
         report = json.loads(output.getvalue())
         self.assertEqual(report['summary'], 'Summary: 0 passed, 50 failed')
         self.assertEqual(report['unverified_cases'], 50)
-        self.assertEqual(report['selected_subcases'], 326)
+        self.assertEqual(report['selected_subcases'], 331)
 
     def test_catalog_isolation_does_not_qualify_all_gateway_records(self):
         catalog = {"A41.catalog_fleet_deployment_isolation", "A41.catalog_fleet_atomic_layout"}
@@ -1349,6 +1349,42 @@ class RecoveryRegistrationTests(unittest.TestCase):
                                  'TestAdminConfigSaveReportsStaleLocalRevision': './internal/server',
                                  'TestSharedConfigurationSaveRefusesStaleRevision': './internal/app',
                                  'TestAdminConfigSaveReportsStaleSharedRevision': './internal/server'})
+
+    def test_baseline_promotion_registers_every_subcase(self):
+        identities = ('A14.explicit_baseline_promotion', 'A14.promotion_exact_retry',
+                      'A14.promotion_preserves_pins_and_authority',
+                      'A14.software_rollback_keeps_promoted_baseline', 'A14.promotion_request_path_memory')
+        args = argparse.Namespace(task='CSP16.2', gate=None, case=None, released_assets=False,
+                                  recipes=False, backends='all')
+        self.assertEqual(set(verifier.select_checks(args, self.roster)), set(identities))
+        for identity in identities:
+            with self.subTest(identity=identity):
+                self.assertIn(identity, self.roster['required_subcases']['A14'])
+                self.assertIn(identity, self.roster['task_checks']['CSP22'])
+                self.assertIn(identity, self.roster['subcase_contracts'])
+                entry, _ = verifier.registered_check(args, self.registry, identity)
+                self.assertIsNotNone(entry)
+                leaves = self.leaves(identity)
+                self.assertTrue(leaves)
+                self.assertTrue(all(leaf['kind'] == 'go_test' for leaf in leaves))
+        starmap = {leaf['test'] for identity in identities for leaf in self.leaves(identity)
+                   if leaf['repository'] == 'starmap'}
+        self.assertEqual(starmap, {
+            'TestPromoteEmbeddedBaselineAdoptsPackagedBaselineUnderLease',
+            'TestFleetReplayRestoresPromotedBaseline',
+            'TestPromoteEmbeddedBaselineRefusesStaleHeadAndEqualBaseline',
+            'TestPromoteEmbeddedBaselineRefusesPinnedGeneration',
+            'TestPromoteEmbeddedBaselineRefusesConfiguredAuthority',
+            'TestPromoteEmbeddedBaselineRetainsInertRemovalTargets',
+            'TestFleetReplayAfterPromotionIgnoresOlderPackagedBaseline',
+            'TestFleetRecoveryRefusesUnsupportedRecordVersion',
+        })
+        # A14 is a candidate case, so CSP22 must hold all of its subcases.
+        self.assertIn('A14', self.roster['qualification']['candidate_required_primary_cases'])
+        self.assertLessEqual(set(self.roster['required_subcases']['A14']), set(self.roster['task_checks']['CSP22']))
+        self.roster['task_checks']['CSP22'].remove('A14.explicit_baseline_promotion')
+        with self.assertRaises(ValueError):
+            verifier.validate_roster(self.roster)
 
     def test_multi_process_real_backend_tests_declare_separate_ten_minute_budgets(self):
         # Starport CI bounds each TestProductionBudgetAcrossProcesses scenario at seven minutes, and the

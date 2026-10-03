@@ -8644,6 +8644,129 @@
           "timeout": "5m"
         }
       ]
+    },
+    "A14.explicit_baseline_promotion": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestPromoteEmbeddedBaselineAdoptsPackagedBaselineUnderLease",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetReplayRestoresPromotedBaseline",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetPromotionAdvancesHeadWithIncreasingRevision",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A14.promotion_exact_retry": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestPromoteEmbeddedBaselineRefusesStaleHeadAndEqualBaseline",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestPromotionExactRetryReturnsOriginalReceipt",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestPromotionRefusesReusedOperationID",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestCatalogPromoteBaselineCommandReportsReceipt",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A14.promotion_preserves_pins_and_authority": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestPromoteEmbeddedBaselineRefusesPinnedGeneration",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestPromoteEmbeddedBaselineRefusesConfiguredAuthority",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestPromoteEmbeddedBaselineRetainsInertRemovalTargets",
+          "timeout": "5m"
+        }
+      ]
+    },
+    "A14.software_rollback_keeps_promoted_baseline": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetReplayAfterPromotionIgnoresOlderPackagedBaseline",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestFleetRecoveryRefusesUnsupportedRecordVersion",
+          "timeout": "5m"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestFleetRuntimeRollbackKeepsPromotedBaseline",
+          "timeout": "10m"
+        }
+      ]
+    },
+    "A14.promotion_request_path_memory": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogPromotionKeepsRequestPathInMemory",
+          "timeout": "5m"
+        }
+      ]
     }
   },
   "task_component_checks": {

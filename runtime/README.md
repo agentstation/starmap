@@ -92,6 +92,9 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type AcquisitionReport](<#AcquisitionReport>)
 - [type AcquisitionRequest](<#AcquisitionRequest>)
 - [type AcquisitionResult](<#AcquisitionResult>)
+- [type BaselinePromotion](<#BaselinePromotion>)
+- [type BaselinePromotionResult](<#BaselinePromotionResult>)
+- [type BaselineStatus](<#BaselineStatus>)
 - [type BindingAcquirer](<#BindingAcquirer>)
 - [type CapturedCatalogBinding](<#CapturedCatalogBinding>)
 - [type CapturedCatalogRecovery](<#CapturedCatalogRecovery>)
@@ -260,6 +263,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(r \*Runtime\) AcquisitionSources\(\) \(\[\]sources.ID, bool\)](<#Runtime.AcquisitionSources>)
   - [func \(r \*Runtime\) AllowsCatalogAttempt\(head catalogs.CatalogAuthorityHead\) bool](<#Runtime.AllowsCatalogAttempt>)
   - [func \(r \*Runtime\) AllowsNewAttempt\(\) bool](<#Runtime.AllowsNewAttempt>)
+  - [func \(r \*Runtime\) BaselineStatus\(\) \(BaselineStatus, bool\)](<#Runtime.BaselineStatus>)
   - [func \(r \*Runtime\) Catalog\(\) \*catalogs.Catalog](<#Runtime.Catalog>)
   - [func \(r \*Runtime\) Client\(\) \*starmap.Client](<#Runtime.Client>)
   - [func \(r \*Runtime\) Close\(\) error](<#Runtime.Close>)
@@ -272,6 +276,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(r \*Runtime\) PermissionClockStatus\(\) permission.ClockMonitorStatus](<#Runtime.PermissionClockStatus>)
   - [func \(r \*Runtime\) PinAcceptance\(\) \(GenerationPinAcceptance, bool\)](<#Runtime.PinAcceptance>)
   - [func \(r \*Runtime\) PreviewAcquisition\(ctx context.Context, prepare func\(context.Context, ObservationInputs\) \(ObservationUpdate, error\), requestedSources ...sources.ID\) \(starmap.CatalogState, error\)](<#Runtime.PreviewAcquisition>)
+  - [func \(r \*Runtime\) PromoteEmbeddedBaseline\(ctx context.Context, request BaselinePromotion\) \(BaselinePromotionResult, error\)](<#Runtime.PromoteEmbeddedBaseline>)
   - [func \(r \*Runtime\) PublishObservations\(ctx context.Context, observations ...sources.Observation\) \(starmap.CatalogState, error\)](<#Runtime.PublishObservations>)
   - [func \(r \*Runtime\) ReadPermission\(ctx context.Context\) \(catalogs.CatalogPermissionEnvelope, error\)](<#Runtime.ReadPermission>)
   - [func \(r \*Runtime\) Refresh\(ctx context.Context\) \(RefreshReport, error\)](<#Runtime.Refresh>)
@@ -796,6 +801,60 @@ type AcquisitionResult struct {
 
     // Layers holds one successful observation per provider or binding.
     Layers []ProviderLayer
+}
+```
+
+<a name="BaselinePromotion"></a>
+## type [BaselinePromotion](<https://github.com/agentstation/starmap/blob/main/runtime/baseline_promotion.go#L51-L56>)
+
+BaselinePromotion selects the packaged baseline at one observed fleet head.
+
+```go
+type BaselinePromotion struct {
+    // ExpectedHead is the accepted publication that the operator reviewed.
+    ExpectedHead FleetHead
+    // PackagedGenerationID must name the embedded baseline of this binary.
+    PackagedGenerationID string
+}
+```
+
+<a name="BaselinePromotionResult"></a>
+## type [BaselinePromotionResult](<https://github.com/agentstation/starmap/blob/main/runtime/baseline_promotion.go#L59-L69>)
+
+BaselinePromotionResult describes one accepted baseline promotion.
+
+```go
+type BaselinePromotionResult struct {
+    // Head is the fleet publication that retains the promoted baseline.
+    Head FleetHead
+    // Previous identifies the retained baseline before promotion.
+    Previous catalogs.GenerationIdentity
+    // Promoted identifies the packaged baseline that the fleet now retains.
+    Promoted catalogs.GenerationIdentity
+    // InertRemovals lists retained removal targets that match nothing in the promoted catalog.
+    // They stay recorded until an explicit removal edit replaces them.
+    InertRemovals []catalogs.CatalogRemovalTarget
+}
+```
+
+<a name="BaselineStatus"></a>
+## type [BaselineStatus](<https://github.com/agentstation/starmap/blob/main/runtime/baseline_promotion.go#L19-L31>)
+
+BaselineStatus compares this binary's packaged baseline with the fleet's retained baseline.
+
+```go
+type BaselineStatus struct {
+    // Packaged identifies the embedded baseline compiled into this binary.
+    Packaged catalogs.GenerationIdentity
+    // Retained identifies the baseline that the accepted fleet publication replays.
+    Retained catalogs.GenerationIdentity
+    // Head is the accepted fleet publication that this replica observed.
+    Head FleetHead
+    // Promotable reports whether PromoteEmbeddedBaseline can adopt Packaged at Head.
+    // It does not establish lease ownership.
+    Promotable bool
+    // Refusal explains why promotion is unavailable. It is empty when Promotable is true.
+    Refusal string
 }
 ```
 
@@ -1470,7 +1529,7 @@ func (p FleetPublication) ValidateRefreshPublication() error
 ValidateRefreshPublication refuses recovery imports through the ordinary refresh commit path. The backend must still compare the original live grant, expiry, approved identity, and head atomically.
 
 <a name="FleetRecovery"></a>
-## type [FleetRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L26-L31>)
+## type [FleetRecovery](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L27-L32>)
 
 FleetRecovery binds private acquisition inputs to one immutable generation. Stores retain these bytes with the generation and never expose them as public catalog data. The runtime owns the encoding. Hosts preserve the bytes without modification.
 
@@ -1484,7 +1543,7 @@ type FleetRecovery struct {
 ```
 
 <a name="FleetRecovery.Validate"></a>
-### func \(FleetRecovery\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L35>)
+### func \(FleetRecovery\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/fleet_recovery.go#L36>)
 
 ```go
 func (r FleetRecovery) Validate(generation catalogs.Generation) error
@@ -2685,6 +2744,15 @@ func (r *Runtime) AllowsNewAttempt() bool
 
 AllowsNewAttempt checks current catalog permission using memory only. Call it for every new attempt, including retries and cached response delivery. It does not replace model, destination, account, or budget authorization.
 
+<a name="Runtime.BaselineStatus"></a>
+### func \(\*Runtime\) [BaselineStatus](<https://github.com/agentstation/starmap/blob/main/runtime/baseline_promotion.go#L35>)
+
+```go
+func (r *Runtime) BaselineStatus() (BaselineStatus, bool)
+```
+
+BaselineStatus returns the packaged and retained baselines without a storage operation. It returns false when the runtime has no fleet store.
+
 <a name="Runtime.Catalog"></a>
 ### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L279>)
 
@@ -2792,6 +2860,15 @@ func (r *Runtime) PreviewAcquisition(ctx context.Context, prepare func(context.C
 ```
 
 PreviewAcquisition computes an acquisition against one captured runtime snapshot. It writes no catalog, workspace, or runtime state. The callback owns source reads. requestedSources has the same access contract as UpdateAcquisition.
+
+<a name="Runtime.PromoteEmbeddedBaseline"></a>
+### func \(\*Runtime\) [PromoteEmbeddedBaseline](<https://github.com/agentstation/starmap/blob/main/runtime/baseline_promotion.go#L76>)
+
+```go
+func (r *Runtime) PromoteEmbeddedBaseline(ctx context.Context, request BaselinePromotion) (BaselinePromotionResult, error)
+```
+
+PromoteEmbeddedBaseline makes this binary's packaged baseline the fleet's retained baseline. It runs under the publication lease and publishes one revision after ExpectedHead. Retained source, provider, manual, and removal inputs stay unchanged. It refuses a stale head, a different packaged generation, an equal baseline, a generation pin, and a configured source authority. The caller authorizes the operator action.
 
 <a name="Runtime.PublishObservations"></a>
 ### func \(\*Runtime\) [PublishObservations](<https://github.com/agentstation/starmap/blob/main/runtime/manual_observation.go#L93>)
