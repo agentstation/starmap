@@ -73,4 +73,4 @@ The structured review at `feb5934a` reported no findings, patch correct 0.98. CI
 
 ## Result
 
-Accepted at `feb5934a`. PR #410 merges at that head when CI run 37138162238 completes green. The merge record follows in `starport410-merge-2026-10-03/`.
+Accepted at `feb5934a`. CI run 37138162238 failed once in `Test (ubuntu-24.04)` on `TestDevelopmentScratchExcludesLiveProcessAndRecoversKilledProcess`, a scratch-lifetime test that the slice does not touch. The lead reran the failed job, and the run completed green with 42 of 42 jobs. PR #410 merged as `ce1107d7` at the exact head on 2026-10-03, with the reviewed tree equal to the merge tree. The merge record is `starport410-merge-2026-10-03/`.
