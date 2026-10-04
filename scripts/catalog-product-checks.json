@@ -9479,6 +9479,20 @@
           "evidence": "install"
         }
       ]
+    },
+    "R01": {
+      "kind": "rehearsal_demo",
+      "repository": "starport",
+      "task": "CSP21",
+      "manifest": "docs/assets/starport-demo.json",
+      "mode": "record"
+    },
+    "R02": {
+      "kind": "rehearsal_demo",
+      "repository": "starport",
+      "task": "CSP21",
+      "manifest": "docs/assets/starport-demo.json",
+      "mode": "verifier"
     }
   },
   "task_component_checks": {
