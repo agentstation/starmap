@@ -335,6 +335,8 @@ def run_check(identity, entry, roots, go_evidence=None):
         return reviewed_first_use(entry, roots)
     if entry.get("kind") == "reviewed_demo":
         return reviewed_demo(entry, roots)
+    if entry.get("kind") == "rehearsal_demo":
+        return rehearsal_demo(entry, roots)
     if entry.get("kind") == "performance_baseline":
         return run_performance_baseline(entry, roots)
     if entry.get("kind") == "performance_profile":
@@ -500,6 +502,160 @@ def reviewed_demo(entry, roots):
         return checked
     except (OSError, ValueError, KeyError, TypeError, IndexError) as error:
         return {"status": "UNVERIFIED", "reason": str(error)}
+
+
+REHEARSAL_OUTPUTS = ("first-use.gif", "poster.png", "events.json", "render.json", "TRANSCRIPT.md")
+REHEARSAL_VERIFIER = "scripts/verify-readme-demo.sh"
+REHEARSAL_VERIFIER_CHECKS = (
+    "output_hashes", "gif_dimensions", "gif_budget", "effective_font", "scene_order", "catalog_keyless",
+    "answer_stream", "cuts_outside_inference", "uncut_source", "no_fixture_token", "poster_dimensions",
+    "transcript_fixtures", "human_review", "readme_not_linking_rehearsal", "invalidation")
+REHEARSAL_VERIFIER_TIMEOUT_SECONDS = 300
+
+
+def rehearsal_demo(entry, roots):
+    """Check the candidate rehearsal that the Starport demonstration manifest names.
+
+    An absent repository or manifest gives UNVERIFIED because no rehearsal exists yet.
+    After the manifest exists, every claim in it must hold, and a broken claim gives FAIL.
+    """
+    root = roots.get(entry.get("repository"))
+    if root is None:
+        return {"status": "UNVERIFIED", "reason": "The Starport repository is unavailable."}
+    try:
+        manifest_path = contained_path(root, entry["manifest"])
+    except (KeyError, TypeError, ValueError):
+        return {"status": "FAIL", "reason": "The rehearsal check needs a manifest inside the repository."}
+    if not manifest_path.is_file():
+        return {"status": "UNVERIFIED", "reason": f"The demonstration manifest is absent: {entry['manifest']}"}
+    if entry.get("mode") == "record":
+        return rehearsal_record(root, manifest_path)
+    if entry.get("mode") == "verifier":
+        return rehearsal_verifier(root, entry["manifest"])
+    return {"status": "FAIL", "reason": "Unknown rehearsal check mode."}
+
+
+def rehearsal_identity(value):
+    return (isinstance(value, str) and bool(value.strip())) or (type(value) is int and value > 0)
+
+
+def validate_rehearsal_record(record, scenes):
+    if record.get("kind") != "rehearsal":
+        raise ValueError("The rehearsal record must have kind rehearsal.")
+    if record.get("qualifies_release_cases") is not False:
+        raise ValueError("A rehearsal record cannot qualify release cases.")
+    candidate = record.get("candidate")
+    if not isinstance(candidate, dict) or candidate.get("source") != "ci-run":
+        raise ValueError("The rehearsal candidate must come from a CI run.")
+    for name in ("run_id", "pull_request", "snapshot_version", "archive_name"):
+        if not rehearsal_identity(candidate.get(name)):
+            raise ValueError(f"The rehearsal candidate omits {name}.")
+    if not isinstance(candidate.get("head_commit"), str) or not re.fullmatch(r"[0-9a-f]{40}", candidate["head_commit"]):
+        raise ValueError("The rehearsal candidate needs a 40-character head commit.")
+    for name in ("archive_sha256", "binary_sha256"):
+        if not isinstance(candidate.get(name), str) or not re.fullmatch(r"[0-9a-f]{64}", candidate[name]):
+            raise ValueError(f"The rehearsal candidate needs a SHA-256 {name}.")
+    fixtures = record.get("fixtures")
+    if not isinstance(fixtures, list) or not fixtures:
+        raise ValueError("The rehearsal record must disclose its fixtures.")
+    cuts = record.get("cuts")
+    if not isinstance(cuts, list) or not cuts:
+        raise ValueError("The rehearsal record must name at least one cut.")
+    for cut in cuts:
+        boundary = cut.get("boundary") if isinstance(cut, dict) else None
+        parts = boundary.split("/") if isinstance(boundary, str) else []
+        if len(parts) != 2 or not all(part in scenes for part in parts):
+            raise ValueError(f"A rehearsal cut has no scene boundary: {boundary!r}")
+
+
+def rehearsal_record(root, manifest_path):
+    """Require an identified, disclosed candidate rehearsal whose retained files match their hashes."""
+    try:
+        manifest = read_json(manifest_path)
+        scenes = manifest.get("scenes")
+        directory = manifest.get("current_rehearsal")
+        if (not isinstance(scenes, list) or not scenes or not all(isinstance(scene, str) for scene in scenes)
+                or not isinstance(directory, str) or not directory):
+            raise ValueError("The demonstration manifest must name its scenes and current rehearsal.")
+        record_directory = contained_path(root, directory)
+        record_path = contained_path(record_directory, "record.json")
+        if not record_path.is_file():
+            raise ValueError(f"The current rehearsal has no record: {directory}/record.json")
+        record = read_json(record_path)
+        if not isinstance(record, dict):
+            raise ValueError("The rehearsal record must be a JSON object.")
+        validate_rehearsal_record(record, scenes)
+        outputs = record.get("outputs")
+        if not isinstance(outputs, dict) or not set(REHEARSAL_OUTPUTS) <= outputs.keys():
+            raise ValueError("The rehearsal record omits a required output.")
+        uncut = record.get("uncut")
+        if not isinstance(uncut, dict) or not isinstance(uncut.get("path"), str) or not uncut["path"]:
+            raise ValueError("The rehearsal record must name its uncut source.")
+        for name, output in [*outputs.items(), (uncut["path"], uncut)]:
+            path = contained_path(record_directory, name)
+            if not path.is_file():
+                raise ValueError(f"A rehearsal file is absent: {name}")
+            if not isinstance(output, dict) or output.get("sha256") != hashlib.sha256(path.read_bytes()).hexdigest():
+                raise ValueError(f"A rehearsal file does not match its recorded hash: {name}")
+        candidate = record["candidate"]
+        return {"status": "PASS", "reason": "The current rehearsal record is an identified, disclosed candidate rehearsal.",
+                "record": str(record_path), "record_sha256": hashlib.sha256(record_path.read_bytes()).hexdigest(),
+                "candidate_head": candidate["head_commit"], "run_id": candidate["run_id"],
+                "scope": "Candidate rehearsal identity and retained file hashes. It cannot qualify final release cases."}
+    except json.JSONDecodeError:
+        return {"status": "FAIL", "reason": "The demonstration manifest or rehearsal record contains invalid JSON."}
+    except UnicodeError:
+        return {"status": "FAIL", "reason": "The demonstration manifest or rehearsal record contains invalid text."}
+    except ValueError as error:
+        return {"status": "FAIL", "reason": str(error)}
+    except (OSError, AttributeError, TypeError) as error:
+        return {"status": "FAIL", "reason": f"The rehearsal record cannot be read: {type(error).__name__}"}
+
+
+def rehearsal_report(stdout):
+    """Parse the JSON document that ends the demonstration verifier output."""
+    try:
+        return json.loads(stdout)
+    except json.JSONDecodeError:
+        return json.loads(stdout[stdout.rfind("\n{") + 1:])
+
+
+def rehearsal_verifier(root, manifest):
+    """Run the Starport demonstration verifier and require a complete passing report."""
+    if not (root / REHEARSAL_VERIFIER).is_file():
+        return {"status": "FAIL", "reason": f"The demonstration verifier is absent: {REHEARSAL_VERIFIER}"}
+    command = ["bash", REHEARSAL_VERIFIER, "--manifest", manifest, "--json"]
+    try:
+        result = subprocess.run(command, cwd=root, capture_output=True, text=True,
+                                timeout=REHEARSAL_VERIFIER_TIMEOUT_SECONDS)
+    except (OSError, subprocess.TimeoutExpired) as error:
+        return {"status": "UNVERIFIED", "reason": f"The demonstration verifier did not complete: {type(error).__name__}",
+                "command": command, "cwd": str(root)}
+    evidence = {"command": command, "cwd": str(root), "exit_code": result.returncode, "stderr": result.stderr}
+    try:
+        report = rehearsal_report(result.stdout)
+        if not isinstance(report, dict) or not isinstance(report.get("checks"), list):
+            raise ValueError
+    except ValueError:
+        return {"status": "FAIL", "reason": "The demonstration verifier printed no valid JSON report.",
+                "stdout": result.stdout, **evidence}
+    evidence.update(report=report, checks=report["checks"])
+    status = report.get("status")
+    checks = [check if isinstance(check, dict) else {} for check in report["checks"]]
+    failed = sorted(str(check.get("id")) for check in checks if check.get("status") != "PASS")
+    if result.returncode == 2 or status == "INVALID":
+        return {"status": "FAIL", "reason": "The demonstration verifier reports INVALID: "
+                "a product path changed after the candidate head.", **evidence}
+    if result.returncode != 0 or status != "PASS":
+        return {"status": "FAIL", "reason": f"The demonstration verifier reports {status} with exit code "
+                f"{result.returncode}. Failed checks: {', '.join(failed) or 'none named'}.", **evidence}
+    missing = sorted(set(REHEARSAL_VERIFIER_CHECKS) - {str(check.get("id")) for check in checks})
+    if failed or missing:
+        return {"status": "FAIL", "reason": "The demonstration verifier report is incomplete. "
+                f"Failed checks: {', '.join(failed) or 'none'}. Missing checks: {', '.join(missing) or 'none'}.", **evidence}
+    return {"status": "PASS", "reason": "The demonstration verifier passed every required check in this invocation.",
+            "scope": "Candidate rehearsal media and invalidation checks. It cannot qualify final release cases.",
+            **evidence}
 
 
 def reviewed_first_use(entry, roots):

@@ -526,6 +526,188 @@ class DemoReviewTests(unittest.TestCase):
         self.assertEqual(self.check(), 'UNVERIFIED')
 
 
+class RehearsalDemoTests(unittest.TestCase):
+    """Exercise both rehearsal modes against a synthetic Starport tree."""
+
+    MANIFEST = 'docs/assets/starport-demo.json'
+    RECORD = 'docs/proof/readme-demo/rehearsal-2026-10-04'
+
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        self.scenes = ['install', 'catalog', 'setup', 'answer', 'next']
+        self.manifest = {'schema_version': 1, 'scenes': self.scenes, 'current_rehearsal': self.RECORD}
+        self.record_directory = self.root / self.RECORD
+        self.record_directory.mkdir(parents=True)
+        files = {name: name.encode() for name in verifier.REHEARSAL_OUTPUTS + ('first-use-uncut.gif',)}
+        for name, data in files.items():
+            (self.record_directory / name).write_bytes(data)
+        digest = lambda name: hashlib.sha256(files[name]).hexdigest()
+        self.record = {
+            'schema_version': 1, 'kind': 'rehearsal', 'qualifies_release_cases': False,
+            'candidate': {'source': 'ci-run', 'run_id': '37222309299', 'pull_request': 414, 'head_commit': 'a' * 40,
+                          'snapshot_version': 'starport 1.2.1-next', 'archive_name': 'starport_1.2.1_darwin_arm64.tar.gz',
+                          'archive_sha256': 'b' * 64, 'binary_sha256': 'c' * 64, 'release_tag': None},
+            'fixtures': [{'name': 'fixture_upstream', 'role': 'openai-compatible upstream'}],
+            'cuts': [{'boundary': 'install/catalog', 'before_event': 5, 'original_seconds': 40.3, 'rendered_seconds': 8.0}],
+            'outputs': {name: {'sha256': digest(name), 'bytes': len(files[name])} for name in verifier.REHEARSAL_OUTPUTS},
+            'uncut': {'path': 'first-use-uncut.gif', 'sha256': digest('first-use-uncut.gif')}}
+        self.report = {'status': 'PASS', 'manifest': self.MANIFEST, 'record': self.RECORD, 'kind': 'rehearsal',
+                       'candidate_head': 'a' * 40,
+                       'checks': [{'id': name, 'status': 'PASS', 'detail': 'ok'} for name in verifier.REHEARSAL_VERIFIER_CHECKS]}
+        self.exit_code = 0
+
+    def run_mode(self, mode):
+        (self.root / 'docs/assets').mkdir(parents=True, exist_ok=True)
+        (self.root / self.MANIFEST).write_text(json.dumps(self.manifest))
+        (self.record_directory / 'record.json').write_text(json.dumps(self.record))
+        (self.root / 'report.out').write_text(self.report if isinstance(self.report, str) else
+                                             'Human-readable progress\n' + json.dumps(self.report, indent=2) + '\n')
+        entry = {'kind': 'rehearsal_demo', 'repository': 'starport', 'task': 'CSP21', 'manifest': self.MANIFEST, 'mode': mode}
+        return verifier.run_check('R01' if mode == 'record' else 'R02', entry, {'starport': self.root})
+
+    def install_verifier(self):
+        script = self.root / 'scripts/verify-readme-demo.sh'
+        script.parent.mkdir(exist_ok=True)
+        script.write_text('printf "%s\\n" "$PWD" "$@" > arguments.out\ncat report.out\nexit "$(cat exit.code)"\n')
+
+    def run_verifier(self):
+        self.install_verifier()
+        (self.root / 'exit.code').write_text(str(self.exit_code))
+        return self.run_mode('verifier')
+
+    def test_complete_record_passes(self):
+        result = self.run_mode('record')
+        self.assertEqual(result['status'], 'PASS', result)
+        self.assertEqual(result['candidate_head'], 'a' * 40)
+        self.assertIn('cannot qualify final release cases', result['scope'])
+
+    def test_record_refuses_each_unqualified_condition(self):
+        original = self.record
+
+        def mutate(change):
+            record = deepcopy(original)
+            change(record)
+            return record
+        cases = {
+            'kind release': (lambda r: r.update(kind='release'), 'kind rehearsal'),
+            'qualifies release cases': (lambda r: r.update(qualifies_release_cases=True), 'cannot qualify release'),
+            'local source': (lambda r: r['candidate'].update(source='local'), 'CI run'),
+            'missing run id': (lambda r: r['candidate'].pop('run_id'), 'run_id'),
+            'empty archive name': (lambda r: r['candidate'].update(archive_name=' '), 'archive_name'),
+            'boolean pull request': (lambda r: r['candidate'].update(pull_request=True), 'pull_request'),
+            'short head commit': (lambda r: r['candidate'].update(head_commit='a' * 12), 'head commit'),
+            'missing binary hash': (lambda r: r['candidate'].pop('binary_sha256'), 'binary_sha256'),
+            'empty fixtures': (lambda r: r.update(fixtures=[]), 'fixtures'),
+            'empty cuts': (lambda r: r.update(cuts=[]), 'at least one cut'),
+            'unknown scene boundary': (lambda r: r['cuts'][0].update(boundary='install/outro'), 'scene boundary'),
+            'unnamed boundary': (lambda r: r['cuts'][0].update(boundary='install'), 'scene boundary'),
+            'hash mismatch': (lambda r: r['outputs']['poster.png'].update(sha256='0' * 64), 'poster.png'),
+            'missing output': (lambda r: r['outputs'].pop('events.json'), 'required output'),
+            'missing uncut path': (lambda r: r.pop('uncut'), 'uncut source'),
+            'uncut hash mismatch': (lambda r: r['uncut'].update(sha256='0' * 64), 'first-use-uncut.gif'),
+            'escaping output': (lambda r: r['outputs'].update({'../escape.gif': {'sha256': '0' * 64}}), 'inside their repository'),
+        }
+        for name, (change, reason) in cases.items():
+            with self.subTest(name):
+                self.record = mutate(change)
+                result = self.run_mode('record')
+                self.assertEqual(result['status'], 'FAIL', result)
+                self.assertIn(reason, result['reason'])
+        self.record = original
+        self.assertEqual(self.run_mode('record')['status'], 'PASS')
+
+    def test_record_refuses_a_missing_uncut_file(self):
+        (self.record_directory / 'first-use-uncut.gif').unlink()
+        result = self.run_mode('record')
+        self.assertEqual(result['status'], 'FAIL')
+        self.assertIn('absent: first-use-uncut.gif', result['reason'])
+
+    def test_record_refuses_missing_or_invalid_record_after_manifest(self):
+        self.run_mode('record')
+        (self.record_directory / 'record.json').write_text('{')
+        entry = {'kind': 'rehearsal_demo', 'repository': 'starport', 'manifest': self.MANIFEST, 'mode': 'record'}
+        self.assertIn('invalid JSON', verifier.run_check('R01', entry, {'starport': self.root})['reason'])
+        (self.record_directory / 'record.json').unlink()
+        result = verifier.run_check('R01', entry, {'starport': self.root})
+        self.assertEqual(result['status'], 'FAIL')
+        self.assertIn('has no record', result['reason'])
+        self.manifest['current_rehearsal'] = '../outside'
+        result = self.run_mode('record')
+        self.assertEqual(result['status'], 'FAIL')
+
+    def test_absent_repository_or_manifest_is_unverified(self):
+        for mode in ('record', 'verifier'):
+            with self.subTest(mode):
+                entry = {'kind': 'rehearsal_demo', 'repository': 'starport', 'manifest': self.MANIFEST, 'mode': mode}
+                self.assertEqual(verifier.run_check('R01', entry, {})['status'], 'UNVERIFIED')
+                result = verifier.run_check('R01', entry, {'starport': self.root})
+                self.assertEqual(result['status'], 'UNVERIFIED')
+                self.assertIn('manifest is absent', result['reason'])
+
+    def test_unknown_mode_or_escaping_manifest_fails(self):
+        self.assertEqual(self.run_mode('replay')['status'], 'FAIL')
+        entry = {'kind': 'rehearsal_demo', 'repository': 'starport', 'manifest': '../starport-demo.json', 'mode': 'record'}
+        self.assertEqual(verifier.run_check('R01', entry, {'starport': self.root})['status'], 'FAIL')
+
+    def test_passing_verifier_passes_with_its_checks(self):
+        result = self.run_verifier()
+        self.assertEqual(result['status'], 'PASS', result)
+        self.assertEqual(result['checks'], self.report['checks'])
+        self.assertEqual(result['command'], ['bash', 'scripts/verify-readme-demo.sh', '--manifest', self.MANIFEST, '--json'])
+        arguments = (self.root / 'arguments.out').read_text().splitlines()
+        self.assertEqual(Path(arguments[0]).resolve(), self.root.resolve())
+        self.assertEqual(arguments[1:], ['--manifest', self.MANIFEST, '--json'])
+
+    def test_compact_report_without_progress_passes(self):
+        self.report = json.dumps(self.report)
+        self.assertEqual(self.run_verifier()['status'], 'PASS')
+
+    def test_verifier_failures_never_pass(self):
+        failing = deepcopy(self.report)
+        failing['status'] = 'FAIL'
+        failing['checks'][0]['status'] = 'FAIL'
+        invalid = dict(self.report, status='INVALID')
+        incomplete = dict(self.report, checks=self.report['checks'][1:])
+        cases = {
+            'exit 1 with FAIL': (1, failing, 'reports FAIL with exit code 1. Failed checks: output_hashes'),
+            'exit 2 with INVALID': (2, invalid, 'reports INVALID'),
+            'exit 0 with FAIL': (0, dict(failing), 'reports FAIL with exit code 0'),
+            'exit 1 with PASS': (1, self.report, 'reports PASS with exit code 1'),
+            'malformed JSON': (0, 'progress\n{"status": "PASS",', 'no valid JSON report'),
+            'empty output': (0, '', 'no valid JSON report'),
+            'report without checks': (0, json.dumps({'status': 'PASS'}), 'no valid JSON report'),
+            'missing required check': (0, incomplete, 'Missing checks: output_hashes'),
+        }
+        original = self.report
+        for name, (code, report, reason) in cases.items():
+            with self.subTest(name):
+                self.exit_code, self.report = code, report
+                result = self.run_verifier()
+                self.assertEqual(result['status'], 'FAIL', result)
+                self.assertIn(reason, result['reason'])
+        self.exit_code, self.report = 0, original
+        self.assertEqual(self.run_verifier()['status'], 'PASS')
+
+    def test_missing_verifier_fails(self):
+        result = self.run_mode('verifier')
+        self.assertEqual(result['status'], 'FAIL')
+        self.assertIn('verifier is absent', result['reason'])
+
+    def test_verifier_timeout_is_unverified(self):
+        self.install_verifier()
+        timeout = subprocess.TimeoutExpired(['bash'], verifier.REHEARSAL_VERIFIER_TIMEOUT_SECONDS)
+        with patch.object(verifier.subprocess, 'run', side_effect=timeout):
+            result = self.run_mode('verifier')
+        self.assertEqual(result['status'], 'UNVERIFIED')
+        self.assertIn('TimeoutExpired', result['reason'])
+
+    def test_unimplemented_kinds_remain_unverified(self):
+        result = verifier.run_check('A36.final_capture', {'kind': 'release_demo', 'repository': 'starport'}, {'starport': self.root})
+        self.assertEqual(result, {'status': 'UNVERIFIED', 'reason': 'This evidence adapter has not been implemented.'})
+
+
 class ConstructorNetworkTests(unittest.TestCase):
     def setUp(self):
         self.payload = {"constructors": constructor_network.CONSTRUCTORS, "os": "linux", "arch": "arm64",
