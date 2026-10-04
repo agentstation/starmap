@@ -1,0 +1,76 @@
+{
+ "recorded_utc": "2026-10-04T00:26:00.285403+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starmap",
+ "pr": 217,
+ "head": "2342b6ad68883e0e5226f005f00cdba70f188557",
+ "base": "18766e474a7959b2e651fe8eecf6be82ffadec4a",
+ "merge": "d2e612f1488229f924f575e1f064540cf04e7539",
+ "merged_at": "2026-10-04T00:25:33Z",
+ "checks": {
+  "success": 62,
+  "not_success": 0,
+  "total": 62
+ },
+ "reviewed_tree": "266b3e445a064add8d392cb275a83731926346eb",
+ "merged_tree": "266b3e445a064add8d392cb275a83731926346eb",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Security & Reliability",
+  "Verification Gate"
+ ],
+ "linear_history": false,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP18: register the seven documentation subcases (A29, A30) and renew E01 against the merged Starport site tests and the 2026-10-03 browser review",
+ "first_run": {
+  "run": 37162074998,
+  "failed_jobs": [
+   "Native windows-2025 / runtime-1",
+   "Runtime windows-2025",
+   "Runtime windows-11-arm",
+   "Runtime ubuntu-24.04",
+   "Runtime ubuntu-24.04-arm",
+   "Runtime macos-15"
+  ],
+  "root_failure": {
+   "test": "TestRuntimeRefreshesOnAnUpstreamWake",
+   "package": "github.com/agentstation/starmap/runtime",
+   "message": "watch_test.go:79: source reads = 1, want 2",
+   "duration_s": 5.22
+  },
+  "classification": "Timing flake on the windows-2025 race runner. The wake channel has capacity 1 (watch_test.go newWatchSource), so a wake cannot be lost. The second read did not land inside the 5 second watchDeadline. The five Runtime gates fail because they require every native group.",
+  "unrelated_to_change": "The PR changes no Go file (git diff --stat 18766e474..2342b6ad6 -- '*.go' is empty)."
+ },
+ "rerun": "gh run rerun 37162074998 --failed on 2026-10-04",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "e9a8f01b415f50d312dfb108f9fbed5521e1d576202d666fcf9ce447bc06ebab",
+   "gzip_sha256": "a4a3d36e08cdf820a79e985fcfea2612dc1ad2743fa0e1203adf059391e5c1e8"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "f534808a4d522764c244b8ee7bfc1e46d330a0ffb2008b0564a92ab0cd116dcc",
+   "gzip_sha256": "b3509be23c562694f0e5f72f73c8d5c96915ba3d86355ab1f6bfcf06660509a3"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "084c6f9cd7d329f44f0d373fecd99f57d3a07abd7a8158e34163181affb4fffd",
+   "gzip_sha256": "9e31a047b28719fa4634fed77e9bd3c538e38e35cd3c9f79a18fe147dbbfe6ff"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+   "gzip_sha256": "da95be86de467295689c40b6350ff741a6659382857d1f52272e7dc99b40ed85"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
