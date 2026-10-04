@@ -1,0 +1,125 @@
+package app
+
+import (
+	"context"
+	"fmt"
+	"net"
+	"os"
+	"path/filepath"
+	"net/http"
+	"net/http/httptest"
+	"strconv"
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/stretchr/testify/require"
+
+	runtimecatalog "github.com/agentstation/starport/internal/catalog"
+	"github.com/agentstation/starport/internal/config"
+	"github.com/agentstation/starport/internal/providers"
+	"github.com/agentstation/starport/internal/providers/keyring"
+	"github.com/agentstation/starport/internal/server"
+)
+
+func zzProbeProfile(label string, p catalogs.ProviderCredentialProfile) {
+	fmt.Printf("%s id=%q primitive=%q fields=%v placements=%+v scopes=%v bindings=%+v google=%+v aws=%+v\n",
+		label, p.ID, p.Primitive, p.Fields, p.Placements, p.Scopes, p.EndpointBindings, p.ProtocolOptions.GoogleDefault, p.ProtocolOptions.AWSDefault)
+}
+
+func zzProbeBind(t *testing.T, label string, application *App) {
+	t.Helper()
+	ctx := t.Context()
+	material, err := application.registry.ResolveMaterial(ctx, "openai")
+	if err != nil {
+		fmt.Printf("%s resolve err=%v\n", label, err)
+		return
+	}
+	zzProbeProfile(label+" runtime", material.Profile())
+	fmt.Printf("%s handle=%q catalog_generation=%q\n", label, material.Handle(), application.catalog.Current().GenerationID())
+	bundled, err := runtimecatalog.Bundled()
+	require.NoError(t, err)
+	bp, err := bundled.Provider(catalogs.ProviderIDOpenAI)
+	require.NoError(t, err)
+	zzProbeProfile(label+" bundled", bp.Credentials.Profiles[0])
+	cp, err := application.catalog.Current().Catalog().Provider(catalogs.ProviderIDOpenAI)
+	if err == nil {
+		zzProbeProfile(label+" current ", cp.Credentials.Profiles[0])
+	} else {
+		fmt.Printf("%s current catalog provider err=%v\n", label, err)
+	}
+	approvals, err := providers.InstallationDestinationApprovals(bundled)
+	require.NoError(t, err)
+	_, err = approvals.Bind(catalogs.ProviderIDOpenAI, string(keyring.SourceEnvironment), material, catalogs.ProviderOperationChatCompletions)
+	fmt.Printf("%s bind err=%v\n", label, err)
+}
+
+func zzProbeRequest(t *testing.T, development *Development) {
+	t.Helper()
+	httpServer, ok := development.application.httpServer.(*server.Server)
+	require.True(t, ok)
+	body := strings.NewReader(`{"model":"openai/gpt-4o-mini","stream":true,"max_tokens":32,"messages":[{"role":"user","content":"Hello"}]}`)
+	request := httptest.NewRequest(http.MethodPost, "/api/v1/chat/completions", body)
+	request.Header.Set("Authorization", "Bearer "+development.APIKey())
+	request.Header.Set("Content-Type", "application/json")
+	recorder := httptest.NewRecorder()
+	httpServer.Router().ServeHTTP(recorder, request)
+	out := recorder.Body.String()
+	if len(out) > 400 {
+		out = out[:400]
+	}
+	fmt.Printf("[request] status=%d body=%s\n", recorder.Code, out)
+}
+
+func TestZZProbeDevelopmentBind(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, "config"))
+	t.Setenv("XDG_DATA_HOME", filepath.Join(home, "data"))
+	t.Setenv("XDG_STATE_HOME", filepath.Join(home, "state"))
+	for _, dir := range []string{"config", "data", "state"} {
+		require.NoError(t, os.MkdirAll(filepath.Join(home, dir), 0o700))
+	}
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	require.NoError(t, err)
+	port := listener.Addr().(*net.TCPAddr).Port
+	require.NoError(t, listener.Close())
+
+	env := map[string]string{
+		"OPENAI_API_KEY":         "sk-<throwaway-placeholder>",
+		"STARPORT_SERVER_PORT":   strconv.Itoa(port),
+		"STARPORT_LOGGING_LEVEL": "warn",
+	}
+	cfg, err := config.NewLoader().WithEnvironment(env).LoadDevelopment(t.Context())
+	require.NoError(t, err)
+	fmt.Printf("catalog source=%q acquisition=%v dev_approvals_nil=%v\n", cfg.Catalog.Source, cfg.Catalog.AcquisitionEnabled, cfg.InferenceDestinationApprovals == nil)
+	prod, err := config.NewLoader().WithEnvironment(map[string]string{"OPENAI_API_KEY": "sk-<throwaway-placeholder>", "STARPORT_SECURITY_MASTER_KEY": strings.Repeat("k", 32)}).WithEnvFiles().WithPaths(config.Paths{}).Load(t.Context())
+	if err != nil {
+		fmt.Printf("production load err=%v\n", err)
+	} else {
+		fmt.Printf("production_approvals_nil=%v\n", prod.InferenceDestinationApprovals == nil)
+	}
+	literal := validProductionConfig(t)
+	fmt.Printf("literal_approvals_nil=%v\n", literal.InferenceDestinationApprovals == nil)
+
+	ctx, cancel := context.WithCancel(t.Context())
+	defer cancel()
+	development, err := NewDevelopment(ctx, cfg)
+	require.NoError(t, err)
+	zzProbeBind(t, "[after New]", development.application)
+
+	done := make(chan error, 1)
+	go func() { done <- development.Run(ctx) }()
+	time.Sleep(4 * time.Second)
+	zzProbeBind(t, "[after Run]", development.application)
+	zzProbeRequest(t, development)
+	cancel()
+	select {
+	case err := <-done:
+		fmt.Printf("run returned err=%v\n", err)
+	case <-time.After(15 * time.Second):
+		fmt.Printf("run did not return in time\n")
+	}
+	_ = development.Close(context.Background())
+}

@@ -1,0 +1,5 @@
+{
+  "dev_running": true,
+  "status": 503,
+  "body_head": "{\"error\":{\"code\":503,\"message\":\"Provider credential material is no longer valid.\",\"metadata\":{\"error_type\":\"service_unavailable\"}}}\n"
+}
