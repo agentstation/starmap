@@ -707,6 +707,18 @@ class RehearsalDemoTests(unittest.TestCase):
         result = verifier.run_check('A36.final_capture', {'kind': 'release_demo', 'repository': 'starport'}, {'starport': self.root})
         self.assertEqual(result, {'status': 'UNVERIFIED', 'reason': 'This evidence adapter has not been implemented.'})
 
+    def test_registry_binds_both_rehearsal_checks_to_csp21(self):
+        registry = verifier.read_json(verifier.REGISTRY)
+        roster = verifier.read_json(verifier.ROSTER)
+        verifier.validate_registry(registry, roster, verifier.validate_roster(roster))
+        self.assertEqual(roster['task_checks']['CSP21'], ['R01', 'R02'])
+        for identity, mode in (('R01', 'record'), ('R02', 'verifier')):
+            with self.subTest(identity):
+                self.assertEqual(registry['checks'][identity], {
+                    'kind': 'rehearsal_demo', 'repository': 'starport', 'task': 'CSP21',
+                    'manifest': self.MANIFEST, 'mode': mode})
+                self.assertEqual(roster['rehearsal_checks'][identity]['task'], 'CSP21')
+
 
 class ConstructorNetworkTests(unittest.TestCase):
     def setUp(self):
