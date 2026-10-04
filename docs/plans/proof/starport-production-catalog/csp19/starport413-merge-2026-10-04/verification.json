@@ -1,0 +1,58 @@
+{
+ "recorded_utc": "2026-10-04T16:39:54.513794+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 413,
+ "head": "4117a4a6619c0efd775e83d55feeb16e066fd914",
+ "base": "149303fc6c7948de3e73382d786b5304c6c51471",
+ "merge": "9f0ad3735f233b81866dd576228b0b4f6c773acb",
+ "merged_at": "2026-10-04T16:36:23Z",
+ "checks": {
+  "success": 42,
+  "not_success": 0,
+  "total": 42
+ },
+ "reviewed_tree": "1b8054652d5a883dff4dd385486e95a4d0b91957",
+ "merged_tree": "1b8054652d5a883dff4dd385486e95a4d0b91957",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP19 Starport slice: deployment recipes T1 to T7, read-only Compose recipes, recipe-image tests",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "792f88339d0d978af50e932294b944671512e77997a33ccbaa2d35afc1002dfb",
+   "gzip_sha256": "e5b7f3088ebd8167eb9d4277c96e9632c1cabeb50e7dc1c79d774ce23f3ef869"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "e62c68739de3e68732a41173f3d808dde30d76256d870a707592fabbb4d2d6b3",
+   "gzip_sha256": "20489b3edfa81772eafdb41db8b86a3e24aa8bed6cebe1342618e28ec65c3ae4"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "671e338db2dad393c410a0ac70fac06cd27e985d32b758c879e93b0458b5940c",
+   "gzip_sha256": "62200dc8bb3f2515f14a830b2ea8e7f9b6978e71c2b0e11d72ace8b31b5b5c29"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}

@@ -1,0 +1,56 @@
+{
+ "recorded_utc": "2026-10-04T16:41:37.488007+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starmap",
+ "pr": 218,
+ "head": "d490bf3a58bfa7771e04a9fddf76bac5ebd351f0",
+ "base": "d2e612f1488229f924f575e1f064540cf04e7539",
+ "merge": "4f58972d4dc437b963131ff76910d6bc5af082f2",
+ "merged_at": "2026-10-04T16:41:32Z",
+ "checks": {
+  "success": 62,
+  "not_success": 0,
+  "total": 62
+ },
+ "reviewed_tree": "b22b1a5824b996e81e7b4a75b3f9b00751e53ffc",
+ "merged_tree": "b22b1a5824b996e81e7b4a75b3f9b00751e53ffc",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Security & Reliability",
+  "Verification Gate"
+ ],
+ "linear_history": false,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP19 Starmap slice: five A31 registry entries for the recipe checks",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "cb9ca28c10bd4625e6e2d6b47410a460e50ff4ff76eec8f660333a256aec8029",
+   "gzip_sha256": "14a62a1ee20cf053b19aef26f413cf78cc3a7accd1840507429d985ed8fe6601"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "843dfabc569a568f2fad52124c7b2f82d9c3b4e3a186055d64e84970d221dad0",
+   "gzip_sha256": "f877cbc3d59617cf2c53e12c0e6bfd28abe2e1959c44f8537d6607b1cfce75b6"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "d231b3651b9179cb3ee175c8a030cd07abbb41ca12970e7bce8dbf78091c2600",
+   "gzip_sha256": "588f657e2423ea7fd515ad01d24216097061d12e147f71b6f52c0f427420e00c"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+   "gzip_sha256": "da95be86de467295689c40b6350ff741a6659382857d1f52272e7dc99b40ed85"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
