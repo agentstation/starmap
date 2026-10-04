@@ -68,3 +68,7 @@ Limits from the Starmap slice:
 - The keyless test blocks the default transport and resolver only. A private dialer escapes the block.
 - A pre-existing gofmt finding in `internal/recovery/catalog_expiring_preparation_test.go` is outside CSP20.
 - The Starmap registry entries for A34, A35, and A50 follow in the second PR.
+
+## Addendum: Starmap merge (2026-10-04)
+
+PR #219 merged as `b6c30e0a7` at 21:04:10Z with the protected squash at the exact head `da7e88539`. The merge proof in `starmap219-merge-2026-10-04/` records 62 of 62 checks, the reviewed tree equal to the merged tree, strict protection, and zero unresolved threads. GitHub deleted the head branch. CSP20 is complete on both repositories.
