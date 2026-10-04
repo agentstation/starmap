@@ -19,4 +19,8 @@ The adapter matches the shared contract in `csp21-record-schema.md`. An absent m
 
 ## Publication
 
-Draft PR agentstation/starmap#220 opened at `d6e2c7d60`. A background poll watches its CI. The merge waits for the settled checks only, because R01 and R02 report UNVERIFIED until the Starport rehearsal record exists.
+Draft PR agentstation/starmap#220 opened at `d6e2c7d60`. The merge waited for the settled checks only, because R01 and R02 report UNVERIFIED until the Starport rehearsal record exists.
+
+## Merge (2026-10-04)
+
+CI settled with 62 of 62 checks green at head `d6e2c7d60`. The exact-head squash merge produced Starmap main `f52b214c0`. The record `csp21/starmap220-merge-2026-10-04/` holds the merge facts. The lead removed the worktree and the local branch after the merge.

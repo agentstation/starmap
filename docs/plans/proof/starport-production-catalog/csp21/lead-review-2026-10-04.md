@@ -84,3 +84,26 @@ The Starmap worktree `/private/tmp/starmap-csp21-20261004` holds two commits on 
 - Decision 21-1: the owner approved one reviewed fix PR from main before any rehearsal. The lead implements it in `/private/tmp/starport-approvals-fix-20261004` on `codex/destination-approvals-noinit`.
 - Decision 21-2: the owner selected the approval surface. A second Starport PR adds the operator-facing destination approval configuration with tests and an operator doc line.
 - The owner asked the lead to explain D2 in plain terms before the second decision. The lead explained it in chat and keeps this record as the durable copy.
+
+## Decision 21-2 design (2026-10-04)
+
+The lead read the configuration, policy compiler, installation policy, registry binding, and recovery digest code. The design brief is in the lead scratch directory at `csp21/approval-surface-brief.md`. Its content:
+
+- One setting per provider, `STARPORT_<PROVIDER>_INFERENCE_BASE_URL`, read beside the catalog-derived credential references. The value is the approval. No second flag exists.
+- The loader validates the URL and fails startup with the provider name on a refused form. The loader accepts plain `http` only for loopback, link-local, private, or `localhost` hosts.
+- Providers with catalog endpoint bindings keep their binding variables. The setting refuses them, and the operator doc states the limit.
+- `providers.DeploymentDestinationApprovals(bundled, settings)` compiles the override for the `environment` and `shared` roles. Account BYOK and anonymous material keep the catalog origin. The registry applies operator overrides only to operator material, so the roles match.
+- The gateway calls that function when no explicit approval set exists. The recovery digest changes through the provider settings.
+- Required tests cover the loader, the policy composition, and the digest. One loader-composed test streams through a real HTTP connector to an `httptest` upstream.
+
+The implementer `csp21-override-implementer` works in `/private/tmp/starport-destination-override-20261004` on `codex/inference-base-url-approval` from the fix commit `e841427d`.
+
+### Scope refinement (2026-10-04)
+
+The implementer stopped before any code change and reported a conflict. The brief compiled the `shared` policy with the replacement origin. The router passes the operator override only for environment material (`internal/router/execution_adapter.go:320`, `internal/registry/generation.go:443`). A shared credential still calls the catalog URL. Under the brief, every shared credential on an overridden provider fails the destination check.
+
+The lead verified both lines and chose the environment-only scope. Only the `environment` policy compiles with the override. The `shared`, `byok`, and `anonymous` policies keep the public catalog origin. The router stays unchanged. The docs state the environment-only scope as a limit beside the parameterized-provider limit. The implementer also claims the derived name in `validateCredentialAliases` and reads it after material resolution, so the existing lookup-order assertion stays.
+
+## Fix publication (2026-10-04)
+
+The fix branch rebased onto `d22f1e60` as `277179e3`. Autoreview was clean with reviewer `codex gpt-6.1-sol high` and "patch is correct (0.96)". Draft PR agentstation/starport#416 is open, and a background poll watches its CI. The record `csp21/regression-fix-2026-10-04.md` holds the defect, the fix, and the checks.
