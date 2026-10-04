@@ -1,0 +1,200 @@
+{
+ "recorded_at": "2026-10-04T00:33:06.090298+00:00",
+ "task": "CSP18",
+ "starmap": {
+  "head": "d2e612f1488229f924f575e1f064540cf04e7539",
+  "tree": "266b3e445a064add8d392cb275a83731926346eb"
+ },
+ "starport": {
+  "head": "1f18b216e117bc43e294e4658a30da47cdac8d30",
+  "branch": "main",
+  "merged_prs": [
+   409,
+   410,
+   411
+  ],
+  "merge_commit": "1f18b216e117bc43e294e4658a30da47cdac8d30"
+ },
+ "starmap_merged_prs": [
+  216,
+  217
+ ],
+ "commands": {
+  "task_csp18": "bash scripts/verify-catalog-product.sh --task CSP18 --starport-root <starport> --json",
+  "task_csp01": "bash scripts/verify-catalog-product.sh --task CSP0.1 --starport-root <starport> --json"
+ },
+ "environment": {
+  "toolchain": "GOTOOLCHAIN=go1.27.1 GOWORK=off CGO_ENABLED=1, go test -race through the verifier",
+  "fixture_urls": "derived privately from docker inspect by the wrapper; values omitted",
+  "variables_set": [
+   "TEST_VALKEY_URL",
+   "TEST_UNPREFIXED_VALKEY_URL",
+   "TEST_SHARED_CACHE_URL",
+   "TEST_VALKEY_REPLACEMENT_URL",
+   "TEST_POSTGRES_URL",
+   "TEST_MYSQL_DSN",
+   "TEST_BLOB_S3_ENDPOINT",
+   "STARPORT_RECOVERY_OPERATOR_BINARY"
+  ],
+  "fixtures": {
+   "starport-csp13-postgres": "f1c3376c26f2 running",
+   "csp13-unprefixed-valkey-20260929": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f running",
+   "starport-csp13-mysql": "3466ba4a4828 running",
+   "starport-csp122-retirement-objectstore": "quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z running",
+   "csp13-adoption-replacement-20260929": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f running"
+  }
+ },
+ "runner_exits": [
+  "console build exit 0",
+  "native test exit: 0",
+  "task exit 0 2026-10-04T00:27:37Z",
+  "native test exit: 0",
+  "csp01 exit 0 2026-10-04T00:27:59Z"
+ ],
+ "reports": {
+  "task_csp18": {
+   "subcases": 10,
+   "by_status": {
+    "PASS": [
+     "A24.generated_file_inventory",
+     "A29.embedded_offline_search",
+     "A29.no_dynamic_data_disclosure",
+     "A29.recovery_without_auth",
+     "A30.desktop_both_themes",
+     "A30.instruction_contrast",
+     "A30.keyboard_screen_reader",
+     "A30.narrow_320",
+     "A30.stable_links_history",
+     "A30.zoom_text_spacing"
+    ]
+   },
+   "gate_status": "PASS",
+   "backend_scope": "primary",
+   "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+   "registry_sha256": "05dfcad655b324ee538d0256f28ebe495966925b3cd1fba17de9116de0788d21",
+   "selected_subcases": 10,
+   "unverified_cases": 49,
+   "cases": {
+    "A30": "PASS"
+   }
+  },
+  "task_csp01": {
+   "subcases": 1,
+   "by_status": {
+    "PASS": [
+     "E01"
+    ]
+   },
+   "gate_status": "PASS",
+   "backend_scope": "primary",
+   "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+   "registry_sha256": "05dfcad655b324ee538d0256f28ebe495966925b3cd1fba17de9116de0788d21",
+   "selected_subcases": 1,
+   "unverified_cases": 50,
+   "cases": {}
+  }
+ },
+ "go_evidence": {
+  "task_csp18": {
+   "processes": 13,
+   "nonzero_exits": 0,
+   "exit_code_missing": 0,
+   "review_checks": [
+    {
+     "subcase": "A30.stable_links_history",
+     "status": "PASS",
+     "proof_sha256": "cf601e3004dd4a012b2470aff2e797e92f55f9853b8a64e39e98efa58c59a0b4",
+     "proof": "browser-review.json"
+    },
+    {
+     "subcase": "A30.desktop_both_themes",
+     "status": "PASS",
+     "proof_sha256": "cf601e3004dd4a012b2470aff2e797e92f55f9853b8a64e39e98efa58c59a0b4",
+     "proof": "browser-review.json"
+    },
+    {
+     "subcase": "A30.narrow_320",
+     "status": "PASS",
+     "proof_sha256": "cf601e3004dd4a012b2470aff2e797e92f55f9853b8a64e39e98efa58c59a0b4",
+     "proof": "browser-review.json"
+    },
+    {
+     "subcase": "A30.zoom_text_spacing",
+     "status": "PASS",
+     "proof_sha256": "cf601e3004dd4a012b2470aff2e797e92f55f9853b8a64e39e98efa58c59a0b4",
+     "proof": "browser-review.json"
+    },
+    {
+     "subcase": "A30.keyboard_screen_reader",
+     "status": "PASS",
+     "proof_sha256": "cf601e3004dd4a012b2470aff2e797e92f55f9853b8a64e39e98efa58c59a0b4",
+     "proof": "browser-review.json"
+    },
+    {
+     "subcase": "A29.embedded_offline_search",
+     "status": "PASS",
+     "proof_sha256": "cf601e3004dd4a012b2470aff2e797e92f55f9853b8a64e39e98efa58c59a0b4",
+     "proof": "browser-review.json"
+    },
+    {
+     "subcase": "A29.recovery_without_auth",
+     "status": "PASS",
+     "proof_sha256": "cf601e3004dd4a012b2470aff2e797e92f55f9853b8a64e39e98efa58c59a0b4",
+     "proof": "browser-review.json"
+    },
+    {
+     "subcase": "A29.no_dynamic_data_disclosure",
+     "status": "PASS",
+     "proof_sha256": "cf601e3004dd4a012b2470aff2e797e92f55f9853b8a64e39e98efa58c59a0b4",
+     "proof": "browser-review.json"
+    }
+   ],
+   "vitest": {
+    "total": 156,
+    "passed": 156,
+    "failed": 0
+   },
+   "elapsed_seconds_total": 19.4,
+   "longest_seconds": 14.543,
+   "test_statuses": {
+    "pass": 10
+   }
+  },
+  "task_csp01": {
+   "processes": 2,
+   "nonzero_exits": 0,
+   "exit_code_missing": 0,
+   "review_checks": [
+    {
+     "subcase": "E01",
+     "status": "PASS",
+     "proof_sha256": "cf601e3004dd4a012b2470aff2e797e92f55f9853b8a64e39e98efa58c59a0b4",
+     "proof": "browser-review.json"
+    }
+   ],
+   "vitest": {
+    "total": 28,
+    "passed": 28,
+    "failed": 0
+   },
+   "elapsed_seconds_total": 13.8,
+   "longest_seconds": 13.821,
+   "test_statuses": {
+    "pass": 2
+   }
+  }
+ },
+ "limits": [
+  "A partial verifier run reports summary counts over all 50 cases; the unselected cases are UNVERIFIED and the subcase statuses carry the result.",
+  "The browser review behind A30.desktop_both_themes, A30.zoom_text_spacing, and A30.keyboard_screen_reader used Playwright against the built site on 2026-10-03; the verifier composes the Starport site tests with that recorded review (reviewed_ui).",
+  "The GitHub Pages workflow stays prepared and disabled (decision 18-1); the site serves from the gateway at /docs/.",
+  "A29.embedded_offline_search proves the offline index inside the binary; no network-dependent search path exists.",
+  "A24.generated_file_inventory passes against the generated settings and file reference merged in Starport #410."
+ ],
+ "files": {
+  "task_csp18.json.gz": "verifier JSON report for --task CSP18",
+  "task_csp01.json.gz": "verifier JSON report for --task CSP0.1",
+  "go-runs-task_csp18.json.gz": "per-process Go evidence for --task CSP18",
+  "go-runs-task_csp01.json.gz": "per-process Go evidence for --task CSP0.1"
+ }
+}
