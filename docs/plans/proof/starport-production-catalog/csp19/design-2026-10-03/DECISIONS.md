@@ -71,3 +71,5 @@ Options for the owner:
 - Document the limit in `docs/RECOVERY.md` and keep activation as a test-proven path until a later release.
 
 Owner decision on 2026-10-03: a new task after CSP19. The plan adds CSP19.2 for the command. CSP19 and CSP19.1 continue unchanged.
+
+Correction on 2026-10-04 (CSP19.2 design exploration): `ProjectIndependentHistory` consumes an existing history package and writes a projection workspace. It does not write a package. The only writer is the test helper `activationHistoryFixture`, so CSP19.2 adds a new writer in `internal/recovery` and the command `backup write-history`. The first option above named the wrong function.
