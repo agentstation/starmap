@@ -6312,6 +6312,64 @@
         }
       ]
     },
+    "A31.each_declared_recipe": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestDeclaredRecipePages"
+        }
+      ]
+    },
+    "A31.upgrade_restore_workload": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestLocalToSharedMigrationPopulatedWorkload"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestLocalToSharedMigrationRefusals"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestLocalToSharedMigrationPromotionAfterMove"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestLocalToSharedMigrationSecondReplicaJoins"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestLocalToSharedMigrationRollback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestLocalToSharedPromotionAfterMove"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestContainerRecipeLocalToShared"
+        }
+      ]
+    },
     "A31.recipe_configuration_guards": {
       "kind": "all",
       "checks": [
@@ -6326,6 +6384,28 @@
           "repository": "starport",
           "package": "./internal/config",
           "test": "TestSharedStorageRecipeSupportedModes"
+        }
+      ]
+    },
+    "A31.container_recreation_records": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFleetRecipeContainerRecreation"
+        }
+      ]
+    },
+    "A31.readonly_container_mounts": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestContainerRecipeReadOnlyMounts"
         }
       ]
     },
@@ -6540,6 +6620,17 @@
           "repository": "starmap",
           "package": "./runtime",
           "test": "TestManualRunByANonOwnerReturnsAConflict"
+        }
+      ]
+    },
+    "A31.recipe_latency_profile": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestRecipeLatencyProfiles"
         }
       ]
     },
