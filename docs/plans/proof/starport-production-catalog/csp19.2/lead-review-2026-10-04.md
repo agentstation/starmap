@@ -38,9 +38,17 @@ Three commits after `9511a683`: `1027efd1` (build), `145ce2a4` (test), `2b775ea6
 
 | Check | Result |
 | --- | --- |
-| Five recipe image tests with image `csp192-modes` (compose, persistence, read-only mounts, local-to-shared, fleet) | pending, see the addendum |
-| Pre-PR roster | pending, see the addendum |
-| Autoreview `--gate pre-pr --mode auto` | pending, see the addendum |
+| Five recipe image tests with image `csp192-modes` id `sha256:ffa3f755…` | 5 PASS, 0 FAIL, `ok 247.9 s`. Compose 0.20 s, Persistence 14.28 s, LocalToShared 15.61 s, Fleet 209.66 s, ReadOnlyMounts 7.40 s |
+| Pre-PR roster at `2b775ea6` | all 36 checks rc 0 (`goago` exits 2 by design), `go test ./...` 832 s, head `2b775ea6`, dirty 0 |
+| Autoreview `--gate pre-pr --mode auto` | Sol 6.1 high, one pass, no findings, "patch is correct (0.97)" |
+
+## Addendum: rebase and pull request (2026-10-04)
+
+The lead rebased the branch onto Starport main `e17ea25a` with `git rebase --onto origin/main 9f0ad373`. The only overlap with the merged #414 was `docs/TASKS.md`, and the resolution keeps both Active Work entries. The branch is now nine commits at `71c2a651`. The diff against main outside `docs/TASKS.md` is identical to the reviewed diff at `2b775ea6`, so the fixture-backed evidence above binds the rebased tree.
+
+Focused checks at `71c2a651`: `go build ./...` and `go vet ./...` rc 0. The packages `internal/recovery`, `internal/cli`, `internal/config`, and `cmd/starport` pass without the fixtures. `verify-doc-links.sh` PASS. `docs/TASKS.md` keeps its 6 base diagnostics. Autoreview reused the clean attestation, because the substantive diff did not change.
+
+Draft PR #415 opened at `71c2a651` with the title `recovery: add backup write-history and activate the fleet restore (CSP19.2)`.
 
 ## Limits recorded
 

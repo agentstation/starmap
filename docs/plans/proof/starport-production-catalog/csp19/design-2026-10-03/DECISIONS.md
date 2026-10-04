@@ -73,3 +73,5 @@ Options for the owner:
 Owner decision on 2026-10-03: a new task after CSP19. The plan adds CSP19.2 for the command. CSP19 and CSP19.1 continue unchanged.
 
 Correction on 2026-10-04 (CSP19.2 design exploration): `ProjectIndependentHistory` consumes an existing history package and writes a projection workspace. It does not write a package. The only writer is the test helper `activationHistoryFixture`, so CSP19.2 adds a new writer in `internal/recovery` and the command `backup write-history`. The first option above named the wrong function.
+
+Resolution in CSP19.2 on 2026-10-04: `starport backup write-history` writes the final-only package through `RestoreSource.WriteFinalHistory` in `internal/recovery/history_writer.go`. The fleet harness writes the package and activates the restored target with the image, which the lead verified in the recipe test. No shipped command writes prefix steps for activity after the backup.
