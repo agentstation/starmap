@@ -1,0 +1,58 @@
+{
+ "recorded_utc": "2026-10-04T03:16:41.150043+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 412,
+ "head": "1528da526051917b91236a4697a8b38cdf6ebfc2",
+ "base": "1f18b216e117bc43e294e4658a30da47cdac8d30",
+ "merge": "149303fc6c7948de3e73382d786b5304c6c51471",
+ "merged_at": "2026-10-04T03:15:44Z",
+ "checks": {
+  "success": 42,
+  "not_success": 0,
+  "total": 42
+ },
+ "reviewed_tree": "989511826675f22acf89e564e3c92627f7683131",
+ "merged_tree": "989511826675f22acf89e564e3c92627f7683131",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP19.1: local-to-shared migration qualified with a populated workload against real backends (five internal/app tests, the catalog promotion test, the container test, and the operator procedure); merged at 149303fc",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "9b90cb2ea4395b00bff2a5b4906afb59950c8bcdb13fdd099cbf0b60d1ce9ca1",
+   "gzip_sha256": "c621bce07ca2c33b6501e3717b27395a60fa58bd30a6c0594b846806a87438f8"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "5e7ac816aac950478f3859428f457f245fc41eaeffd5dbd6a2de468ffe02e129",
+   "gzip_sha256": "6cca074a3c57e225af2cdc078a9610075eac1b9f2c0785b1ecdcc6e22876352d"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "376716c97dfafbf87d9c154e254e4135c7d2fc6738bc32a7dc696e5a779c9fa1",
+   "gzip_sha256": "4f37af389092a96482b88fd9e2266c9ed191c6f5ae9c13721f08da0fe005ea9a"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
