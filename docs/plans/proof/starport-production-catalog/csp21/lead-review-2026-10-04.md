@@ -78,3 +78,9 @@ The lead recommends option 1 inside the regression fix PR or as its direct follo
 ## Starmap slice state
 
 The Starmap worktree `/private/tmp/starmap-csp21-20261004` holds two commits on `csp21-registry` over `da7e88539`. It needs a rebase onto `b6c30e0a7`. R01 and R02 can pass only after the Starport slice lands a record, so the Starmap PR waits for Decision 21-2.
+
+## Owner decisions (2026-10-04)
+
+- Decision 21-1: the owner approved one reviewed fix PR from main before any rehearsal. The lead implements it in `/private/tmp/starport-approvals-fix-20261004` on `codex/destination-approvals-noinit`.
+- Decision 21-2: the owner selected the approval surface. A second Starport PR adds the operator-facing destination approval configuration with tests and an operator doc line.
+- The owner asked the lead to explain D2 in plain terms before the second decision. The lead explained it in chat and keeps this record as the durable copy.
