@@ -9236,6 +9236,249 @@
           ]
         }
       ]
+    },
+    "A34.temporary_persistent": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmeFollowsTheFirstUseSequence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmeTemporaryPathPrecedesPersistentPath"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestDevelopmentRejectsPersistentEnvironmentSelections"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevKeepsCatalogStateInScratch"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevUsesInMemoryBadger"
+        }
+      ]
+    },
+    "A34.catalog_before_keys": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmeFollowsTheFirstUseSequence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmeInspectsTheCatalogBeforeAnyCredential"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestModelsSearchAnswersJSON"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryRouteWithoutProviderCredentials"
+        }
+      ]
+    },
+    "A34.credential_roles": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmeNamesTheThreeCredentialRolesInOrder"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmeKeepsCredentialRolesApart"
+        }
+      ]
+    },
+    "A34.recipe_links": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmeLinksTheStorageAndRecipePages"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestDeclaredRecipePages"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestRecipeLatencyProfiles"
+        }
+      ]
+    },
+    "A35.each_advertised_native_install": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "linux",
+          "evidence": "install"
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "darwin",
+          "evidence": "install"
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "windows",
+          "evidence": "install"
+        }
+      ]
+    },
+    "A35.clean_catalog_no_keys": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestModelsSearchAndShowWithoutCredentialsOrNetwork"
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "linux",
+          "evidence": "install"
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "darwin",
+          "evidence": "install"
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "windows",
+          "evidence": "install"
+        }
+      ]
+    },
+    "A35.documented_inference": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestDocumentedInferenceRequestStreamsThroughGateway"
+    },
+    "A34.persistence_paths_and_cache_roles": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmeStatesThePathAnchors"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmeLinksTheStorageAndRecipePages"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmeTemporaryPathPrecedesPersistentPath"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigPathsTextIncludesRuntimeAndStorageLocations"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderOwnsIndependentProductRoots"
+        }
+      ]
+    },
+    "A34.qualified_performance_claims": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmePerformanceClaimsAreQualified"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmeLatencyClaimsReadEachUnit"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./cmd/starport",
+          "test": "TestReadmeOmitsCatalogCounts"
+        }
+      ]
+    },
+    "A50.current_artifact_evidence": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "linux",
+          "evidence": "install"
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "darwin",
+          "evidence": "install"
+        },
+        {
+          "kind": "native_ci",
+          "repository": "starport",
+          "platform": "windows",
+          "evidence": "install"
+        }
+      ]
     }
   },
   "task_component_checks": {
