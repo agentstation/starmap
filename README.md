@@ -167,7 +167,14 @@ Starmap owns catalog discovery and acquisition.
 [Starport](https://github.com/agentstation/starport) uses that catalog to route inference requests.
 Catalog-acquisition credentials and inference credentials serve separate purposes.
 You can inspect the embedded catalog without provider API keys.
-Source acquisition is a separate explicit operation.
+Acquisition uses the catalog-acquisition credentials and runs separately from catalog reads.
+
+Library reads are passive: `starmap.New` reads the verified embedded catalog or a caller-supplied store, creates no workspace, and starts no acquisition.
+Persistent application startup, such as `starmap serve`, exports the embedded baseline under the product paths and then opens the connected runtime.
+The runtime serves the embedded catalog before the first upstream reply and schedules source reads and acquisition by default.
+Acquisition gets catalog evidence from provider APIs and other sources, and `starmap update` or `acquisition.Syncer` runs it on request.
+Each publication commits one complete immutable generation and swaps it into memory as one atomic step.
+The `starmap serve` server subscribes to publication and sends each generation ID and sequence to SSE clients at `/api/v1/updates/stream`.
 
 ### CLI: List Available Models
 
