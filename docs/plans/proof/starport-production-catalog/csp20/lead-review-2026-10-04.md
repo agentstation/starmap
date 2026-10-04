@@ -10,7 +10,7 @@ Branch `csp20-readme` at `aeae7664` on Starport main `9f0ad373`. Eleven commits,
 - `internal/markdowntest` owns the shared section parser. `ReadFile` opens through `os.OpenRoot` at the repository root, which closes the gosec G304 finding.
 - `TestDocumentedInferenceRequestStreamsThroughGateway` parses the Terminal 2 request from the README and streams it through the composed gateway to a fake provider. Real provider inference belongs to CSP24 by the owner decision of 2026-10-04.
 - `TestModelsSearchAndShowWithoutCredentialsOrNetwork` runs the two catalog commands in a child process. The child refuses every dial and counts proxy connections.
-- The `candidate-install` job runs the release snapshot archive on the five native runners. `scripts/native_catalog.py` qualifies the result as format 4 evidence and binds it to the pull request run and number.
+- The `candidate-install` job runs the release snapshot archive on the five native runners. The adapter `scripts/native_catalog.py` qualifies the result as format 4 evidence and binds it to the pull request run and number.
 - The lead checked three facts in the source. The `/api/v1/catalog/discovery` route and its `generation_id` field exist in `internal/server`. No repository file references the three removed README anchors. The capture records the run event.
 - No defect found. No protocol, storage layout, or public API changed. The CI workflow gained one job and one output.
 
