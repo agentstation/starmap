@@ -57,3 +57,7 @@ Draft PR #415 opened at `71c2a651` with the title `recovery: add backup write-hi
 - The `docs/site/storage/migration.md` lint base is 4 diagnostics. The CSP19.2 edit adds none.
 - The DECISIONS.md 19-9 resolution paragraph waits for the fleet run to pass.
 - A volume created from an older image keeps mode `0755` on the state roots, and activation into it refuses. The documented restore uses fresh targets.
+
+## Merge (2026-10-04)
+
+CI settled at `71c2a651` with 47 of 47 checks SUCCESS. The lead marked the draft ready and squash-merged PR #415 as `d22f1e60` at the exact head. The merge proof in `starport415-merge-2026-10-04/` records 0 unresolved threads, strict protection, and a reviewed tree equal to the merge tree. The lead deleted the remote branch, the worktree, and the local branch.
