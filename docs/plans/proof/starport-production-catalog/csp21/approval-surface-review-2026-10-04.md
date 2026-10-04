@@ -25,6 +25,7 @@ The implementer delivered `STARPORT_<PROVIDER>_INFERENCE_BASE_URL` in `/private/
 - The brief example `http://127.0.0.1:8089/v1` was wrong. Starport appends the catalog endpoint path, which includes `/v1`, so the rehearsal sets the origin without `/v1`. The operator doc states the rule.
 - A catalog refresh re-resolves providers against the in-memory environment, so the value cannot change between startup and refresh. Approvals compile once from the bundled catalog, so a refresh cannot widen an approval.
 - The first app race run failed `TestApplicationRefusesUnapprovedCredentialDestination` with 200 instead of 503. The fixture sets an in-code `BaseURL` with no approval. The composition read any resolved `BaseURL` as an approved origin. The lead refused a test change and required provenance. The implementer added the `InferenceOrigin` field, and the composition reads only that field. An in-code `BaseURL` keeps the #384 refusal, and the test stays unchanged.
+- An explicit destination policy in the configuration still wins over the setting. A provider that first appears in a later catalog refresh gets no approval and stays refused. The docs state both limits.
 - No weakened assertion. No change to the installation digest. No AI attribution in the commit messages.
 
 ## Checks (implementer logs in the lead scratch directory `csp21/override-proof/`)
