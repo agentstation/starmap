@@ -1,0 +1,58 @@
+{
+ "recorded_utc": "2026-10-04T19:46:48.454977+00:00",
+ "task": "CSP13",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 414,
+ "head": "aeae766491c248c8585d4f97a006ae3a7e7e40fb",
+ "base": "9f0ad3735f233b81866dd576228b0b4f6c773acb",
+ "merge": "e17ea25a784b814012c1c072c00f6b39ab12d2ad",
+ "merged_at": "2026-10-04T19:45:51Z",
+ "checks": {
+  "success": 52,
+  "not_success": 0,
+  "total": 52
+ },
+ "reviewed_tree": "1db639dd8a98f4b274b0a4c6fa02d0e3f43927d0",
+ "merged_tree": "1db639dd8a98f4b274b0a4c6fa02d0e3f43927d0",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP20 Starport slice: README first-use sequence with contract tests, keyless catalog and documented inference tests, candidate-install CI job, format 4 install evidence adapter",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "901ca3b745e01ece9a7e8efe5885a2672f9495ac67829d2fe714ea1481d10484",
+   "gzip_sha256": "8fd10ad8baeb1db9a9099b75af3155aab7b2c2ad62ff365a7a666069fa134e85"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "9d2137a663bcafe4e0961229b8aacf6d54361de2d04a14ee47cf96130f9c53f7",
+   "gzip_sha256": "793d99ab932f2de4c0b7c3c2edd0b582139f32a9d077efd230a0a7accce707d2"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "729f547e338ca5f38ad722a7ddef5240c575d471d6bf6844ef8c44d0ebea0b6e",
+   "gzip_sha256": "4872f99a0c7f4b6a1229c7185599735c9fa3682113370ff9ee94f49e1af5a532"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}

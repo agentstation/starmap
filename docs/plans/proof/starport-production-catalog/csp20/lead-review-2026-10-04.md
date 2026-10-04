@@ -26,8 +26,14 @@ The `release-snapshot` job runs only on pull requests. The lead kept that condit
 | `actionlint .github/workflows/ci.yml` | rc 0 |
 | technical-writing lint `docs/TASKS.md` | 6 diagnostics, all on the base lines |
 | Autoreview `--gate pre-pr --mode auto` | Sol 6.1 high, one pass, no findings, "patch is correct (0.98)" |
-| Pre-PR roster | pending, see the addendum |
-| PR #414 checks | pending, see the addendum |
+| Pre-PR roster | all 36 checks rc 0 (`goago` exits 2 by design), head `aeae7664`, dirty 0 |
+| PR #414 checks | 51 of 51 SUCCESS at `aeae7664`, which include the five `Candidate install` jobs |
+
+## Addendum: merge and capture (2026-10-04)
+
+PR #414 merged as `e17ea25a` at 19:45:51Z with the protected squash at the exact head. The merge proof in `starport414-merge-2026-10-04/` records 52 of 52 checks, the reviewed tree equal to the merged tree, strict protection, and zero unresolved threads. The lead deleted the remote branch `csp20-readme`.
+
+The lead captured the final pull request CI run `37222309299` from the updated main checkout with `scripts/native_catalog.py --run 37222309299 --output docs/proof/catalog-native`. The capture is format 4, bound to pull request 414 and head `aeae7664`, with 51 file digests across the app, recovery, and install shards. The stale format 3 capture at `70dbf7de` now rests outside git at `/private/tmp/starport-native-capture-stale-70dbf7de-20261004`.
 
 ## Implementer evidence (reported, not repeated by the lead)
 
