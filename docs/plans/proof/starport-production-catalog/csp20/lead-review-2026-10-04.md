@@ -35,6 +35,23 @@ PR #414 merged as `e17ea25a` at 19:45:51Z with the protected squash at the exact
 
 The lead captured the final pull request CI run `37222309299` from the updated main checkout with `scripts/native_catalog.py --run 37222309299 --output docs/proof/catalog-native`. The capture is format 4, bound to pull request 414 and head `aeae7664`, with 51 file digests across the app, recovery, and install shards. The stale format 3 capture at `70dbf7de` now rests outside git at `/private/tmp/starport-native-capture-stale-70dbf7de-20261004`.
 
+## Starmap slice review at `da7e88539` (2026-10-04)
+
+Branch `csp20-registry` on Starmap main `4f58972d`, two commits. The implementer report is in `starmap-implementer-report-2026-10-04.md`.
+
+- The ten registry entries match decision D8 and the acceptance map order. Each `go_test` leaf names one test that PR #414 added. Each of the three install leaves binds format 4 evidence for one platform.
+- The lead read the README lifecycle paragraph against the Starmap source. In `runtime/policy.go`, lines 31 to 33 keep the embedded baseline active until the first verified upstream generation. Lines 147 to 157 set the default source poll of one hour. Lines 268 to 270 set the default acquisition interval of four hours. In `internal/cli/app/catalog_runtime.go`, line 135 connects the source acquirer and line 177 connects the provider acquirer. The `serve` command passes only the listen address, and the implementer report cites each other sentence.
+- The lead acceptance run at `da7e88539` against Starport main `e17ea25a` with the format 4 capture gave 10 of 10 CSP20 subcases PASS. The record is in `acceptance-2026-10-04/`.
+- `make technical-writing-check`: PASS, 1975 files, 0 diagnostics. The verifier tests: 139 OK in the lead run, 151 OK with the component suite in the implementer run.
+- Autoreview skipped the model call, because the slice holds only documentation and registry data.
+- Draft PR agentstation/starmap#219 opened at `da7e88539`.
+
+Limits from the Starmap slice:
+
+- No gate binds the Starmap README lifecycle paragraph by digest. A later change to it fails no check.
+- `app.CatalogAcquisition` turns both schedules off when it opens the runtime first. `serve` opens the runtime first, and no test binds that order.
+- `make technical-writing-check` needs the pyenv Python. With `/usr/bin` first in PATH it exits 2.
+
 ## Implementer evidence (reported, not repeated by the lead)
 
 - `go vet ./...`, `make lint` (0 issues), `make build`, and the eight `verify-*` scripts: rc 0.
