@@ -1,0 +1,106 @@
+[
+  {
+    "url": "http://127.0.0.1:18731/docs/",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/docs-BI-pn-JJ.css",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/docs-vRRIq3l1.js",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/Geist-Regular-rEkwi4hp.woff2",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/Geist-SemiBold-Dgivxjvs.woff2",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/GeistMono-Regular-DHEw6VMZ.woff2",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/troubleshoot/recovery/",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/docs-BI-pn-JJ.css",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/docs-vRRIq3l1.js",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/Geist-Regular-rEkwi4hp.woff2",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/Geist-SemiBold-Dgivxjvs.woff2",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/GeistMono-Regular-DHEw6VMZ.woff2",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/search/",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/docs-BI-pn-JJ.css",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/docs-vRRIq3l1.js",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/Geist-Regular-rEkwi4hp.woff2",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/Geist-SemiBold-Dgivxjvs.woff2",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/GeistMono-Regular-DHEw6VMZ.woff2",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/search-index.json",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/search/?q=recovery",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/docs-BI-pn-JJ.css",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/docs-vRRIq3l1.js",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/Geist-Regular-rEkwi4hp.woff2",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/Geist-SemiBold-Dgivxjvs.woff2",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/assets/GeistMono-Regular-DHEw6VMZ.woff2",
+    "method": "GET"
+  },
+  {
+    "url": "http://127.0.0.1:18731/docs/search-index.json",
+    "method": "GET"
+  }
+]

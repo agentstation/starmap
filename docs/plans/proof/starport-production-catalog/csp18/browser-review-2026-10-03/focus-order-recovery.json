@@ -1,0 +1,602 @@
+[
+  {
+    "tag": "a",
+    "name": "Skip to content",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 46
+  },
+  {
+    "tag": "a",
+    "name": "Starport docs",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "input",
+    "name": "",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 54
+  },
+  {
+    "tag": "button",
+    "name": "Search",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 54
+  },
+  {
+    "tag": "summary",
+    "name": "Documentation version: dev",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "button",
+    "name": "Switch to light theme",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Start",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Run a persistent local gateway",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Run a temporary development gateway",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 50
+  },
+  {
+    "tag": "a",
+    "name": "Keys and roles",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Inspect the catalog",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Choose an architecture",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Architecture targets",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Catalog source topologies",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Select storage for a target",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Configure",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Configuration sources and precedence",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 50
+  },
+  {
+    "tag": "a",
+    "name": "Secret references and secret managers",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 50
+  },
+  {
+    "tag": "a",
+    "name": "Files and paths",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Manage configuration from the console",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 50
+  },
+  {
+    "tag": "a",
+    "name": "File reference",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Settings reference",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Catalog lifecycle",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Sources and the baseline",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Observations, authority, and acceptance",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 50
+  },
+  {
+    "tag": "a",
+    "name": "Membership and routability",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Model discovery and readiness",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Operate Starmap",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Run a central Starmap server",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Imports and the air-gapped mirror",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 50
+  },
+  {
+    "tag": "a",
+    "name": "Starmap state recovery and unrecognized ",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 50
+  },
+  {
+    "tag": "a",
+    "name": "Operate Starport",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Authentication and the local admin token",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 50
+  },
+  {
+    "tag": "a",
+    "name": "Identity providers and account selection",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 50
+  },
+  {
+    "tag": "a",
+    "name": "Initialize and run a fleet",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Catalog updates",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Diagnostics and observability",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Upgrade and shut down",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Storage",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Storage backends",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Back up and restore",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Move between storage modes",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Optional caches",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "API compatibility",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Supported API surfaces",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Connect an SDK",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Errors and limits",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Troubleshoot",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Recover without a console session",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 50
+  },
+  {
+    "tag": "a",
+    "name": "Catalog failures",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Resource failures",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Link to section: Health checks",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "div",
+    "name": "Health checks table",
+    "role": "region",
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 219
+  },
+  {
+    "tag": "button",
+    "name": "Copy bash code",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "pre",
+    "name": "bash code example",
+    "role": "group",
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 66
+  },
+  {
+    "tag": "a",
+    "name": "Link to section: CLI inspection commands",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "div",
+    "name": "CLI inspection commands table",
+    "role": "region",
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": false,
+    "h": 329
+  },
+  {
+    "tag": "a",
+    "name": "Link to section: Local admin token and t",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  },
+  {
+    "tag": "a",
+    "name": "Authentication",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 21
+  },
+  {
+    "tag": "a",
+    "name": "Link to section: Logs and request IDs",
+    "role": null,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(240, 178, 62)",
+    "inView": true,
+    "h": 44
+  }
+]
