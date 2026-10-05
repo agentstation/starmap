@@ -39,4 +39,5 @@ The Starport implementer delivered the recording and verification tooling in `/p
 ## Publication
 
 The lead rebased `csp21-readme-demo` onto main `4393ee55` with the same patch. The 25 unit tests passed and the doc link check passed on the rebased tree. Draft PR agentstation/starport#418 is open at `b64d3682`.
-The rehearsal capture uses that PR's CI run. MERGE_RESULT
+The rehearsal capture uses that PR's CI run. The lead committed the rehearsal record as `f0f63a45` after the review.
+The PR merged at main `c5246216` with 47 of 47 checks, and the proof is in `csp21/starport418-merge-2026-10-04/`.
