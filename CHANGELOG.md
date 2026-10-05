@@ -7,6 +7,27 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-10-05
+
+This release is the Starmap half of the qualified catalog release pair. Starport v1.3.0 pins it.
+
+### Added
+
+- Complete billing contracts: embedding, recognition, and text billing derive from one catalog schema. The canonical catalog payload moves from schema 6 to schema 19.
+- Catalog host APIs with separate subscriber and administrator access, authority publishers, and runtime origin transactions.
+- Catalog update controls, a persisted acquisition credential policy, and retained local state.
+- Generation-bound catalog recovery inputs. A stopped runtime prepares its recovery directory, inspects backup inputs and retained baseline exports, and materializes retained inputs without acquisition.
+- Native clocks and current authority permission for catalog permission checks and catalog snapshots.
+- Canonical model aliases, explicit catalog removals, and catalog entries with scoped provider availability.
+- `catalogs.RetainDecodedCatalogs` and `starmap.WithCandidateGenerationID` (described in the sections below).
+
+### Changed
+
+- The scheduled publication restores an accepted catalog from an older schema version. The run receipt records the supersession. The workflow retains the acquisition error for the operator.
+- The runtime persists the offline embedded baseline and promotes a baseline explicitly.
+- The catalog product verifier registers the acceptance subcases of the production catalog plan. It budgets its Go processes by registered test.
+- Homebrew installation and package trust use the release checksums and attestations.
+
 ### Fixed
 
 - The catalog discovery channel moves from the `catalog-latest` release to the
@@ -73,8 +94,9 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `pkg/catalogs/storage/s3`.
 - Portable artifact and versioned wire clients move to
   `pkg/catalogs/artifact` and `pkg/catalogs/remote`.
-- This release does not change catalog schema 5, generation manifest 2,
-  artifact bytes, stored generations, or the remote wire protocol.
+- The canonical catalog payload is schema 19. A consumer that pins an older
+  Starmap module keeps its embedded bytes. The generation manifest stays at
+  version 2, and the authority manifest is version 3.
 
 ## [0.4.0] - 2026-08-11
 
@@ -655,7 +677,8 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 Initial public release. See Unreleased section for features.
 
-[Unreleased]: https://github.com/agentstation/starmap/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/agentstation/starmap/compare/v0.17.0...HEAD
+[0.17.0]: https://github.com/agentstation/starmap/compare/v0.16.5...v0.17.0
 [0.4.0]: https://github.com/agentstation/starmap/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/agentstation/starmap/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/agentstation/starmap/compare/v0.1.2...v0.2.0
