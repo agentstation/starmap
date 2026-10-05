@@ -144,6 +144,11 @@ The owner reported disappearing questions. This section retains each open questi
 1. D5: answered on 2026-10-05 with route A.
 2. D8: answered on 2026-10-05 with route B2.
 3. Disk cleanup: answered on 2026-10-05. The owner cleaned the Go build cache and the Docker build cache. The free space is 82 GiB.
+4. D7 retry dispatch: open since 2026-10-05 at 19:20 UTC. The `after` phase of the hosted capture needs a retry dispatch, and the dispatch needs owner authority.
+   - The scheduled run 37346030591 published from `51e09ff56`. The bot pull request #230 merged as `2fba452ab`. The completion run 37354013071 passed.
+   - The lead captured the `before` phase on the local branch `codex/csp22-hosted-capture`.
+   - The retry receipt checksum is `sha256:3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f`.
+   - A later scheduled publication that changes a channel makes this `before` capture stale. The lead then captures again after that publication.
 
 ## Limits known before implementation
 
