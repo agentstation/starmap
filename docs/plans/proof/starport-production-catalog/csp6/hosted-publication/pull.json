@@ -1,15 +1,15 @@
 {
-  "url": "https://api.github.com/repos/agentstation/starmap/pulls/168",
-  "id": 4573394730,
-  "node_id": "PR_kwDOPa1FXM8AAAABEJh3Kg",
-  "html_url": "https://github.com/agentstation/starmap/pull/168",
-  "diff_url": "https://github.com/agentstation/starmap/pull/168.diff",
-  "patch_url": "https://github.com/agentstation/starmap/pull/168.patch",
-  "issue_url": "https://api.github.com/repos/agentstation/starmap/issues/168",
-  "number": 168,
+  "url": "https://api.github.com/repos/agentstation/starmap/pulls/230",
+  "id": 4748640243,
+  "node_id": "PR_kwDOPa1FXM8AAAABGwp_8w",
+  "html_url": "https://github.com/agentstation/starmap/pull/230",
+  "diff_url": "https://github.com/agentstation/starmap/pull/230.diff",
+  "patch_url": "https://github.com/agentstation/starmap/pull/230.patch",
+  "issue_url": "https://api.github.com/repos/agentstation/starmap/issues/230",
+  "number": 230,
   "state": "closed",
   "locked": false,
-  "title": "catalog: embed bindings-de02ef4fcfb68a86b119f3fa139715c1f77d4e2ee8d8af3d4eb4efab3d31ef07.local.ac6ad0483752",
+  "title": "catalog: embed bindings-9157a3e797c02e21193a26a2233dcbc5967390eee9ced9cb5416bdf1dae7d620.local.010adf9f3137",
   "user": {
     "login": "starmap-catalog-publisher[bot]",
     "id": 329307247,
@@ -31,27 +31,27 @@
     "user_view_type": "public",
     "site_admin": false
   },
-  "body": "Embed verified public catalog `sha256:dc217f144ccd01d0ee8045e9c7a5bf9159776d2a000b6389001b8162d8634aac`.\n\nPublication run: `github-35395944704`.\nReceipt: `sha256:4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613`.\n\nThe publisher advances discovery only after the merged catalog matches this artifact.\n",
-  "created_at": "2026-09-18T21:32:15Z",
-  "updated_at": "2026-09-20T05:07:50Z",
-  "closed_at": "2026-09-20T05:07:45Z",
-  "merged_at": "2026-09-20T05:07:45Z",
-  "merge_commit_sha": "4d031cbf773b5819f78a9590aa29aeaf938d84b5",
+  "body": "Embed verified public catalog `sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f`.\n\nPublication run: `github-37346030591`.\nReceipt: `sha256:3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f`.\n\nThe publisher advances discovery only after the merged catalog matches this artifact.\n",
+  "created_at": "2026-10-05T17:32:55Z",
+  "updated_at": "2026-10-05T18:23:51Z",
+  "closed_at": "2026-10-05T18:23:47Z",
+  "merged_at": "2026-10-05T18:23:47Z",
+  "merge_commit_sha": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
   "assignees": [],
   "requested_reviewers": [],
   "requested_teams": [],
   "labels": [],
   "milestone": null,
   "draft": false,
-  "commits_url": "https://api.github.com/repos/agentstation/starmap/pulls/168/commits",
-  "review_comments_url": "https://api.github.com/repos/agentstation/starmap/pulls/168/comments",
+  "commits_url": "https://api.github.com/repos/agentstation/starmap/pulls/230/commits",
+  "review_comments_url": "https://api.github.com/repos/agentstation/starmap/pulls/230/comments",
   "review_comment_url": "https://api.github.com/repos/agentstation/starmap/pulls/comments{/number}",
-  "comments_url": "https://api.github.com/repos/agentstation/starmap/issues/168/comments",
-  "statuses_url": "https://api.github.com/repos/agentstation/starmap/statuses/45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+  "comments_url": "https://api.github.com/repos/agentstation/starmap/issues/230/comments",
+  "statuses_url": "https://api.github.com/repos/agentstation/starmap/statuses/8b935d15d7df9efa8f97b185314886a297cba2cb",
   "head": {
-    "label": "agentstation:catalog/promotion/4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613",
-    "ref": "catalog/promotion/4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613",
-    "sha": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+    "label": "agentstation:catalog/promotion/3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f",
+    "ref": "catalog/promotion/3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f",
+    "sha": "8b935d15d7df9efa8f97b185314886a297cba2cb",
     "user": {
       "login": "agentstation",
       "id": 165715156,
@@ -141,14 +141,14 @@
       "releases_url": "https://api.github.com/repos/agentstation/starmap/releases{/id}",
       "deployments_url": "https://api.github.com/repos/agentstation/starmap/deployments",
       "created_at": "2025-08-09T00:23:10Z",
-      "updated_at": "2026-09-20T05:07:56Z",
-      "pushed_at": "2026-09-20T05:09:45Z",
+      "updated_at": "2026-10-05T18:23:57Z",
+      "pushed_at": "2026-10-05T19:12:50Z",
       "git_url": "git://github.com/agentstation/starmap.git",
       "ssh_url": "git@github.com:agentstation/starmap.git",
       "clone_url": "https://github.com/agentstation/starmap.git",
       "svn_url": "https://github.com/agentstation/starmap",
       "homepage": "https://agentstation.github.io/starmap/",
-      "size": 56606,
+      "size": 274002,
       "stargazers_count": 4,
       "watchers_count": 4,
       "language": "Go",
@@ -162,7 +162,7 @@
       "mirror_url": null,
       "archived": false,
       "disabled": false,
-      "open_issues_count": 2,
+      "open_issues_count": 6,
       "license": {
         "key": "agpl-3.0",
         "name": "GNU Affero General Public License v3.0",
@@ -199,7 +199,7 @@
       ],
       "visibility": "public",
       "forks": 0,
-      "open_issues": 2,
+      "open_issues": 6,
       "watchers": 4,
       "default_branch": "main"
     }
@@ -207,7 +207,7 @@
   "base": {
     "label": "agentstation:main",
     "ref": "main",
-    "sha": "9ff84a481c3693a22f27004316e4340a49689afd",
+    "sha": "51e09ff5645f8529915a9975b953fae378f41532",
     "user": {
       "login": "agentstation",
       "id": 165715156,
@@ -297,14 +297,14 @@
       "releases_url": "https://api.github.com/repos/agentstation/starmap/releases{/id}",
       "deployments_url": "https://api.github.com/repos/agentstation/starmap/deployments",
       "created_at": "2025-08-09T00:23:10Z",
-      "updated_at": "2026-09-20T05:07:56Z",
-      "pushed_at": "2026-09-20T05:09:45Z",
+      "updated_at": "2026-10-05T18:23:57Z",
+      "pushed_at": "2026-10-05T19:12:50Z",
       "git_url": "git://github.com/agentstation/starmap.git",
       "ssh_url": "git@github.com:agentstation/starmap.git",
       "clone_url": "https://github.com/agentstation/starmap.git",
       "svn_url": "https://github.com/agentstation/starmap",
       "homepage": "https://agentstation.github.io/starmap/",
-      "size": 56606,
+      "size": 274002,
       "stargazers_count": 4,
       "watchers_count": 4,
       "language": "Go",
@@ -318,7 +318,7 @@
       "mirror_url": null,
       "archived": false,
       "disabled": false,
-      "open_issues_count": 2,
+      "open_issues_count": 6,
       "license": {
         "key": "agpl-3.0",
         "name": "GNU Affero General Public License v3.0",
@@ -355,35 +355,35 @@
       ],
       "visibility": "public",
       "forks": 0,
-      "open_issues": 2,
+      "open_issues": 6,
       "watchers": 4,
       "default_branch": "main"
     }
   },
   "_links": {
     "self": {
-      "href": "https://api.github.com/repos/agentstation/starmap/pulls/168"
+      "href": "https://api.github.com/repos/agentstation/starmap/pulls/230"
     },
     "html": {
-      "href": "https://github.com/agentstation/starmap/pull/168"
+      "href": "https://github.com/agentstation/starmap/pull/230"
     },
     "issue": {
-      "href": "https://api.github.com/repos/agentstation/starmap/issues/168"
+      "href": "https://api.github.com/repos/agentstation/starmap/issues/230"
     },
     "comments": {
-      "href": "https://api.github.com/repos/agentstation/starmap/issues/168/comments"
+      "href": "https://api.github.com/repos/agentstation/starmap/issues/230/comments"
     },
     "review_comments": {
-      "href": "https://api.github.com/repos/agentstation/starmap/pulls/168/comments"
+      "href": "https://api.github.com/repos/agentstation/starmap/pulls/230/comments"
     },
     "review_comment": {
       "href": "https://api.github.com/repos/agentstation/starmap/pulls/comments{/number}"
     },
     "commits": {
-      "href": "https://api.github.com/repos/agentstation/starmap/pulls/168/commits"
+      "href": "https://api.github.com/repos/agentstation/starmap/pulls/230/commits"
     },
     "statuses": {
-      "href": "https://api.github.com/repos/agentstation/starmap/statuses/45afaed5d2ea6fb3993a4abeb120657d252e9a41"
+      "href": "https://api.github.com/repos/agentstation/starmap/statuses/8b935d15d7df9efa8f97b185314886a297cba2cb"
     }
   },
   "author_association": "CONTRIBUTOR",
@@ -418,8 +418,8 @@
   "comments": 0,
   "review_comments": 0,
   "maintainer_can_modify": false,
-  "commits": 2,
-  "additions": 663849,
-  "deletions": 113830,
-  "changed_files": 380
+  "commits": 1,
+  "additions": 84879,
+  "deletions": 76463,
+  "changed_files": 394
 }

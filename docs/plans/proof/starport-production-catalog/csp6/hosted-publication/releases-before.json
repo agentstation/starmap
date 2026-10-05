@@ -1,10 +1,10 @@
 [
   {
-    "url": "https://api.github.com/repos/agentstation/starmap/releases/391796424",
-    "assets_url": "https://api.github.com/repos/agentstation/starmap/releases/391796424/assets",
-    "upload_url": "https://uploads.github.com/repos/agentstation/starmap/releases/391796424/assets{?name,label}",
-    "html_url": "https://github.com/agentstation/starmap/releases/tag/catalog-dc217f144ccd01d0ee8045e9c7a5bf9159776d2a000b6389001b8162d8634aac",
-    "id": 391796424,
+    "url": "https://api.github.com/repos/agentstation/starmap/releases/403962950",
+    "assets_url": "https://api.github.com/repos/agentstation/starmap/releases/403962950/assets",
+    "upload_url": "https://uploads.github.com/repos/agentstation/starmap/releases/403962950/assets{?name,label}",
+    "html_url": "https://github.com/agentstation/starmap/releases/tag/catalog-99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f",
+    "id": 403962950,
     "author": {
       "login": "github-actions[bot]",
       "id": 41898282,
@@ -26,21 +26,21 @@
       "user_view_type": "public",
       "site_admin": false
     },
-    "node_id": "RE_kwDOPa1FXM4XWlbI",
-    "tag_name": "catalog-dc217f144ccd01d0ee8045e9c7a5bf9159776d2a000b6389001b8162d8634aac",
-    "target_commitish": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
-    "name": "catalog-dc217f144ccd01d0ee8045e9c7a5bf9159776d2a000b6389001b8162d8634aac",
+    "node_id": "RE_kwDOPa1FXM4YE_xG",
+    "tag_name": "catalog-99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f",
+    "target_commitish": "51e09ff5645f8529915a9975b953fae378f41532",
+    "name": "catalog-99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f",
     "draft": false,
     "immutable": true,
     "prerelease": true,
-    "created_at": "2026-09-18T21:16:32Z",
-    "updated_at": "2026-09-18T21:30:12Z",
-    "published_at": "2026-09-18T21:30:12Z",
+    "created_at": "2026-10-05T16:37:18Z",
+    "updated_at": "2026-10-05T17:29:10Z",
+    "published_at": "2026-10-05T17:29:10Z",
     "assets": [
       {
-        "url": "https://api.github.com/repos/agentstation/starmap/releases/assets/573492863",
-        "id": 573492863,
-        "node_id": "RA_kwDOPa1FXM4iLs5_",
+        "url": "https://api.github.com/repos/agentstation/starmap/releases/assets/613222768",
+        "id": 613222768,
+        "node_id": "RA_kwDOPa1FXM4kjQlw",
         "name": "starmap-catalog.intoto.json",
         "label": "",
         "uploader": {
@@ -67,16 +67,16 @@
         "content_type": "application/json",
         "state": "uploaded",
         "size": 824,
-        "digest": "sha256:1e02e036a7f8e67bad8703d0f7c16c30a5497796cd7df36b772767bfdbf09ae2",
-        "download_count": 20,
-        "created_at": "2026-09-18T21:30:08Z",
-        "updated_at": "2026-09-18T21:30:08Z",
-        "browser_download_url": "https://github.com/agentstation/starmap/releases/download/catalog-dc217f144ccd01d0ee8045e9c7a5bf9159776d2a000b6389001b8162d8634aac/starmap-catalog.intoto.json"
+        "digest": "sha256:3ce6d9ccc121d0fae90012d8aa8ef5cb1855056c468acf94681d030679603ac0",
+        "download_count": 4,
+        "created_at": "2026-10-05T17:29:06Z",
+        "updated_at": "2026-10-05T17:29:06Z",
+        "browser_download_url": "https://github.com/agentstation/starmap/releases/download/catalog-99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f/starmap-catalog.intoto.json"
       },
       {
-        "url": "https://api.github.com/repos/agentstation/starmap/releases/assets/573492782",
-        "id": 573492782,
-        "node_id": "RA_kwDOPa1FXM4iLs4u",
+        "url": "https://api.github.com/repos/agentstation/starmap/releases/assets/613222681",
+        "id": 613222681,
+        "node_id": "RA_kwDOPa1FXM4kjQkZ",
         "name": "starmap-catalog.tar.gz",
         "label": "",
         "uploader": {
@@ -102,17 +102,17 @@
         },
         "content_type": "application/x-gtar",
         "state": "uploaded",
-        "size": 1031339,
-        "digest": "sha256:ed2c766ea82a82e9ccdf17bfd1fd33a7fee3d44041ae26ad12e0c66f355e8337",
-        "download_count": 20,
-        "created_at": "2026-09-18T21:30:06Z",
-        "updated_at": "2026-09-18T21:30:06Z",
-        "browser_download_url": "https://github.com/agentstation/starmap/releases/download/catalog-dc217f144ccd01d0ee8045e9c7a5bf9159776d2a000b6389001b8162d8634aac/starmap-catalog.tar.gz"
+        "size": 1069851,
+        "digest": "sha256:a026728d9d9bf657cf5a147f5dd8ae24a2ed0e70db0ba3265abc55abfe3ecb90",
+        "download_count": 4,
+        "created_at": "2026-10-05T17:29:03Z",
+        "updated_at": "2026-10-05T17:29:03Z",
+        "browser_download_url": "https://github.com/agentstation/starmap/releases/download/catalog-99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f/starmap-catalog.tar.gz"
       },
       {
-        "url": "https://api.github.com/repos/agentstation/starmap/releases/assets/573492817",
-        "id": 573492817,
-        "node_id": "RA_kwDOPa1FXM4iLs5R",
+        "url": "https://api.github.com/repos/agentstation/starmap/releases/assets/613222729",
+        "id": 613222729,
+        "node_id": "RA_kwDOPa1FXM4kjQlJ",
         "name": "starmap-catalog.tar.gz.sha256",
         "label": "",
         "uploader": {
@@ -139,23 +139,23 @@
         "content_type": "application/octet-stream",
         "state": "uploaded",
         "size": 89,
-        "digest": "sha256:13d6559f55ad9a6eeb9090ea7646282694a25e34bd97ec1d7af10992732b9e29",
-        "download_count": 20,
-        "created_at": "2026-09-18T21:30:07Z",
-        "updated_at": "2026-09-18T21:30:07Z",
-        "browser_download_url": "https://github.com/agentstation/starmap/releases/download/catalog-dc217f144ccd01d0ee8045e9c7a5bf9159776d2a000b6389001b8162d8634aac/starmap-catalog.tar.gz.sha256"
+        "digest": "sha256:81089af31cff9cfc3a6b4d9d69f6fe23904e2352b17e0e89331114257133bb32",
+        "download_count": 4,
+        "created_at": "2026-10-05T17:29:04Z",
+        "updated_at": "2026-10-05T17:29:05Z",
+        "browser_download_url": "https://github.com/agentstation/starmap/releases/download/catalog-99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f/starmap-catalog.tar.gz.sha256"
       }
     ],
-    "tarball_url": "https://api.github.com/repos/agentstation/starmap/tarball/catalog-dc217f144ccd01d0ee8045e9c7a5bf9159776d2a000b6389001b8162d8634aac",
-    "zipball_url": "https://api.github.com/repos/agentstation/starmap/zipball/catalog-dc217f144ccd01d0ee8045e9c7a5bf9159776d2a000b6389001b8162d8634aac",
-    "body": "Public catalog publication github-35395944704.\nCatalog digest: sha256:dc217f144ccd01d0ee8045e9c7a5bf9159776d2a000b6389001b8162d8634aac.\n"
+    "tarball_url": "https://api.github.com/repos/agentstation/starmap/tarball/catalog-99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f",
+    "zipball_url": "https://api.github.com/repos/agentstation/starmap/zipball/catalog-99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f",
+    "body": "Public catalog publication github-37346030591.\nCatalog digest: sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f.\n"
   },
   {
-    "url": "https://api.github.com/repos/agentstation/starmap/releases/391796360",
-    "assets_url": "https://api.github.com/repos/agentstation/starmap/releases/391796360/assets",
-    "upload_url": "https://uploads.github.com/repos/agentstation/starmap/releases/391796360/assets{?name,label}",
-    "html_url": "https://github.com/agentstation/starmap/releases/tag/catalog-run-4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613",
-    "id": 391796360,
+    "url": "https://api.github.com/repos/agentstation/starmap/releases/403962738",
+    "assets_url": "https://api.github.com/repos/agentstation/starmap/releases/403962738/assets",
+    "upload_url": "https://uploads.github.com/repos/agentstation/starmap/releases/403962738/assets{?name,label}",
+    "html_url": "https://github.com/agentstation/starmap/releases/tag/catalog-run-3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f",
+    "id": 403962738,
     "author": {
       "login": "github-actions[bot]",
       "id": 41898282,
@@ -177,21 +177,21 @@
       "user_view_type": "public",
       "site_admin": false
     },
-    "node_id": "RE_kwDOPa1FXM4XWlaI",
-    "tag_name": "catalog-run-4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613",
-    "target_commitish": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
-    "name": "catalog-run-4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613",
+    "node_id": "RE_kwDOPa1FXM4YE_ty",
+    "tag_name": "catalog-run-3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f",
+    "target_commitish": "51e09ff5645f8529915a9975b953fae378f41532",
+    "name": "catalog-run-3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f",
     "draft": false,
     "immutable": true,
     "prerelease": true,
-    "created_at": "2026-09-18T21:16:32Z",
-    "updated_at": "2026-09-18T21:30:02Z",
-    "published_at": "2026-09-18T21:30:02Z",
+    "created_at": "2026-10-05T16:37:18Z",
+    "updated_at": "2026-10-05T17:28:58Z",
+    "published_at": "2026-10-05T17:28:58Z",
     "assets": [
       {
-        "url": "https://api.github.com/repos/agentstation/starmap/releases/assets/573492471",
-        "id": 573492471,
-        "node_id": "RA_kwDOPa1FXM4iLsz3",
+        "url": "https://api.github.com/repos/agentstation/starmap/releases/assets/613222205",
+        "id": 613222205,
+        "node_id": "RA_kwDOPa1FXM4kjQc9",
         "name": "starmap-catalog-run.json",
         "label": "",
         "uploader": {
@@ -217,17 +217,17 @@
         },
         "content_type": "application/json",
         "state": "uploaded",
-        "size": 203789,
-        "digest": "sha256:4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613",
-        "download_count": 33,
-        "created_at": "2026-09-18T21:29:56Z",
-        "updated_at": "2026-09-18T21:29:57Z",
-        "browser_download_url": "https://github.com/agentstation/starmap/releases/download/catalog-run-4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613/starmap-catalog-run.json"
+        "size": 196334,
+        "digest": "sha256:3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f",
+        "download_count": 5,
+        "created_at": "2026-10-05T17:28:49Z",
+        "updated_at": "2026-10-05T17:28:49Z",
+        "browser_download_url": "https://github.com/agentstation/starmap/releases/download/catalog-run-3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f/starmap-catalog-run.json"
       },
       {
-        "url": "https://api.github.com/repos/agentstation/starmap/releases/assets/573492505",
-        "id": 573492505,
-        "node_id": "RA_kwDOPa1FXM4iLs0Z",
+        "url": "https://api.github.com/repos/agentstation/starmap/releases/assets/613222236",
+        "id": 613222236,
+        "node_id": "RA_kwDOPa1FXM4kjQdc",
         "name": "starmap-catalog-state.json",
         "label": "",
         "uploader": {
@@ -253,16 +253,16 @@
         },
         "content_type": "application/json",
         "state": "uploaded",
-        "size": 22454312,
-        "digest": "sha256:5bb7bcc799a7b728a6d9b6ac4b8affaffa6f01b94c8c87c57d2ae0a4512eabce",
-        "download_count": 32,
-        "created_at": "2026-09-18T21:29:58Z",
-        "updated_at": "2026-09-18T21:29:59Z",
-        "browser_download_url": "https://github.com/agentstation/starmap/releases/download/catalog-run-4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613/starmap-catalog-state.json"
+        "size": 65731968,
+        "digest": "sha256:fbc84df0a1d1654d8b2a1257578c0efa0362a889768e19ad62838a66bc033a29",
+        "download_count": 5,
+        "created_at": "2026-10-05T17:28:50Z",
+        "updated_at": "2026-10-05T17:28:53Z",
+        "browser_download_url": "https://github.com/agentstation/starmap/releases/download/catalog-run-3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f/starmap-catalog-state.json"
       }
     ],
-    "tarball_url": "https://api.github.com/repos/agentstation/starmap/tarball/catalog-run-4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613",
-    "zipball_url": "https://api.github.com/repos/agentstation/starmap/zipball/catalog-run-4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613",
-    "body": "Public catalog publication github-35395944704.\nCatalog digest: sha256:dc217f144ccd01d0ee8045e9c7a5bf9159776d2a000b6389001b8162d8634aac.\n"
+    "tarball_url": "https://api.github.com/repos/agentstation/starmap/tarball/catalog-run-3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f",
+    "zipball_url": "https://api.github.com/repos/agentstation/starmap/zipball/catalog-run-3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f",
+    "body": "Public catalog publication github-37346030591.\nCatalog digest: sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f.\n"
   }
 ]
