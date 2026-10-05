@@ -204,6 +204,10 @@ func verifyRestoredState(ctx context.Context, state *State) error {
 		seen[binding.ID] = binding
 		bindings = append(bindings, binding)
 	}
+	accepted := state.current.Manifest.SchemaVersion
+	if accepted > catalogs.CurrentCatalogSchemaVersion {
+		return admissionError("state.catalog.schema_version", "is newer than this publisher supports")
+	}
 	candidate, err := catalogruntime.ReplayAcquisition(ctx, state.baseline, state.publisherID, bindings, state.history)
 	if err != nil {
 		return err
@@ -211,6 +215,12 @@ func verifyRestoredState(ctx context.Context, state *State) error {
 	rebuilt, err := candidate.Generation(state.current.Manifest.SyncRunID, state.current.Manifest.GeneratedAt)
 	if err != nil {
 		return err
+	}
+	// Current code derives current-schema facts, so it cannot reproduce an older-schema catalog.
+	// The checkpoint digest, canonical bytes, and artifact attestation still bind the accepted catalog.
+	if accepted < catalogs.CurrentCatalogSchemaVersion {
+		state.supersession = &SchemaSupersession{AcceptedSchemaVersion: accepted, CurrentSchemaVersion: catalogs.CurrentCatalogSchemaVersion}
+		return nil
 	}
 	expected, err := state.current.SemanticChecksum()
 	if err != nil {
