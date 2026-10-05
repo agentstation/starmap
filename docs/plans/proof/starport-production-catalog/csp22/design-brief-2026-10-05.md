@@ -112,6 +112,10 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 - The lead replayed the accepted checkpoint with the fixed tool and no credential. The tool exits 0 and reports the supersession from schema 10 to schema 19.
 - The race tests of the command package pass. The race tests of the publication package pass without `TestPublicPublicationProfileRetainsBoundedState`. That capacity test exceeded the 30 minute local limit under the race detector. The change does not touch it, and CI owns its result.
 - Autoreview of PR P with Sol 6.1 at high effort returned clean in one pass.
+- Pull request #229 merged as `51e09ff56` on 2026-10-05 with 62 of 62 checks. The next scheduled publication starts at 20:17 UTC.
+- The first CI run of #423 failed four test jobs. On both Linux runners the `client_backpressure` milestone measured 1.65 s against the fixed 900 ms ceiling. The small socket buffers slow the transfer after the client pause, and the kernel sets that rate.
+- Commit `60db1856` sets the ceiling of that milestone to the time that the client took to receive the stream. The floor and the ceilings of the other milestones do not change. Autoreview returned clean in one pass.
+- The macOS job stopped at the one hour limit of the `internal/catalog` package. The Windows job failed in `TestComposeStorageRecipes` before the native suite. The pull request changes neither path. The second CI run tests both again.
 - The acceptance run is `--gate candidate` at the merged Starmap head against the merged Starport main.
 
 ### D11. Discovery audit

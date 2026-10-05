@@ -1,0 +1,56 @@
+{
+ "recorded_utc": "2026-10-05T16:37:29.438705+00:00",
+ "task": "CSP22",
+ "task_completed": false,
+ "repository": "agentstation/starmap",
+ "pr": 229,
+ "head": "00a4878c2f33a5c6d70d93e8986863a2f6833ed1",
+ "base": "a4d24306b6114236aee5586229c4b029c52db43f",
+ "merge": "51e09ff5645f8529915a9975b953fae378f41532",
+ "merged_at": "2026-10-05T16:37:18Z",
+ "checks": {
+  "success": 62,
+  "not_success": 0,
+  "total": 62
+ },
+ "reviewed_tree": "3e1b68c12149f7b36739dc866f5e9caeca59bdef",
+ "merged_tree": "3e1b68c12149f7b36739dc866f5e9caeca59bdef",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Security & Reliability",
+  "Verification Gate"
+ ],
+ "linear_history": false,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "CSP22 publication restore fix",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "7cf4d2302ec9cb19b1073f699154e9b24f2725ed4da9a836958e8783cedd7024",
+   "gzip_sha256": "66c598b26474d7cce30fb2c30c6415745c015b32eaf191a5aad00e3da5592876"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "eea4c2c62672e33697de38c0fb212ee24deb721e626ad41758478d1e4d02fb8d",
+   "gzip_sha256": "f673c916ab858a16136cf433bdd32c771a165a9ef880aeaabf5288c3d831c410"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "643cc567a64f8b04c1a77e794c93d27fda8da26dd43c68304efc1aeb38e32181",
+   "gzip_sha256": "80828a16e0431c54e1b79753d1bdb11ebf203194a7b352d23fc9918902d87781"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+   "gzip_sha256": "da95be86de467295689c40b6350ff741a6659382857d1f52272e7dc99b40ed85"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}
