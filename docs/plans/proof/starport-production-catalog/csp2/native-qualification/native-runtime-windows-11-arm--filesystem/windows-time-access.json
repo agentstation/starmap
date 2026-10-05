@@ -1,0 +1,5 @@
+{
+  "scope": "read-only local diagnostics",
+  "privilege_exit": 0,
+  "status_exit": 0
+}

@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "system": "darwin",
+  "arch": "arm64",
+  "groups": [
+    "client",
+    "application",
+    "filesystem",
+    "runtime-1",
+    "runtime-2",
+    "runtime-3"
+  ],
+  "packages": 23,
+  "top_level_tests": 1444,
+  "status": "success"
+}

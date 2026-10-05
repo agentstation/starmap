@@ -1,0 +1,12 @@
+{
+  "source_commit": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+  "sha256": {
+    "pending.json": "79db262eb298d61d6d4ceccf114f8b7de1cefaf1811d1f29370544410359f8ae",
+    "pull.json": "0277d5a277dab09f7de9102711c46b29baa456a53af1757f6c37b6ca253daaee",
+    "protection.json": "def81981945f046a854c34d02c9e0f65e63068f443e20911240988b0120390c2",
+    "checks.json": "0ce99adf21052d3cc5cab436683f471ad86f11697143f6679e5b71e4c48702d9",
+    "completion.json": "fd12a3ea21ee227c602a4a1959abebc43671b08bc0335c5f7c9f067bc7103acb",
+    "releases-before.json": "eadc6b09721367f29bbabd813b0503144883e7d99cd13a3459dda0ff5a1392a9",
+    "channels-before.json": "fbcfbcde91fc0070d60a22426306d3b5b2c9edb5944a403e3b1c73c7d0bb14ac"
+  }
+}

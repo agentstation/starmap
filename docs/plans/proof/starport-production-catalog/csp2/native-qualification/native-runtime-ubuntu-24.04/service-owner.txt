@@ -3,5 +3,5 @@
         --- PASS: TestServiceConfigurationAdministratorOwnedRead (0.00s)
         PASS
         
---- PASS: TestServiceConfigurationAdministratorOwnedRead (0.14s)
+--- PASS: TestServiceConfigurationAdministratorOwnedRead (0.01s)
 PASS
