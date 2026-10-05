@@ -55,7 +55,10 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 ### D6. A06 adapters
 
 - The subcase `A06.promoted_checkout` needs a Starmap adapter. It reads the `catalog/v1` channel document and resolves the promoted generation. It compares that generation with the current main embedding.
-- The subcase `A06.old_pinned_bytes_unchanged` needs a Starmap adapter. It downloads the pinned release assets of the recorded tag and compares their digests with the recorded digests. The download changes no remote state.
+- The subcase `A06.old_pinned_bytes_unchanged` needs a Starmap adapter. The accepted design reads the Starmap pin and its `h1:` line from the Starport `go.mod` and `go.sum`. It downloads the module zip and recomputes the Go directory hash. A mismatch is a FAIL. The download changes no remote state.
+- The adapter reads the embedded generation from the zip. It reports PASS when the pin generation differs from the checkout generation and the hash matches. It reports UNVERIFIED when the generations are equal, when a `replace` directive applies, or when the module is unavailable.
+- The adapter `promoted_checkout` reads `channel.json` on the `catalog/v1` branch and verifies its attestation against the generation workflow on `refs/heads/main`. It reports PASS when the channel generation and digest equal the main embedding.
+- Limit for CSP23: at the final released pair the Starport pin can equal the checkout. CSP23 then needs an explicit older version input for this subcase.
 - Today the main embedding declares the 2026-09-28 generation `whisper-operation-correction-47190c7a…`. The channel declares the 2026-09-26 generation `bindings-ef621d85…`. The promoted checkout adapter reports FAIL until a new promotion lands.
 - The adapters land with the Starmap slice. Their candidate results are honest, and the gate counts them as the publication-dependent cases that CSP23 completes.
 
@@ -76,6 +79,8 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 - The replay break has two routes. Route B2 skips the equality check after a schema version increase and records the supersession in the receipt. Route C resets the channel state and loses the retained inputs and the accepted lineage. Exact reproduction needs a return to schema version 10, which is not an option. Route B is a protocol change and needs an owner decision.
 - Owner decision of 2026-10-05: route B2 with regression tests.
 - The stderr fix retains only the typed error field and its constant message. Raw stderr can hold provider addresses or credentials, and the validation artifact is public.
+- Lead decision of 2026-10-05 on the supersession record: option A. The receipt and checkpoint decoders reject unknown fields, and Starport pins a Starmap version with the same strict decoder. A new receipt field breaks the pinned consumer. The fix adds a `schema_supersession` object to the publish tool report and the workflow validation artifact. The signed receipt format does not change.
+- Option B raises the receipt schema version and breaks pinned consumers. Option C first ships a tolerant decoder. The task uses neither. The lead reported both to the owner as a possible later task.
 - The scheduled cron publishes by itself after the fix merges. A manual dispatch or receipt replay is a separate authority boundary.
 
 ### D9. Recapture sequencing
@@ -91,6 +96,8 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 - PR P on Starmap lands the D8 publication fixes. PR R on Starmap lands the registry entries from D1 through D4, the A06 adapters, and the registry test pins. Each runs its unit tests, `make technical-writing-check`, and autoreview.
 - The split keeps the publication fix reviewable alone, because the scheduled run depends on it.
 - Proof PRs land the recaptures after both code PRs merge.
+- PR R is Starmap pull request #223 at head `4458f6146`. It registers six subcases, and the registry holds 313 checks. Its 184 unit tests pass, and `make technical-writing-check` passes. Autoreview with Sol 6.1 at high effort returned clean in one pass.
+- The file `scripts/test_catalog_product_verify.py` holds 1,944 lines. It owns the tests of one verifier module. The next addition must split it by adapter.
 - The acceptance run is `--gate candidate` at the merged Starmap head against the merged Starport main.
 
 ### D11. Discovery audit
@@ -115,7 +122,7 @@ The owner reported disappearing questions. This section retains each open questi
 
 1. D5: answered on 2026-10-05 with route A.
 2. D8: answered on 2026-10-05 with route B2.
-3. Disk cleanup: the Go build cache at `/private/tmp/csp13-go-build-20260929` holds 65 GB and the Docker build cache holds 21.86 GB. The lead cannot run the cleanup. The owner runs it.
+3. Disk cleanup: answered on 2026-10-05. The owner cleaned the Go build cache and the Docker build cache. The free space is 82 GiB.
 
 ## Limits known before implementation
 
