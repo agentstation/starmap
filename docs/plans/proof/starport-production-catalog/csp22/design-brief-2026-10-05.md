@@ -9,7 +9,7 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 - Reruns with the toggles, the recipe image, the public fixture, and the brew Python pass every local group. A07, A17, A42, A46, A48, and the registered A31 subcases all PASS.
 - The fresh `A50.full_path_baseline` at `c5246216` measured a median paired added latency of 0.46 ms for plain requests. Streams measured 0.60 ms. The p99 values are 0.84 ms and 2.00 ms. The csp0.4 baseline from 2026-09-05 measured 56 to 59 ms.
 - Starport PR #419 holds the native capture from the `c5246216` tree at head `84b0bd8b`. Its CI checks still run.
-- Starmap PR #221 holds the csp6 hosted capture, the native capture from run 37239363730, and the numeric profile review. Its head is `ee9ab6598`. Its CI checks still run.
+- Starmap PR #221 holds the csp6 hosted capture, the native capture from run 37239363730, and the numeric profile review. It merged as `178976f51` on 2026-10-05 with 62 of 62 checks.
 - The registry has no entry for `A06.promoted_checkout`, `A06.old_pinned_bytes_unchanged`, `A31.exact_backend_versions`, `A31.single_region_boundaries`, `A50.gateway_provider_boundaries`, `A50.connection_reuse_lifecycle`, `A50.percentiles_and_load`, `A50.stream_timing_memory`, `A50.allocations_cpu_gc`, or `A50.real_recipe_matrix`.
 - Every scheduled Starmap catalog publication run since 2026-09-26 failed. Decision D8 records the diagnosis.
 
@@ -49,12 +49,13 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 - The profile requires three runs, 100,000 samples per variant, at least 600 seconds, and open-loop arrivals. It requires 95 percent confidence intervals. It requires a dedicated runner with eight physical cores and 16 GiB.
 - This host is not a dedicated runner. No existing CI runner meets the dedicated requirement.
 - The lead offers the owner three routes. Route A documents the four subcases as an UNVERIFIED limit of this task. It creates a sibling task for the dedicated measurement. Route B authorizes a dedicated or paid runner now. Route C runs the harness on this host and records the result as UNVERIFIED evidence.
-- Pending owner decision. The lead recommends route A because the fresh baseline shows no latency regression and route B is new authority.
+- Owner decision of 2026-10-05: route A. The four subcases stay UNVERIFIED in this task. The sibling task CSP22.1 owns the dedicated measurement.
+- The owner asked about the host `nimbus@minicloud`. A read-only probe found two physical cores and 7 GiB of memory. The host does not meet the profile.
 
 ### D6. A06 adapters
 
 - The subcase `A06.promoted_checkout` needs a Starmap adapter. It reads the `catalog/v1` channel document and resolves the promoted generation. It compares that generation with the current main embedding.
-- The subcase `A06.old_pinned_bytes_unchanged` needs a Starmap adapter. It downloads the pinned release assets of the recorded tag and compares their digests with the recorded digests. The download is read-only.
+- The subcase `A06.old_pinned_bytes_unchanged` needs a Starmap adapter. It downloads the pinned release assets of the recorded tag and compares their digests with the recorded digests. The download changes no remote state.
 - Today the main embedding declares the 2026-09-28 generation `whisper-operation-correction-47190c7a…`. The channel declares the 2026-09-26 generation `bindings-ef621d85…`. The promoted checkout adapter reports FAIL until a new promotion lands.
 - The adapters land with the Starmap slice. Their candidate results are honest, and the gate counts them as the publication-dependent cases that CSP23 completes.
 
@@ -73,7 +74,8 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 - The function `RestoreState` replays the retained inputs of the checkpoint against the checkpoint baseline with the current code. It compares the rebuilt semantic checksum with the accepted catalog. The bisect in `publication-outage-2026-10-05/` shows that `024c24c22` restores the checkpoint and that `4586667a3` fails. Pull request #187 raised the catalog schema version from 10 to 19 and changed derived billing. The current code cannot reproduce a schema 10 catalog.
 - The fix slice has three parts. Add the fixture identity to the test commit. Retain the publish tool stderr tail in the validation artifact. Resolve the checkpoint replay break by the route the owner selects.
 - The replay break has two routes. Route B2 skips the equality check after a schema version increase and records the supersession in the receipt. Route C resets the channel state and loses the retained inputs and the accepted lineage. Exact reproduction needs a return to schema version 10, which is not an option. Route B is a protocol change and needs an owner decision.
-- Pending owner decision. Route B2 is a protocol change. The lead recommends route B2 with a regression test and asks before the change.
+- Owner decision of 2026-10-05: route B2 with regression tests.
+- The stderr fix retains only the typed error field and its constant message. Raw stderr can hold provider addresses or credentials, and the validation artifact is public.
 - The scheduled cron publishes by itself after the fix merges. A manual dispatch or receipt replay is a separate authority boundary.
 
 ### D9. Recapture sequencing
@@ -86,7 +88,8 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 ### D10. Delivery order
 
 - PR A on Starport lands the single-region text, the three new tests, and the five-archive wording in `docs/PERFORMANCE.md`. It runs the full roster and autoreview.
-- PR B on Starmap lands the registry entries from D1 through D4 and the A06 adapters. It also lands the registry test pins and the D8 publication fixes. It runs the registry unit tests, `make technical-writing-check`, and autoreview.
+- PR P on Starmap lands the D8 publication fixes. PR R on Starmap lands the registry entries from D1 through D4, the A06 adapters, and the registry test pins. Each runs its unit tests, `make technical-writing-check`, and autoreview.
+- The split keeps the publication fix reviewable alone, because the scheduled run depends on it.
 - Proof PRs land the recaptures after both code PRs merge.
 - The acceptance run is `--gate candidate` at the merged Starmap head against the merged Starport main.
 
@@ -110,8 +113,8 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 
 The owner reported disappearing questions. This section retains each open question until the owner answers it.
 
-1. D5: route A, B, or C for the four A50 measurement subcases.
-2. D8: route B2 or route C for the checkpoint replay break, and whether the lead starts the fix slice now.
+1. D5: answered on 2026-10-05 with route A.
+2. D8: answered on 2026-10-05 with route B2.
 3. Disk cleanup: the Go build cache at `/private/tmp/csp13-go-build-20260929` holds 65 GB and the Docker build cache holds 21.86 GB. The lead cannot run the cleanup. The owner runs it.
 
 ## Limits known before implementation
