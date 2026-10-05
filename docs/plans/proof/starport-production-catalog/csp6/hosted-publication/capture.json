@@ -7,6 +7,11 @@
     "checks.json": "aae9d3fbbb2861d876586c88e13a09bf3662617c448f696ce537792d536c1bea",
     "completion.json": "2778be9db4b393b035205a49b7fabceeaae4b9f3c2457f7bfc3a878e5565da67",
     "releases-before.json": "85481e5a4a41c958a8c5c5d0308ff4330394e667a053d149bed0c2bc91a15f15",
-    "channels-before.json": "cfb12e9f59a00fa4c12aebf7a3d27e53d461ff5cf057ce3a839033238875be37"
+    "channels-before.json": "cfb12e9f59a00fa4c12aebf7a3d27e53d461ff5cf057ce3a839033238875be37",
+    "retry.json": "ba8df9109be6aed8e0f423abfb9fd0a2d7af26029d3a1870071466ac9cd79c09",
+    "releases-after.json": "ddca9bd331b3c5b6176ea3e999818da2396636a621c2ab643729213e5cf49a90",
+    "channels-after.json": "cfb12e9f59a00fa4c12aebf7a3d27e53d461ff5cf057ce3a839033238875be37",
+    "channel-v1.raw.json": "0e6519e18af9e1407db324f9ab746f1354b09e4d028ea527f973c79c18f95aa4",
+    "channel-v2.raw.json": "72f899a1c90592d92bcecf955de3d80166c90718215ed1e1ecbbceb001bd0488"
   }
 }
