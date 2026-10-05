@@ -1,0 +1,56 @@
+{
+ "recorded_utc": "2026-10-05T22:26:29.785728+00:00",
+ "task": "CSP22",
+ "task_completed": false,
+ "repository": "agentstation/starmap",
+ "pr": 231,
+ "head": "f3dc61015efa3eb99588b13bd62bc8c7bdf53977",
+ "base": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
+ "merge": "753b2e551ee1a3a831d0f129367082123aa2de91",
+ "merged_at": "2026-10-05T22:26:03Z",
+ "checks": {
+  "success": 58,
+  "not_success": 3,
+  "total": 61
+ },
+ "reviewed_tree": "94ab3fdc0c5b1ae620ccb8ac5387ee6681e1ce67",
+ "merged_tree": "94ab3fdc0c5b1ae620ccb8ac5387ee6681e1ce67",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Security & Reliability",
+  "Verification Gate"
+ ],
+ "linear_history": false,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "evidence",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "398aba3cf5a7dae7407fc661be0bdb10461a9e1a74923ed6730e9d90ee7d6638",
+   "gzip_sha256": "c8a251282b7ee8bac328c760d46dbeda1cd769b55427e4f9034276b636a90d29"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "3856df2ae78941c036eed6321a7dfbc5f42ab9dcf6ec61f93b57998d07cb4a94",
+   "gzip_sha256": "1a99ceddfc29445bb475d93ae1b65f042493d68248d40af8988ffbad832b6fdb"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "58cd30f9976e6fa41e3be8f0b5ed8185484dca83c13cb66836ded5abdcf596ca",
+   "gzip_sha256": "23d14afbe1018c3d7ad2959bb7a054e9cee4b39d4f62f44c347c37be3fcd6e23"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "a5072bc0d1478c9afe954a2b4f89f1b44bb57fedd557fb22558eed42bd31a52e",
+   "gzip_sha256": "da95be86de467295689c40b6350ff741a6659382857d1f52272e7dc99b40ed85"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}

@@ -1,0 +1,58 @@
+{
+ "recorded_utc": "2026-10-05T22:26:36.391452+00:00",
+ "task": "CSP22",
+ "task_completed": false,
+ "repository": "agentstation/starport",
+ "pr": 419,
+ "head": "17776031a5b5e1ef5b7928c12184a20918c331de",
+ "base": "3234997a6e9ccc3e312559aa0cd42bb1c290eaac",
+ "merge": "635fb25fc798b024b328c3b24ebd50de7e4b7c84",
+ "merged_at": "2026-10-05T22:26:19Z",
+ "checks": {
+  "success": 47,
+  "not_success": 0,
+  "total": 47
+ },
+ "reviewed_tree": "b881aee01291ab854142b2bf211feda007ebdd18",
+ "merged_tree": "b881aee01291ab854142b2bf211feda007ebdd18",
+ "reviewed_tree_equals_merge_tree": true,
+ "merge_commit_verified": true,
+ "strict_protection": true,
+ "required_checks": [
+  "Build",
+  "Security Scan",
+  "Release Snapshot",
+  "Action Pin Provenance"
+ ],
+ "linear_history": true,
+ "unresolved_threads": 0,
+ "merge_method": "protected squash with exact head match; no admin bypass",
+ "scope": "evidence",
+ "artifacts": {
+  "merged-pr.json": {
+   "file": "merged-pr.json.gz",
+   "sha256": "7962a1cb83282103d456cb953d0935f34f02902c195239ac296cf7634992a7fa",
+   "gzip_sha256": "08f896fb045bf05080311cbd22ff5fed471e7c4cc394d0e040f7797d1d1ea52c"
+  },
+  "merge-commit.json": {
+   "file": "merge-commit.json.gz",
+   "sha256": "edb2c677e25352ff75ab5d948a420264a5986c170997429c6418d4ad888d856b",
+   "gzip_sha256": "b934d7c7d557ac4ac57e341e7d62bec878c293567872c0bd8ac9cb9d21accdad"
+  },
+  "head-commit.json": {
+   "file": "head-commit.json.gz",
+   "sha256": "8a4cdab6d7cb3602579d5d7a2e8155275fd7ad74493803d0a14264a6a317767a",
+   "gzip_sha256": "790f85157b69b83c51c80415a1987a76991f25334c677a05f5458742bf8ad258"
+  },
+  "after-protection.json": {
+   "file": "after-protection.json.gz",
+   "sha256": "2da0285aa9ee8ecc34866455293947b2f1ddd237b8d83a9949d013881fb435e0",
+   "gzip_sha256": "ede47f26a3ae8643ae70cb2a7551c84e3fe9aafddcca371d198a11e45586c885"
+  },
+  "threads.json": {
+   "file": "threads.json.gz",
+   "sha256": "60850aebcfb59ac97e9a03ac4d57095b9e79e515ad53f6f37d8cfb17dc7222fe",
+   "gzip_sha256": "fd70a5d1b7cda50b7da47f91b63f5b44a7640c07d20eec0d0e95e96153588c18"
+  }
+ }
+}

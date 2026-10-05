@@ -120,6 +120,12 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 - The lead captured the Starport native evidence from run 37344667799 into pull request #419 at head `17776031`. The capture test passed 31 tests. The install evidence verified on Windows, Linux, and macOS.
 - The macOS job stopped at the one hour limit of the `internal/catalog` package. The Windows job failed in `TestComposeStorageRecipes` before the native suite. The pull request changes neither path. The second CI run tests both again.
 - The acceptance run is `--gate candidate` at the merged Starmap head against the merged Starport main.
+- The retry run 37362218157 reproduced the same bytes. The hosted `after` capture verified five attested subjects, and `A05.bot_required_checks` and `A05.same_bytes_retry` pass.
+- Starmap pull request #231 holds the hosted and native captures. It merged as `753b2e551` with 58 of 61 checks. The three cancelled checks are the CodeQL analyses. The branch protection does not require them. The GitHub Actions outage of 2026-10-05 cancelled them. GitHub refused a rerun of that CodeQL run.
+- Starport pull request #419 merged as `635fb25fc` with 47 of 47 checks. The lead reran the jobs that the same outage failed.
+- The directories `merge-231/` and `merge-419/` hold the merge proofs. Each reviewed tree equals its merge tree.
+- The candidate gate at Starmap `f3dc61015` against Starport `17776031` reports 308 PASS, 4 UNVERIFIED, and 0 FAIL of 312. The record is `acceptance-2026-10-05/`.
+- The four UNVERIFIED subcases are the A50 measurements of CSP22.1. The lead closed CSP22.
 
 ### D11. Discovery audit
 
