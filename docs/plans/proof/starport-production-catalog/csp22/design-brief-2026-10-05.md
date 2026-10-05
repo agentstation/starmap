@@ -149,7 +149,8 @@ The owner reported disappearing questions. This section retains each open questi
    - The lead captured the `before` phase on the local branch `codex/csp22-hosted-capture`.
    - The retry receipt checksum is `sha256:3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f`.
    - A later scheduled publication that changes a channel makes this `before` capture stale. The lead then captures again after that publication.
-   - The lead captured the Starmap native evidence from run 37349252815. That run belongs to pull request #230. Its head and main `2fba452ab` have the same tree. Nine Starmap native entries verified.
+   - The lead captured the Starmap native evidence from run 37349252815 of the bot pull request.
+   - The head of that pull request and main `2fba452ab` have the same tree. Nine Starmap native entries verified.
 
 ## Limits known before implementation
 
