@@ -1,7 +1,10 @@
 import argparse
+import base64
+import gzip
 import os
 import io
 import sys
+import zipfile
 from contextlib import redirect_stdout
 import json
 import hashlib
@@ -1703,6 +1706,241 @@ class RecoveryRegistrationTests(unittest.TestCase):
                 for case in report['cases']:
                     if case['id'] == 'A33':
                         self.assertEqual(case['status'], 'PASS')
+
+
+class CandidateRegistrationTests(unittest.TestCase):
+    def setUp(self):
+        self.roster = verifier.read_json(verifier.ROSTER)
+        self.registry = verifier.read_json(verifier.REGISTRY)
+
+    def test_registry_size_and_validation(self):
+        verifier.validate_registry(self.registry, self.roster, verifier.validate_roster(self.roster))
+        self.assertEqual(len(self.registry['checks']), 313)
+
+    def test_backend_versions_and_region_boundary_bind_starport_tests(self):
+        self.assertEqual(self.registry['checks']['A31.exact_backend_versions'], {'kind': 'all', 'checks': [
+            {'kind': 'go_test', 'repository': 'starport', 'package': './internal/storage', 'test': 'TestQualifiedValkeyVersion'},
+            {'kind': 'go_test', 'repository': 'starport', 'package': './internal/sqlstore', 'test': 'TestQualifiedPostgreSQLVersion'},
+            {'kind': 'go_test', 'repository': 'starport', 'package': './internal/config', 'test': 'TestDeclaredRecipePages'}]})
+        self.assertEqual(self.registry['checks']['A31.single_region_boundaries'], {
+            'kind': 'go_test', 'repository': 'starport', 'package': './internal/config', 'test': 'TestRecipeSingleRegionBoundary'})
+
+    def test_gateway_and_connection_checks_bind_named_boundaries(self):
+        self.assertEqual(self.registry['checks']['A50.gateway_provider_boundaries'], {
+            'kind': 'go_test', 'repository': 'starport', 'package': './internal/app', 'test': 'TestGatewayProviderTimingBoundaries',
+            'required_subtests': ['connection_queueing', 'dns', 'tcp_tls_setup', 'provider_wait', 'client_backpressure']})
+        entry = self.registry['checks']['A50.connection_reuse_lifecycle']
+        self.assertEqual(entry['kind'], 'all')
+        self.assertEqual(entry['checks'], [
+            {'kind': 'go_test', 'repository': 'starport', 'package': './internal/providers/connectors', 'test': name} for name in (
+                'TestDispatchTransportIdleConnectionExpires', 'TestDispatchTransportCanceledRequestPreservesActiveStream',
+                'TestDispatchCapacityNotificationWakesEveryWaiter', 'TestDispatchTransportBoundsIdleConnectionsAcrossOrigins',
+                'TestDispatchTransportDoesNotRetryAndRecoversClosedConnection', 'TestDispatchTransportCancellationDuringDialReleasesCapacity',
+                'TestDispatchTransportHTTP2StreamFailureDoesNotRetry', 'TestHTTPClientConnectionPooling', 'TestHTTPClientConnectionReuse',
+                'TestDispatchTransportGenerationChangeSaturation')])
+
+    def test_measurement_subcases_stay_unregistered(self):
+        for identity in ('A50.percentiles_and_load', 'A50.stream_timing_memory', 'A50.allocations_cpu_gc', 'A50.real_recipe_matrix'):
+            with self.subTest(identity=identity):
+                self.assertIn(identity, self.roster['required_subcases']['A50'])
+                self.assertNotIn(identity, self.registry['checks'])
+
+    def test_embedding_subcases_use_their_adapters(self):
+        self.assertEqual(self.registry['checks']['A06.promoted_checkout'], {'kind': 'promoted_checkout', 'repository': 'starmap'})
+        self.assertEqual(self.registry['checks']['A06.old_pinned_bytes_unchanged'],
+                         {'kind': 'pinned_module_baseline', 'repository': 'starport'})
+        for identity in ('A06.new_released_module', 'A06.starport_released_module_pin'):
+            self.assertNotIn(identity, self.registry['checks'])
+
+
+def generation_files(generation_id, semantic, payload=b'{"models":[]}', declared=None):
+    record = {'generation_id': generation_id, 'semantic_checksum': semantic,
+              'payload': {'checksum': declared or 'sha256:' + hashlib.sha256(payload).hexdigest(), 'size_bytes': len(payload)}}
+    return {'generation.json': json.dumps(record).encode(), 'generation-payload.json.gz': gzip.compress(payload)}
+
+
+def write_generation(directory, *selection, **options):
+    directory.mkdir(parents=True, exist_ok=True)
+    for name, data in generation_files(*selection, **options).items():
+        (directory / name).write_bytes(data)
+
+
+SELECTED = ('whisper-operation-correction-47190c7a', 'sha256:' + 'd' * 64)
+PROMOTED = ('bindings-ef621d85', 'sha256:' + 'e' * 64)
+
+
+class PromotedCheckoutTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.root = Path(self.directory.name)
+        # The adapter loads the publication capture from the repository under test.
+        (self.root / 'scripts').symlink_to(Path(verifier.__file__).resolve().parent)
+        write_generation(self.root / verifier.EMBEDDED_CATALOG, *SELECTED)
+        self.status = ''
+        self.attested = None
+
+    def tearDown(self):
+        self.directory.cleanup()
+
+    def channel(self, selection):
+        return json.dumps({'schema_version': 1, 'channel': 'catalog/v1', 'sequence': 43,
+                           'generation_id': selection[0], 'catalog_digest': selection[1]}).encode()
+
+    def run_with(self, raw):
+        def run(args, **kwargs):
+            if args[:2] == ['git', 'status']:
+                return subprocess.CompletedProcess(args, 0, self.status, '')
+            if args[:2] == ['gh', 'api']:
+                self.assertEqual(args[2], 'repos/agentstation/starmap/contents/channel.json?ref=catalog%2Fv1')
+                if raw is None:
+                    raise subprocess.CalledProcessError(1, args, '', 'HTTP 404')
+                return subprocess.CompletedProcess(args, 0, json.dumps({'content': base64.b64encode(raw).decode()}), '')
+            if args[:3] == ['gh', 'attestation', 'verify']:
+                self.assertIn('--deny-self-hosted-runners', args)
+                self.assertEqual(Path(args[3]).read_bytes(), raw)
+                digest = self.attested or hashlib.sha256(raw).hexdigest()
+                reports = [{'verificationResult': {'statement': {'subject': [{'digest': {'sha256': digest}}]}}}]
+                return subprocess.CompletedProcess(args, 0, json.dumps(reports), '')
+            raise AssertionError(args)
+        with patch.object(verifier.subprocess, 'run', side_effect=run):
+            return verifier.run_check('A06.promoted_checkout', {'kind': 'promoted_checkout', 'repository': 'starmap'},
+                                      {'starmap': self.root})
+
+    def test_equal_promotion_passes(self):
+        result = self.run_with(self.channel(SELECTED))
+        self.assertEqual(result['status'], 'PASS')
+        self.assertEqual(result['promoted'], result['embedded'])
+
+    def test_different_promotion_fails(self):
+        result = self.run_with(self.channel(PROMOTED))
+        self.assertEqual(result['status'], 'FAIL')
+        self.assertEqual(result['promoted']['generation_id'], PROMOTED[0])
+        self.assertEqual(result['embedded']['generation_id'], SELECTED[0])
+
+    def test_unreadable_channel_is_unverified(self):
+        self.assertEqual(self.run_with(None)['status'], 'UNVERIFIED')
+
+    def test_unattested_channel_bytes_are_unverified(self):
+        self.attested = 'f' * 64
+        result = self.run_with(self.channel(SELECTED))
+        self.assertEqual(result, {'status': 'UNVERIFIED', 'reason': 'No attestation binds the catalog/v1 channel bytes.'})
+
+    def test_changed_checkout_is_unverified(self):
+        self.status = ' M internal/embedded/catalog/generation.json\n'
+        self.assertEqual(self.run_with(self.channel(SELECTED))['status'], 'UNVERIFIED')
+
+    def test_payload_that_contradicts_its_record_fails(self):
+        write_generation(self.root / verifier.EMBEDDED_CATALOG, *SELECTED, declared='sha256:' + '0' * 64)
+        self.assertEqual(self.run_with(self.channel(SELECTED))['status'], 'FAIL')
+
+
+class PinnedModuleBaselineTests(unittest.TestCase):
+    VERSION = 'v0.16.6-0.20261003000954-595e3c7ba959'
+
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        base = Path(self.directory.name)
+        self.source, self.consumer, self.archive = base / 'starmap', base / 'starport', base / 'module.zip'
+        write_generation(self.source / verifier.EMBEDDED_CATALOG, *SELECTED)
+        self.consumer.mkdir()
+        self.write_module(SELECTED)
+        self.record = self.recorded_version = None
+        self.requirements = {'Require': [{'Path': verifier.STARMAP_MODULE, 'Version': self.VERSION}]}
+
+    def tearDown(self):
+        self.directory.cleanup()
+
+    def write_module(self, selection, **options):
+        prefix = f'{verifier.STARMAP_MODULE}@{self.VERSION}/'
+        with zipfile.ZipFile(self.archive, 'w') as archive:
+            archive.writestr(prefix + 'go.mod', 'module ' + verifier.STARMAP_MODULE + '\n')
+            for name, data in generation_files(*selection, **options).items():
+                archive.writestr(prefix + verifier.EMBEDDED_CATALOG + '/' + name, data)
+
+    def pin_current_module(self):
+        with zipfile.ZipFile(self.archive) as archive:
+            self.record = verifier.module_hash(archive)
+
+    def run_check(self):
+        version = self.recorded_version or self.VERSION
+        (self.consumer / 'go.sum').write_text(
+            f'{verifier.STARMAP_MODULE} {version} {self.record}\n'
+            f'{verifier.STARMAP_MODULE} {self.VERSION}/go.mod h1:{"A" * 43}=\n')
+
+        def run(args, **kwargs):
+            if args[:2] == ['git', 'status']:
+                return subprocess.CompletedProcess(args, 0, '', '')
+            if args[:3] == ['go', 'mod', 'edit']:
+                self.assertEqual(kwargs['cwd'], self.consumer)
+                return subprocess.CompletedProcess(args, 0, json.dumps(self.requirements), '')
+            if args[:3] == ['go', 'mod', 'download']:
+                self.assertNotEqual(kwargs['cwd'], self.consumer)
+                self.assertEqual(args[-1], f'{verifier.STARMAP_MODULE}@{self.VERSION}')
+                if not self.archive.exists():
+                    raise subprocess.CalledProcessError(1, args, '{"Error": "not found"}', '')
+                return subprocess.CompletedProcess(args, 0, json.dumps({'Zip': str(self.archive)}), '')
+            raise AssertionError(args)
+        with patch.object(verifier.subprocess, 'run', side_effect=run):
+            return verifier.run_check('A06.old_pinned_bytes_unchanged',
+                                      {'kind': 'pinned_module_baseline', 'repository': 'starport'},
+                                      {'starmap': self.source, 'starport': self.consumer})
+
+    def test_module_hash_matches_go_dirhash(self):
+        # The expected value comes from golang.org/x/mod/sumdb/dirhash.HashZip with Hash1.
+        for content, matches in (('y\n', True), ('z\n', False)):
+            with self.subTest(content=content):
+                archive = io.BytesIO()
+                with zipfile.ZipFile(archive, 'w') as module:
+                    module.writestr('example.com/m@v1.0.0/go.mod', 'module example.com/m\n')
+                    module.writestr('example.com/m@v1.0.0/b/y.txt', content)
+                with zipfile.ZipFile(archive) as module:
+                    digest = verifier.module_hash(module)
+                self.assertEqual(digest == 'h1:kJg9g4ux/nO01IFooMqOOIi9G/C9MZ70kbtT2pUFM5k=', matches)
+
+    def test_older_recorded_generation_passes(self):
+        self.write_module(PROMOTED)
+        self.pin_current_module()
+        result = self.run_check()
+        self.assertEqual(result['status'], 'PASS')
+        self.assertEqual(result['pinned']['generation_id'], PROMOTED[0])
+        self.assertEqual(result['selected']['generation_id'], SELECTED[0])
+
+    def test_equal_generation_is_unverified(self):
+        self.pin_current_module()
+        result = self.run_check()
+        self.assertEqual(result['status'], 'UNVERIFIED')
+        self.assertEqual(result['pinned'], result['selected'])
+
+    def test_changed_module_bytes_fail(self):
+        self.pin_current_module()
+        self.write_module(PROMOTED)
+        result = self.run_check()
+        self.assertEqual(result, {'status': 'FAIL', 'reason': 'The pinned Starmap module bytes differ from the consumer go.sum record.'})
+
+    def test_payload_that_contradicts_its_record_fails(self):
+        self.write_module(PROMOTED, declared='sha256:' + '0' * 64)
+        self.pin_current_module()
+        self.assertEqual(self.run_check()['status'], 'FAIL')
+
+    def test_replaced_module_is_unverified(self):
+        self.pin_current_module()
+        self.requirements['Replace'] = [{'Old': {'Path': verifier.STARMAP_MODULE}, 'New': {'Path': '../starmap'}}]
+        self.assertEqual(self.run_check()['status'], 'UNVERIFIED')
+
+    def test_missing_pin_is_unverified(self):
+        self.pin_current_module()
+        self.requirements['Require'] = []
+        self.assertEqual(self.run_check()['status'], 'UNVERIFIED')
+
+    def test_missing_go_sum_record_is_unverified(self):
+        self.pin_current_module()
+        self.recorded_version = 'v0.16.5'
+        self.assertEqual(self.run_check(), {'status': 'UNVERIFIED', 'reason': 'The consumer go.sum has no record of the pinned Starmap module.'})
+
+    def test_unavailable_module_is_unverified(self):
+        self.pin_current_module()
+        self.archive.unlink()
+        self.assertEqual(self.run_check()['status'], 'UNVERIFIED')
 
 
 if __name__ == '__main__':

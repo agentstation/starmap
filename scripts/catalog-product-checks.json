@@ -9493,6 +9493,121 @@
       "task": "CSP21",
       "manifest": "docs/assets/starport-demo.json",
       "mode": "verifier"
+    },
+    "A06.promoted_checkout": {
+      "kind": "promoted_checkout",
+      "repository": "starmap"
+    },
+    "A06.old_pinned_bytes_unchanged": {
+      "kind": "pinned_module_baseline",
+      "repository": "starport"
+    },
+    "A31.exact_backend_versions": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/storage",
+          "test": "TestQualifiedValkeyVersion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/sqlstore",
+          "test": "TestQualifiedPostgreSQLVersion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestDeclaredRecipePages"
+        }
+      ]
+    },
+    "A31.single_region_boundaries": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/config",
+      "test": "TestRecipeSingleRegionBoundary"
+    },
+    "A50.gateway_provider_boundaries": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/app",
+      "test": "TestGatewayProviderTimingBoundaries",
+      "required_subtests": [
+        "connection_queueing",
+        "dns",
+        "tcp_tls_setup",
+        "provider_wait",
+        "client_backpressure"
+      ]
+    },
+    "A50.connection_reuse_lifecycle": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchTransportIdleConnectionExpires"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchTransportCanceledRequestPreservesActiveStream"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchCapacityNotificationWakesEveryWaiter"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchTransportBoundsIdleConnectionsAcrossOrigins"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchTransportDoesNotRetryAndRecoversClosedConnection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchTransportCancellationDuringDialReleasesCapacity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchTransportHTTP2StreamFailureDoesNotRetry"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestHTTPClientConnectionPooling"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestHTTPClientConnectionReuse"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchTransportGenerationChangeSaturation"
+        }
+      ]
     }
   },
   "task_component_checks": {

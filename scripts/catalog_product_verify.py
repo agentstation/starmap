@@ -2,6 +2,8 @@
 """Run the catalog plan's registered behavior checks without granting missing evidence a pass."""
 
 import argparse
+import base64
+import gzip
 import hashlib
 import importlib.util
 import json
@@ -12,6 +14,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import zipfile
 from pathlib import Path
 
 
@@ -19,6 +22,8 @@ ROOT = Path(__file__).resolve().parents[1]
 ROSTER = ROOT / "docs/plans/proof/starport-production-catalog/acceptance-map.json"
 REGISTRY = ROOT / "scripts/catalog-product-checks.json"
 COMPONENT_CASES = {"CSP5": ("A22", "A23"), "CSP7": ("A11", "A12")}
+EMBEDDED_CATALOG = "internal/embedded/catalog"
+STARMAP_MODULE = "github.com/agentstation/starmap"
 
 
 def read_json(path):
@@ -365,6 +370,10 @@ def run_check(identity, entry, roots, go_evidence=None):
             return adapter.verify(root)
         except (OSError, ImportError) as error:
             return {"status": "UNVERIFIED", "reason": str(error)}
+    if entry.get("kind") == "promoted_checkout":
+        return promoted_checkout(entry, roots)
+    if entry.get("kind") == "pinned_module_baseline":
+        return pinned_module_baseline(entry, roots)
     if entry.get("kind") != "go_test":
         return {"status": "UNVERIFIED", "reason": "This evidence adapter has not been implemented."}
     inputs, error = go_check_input(entry, roots)
@@ -387,6 +396,120 @@ def run_check(identity, entry, roots, go_evidence=None):
         result.update(status="UNVERIFIED", reason="Required Go subtests did not run and pass exactly once.",
                       missing_subtests=missing)
     return result
+
+
+class EmbeddingMismatch(Exception):
+    """Report readable catalog bytes that contradict their own record."""
+
+
+def checked_output(root, args):
+    return subprocess.run(args, cwd=root, check=True, capture_output=True, text=True, timeout=300,
+                          env=dict(os.environ, GOTOOLCHAIN="go1.27.1", GOWORK="off", GOFLAGS="")).stdout
+
+
+def embedded_generation(read):
+    """Return one embedded generation identity after the payload matches its declared digest."""
+    generation = json.loads(read("generation.json"))
+    payload = gzip.decompress(read("generation-payload.json.gz"))
+    declared = generation["payload"]
+    if ("sha256:" + hashlib.sha256(payload).hexdigest() != declared["checksum"]
+            or len(payload) != declared["size_bytes"]):
+        raise EmbeddingMismatch("The embedded payload differs from its generation record.")
+    return {"generation_id": generation["generation_id"], "semantic_checksum": generation["semantic_checksum"]}
+
+
+def checkout_generation(root):
+    if checked_output(root, ["git", "status", "--porcelain", "--", EMBEDDED_CATALOG]).strip():
+        raise ValueError("The checkout changes the embedded catalog.")
+    return embedded_generation(lambda name: (root / EMBEDDED_CATALOG / name).read_bytes())
+
+
+def attested_channel(root):
+    """Read catalog/v1 through the publication capture path and require attested bytes."""
+    spec = importlib.util.spec_from_file_location(
+        "catalog_publication_capture", root / "scripts/catalog_publication_capture.py")
+    capture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(capture)
+    raw = base64.b64decode(capture.api(root, "contents/channel.json?ref=catalog%2Fv1")["content"], validate=False)
+    with tempfile.TemporaryDirectory(prefix="starmap-channel-") as temporary:
+        path = Path(temporary) / "catalog-v1.json"
+        path.write_bytes(raw)
+        reports = json.loads(capture.command(root, ["gh", "attestation", "verify", str(path), "--repo", capture.REPOSITORY,
+                             "--signer-workflow", capture.REPOSITORY + "/.github/workflows/catalog-generation.yaml",
+                             "--source-ref", "refs/heads/main", "--deny-self-hosted-runners", "--format", "json"]))
+    digest = hashlib.sha256(raw).hexdigest()
+    if not any(subject.get("digest", {}).get("sha256") == digest
+               for report in reports for subject in report["verificationResult"]["statement"]["subject"]):
+        raise ValueError("No attestation binds the catalog/v1 channel bytes.")
+    channel = json.loads(raw)
+    if (channel.get("schema_version") != 1 or channel.get("channel") != "catalog/v1"
+            or not isinstance(channel.get("generation_id"), str)
+            or not re.fullmatch(r"sha256:[0-9a-f]{64}", str(channel.get("catalog_digest")))):
+        raise ValueError("The catalog/v1 channel does not select one generation.")
+    return channel, "sha256:" + digest
+
+
+def promoted_checkout(entry, roots):
+    """Compare the attested catalog/v1 promotion with the clean checkout embedding."""
+    root = roots.get(entry.get("repository"))
+    if root is None:
+        return {"status": "UNVERIFIED", "reason": "The checkout repository is unavailable."}
+    try:
+        embedded = checkout_generation(root)
+        channel, channel_digest = attested_channel(root)
+    except EmbeddingMismatch as error:
+        return {"status": "FAIL", "reason": str(error)}
+    except (OSError, ImportError, ValueError, KeyError, TypeError, AttributeError, subprocess.SubprocessError) as error:
+        return {"status": "UNVERIFIED", "reason": str(error)}
+    promoted = {"generation_id": channel["generation_id"], "semantic_checksum": channel["catalog_digest"]}
+    result = {"status": "PASS" if promoted == embedded else "FAIL", "channel_sha256": channel_digest,
+              "channel_sequence": channel.get("sequence"), "promoted": promoted, "embedded": embedded}
+    if promoted != embedded:
+        result["reason"] = "The checkout embeds a generation that catalog/v1 does not promote."
+    return result
+
+
+def module_hash(archive):
+    """Return the Go h1 directory hash of one module zip."""
+    lines = "".join(f"{hashlib.sha256(archive.read(name)).hexdigest()}  {name}\n" for name in sorted(archive.namelist()))
+    return "h1:" + base64.b64encode(hashlib.sha256(lines.encode("utf-8")).digest()).decode("ascii")
+
+
+def pinned_module_baseline(entry, roots):
+    """Compare the Starmap module bytes that Starport pins with the newly selected embedding."""
+    consumer, source = roots.get(entry.get("repository")), roots.get("starmap")
+    if consumer is None or source is None:
+        return {"status": "UNVERIFIED", "reason": "The consumer or source repository is unavailable."}
+    try:
+        module = json.loads(checked_output(consumer, ["go", "mod", "edit", "-json"]))
+        if any(item["Old"]["Path"] == STARMAP_MODULE for item in module.get("Replace") or []):
+            raise ValueError("The consumer replaces the pinned Starmap module.")
+        versions = [item["Version"] for item in module.get("Require") or [] if item["Path"] == STARMAP_MODULE]
+        if len(versions) != 1:
+            raise ValueError("The consumer does not pin one Starmap module version.")
+        version = versions[0]
+        recorded = [line.split()[2] for line in (consumer / "go.sum").read_text().splitlines()
+                    if line.split()[:2] == [STARMAP_MODULE, version] and len(line.split()) == 3]
+        if len(recorded) != 1:
+            raise ValueError("The consumer go.sum has no record of the pinned Starmap module.")
+        selected = checkout_generation(source)
+        # An empty directory keeps the download from changing the consumer go.mod or go.sum.
+        with tempfile.TemporaryDirectory(prefix="starmap-pinned-module-") as temporary:
+            download = json.loads(checked_output(Path(temporary), ["go", "mod", "download", "-json", f"{STARMAP_MODULE}@{version}"]))
+        with zipfile.ZipFile(download["Zip"]) as archive:
+            if module_hash(archive) != recorded[0]:
+                raise EmbeddingMismatch("The pinned Starmap module bytes differ from the consumer go.sum record.")
+            prefix = f"{STARMAP_MODULE}@{version}/{EMBEDDED_CATALOG}/"
+            pinned = embedded_generation(lambda name: archive.read(prefix + name))
+    except EmbeddingMismatch as error:
+        return {"status": "FAIL", "reason": str(error)}
+    except (OSError, ValueError, KeyError, TypeError, AttributeError, zipfile.BadZipFile, subprocess.SubprocessError) as error:
+        return {"status": "UNVERIFIED", "reason": str(error)}
+    result = {"module": f"{STARMAP_MODULE}@{version}", "go_sum": recorded[0], "pinned": pinned, "selected": selected}
+    if pinned == selected:
+        return result | {"status": "UNVERIFIED",
+                         "reason": "The pinned module embeds the selected generation. No later generation exists to compare."}
+    return result | {"status": "PASS", "scope": "The pinned module bytes match the consumer go.sum record and keep their original generation."}
 
 
 def run_vitest(entry, roots):
