@@ -1,0 +1,2404 @@
+{
+ "backend_scope": "primary",
+ "cases": [
+  {
+   "condition": "CSP-V01",
+   "id": "A01",
+   "required_subcases": 5,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V02",
+   "id": "A02",
+   "required_subcases": 3,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V03",
+   "id": "A03",
+   "required_subcases": 16,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V04",
+   "id": "A04",
+   "required_subcases": 9,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V05",
+   "id": "A05",
+   "required_subcases": 6,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V06",
+   "id": "A06",
+   "required_subcases": 4,
+   "status": "UNVERIFIED"
+  },
+  {
+   "condition": "CSP-V07",
+   "id": "A07",
+   "required_subcases": 4,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V08",
+   "id": "A08",
+   "required_subcases": 5,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V09",
+   "id": "A09",
+   "required_subcases": 4,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V10",
+   "id": "A10",
+   "required_subcases": 4,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V11",
+   "id": "A11",
+   "required_subcases": 7,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V12",
+   "id": "A12",
+   "required_subcases": 5,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V13",
+   "id": "A13",
+   "required_subcases": 3,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V14",
+   "id": "A14",
+   "required_subcases": 9,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V15",
+   "id": "A15",
+   "required_subcases": 8,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V16",
+   "id": "A16",
+   "required_subcases": 5,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V17",
+   "id": "A17",
+   "required_subcases": 5,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V18",
+   "id": "A18",
+   "required_subcases": 5,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V19",
+   "id": "A19",
+   "required_subcases": 4,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V20",
+   "id": "A20",
+   "required_subcases": 6,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V21",
+   "id": "A21",
+   "required_subcases": 5,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V22",
+   "id": "A22",
+   "required_subcases": 4,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V23",
+   "id": "A23",
+   "required_subcases": 4,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V24",
+   "id": "A24",
+   "required_subcases": 10,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V25",
+   "id": "A25",
+   "required_subcases": 6,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V26",
+   "id": "A26",
+   "required_subcases": 4,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V27",
+   "id": "A27",
+   "required_subcases": 6,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V28",
+   "id": "A28",
+   "required_subcases": 4,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V29",
+   "id": "A29",
+   "required_subcases": 5,
+   "status": "UNVERIFIED"
+  },
+  {
+   "condition": "CSP-V30",
+   "id": "A30",
+   "required_subcases": 6,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V31",
+   "id": "A31",
+   "required_subcases": 9,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V32",
+   "id": "A32",
+   "required_subcases": 8,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V33",
+   "id": "A33",
+   "required_subcases": 9,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V34",
+   "id": "A34",
+   "required_subcases": 6,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V35",
+   "id": "A35",
+   "required_subcases": 4,
+   "status": "UNVERIFIED"
+  },
+  {
+   "condition": "CSP-V36",
+   "id": "A36",
+   "required_subcases": 2,
+   "status": "UNVERIFIED"
+  },
+  {
+   "condition": "CSP-V37",
+   "id": "A37",
+   "required_subcases": 5,
+   "status": "UNVERIFIED"
+  },
+  {
+   "condition": "CSP-V38",
+   "id": "A38",
+   "required_subcases": 4,
+   "status": "UNVERIFIED"
+  },
+  {
+   "condition": "CSP-V39",
+   "id": "A39",
+   "required_subcases": 3,
+   "status": "UNVERIFIED"
+  },
+  {
+   "condition": "CSP-V40",
+   "id": "A40",
+   "required_subcases": 8,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V41",
+   "id": "A41",
+   "required_subcases": 12,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V42",
+   "id": "A42",
+   "required_subcases": 9,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V43",
+   "id": "A43",
+   "required_subcases": 7,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V44",
+   "id": "A44",
+   "required_subcases": 8,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V45",
+   "id": "A45",
+   "required_subcases": 9,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V46",
+   "id": "A46",
+   "required_subcases": 10,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V47",
+   "id": "A47",
+   "required_subcases": 22,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V48",
+   "id": "A48",
+   "required_subcases": 8,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V49",
+   "id": "A49",
+   "required_subcases": 7,
+   "status": "PASS"
+  },
+  {
+   "condition": "CSP-V50",
+   "id": "A50",
+   "required_subcases": 10,
+   "status": "UNVERIFIED"
+  }
+ ],
+ "full_log_sha256": "84f0a316b5c82f4682627ea457b60820fa2f1116dc2826d3a13e6c8fd60b3fc7",
+ "gate_status": "FAIL",
+ "qualification": "UNVERIFIED",
+ "qualification_reason": "Real environment and final artifact qualification remain unimplemented. Baseline and target-profile checks cannot qualify a release.",
+ "registry_sha256": "1c44c2e5d833a0fc3b627b63255dae020445e0379e786affec1b1e649ebab6f5",
+ "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+ "selected_subcases": 312,
+ "subcases": {
+  "A01.existing_head_preserved": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starmap-acceptance-20261003",
+   "elapsed_seconds": 226.0356582920067,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A01.required_write_failure": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starmap-acceptance-20261003",
+   "elapsed_seconds": 226.0356582920067,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A01.restart_same_baseline": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A01.starmap_cold_offline": {
+   "cleanup_complete": true,
+   "commands": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "observations": "<omitted: see the full log digest>",
+   "observe_build_info": "<omitted: see the full log digest>",
+   "observe_sha256": "04acf2b27d52c3c7cebd86ca1a9e1fa08cf130f81dc80ce0ea1e36bc5f69ccc3",
+   "qualification": "Linux component evidence only",
+   "reason": "Two fresh offline server processes retained the same private baseline and served digest.",
+   "server": "<omitted: see the full log digest>",
+   "server_logs": "<omitted: see the full log digest>",
+   "starmap_build_info": "<omitted: see the full log digest>",
+   "starmap_sha256": "ba8e6037d5d209df98b66cd544565f68a1658e89e808f89d2dd83ece56052c30",
+   "status": "PASS"
+  },
+  "A01.starport_cold_offline": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A02.constructor_filesystem_silence": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A02.constructor_network_silence": {
+   "binary_sha256": "77074fc5212ebdd2c01d8bd3ae5c15fc71ce50a7dbef95c0ad19d0f3c61a9723",
+   "build_info": "<omitted: see the full log digest>",
+   "cleanup_complete": true,
+   "commands": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "observations": "<omitted: see the full log digest>",
+   "profile": {
+    "defaultAction": "SCMP_ACT_ALLOW",
+    "syscalls": [
+     {
+      "action": "SCMP_ACT_KILL_PROCESS",
+      "names": [
+       "socket",
+       "socketpair",
+       "socketcall",
+       "connect",
+       "accept",
+       "accept4",
+       "bind",
+       "listen",
+       "sendto",
+       "sendmsg",
+       "sendmmsg",
+       "recvfrom",
+       "recvmsg",
+       "recvmmsg",
+       "io_uring_setup",
+       "io_uring_enter",
+       "io_uring_register"
+      ]
+     }
+    ]
+   },
+   "qualification": "Linux component evidence only",
+   "reason": "Four constructors retained the baseline without a socket attempt or local initialization.",
+   "server": "<omitted: see the full log digest>",
+   "status": "PASS"
+  },
+  "A02.no_workers": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A03.duplicate_owner_refusal": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A03.effective_path_report": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A03.relative_anchor_migration_guard": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A03.required_empty_path_refusal": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starmap-acceptance-20261003",
+   "elapsed_seconds": 226.0356582920067,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {
+    "STARMAP_CACHE_DIR": true,
+    "STARMAP_CATALOG_STORE_PATH": true,
+    "STARMAP_CONFIG_DIR": true,
+    "STARMAP_DATA_DIR": true,
+    "STARMAP_HOME": true,
+    "STARMAP_STATE_DIR": true,
+    "STARMAP_STATE_ROOT": true
+   }
+  },
+  "A03.root_leaf_precedence": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A03.service_container_roots": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starmap-acceptance-20261003",
+   "elapsed_seconds": 226.0356582920067,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A03.shared_backend_no_local_databases": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A03.starmap_file_manifest": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A03.starmap_linux": {
+   "evidence_scope": "product",
+   "observations": "<omitted: see the full log digest>",
+   "run": "https://github.com/agentstation/starmap/actions/runs/37349252815",
+   "scope": "Recorded native component tests on the supported architectures.",
+   "source_commit": "8b935d15d7df9efa8f97b185314886a297cba2cb",
+   "status": "PASS"
+  },
+  "A03.starmap_macos": {
+   "evidence_scope": "product",
+   "observations": [
+    {
+     "architecture": "arm64",
+     "job_id": 111911522237,
+     "platform": "darwin",
+     "required_tests": 10,
+     "separate_administrator_read": false,
+     "unprivileged_skips": 0,
+     "unselected_skips": [
+      {
+       "Action": "skip",
+       "Elapsed": 0,
+       "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+       "Test": "TestWindowsMonitorFactoryRequiresSourceBounds",
+       "Time": "2026-10-05T17:47:51.238832Z"
+      }
+     ]
+    }
+   ],
+   "run": "https://github.com/agentstation/starmap/actions/runs/37349252815",
+   "scope": "Recorded native component tests on the supported architectures.",
+   "source_commit": "8b935d15d7df9efa8f97b185314886a297cba2cb",
+   "status": "PASS"
+  },
+  "A03.starmap_windows": {
+   "evidence_scope": "product",
+   "observations": "<omitted: see the full log digest>",
+   "run": "https://github.com/agentstation/starmap/actions/runs/37349252815",
+   "scope": "Recorded native component tests on the supported architectures.",
+   "source_commit": "8b935d15d7df9efa8f97b185314886a297cba2cb",
+   "status": "PASS"
+  },
+  "A03.starport_file_manifest": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A03.starport_linux": {
+   "evidence_scope": "product",
+   "observations": [
+    {
+     "architecture": "amd64",
+     "job_id": 111880121331,
+     "platform": "linux",
+     "required_tests": 8
+    },
+    {
+     "architecture": "arm64",
+     "job_id": 111880121857,
+     "platform": "linux",
+     "required_tests": 8
+    }
+   ],
+   "run": "https://github.com/agentstation/starport/actions/runs/37344667799",
+   "scope": "Recorded native component tests on the supported architectures.",
+   "source_commit": "60db1856066a0933d9603b6a468c1d3dc9301137",
+   "status": "PASS"
+  },
+  "A03.starport_macos": {
+   "evidence_scope": "product",
+   "observations": [
+    {
+     "architecture": "arm64",
+     "job_id": 111880121578,
+     "platform": "darwin",
+     "required_tests": 8
+    }
+   ],
+   "run": "https://github.com/agentstation/starport/actions/runs/37344667799",
+   "scope": "Recorded native component tests on the supported architectures.",
+   "source_commit": "60db1856066a0933d9603b6a468c1d3dc9301137",
+   "status": "PASS"
+  },
+  "A03.starport_windows": {
+   "evidence_scope": "product",
+   "observations": [
+    {
+     "architecture": "amd64",
+     "job_id": 111880121453,
+     "platform": "windows",
+     "required_tests": 8
+    },
+    {
+     "architecture": "arm64",
+     "job_id": 111880121582,
+     "platform": "windows",
+     "required_tests": 8
+    }
+   ],
+   "run": "https://github.com/agentstation/starport/actions/runs/37344667799",
+   "scope": "Recorded native component tests on the supported architectures.",
+   "source_commit": "60db1856066a0933d9603b6a468c1d3dc9301137",
+   "status": "PASS"
+  },
+  "A03.two_instances_same_user": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starmap-acceptance-20261003",
+   "elapsed_seconds": 226.0356582920067,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A04.dual_root_conflict": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A04.human_workspace_preserved": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A04.identity_and_journal_recovery": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A04.starmap_linux_interruption": {
+   "evidence_scope": "product",
+   "observations": "<omitted: see the full log digest>",
+   "run": "https://github.com/agentstation/starmap/actions/runs/37349252815",
+   "scope": "Recorded native component tests on the supported architectures.",
+   "source_commit": "8b935d15d7df9efa8f97b185314886a297cba2cb",
+   "status": "PASS"
+  },
+  "A04.starmap_macos_interruption": {
+   "evidence_scope": "product",
+   "observations": [
+    {
+     "architecture": "arm64",
+     "job_id": 111911522237,
+     "platform": "darwin",
+     "required_tests": 7,
+     "separate_administrator_read": false,
+     "unprivileged_skips": 0,
+     "unselected_skips": [
+      {
+       "Action": "skip",
+       "Elapsed": 0,
+       "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+       "Test": "TestWindowsMonitorFactoryRequiresSourceBounds",
+       "Time": "2026-10-05T17:47:51.238832Z"
+      }
+     ]
+    }
+   ],
+   "run": "https://github.com/agentstation/starmap/actions/runs/37349252815",
+   "scope": "Recorded native component tests on the supported architectures.",
+   "source_commit": "8b935d15d7df9efa8f97b185314886a297cba2cb",
+   "status": "PASS"
+  },
+  "A04.starmap_windows_interruption": {
+   "evidence_scope": "product",
+   "observations": "<omitted: see the full log digest>",
+   "run": "https://github.com/agentstation/starmap/actions/runs/37349252815",
+   "scope": "Recorded native component tests on the supported architectures.",
+   "source_commit": "8b935d15d7df9efa8f97b185314886a297cba2cb",
+   "status": "PASS"
+  },
+  "A04.starport_linux_interruption": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A04.starport_macos_interruption": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A04.starport_windows_interruption": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A05.bot_required_checks": {
+   "attested_subjects": 5,
+   "catalog_checksum": "sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f",
+   "evidence_scope": "product",
+   "promotion": {
+    "checks": {
+     "Runtime macos-15": 111911522237,
+     "Runtime ubuntu-24.04": 111911522341,
+     "Runtime ubuntu-24.04-arm": 111911522240,
+     "Runtime windows-11-arm": 111911522328,
+     "Runtime windows-2025": 111911522197,
+     "Security & Reliability": 111895637742,
+     "Verification Gate": 111910972032
+    },
+    "head": "8b935d15d7df9efa8f97b185314886a297cba2cb",
+    "merge": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
+    "merged_at": "2026-10-05T18:23:47Z"
+   },
+   "retry": {
+    "asset_ids": [
+     613222205,
+     613222236,
+     613222681,
+     613222729,
+     613222768
+    ],
+    "completion_run": [
+     37354013071,
+     1
+    ],
+    "retry_run": [
+     37362218157,
+     1
+    ]
+   },
+   "source_commit": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
+   "status": "PASS"
+  },
+  "A05.complete_deletion_threshold": {
+   "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "420s",
+    "-json",
+    "-run",
+    "^(TestAdmissionRequiredScopeCannotBecomeOptional|TestPreparePublicationRejectsMissingAndCanceledEvidenceWithoutStateChange|TestPreparePublicationUsesPipelineAndRetainsFailedAccount|TestPublicationCompactionPreservesChangesAbsenceReturnAndScopeRemoval|TestPublicationQuarantinePreservesRejectedRecordsAndClearsAfterRecovery|TestPublicationQuarantineRequiresExplicitPolicyAndOnlyRecordFailures|TestPublicationRepeatedQuarantineRetainsBoundedOriginalEvidence)$",
+    "./internal/catalog/publication"
+   ],
+   "cwd": "/private/tmp/starmap-acceptance-20261003",
+   "elapsed_seconds": 25.176098042051308,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A05.each_publication_failure": {
+   "command": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "hosted_publication": "UNVERIFIED",
+   "report": "<omitted: see the full log digest>",
+   "scope": "Real catalog tools and Git with simulated GitHub transport.",
+   "status": "PASS"
+  },
+  "A05.partial_retained_admission": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A05.required_source_absent": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A05.same_bytes_retry": {
+   "attested_subjects": 5,
+   "catalog_checksum": "sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f",
+   "evidence_scope": "product",
+   "promotion": {
+    "checks": {
+     "Runtime macos-15": 111911522237,
+     "Runtime ubuntu-24.04": 111911522341,
+     "Runtime ubuntu-24.04-arm": 111911522240,
+     "Runtime windows-11-arm": 111911522328,
+     "Runtime windows-2025": 111911522197,
+     "Security & Reliability": 111895637742,
+     "Verification Gate": 111910972032
+    },
+    "head": "8b935d15d7df9efa8f97b185314886a297cba2cb",
+    "merge": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
+    "merged_at": "2026-10-05T18:23:47Z"
+   },
+   "retry": {
+    "asset_ids": [
+     613222205,
+     613222236,
+     613222681,
+     613222729,
+     613222768
+    ],
+    "completion_run": [
+     37354013071,
+     1
+    ],
+    "retry_run": [
+     37362218157,
+     1
+    ]
+   },
+   "source_commit": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
+   "status": "PASS"
+  },
+  "A06.old_pinned_bytes_unchanged": {
+   "evidence_scope": "product",
+   "go_sum": "h1:E0UH/9yA9BKQ3Om5JpnKUBQhphsQY858PWL4gUuhn64=",
+   "module": "github.com/agentstation/starmap@v0.16.6-0.20261003000954-595e3c7ba959",
+   "pinned": {
+    "generation_id": "whisper-operation-correction-47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9",
+    "semantic_checksum": "sha256:d9819e739a227358fa6b54ed26e4a672801541cbfcfee97ffab95e3cd03462f7"
+   },
+   "scope": "The pinned module bytes match the consumer go.sum record and keep their original generation.",
+   "selected": {
+    "generation_id": "bindings-9157a3e797c02e21193a26a2233dcbc5967390eee9ced9cb5416bdf1dae7d620.local.010adf9f3137",
+    "semantic_checksum": "sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f"
+   },
+   "status": "PASS"
+  },
+  "A06.promoted_checkout": {
+   "channel_sequence": 44,
+   "channel_sha256": "sha256:65bb05fcedf8bb7e048d4d8553c07482c60245390a0773ead02258c3dca94c04",
+   "embedded": {
+    "generation_id": "bindings-9157a3e797c02e21193a26a2233dcbc5967390eee9ced9cb5416bdf1dae7d620.local.010adf9f3137",
+    "semantic_checksum": "sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f"
+   },
+   "evidence_scope": "product",
+   "promoted": {
+    "generation_id": "bindings-9157a3e797c02e21193a26a2233dcbc5967390eee9ced9cb5416bdf1dae7d620.local.010adf9f3137",
+    "semantic_checksum": "sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f"
+   },
+   "status": "PASS"
+  },
+  "A07.checksum_size_schema": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A07.invalid_signature": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starmap-acceptance-20261003",
+   "elapsed_seconds": 550.4123121669982,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {
+    "archive_signature": true,
+    "channel_signature": true,
+    "checksum": true,
+    "replay": true,
+    "size": true
+   }
+  },
+  "A07.public_no_provider_keys": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starmap-acceptance-20261003",
+   "elapsed_seconds": 550.4123121669982,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A07.replay_rejection": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starmap-acceptance-20261003",
+   "elapsed_seconds": 550.4123121669982,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {
+    "archive_signature": true,
+    "channel_signature": true,
+    "checksum": true,
+    "replay": true,
+    "size": true
+   }
+  },
+  "A08.alias_cycle_scope": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A08.field_authority": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A08.partial_empty": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A08.presence_zero_null": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A08.scoped_tombstone": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A09.alias_cannot_restore_permission": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A09.authority_change": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 911.261442707968,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {
+    "approved": true,
+    "expired": true
+   }
+  },
+  "A09.excluded_membership": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 911.261442707968,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A09.revoked_scope_restart": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A10.cold_follower_refusal": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 911.261442707968,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A10.cold_owner_refusal": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A10.warm_retained_authority": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A10.wrong_authority_refusal": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A11.acquisition_role_matrix": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A11.explicit_reference": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A11.fresh_install_override": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A11.identical_values": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A11.inference_role_matrix": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A11.mixed_field_handle": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A11.upgrade_changed_selection": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A12.backend_outage": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A12.each_supported_backend": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A12.expired_revoked": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A12.no_secret_disclosure": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A12.rotation_complete_version": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A13.lease_expiry_during_commit": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 911.261442707968,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {
+    "acceptance": true,
+    "publication": true
+   }
+  },
+  "A13.stale_epoch_rejection": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A13.two_real_processes": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A14.equivalent_acquisition_capability": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A14.explicit_baseline_promotion": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A14.follower_restart": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A14.leader_loss_with_local_files_removed": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A14.missed_events": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 911.261442707968,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A14.promotion_exact_retry": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A14.promotion_preserves_pins_and_authority": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A14.promotion_request_path_memory": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A14.software_rollback_keeps_promoted_baseline": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A15.budget_usage_unknown": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A15.cache_eviction_isolation": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A15.confirmed_no_budget": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A15.durability_failover": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A15.hash_slot_layout": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A15.online_batch_retry": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A15.real_valkey_postgres": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A15.team_policy_unknown": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A16.complete_backup_manifest": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A16.concurrent_migration_owner": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A16.interrupted_migration": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A16.kv_sql_file_references": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A16.sqlite_wal_backup": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A17.identity_error_mapping": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A17.official_sdk_roster": {
+   "command": [
+    "bash",
+    "/private/tmp/starport-csp21-20261004/scripts/smoke-openrouter-sdks.sh"
+   ],
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "All pinned SDKs passed the live catalog transitions.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>"
+  },
+  "A17.raw_http_both_api_families": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A17.stream_refresh": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 30.00258358300198,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {
+    "/api/v1": true,
+    "/v1": true
+   }
+  },
+  "A17.unsupported_field_contract": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A18.consistent_counts_prices": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A18.inflight_and_new_attempts": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A18.removed_id_error": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A18.rename_alias_overlap": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A18.unauthorized_membership_redaction": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A19.permission_withdrawal_not_bypassed": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A19.pin_restart": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A19.poll_cannot_unpin": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A19.verified_rollback": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A20.cli_provider_nonprovider": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A20.dependency_disabled_partial": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A20.publisher_provider_nonprovider": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A20.receipt_artifact_binding": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A20.server_provider_nonprovider": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A20.starport_provider_nonprovider": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A21.cache_retry_batch_admission": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A21.known_withdrawal_refusal": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A21.mixed_schema_permission_envelope": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A21.partition_validity_expiry": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A21.stream_policy_diagnostic": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A22.inference_separate_egress": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A22.lazy_secret_resolution": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A22.local_import_allowed": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A22.startup_poll_stream_manual": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A23.explicit_refresh": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A23.manual_source_with_acquisition": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A23.pin_blocks_all_activation": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A23.restart_watcher_guards": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A24.aliases_coalescing": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A24.bootstrap_file_location": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A24.descriptor_parity": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A24.dotenv_conflict_migration": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A24.generated_file_inventory": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A24.local_fallback": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A24.primary_config_file_selection": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A24.scope_authority_origins": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A24.starmap_yaml_parity": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A24.zero_false_empty": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A25.approved_local_exception": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A25.byok_shared_stream_override": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 19.482116332976148,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": "<omitted: see the full log digest>"
+  },
+  "A25.credential_placement_changes": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 19.482116332976148,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": "<omitted: see the full log digest>"
+  },
+  "A25.inference_origin_changes": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 19.482116332976148,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": "<omitted: see the full log digest>"
+  },
+  "A25.product_path_isolation": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A25.source_token_replacement": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A26.failed_save_activation": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A26.idempotent_operation_receipt": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A26.local_file_stale_revision": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A26.shared_sql_stale_revision": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A27.external_controller_lock": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A27.local_shared_authorization": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A27.migration_boundary": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A27.origin_protection": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A27.redaction": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A27.transactional_audit": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A28.applied_config_memory": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A28.desired_applied_drift": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A28.leadership_config_revision": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A28.shared_authority_mismatch": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A29.embedded_offline_search": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A29.no_dynamic_data_disclosure": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A29.recovery_without_auth": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A30.desktop_both_themes": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A30.instruction_contrast": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A30.keyboard_screen_reader": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A30.narrow_320": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A30.stable_links_history": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A30.zoom_text_spacing": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A31.compose_complete_storage": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A31.container_recreation_records": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A31.each_declared_recipe": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A31.exact_backend_versions": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A31.readonly_container_mounts": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A31.recipe_configuration_guards": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A31.recipe_latency_profile": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A31.single_region_boundaries": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 295.8118495410308,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A31.upgrade_restore_workload": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A32.admin_effective_report": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A32.audit_write_failure": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A32.authority_restore": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starmap-acceptance-20261003",
+   "elapsed_seconds": 550.4123121669982,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A32.cli_effective_report": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A32.first_admin_bootstrap": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A32.receipt_crash_recovery": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A32.rotation_overlap": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A32.subscriber_mutation_denied": {
+   "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "300s",
+    "-json",
+    "-run",
+    "^(TestAdministratorHTTPRotationAndRevocation|TestInternalServerEmbeddingRequiresManagedReaders|TestSubscriberCannotStartAdministrativeUpdate)$",
+    "./server"
+   ],
+   "cwd": "/private/tmp/starmap-acceptance-20261003",
+   "elapsed_seconds": 17.670446750009432,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {
+    "anonymous_mutation": true,
+    "inference_key_mutation": true,
+    "legacy_reader_mutation": true,
+    "subscriber_mutation": true,
+    "subscriber_reads": true
+   }
+  },
+  "A33.backup_then_revoke_and_spend": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A33.fresh_replica_history_barrier": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A33.independent_record_replay": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A33.measured_rpo_rto": {
+   "evidence_scope": "product",
+   "max_outage_to_ready_seconds": 54.816211,
+   "reason": "The measurement record meets the confirmed loss and RTO targets.",
+   "rto_seconds": 120,
+   "runs": 9,
+   "status": "PASS"
+  },
+  "A33.missing_evidence_restricted": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A33.old_primary_admission_fence": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A33.old_writer_fenced": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A33.operator_reconciliation": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A33.restart_and_recovery_epoch": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A34.catalog_before_keys": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A34.credential_roles": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A34.persistence_paths_and_cache_roles": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A34.qualified_performance_claims": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A34.recipe_links": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A34.temporary_persistent": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A35.clean_catalog_no_keys": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A35.documented_inference": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 769.1962806249503,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A35.each_advertised_native_install": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A40.atomic_initialization_race": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A40.bootstrap_connection_cycle": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A40.local_file_authority": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A40.local_shared_migration": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A40.no_outage_file_fallback": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A40.retained_shared_revision": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A40.shared_revision_beats_local_values": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A40.unavailable_not_empty": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A41.badger_effective_options": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A41.badger_write_sync_profile": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A41.catalog_fleet_atomic_layout": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A41.catalog_fleet_deployment_isolation": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 911.261442707968,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A41.deployment_key_channel_isolation": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A41.namespace_atomic_layout": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A41.unprefixed_record_migration": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A41.unsupported_modes_refused": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A41.valkey_effective_connection_options": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A41.valkey_tls_identity": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 6.891441583982669,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {
+    "expired": true,
+    "hostname": true,
+    "trusted": true,
+    "untrusted": true
+   }
+  },
+  "A41.valkey_url_contract": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A41.valkey_username_password": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 6.891441583982669,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A42.cache_only_cleanup": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A42.cache_outage_admission": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A42.capacity_and_entry_limits": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A42.enablement_by_cache_kind": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A42.expiry_preserving_refill": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A42.generation_account_scope": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A42.memory_and_shared_cache_selection": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A42.memory_budget_measurement": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A42.unknown_remaining_ttl": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A43.crash_cleanup_ownership": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A43.memory_databases": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A43.migration_diagnostic": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A43.normal_shutdown_cleanup": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A43.persistent_installation_untouched": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A43.persistent_selectors_rejected": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A43.scratch_blobs_runtime": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A44.auto_fallback_semantics": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A44.caller_owned_values": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A44.canonical_alias_lookup": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A44.embedded_catalog_profile": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 19.482116332976148,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {}
+  },
+  "A44.exact_model_scaling": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A44.generation_lease_consistency": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A44.precomputed_static_candidates": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A44.retained_generation_bounds": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A45.cold_load_coalescing": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A45.encryption_and_disclosure": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A45.outage_validity": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A45.resident_secret_bounds": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A45.revision_owner_identity": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A45.revoked_refresh_fencing": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A45.rotation_expiry_revocation": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A45.shared_grant_recheck": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A45.warm_no_derivation_or_io": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A46.bounded_tenant_working_set": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A46.cache_retry_batch_admission": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A46.cold_load_deadline_coalescing": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A46.confirmed_absence_vs_unknown": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A46.dependency_revision_coherence": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A46.fleet_receipt_vs_enforcement": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 158.29216275003273,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {
+    "kv/live_false/partition_false/expiry_false": true,
+    "kv/live_true/partition_false/expiry_false": true,
+    "kv/live_true/partition_true/expiry_false": true,
+    "kv/live_true/partition_true/expiry_true": true,
+    "sql/live_false/partition_false/expiry_false": true,
+    "sql/live_true/partition_false/expiry_false": true,
+    "sql/live_true/partition_true/expiry_false": true,
+    "sql/live_true/partition_true/expiry_true": true
+   }
+  },
+  "A46.local_mutation_fencing": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A46.missed_event_catchup": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A46.validity_skew_withdrawal": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A46.warm_no_stable_store_reads": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.analytics_drop_independence": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 769.1962806249503,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {
+    "both/measured": true,
+    "both/uncertain": true,
+    "export/measured": true,
+    "export/uncertain": true,
+    "store/measured": true,
+    "store/uncertain": true
+   }
+  },
+  "A47.atomic_hierarchical_reservation": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.backend_operation_evidence": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.bounded_cost_and_tokens": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.chargeable_operation_matrix": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.clock_and_window_authority": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.confirmed_absent_fast_path": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.crash_failover_recovery": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.idempotent_attempt_identity": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.late_usage_pinned_valuation": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.media_async_reconciliation": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.policy_edit_preserves_spend": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.quota_lease_support_boundary": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.recognition_then_cancel": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.reconciliation_retention": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.rerank_billing_units": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.retry_fallback_charges": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.semantic_embedding_cache_hit": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.stream_cancel_uncertainty": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.unknown_cost_refusal": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.usage_reconcile_once": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A47.utc_window_boundaries": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A48.admission_and_expiry_preserved": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A48.bounded_cache_read_deadline": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A48.cache_semantic_mode_matrix": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A48.fill_queue_byte_entry_bounds": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A48.nonblocking_fill_visibility": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A48.stream_accumulation_bound": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A48.stream_forwarding_errors": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A48.worker_shutdown_ownership": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A49.bounded_background_exchange": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A49.callback_no_remote_io": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A49.cold_peer_refresh": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A49.fleet_fault_isolation": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A49.local_breaker_immediacy": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A49.stale_hint_expiry": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A49.worker_close_and_reconnect": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A50.allocations_cpu_gc": {
+   "evidence_scope": "product",
+   "reason": "No behavior check is registered.",
+   "status": "UNVERIFIED"
+  },
+  "A50.connection_reuse_lifecycle": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A50.current_artifact_evidence": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A50.full_path_baseline": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A50.gateway_provider_boundaries": {
+   "command": "<omitted: see the full log digest>",
+   "cwd": "/private/tmp/starport-csp21-20261004",
+   "elapsed_seconds": 769.1962806249503,
+   "evidence_scope": "product",
+   "exit_code": 0,
+   "reason": "The named behavior test passed in this invocation.",
+   "status": "PASS",
+   "stderr": "",
+   "stdout": "<omitted: see the full log digest>",
+   "subtests": {
+    "client_backpressure": true,
+    "connection_queueing": true,
+    "dns": true,
+    "provider_wait": true,
+    "tcp_tls_setup": true
+   }
+  },
+  "A50.partial_complete_metric_surfaces": {
+   "checks": "<omitted: see the full log digest>",
+   "evidence_scope": "product",
+   "status": "PASS"
+  },
+  "A50.percentiles_and_load": {
+   "evidence_scope": "product",
+   "reason": "No behavior check is registered.",
+   "status": "UNVERIFIED"
+  },
+  "A50.real_recipe_matrix": {
+   "evidence_scope": "product",
+   "reason": "No behavior check is registered.",
+   "status": "UNVERIFIED"
+  },
+  "A50.reviewed_numeric_profile": {
+   "evidence_scope": "product",
+   "profile_sha256": "79261213cb4bb2a52f667d0a4ed9a1312681cd271af6273cd4998fd4c9e84dbf",
+   "reason": "Reviewed engineering targets, not a claim that current performance meets them.",
+   "review_sha256": "6037b52a14abe7776a60fd691cc35f5770ebfb5a3d8ba8cedc5f94b8dd2d1fcd",
+   "status": "PASS"
+  },
+  "A50.stream_timing_memory": {
+   "evidence_scope": "product",
+   "reason": "No behavior check is registered.",
+   "status": "UNVERIFIED"
+  }
+ },
+ "summary": "Summary: 42 passed, 8 failed",
+ "unverified_cases": 8
+}
