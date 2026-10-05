@@ -39,6 +39,18 @@ The implementer delivered `STARPORT_<PROVIDER>_INFERENCE_BASE_URL` in `/private/
 - `make lint` 0 issues. `make build` complete.
 - Technical writing: `CHANGELOG.md` PASS. `ARCHITECTURE.md` 26 before and after. `OPERATOR-GUIDE.md` 68 before and after. `TASKS.md` 6 before and after.
 
+## Rebase and secret scan
+
+- After PR #416 merged, the lead ran `git rebase --onto origin/main e841427d`. The branch now sits on main `9b2ea10f`.
+- The override patch is the same before and after the rebase, except one blob index line in `config.go` from #416.
+- On the rebased tree, `go test -race -count=1 ./internal/config/ ./internal/providers/` ok in 130.7 s and 101.2 s. `make build` ok.
+- The first pre-PR gate stopped before the model call. TruffleHog reported one unverified URI hit, the test value `https://user:secret@relay.example`.
+- The validator refuses on `parsed.User != nil`, so commit `3c02c544` changes the value to `https://operator@relay.example`.
+- `TestInferenceBaseURLSettingRefusesUnsafeOrigins/https://operator@relay.example` passes under `-race`. The log is `override-proof/userinfo-subtest.log`.
+- On the rebased tree, `go test -count=1 ./internal/app/` ok in 527 s with 0 failures. The log is `override-proof/rebased-app.log`.
+- Autoreview `--gate pre-pr --mode auto` on `3c02c544`: Sol 6.1 high, 1 pass over 40,062 bytes, TruffleHog clean.
+- The review reported no P0 finding, score 0.96, and stored the attestation.
+
 ## Publication
 
 PUBLICATION_RESULT
