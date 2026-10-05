@@ -107,6 +107,11 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 - The roster needs `CATALOG_DRIVEN_STARMAP_ROOT` set to a Starmap worktree at current main. Two of its checks need Python 3.12.
 - PR A also fixes a test defect that failed the #419 CI run on `ubuntu-24.04-arm`. The helper test `TestDevelopmentScratchProcess` let its session become unreachable. The collector finalized the lock file and released the lock. The fix adds `runtime.KeepAlive(session)`. Production holds the session until it closes it.
 - The first CI run of #223 failed on `Native windows-2025 / client`. The `go list` command exceeded its 120 second limit. The pull request changes only Python and JSON. The lead reran the failed jobs of run 37323139597.
+- Pull request #223 merged as `a4d24306b` on 2026-10-05 with 62 of 62 checks after the rerun.
+- PR P is Starmap pull request #229 at head `00a4878c2`. The implementer stopped before its commit. The lead ran the checks and made the commit.
+- The lead replayed the accepted checkpoint with the fixed tool and no credential. The tool exits 0 and reports the supersession from schema 10 to schema 19.
+- The race tests of the command package pass. The race tests of the publication package pass without `TestPublicPublicationProfileRetainsBoundedState`. That capacity test exceeded the 30 minute local limit under the race detector. The change does not touch it, and CI owns its result.
+- Autoreview of PR P with Sol 6.1 at high effort returned clean in one pass.
 - The acceptance run is `--gate candidate` at the merged Starmap head against the merged Starport main.
 
 ### D11. Discovery audit
