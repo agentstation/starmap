@@ -34,4 +34,4 @@ Without the tag, both loader subtests fail with "loader materialized an empty de
 
 ## Publication
 
-The branch rebased onto Starport main `d22f1e60` as `277179e3`. Draft PR agentstation/starport#416 opened at that head. The merge waits for settled CI at that head.
+The branch rebased onto Starport main `d22f1e60` as `277179e3`. Draft PR agentstation/starport#416 opened at that head. PR #416 merged at `9b2ea10f` on 2026-10-05T00:21:27Z with 47 of 47 checks green at head `277179e3`. The merge proof in `csp21/starport416-merge-2026-10-04/` records the reviewed tree equal to the merge tree, strict protection, and zero unresolved threads.
