@@ -31,7 +31,15 @@ The lead recorded these questions before it asked the owner. The owner reported 
 - The only real inference that CSP24 needs is the README recording: one quickstart session with one real streamed answer. A35 through A39 verify that recording and the installers.
 - GitHub Pages, real provider inference, and the dedicated runner stay outside the current authority.
 
+## Release progress of 2026-10-05
+
+- Starmap PR #232 merged as `2b2944be7`. The lead pushed the annotated tag `v0.17.0` on that commit. Release run `37389198612` started.
+- Starmap PR #233 registers `A06.new_released_module` and `A06.starport_released_module_pin`, and extends `A06.old_pinned_bytes_unchanged` with the previous-pin comparison. It is scripts only.
+- Starport branch `codex/csp23-release-v1.3.0` pins Starmap `v0.17.0`. The test suite and the verify gates run before the pull request.
+
 ## Pending owner decisions
 
-1. Public documentation. CSP23 names versioned public docs. GitHub Pages stays disabled. Enabling it is new authority.
-2. Real provider inference for CSP24. Real inference is a paid action outside the current authority.
+1. Public documentation. CSP23 names versioned public docs. GitHub Pages stays disabled on `agentstation/starport`. Enabling it is new authority. The lead asked the owner on 2026-10-05 with these consequences:
+   - Enable: the owner sets the Pages source to GitHub Actions and creates the `github-pages` environment with a required reviewer. After the `v1.3.0` release, the lead starts `docs-pages.yaml` with tag `v1.3.0`. The owner approves the deployment. The site serves `https://agentstation.github.io/starport/v1.3.0/` and `/latest/`. The lead registers `A29.public_url_content_manifest` against that URL. `A29.hosting_rollback` needs an earlier release with a docs archive. Only `v1.3.0` has one, so that subcase stays a documented limit until the next release.
+   - Keep off: `A29.public_url_content_manifest` and `A29.hosting_rollback` stay UNVERIFIED. A29 fails its primary case in the final gate. The final 50-case result records A29 as UNVERIFIED, and no complete production claim follows.
+2. Real provider inference for CSP24. Real inference is a paid action outside the current authority. The README recording is the only real inference the plan needs.
