@@ -1,5 +1,5 @@
 {
-  "before": "Stopped",
   "after": "Running",
+  "before": "Stopped",
   "action": "Start existing time service on this disposable CI runner"
 }

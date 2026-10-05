@@ -1,84 +1,84 @@
 {
-  "id": 37354013071,
+  "id": 37362218157,
   "name": "Catalog Generation",
-  "node_id": "WFR_kwLOPa1FXM8AAAAIsnkBjw",
+  "node_id": "WFR_kwLOPa1FXM8AAAAIsvY0rQ",
   "head_branch": "main",
-  "head_sha": "51e09ff5645f8529915a9975b953fae378f41532",
+  "head_sha": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
   "path": ".github/workflows/catalog-generation.yaml",
   "display_title": "Catalog Generation",
-  "run_number": 338,
-  "event": "workflow_run",
+  "run_number": 339,
+  "event": "workflow_dispatch",
   "status": "completed",
   "conclusion": "success",
   "workflow_id": 311070150,
-  "check_suite_id": 101177822842,
-  "check_suite_node_id": "CS_kwDOPa1FXM8AAAAXjqsOeg",
-  "url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37354013071",
-  "html_url": "https://github.com/agentstation/starmap/actions/runs/37354013071",
+  "check_suite_id": 101201112071,
+  "check_suite_node_id": "CS_kwDOPa1FXM8AAAAXkA5sBw",
+  "url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157",
+  "html_url": "https://github.com/agentstation/starmap/actions/runs/37362218157",
   "pull_requests": [],
-  "created_at": "2026-10-05T18:10:59Z",
-  "updated_at": "2026-10-05T18:28:12Z",
+  "created_at": "2026-10-05T19:16:24Z",
+  "updated_at": "2026-10-05T19:33:18Z",
   "actor": {
-    "login": "starmap-catalog-publisher[bot]",
-    "id": 329307247,
-    "node_id": "BOT_kgDOE6DUbw",
-    "avatar_url": "https://avatars.githubusercontent.com/u/165715156?v=4",
+    "login": "jackspirou",
+    "id": 5687406,
+    "node_id": "MDQ6VXNlcjU2ODc0MDY=",
+    "avatar_url": "https://avatars.githubusercontent.com/u/5687406?v=4",
     "gravatar_id": "",
-    "url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D",
-    "html_url": "https://github.com/apps/starmap-catalog-publisher",
-    "followers_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/followers",
-    "following_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/following{/other_user}",
-    "gists_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/gists{/gist_id}",
-    "starred_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/starred{/owner}{/repo}",
-    "subscriptions_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/subscriptions",
-    "organizations_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/orgs",
-    "repos_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/repos",
-    "events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/events{/privacy}",
-    "received_events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/received_events",
-    "type": "Bot",
+    "url": "https://api.github.com/users/jackspirou",
+    "html_url": "https://github.com/jackspirou",
+    "followers_url": "https://api.github.com/users/jackspirou/followers",
+    "following_url": "https://api.github.com/users/jackspirou/following{/other_user}",
+    "gists_url": "https://api.github.com/users/jackspirou/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/jackspirou/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/jackspirou/subscriptions",
+    "organizations_url": "https://api.github.com/users/jackspirou/orgs",
+    "repos_url": "https://api.github.com/users/jackspirou/repos",
+    "events_url": "https://api.github.com/users/jackspirou/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/jackspirou/received_events",
+    "type": "User",
     "user_view_type": "public",
     "site_admin": false
   },
   "run_attempt": 1,
   "referenced_workflows": [],
-  "run_started_at": "2026-10-05T18:10:59Z",
+  "run_started_at": "2026-10-05T19:16:24Z",
   "triggering_actor": {
-    "login": "starmap-catalog-publisher[bot]",
-    "id": 329307247,
-    "node_id": "BOT_kgDOE6DUbw",
-    "avatar_url": "https://avatars.githubusercontent.com/u/165715156?v=4",
+    "login": "jackspirou",
+    "id": 5687406,
+    "node_id": "MDQ6VXNlcjU2ODc0MDY=",
+    "avatar_url": "https://avatars.githubusercontent.com/u/5687406?v=4",
     "gravatar_id": "",
-    "url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D",
-    "html_url": "https://github.com/apps/starmap-catalog-publisher",
-    "followers_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/followers",
-    "following_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/following{/other_user}",
-    "gists_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/gists{/gist_id}",
-    "starred_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/starred{/owner}{/repo}",
-    "subscriptions_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/subscriptions",
-    "organizations_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/orgs",
-    "repos_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/repos",
-    "events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/events{/privacy}",
-    "received_events_url": "https://api.github.com/users/starmap-catalog-publisher%5Bbot%5D/received_events",
-    "type": "Bot",
+    "url": "https://api.github.com/users/jackspirou",
+    "html_url": "https://github.com/jackspirou",
+    "followers_url": "https://api.github.com/users/jackspirou/followers",
+    "following_url": "https://api.github.com/users/jackspirou/following{/other_user}",
+    "gists_url": "https://api.github.com/users/jackspirou/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/jackspirou/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/jackspirou/subscriptions",
+    "organizations_url": "https://api.github.com/users/jackspirou/orgs",
+    "repos_url": "https://api.github.com/users/jackspirou/repos",
+    "events_url": "https://api.github.com/users/jackspirou/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/jackspirou/received_events",
+    "type": "User",
     "user_view_type": "public",
     "site_admin": false
   },
-  "jobs_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37354013071/attempts/1/jobs",
-  "logs_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37354013071/attempts/1/logs",
-  "check_suite_url": "https://api.github.com/repos/agentstation/starmap/check-suites/101177822842",
-  "artifacts_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37354013071/artifacts",
-  "cancel_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37354013071/cancel",
-  "rerun_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37354013071/rerun",
+  "jobs_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157/attempts/1/jobs",
+  "logs_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157/attempts/1/logs",
+  "check_suite_url": "https://api.github.com/repos/agentstation/starmap/check-suites/101201112071",
+  "artifacts_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157/artifacts",
+  "cancel_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157/cancel",
+  "rerun_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157/rerun",
   "previous_attempt_url": null,
   "workflow_url": "https://api.github.com/repos/agentstation/starmap/actions/workflows/311070150",
   "head_commit": {
-    "id": "51e09ff5645f8529915a9975b953fae378f41532",
-    "tree_id": "3e1b68c12149f7b36739dc866f5e9caeca59bdef",
-    "message": "publication: restore an accepted catalog from an older schema and retain the acquisition error (#229)\n\n## Summary\n\nEvery scheduled catalog publication has failed since 2026-09-26. This pull request fixes the three defects behind that outage.\n\n- **Restore rule.** Restore replays the retained inputs with current code and required the result to equal the accepted catalog. Current code derives facts only for the current schema. The accepted checkpoint is at schema 10, and pull request #187 moved the schema to 19, so the comparison could not pass. Restore now skips only that comparison when the accepted catalog declares an older schema. Replay must still succeed. The trusted digest, canonical bytes, and attestation checks do not change. An equal-schema mismatch still fails, and a newer schema fails closed.\n- **Supersession record.** The publish tool reports `schema_supersession` with the accepted and current schema versions. The workflow retains it in `schema-supersession.log` in the validation artifact. The signed receipt, checkpoint, and statement formats do not change, because their decoders reject unknown fields.\n- **Acquisition error.** The workflow discarded the publish tool error. It now retains the field and constant message of the final admission error. Any other error becomes the fixed category `unclassified`, because the validation artifact is public and raw output can contain provider addresses or credentials.\n- **Fixture identity.** One publication test committed in a fixture repository without a git identity and failed on a runner with no global identity.\n\n## Checks\n\n- Replay of the accepted `catalog/v2` checkpoint with no credential and no publication: exit 0, status `prepared`, `schema_supersession` 10 to 19. The same replay at `f52b214c0` exits 1.\n- `go test -race ./cmd/starmap-catalog-publish/...`: pass. `go test -race ./internal/catalog/publication` without `TestPublicPublicationProfileRetainsBoundedState`: pass. That capacity test exceeded the 30 minute local limit under the race detector, and this change does not touch it.\n- New tests: `TestRestoreStateSupersedesOlderSchemaCatalog`, `TestRestoreStateRejectsCurrentSchemaReplayMismatch`, `TestRestoreStateKeepsCheckpointBindingForOlderSchema`, `TestRestoreStateRejectsNewerSchemaCatalog`, `TestPublicationCommandReportsOlderSchemaSupersession`, and five Python tests.\n- `go vet`, goago, the five publication Python suites, and `make technical-writing-check`: pass.\n- Structured review before publication: one pass, no finding.",
-    "timestamp": "2026-10-05T16:37:18Z",
+    "id": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
+    "tree_id": "00f3535e42719aba6e72737fd2b0a3c0ada7f796",
+    "message": "Merge pull request #230 from agentstation/catalog/promotion/3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f\n\ncatalog: embed bindings-9157a3e797c02e21193a26a2233dcbc5967390eee9ced9cb5416bdf1dae7d620.local.010adf9f3137",
+    "timestamp": "2026-10-05T18:23:46Z",
     "author": {
-      "name": "Jack Spirou",
-      "email": "jack.spirou@me.com"
+      "name": "starmap-catalog-publisher[bot]",
+      "email": "329307247+starmap-catalog-publisher[bot]@users.noreply.github.com"
     },
     "committer": {
       "name": "GitHub",
@@ -223,21 +223,21 @@
   },
   "jobs": [
     {
-      "id": 111911705392,
-      "run_id": 37354013071,
+      "id": 111939303068,
+      "run_id": 37362218157,
       "workflow_name": "Catalog Generation",
       "head_branch": "main",
-      "run_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37354013071",
+      "run_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157",
       "run_attempt": 1,
-      "node_id": "CR_kwDOPa1FXM8AAAAaDnUbMA",
-      "head_sha": "51e09ff5645f8529915a9975b953fae378f41532",
-      "url": "https://api.github.com/repos/agentstation/starmap/actions/jobs/111911705392",
-      "html_url": "https://github.com/agentstation/starmap/actions/runs/37354013071/job/111911705392",
+      "node_id": "CR_kwDOPa1FXM8AAAAaEBo2nA",
+      "head_sha": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
+      "url": "https://api.github.com/repos/agentstation/starmap/actions/jobs/111939303068",
+      "html_url": "https://github.com/agentstation/starmap/actions/runs/37362218157/job/111939303068",
       "status": "completed",
       "conclusion": "success",
-      "created_at": "2026-10-05T18:11:00Z",
-      "started_at": "2026-10-05T18:11:02Z",
-      "completed_at": "2026-10-05T18:28:11Z",
+      "created_at": "2026-10-05T19:16:25Z",
+      "started_at": "2026-10-05T19:16:48Z",
+      "completed_at": "2026-10-05T19:33:17Z",
       "name": "generate",
       "steps": [
         {
@@ -245,216 +245,216 @@
           "status": "completed",
           "conclusion": "success",
           "number": 1,
-          "started_at": "2026-10-05T18:11:03Z",
-          "completed_at": "2026-10-05T18:11:05Z"
+          "started_at": "2026-10-05T19:16:49Z",
+          "completed_at": "2026-10-05T19:16:53Z"
         },
         {
           "name": "Checkout trusted publisher source",
           "status": "completed",
           "conclusion": "success",
           "number": 2,
-          "started_at": "2026-10-05T18:11:05Z",
-          "completed_at": "2026-10-05T18:11:15Z"
+          "started_at": "2026-10-05T19:16:53Z",
+          "completed_at": "2026-10-05T19:17:03Z"
         },
         {
           "name": "Check publisher identity configuration",
           "status": "completed",
           "conclusion": "success",
           "number": 3,
-          "started_at": "2026-10-05T18:11:15Z",
-          "completed_at": "2026-10-05T18:11:15Z"
+          "started_at": "2026-10-05T19:17:03Z",
+          "completed_at": "2026-10-05T19:17:03Z"
         },
         {
           "name": "Set up Go",
           "status": "completed",
           "conclusion": "success",
           "number": 4,
-          "started_at": "2026-10-05T18:11:15Z",
-          "completed_at": "2026-10-05T18:11:29Z"
+          "started_at": "2026-10-05T19:17:03Z",
+          "completed_at": "2026-10-05T19:17:16Z"
         },
         {
           "name": "Select publication directory",
           "status": "completed",
           "conclusion": "success",
           "number": 5,
-          "started_at": "2026-10-05T18:11:29Z",
-          "completed_at": "2026-10-05T18:11:29Z"
+          "started_at": "2026-10-05T19:17:16Z",
+          "completed_at": "2026-10-05T19:17:16Z"
         },
         {
           "name": "Restore accepted or pending publication",
           "status": "completed",
           "conclusion": "success",
           "number": 6,
-          "started_at": "2026-10-05T18:11:29Z",
-          "completed_at": "2026-10-05T18:16:18Z"
+          "started_at": "2026-10-05T19:17:16Z",
+          "completed_at": "2026-10-05T19:22:03Z"
         },
         {
           "name": "Refresh candidate catalog",
           "status": "completed",
           "conclusion": "skipped",
           "number": 7,
-          "started_at": "2026-10-05T18:16:18Z",
-          "completed_at": "2026-10-05T18:16:18Z"
+          "started_at": "2026-10-05T19:22:03Z",
+          "completed_at": "2026-10-05T19:22:03Z"
         },
         {
           "name": "Validate candidate before publication",
           "status": "completed",
           "conclusion": "skipped",
           "number": 8,
-          "started_at": "2026-10-05T18:16:18Z",
-          "completed_at": "2026-10-05T18:16:18Z"
+          "started_at": "2026-10-05T19:22:03Z",
+          "completed_at": "2026-10-05T19:22:03Z"
         },
         {
           "name": "Attest exact publication inputs",
           "status": "completed",
           "conclusion": "skipped",
           "number": 9,
-          "started_at": "2026-10-05T18:16:18Z",
-          "completed_at": "2026-10-05T18:16:18Z"
+          "started_at": "2026-10-05T19:22:03Z",
+          "completed_at": "2026-10-05T19:22:03Z"
         },
         {
           "name": "Retain preparation before public writes",
           "status": "completed",
           "conclusion": "skipped",
           "number": 10,
-          "started_at": "2026-10-05T18:16:18Z",
-          "completed_at": "2026-10-05T18:16:18Z"
+          "started_at": "2026-10-05T19:22:03Z",
+          "completed_at": "2026-10-05T19:22:03Z"
         },
         {
           "name": "Record pending publication",
           "status": "completed",
           "conclusion": "success",
           "number": 11,
-          "started_at": "2026-10-05T18:16:18Z",
-          "completed_at": "2026-10-05T18:18:41Z"
+          "started_at": "2026-10-05T19:22:03Z",
+          "completed_at": "2026-10-05T19:24:23Z"
         },
         {
           "name": "Publish and verify immutable public inputs",
           "status": "completed",
           "conclusion": "success",
           "number": 12,
-          "started_at": "2026-10-05T18:18:41Z",
-          "completed_at": "2026-10-05T18:21:11Z"
+          "started_at": "2026-10-05T19:24:23Z",
+          "completed_at": "2026-10-05T19:26:56Z"
         },
         {
           "name": "Create promotion installation token",
           "status": "completed",
           "conclusion": "success",
           "number": 13,
-          "started_at": "2026-10-05T18:21:11Z",
-          "completed_at": "2026-10-05T18:21:11Z"
+          "started_at": "2026-10-05T19:26:56Z",
+          "completed_at": "2026-10-05T19:26:57Z"
         },
         {
           "name": "Select promotion bot identity",
           "status": "completed",
           "conclusion": "success",
           "number": 14,
-          "started_at": "2026-10-05T18:21:11Z",
-          "completed_at": "2026-10-05T18:21:12Z"
+          "started_at": "2026-10-05T19:26:57Z",
+          "completed_at": "2026-10-05T19:26:57Z"
         },
         {
           "name": "Promote exact input through checked pull request",
           "status": "completed",
           "conclusion": "success",
           "number": 15,
-          "started_at": "2026-10-05T18:21:12Z",
-          "completed_at": "2026-10-05T18:24:00Z"
+          "started_at": "2026-10-05T19:26:57Z",
+          "completed_at": "2026-10-05T19:29:21Z"
         },
         {
           "name": "Stage channels after verified merge",
           "status": "completed",
           "conclusion": "success",
           "number": 16,
-          "started_at": "2026-10-05T18:24:00Z",
-          "completed_at": "2026-10-05T18:27:48Z"
+          "started_at": "2026-10-05T19:29:21Z",
+          "completed_at": "2026-10-05T19:33:01Z"
         },
         {
           "name": "Attest both discovery channels",
           "status": "completed",
           "conclusion": "success",
           "number": 17,
-          "started_at": "2026-10-05T18:27:48Z",
-          "completed_at": "2026-10-05T18:27:50Z"
+          "started_at": "2026-10-05T19:33:01Z",
+          "completed_at": "2026-10-05T19:33:04Z"
         },
         {
           "name": "Publish and verify both discovery channels",
           "status": "completed",
           "conclusion": "success",
           "number": 18,
-          "started_at": "2026-10-05T18:27:50Z",
-          "completed_at": "2026-10-05T18:28:08Z"
+          "started_at": "2026-10-05T19:33:04Z",
+          "completed_at": "2026-10-05T19:33:12Z"
         },
         {
           "name": "Retain acquisition corrections and validation logs",
           "status": "completed",
           "conclusion": "success",
           "number": 19,
-          "started_at": "2026-10-05T18:28:08Z",
-          "completed_at": "2026-10-05T18:28:08Z"
+          "started_at": "2026-10-05T19:33:12Z",
+          "completed_at": "2026-10-05T19:33:13Z"
         },
         {
           "name": "Report publication state",
           "status": "completed",
           "conclusion": "success",
           "number": 20,
-          "started_at": "2026-10-05T18:28:08Z",
-          "completed_at": "2026-10-05T18:28:08Z"
+          "started_at": "2026-10-05T19:33:13Z",
+          "completed_at": "2026-10-05T19:33:13Z"
         },
         {
           "name": "Set up ORAS for optional catalog mirror",
           "status": "completed",
           "conclusion": "skipped",
           "number": 21,
-          "started_at": "2026-10-05T18:28:08Z",
-          "completed_at": "2026-10-05T18:28:08Z"
+          "started_at": "2026-10-05T19:33:13Z",
+          "completed_at": "2026-10-05T19:33:13Z"
         },
         {
           "name": "Publish and verify optional OCI catalog mirror",
           "status": "completed",
           "conclusion": "skipped",
           "number": 22,
-          "started_at": "2026-10-05T18:28:08Z",
-          "completed_at": "2026-10-05T18:28:08Z"
+          "started_at": "2026-10-05T19:33:13Z",
+          "completed_at": "2026-10-05T19:33:13Z"
         },
         {
           "name": "Post Create promotion installation token",
           "status": "completed",
           "conclusion": "success",
           "number": 42,
-          "started_at": "2026-10-05T18:28:08Z",
-          "completed_at": "2026-10-05T18:28:08Z"
+          "started_at": "2026-10-05T19:33:13Z",
+          "completed_at": "2026-10-05T19:33:13Z"
         },
         {
           "name": "Post Set up Go",
           "status": "completed",
           "conclusion": "success",
           "number": 43,
-          "started_at": "2026-10-05T18:28:08Z",
-          "completed_at": "2026-10-05T18:28:08Z"
+          "started_at": "2026-10-05T19:33:13Z",
+          "completed_at": "2026-10-05T19:33:13Z"
         },
         {
           "name": "Post Checkout trusted publisher source",
           "status": "completed",
           "conclusion": "success",
           "number": 44,
-          "started_at": "2026-10-05T18:28:08Z",
-          "completed_at": "2026-10-05T18:28:08Z"
+          "started_at": "2026-10-05T19:33:13Z",
+          "completed_at": "2026-10-05T19:33:13Z"
         },
         {
           "name": "Complete job",
           "status": "completed",
           "conclusion": "success",
           "number": 45,
-          "started_at": "2026-10-05T18:28:09Z",
-          "completed_at": "2026-10-05T18:28:09Z"
+          "started_at": "2026-10-05T19:33:13Z",
+          "completed_at": "2026-10-05T19:33:13Z"
         }
       ],
-      "check_run_url": "https://api.github.com/repos/agentstation/starmap/check-runs/111911705392",
+      "check_run_url": "https://api.github.com/repos/agentstation/starmap/check-runs/111939303068",
       "labels": [
         "ubuntu-latest"
       ],
-      "runner_id": 1000028096,
-      "runner_name": "GitHub Actions 1000028096",
+      "runner_id": 1000028168,
+      "runner_name": "GitHub Actions 1000028168",
       "runner_group_id": 0,
       "runner_group_name": "GitHub Actions"
     }

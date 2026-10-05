@@ -1,12 +1,17 @@
 {
-  "source_commit": "45afaed5d2ea6fb3993a4abeb120657d252e9a41",
+  "source_commit": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
   "sha256": {
-    "pending.json": "79db262eb298d61d6d4ceccf114f8b7de1cefaf1811d1f29370544410359f8ae",
-    "pull.json": "0277d5a277dab09f7de9102711c46b29baa456a53af1757f6c37b6ca253daaee",
+    "pending.json": "b8467ae75595ee3c18b3297ed7db4432943bb9e046cbae14ebe84d5177da7482",
+    "pull.json": "6d4261910d7540802af76e8b155fa5f876c9aeb969fc5f48a6713841ca1d6a80",
     "protection.json": "def81981945f046a854c34d02c9e0f65e63068f443e20911240988b0120390c2",
-    "checks.json": "0ce99adf21052d3cc5cab436683f471ad86f11697143f6679e5b71e4c48702d9",
-    "completion.json": "fd12a3ea21ee227c602a4a1959abebc43671b08bc0335c5f7c9f067bc7103acb",
-    "releases-before.json": "eadc6b09721367f29bbabd813b0503144883e7d99cd13a3459dda0ff5a1392a9",
-    "channels-before.json": "fbcfbcde91fc0070d60a22426306d3b5b2c9edb5944a403e3b1c73c7d0bb14ac"
+    "checks.json": "aae9d3fbbb2861d876586c88e13a09bf3662617c448f696ce537792d536c1bea",
+    "completion.json": "2778be9db4b393b035205a49b7fabceeaae4b9f3c2457f7bfc3a878e5565da67",
+    "releases-before.json": "85481e5a4a41c958a8c5c5d0308ff4330394e667a053d149bed0c2bc91a15f15",
+    "channels-before.json": "cfb12e9f59a00fa4c12aebf7a3d27e53d461ff5cf057ce3a839033238875be37",
+    "retry.json": "ba8df9109be6aed8e0f423abfb9fd0a2d7af26029d3a1870071466ac9cd79c09",
+    "releases-after.json": "ddca9bd331b3c5b6176ea3e999818da2396636a621c2ab643729213e5cf49a90",
+    "channels-after.json": "cfb12e9f59a00fa4c12aebf7a3d27e53d461ff5cf057ce3a839033238875be37",
+    "channel-v1.raw.json": "0e6519e18af9e1407db324f9ab746f1354b09e4d028ea527f973c79c18f95aa4",
+    "channel-v2.raw.json": "72f899a1c90592d92bcecf955de3d80166c90718215ed1e1ecbbceb001bd0488"
   }
 }
