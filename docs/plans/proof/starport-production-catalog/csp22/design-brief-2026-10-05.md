@@ -115,6 +115,9 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 - Pull request #229 merged as `51e09ff56` on 2026-10-05 with 62 of 62 checks. The next scheduled publication starts at 20:17 UTC.
 - The first CI run of #423 failed four test jobs. On both Linux runners the `client_backpressure` milestone measured 1.65 s against the fixed 900 ms ceiling. The small socket buffers slow the transfer after the client pause, and the kernel sets that rate.
 - Commit `60db1856` sets the ceiling of that milestone to the time that the client took to receive the stream. The floor and the ceilings of the other milestones do not change. Autoreview returned clean in one pass.
+- The second CI run 37344667799 passed 47 of 47 checks. The macOS and Windows failures of the first run did not occur again.
+- Pull request #423 merged as `3234997a6e9ccc3e312559aa0cd42bb1c290eaac`. The directory `merge-423/` holds the merge proof.
+- The lead captured the Starport native evidence from run 37344667799 into pull request #419 at head `17776031`. The capture test passed 31 tests. The install evidence verified on Windows, Linux, and macOS.
 - The macOS job stopped at the one hour limit of the `internal/catalog` package. The Windows job failed in `TestComposeStorageRecipes` before the native suite. The pull request changes neither path. The second CI run tests both again.
 - The acceptance run is `--gate candidate` at the merged Starmap head against the merged Starport main.
 
