@@ -111,7 +111,10 @@ extensions:
   groq:
     fields:
       hugging_face_id: openai/whisper-large-v3
+      unknown_fields:
+      - checksum: sha256:57db10f0d2b716fecd483b0d89599eaf3f25a6e545194595c9b29d1b75f13676
+        path: data[].model_card
 
 # Timestamps
 created_at: null
-updated_at: 2026-09-18T21:17:46.863361535Z
+updated_at: 2026-10-05T17:10:24.265785628Z

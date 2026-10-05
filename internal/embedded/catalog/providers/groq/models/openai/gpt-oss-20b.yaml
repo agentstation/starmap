@@ -126,7 +126,10 @@ extensions:
   groq:
     fields:
       hugging_face_id: openai/gpt-oss-20b
+      unknown_fields:
+      - checksum: sha256:340dac3427a49379d73acb3eea33b49ffe12c5c2834cb659aebaac5a63ffaddf
+        path: data[].model_card
 
 # Timestamps
 created_at: null
-updated_at: 2026-09-18T21:17:46.863361535Z
+updated_at: 2026-10-05T17:10:24.265785628Z

@@ -118,7 +118,12 @@ extensions:
       - countTokens
       thinking: true
       version: "001"
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:5e626116f319bf96759b71a23eec7a7d18f334c2b201f8a5cf456f47e3240517
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-06-30T00:00:00Z
-updated_at: 2026-09-18T21:17:46.66512128Z
+updated_at: 2026-09-28T05:13:12.909271Z

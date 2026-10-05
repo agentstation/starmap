@@ -96,7 +96,13 @@ pricing:
 limits:
   context_window: 262144
   output_tokens: 262144
+extensions:
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:8d7f55b4269a5396d76a0f1960b17a1f97132d5625824628c2b616f3a7af88c5
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-08-19T23:27:49Z
-updated_at: 2026-09-18T21:17:46.951479494Z
+updated_at: 2026-09-28T05:13:12.909271Z

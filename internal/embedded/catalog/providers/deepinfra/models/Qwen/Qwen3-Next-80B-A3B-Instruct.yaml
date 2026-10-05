@@ -96,7 +96,13 @@ limits:
   context_window: 262144
   input_tokens: 0
   output_tokens: 32768
+extensions:
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:a126d362cd1de70d62a6dc5a1e52c2ffe8d5f0aadb301da6d26e0ec91e7fc075
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2025-09-01T00:00:00Z
-updated_at: 2026-09-18T21:17:47.882119486Z
+updated_at: 2026-09-28T05:13:12.909271Z

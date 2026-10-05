@@ -91,7 +91,12 @@ extensions:
       supported_generation_methods:
       - predictLongRunning
       version: "3.1"
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:5c4ac5bdc0a6b4ecebdc40394be14d352694c70e3a4028ec18132a3218bda79d
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: null
-updated_at: 2026-09-18T21:17:47.645556677Z
+updated_at: 2026-10-05T17:10:25.275896707Z

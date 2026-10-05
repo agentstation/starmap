@@ -121,7 +121,12 @@ extensions:
       - countTokens
       - batchGenerateContent
       version: "2.0"
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:d2c0a28df435114ae8e77bafa5a320cfb29ed609bcd3a33358b041cbae9a02f0
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: null
-updated_at: 2026-09-18T21:17:46.66512128Z
+updated_at: 2026-09-28T05:13:12.909271Z

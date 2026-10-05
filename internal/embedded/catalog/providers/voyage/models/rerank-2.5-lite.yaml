@@ -76,6 +76,10 @@ features:
   format_response: false
   structured_outputs: false
   streaming: false
+billing:
+  rerank:
+    basis: query_document_tokens
+    request_charge: false
 
 # Model pricing
 pricing:
@@ -88,15 +92,10 @@ pricing:
 
 # Model limits
 limits:
-  input_tokens: 600000
   context_window: 32000
+  input_tokens: 600000
   max_documents: 1000
 
 # Timestamps
 created_at: 2026-08-27T00:00:00Z
 updated_at: 2026-08-27T00:00:00Z
-
-billing:
-  rerank:
-    basis: query_document_tokens
-    request_charge: false

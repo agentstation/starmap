@@ -127,7 +127,10 @@ extensions:
     fields:
       reasoning_options:
       - type: toggle
+      unknown_fields:
+      - checksum: sha256:6df279560ad1f9619025f198070f6c933fd1ddf6428bd024708d5f39085049cb
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: null
-updated_at: 2026-09-26T04:35:09.328159722Z
+updated_at: 2026-10-05T17:10:25.275896707Z

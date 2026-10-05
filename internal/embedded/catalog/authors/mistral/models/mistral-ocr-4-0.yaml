@@ -1,28 +1,42 @@
+# mistral-ocr-4-0 - Document recognition with structured page text.
 id: mistral-ocr-4-0
 name: Mistral OCR 4.0
 authors:
 - id: mistral
   name: Mistral AI
 description: Document recognition with structured page text.
+
+# Model metadata
 metadata:
   release_date: 2026-06-23
   open_weights: false
-  tags: [ocr]
+  tags:
+  - ocr
+
+# Model features
 features:
   modalities:
-    input: [pdf, image]
-    output: [text]
-  # Unknown capabilities remain explicit.
+    input:
+    - pdf
+    - image
+    output:
+    - text
+
+  # Core capabilities
   tool_calls: null
   tools: null
   tool_choice: null
   web_search: null
   attachments: null
+
+  # Reasoning & Verbosity
   reasoning: null
   reasoning_effort: null
   reasoning_tokens: null
   include_reasoning: null
   verbosity: null
+
+  # Generation control support flags
   temperature: null
   top_p: null
   top_k: null
@@ -46,7 +60,7 @@ features:
   logprobs: null
   top_logprobs: null
   echo: null
-  n: null
+  "n": null
   best_of: null
   mirostat: null
   mirostat_tau: null
@@ -55,6 +69,12 @@ features:
   num_beams: null
   early_stopping: null
   diversity_penalty: null
+
+  # Response delivery
   format_response: null
   structured_outputs: null
   streaming: null
+
+# Timestamps
+created_at: null
+updated_at: null

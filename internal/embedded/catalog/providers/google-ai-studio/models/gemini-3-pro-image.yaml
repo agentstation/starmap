@@ -124,7 +124,12 @@ extensions:
       - batchGenerateContent
       thinking: true
       version: "3.0"
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:c4bd8b08270d405894f8f95ebae8ff9d524aebc2df87630e5225a8988973b8af
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-07-11T20:15:12.208999Z
-updated_at: 2026-09-18T21:17:46.66512128Z
+updated_at: 2026-09-28T05:13:12.909271Z

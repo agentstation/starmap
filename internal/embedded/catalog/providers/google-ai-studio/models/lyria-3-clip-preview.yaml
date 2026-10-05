@@ -115,7 +115,12 @@ extensions:
       - generateContent
       - countTokens
       version: lyria-3-clip-preview
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:8dc963277ff84422213597641389392383db70182306848713d75d419652bfe7
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-07-11T20:15:12.209026Z
-updated_at: 2026-09-18T21:17:46.66512128Z
+updated_at: 2026-09-28T05:13:12.909271Z

@@ -2,7 +2,7 @@
 id: Wan-AI/Wan2.2-T2V-A14B
 model: alibaba/wan2.2-t2v-a14b
 name: Wan-AI/Wan2.2-T2V-A14B
-description: DeepInfra serves this text-to-video model through native inference. The current endpoint generates five-second, 1280x720 landscape videos at 16 frames per second.
+description: The Wan2.2 T2V A14B is a next-generation 14B-parameter video foundation model by Wan-AI featuring a novel two-stage denoising architecture. It produces 480P videos with improved visual coherence and detail, generating 2 or 5 second clips at 16fps from text prompts.
 
 # Model metadata
 metadata:
@@ -73,16 +73,15 @@ features:
   format_response: false
   structured_outputs: false
   streaming: false
-
-# Schema: https://api.deepinfra.com/models/Wan-AI/Wan2.2-T2V-A14B/schema/default
-# The model schema fixes five seconds, 720p, and landscape output.
 billing:
   videos:
     basis: output_seconds
     default_seconds: 5
-    seconds: [5]
+    seconds:
+    - 5
     default_size: 1280x720
-    sizes: [1280x720]
+    sizes:
+    - 1280x720
     request_charge: false
 
 # Model pricing
@@ -93,4 +92,4 @@ pricing:
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.090051Z
-updated_at: 2026-09-18T21:17:47.882119486Z
+updated_at: 2026-10-05T17:10:25.078129427Z
