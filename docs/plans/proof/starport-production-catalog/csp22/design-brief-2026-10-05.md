@@ -35,13 +35,17 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 
 - The Starport slice adds `TestGatewayProviderTimingBoundaries` in `./internal/app`. It uses a controlled upstream with fixed delays for each boundary.
 - The registry binds it with the required subtests `connection_queueing`, `dns`, `tcp_tls_setup`, `provider_wait`, and `client_backpressure`.
-- Each subtest asserts the measured milestone against the controlled delay without subtracting the whole connector call. The `performanceSample` fields in `performance_test.go` already carry the milestones.
+- Each subtest asserts the measured milestone against the controlled delay without subtracting the whole connector call.
+- The lead corrected this decision on 2026-10-05. The `performanceSample` fields do not carry these milestones. Production records no milestone for the five boundaries. The `execution.OverheadTimer.TrackUpstream()` call at `internal/router/router.go:294` wraps the whole connector call.
+- The test measures the milestones with `net/http` trace events on the real request path. Each subtest injects a 600 ms delay at one boundary. The delay milestone must be in the range from 300 ms to 900 ms. Each other milestone must stay below 300 ms.
+- UNVERIFIED limits: the milestones come from the test and not from production telemetry. Codec time is inside the gateway processing value. The `dns` subtest covers only the Go resolver.
 
 ### D4. A50.connection_reuse_lifecycle
 
 - The registry binds an `all` entry with the nine existing connector and HTTP client tests from the survey.
 - The slice adds `TestDispatchTransportGenerationChangeSaturation` in `./internal/providers/connectors`. It saturates the dispatch capacity, changes the runtime generation, and asserts that pooled connections and waiters recover.
 - The contract names runtime generation changes. The entry is not honest without the new test.
+- UNVERIFIED limit: the new test covers HTTP/1.1 only.
 
 ### D5. A50 measurement subcases
 
@@ -67,6 +71,7 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 - The subcases `A05.bot_required_checks` and `A05.same_bytes_retry` need a hosted publication capture that matches the current source. The csp6 capture in PR #221 names source commit `45afaed5d`. Main moved past it, and `verify()` refuses it.
 - A fresh capture needs one successful scheduled publication from the candidate source. Decision D8 blocks that until the outage ends.
 - The brief records A05 as a publication-dependent limit of the candidate gate until the pipeline recovers.
+- The `after` phase of the capture needs a retry run of the completed receipt. The documented retry is a manual workflow dispatch with the receipt checksum. That dispatch needs owner authority.
 
 ### D8. Publication outage
 
@@ -98,6 +103,10 @@ Task: qualify the complete release candidate. Scope: checks for the ten unregist
 - Proof PRs land the recaptures after both code PRs merge.
 - PR R is Starmap pull request #223 at head `4458f6146`. It registers six subcases, and the registry holds 313 checks. Its 184 unit tests pass, and `make technical-writing-check` passes. Autoreview with Sol 6.1 at high effort returned clean in one pass.
 - The file `scripts/test_catalog_product_verify.py` holds 1,944 lines. It owns the tests of one verifier module. The next addition must split it by adapter.
+- PR A is Starport pull request #423 at head `9512f754`. It changes tests and documentation only. The full roster passes at `96ff2ed6`, and the timing test passes five race runs at `9512f754`. Autoreview with Sol 6.1 at high effort returned clean in one pass.
+- The roster needs `CATALOG_DRIVEN_STARMAP_ROOT` set to a Starmap worktree at current main. Two of its checks need Python 3.12.
+- PR A also fixes a test defect that failed the #419 CI run on `ubuntu-24.04-arm`. The helper test `TestDevelopmentScratchProcess` let its session become unreachable. The collector finalized the lock file and released the lock. The fix adds `runtime.KeepAlive(session)`. Production holds the session until it closes it.
+- The first CI run of #223 failed on `Native windows-2025 / client`. The `go list` command exceeded its 120 second limit. The pull request changes only Python and JSON. The lead reran the failed jobs of run 37323139597.
 - The acceptance run is `--gate candidate` at the merged Starmap head against the merged Starport main.
 
 ### D11. Discovery audit
