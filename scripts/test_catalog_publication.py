@@ -465,6 +465,7 @@ class AcquisitionDiagnosticsTests(unittest.TestCase):
         report = self.report()
         self.assertEqual(report["run_id"], "github-42")
         self.assertEqual(report["process_status"], "succeeded")
+        self.assertIsNone(report["error"])
         self.assertEqual(report["correction_count"], 4)
         self.assertEqual(report["omitted_count"], 0)
         self.assertEqual(report["invalid_count"], 0)
@@ -488,10 +489,51 @@ class AcquisitionDiagnosticsTests(unittest.TestCase):
         self.assertNotIn("private-fixture", str(failure.exception))
         report = self.report()
         self.assertEqual(report["process_status"], "failed")
+        self.assertEqual(report["error"], {"category": "unclassified"})
         self.assertEqual(report["correction_count"], 1)
-        self.assertIn("Process: failed", self.summary.read_text(encoding="utf-8"))
+        self.assertIn("Process: failed. Error: unclassified.", self.summary.read_text(encoding="utf-8"))
         self.assertFalse(self.publisher.stage.exists())
         self.assertNotIn("pending", publication.read_json(self.publisher.control))
+
+    def failed_error(self, stderr):
+        with self.assertRaises(publication.PublicationError):
+            self.execute(stderr, returncode=1)
+        return self.report()["error"]
+
+    def test_failed_acquisition_retains_typed_admission_error(self):
+        line = "validation failed for field publication_admission.state.catalog: retained inputs do not reproduce the accepted catalog"
+        error = self.failed_error(json.dumps(self.events[0]) + "\n" + line + "\n")
+        self.assertEqual(error, {"field": "publication_admission.state.catalog",
+                                 "message": "retained inputs do not reproduce the accepted catalog"})
+        self.assertIn("Error: publication_admission.state.catalog: retained inputs do not reproduce the accepted catalog.",
+                      self.summary.read_text(encoding="utf-8"))
+
+    def test_failed_acquisition_reduces_other_errors_to_category(self):
+        prefix = "validation failed for field publication_admission.source: "
+        lines = {
+            "url": prefix + "fetch https://api.example.invalid/v1?key=private-fixture-credential",
+            "token": prefix + "rejected ghp_0123456789abcdefghijABCDEFGHIJ0123",
+            "field": "validation failed for field provider.endpoint: is invalid",
+            "wrapped": "acquire openai: " + prefix + "is invalid",
+            "control": prefix + "is\tinvalid",
+            "not final": prefix + "is invalid\nGET https://api.example.invalid/v1 failed",
+        }
+        for name, stderr in lines.items():
+            with self.subTest(name):
+                self.assertEqual(self.failed_error(stderr), {"category": "unclassified"})
+                raw = (self.publisher.root / "acquisition-corrections.log").read_text(encoding="utf-8")
+                for fragment in ("example.invalid", "ghp_", "provider.endpoint", "openai"):
+                    self.assertNotIn(fragment, raw)
+
+    def test_retained_admission_error_is_length_bounded(self):
+        prefix = "validation failed for field publication_admission.state: "
+        size = publication.MAX_ACQUISITION_ERROR_LENGTH - len(prefix)
+        message = " ".join(["a" * 9] * (size // 10 + 1))[:size]
+        message = message[:-1] + "a" if message.endswith(" ") else message
+        self.assertEqual(self.failed_error(prefix + message), {"field": "publication_admission.state", "message": message})
+        self.assertEqual(self.failed_error(prefix + message + "a"), {"category": "unclassified"})
+        long_word = prefix + "is " + "a" * 25
+        self.assertEqual(self.failed_error(long_word), {"category": "unclassified"})
 
     def test_timeout_retains_complete_events_from_partial_bytes(self):
         stderr = (json.dumps(self.events[0]) + '\n{"message":"private-fixture').encode()
@@ -501,6 +543,7 @@ class AcquisitionDiagnosticsTests(unittest.TestCase):
                 self.publisher.prepare()
         report = self.report()
         self.assertEqual(report["process_status"], "timed_out")
+        self.assertIsNone(report["error"])
         self.assertIn("Process: timed_out", self.summary.read_text(encoding="utf-8"))
         self.assertEqual(report["correction_count"], 1)
         self.assertFalse(self.publisher.stage.exists())
@@ -518,6 +561,33 @@ class AcquisitionDiagnosticsTests(unittest.TestCase):
         self.assertEqual(report["correction_count"], 1)
         self.assertEqual(report["invalid_count"], 4)
         self.assertEqual(report["corrections"][0]["source"], "models_dev_git")
+
+    def test_prepare_retains_schema_supersession_from_tool_report(self):
+        self.execute("")
+        self.assertFalse((self.publisher.root / "schema-supersession.log").exists())
+        self.result["schema_supersession"] = {"accepted_schema_version": 10, "current_schema_version": 19}
+        publication.write_json(self.publisher.control, {"acquire": True, "channels": {"catalog/v2": {"document": None}}})
+        self.execute("")
+        retained = publication.read_json(self.publisher.root / "schema-supersession.log")
+        self.assertEqual(retained, {"schema_version": 1, "run_id": "github-42",
+                                    "accepted_schema_version": 10, "current_schema_version": 19})
+        self.assertIn("The accepted catalog uses schema 10. This run prepares schema 19.", self.summary.read_text(encoding="utf-8"))
+
+    def test_prepare_rejects_invalid_schema_supersession(self):
+        invalid = [{"accepted_schema_version": 19, "current_schema_version": 10},
+                   {"accepted_schema_version": 10, "current_schema_version": 10},
+                   {"accepted_schema_version": "10", "current_schema_version": 19},
+                   {"accepted_schema_version": True, "current_schema_version": 19},
+                   {"accepted_schema_version": 0, "current_schema_version": 19},
+                   {"accepted_schema_version": 10, "current_schema_version": 19, "detail": "private-fixture-message"},
+                   [10, 19]]
+        for supersession in invalid:
+            with self.subTest(supersession=supersession):
+                self.result["schema_supersession"] = supersession
+                with self.assertRaises(publication.PublicationError):
+                    self.execute("")
+                self.assertFalse((self.publisher.root / "schema-supersession.log").exists())
+                self.assertFalse(self.publisher.stage.exists())
 
     def test_report_bounds_preserve_total_and_omitted_counts(self):
         with patch.object(publication, "MAX_ACQUISITION_CORRECTIONS", 2, create=True):
@@ -876,7 +946,8 @@ scopes:
             # Retain a historical accepted source that predates the compiled payload.
             historical = Path(checked.emitted["checkout"])
             publication.command(["git", "rm", "internal/embedded/catalog/generation-payload.json.gz"], cwd=historical)
-            publication.command(["git", "commit", "--quiet", "-m", "Historical accepted catalog"], cwd=historical)
+            publication.command(["git", "-c", "user.name=fixture", "-c", "user.email=fixture@example.invalid",
+                "commit", "--quiet", "-m", "Historical accepted catalog"], cwd=historical)
             historical_commit = publication.command(["git", "rev-parse", "HEAD"], cwd=historical).stdout.strip()
             publication.command(["git", "push", "origin", "HEAD:refs/heads/main"], cwd=historical)
             historical_channel = checked.root / "historical-channel.json"

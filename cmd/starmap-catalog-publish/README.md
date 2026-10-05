@@ -111,6 +111,18 @@ Read the digest from accepted publisher state or verified publisher provenance.
 Do not use the checkpoint's own digest as proof of trust.
 The decoder validates original observation receipts and replays their payloads before accepting the checkpoint.
 
+Replay must reproduce the accepted catalog when that catalog uses the current schema version.
+Current code derives facts only for the current schema, so it cannot reproduce a catalog from an older schema.
+For an older-schema catalog, restore skips only that equality comparison.
+Replay must still succeed, and the trusted digest, canonical bytes, and artifact attestation still bind the accepted catalog.
+The next prepared artifact uses the current schema. Restore rejects a catalog from a newer schema.
+
+The JSON output reports this case in `schema_supersession` with the accepted and current schema versions.
+The field is absent when the accepted catalog uses the current schema.
+The signed run receipt does not record the supersession and does not declare a catalog schema version.
+Each receipt binds its archive checksum. The archive descriptor and the detached statement predicate declare the schema version.
+The artifacts of the superseded receipt and the next receipt therefore show the schema change.
+
 Add `-baseline-embedded` when the resumed publication must apply authored changes from the current compiled catalog.
 The command validates model and alias state before acquisition and binds that baseline to the saved run request.
 An embedded copy of the publisher's own accepted output keeps the existing acquisition baseline.

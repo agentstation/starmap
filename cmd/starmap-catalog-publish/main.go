@@ -50,6 +50,14 @@ type prepareReport struct {
 	StatePath         string `json:"state_path"`
 	StateChecksum     string `json:"state_checksum"`
 	ReusedArtifact    bool   `json:"reused_artifact"`
+	// SchemaSupersession appears only when the accepted catalog uses an older schema.
+	// The signed run receipt does not record it.
+	SchemaSupersession *schemaSupersessionReport `json:"schema_supersession,omitempty"`
+}
+
+type schemaSupersessionReport struct {
+	AcceptedSchemaVersion uint64 `json:"accepted_schema_version"`
+	CurrentSchemaVersion  uint64 `json:"current_schema_version"`
 }
 
 func main() {
@@ -206,7 +214,14 @@ func prepare(ctx context.Context, options prepareOptions) (prepareReport, error)
 	if selected.RequestChecksum != requestChecksum {
 		return prepareReport{}, invalid("run_id", "already belongs to a different publication request")
 	}
-	return stagePrepared(ctx, absolute, selected)
+	report, err := stagePrepared(ctx, absolute, selected)
+	if err != nil {
+		return prepareReport{}, err
+	}
+	if supersession, found := state.SchemaSupersession(); found {
+		report.SchemaSupersession = &schemaSupersessionReport{AcceptedSchemaVersion: supersession.AcceptedSchemaVersion, CurrentSchemaVersion: supersession.CurrentSchemaVersion}
+	}
+	return report, nil
 }
 
 func loadPublicationState(ctx context.Context, options prepareOptions) (*publication.State, error) {

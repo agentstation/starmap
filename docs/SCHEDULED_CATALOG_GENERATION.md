@@ -16,7 +16,13 @@ Adapter corrections use structured acquisition logs. The publisher retains recog
 The JSON report names the workflow run, process outcome, source, provider, model, and correction code.
 It excludes raw messages and unknown fields. It retains up to 20,000 corrections and reports total, omitted, and invalid-event counts.
 
-The Actions job summary shows the process outcome and counts. The `catalog-validation` artifact contains the report.
+After a failed acquisition, the report keeps the field and constant message of the final publication admission error.
+It reduces every other error to the `unclassified` category, because raw tool output can contain provider URLs or credentials.
+
+When the accepted catalog uses an older schema, `schema-supersession.log` retains the accepted and current schema versions.
+The [preparation command](../cmd/starmap-catalog-publish/README.md#resume-and-retry) documents this restore rule.
+
+The Actions job summary shows the process outcome, the retained error, and counts. The `catalog-validation` artifact contains the report.
 Corrected records remain accepted. Corrections alone do not mark a source degraded.
 
 Promotion staging preserves command output in `promotion-staging.log`, including partial output after a timeout.

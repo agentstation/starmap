@@ -27,6 +27,12 @@ COMMIT = re.compile(r"[0-9a-f]{40}\Z")
 # Retain both models.dev transports at the catalog limit of 10,000 records each.
 MAX_ACQUISITION_CORRECTIONS = 20000
 MAX_CORRECTION_ID_LENGTH = 4096
+# Validation artifacts are public. Retain only the publish tool's final admission error, whose field and message are constants.
+# Reduce every other failure to one fixed category, because raw stderr can hold provider URLs, credentials, or diagnostics.
+ACQUISITION_ADMISSION_ERROR = re.compile(r"validation failed for field (publication_admission(?:\.[a-z][a-z0-9_]{0,47}){1,6}): "
+                                         r"([A-Za-z][A-Za-z0-9,.'_-]{0,23}(?: [A-Za-z0-9,.'_-]{1,24}){0,23})\Z")
+MAX_ACQUISITION_ERROR_LENGTH = 256
+ACQUISITION_ERROR_CATEGORY = "unclassified"
 REQUIRED_CHECKS = (
     "Security & Reliability", "Verification Gate", "Runtime ubuntu-24.04",
     "Runtime ubuntu-24.04-arm", "Runtime macos-15",
@@ -79,6 +85,15 @@ def unique_object(pairs):
             raise PublicationError("publication record contains a duplicate field")
         result[key] = value
     return result
+
+
+def acquisition_error(stderr):
+    lines = [line for line in (stderr or "").splitlines() if line.strip()]
+    final = lines[-1] if lines else ""
+    match = ACQUISITION_ADMISSION_ERROR.match(final) if len(final) <= MAX_ACQUISITION_ERROR_LENGTH else None
+    if not match:
+        return {"category": ACQUISITION_ERROR_CATEGORY}
+    return {"field": match.group(1), "message": match.group(2)}
 
 
 def checksum(path, limit=256 << 20):
@@ -408,6 +423,7 @@ class Publisher:
         if acquired.returncode:
             raise PublicationError(f"catalog acquisition failed with exit status {acquired.returncode}")
         report = json.loads(acquired.stdout)
+        self.retain_schema_supersession(report.get("schema_supersession"))
         self.stage.mkdir(exist_ok=True, mode=0o700)
         for filename in ASSETS:
             shutil.copyfile(Path(report["artifact_directory"]) / filename, self.stage / filename)
@@ -447,6 +463,23 @@ class Publisher:
                 stream.write(f"### Catalog source quality\n\nStale sources: {len(stale)}. Oldest stale evidence: {oldest:g} seconds.\n\n"
                              "The catalog-validation artifact contains source identities, outcomes, and ages in `source-status.log`.\n\n")
 
+    def retain_schema_supersession(self, supersession):
+        if supersession is None:
+            return
+        keys = ("accepted_schema_version", "current_schema_version")
+        if (not isinstance(supersession, dict) or set(supersession) != set(keys)
+                or any(type(supersession[key]) is not int or not 0 < supersession[key] < 1 << 32 for key in keys)
+                or supersession["accepted_schema_version"] >= supersession["current_schema_version"]):
+            raise PublicationError("publish tool reported an invalid schema supersession")
+        accepted, current = (supersession[key] for key in keys)
+        write_json(self.root / "schema-supersession.log", {"schema_version": 1, "run_id": f"github-{self.run_id}",
+            "accepted_schema_version": accepted, "current_schema_version": current})
+        summary = os.environ.get("GITHUB_STEP_SUMMARY")
+        if summary:
+            with open(summary, "a", encoding="utf-8") as stream:
+                stream.write(f"### Catalog schema supersession\n\nThe accepted catalog uses schema {accepted}. "
+                             f"This run prepares schema {current}. Restore skipped only the replay equality check.\n\n")
+
     def retain_acquisition_corrections(self, stderr, process_status):
         if isinstance(stderr, bytes):
             stderr = stderr.decode("utf-8", errors="replace")
@@ -469,15 +502,19 @@ class Publisher:
             count += 1
             if len(corrections) < MAX_ACQUISITION_CORRECTIONS:
                 corrections.append({key: event[key] for key in ("source", "provider_id", "model_id", "code")})
+        error = acquisition_error(stderr) if process_status == "failed" else None
         write_json(self.root / "acquisition-corrections.log", {
             "schema_version": 1, "run_id": f"github-{self.run_id}", "process_status": process_status,
-            "correction_count": count, "omitted_count": count - len(corrections),
+            "error": error, "correction_count": count, "omitted_count": count - len(corrections),
             "invalid_count": invalid, "corrections": corrections,
         })
         summary = os.environ.get("GITHUB_STEP_SUMMARY")
         if summary:
+            failure = ""
+            if error:
+                failure = f" Error: {error['field']}: {error['message']}." if "field" in error else f" Error: {error['category']}."
             with open(summary, "a", encoding="utf-8") as stream:
-                stream.write(f"### Catalog acquisition\n\nProcess: {process_status}. Correction events: {count}. "
+                stream.write(f"### Catalog acquisition\n\nProcess: {process_status}.{failure} Correction events: {count}. "
                              f"Omitted events: {count - len(corrections)}. Invalid events: {invalid}.\n\n"
                              "The catalog-validation artifact contains `acquisition-corrections.log`.\n\n")
 

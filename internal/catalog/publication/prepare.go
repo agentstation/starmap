@@ -24,6 +24,15 @@ type State struct {
 	publisherID string
 	history     []sources.Observation
 	bundle      *artifact.Bundle
+	// Restore sets supersession only when the accepted catalog has an older schema.
+	supersession *SchemaSupersession
+}
+
+// SchemaSupersession records that current code replaces an accepted catalog from an older schema.
+// Restore skips only the replay equality check for such a catalog.
+type SchemaSupersession struct {
+	AcceptedSchemaVersion uint64
+	CurrentSchemaVersion  uint64
 }
 
 // PreparedPublication contains one admitted candidate, its artifact, and its run receipt.
@@ -65,6 +74,14 @@ func (s *State) Generation() catalogs.Generation {
 		return catalogs.Generation{}
 	}
 	return s.current.Copy()
+}
+
+// SchemaSupersession reports whether restore accepted an older-schema catalog without exact replay.
+func (s *State) SchemaSupersession() (SchemaSupersession, bool) {
+	if s == nil || s.supersession == nil {
+		return SchemaSupersession{}, false
+	}
+	return *s.supersession, true
 }
 
 // Prepare collects declared sources and prepares a complete artifact and receipt.
