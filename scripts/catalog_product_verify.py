@@ -24,6 +24,8 @@ REGISTRY = ROOT / "scripts/catalog-product-checks.json"
 COMPONENT_CASES = {"CSP5": ("A22", "A23"), "CSP7": ("A11", "A12")}
 EMBEDDED_CATALOG = "internal/embedded/catalog"
 STARMAP_MODULE = "github.com/agentstation/starmap"
+STARPORT_MODULE = "github.com/agentstation/starport"
+STABLE_VERSION = re.compile(r"v\d+\.\d+\.\d+")
 
 
 def read_json(path):
@@ -374,6 +376,10 @@ def run_check(identity, entry, roots, go_evidence=None):
         return promoted_checkout(entry, roots)
     if entry.get("kind") == "pinned_module_baseline":
         return pinned_module_baseline(entry, roots)
+    if entry.get("kind") == "released_module":
+        return released_module(entry, roots)
+    if entry.get("kind") == "released_module_pin":
+        return released_module_pin(entry, roots)
     if entry.get("kind") != "go_test":
         return {"status": "UNVERIFIED", "reason": "This evidence adapter has not been implemented."}
     inputs, error = go_check_input(entry, roots)
@@ -475,41 +481,220 @@ def module_hash(archive):
     return "h1:" + base64.b64encode(hashlib.sha256(lines.encode("utf-8")).digest()).decode("ascii")
 
 
+ENVIRONMENT_ERRORS = (OSError, ValueError, KeyError, TypeError, AttributeError, zipfile.BadZipFile, subprocess.SubprocessError)
+
+
+def release_version(root):
+    """Return the latest stable release tag that is an ancestor of HEAD, or None when no such tag exists."""
+    try:
+        version = checked_output(root, ["git", "describe", "--tags", "--abbrev=0", "--match", "v[0-9]*",
+                                        "--exclude", "v*-*", "HEAD"]).strip()
+    except subprocess.CalledProcessError:
+        return None
+    return version if STABLE_VERSION.fullmatch(version) else None
+
+
+def download_module(path, version):
+    """Download one module version and return the Go report with its Zip path and checksum database Sum."""
+    # An empty directory keeps the download from changing a repository go.mod or go.sum.
+    with tempfile.TemporaryDirectory(prefix="catalog-module-") as temporary:
+        try:
+            download = json.loads(checked_output(Path(temporary), ["go", "mod", "download", "-json", f"{path}@{version}"]))
+        except subprocess.CalledProcessError as error:
+            try:
+                detail = json.loads(error.stdout)["Error"]
+            except (ValueError, KeyError, TypeError):
+                detail = (error.stderr or "").strip() or str(error)
+            raise ValueError(f"Cannot download {path}@{version}: {detail}") from error
+    return download
+
+
+def module_generation(archive, version):
+    """Return the generation that one Starmap module zip embeds."""
+    prefix = f"{STARMAP_MODULE}@{version}/{EMBEDDED_CATALOG}/"
+    return embedded_generation(lambda name: archive.read(prefix + name))
+
+
+def go_mod_directives(text, verb):
+    """Return the fields of each require or replace line of go.mod text, in single-line and block form."""
+    entries, block = [], False
+    for line in text.splitlines():
+        fields = line.split("//")[0].split()
+        if not fields:
+            continue
+        if block:
+            if fields == [")"]:
+                block = False
+            else:
+                entries.append(fields)
+        elif fields[0] == verb:
+            if fields[1:] == ["("]:
+                block = True
+            else:
+                entries.append(fields[1:])
+    return [[entry[0].strip('"'), *entry[1:]] for entry in entries if entry]
+
+
+def required_starmap(text):
+    """Return the one Starmap version that go.mod text requires, or None."""
+    versions = [fields[1] for fields in go_mod_directives(text, "require") if fields[0] == STARMAP_MODULE and len(fields) > 1]
+    return versions[0] if len(versions) == 1 else None
+
+
+def go_sum_record(text, version):
+    """Return the one go.sum h1 record of the Starmap module zip at version, or None."""
+    recorded = [line.split()[2] for line in text.splitlines()
+                if line.split()[:2] == [STARMAP_MODULE, version] and len(line.split()) == 3]
+    return recorded[0] if len(recorded) == 1 else None
+
+
+def consumer_pin(consumer):
+    """Return the one Starmap version that the consumer go.mod requires without a replacement."""
+    module = json.loads(checked_output(consumer, ["go", "mod", "edit", "-json"]))
+    if any(item["Old"]["Path"] == STARMAP_MODULE for item in module.get("Replace") or []):
+        raise ValueError("The consumer replaces the pinned Starmap module.")
+    versions = [item["Version"] for item in module.get("Require") or [] if item["Path"] == STARMAP_MODULE]
+    if len(versions) != 1:
+        raise ValueError("The consumer does not pin one Starmap module version.")
+    return versions[0]
+
+
+def previous_pin(consumer, version):
+    """Return the latest consumer commit, Starmap version, and go.sum record of the pin before version."""
+    for commit in checked_output(consumer, ["git", "log", "--format=%H", "-n", "200", "--", "go.mod"]).split():
+        old = required_starmap(checked_output(consumer, ["git", "show", f"{commit}:go.mod"]))
+        if old == version:
+            continue
+        if old is None:
+            return None
+        try:
+            record = go_sum_record(checked_output(consumer, ["git", "show", f"{commit}:go.sum"]), old)
+        except subprocess.CalledProcessError:
+            return None
+        return None if record is None else (commit, old, record)
+    return None
+
+
 def pinned_module_baseline(entry, roots):
     """Compare the Starmap module bytes that Starport pins with the newly selected embedding."""
     consumer, source = roots.get(entry.get("repository")), roots.get("starmap")
     if consumer is None or source is None:
         return {"status": "UNVERIFIED", "reason": "The consumer or source repository is unavailable."}
     try:
-        module = json.loads(checked_output(consumer, ["go", "mod", "edit", "-json"]))
-        if any(item["Old"]["Path"] == STARMAP_MODULE for item in module.get("Replace") or []):
-            raise ValueError("The consumer replaces the pinned Starmap module.")
-        versions = [item["Version"] for item in module.get("Require") or [] if item["Path"] == STARMAP_MODULE]
-        if len(versions) != 1:
-            raise ValueError("The consumer does not pin one Starmap module version.")
-        version = versions[0]
-        recorded = [line.split()[2] for line in (consumer / "go.sum").read_text().splitlines()
-                    if line.split()[:2] == [STARMAP_MODULE, version] and len(line.split()) == 3]
-        if len(recorded) != 1:
+        version = consumer_pin(consumer)
+        recorded = go_sum_record((consumer / "go.sum").read_text(), version)
+        if recorded is None:
             raise ValueError("The consumer go.sum has no record of the pinned Starmap module.")
         selected = checkout_generation(source)
-        # An empty directory keeps the download from changing the consumer go.mod or go.sum.
-        with tempfile.TemporaryDirectory(prefix="starmap-pinned-module-") as temporary:
-            download = json.loads(checked_output(Path(temporary), ["go", "mod", "download", "-json", f"{STARMAP_MODULE}@{version}"]))
-        with zipfile.ZipFile(download["Zip"]) as archive:
-            if module_hash(archive) != recorded[0]:
+        with zipfile.ZipFile(download_module(STARMAP_MODULE, version)["Zip"]) as archive:
+            if module_hash(archive) != recorded:
                 raise EmbeddingMismatch("The pinned Starmap module bytes differ from the consumer go.sum record.")
-            prefix = f"{STARMAP_MODULE}@{version}/{EMBEDDED_CATALOG}/"
-            pinned = embedded_generation(lambda name: archive.read(prefix + name))
+            pinned = module_generation(archive, version)
     except EmbeddingMismatch as error:
         return {"status": "FAIL", "reason": str(error)}
-    except (OSError, ValueError, KeyError, TypeError, AttributeError, zipfile.BadZipFile, subprocess.SubprocessError) as error:
+    except ENVIRONMENT_ERRORS as error:
         return {"status": "UNVERIFIED", "reason": str(error)}
-    result = {"module": f"{STARMAP_MODULE}@{version}", "go_sum": recorded[0], "pinned": pinned, "selected": selected}
-    if pinned == selected:
-        return result | {"status": "UNVERIFIED",
-                         "reason": "The pinned module embeds the selected generation. No later generation exists to compare."}
-    return result | {"status": "PASS", "scope": "The pinned module bytes match the consumer go.sum record and keep their original generation."}
+    result = {"module": f"{STARMAP_MODULE}@{version}", "go_sum": recorded, "pinned": pinned, "selected": selected}
+    if pinned != selected:
+        return result | {"status": "PASS", "scope": "The pinned module bytes match the consumer go.sum record and keep their original generation."}
+    # The current pin carries the selected generation. The pin before it holds the old bytes.
+    try:
+        previous = previous_pin(consumer, version)
+        if previous is None:
+            return result | {"status": "UNVERIFIED", "reason": "The pinned module embeds the selected generation "
+                             "and the consumer history has no earlier pin to compare."}
+        commit, old, record = previous
+        with zipfile.ZipFile(download_module(STARMAP_MODULE, old)["Zip"]) as archive:
+            if module_hash(archive) != record:
+                raise EmbeddingMismatch("The previous pinned Starmap module bytes differ from the consumer go.sum record at that pin.")
+            earlier = module_generation(archive, old)
+    except EmbeddingMismatch as error:
+        return {"status": "FAIL", "reason": str(error)}
+    except ENVIRONMENT_ERRORS as error:
+        return {"status": "UNVERIFIED", "reason": str(error)}
+    result["previous"] = {"module": f"{STARMAP_MODULE}@{old}", "go_sum": record, "commit": commit, "pinned": earlier}
+    if earlier == selected:
+        return result | {"status": "UNVERIFIED", "reason": "No earlier pinned generation differs from the selected generation."}
+    return result | {"status": "PASS", "scope": "The previous pinned module bytes match the consumer go.sum record at that pin "
+                     "and keep their original generation. The current pin embeds the selected generation."}
+
+
+def released_module(entry, roots):
+    """Compare the released Starmap module with the checksum database, the checkout, and catalog/v1."""
+    root = roots.get(entry.get("repository"))
+    if root is None:
+        return {"status": "UNVERIFIED", "reason": "The release repository is unavailable."}
+    try:
+        version = release_version(root)
+        if version is None:
+            return {"status": "UNVERIFIED", "reason": "No stable release tag is an ancestor of the checkout."}
+        download = download_module(STARMAP_MODULE, version)
+        digest = download["Sum"]
+        with zipfile.ZipFile(download["Zip"]) as archive:
+            if module_hash(archive) != digest:
+                raise EmbeddingMismatch("The released Starmap module bytes differ from the checksum database record.")
+            released = module_generation(archive, version)
+        checkout = checkout_generation(root)
+        channel, channel_digest = attested_channel(root)
+    except EmbeddingMismatch as error:
+        return {"status": "FAIL", "reason": str(error)}
+    except (ImportError, *ENVIRONMENT_ERRORS) as error:
+        return {"status": "UNVERIFIED", "reason": str(error)}
+    promoted = {"generation_id": channel["generation_id"], "semantic_checksum": channel["catalog_digest"]}
+    result = {"version": version, "module": f"{STARMAP_MODULE}@{version}", "sum": digest, "released": released,
+              "checkout": checkout, "promoted": promoted, "channel_sha256": channel_digest}
+    if released != promoted:
+        return result | {"status": "FAIL", "reason": "The released module embeds a generation that catalog/v1 does not promote."}
+    if checkout != released:
+        return result | {"status": "FAIL", "reason": "The checkout embeds a generation that the released module does not carry."}
+    return result | {"status": "PASS"}
+
+
+def released_module_pin(entry, roots):
+    """Prove that the released Starport module pins the released Starmap module."""
+    consumer, source = roots.get(entry.get("repository")), roots.get("starmap")
+    if consumer is None or source is None:
+        return {"status": "UNVERIFIED", "reason": "The consumer or source repository is unavailable."}
+    try:
+        version = consumer_pin(consumer)
+        if not STABLE_VERSION.fullmatch(version):
+            return {"status": "FAIL", "reason": "The consumer does not pin a stable Starmap release.", "pinned_version": version}
+        released = release_version(source)
+        if released is None:
+            return {"status": "UNVERIFIED", "reason": "No stable release tag is an ancestor of the checkout."}
+        if version != released:
+            return {"status": "FAIL", "reason": "The consumer pins a Starmap version that is not the released pair version.",
+                    "pinned_version": version, "release_version": released}
+        recorded = go_sum_record((consumer / "go.sum").read_text(), version)
+        if recorded is None:
+            raise ValueError("The consumer go.sum has no record of the pinned Starmap module.")
+        download = download_module(STARMAP_MODULE, version)
+        digest = download["Sum"]
+        with zipfile.ZipFile(download["Zip"]) as archive:
+            pinned = module_hash(archive)
+        if pinned != recorded:
+            raise EmbeddingMismatch("The released Starmap module bytes differ from the consumer go.sum record.")
+        if pinned != digest:
+            raise EmbeddingMismatch("The released Starmap module bytes differ from the checksum database record.")
+        consumer_version = release_version(consumer)
+        if consumer_version is None:
+            return {"status": "UNVERIFIED", "reason": "No stable release tag is an ancestor of the consumer checkout."}
+        consumer_download = download_module(STARPORT_MODULE, consumer_version)
+        consumer_digest = consumer_download["Sum"]
+        with zipfile.ZipFile(consumer_download["Zip"]) as archive:
+            if module_hash(archive) != consumer_digest:
+                raise EmbeddingMismatch("The released Starport module bytes differ from the checksum database record.")
+            requirements = archive.read(f"{STARPORT_MODULE}@{consumer_version}/go.mod").decode()
+    except EmbeddingMismatch as error:
+        return {"status": "FAIL", "reason": str(error)}
+    except ENVIRONMENT_ERRORS as error:
+        return {"status": "UNVERIFIED", "reason": str(error)}
+    result = {"consumer_module": f"{STARPORT_MODULE}@{consumer_version}", "consumer_sum": consumer_digest,
+              "module": f"{STARMAP_MODULE}@{version}", "go_sum": recorded, "sum": digest}
+    if (required_starmap(requirements) != version
+            or any(fields[0] == STARMAP_MODULE for fields in go_mod_directives(requirements, "replace"))):
+        return result | {"status": "FAIL", "reason": "The released Starport module does not pin the released Starmap module."}
+    return result | {"status": "PASS"}
 
 
 def run_vitest(entry, roots):

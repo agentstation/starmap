@@ -1715,7 +1715,7 @@ class CandidateRegistrationTests(unittest.TestCase):
 
     def test_registry_size_and_validation(self):
         verifier.validate_registry(self.registry, self.roster, verifier.validate_roster(self.roster))
-        self.assertEqual(len(self.registry['checks']), 313)
+        self.assertEqual(len(self.registry['checks']), 315)
 
     def test_backend_versions_and_region_boundary_bind_starport_tests(self):
         self.assertEqual(self.registry['checks']['A31.exact_backend_versions'], {'kind': 'all', 'checks': [
@@ -1749,8 +1749,9 @@ class CandidateRegistrationTests(unittest.TestCase):
         self.assertEqual(self.registry['checks']['A06.promoted_checkout'], {'kind': 'promoted_checkout', 'repository': 'starmap'})
         self.assertEqual(self.registry['checks']['A06.old_pinned_bytes_unchanged'],
                          {'kind': 'pinned_module_baseline', 'repository': 'starport'})
-        for identity in ('A06.new_released_module', 'A06.starport_released_module_pin'):
-            self.assertNotIn(identity, self.registry['checks'])
+        self.assertEqual(self.registry['checks']['A06.new_released_module'], {'kind': 'released_module', 'repository': 'starmap'})
+        self.assertEqual(self.registry['checks']['A06.starport_released_module_pin'],
+                         {'kind': 'released_module_pin', 'repository': 'starport'})
 
 
 def generation_files(generation_id, semantic, payload=b'{"models":[]}', declared=None):
@@ -1868,7 +1869,7 @@ class PinnedModuleBaselineTests(unittest.TestCase):
             f'{verifier.STARMAP_MODULE} {self.VERSION}/go.mod h1:{"A" * 43}=\n')
 
         def run(args, **kwargs):
-            if args[:2] == ['git', 'status']:
+            if args[:2] in (['git', 'status'], ['git', 'log']):
                 return subprocess.CompletedProcess(args, 0, '', '')
             if args[:3] == ['go', 'mod', 'edit']:
                 self.assertEqual(kwargs['cwd'], self.consumer)
@@ -1909,6 +1910,7 @@ class PinnedModuleBaselineTests(unittest.TestCase):
         self.pin_current_module()
         result = self.run_check()
         self.assertEqual(result['status'], 'UNVERIFIED')
+        self.assertIn('no earlier pin', result['reason'])
         self.assertEqual(result['pinned'], result['selected'])
 
     def test_changed_module_bytes_fail(self):
