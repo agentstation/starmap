@@ -1,9 +1,11 @@
 {
   "schema_version": 1,
   "verdict": "PASS",
-  "review_type": "repository-grounded engineering assessment by the implementing agent; no independent reviewer or owner approval is claimed",
-  "date": "2026-09-05",
-  "profile_sha256": "ed33e678093dfa48b1e0c242300d04f2cd51e3bfaa57a92b8f22045d2d84e30b",
+  "review_type": "repository-grounded engineering assessment by the CSP22 lead; no independent reviewer or owner approval is claimed",
+  "date": "2026-10-05",
+  "supersedes": "2026-09-05 review of profile ed33e678093dfa48b1e0c242300d04f2cd51e3bfaa57a92b8f22045d2d84e30b",
+  "profile_sha256": "79261213cb4bb2a52f667d0a4ed9a1312681cd271af6273cd4998fd4c9e84dbf",
+  "profile_commit": "a1a08df8 (agentstation/starport#387); last changes in #384 and #387 since the previous review",
   "observations": {
     "timing_boundaries": true,
     "latency_and_workload": true,
@@ -14,13 +16,13 @@
     "no_current_release_claim": true
   },
   "assessment": {
-    "timing_boundaries": "The baseline measures actual HTTP middleware through response receipt and complete handler return. It subtracts only measured fixture sleeps. Paired differences retain negative values. Production qualification must add precise milestone comparisons, connection lifecycle and backpressure cases under A50 gateway_provider_boundaries. The header timer cannot satisfy this contract.",
-    "latency_and_workload": "The local p99 target is 2 ms and the three-replica fleet target is 4 ms with store RTT p99 at most 0.5 ms. These are targets for warm valid state and required atomic admission, not current measurements. The workload defines ordinary and stream body sizes separately. Fifty 276-ms streams per second need about 14 concurrent requests before added work, within the 32-request standard workload. Saturation is a separate required exercise.",
-    "resources_and_deadlines": "The 256 KiB and 1500-allocation request budgets exclude separately counted stream events. Each event has 4 KiB and 32 allocations. Gateway frames must establish attribution. Heap, RSS, optional queues, response cache, generation retention, admission waits and cancellation all have explicit bounds. Hitting a resource limit cannot retain expired policy or permit a request that required admission refuses.",
-    "correctness": "The profile preserves 300-second permission validity, a 30-second clock-uncertainty bound, atomic per-attempt admission, retryable unknown-budget refusal and failed restrictive-activation fencing. Credential and authority variants remain mandatory. Controlled backend recovery remains required. No target permits a weaker consistency model.",
-    "qualification_method": "Three runs, 100000 samples per variant, at least 600 seconds, open-loop arrivals and 95-percent confidence intervals prevent the short serial baseline from becoming a production percentile claim. Stream runs need at least 2000 seconds at 50 requests/s to meet the count floor. Every run must meet upper confidence bounds. Dedicated runners and final artifact hashes are required. Four named native platforms receive initial numeric qualification, while all six archives require native functional evidence.",
-    "baseline_costs": "Three retained runs contain 600 warm direct/proxy pairs. Median paired added latency is about 56-59 ms. The allocation benchmark records about 113 MB and 1.3 million allocations per measured request including fixture work. About 89 percent of allocated bytes pass through DeepCopyProviderModels. Stored credential Argon2 costs remain a separate baseline. These findings support snapshot and credential-index work before pooling or GC tuning.",
-    "no_current_release_claim": "The profile explicitly marks engineering_targets and qualification UNVERIFIED. The baseline and numeric-profile subcases can pass while eight remaining A50 subcases remain UNVERIFIED. No local result qualifies a fleet, a released artifact, or a production latency percentile."
+    "timing_boundaries": "The baseline measures actual HTTP middleware through response receipt and complete handler return. It subtracts only measured fixture sleeps. Paired differences retain negative values. The timing boundary and percentile method fields are unchanged since the previous review. Production qualification must add precise milestone comparisons, connection lifecycle and backpressure cases under A50 gateway_provider_boundaries. The header timer cannot satisfy this contract.",
+    "latency_and_workload": "The local p99 target is 2 ms and the three-replica fleet target is 4 ms with store RTT p99 at most 0.5 ms. These are targets for warm valid state and required atomic admission, not current measurements. The workload and recipe blocks are unchanged since the previous review. Fifty 276-ms streams per second need about 14 concurrent requests before added work, within the 32-request standard workload. Saturation is a separate required exercise.",
+    "resources_and_deadlines": "The 256 KiB and 1500-allocation request budgets exclude separately counted stream events. Each event has 4 KiB and 32 allocations. The resources and deadlines blocks are unchanged since the previous review. Heap, RSS, optional queues, response cache, generation retention, admission waits and cancellation all have explicit bounds. Hitting a resource limit cannot retain expired policy or permit a request that required admission refuses.",
+    "correctness": "The correctness block changed in #384. It replaces the 300-second permission validity with a 60-second gateway authorization lifetime on a suspend-aware elapsed clock, a 2-second revocation propagation target, and a qualified-UTC authority receipt contract with a 30-second maximum clock uncertainty. An unknown clock now refuses the affected operation instead of a blanket refusal. Atomic per-attempt admission, retryable unknown-budget refusal and failed restrictive-activation fencing are unchanged. Credential and authority variants remain mandatory. Controlled backend recovery remains required. The shorter lifetime and the bounded revocation target strengthen the contract. No target permits a weaker consistency model, and the verifier binds each of these values.",
+    "qualification_method": "Three runs, 100000 samples per variant, at least 600 seconds, open-loop arrivals and 95-percent confidence intervals prevent the short serial baseline from becoming a production percentile claim. Stream runs need at least 2000 seconds at 50 requests/s to meet the count floor. Every run must meet upper confidence bounds. Dedicated runners and final artifact hashes are required. Four named native platforms receive initial numeric qualification. The platform scope now names five published archive targets, and the goreleaser matrix publishes five archives: linux amd64 and arm64, darwin arm64, and windows amd64 and arm64. The previous six-archive wording was stale.",
+    "baseline_costs": "The csp0.4 baseline evidence is unchanged. Three retained runs contain 600 warm direct/proxy pairs. Median paired added latency is about 56-59 ms. The allocation benchmark records about 113 MB and 1.3 million allocations per measured request including fixture work. About 89 percent of allocated bytes pass through DeepCopyProviderModels. Stored credential Argon2 costs remain a separate baseline. The candidate gate still runs a fresh 100-pair baseline through A50.full_path_baseline on each verification. The 2026-10-05 fail-before gate at Starport c5246216 measured a median paired added latency of 0.46 ms for plain requests and 0.60 ms for streams, with p99 at 0.84 ms and 2.00 ms. That serial loopback result is not a qualification measurement.",
+    "no_current_release_claim": "The profile still marks engineering_targets and qualification UNVERIFIED. The baseline and numeric-profile subcases can pass while the remaining A50 subcases stay UNVERIFIED until the CSP22 measurement work registers evidence. No local result qualifies a fleet, a released artifact, or a production latency percentile."
   },
   "evidence": {
     "numeric-profile.json": "ed33e678093dfa48b1e0c242300d04f2cd51e3bfaa57a92b8f22045d2d84e30b",
@@ -35,5 +37,6 @@
     "baseline-scope.json": "2c51b406832874e88e9d940facac9bcaad339bd25b2563e7b1fa87acc8b32280",
     "source-manifest.json": "c4002a33b92347d4ad0dac7a5bf50b4bbe4d2da270b92e7b58d9218e8e609a6c"
   },
+  "evidence_note": "The numeric-profile.json digest is the profile copy captured on 2026-09-05. The current profile digest is in profile_sha256.",
   "release_qualification": "UNVERIFIED"
 }
