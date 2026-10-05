@@ -3,6 +3,7 @@ id: XiaomiMiMo/MiMo-V2.5
 model: xiaomi/mimo-v2.5
 name: XiaomiMiMo/MiMo-V2.5
 description: Open MiMo model for multimodal coding agents and long-context automation
+status: deprecated
 
 # Model metadata
 metadata:
@@ -110,7 +111,10 @@ extensions:
         field: reasoning_content
       reasoning_options:
       - type: toggle
+      unknown_fields:
+      - checksum: sha256:0c7c339c9e91684dc8d5aa72c1a50c2f3d4e162cd761b209ce3e8f379ad4c71c
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-04-22T00:00:00Z
-updated_at: 2026-09-18T21:17:47.882119486Z
+updated_at: 2026-09-28T05:13:12.909271Z

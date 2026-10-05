@@ -1,30 +1,42 @@
-# Standard OCR only. Annotations and provider-native batches use different rates.
-# https://docs.mistral.ai/models/ocr-4-0 (verified 2026-09-27)
+# mistral-ocr-4-0 - AI model
 id: mistral-ocr-4-0
 model: mistral/mistral-ocr-4-0
-name: Mistral OCR 4.0
+name: mistral-ocr-4-0
 authors:
 - id: mistral
-  name: Mistral AI
+  name: mistral
+
+# Model metadata
 metadata:
   release_date: 2026-06-23
   open_weights: false
-  tags: [ocr]
+  tags:
+  - ocr
+
+# Model features
 features:
   modalities:
-    input: [pdf, image]
-    output: [text]
-  # Unknown capabilities remain explicit.
+    input:
+    - pdf
+    - image
+    output:
+    - text
+
+  # Core capabilities
   tool_calls: null
   tools: null
   tool_choice: null
   web_search: null
   attachments: null
+
+  # Reasoning & Verbosity
   reasoning: null
   reasoning_effort: null
   reasoning_tokens: null
   include_reasoning: null
   verbosity: null
+
+  # Generation control support flags
   temperature: null
   top_p: null
   top_k: null
@@ -48,7 +60,7 @@ features:
   logprobs: null
   top_logprobs: null
   echo: null
-  n: null
+  "n": null
   best_of: null
   mirostat: null
   mirostat_tau: null
@@ -57,14 +69,44 @@ features:
   num_beams: null
   early_stopping: null
   diversity_penalty: null
+
+  # Response delivery
   format_response: null
   structured_outputs: null
   streaming: null
 billing:
   recognition:
-    basis: pages
     request_charge: false
+    basis: pages
+
+# Model pricing
 pricing:
-  currency: USD
   operations:
     page_input: 0.004
+  currency: USD
+extensions:
+  mistral:
+    fields:
+      unknown_fields:
+      - checksum: sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945
+        path: data[].aliases
+      - checksum: sha256:18f5cc847628988cde99e3f00f7977c7759ac38e975c2d73698901d94384adb3
+        path: data[].billing_model_name
+      - checksum: sha256:65de5e04f82830f91d38eb7999a7312f2e0a2cf23895264bc91fb5d2581858b0
+        path: data[].capabilities
+      - checksum: sha256:8aed642bf5118b9d3c859bd4be35ecac75b6e873cce34e7b6f554b06f75550d7
+        path: data[].default_model_temperature
+      - checksum: sha256:74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b
+        path: data[].deprecation
+      - checksum: sha256:74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b
+        path: data[].deprecation_replacement_model
+      - checksum: sha256:acff8d4a2ad4535fcf50fe7e00251292d59b98f7e191e70506c2a8533fa8597b
+        path: data[].description
+      - checksum: sha256:ca902d4a8acbdea132ada81a004081f51c5c9279d409cee414de5a39a139fab6
+        path: data[].max_context_length
+      - checksum: sha256:751bbc009e4ccaff946a3bc62bf453a7b95af64a0e55530e8f1f4d031fa41822
+        path: data[].type
+
+# Timestamps
+created_at: null
+updated_at: 2026-09-28T05:13:12.909271Z

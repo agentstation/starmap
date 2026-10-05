@@ -3,6 +3,7 @@ id: stepfun-ai/Step-3.7-Flash
 model: stepfun/step-3.7-flash
 name: stepfun-ai/Step-3.7-Flash
 description: Newer StepFun flash model for faster agents, coding, and multimodal prompts
+status: deprecated
 
 # Model metadata
 metadata:
@@ -99,7 +100,13 @@ limits:
   context_window: 262144
   input_tokens: 0
   output_tokens: 256000
+extensions:
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:058205f9349e1e85d60c645dc90538ae5547a1ceb9b43292870424f3e4258321
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.08194Z
-updated_at: 2026-09-18T21:17:47.882119486Z
+updated_at: 2026-09-28T05:13:12.909271Z

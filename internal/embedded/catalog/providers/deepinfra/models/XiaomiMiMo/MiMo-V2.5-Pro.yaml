@@ -3,6 +3,7 @@ id: XiaomiMiMo/MiMo-V2.5-Pro
 model: xiaomi/mimo-v2.5-pro
 name: XiaomiMiMo/MiMo-V2.5-Pro
 description: Stronger MiMo Pro tier for multimodal reasoning and coding-agent execution
+status: deprecated
 
 # Model metadata
 metadata:
@@ -106,7 +107,10 @@ extensions:
         field: reasoning_content
       reasoning_options:
       - type: toggle
+      unknown_fields:
+      - checksum: sha256:41a60dd8754eb18c61b34713018d4c7b113f0e387575f554ea703cccf95614da
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-04-22T00:00:00Z
-updated_at: 2026-09-18T21:17:47.882119486Z
+updated_at: 2026-09-28T05:13:12.909271Z

@@ -112,7 +112,12 @@ extensions:
   groq:
     fields:
       hugging_face_id: ALLaM-AI/ALLaM-2.0-7B-Instruct
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:1a1030389611c5d06e0d3019048662cf87442a5cd45091fe1520aac733eab13b
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: null
-updated_at: 2026-09-18T21:17:46.863361535Z
+updated_at: 2026-09-28T05:13:12.909271Z

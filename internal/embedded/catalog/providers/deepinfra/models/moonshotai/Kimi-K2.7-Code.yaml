@@ -6,6 +6,7 @@ authors:
 - id: moonshot-ai
   name: moonshot-ai
 description: Coding-focused Kimi model, stronger on long-horizon repo work with less overthinking
+status: deprecated
 
 # Model metadata
 metadata:
@@ -112,7 +113,10 @@ extensions:
         field: reasoning_content
       reasoning_options:
       - type: toggle
+      unknown_fields:
+      - checksum: sha256:939d3a5af17f6d5ec5ccfa05ac09134873d4258357865f59829f96b94a392836
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-06-12T00:00:00Z
-updated_at: 2026-09-18T21:17:47.882119486Z
+updated_at: 2026-09-28T05:13:12.909271Z

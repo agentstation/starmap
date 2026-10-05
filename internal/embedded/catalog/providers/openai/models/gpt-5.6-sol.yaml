@@ -172,6 +172,9 @@ extensions:
         values:
         - none
         - xhigh
+      unknown_fields:
+      - checksum: sha256:7c0c3c6d082d41789ea8b1304f8829af4845e8363c269742ef6dc2bb20db4ea9
+        path: models[].canonical_model_id
   openai:
     fields:
       unknown_fields:
@@ -180,4 +183,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-06-23T15:20:18Z
-updated_at: 2026-09-18T21:17:47.66134312Z
+updated_at: 2026-09-28T05:13:12.909271Z

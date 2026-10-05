@@ -15,6 +15,7 @@ metadata:
   - chat
   - vlm
   - vision
+  - prompt_cache
   - reasoning_effort
   - reasoning
 lineage:
@@ -87,6 +88,9 @@ features:
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_token: 0.0
+      per_1m: 0.1
     input:
       per_token: 0.0
       per_1m: 0.1
@@ -103,4 +107,4 @@ limits:
 
 # Timestamps
 created_at: 2026-04-01T00:00:00Z
-updated_at: 2026-09-18T21:17:47.882119486Z
+updated_at: 2026-10-05T17:10:25.078129427Z

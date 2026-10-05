@@ -105,7 +105,12 @@ extensions:
       - countTokens
       thinking: true
       version: Gemini 2.5 Computer Use Preview 10-2025
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:e1a3f4366a6d730f9780e2fed7ae7556c5a2746f6b46e0c220ebaab78605e0af
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: null
-updated_at: 2026-09-18T21:17:46.66512128Z
+updated_at: 2026-09-28T05:13:12.909271Z

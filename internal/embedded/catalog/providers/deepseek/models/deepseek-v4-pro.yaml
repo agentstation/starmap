@@ -87,16 +87,16 @@ pricing:
   tokens:
     cache_read:
       per_token: 0.0
-      per_1m: 0.003625
+      per_1m: 0.022
     input:
       per_token: 0.0
-      per_1m: 0.435
+      per_1m: 0.66
     output:
       per_token: 0.0
-      per_1m: 0.87
+      per_1m: 1.98
     reasoning:
       per_token: 0.0
-      per_1m: 0.87
+      per_1m: 1.98
   currency: USD
 
 # Model limits
@@ -121,7 +121,10 @@ extensions:
         field: reasoning_content
       reasoning_options:
       - type: toggle
+      unknown_fields:
+      - checksum: sha256:88d0e920aac0ddac9b07ca500a32873ff2f5a363cce100964c07dbf6a185704b
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-04-24T00:00:00Z
-updated_at: 2026-09-26T04:35:08.495386649Z
+updated_at: 2026-09-28T05:13:12.909271Z

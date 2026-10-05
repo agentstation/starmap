@@ -116,7 +116,10 @@ extensions:
       - type: effort
         values:
         - xhigh
+      unknown_fields:
+      - checksum: sha256:a49f6174178f41d77431b186ebc68605948f3c4a28557cb63892dd3c49023ba2
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-06-13T00:00:00Z
-updated_at: 2026-09-18T21:17:47.882119486Z
+updated_at: 2026-09-28T05:13:12.909271Z

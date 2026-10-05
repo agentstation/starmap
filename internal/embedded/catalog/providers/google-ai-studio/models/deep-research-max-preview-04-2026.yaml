@@ -109,7 +109,12 @@ extensions:
       - countTokens
       thinking: true
       version: deepthink-exp-05-20
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:4e1d1646df6b5c7d726af7b9792e4140f11a0eea9a7d8a567332e52879dc683b
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-07-11T20:15:12.209063Z
-updated_at: 2026-09-18T21:17:46.66512128Z
+updated_at: 2026-09-28T05:13:12.909271Z

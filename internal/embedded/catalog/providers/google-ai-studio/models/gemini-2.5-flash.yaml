@@ -99,10 +99,13 @@ response:
   - http
 billing:
   recognition:
-    basis: tokens
     request_charge: false
-    input: [input, cache_read]
-    output: [output]
+    input:
+    - input
+    - cache_read
+    output:
+    - output
+    basis: tokens
 
 # Model pricing
 pricing:
@@ -146,7 +149,10 @@ extensions:
     fields:
       reasoning_options:
       - type: toggle
+      unknown_fields:
+      - checksum: sha256:546f83106fe9cd5f248f967ba524d0af46832e750a1f248fe3b9645b79a37626
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: null
-updated_at: 2026-09-18T21:17:46.66512128Z
+updated_at: 2026-09-28T05:13:12.909271Z

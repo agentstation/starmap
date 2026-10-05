@@ -496,13 +496,13 @@
     - operation: audio-translations
       type: openai
       path: /openai/audio/translations
-    - operation: videos-generations
-      type: openai
-      path: /openai/videos
-      overrides_by_model:
+    - overrides_by_model:
         Wan-AI/Wan2.2-T2V-A14B:
           type: deepinfra-video
           path: /inference/{provider_model_id}
+      operation: videos-generations
+      type: openai
+      path: /openai/videos
     health_api_url: https://status.deepinfra.com/status.json
     health_api_kind: hyperping
     health_components:

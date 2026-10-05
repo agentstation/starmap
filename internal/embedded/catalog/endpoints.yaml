@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: whisper-operation-correction-47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9
-catalog_digest: sha256:47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9
+generation_id: bindings-9157a3e797c02e21193a26a2233dcbc5967390eee9ced9cb5416bdf1dae7d620.local.010adf9f3137
+catalog_digest: sha256:d1fc83a1a02d8df7358a52d80333549efd294e9cb1033fb82316c9037d22b59f
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -1034,7 +1034,7 @@ models:
         provider_model_id: black-forest-labs/FLUX.1-Kontext-dev
         pricing:
           operations:
-            image_unit: 0.01
+            image_gen: 0.01
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -1621,7 +1621,7 @@ models:
           input_tokens: 0
           output_tokens: 163840
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -1858,16 +1858,16 @@ models:
           tokens:
             cache_read:
               per_token: 0.0
-              per_1m: 0.003625
+              per_1m: 0.022
             input:
               per_token: 0.0
-              per_1m: 0.435
+              per_1m: 0.66
             output:
               per_token: 0.0
-              per_1m: 0.87
+              per_1m: 1.98
             reasoning:
               per_token: 0.0
-              per_1m: 0.87
+              per_1m: 1.98
           currency: USD
         limits:
           context_window: 1000000
@@ -4209,10 +4209,10 @@ models:
           tokens:
             input:
               per_token: 0.0
-              per_1m: 0.13
+              per_1m: 0.2
             output:
               per_token: 0.0
-              per_1m: 0.38
+              per_1m: 0.4
           currency: USD
         limits:
           context_window: 262144
@@ -5970,7 +5970,7 @@ models:
           input_tokens: 0
           output_tokens: 16384
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -6591,7 +6591,7 @@ models:
           input_tokens: 0
           output_tokens: 262144
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -7252,6 +7252,23 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.875
+                input:
+                  per_token: 0.0
+                  per_1m: 3.5
+                output:
+                  per_token: 0.0
+                  per_1m: 14.0
+              currency: USD
+            request:
+              body:
+                service_tier: priority
   - model: openai/gpt-4.1-2025-04-14
     endpoints:
       - provider: openai
@@ -7295,6 +7312,23 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.175
+                input:
+                  per_token: 0.0
+                  per_1m: 0.7
+                output:
+                  per_token: 0.0
+                  per_1m: 2.8
+              currency: USD
+            request:
+              body:
+                service_tier: priority
   - model: openai/gpt-4.1-mini-2025-04-14
     endpoints:
       - provider: openai
@@ -7338,6 +7372,23 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.05
+                input:
+                  per_token: 0.0
+                  per_1m: 0.2
+                output:
+                  per_token: 0.0
+                  per_1m: 0.8
+              currency: USD
+            request:
+              body:
+                service_tier: priority
   - model: openai/gpt-4.1-nano-2025-04-14
     endpoints:
       - provider: openai
@@ -7381,6 +7432,23 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 2.125
+                input:
+                  per_token: 0.0
+                  per_1m: 4.25
+                output:
+                  per_token: 0.0
+                  per_1m: 17.0
+              currency: USD
+            request:
+              body:
+                service_tier: priority
   - model: openai/gpt-4o-2024-05-13
     endpoints:
       - provider: openai
@@ -7407,6 +7475,20 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 8.75
+                output:
+                  per_token: 0.0
+                  per_1m: 26.25
+              currency: USD
+            request:
+              body:
+                service_tier: priority
   - model: openai/gpt-4o-2024-08-06
     endpoints:
       - provider: google-vertex
@@ -7513,6 +7595,23 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.125
+                input:
+                  per_token: 0.0
+                  per_1m: 0.25
+                output:
+                  per_token: 0.0
+                  per_1m: 1.0
+              currency: USD
+            request:
+              body:
+                service_tier: priority
   - model: openai/gpt-4o-mini-2024-07-18
     endpoints:
       - provider: openai
@@ -7712,6 +7811,39 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.25
+                input:
+                  per_token: 0.0
+                  per_1m: 2.5
+                output:
+                  per_token: 0.0
+                  per_1m: 20.0
+              currency: USD
+            request:
+              body:
+                service_tier: priority
+          flex:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.0625
+                input:
+                  per_token: 0.0
+                  per_1m: 0.625
+                output:
+                  per_token: 0.0
+                  per_1m: 5.0
+              currency: USD
+            request:
+              body:
+                service_tier: flex
   - model: openai/gpt-5-2025-08-07
     endpoints:
       - provider: openai
@@ -7809,6 +7941,39 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.045
+                input:
+                  per_token: 0.0
+                  per_1m: 0.45
+                output:
+                  per_token: 0.0
+                  per_1m: 3.6
+              currency: USD
+            request:
+              body:
+                service_tier: priority
+          flex:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.0125
+                input:
+                  per_token: 0.0
+                  per_1m: 0.125
+                output:
+                  per_token: 0.0
+                  per_1m: 1.0
+              currency: USD
+            request:
+              body:
+                service_tier: flex
   - model: openai/gpt-5-mini-2025-08-07
     endpoints:
       - provider: openai
@@ -7852,6 +8017,23 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          flex:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.0025
+                input:
+                  per_token: 0.0
+                  per_1m: 0.025
+                output:
+                  per_token: 0.0
+                  per_1m: 0.2
+              currency: USD
+            request:
+              body:
+                service_tier: flex
   - model: openai/gpt-5-nano-2025-08-07
     endpoints:
       - provider: openai
@@ -7960,6 +8142,39 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.25
+                input:
+                  per_token: 0.0
+                  per_1m: 2.5
+                output:
+                  per_token: 0.0
+                  per_1m: 20.0
+              currency: USD
+            request:
+              body:
+                service_tier: priority
+          flex:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.0625
+                input:
+                  per_token: 0.0
+                  per_1m: 0.625
+                output:
+                  per_token: 0.0
+                  per_1m: 5.0
+              currency: USD
+            request:
+              body:
+                service_tier: flex
   - model: openai/gpt-5.1-2025-11-13
     endpoints:
       - provider: openai
@@ -8111,6 +8326,39 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.35
+                input:
+                  per_token: 0.0
+                  per_1m: 3.5
+                output:
+                  per_token: 0.0
+                  per_1m: 28.0
+              currency: USD
+            request:
+              body:
+                service_tier: priority
+          flex:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.0875
+                input:
+                  per_token: 0.0
+                  per_1m: 0.875
+                output:
+                  per_token: 0.0
+                  per_1m: 7.0
+              currency: USD
+            request:
+              body:
+                service_tier: flex
   - model: openai/gpt-5.2-2025-12-11
     endpoints:
       - provider: openai
@@ -8280,6 +8528,23 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.35
+                input:
+                  per_token: 0.0
+                  per_1m: 3.5
+                output:
+                  per_token: 0.0
+                  per_1m: 28.0
+              currency: USD
+            request:
+              body:
+                service_tier: priority
   - model: openai/gpt-5.4
     endpoints:
       - provider: openai
@@ -8413,6 +8678,22 @@ models:
             request:
               body:
                 service_tier: priority
+          flex:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.0375
+                input:
+                  per_token: 0.0
+                  per_1m: 0.375
+                output:
+                  per_token: 0.0
+                  per_1m: 2.25
+              currency: USD
+            request:
+              body:
+                service_tier: flex
   - model: openai/gpt-5.4-mini-2026-03-17
     endpoints:
       - provider: openai
@@ -8456,6 +8737,23 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          flex:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.01
+                input:
+                  per_token: 0.0
+                  per_1m: 0.1
+                output:
+                  per_token: 0.0
+                  per_1m: 0.625
+              currency: USD
+            request:
+              body:
+                service_tier: flex
   - model: openai/gpt-5.4-nano-2026-03-17
     endpoints:
       - provider: openai
@@ -9588,6 +9886,39 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.875
+                input:
+                  per_token: 0.0
+                  per_1m: 3.5
+                output:
+                  per_token: 0.0
+                  per_1m: 14.0
+              currency: USD
+            request:
+              body:
+                service_tier: priority
+          flex:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.25
+                input:
+                  per_token: 0.0
+                  per_1m: 1.0
+                output:
+                  per_token: 0.0
+                  per_1m: 4.0
+              currency: USD
+            request:
+              body:
+                service_tier: flex
   - model: openai/o3-2025-04-16
     endpoints:
       - provider: openai
@@ -9674,6 +10005,39 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.openai.com/v1/chat/completions
+        modes:
+          fast:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.5
+                input:
+                  per_token: 0.0
+                  per_1m: 2.0
+                output:
+                  per_token: 0.0
+                  per_1m: 8.0
+              currency: USD
+            request:
+              body:
+                service_tier: priority
+          flex:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.138
+                input:
+                  per_token: 0.0
+                  per_1m: 0.55
+                output:
+                  per_token: 0.0
+                  per_1m: 2.2
+              currency: USD
+            request:
+              body:
+                service_tier: flex
   - model: openai/o4-mini-2025-04-16
     endpoints:
       - provider: openai
@@ -9787,7 +10151,7 @@ models:
               per_1m: 0.0
           currency: USD
         limits:
-          context_window: 8192
+          context_window: 8191
           input_tokens: 8192
           output_tokens: 1536
         availability: unknown
@@ -10136,7 +10500,7 @@ models:
         provider_model_id: Qwen/Qwen-Image-Edit
         pricing:
           operations:
-            image_unit: 0.025
+            image_gen: 0.025
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -11571,7 +11935,7 @@ models:
           input_tokens: 0
           output_tokens: 65536
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -11767,11 +12131,30 @@ models:
     endpoints:
       - provider: alibaba
         provider_model_id: qwen3.5-flash
+        pricing:
+          tokens:
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.01
+            cache_write:
+              per_token: 0.0
+              per_1m: 0.125
+            input:
+              per_token: 0.0
+              per_1m: 0.1
+            output:
+              per_token: 0.0
+              per_1m: 0.4
+          currency: USD
+        limits:
+          context_window: 1000000
+          output_tokens: 65536
         availability: unknown
         lifecycle: unknown
         service:
           operations:
             - chat-completions
+          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: openai
@@ -11902,6 +12285,9 @@ models:
         provider_model_id: Qwen/Qwen3.6-35B-A3B
         pricing:
           tokens:
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.1
             input:
               per_token: 0.0
               per_1m: 0.1
@@ -11918,6 +12304,7 @@ models:
         service:
           operations:
             - chat-completions
+          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: openai
@@ -12122,48 +12509,48 @@ models:
           tokens:
             cache_read:
               per_token: 0.0
-              per_1m: 0.05
+              per_1m: 0.04
             cache_write:
               per_token: 0.0
-              per_1m: 0.625
+              per_1m: 0.5
             input:
               per_token: 0.0
-              per_1m: 0.5
+              per_1m: 0.4
             output:
               per_token: 0.0
-              per_1m: 3.0
+              per_1m: 1.6
           tiers:
             - type: context
               size: 256000
               tokens:
                 cache_read:
                   per_token: 0.0
-                  per_1m: 0.2
+                  per_1m: 0.12
                 cache_write:
                   per_token: 0.0
-                  per_1m: 2.5
+                  per_1m: 1.5
                 input:
                   per_token: 0.0
-                  per_1m: 2.0
+                  per_1m: 1.2
                 output:
                   per_token: 0.0
-                  per_1m: 6.0
+                  per_1m: 4.8
             - name: context_over_200k
               type: context
               size: 200000
               tokens:
                 cache_read:
                   per_token: 0.0
-                  per_1m: 0.2
+                  per_1m: 0.12
                 cache_write:
                   per_token: 0.0
-                  per_1m: 2.5
+                  per_1m: 1.5
                 input:
                   per_token: 0.0
-                  per_1m: 2.0
+                  per_1m: 1.2
                 output:
                   per_token: 0.0
-                  per_1m: 6.0
+                  per_1m: 4.8
           currency: USD
         limits:
           context_window: 1000000
@@ -12571,7 +12958,7 @@ models:
           input_tokens: 0
           output_tokens: 256000
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -12649,7 +13036,7 @@ models:
           input_tokens: 0
           output_tokens: 16384
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -12679,7 +13066,7 @@ models:
           input_tokens: 0
           output_tokens: 16384
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -12894,7 +13281,7 @@ models:
           input_tokens: 0
           output_tokens: 16384
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions

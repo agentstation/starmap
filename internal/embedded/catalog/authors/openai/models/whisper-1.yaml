@@ -5,7 +5,9 @@ authors:
 - id: openai
   name: OpenAI
 
+# Model metadata
 metadata:
+  release_date: null
   tags:
   - speech_to_text
 

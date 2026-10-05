@@ -126,7 +126,15 @@ extensions:
   groq:
     fields:
       hugging_face_id: openai/gpt-oss-120b
+      unknown_fields:
+      - checksum: sha256:340dac3427a49379d73acb3eea33b49ffe12c5c2834cb659aebaac5a63ffaddf
+        path: data[].model_card
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:773c6ec313e3f108fa5136997201b517e12a148a4cb54dc74e5a13b46d06eadc
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: null
-updated_at: 2026-09-18T21:17:46.863361535Z
+updated_at: 2026-10-05T17:10:24.265785628Z

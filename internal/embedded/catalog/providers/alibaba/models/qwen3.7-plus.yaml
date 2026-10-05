@@ -30,7 +30,7 @@ features:
   tools: true
   tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
@@ -75,7 +75,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 
 # Model pricing
@@ -83,48 +83,48 @@ pricing:
   tokens:
     cache_read:
       per_token: 0.0
-      per_1m: 0.05
+      per_1m: 0.04
     cache_write:
       per_token: 0.0
-      per_1m: 0.625
+      per_1m: 0.5
     input:
       per_token: 0.0
-      per_1m: 0.5
+      per_1m: 0.4
     output:
       per_token: 0.0
-      per_1m: 3.0
+      per_1m: 1.6
   tiers:
   - type: context
     size: 256000
     tokens:
       cache_read:
         per_token: 0.0
-        per_1m: 0.2
+        per_1m: 0.12
       cache_write:
         per_token: 0.0
-        per_1m: 2.5
+        per_1m: 1.5
       input:
         per_token: 0.0
-        per_1m: 2.0
+        per_1m: 1.2
       output:
         per_token: 0.0
-        per_1m: 6.0
+        per_1m: 4.8
   - name: context_over_200k
     type: context
     size: 200000
     tokens:
       cache_read:
         per_token: 0.0
-        per_1m: 0.2
+        per_1m: 0.12
       cache_write:
         per_token: 0.0
-        per_1m: 2.5
+        per_1m: 1.5
       input:
         per_token: 0.0
-        per_1m: 2.0
+        per_1m: 1.2
       output:
         per_token: 0.0
-        per_1m: 6.0
+        per_1m: 4.8
   currency: USD
 
 # Model limits
@@ -144,9 +144,12 @@ extensions:
         path: $.last_id
   models.dev:
     fields:
+      interleaved:
+        enabled: true
+        field: reasoning_content
       reasoning_options:
       - type: toggle
 
 # Timestamps
 created_at: 2026-06-04T00:00:00Z
-updated_at: 2026-09-18T21:17:47.251956639Z
+updated_at: 2026-09-28T05:13:12.909271Z

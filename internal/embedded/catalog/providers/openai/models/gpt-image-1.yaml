@@ -84,6 +84,11 @@ limits:
   input_tokens: 0
   output_tokens: 0
 extensions:
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:af47d5befc5a4013fd24d1bf0cf26fcdecc9da712573608d37fbd077002f21d9
+        path: models[].canonical_model_id
   openai:
     fields:
       unknown_fields:
@@ -92,4 +97,4 @@ extensions:
 
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2026-09-18T21:17:47.66134312Z
+updated_at: 2026-09-28T05:13:12.909271Z

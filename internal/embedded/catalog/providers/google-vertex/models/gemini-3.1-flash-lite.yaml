@@ -113,7 +113,12 @@ extensions:
   google-vertex:
     fields:
       version: default
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:1e5c09c9ac9b7f2a389a70216acb26c2d3211fbf3fb5e2e8a73f9acfb15eae24
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-05-07T00:00:00Z
-updated_at: 2026-09-18T21:17:47.645556677Z
+updated_at: 2026-10-05T17:10:25.275896707Z

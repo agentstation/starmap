@@ -129,7 +129,12 @@ extensions:
       supported_generation_methods:
       - bidiGenerateContent
       version: 3.1-flash-live-03-2026
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:6ec3b6f8aa495667e5c49ba592715411385987b536c0561ff7e7948c1e471125
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-07-11T20:15:12.209375Z
-updated_at: 2026-09-18T21:17:47.645556677Z
+updated_at: 2026-10-05T17:10:25.275896707Z

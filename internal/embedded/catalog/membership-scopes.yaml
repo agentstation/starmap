@@ -7,8 +7,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:8c8b3a3336e1bfee41bd31c6678eff7e63368df6c02cd9e8c2b8b32ec6947abc
-    observed_at: "2026-09-26T13:04:35.023304033Z"
+    observation_id: observation:v4:30f6e8d7294e7406c9a768dc2ff9a10df7f6f732cca27bb74bb472accf79d51f
+    observed_at: "2026-10-05T17:10:24.978983395Z"
     model_ids:
     - deepseek-v4-flash
     - deepseek-v4-flash-0731
@@ -123,8 +123,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:65664aff9c407208a9ca8174165e555d0d7fb8ce4cde1a7a4ced1656b5cedb2a
-    observed_at: "2026-09-26T13:04:34.647820021Z"
+    observation_id: observation:v4:31dbeaa11432d525fb6b0b95c35ac46c459511b7842e555d0b6c0cf023e91b96
+    observed_at: "2026-10-05T17:10:24.898734505Z"
     model_ids:
     - claude-fable-5
     - claude-fable-5-1
@@ -138,6 +138,7 @@
     - claude-sonnet-4-5-20250929
     - claude-sonnet-4-6
     - claude-sonnet-5
+    - claude-sonnet-5-5
   additions: null
 - publisher_id: starmap-public
   binding_id: public-cerebras
@@ -148,8 +149,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:7b27ca236c972f01a95f7bd577f54c2d71847fa232a24876b0c1fe6624317bcc
-    observed_at: "2026-09-26T13:04:34.532714466Z"
+    observation_id: observation:v4:174f916718109b4133a124bd72830fe77dbc94372664a91a91b3062d441b5a0b
+    observed_at: "2026-10-05T17:10:24.499962219Z"
     model_ids:
     - gpt-oss-120b
     - qwen-3.8-27b
@@ -163,8 +164,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:8d8967ae9481dcbae8be7331a2a24684e0cf24ae593fa2121b1164ac4e90e9af
-    observed_at: "2026-09-26T13:04:35.029731942Z"
+    observation_id: observation:v4:d6992b948b29f499725c2cde22467bc1c2800db5b12e912d3fc5c0b1864dac5b
+    observed_at: "2026-10-05T17:10:25.078129427Z"
     model_ids:
     - Audio8/Audio8-TTS-Preview-0.6b
     - BAAI/bge-base-en-v1.5
@@ -191,7 +192,6 @@
     - ByteDance/Seedance-2.0
     - ByteDance/Seedream-4
     - Gryphe/MythoMax-L2-13b
-    - MiniMaxAI/MiniMax-M2.7-Turbo
     - MiniMaxAI/MiniMax-M3
     - NousResearch/Hermes-3-Llama-3.1-405B
     - NousResearch/Hermes-3-Llama-3.1-70B
@@ -200,7 +200,6 @@
     - Pixverse/Pixverse-T2V-HD
     - PrunaAI/p-image
     - PrunaAI/p-video
-    - Qwen/Qwen-Image-Edit
     - Qwen/Qwen-Image-Max
     - Qwen/Qwen2.5-72B-Instruct
     - Qwen/Qwen3-14B
@@ -250,6 +249,7 @@
     - anthropic/claude-opus-5-5
     - anthropic/claude-sonnet-4-6
     - anthropic/claude-sonnet-5
+    - anthropic/claude-sonnet-5-5
     - black-forest-labs/FLUX-1-Redux-dev
     - black-forest-labs/FLUX-1-dev
     - black-forest-labs/FLUX-1-schnell
@@ -259,7 +259,6 @@
     - black-forest-labs/FLUX-2-klein-9b
     - black-forest-labs/FLUX-2-max
     - black-forest-labs/FLUX-2-pro
-    - black-forest-labs/FLUX.1-Kontext-dev
     - bosonai/HiggsAudioV2.5
     - deepseek-ai/DeepSeek-R1-0528
     - deepseek-ai/DeepSeek-V3
@@ -322,7 +321,6 @@
     - nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
     - nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B
     - nvidia/NVIDIA-Nemotron-3.5-Lightning
-    - nvidia/Nemotron-3-Nano-30B-A3B
     - nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b
     - nvidia/Nemotron-Content-Safety-3.5
     - nvidia/llama-nemotron-embed-vl-1b-v2
@@ -342,7 +340,6 @@
     - sesame/csm-1b
     - shibing624/text2vec-base-chinese
     - stabilityai/sdxl-turbo
-    - tencent/Hy3
     - tencent/Hy4-preview
     - thenlper/gte-base
     - thenlper/gte-large
@@ -363,8 +360,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:d4420db3cb89fda778336a728e0c6104f66ebce88b690eddb6013ad94cfdb010
-    observed_at: "2026-09-26T13:04:35.114934122Z"
+    observation_id: observation:v4:6948b528f3f16fe97a6abfe58d96edda08152412d7999ea47b392204162ecc64
+    observed_at: "2026-10-05T17:10:25.156088633Z"
     model_ids:
     - deepseek-flash
     - deepseek-v4-pro
@@ -378,13 +375,9 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:7dc4bf31ec0dfce36b7172fed5b47de9bb3de64b1fad2fd4f0d14111595f75e3
-    observed_at: "2026-09-26T13:04:34.628283673Z"
+    observation_id: observation:v4:b3665415878fe6ec03a9418bade48d66067c8b1608a3600634f79a5d5d0e2741
+    observed_at: "2026-10-05T17:10:24.902682993Z"
     model_ids:
-    - accounts/fireworks/models/deepseek-v4-flash-0731
-    - accounts/fireworks/models/deepseek-v4-flash-vision-exp
-    - accounts/fireworks/models/deepseek-v4-pro
-    - accounts/fireworks/models/deepseek-v4-pro-0813
     - accounts/fireworks/models/deepseek-v4p1-flash
     - accounts/fireworks/models/ember-1
     - accounts/fireworks/models/glm-5p2
@@ -392,22 +385,19 @@
     - accounts/fireworks/models/glm-5p3-flash
     - accounts/fireworks/models/gpt-oss-120b
     - accounts/fireworks/models/inkling
-    - accounts/fireworks/models/kimi-k2p6
-    - accounts/fireworks/models/kimi-k2p7-code
     - accounts/fireworks/models/kimi-k3
-    - accounts/fireworks/models/minimax-m2p7
     - accounts/fireworks/models/minimax-m3
-    - accounts/fireworks/models/muse-glimmer-30b
     - accounts/fireworks/models/nemotron-3-ultra-nvfp4
     - accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b
     - accounts/fireworks/models/qwen3-embedding-8b
     - accounts/fireworks/models/qwen3-reranker-8b
-    - accounts/fireworks/models/qwen3p7-plus
     - accounts/fireworks/models/qwen3p8-2p4t-a95b
     - accounts/fireworks/models/qwen3p8-max
     - accounts/fireworks/routers/glm-5p2-fast
     - accounts/fireworks/routers/glm-5p3-fast
     - accounts/fireworks/routers/kimi-k3-fast
+    - auto
+    - firerouter/auto
   additions: null
 - publisher_id: starmap-public
   binding_id: public-google-ai-studio
@@ -418,8 +408,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:2b880ce4303e2fe8cda46f91877345bd5a5100748d5d34d8ee0548aec8a483e4
-    observed_at: "2026-09-26T13:04:34.64517972Z"
+    observation_id: observation:v4:07f523e75b3214ae5e4d7400d09f015e129d17eb68bdd5dde559f8431faa0bb0
+    observed_at: "2026-10-05T17:10:24.172687749Z"
     model_ids:
     - antigravity-preview-05-2026
     - antigravity-preview-09-2026
@@ -492,8 +482,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:707a732d743d4fcd09d4cd2f7a1135a34e25e3c6787ac570cb2eb27085c40541
-    observed_at: "2026-09-26T13:04:34.753496647Z"
+    observation_id: observation:v4:d4674b74447a2f4b925b2159cce4b80398f06092b77121cfc37242e9d5ae9292
+    observed_at: "2026-10-05T17:10:24.265785628Z"
     model_ids:
     - allam-2-7b
     - canopylabs/orpheus-arabic-saudi
@@ -516,8 +506,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:5e7a73e5edcaf76ffde6509ff1bc06efd864063cfab2de82d6f696d3e1abfc69
-    observed_at: "2026-09-26T13:04:34.824716168Z"
+    observation_id: observation:v4:e599a43f46c6da152769bdf80d0683017deb63d1fc6835fe3f6c8d45f2e9fe1e
+    observed_at: "2026-10-05T17:10:24.671615828Z"
     model_ids:
     - Qwen/Qwen3.6-35B-A3B-FP8
     - Qwen3.8-27B
@@ -531,8 +521,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:e78df21321de072500074117f67bc9c78a837f4125fcae94069b5aa5febf2ba6
-    observed_at: "2026-09-26T13:04:34.706665422Z"
+    observation_id: observation:v4:86f6aefba7b26bf49edfaf7774b8048f9a6677ad2b4a0aba1d5ce9d995e3f51e
+    observed_at: "2026-10-05T17:10:24.797866334Z"
     model_ids:
     - codestral-2508
     - codestral-embed
@@ -590,8 +580,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:94bacd1923d4a1371f8c79c46c313083dea4896ffd2182e214f409520f069f72
-    observed_at: "2026-09-26T13:04:35.016556014Z"
+    observation_id: observation:v4:6a19d3d030676e9b987685309ff98de828e2606cbb8d73b7c7fd0492b2148403
+    observed_at: "2026-10-05T17:10:24.571080956Z"
     model_ids:
     - kimi-k2.6
     - kimi-k2.7-code
@@ -607,8 +597,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:607580c5d161f4295506efc7305ebbbf01cb6b42282fe772c85b172c456ebb08
-    observed_at: "2026-09-26T13:04:35.544847523Z"
+    observation_id: observation:v4:c9314cf499bad8a8b4e0fa8c2653ee5aa69dc0536d9dcc04377b19a9da5f8441
+    observed_at: "2026-10-05T17:10:24.807748269Z"
     model_ids:
     - babbage-002
     - chat-latest
@@ -688,6 +678,7 @@
     - gpt-6-astra
     - gpt-6-luna
     - gpt-6-sol
+    - gpt-6.1-sol
     - gpt-audio
     - gpt-audio-1.5
     - gpt-audio-2025-08-28

@@ -73,6 +73,18 @@ features:
   format_response: false
   structured_outputs: false
   streaming: true
+billing:
+  images:
+    basis: pixel_iterations
+    operations:
+    - images-generations
+    default_images: 1
+    default_width: 1024
+    default_height: 1024
+    iterations: 1
+    unit_pixels: 1048576
+    unit_iterations: 1
+    request_charge: false
 
 # Model pricing
 pricing:
@@ -89,17 +101,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.092243Z
-updated_at: 2026-07-11T20:15:13.092243Z
-
-billing:
-  images:
-    basis: pixel_iterations
-    operations:
-    - images-generations
-    default_images: 1
-    request_charge: false
-    default_width: 1024
-    default_height: 1024
-    iterations: 1
-    unit_pixels: 1048576
-    unit_iterations: 1
+updated_at: 2026-10-05T17:10:25.078129427Z
