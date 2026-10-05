@@ -22,11 +22,16 @@ The lead recorded these questions before it asked the owner. The owner reported 
 4. The owner authorizes the Starport tag. The lead pushes the tag. The release workflow publishes the release.
 5. The lead verifies A06 and A29 against the released assets and records `csp23.md`.
 
+## Owner answers of 2026-10-05
+
+- The owner approved the Starmap version `v0.17.0` as a stable tag at main `753b2e551`.
+- The owner approved the Starport version `v1.3.0` as a stable tag after the Starmap pin pull request merges.
+- The owner paused CSP23 and CSP24 for now. The lead pushes no tag and opens no release pull request until the owner resumes CSP23.
+- GitHub Pages, real provider inference, and the dedicated runner stay outside the current authority.
+
 ## Pending owner decisions
 
-1. Starmap release version. The lead recommends `v0.17.0`. The catalog schema moved from 10 to 19, and the publication protocol changed. A release candidate tag `v0.17.0-rc.1` avoids the Homebrew update but gives Starport a pre-release pin.
-2. Starport release version. The lead recommends `v1.3.0`. Main adds the catalog-driven runtime, the console work, the storage recipes, and the inference origin approval.
-3. Tag authority. Each tag push starts a release that the lead cannot undo. A failed release workflow leaves a tag that needs a new version number.
-4. Public documentation. CSP23 names versioned public docs. GitHub Pages stays disabled. Enabling it is new authority.
-5. Dedicated runner for CSP22.1. The four A50 subcases stay UNVERIFIED without it.
-6. Real provider inference for CSP24. Real inference is a paid action outside the current authority.
+1. Resume of CSP23. The owner decides when the lead starts the Starmap changelog pull request and the tag pushes.
+2. Public documentation. CSP23 names versioned public docs. GitHub Pages stays disabled. Enabling it is new authority.
+3. Dedicated runner for CSP22.1. The four A50 subcases stay UNVERIFIED without it.
+4. Real provider inference for CSP24. Real inference is a paid action outside the current authority.
