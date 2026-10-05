@@ -1,0 +1,62 @@
+{
+ "schema_version": 1,
+ "date": "2026-10-05",
+ "purpose": "Find the Starmap commit after which the publish tool cannot restore the accepted catalog/v2 checkpoint.",
+ "method": "Build cmd/starmap-catalog-publish at each commit with go1.27.1. Run it with -baseline-embedded, the starmap-public profile, no provider credential, and the accepted checkpoint from release tag catalog-run-ba26391fff9011c4feaa678badb4247938eefa534c4cc81b9a0e6d4941c78c19 with checksum sha256:004c3bb8ef91a3d199d3a1e0cc43ed8a15ab2cc8fcb5c30a2b44cfc6d66a46f0.",
+ "checkpoint": {
+  "channel": "catalog/v2",
+  "baseline_generation_id": "catalog-20260917T165638Z-09446b361271",
+  "baseline_schema_version": 10,
+  "retained_inputs": 51
+ },
+ "current_embedded": {
+  "commit": "f52b214c0",
+  "generation_id": "whisper-operation-correction-47190c7a5b1d6b75ecf4efe75eab2cea58b8b7fdc753485d4e769e85747a10b9",
+  "schema_version": 19
+ },
+ "runs": [
+  {
+   "commit": "71c5c8c72",
+   "started_utc": "2026-10-05T05:17:07Z",
+   "exit_status": 0,
+   "result": {
+    "status": "prepared",
+    "generation_id": "bindings-d0750b1d250ab69f200f1950e9e93a7d787804537305ec64513e82e884ba1237.local.a56855d95f1c"
+   },
+   "error": null
+  },
+  {
+   "commit": "8122081e0",
+   "started_utc": "2026-10-05T05:19:17Z",
+   "exit_status": 0,
+   "result": {
+    "status": "prepared",
+    "generation_id": "bindings-1279e7b302a6983ebaffff6b2eb7b795f73e525262895137b760da8404828ba1.local.0fdfe0f20f23"
+   },
+   "error": null
+  },
+  {
+   "commit": "024c24c22",
+   "started_utc": "2026-10-05T05:21:00Z",
+   "exit_status": 0,
+   "result": {
+    "status": "prepared",
+    "generation_id": "bindings-e15c32d2341c885e09a87e12ee4b7d219e61616f805bc53f434fc171203ec9a6.local.d8fae5be013e"
+   },
+   "error": null
+  },
+  {
+   "commit": "4586667a3",
+   "started_utc": "2026-10-05T05:22:49Z",
+   "exit_status": 1,
+   "result": null,
+   "error": "validation failed for field publication_admission.state.catalog: retained inputs do not reproduce the accepted catalog"
+  }
+ ],
+ "also_failing": {
+  "commit": "f52b214c0",
+  "exit_status": 1,
+  "error": "validation failed for field publication_admission.state.catalog: retained inputs do not reproduce the accepted catalog"
+ },
+ "conclusion": "Commit 4586667a3 (pull request #187) is the first commit that fails. Its parent 024c24c22 passes. The pull request raised CurrentCatalogSchemaVersion from 10 to 19 and changed the derived billing contracts. RestoreState replays the retained inputs against the checkpoint baseline with the current code and requires the accepted semantic checksum. The current code derives schema 19 content from the same inputs, so the checksum differs."
+}
