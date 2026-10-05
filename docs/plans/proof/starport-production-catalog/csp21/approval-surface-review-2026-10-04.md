@@ -53,4 +53,6 @@ The implementer delivered `STARPORT_<PROVIDER>_INFERENCE_BASE_URL` in `/private/
 
 ## Publication
 
-PUBLICATION_RESULT
+Draft PR agentstation/starport#417 opened at `3c02c544` and merged at `4393ee55` on 2026-10-05T02:23:46Z with 47 of 47 checks green.
+The merge proof in `csp21/starport417-merge-2026-10-04/` records the reviewed tree equal to the merge tree, strict protection, and zero unresolved threads.
+The lead removed the worktree and deleted the local and remote branch after the merge.
