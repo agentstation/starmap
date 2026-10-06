@@ -1,0 +1,22 @@
+{
+  "build_source_commit": "b649dbf5184e53b2c13449b96fc887bcb144e18c",
+  "port": 52031,
+  "provider_credentials_used": false,
+  "test_adjustments": [
+    "Loopback host port 52031 replaces host port 8080 through STARPORT_PORT.",
+    "A generated temporary master key in a mode 0600 .env replaces the placeholder.",
+    "Catalog source embedded and acquisition disabled isolate persistence from public egress.",
+    "JSON output keeps generated credentials in driver memory."
+  ],
+  "proof_scope": "One native Compose process on Docker Desktop. Not replicated storage qualification.",
+  "recipe_commit": "b649dbf5184e53b2c13449b96fc887bcb144e18c",
+  "inputs": {
+    "docker-compose.yml": "0e9c6f3933d9211439dc3cc0742f9d0c73060ae3872758da33b7af4a319508a1",
+    "Dockerfile": "0c6ac9b9a03277ecfbb1d2eee881ce58e3a8d934a68c59570e461aa77fe78422",
+    ".dockerignore": "4b739bcccfc4e48ffac308af4eddcc768fab7ab8b27235ee4400e84fc8347f02",
+    ".env.example": "c14d1758da3054f09c8b06d745d1527e2e31f413f252159b8c0de24f7ecaeae1"
+  },
+  "temporary_credential_file_removed": true,
+  "resources_removed": true,
+  "verdict": "PASS"
+}

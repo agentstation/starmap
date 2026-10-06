@@ -1,0 +1,98 @@
+{
+  "source_commit": "b649dbf5184e53b2c13449b96fc887bcb144e18c",
+  "platform": "linux/arm64",
+  "commands": [
+    {
+      "args": [
+        "build",
+        "starport"
+      ],
+      "exit_code": 0
+    },
+    {
+      "args": [
+        "run",
+        "--rm",
+        "starport",
+        "init",
+        "--configured-storage",
+        "--name",
+        "primary-admin",
+        "--json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "args": [
+        "run",
+        "--rm",
+        "starport",
+        "auth",
+        "rotate",
+        "--json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "args": [
+        "up",
+        "-d",
+        "starport"
+      ],
+      "exit_code": 0
+    },
+    {
+      "args": [
+        "up",
+        "-d",
+        "--force-recreate",
+        "starport"
+      ],
+      "exit_code": 0
+    },
+    {
+      "args": [
+        "down",
+        "-v",
+        "--rmi",
+        "local",
+        "--remove-orphans"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "http": [
+    {
+      "path": "/api/v1/models",
+      "method": "GET",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/v1/admin/account-templates",
+      "method": "POST",
+      "status": 201,
+      "authenticated": true
+    },
+    {
+      "path": "/api/v1/admin/account-templates/compose-persistence",
+      "method": "GET",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/v1/models",
+      "method": "GET",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/v1/admin/account-templates/compose-persistence",
+      "method": "GET",
+      "status": 200,
+      "authenticated": true
+    }
+  ],
+  "relational_record_retained": true,
+  "verdict": "PASS"
+}

@@ -1,0 +1,35 @@
+{
+  "scope": "5 native archive records from a release-mode workflow_dispatch run and GitHub workflow identity. No paid inference. E02 registration remains separate.",
+  "head_commit": "0af089d3195cb5ee5b05e734a3019b8afc098d11",
+  "event": "workflow_dispatch",
+  "tag": "v1.3.0",
+  "run_url": "https://github.com/agentstation/starport/actions/runs/37475148346",
+  "results": [
+    {
+      "artifact": "native-release-darwin-arm64",
+      "archive": "starport_1.3.0_darwin_arm64.tar.gz",
+      "model_count": 509
+    },
+    {
+      "artifact": "native-release-linux-arm64",
+      "archive": "starport_1.3.0_linux_arm64.tar.gz",
+      "model_count": 509
+    },
+    {
+      "artifact": "native-release-linux-x86_64",
+      "archive": "starport_1.3.0_linux_x86_64.tar.gz",
+      "model_count": 509
+    },
+    {
+      "artifact": "native-release-windows-arm64",
+      "archive": "starport_1.3.0_windows_arm64.zip",
+      "model_count": 509
+    },
+    {
+      "artifact": "native-release-windows-x86_64",
+      "archive": "starport_1.3.0_windows_x86_64.zip",
+      "model_count": 509
+    }
+  ],
+  "verdict": "PASS"
+}
