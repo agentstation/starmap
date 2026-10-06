@@ -12,9 +12,17 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"name: Release",
 		"tags:\n      - \"v*\"",
 		"workflow_dispatch:",
-		"Existing release tag to recover",
-		"Failed Release run that owns the exact dist artifact",
+		"Existing release tag to publish or recover",
+		"Failed Release run that owns the exact dist artifact. Leave empty to build and publish the tag again.",
 		"group: release-${{ inputs.tag || github.ref_name }}",
+		"RELEASE_TAG: ${{ inputs.tag || github.ref_name }}",
+		"if: github.event_name == 'push' || inputs.source_run_id == ''",
+		"if: github.event_name == 'workflow_dispatch' && inputs.source_run_id != ''",
+		"ref: ${{ inputs.tag || github.ref }}",
+		"timeout-minutes: 180",
+		"Require the release tag at the checkout",
+		"a release for $RELEASE_TAG already exists",
+		"GORELEASER_CURRENT_TAG: ${{ env.RELEASE_TAG }}",
 		"permissions:\n  contents: read",
 		"    permissions:\n      attestations: write\n      contents: write\n      discussions: write\n      id-token: write\n      packages: write",
 		`go-version: "1.27.1"`,
@@ -35,7 +43,7 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"subject-checksums: dist/checksums.txt",
 		"Verify draft release assets before publication",
 		"Publish verified immutable release",
-		`gh release edit "$GITHUB_REF_NAME" --draft=false`,
+		`gh release edit "$RELEASE_TAG" --draft=false`,
 		`--jq .immutable`,
 		"gpg --batch --verify checksums.txt.sig checksums.txt",
 		"sha256sum --check checksums.txt",
@@ -64,7 +72,8 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"brew install agentstation/tap/starmap",
 		`go version -m "$BINARY"`,
 		`grep -Ev '^(/usr/lib/|/System/Library/)'`,
-		"!contains(github.ref_name, '-')",
+		"!contains(inputs.tag || github.ref_name, '-')",
+		"inputs.source_run_id != '' && !contains(inputs.tag, '-')",
 	}
 	for _, check := range checks {
 		if !strings.Contains(workflow, check) {
@@ -85,6 +94,8 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"permissions:\n  attestations: write",
 		`RELEASE=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG")`,
 		"HEAD:master",
+		"$GITHUB_REF_NAME",
+		"timeout-minutes: 75",
 	} {
 		if strings.Contains(workflow, forbidden) {
 			t.Errorf("release workflow contains obsolete coupling %q", forbidden)
