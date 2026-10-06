@@ -1,3 +1,5 @@
+import base64
+import hashlib
 import json
 import subprocess
 import tempfile
@@ -12,7 +14,8 @@ from test_catalog_product_verify import PROMOTED, SELECTED, generation_files, wr
 
 RELEASE, PREVIOUS, CONSUMER_RELEASE = 'v0.17.0', 'v0.16.5', 'v1.3.0'
 DESCRIBE = ['git', 'describe', '--tags', '--abbrev=0', '--match', 'v[0-9]*', '--exclude', 'v*-*', 'HEAD']
-CHANNEL_SHA256 = 'sha256:' + 'c' * 64
+TAG_COMMIT, TAG_TIME, TAG_MOMENT = '2b2944be736b1c2fb2907904f06b5f9c8fb6ecb7', '2026-10-05T18:33:39-05:00', '2026-10-05T23:33:39Z'
+AT_TAG, AFTER_TAG = ('c55f31dd9' + 'a' * 31, '2026-10-05T18:27:53Z'), ('130a540d4' + 'b' * 31, '2026-10-06T05:10:46Z')
 
 
 def starport_go_mod(version, replace=False):
@@ -96,27 +99,72 @@ class ModuleFake(unittest.TestCase):
 
 
 class ReleasedModuleTests(ModuleFake):
+    """Fake the release tag tree and the catalog/v1 history that the GitHub API returns."""
+
     def setUp(self):
         super().setUp()
+        # The adapter loads the publication capture from the repository under test.
+        (self.source / 'scripts').symlink_to(Path(verifier.__file__).resolve().parent)
         self.starmap_module(RELEASE, SELECTED)
-        self.promoted = SELECTED
+        self.tag_files = generation_files(*SELECTED)
+        self.channels = [(*AT_TAG, 44, SELECTED)]
+        self.attested = None
+
+    def channel(self, sequence, selection):
+        return json.dumps({'schema_version': 1, 'channel': 'catalog/v1', 'sequence': sequence,
+                           'generation_id': selection[0], 'catalog_digest': selection[1]}).encode()
+
+    def command(self, args, **kwargs):
+        if kwargs['cwd'] != self.source or args == DESCRIBE:
+            return super().command(args, **kwargs)
+        if args == ['git', 'rev-parse', RELEASE + '^{commit}']:
+            return subprocess.CompletedProcess(args, 0, TAG_COMMIT + '\n', '')
+        if args == ['git', 'log', '-1', '--format=%cI', RELEASE + '^{commit}']:
+            return subprocess.CompletedProcess(args, 0, TAG_TIME + '\n', '')
+        if args[:2] == ['git', 'show']:
+            self.assertIs(kwargs['text'], False)
+            prefix = f'{RELEASE}:{verifier.EMBEDDED_CATALOG}/'
+            self.assertTrue(args[2].startswith(prefix))
+            return subprocess.CompletedProcess(args, 0, self.tag_files[args[2].removeprefix(prefix)], b'')
+        if args[:2] == ['gh', 'api']:
+            endpoint = args[2].removeprefix('repos/agentstation/starmap/')
+            if endpoint.startswith('commits?'):
+                self.assertEqual(endpoint, f'commits?sha=catalog%2Fv1&path=channel.json&until={TAG_MOMENT}&per_page=1')
+                before = [{'sha': commit} for commit, time, _, _ in reversed(self.channels) if time <= TAG_MOMENT]
+                return subprocess.CompletedProcess(args, 0, json.dumps(before[:1]), '')
+            # Only a channel commit at or before the tag is readable. The channel head is not.
+            ref = endpoint.removeprefix('contents/channel.json?ref=')
+            raw = next(self.channel(sequence, selection) for commit, _, sequence, selection in self.channels if commit == ref)
+            return subprocess.CompletedProcess(args, 0, json.dumps({'content': base64.b64encode(raw).decode()}), '')
+        if args[:3] == ['gh', 'attestation', 'verify']:
+            self.assertIn('--deny-self-hosted-runners', args)
+            digest = self.attested or hashlib.sha256(Path(args[3]).read_bytes()).hexdigest()
+            reports = [{'verificationResult': {'statement': {'subject': [{'digest': {'sha256': digest}}]}}}]
+            return subprocess.CompletedProcess(args, 0, json.dumps(reports), '')
+        raise AssertionError(args)
 
     def run_check(self):
-        channel = {'schema_version': 1, 'channel': 'catalog/v1', 'sequence': 44,
-                   'generation_id': self.promoted[0], 'catalog_digest': self.promoted[1]}
-        with patch.object(verifier, 'attested_channel', return_value=(channel, CHANNEL_SHA256)) as attested:
-            result = self.check('A06.new_released_module', 'released_module', 'starmap')
-        if result['status'] == 'PASS':
-            attested.assert_called_once_with(self.source)
-        return result
+        return self.check('A06.new_released_module', 'released_module', 'starmap')
 
-    def test_released_module_that_carries_the_promoted_checkout_passes(self):
+    def test_released_module_that_carries_the_channel_at_its_tag_passes(self):
         result = self.run_check()
         identity = {'generation_id': SELECTED[0], 'semantic_checksum': SELECTED[1]}
         self.assertEqual(result, {
             'status': 'PASS', 'version': RELEASE, 'module': f'{verifier.STARMAP_MODULE}@{RELEASE}',
-            'sum': self.sums[f'{verifier.STARMAP_MODULE}@{RELEASE}'], 'released': identity, 'checkout': identity,
-            'promoted': identity, 'channel_sha256': CHANNEL_SHA256})
+            'sum': self.sums[f'{verifier.STARMAP_MODULE}@{RELEASE}'], 'released': identity,
+            'tag_commit': TAG_COMMIT, 'tag_committed_at': TAG_MOMENT, 'tag_embedded': identity,
+            'channel_commit': AT_TAG[0], 'channel_sequence': 44, 'promoted': identity,
+            'channel_sha256': 'sha256:' + hashlib.sha256(self.channel(44, SELECTED)).hexdigest()})
+
+    def test_later_promotion_on_the_channel_head_passes(self):
+        self.channels.append((*AFTER_TAG, 45, PROMOTED))
+        result = self.run_check()
+        self.assertEqual(result['status'], 'PASS')
+        self.assertEqual((result['channel_commit'], result['channel_sequence']), (AT_TAG[0], 44))
+
+    def test_checkout_that_moved_past_the_tag_passes(self):
+        write_generation(self.source / verifier.EMBEDDED_CATALOG, *PROMOTED)
+        self.assertEqual(self.run_check()['status'], 'PASS')
 
     def test_checkout_without_a_stable_ancestor_tag_is_unverified(self):
         for tag in ('v0.17.0-rc.1', 'v0.17', None):
@@ -136,22 +184,39 @@ class ReleasedModuleTests(ModuleFake):
         self.assertEqual(self.run_check(), {
             'status': 'FAIL', 'reason': 'The released Starmap module bytes differ from the checksum database record.'})
 
-    def test_released_generation_that_catalog_v1_does_not_promote_fails(self):
-        self.promoted = PROMOTED
+    def test_released_generation_that_catalog_v1_had_not_promoted_at_its_tag_fails(self):
+        # catalog/v1 promotes the released generation only after the tag.
+        self.channels = [(*AT_TAG, 44, PROMOTED), (*AFTER_TAG, 45, SELECTED)]
         result = self.run_check()
         self.assertEqual(result['status'], 'FAIL')
-        self.assertEqual(result['reason'], 'The released module embeds a generation that catalog/v1 does not promote.')
+        self.assertEqual(result['reason'], 'The released module embeds a generation that catalog/v1 had not promoted at its tag.')
         self.assertEqual(result['promoted']['generation_id'], PROMOTED[0])
+        self.assertEqual(result['channel_commit'], AT_TAG[0])
 
-    def test_checkout_that_differs_from_the_released_module_fails(self):
-        write_generation(self.source / verifier.EMBEDDED_CATALOG, *PROMOTED)
+    def test_tag_that_differs_from_the_released_module_fails(self):
+        self.tag_files = generation_files(*PROMOTED)
         result = self.run_check()
         self.assertEqual(result['status'], 'FAIL')
-        self.assertEqual(result['reason'], 'The checkout embeds a generation that the released module does not carry.')
-        self.assertEqual(result['checkout']['generation_id'], PROMOTED[0])
+        self.assertEqual(result['reason'], 'The release tag embeds a generation that the released module does not carry.')
+        self.assertEqual(result['tag_embedded']['generation_id'], PROMOTED[0])
+
+    def test_channel_without_a_promotion_before_the_tag_is_unverified(self):
+        self.channels = [(*AFTER_TAG, 45, SELECTED)]
+        self.assertEqual(self.run_check(), {
+            'status': 'UNVERIFIED', 'reason': 'catalog/v1 has no promotion at or before the release tag.'})
+
+    def test_unattested_channel_bytes_are_unverified(self):
+        self.attested = 'f' * 64
+        self.assertEqual(self.run_check(), {
+            'status': 'UNVERIFIED', 'reason': 'No attestation binds the catalog/v1 channel bytes.'})
 
     def test_released_payload_that_contradicts_its_record_fails(self):
         self.starmap_module(RELEASE, SELECTED, declared='sha256:' + '0' * 64)
+        self.assertEqual(self.run_check(), {
+            'status': 'FAIL', 'reason': 'The embedded payload differs from its generation record.'})
+
+    def test_tag_payload_that_contradicts_its_record_fails(self):
+        self.tag_files = generation_files(*SELECTED, declared='sha256:' + '0' * 64)
         self.assertEqual(self.run_check(), {
             'status': 'FAIL', 'reason': 'The embedded payload differs from its generation record.'})
 
