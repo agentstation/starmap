@@ -7,12 +7,13 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing release tag to recover"
+        description: "Existing release tag to publish or recover"
         required: true
         type: string
       source_run_id:
-        description: "Failed Release run that owns the exact dist artifact"
-        required: true
+        description: "Failed Release run that owns the exact dist artifact. Leave empty to build and publish the tag again."
+        required: false
+        default: ""
         type: string
 
 permissions:
@@ -24,16 +25,20 @@ concurrency:
 
 env:
   GOTOOLCHAIN: go1.27.1
+  # The release tag. A tag push supplies it through the ref. A dispatch
+  # supplies it through the tag input.
+  RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
 
 jobs:
   test:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || inputs.source_run_id == ''
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 180
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.tag || github.ref }}
           fetch-depth: 0
           lfs: true
 
@@ -45,8 +50,14 @@ jobs:
 
       - name: Require release tag from main
         run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$ ]]; then
+            echo "release tag is not an application semantic version" >&2
+            exit 1
+          fi
+          TAG_SHA=$(git rev-list -n 1 "$RELEASE_TAG")
+          test "$TAG_SHA" = "$(git rev-parse HEAD)"
           git fetch origin main
-          git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+          git merge-base --is-ancestor "$TAG_SHA" origin/main
 
       - name: Install pinned release tools
         run: |
@@ -73,7 +84,7 @@ jobs:
           make release-check
 
   release:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || inputs.source_run_id == ''
     needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -87,7 +98,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.tag || github.ref }}
           fetch-depth: 0
+
+      - name: Require the release tag at the checkout
+        run: |
+          test "$(git rev-list -n 1 "$RELEASE_TAG")" = "$(git rev-parse HEAD)"
+          if gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG" --jq .id >/dev/null 2>&1; then
+            echo "a release for $RELEASE_TAG already exists; use the recovery mode with source_run_id" >&2
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
@@ -126,6 +148,7 @@ jobs:
           args: release --clean --parallelism 2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GORELEASER_CURRENT_TAG: ${{ env.RELEASE_TAG }}
           HOMEBREW_TAP_DEPLOY_KEY: ${{ secrets.HOMEBREW_TAP_DEPLOY_KEY }}
           GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
           MACOS_SIGN_P12: ${{ secrets.MACOS_SIGN_P12 }}
@@ -163,13 +186,13 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
-            gh release edit "$GITHUB_REF_NAME" --draft=false --latest=false
+          if [[ "$RELEASE_TAG" == *-* ]]; then
+            gh release edit "$RELEASE_TAG" --draft=false --latest=false
           else
-            gh release edit "$GITHUB_REF_NAME" --draft=false --latest
+            gh release edit "$RELEASE_TAG" --draft=false --latest
           fi
           for _ in {1..10}; do
-            if [[ "$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$GITHUB_REF_NAME" --jq .immutable)" == true ]]; then
+            if [[ "$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG" --jq .immutable)" == true ]]; then
               exit 0
             fi
             sleep 1
@@ -183,7 +206,7 @@ jobs:
         run: |
           DOWNLOAD_DIRECTORY=${RUNNER_TEMP}/release-download
           mkdir -p "$DOWNLOAD_DIRECTORY"
-          gh release download "$GITHUB_REF_NAME" --dir "$DOWNLOAD_DIRECTORY"
+          gh release download "$RELEASE_TAG" --dir "$DOWNLOAD_DIRECTORY"
           cmp dist/checksums.txt "$DOWNLOAD_DIRECTORY/checksums.txt"
           cmp dist/checksums.txt.sig "$DOWNLOAD_DIRECTORY/checksums.txt.sig"
           (
@@ -198,7 +221,7 @@ jobs:
               --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yaml" \
               --deny-self-hosted-runners
           done < "$DOWNLOAD_DIRECTORY/checksums.txt"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$GITHUB_REF_NAME" --jq .immutable)" = true
+          test "$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG" --jq .immutable)" = true
 
       - name: Upload diagnostics on failure
         if: failure()
@@ -208,7 +231,7 @@ jobs:
           path: dist/
 
   recover:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && inputs.source_run_id != ''
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -423,7 +446,7 @@ jobs:
 
   verify-homebrew:
     needs: release
-    if: ${{ github.event_name == 'push' && !contains(github.ref_name, '-') }}
+    if: ${{ (github.event_name == 'push' || inputs.source_run_id == '') && !contains(inputs.tag || github.ref_name, '-') }}
     runs-on: macos-latest
     timeout-minutes: 15
     steps:
@@ -438,7 +461,7 @@ jobs:
 
       - name: Verify installed release
         run: |
-          EXPECTED=${GITHUB_REF_NAME#v}
+          EXPECTED=${RELEASE_TAG#v}
           test "$(starmap version | awk '{print $2}')" = "$EXPECTED"
           BINARY=$(command -v starmap)
           go version -m "$BINARY" | grep -Eq '^[[:space:]]*build[[:space:]]+CGO_ENABLED=0$'
@@ -446,7 +469,7 @@ jobs:
 
   verify-homebrew-recovery:
     needs: recover
-    if: ${{ github.event_name == 'workflow_dispatch' && !contains(inputs.tag, '-') }}
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.source_run_id != '' && !contains(inputs.tag, '-') }}
     runs-on: macos-latest
     timeout-minutes: 15
     steps:

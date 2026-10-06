@@ -131,6 +131,24 @@ make release-tag VERSION=0.4.0
 
 Pushing the tag is the publication action. Do not reuse or move release tags.
 
+## Publish an existing tag again
+
+The release verification job stops at its time limit. A run that stops before
+GoReleaser starts leaves no draft release and no `release-dist` artifact. The
+tag stays immutable. Do not move or reuse the tag. Start the Release workflow
+again for the exact tag with an empty `source_run_id`:
+
+```bash
+gh workflow run release.yaml \
+  --repo agentstation/starmap \
+  -f tag=v0.3.0 \
+  -f source_run_id=
+```
+
+The dispatch runs the same `test` and `release` jobs as a tag push. The jobs
+check out the tag, require the tag commit on `main`, and refuse a tag that
+already has a release. The dispatch uses the workflow file on `main`.
+
 ## Failed publication recovery
 
 A failed GoReleaser run can leave a draft release and a `release-dist` workflow
@@ -138,8 +156,8 @@ artifact. A later recovery failure can leave the exact release published but its
 Homebrew update incomplete. Do not move or reuse the tag. Correct the failure
 cause first.
 
-Use the Release workflow's manual dispatch only when all these conditions are
-true:
+Use the Release workflow's manual dispatch with a `source_run_id` only when
+all these conditions are true:
 
 - The source run is a failed tag-triggered Release run.
 - The source run commit equals the immutable tag commit.
