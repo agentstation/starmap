@@ -77,6 +77,8 @@ Consequences for the plan:
 
 ## Pending owner decisions
 
-1. Cloudflare account membership for the first deploy. Waiting on the owner. The deploy runs when `wrangler whoami` lists the account that holds `agentstation.ai`. A Worker custom domain needs the Worker and the zone in the same account. The lead cannot log in, create an API token, or move a zone.
+1. Zone move for the first deploy. Waiting on the owner. The owner logged in as `jack@agentstation.ai` at 01:33Z on 2026-10-06. `wrangler whoami` lists the `AgentStation` account `c4ea376a1fc44013b2184fa13b5f4c54`. The first `wrangler deploy` uploaded the Worker `starport-site` into that account. The custom domain binding failed with Cloudflare code 10083: the `agentstation.ai` zone does not exist on the account. The zone is in a third Cloudflare account.
+   - Owner decision (2026-10-06): move the `agentstation.ai` zone into the `AgentStation` account. The owner does the move in the Cloudflare dashboard. The lead reruns the deploy after the move, and the deploy creates the DNS record and the certificate.
+   - The lead cannot log in, create an API token, or move a zone.
    - Later, for the durable flow: the owner creates an API token. The token needs Workers Scripts edit, zone DNS edit, and zone Workers Routes edit. The owner sets the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets in the `starport-site` environment.
 2. Real provider inference for CSP24. Real inference is a paid action outside the current authority. The README recording is the only real inference the plan needs.
