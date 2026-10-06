@@ -66,9 +66,17 @@ Consequences for the plan:
 2. Repository location: `website/` in `agentstation/starport`. Starport PR #425 holds the site, the `Site` workflow, and the `Deploy` job.
 3. Timing: now, in parallel with the release pair.
 
+## Owner answers on Cloudflare access (2026-10-05, later)
+
+- Access method: the owner chose the command line. The owner asked for web research on the new `cf` CLI before a tool choice.
+- Research result (2026-10-05): `cf` is an open beta since 2026-09-28. It is a whole-API agentic CLI with a `cloudflare.config.ts` file. It has no `assets.directory` setting for a static site without Vite. It writes a generated Wrangler config that can change during the beta.
+- Research result, continued: the `cf domains` command does not create DNS records. Cloudflare keeps Wrangler in maintenance for 18 months after the beta ends. Decision: keep Wrangler for the deploy. Revisit `cf` after the beta.
+- First deploy: the owner chose "wrangler login now". The lead deploys from the site worktree after the login. The `website/wrangler.jsonc` file binds `starport.agentstation.ai` as a Worker custom domain, so the deploy creates the DNS record and the certificate.
+- Account membership: `wrangler whoami` lists only `OpenE2EE LLC`. The `agentstation.ai` zone is in an account where the `jack@open-e2ee.dev` user is not a member. The lead recommended a member invite into that account instead of a logout. Wrangler reads memberships live, so the invite needs no second login.
+- Durable flow: the owner later creates an API token and sets the `starport-site` environment secrets. The lead never handles the token value.
+
 ## Pending owner decisions
 
-1. Cloudflare access for the first deploy. The local `wrangler` login sees only the `OpenE2EE LLC` account. The `agentstation.ai` zone is in a different account. A Worker custom domain needs the Worker and the zone in the same account. The lead cannot log in, create an API token, or move a zone.
-   - Path A: the owner runs `npx wrangler login` into the account that holds the zone. The lead deploys from the local worktree.
-   - Path B: the owner creates an API token with Workers Scripts edit, zone DNS edit, and zone Workers Routes edit. The owner sets the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets in the `starport-site` environment. The lead dispatches the `Deploy` job. The durable flow needs path B.
+1. Cloudflare account membership for the first deploy. Waiting on the owner. The deploy runs when `wrangler whoami` lists the account that holds `agentstation.ai`. A Worker custom domain needs the Worker and the zone in the same account. The lead cannot log in, create an API token, or move a zone.
+   - Later, for the durable flow: the owner creates an API token. The token needs Workers Scripts edit, zone DNS edit, and zone Workers Routes edit. The owner sets the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets in the `starport-site` environment.
 2. Real provider inference for CSP24. Real inference is a paid action outside the current authority. The README recording is the only real inference the plan needs.
