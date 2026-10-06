@@ -285,5 +285,12 @@ class PinnedModuleHistoryTests(ModuleFake):
         self.assertEqual(result['previous']['commit'], 'c2')
 
 
+class PublicSiteRegistrationTests(unittest.TestCase):
+    def test_registry_binds_the_public_site_adapters(self):
+        checks = verifier.read_json(verifier.REGISTRY)['checks']
+        self.assertEqual({identity: checks[identity]['kind'] for identity in ('A29.public_url_content_manifest', 'A29.hosting_rollback')},
+                         {'A29.public_url_content_manifest': 'public_site_manifest', 'A29.hosting_rollback': 'public_site_rollback'})
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -1715,7 +1715,7 @@ class CandidateRegistrationTests(unittest.TestCase):
 
     def test_registry_size_and_validation(self):
         verifier.validate_registry(self.registry, self.roster, verifier.validate_roster(self.roster))
-        self.assertEqual(len(self.registry['checks']), 315)
+        self.assertEqual(len(self.registry['checks']), 317)
 
     def test_backend_versions_and_region_boundary_bind_starport_tests(self):
         self.assertEqual(self.registry['checks']['A31.exact_backend_versions'], {'kind': 'all', 'checks': [

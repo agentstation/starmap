@@ -380,6 +380,13 @@ def run_check(identity, entry, roots, go_evidence=None):
         return released_module(entry, roots)
     if entry.get("kind") == "released_module_pin":
         return released_module_pin(entry, roots)
+    if entry.get("kind") in ("public_site_manifest", "public_site_rollback"):
+        spec = importlib.util.spec_from_file_location("catalog_public_site", ROOT / "scripts/catalog_public_site.py")
+        adapter = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(adapter)
+        if entry["kind"] == "public_site_manifest":
+            return adapter.verify_manifest(entry, roots, release_version)
+        return adapter.verify_rollback(entry, roots, checked_output)
     if entry.get("kind") != "go_test":
         return {"status": "UNVERIFIED", "reason": "This evidence adapter has not been implemented."}
     inputs, error = go_check_input(entry, roots)
