@@ -345,6 +345,8 @@ def run_check(identity, entry, roots, go_evidence=None):
         return reviewed_demo(entry, roots)
     if entry.get("kind") == "rehearsal_demo":
         return rehearsal_demo(entry, roots)
+    if entry.get("kind") == "release_demo":
+        return release_demo(entry, roots)
     if entry.get("kind") == "performance_baseline":
         return run_performance_baseline(entry, roots)
     if entry.get("kind") == "performance_profile":
@@ -967,11 +969,11 @@ def rehearsal_report(stdout):
         return json.loads(stdout[stdout.rfind("\n{") + 1:])
 
 
-def rehearsal_verifier(root, manifest):
+def rehearsal_verifier(root, manifest, record=None):
     """Run the Starport demonstration verifier and require a complete passing report."""
     if not (root / REHEARSAL_VERIFIER).is_file():
         return {"status": "FAIL", "reason": f"The demonstration verifier is absent: {REHEARSAL_VERIFIER}"}
-    command = ["bash", REHEARSAL_VERIFIER, "--manifest", manifest, "--json"]
+    command = ["bash", REHEARSAL_VERIFIER, "--manifest", manifest, *(["--record", record] if record else []), "--json"]
     try:
         result = subprocess.run(command, cwd=root, capture_output=True, text=True,
                                 timeout=REHEARSAL_VERIFIER_TIMEOUT_SECONDS)
@@ -1003,6 +1005,175 @@ def rehearsal_verifier(root, manifest):
     return {"status": "PASS", "reason": "The demonstration verifier passed every required check in this invocation.",
             "scope": "Candidate rehearsal media and invalidation checks. It cannot qualify final release cases.",
             **evidence}
+
+
+# The roster checks many subcases against one release record, so one process runs the verifier once per record.
+RELEASE_DEMO_REPORTS = {}
+
+
+def release_verifier(root, manifest, record):
+    """Return the shared Starport verifier result for one release record."""
+    key = (root.resolve(), manifest, record)
+    if key not in RELEASE_DEMO_REPORTS:
+        RELEASE_DEMO_REPORTS[key] = rehearsal_verifier(root, manifest, record)
+    return dict(RELEASE_DEMO_REPORTS[key])
+
+
+def validate_release_record(record, release):
+    if not isinstance(record, dict) or record.get("kind") != "release":
+        raise ValueError("The release record must have kind release.")
+    if record.get("qualifies_release_cases") is not True:
+        raise ValueError("The release record does not qualify release cases.")
+    if record.get("real_provider") is not True:
+        raise ValueError("The release record needs a real provider answer.")
+    if record.get("fixtures") != []:
+        raise ValueError("A release record cannot use fixtures.")
+    candidate = record.get("candidate")
+    if not isinstance(candidate, dict) or candidate.get("source") != "release":
+        raise ValueError("The release candidate must come from a published release.")
+    if candidate.get("release_tag") != release:
+        raise ValueError(f"The release record binds release {candidate.get('release_tag')!r}, not {release}.")
+    if candidate.get("archive_name") != f"starport_{release[1:]}_darwin_arm64.tar.gz":
+        raise ValueError(f"The release candidate is not the darwin arm64 archive of {release}.")
+    if candidate.get("checksum_verified") is not True or candidate.get("attestation_verified") is not True:
+        raise ValueError("The release archive needs a verified checksum and a verified attestation.")
+    if not isinstance(candidate.get("head_commit"), str) or not re.fullmatch(r"[0-9a-f]{40}", candidate["head_commit"]):
+        raise ValueError("The release candidate needs a 40-character tag commit.")
+    if not isinstance(candidate.get("archive_sha256"), str) or not re.fullmatch(r"[0-9a-f]{64}", candidate["archive_sha256"]):
+        raise ValueError("The release candidate needs a SHA-256 archive_sha256.")
+
+
+def release_binding(root, manifest, record_directory):
+    """Return each README binding path after it resolves inside the release record directory."""
+    binding = manifest.get("readme_binding") if isinstance(manifest, dict) else None
+    if not isinstance(binding, dict) or not all(isinstance(binding.get(name), str) for name in ("gif", "poster")):
+        raise ValueError("The demonstration manifest must bind the README GIF and poster.")
+    paths = {}
+    for name, value in binding.items():
+        if isinstance(value, str):
+            path = contained_path(root, value)
+            if not path.is_relative_to(record_directory):
+                raise ValueError(f"The README binds {name} outside the release record: {value}")
+            paths[name] = path
+    return paths
+
+
+def release_review(root, record, review_path, release, observations):
+    """Require a current passing human review of the release record that holds each named observation."""
+    review = read_json(review_path)
+    if not isinstance(review, dict) or review.get("schema_version") != 1 or review.get("verdict") != "PASS":
+        raise ValueError("A passing release media review is required.")
+    if review.get("release") != release:
+        raise ValueError(f"The release media review is not a review of {release}.")
+    if not isinstance(review.get("reviewer"), str) or not review["reviewer"].strip():
+        raise ValueError("The release media review names no reviewer.")
+    try:
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", review.get("date")):
+            raise ValueError
+        datetime.strptime(review["date"], "%Y-%m-%d")
+    except (TypeError, ValueError):
+        raise ValueError("The release media review has no ISO date.") from None
+    recorded = review.get("observations")
+    missing = [name for name in observations if not isinstance(recorded, dict) or recorded.get(name) is not True]
+    if missing:
+        raise ValueError(f"The release media review omits observations: {', '.join(missing)}")
+    inputs = review.get("inputs")
+    required = ["README.md", *(f"{record.rstrip('/')}/{name}" for name in REHEARSAL_OUTPUTS)]
+    if not isinstance(inputs, dict) or not set(required) <= inputs.keys():
+        absent = [name for name in required if not isinstance(inputs, dict) or name not in inputs]
+        raise ValueError(f"The release media review omits required inputs: {', '.join(absent)}")
+    for name, digest in inputs.items():
+        path = contained_path(root, name)
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+            raise ValueError(f"The release media review is stale: {name}")
+
+
+def release_demo(entry, roots):
+    """Check the release demonstration record that a registry entry names.
+
+    An absent repository, manifest, record, or required review gives UNVERIFIED because the evidence does not exist yet.
+    After the record exists, every claim must hold, and a broken claim gives FAIL.
+    """
+    root = roots.get(entry.get("repository"))
+    if root is None:
+        return {"status": "UNVERIFIED", "reason": "The Starport repository is unavailable."}
+    try:
+        manifest_path = contained_path(root, entry["manifest"])
+        record_directory = contained_path(root, entry["record"])
+    except (KeyError, TypeError, ValueError):
+        return {"status": "FAIL", "reason": "The release check needs a manifest and a record inside the repository."}
+    release, checks, observations = entry.get("release"), entry.get("checks"), entry.get("observations", [])
+    if not isinstance(release, str) or not STABLE_VERSION.fullmatch(release):
+        return {"status": "FAIL", "reason": "The release check needs a stable release tag."}
+    if (not isinstance(checks, list) or not checks or len(checks) != len(set(map(str, checks)))
+            or not set(map(str, checks)) <= set(REHEARSAL_VERIFIER_CHECKS)):
+        unknown = sorted(str(name) for name in checks if name not in REHEARSAL_VERIFIER_CHECKS) if isinstance(checks, list) else []
+        return {"status": "FAIL", "reason": "The release check needs distinct Starport verifier checks. "
+                f"Unknown checks: {', '.join(unknown) or 'none'}."}
+    if (not isinstance(observations, list) or len(observations) != len(set(map(str, observations)))
+            or not all(isinstance(name, str) and name for name in observations)):
+        return {"status": "FAIL", "reason": "The release check needs distinct named observations."}
+    if not manifest_path.is_file():
+        return {"status": "UNVERIFIED", "reason": f"The demonstration manifest is absent: {entry['manifest']}"}
+    record_path = contained_path(record_directory, "record.json")
+    if not record_path.is_file():
+        return {"status": "UNVERIFIED", "reason": f"The release record is absent: {entry['record']}/record.json"}
+    try:
+        record = read_json(record_path)
+        validate_release_record(record, release)
+        bound = release_binding(root, read_json(manifest_path), record_directory)
+    except json.JSONDecodeError:
+        return {"status": "FAIL", "reason": "The demonstration manifest or release record contains invalid JSON."}
+    except UnicodeError:
+        return {"status": "FAIL", "reason": "The demonstration manifest or release record contains invalid text."}
+    except ValueError as error:
+        return {"status": "FAIL", "reason": str(error)}
+    except (OSError, AttributeError, TypeError) as error:
+        return {"status": "FAIL", "reason": f"The release record cannot be read: {type(error).__name__}"}
+    run = release_verifier(root, entry["manifest"], entry["record"])
+    if run["status"] != "PASS":
+        return run
+    report = run["report"]
+    if report.get("kind") != "release":
+        return {"status": "FAIL", "reason": f"The demonstration verifier checked a {report.get('kind')!r} record, not a release record.",
+                "command": run["command"]}
+    rows = {check.get("id"): check for check in run["checks"] if isinstance(check, dict)}
+    selected = [rows.get(name, {"id": name}) for name in checks]
+    failed = [row["id"] for row in selected if row.get("status") != "PASS"]
+    if failed:
+        return {"status": "FAIL", "reason": f"The demonstration verifier does not pass: {', '.join(failed)}.",
+                "checks": selected, "command": run["command"]}
+    media = report.get("readme_media")
+    linked = {(root / link).resolve() for link in media if isinstance(link, str)} if isinstance(media, list) else set()
+    unlinked = [str(bound[name].relative_to(root.resolve())) for name in ("gif", "poster") if bound[name] not in linked]
+    if unlinked:
+        return {"status": "FAIL", "reason": f"The README does not link the bound release media: {', '.join(unlinked)}",
+                "readme_media": media, "checks": selected}
+    result = {"status": "PASS", "reason": "The release record and the Starport verifier support the selected checks.",
+              "record": str(record_path), "record_sha256": hashlib.sha256(record_path.read_bytes()).hexdigest(),
+              "release": release, "candidate_head": record["candidate"]["head_commit"],
+              "archive_sha256": record["candidate"]["archive_sha256"], "checks": selected, "command": run["command"],
+              "scope": "This invocation ran the Starport verifier again on the retained release record. "
+                       "It did not reinstall software or call a provider."}
+    if not observations:
+        return result
+    review_path = contained_path(record_directory, "review.json")
+    if not review_path.is_file():
+        return {"status": "UNVERIFIED", "reason": f"The release media review is absent: {entry['record']}/review.json",
+                "checks": selected}
+    try:
+        release_review(root, entry["record"], review_path, release, observations)
+    except json.JSONDecodeError:
+        return {"status": "FAIL", "reason": "The release media review contains invalid JSON."}
+    except UnicodeError:
+        return {"status": "FAIL", "reason": "The release media review contains invalid text."}
+    except ValueError as error:
+        return {"status": "FAIL", "reason": str(error)}
+    except (OSError, AttributeError, TypeError) as error:
+        return {"status": "FAIL", "reason": f"The release media review cannot be read: {type(error).__name__}"}
+    return result | {"review": str(review_path), "review_sha256": hashlib.sha256(review_path.read_bytes()).hexdigest(),
+                     "observations": observations,
+                     "scope": result["scope"] + " The named observations come from a recorded human review of the current files."}
 
 
 def reviewed_first_use(entry, roots):
