@@ -9036,6 +9036,17 @@
         }
       ]
     },
+    "A29.public_url_content_manifest": {
+      "kind": "public_site_manifest",
+      "repository": "starport",
+      "url": "https://starport.agentstation.ai"
+    },
+    "A29.hosting_rollback": {
+      "kind": "public_site_rollback",
+      "repository": "starport",
+      "url": "https://starport.agentstation.ai",
+      "proof": "docs/plans/proof/starport-production-catalog/csp23.1/rollback/rollback.json"
+    },
     "A30.stable_links_history": {
       "kind": "all",
       "checks": [
