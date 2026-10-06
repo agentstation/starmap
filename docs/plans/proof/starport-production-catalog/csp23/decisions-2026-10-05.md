@@ -128,3 +128,17 @@ The lead ran `--task CSP23` with Starmap `b68e341d9` and Starport `v1.3.0`.
 - Starmap PR #237 merged as `9634fa434`. Starport PR #428 merged as `0af089d3` with 47 of 47 checks. The lead rebased PR #427 onto `0af089d3`, and it waits for CI.
 - The lead reran `--task CSP23` with Starmap `9634fa434` and Starport `v1.3.0`: 7 PASS, 1 FAIL, 2 UNVERIFIED. `A06.new_released_module` now passes. The FAIL and the UNVERIFIED subcases wait on the owner actions above.
 - CSP24 scope: the verifier has the `reviewed_first_use` and `reviewed_demo` check kinds. CSP24 registers `A35.released_installer_paths` and the 14 A36 through A39 subcases with those kinds against a `csp24/` proof set and a `docs/assets/first-use-v1.3.0/` recording. The six-platform archive evidence comes from the native workflow in item 6.
+
+## Owner actions completed (2026-10-06, afternoon)
+
+- The owner dispatched the native verification workflow for `v1.3.0` from `main` at `0af089d3`: run `37475148346`, event `workflow_dispatch`. All five platform jobs report PASS with model count 509. The review file is `csp24/first-use/native-run-37475148346-review.json` on the Starmap branch `codex/csp24-first-use-proof`.
+- The owner deployed the `v1.3.0` build from `/private/tmp/starport-v130-20261006/website`: version `6aff5ed9-e067-434d-8160-b555788e5e48`. The previous `dev` build is version `fb522680-b870-40e4-a91f-2d2db085ef7f`. The rollback exercise uses these two versions in three steps.
+- The lead asked the Codex agent `cf-web-analytics-off` to turn off the Web Analytics automatic setup in the Cloudflare dashboard. The permission classifier denied the browser call as a shared-resource change. The lead did not retry through another route. The owner does the dashboard toggle.
+
+## Observations (2026-10-06)
+
+- The source build at `v1.3.0` prints `starport version v1.3.0`. The release archive prints `starport version 1.3.0`. The capture script accepts the exact source string. The verifier does not compare the two strings.
+- The `v1.3.0` native run reports 509 models. The `v1.2.0` run reported 511. The accepted catalog generation changed between the releases.
+- The Homebrew capture on the owner's Mac upgraded the cask from `1.2.1` to `1.3.0`. The capture records `preexisting_install: true` and leaves the cask installed.
+- Main run `37462863729` failed once in `Test (windows-2025)`: `TestFilePagesReachPublicFilesAndExpiredPreparations/badger` reported `files: sweep checkpoint-0242: files: delete the bytes: context deadline exceeded` after 31.65 s. The slow-runner timeout is not the rename race that PR #430 fixes. The lead reran the failed jobs.
+- PR #429 run `37471216646` failed once in `Candidate install (macos-15)` with `HTTP 503: 503 Egress is over the account limit` from the artifact download. The GitHub account egress quota, not the code, caused the failure. The lead reran the failed jobs after the run completed.
