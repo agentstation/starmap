@@ -121,3 +121,10 @@ The lead ran `--task CSP23` with Starmap `b68e341d9` and Starport `v1.3.0`.
 3. Run the rollback exercise: at least three deploys or rollbacks with version ids.
 4. Complete the ICANN email verifications for `agentstation.dev` and `agentstation.io`.
 5. Optional: create the `starport-site` environment with the Cloudflare secrets so the Site workflow can deploy.
+6. Dispatch the Starport `Native Release Verification` workflow for `v1.3.0`. The permission classifier denied the dispatch to the lead on 2026-10-06. Command: `gh workflow run native-release.yaml -R agentstation/starport --ref main -f tag=v1.3.0`. An allow rule for `gh workflow run` is the alternative.
+
+## Merges and the CSP23 rerun (2026-10-06, later)
+
+- Starmap PR #237 merged as `9634fa434`. Starport PR #428 merged as `0af089d3` with 47 of 47 checks. The lead rebased PR #427 onto `0af089d3`, and it waits for CI.
+- The lead reran `--task CSP23` with Starmap `9634fa434` and Starport `v1.3.0`: 7 PASS, 1 FAIL, 2 UNVERIFIED. `A06.new_released_module` now passes. The FAIL and the UNVERIFIED subcases wait on the owner actions above.
+- CSP24 scope: the verifier has the `reviewed_first_use` and `reviewed_demo` check kinds. CSP24 registers `A35.released_installer_paths` and the 14 A36 through A39 subcases with those kinds against a `csp24/` proof set and a `docs/assets/first-use-v1.3.0/` recording. The six-platform archive evidence comes from the native workflow in item 6.
