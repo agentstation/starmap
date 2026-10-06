@@ -9502,6 +9502,14 @@
       "kind": "pinned_module_baseline",
       "repository": "starport"
     },
+    "A06.new_released_module": {
+      "kind": "released_module",
+      "repository": "starmap"
+    },
+    "A06.starport_released_module_pin": {
+      "kind": "released_module_pin",
+      "repository": "starport"
+    },
     "A31.exact_backend_versions": {
       "kind": "all",
       "checks": [
