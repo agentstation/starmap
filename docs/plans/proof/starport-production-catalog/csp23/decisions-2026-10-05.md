@@ -60,8 +60,15 @@ Consequences for the plan:
 - The site is a new deliverable with its own repository location, build, hosting, DNS, and deployment approval. It is not part of the release pair. CSP23 closes with `A29.public_url_content_manifest` and `A29.hosting_rollback` as documented limits that point to the new task.
 - The lead adds a sibling task for the public site after CSP23 closes. The task brief names the repository location, the hosting target, and the DNS change. It also names the release-to-site publication contract and the A29 subcases.
 
+## Owner answers on the public site (2026-10-05, later)
+
+1. Hosting target: Cloudflare Workers with static assets. The site is a static export. It has no login and no database. The OpenNext adapter is not needed.
+2. Repository location: `website/` in `agentstation/starport`. Starport PR #425 holds the site, the `Site` workflow, and the `Deploy` job.
+3. Timing: now, in parallel with the release pair.
+
 ## Pending owner decisions
 
-1. Hosting target for the public site. The exemplar runs on Vercel. The owner named the Cloudflare account. Vercel needs a Vercel project and a CNAME on Cloudflare. Cloudflare Workers needs the OpenNext adapter and a Workers route on the zone. The lead proposes Vercel to match the exemplar, with Cloudflare DNS only.
-2. Repository location for the site. The lead proposes a `website/` directory in `agentstation/starport` so that the site reads the release documentation from the same tree.
-3. Real provider inference for CSP24. Real inference is a paid action outside the current authority. The README recording is the only real inference the plan needs.
+1. Cloudflare access for the first deploy. The local `wrangler` login sees only the `OpenE2EE LLC` account. The `agentstation.ai` zone is in a different account. A Worker custom domain needs the Worker and the zone in the same account. The lead cannot log in, create an API token, or move a zone.
+   - Path A: the owner runs `npx wrangler login` into the account that holds the zone. The lead deploys from the local worktree.
+   - Path B: the owner creates an API token with Workers Scripts edit, zone DNS edit, and zone Workers Routes edit. The owner sets the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets in the `starport-site` environment. The lead dispatches the `Deploy` job. The durable flow needs path B.
+2. Real provider inference for CSP24. Real inference is a paid action outside the current authority. The README recording is the only real inference the plan needs.
