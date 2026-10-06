@@ -82,3 +82,42 @@ Consequences for the plan:
    - The lead cannot log in, create an API token, or move a zone.
    - Later, for the durable flow: the owner creates an API token. The token needs Workers Scripts edit, zone DNS edit, and zone Workers Routes edit. The owner sets the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets in the `starport-site` environment.
 2. Real provider inference for CSP24. Real inference is a paid action outside the current authority. The README recording is the only real inference the plan needs.
+
+## Release pair published (2026-10-06)
+
+- Starmap PR #234 merged as `6870aec2`. PR #235 merged as `c83f3bd4`. PR #236 merged as `b68e341d9`. It promotes sequence 45 automatically.
+- The Starmap release dispatch, run `37402744934`, published `v0.17.0`. The tag `6ff85f561d` points to commit `2b2944be7`. The module embeds the generation that channel sequence 44 promotes at commit `c55f31dd9`.
+- Starport PR #424 merged as `05d70da7`. PR #426, the Release Gate limits, merged as `aebb9460`. PR #425, the public site, merged as `b649dbf5`.
+- The annotated tag `v1.3.0`, object `37e6f897ad`, points to `b649dbf5`. Release run `37437368384` published 12 assets at 2026-10-06T09:12:50Z with one SLSA provenance attestation over 11 subjects.
+- The docs archive manifest reports release `v1.3.0`, Starmap `v0.17.0`, content revision `0b7f6bb15611`, and 58 files.
+
+## Domain consolidation (2026-10-05, Codex)
+
+- Codex moved the zones `agentstation.ai`, `agentstation.dev`, and `agentstation.io` into the `AgentStation` account. The owner did the logins and the payments.
+- The registrations of `.dev` and `.io` are now in Cloudflare Registrar. The ICANN email verifications for `.dev` and `.io` are open. The `.io` transfer has a 60-day lock.
+- The owner ran the first `wrangler deploy` from the site worktree. The live version is `fb522680-b870-40e4-a91f-2d2db085ef7f`, a `dev` build.
+
+## CSP23 acceptance run on the released pair (2026-10-06)
+
+The lead ran `--task CSP23` with Starmap `b68e341d9` and Starport `v1.3.0`.
+
+- PASS: `A29.embedded_offline_search`, `A29.recovery_without_auth`, `A29.no_dynamic_data_disclosure`, `A06.promoted_checkout`, `A06.old_pinned_bytes_unchanged`, `A06.starport_released_module_pin`.
+- FAIL `A29.public_url_content_manifest`: the live site is the `dev` build. The Cloudflare Web Analytics beacon is also injected. The owner deploys the `v1.3.0` build and turns off the automatic beacon setup.
+- FAIL `A06.new_released_module`: the check compared the release with the current channel head. Sequence 45 moved the head after the release. The check is time-windowed, not the release.
+- UNVERIFIED `A29.hosting_rollback`: the rollback record does not exist until the deploys run.
+- UNVERIFIED `A35.released_installer_paths`: the registry has no behavior check for it. CSP24 owns the installers.
+
+## Fix pull requests (2026-10-06)
+
+- Starmap PR #237 compares the released module with the `catalog/v1` channel at the tag commit time. It also compares the tag tree with the module. The real run reports `A06.new_released_module` PASS at sequence 44, commit `c55f31dd9`, tag commit `2b2944be7`. Four A06 subcases PASS.
+- Starport PR #428 gives the recovery shards a thirty-minute allowance. The windows-2025 shard 1 takes about nineteen minutes. The twenty-minute allowance cut it in runs `37406845328` and `37437505736`.
+- Starport PR #427 redoes the splash page as a sourced landing page. The owner asked for a redesign with nimbusdocs.com as the exemplar. The lead reviewed the screenshots and the sourced-copy tests. The autoreview gate is clean.
+- Observed once on PR #425: `TestInitializeConcurrentSingleWinner` in `internal/setup` on macos-15 reported a writer-conflict error under load. The rerun passed. The lead made no change.
+
+## Owner actions that remain open (2026-10-06)
+
+1. Disable the Cloudflare Web Analytics automatic setup for `starport.agentstation.ai`.
+2. Deploy the `v1.3.0` build from `/private/tmp/starport-v130-20261006/website` with `wrangler deploy`, and record the version id.
+3. Run the rollback exercise: at least three deploys or rollbacks with version ids.
+4. Complete the ICANN email verifications for `agentstation.dev` and `agentstation.io`.
+5. Optional: create the `starport-site` environment with the Cloudflare secrets so the Site workflow can deploy.
