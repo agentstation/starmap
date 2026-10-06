@@ -36,6 +36,10 @@ The lead recorded these questions before it asked the owner. The owner reported 
 - Starmap PR #232 merged as `2b2944be7`. The lead pushed the annotated tag `v0.17.0` on that commit. Release run `37389198612` started.
 - Starmap PR #233 registers `A06.new_released_module` and `A06.starport_released_module_pin`, and extends `A06.old_pinned_bytes_unchanged` with the previous-pin comparison. It is scripts only.
 - Starport branch `codex/csp23-release-v1.3.0` pins Starmap `v0.17.0`. The test suite and the verify gates run before the pull request.
+- Release run `37389198612` stopped at the 75-minute limit of the `test` job after 75 minutes and 17 seconds. The serial race shards used 58 minutes before the application shards started. GoReleaser never ran. No draft release and no `release-dist` artifact exist. The tag stays on `2b2944be7` because the Go checksum database already records the module bytes.
+- Starmap PR #234 lets a dispatch publish an existing tag with an empty `source_run_id` and raises the `test` limit to 180 minutes. The lead dispatches `release.yaml` with `tag=v0.17.0` after the merge.
+- Starmap PR #233 merged as `ee423bd9f`.
+- Starport PR #424 pins Starmap `v0.17.0`. Its `Catalog Fleet Recovery` check stopped at the 30-minute limit of that job. The same job on main `635fb25fc` took 29 minutes and 37 seconds. The check is not required. The lead reruns the job after the workflow completes.
 
 ## Public site decision of 2026-10-05
 
