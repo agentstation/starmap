@@ -9410,6 +9410,188 @@
       "package": "./internal/app",
       "test": "TestDocumentedInferenceRequestStreamsThroughGateway"
     },
+    "A35.released_installer_paths": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "invalidation",
+        "uncut_source",
+        "output_hashes"
+      ]
+    },
+    "A36.install_catalog_setup_answer_order": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "scene_order",
+        "catalog_keyless"
+      ]
+    },
+    "A36.real_streamed_result": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "answer_stream",
+        "transcript_fixtures",
+        "no_fixture_token"
+      ]
+    },
+    "A37.candidate_artifact_hash": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "invalidation",
+        "output_hashes",
+        "uncut_source"
+      ]
+    },
+    "A37.catalog_provider_path": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "catalog_keyless",
+        "scene_order"
+      ]
+    },
+    "A37.cuts_disclosed": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "cuts_outside_inference"
+      ]
+    },
+    "A37.no_secret_or_fabrication": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "no_fixture_token",
+        "transcript_fixtures"
+      ],
+      "observations": [
+        "no_secret_material"
+      ]
+    },
+    "A37.invalidation_on_product_change": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "invalidation"
+      ]
+    },
+    "A38.size_dimensions": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "gif_dimensions",
+        "gif_budget",
+        "poster_dimensions"
+      ]
+    },
+    "A38.readable_900": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "effective_font"
+      ],
+      "observations": [
+        "readable_at_900px"
+      ]
+    },
+    "A38.human_pacing_review": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "human_review"
+      ],
+      "observations": [
+        "human_pacing_review"
+      ]
+    },
+    "A38.inference_real_speed": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "cuts_outside_inference",
+        "answer_stream"
+      ]
+    },
+    "A39.media_links": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "readme_not_linking_rehearsal",
+        "output_hashes"
+      ],
+      "observations": [
+        "media_links_resolve"
+      ]
+    },
+    "A39.poster_alt_transcript": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "poster_dimensions",
+        "transcript_fixtures"
+      ],
+      "observations": [
+        "poster_alt_transcript"
+      ]
+    },
+    "A39.supported_motion_controls": {
+      "kind": "release_demo",
+      "repository": "starport",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
+      "checks": [
+        "readme_not_linking_rehearsal"
+      ],
+      "observations": [
+        "supported_motion_controls"
+      ]
+    },
     "A34.persistence_paths_and_cache_roles": {
       "kind": "all",
       "checks": [

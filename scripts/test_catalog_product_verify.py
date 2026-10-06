@@ -20,6 +20,7 @@ import constructor_network
 import cold_server
 import native_catalog
 from test_catalog_component_checks import ComponentCheckBoundaryTests
+from test_catalog_release_demo import ReleaseDemoTests
 from test_catalog_sdk import CatalogSDKTests
 
 
@@ -707,7 +708,7 @@ class RehearsalDemoTests(unittest.TestCase):
         self.assertIn('TimeoutExpired', result['reason'])
 
     def test_unimplemented_kinds_remain_unverified(self):
-        result = verifier.run_check('A36.final_capture', {'kind': 'release_demo', 'repository': 'starport'}, {'starport': self.root})
+        result = verifier.run_check('A36.final_capture', {'kind': 'final_capture', 'repository': 'starport'}, {'starport': self.root})
         self.assertEqual(result, {'status': 'UNVERIFIED', 'reason': 'This evidence adapter has not been implemented.'})
 
     def test_registry_binds_both_rehearsal_checks_to_csp21(self):
@@ -1715,7 +1716,7 @@ class CandidateRegistrationTests(unittest.TestCase):
 
     def test_registry_size_and_validation(self):
         verifier.validate_registry(self.registry, self.roster, verifier.validate_roster(self.roster))
-        self.assertEqual(len(self.registry['checks']), 317)
+        self.assertEqual(len(self.registry['checks']), 332)
 
     def test_backend_versions_and_region_boundary_bind_starport_tests(self):
         self.assertEqual(self.registry['checks']['A31.exact_backend_versions'], {'kind': 'all', 'checks': [
