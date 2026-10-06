@@ -37,9 +37,27 @@ The lead recorded these questions before it asked the owner. The owner reported 
 - Starmap PR #233 registers `A06.new_released_module` and `A06.starport_released_module_pin`, and extends `A06.old_pinned_bytes_unchanged` with the previous-pin comparison. It is scripts only.
 - Starport branch `codex/csp23-release-v1.3.0` pins Starmap `v0.17.0`. The test suite and the verify gates run before the pull request.
 
+## Public site decision of 2026-10-05
+
+The owner answered the public documentation question twice on 2026-10-05.
+
+1. First answer: the public host is `starport.agentstation.ai`. The `agentstation.ai` zone is on Cloudflare. The owner permits the use of the Cloudflare account for the setup and permits delegation to Codex. The agentstation domains may need a transfer into the agentstation Cloudflare account.
+2. Second answer: `starport.agentstation.ai` serves the Starport splash page. The documentation lives at `starport.agentstation.ai/docs`. The site uses Fumadocs in the same way as `https://docs.open-e2ee.dev/`.
+
+Facts that the lead verified on 2026-10-05:
+
+- `docs.open-e2ee.dev` is the open-e2ee console: Next.js 16 with `fumadocs-core` 16.11.4, `fumadocs-mdx` 15.1.1, and `@fumadocs/base-ui`. The `(home)` route group holds the splash page and `/docs` holds the documentation. Vercel serves it. The DNS record is a CNAME to Vercel on Cloudflare.
+- `agentstation.ai` resolves through `remy.ns.cloudflare.com` and `mina.ns.cloudflare.com`. `open-e2ee.dev` resolves through `jack.ns.cloudflare.com` and `dora.ns.cloudflare.com`. The two zones are in different Cloudflare accounts.
+- `starport.agentstation.ai` has no DNS record.
+
+Consequences for the plan:
+
+- The GitHub Pages path in `docs-pages.yaml` serves raw versioned documentation at `/<tag>/`. It does not produce a splash page or a Fumadocs site. The owner's direction supersedes the GitHub Pages option.
+- The site is a new deliverable with its own repository location, build, hosting, DNS, and deployment approval. It is not part of the release pair. CSP23 closes with `A29.public_url_content_manifest` and `A29.hosting_rollback` as documented limits that point to the new task.
+- The lead adds a sibling task for the public site after CSP23 closes. The task brief names the repository location, the hosting target, and the DNS change. It also names the release-to-site publication contract and the A29 subcases.
+
 ## Pending owner decisions
 
-1. Public documentation. CSP23 names versioned public docs. GitHub Pages stays disabled on `agentstation/starport`. Enabling it is new authority. The lead asked the owner on 2026-10-05 with these consequences:
-   - Enable: the owner sets the Pages source to GitHub Actions and creates the `github-pages` environment with a required reviewer. After the `v1.3.0` release, the lead starts `docs-pages.yaml` with tag `v1.3.0`. The owner approves the deployment. The site serves `https://agentstation.github.io/starport/v1.3.0/` and `/latest/`. The lead registers `A29.public_url_content_manifest` against that URL. `A29.hosting_rollback` needs an earlier release with a docs archive. Only `v1.3.0` has one, so that subcase stays a documented limit until the next release.
-   - Keep off: `A29.public_url_content_manifest` and `A29.hosting_rollback` stay UNVERIFIED. A29 fails its primary case in the final gate. The final 50-case result records A29 as UNVERIFIED, and no complete production claim follows.
-2. Real provider inference for CSP24. Real inference is a paid action outside the current authority. The README recording is the only real inference the plan needs.
+1. Hosting target for the public site. The exemplar runs on Vercel. The owner named the Cloudflare account. Vercel needs a Vercel project and a CNAME on Cloudflare. Cloudflare Workers needs the OpenNext adapter and a Workers route on the zone. The lead proposes Vercel to match the exemplar, with Cloudflare DNS only.
+2. Repository location for the site. The lead proposes a `website/` directory in `agentstation/starport` so that the site reads the release documentation from the same tree.
+3. Real provider inference for CSP24. Real inference is a paid action outside the current authority. The README recording is the only real inference the plan needs.
