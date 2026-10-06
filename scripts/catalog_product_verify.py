@@ -15,6 +15,7 @@ import sys
 import tempfile
 import time
 import zipfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -415,8 +416,8 @@ class EmbeddingMismatch(Exception):
     """Report readable catalog bytes that contradict their own record."""
 
 
-def checked_output(root, args):
-    return subprocess.run(args, cwd=root, check=True, capture_output=True, text=True, timeout=300,
+def checked_output(root, args, text=True):
+    return subprocess.run(args, cwd=root, check=True, capture_output=True, text=text, timeout=300,
                           env=dict(os.environ, GOTOOLCHAIN="go1.27.1", GOWORK="off", GOFLAGS="")).stdout
 
 
@@ -437,13 +438,19 @@ def checkout_generation(root):
     return embedded_generation(lambda name: (root / EMBEDDED_CATALOG / name).read_bytes())
 
 
-def attested_channel(root):
-    """Read catalog/v1 through the publication capture path and require attested bytes."""
+def publication_capture(root):
+    """Load the publication capture module of the repository under test."""
     spec = importlib.util.spec_from_file_location(
         "catalog_publication_capture", root / "scripts/catalog_publication_capture.py")
     capture = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(capture)
-    raw = base64.b64decode(capture.api(root, "contents/channel.json?ref=catalog%2Fv1")["content"], validate=False)
+    return capture
+
+
+def attested_channel(root, ref="catalog%2Fv1"):
+    """Read the catalog/v1 channel at ref through the publication capture path and require attested bytes."""
+    capture = publication_capture(root)
+    raw = base64.b64decode(capture.api(root, "contents/channel.json?ref=" + ref)["content"], validate=False)
     with tempfile.TemporaryDirectory(prefix="starmap-channel-") as temporary:
         path = Path(temporary) / "catalog-v1.json"
         path.write_bytes(raw)
@@ -626,8 +633,26 @@ def pinned_module_baseline(entry, roots):
                      "and keep their original generation. The current pin embeds the selected generation."}
 
 
+def channel_commit_at(root, moment):
+    """Return the last catalog/v1 commit that changes channel.json at or before moment."""
+    commits = publication_capture(root).api(
+        root, f"commits?sha=catalog%2Fv1&path=channel.json&until={moment}&per_page=1")
+    if not commits:
+        raise ValueError("catalog/v1 has no promotion at or before the release tag.")
+    commit = commits[0]["sha"]
+    if not re.fullmatch(r"[0-9a-f]{40}", str(commit)):
+        raise ValueError("The catalog/v1 commit history does not name one commit.")
+    return commit
+
+
+def tag_generation(root, version):
+    """Return the generation that the tree of one release tag embeds."""
+    return embedded_generation(lambda name: checked_output(
+        root, ["git", "show", f"{version}:{EMBEDDED_CATALOG}/{name}"], text=False))
+
+
 def released_module(entry, roots):
-    """Compare the released Starmap module with the checksum database, the checkout, and catalog/v1."""
+    """Compare the released Starmap module with the checksum database, its tag, and catalog/v1 at the tag time."""
     root = roots.get(entry.get("repository"))
     if root is None:
         return {"status": "UNVERIFIED", "reason": "The release repository is unavailable."}
@@ -641,19 +666,26 @@ def released_module(entry, roots):
             if module_hash(archive) != digest:
                 raise EmbeddingMismatch("The released Starmap module bytes differ from the checksum database record.")
             released = module_generation(archive, version)
-        checkout = checkout_generation(root)
-        channel, channel_digest = attested_channel(root)
+        # A later promotion moves catalog/v1, so compare with the channel at the tag commit time.
+        tag_commit = checked_output(root, ["git", "rev-parse", f"{version}^{{commit}}"]).strip()
+        committed = checked_output(root, ["git", "log", "-1", "--format=%cI", f"{version}^{{commit}}"]).strip()
+        moment = datetime.fromisoformat(committed).astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        tag_embedded = tag_generation(root, version)
+        channel_commit = channel_commit_at(root, moment)
+        channel, channel_digest = attested_channel(root, channel_commit)
     except EmbeddingMismatch as error:
         return {"status": "FAIL", "reason": str(error)}
     except (ImportError, *ENVIRONMENT_ERRORS) as error:
         return {"status": "UNVERIFIED", "reason": str(error)}
     promoted = {"generation_id": channel["generation_id"], "semantic_checksum": channel["catalog_digest"]}
     result = {"version": version, "module": f"{STARMAP_MODULE}@{version}", "sum": digest, "released": released,
-              "checkout": checkout, "promoted": promoted, "channel_sha256": channel_digest}
+              "tag_commit": tag_commit, "tag_committed_at": moment, "tag_embedded": tag_embedded,
+              "channel_commit": channel_commit, "channel_sequence": channel.get("sequence"), "promoted": promoted,
+              "channel_sha256": channel_digest}
     if released != promoted:
-        return result | {"status": "FAIL", "reason": "The released module embeds a generation that catalog/v1 does not promote."}
-    if checkout != released:
-        return result | {"status": "FAIL", "reason": "The checkout embeds a generation that the released module does not carry."}
+        return result | {"status": "FAIL", "reason": "The released module embeds a generation that catalog/v1 had not promoted at its tag."}
+    if tag_embedded != released:
+        return result | {"status": "FAIL", "reason": "The release tag embeds a generation that the released module does not carry."}
     return result | {"status": "PASS"}
 
 
