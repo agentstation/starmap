@@ -1,6 +1,6 @@
 # CSP23.1 public site at starport.agentstation.ai
 
-CSP23.1 remains in progress on 2026-10-07. The site is live. One A29 check waits on the owner beacon decision.
+CSP23.1 remains in progress on 2026-10-07. The site is live. The A29 rerun waits on Starmap #243 and the zone RUM re-enable.
 
 ## Site
 
@@ -39,4 +39,12 @@ The AgentStation account shows no RUM site for the `agentstation.ai` zone, and t
 
 On 2026-10-07, Codex created the Web Analytics site `starport.agentstation.ai` with manual setup in the AgentStation account. Codex also turned off the zone RUM injection.
 The verifier then received the manifest bytes, and the [final A29 run](csp23/a29-live-2026-10-07-pass.json) reports 5 PASS.
-Starport #432 writes the beacon tag with the new token `2a073dbb…` into the build with `src/app/layout.tsx`, so the manifest lists the served bytes. The task closes after the #432 merge, the deploy, and an A29 rerun.
+Starport #432 wrote the beacon tag with the new token `2a073dbb…` into the build, so the manifest would list the served bytes.
+
+## Analytics decision
+
+On 2026-10-07 the owner chose the automatic Web Analytics setup, the same setup as the other AgentStation sites. The manual snippet made this site a special case, and the byte-exact HTML rule was its only cost. The lead closed Starport #432 without merge.
+
+Starmap #243 (`3fb7a434`) changes `A29.public_url_content_manifest`. The check removes one Cloudflare beacon tag from each HTML page before the digest and reports the count as `beacon_pages`. Two tags on one page, a tag in a non-HTML file, or any other change still fail. Non-HTML files stay byte-exact. The [branch run](csp23/a29-live-2026-10-07-beacon-branch.json) reports 5 PASS with `beacon_pages` 0 while the zone injection stays off.
+
+The task closes after the #243 merge, the zone RUM re-enable in the AgentStation account, and an A29 rerun with `beacon_pages` above 0.
