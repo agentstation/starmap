@@ -54,7 +54,7 @@ def isolated_env(home):
 
 
 class Recorder:
-    """Run commands and record exit codes and timing. Stdout is kept only as a short summary."""
+    """Run commands and record exit codes and timing. The record keeps only a short summary of stdout."""
 
     def __init__(self):
         self.commands = []
@@ -298,7 +298,7 @@ def step_compose(output):
                   "JSON output keeps generated credentials in driver memory."],
               "proof_scope": "One native Compose process on Docker Desktop. Not replicated storage qualification."}
     parent = Path(tempfile.mkdtemp(prefix="starport-csp24-compose-"))
-    env_file, key, error = None, "", None  # A set env_file means the project may have started.
+    env_file, key, error = None, "", None  # A set env_file means a possible project start.
 
     def compose(args, timeout=300):
         result = subprocess.run(["docker", "compose", "-p", PROJECT, "-f", "docker-compose.yml"] + args, cwd=root,
