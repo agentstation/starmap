@@ -26,6 +26,10 @@ FETCH_TIMEOUT_SECONDS = 30
 FETCH_WORKERS = 8
 MISMATCH_LIMIT = 10
 USER_AGENT = "starmap-catalog-verify"
+# Cloudflare Web Analytics in its automatic setup adds one beacon script tag to each HTML response at the edge.
+# The site uses that setup, so the check removes one such tag from an HTML page before it compares the page with
+# the manifest. Every other byte, every other tag, and every non-HTML file must equal the manifest.
+BEACON_TAG = re.compile(rb'<script[^<>]*\ssrc="https://static\.cloudflareinsights\.com/beacon\.min\.js[^"<>]*"[^<>]*></script>')
 ROLLBACK_SCOPE = "Recorded rollback exercise plus the live manifest. This invocation did not deploy."
 # These errors prevent an observation. They do not show that the site is wrong.
 ENVIRONMENT_ERRORS = (OSError, ValueError, KeyError, TypeError, EOFError, zlib.error, http.client.HTTPException,
@@ -89,24 +93,33 @@ def archive_manifest(tag):
     return manifest, hashlib.sha256(data).hexdigest()
 
 
-def served_digest(address):
-    return hashlib.sha256(fetch_bytes(address, FETCH_TIMEOUT_SECONDS)).hexdigest()
+def served_digest(address, html):
+    """Return the sha256 of the served bytes and whether the check first removed one beacon tag from an HTML page."""
+    data = fetch_bytes(address, FETCH_TIMEOUT_SECONDS)
+    if html:
+        data, removed = BEACON_TAG.subn(b"", data, count=1)
+        return hashlib.sha256(data).hexdigest(), removed == 1
+    return hashlib.sha256(data).hexdigest(), False
 
 
 def served_mismatches(url, files):
-    """Return up to MISMATCH_LIMIT paths whose served bytes differ from the manifest. The first transport error stops the scan."""
+    """Return up to MISMATCH_LIMIT paths whose served bytes differ from the manifest and the count of HTML pages that
+    carried a beacon tag. The first transport error stops the scan."""
     addresses = {name: served_path(url, name) for name in files}
-    differing = []
+    differing, beacon_pages = [], 0
     with ThreadPoolExecutor(max_workers=FETCH_WORKERS) as pool:
-        futures = {pool.submit(served_digest, address): name for name, address in addresses.items()}
+        futures = {pool.submit(served_digest, address, name.endswith(".html")): name
+                   for name, address in addresses.items()}
         try:
             for future in as_completed(futures):
-                if future.result() != files[futures[future]]:
+                digest, removed = future.result()
+                beacon_pages += removed
+                if digest != files[futures[future]]:
                     differing.append(futures[future])
         except Exception:
             pool.shutdown(cancel_futures=True)
             raise
-    return sorted(differing)[:MISMATCH_LIMIT]
+    return sorted(differing)[:MISMATCH_LIMIT], beacon_pages
 
 
 def verify_manifest(entry, roots, release_version):
@@ -140,13 +153,13 @@ def verify_manifest(entry, roots, release_version):
             return result | {"status": "FAIL",
                              "reason": f"The public site content differs from the released documentation archive in {key}."}
     try:
-        mismatches = served_mismatches(url, manifest["files"])
+        mismatches, beacon_pages = served_mismatches(url, manifest["files"])
     except ENVIRONMENT_ERRORS as error:
         return result | unverified(error)
     if mismatches:
         return result | {"status": "FAIL", "reason": "The public site serves bytes that its manifest does not list.",
                          "mismatches": mismatches}
-    return result | {"status": "PASS", "files": len(manifest["files"])}
+    return result | {"status": "PASS", "files": len(manifest["files"]), "beacon_pages": beacon_pages}
 
 
 def valid_deploy(deploy):
