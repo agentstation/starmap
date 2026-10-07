@@ -145,10 +145,16 @@ Consumers must use that receipt for current review results instead of treating h
 Complete omission preserves the visible offering and records absence within its provider account scope.
 An explicit disabled-source removal discards that scope's local input history. It preserves the baseline.
 
-Replay currently accepts at most 4096 observations and 64 MiB of retained payloads.
+Replay accepts at most 4096 observations, and each observation record must fit in 64 MiB.
 The checkpoint byte limit is 256 MiB.
+Replay of an accepted checkpoint can read payloads up to that limit.
+Compaction then drops superseded inputs, and the retained history must fit in 64 MiB of payloads.
 Capacity errors preserve the previous accepted state and require operator recovery.
+
 Replay compacts repeated equivalent evidence when the smaller history preserves catalog bytes and current reviews.
+For each metadata source, the latest complete observation supersedes older observations.
+Compaction keeps an older observation while the catalog cites it.
+Field provenance, membership, current reviews, and offering timestamps can cite an observation.
 Distinct source changes can still reach the capacity limits.
 The command does not automatically adopt a prepared checkpoint.
 
