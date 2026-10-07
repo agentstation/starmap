@@ -16,6 +16,8 @@ import (
 // PrepareAcquisitionReplay returns a catalog generation and the original inputs needed for later replay.
 // It retains compacted inputs only when catalog facts, provenance, membership, and current reviews remain exact.
 // Current metadata reviews retain their latest original observation. Omission preserves the last review.
+//
+// The retained inputs must fit the retained payload bound. The supplied history can exceed it.
 // The caller authenticates the baseline and inputs. This function reads no sources or storage.
 func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings []sources.ProviderAcquisitionBinding, observations []sources.Observation, runID string, completedAt time.Time) (catalogs.Generation, []sources.Observation, error) {
 	candidate, err := replayAcquisition(ctx, baseline, publisherID, bindings, observations, true)
@@ -26,52 +28,103 @@ func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation,
 	if err != nil {
 		return catalogs.Generation{}, nil, err
 	}
-	selected, err := compactAcquisitionHistory(ctx, observations)
+	cited, err := replayCitations(expected, observations)
 	if err != nil {
 		return catalogs.Generation{}, nil, err
 	}
-	if len(selected) == len(observations) {
-		return expected, selected, nil
-	}
-	candidate, err = replayAcquisition(ctx, baseline, publisherID, bindings, selected, true)
+	selected, sizes, err := compactAcquisitionHistory(ctx, observations, cited)
 	if err != nil {
 		return catalogs.Generation{}, nil, err
 	}
-	actual, err := candidate.Generation(runID, completedAt)
-	if err != nil {
-		return catalogs.Generation{}, nil, err
+	if len(selected) != len(observations) {
+		candidate, err = replayAcquisition(ctx, baseline, publisherID, bindings, selected, true)
+		if err != nil {
+			return catalogs.Generation{}, nil, err
+		}
+		actual, err := candidate.Generation(runID, completedAt)
+		if err != nil {
+			return catalogs.Generation{}, nil, err
+		}
+		if !bytes.Equal(actual.Payload, expected.Payload) || !reflect.DeepEqual(actual.Manifest.ReviewCandidates, expected.Manifest.ReviewCandidates) {
+			selected = observations
+		}
 	}
-	if !bytes.Equal(actual.Payload, expected.Payload) || !reflect.DeepEqual(actual.Manifest.ReviewCandidates, expected.Manifest.ReviewCandidates) {
-		return expected, observations, ctx.Err()
+	retained := 0
+	for _, observation := range selected {
+		retained += sizes[observation.ID]
+	}
+	if retained > maxLayerBytes {
+		return catalogs.Generation{}, nil, &errors.ValidationError{Field: "replay.observations", Message: "exceeds the retained payload bound"}
 	}
 	return expected, selected, ctx.Err()
 }
 
-func compactAcquisitionHistory(ctx context.Context, observations []sources.Observation) ([]sources.Observation, error) {
+// replayCitations returns the observations that the generation still names.
+// Payload provenance, membership scopes, and review candidates each name their original observation.
+// A metadata pass stamps the offerings that it adds or changes with its observation time.
+// An offering timestamp therefore names each metadata observation at that time.
+func replayCitations(generation catalogs.Generation, observations []sources.Observation) (map[string]bool, error) {
+	catalog, err := catalogs.DecodeCatalogGeneration(generation)
+	if err != nil {
+		return nil, err
+	}
+	stamped := make(map[int64]bool)
+	catalog.Providers().ForEach(func(_ catalogs.ProviderID, provider *catalogs.Provider) bool {
+		for _, model := range provider.Models {
+			stamped[model.CreatedAt.Time().UnixNano()] = true
+			stamped[model.UpdatedAt.Time().UnixNano()] = true
+		}
+		return true
+	})
+	cited := make(map[string]bool)
+	for _, observation := range observations {
+		if observation.SourceID != sources.ProvidersID && stamped[observation.ObservedAt.UnixNano()] {
+			cited[observation.ID] = true
+		}
+	}
+	for _, entries := range catalog.Provenance().Map() {
+		for _, entry := range entries {
+			cited[entry.ObservationID] = true
+		}
+	}
+	for _, scope := range catalog.MembershipScopes() {
+		if scope.Inventory != nil {
+			cited[scope.Inventory.ObservationID] = true
+		}
+		for _, addition := range scope.Additions {
+			cited[addition.ObservationID] = true
+		}
+	}
+	for _, review := range generation.Manifest.ReviewCandidates {
+		cited[review.SourceObservationID] = true
+	}
+	return cited, nil
+}
+
+// compactAcquisitionHistory selects inputs for an exact replay and returns the payload size of each input.
+// The caller replays the selection and keeps the full history when the result differs.
+func compactAcquisitionHistory(ctx context.Context, observations []sources.Observation, cited map[string]bool) ([]sources.Observation, map[string]int, error) {
 	if ctx == nil {
-		return nil, &errors.ValidationError{Field: "context", Message: "is required"}
+		return nil, nil, &errors.ValidationError{Field: "context", Message: "is required"}
 	}
 	if len(observations) > maxManualHistoryBatches {
-		return nil, &errors.ValidationError{Field: "replay.observations", Message: "exceeds the retained history bound"}
+		return nil, nil, &errors.ValidationError{Field: "replay.observations", Message: "exceeds the retained history bound"}
 	}
 	var providers *manualBatch
 	var metadata []manualObservation
 	seen := make(map[string]bool, len(observations))
-	size := 0
+	sizes := make(map[string]int, len(observations))
 	for _, input := range observations {
 		if seen[input.ID] {
-			return nil, &errors.ValidationError{Field: "replay.observations", Message: "contains a duplicate observation identity"}
+			return nil, nil, &errors.ValidationError{Field: "replay.observations", Message: "contains a duplicate observation identity"}
 		}
 		seen[input.ID] = true
 		prepared, err := prepareManualObservations(ctx, []sources.Observation{input})
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		observation := prepared[0]
-		if len(observation.Payload) > maxLayerBytes-size {
-			return nil, &errors.ValidationError{Field: "replay.observations", Message: "exceeds the retained payload bound"}
-		}
-		size += len(observation.Payload)
+		sizes[input.ID] = len(observation.Payload)
 		if input.SourceID == sources.ProvidersID {
 			providers = &manualBatch{parent: providers, observations: prepared}
 		} else {
@@ -82,7 +135,7 @@ func compactAcquisitionHistory(ctx context.Context, observations []sources.Obser
 	// Provider compaction therefore uses one epoch regardless of metadata collection order.
 	compacted, err := compactProviderHistory(ctx, compactRepeatedReplayRounds(providers))
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	selected := make(map[string]bool)
 	for _, batch := range manualBatches(compacted) {
@@ -90,7 +143,7 @@ func compactAcquisitionHistory(ctx context.Context, observations []sources.Obser
 			selected[observation.Receipt.Link.ObservationID] = true
 		}
 	}
-	for _, observation := range metadata {
+	for _, observation := range supersedeReplayMetadata(metadata, cited) {
 		selected[observation.Receipt.Link.ObservationID] = true
 	}
 	retained := make([]sources.Observation, 0, len(selected))
@@ -105,7 +158,28 @@ func compactAcquisitionHistory(ctx context.Context, observations []sources.Obser
 		}
 		retained = append(retained, observation)
 	}
-	return retained, ctx.Err()
+	return retained, sizes, ctx.Err()
+}
+
+// supersedeReplayMetadata drops metadata that a later complete observation from the same source supersedes.
+// An older observation stays while the generation cites it. Inputs after the latest complete observation stay too.
+func supersedeReplayMetadata(history []manualObservation, cited map[string]bool) []manualObservation {
+	latest := make(map[sources.ID]int)
+	for index, observation := range history {
+		link := observation.Receipt.Link
+		if link.Completeness == sources.ObservationCompletenessComplete && link.Status == sources.ObservationStatusSucceeded {
+			latest[link.Source] = index
+		}
+	}
+	retained := make([]manualObservation, 0, len(history))
+	for index, observation := range history {
+		link := observation.Receipt.Link
+		if last, complete := latest[link.Source]; complete && index < last && !cited[link.ObservationID] {
+			continue
+		}
+		retained = append(retained, observation)
+	}
+	return retained
 }
 
 func appendReplayMetadata(history []manualObservation, current manualObservation) []manualObservation {
