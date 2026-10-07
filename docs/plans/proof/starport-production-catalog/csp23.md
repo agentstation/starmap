@@ -27,7 +27,7 @@ The task selects 10 subcases: 7 PASS, 1 FAIL, 2 UNVERIFIED. The other 48 cases w
 | `A29.recovery_without_auth` | PASS | |
 | `A29.no_dynamic_data_disclosure` | PASS | |
 | `A29.public_url_content_manifest` | FAIL | The analytics beacon changes the served HTML bytes. See below. |
-| `A29.hosting_rollback` | UNVERIFIED | The rollback record `csp23.1/rollback/rollback.json` does not exist yet. |
+| `A29.hosting_rollback` | UNVERIFIED | The roster ran before the rollback exercise. The [2026-10-07 rerun](csp23/a29-live-2026-10-07-rollback.json) reports PASS with 3 steps. |
 | `A35.released_installer_paths` | UNVERIFIED | The record `docs/assets/first-use-v1.3.0/record.json` waits on the CSP24 recording. |
 
 ## Open items
@@ -37,5 +37,6 @@ The live Worker serves the `v1.3.0` build, and its manifest equals the local bui
 Cloudflare Web Analytics injects a beacon script into HTML responses for the verifier user agent.
 The injected bytes differ from the manifest digests. The check stays strict. The owner turns off the automatic beacon in the Cloudflare dashboard.
 
-The rollback exercise needs two owner-run `wrangler rollback` commands. The lead captures each step and assembles the record.
+The rollback exercise ran on 2026-10-07. Starmap #242 publishes the record `csp23.1/rollback/rollback.json`.
+The [A29 rerun](csp23/a29-live-2026-10-07-rollback.json) reports 4 PASS and 1 FAIL. Only the beacon item remains open.
 Both items belong to [CSP23.1](csp23.1.md). CSP23 closes when A06 and A29 pass against the released modules and the public docs URL.
