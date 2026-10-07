@@ -23,11 +23,12 @@ CURRENT, OLDER = '1' * 40, '2' * 40
 PAGES = {'index.html': ('/', b'<home>'), 'docs/index.html': ('/docs', b'<docs>'),
          'docs/install.html': ('/docs/install', b'<install>'), 'docs/assets/site.css': ('/docs/assets/site.css', b'body{}')}
 MANIFEST_ENTRY = {'kind': 'public_site_manifest', 'repository': 'starport', 'url': SITE}
-# The tag that Cloudflare Web Analytics adds to an HTML response at the edge. The attribute values change per deploy.
+# The bytes that Cloudflare Web Analytics adds to an HTML response at the edge: the tag, then one newline. The
+# attribute values change per deploy.
 BEACON = (b'<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7'
           b'a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexC'
           b'L0KEQwVYv5BlowfhVz26hg==" data-cf-beacon=\'{"version":"2024.11.0","token":"' + b'0' * 32
-          + b'","r":1,"spa":2}\' crossorigin="anonymous"></script>')
+          + b'","r":1,"spa":2}\' crossorigin="anonymous"></script>\n')
 
 
 def digest(data):

@@ -28,8 +28,9 @@ MISMATCH_LIMIT = 10
 USER_AGENT = "starmap-catalog-verify"
 # Cloudflare Web Analytics in its automatic setup adds one beacon script tag to each HTML response at the edge.
 # The site uses that setup, so the check removes one such tag from an HTML page before it compares the page with
-# the manifest. Every other byte, every other tag, and every non-HTML file must equal the manifest.
-BEACON_TAG = re.compile(rb'<script[^<>]*\ssrc="https://static\.cloudflareinsights\.com/beacon\.min\.js[^"<>]*"[^<>]*></script>')
+# the manifest. The edge writes one newline after the tag. Every other byte, every other tag, and every non-HTML
+# file must equal the manifest.
+BEACON_TAG = re.compile(rb'<script[^<>]*\ssrc="https://static\.cloudflareinsights\.com/beacon\.min\.js[^"<>]*"[^<>]*></script>\n?')
 ROLLBACK_SCOPE = "Recorded rollback exercise plus the live manifest. This invocation did not deploy."
 # These errors prevent an observation. They do not show that the site is wrong.
 ENVIRONMENT_ERRORS = (OSError, ValueError, KeyError, TypeError, EOFError, zlib.error, http.client.HTTPException,
