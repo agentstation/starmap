@@ -1,6 +1,6 @@
 # CSP23 compatible releases and versioned docs
 
-CSP23 remains in progress on 2026-10-06. The release workflows published both releases. Two checks wait on owner actions, and one waits on CSP24.
+CSP23 reached its acceptance on 2026-10-07. The release workflows published both releases. A06 passes 4 of 4 and A29 passes 5 of 5 against the live site. A35 belongs to CSP24.
 
 ## Published pair
 
@@ -38,5 +38,7 @@ Cloudflare Web Analytics injects a beacon script into HTML responses for the ver
 The injected bytes differ from the manifest digests. The check stays strict. The owner turns off the automatic beacon in the Cloudflare dashboard.
 
 The rollback exercise ran on 2026-10-07. Starmap #242 merged the record `csp23.1/rollback/rollback.json` as `e4e25c2ad`.
-The [A29 rerun](csp23/a29-live-2026-10-07-rollback.json) reports 4 PASS and 1 FAIL. Only the beacon item remains open.
-Both items belong to [CSP23.1](csp23.1.md). CSP23 closes when A06 and A29 pass against the released modules and the public docs URL.
+The [A29 rerun after the rollback](csp23/a29-live-2026-10-07-rollback.json) reports 4 PASS and 1 FAIL.
+The owner then created a manual-setup Web Analytics site in the AgentStation account and turned off the zone RUM injection.
+The [final A29 run](csp23/a29-live-2026-10-07-pass.json) reports 5 PASS against the live Worker version `bb08210b`.
+Both items belong to [CSP23.1](csp23.1.md). CSP23 meets its acceptance: A06 and A29 pass against the released modules and the public docs URL.

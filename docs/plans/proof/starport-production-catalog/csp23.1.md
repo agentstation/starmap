@@ -36,4 +36,7 @@ Starmap #242 merged `csp23.1/rollback/rollback.json` with schema version 1 and t
 ## Beacon
 
 The AgentStation account shows no RUM site for the `agentstation.ai` zone, and the edge still injects the token `eafc8874…`. That record is an orphan from the account that held the zone before the 2026-10-05 move.
-Starport #432 writes the beacon tag into the build with `src/app/layout.tsx`, so the manifest lists the served bytes. The owner creates a manual-setup site in the AgentStation account, disables the zone RUM injection, and supplies the new token for #432.
+
+On 2026-10-07, Codex created the Web Analytics site `starport.agentstation.ai` with manual setup in the AgentStation account. Codex also turned off the zone RUM injection.
+The verifier then received the manifest bytes, and the [final A29 run](csp23/a29-live-2026-10-07-pass.json) reports 5 PASS.
+Starport #432 writes the beacon tag with the new token `2a073dbb…` into the build with `src/app/layout.tsx`, so the manifest lists the served bytes. The task closes after the #432 merge, the deploy, and an A29 rerun.
