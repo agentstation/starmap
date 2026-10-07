@@ -99,6 +99,16 @@ def validate_registry(registry, roster, checks):
         allowed = {identity for case in COMPONENT_CASES[task] for identity in roster["required_subcases"][case]}
         if not isinstance(entries, dict) or not set(entries) <= allowed.intersection(roster["task_checks"][task]):
             raise ValueError("Producer component checks exceed their approved task contract.")
+    pending = list(registry["checks"].items())
+    while pending:
+        identity, entry = pending.pop()
+        if entry.get("kind") == "all":
+            pending.extend((identity, child) for child in entry.get("checks", []))
+        elif entry.get("kind") == "reviewed_demo":
+            try:
+                validate_reviewed_demo_entry(entry)
+            except ValueError as error:
+                raise ValueError(f"{identity}: {error}") from None
 
 
 def registered_check(args, registry, identity):
@@ -796,61 +806,82 @@ def reviewed_artifacts(entry, roots, medium):
         return {"status": "UNVERIFIED", "reason": str(error)}
 
 
+def validate_reviewed_demo_entry(entry):
+    """Require the release record fields that bind a README media review to the Starport verifier."""
+    if "asset_directory" in entry:
+        raise ValueError("A README media review binds a release record, not an asset directory.")
+    for name in ("proof", "manifest", "record"):
+        value = entry.get(name)
+        if not isinstance(value, str) or not value or Path(value).is_absolute() or ".." in Path(value).parts:
+            raise ValueError(f"A README media review needs a relative {name} path.")
+    if not isinstance(entry.get("release"), str) or not STABLE_VERSION.fullmatch(entry["release"]):
+        raise ValueError("A README media review needs a stable release tag.")
+    inputs = entry.get("required_inputs")
+    bound = {entry["manifest"], f"{entry['record'].rstrip('/')}/record.json"}
+    if not isinstance(inputs, list) or not all(isinstance(name, str) for name in inputs) or not bound <= set(inputs):
+        raise ValueError("A README media review must hash the demonstration manifest and the release record.")
+    observations = entry.get("observations")
+    if not isinstance(observations, list) or not observations or not all(isinstance(name, str) and name for name in observations):
+        raise ValueError("A README media review needs named observations.")
+
+
 def reviewed_demo(entry, roots):
-    """Require readable media and edits that preserve the real inference interval."""
+    """Require a current README media review of a release record that passes every Starport verifier check.
+
+    An absent repository, manifest, record, or review gives UNVERIFIED because the evidence does not exist yet.
+    A stale review, or a review of a different release, also gives UNVERIFIED.
+    After the record exists, every record and verifier claim must hold, and a broken claim gives FAIL.
+    """
+    root = roots.get(entry.get("repository"))
+    if root is None:
+        return {"status": "UNVERIFIED", "reason": "The Starport repository is unavailable."}
+    try:
+        validate_reviewed_demo_entry(entry)
+        manifest_path = contained_path(root, entry["manifest"])
+        record_path = contained_path(contained_path(root, entry["record"]), "record.json")
+    except ValueError as error:
+        return {"status": "FAIL", "reason": str(error)}
+    release = entry["release"]
+    if not manifest_path.is_file():
+        return {"status": "UNVERIFIED", "reason": f"The demonstration manifest is absent: {entry['manifest']}"}
+    if not record_path.is_file():
+        return {"status": "UNVERIFIED", "reason": f"The release record is absent: {entry['record']}/record.json"}
+    try:
+        record = read_json(record_path)
+        validate_release_record(record, release)
+    except json.JSONDecodeError:
+        return {"status": "FAIL", "reason": "The release record contains invalid JSON."}
+    except UnicodeError:
+        return {"status": "FAIL", "reason": "The release record contains invalid text."}
+    except ValueError as error:
+        return {"status": "FAIL", "reason": str(error)}
+    except OSError as error:
+        return {"status": "FAIL", "reason": f"The release record cannot be read: {type(error).__name__}"}
     checked = reviewed_artifacts(entry, roots, "media")
     if checked["status"] != "PASS":
         return checked
-    try:
-        proof = contained_path(ROOT, entry["proof"])
-        review = read_json(proof)
-        if not {review["capture"], review["render"]} <= review["captures"].keys():
-            raise ValueError("The media review must retain capture and render records.")
-        capture = read_json(contained_path(proof.parent, review["capture"]))
-        render = read_json(contained_path(proof.parent, review["render"]))
-        if capture.get("verdict") != "PASS" or capture.get("release") != review["release"]:
-            raise ValueError("The demonstration needs a successful capture of its release.")
-        if capture.get("response_status") != 200 or capture.get("stream_events", [{}])[-1].get("data") != "[DONE]":
-            raise ValueError("The demonstration needs a complete real inference stream.")
-        chunks = [json.loads(event["data"]) for event in capture["stream_events"][:-1]]
-        if not any(choice.get("delta", {}).get("content") for chunk in chunks for choice in chunk.get("choices", [])):
-            raise ValueError("The demonstration contains no model response.")
-        if (capture.get("persistent_selectors_present") != [] or capture.get("remaining_home_files") != []
-                or capture.get("catalog_environment_has_provider_key") is not False
-                or capture.get("shutdown_exit_code") != 0 or capture.get("scratch_removed") is not True):
-            raise ValueError("The capture does not establish temporary, keyless first use and cleanup.")
-        start, end = capture["inference_start_seconds"], capture["inference_end_seconds"]
-        if not 0 <= start < end:
-            raise ValueError("The inference interval is invalid.")
-        if render["capture_sha256"] != hashlib.sha256(contained_path(proof.parent, review["capture"]).read_bytes()).hexdigest():
-            raise ValueError("The renderer used a different capture.")
-        if render["width"] < 1280 or render["effective_font_at_900px"] < 14:
-            raise ValueError("The demonstration does not meet the readable dimensions.")
-        for edit in render["edits"]:
-            index = edit["before_event"]
-            if not isinstance(index, int) or not 0 < index < len(capture["events"]):
-                raise ValueError("The edit does not identify a captured interval.")
-            left, right = capture["events"][index - 1]["seconds"], capture["events"][index]["seconds"]
-            if (abs(edit["original_gap_seconds"] - (right - left)) > 0.000001
-                    or not math.isfinite(edit["edited_gap_seconds"]) or edit["edited_gap_seconds"] < 0):
-                raise ValueError("The edit does not match the captured interval.")
-            if left < end and right > start:
-                raise ValueError("An edit changes the inference interval.")
-        for name in ("first-use.gif", "first-use-uncut.gif"):
-            artifact = contained_path(roots[entry["repository"]], entry["asset_directory"] + "/" + name)
-            output = render["outputs"][name]
-            if output["sha256"] != hashlib.sha256(artifact.read_bytes()).hexdigest() or output["bytes"] != artifact.stat().st_size:
-                raise ValueError("The rendered artifact changed.")
-            header = artifact.read_bytes()[:10]
-            if (header[:6] not in (b"GIF87a", b"GIF89a")
-                    or int.from_bytes(header[6:8], "little") != render["width"]
-                    or int.from_bytes(header[8:10], "little") != render["height"]):
-                raise ValueError("The GIF dimensions do not match the render record.")
-        if render["outputs"]["first-use.gif"]["bytes"] >= 10 * 1024 * 1024:
-            raise ValueError("The GIF exceeds the project size budget.")
-        return checked
-    except (OSError, ValueError, KeyError, TypeError, IndexError) as error:
-        return {"status": "UNVERIFIED", "reason": str(error)}
+    if read_json(Path(checked["proof"])).get("release") != release:
+        return {"status": "UNVERIFIED", "reason": f"The media review is not a review of {release}.", "proof": checked["proof"]}
+    run = release_verifier(root, entry["manifest"], entry["record"])
+    if run["status"] != "PASS":
+        return run
+    report = run["report"]
+    if report.get("kind") != "release":
+        return {"status": "FAIL", "reason": f"The demonstration verifier checked a {report.get('kind')!r} record, not a release record.",
+                "command": run["command"]}
+    rows = {check.get("id"): check for check in run["checks"] if isinstance(check, dict)}
+    selected = [rows.get(name, {"id": name}) for name in REHEARSAL_VERIFIER_CHECKS]
+    failed = [row["id"] for row in selected if row.get("status") != "PASS"]
+    if failed:
+        return {"status": "FAIL", "reason": f"The demonstration verifier does not pass: {', '.join(failed)}.",
+                "checks": selected, "command": run["command"]}
+    return checked | {
+        "reason": "The current media review and every Starport verifier check support the release record.",
+        "record": str(record_path), "record_sha256": hashlib.sha256(record_path.read_bytes()).hexdigest(),
+        "release": release, "candidate_head": record["candidate"]["head_commit"], "checks": selected,
+        "command": run["command"],
+        "scope": "Recorded manual media observations of the release record. This invocation ran the Starport verifier "
+                 "again on the retained record. It did not repeat the capture or call a provider."}
 
 
 REHEARSAL_OUTPUTS = ("first-use.gif", "poster.png", "events.json", "render.json", "TRANSCRIPT.md")

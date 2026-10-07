@@ -1,0 +1,18 @@
+Emulation configured successfully
+Emulating viewport: {"deviceScaleFactor":1,"isMobile":false,"hasTouch":false,"isLandscape":false,"width":948,"height":920}
+Emulating color scheme: light
+Successfully reloaded the page.
+Emulating viewport: {"deviceScaleFactor":1,"isMobile":false,"hasTouch":false,"isLandscape":false,"width":948,"height":920}
+Emulating color scheme: light
+## Pages
+1: about:blank
+2: Relay Delivery Versions (file:///tmp/relay-delivery-versions-preview.html)
+3: Starport README media review v1.3.0 (file:///private/tmp/starmap-csp24-proof-20261006/docs/plans/proof/starport-production-catalog/csp24/media/readme-preview.html) [selected]
+Script ran on page and returned:
+```json
+{"width":948,"scrollWidth":948,"posterWidth":900,"loaded":1280,"alt":"Starport returns a real streamed OpenAI answer after installation, catalog inspection, and provider setup. Select the preview to play.","transcript":true,"scheme":"light","background":"rgb(255, 255, 255)"}
+```
+Took a screenshot of the current page's viewport.
+Saved screenshot to /private/tmp/starmap-csp24-proof-20261006/docs/plans/proof/starport-production-catalog/csp24/media/readme-light.png.
+Emulating viewport: {"deviceScaleFactor":1,"isMobile":false,"hasTouch":false,"isLandscape":false,"width":948,"height":920}
+Emulating color scheme: light

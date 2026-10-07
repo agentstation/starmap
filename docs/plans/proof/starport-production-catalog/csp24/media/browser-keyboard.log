@@ -1,0 +1,14 @@
+Successfully reloaded the page.
+Emulating viewport: {"deviceScaleFactor":1,"isMobile":false,"hasTouch":false,"isLandscape":false,"width":320,"height":900}
+Emulating color scheme: dark
+## Pages
+1: about:blank
+2: Relay Delivery Versions (file:///tmp/relay-delivery-versions-preview.html)
+3: Starport README media review v1.3.0 (file:///private/tmp/starmap-csp24-proof-20261006/docs/plans/proof/starport-production-catalog/csp24/media/readme-preview.html) [selected]
+Successfully pressed key: Tab
+Emulating viewport: {"deviceScaleFactor":1,"isMobile":false,"hasTouch":false,"isLandscape":false,"width":320,"height":900}
+Emulating color scheme: dark
+Script ran on page and returned:
+```json
+{"focusedHref":"file:///private/tmp/starport-readme-demo-20261006/docs/assets/first-use-v1.3.0/first-use.gif","focusVisible":true}
+```

@@ -1,0 +1,11 @@
+Emulation configured successfully
+Emulating viewport: {"deviceScaleFactor":1,"isMobile":false,"hasTouch":false,"isLandscape":false,"width":320,"height":900}
+Emulating color scheme: dark
+Script ran on page and returned:
+```json
+{"width":320,"scrollWidth":320,"posterWidth":272,"loaded":1280,"alt":"Starport returns a real streamed OpenAI answer after installation, catalog inspection, and provider setup. Select the preview to play.","transcript":true,"scheme":"dark","background":"rgb(13, 17, 23)"}
+```
+Took a screenshot of the current page's viewport.
+Saved screenshot to /private/tmp/starmap-csp24-proof-20261006/docs/plans/proof/starport-production-catalog/csp24/media/readme-narrow.png.
+Emulating viewport: {"deviceScaleFactor":1,"isMobile":false,"hasTouch":false,"isLandscape":false,"width":320,"height":900}
+Emulating color scheme: dark

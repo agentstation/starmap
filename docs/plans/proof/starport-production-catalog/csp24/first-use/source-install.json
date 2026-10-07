@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "method": "readme-source-build",
+  "release": "v1.3.0",
+  "started_at": "2026-10-06T14:30:20Z",
+  "source_commit": "b649dbf5184e53b2c13449b96fc887bcb144e18c",
+  "go_mod_sha256": "cb97b8a1524fddf3f493f46f010f3985dc66b63e77f121c23a0e6ea79f9fccd1",
+  "binary_sha256": "8fd3253dd2fa703a28e3d2bd76fedb4c8ad966081f862dac6143ee3b4ab224ac",
+  "version": "starport version v1.3.0",
+  "user_files": [],
+  "commands": [
+    {
+      "command": [
+        "git",
+        "clone",
+        "--depth",
+        "1",
+        "--branch",
+        "v1.3.0",
+        "https://github.com/agentstation/starport.git",
+        "starport"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.173
+    },
+    {
+      "command": [
+        "make",
+        "build"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 22.737
+    },
+    {
+      "command": [
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-csp24-source-1ve09wwc/starport/starport",
+        "--version"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.216,
+      "version": "starport version v1.3.0"
+    },
+    {
+      "command": [
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-csp24-source-1ve09wwc/starport/starport",
+        "models",
+        "search",
+        "gpt-4o",
+        "--json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.906,
+      "result_count": 18,
+      "includes_model": true
+    },
+    {
+      "command": [
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-csp24-source-1ve09wwc/starport/starport",
+        "models",
+        "show",
+        "openai/gpt-4o-mini",
+        "--json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.898,
+      "model_id": "openai/gpt-4o-mini"
+    }
+  ],
+  "verdict": "PASS"
+}

@@ -1,4 +1,4 @@
-"""Test the release demonstration adapter against a synthetic Starport tree."""
+"""Test the release demonstration adapters against a synthetic Starport tree."""
 
 import hashlib
 import json
@@ -12,8 +12,8 @@ from unittest.mock import patch
 import catalog_product_verify as verifier
 
 
-class ReleaseDemoTests(unittest.TestCase):
-    """Exercise the release demonstration adapter against a synthetic Starport tree."""
+class ReleaseRecordFixture:
+    """Build a synthetic Starport tree with a release record and a stub demonstration verifier."""
 
     MANIFEST = 'docs/assets/starport-demo.json'
     RECORD = 'docs/assets/first-use-v1.3.0'
@@ -53,10 +53,6 @@ class ReleaseDemoTests(unittest.TestCase):
         script.parent.mkdir()
         script.write_text('printf "%s\\n" "$@" > arguments.out\necho run >> calls.out\ncat report.out\nexit "$(cat exit.code)"\n')
 
-    def entry(self, **changes):
-        return {'kind': 'release_demo', 'repository': 'starport', 'manifest': self.MANIFEST, 'record': self.RECORD,
-                'release': 'v1.3.0', 'checks': ['scene_order', 'catalog_keyless'], **changes}
-
     def write(self):
         (self.root / self.MANIFEST).write_text(json.dumps(self.manifest))
         (self.record_directory / 'record.json').write_text(json.dumps(self.record))
@@ -69,6 +65,14 @@ class ReleaseDemoTests(unittest.TestCase):
             'inputs': {name: hashlib.sha256((self.root / name).read_bytes()).hexdigest()
                        for name in ['README.md'] + [f'{self.RECORD}/{name}' for name in verifier.REHEARSAL_OUTPUTS]}}
         (self.record_directory / 'review.json').write_text(json.dumps(review))
+
+
+class ReleaseDemoTests(ReleaseRecordFixture, unittest.TestCase):
+    """Exercise the release demonstration adapter against a synthetic Starport tree."""
+
+    def entry(self, **changes):
+        return {'kind': 'release_demo', 'repository': 'starport', 'manifest': self.MANIFEST, 'record': self.RECORD,
+                'release': 'v1.3.0', 'checks': ['scene_order', 'catalog_keyless'], **changes}
 
     def check(self, entry=None, write=True):
         verifier.RELEASE_DEMO_REPORTS.clear()
@@ -271,6 +275,172 @@ class ReleaseDemoTests(unittest.TestCase):
                 self.assertTrue(set(entry['checks']) <= set(verifier.REHEARSAL_VERIFIER_CHECKS))
                 self.assertEqual(verifier.release_demo(entry, {}), {
                     'status': 'UNVERIFIED', 'reason': 'The Starport repository is unavailable.'})
+
+
+class ReviewedDemoTests(ReleaseRecordFixture, unittest.TestCase):
+    """Exercise the README media review of a release record against synthetic Starmap and Starport trees."""
+
+    PROOF = 'proof/media-review.json'
+
+    def setUp(self):
+        super().setUp()
+        starmap = tempfile.TemporaryDirectory()
+        self.addCleanup(starmap.cleanup)
+        self.starmap = Path(starmap.name)
+        (self.starmap / 'proof').mkdir()
+        (self.starmap / 'proof/readme-light.png').write_bytes(b'light')
+        patcher = patch.object(verifier, 'ROOT', self.starmap)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.media_review = {}
+
+    def entry(self, **changes):
+        inputs = ['README.md', self.MANIFEST, f'{self.RECORD}/record.json', f'{self.RECORD}/first-use-uncut.gif',
+                  *(f'{self.RECORD}/{name}' for name in verifier.REHEARSAL_OUTPUTS)]
+        return {'kind': 'reviewed_demo', 'repository': 'starport', 'proof': self.PROOF, 'manifest': self.MANIFEST,
+                'record': self.RECORD, 'release': 'v1.3.0', 'required_inputs': inputs,
+                'observations': ['readable_at_900px'], **changes}
+
+    def write(self):
+        super().write()
+        digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+        review = {'schema_version': 1, 'verdict': 'PASS', 'release': 'v1.3.0', 'observations': {'readable_at_900px': True},
+                  'inputs': {name: digest(self.root / name) for name in self.entry()['required_inputs']},
+                  'captures': {'readme-light.png': digest(self.starmap / 'proof/readme-light.png')}}
+        (self.starmap / self.PROOF).write_text(json.dumps(review | self.media_review))
+
+    def check(self, entry=None, write=True):
+        verifier.RELEASE_DEMO_REPORTS.clear()
+        if write:
+            self.write()
+        return verifier.run_check('E03', entry or self.entry(), {'starport': self.root})
+
+    def test_current_review_and_release_record_pass(self):
+        result = self.check()
+        self.assertEqual(result['status'], 'PASS', result)
+        proof = self.starmap / self.PROOF
+        self.assertEqual((result['proof'], result['proof_sha256']), (str(proof), hashlib.sha256(proof.read_bytes()).hexdigest()))
+        self.assertEqual(result['checks'], [{'id': name, 'status': 'PASS', 'detail': 'ok'} for name in verifier.REHEARSAL_VERIFIER_CHECKS])
+        self.assertEqual((result['release'], result['candidate_head']), ('v1.3.0', 'a' * 40))
+        self.assertIn('did not repeat the capture or call a provider', result['scope'])
+        self.assertEqual((self.root / 'arguments.out').read_text().splitlines(),
+                         ['--manifest', self.MANIFEST, '--record', self.RECORD, '--json'])
+
+    def test_failed_verifier_check_or_unqualified_record_fails(self):
+        failed = deepcopy(self.report)
+        failed['status'] = 'FAIL'
+        failed['checks'][verifier.REHEARSAL_VERIFIER_CHECKS.index('human_review')]['status'] = 'FAIL'
+        incomplete = dict(self.report, checks=[row for row in self.report['checks'] if row['id'] != 'human_review'])
+        report, record = self.report, self.record
+        cases = {
+            'failed human review': (1, failed, record, 'Failed checks: human_review'),
+            'missing human review': (0, incomplete, record, 'Missing checks: human_review'),
+            'rehearsal report': (0, dict(report, kind='rehearsal'), record, "'rehearsal' record"),
+            'rehearsal record': (0, report, dict(record, kind='rehearsal'), 'kind release'),
+            'other release': (0, report, record | {'candidate': record['candidate'] | {'release_tag': 'v1.2.0'}},
+                              "'v1.2.0', not v1.3.0"),
+        }
+        for name, (code, changed_report, changed_record, reason) in cases.items():
+            with self.subTest(name):
+                self.exit_code, self.report, self.record = code, changed_report, changed_record
+                result = self.check()
+                self.assertEqual(result['status'], 'FAIL', result)
+                self.assertIn(reason, result['reason'])
+
+    def test_absent_evidence_is_unverified(self):
+        self.assertEqual(verifier.run_check('E03', self.entry(), {}),
+                         {'status': 'UNVERIFIED', 'reason': 'The Starport repository is unavailable.'})
+        result = self.check(write=False)
+        self.assertEqual(result['status'], 'UNVERIFIED')
+        self.assertIn('manifest is absent', result['reason'])
+        self.write()
+        (self.record_directory / 'record.json').unlink()
+        result = self.check(write=False)
+        self.assertEqual(result, {'status': 'UNVERIFIED', 'reason': f'The release record is absent: {self.RECORD}/record.json'})
+        self.write()
+        (self.starmap / self.PROOF).unlink()
+        result = self.check(write=False)
+        self.assertEqual(result['status'], 'UNVERIFIED')
+        self.assertIn('media-review.json', result['reason'])
+        self.assertFalse((self.root / 'calls.out').exists())
+
+    def test_stale_review_is_unverified(self):
+        cases = {
+            'changed README': (lambda: (self.root / 'README.md').write_text(self.readme + 'Changed after review.\n'),
+                               'stale: README.md'),
+            'changed record': (lambda: (self.record_directory / 'record.json').write_text(json.dumps(self.record | {'notes': 'x'})),
+                               f'stale: {self.RECORD}/record.json'),
+            'changed capture': (lambda: (self.starmap / 'proof/readme-light.png').write_bytes(b'changed'),
+                                'reviewed capture changed: readme-light.png'),
+        }
+        for name, (change, reason) in cases.items():
+            with self.subTest(name):
+                self.write()
+                change()
+                result = self.check(write=False)
+                self.assertEqual(result['status'], 'UNVERIFIED', result)
+                self.assertIn(reason, result['reason'])
+        self.media_review = {'inputs': {'README.md': hashlib.sha256(self.readme.encode()).hexdigest()}}
+        result = self.check()
+        self.assertEqual(result['status'], 'UNVERIFIED', result)
+        self.assertIn('omits required source inputs', result['reason'])
+        self.assertFalse((self.root / 'calls.out').exists())
+
+    def test_review_of_another_release_is_unverified(self):
+        self.media_review = {'release': 'v1.2.0'}
+        result = self.check()
+        self.assertEqual(result['status'], 'UNVERIFIED', result)
+        self.assertEqual(result['reason'], 'The media review is not a review of v1.3.0.')
+        self.assertFalse((self.root / 'calls.out').exists())
+        self.media_review = {}
+        self.assertEqual(self.check()['status'], 'PASS')
+
+    def test_invalid_entry_fails(self):
+        entry = self.entry()
+        cases = {
+            'legacy asset directory': (self.entry(asset_directory='docs/assets/first-use-v1.2.0'), 'not an asset directory'),
+            'no manifest': ({key: value for key, value in entry.items() if key != 'manifest'}, 'relative manifest path'),
+            'no record': ({key: value for key, value in entry.items() if key != 'record'}, 'relative record path'),
+            'escaping record': (self.entry(record='../first-use-v1.3.0'), 'relative record path'),
+            'no release': ({key: value for key, value in entry.items() if key != 'release'}, 'stable release tag'),
+            'prerelease tag': (self.entry(release='v1.3.0-rc.1'), 'stable release tag'),
+            'unhashed record': (self.entry(required_inputs=['README.md', self.MANIFEST]), 'hash the demonstration manifest'),
+            'no observations': (self.entry(observations=[]), 'named observations'),
+        }
+        for name, (changed, reason) in cases.items():
+            with self.subTest(name):
+                result = self.check(changed)
+                self.assertEqual(result['status'], 'FAIL', result)
+                self.assertIn(reason, result['reason'])
+
+    def test_registry_binds_e03_to_the_release_record(self):
+        roster = verifier.read_json(verifier.ROSTER)
+        registry = verifier.read_json(verifier.REGISTRY)
+        checks = verifier.validate_roster(roster)
+        verifier.validate_registry(registry, roster, checks)
+        entry = registry['checks']['E03']
+        self.assertEqual({key: entry[key] for key in ('kind', 'repository', 'manifest', 'record', 'release')}, {
+            'kind': 'reviewed_demo', 'repository': 'starport', 'manifest': self.MANIFEST, 'record': self.RECORD,
+            'release': 'v1.3.0'})
+        self.assertEqual(entry['required_inputs'], [
+            'README.md', self.MANIFEST, *(f'{self.RECORD}/{name}' for name in (
+                'record.json', 'render.json', 'events.json', 'TRANSCRIPT.md', 'first-use.gif', 'first-use-uncut.gif',
+                'poster.png')),
+            *(f'scripts/readme-demo/{name}' for name in ('capture.py', 'render.py', 'verify.py'))])
+        self.assertEqual(verifier.reviewed_demo(entry, {}), {
+            'status': 'UNVERIFIED', 'reason': 'The Starport repository is unavailable.'})
+        legacy = {key: value for key, value in entry.items() if key != 'manifest'}
+        cases = {
+            'no manifest': (legacy, 'E03: A README media review needs a relative manifest path.'),
+            'asset directory': (entry | {'asset_directory': 'docs/assets/first-use-v1.2.0'}, 'E03: .*not an asset directory'),
+            'nested entry': ({'kind': 'all', 'checks': [legacy]}, 'E03: .*manifest path'),
+        }
+        for name, (changed, reason) in cases.items():
+            with self.subTest(name):
+                broken = deepcopy(registry)
+                broken['checks']['E03'] = changed
+                with self.assertRaisesRegex(ValueError, reason):
+                    verifier.validate_registry(broken, roster, checks)
 
 
 if __name__ == '__main__':

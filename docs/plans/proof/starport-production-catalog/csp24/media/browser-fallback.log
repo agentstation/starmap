@@ -1,0 +1,21 @@
+Script ran on page and returned:
+```json
+true
+```
+Emulating viewport: {"deviceScaleFactor":1,"isMobile":false,"hasTouch":false,"isLandscape":false,"width":320,"height":900}
+Emulating color scheme: dark
+## Latest page snapshot
+uid=1_0 RootWebArea "Starport README media review v1.3.0" url="file:///private/tmp/starmap-csp24-proof-20261006/docs/plans/proof/starport-production-catalog/csp24/media/readme-preview.html"
+  uid=1_1 main
+    uid=1_2 heading "Starport" level="1"
+    uid=1_3 link "Starport returns a real streamed OpenAI answer after installation, catalog inspection, and provider setup. Select the preview to play." focusable focused url="file:///private/tmp/starport-readme-demo-20261006/docs/assets/first-use-v1.3.0/first-use.gif"
+      uid=1_4 image "Starport returns a real streamed OpenAI answer after installation, catalog inspection, and provider setup. Select the preview to play." url="file:///unavailable-starport-preview.png"
+    uid=1_5 link "Watch the 41-second first request" url="file:///private/tmp/starport-readme-demo-20261006/docs/assets/first-use-v1.3.0/first-use.gif"
+      uid=1_6 StaticText "Watch the 41-second first request"
+    uid=1_7 StaticText " or read the "
+    uid=1_8 link "transcript and reproduction steps" url="file:///private/tmp/starport-readme-demo-20261006/docs/assets/first-use-v1.3.0/TRANSCRIPT.md"
+      uid=1_9 StaticText "transcript and reproduction steps"
+    uid=1_10 StaticText ". The recording uses release v1.3.0 and a real provider. It shortens the credential-entry wait and preserves inference timing. The static preview does not autoplay. The earlier "
+    uid=1_11 link "console tour" url="file:///private/tmp/starport-readme-demo-20261006/docs/assets/2026-08-29_starport-console.gif"
+      uid=1_12 StaticText "console tour"
+    uid=1_13 StaticText " shows the catalog and provider views."

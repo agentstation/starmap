@@ -463,7 +463,7 @@
     "E02": {
       "kind": "reviewed_first_use",
       "repository": "starport",
-      "proof": "docs/plans/proof/starport-production-catalog/csp0.2/first-use-demo-review.json",
+      "proof": "docs/plans/proof/starport-production-catalog/csp24/first-use/first-use-demo-review.json",
       "required_inputs": [
         "README.md",
         "docker-compose.yml",
@@ -502,19 +502,23 @@
     "E03": {
       "kind": "reviewed_demo",
       "repository": "starport",
-      "proof": "docs/plans/proof/starport-production-catalog/csp0.3/media-review.json",
-      "asset_directory": "docs/assets/first-use-v1.2.0",
+      "proof": "docs/plans/proof/starport-production-catalog/csp24/media-review.json",
+      "manifest": "docs/assets/starport-demo.json",
+      "record": "docs/assets/first-use-v1.3.0",
+      "release": "v1.3.0",
       "required_inputs": [
         "README.md",
-        "docs/assets/first-use-v1.2.0/render.json",
-        "docs/assets/first-use-v1.2.0/events.json",
-        "docs/assets/first-use-v1.2.0/render.py",
-        "docs/assets/first-use-v1.2.0/first-use-uncut.gif",
-        "docs/assets/first-use-v1.2.0/poster.png",
-        "docs/assets/first-use-v1.2.0/first-use.gif",
-        "docs/assets/first-use-v1.2.0/capture.py",
-        "docs/assets/first-use-v1.2.0/replay.py",
-        "docs/assets/first-use-v1.2.0/TRANSCRIPT.md"
+        "docs/assets/starport-demo.json",
+        "docs/assets/first-use-v1.3.0/record.json",
+        "docs/assets/first-use-v1.3.0/render.json",
+        "docs/assets/first-use-v1.3.0/events.json",
+        "docs/assets/first-use-v1.3.0/TRANSCRIPT.md",
+        "docs/assets/first-use-v1.3.0/first-use.gif",
+        "docs/assets/first-use-v1.3.0/first-use-uncut.gif",
+        "docs/assets/first-use-v1.3.0/poster.png",
+        "scripts/readme-demo/capture.py",
+        "scripts/readme-demo/render.py",
+        "scripts/readme-demo/verify.py"
       ],
       "observations": [
         "installation",
