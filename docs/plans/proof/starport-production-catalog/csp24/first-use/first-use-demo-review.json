@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "verdict": "PASS",
+  "release": "v1.3.0",
+  "scope": "Reviewed the README at the v1.3.0 demonstration head with native evidence for each advertised installation method. The source build and the compose build identify tag commit b649dbf5184e53b2c13449b96fc887bcb144e18c. The real inference capture used the released darwin-arm64 archive, the owner-supplied OpenAI credential in the process environment, and one streamed request of at most 32 tokens. The lead judged that request to be inside the CSP24 README recording authority. No full production acceptance credit.",
+  "observations": {
+    "install_catalog_credentials_inference_order": true,
+    "catalog_presence_is_not_provider_access": true,
+    "development_persistence_overrides_disclosed": true,
+    "recording_persistence_selectors_cleared": true,
+    "production_limits_linked": true,
+    "gateway_latency_claim_qualified": true,
+    "all_advertised_installation_methods_reviewed": true
+  },
+  "observation_evidence": {
+    "install_catalog_credentials_inference_order": "README quickstart order: install, catalog, credentials, first request. The v1.3.0 recording scenes install, catalog, setup, answer, next follow it.",
+    "catalog_presence_is_not_provider_access": "README line 84: catalog presence does not prove that a provider will accept an inference request.",
+    "development_persistence_overrides_disclosed": "README line 109 unsets STARPORT_CATALOG_STATE_DIR and STARPORT_FILES_BACKEND, and line 138 states that the recording refuses persistent selectors.",
+    "recording_persistence_selectors_cleared": "first-use-v1.3.0/events.json discovery: persistent_selectors_present false, leftover_home_files empty.",
+    "production_limits_linked": "README line 338 links docs/PRODUCTION-STATUS.md.",
+    "gateway_latency_claim_qualified": "README performance section states that the figure does not establish complete gateway latency or a production p99 limit, and links docs/PERFORMANCE.md.",
+    "all_advertised_installation_methods_reviewed": "Homebrew cask on macOS and Linux, five archive targets, source build, container image, and compose build each have a PASS capture."
+  },
+  "inputs": {
+    "README.md": "5e921e9ad826549109a3a5368f9d3fe7aff1904cb15878d7eeb1caef0387bf20",
+    "docker-compose.yml": "0e9c6f3933d9211439dc3cc0742f9d0c73060ae3872758da33b7af4a319508a1",
+    "Dockerfile": "0c6ac9b9a03277ecfbb1d2eee881ce58e3a8d934a68c59570e461aa77fe78422",
+    ".dockerignore": "4b739bcccfc4e48ffac308af4eddcc768fab7ab8b27235ee4400e84fc8347f02",
+    ".env.example": "c14d1758da3054f09c8b06d745d1527e2e31f413f252159b8c0de24f7ecaeae1",
+    "docs/OPERATOR-GUIDE.md": "68b4dc75affff99ef490dda8f8e03c668b96ebdfeeac1ffd73bb093b77a000f9",
+    "docs/PRODUCTION-STATUS.md": "dd835dd8139aa57629084aaaa65d5065aab833ae387f8d2562c72d80ed0a84bc",
+    "docs/PERFORMANCE.md": "d87aeb0888e220f36f1b870dfdbe21b13b407ef397ee9e3d7ae9d9963726d8e2",
+    "scripts/verify-readme-quickstart.sh": "af4553bc09314f877f67c76bbbc0a3cd07c1b784e4fd8758ebb3650a88759ab6",
+    "scripts/test-readme-quickstart-verifier.sh": "3370668e3d94ec8e8d4accb52c5cda4f6e6ea95451c4590f8622808d1466c2c9",
+    "scripts/verify-doc-links.sh": "2ddebd0181202adad44420fcd409e2ee979e606835e8fa79735201be1ff1dfcc"
+  },
+  "captures": {
+    "compose-after.json": "f8702cedd286a3888e8a67ddbaeb07244ef400f75fec9679a80cd69936be6f9f",
+    "compose-review.json": "ab1a3bc8707adcab33eb24ac9e06a4ee675be8875769b860cbb667a941483b90",
+    "container-install.json": "d1511f608a4a7f934d629b3c958b82f7c63b0f1041d75b980c1b3c6fa18df5aa",
+    "homebrew-cask.json": "df1f7f905564275a50df26153397be5bdf2db8bb95ee6460df308d99ea5ff217",
+    "homebrew-macos.json": "401f5fd13a2bb91e5724c155536ccd910ffb656b98e34861695395263c5cd4d9",
+    "native-run-37475148346-review.json": "4792e6554761897d540bdbc039dfbef2eefdfa7ad6316881114bb61f87c49cee",
+    "native-run-37475148346/native-release-darwin-arm64/result.json": "1af31279dbc3e6a80f6710e050a88c2bca5cfaf2c9ff9af57290621995053c3a",
+    "native-run-37475148346/native-release-linux-arm64/result.json": "b7998a37b2e76251029b008410664f572904103601f1b9349eb8dfc4b267698f",
+    "native-run-37475148346/native-release-linux-x86_64/result.json": "5d46a2951bb5798fbf2d24629e4982db18a2a2fb128b3d1da6510f4990d5856e",
+    "native-run-37475148346/native-release-windows-arm64/result.json": "624aa4413472f7c5fc6376da39a5cf4bb6e0f38769d88ac1489e3936435f64c3",
+    "native-run-37475148346/native-release-windows-x86_64/result.json": "8cfa35b37f7b9ec28bee9d0b06d59ab1b3e75d766c04ec4defccb38ca495b6da",
+    "real-inference.json": "bf4a4ab63ec1ca668f28087bd286f60dca8c12e9a1c3758b572184da0978a7da",
+    "release-run.json": "e59ab41287fa2184c4148d5ba64276375a5b6afe70ee4bd039db1d714a8f0665",
+    "release.json": "44399558a3448b5e71ebbd6f9ccf8801c225d645292c87e0334de3c8073b54d2",
+    "source-install.json": "07cfafe68007f32302a299eef7719e44e86fa68472ee1116dd42720e245e39cf"
+  },
+  "methods": {
+    "homebrew-linux": {
+      "artifact_kind": "release",
+      "release": "v1.3.0",
+      "platform": "linux",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "release-run.json",
+        "homebrew-cask.json"
+      ]
+    },
+    "homebrew-macos": {
+      "artifact_kind": "release",
+      "release": "v1.3.0",
+      "platform": "macos",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "release-run.json",
+        "homebrew-cask.json",
+        "homebrew-macos.json"
+      ]
+    },
+    "archive-darwin-arm64": {
+      "artifact_kind": "release",
+      "release": "v1.3.0",
+      "platform": "darwin-arm64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "native-run-37475148346/native-release-darwin-arm64/result.json",
+        "native-run-37475148346-review.json"
+      ]
+    },
+    "archive-linux-arm64": {
+      "artifact_kind": "release",
+      "release": "v1.3.0",
+      "platform": "linux-arm64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "native-run-37475148346/native-release-linux-arm64/result.json",
+        "native-run-37475148346-review.json"
+      ]
+    },
+    "archive-linux-x86_64": {
+      "artifact_kind": "release",
+      "release": "v1.3.0",
+      "platform": "linux-x86_64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "native-run-37475148346/native-release-linux-x86_64/result.json",
+        "native-run-37475148346-review.json"
+      ]
+    },
+    "archive-windows-arm64": {
+      "artifact_kind": "release",
+      "release": "v1.3.0",
+      "platform": "windows-arm64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "native-run-37475148346/native-release-windows-arm64/result.json",
+        "native-run-37475148346-review.json"
+      ]
+    },
+    "archive-windows-x86_64": {
+      "artifact_kind": "release",
+      "release": "v1.3.0",
+      "platform": "windows-x86_64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "native-run-37475148346/native-release-windows-x86_64/result.json",
+        "native-run-37475148346-review.json"
+      ]
+    },
+    "source-build": {
+      "artifact_kind": "source",
+      "source_commit": "b649dbf5184e53b2c13449b96fc887bcb144e18c",
+      "platform": "darwin/arm64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "source-install.json"
+      ]
+    },
+    "container-release": {
+      "artifact_kind": "release",
+      "release": "v1.3.0",
+      "platform": "linux/arm64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "container-install.json"
+      ]
+    },
+    "compose-source": {
+      "artifact_kind": "source",
+      "source_commit": "b649dbf5184e53b2c13449b96fc887bcb144e18c",
+      "platform": "linux/arm64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "compose-after.json",
+        "compose-review.json"
+      ]
+    }
+  },
+  "inference_capture": "real-inference.json"
+}
