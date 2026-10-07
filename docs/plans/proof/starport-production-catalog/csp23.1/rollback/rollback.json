@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "url": "https://starport.agentstation.ai",
+  "worker": "starport-site",
+  "operator": "The owner ran each wrangler command. The lead captured the served manifest after each step.",
+  "steps": [
+    {
+      "ref": "main@06542922",
+      "commit": "065429223831e22947db70914de4771ad2a961f4",
+      "deploy": {
+        "method": "wrangler",
+        "version_id": "bb08210b-2652-48db-bda0-710288d72141"
+      },
+      "capture": "step1-splash.json",
+      "observed": {
+        "starport_release": "v1.3.0",
+        "content_revision": "0b7f6bb15611086250f867c25cb41f36ed1afc318027cf4a6cdfbfffa39485b8",
+        "generated_at": "2026-10-06T23:47:20.000Z"
+      },
+      "captured_at": "2026-10-07T00:31:59Z",
+      "note": "Deploy of the main build (splash redesign #427) labeled with the v1.3.0 docs release."
+    },
+    {
+      "ref": "codex/public-site@12485718d226",
+      "commit": "12485718d2269245f49fd9520aa5cc8eee469e1b",
+      "deploy": {
+        "method": "wrangler",
+        "version_id": "fb522680-b870-40e4-a91f-2d2db085ef7f"
+      },
+      "capture": "step2-dev.json",
+      "observed": {
+        "starport_release": "dev",
+        "content_revision": "0b7f6bb15611086250f867c25cb41f36ed1afc318027cf4a6cdfbfffa39485b8",
+        "generated_at": "2026-10-06T01:07:59.000Z"
+      },
+      "captured_at": "2026-10-07T01:07:19Z",
+      "note": "Rollback to the earlier dev build with wrangler rollback."
+    },
+    {
+      "ref": "main@06542922",
+      "commit": "065429223831e22947db70914de4771ad2a961f4",
+      "deploy": {
+        "method": "wrangler",
+        "version_id": "bb08210b-2652-48db-bda0-710288d72141"
+      },
+      "capture": "step3-splash.json",
+      "observed": {
+        "starport_release": "v1.3.0",
+        "content_revision": "0b7f6bb15611086250f867c25cb41f36ed1afc318027cf4a6cdfbfffa39485b8",
+        "generated_at": "2026-10-06T23:47:20.000Z"
+      },
+      "captured_at": "2026-10-07T01:34:30Z",
+      "note": "Roll forward to the splash build with wrangler rollback."
+    }
+  ]
+}
