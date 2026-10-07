@@ -23,6 +23,11 @@ CURRENT, OLDER = '1' * 40, '2' * 40
 PAGES = {'index.html': ('/', b'<home>'), 'docs/index.html': ('/docs', b'<docs>'),
          'docs/install.html': ('/docs/install', b'<install>'), 'docs/assets/site.css': ('/docs/assets/site.css', b'body{}')}
 MANIFEST_ENTRY = {'kind': 'public_site_manifest', 'repository': 'starport', 'url': SITE}
+# The tag that Cloudflare Web Analytics adds to an HTML response at the edge. The attribute values change per deploy.
+BEACON = (b'<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7'
+          b'a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexC'
+          b'L0KEQwVYv5BlowfhVz26hg==" data-cf-beacon=\'{"version":"2024.11.0","token":"' + b'0' * 32
+          + b'","r":1,"spa":2}\' crossorigin="anonymous"></script>')
 
 
 def digest(data):
@@ -109,8 +114,31 @@ class PublicManifestTests(SiteFake):
     def test_served_release_archive_and_bytes_pass(self):
         self.assertEqual(self.run_check(), {
             'status': 'PASS', 'version': RELEASE, 'url': SITE, 'content_revision': REVISION,
-            'starmap_module_version': MODULE, 'archive_sha256': digest(self.archive()), 'files': len(PAGES)})
+            'starmap_module_version': MODULE, 'archive_sha256': digest(self.archive()), 'files': len(PAGES),
+            'beacon_pages': 0})
         self.assertEqual(sorted(self.requests), sorted([SITE + '/docs/manifest.json', ARCHIVE, *self.served]))
+
+    def test_one_beacon_tag_in_each_html_page_passes(self):
+        for address in (SITE + '/', SITE + '/docs', SITE + '/docs/install'):
+            self.served[address] = self.served[address].replace(b'>', b'>' + BEACON)
+        result = self.run_check()
+        self.assertEqual((result['status'], result['files'], result['beacon_pages']), ('PASS', len(PAGES), 3))
+
+    def test_two_beacon_tags_in_one_page_fail(self):
+        self.served[SITE + '/docs'] += BEACON + BEACON
+        result = self.run_check()
+        self.assertEqual((result['status'], result['mismatches']), ('FAIL', ['docs/index.html']))
+
+    def test_beacon_tag_in_a_non_html_file_fails(self):
+        self.served[SITE + '/docs/assets/site.css'] += BEACON
+        result = self.run_check()
+        self.assertEqual((result['status'], result['mismatches']), ('FAIL', ['docs/assets/site.css']))
+
+    def test_beacon_tag_with_another_change_fails(self):
+        self.served[SITE + '/'] = b'<changed>' + BEACON
+        self.served[SITE + '/docs/install'] += b'<script src="https://static.cloudflareinsights.com/other.js"></script>'
+        result = self.run_check()
+        self.assertEqual((result['status'], result['mismatches']), ('FAIL', ['docs/install.html', 'index.html']))
 
     def test_checkout_without_a_stable_tag_is_unverified(self):
         self.tag = None
