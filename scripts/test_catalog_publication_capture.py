@@ -1,5 +1,6 @@
 """Check captured-file integrity and fail-closed publication qualification."""
 
+import base64
 import copy
 import hashlib
 import json
@@ -71,7 +72,7 @@ class CaptureEvidenceTests(unittest.TestCase):
             directory = root / "proof"
             directory.mkdir()
             capture.write_capture(directory, "b" * 40, self.documents)
-            with patch.object(capture, "unchanged_source", side_effect=ValueError("source changed")), patch.object(capture, "command") as command:
+            with patch.object(capture, "unchanged_tooling", side_effect=ValueError("tooling changed")), patch.object(capture, "command") as command:
                 self.assertEqual("UNVERIFIED", capture.verify(root, entry)["status"])
                 command.assert_not_called()
 
@@ -81,8 +82,10 @@ class CaptureEvidenceTests(unittest.TestCase):
             directory = root / "proof"
             directory.mkdir()
             capture.write_capture(directory, "b" * 40, self.documents)
-            with patch.object(capture, "unchanged_source"), patch.object(capture, "command", side_effect=subprocess.CalledProcessError(1, ["gh"])):
+            with patch.object(capture, "unchanged_tooling"), patch.object(capture, "api") as api, \
+                    patch.object(capture, "command", side_effect=subprocess.CalledProcessError(1, ["gh"])):
                 self.assertEqual("UNVERIFIED", capture.verify(root, {"proof": "proof"})["status"])
+                api.assert_not_called()
 
     def test_qualification_requires_download_attestation_replay_and_embedding(self):
         # The fake transport does not qualify a hosted publication. It proves
@@ -106,22 +109,56 @@ class CaptureEvidenceTests(unittest.TestCase):
         self.documents["channels-after.json"] = copy.deepcopy(self.channels)
         for version in ("v1", "v2"):
             self.documents["channel-" + version + ".raw.json"] = json.dumps(self.channels["catalog/" + version])
-        for failure in (None, "attestation", "attestation_identity", "replay", "replay_bytes", "embedding", "embedding_identity"):
+        for failure in (None, "attestation", "attestation_identity", "replay", "replay_bytes",
+                        "current_record", "current_promotion", "current_channels", "current_assets",
+                        "current_attestation", "embedding", "embedding_identity"):
             with self.subTest(failure=failure), tempfile.TemporaryDirectory() as temporary:
                 root = Path(temporary)
                 directory = root / "proof"
                 directory.mkdir()
                 capture.write_capture(directory, "b" * 40, self.documents)
                 phases = []
+                # The live publication equals the capture unless one failure changes it.
+                live = {"record": copy.deepcopy(self.record), "pull": copy.deepcopy(self.pull),
+                        "channels": copy.deepcopy(self.channels), "releases": copy.deepcopy(self.releases)}
+                if failure == "current_record":
+                    live["record"]["schema_version"] = 2
+                if failure == "current_promotion":
+                    live["pull"]["user"]["login"] = "human"
+                if failure == "current_channels":
+                    live["channels"]["catalog/v2"]["tag"] = "catalog-" + "e" * 64
+                if failure == "current_assets":
+                    live["releases"][0]["assets"][0]["digest"] = "sha256:" + "e" * 64
+                merge = self.pull["merge_commit_sha"]
+
+                def api(repository, endpoint, pages=False):
+                    phases.append("api")
+                    if endpoint == "contents/pending.json?ref=catalog%2Fpublication":
+                        return {"content": base64.b64encode(json.dumps(live["record"]).encode()).decode()}
+                    if endpoint.startswith("contents/channel.json?ref=catalog%2F"):
+                        channel = live["channels"]["catalog/" + endpoint[-2:]]
+                        return {"content": base64.b64encode(json.dumps(channel).encode()).decode()}
+                    if endpoint == f"commits/{merge}/pulls?per_page=100":
+                        return [{"number": 7, "merge_commit_sha": merge}]
+                    if endpoint == "pulls/7":
+                        return live["pull"]
+                    if endpoint == "branches/main/protection":
+                        return self.protection
+                    if endpoint == "commits/" + self.pull["head"]["sha"] + "/check-runs?filter=all&per_page=100" and pages:
+                        return self.pages
+                    if endpoint.startswith("releases/tags/"):
+                        return next(release for release in live["releases"] if release["tag_name"] == endpoint[len("releases/tags/"):])
+                    raise AssertionError("unexpected endpoint " + endpoint)
 
                 def command(repository, args):
+                    current = "/current/" in str(args)
                     if args[:3] == ["gh", "release", "download"]:
                         target = Path(args[args.index("--dir") + 1])
                         for name, raw in data.items():
                             (target / name).write_bytes(raw)
                         return ""
                     if args[:3] == ["gh", "attestation", "verify"]:
-                        phase = "attestation"
+                        phase = "current_attestation" if current else "attestation"
                     elif args[:3] == ["go", "run", "./cmd/starmap-catalog-publish"]:
                         phase = "replay"
                     else:
@@ -137,6 +174,7 @@ class CaptureEvidenceTests(unittest.TestCase):
                         return json.dumps({"artifact_directory": str(restored)})
                     if phase == "embedding":
                         release = Path(args[args.index("--promotion-release-dir") + 1])
+                        self.assertTrue(current)
                         self.assertEqual(3, len(list(release.iterdir())))
                         return json.dumps({"generation_id": self.record["generation_id"], "semantic_checksum": "wrong" if failure == "embedding_identity" else self.record["catalog_checksum"],
                                            "archive_checksum": self.record["archive_checksum"]})
@@ -146,11 +184,48 @@ class CaptureEvidenceTests(unittest.TestCase):
                         "runInvocationURI": "https://github.com/agentstation/starmap/actions/runs/10/attempts/1"}},
                         "statement": {"subject": [{"digest": {"sha256": hashlib.sha256(path.read_bytes()).hexdigest()}}]}}}])
 
-                with patch.object(capture, "unchanged_source"), patch.object(capture, "command", side_effect=command):
+                with patch.object(capture, "unchanged_tooling"), patch.object(capture, "api", side_effect=api), \
+                        patch.object(capture, "command", side_effect=command):
                     result = capture.verify(root, {"proof": "proof"})
                 self.assertEqual("UNVERIFIED" if failure else "PASS", result["status"], result)
                 if failure is None:
-                    self.assertEqual(["attestation"] * 5 + ["replay", "embedding"], phases)
+                    self.assertEqual(["attestation"] * 5 + ["replay"] + ["api"] * 9 + ["current_attestation"] * 3 + ["embedding"], phases)
+                    self.assertEqual(7, result["current"]["pull"])
+                    self.assertEqual(3, result["current"]["attested_subjects"])
+                    self.assertEqual(self.pull["merge_commit_sha"], result["current"]["promotion"]["merge"])
+
+    def test_tooling_binding_ignores_catalog_and_other_source_changes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            repository = Path(temporary)
+            git = ["git", "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "-c", "commit.gpgsign=false"]
+            capture.command(repository, ["git", "init", "-q"])
+            tooling = repository / "scripts/catalog_publication.py"
+            catalog = repository / "internal/embedded/catalog/providers.yaml"
+            runtime = repository / "runtime/layers.go"
+            for path in (tooling, catalog, runtime):
+                path.parent.mkdir(parents=True)
+                path.write_text("original\n")
+            capture.command(repository, ["git", "add", "."])
+            capture.command(repository, git + ["commit", "-qm", "fixture"])
+            revision = capture.command(repository, ["git", "rev-parse", "HEAD"]).strip()
+            with self.assertRaises(ValueError):
+                capture.unchanged_tooling(repository, revision[:12])
+            capture.unchanged_tooling(repository, revision)
+            catalog.write_text("promoted\n")
+            runtime.write_text("changed\n")
+            (repository / "docs/plans").mkdir(parents=True)
+            (repository / "docs/plans/proof.json").write_text("{}")
+            capture.unchanged_tooling(repository, revision)
+            tooling.write_text("changed\n")
+            with self.assertRaises(ValueError):
+                capture.unchanged_tooling(repository, revision)
+            tooling.write_text("original\n")
+            capture.unchanged_tooling(repository, revision)
+            added = repository / "cmd/starmap-catalog-publish/new.go"
+            added.parent.mkdir(parents=True)
+            added.write_text("package main\n")
+            with self.assertRaises(ValueError):
+                capture.unchanged_tooling(repository, revision)
 
 
 if __name__ == "__main__":
