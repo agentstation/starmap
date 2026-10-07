@@ -27,9 +27,9 @@ COMMIT = re.compile(r"[0-9a-f]{40}\Z")
 # Retain both models.dev transports at the catalog limit of 10,000 records each.
 MAX_ACQUISITION_CORRECTIONS = 20000
 MAX_CORRECTION_ID_LENGTH = 4096
-# Validation artifacts are public. Retain only the publish tool's final admission error, whose field and message are constants.
+# Validation artifacts are public. Retain only the publish tool's final validation error, whose field and message are constants.
 # Reduce every other failure to one fixed category, because raw stderr can hold provider URLs, credentials, or diagnostics.
-ACQUISITION_ADMISSION_ERROR = re.compile(r"validation failed for field (publication_admission(?:\.[a-z][a-z0-9_]{0,47}){1,6}): "
+ACQUISITION_ADMISSION_ERROR = re.compile(r"validation failed for field ([a-z][a-z0-9_]{0,47}(?:\.[a-z][a-z0-9_]{0,47}){0,6}): "
                                          r"([A-Za-z][A-Za-z0-9,.'_-]{0,23}(?: [A-Za-z0-9,.'_-]{1,24}){0,23})\Z")
 MAX_ACQUISITION_ERROR_LENGTH = 256
 ACQUISITION_ERROR_CATEGORY = "unclassified"
