@@ -37,6 +37,6 @@ The live Worker serves the `v1.3.0` build, and its manifest equals the local bui
 Cloudflare Web Analytics injects a beacon script into HTML responses for the verifier user agent.
 The injected bytes differ from the manifest digests. The check stays strict. The owner turns off the automatic beacon in the Cloudflare dashboard.
 
-The rollback exercise ran on 2026-10-07. Starmap #242 publishes the record `csp23.1/rollback/rollback.json`.
+The rollback exercise ran on 2026-10-07. Starmap #242 merged the record `csp23.1/rollback/rollback.json` as `e4e25c2ad`.
 The [A29 rerun](csp23/a29-live-2026-10-07-rollback.json) reports 4 PASS and 1 FAIL. Only the beacon item remains open.
 Both items belong to [CSP23.1](csp23.1.md). CSP23 closes when A06 and A29 pass against the released modules and the public docs URL.

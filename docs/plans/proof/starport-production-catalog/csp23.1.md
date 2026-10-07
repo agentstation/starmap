@@ -31,4 +31,9 @@ The exercise ran on 2026-10-07 with three deploys of the Worker. The owner ran e
 
 The content revision is `0b7f6bb15611` in all three steps because the docs content did not change. The release label and the build time separate the steps.
 The dev build pins its repository links to commit `12485718d2`, which is not reachable from a branch. A `git fetch origin 12485718d2269245f49fd9520aa5cc8eee469e1b` makes it present for the verifier.
-Starmap #242 publishes `csp23.1/rollback/rollback.json` with schema version 1 and the three captures.
+Starmap #242 merged `csp23.1/rollback/rollback.json` with schema version 1 and the three captures as `e4e25c2ad`.
+
+## Beacon
+
+The AgentStation account shows no RUM site for the `agentstation.ai` zone, and the edge still injects the token `eafc8874…`. That record is an orphan from the account that held the zone before the 2026-10-05 move.
+Starport #432 writes the beacon tag into the build with `src/app/layout.tsx`, so the manifest lists the served bytes. The owner creates a manual-setup site in the AgentStation account, disables the zone RUM injection, and supplies the new token for #432.
