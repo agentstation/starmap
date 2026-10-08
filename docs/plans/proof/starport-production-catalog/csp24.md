@@ -60,7 +60,7 @@ The pre-merge roster took 110 minutes. Its 27 open subcases have three causes.
 
 The provisional roster ran from the same Starmap tree against the #434 head. A03 `starport`, A16, A35, and A50 `current_artifact_evidence` passed with the renewed Starport capture. The 11 open Starmap entries in A03, A04, and A05 still bound to the #239 head `9dd83561`. Starmap #241 through #245 changed the embedded catalog and the verifier scripts after that capture. Starmap #246 renews the Starmap capture from the #245 head run `37622348577`, whose five `Runtime` jobs passed. In that worktree `native_catalog.verify` passes 6 of 6 Starmap entries.
 
-The final roster started at 20:00 UTC from Starmap main `774856e4`, before Starport #434 merged. The #434 branch sat on main `c63b6284`, so the tree at its head `6cf8dc1c` equals the tree of the squash merge `ecde4dfb`. The [environment record](csp24/environment.json) states both heads and both tree equalities. The roster took 108 minutes. Its six open subcases are the four A50 measurements and the two A05 hosted publication checks.
+The final roster started at 20:00 UTC from Starmap main `774856e4`, before Starport #434 merged. The #434 branch sat on main `c63b6284`, so the tree at its head `6cf8dc1c` equals the tree of the squash merge `ecde4dfb`. The [environment record](csp24/environment.json) states both heads and both tree equalities. The roster took 108 minutes. Its six open subcases were the four A50 measurements and the two A05 hosted publication checks. The capture renewal of 2026-10-08 cleared the two A05 subcases, so four A50 measurements stay open.
 
 The verifier reports `gate_status` FAIL and `qualification` UNVERIFIED while any subcase stays UNVERIFIED. The reason text reads `Real environment and final artifact qualification remain unimplemented`. That is the CSP22.1 limit, which the plan accepts.
 
@@ -74,7 +74,10 @@ The verifier reports `gate_status` FAIL and `qualification` UNVERIFIED while any
 - Starmap #248 (merged as `747ac19bb`) binds the capture to the publisher tooling paths only. Those paths are the workflow, the publication profile, `scripts/catalog_publication.py`, both catalog commands, and `internal/catalog/publication`. The verifier also checks the current publication live. A live run from the #248 branch passed in 138 seconds with current pull 241 and three current attested subjects. The record is `csp24/a05-live-binding-2026-10-07.json`.
 - Starmap #247 (merged as `7fba79a84`) changed three bound tooling paths. They are the error grammar in `scripts/catalog_publication.py`, a publication history test, and the publish command README. The A05 re-run at main `747ac19bb` on 2026-10-08 passes 4 of 6 subcases. The two capture subcases report `Publication tooling differs from the captured publication source.` The record is `csp24/case-a05-2026-10-08.json`.
 
-The binding, not the behavior, makes the two subcases UNVERIFIED. The capture renewal needs a real promotion and its same-bytes retry at a tree that includes #247.
+- The scheduled run 37735193283 healed the channel at `747ac19bb` and opened the promotion #249 with receipt `sha256:9faf893ae5…`. Starmap #250 fixed the race shard timeout. The bot then updated the promotion base and merged #249 as `60cec3dec`. The completion run 37821919952 published both discovery channels. The lead then dispatched the single owner-authorized retry, run 37825040856, with the receipt checksum.
+- Starmap #253 (merged as `4d452ebab`) renews the capture `csp6/hosted-publication` from that completion run and that retry. The task CSP6 verification in the capture worktree passes all six A05 subcases at `60cec3dec` with Starport `6cf8dc1c`. The final A05 re-run at main `4d452ebab` passes 6 of 6 subcases. The record is `csp24/case-a05-2026-10-08b.json`.
+
+The binding, not the behavior, made the two subcases UNVERIFIED until the renewal. The renewed capture binds the publisher tooling at a tree that includes #247.
 
 ## Scheduled publication outage
 
@@ -100,7 +103,7 @@ The [environment record](csp24/environment.json) lists the toolchain, the fixtur
 ## Limits
 
 - A50 `percentiles_and_load`, `stream_timing_memory`, `allocations_cpu_gc`, and `real_recipe_matrix` stay UNVERIFIED. CSP22.1 documents that limit, and the plan accepts it.
-- `A05.bot_required_checks` and `A05.same_bytes_retry` stay UNVERIFIED because #247 changed the bound publisher tooling after the capture. They pass at the publication tree `2fba452ab`, and the live current-publication check passes. A new capture after the next promotion and retry clears them.
+- `A05.bot_required_checks` and `A05.same_bytes_retry` reported UNVERIFIED from #247 until the capture renewal in #253. Both pass at main `4d452ebab`.
 - Cited `models.dev` snapshots can accumulate across publisher runs while offering timestamps stamp them. The retained bound now fails closed only after compaction. A later change can lower retention if the accumulation approaches 64 MiB.
-- The release gate stays FAIL and the qualification stays UNVERIFIED for the same reasons. No numeric production target comes from this roster.
+- The release gate stays FAIL and the qualification stays UNVERIFIED for the A50 limit. No numeric production target comes from this roster.
 - Component test duration is not deployment RTO, and a laboratory zero-loss result is not a blanket production RPO guarantee.
