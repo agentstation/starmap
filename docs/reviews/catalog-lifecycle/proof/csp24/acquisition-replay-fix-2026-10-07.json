@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "label": "credential-free local replay of the scheduled Catalog Generation prepare step with the compaction fix",
+  "replayed_at": "2026-10-08T01:00:00Z",
+  "starmap_tree": "codex/catalog-history-compaction at 2bd7ab46026e2c092313fea991044b6a40fd1e27 (same tree as 131b7f9ee6951f3674660bba9a703e3360aa3821)",
+  "fix": {
+    "pull": 247,
+    "merge_commit": "7fba79a844e0dd30dc556a7ddd9d1f18ad17561c",
+    "merged_at": "2026-10-08T04:48:21Z",
+    "head_commit": "2bd7ab46026e2c092313fea991044b6a40fd1e27",
+    "summary": "replay of an accepted checkpoint reads payloads up to the 256 MiB checkpoint bound; compaction drops superseded metadata snapshots unless the generation cites them; the 64 MiB retained bound applies after compaction; the publisher retains any typed validation error line"
+  },
+  "tools": {
+    "publish": "go build ./cmd/starmap-catalog-publish at the fix head with go1.27.1 darwin/arm64"
+  },
+  "environment": "env -i PATH HOME TMPDIR; no provider credential variables; the profile allows missing provider sources",
+  "accepted_channel": {
+    "channel": "catalog/v2",
+    "checkpoint_checksum": "sha256:b9f137267c51c11ed7da98c47b25d5c4b74deaacc84b03c5a98b63d21a267f6c",
+    "checkpoint_size_bytes": 101079863,
+    "input_count": 86
+  },
+  "runs": {
+    "C_accepted_checkpoint": {
+      "args": "-baseline-embedded -profile .github/catalog-publication.yaml -publisher-id starmap-public -run-id github-replay-c -output-dir prepared-c -state starmap-catalog-state.json -state-checksum sha256:b9f13726...",
+      "exit_status": 0,
+      "duration_seconds": 234,
+      "prepared_bytes": 66780426,
+      "receipt_bytes": 193559,
+      "state_bytes": 49891511,
+      "retained_models_dev_snapshots": 3,
+      "distinct_models_dev_snapshots_before_compaction": 9,
+      "retained_models_dev_payload_mib": 31.2,
+      "models_dev_payload_before_compaction_mib": 80.2,
+      "provider_records_retained": 79,
+      "stderr": "unresolved_model_reference warnings and info lines only"
+    },
+    "D_restore_compacted_state": {
+      "args": "-baseline-embedded -profile .github/catalog-publication.yaml -publisher-id starmap-public -run-id github-replay-d -output-dir prepared-d -state prepared-c/state-2c69ac73....json -state-checksum sha256:2c69ac73...",
+      "exit_status": 0,
+      "duration_seconds": 175,
+      "prepared_bytes": 100380230,
+      "receipt_bytes": 219584,
+      "state_bytes": 75065338,
+      "retained_models_dev_snapshots": 4,
+      "retained_models_dev_payload_mib": 42.1,
+      "provider_records_retained": 80
+    }
+  },
+  "observation": "cited models.dev snapshots accumulate across runs while offering timestamps still stamp them (3 then 4 snapshots, 31.2 then 42.1 MiB); the retained bound now fails closed only after compaction; a later change can lower retention if the accumulation approaches 64 MiB",
+  "verifier_fix": {
+    "pull": 248,
+    "merge_commit": "747ac19bb82db1307c5447c2bb4d53cbeb776d06",
+    "merged_at": "2026-10-08T05:30:16Z",
+    "head_commit": "8264ab2cd22914edcc13f3df878f5d22f12d95ba",
+    "summary": "the A05 capture binds the publisher tooling paths instead of the whole tree, and the verifier checks the current publication live"
+  },
+  "credentials_in_record": false
+}

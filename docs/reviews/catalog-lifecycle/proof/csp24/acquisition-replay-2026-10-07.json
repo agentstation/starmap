@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "label": "credential-free local replay of the scheduled Catalog Generation prepare step",
+  "replayed_at": "2026-10-07T22:15:00Z",
+  "starmap_tree": "774856e4d16e78f57148e1f064f67a5ae73f00cf",
+  "tools": {
+    "publish": "go build ./cmd/starmap-catalog-publish at 774856e4 with go1.27.1 darwin/arm64",
+    "release": "go build ./cmd/starmap-catalog-release at 774856e4"
+  },
+  "environment": "env -i PATH HOME TMPDIR; no provider credential variables; the profile allows missing provider sources",
+  "accepted_channel": {
+    "channel": "catalog/v2",
+    "tag": "catalog-c8bb3f9fda69e177f10f74fa2d9865b857d37b1b35fb6c653a0c2eec0c6f0dc1",
+    "receipt_tag": "catalog-run-207708aa74ddc30777f69ee523b215794a81a1e197c68ea386b9599a65c9b45d",
+    "promotion_source_commit": "17870526754eb54af7e27cf1df64d3b8d8ec9e63",
+    "checkpoint_checksum": "sha256:b9f137267c51c11ed7da98c47b25d5c4b74deaacc84b03c5a98b63d21a267f6c",
+    "checkpoint_size_bytes": 101079863,
+    "checkpoint_digest_verified": true
+  },
+  "runs": {
+    "A_accepted_checkpoint": {
+      "args": "-baseline-embedded -profile .github/catalog-publication.yaml -publisher-id starmap-public -run-id github-replay-a -output-dir prepared-a -state starmap-catalog-state.json -state-checksum sha256:b9f13726...",
+      "exit_status": 1,
+      "final_stderr_line": "validation failed for field replay.observations: exceeds the retained payload bound",
+      "duration_seconds": 110
+    },
+    "B_baseline_only": {
+      "args": "-baseline-embedded -profile .github/catalog-publication.yaml -publisher-id starmap-public -run-id github-replay-b -output-dir prepared-b",
+      "exit_status": 0,
+      "duration_seconds": 75
+    }
+  },
+  "ci_history": {
+    "last_success": {"run_id": 37517906112, "created_at": "2026-10-06T19:17:55Z", "head": "960c35952"},
+    "first_failure": {"run_id": 37548445505, "created_at": "2026-10-06T23:47:07Z", "head": "178705267", "note": "the promotion #241 merge; it changed only internal/embedded/catalog"},
+    "later_failures": [37578758006, 37644664076, 37688272354],
+    "retained_error_record": {"artifact": "catalog-validation-37688272354-1", "error": {"category": "unclassified"}, "reason": "scripts/catalog_publication.py ACQUISITION_ADMISSION_ERROR matches only publication_admission.* fields"}
+  },
+  "checkpoint_profile": {
+    "inputs": 86,
+    "decoded_payload_bytes": 66422934,
+    "models_dev_http_snapshots": 8,
+    "models_dev_http_payload_bytes": 63102420,
+    "models_dev_http_observed_at": ["2026-09-18T21:17:47Z", "2026-09-20T13:03:28Z", "2026-09-26T04:35:09Z", "2026-09-26T13:04:35Z", "2026-10-05T17:10:25Z", "2026-10-06T01:19:39Z", "2026-10-06T11:17:01Z", "2026-10-06T18:21:36Z"],
+    "previous_checkpoints": {
+      "catalog-run-54ad125a...": 77725911,
+      "catalog-run-f6888397...": 89406500,
+      "catalog-run-207708aa...": 101079863
+    }
+  },
+  "bound": {
+    "constant": "runtime/layers.go maxLayerBytes = 64 << 20",
+    "checks": ["runtime/acquisition_replay.go:66", "runtime/acquisition_compaction.go:71"],
+    "payload_counted": "catalogs.EncodeCatalogPayload of each restored observation, summed in input order"
+  },
+  "root_cause": [
+    "runtime/acquisition_compaction.go appendReplayMetadata drops a metadata observation only when three consecutive observations are byte-identical. models.dev changes between runs, so every distinct snapshot stays in the retained history.",
+    "Each promotion adds one models.dev snapshot of 7 to 8.5 MB. The accepted history reached 66.4 MB of decoded payload after promotion #241 and crossed the 64 MiB replay bound after re-encoding.",
+    "PrepareAcquisitionReplay replays the full history before it compacts, and compactAcquisitionHistory applies the same bound before it selects. A history over the bound can never compact, so every later run fails on the same accepted checkpoint.",
+    "The workflow records the failure as unclassified because the error field is replay.observations, not publication_admission.*."
+  ],
+  "a05_binding_facts": {
+    "capture_source_commit": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
+    "publication_tooling_paths_changed_since_capture": [],
+    "other_paths_changed_since_capture": [".github/workflows/release.yaml", "CHANGELOG.md", "docs/RELEASES.md", "internal/ciworkflow/release_workflow_test.go", "internal/embedded/catalog/* (promotions #236, #238, #241)", "scripts/catalog-product-checks.json", "scripts/catalog_product_verify.py", "scripts/catalog_public_site.py", "scripts/test_*.py", "scripts/verify.sh"]
+  },
+  "credentials_in_record": false
+}

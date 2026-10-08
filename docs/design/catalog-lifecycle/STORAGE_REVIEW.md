@@ -4,7 +4,7 @@ Reviewed: 2026-09-05. Current code has stable storage owners but an incomplete p
 The proposed specification improves that contract. Several details still need implementation or a more precise decision.
 
 This review answers where data lives, which service owns it, and which deployment uses it.
-It does not activate the [implementation plan](../../plans/starport-production-catalog-plan.html) or change product code.
+It does not activate the [implementation plan](../../reviews/catalog-lifecycle/starport-production-catalog-plan.html) or change product code.
 The [engineering specification](ENGINEERING_SPEC.md) remains the proposed contract.
 
 The inspected revisions are Starmap `4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225`

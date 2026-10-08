@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "roster": "catalog_product_verify.py --task CSP24 --released-assets --recipes --backends all --json",
+  "wrapper": "csp15-acceptance-wrapper.py derives TEST_* fixture URLs from docker inspect and never prints them",
+  "starmap_head": "774856e4d16e78f57148e1f064f67a5ae73f00cf",
+  "starmap_origin_main": "774856e4d16e78f57148e1f064f67a5ae73f00cf",
+  "starmap_tree_equals_origin_main": true,
+  "starport_head": "6cf8dc1ce0e977d8b0f7b6a835a5a2c17d5c3b27",
+  "starport_origin_main": "ecde4dfb8b583b05b3c573bd7fc21c65dd6e6a75",
+  "starport_tree_equals_origin_main": true,
+  "go_environment": {
+    "CGO_ENABLED": "1",
+    "GOARCH": "arm64",
+    "GOHOSTARCH": "arm64",
+    "GOHOSTOS": "darwin",
+    "GOOS": "darwin",
+    "GOVERSION": "go1.27.1",
+    "GOWORK": "off"
+  },
+  "gocache": "/private/tmp/csp13-go-build-20260929 (shared, one roster at a time)",
+  "recipe_image": {
+    "tag": "starport-storage-recipe:csp24-6cf8dc1c",
+    "id": "sha256:c02c2c16a1acbeaa3d3e186c3c6b1da369af20c82806c7d1434f64fe4ceca8d1"
+  },
+  "qualification_variables": {
+    "STARPORT_RECIPE_IMAGE": "the recipe image tag above",
+    "TEST_SHARED_CACHE_FAULT_URL": "valkey://127.0.0.1:54811",
+    "TEST_AUTHORIZATION_CAPACITY": "1",
+    "TEST_DEFAULT_CACHE_CAPACITY": "1",
+    "STARPORT_RECOVERY_OPERATOR_BINARY": "built by the wrapper from STARPORT_OPERATOR_SOURCE, the Starport head under test"
+  },
+  "fixtures": [
+    {
+      "container": "starport-csp13-postgres",
+      "image": "f1c3376c26f2",
+      "host_ports": [
+        62499
+      ]
+    },
+    {
+      "container": "starport-csp13-mysql",
+      "image": "3466ba4a4828",
+      "host_ports": [
+        62501
+      ]
+    },
+    {
+      "container": "csp13-unprefixed-valkey-20260929",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "host_ports": [
+        62500
+      ]
+    },
+    {
+      "container": "csp13-adoption-replacement-20260929",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "host_ports": [
+        62503
+      ]
+    },
+    {
+      "container": "starport-csp122-retirement-objectstore",
+      "image": "quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z",
+      "host_ports": [
+        62502
+      ]
+    },
+    {
+      "container": "csp22-cache-fault-20261005",
+      "image": "9acdf6f0ae17",
+      "host_ports": [
+        54811
+      ]
+    }
+  ],
+  "public_catalog_fixture": "runtime/testdata/public-catalog-20260908/starmap-catalog.tar.gz from prepare_public_catalog_fixture.py",
+  "credentials": "No credential value appears in this record, the roster command line, or the proof reports."
+}
