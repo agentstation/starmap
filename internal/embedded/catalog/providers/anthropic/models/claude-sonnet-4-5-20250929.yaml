@@ -101,8 +101,8 @@ pricing:
 
 # Model limits
 limits:
-  context_window: 1000000
-  input_tokens: 1000000
+  context_window: 200000
+  input_tokens: 200000
   output_tokens: 64000
 extensions:
   anthropic:
@@ -128,4 +128,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-09-28T05:13:12.909271Z
+updated_at: 2026-10-08T06:01:45.926220727Z
