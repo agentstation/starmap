@@ -1,23 +1,23 @@
 {
-  "id": 37362218157,
+  "id": 37825040856,
   "name": "Catalog Generation",
-  "node_id": "WFR_kwLOPa1FXM8AAAAIsvY0rQ",
+  "node_id": "WFR_kwLOPa1FXM8AAAAIzoxR2A",
   "head_branch": "main",
-  "head_sha": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
+  "head_sha": "60cec3dec312fda8790181b5aaa1bf9b79f732e9",
   "path": ".github/workflows/catalog-generation.yaml",
   "display_title": "Catalog Generation",
-  "run_number": 339,
+  "run_number": 388,
   "event": "workflow_dispatch",
   "status": "completed",
   "conclusion": "success",
   "workflow_id": 311070150,
-  "check_suite_id": 101201112071,
-  "check_suite_node_id": "CS_kwDOPa1FXM8AAAAXkA5sBw",
-  "url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157",
-  "html_url": "https://github.com/agentstation/starmap/actions/runs/37362218157",
+  "check_suite_id": 102481207496,
+  "check_suite_node_id": "CS_kwDOPa1FXM8AAAAX3FsgyA",
+  "url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37825040856",
+  "html_url": "https://github.com/agentstation/starmap/actions/runs/37825040856",
   "pull_requests": [],
-  "created_at": "2026-10-05T19:16:24Z",
-  "updated_at": "2026-10-05T19:33:18Z",
+  "created_at": "2026-10-08T18:32:11Z",
+  "updated_at": "2026-10-08T18:48:45Z",
   "actor": {
     "login": "jackspirou",
     "id": 5687406,
@@ -41,7 +41,7 @@
   },
   "run_attempt": 1,
   "referenced_workflows": [],
-  "run_started_at": "2026-10-05T19:16:24Z",
+  "run_started_at": "2026-10-08T18:32:11Z",
   "triggering_actor": {
     "login": "jackspirou",
     "id": 5687406,
@@ -63,19 +63,19 @@
     "user_view_type": "public",
     "site_admin": false
   },
-  "jobs_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157/attempts/1/jobs",
-  "logs_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157/attempts/1/logs",
-  "check_suite_url": "https://api.github.com/repos/agentstation/starmap/check-suites/101201112071",
-  "artifacts_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157/artifacts",
-  "cancel_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157/cancel",
-  "rerun_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157/rerun",
+  "jobs_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37825040856/attempts/1/jobs",
+  "logs_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37825040856/attempts/1/logs",
+  "check_suite_url": "https://api.github.com/repos/agentstation/starmap/check-suites/102481207496",
+  "artifacts_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37825040856/artifacts",
+  "cancel_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37825040856/cancel",
+  "rerun_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37825040856/rerun",
   "previous_attempt_url": null,
   "workflow_url": "https://api.github.com/repos/agentstation/starmap/actions/workflows/311070150",
   "head_commit": {
-    "id": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
-    "tree_id": "00f3535e42719aba6e72737fd2b0a3c0ada7f796",
-    "message": "Merge pull request #230 from agentstation/catalog/promotion/3fdb7007d352fb2f07320e48a9847224890157a00e13cbb0b42ef3f86990887f\n\ncatalog: embed bindings-9157a3e797c02e21193a26a2233dcbc5967390eee9ced9cb5416bdf1dae7d620.local.010adf9f3137",
-    "timestamp": "2026-10-05T18:23:46Z",
+    "id": "60cec3dec312fda8790181b5aaa1bf9b79f732e9",
+    "tree_id": "3383c9e24b3f2916452a7b8ec4eb8982640879d4",
+    "message": "Merge pull request #249 from agentstation/catalog/promotion/9faf893ae5ac47f76dcf2f757d51ac5dacee32b7104a555ac4d1e63583ac46f6\n\ncatalog: embed bindings-c465d7cab958f458951cb9ec5ec8af12ce80d5be1f615f8f8cdc2c512bd0144e.local.ad46fe4ada1e",
+    "timestamp": "2026-10-08T18:21:03Z",
     "author": {
       "name": "starmap-catalog-publisher[bot]",
       "email": "329307247+starmap-catalog-publisher[bot]@users.noreply.github.com"
@@ -223,21 +223,21 @@
   },
   "jobs": [
     {
-      "id": 111939303068,
-      "run_id": 37362218157,
+      "id": 113475592698,
+      "run_id": 37825040856,
       "workflow_name": "Catalog Generation",
       "head_branch": "main",
-      "run_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37362218157",
+      "run_url": "https://api.github.com/repos/agentstation/starmap/actions/runs/37825040856",
       "run_attempt": 1,
-      "node_id": "CR_kwDOPa1FXM8AAAAaEBo2nA",
-      "head_sha": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
-      "url": "https://api.github.com/repos/agentstation/starmap/actions/jobs/111939303068",
-      "html_url": "https://github.com/agentstation/starmap/actions/runs/37362218157/job/111939303068",
+      "node_id": "CR_kwDOPa1FXM8AAAAaa6wh-g",
+      "head_sha": "60cec3dec312fda8790181b5aaa1bf9b79f732e9",
+      "url": "https://api.github.com/repos/agentstation/starmap/actions/jobs/113475592698",
+      "html_url": "https://github.com/agentstation/starmap/actions/runs/37825040856/job/113475592698",
       "status": "completed",
       "conclusion": "success",
-      "created_at": "2026-10-05T19:16:25Z",
-      "started_at": "2026-10-05T19:16:48Z",
-      "completed_at": "2026-10-05T19:33:17Z",
+      "created_at": "2026-10-08T18:32:12Z",
+      "started_at": "2026-10-08T18:32:14Z",
+      "completed_at": "2026-10-08T18:48:44Z",
       "name": "generate",
       "steps": [
         {
@@ -245,216 +245,216 @@
           "status": "completed",
           "conclusion": "success",
           "number": 1,
-          "started_at": "2026-10-05T19:16:49Z",
-          "completed_at": "2026-10-05T19:16:53Z"
+          "started_at": "2026-10-08T18:32:15Z",
+          "completed_at": "2026-10-08T18:32:17Z"
         },
         {
           "name": "Checkout trusted publisher source",
           "status": "completed",
           "conclusion": "success",
           "number": 2,
-          "started_at": "2026-10-05T19:16:53Z",
-          "completed_at": "2026-10-05T19:17:03Z"
+          "started_at": "2026-10-08T18:32:17Z",
+          "completed_at": "2026-10-08T18:32:27Z"
         },
         {
           "name": "Check publisher identity configuration",
           "status": "completed",
           "conclusion": "success",
           "number": 3,
-          "started_at": "2026-10-05T19:17:03Z",
-          "completed_at": "2026-10-05T19:17:03Z"
+          "started_at": "2026-10-08T18:32:27Z",
+          "completed_at": "2026-10-08T18:32:27Z"
         },
         {
           "name": "Set up Go",
           "status": "completed",
           "conclusion": "success",
           "number": 4,
-          "started_at": "2026-10-05T19:17:03Z",
-          "completed_at": "2026-10-05T19:17:16Z"
+          "started_at": "2026-10-08T18:32:27Z",
+          "completed_at": "2026-10-08T18:32:41Z"
         },
         {
           "name": "Select publication directory",
           "status": "completed",
           "conclusion": "success",
           "number": 5,
-          "started_at": "2026-10-05T19:17:16Z",
-          "completed_at": "2026-10-05T19:17:16Z"
+          "started_at": "2026-10-08T18:32:41Z",
+          "completed_at": "2026-10-08T18:32:41Z"
         },
         {
           "name": "Restore accepted or pending publication",
           "status": "completed",
           "conclusion": "success",
           "number": 6,
-          "started_at": "2026-10-05T19:17:16Z",
-          "completed_at": "2026-10-05T19:22:03Z"
+          "started_at": "2026-10-08T18:32:41Z",
+          "completed_at": "2026-10-08T18:37:26Z"
         },
         {
           "name": "Refresh candidate catalog",
           "status": "completed",
           "conclusion": "skipped",
           "number": 7,
-          "started_at": "2026-10-05T19:22:03Z",
-          "completed_at": "2026-10-05T19:22:03Z"
+          "started_at": "2026-10-08T18:37:26Z",
+          "completed_at": "2026-10-08T18:37:26Z"
         },
         {
           "name": "Validate candidate before publication",
           "status": "completed",
           "conclusion": "skipped",
           "number": 8,
-          "started_at": "2026-10-05T19:22:03Z",
-          "completed_at": "2026-10-05T19:22:03Z"
+          "started_at": "2026-10-08T18:37:26Z",
+          "completed_at": "2026-10-08T18:37:26Z"
         },
         {
           "name": "Attest exact publication inputs",
           "status": "completed",
           "conclusion": "skipped",
           "number": 9,
-          "started_at": "2026-10-05T19:22:03Z",
-          "completed_at": "2026-10-05T19:22:03Z"
+          "started_at": "2026-10-08T18:37:26Z",
+          "completed_at": "2026-10-08T18:37:26Z"
         },
         {
           "name": "Retain preparation before public writes",
           "status": "completed",
           "conclusion": "skipped",
           "number": 10,
-          "started_at": "2026-10-05T19:22:03Z",
-          "completed_at": "2026-10-05T19:22:03Z"
+          "started_at": "2026-10-08T18:37:26Z",
+          "completed_at": "2026-10-08T18:37:26Z"
         },
         {
           "name": "Record pending publication",
           "status": "completed",
           "conclusion": "success",
           "number": 11,
-          "started_at": "2026-10-05T19:22:03Z",
-          "completed_at": "2026-10-05T19:24:23Z"
+          "started_at": "2026-10-08T18:37:26Z",
+          "completed_at": "2026-10-08T18:39:47Z"
         },
         {
           "name": "Publish and verify immutable public inputs",
           "status": "completed",
           "conclusion": "success",
           "number": 12,
-          "started_at": "2026-10-05T19:24:23Z",
-          "completed_at": "2026-10-05T19:26:56Z"
+          "started_at": "2026-10-08T18:39:47Z",
+          "completed_at": "2026-10-08T18:42:16Z"
         },
         {
           "name": "Create promotion installation token",
           "status": "completed",
           "conclusion": "success",
           "number": 13,
-          "started_at": "2026-10-05T19:26:56Z",
-          "completed_at": "2026-10-05T19:26:57Z"
+          "started_at": "2026-10-08T18:42:16Z",
+          "completed_at": "2026-10-08T18:42:17Z"
         },
         {
           "name": "Select promotion bot identity",
           "status": "completed",
           "conclusion": "success",
           "number": 14,
-          "started_at": "2026-10-05T19:26:57Z",
-          "completed_at": "2026-10-05T19:26:57Z"
+          "started_at": "2026-10-08T18:42:17Z",
+          "completed_at": "2026-10-08T18:42:17Z"
         },
         {
           "name": "Promote exact input through checked pull request",
           "status": "completed",
           "conclusion": "success",
           "number": 15,
-          "started_at": "2026-10-05T19:26:57Z",
-          "completed_at": "2026-10-05T19:29:21Z"
+          "started_at": "2026-10-08T18:42:17Z",
+          "completed_at": "2026-10-08T18:44:47Z"
         },
         {
           "name": "Stage channels after verified merge",
           "status": "completed",
           "conclusion": "success",
           "number": 16,
-          "started_at": "2026-10-05T19:29:21Z",
-          "completed_at": "2026-10-05T19:33:01Z"
+          "started_at": "2026-10-08T18:44:47Z",
+          "completed_at": "2026-10-08T18:48:32Z"
         },
         {
           "name": "Attest both discovery channels",
           "status": "completed",
           "conclusion": "success",
           "number": 17,
-          "started_at": "2026-10-05T19:33:01Z",
-          "completed_at": "2026-10-05T19:33:04Z"
+          "started_at": "2026-10-08T18:48:32Z",
+          "completed_at": "2026-10-08T18:48:34Z"
         },
         {
           "name": "Publish and verify both discovery channels",
           "status": "completed",
           "conclusion": "success",
           "number": 18,
-          "started_at": "2026-10-05T19:33:04Z",
-          "completed_at": "2026-10-05T19:33:12Z"
+          "started_at": "2026-10-08T18:48:34Z",
+          "completed_at": "2026-10-08T18:48:41Z"
         },
         {
           "name": "Retain acquisition corrections and validation logs",
           "status": "completed",
           "conclusion": "success",
           "number": 19,
-          "started_at": "2026-10-05T19:33:12Z",
-          "completed_at": "2026-10-05T19:33:13Z"
+          "started_at": "2026-10-08T18:48:41Z",
+          "completed_at": "2026-10-08T18:48:41Z"
         },
         {
           "name": "Report publication state",
           "status": "completed",
           "conclusion": "success",
           "number": 20,
-          "started_at": "2026-10-05T19:33:13Z",
-          "completed_at": "2026-10-05T19:33:13Z"
+          "started_at": "2026-10-08T18:48:41Z",
+          "completed_at": "2026-10-08T18:48:41Z"
         },
         {
           "name": "Set up ORAS for optional catalog mirror",
           "status": "completed",
           "conclusion": "skipped",
           "number": 21,
-          "started_at": "2026-10-05T19:33:13Z",
-          "completed_at": "2026-10-05T19:33:13Z"
+          "started_at": "2026-10-08T18:48:41Z",
+          "completed_at": "2026-10-08T18:48:41Z"
         },
         {
           "name": "Publish and verify optional OCI catalog mirror",
           "status": "completed",
           "conclusion": "skipped",
           "number": 22,
-          "started_at": "2026-10-05T19:33:13Z",
-          "completed_at": "2026-10-05T19:33:13Z"
+          "started_at": "2026-10-08T18:48:41Z",
+          "completed_at": "2026-10-08T18:48:41Z"
         },
         {
           "name": "Post Create promotion installation token",
           "status": "completed",
           "conclusion": "success",
           "number": 42,
-          "started_at": "2026-10-05T19:33:13Z",
-          "completed_at": "2026-10-05T19:33:13Z"
+          "started_at": "2026-10-08T18:48:41Z",
+          "completed_at": "2026-10-08T18:48:41Z"
         },
         {
           "name": "Post Set up Go",
           "status": "completed",
           "conclusion": "success",
           "number": 43,
-          "started_at": "2026-10-05T19:33:13Z",
-          "completed_at": "2026-10-05T19:33:13Z"
+          "started_at": "2026-10-08T18:48:41Z",
+          "completed_at": "2026-10-08T18:48:41Z"
         },
         {
           "name": "Post Checkout trusted publisher source",
           "status": "completed",
           "conclusion": "success",
           "number": 44,
-          "started_at": "2026-10-05T19:33:13Z",
-          "completed_at": "2026-10-05T19:33:13Z"
+          "started_at": "2026-10-08T18:48:41Z",
+          "completed_at": "2026-10-08T18:48:42Z"
         },
         {
           "name": "Complete job",
           "status": "completed",
           "conclusion": "success",
           "number": 45,
-          "started_at": "2026-10-05T19:33:13Z",
-          "completed_at": "2026-10-05T19:33:13Z"
+          "started_at": "2026-10-08T18:48:42Z",
+          "completed_at": "2026-10-08T18:48:42Z"
         }
       ],
-      "check_run_url": "https://api.github.com/repos/agentstation/starmap/check-runs/111939303068",
+      "check_run_url": "https://api.github.com/repos/agentstation/starmap/check-runs/113475592698",
       "labels": [
         "ubuntu-latest"
       ],
-      "runner_id": 1000028168,
-      "runner_name": "GitHub Actions 1000028168",
+      "runner_id": 1000032466,
+      "runner_name": "GitHub Actions 1000032466",
       "runner_group_id": 0,
       "runner_group_name": "GitHub Actions"
     }
