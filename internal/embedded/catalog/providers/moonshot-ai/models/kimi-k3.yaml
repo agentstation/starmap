@@ -89,6 +89,9 @@ pricing:
     cache_read:
       per_token: 0.0
       per_1m: 0.3
+    cache_write:
+      per_token: 0.0
+      per_1m: 3.0
     input:
       per_token: 0.0
       per_1m: 3.0
