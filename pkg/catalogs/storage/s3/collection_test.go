@@ -27,7 +27,8 @@ func TestBackendObjectCollectionPages(t *testing.T) {
 	var calls atomic.Int64
 	backend, _ := newTestBackend(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
-		if r.Method != http.MethodGet || r.URL.Path != "/catalogs" || query.Get("list-type") != "2" || query.Get("prefix") != "catalog/" || query.Get("max-keys") != "2" || query.Get("encoding-type") != "url" || query.Get("delimiter") != "" {
+		// smithy-go 1.28.2 keeps the trailing slash on a path-style bucket request.
+		if r.Method != http.MethodGet || strings.TrimSuffix(r.URL.Path, "/") != "/catalogs" || query.Get("list-type") != "2" || query.Get("prefix") != "catalog/" || query.Get("max-keys") != "2" || query.Get("encoding-type") != "url" || query.Get("delimiter") != "" {
 			t.Errorf("unexpected inventory request: %s %s", r.Method, r.URL)
 		}
 		w.Header().Set("Content-Type", "application/xml")

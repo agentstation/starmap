@@ -64,7 +64,7 @@ func TestArtifactOCIMirrorWorkflowRequiresIdenticalArchiveDigest(t *testing.T) {
 	}
 	workflow := string(data)
 	for _, required := range []string{
-		"vars.STARMAP_CATALOG_OCI_MIRROR == 'true'", "oras-project/setup-oras@1d808f7d7f6995cc68b7bf507bfe5c5446e1dc9d # v2.0.1", "version: 1.3.3",
+		"vars.STARMAP_CATALOG_OCI_MIRROR == 'true'", "oras-project/setup-oras@005458ad77f1c8facd38a094e4af2e69e5607ff4 # v2.0.2", "version: 1.3.3",
 		`OCI_TAG=sha256-${ARCHIVE_DIGEST}`, `oras push "${OCI_REPOSITORY}:${OCI_TAG}"`,
 		`--artifact-type "` + OCIMirrorArtifactType + `"`,
 		`--annotation "` + OCIGenerationAnnotation + `=${GENERATION_ID}"`,
