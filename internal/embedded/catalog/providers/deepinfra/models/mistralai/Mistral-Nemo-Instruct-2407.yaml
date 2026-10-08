@@ -82,7 +82,7 @@ pricing:
   tokens:
     input:
       per_token: 0.0
-      per_1m: 0.019
+      per_1m: 0.029
     output:
       per_token: 0.0
       per_1m: 0.03
@@ -96,4 +96,4 @@ limits:
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.086681Z
-updated_at: 2026-09-28T05:13:12.909271Z
+updated_at: 2026-10-08T21:19:39.656808457Z
