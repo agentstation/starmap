@@ -18,10 +18,10 @@ func TestActiveWorkflowsUseReviewedCurrentActions(t *testing.T) {
 		"actions/download-artifact":       "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c", // v8.0.1
 		"actions/create-github-app-token": "bcd2ba49218906704ab6c1aa796996da409d3eb1", // v3.2.0
 
-		"anchore/sbom-action/download-syft": "3ad7283483fc7af8ff2b4ea19663c2d5ca935e26", // v0.24.2
+		"anchore/sbom-action/download-syft": "66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c", // v0.24.3
 		"docker/login-action":               "dbcb813823bdd20940b903addbd779551569679f", // v4.6.0
 		"goreleaser/goreleaser-action":      "f06c13b6b1a9625abc9e6e439d9c05a8f2190e94", // v7.2.3
-		"oras-project/setup-oras":           "1d808f7d7f6995cc68b7bf507bfe5c5446e1dc9d", // v2.0.1
+		"oras-project/setup-oras":           "005458ad77f1c8facd38a094e4af2e69e5607ff4", // v2.0.2
 	}
 	seen := make(map[string]bool, len(approved))
 	use := regexp.MustCompile(`uses:\s+([^@\s]+)@([0-9a-f]{40})(?:\s|$)`)
