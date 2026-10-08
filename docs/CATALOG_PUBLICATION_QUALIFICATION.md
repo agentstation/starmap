@@ -4,8 +4,11 @@ CSP6 requires a checked bot merge, publication recovery tests, and a hosted retr
 The qualifier also verifies both channel attestations, checkpoint replay, and the current embedded catalog.
 Missing evidence reports `UNVERIFIED`.
 
-Use a clean checkout of the promoted source. The verifier permits later planning and design evidence changes.
-Changes to code, tests, tools, or embedded catalog input require new qualification.
+Capture from a clean checkout of the promoted source.
+The capture binds the publisher tooling: the workflow, the publication profile, `scripts/catalog_publication.py`, both catalog commands, and `internal/catalog/publication`.
+A change to one of those paths requires a new capture.
+A later promotion changes only the embedded catalog and keeps the capture valid.
+The verifier checks the current publication live instead.
 
 Capture the successful publication before its retry:
 
@@ -48,9 +51,14 @@ bash scripts/verify-catalog-product.sh --task CSP6 \
 ```
 
 Qualification requires GitHub read access and Go 1.27.1.
-It downloads the immutable assets and verifies five attestations.
-It restores the checkpoint and compares the artifact with the current embedding.
+It downloads the captured immutable assets and verifies five attestations.
+It restores the captured checkpoint and compares the restored artifact with the captured archive.
 Attestations must identify the expected publisher source and run. Later channel updates do not invalidate the captured, attested channel bytes.
+
+The live check then reads the accepted record on the `catalog/publication` branch and both current channels.
+It requires a checked bot merge for the channel source commit, with the current branch protection and the check runs of that merge.
+It downloads the three current artifact assets, verifies their attestations, and compares the current embedding with the current publication.
+A pending candidate without channel acceptance reports `UNVERIFIED` until its promotion completes.
 
 The local recovery adapter injects failures into simulated GitHub transport while using real catalog tools and Git.
 Those tests establish transition recovery. They cannot replace hosted publication evidence.
