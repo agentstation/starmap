@@ -1,0 +1,58 @@
+{
+ "attested_subjects": 5,
+ "catalog_checksum": "sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f",
+ "current": {
+  "attested_subjects": 3,
+  "catalog_checksum": "sha256:c8bb3f9fda69e177f10f74fa2d9865b857d37b1b35fb6c653a0c2eec0c6f0dc1",
+  "generation_id": "bindings-639f3088529942a167fe71c07f879e4b4f2df0f9df39924a8e496b021fa14235.local.7762dc37b28e",
+  "promotion": {
+   "checks": {
+    "Runtime macos-15": 112455275405,
+    "Runtime ubuntu-24.04": 112455275384,
+    "Runtime ubuntu-24.04-arm": 112455275304,
+    "Runtime windows-11-arm": 112455275318,
+    "Runtime windows-2025": 112455275410,
+    "Security & Reliability": 112439248765,
+    "Verification Gate": 112455338599
+   },
+   "head": "91d7f88c497b2ef7135e040f932faf6b0f5ade6c",
+   "merge": "17870526754eb54af7e27cf1df64d3b8d8ec9e63",
+   "merged_at": "2026-10-06T19:36:35Z"
+  },
+  "pull": 241
+ },
+ "duration_seconds": 138.1,
+ "promotion": {
+  "checks": {
+   "Runtime macos-15": 111911522237,
+   "Runtime ubuntu-24.04": 111911522341,
+   "Runtime ubuntu-24.04-arm": 111911522240,
+   "Runtime windows-11-arm": 111911522328,
+   "Runtime windows-2025": 111911522197,
+   "Security & Reliability": 111895637742,
+   "Verification Gate": 111910972032
+  },
+  "head": "8b935d15d7df9efa8f97b185314886a297cba2cb",
+  "merge": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
+  "merged_at": "2026-10-05T18:23:47Z"
+ },
+ "retry": {
+  "asset_ids": [
+   613222205,
+   613222236,
+   613222681,
+   613222729,
+   613222768
+  ],
+  "completion_run": [
+   37354013071,
+   1
+  ],
+  "retry_run": [
+   37362218157,
+   1
+  ]
+ },
+ "source_commit": "2fba452ab5b829b67533d1507e3ac18f3435ecdc",
+ "status": "PASS"
+}

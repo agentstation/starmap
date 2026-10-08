@@ -1,0 +1,324 @@
+{
+  "backend_scope": "primary",
+  "cases": [
+    {
+      "condition": "CSP-V01",
+      "id": "A01",
+      "required_subcases": 5,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V02",
+      "id": "A02",
+      "required_subcases": 3,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V03",
+      "id": "A03",
+      "required_subcases": 16,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V04",
+      "id": "A04",
+      "required_subcases": 9,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V05",
+      "id": "A05",
+      "required_subcases": 6,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V06",
+      "id": "A06",
+      "required_subcases": 4,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V07",
+      "id": "A07",
+      "required_subcases": 4,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V08",
+      "id": "A08",
+      "required_subcases": 5,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V09",
+      "id": "A09",
+      "required_subcases": 4,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V10",
+      "id": "A10",
+      "required_subcases": 4,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V11",
+      "id": "A11",
+      "required_subcases": 7,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V12",
+      "id": "A12",
+      "required_subcases": 5,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V13",
+      "id": "A13",
+      "required_subcases": 3,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V14",
+      "id": "A14",
+      "required_subcases": 9,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V15",
+      "id": "A15",
+      "required_subcases": 8,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V16",
+      "id": "A16",
+      "required_subcases": 5,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V17",
+      "id": "A17",
+      "required_subcases": 5,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V18",
+      "id": "A18",
+      "required_subcases": 5,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V19",
+      "id": "A19",
+      "required_subcases": 4,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V20",
+      "id": "A20",
+      "required_subcases": 6,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V21",
+      "id": "A21",
+      "required_subcases": 5,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V22",
+      "id": "A22",
+      "required_subcases": 4,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V23",
+      "id": "A23",
+      "required_subcases": 4,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V24",
+      "id": "A24",
+      "required_subcases": 10,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V25",
+      "id": "A25",
+      "required_subcases": 6,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V26",
+      "id": "A26",
+      "required_subcases": 4,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V27",
+      "id": "A27",
+      "required_subcases": 6,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V28",
+      "id": "A28",
+      "required_subcases": 4,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V29",
+      "id": "A29",
+      "required_subcases": 5,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V30",
+      "id": "A30",
+      "required_subcases": 6,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V31",
+      "id": "A31",
+      "required_subcases": 9,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V32",
+      "id": "A32",
+      "required_subcases": 8,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V33",
+      "id": "A33",
+      "required_subcases": 9,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V34",
+      "id": "A34",
+      "required_subcases": 6,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V35",
+      "id": "A35",
+      "required_subcases": 4,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V36",
+      "id": "A36",
+      "required_subcases": 2,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V37",
+      "id": "A37",
+      "required_subcases": 5,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V38",
+      "id": "A38",
+      "required_subcases": 4,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V39",
+      "id": "A39",
+      "required_subcases": 3,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V40",
+      "id": "A40",
+      "required_subcases": 8,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V41",
+      "id": "A41",
+      "required_subcases": 12,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V42",
+      "id": "A42",
+      "required_subcases": 9,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V43",
+      "id": "A43",
+      "required_subcases": 7,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V44",
+      "id": "A44",
+      "required_subcases": 8,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V45",
+      "id": "A45",
+      "required_subcases": 9,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V46",
+      "id": "A46",
+      "required_subcases": 10,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V47",
+      "id": "A47",
+      "required_subcases": 22,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V48",
+      "id": "A48",
+      "required_subcases": 8,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V49",
+      "id": "A49",
+      "required_subcases": 7,
+      "status": "UNVERIFIED"
+    },
+    {
+      "condition": "CSP-V50",
+      "id": "A50",
+      "required_subcases": 10,
+      "status": "UNVERIFIED"
+    }
+  ],
+  "gate_status": "PASS",
+  "label": "E02 from Starmap main c3e38970 on 2026-10-07",
+  "qualification": "component checks only",
+  "registry_sha256": "cee58cbcb94235b66e309571c5a027051b2eb7058f92342a1c46633ff1396727",
+  "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+  "selected_subcases": 1,
+  "source_log_bytes": 6910,
+  "source_log_sha256": "d991c22ad588e5a69bcb3a15514e496bd69f6b3943a4875638386a43efe83316",
+  "subcases": {
+    "E02": {
+      "evidence_scope": "product",
+      "proof": "/private/tmp/starmap-e03-20261007/docs/plans/proof/starport-production-catalog/csp24/first-use/first-use-demo-review.json",
+      "proof_sha256": "78d4ca918fd4ba5774aa01f98df5e228e72da11025b5150d7ebd22992cf1c87f",
+      "scope": "Recorded native installation and README review. This invocation did not reinstall software or call a paid provider.",
+      "status": "PASS"
+    }
+  },
+  "summary": "Summary: 0 passed, 50 failed",
+  "unverified_cases": 50
+}

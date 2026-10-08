@@ -31,13 +31,13 @@ The user activated the whole-plan goal on 2026-09-05. The plan branch `codex/cat
 | Starmap | #250 | `875202371` | the capacity suite for the replay payload-bound tests |
 | Starmap | #249 | `60cec3dec` | the bot promotion with receipt `sha256:9faf893ae5…` |
 | Starmap | #253 | `4d452ebab` | the renewed hosted publication capture |
-| Starmap | #TODO-ARCHIVE-PR | recorded on the plan branch after the merge | this archive |
+| Starmap | #254 | recorded on the plan branch after the merge | this archive |
 
 ## Proof locations
 
 - This directory holds the plan and the task proofs `proof/csp*.md` with the small record directories `proof/csp23/` and `proof/csp24/`.
 - Starmap main holds the verifier inputs under `docs/plans/proof/starport-production-catalog/`: 2,286 files and 247 MB. They include the native qualification capture and the first-use records. The verifier `scripts/catalog_product_verify.py` reads them from that path.
-- The plan branch `codex/catalog-qualification` at `TODO-BRANCH-TIP` holds the complete proof tree: 26,071 files and 510 MB. It includes the execution histories and the large captures. Every archive link to a branch-only file names that commit. The branch remains and nobody deletes it.
+- The plan branch `codex/catalog-qualification` at `af32c6ce2468bcb2260345881516e99a049ac892` holds the complete proof tree: 26,071 files and 510 MB. It includes the execution histories and the large captures. Every archive link to a branch-only file names that commit. The branch remains and nobody deletes it.
 - The design document `docs/design/catalog-lifecycle/PAID_OPERATION_MATRIX.md` exists only on the plan branch. The archived plan links to it there.
 
 ## Indexes
