@@ -15,8 +15,21 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 MODULE = "github.com/agentstation/starmap"
 GROUPS = ("checks", "runtime", "client", "application", "contracts")
-CAPACITY_PACKAGE = MODULE + "/internal/catalog/publication"
-CAPACITY_TEST = "TestPublicPublicationProfileRetainsBoundedState"
+# Capacity tests cross a fixed payload bound with a complete corpus or bound-sized inputs.
+# Race instrumentation multiplies their cost, so the capacity suite runs them once without it.
+CAPACITY_TESTS = {
+    MODULE + "/internal/catalog/publication": ("TestPublicPublicationProfileRetainsBoundedState",),
+    MODULE + "/runtime": (
+        "TestAcquisitionReplayCompactsSupersededMetadataBeforeRetainedBound",
+        "TestAcquisitionReplayRejectsRetainedHistoryAboveBound",
+    ),
+}
+
+
+def capacity_pattern():
+    """Match exactly the capacity test names in every package."""
+    names = sorted(name for tests in CAPACITY_TESTS.values() for name in tests)
+    return "^(" + "|".join(names) + ")$"
 
 
 def group_for(package):
@@ -50,10 +63,10 @@ def test_command(suite, packages):
     # A package owns its goroutines. Separate hosted runners bound package memory.
     args = ["go", "test", "-json", "-count=1", "-timeout=30m", "-p=1"]
     if suite == "race":
-        args += ["-race", "-skip=^" + CAPACITY_TEST + "$"]
+        args += ["-race", "-skip=" + capacity_pattern()]
     elif suite == "capacity":
-        args += ["-run=^" + CAPACITY_TEST + "$"]
-        packages = [CAPACITY_PACKAGE]
+        args += ["-run=" + capacity_pattern()]
+        packages = sorted(CAPACITY_TESTS)
     elif suite != "regular":
         raise ValueError("unknown test suite")
     return args + packages
@@ -89,6 +102,11 @@ def select_tests(events, packages, shard):
     return selected
 
 
+def exclude_capacity(tests):
+    """Drop the capacity tests that the race suite skips from a shard expectation."""
+    return {key for key in tests if key[1] not in CAPACITY_TESTS.get(key[0], ())}
+
+
 def shard_filter(tests):
     return "-run=^(" + "|".join(re.escape(name) for name in sorted({name for _, name in tests})) + ")$"
 
@@ -96,7 +114,7 @@ def shard_filter(tests):
 def summarize(path, suite, packages, expected_tests=None):
     counts = {"pass": 0, "fail": 0, "skip": 0}
     slow = []
-    capacity_passed = False
+    capacity_passed = set()
     completed = set()
     completed_tests = set()
     failed = False
@@ -118,7 +136,8 @@ def summarize(path, suite, packages, expected_tests=None):
                 counts[action] += 1
                 if "/" not in name and action != "skip":
                     slow.append((event.get("Elapsed", 0), event.get("Package"), name))
-                capacity_passed |= action == "pass" and name == CAPACITY_TEST and event.get("Package") == CAPACITY_PACKAGE
+                if action == "pass" and name in CAPACITY_TESTS.get(package, ()):
+                    capacity_passed.add((package, name))
             if action == "fail":
                 failed = True
                 print("FAILED:", event.get("Package"), name or "package", file=sys.stderr)
@@ -130,8 +149,9 @@ def summarize(path, suite, packages, expected_tests=None):
         raise ValueError("test evidence differs from the selected shard inventory")
     if counts["pass"] == 0:
         raise ValueError("test evidence contains no passing tests")
-    if suite == "capacity" and not capacity_passed:
-        raise ValueError("the full-catalog capacity test did not pass")
+    capacity_expected = {(package, name) for package, names in CAPACITY_TESTS.items() for name in names}
+    if suite == "capacity" and capacity_passed != capacity_expected:
+        raise ValueError("a capacity test did not pass")
     print(json.dumps({"tests": counts, "slowest": sorted(slow, reverse=True)[:15], "events": str(path)}))
 
 
@@ -143,7 +163,7 @@ def main():
     parser.add_argument("--shard", type=int, choices=(0, 1, 2, 3), default=0)
     args = parser.parse_args()
     if args.suite == "capacity" and args.group != "all":
-        parser.error("capacity runs as one complete test")
+        parser.error("capacity runs its complete test set")
     if args.shard and (args.group not in ("runtime", "application") or args.suite != "race"):
         parser.error("shards apply only to the runtime and application race groups")
     inventory = subprocess.run(["go", "list", "./..."], cwd=ROOT, check=True,
@@ -158,7 +178,7 @@ def main():
         listing = subprocess.run(["go", "test", "-race", "-json", "-list", ".", *packages],
                                  cwd=ROOT, env=environment, capture_output=True, text=True,
                                  check=True, timeout=600)
-        expected_tests = select_tests([json.loads(line) for line in listing.stdout.splitlines()], packages, args.shard)
+        expected_tests = exclude_capacity(select_tests([json.loads(line) for line in listing.stdout.splitlines()], packages, args.shard))
         selected.insert(2, shard_filter(expected_tests))
     path = args.output
     if path is None:
@@ -176,7 +196,7 @@ def main():
         # Preserve Go's diagnostics and exit status, including package build failures.
         print(path.read_text(encoding="utf-8"), file=sys.stderr)
         return result.returncode
-    summarize(path, args.suite, [CAPACITY_PACKAGE] if args.suite == "capacity" else packages, expected_tests)
+    summarize(path, args.suite, sorted(CAPACITY_TESTS) if args.suite == "capacity" else packages, expected_tests)
     return 0
 
 

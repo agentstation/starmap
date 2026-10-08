@@ -38,14 +38,18 @@ class TestVerification(unittest.TestCase):
         self.assertIn("-count=1", args)
         self.assertIn("-p=1", args)
         self.assertNotIn("-short", args)
-        self.assertEqual(["-skip=^" + verification.CAPACITY_TEST + "$"], [arg for arg in args if arg.startswith("-skip")])
+        self.assertEqual(["-skip=" + verification.capacity_pattern()], [arg for arg in args if arg.startswith("-skip")])
+        for package, names in verification.CAPACITY_TESTS.items():
+            for name in names:
+                self.assertTrue(re.fullmatch(verification.capacity_pattern(), name), (package, name))
+        self.assertIsNone(re.fullmatch(verification.capacity_pattern(), "TestPublicPublicationProfileRetainsBoundedStateX"))
 
     def test_regular_and_capacity_preserve_scale_coverage(self):
         regular = verification.test_command("regular", [verification.MODULE])
         self.assertFalse(any(arg.startswith(("-skip", "-run", "-short")) for arg in regular))
         capacity = verification.test_command("capacity", [verification.MODULE])
-        self.assertEqual(verification.CAPACITY_PACKAGE, capacity[-1])
-        self.assertIn("-run=^" + verification.CAPACITY_TEST + "$", capacity)
+        self.assertEqual(sorted(verification.CAPACITY_TESTS), capacity[-len(verification.CAPACITY_TESTS):])
+        self.assertIn("-run=" + verification.capacity_pattern(), capacity)
         with self.assertRaises(ValueError):
             verification.test_command("unrecognized", [])
 
@@ -54,7 +58,7 @@ class TestVerification(unittest.TestCase):
             path = Path(directory) / "events.jsonl"
             path.write_text("".join(json.dumps(event) + "\n" for event in events), encoding="utf-8")
             with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-                verification.summarize(path, suite, packages or [verification.CAPACITY_PACKAGE], expected_tests)
+                verification.summarize(path, suite, packages or sorted(verification.CAPACITY_TESTS), expected_tests)
 
     def test_shards_cover_tests_examples_and_fuzz_seeds_exactly_once(self):
         packages = [verification.MODULE + suffix for suffix in (
@@ -78,6 +82,11 @@ class TestVerification(unittest.TestCase):
             with self.subTest(broken=broken[-1:]), self.assertRaises(ValueError):
                 verification.select_tests(broken, packages, 1)
 
+    def test_race_shards_exclude_only_the_capacity_tests(self):
+        package, name = next((package, names[0]) for package, names in sorted(verification.CAPACITY_TESTS.items()))
+        tests = {(package, name), (package, "TestOther"), (verification.MODULE + "/other", name)}
+        self.assertEqual({(package, "TestOther"), (verification.MODULE + "/other", name)}, verification.exclude_capacity(tests))
+
     def test_shard_evidence_rejects_omitted_extra_and_duplicate_tests(self):
         package = verification.MODULE + "/runtime"
         expected = {(package, "TestA"), (package, "ExampleB")}
@@ -90,11 +99,15 @@ class TestVerification(unittest.TestCase):
             with self.subTest(broken=broken), self.assertRaises(ValueError):
                 self.summarize(broken, "race", [package], expected)
 
-    def test_capacity_needs_the_exact_passing_test(self):
-        success = {"Package": verification.CAPACITY_PACKAGE, "Test": verification.CAPACITY_TEST, "Action": "pass"}
-        completion = {"Package": verification.CAPACITY_PACKAGE, "Action": "pass"}
-        self.summarize([success, completion])
-        for events in ([], [dict(success, Action="skip")], [dict(success, Test="TestOther")], [dict(success, Package="other")]):
+    def test_capacity_needs_every_exact_passing_test(self):
+        successes = [{"Package": package, "Test": name, "Action": "pass"}
+                     for package, names in sorted(verification.CAPACITY_TESTS.items()) for name in names]
+        completions = [{"Package": package, "Action": "pass"} for package in sorted(verification.CAPACITY_TESTS)]
+        self.summarize(successes + completions)
+        first = successes[0]
+        for events in ([], successes[1:] + completions, [dict(first, Action="skip")] + successes[1:] + completions,
+                       [dict(first, Test="TestOther")] + successes[1:] + completions,
+                       [dict(first, Package="other")] + successes[1:] + completions):
             with self.subTest(events=events), self.assertRaises(ValueError):
                 self.summarize(events)
 
