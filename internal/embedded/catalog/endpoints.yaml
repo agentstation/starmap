@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: bindings-c465d7cab958f458951cb9ec5ec8af12ce80d5be1f615f8f8cdc2c512bd0144e.local.ad46fe4ada1e
-catalog_digest: sha256:b07a5abcc810d50c26491bd762d0efe1114ab4fcf54a02258ecd9742a5b55f58
+generation_id: bindings-552d2fdd5a9dd0a5c9c3a42c1baa90ec30f8beb4da37e644666894c0c53822d8.local.a4b144a6c0df
+catalog_digest: sha256:fbaf752cb6f091c6324cc7e86e9098f4b77efcec991d1a586700a894ec28feab
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -6246,7 +6246,7 @@ models:
           tokens:
             input:
               per_token: 0.0
-              per_1m: 0.019
+              per_1m: 0.029
             output:
               per_token: 0.0
               per_1m: 0.03
