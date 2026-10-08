@@ -456,7 +456,7 @@ func (r *Runtime) commitOrdinary(ctx context.Context, state starmap.CatalogState
 	} else if restored {
 		return r.client.CurrentCatalogState(), nil
 	}
-	publication, err := r.client.Update(ctx, func(
+	_, err := r.client.Update(ctx, func(
 		context.Context,
 		*catalogs.Catalog,
 	) (*starmap.Candidate, error) {
@@ -485,9 +485,7 @@ func (r *Runtime) commitOrdinary(ctx context.Context, state starmap.CatalogState
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}
-	if !publication.Published {
-		return state, nil
-	}
+	// A no-op retains the committed generation's timestamp and sequence.
 	return r.client.CurrentCatalogState(), nil
 }
 

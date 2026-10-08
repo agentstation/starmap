@@ -63,7 +63,10 @@ func (r *Runtime) publishAcquisitionPolicyStartup(ctx context.Context) error {
 	r.mu.RUnlock()
 	current := r.client.CurrentCatalogState()
 	if current.GenerationID == state.GenerationID && current.PayloadChecksum == state.PayloadChecksum && !r.needsFleetOwnershipPublication(ctx) {
-		return r.retainEmbeddedStartup(ctx, state)
+		r.mu.Lock()
+		r.effective = current
+		r.mu.Unlock()
+		return r.retainEmbeddedStartup(ctx, current)
 	}
 	committed, err := r.commit(ctx, state, r.lease.epoch(), evidence, nil)
 	if err != nil {
