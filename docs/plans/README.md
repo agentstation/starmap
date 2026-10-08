@@ -1,14 +1,14 @@
 # Plans
 
-## Active
+## Archived
 
-[Starmap and Starport production catalog](starport-production-catalog-plan.html)
-owns catalog lifecycle, shared configuration, storage, request latency, operator UX,
+[Starmap and Starport production catalog](../reviews/catalog-lifecycle/starport-production-catalog-plan.html)
+owned catalog lifecycle, shared configuration, storage, request latency, operator UX,
 documentation, and the README demonstration.
-The user activated the whole-plan goal on 2026-09-05. CSP0, CSP0.1, CSP0.4, and CSP1 are complete. CSP0.2 awaits native CI evidence. CSP2 is in progress.
-The ledger contains 38 tasks, 50 primary cases, and 324 required subcases.
-The candidate gate also requires eight local checks from publication-dependent cases.
+The user activated the whole-plan goal on 2026-09-05. The plan completed on 2026-10-07 against Starmap `v0.17.0` and Starport `v1.3.0`.
+The [closure record](../reviews/catalog-lifecycle/CLOSURE.md) lists the ledger result, the merge commits, and the proof locations.
 
-The [activation resolution](proof/starport-production-catalog/activation-2026-09-05/RESOLUTION.md)
-records audit corrections, authority, and the next implementation evidence.
-Earlier storage, latency, and audit proofs remain historical records.
+The proof tree `proof/starport-production-catalog/` stays at this path.
+The verifier `scripts/catalog_product_verify.py` reads the native and first-use records from it.
+The task proofs and the execution histories of the plan branch live in the archive and on the branch that the closure record names.
+No plan is active.

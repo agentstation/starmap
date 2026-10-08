@@ -2736,7 +2736,7 @@ need replacement. The remaining changes have these owners and dependencies:
 | Optional cache and advisory workers | Starport cache and availability concepts | Lifecycle, cancellation, byte bounds, and admission separation |
 | Complete latency measurements | Starport telemetry, benchmark harness, UI, and docs | Reviewed profile, actual recipes, and artifact-bound evidence |
 
-The [canonical plan](../../plans/starport-production-catalog-plan.html) owns implementation order and evidence.
+The [archived plan](../../reviews/catalog-lifecycle/starport-production-catalog-plan.html) records the implementation order and evidence. The plan completed on 2026-10-07.
 Its early first-use tasks preserve the final production qualification boundary.
 The review does not activate that plan, create commits, or authorize external publication.
 

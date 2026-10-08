@@ -15,7 +15,7 @@ defines proposed contracts. The
 [repository findings](design/catalog-lifecycle/REPOSITORY_FINDINGS.md) record
 current behavior and verification limits.
 The [storage review](design/catalog-lifecycle/STORAGE_REVIEW.md) inventories current files and storage services.
-The [canonical plan](plans/starport-production-catalog-plan.html) includes the recommendations and their required implementation evidence.
+The [archived plan](reviews/catalog-lifecycle/starport-production-catalog-plan.html) records the recommendations, their implementation evidence, and the completion on 2026-10-07.
 
 The [latency review](design/catalog-lifecycle/LATENCY_REVIEW.md) records measured catalog and credential costs.
 Its accepted target defines valid memory state, atomic admission, bounded optional work, and complete gateway measurements.
