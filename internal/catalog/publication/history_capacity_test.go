@@ -2,12 +2,14 @@ package publication
 
 import (
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	"github.com/agentstation/starmap/pkg/sources"
+	catalogruntime "github.com/agentstation/starmap/runtime"
 )
 
 func TestPublicationStableInputsHaveBoundedReplayHistory(t *testing.T) {
@@ -69,10 +71,89 @@ func TestPublicationStableInputsHaveBoundedReplayHistory(t *testing.T) {
 	}
 }
 
+func TestPublicationRestoresAcceptedHistoryAboveRetainedBound(t *testing.T) {
+	// The runtime retained payload bound. An accepted checkpoint can exceed it until compaction.
+	const retainedBound = 64 << 20
+	profile, run := admissionFixture(t)
+	profile.Scopes[0].Scope.Source = sources.ModelsDevHTTPID
+	profile.Scopes[0].Scope.Binding = nil
+	empty, err := catalogs.NewEmpty().Build()
+	if err != nil {
+		t.Fatal(err)
+	}
+	state, err := NewState(publicationBaselineFixture(t, empty), "accepted-publisher")
+	if err != nil {
+		t.Fatal(err)
+	}
+	total := 0
+	for index := 0; total <= retainedBound; index++ {
+		at := run.StartedAt.Add(time.Duration(index) * time.Hour)
+		observation := sizedUnresolvedPublicationObservation(t, at, strings.Repeat(string(rune('a'+index)), 6<<20))
+		payload, err := catalogs.EncodeCatalogPayload(observation.Catalog)
+		if err != nil {
+			t.Fatal(err)
+		}
+		total += len(payload)
+		state.history = append(state.history, observation)
+	}
+	candidate, err := catalogruntime.ReplayAcquisition(t.Context(), state.baseline, state.publisherID, nil, state.history)
+	if err != nil {
+		t.Fatal(err)
+	}
+	state.current, err = candidate.Generation("accepted", state.history[len(state.history)-1].ObservedAt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	bundle, err := artifact.Build(state.current)
+	if err != nil {
+		t.Fatal(err)
+	}
+	state.bundle = &bundle
+	accepted, err := EncodeState(state)
+	if err != nil {
+		t.Fatal(err)
+	}
+	restored, err := RestoreState(t.Context(), accepted.Data, accepted.Checksum)
+	if err != nil {
+		t.Fatalf("accepted history above the retained bound did not restore: %v", err)
+	}
+	at := run.StartedAt.Add(time.Duration(len(state.history)) * time.Hour)
+	observation := sizedUnresolvedPublicationObservation(t, at, "current")
+	run = Run{StartedAt: at, CompletedAt: at, Attempts: []Attempt{{Scope: profile.Scopes[0].Scope, Outcome: Succeeded, Observation: &observation}}}
+	prepared, err := preparePublication(t.Context(), restored, profile, run, "compacted")
+	if err != nil {
+		t.Fatal(err)
+	}
+	retained := 0
+	for _, observation := range prepared.Next.history {
+		payload, err := catalogs.EncodeCatalogPayload(observation.Catalog)
+		if err != nil {
+			t.Fatal(err)
+		}
+		retained += len(payload)
+	}
+	checkpoint, err := EncodeState(prepared.Next)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if retained > retainedBound || len(checkpoint.Data) > retainedBound {
+		t.Fatalf("compacted checkpoint retained %d payload bytes in %d checkpoint bytes; want each at most %d", retained, len(checkpoint.Data), retainedBound)
+	}
+	if _, err := RestoreState(t.Context(), checkpoint.Data, checkpoint.Checksum); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func unresolvedPublicationObservation(t *testing.T, at time.Time) sources.Observation {
 	t.Helper()
+	return sizedUnresolvedPublicationObservation(t, at, "")
+}
+
+// sizedUnresolvedPublicationObservation carries the description in a quarantined offering, so it changes only the payload size.
+func sizedUnresolvedPublicationObservation(t *testing.T, at time.Time, description string) sources.Observation {
+	t.Helper()
 	builder := catalogs.NewEmpty()
-	if err := builder.SetProvider(catalogs.Provider{ID: "provider", Name: "Provider", Models: map[string]*catalogs.Model{"unresolved": {ID: "unresolved", Name: "Unresolved"}}}); err != nil {
+	if err := builder.SetProvider(catalogs.Provider{ID: "provider", Name: "Provider", Models: map[string]*catalogs.Model{"unresolved": {ID: "unresolved", Name: "Unresolved", Description: description}}}); err != nil {
 		t.Fatal(err)
 	}
 	catalog, err := catalogs.NewObservationCatalog(builder)

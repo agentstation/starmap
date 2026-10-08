@@ -587,13 +587,15 @@ func InspectRetainedPublications(ctx context.Context, files map[string]RetainedF
 InspectRetainedPublications selects native journals and matching staging files to keep inactive. The caller must supply the complete verified runtime inventory and preserve all selected bytes. Destination records remain active and require separate owner validation. This check never promotes staging files. Native file identities are historical. This result does not authorize cleanup or admission.
 
 <a name="PrepareAcquisitionReplay"></a>
-## func [PrepareAcquisitionReplay](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_compaction.go#L20>)
+## func [PrepareAcquisitionReplay](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_compaction.go#L22>)
 
 ```go
 func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings []sources.ProviderAcquisitionBinding, observations []sources.Observation, runID string, completedAt time.Time) (catalogs.Generation, []sources.Observation, error)
 ```
 
-PrepareAcquisitionReplay returns a catalog generation and the original inputs needed for later replay. It retains compacted inputs only when catalog facts, provenance, membership, and current reviews remain exact. Current metadata reviews retain their latest original observation. Omission preserves the last review. The caller authenticates the baseline and inputs. This function reads no sources or storage.
+PrepareAcquisitionReplay returns a catalog generation and the original inputs needed for later replay. It retains compacted inputs only when catalog facts, provenance, membership, and current reviews remain exact. Current metadata reviews retain their latest original observation. Omission preserves the last review.
+
+The retained inputs must fit the retained payload bound. The supplied history can exceed it. The caller authenticates the baseline and inputs. This function reads no sources or storage.
 
 <a name="PrepareCatalogRecoveryDirectory"></a>
 ## func [PrepareCatalogRecoveryDirectory](<https://github.com/agentstation/starmap/blob/main/runtime/catalog_recovery_directory.go#L16>)
@@ -607,7 +609,7 @@ PrepareCatalogRecoveryDirectory establishes private owner, seed, and empty layer
 The host must fence writers and call this only before sealing its native activation decision. Restart paths must inspect the retained directory instead of invoking preparation.
 
 <a name="ReplayAcquisition"></a>
-## func [ReplayAcquisition](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_replay.go#L19>)
+## func [ReplayAcquisition](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_replay.go#L26>)
 
 ```go
 func ReplayAcquisition(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings []sources.ProviderAcquisitionBinding, observations []sources.Observation) (*starmap.Candidate, error)

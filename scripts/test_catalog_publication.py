@@ -508,21 +508,39 @@ class AcquisitionDiagnosticsTests(unittest.TestCase):
         self.assertIn("Error: publication_admission.state.catalog: retained inputs do not reproduce the accepted catalog.",
                       self.summary.read_text(encoding="utf-8"))
 
+    def test_failed_acquisition_retains_typed_validation_error(self):
+        fields = {
+            "replay.observations": "exceeds the retained payload bound",
+            "manual.observation": "exceeds the layer bound",
+            "private.directory": "requires owner-only POSIX permissions. Review ownership and remove group and other access before retrying",
+            "context": "is required",
+            "a" * 48 + ".b" * 6: "is invalid",
+        }
+        for field, message in fields.items():
+            with self.subTest(field):
+                error = self.failed_error(json.dumps(self.events[0]) + f"\nvalidation failed for field {field}: {message}\n")
+                self.assertEqual(error, {"field": field, "message": message})
+                self.assertIn(f"Error: {field}: {message}.", self.summary.read_text(encoding="utf-8"))
+
     def test_failed_acquisition_reduces_other_errors_to_category(self):
         prefix = "validation failed for field publication_admission.source: "
         lines = {
             "url": prefix + "fetch https://api.example.invalid/v1?key=private-fixture-credential",
             "token": prefix + "rejected ghp_0123456789abcdefghijABCDEFGHIJ0123",
-            "field": "validation failed for field provider.endpoint: is invalid",
             "wrapped": "acquire openai: " + prefix + "is invalid",
             "control": prefix + "is\tinvalid",
             "not final": prefix + "is invalid\nGET https://api.example.invalid/v1 failed",
+            "field case": "validation failed for field Provider.endpoint: is invalid",
+            "field url": "validation failed for field https://api.example.invalid/v1: is invalid",
+            "field empty segment": "validation failed for field provider..endpoint: is invalid",
+            "field segment length": "validation failed for field provider." + "e" * 49 + ": is invalid",
+            "field segment count": "validation failed for field provider" + ".openai" * 7 + ": is invalid",
         }
         for name, stderr in lines.items():
             with self.subTest(name):
                 self.assertEqual(self.failed_error(stderr), {"category": "unclassified"})
                 raw = (self.publisher.root / "acquisition-corrections.log").read_text(encoding="utf-8")
-                for fragment in ("example.invalid", "ghp_", "provider.endpoint", "openai"):
+                for fragment in ("example.invalid", "ghp_", "endpoint", "openai"):
                     self.assertNotIn(fragment, raw)
 
     def test_retained_admission_error_is_length_bounded(self):

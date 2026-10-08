@@ -8,9 +8,16 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
+
+// maxAcceptedReplayBytes bounds the summed payloads that one replay reads.
+// A replayed history comes from a checksum-verified publisher checkpoint, which this byte bound already limits.
+// The history can exceed the retained payload bound until compaction drops superseded inputs.
+// Each observation record keeps the maxLayerBytes bound.
+const maxAcceptedReplayBytes = artifact.MaxPublicationCheckpointBytes
 
 // ReplayAcquisition rebuilds an ordered observation history above an explicit baseline.
 // The caller authenticates the baseline and observations, and selects the active bindings.
@@ -63,8 +70,8 @@ func replayAcquisition(ctx context.Context, baseline catalogs.Generation, publis
 			return nil, err
 		}
 		observation := original[0]
-		if len(observation.Payload) > maxLayerBytes-bytes {
-			return nil, &errors.ValidationError{Field: "replay.observations", Message: "exceeds the retained payload bound"}
+		if len(observation.Payload) > maxAcceptedReplayBytes-bytes {
+			return nil, &errors.ValidationError{Field: "replay.observations", Message: "exceeds the accepted replay bound"}
 		}
 		bytes += len(observation.Payload)
 		layers.manual = &manualBatch{parent: layers.manual, observations: original}
