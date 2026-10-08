@@ -58,7 +58,7 @@ func (merger *merger) modelSourcesForValue(
 	sourceModels = merger.suppressStaleModelFallback(providerID, modelID, sourceModels, value)
 	localModel := sourceModels[sources.LocalCatalogID]
 	if localModel == nil {
-		return sourceModels
+		return merger.baselineModelSourcesForValue(providerID, modelID, policy, sourceModels, value)
 	}
 	localValue := value(localModel)
 	if localValue == nil {
@@ -103,6 +103,75 @@ func (merger *merger) modelSourcesForValue(
 		evidence,
 	)
 	return resolved
+}
+
+// baselineModelSourcesForValue retains receipts for models omitted from a local delta.
+// Only an unchanged accepted baseline can supply a synthetic receipt carrier.
+func (merger *merger) baselineModelSourcesForValue(
+	providerID catalogs.ProviderID,
+	modelID string,
+	policy authority.Policy,
+	sourceModels map[sources.ID]*catalogs.Model,
+	value func(*catalogs.Model) any,
+) map[sources.ID]*catalogs.Model {
+	if !merger.sparseLocalModelDelta(providerID, modelID) {
+		return sourceModels
+	}
+	for _, source := range []sources.ID{sources.ReleaseArtifactID, sources.EmbeddedCatalogID} {
+		model := sourceModels[source]
+		if model == nil || !merger.acceptedBaselineCarrier(source) {
+			continue
+		}
+		currentValue := value(model)
+		if currentValue == nil {
+			continue
+		}
+		entry, found := projectedCatalogModelEvidence(merger.baseline, providerID, modelID, policy.Evidence(), currentValue)
+		if !found {
+			continue
+		}
+		resolved := cloneModelSources(sourceModels)
+		if !merger.modelReceiptPermitted(providerID, policy, entry) {
+			for _, carrier := range []sources.ID{sources.ReleaseArtifactID, sources.EmbeddedCatalogID} {
+				if candidate := resolved[carrier]; candidate != nil && merger.acceptedBaselineCarrier(carrier) &&
+					semanticValueEqual(policy.Evidence(), entry.Value, value(candidate)) {
+					merger.rememberBaselineFallbackEvidence(catalogevidence.ResourceTypeModel,
+						provenance.ModelResourceID(string(providerID), modelID), policy.Evidence(), carrier, entry)
+				}
+			}
+			return resolved
+		}
+		if entry.Source != source {
+			delete(resolved, source)
+			if current := resolved[entry.Source]; current != nil && value(current) != nil {
+				return resolved
+			}
+			resolved[entry.Source] = model
+		}
+		merger.rememberCarriedEvidence(catalogevidence.ResourceTypeModel,
+			provenance.ModelResourceID(string(providerID), modelID), policy.Evidence(), entry)
+		return resolved
+	}
+	return sourceModels
+}
+
+func (merger *merger) sparseLocalModelDelta(providerID catalogs.ProviderID, modelID string) bool {
+	observation, exists := merger.observations[sources.LocalCatalogID]
+	local := merger.sourceCatalogs[sources.LocalCatalogID]
+	if !exists || observation.id == "" || local == nil {
+		return false
+	}
+	provider, err := local.Provider(providerID)
+	return err != nil || provider.Models[modelID] == nil
+}
+
+func (merger *merger) acceptedBaselineCarrier(source sources.ID) bool {
+	if source != sources.ReleaseArtifactID && source != sources.EmbeddedCatalogID && source != sources.LocalCatalogID {
+		return false
+	}
+	observation, exists := merger.observations[source]
+	return merger.baseline != nil && exists && observation.id == "" &&
+		merger.sourceCatalogs[source] == merger.baseline
 }
 
 // modelReceiptPermitted applies field authority and the caller's receipt policy.
@@ -151,11 +220,11 @@ func (merger *merger) providerSourcesForPolicy(
 	sourceProviders = merger.suppressStaleProviderFallback(providerID, policy, sourceProviders)
 	localProvider := sourceProviders[sources.LocalCatalogID]
 	if localProvider == nil {
-		return sourceProviders
+		return merger.baselineProviderSourcesForPolicy(providerID, policy, sourceProviders)
 	}
 	localValue := merger.providerFieldValue(*localProvider, policy.Path)
-	if localValue == nil {
-		return sourceProviders
+	if !policyAccepts(policy, localValue) {
+		return merger.baselineProviderSourcesForPolicy(providerID, policy, sourceProviders)
 	}
 	evidence, ok := merger.projectedProviderEvidence(providerID, policy.Evidence(), localValue)
 	if ok && (!slices.Contains(policy.SourceOrder, evidence.Source) ||
@@ -193,6 +262,51 @@ func (merger *merger) providerSourcesForPolicy(
 		evidence,
 	)
 	return resolved
+}
+
+func (merger *merger) baselineProviderSourcesForPolicy(
+	providerID catalogs.ProviderID,
+	policy authority.Policy,
+	sourceProviders map[sources.ID]*catalogs.Provider,
+) map[sources.ID]*catalogs.Provider {
+	if observation, exists := merger.observations[sources.LocalCatalogID]; !exists || observation.id == "" {
+		return sourceProviders
+	}
+	for _, source := range []sources.ID{sources.ReleaseArtifactID, sources.EmbeddedCatalogID} {
+		provider := sourceProviders[source]
+		if provider == nil || !merger.acceptedBaselineCarrier(source) {
+			continue
+		}
+		value := merger.providerFieldValue(*provider, policy.Path)
+		entry, found := matchingCurrentEvidence(
+			merger.baseline.Provenance().FindByField(catalogevidence.ResourceTypeProvider, string(providerID), policy.Evidence()), value,
+		)
+		if !found {
+			continue
+		}
+		resolved := cloneProviderSources(sourceProviders)
+		if !slices.Contains(policy.SourceOrder, entry.Source) ||
+			(merger.projectedEvidence != nil && !merger.projectedEvidence(providerID, entry)) {
+			for _, carrier := range []sources.ID{sources.ReleaseArtifactID, sources.EmbeddedCatalogID} {
+				if candidate := resolved[carrier]; candidate != nil && merger.acceptedBaselineCarrier(carrier) &&
+					semanticValueEqual(policy.Evidence(), entry.Value, merger.providerFieldValue(*candidate, policy.Path)) {
+					merger.rememberBaselineFallbackEvidence(catalogevidence.ResourceTypeProvider,
+						string(providerID), policy.Evidence(), carrier, entry)
+				}
+			}
+			return resolved
+		}
+		if entry.Source != source {
+			delete(resolved, source)
+			if current := resolved[entry.Source]; current != nil && policyAccepts(policy, merger.providerFieldValue(*current, policy.Path)) {
+				return resolved
+			}
+			resolved[entry.Source] = provider
+		}
+		merger.rememberCarriedEvidence(catalogevidence.ResourceTypeProvider, string(providerID), policy.Evidence(), entry)
+		return resolved
+	}
+	return sourceProviders
 }
 
 func (merger *merger) suppressStaleProviderFallback(
@@ -239,7 +353,15 @@ func (merger *merger) projectedModelEvidence(
 	modelID, field string,
 	value any,
 ) (provenance.Entry, bool) {
-	catalog := merger.sourceCatalogs[sources.LocalCatalogID]
+	return projectedCatalogModelEvidence(merger.sourceCatalogs[sources.LocalCatalogID], providerID, modelID, field, value)
+}
+
+func projectedCatalogModelEvidence(
+	catalog *catalogs.Catalog,
+	providerID catalogs.ProviderID,
+	modelID, field string,
+	value any,
+) (provenance.Entry, bool) {
 	if catalog == nil {
 		return provenance.Entry{}, false
 	}
@@ -397,6 +519,21 @@ func (merger *merger) rememberCarriedEvidence(
 		field:    field,
 		source:   evidence.Source,
 	}] = evidence
+}
+
+// rememberBaselineFallbackEvidence keeps historical receipts without promoting their source authority.
+// The synthetic carrier remains the field candidate when current receipt policy denies reuse.
+func (merger *merger) rememberBaselineFallbackEvidence(
+	resource catalogevidence.ResourceType,
+	resourceID, field string,
+	carrier sources.ID,
+	entry provenance.Entry,
+) {
+	if merger.carriedEvidence == nil {
+		merger.carriedEvidence = make(map[evidenceLocator]provenance.Entry)
+	}
+	entry.Rejections = append([]provenance.Rejection(nil), entry.Rejections...)
+	merger.carriedEvidence[evidenceLocator{resource: resource, id: resourceID, field: field, source: carrier}] = entry
 }
 
 func (merger *merger) carried(
