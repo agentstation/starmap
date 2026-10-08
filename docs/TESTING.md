@@ -62,15 +62,16 @@ A failed, cancelled, skipped, or absent prerequisite cannot pass that gate.
 
 | Execution | Contract |
 | --- | --- |
-| Go 1.27.1, race suite | Every package with race instrumentation, except one explicit capacity test |
-| Go 1.27.1, capacity suite | `TestPublicPublicationProfileRetainsBoundedState` with the complete corpus |
+| Go 1.27.1, race suite | Every package with race instrumentation, except the named capacity tests |
+| Go 1.27.1, capacity suite | The capacity tests in `CAPACITY_TESTS`: the complete public corpus and the retained payload bound |
 | Native jobs | Linux, macOS, and Windows behavior on the configured architectures |
 | Storage jobs | Valkey and Redis behavior with a real object store and process recovery |
 
 The race suite has no blanket `-short` flag. The catalog concurrency test must
-run under the race detector. Only the named full-catalog capacity test runs
-without race instrumentation. Smaller publication and ownership tests still
-exercise those contracts under the race detector.
+run under the race detector. Only the named capacity tests run without race
+instrumentation, because each one crosses a fixed payload bound. Smaller
+publication and ownership tests still exercise those contracts under the race
+detector.
 
 `scripts/verification_tests.py` assigns each package from `go list ./...` to
 exactly one group. New packages enter a group automatically. The race suite uses eight hosted runners after the verification checks job:
