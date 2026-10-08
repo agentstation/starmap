@@ -1,0 +1,1328 @@
+{
+  "cases": [
+    {
+      "id": "A01",
+      "condition": "CSP-V01",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A02",
+      "condition": "CSP-V02",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A03",
+      "condition": "CSP-V03",
+      "status": "UNVERIFIED",
+      "required_subcases": 16
+    },
+    {
+      "id": "A04",
+      "condition": "CSP-V04",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A05",
+      "condition": "CSP-V05",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A06",
+      "condition": "CSP-V06",
+      "status": "PASS",
+      "required_subcases": 4
+    },
+    {
+      "id": "A07",
+      "condition": "CSP-V07",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A08",
+      "condition": "CSP-V08",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A09",
+      "condition": "CSP-V09",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A10",
+      "condition": "CSP-V10",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A11",
+      "condition": "CSP-V11",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A12",
+      "condition": "CSP-V12",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A13",
+      "condition": "CSP-V13",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A14",
+      "condition": "CSP-V14",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A15",
+      "condition": "CSP-V15",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A16",
+      "condition": "CSP-V16",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A17",
+      "condition": "CSP-V17",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A18",
+      "condition": "CSP-V18",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A19",
+      "condition": "CSP-V19",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A20",
+      "condition": "CSP-V20",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A21",
+      "condition": "CSP-V21",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A22",
+      "condition": "CSP-V22",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A23",
+      "condition": "CSP-V23",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A24",
+      "condition": "CSP-V24",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A25",
+      "condition": "CSP-V25",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A26",
+      "condition": "CSP-V26",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A27",
+      "condition": "CSP-V27",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A28",
+      "condition": "CSP-V28",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A29",
+      "condition": "CSP-V29",
+      "status": "FAIL",
+      "required_subcases": 5
+    },
+    {
+      "id": "A30",
+      "condition": "CSP-V30",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A31",
+      "condition": "CSP-V31",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A32",
+      "condition": "CSP-V32",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A33",
+      "condition": "CSP-V33",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A34",
+      "condition": "CSP-V34",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A35",
+      "condition": "CSP-V35",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A36",
+      "condition": "CSP-V36",
+      "status": "UNVERIFIED",
+      "required_subcases": 2
+    },
+    {
+      "id": "A37",
+      "condition": "CSP-V37",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A38",
+      "condition": "CSP-V38",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A39",
+      "condition": "CSP-V39",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A40",
+      "condition": "CSP-V40",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A41",
+      "condition": "CSP-V41",
+      "status": "UNVERIFIED",
+      "required_subcases": 12
+    },
+    {
+      "id": "A42",
+      "condition": "CSP-V42",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A43",
+      "condition": "CSP-V43",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A44",
+      "condition": "CSP-V44",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A45",
+      "condition": "CSP-V45",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A46",
+      "condition": "CSP-V46",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A47",
+      "condition": "CSP-V47",
+      "status": "UNVERIFIED",
+      "required_subcases": 22
+    },
+    {
+      "id": "A48",
+      "condition": "CSP-V48",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A49",
+      "condition": "CSP-V49",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A50",
+      "condition": "CSP-V50",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    }
+  ],
+  "subcases": {
+    "A29.embedded_offline_search": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "report": {
+            "numTotalTestSuites": 3,
+            "numPassedTestSuites": 3,
+            "numFailedTestSuites": 0,
+            "numPendingTestSuites": 0,
+            "numTotalTests": 28,
+            "numPassedTests": 28,
+            "numFailedTests": 0,
+            "numPendingTests": 0,
+            "numTodoTests": 0,
+            "snapshot": {
+              "added": 0,
+              "failure": false,
+              "filesAdded": 0,
+              "filesRemoved": 0,
+              "filesRemovedList": [],
+              "filesUnmatched": 0,
+              "filesUpdated": 0,
+              "matched": 0,
+              "total": 0,
+              "unchecked": 0,
+              "uncheckedKeysByFile": [],
+              "unmatched": 0,
+              "updated": 0,
+              "didUpdate": false
+            },
+            "startTime": 1791322054964,
+            "success": true,
+            "testResults": [
+              {
+                "assertionResults": [
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the recovery topic is a page under Troubleshoot",
+                    "status": "passed",
+                    "title": "the recovery topic is a page under Troubleshoot",
+                    "duration": 21.912374999999884,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the recovery topic names the liveness and readiness routes",
+                    "status": "passed",
+                    "title": "the recovery topic names the liveness and readiness routes",
+                    "duration": 9.883625000000166,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the Troubleshoot area and the navigation link the recovery topic",
+                    "status": "passed",
+                    "title": "the Troubleshoot area and the navigation link the recovery topic",
+                    "duration": 11.384958000000097,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "search finds the recovery topic by the health routes",
+                    "status": "passed",
+                    "title": "search finds the recovery topic by the health routes",
+                    "duration": 13.264707999999928,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  }
+                ],
+                "startTime": 1791322056337,
+                "endTime": 1791322056393.2646,
+                "status": "passed",
+                "message": "",
+                "name": "/private/tmp/starport-v130-20261006/console/src/docs/recovery.test.ts"
+              },
+              {
+                "assertionResults": [
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "every content file becomes one page at its area and topic path",
+                    "status": "passed",
+                    "title": "every content file becomes one page at its area and topic path",
+                    "duration": 1.3380000000001928,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "every h2, h3, and h4 has a unique id and an anchor to itself",
+                    "status": "passed",
+                    "title": "every h2, h3, and h4 has a unique id and an anchor to itself",
+                    "duration": 97.77820799999995,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "each table of contents lists the h2 and h3 headings in order and every entry resolves",
+                    "status": "passed",
+                    "title": "each table of contents lists the h2 and h3 headings in order and every entry resolves",
+                    "duration": 37.39774999999986,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "every page has a skip link, the landmarks, and one h1",
+                    "status": "passed",
+                    "title": "every page has a skip link, the landmarks, and one h1",
+                    "duration": 38.287166999999954,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the header shows the release, the Starmap version, and the content revision",
+                    "status": "passed",
+                    "title": "the header shows the release, the Starmap version, and the content revision",
+                    "duration": 28.76558299999988,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "pages carry no inline script and load only the build's own assets",
+                    "status": "passed",
+                    "title": "pages carry no inline script and load only the build's own assets",
+                    "duration": 22.90316699999994,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "every link is relative or a pinned repository link, and every relative link resolves",
+                    "status": "passed",
+                    "title": "every link is relative or a pinned repository link, and every relative link resolves",
+                    "duration": 63.66145800000004,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the same input gives the same site",
+                    "status": "passed",
+                    "title": "the same input gives the same site",
+                    "duration": 369.23058300000025,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "without a pinned reference, repository links render as text",
+                    "status": "passed",
+                    "title": "without a pinned reference, repository links render as text",
+                    "duration": 426.24291700000003,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "search covers headings, prose, and setting names",
+                    "status": "passed",
+                    "title": "search covers headings, prose, and setting names",
+                    "duration": 26.770958999999948,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "a generated page joins the site and the search index",
+                    "status": "passed",
+                    "title": "a generated page joins the site and the search index",
+                    "duration": 418.69629099999975,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the site states that discovery readiness stays unknown and that Starport has no removal targets",
+                    "status": "passed",
+                    "title": "the site states that discovery readiness stays unknown and that Starport has no removal targets",
+                    "duration": 0.37449999999989814,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  }
+                ],
+                "startTime": 1791322056601,
+                "endTime": 1791322058133.3745,
+                "status": "passed",
+                "message": "",
+                "name": "/private/tmp/starport-v130-20261006/console/src/docs/site.test.ts"
+              },
+              {
+                "assertionResults": [
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the table of contents marks the section of the fragment on load",
+                    "status": "passed",
+                    "title": "the table of contents marks the section of the fragment on load",
+                    "duration": 40.79762500000015,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "a fragment that names an h4 marks the h2 or h3 above it",
+                    "status": "passed",
+                    "title": "a fragment that names an h4 marks the h2 or h3 above it",
+                    "duration": 17.21095799999989,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the marker follows fragment links, back, and forward",
+                    "status": "passed",
+                    "title": "the marker follows fragment links, back, and forward",
+                    "duration": 68.745541,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the marker follows the scroll position",
+                    "status": "passed",
+                    "title": "the marker follows the scroll position",
+                    "duration": 34.7052920000001,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "a reload of the same address marks the same entry",
+                    "status": "passed",
+                    "title": "a reload of the same address marks the same entry",
+                    "duration": 26.232250000000022,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the theme toggle appears with the script and switches the theme",
+                    "status": "passed",
+                    "title": "the theme toggle appears with the script and switches the theme",
+                    "duration": 12.040624999999864,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "copy controls appear with the script and copy the code block",
+                    "status": "passed",
+                    "title": "copy controls appear with the script and copy the code block",
+                    "duration": 65.39416699999992,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "a page read from disk links to index files",
+                    "status": "passed",
+                    "title": "a page read from disk links to index files",
+                    "duration": 13.38470899999993,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "a served page keeps its directory links",
+                    "status": "passed",
+                    "title": "a served page keeps its directory links",
+                    "duration": 9.943625000000111,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the search page reads the query from the address and lists results",
+                    "status": "passed",
+                    "title": "the search page reads the query from the address and lists results",
+                    "duration": 61.11945800000012,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the search page reports a query without results and an index that does not load",
+                    "status": "passed",
+                    "title": "the search page reports a query without results and an index that does not load",
+                    "duration": 111.10670800000003,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the client sends no request on a topic page",
+                    "status": "passed",
+                    "title": "the client sends no request on a topic page",
+                    "duration": 15.35916599999996,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  }
+                ],
+                "startTime": 1791322056418,
+                "endTime": 1791322056894.3591,
+                "status": "passed",
+                "message": "",
+                "name": "/private/tmp/starport-v130-20261006/console/src/docs/client/behavior.test.ts"
+              }
+            ]
+          },
+          "command": [
+            "pnpm",
+            "--dir",
+            "console",
+            "test",
+            "src/docs/site.test.ts",
+            "src/docs/client/behavior.test.ts",
+            "src/docs/recovery.test.ts",
+            "--reporter=json",
+            "--outputFile=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/catalog-console-check-zbtuf0ed/results.json"
+          ],
+          "cwd": "/private/tmp/starport-v130-20261006",
+          "exit_code": 0,
+          "stdout": "JSON report written to /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/catalog-console-check-zbtuf0ed/results.json\n",
+          "stderr": "$ vitest run src/docs/site.test.ts src/docs/client/behavior.test.ts src/docs/recovery.test.ts --reporter=json --outputFile=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/catalog-console-check-zbtuf0ed/results.json\n"
+        },
+        {
+          "status": "PASS",
+          "reason": "Recorded browser review matches the current inputs.",
+          "proof": "/private/tmp/starmap-csp23-20261006/docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/browser-review.json",
+          "proof_sha256": "cf601e3004dd4a012b2470aff2e797e92f55f9853b8a64e39e98efa58c59a0b4",
+          "scope": "Recorded manual browser observations. This invocation did not repeat the capture."
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A29.recovery_without_auth": {
+      "status": "PASS",
+      "checks": [
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "300s",
+            "-json",
+            "-run",
+            "^(TestDocsDoNotOpenTheDynamicEndpoints|TestDocsServeWithoutASession)$",
+            "./internal/server"
+          ],
+          "cwd": "/private/tmp/starport-v130-20261006",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-10-06T16:27:43.837345-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-10-06T16:27:44.743428-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\"}\n{\"Time\":\"2026-10-06T16:27:44.743524-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"=== RUN   TestDocsServeWithoutASession\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:56.378919-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.468867-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs/\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000001\\\",\\\"status\\\":200,\\\"bytes\\\":52,\\\"duration\\\":0.107834,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.468979-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs/troubleshoot/recovery/\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000002\\\",\\\"status\\\":200,\\\"bytes\\\":47,\\\"duration\\\":0.035042,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.477776-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs/search-index.json\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000003\\\",\\\"status\\\":200,\\\"bytes\\\":16,\\\"duration\\\":8.760791,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.47786-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs/manifest.json\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000004\\\",\\\"status\\\":200,\\\"bytes\\\":26,\\\"duration\\\":0.043583,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.477919-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs/troubleshoot/recovery/\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000005\\\",\\\"status\\\":200,\\\"bytes\\\":47,\\\"duration\\\":0.032375,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.477993-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000006\\\",\\\"status\\\":301,\\\"bytes\\\":41,\\\"duration\\\":0.046833,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.47805-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs/no-such-topic/\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000007\\\",\\\"status\\\":404,\\\"bytes\\\":19,\\\"duration\\\":0.025875,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.481177-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"--- PASS: TestDocsServeWithoutASession (11.74s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:56.48119-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Elapsed\":11.74}\n{\"Time\":\"2026-10-06T16:27:56.481235-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\"}\n{\"Time\":\"2026-10-06T16:27:56.481237-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"=== RUN   TestDocsDoNotOpenTheDynamicEndpoints\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:56.488649-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.541825-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/admin/config/effective\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000008\\\",\\\"status\\\":401,\\\"bytes\\\":100,\\\"duration\\\":0.154416,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.541892-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/admin/audit\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000009\\\",\\\"status\\\":401,\\\"bytes\\\":100,\\\"duration\\\":0.047042,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.541961-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/admin/info\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000010\\\",\\\"status\\\":401,\\\"bytes\\\":100,\\\"duration\\\":0.039875,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.542066-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/v1/models\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000011\\\",\\\"status\\\":401,\\\"bytes\\\":70,\\\"duration\\\":0.081625,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.542911-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"--- PASS: TestDocsDoNotOpenTheDynamicEndpoints (0.06s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:56.542917-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Elapsed\":0.06}\n{\"Time\":\"2026-10-06T16:27:56.543096-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:57.566406-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t13.729s\\n\"}\n{\"Time\":\"2026-10-06T16:27:57.566437-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":13.73}\n",
+          "stderr": "",
+          "elapsed_seconds": 19.523449917091057,
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "subtests": {}
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "300s",
+            "-json",
+            "-run",
+            "^(TestDocsFSReturnsTheDocsSubtree)$",
+            "./internal/console"
+          ],
+          "cwd": "/private/tmp/starport-v130-20261006",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-10-06T16:27:58.644942-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/console\"}\n{\"Time\":\"2026-10-06T16:27:58.95806-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/console\",\"Test\":\"TestDocsFSReturnsTheDocsSubtree\"}\n{\"Time\":\"2026-10-06T16:27:58.958114-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/console\",\"Test\":\"TestDocsFSReturnsTheDocsSubtree\",\"Output\":\"=== RUN   TestDocsFSReturnsTheDocsSubtree\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:58.958704-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/console\",\"Test\":\"TestDocsFSReturnsTheDocsSubtree\",\"Output\":\"--- PASS: TestDocsFSReturnsTheDocsSubtree (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:58.958734-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/console\",\"Test\":\"TestDocsFSReturnsTheDocsSubtree\",\"Elapsed\":0}\n{\"Time\":\"2026-10-06T16:27:58.95875-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/console\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:59.964409-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/console\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/console\\t1.319s\\n\"}\n{\"Time\":\"2026-10-06T16:27:59.964433-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/console\",\"Elapsed\":1.32}\n",
+          "stderr": "",
+          "elapsed_seconds": 2.2839804999530315,
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "subtests": {}
+        },
+        {
+          "status": "PASS",
+          "report": {
+            "numTotalTestSuites": 1,
+            "numPassedTestSuites": 1,
+            "numFailedTestSuites": 0,
+            "numPendingTestSuites": 0,
+            "numTotalTests": 4,
+            "numPassedTests": 4,
+            "numFailedTests": 0,
+            "numPendingTests": 0,
+            "numTodoTests": 0,
+            "snapshot": {
+              "added": 0,
+              "failure": false,
+              "filesAdded": 0,
+              "filesRemoved": 0,
+              "filesRemovedList": [],
+              "filesUnmatched": 0,
+              "filesUpdated": 0,
+              "matched": 0,
+              "total": 0,
+              "unchecked": 0,
+              "uncheckedKeysByFile": [],
+              "unmatched": 0,
+              "updated": 0,
+              "didUpdate": false
+            },
+            "startTime": 1791322080547,
+            "success": true,
+            "testResults": [
+              {
+                "assertionResults": [
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the recovery topic is a page under Troubleshoot",
+                    "status": "passed",
+                    "title": "the recovery topic is a page under Troubleshoot",
+                    "duration": 22.72262499999988,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the recovery topic names the liveness and readiness routes",
+                    "status": "passed",
+                    "title": "the recovery topic names the liveness and readiness routes",
+                    "duration": 10.138417000000118,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the Troubleshoot area and the navigation link the recovery topic",
+                    "status": "passed",
+                    "title": "the Troubleshoot area and the navigation link the recovery topic",
+                    "duration": 9.768208999999842,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "search finds the recovery topic by the health routes",
+                    "status": "passed",
+                    "title": "search finds the recovery topic by the health routes",
+                    "duration": 9.650709000000006,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  }
+                ],
+                "startTime": 1791322081965,
+                "endTime": 1791322082016.6506,
+                "status": "passed",
+                "message": "",
+                "name": "/private/tmp/starport-v130-20261006/console/src/docs/recovery.test.ts"
+              }
+            ]
+          },
+          "command": [
+            "pnpm",
+            "--dir",
+            "console",
+            "test",
+            "src/docs/recovery.test.ts",
+            "--reporter=json",
+            "--outputFile=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/catalog-console-check-7_o7c8eu/results.json"
+          ],
+          "cwd": "/private/tmp/starport-v130-20261006",
+          "exit_code": 0,
+          "stdout": "JSON report written to /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/catalog-console-check-7_o7c8eu/results.json\n",
+          "stderr": "$ vitest run src/docs/recovery.test.ts --reporter=json --outputFile=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/catalog-console-check-7_o7c8eu/results.json\n"
+        },
+        {
+          "status": "PASS",
+          "reason": "Recorded browser review matches the current inputs.",
+          "proof": "/private/tmp/starmap-csp23-20261006/docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/browser-review.json",
+          "proof_sha256": "cf601e3004dd4a012b2470aff2e797e92f55f9853b8a64e39e98efa58c59a0b4",
+          "scope": "Recorded manual browser observations. This invocation did not repeat the capture."
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A29.no_dynamic_data_disclosure": {
+      "status": "PASS",
+      "checks": [
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "300s",
+            "-json",
+            "-run",
+            "^(TestDocsDoNotOpenTheDynamicEndpoints|TestDocsServeWithoutASession)$",
+            "./internal/server"
+          ],
+          "cwd": "/private/tmp/starport-v130-20261006",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-10-06T16:27:43.837345-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-10-06T16:27:44.743428-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\"}\n{\"Time\":\"2026-10-06T16:27:44.743524-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"=== RUN   TestDocsServeWithoutASession\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:56.378919-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.468867-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs/\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000001\\\",\\\"status\\\":200,\\\"bytes\\\":52,\\\"duration\\\":0.107834,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.468979-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs/troubleshoot/recovery/\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000002\\\",\\\"status\\\":200,\\\"bytes\\\":47,\\\"duration\\\":0.035042,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.477776-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs/search-index.json\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000003\\\",\\\"status\\\":200,\\\"bytes\\\":16,\\\"duration\\\":8.760791,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.47786-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs/manifest.json\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000004\\\",\\\"status\\\":200,\\\"bytes\\\":26,\\\"duration\\\":0.043583,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.477919-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs/troubleshoot/recovery/\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000005\\\",\\\"status\\\":200,\\\"bytes\\\":47,\\\"duration\\\":0.032375,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.477993-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000006\\\",\\\"status\\\":301,\\\"bytes\\\":41,\\\"duration\\\":0.046833,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.47805-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/docs/no-such-topic/\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000007\\\",\\\"status\\\":404,\\\"bytes\\\":19,\\\"duration\\\":0.025875,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.481177-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Output\":\"--- PASS: TestDocsServeWithoutASession (11.74s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:56.48119-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsServeWithoutASession\",\"Elapsed\":11.74}\n{\"Time\":\"2026-10-06T16:27:56.481235-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\"}\n{\"Time\":\"2026-10-06T16:27:56.481237-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"=== RUN   TestDocsDoNotOpenTheDynamicEndpoints\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:56.488649-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.541825-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/admin/config/effective\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000008\\\",\\\"status\\\":401,\\\"bytes\\\":100,\\\"duration\\\":0.154416,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.541892-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/admin/audit\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000009\\\",\\\"status\\\":401,\\\"bytes\\\":100,\\\"duration\\\":0.047042,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.541961-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/admin/info\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000010\\\",\\\"status\\\":401,\\\"bytes\\\":100,\\\"duration\\\":0.039875,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.542066-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/v1/models\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/GKLkSIJU9v-000011\\\",\\\"status\\\":401,\\\"bytes\\\":70,\\\"duration\\\":0.081625,\\\"time\\\":\\\"2026-10-06T16:27:56-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-10-06T16:27:56.542911-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Output\":\"--- PASS: TestDocsDoNotOpenTheDynamicEndpoints (0.06s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:56.542917-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDocsDoNotOpenTheDynamicEndpoints\",\"Elapsed\":0.06}\n{\"Time\":\"2026-10-06T16:27:56.543096-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-10-06T16:27:57.566406-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t13.729s\\n\"}\n{\"Time\":\"2026-10-06T16:27:57.566437-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":13.73}\n",
+          "stderr": "",
+          "elapsed_seconds": 19.523449917091057,
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "subtests": {}
+        },
+        {
+          "status": "PASS",
+          "report": {
+            "numTotalTestSuites": 2,
+            "numPassedTestSuites": 2,
+            "numFailedTestSuites": 0,
+            "numPendingTestSuites": 0,
+            "numTotalTests": 24,
+            "numPassedTests": 24,
+            "numFailedTests": 0,
+            "numPendingTests": 0,
+            "numTodoTests": 0,
+            "snapshot": {
+              "added": 0,
+              "failure": false,
+              "filesAdded": 0,
+              "filesRemoved": 0,
+              "filesRemovedList": [],
+              "filesUnmatched": 0,
+              "filesUpdated": 0,
+              "matched": 0,
+              "total": 0,
+              "unchecked": 0,
+              "uncheckedKeysByFile": [],
+              "unmatched": 0,
+              "updated": 0,
+              "didUpdate": false
+            },
+            "startTime": 1791322082494,
+            "success": true,
+            "testResults": [
+              {
+                "assertionResults": [
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "every content file becomes one page at its area and topic path",
+                    "status": "passed",
+                    "title": "every content file becomes one page at its area and topic path",
+                    "duration": 1.3263330000002043,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "every h2, h3, and h4 has a unique id and an anchor to itself",
+                    "status": "passed",
+                    "title": "every h2, h3, and h4 has a unique id and an anchor to itself",
+                    "duration": 99.66887500000007,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "each table of contents lists the h2 and h3 headings in order and every entry resolves",
+                    "status": "passed",
+                    "title": "each table of contents lists the h2 and h3 headings in order and every entry resolves",
+                    "duration": 29.28295899999989,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "every page has a skip link, the landmarks, and one h1",
+                    "status": "passed",
+                    "title": "every page has a skip link, the landmarks, and one h1",
+                    "duration": 35.04212499999994,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the header shows the release, the Starmap version, and the content revision",
+                    "status": "passed",
+                    "title": "the header shows the release, the Starmap version, and the content revision",
+                    "duration": 26.284625000000005,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "pages carry no inline script and load only the build's own assets",
+                    "status": "passed",
+                    "title": "pages carry no inline script and load only the build's own assets",
+                    "duration": 21.26470899999981,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "every link is relative or a pinned repository link, and every relative link resolves",
+                    "status": "passed",
+                    "title": "every link is relative or a pinned repository link, and every relative link resolves",
+                    "duration": 59.71341700000016,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the same input gives the same site",
+                    "status": "passed",
+                    "title": "the same input gives the same site",
+                    "duration": 383.4582499999999,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "without a pinned reference, repository links render as text",
+                    "status": "passed",
+                    "title": "without a pinned reference, repository links render as text",
+                    "duration": 333.64699999999993,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "search covers headings, prose, and setting names",
+                    "status": "passed",
+                    "title": "search covers headings, prose, and setting names",
+                    "duration": 14.160875000000033,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "a generated page joins the site and the search index",
+                    "status": "passed",
+                    "title": "a generated page joins the site and the search index",
+                    "duration": 323.31674999999996,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the site states that discovery readiness stays unknown and that Starport has no removal targets",
+                    "status": "passed",
+                    "title": "the site states that discovery readiness stays unknown and that Starport has no removal targets",
+                    "duration": 0.3289169999998194,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  }
+                ],
+                "startTime": 1791322083742,
+                "endTime": 1791322085069.3289,
+                "status": "passed",
+                "message": "",
+                "name": "/private/tmp/starport-v130-20261006/console/src/docs/site.test.ts"
+              },
+              {
+                "assertionResults": [
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the table of contents marks the section of the fragment on load",
+                    "status": "passed",
+                    "title": "the table of contents marks the section of the fragment on load",
+                    "duration": 37.88795899999991,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "a fragment that names an h4 marks the h2 or h3 above it",
+                    "status": "passed",
+                    "title": "a fragment that names an h4 marks the h2 or h3 above it",
+                    "duration": 15.578208000000132,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the marker follows fragment links, back, and forward",
+                    "status": "passed",
+                    "title": "the marker follows fragment links, back, and forward",
+                    "duration": 64.17037499999992,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the marker follows the scroll position",
+                    "status": "passed",
+                    "title": "the marker follows the scroll position",
+                    "duration": 35.88258300000007,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "a reload of the same address marks the same entry",
+                    "status": "passed",
+                    "title": "a reload of the same address marks the same entry",
+                    "duration": 23.81554200000005,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the theme toggle appears with the script and switches the theme",
+                    "status": "passed",
+                    "title": "the theme toggle appears with the script and switches the theme",
+                    "duration": 12.157916000000114,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "copy controls appear with the script and copy the code block",
+                    "status": "passed",
+                    "title": "copy controls appear with the script and copy the code block",
+                    "duration": 67.52433299999984,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "a page read from disk links to index files",
+                    "status": "passed",
+                    "title": "a page read from disk links to index files",
+                    "duration": 14.339541999999938,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "a served page keeps its directory links",
+                    "status": "passed",
+                    "title": "a served page keeps its directory links",
+                    "duration": 9.842333000000053,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the search page reads the query from the address and lists results",
+                    "status": "passed",
+                    "title": "the search page reads the query from the address and lists results",
+                    "duration": 60.709499999999935,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the search page reports a query without results and an index that does not load",
+                    "status": "passed",
+                    "title": "the search page reports a query without results and an index that does not load",
+                    "duration": 111.22633300000007,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  },
+                  {
+                    "ancestorTitles": [],
+                    "fullName": "the client sends no request on a topic page",
+                    "status": "passed",
+                    "title": "the client sends no request on a topic page",
+                    "duration": 14.366958999999952,
+                    "failureMessages": [],
+                    "meta": {},
+                    "tags": [],
+                    "benchmarks": []
+                  }
+                ],
+                "startTime": 1791322083557,
+                "endTime": 1791322084024.367,
+                "status": "passed",
+                "message": "",
+                "name": "/private/tmp/starport-v130-20261006/console/src/docs/client/behavior.test.ts"
+              }
+            ]
+          },
+          "command": [
+            "pnpm",
+            "--dir",
+            "console",
+            "test",
+            "src/docs/site.test.ts",
+            "src/docs/client/behavior.test.ts",
+            "--reporter=json",
+            "--outputFile=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/catalog-console-check-v8xsvnt1/results.json"
+          ],
+          "cwd": "/private/tmp/starport-v130-20261006",
+          "exit_code": 0,
+          "stdout": "JSON report written to /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/catalog-console-check-v8xsvnt1/results.json\n",
+          "stderr": "$ vitest run src/docs/site.test.ts src/docs/client/behavior.test.ts --reporter=json --outputFile=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/catalog-console-check-v8xsvnt1/results.json\n"
+        },
+        {
+          "status": "PASS",
+          "reason": "Recorded browser review matches the current inputs.",
+          "proof": "/private/tmp/starmap-csp23-20261006/docs/plans/proof/starport-production-catalog/csp18/browser-review-2026-10-03/browser-review.json",
+          "proof_sha256": "cf601e3004dd4a012b2470aff2e797e92f55f9853b8a64e39e98efa58c59a0b4",
+          "scope": "Recorded manual browser observations. This invocation did not repeat the capture."
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A29.public_url_content_manifest": {
+      "version": "v1.3.0",
+      "url": "https://starport.agentstation.ai",
+      "content_revision": "0b7f6bb15611086250f867c25cb41f36ed1afc318027cf4a6cdfbfffa39485b8",
+      "starmap_module_version": "v0.17.0",
+      "archive_sha256": "51efc72a30a34091fa1c537241c477909efde7bcc278cad4614a0b0116e6704b",
+      "status": "FAIL",
+      "reason": "The public site serves bytes that its manifest does not list.",
+      "mismatches": [
+        "404.html",
+        "_not-found.html",
+        "docs.html",
+        "docs/api-compatibility.html",
+        "docs/api-compatibility/errors-and-limits.html",
+        "docs/api-compatibility/sdks.html",
+        "docs/api-compatibility/surfaces.html",
+        "docs/architecture.html",
+        "docs/architecture/recipes.html",
+        "docs/architecture/storage-selection.html"
+      ],
+      "evidence_scope": "product"
+    },
+    "A29.hosting_rollback": {
+      "status": "UNVERIFIED",
+      "reason": "[Errno 2] No such file or directory: '/private/tmp/starmap-csp23-20261006/docs/plans/proof/starport-production-catalog/csp23.1/rollback/rollback.json'",
+      "evidence_scope": "product"
+    },
+    "A06.promoted_checkout": {
+      "status": "PASS",
+      "channel_sha256": "sha256:ed3480c375e02a5cb3a88481ec30a950298e98335869d28238e7691fb2fa53dd",
+      "channel_sequence": 47,
+      "promoted": {
+        "generation_id": "bindings-639f3088529942a167fe71c07f879e4b4f2df0f9df39924a8e496b021fa14235.local.7762dc37b28e",
+        "semantic_checksum": "sha256:c8bb3f9fda69e177f10f74fa2d9865b857d37b1b35fb6c653a0c2eec0c6f0dc1"
+      },
+      "embedded": {
+        "generation_id": "bindings-639f3088529942a167fe71c07f879e4b4f2df0f9df39924a8e496b021fa14235.local.7762dc37b28e",
+        "semantic_checksum": "sha256:c8bb3f9fda69e177f10f74fa2d9865b857d37b1b35fb6c653a0c2eec0c6f0dc1"
+      },
+      "evidence_scope": "product"
+    },
+    "A06.new_released_module": {
+      "version": "v0.17.0",
+      "module": "github.com/agentstation/starmap@v0.17.0",
+      "sum": "h1:8lOUNj6M+YYGiEZovBEbyDbHKb5dPtHqNJt94VApf2g=",
+      "released": {
+        "generation_id": "bindings-9157a3e797c02e21193a26a2233dcbc5967390eee9ced9cb5416bdf1dae7d620.local.010adf9f3137",
+        "semantic_checksum": "sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f"
+      },
+      "tag_commit": "2b2944be736b1c2fb2907904f06b5f9c8fb6ecb7",
+      "tag_committed_at": "2026-10-05T23:33:39Z",
+      "tag_embedded": {
+        "generation_id": "bindings-9157a3e797c02e21193a26a2233dcbc5967390eee9ced9cb5416bdf1dae7d620.local.010adf9f3137",
+        "semantic_checksum": "sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f"
+      },
+      "channel_commit": "c55f31dd919bd9643a8cf82c0dfb9af80be1201b",
+      "channel_sequence": 44,
+      "promoted": {
+        "generation_id": "bindings-9157a3e797c02e21193a26a2233dcbc5967390eee9ced9cb5416bdf1dae7d620.local.010adf9f3137",
+        "semantic_checksum": "sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f"
+      },
+      "channel_sha256": "sha256:65bb05fcedf8bb7e048d4d8553c07482c60245390a0773ead02258c3dca94c04",
+      "status": "PASS",
+      "evidence_scope": "product"
+    },
+    "A06.old_pinned_bytes_unchanged": {
+      "module": "github.com/agentstation/starmap@v0.17.0",
+      "go_sum": "h1:8lOUNj6M+YYGiEZovBEbyDbHKb5dPtHqNJt94VApf2g=",
+      "pinned": {
+        "generation_id": "bindings-9157a3e797c02e21193a26a2233dcbc5967390eee9ced9cb5416bdf1dae7d620.local.010adf9f3137",
+        "semantic_checksum": "sha256:99ce815daef13ed1cced29ad554f9ced4f33554ac10b2f220dbb58dbfb43155f"
+      },
+      "selected": {
+        "generation_id": "bindings-639f3088529942a167fe71c07f879e4b4f2df0f9df39924a8e496b021fa14235.local.7762dc37b28e",
+        "semantic_checksum": "sha256:c8bb3f9fda69e177f10f74fa2d9865b857d37b1b35fb6c653a0c2eec0c6f0dc1"
+      },
+      "status": "PASS",
+      "scope": "The pinned module bytes match the consumer go.sum record and keep their original generation.",
+      "evidence_scope": "product"
+    },
+    "A06.starport_released_module_pin": {
+      "consumer_module": "github.com/agentstation/starport@v1.3.0",
+      "consumer_sum": "h1:cL1F/7rybtOLIAklY28W3w6IKKmcHCxzG0tUWLglKIc=",
+      "module": "github.com/agentstation/starmap@v0.17.0",
+      "go_sum": "h1:8lOUNj6M+YYGiEZovBEbyDbHKb5dPtHqNJt94VApf2g=",
+      "sum": "h1:8lOUNj6M+YYGiEZovBEbyDbHKb5dPtHqNJt94VApf2g=",
+      "status": "PASS",
+      "evidence_scope": "product"
+    },
+    "A35.released_installer_paths": {
+      "status": "UNVERIFIED",
+      "reason": "The release record is absent: docs/assets/first-use-v1.3.0/record.json",
+      "evidence_scope": "product"
+    }
+  },
+  "selected_subcases": 10,
+  "summary": "Summary: 1 passed, 49 failed",
+  "unverified_cases": 48,
+  "gate_status": "FAIL",
+  "qualification": "UNVERIFIED",
+  "roster_sha256": "c6acdcc057c848d7c7c1a8d10a39fb99d248c4aea27ed93b2d525f2c5e1e33c6",
+  "registry_sha256": "8b7acdbcf4a3da0d05ddea6e667b3e113590037764fcccbc87bd71f5e1f54216",
+  "backend_scope": "primary",
+  "qualification_reason": "Real environment and final artifact qualification remain unimplemented. Baseline and target-profile checks cannot qualify a release."
+}
