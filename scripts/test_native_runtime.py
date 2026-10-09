@@ -34,7 +34,7 @@ class TestNativeRuntime(unittest.TestCase):
             (path / "tests.jsonl").write_text("".join(json.dumps(event) + "\n" for event in events))
             manifest = {"version": 1, "group": group, "system": "darwin", "arch": "arm64", "status": "success",
                         "packages": self.packages, "inventory": sorted(inventory), "selected": sorted(tests)}
-            toolchain = ["go version go1.27.1 darwin/arm64", "darwin", "arm64", "darwin", "arm64", "0"]
+            toolchain = ["go version go1.27.2 darwin/arm64", "darwin", "arm64", "darwin", "arm64", "0"]
             (path / "inventory.json").write_text(json.dumps(manifest))
             (path / "toolchain.txt").write_text("\n".join(toolchain) + "\n")
             (path / "job-status.txt").write_text("success\n")
@@ -117,7 +117,7 @@ class TestNativeRuntime(unittest.TestCase):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 self.validate(groups)
         with self.assertRaises(ValueError):
-            native.validate_toolchain(["go version go1.27.1 darwin/amd64", "darwin", "amd64", "darwin", "amd64", "0"], "darwin", "amd64")
+            native.validate_toolchain(["go version go1.27.2 darwin/amd64", "darwin", "amd64", "darwin", "amd64", "0"], "darwin", "amd64")
 
     def test_complete_native_commands_keep_original_limits_and_behavior(self):
         for group in native.GROUPS:

@@ -19,7 +19,7 @@ AT_TAG, AFTER_TAG = ('c55f31dd9' + 'a' * 31, '2026-10-05T18:27:53Z'), ('130a540d
 
 
 def starport_go_mod(version, replace=False):
-    text = (f'module {verifier.STARPORT_MODULE}\n\ngo 1.27.1\n\n'
+    text = (f'module {verifier.STARPORT_MODULE}\n\ngo 1.27.2\n\n'
             f'require (\n\tgithub.com/rs/zerolog v1.34.0\n\t{verifier.STARMAP_MODULE} {version}\n)\n\n'
             'require golang.org/x/mod v0.30.0 // indirect\n')
     if replace:

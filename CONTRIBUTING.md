@@ -27,7 +27,7 @@ Before contributing, please:
 
 ### Prerequisites
 
-- **Go 1.27.1** - [Install Go](https://go.dev/doc/install)
+- **Go 1.27.2** - [Install Go](https://go.dev/doc/install)
 - **Make** - For build automation
 - **Git** - For models.dev integration and version control
 

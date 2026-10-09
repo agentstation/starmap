@@ -141,7 +141,7 @@ func TestWorkflowGoPinsMatchProductToolchain(t *testing.T) {
 			for _, step := range job.Steps {
 				if strings.HasPrefix(step.Uses, "actions/setup-go@") {
 					setups++
-					if step.With["go-version"] != "1.27.1" || step.With["go-version-file"] != "" {
+					if step.With["go-version"] != "1.27.2" || step.With["go-version-file"] != "" {
 						t.Fatalf("%s selects a different Go toolchain: %v", path, step.With)
 					}
 				}

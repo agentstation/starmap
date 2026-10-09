@@ -4,7 +4,7 @@ Tests must prove a behavior that callers or operators depend on. Each test needs
 a failure that explains which contract broke. Test counts and line coverage
 cannot establish correctness alone.
 
-Starmap and Starport use Go 1.27.1. Older Go families have no current support commitment.
+Starmap and Starport use Go 1.27.2. Older Go families have no current support commitment.
 Qualify future upgrades across both repositories and update their exact pins together.
 
 ## Local development
@@ -62,8 +62,8 @@ A failed, cancelled, skipped, or absent prerequisite cannot pass that gate.
 
 | Execution | Contract |
 | --- | --- |
-| Go 1.27.1, race suite | Every package with race instrumentation, except the named capacity tests |
-| Go 1.27.1, capacity suite | The capacity tests in `CAPACITY_TESTS`: the complete public corpus and the retained payload bound |
+| Go 1.27.2, race suite | Every package with race instrumentation, except the named capacity tests |
+| Go 1.27.2, capacity suite | The capacity tests in `CAPACITY_TESTS`: the complete public corpus and the retained payload bound |
 | Native jobs | Linux, macOS, and Windows behavior on the configured architectures |
 | Storage jobs | Valkey and Redis behavior with a real object store and process recovery |
 

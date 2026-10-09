@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  GOTOOLCHAIN: go1.27.1
+  GOTOOLCHAIN: go1.27.2
   # The release tag. A tag push supplies it through the ref. A dispatch
   # supplies it through the tag input.
   RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
@@ -45,7 +45,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.1"
+          go-version: "1.27.2"
           cache: true
 
       - name: Require release tag from main
@@ -61,7 +61,7 @@ jobs:
 
       - name: Install pinned release tools
         run: |
-          go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2
+          go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0
           go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0
           go install github.com/goreleaser/goreleaser/v2@v2.17.0
 
@@ -114,7 +114,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.1"
+          go-version: "1.27.2"
           cache: true
 
       - name: Install gomarkdoc
@@ -253,7 +253,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.1"
+          go-version: "1.27.2"
           cache: false
 
       - name: Validate the recovery source and release
@@ -453,7 +453,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.1"
+          go-version: "1.27.2"
           cache: false
 
       - name: Install from AgentStation tap
@@ -476,7 +476,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.1"
+          go-version: "1.27.2"
           cache: false
 
       - name: Install recovered release from AgentStation tap

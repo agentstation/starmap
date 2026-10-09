@@ -2,12 +2,13 @@
 
 ## Go versions
 
-Starmap and Starport use Go 1.27.1 for development, CI, and releases.
-Both modules declare `go 1.27.1`. Build commands select `GOTOOLCHAIN=go1.27.1`.
+Starmap and Starport use Go 1.27.2 for development, CI, and releases.
+Both modules declare `go 1.27.2`. Build commands select `GOTOOLCHAIN=go1.27.2`.
 Go removes an equivalent `toolchain` directive during `go mod tidy`.
 CI and release jobs use explicit three-component pins.
 
-Devbox selects Go 1.27.1 from an exact Nixpkgs commit because its package index lacks this patch release.
+Devbox installs a Go 1.27 package from an exact Nixpkgs commit because its package index lacks this patch release.
+Its `GOTOOLCHAIN=go1.27.2` setting then selects Go 1.27.2.
 The lockfile records the resolved package. Docker builders use a version and image digest.
 On macOS, Devbox selects Apple SDK 15.5 from the same Nixpkgs commit.
 This SDK supplies the system symbols that Go 1.27 needs when it builds development tools.
@@ -23,7 +24,7 @@ Application releases use GoReleaser v2.17.0 and a tag of the form `vX.Y.Z` or
 `vX.Y.Z-rc.N`. The tag commit must already be reachable from `main`. The release
 workflow:
 
-1. runs repository and release verification with Go 1.27.1.
+1. runs repository and release verification with Go 1.27.2.
 2. builds Linux and Windows archives for amd64 and arm64, plus macOS archives for arm64, with `CGO_ENABLED=0`.
 3. verifies cgo-disabled build metadata for all five binaries. It also verifies
    static ELF linkage on Linux and no Windows C/C++ runtime imports. Darwin
@@ -115,7 +116,7 @@ catalog formats.
 Prepare a local, non-publishing release snapshot:
 
 ```bash
-GOTOOLCHAIN=go1.27.1 make release-snapshot
+GOTOOLCHAIN=go1.27.2 make release-snapshot
 ./scripts/verify-release-binaries.sh dist
 ```
 

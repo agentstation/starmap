@@ -84,7 +84,7 @@ write_module_fixture() {
 	local extra="${2:-}"
 
 	{
-		printf 'module example.com/fixture\n\ngo 1.27.1\n\nrequire (\n'
+		printf 'module example.com/fixture\n\ngo 1.27.2\n\nrequire (\n'
 		printf '\texample.com/kept %s\n' "$version"
 		printf '\texample.com/Upstream v1.0.0\n'
 		printf '\texample.com/carried v0.1.0 // indirect\n'
@@ -115,7 +115,7 @@ exit 1
 GO_PROBE
 chmod +x "$FIXTURE/toolchain-bin/go"
 write_module_fixture v1.2.3
-for toolchain in go1.27.1 local; do
+for toolchain in go1.27.2 local; do
 	toolchain_report="$FIXTURE/toolchain-$toolchain.txt"
 	PATH="$FIXTURE/toolchain-bin:$PATH" \
 		GOTOOLCHAIN="$toolchain" \
@@ -152,7 +152,7 @@ grep -Fq 'example.com/unapproved' "$dependency_report" || {
 }
 
 {
-	printf 'module example.com/fixture\n\ngo 1.27.1\n\nrequire (\n'
+	printf 'module example.com/fixture\n\ngo 1.27.2\n\nrequire (\n'
 	printf '\texample.com/kept v1.2.3\n'
 	printf '\texample.com/Upstream v1.0.0\n'
 	printf '\texample.com/carried v0.1.0 // indirect\n'

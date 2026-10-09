@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-GOTOOLCHAIN="${GOTOOLCHAIN:-go1.27.1}"
+GOTOOLCHAIN="${GOTOOLCHAIN:-go1.27.2}"
 export GOTOOLCHAIN
 printf 'External consumer toolchain: %s\n' "$(go env GOVERSION)"
 READ_ONLY_MODULE="$ROOT/testdata/consumers/read-only"

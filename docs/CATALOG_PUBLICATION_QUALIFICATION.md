@@ -50,7 +50,7 @@ bash scripts/verify-catalog-product.sh --task CSP6 \
   --starport-root "$CSP_STARPORT_WORKTREE" --json
 ```
 
-Qualification requires GitHub read access and Go 1.27.1.
+Qualification requires GitHub read access and Go 1.27.2.
 It downloads the captured immutable assets and verifies five attestations.
 It restores the captured checkpoint and compares the restored artifact with the captured archive.
 Attestations must identify the expected publisher source and run. Later channel updates do not invalidate the captured, attested channel bytes.
