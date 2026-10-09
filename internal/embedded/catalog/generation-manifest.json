@@ -1,16 +1,16 @@
 {
   "manifest_version": 2,
   "schema_version": 19,
-  "generation_id": "bindings-ca4157512923a7df5df2761f87dd0975999d91fc61e5c9612f4bcac75d7f09aa.local.b8923306d6ce",
-  "generated_at": "2026-10-09T06:07:40.346637298Z",
+  "generation_id": "bindings-53fdce277e501591d72a1160857d31787d386754e0775b862a2a22704eb60a36.local.c70aef7a19dd",
+  "generated_at": "2026-10-09T16:55:27.97873Z",
   "payload": {
-    "checksum": "sha256:c538a530c8a6661b4e3b8973c9b3d6b18156b3af50ddf28ece73aa7c510f1556",
-    "size_bytes": 26746870,
+    "checksum": "sha256:52d02db976046523d4e8065b2f3b3f4c49a812f3bb1599eb680527ce0115e24a",
+    "size_bytes": 26798807,
     "media_type": "application/vnd.agentstation.starmap.catalog+json"
   },
   "validation": {
     "validator_version": "starmap-v1",
-    "validated_at": "2026-10-09T06:07:40.346637298Z",
+    "validated_at": "2026-10-09T16:55:27.97873Z",
     "status": "passed",
     "error_count": 0,
     "warning_count": 0,
@@ -21,8 +21,20 @@
       }
     ]
   },
-  "sync_run_id": "github-37891692492",
+  "sync_run_id": "local-gpt61-sol-catalog-main-b258ddc5258f",
   "source_observations": [
+    {
+      "source": "local_catalog",
+      "observation_id": "observation:v2:11685750ba65ceceb42489630be3fd1ae0d88762e1b419fe60cd3034c3ddb474",
+      "observed_at": "2026-10-09T16:55:27.940537Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:efcef103ae9004fe25677c62cf32e1bc862458d77650785fb5bc1c6397ffdd9c"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:efcef103ae9004fe25677c62cf32e1bc862458d77650785fb5bc1c6397ffdd9c"
+    },
     {
       "source": "models_dev_http",
       "observation_id": "observation:v2:16c07a18f8362c2dcd2be4690dea9f2331e548ada3ad7b9a84ce5322c5350d30",
@@ -3959,20 +3971,6 @@
       "code": "unresolved_model_reference",
       "provider_id": "openai",
       "provider_model_id": "gpt-6-sol",
-      "source": "providers",
-      "source_observation_id": "observation:v4:d766728577a1b8af7700ef6b76411dc5bdd31bfc455dada32416ef316b9ac84a",
-      "source_revision": {
-        "kind": "content_digest",
-        "value": "sha256:f925a18256e6c7a095ffaddd84b65d8d6fe7edb6aa7112c5a0acec2eac2b3504"
-      },
-      "evidence_checksum": "sha256:f925a18256e6c7a095ffaddd84b65d8d6fe7edb6aa7112c5a0acec2eac2b3504",
-      "reason": "provider offering has no explicit canonical model reference and was quarantined",
-      "prior_reviewed_model_link": ""
-    },
-    {
-      "code": "unresolved_model_reference",
-      "provider_id": "openai",
-      "provider_model_id": "gpt-6.1-sol",
       "source": "providers",
       "source_observation_id": "observation:v4:d766728577a1b8af7700ef6b76411dc5bdd31bfc455dada32416ef316b9ac84a",
       "source_revision": {
