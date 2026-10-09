@@ -611,10 +611,7 @@ docs-check: openapi-check ## Check if documentation is up to date (for CI)
 	@echo "$(GREEN)All documentation is up to date$(NC)"
 
 # Demo
-demo: ## Generate VHS demo video
+demo: ## Record and verify the catalog server demo
 	@echo "$(BLUE)Generating demo video...$(NC)"
-	@$(RUN_PREFIX) which vhs > /dev/null || (echo "$(RED)VHS not found. Install with: go install github.com/agentstation/vhs@latest$(NC)" && exit 1)
-	@echo "$(YELLOW)Recording terminal demo...$(NC)"
-	$(RUN_PREFIX) vhs scripts/demo.tape
-	@echo "$(GREEN)Demo video generated: scripts/demo.svg$(NC)"
-	@echo "$(YELLOW)You can open scripts/demo.svg in your browser to view the demo$(NC)"
+	$(RUN_PREFIX) python3 scripts/record-demo.py
+	@echo "$(GREEN)Verified demo: scripts/demo.svg and scripts/demo.gif$(NC)"

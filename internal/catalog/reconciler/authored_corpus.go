@@ -1,7 +1,12 @@
 package reconciler
 
 import (
+	"reflect"
+	"slices"
+
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/authority"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -17,6 +22,7 @@ func reconcileAuthoredCorpus(
 	target *catalogs.Builder,
 	baseline *catalogs.Catalog,
 	collector *collector,
+	strategy *AuthorityStrategy,
 ) error {
 	bootstrap := collector.authoredBootstrap()
 	local := collector.catalog(sources.LocalCatalogID)
@@ -28,7 +34,7 @@ func reconcileAuthoredCorpus(
 	if err := addMissingAuthors(target, bootstrap); err != nil {
 		return err
 	}
-	if err := upsertAuthors(target, local); err != nil {
+	if err := upsertAuthors(target, local, strategy); err != nil {
 		return err
 	}
 
@@ -96,16 +102,51 @@ func addMissingAuthors(target *catalogs.Builder, source *catalogs.Catalog) error
 	return nil
 }
 
-func upsertAuthors(target *catalogs.Builder, source *catalogs.Catalog) error {
+func upsertAuthors(target *catalogs.Builder, source *catalogs.Catalog, strategy *AuthorityStrategy) error {
 	if source == nil {
 		return nil
 	}
 	for _, author := range source.Authors().List() {
+		if retained, found := target.Authors().Resolve(author.ID); found && retained != nil {
+			author = mergeLocalAuthor(*retained, author, strategy)
+		}
 		if err := target.SetAuthor(author); err != nil {
 			return errors.WrapResource("set", "author", string(author.ID), err)
 		}
 	}
 	return nil
+}
+
+// mergeLocalAuthor applies present workspace facts and retains absent fields.
+func mergeLocalAuthor(retained, incoming catalogs.Author, strategy *AuthorityStrategy) catalogs.Author {
+	result := catalogs.DeepCopyAuthor(retained)
+	target := reflect.ValueOf(&result).Elem()
+	input := reflect.ValueOf(incoming)
+	for index := range input.NumField() {
+		name := input.Type().Field(index).Name
+		policy, found := strategy.authorities.Find(evidence.ResourceTypeAuthor, name)
+		if !found || !slices.Contains(policy.SourceOrder, sources.LocalCatalogID) {
+			continue
+		}
+		field := input.Field(index)
+		if !policyAccepts(policy, field.Interface()) {
+			continue
+		}
+		if policy.Empty == authority.EmptyAbsent && field.Kind() == reflect.Slice && field.Len() == 0 {
+			continue
+		}
+		if name == "Aliases" && policy.Merge == authority.MergeSetUnion {
+			result.Aliases = nil
+			for _, alias := range append(slices.Clone(incoming.Aliases), retained.Aliases...) {
+				if !slices.Contains(result.Aliases, alias) {
+					result.Aliases = append(result.Aliases, alias)
+				}
+			}
+			continue
+		}
+		target.Field(index).Set(field)
+	}
+	return catalogs.DeepCopyAuthor(result)
 }
 
 func authoredModelsByID(source *catalogs.Catalog) map[catalogs.ModelDefinitionID]catalogs.AuthoredModel {

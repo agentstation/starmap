@@ -284,6 +284,9 @@ func (merger *merger) mergeModelPricing(
 	models map[sources.ID]*catalogs.Model,
 	history *map[string]provenance.Field,
 ) {
+	if merger.retainsBaselinePricingDiagnostic(identity, models) {
+		return
+	}
 	rejected := make([]provenance.Rejection, 0, len(policy.SourceOrder))
 	for _, source := range policy.SourceOrder {
 		model := models[source]
@@ -314,7 +317,11 @@ func (merger *merger) mergeModelPricing(
 		merger.recordModelHistory(identity, history, policy, source, model.Pricing, reason)
 		if history != nil {
 			field := (*history)[policy.Evidence()]
-			field.Current.Rejections = append([]provenance.Rejection(nil), rejected...)
+			if _, carried := merger.carried(policy.Resource, identity.resourceID(), policy.Evidence(), source); carried && merger.sparseLocalModelDelta(identity.providerID, identity.modelID) {
+				field.Current.Rejections = mergePricingRejections(field.Current.Rejections, rejected)
+			} else {
+				field.Current.Rejections = append([]provenance.Rejection(nil), rejected...)
+			}
 			(*history)[policy.Evidence()] = field
 		}
 		return

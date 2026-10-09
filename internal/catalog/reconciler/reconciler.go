@@ -308,7 +308,7 @@ func (r *Reconciler) catalog(
 	} else {
 		catalog = catalogs.NewEmpty()
 	}
-	if err := reconcileAuthoredCorpus(catalog, r.baseline, rctx.collector); err != nil {
+	if err := reconcileAuthoredCorpus(catalog, r.baseline, rctx.collector, r.strategy); err != nil {
 		return nil, nil, err
 	}
 	// Add/update providers with their reconciled models
