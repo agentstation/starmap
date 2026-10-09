@@ -24,8 +24,8 @@ const (
 
 	// workspaceHelperTimeout bounds each handshake step between a test and a
 	// helper process. On a native Windows runner, one helper took more than
-	// 10 s to become ready, and neighbor tests ran up to 6.1 times slower than
-	// their 2.1 s to 2.5 s baseline.
+	// 10 s to become ready. Neighbor tests on that runner ran up to 6.1 times
+	// slower than their 2.1 s to 2.5 s baseline.
 	workspaceHelperTimeout = 30 * time.Second
 )
 
