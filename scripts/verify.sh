@@ -7,7 +7,7 @@ TMPDIR="$(cd "$TMPDIR" && pwd -P)"
 trap 'rm -rf "$TMPDIR"' EXIT
 VERIFY_HOME="$TMPDIR/home"
 GOLANGCI_LINT_CACHE="$TMPDIR/golangci-lint-cache"
-GOLANGCI_LINT_VERSION="2.13.2"
+GOLANGCI_LINT_VERSION="2.14.0"
 export GOLANGCI_LINT_CACHE
 
 cd "$ROOT"

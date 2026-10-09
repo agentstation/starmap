@@ -27,7 +27,7 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"    permissions:\n      attestations: write\n      contents: write\n      discussions: write\n      id-token: write\n      packages: write",
 		`go-version: "1.27.2"`,
 		"git merge-base --is-ancestor",
-		"golangci-lint@v2.13.2",
+		"golangci-lint@v2.14.0",
 		"name: Checkout pinned technical-writing skill",
 		"repository: agentstation/skills",
 		"ref: dc9948f59089426c7dd077e41469104ec788cf7f",
