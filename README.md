@@ -20,6 +20,34 @@
 
 </div>
 
+## Catalog server demo
+
+[![Starmap catalog server demo](scripts/demo.gif)](scripts/demo.svg)
+
+Serve a model catalog for applications and gateways. Read GPT-6.1 Sol metadata over HTTP, then fetch a generation and verify its payload checksum.
+The recording uses a source build and the embedded catalog generation `bindings-53fdce277e…c70aef7a19dd`.
+
+The recording evidence binds its exact catalog inputs and generation metadata. The runner disables catalog acquisition.
+It reads local catalog data without provider API keys or inference requests.
+[Animated SVG](scripts/demo.svg) · [GIF](scripts/demo.gif) · [Recording evidence](scripts/demo-record.json) · [Command transcript](scripts/demo-transcript.md)
+
+The command transcript records preflight output. Chapter titles precede the actions and remain above the typed commands.
+The opening states the goal. The ending names the observed model and verified generation, then identifies the next configuration step.
+
+The checksum check verifies payload integrity.
+Consumer configuration, authentication, authority checks, and subscriber activation require separate setup.
+See [Go consumer configuration](remote/README.md#Config) or the [Starport central-server guide](https://github.com/agentstation/starport/blob/main/docs/site/operate-starmap/central-server.md#connect-replicas-to-a-central-server).
+Output pauses allow time to read the model data, manifest, and checksum.
+
+Reproduce the recording with `make demo` and the [agentstation/vhs](https://github.com/agentstation/vhs) fork.
+Use a fork build with elapsed recording time and the `--svg-font-file` option.
+Those fixes are local and do not yet ship in a release.
+
+The runner requires Go, Bash, curl, jq, shasum, and FFmpeg. The VHS fork requires ttyd and a Chromium browser.
+It creates temporary product paths and removes them after the recording.
+Run `python3 scripts/record-demo.py --check` to verify the commands without a media capture.
+Set `VHS_BROWSER_PATH` to select the capture browser executable.
+
 ## Table of Contents
 
 - [Why Starmap?](#why-starmap)
