@@ -6,6 +6,7 @@ authors:
 - id: nvidia
   name: nvidia
 description: Small Nemotron 3 MoE for efficient coding, math, and long-context agents
+status: deprecated
 
 # Model metadata
 metadata:

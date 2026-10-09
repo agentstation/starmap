@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: bindings-552d2fdd5a9dd0a5c9c3a42c1baa90ec30f8beb4da37e644666894c0c53822d8.local.a4b144a6c0df
-catalog_digest: sha256:fbaf752cb6f091c6324cc7e86e9098f4b77efcec991d1a586700a894ec28feab
+generation_id: bindings-ca4157512923a7df5df2761f87dd0975999d91fc61e5c9612f4bcac75d7f09aa.local.b8923306d6ce
+catalog_digest: sha256:c538a530c8a6661b4e3b8973c9b3d6b18156b3af50ddf28ece73aa7c510f1556
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -2594,7 +2594,7 @@ models:
           input_tokens: 0
           output_tokens: 65536
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -2718,9 +2718,9 @@ models:
         limits:
           context_window: 1048576
           input_tokens: 0
-          output_tokens: 65535
+          output_tokens: 65536
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -2805,7 +2805,7 @@ models:
           currency: USD
         limits:
           context_window: 32768
-          input_tokens: 0
+          input_tokens: 8192
           output_tokens: 16384
         availability: unknown
         lifecycle: unknown
@@ -2885,7 +2885,7 @@ models:
           input_tokens: 0
           output_tokens: 65536
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -2936,7 +2936,7 @@ models:
           currency: USD
         limits:
           context_window: 32768
-          input_tokens: 0
+          input_tokens: 8192
           output_tokens: 16384
         availability: unknown
         lifecycle: unknown
@@ -3009,7 +3009,7 @@ models:
           input_tokens: 0
           output_tokens: 65536
         availability: unknown
-        lifecycle: unknown
+        lifecycle: preview
         service:
           operations:
             - chat-completions
@@ -3388,11 +3388,27 @@ models:
             stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-image:streamGenerateContent
       - provider: google-vertex
         provider_model_id: gemini-3.1-flash-lite-image
+        pricing:
+          tokens:
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.025
+            input:
+              per_token: 0.0
+              per_1m: 0.25
+            output:
+              per_token: 0.0
+              per_1m: 30.0
+          currency: USD
+        limits:
+          context_window: 65536
+          output_tokens: 4096
         availability: unknown
         lifecycle: unknown
         service:
           operations:
             - chat-completions
+          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: google-cloud
@@ -3585,7 +3601,7 @@ models:
           input_tokens: 0
           output_tokens: 65536
         availability: unknown
-        lifecycle: unknown
+        lifecycle: preview
         service:
           operations:
             - chat-completions
@@ -6929,7 +6945,7 @@ models:
           input_tokens: 0
           output_tokens: 262144
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
