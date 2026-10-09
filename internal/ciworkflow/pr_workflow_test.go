@@ -17,8 +17,8 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 	if len(minimumVersion) != 2 {
 		t.Fatal("go.mod does not declare an exact three-component Go version")
 	}
-	if minimumVersion[1] != "1.27.1" {
-		t.Fatalf("Go version = %q, want 1.27.1", minimumVersion[1])
+	if minimumVersion[1] != "1.27.2" {
+		t.Fatalf("Go version = %q, want 1.27.2", minimumVersion[1])
 	}
 	checks := []string{
 		"name: Pull Request",
@@ -47,7 +47,7 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 		"run: make test-consumer-deps",
 		`go-version: "` + minimumVersion[1] + `"`,
 		"run: make verify-checks",
-		"golangci-lint@v2.13.2",
+		"golangci-lint@v2.14.0",
 		"gomarkdoc@v1.1.0",
 		"govulncheck@v1.6.0",
 		"govulncheck ./...",
@@ -107,7 +107,7 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 		`VERIFY_HOME="$TMPDIR/home"`,
 		`GOLANGCI_LINT_CACHE="$TMPDIR/golangci-lint-cache"`,
 		`export GOLANGCI_LINT_CACHE`,
-		`GOLANGCI_LINT_VERSION="2.13.2"`,
+		`GOLANGCI_LINT_VERSION="2.14.0"`,
 		`run make test-pure-go`,
 		`run make test-file-sizes`,
 		`run python3 ./scripts/verification_tests.py race`,
@@ -291,7 +291,7 @@ func TestPinnedArtifactConsumerIsOfflineAndDependencyBounded(t *testing.T) {
 	}
 	for _, check := range []string{
 		`PINNED_ARTIFACT_MODULE=`,
-		`GOTOOLCHAIN="${GOTOOLCHAIN:-go1.27.1}"`,
+		`GOTOOLCHAIN="${GOTOOLCHAIN:-go1.27.2}"`,
 		`export GOTOOLCHAIN`,
 		`PINNED_MAX_NON_STANDARD_PACKAGES=32`,
 		`pinned_banned_pattern=`,
@@ -365,7 +365,7 @@ func TestPureGoAndRaceVerificationHaveSeparateCgoModes(t *testing.T) {
 }
 
 func TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces(t *testing.T) {
-	const version = "2.13.2"
+	const version = "2.14.0"
 	fixtures := map[string]string{
 		"Devbox":           "../../devbox.json",
 		"Makefile":         "../../Makefile",

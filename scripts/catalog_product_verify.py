@@ -430,7 +430,7 @@ class EmbeddingMismatch(Exception):
 
 def checked_output(root, args, text=True):
     return subprocess.run(args, cwd=root, check=True, capture_output=True, text=text, timeout=300,
-                          env=dict(os.environ, GOTOOLCHAIN="go1.27.1", GOWORK="off", GOFLAGS="")).stdout
+                          env=dict(os.environ, GOTOOLCHAIN="go1.27.2", GOWORK="off", GOFLAGS="")).stdout
 
 
 def embedded_generation(read):

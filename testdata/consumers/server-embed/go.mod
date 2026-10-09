@@ -1,6 +1,6 @@
 module github.com/agentstation/starmap-test/server-embed-consumer
 
-go 1.27.1
+go 1.27.2
 
 require github.com/agentstation/starmap v0.0.0
 
@@ -13,7 +13,7 @@ require (
 	github.com/mattn/go-isatty v0.0.24 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/rs/zerolog v1.35.1 // indirect
-	golang.org/x/sys v0.47.0 // indirect
+	golang.org/x/sys v0.48.0 // indirect
 )
 
 replace github.com/agentstation/starmap => ../../..

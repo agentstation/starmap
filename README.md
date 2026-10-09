@@ -13,7 +13,7 @@
                                                                 |_|    
 ```
 
-[![Go Version](https://img.shields.io/badge/Go-1.27.1-00ADD8?style=flat&logo=go)](https://go.dev)
+[![Go Version](https://img.shields.io/badge/Go-1.27.2-00ADD8?style=flat&logo=go)](https://go.dev)
 [![License](https://img.shields.io/badge/License-AGPL%203.0-blue)](LICENSE)
 
 [Installation](#installation) • [Quick Start](#quick-start) • [API Reference](docs/API.md) • [Contributing](CONTRIBUTING.md)
@@ -104,7 +104,7 @@ starmap version
 
 ### Go Package
 
-Starmap and Starport use Go 1.27.1 for development, CI, and releases.
+Starmap and Starport use Go 1.27.2 for development, CI, and releases.
 Upgrade both projects together after qualification.
 Supported library, CLI, server, and remote-consumer compositions require no C
 toolchain. Release builds set `CGO_ENABLED=0` for archives and containers.

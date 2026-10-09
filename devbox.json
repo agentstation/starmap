@@ -16,10 +16,10 @@
     ],
     "scripts": {
       "vet":       "go vet ./...",
-      "lint":      "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run",
-      "lint-fix":  "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run --fix",
-      "check":     "go vet ./... && go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run && go test ./...",
-      "fix":       "gofmt -w . && goimports -w -local github.com/agentstation/starmap . && go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run --fix && go mod tidy",
+      "lint":      "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0 run",
+      "lint-fix":  "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0 run --fix",
+      "check":     "go vet ./... && go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0 run && go test ./...",
+      "fix":       "gofmt -w . && goimports -w -local github.com/agentstation/starmap . && go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0 run --fix && go mod tidy",
       "docs":      "make generate",
       "test":      "go test ./...",
       "test-race": "go test -race ./...",
@@ -27,6 +27,6 @@
     }
   },
   "env": {
-    "GOTOOLCHAIN": "go1.27.1"
+    "GOTOOLCHAIN": "go1.27.2"
   }
 }
