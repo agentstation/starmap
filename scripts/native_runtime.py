@@ -66,7 +66,7 @@ def selected_tests(inventory, group):
 
 
 def validate_toolchain(lines, system, arch):
-    if (system, arch) not in {("linux", "amd64"), ("linux", "arm64"), ("windows", "amd64"), ("windows", "arm64"), ("darwin", "arm64")} or lines != [f"go version go1.27.1 {system}/{arch}", system, arch, system, arch, "0"]:
+    if (system, arch) not in {("linux", "amd64"), ("linux", "arm64"), ("windows", "amd64"), ("windows", "arm64"), ("darwin", "arm64")} or lines != [f"go version go1.27.2 {system}/{arch}", system, arch, system, arch, "0"]:
         raise ValueError("native toolchain, target, host, or pure-Go mode differs")
 
 

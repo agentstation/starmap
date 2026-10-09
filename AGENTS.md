@@ -8,7 +8,7 @@ This file provides Codex with project-specific guidance for working in this repo
 
 ## Go Development Standards
 
-**Starmap and Starport use Go 1.27.1 for development, CI, and releases.** Write idiomatic, thread-safe, production-ready code:
+**Starmap and Starport use Go 1.27.2 for development, CI, and releases.** Write idiomatic, thread-safe, production-ready code:
 
 - **Simplicity over cleverness** - Follow Effective Go, prioritize readability
 - **Thread safety first** - Deep copies for shared data, proper RWMutex usage
@@ -55,8 +55,8 @@ make testdata PROVIDER=openai           # Refresh one governed provider fixture
 
 ## Tech Stack
 
-- **Module requirement**: Go 1.27.1
-- **Development/release toolchain**: Go 1.27.1
+- **Module requirement**: Go 1.27.2
+- **Development/release toolchain**: Go 1.27.2
 - **Build System**: Make (see Makefile)
 - **Key Dependencies**: zerolog (logging), cobra (CLI), goccy/go-yaml (YAML)
 - **Testing**: Go testing, testdata pattern with `-update` flag

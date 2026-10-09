@@ -1,4 +1,4 @@
-export GOTOOLCHAIN := go1.27.1
+export GOTOOLCHAIN := go1.27.2
 
 # Starmap Makefile
 # AI Model Catalog CLI

@@ -21,8 +21,8 @@ while IFS= read -r binary; do
 		continue
 	fi
 
-	if [[ "${build_info%%$'\n'*}" != *": go1.27.1" ]]; then
-		printf 'release binary does not use Go 1.27.1: %s\n' "$binary" >&2
+	if [[ "${build_info%%$'\n'*}" != *": go1.27.2" ]]; then
+		printf 'release binary does not use Go 1.27.2: %s\n' "$binary" >&2
 		exit 1
 	fi
 

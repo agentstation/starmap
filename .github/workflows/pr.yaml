@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  GOTOOLCHAIN: go1.27.1
+  GOTOOLCHAIN: go1.27.2
 
 concurrency:
   group: pr-${{ github.event.pull_request.number || github.ref }}
@@ -25,7 +25,7 @@ jobs:
       - name: Set up qualification Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.1"
+          go-version: "1.27.2"
           cache: false
       - name: Build MinIO fixture from pinned source
         run: |
@@ -73,7 +73,7 @@ jobs:
       - name: Set up qualification Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.1"
+          go-version: "1.27.2"
           cache: true
       - name: Download pinned object fixture
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -131,7 +131,7 @@ jobs:
       - name: Set up qualification Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: '1.27.1'
+          go-version: '1.27.2'
           cache: true
       - name: Verify passive constructors and the socket control
         run: python3 scripts/constructor_network.py > "$RUNNER_TEMP/constructor-network.json"
@@ -155,7 +155,7 @@ jobs:
       - name: Set up qualification Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: '1.27.1'
+          go-version: '1.27.2'
           cache: true
       - name: Verify cold offline startup and restart
         run: python3 scripts/cold_server.py > "$RUNNER_TEMP/cold-server.json"
@@ -196,7 +196,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.1"
+          go-version: "1.27.2"
           cache: true
       - name: Install pinned verification tools
         run: |
@@ -223,7 +223,7 @@ jobs:
           if-no-files-found: warn
 
   verification-tests:
-    name: Go 1.27.1 race ${{ matrix.label }}
+    name: Go 1.27.2 race ${{ matrix.label }}
     needs: verification-checks
     runs-on: ubuntu-latest
     timeout-minutes: 40
@@ -254,7 +254,7 @@ jobs:
       - name: Set up selected Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.1"
+          go-version: "1.27.2"
           cache: true
       - name: Set up pinned Bun for Git acquisition fixtures
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
@@ -292,7 +292,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.1"
+          go-version: "1.27.2"
           cache: true
       - name: Run full public catalog capacity
         run: python3 scripts/verification_tests.py capacity --output "$RUNNER_TEMP/go-capacity-events.jsonl"
@@ -315,7 +315,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.1"
+          go-version: "1.27.2"
           cache: true
 
       - name: Install pinned vulnerability scanner
@@ -418,7 +418,7 @@ jobs:
       - name: Set up qualification Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: '1.27.1'
+          go-version: '1.27.2'
           cache: true
       - name: Set up pinned Bun for Git acquisition fixtures
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
@@ -528,7 +528,7 @@ jobs:
       - name: Set up qualification Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: '1.27.1'
+          go-version: '1.27.2'
           cache: true
       - name: Set up pinned Bun for Git acquisition fixtures
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2

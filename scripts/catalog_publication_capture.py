@@ -31,7 +31,7 @@ TOOLING_PATHS = (".github/workflows/catalog-generation.yaml", ".github/catalog-p
 
 def command(root, args):
     return subprocess.run(args, cwd=root, check=True, capture_output=True, text=True, timeout=300,
-                          env=dict(os.environ, GOTOOLCHAIN="go1.27.1", GOWORK="off", GOFLAGS="")).stdout
+                          env=dict(os.environ, GOTOOLCHAIN="go1.27.2", GOWORK="off", GOFLAGS="")).stdout
 
 
 def api(root, endpoint, pages=False):

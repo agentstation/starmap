@@ -839,7 +839,7 @@ class NativeCatalogTests(unittest.TestCase):
             self.proof["run"]["jobs"].append({"databaseId": len(self.proof["run"]["jobs"]) + 1,
                                             "name": f"Runtime {runner}", "status": "completed", "conclusion": "success"})
             prefix = f"native-runtime-{runner}/"
-            self.write(prefix + "toolchain.txt", f"go version go1.27.1 windows/{arch}\nwindows\n{arch}\nwindows\n{arch}\n0\n")
+            self.write(prefix + "toolchain.txt", f"go version go1.27.2 windows/{arch}\nwindows\n{arch}\nwindows\n{arch}\n0\n")
             events = [{"Package": self.test["package"], "Test": self.test["test"], "Action": action} for action in ("run", "pass")]
             events.append({"Package": self.test["package"], "Action": "pass"})
             self.write(prefix + "tests.jsonl", "\n".join(map(json.dumps, events)))
@@ -879,7 +879,7 @@ class NativeCatalogTests(unittest.TestCase):
     def test_cross_compiled_or_changed_toolchain_refuses(self):
         name = "native-runtime-windows-2025/toolchain.txt"
         original = (self.root / name).read_text()
-        for changed in [original.replace("1.27.1", "1.27.2"), original.replace("\nwindows\namd64\n0", "\nlinux\namd64\n0")]:
+        for changed in [original.replace("1.27.2", "1.27.1"), original.replace("\nwindows\namd64\n0", "\nlinux\namd64\n0")]:
             self.write(name, changed)
             with self.assertRaises(ValueError):
                 self.validate()
@@ -941,7 +941,7 @@ class NativeCatalogTests(unittest.TestCase):
             self.proof["run"]["jobs"].append({"databaseId": len(self.proof["run"]["jobs"]) + 1,
                                             "name": f"Runtime {runner}", "status": "completed", "conclusion": "success"})
             prefix = f"native-runtime-{runner}/"
-            self.write(prefix + "toolchain.txt", f"go version go1.27.1 linux/{arch}\nlinux\n{arch}\nlinux\n{arch}\n0\n")
+            self.write(prefix + "toolchain.txt", f"go version go1.27.2 linux/{arch}\nlinux\n{arch}\nlinux\n{arch}\n0\n")
             self.write(prefix + "tests.jsonl", events)
             self.write(prefix + "service-owner.txt", owner)
         self.assertEqual(len(native_catalog.validate_platform(self.root, self.proof, "linux", [self.test])), 2)
@@ -1037,7 +1037,7 @@ class CatalogGoBatchTests(unittest.TestCase):
     def test_roots_do_not_share_process_results(self):
         with tempfile.TemporaryDirectory() as directory:
             other = Path(directory)
-            (other / 'go.mod').write_text('module github.com/agentstation/starmap\n\ngo 1.27.1\n')
+            (other / 'go.mod').write_text('module github.com/agentstation/starmap\n\ngo 1.27.2\n')
             roots = {'starmap': verifier.ROOT, 'other': other}
             entries = [self.entry('TestAlpha'), dict(self.entry('TestAlpha'), repository='other')]
             with patch.object(verifier.subprocess, 'run', return_value=self.result(self.events(['TestAlpha']))) as run:
@@ -1143,7 +1143,7 @@ class CatalogGoBatchTests(unittest.TestCase):
     def test_real_go_selection_skip_and_invocation_lifetime(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / 'go.mod').write_text('module example.test/cohort\n\ngo 1.27.1\n')
+            (root / 'go.mod').write_text('module example.test/cohort\n\ngo 1.27.2\n')
             (root / 'cohort_test.go').write_text(r'''package cohort
 import ("os"; "testing")
 func TestMain(m *testing.M) {

@@ -31,7 +31,7 @@ The catalog publisher must not require a retired Intel Mac check.
 Keep race detection on supported targets where Go provides it. Preserve all distinct storage, recovery, pure-Go, capacity, and performance checks.
 
 Historical Intel Mac releases and test evidence remain available. They do not define the current support boundary.
-Go 1.27.1 remains the exact toolchain for every supported target.
+Go 1.27.2 remains the exact toolchain for every supported target.
 
 ## 1. Ownership and composition
 

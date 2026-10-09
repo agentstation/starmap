@@ -17,8 +17,8 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 	if len(minimumVersion) != 2 {
 		t.Fatal("go.mod does not declare an exact three-component Go version")
 	}
-	if minimumVersion[1] != "1.27.1" {
-		t.Fatalf("Go version = %q, want 1.27.1", minimumVersion[1])
+	if minimumVersion[1] != "1.27.2" {
+		t.Fatalf("Go version = %q, want 1.27.2", minimumVersion[1])
 	}
 	checks := []string{
 		"name: Pull Request",
@@ -291,7 +291,7 @@ func TestPinnedArtifactConsumerIsOfflineAndDependencyBounded(t *testing.T) {
 	}
 	for _, check := range []string{
 		`PINNED_ARTIFACT_MODULE=`,
-		`GOTOOLCHAIN="${GOTOOLCHAIN:-go1.27.1}"`,
+		`GOTOOLCHAIN="${GOTOOLCHAIN:-go1.27.2}"`,
 		`export GOTOOLCHAIN`,
 		`PINNED_MAX_NON_STANDARD_PACKAGES=32`,
 		`pinned_banned_pattern=`,

@@ -1,7 +1,7 @@
 version: 2
 
 env:
-  - GOTOOLCHAIN=go1.27.1
+  - GOTOOLCHAIN=go1.27.2
 
 git:
   # Catalog releases have their own prerelease namespace. They never
