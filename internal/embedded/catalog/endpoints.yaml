@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: bindings-ca4157512923a7df5df2761f87dd0975999d91fc61e5c9612f4bcac75d7f09aa.local.b8923306d6ce
-catalog_digest: sha256:c538a530c8a6661b4e3b8973c9b3d6b18156b3af50ddf28ece73aa7c510f1556
+generation_id: bindings-53fdce277e501591d72a1160857d31787d386754e0775b862a2a22704eb60a36.local.c70aef7a19dd
+catalog_digest: sha256:52d02db976046523d4e8065b2f3b3f4c49a812f3bb1599eb680527ce0115e24a
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -9260,6 +9260,47 @@ models:
               body:
                 reasoning:
                   mode: pro
+  - model: openai/gpt-6.1-sol
+    endpoints:
+      - provider: openai
+        provider_model_id: gpt-6.1-sol
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.1
+            cache_write:
+              per_1m: 2.5
+            input:
+              per_1m: 2.0
+            output:
+              per_1m: 10.0
+          tiers:
+            - type: context
+              size: 272000
+              tokens:
+                cache_read:
+                  per_1m: 0.2
+                cache_write:
+                  per_1m: 5.0
+                input:
+                  per_1m: 4.0
+                output:
+                  per_1m: 15.0
+          currency: USD
+        limits:
+          context_window: 1050000
+          input_tokens: 922000
+          output_tokens: 128000
+        availability: unknown
+        lifecycle: unknown
+        service:
+          operations:
+            - chat-completions
+          prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://api.openai.com/v1/chat/completions
   - model: openai/gpt-audio
     endpoints:
       - provider: openai

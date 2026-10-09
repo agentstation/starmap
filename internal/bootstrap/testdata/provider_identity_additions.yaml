@@ -6,3 +6,9 @@ records:
     model: mistral/mistral-ocr-4-0
     status: linked
     evidence: "Mistral publishes this exact model identifier at https://docs.mistral.ai/models/ocr-4-0 (verified 2026-09-27)."
+  - path: providers/openai/models/gpt-6.1-sol.yaml
+    provider: openai
+    provider_model_id: gpt-6.1-sol
+    model: openai/gpt-6.1-sol
+    status: linked
+    evidence: "OpenAI publishes this exact model identifier at https://developers.openai.com/api/docs/models/gpt-6.1-sol; models.dev commit 5965293f511d4d0105b20439ae9ed4bf1cd50e0c contains the matching OpenAI offering (verified 2026-10-07)."
