@@ -1,0 +1,475 @@
+{
+  "source_commit": "06539bc028f12595830315c60b1400676d2708b3",
+  "version": "source build (demo)",
+  "catalog_inputs": {
+    "embedded_tree_sha256": "b158f0592f97225ba4167ad60bb982aa86dc8faa8adf62e6a8b362d4c982a46f",
+    "embedded_file_count": 1284,
+    "working_tree_changes": [],
+    "input_files": {
+      "internal/embedded/catalog/authors/openai/models/gpt-6.1-sol.yaml": {
+        "sha256": "d503a7fdfb7dcca53508746bb02e28f7ed0fc279cf3ad82b0255ae7bd6e5d7ac",
+        "bytes": 1679
+      },
+      "internal/embedded/catalog/endpoints.yaml": {
+        "sha256": "0f42ab0ee2a2220cd28f528a12ba7350b0a78494b7b6d0f20ba7849ec8058b75",
+        "bytes": 433570
+      },
+      "internal/embedded/catalog/generation-manifest.json": {
+        "sha256": "b3e03fbf9bfaed4b19dc059c42719bf43057f939a588d3c92f59ad18707702eb",
+        "bytes": 193875
+      },
+      "internal/embedded/catalog/generation-payload.json.gz": {
+        "sha256": "02f972bb9fbb1a125b096f6369d69298c287ba43fbf83200a970666f33a20db6",
+        "bytes": 1194033
+      },
+      "internal/embedded/catalog/generation.json": {
+        "sha256": "f76fc490c9409c4777ce116618be6a1090ecf6b23f028676c1370849573cae64",
+        "bytes": 522
+      },
+      "internal/embedded/catalog/membership-scopes.yaml": {
+        "sha256": "1be215ad256774613a9b822e6f6bdbf908bb2dea89946964f58d8e76e03dae5e",
+        "bytes": 21067
+      },
+      "internal/embedded/catalog/provenance.yaml": {
+        "sha256": "090c312f70bb1ab105924b53e519008b05070e260d9ef5cb180e5785f484d891",
+        "bytes": 26262327
+      },
+      "internal/embedded/catalog/providers/openai/models/gpt-6.1-sol.yaml": {
+        "sha256": "e13a3723ed90c97977d7ffe696a807e6e5e824fe9a9d9d0a39976d88e528cb50",
+        "bytes": 2376
+      }
+    },
+    "bootstrap": {
+      "manifest_version": 2,
+      "generation_id": "bindings-53fdce277e501591d72a1160857d31787d386754e0775b862a2a22704eb60a36.local.c70aef7a19dd",
+      "generated_at": "2026-10-09T16:55:27.97873Z",
+      "schema_version": 19,
+      "semantic_checksum": "sha256:c3c0a555777a3134298ec03181f265419d3555b88ffefacfb2abb4c58b35dff1",
+      "payload": {
+        "checksum": "sha256:52d02db976046523d4e8065b2f3b3f4c49a812f3bb1599eb680527ce0115e24a",
+        "size_bytes": 26798807,
+        "media_type": "application/vnd.agentstation.starmap.catalog+json"
+      }
+    },
+    "committed_generation": {
+      "generation_id": "bindings-53fdce277e501591d72a1160857d31787d386754e0775b862a2a22704eb60a36.local.c70aef7a19dd",
+      "schema_version": 19,
+      "generated_at": "2026-10-09T16:55:27.97873Z",
+      "payload": {
+        "checksum": "sha256:52d02db976046523d4e8065b2f3b3f4c49a812f3bb1599eb680527ce0115e24a",
+        "size_bytes": 26798807,
+        "media_type": "application/vnd.agentstation.starmap.catalog+json"
+      }
+    },
+    "model_definition": {
+      "id": "openai/gpt-6.1-sol",
+      "name": "GPT-6.1 Sol",
+      "origin": "Reviewed working-tree author record."
+    },
+    "provider_observations": [
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:01b11bec5ef707ad0a625bce3b4f7f85191d3f71c57d85c2eb58bc5e0f9d60e2",
+        "observed_at": "2026-10-09T06:07:38.966800149Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:6dae4db6e41405cda87192a6980e427fc417637154746cd24a0b735fa26b37d5"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:6dae4db6e41405cda87192a6980e427fc417637154746cd24a0b735fa26b37d5"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:0bfae19dd25440418194d22c65ece867a081a8d4da02f1be130b6a2440df2bb2",
+        "observed_at": "2026-10-09T06:07:39.055004747Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:547a256556f131dceb34df39d56dd94454d5dbca623f63c6fc974f28558eea1f"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:547a256556f131dceb34df39d56dd94454d5dbca623f63c6fc974f28558eea1f"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:13e81ed2c1b4242c20f4409b011796bc412a385f62b2d000c8792dc5d6b93b4a",
+        "observed_at": "2026-10-09T06:07:39.525213102Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:0934003b2505993c0008a61965d8d7c6c26d7a632ba7383c255276f4cc29b4e8"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:0934003b2505993c0008a61965d8d7c6c26d7a632ba7383c255276f4cc29b4e8"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:1f1efba85bf7a4fd944ed2943211f6bc7b37434aad18e7b76244b96bab6fc8ed",
+        "observed_at": "2026-09-20T13:03:28.111250337Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:976dc209acd51731cb2d26f5c7f69ef7af43e1dfd112c5f542cb96135660c8fa"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:976dc209acd51731cb2d26f5c7f69ef7af43e1dfd112c5f542cb96135660c8fa"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:2c9c5ad378d9b8c47f2ed120671e68f91377a84927532cd7e16aede88c916376",
+        "observed_at": "2026-10-09T06:07:39.320164329Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:153321dcd87bab541d3f0c5b92f72331cf16c9a4732d026c5392769f8d3ae50e"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:153321dcd87bab541d3f0c5b92f72331cf16c9a4732d026c5392769f8d3ae50e"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:3196e37fcca262bc2e45b83d675f960166f26032a5af86a0b67521cc286482d5",
+        "observed_at": "2026-09-26T04:35:08.417718659Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:53c21567bb87b9f64b9e210f4de6ecfca464fa1169ec41a213f25e15767eef36"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:53c21567bb87b9f64b9e210f4de6ecfca464fa1169ec41a213f25e15767eef36"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:343176ceeb783fd0b2c89d6e93a07d4107f77dc5371d68874ee5d96b0169bc6b",
+        "observed_at": "2026-10-09T06:07:38.843344288Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:26d4b70ee7f3fa69c3550f255a02c8717a43b8eff8639f77515c5dd950cb90b5"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:26d4b70ee7f3fa69c3550f255a02c8717a43b8eff8639f77515c5dd950cb90b5"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:40c7944458d6fb83ee66c33d93a5f283e00b310ebb5d7260f1448b3c1d841c2a",
+        "observed_at": "2026-10-06T01:19:38.596829601Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:5bf2de1e3db64abb5c8f9460204256e9d515ef655b2d943de0adbf0e6e59ad0d"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:5bf2de1e3db64abb5c8f9460204256e9d515ef655b2d943de0adbf0e6e59ad0d"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:482a363e08159613128909bd285bac68b5a90a338c2973a76c6da3b8b1b24550",
+        "observed_at": "2026-09-26T04:35:08.703579024Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:10af05bb76bb1620958141a1795a439c85c3824a2a5575c9ccfb8509c3195ddb"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:10af05bb76bb1620958141a1795a439c85c3824a2a5575c9ccfb8509c3195ddb"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:585624cf5e0b7be8e77fcaa2aede795e74e197c41107cfa3d7e5dd9fc9fe9542",
+        "observed_at": "2026-09-20T13:03:28.576839995Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:b691efce6b3ac093688abb1b187ba8f4e815bec0a1431e5ea3952c3f69519361"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:b691efce6b3ac093688abb1b187ba8f4e815bec0a1431e5ea3952c3f69519361"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:68b3f57f31da23efb1a2557e41cf0d2fae63515f142174185119452b8d7bf0ec",
+        "observed_at": "2026-10-09T06:07:38.907308988Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:f42a37851d26a486be107ecdc42cf7d1114ec0dc42825a3f7f26455c477f0a8a"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:f42a37851d26a486be107ecdc42cf7d1114ec0dc42825a3f7f26455c477f0a8a"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:729e8d6feb6f4c5b2e66f1562488b0c485d24f3fbde81f588593c2b0fd66a27e",
+        "observed_at": "2026-10-06T11:17:00.430790766Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:815faae101cb037651c5694612c89506dddc522a0b7d35003df80b8b0f5d591a"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:815faae101cb037651c5694612c89506dddc522a0b7d35003df80b8b0f5d591a"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:7dc4bf31ec0dfce36b7172fed5b47de9bb3de64b1fad2fd4f0d14111595f75e3",
+        "observed_at": "2026-09-26T13:04:34.628283673Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:10af05bb76bb1620958141a1795a439c85c3824a2a5575c9ccfb8509c3195ddb"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:10af05bb76bb1620958141a1795a439c85c3824a2a5575c9ccfb8509c3195ddb"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:7e2a5199bbc4afa8792f3d9b3c2c990516f23eb0a27fea45416308471513d595",
+        "observed_at": "2026-10-09T06:07:38.837036276Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:2bc8b5420400fcd4a98b3decd2329577e12e15ea8709532a1d4959109ee9a363"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:2bc8b5420400fcd4a98b3decd2329577e12e15ea8709532a1d4959109ee9a363"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:8d8967ae9481dcbae8be7331a2a24684e0cf24ae593fa2121b1164ac4e90e9af",
+        "observed_at": "2026-09-26T13:04:35.029731942Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:53c21567bb87b9f64b9e210f4de6ecfca464fa1169ec41a213f25e15767eef36"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:53c21567bb87b9f64b9e210f4de6ecfca464fa1169ec41a213f25e15767eef36"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:94d97a720da9c8718dd8fe0046f0deebbd68163ebbdb2e001a7920650e77b869",
+        "observed_at": "2026-10-09T06:07:39.311531029Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:f0ba9b4af60dca03e8950757d587ebaf1cda813948d577c1f1919b62d4bf100f"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:f0ba9b4af60dca03e8950757d587ebaf1cda813948d577c1f1919b62d4bf100f"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:982505f558f6f4e0bdfa7ac91d8558cc5178eb6396c1171759dff7caddec677c",
+        "observed_at": "2026-10-09T06:07:38.769675075Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:4b9c5e67bb0642b1811bbd7bf2f16e54a41e528269b09c9b8fe6e05537678941"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:4b9c5e67bb0642b1811bbd7bf2f16e54a41e528269b09c9b8fe6e05537678941"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:ba856d4c3a4c284fe794d83601dcd7a3ae109ea9c2bad18f5cac5e011aee03e1",
+        "observed_at": "2026-10-09T06:07:39.295628958Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:f334c24aa25bf2054aeca8cd8167fdad1b9a21f5f318a29b8cbc5254dac3e829"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:f334c24aa25bf2054aeca8cd8167fdad1b9a21f5f318a29b8cbc5254dac3e829"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:c529a6f4bcbfa145876fcd346c77576ac90b5e78a238a20164c944640eec0c69",
+        "observed_at": "2026-09-18T21:17:47.023038915Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:a635baf8a55c1538dd8e04fbf088f884f433c63b0857b86c4fca06eb6211be2f"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:a635baf8a55c1538dd8e04fbf088f884f433c63b0857b86c4fca06eb6211be2f"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:c5b1ed4eab37b37f0e0d9e035f9a6af9a0b0ef54ca5f98faae773ce9f3dcb83b",
+        "observed_at": "2026-09-18T21:17:46.863361535Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:6bf727fa08bbc580076fba05e927f9e92bdfb980c4af3309a55f14207a7851b6"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:6bf727fa08bbc580076fba05e927f9e92bdfb980c4af3309a55f14207a7851b6"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:d6992b948b29f499725c2cde22467bc1c2800db5b12e912d3fc5c0b1864dac5b",
+        "observed_at": "2026-10-05T17:10:25.078129427Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:b736cc7a2378a1d1af3e8872b3cf0e4ef31df49f242ec66c93de2b21e5802a01"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:b736cc7a2378a1d1af3e8872b3cf0e4ef31df49f242ec66c93de2b21e5802a01"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:d766728577a1b8af7700ef6b76411dc5bdd31bfc455dada32416ef316b9ac84a",
+        "observed_at": "2026-10-09T06:07:39.478466107Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:f925a18256e6c7a095ffaddd84b65d8d6fe7edb6aa7112c5a0acec2eac2b3504"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:f925a18256e6c7a095ffaddd84b65d8d6fe7edb6aa7112c5a0acec2eac2b3504"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:dbc9602d577996ec4f3b2bc6321dd9139809b685b67ad93bc2d156a01fb1d236",
+        "observed_at": "2026-09-18T21:17:47.882119486Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:30c7e71878d1f91c94607b3781d225d746f725dae07ce8c2c041433021827dac"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:30c7e71878d1f91c94607b3781d225d746f725dae07ce8c2c041433021827dac"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:e890cd6cbd7f933a9d8e03b7288540612de67cd0db98f089c4cf220b096bafe9",
+        "observed_at": "2026-10-09T06:07:38.67228149Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:98ad4d1b7cfd8316743b8d0af63b47b6568c1aa349e48d9c1165c1bc7b616473"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:98ad4d1b7cfd8316743b8d0af63b47b6568c1aa349e48d9c1165c1bc7b616473"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:ef5f46928d45c086498efa92e0d25a061b222ce08a4d4e8f597e2575deca8a1e",
+        "observed_at": "2026-10-06T11:16:59.985207977Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:233fb0b1c4d90161f400e1784fefbd9927bba3d0d61b930a72368e8377eaa6ad"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:233fb0b1c4d90161f400e1784fefbd9927bba3d0d61b930a72368e8377eaa6ad"
+      },
+      {
+        "source": "providers",
+        "observation_id": "observation:v4:f5060c9e16021f9404beb7de0ebda35a7d5b29a52cf69c07fb81cdef36986817",
+        "observed_at": "2026-09-20T13:03:28.441155859Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:869f883b942aed6b8cd2da893595640e85f8ee9d9d7d69d5f776d82d8f25b336"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:869f883b942aed6b8cd2da893595640e85f8ee9d9d7d69d5f776d82d8f25b336"
+      }
+    ],
+    "review_candidate_count": 263
+  },
+  "tape_sha256": "4c195800ebdf20ff48ffa6ec808880396b0f7e5a07aca6fde27905cc8a162004",
+  "typing_speed_ms": 35,
+  "framerate": 20,
+  "direction": {
+    "chapters": [
+      "Start the catalog server",
+      "Read a model over HTTP",
+      "Fetch and verify a generation"
+    ],
+    "chapter_holds_seconds": {
+      "start_server": 2.5,
+      "read_model": 1.8,
+      "fetch_generation": 1.8
+    },
+    "title_position": "above commands",
+    "opening": "Serve a model catalog for applications and gateways",
+    "opening_hold_seconds": 2.5,
+    "output_holds_seconds": {
+      "readiness": 2,
+      "model_definition": 3,
+      "manifest": 2,
+      "checksum": 3
+    },
+    "ending": "Model read and generation payload verified",
+    "ending_hold_seconds": 5,
+    "next_step": "Configure a catalog consumer. Setup and activation are separate steps.",
+    "readiness": "Hidden GET /api/v1/ready retries with a 10 second retry budget and 2 second request timeout."
+  },
+  "runner_sha256": "eeee338631eb9b1aaad2411464dd929ec17944a070bf56166ae2bfaa60b079de",
+  "transcript_sha256": "777cfaec4c412f4b4aa59e8ee8ffa62018d4b56a4bbd61d5652efec0cf3c4736",
+  "transcript_kind": "preflight",
+  "font_sha256": "e4507fb4fb5f832fbbb6c06aea4206274ba3083007f23fa8cbc0e87a10acf95b",
+  "binary_sha256": "a8fc5158cf38ab3afff3e5b8a45629a3ca36d5f3c14e8cca4de88bd84b035cb8",
+  "vhs_sha256": "690aabb435ab7ad0ac5feb274f6253a93204f349936110fe462781c3c0cde081",
+  "browser_path": null,
+  "configuration": {
+    "source": "embedded",
+    "acquisition_enabled": false,
+    "source_poll_interval": "0s",
+    "network_mode": "offline"
+  },
+  "preflight": {
+    "checks": 10,
+    "outcome": {
+      "model_id": "openai/gpt-6.1-sol",
+      "generation_id": "bindings-53fdce277e501591d72a1160857d31787d386754e0775b862a2a22704eb60a36.local.c70aef7a19dd",
+      "checksum": "verified"
+    },
+    "generation_id": "bindings-53fdce277e501591d72a1160857d31787d386754e0775b862a2a22704eb60a36.local.c70aef7a19dd",
+    "schema_version": 19,
+    "payload_sha256": "52d02db976046523d4e8065b2f3b3f4c49a812f3bb1599eb680527ce0115e24a",
+    "payload_size_bytes": 26798807
+  },
+  "recording": {
+    "checks": 10,
+    "outcome": {
+      "model_id": "openai/gpt-6.1-sol",
+      "generation_id": "bindings-53fdce277e501591d72a1160857d31787d386754e0775b862a2a22704eb60a36.local.c70aef7a19dd",
+      "checksum": "verified"
+    },
+    "generation_id": "bindings-53fdce277e501591d72a1160857d31787d386754e0775b862a2a22704eb60a36.local.c70aef7a19dd",
+    "schema_version": 19,
+    "payload_sha256": "52d02db976046523d4e8065b2f3b3f4c49a812f3bb1599eb680527ce0115e24a",
+    "payload_size_bytes": 26798807
+  },
+  "story": {
+    "checks": 11,
+    "segments": [
+      "Starmap / Serve a model catalog",
+      "1 / Start the catalog server",
+      "2 / Read a model over HTTP",
+      "3 / Fetch and verify a generation",
+      "Result / Model read and payload verified"
+    ],
+    "ending_matches_observed_data": true
+  },
+  "svg_duration_seconds": 53.25,
+  "gif_duration_seconds": 53.28,
+  "width": 1280,
+  "height": 720,
+  "assets": {
+    "demo.svg": {
+      "sha256": "069de2ac60ec29b4ecf90aeb15e5fc0a6c1abdb2195fc863f289092f8c06c6ad",
+      "bytes": 772076
+    },
+    "demo.gif": {
+      "sha256": "4e46a0f5c3db90a5bddd3df628054adfcb14198fa5aa6d6a28f571d5d9d44896",
+      "bytes": 378853
+    }
+  }
+}
