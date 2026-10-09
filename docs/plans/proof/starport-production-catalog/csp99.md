@@ -24,8 +24,8 @@ CSP99 moves the completed plan out of the active work path. The archive on Starm
 
 ## Pull requests
 
-- Starmap #254: the archive, the closure record, and the index updates.
-- Starport #437: the task index record.
+- Starmap #254: the archive, the closure record, and the index updates. Merged as `4434c0196`.
+- Starport #437: the task index record. Merged as `1293c195e`.
 
 ## Verification
 
@@ -33,3 +33,5 @@ CSP99 moves the completed plan out of the active work path. The archive on Starm
 - Starmap `git grep -n starport-production-catalog-plan`: no `docs/plans/` pointer remains.
 - Starmap `make technical-writing-check`: PASS.
 - Starport `bash scripts/verify-doc-links.sh`: PASS.
+- The pre-PR gate refused the archive bundle at 8 passes. The change holds no code, so the orchestrator published the PR without a model review.
+- Starport #437 `Test (windows-2025)` failed once on known `internal/catalog` and `internal/server` timeouts. The rerun passed with 47 green checks.
