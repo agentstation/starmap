@@ -7,8 +7,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:7aa456501c2f7a645bc7baf647c9bb63e0d6a2ac9bb515ee293a68c372411381
-    observed_at: "2026-10-10T14:29:50.103972062Z"
+    observation_id: observation:v4:79da2ca195a5969afd8e5861c7d4cc13d364c643443caed33dae768c80d5a49f
+    observed_at: "2026-10-10T20:05:39.314326057Z"
     model_ids:
     - deepseek-v4-flash-0731
     - deepseek-v4-flash-0731-us
@@ -80,8 +80,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:ba79e731f26dc850637e8c57a062cffd98944aa6ef73d7fecafb6f656b72a95e
-    observed_at: "2026-10-10T14:29:50.358530049Z"
+    observation_id: observation:v4:09aa1fa56be9386b19adb54c16705783f13f4c40774d38411078a39f83f98544
+    observed_at: "2026-10-10T20:05:39.302552372Z"
     model_ids:
     - claude-fable-5
     - claude-fable-5-1
@@ -107,8 +107,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:f3f8fdd21737b4b92db2081eec9c0717aedde789de74242472aafc5340300853
-    observed_at: "2026-10-10T14:29:50.354377112Z"
+    observation_id: observation:v4:9129127adf773b30ad5a83937d6c3d3ea04c14453b26fe5805701419f1bab161
+    observed_at: "2026-10-10T20:05:38.98207109Z"
     model_ids:
     - gpt-oss-120b
     - qwen-3.8-27b
@@ -122,8 +122,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:1ad13734150f43797736dadad854362d80ac03a5582289e528e53d7230a1fa41
-    observed_at: "2026-10-10T14:29:50.553160971Z"
+    observation_id: observation:v4:54753111f88e421ca385a8e3deb7a536983b86744e4349c598ff8567d2356cd3
+    observed_at: "2026-10-10T20:05:39.583993183Z"
     model_ids:
     - Audio8/Audio8-TTS-Preview-0.6b
     - BAAI/bge-base-en-v1.5
@@ -314,8 +314,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:0e09d1047cf6aeb5284658065617dd337066a12e9d595d8b53549cd3858ef069
-    observed_at: "2026-10-10T14:29:50.209026465Z"
+    observation_id: observation:v4:6f4fe0e66ca64fe9080ffed2d9eeab0efac574d47ef9db1e6b7d123db6d700ac
+    observed_at: "2026-10-10T20:05:40.142191345Z"
     model_ids:
     - deepseek-flash
     - deepseek-v4-pro
@@ -329,8 +329,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:349884f7d3c7fb7103121d2d611e5e6ca9e4e067979c8db0559f76bb87eb3348
-    observed_at: "2026-10-10T14:29:50.063211715Z"
+    observation_id: observation:v4:6a6bb0012ad1cbc846f47062f50bfb6739707f8ea6e9a4a4dfb3216f8974fd9a
+    observed_at: "2026-10-10T20:05:38.81996171Z"
     model_ids:
     - accounts/fireworks/models/deepseek-v4p1-flash
     - accounts/fireworks/models/ember-1
@@ -362,8 +362,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:9b3ef9d04d056891d3e3b46cea279c57561f04740bea107a1ceafc37d46a4fe2
-    observed_at: "2026-10-10T14:29:50.228536635Z"
+    observation_id: observation:v4:f255954918bcd57221c4c6aa99f5eb86ad27380168e2dc75e0bd833071528e7d
+    observed_at: "2026-10-10T20:05:38.614603338Z"
     model_ids:
     - antigravity-preview-05-2026
     - antigravity-preview-09-2026
@@ -437,8 +437,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:7765165c3ce25df2de83147e46837b44942b114e5482abe0b58cf736b6b12feb
-    observed_at: "2026-10-10T14:29:50.255998033Z"
+    observation_id: observation:v4:18c8be425ee9284d146d91aa637913da21a90b46f471cd6f47270d0f59b556f3
+    observed_at: "2026-10-10T20:05:38.835688485Z"
     model_ids:
     - allam-2-7b
     - canopylabs/orpheus-arabic-saudi
@@ -461,8 +461,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:19748879fbecf5c8e544014142b7b973fa371d2ee7121204e1e6c3a117bc4295
-    observed_at: "2026-10-10T14:29:50.799782768Z"
+    observation_id: observation:v4:fc139e8e1ec3f4b4d4c6cb554596dda32ccba712ceaa0a65196e315848ec8210
+    observed_at: "2026-10-10T20:05:39.017157251Z"
     model_ids:
     - Qwen/Qwen3.6-35B-A3B
     - Qwen/Qwen3.6-35B-A3B-FP8
@@ -478,8 +478,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:2438dc17dc958357f3414deeb6e6a7ba77c36dee0c6b2ce43c1be10598f0592f
-    observed_at: "2026-10-10T14:29:50.121399869Z"
+    observation_id: observation:v4:6b540d33f869979a2e5f397ebc4d3e453c8487e494ff48fd1624c11ea6de4fea
+    observed_at: "2026-10-10T20:05:42.123704855Z"
     model_ids:
     - codestral-2508
     - codestral-embed
@@ -537,8 +537,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:d012e233f898aeb6dfc44e7f0113bfda1520e9f1c5bda8e42df1420add3c1d6d
-    observed_at: "2026-10-10T14:29:50.717299805Z"
+    observation_id: observation:v4:f26aca0193941d71d61974154fd220f893f0bc76047b72c9b68eca5df029fdf2
+    observed_at: "2026-10-10T20:05:39.355744866Z"
     model_ids:
     - kimi-k2.6
     - kimi-k2.7-code
@@ -554,8 +554,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:227c14135577d9d8d561169bc2b644fdb28f5d48e9059e85340e736ee6afd063
-    observed_at: "2026-10-10T14:29:50.741617282Z"
+    observation_id: observation:v4:0a9a90af35e85d926aac9312b1a36a292f7933366f250a84521cc42b833e013a
+    observed_at: "2026-10-10T20:05:39.498529931Z"
     model_ids:
     - babbage-002
     - chat-latest
