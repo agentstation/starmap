@@ -1,23 +1,23 @@
-# Qwen/Qwen3-VL-30B-A3B-Instruct - Meet Qwen3-VL — the most powerful vision-language model in...
+# Qwen/Qwen3-VL-30B-A3B-Instruct - Open vision-language MoE model for image and video understan...
 id: Qwen/Qwen3-VL-30B-A3B-Instruct
 model: qwen/qwen3-vl-30b-a3b-instruct
 name: Qwen/Qwen3-VL-30B-A3B-Instruct
 authors:
 - id: qwen
   name: qwen
-description: |-
-  Meet Qwen3-VL — the most powerful vision-language model in the Qwen series to date. This generation delivers comprehensive upgrades across the board: superior text understanding & generation, deeper visual perception & reasoning, extended context length, enhanced spatial and video dynamics comprehension, and stronger agent interaction capabilities.
+description: Open vision-language MoE model for image and video understanding, documents, and visual agents
 
 # Model metadata
 metadata:
-  release_date: null
-  open_weights: false
+  release_date: 2025-10-04
+  open_weights: true
   tags:
   - chat
   - vlm
   - vision
   - reasoning_effort
 lineage:
+  family: qwen
   root: Qwen/Qwen3-VL-30B-A3B-Instruct
 
 # Model features
@@ -25,18 +25,19 @@ features:
   modalities:
     input:
     - text
+    - image
     output:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
-  reasoning: true
+  reasoning: false
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
@@ -78,7 +79,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 
 # Model pricing
@@ -96,8 +97,14 @@ pricing:
 limits:
   context_window: 262144
   input_tokens: 0
-  output_tokens: 262144
+  output_tokens: 32768
+extensions:
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:8a04352d9cbb83ccce864c7440983be76bc18e0d3ee80099e3dc1a355958ee36
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.096611Z
-updated_at: 2026-09-28T05:13:12.909271Z
+updated_at: 2026-10-09T16:55:27.97873Z
