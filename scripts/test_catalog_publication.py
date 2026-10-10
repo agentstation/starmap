@@ -1038,6 +1038,34 @@ class GitPublicationTests(unittest.TestCase):
             self.assertEqual({"sequence": 2}, json.loads(payload))
 
 
+class ApiDiagnosticsTests(unittest.TestCase):
+    """A failed GitHub API call names the request and the gh status line for the operator."""
+
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix="starmap-api-diagnostics-")
+        self.addCleanup(self.temporary.cleanup)
+        self.publisher = publication.Publisher(self.temporary.name, "agentstation/starmap", 42, source=self.temporary.name)
+
+    def test_failed_call_reports_method_endpoint_and_status(self):
+        stderr = "gh: Bad Gateway (HTTP 502)\n{\"message\":\"Server Error\"}\n"
+        failure = subprocess.CompletedProcess([], 1, "", stderr)
+        with patch.object(publication, "command", return_value=failure):
+            with self.assertRaisesRegex(publication.PublicationError, r"POST repos/agentstation/starmap/pulls: .*Server Error") as raised:
+                self.publisher.api("pulls", method="POST", body={"title": "promotion"})
+        self.assertIn("GitHub API operation failed", str(raised.exception))
+
+    def test_failed_call_without_output_reports_missing_diagnostic(self):
+        failure = subprocess.CompletedProcess([], 1, "", "")
+        with patch.object(publication, "command", return_value=failure):
+            with self.assertRaisesRegex(publication.PublicationError, "GET repos/agentstation/starmap/releases/latest: no diagnostic output"):
+                self.publisher.api("releases/latest")
+
+    def test_missing_resource_still_returns_none(self):
+        failure = subprocess.CompletedProcess([], 1, "", "gh: Not Found (HTTP 404)\n")
+        with patch.object(publication, "command", return_value=failure):
+            self.assertIsNone(self.publisher.api("releases/tags/v0", missing=True))
+
+
 class PublicationResult(unittest.TextTestResult):
     """Record completed tests and subcases for the product acceptance runner."""
 
