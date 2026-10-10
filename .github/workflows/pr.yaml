@@ -51,10 +51,10 @@ jobs:
         server: [valkey, redis]
         include:
           - server: valkey
-            image: valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+            image: ghcr.io/agentstation/fixtures/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
             cli: valkey-cli
           - server: redis
-            image: redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf
+            image: ghcr.io/agentstation/fixtures/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf
             cli: redis-cli
     env:
       GOTOOLCHAIN: local
@@ -93,7 +93,7 @@ jobs:
             -v "$RUNNER_TEMP/starmap-object-data:/data" \
             -e MINIO_ROOT_USER=starmap-test \
             -e MINIO_ROOT_PASSWORD=starmap-test-secret-only \
-            busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e \
+            ghcr.io/agentstation/fixtures/busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e \
             /usr/local/bin/minio server /data
           for attempt in {1..60}; do
             if docker exec "$STARMAP_TEST_COORDINATION_CONTAINER" "$COORDINATION_CLI" ping && \

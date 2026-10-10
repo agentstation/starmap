@@ -100,19 +100,25 @@ func TestWorkspaceWriterProcessHelper(t *testing.T) {
 		return
 	}
 
+	reportHelperStep("started")
 	path := os.Getenv(workspaceHelperPath)
 	modelID := os.Getenv(workspaceHelperModel)
 	catalog, identity := testCatalog(t, modelID, "Process "+modelID)
-	p := projector{}
+	p := projector{afterStageRender: func(string) error {
+		reportHelperStep("staged catalog under writer lock")
+		return nil
+	}}
 	if ready := os.Getenv(workspaceHelperReady); ready != "" {
 		release := os.Getenv(workspaceHelperRelease)
 		p.beforePromote = func() error {
 			if err := os.WriteFile(ready, []byte("ready\n"), constants.FilePermissions); err != nil {
 				return err
 			}
+			reportHelperStep("wrote ready file")
 			deadline := time.Now().Add(workspaceHelperTimeout)
 			for time.Now().Before(deadline) {
 				if _, err := os.Stat(release); err == nil {
+					reportHelperStep("saw release file")
 					return nil
 				} else if !stderrors.Is(err, os.ErrNotExist) {
 					return err
@@ -134,6 +140,13 @@ func TestWorkspaceWriterProcessHelper(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Project: %v", err)
 	}
+}
+
+// reportHelperStep writes one progress line to the standard error of a helper
+// process. The write is not buffered, so the parent keeps the line when it
+// stops a helper that does not finish.
+func reportHelperStep(step string) {
+	_, _ = os.Stderr.WriteString("helper: " + step + "\n")
 }
 
 func workspaceWriterCommand(

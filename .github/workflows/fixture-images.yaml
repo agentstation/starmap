@@ -1,0 +1,101 @@
+name: Fixture Images
+
+# This workflow copies the pinned test fixture images from Docker Hub into the
+# organization container registry. GitHub-hosted runners pull Docker Hub
+# without authentication and share one rate limit, which stopped three of four
+# CI runs on 2026-10-09 before any test ran. A copy keeps the manifest bytes,
+# so every "@sha256" pin in the CI workflows stays the same. The copy job
+# verifies that identity and fails closed when the registry reports another
+# digest.
+#
+# To qualify a new fixture release, change the digest in the matrix below and
+# in each CI reference. Run this workflow before the CI change merges.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # The monthly copy keeps the registry warm after a package retention change.
+    - cron: "23 5 1 * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fixture-images
+  cancel-in-progress: false
+
+env:
+  GOTOOLCHAIN: go1.27.2
+  CRANE_MODULE: github.com/google/go-containerregistry/cmd/crane@v0.22.1
+
+jobs:
+  copy:
+    name: Copy ${{ matrix.name }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: valkey
+            source: docker.io/valkey/valkey
+            digest: sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f
+          - name: redis
+            source: docker.io/library/redis
+            digest: sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf
+          - name: postgres
+            source: docker.io/library/postgres
+            digest: sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94
+          - name: mysql
+            source: docker.io/library/mysql
+            digest: sha256:3466ba4a4828aa8d46fb7c3bc16b67b781c98413cf4ea0fac6feaa6e881faa26
+          - name: busybox
+            source: docker.io/library/busybox
+            digest: sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e
+    env:
+      FIXTURE_NAME: ${{ matrix.name }}
+      FIXTURE_SOURCE: ${{ matrix.source }}
+      FIXTURE_DIGEST: ${{ matrix.digest }}
+      FIXTURE_TARGET: ghcr.io/${{ github.repository_owner }}/fixtures/${{ matrix.name }}
+    steps:
+      - name: Set up Go toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.27.2"
+          cache: false
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Copy the pinned image by digest
+        run: |
+          tag="${FIXTURE_DIGEST#sha256:}"
+          for attempt in 1 2 3; do
+            if go run "$CRANE_MODULE" copy "$FIXTURE_SOURCE@$FIXTURE_DIGEST" "$FIXTURE_TARGET:$tag"; then
+              break
+            fi
+            if [ "$attempt" = 3 ]; then
+              echo "::error::copy of $FIXTURE_NAME failed three times"
+              exit 1
+            fi
+            echo "copy attempt $attempt failed, waiting before the next attempt"
+            sleep 90
+          done
+
+      - name: Verify the copied digest
+        run: |
+          tag="${FIXTURE_DIGEST#sha256:}"
+          actual="$(go run "$CRANE_MODULE" digest "$FIXTURE_TARGET:$tag")"
+          if [ "$actual" != "$FIXTURE_DIGEST" ]; then
+            echo "::error::$FIXTURE_TARGET:$tag has digest $actual, expected $FIXTURE_DIGEST"
+            exit 1
+          fi
+          go run "$CRANE_MODULE" manifest "$FIXTURE_TARGET@$FIXTURE_DIGEST" > /dev/null
+          echo "$FIXTURE_TARGET@$FIXTURE_DIGEST is available"

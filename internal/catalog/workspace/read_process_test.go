@@ -67,12 +67,15 @@ func TestWorkspaceReaderProcessHelper(t *testing.T) {
 	if os.Getenv(workspaceReaderHelper) == "" {
 		return
 	}
+	reportHelperStep("started")
 	ctx, cancel := context.WithTimeout(t.Context(), workspaceHelperTimeout)
 	defer cancel()
 	err := Read(ctx, os.Getenv(workspaceHelperPath), func(InputExpectation) error {
+		reportHelperStep("holds reader lock")
 		if err := os.WriteFile(os.Getenv(workspaceHelperReady), []byte("ready"), fileMode); err != nil {
 			return err
 		}
+		reportHelperStep("wrote ready file")
 		<-ctx.Done()
 		return ctx.Err()
 	})

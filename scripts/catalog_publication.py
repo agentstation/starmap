@@ -54,6 +54,12 @@ def command(args, *, cwd=None, env=None, input=None, check=True, timeout=3600, t
     return result
 
 
+def api_diagnostic(stderr):
+    """Return the last gh error line, which names the HTTP status without the request credentials."""
+    lines = [line.strip() for line in stderr.splitlines() if line.strip()]
+    return lines[-1][:200] if lines else "no diagnostic output"
+
+
 def canonical(value):
     return (json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n").encode()
 
@@ -175,7 +181,7 @@ class Publisher:
         if missing and result.returncode and "(HTTP 404)" in result.stderr:
             return None
         if result.returncode:
-            raise PublicationError("GitHub API operation failed")
+            raise PublicationError(f"GitHub API operation failed: {method} {args[4]}: {api_diagnostic(result.stderr)}")
         return json.loads(result.stdout) if result.stdout.strip() else None
 
     def graphql(self, query, variables):
