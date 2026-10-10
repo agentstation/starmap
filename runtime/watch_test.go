@@ -6,8 +6,9 @@ import (
 	"time"
 )
 
-// watchDeadline bounds every wait for a reactive refresh. The whole test runs
-// in one process, so a longer wait means the wake never arrived.
+// watchDeadline bounds the wait from a wake to the next source read. No
+// durable publication runs in that window, and the read starts within
+// milliseconds. A longer wait means that the wake never arrived.
 const watchDeadline = 5 * time.Second
 
 // watchSource is a stub source that also reports upstream change and adopts a
@@ -54,7 +55,7 @@ func (w *watchSource) wake() { w.changes <- struct{}{} }
 // TestRuntimeRefreshesOnAnUpstreamWake proves the reactive path of a cascade.
 // A source that reports its own change wakes the source worker, so a streamed
 // publication reaches the runtime without waiting for the poll boundary. The
-// runtime under test polls once an hour, so only the wake can produce the
+// schedule timer of the runtime never fires, so only the wake can produce the
 // second read.
 func TestRuntimeRefreshesOnAnUpstreamWake(t *testing.T) {
 	t.Parallel()
@@ -67,20 +68,26 @@ func TestRuntimeRefreshesOnAnUpstreamWake(t *testing.T) {
 		testSourceRead(t, "generation-2", second, published.Add(time.Minute)),
 	}
 
+	timer := newStubScheduleTimer()
+
+	// The require_source policy reads and publishes once before Open returns.
+	// The timed wait then excludes the durable work of that first read.
 	runtime := openTestRuntime(t,
 		WithSource(source),
+		WithSourceStartupPolicy(string(StartupRequireSource)),
 		WithSourcePollInterval(time.Hour),
 		WithStartupSpread(0),
+		withScheduleTimer(timer.after),
 	)
+	if got := source.readCount(); got != 1 {
+		t.Fatalf("source reads after Open = %d, want 1", got)
+	}
+	if got := runtime.Status().GenerationID; got == "" {
+		t.Fatal("the runtime published no generation before the wake")
+	}
 
-	// The startup pass reads once, because the runtime retains no source layer.
-	waitForReads(t, source, 1)
 	source.wake()
 	waitForReads(t, source, 2)
-
-	if got := runtime.Status().GenerationID; got == "" {
-		t.Fatal("the runtime published no generation after the wake")
-	}
 }
 
 // TestRuntimeHandsItsInstanceIdentityToTheSource proves that one replica
