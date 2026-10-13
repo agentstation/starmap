@@ -34,7 +34,7 @@ jobs:
             go install github.com/minio/minio@9e49d5e7a648f00e26f2246f4dc28e6b07f8c84a
           go version -m "$RUNNER_TEMP/starmap-object-bin/minio"
       - name: Share object fixture with storage jobs
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: starmap-minio-fixture
           path: ${{ runner.temp }}/starmap-object-bin/minio
@@ -76,7 +76,7 @@ jobs:
           go-version: "1.27.2"
           cache: true
       - name: Download pinned object fixture
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: starmap-minio-fixture
           path: ${{ runner.temp }}/starmap-object-bin
@@ -110,7 +110,7 @@ jobs:
         run: go test -race -json -count=1 -timeout=5m ./pkg/catalogs/storage/valkey > "$RUNNER_TEMP/coordinated-storage.jsonl"
       - name: Retain coordinated storage evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: coordinated-storage-${{ matrix.server }}
           path: ${{ runner.temp }}/coordinated-storage.jsonl
@@ -137,7 +137,7 @@ jobs:
         run: python3 scripts/constructor_network.py > "$RUNNER_TEMP/constructor-network.json"
       - name: Retain constructor network evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: constructor-network-linux-amd64
           path: ${{ runner.temp }}/constructor-network.json
@@ -161,7 +161,7 @@ jobs:
         run: python3 scripts/cold_server.py > "$RUNNER_TEMP/cold-server.json"
       - name: Retain offline server evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: cold-server-linux-amd64
           path: ${{ runner.temp }}/cold-server.json
@@ -216,7 +216,7 @@ jobs:
         run: make verify-checks
       - name: Retain early workflow contract evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: go-tests-race-checks
           path: ${{ runner.temp }}/verification-events/
@@ -273,7 +273,7 @@ jobs:
         run: make test-consumer-deps
       - name: Retain test timings and failures
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: go-tests-race-${{ matrix.label }}
           path: ${{ runner.temp }}/go-test-events.*
@@ -298,7 +298,7 @@ jobs:
         run: python3 scripts/verification_tests.py capacity --output "$RUNNER_TEMP/go-capacity-events.jsonl"
       - name: Retain capacity evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: go-full-catalog-capacity
           path: ${{ runner.temp }}/go-capacity-events.jsonl
@@ -375,14 +375,14 @@ jobs:
         with:
           persist-credentials: false
       - name: Read every native group artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: native-runtime-${{ matrix.runner }}--*
           path: native-groups
       - name: Verify complete disjoint native coverage
         run: python3 scripts/native_runtime.py combine --source native-groups --system '${{ matrix.os }}' --arch '${{ matrix.arch }}' --output native-evidence
       - name: Retain combined native test evidence
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: native-runtime-${{ matrix.runner }}
           path: native-evidence/
@@ -496,7 +496,7 @@ jobs:
           printf '%s\n' '${{ job.status }}' > native-evidence/job-status.txt
       - name: Retain native test evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: native-runtime-${{ matrix.runner }}--${{ matrix.group }}
           path: native-evidence/
@@ -566,7 +566,7 @@ jobs:
           go test -json -count=1 -timeout=30m ./internal/catalog/publication ./cmd/starmap-catalog-publish > native-evidence/publication-preparation.jsonl
       - name: Retain native publication evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: native-publication-${{ matrix.runner }}
           path: native-evidence/
