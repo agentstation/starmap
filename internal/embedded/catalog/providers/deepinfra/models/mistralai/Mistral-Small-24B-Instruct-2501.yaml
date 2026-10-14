@@ -1,19 +1,21 @@
-# mistralai/Mistral-Small-24B-Instruct-2501 - Mistral Small 3 is a 24B-parameter language model optimized ...
+# mistralai/Mistral-Small-24B-Instruct-2501 - Efficient Mistral model for fast chat, extraction, and produ...
 id: mistralai/Mistral-Small-24B-Instruct-2501
 model: mistral/mistral-small-24b-instruct-2501
 name: mistralai/Mistral-Small-24B-Instruct-2501
 authors:
 - id: mistral
   name: mistral
-description: Mistral Small 3 is a 24B-parameter language model optimized for low-latency performance across common AI tasks. Released under the Apache 2.0 license, it features both pre-trained and instruction-tuned versions designed for efficient local deployment. The model achieves 81% accuracy on the MMLU benchmark and performs competitively with larger models like Llama 3.3 70B and Qwen 32B, while operating at three times the speed on equivalent hardware.
+description: Efficient Mistral model for fast chat, extraction, and production assistants
 
 # Model metadata
 metadata:
-  release_date: null
-  open_weights: false
+  release_date: 2025-01-30
+  open_weights: true
+  knowledge_cutoff: 2023-10-31
   tags:
   - chat
 lineage:
+  family: mistral-small
   root: mistralai/Mistral-Small-24B-Instruct-2501
 
 # Model features
@@ -74,7 +76,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 
 # Model pricing
@@ -92,7 +94,13 @@ pricing:
 limits:
   context_window: 32768
   input_tokens: 0
-  output_tokens: 32768
+  output_tokens: 16384
+extensions:
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:871ee133ee995a420a3ff9e5084a2fcf49bfe486f98c6fe87cfd051e1335ea16
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.081061Z

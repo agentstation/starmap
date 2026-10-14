@@ -1,14 +1,14 @@
-# anthropic/claude-fable-5 - Claude Fable 5 is Anthropic's next generation of intelligenc...
+# anthropic/claude-fable-5 - Claude model for creative writing, analysis, and controlled ...
 id: anthropic/claude-fable-5
 model: anthropic/claude-fable-5
 name: anthropic/claude-fable-5
-description: |-
-  Claude Fable 5 is Anthropic's next generation of intelligence for the hardest knowledge work and coding problems. It works independently for longer than any prior generally available Claude model: run it in an agent harness and it can work for days at a time, planning across stages, delegating to sub-agents, and checking its own work.
+description: Claude model for creative writing, analysis, and controlled agent workflows
 
 # Model metadata
 metadata:
-  release_date: null
+  release_date: 2026-06-09
   open_weights: false
+  knowledge_cutoff: 2026-01-31
   tags:
   - chat
   - vlm
@@ -16,6 +16,7 @@ metadata:
   - reasoning_effort
   - reasoning
 lineage:
+  family: claude-fable
   root: anthropic/claude-fable-5
 
 # Model features
@@ -23,25 +24,27 @@ features:
   modalities:
     input:
     - text
+    - image
+    - pdf
     output:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
-  reasoning_effort: false
+  reasoning_effort: true
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
 
   # Generation control support flags
-  temperature: true
+  temperature: false
   top_p: true
   top_k: false
   top_a: false
@@ -76,8 +79,15 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
+reasoning:
+  levels:
+  - low
+  - medium
+  - high
+  - maximum
+  default: null
 
 # Model pricing
 pricing:
@@ -94,7 +104,17 @@ pricing:
 limits:
   context_window: 1000000
   input_tokens: 0
-  output_tokens: 1000000
+  output_tokens: 128000
+extensions:
+  models.dev:
+    fields:
+      reasoning_options:
+      - type: effort
+        values:
+        - xhigh
+      unknown_fields:
+      - checksum: sha256:de4de61708be116bc26ef272598c2f28ba96d2402a028b50f8004121881f4bee
+        path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.08944Z

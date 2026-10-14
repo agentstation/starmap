@@ -1,7 +1,7 @@
-# mistral-ocr-4-0 - AI model
+# mistral-ocr-4-0 - Mistral OCR 4.0
 id: mistral-ocr-4-0
 model: mistral/mistral-ocr-4-0
-name: mistral-ocr-4-0
+name: Mistral OCR 4.0
 authors:
 - id: mistral
   name: mistral
@@ -100,7 +100,7 @@ extensions:
         path: data[].deprecation
       - checksum: sha256:74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b
         path: data[].deprecation_replacement_model
-      - checksum: sha256:acff8d4a2ad4535fcf50fe7e00251292d59b98f7e191e70506c2a8533fa8597b
+      - checksum: sha256:3bf7039cf8610a394759b193fb85e57dff41501a168447309cb8c3b3cc0d6b82
         path: data[].description
       - checksum: sha256:ca902d4a8acbdea132ada81a004081f51c5c9279d409cee414de5a39a139fab6
         path: data[].max_context_length
@@ -109,4 +109,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-10-09T16:55:27.97873Z
+updated_at: 2026-10-14T13:45:11.507902395Z
