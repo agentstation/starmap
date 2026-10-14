@@ -7,8 +7,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:79da2ca195a5969afd8e5861c7d4cc13d364c643443caed33dae768c80d5a49f
-    observed_at: "2026-10-10T20:05:39.314326057Z"
+    observation_id: observation:v4:dcd381aa0d585bd0fc1d325e1718fc4add129abf9fd68c5f2d67bc0355cded68
+    observed_at: "2026-10-14T13:45:11.603900426Z"
     model_ids:
     - deepseek-v4-flash-0731
     - deepseek-v4-flash-0731-us
@@ -80,8 +80,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:09aa1fa56be9386b19adb54c16705783f13f4c40774d38411078a39f83f98544
-    observed_at: "2026-10-10T20:05:39.302552372Z"
+    observation_id: observation:v4:5939e4f505fa63a499c6e6081b4b424cefc15669a9595633a6f56129101aed8f
+    observed_at: "2026-10-14T13:45:11.07059497Z"
     model_ids:
     - claude-fable-5
     - claude-fable-5-1
@@ -107,8 +107,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:9129127adf773b30ad5a83937d6c3d3ea04c14453b26fe5805701419f1bab161
-    observed_at: "2026-10-10T20:05:38.98207109Z"
+    observation_id: observation:v4:bd16b82a921cd411fc6198a0ca170244558684033de16019fffe4410c8d732c7
+    observed_at: "2026-10-14T13:45:11.679491717Z"
     model_ids:
     - gpt-oss-120b
     - qwen-3.8-27b
@@ -122,8 +122,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:54753111f88e421ca385a8e3deb7a536983b86744e4349c598ff8567d2356cd3
-    observed_at: "2026-10-10T20:05:39.583993183Z"
+    observation_id: observation:v4:d716f0b400bc8f1905a529d3273f7230100b80b8ac002cbce10744b0c5319cca
+    observed_at: "2026-10-14T13:45:10.989373164Z"
     model_ids:
     - Audio8/Audio8-TTS-Preview-0.6b
     - BAAI/bge-base-en-v1.5
@@ -142,6 +142,7 @@
     - Bria/fibo_edit
     - Bria/fibo_edit-1.5
     - Bria/remove_background
+    - Bria/remove_background_guided
     - ByteDance/Seed-1.8
     - ByteDance/Seed-2.0-code
     - ByteDance/Seed-2.0-mini
@@ -246,8 +247,6 @@
     - google/veo-3.1
     - google/veo-3.1-fast
     - hexgrad/Kokoro-82M
-    - ibm-granite/granite-4.2-30b
-    - ibm-granite/granite-4.2-3b
     - ibm-granite/granite-4.2-8b
     - inclusionAI/Ling-3.0-flash
     - inclusionAI/Ling-3.0-flash-VL
@@ -314,8 +313,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:6f4fe0e66ca64fe9080ffed2d9eeab0efac574d47ef9db1e6b7d123db6d700ac
-    observed_at: "2026-10-10T20:05:40.142191345Z"
+    observation_id: observation:v4:3278aab93f60a6b5c97f1495c875a2a9c6e631195ad34cff7fcfdc496f5a611f
+    observed_at: "2026-10-14T13:45:11.21454504Z"
     model_ids:
     - deepseek-flash
     - deepseek-v4-pro
@@ -329,12 +328,11 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:6a6bb0012ad1cbc846f47062f50bfb6739707f8ea6e9a4a4dfb3216f8974fd9a
-    observed_at: "2026-10-10T20:05:38.81996171Z"
+    observation_id: observation:v4:fb118c04ed75f2039a1ca7803ad01a9a0a84f8ed01146011cc0226a7afda2b57
+    observed_at: "2026-10-14T13:45:10.969792275Z"
     model_ids:
     - accounts/fireworks/models/deepseek-v4p1-flash
     - accounts/fireworks/models/ember-1
-    - accounts/fireworks/models/glm-5p2
     - accounts/fireworks/models/glm-5p3
     - accounts/fireworks/models/glm-5p3-flash
     - accounts/fireworks/models/gpt-oss-120b
@@ -362,8 +360,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:f255954918bcd57221c4c6aa99f5eb86ad27380168e2dc75e0bd833071528e7d
-    observed_at: "2026-10-10T20:05:38.614603338Z"
+    observation_id: observation:v4:5b3d5b30b3bfd247639a198712f61e37ef6d98e5a2a0cf102810412517fb4093
+    observed_at: "2026-10-14T13:45:10.908791123Z"
     model_ids:
     - antigravity-preview-05-2026
     - antigravity-preview-09-2026
@@ -406,6 +404,7 @@
     - gemini-3.8-flash-tts
     - gemini-3.8-live
     - gemini-3.8-live-extended-thinking
+    - gemini-4-argon
     - gemini-embedding-001
     - gemini-embedding-2
     - gemini-embedding-2-preview
@@ -437,8 +436,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:18c8be425ee9284d146d91aa637913da21a90b46f471cd6f47270d0f59b556f3
-    observed_at: "2026-10-10T20:05:38.835688485Z"
+    observation_id: observation:v4:554c6ed00839002b7a30851171793349fe82102ffb2dbbe20474bd74107534b1
+    observed_at: "2026-10-14T13:45:11.057412751Z"
     model_ids:
     - allam-2-7b
     - canopylabs/orpheus-arabic-saudi
@@ -461,8 +460,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:fc139e8e1ec3f4b4d4c6cb554596dda32ccba712ceaa0a65196e315848ec8210
-    observed_at: "2026-10-10T20:05:39.017157251Z"
+    observation_id: observation:v4:1f20bb64769793a969b5894d263b926efdbc9c8fa709c4d78e006030bf57d4ea
+    observed_at: "2026-10-14T13:45:11.662363003Z"
     model_ids:
     - Qwen/Qwen3.6-35B-A3B
     - Qwen/Qwen3.6-35B-A3B-FP8
@@ -478,8 +477,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:6b540d33f869979a2e5f397ebc4d3e453c8487e494ff48fd1624c11ea6de4fea
-    observed_at: "2026-10-10T20:05:42.123704855Z"
+    observation_id: observation:v4:78a8c5c6935e03b8cd798717993e7ba798e25b04afccc04de8d0f5a221a85844
+    observed_at: "2026-10-14T13:45:11.507902395Z"
     model_ids:
     - codestral-2508
     - codestral-embed
@@ -537,8 +536,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:f26aca0193941d71d61974154fd220f893f0bc76047b72c9b68eca5df029fdf2
-    observed_at: "2026-10-10T20:05:39.355744866Z"
+    observation_id: observation:v4:84d7068b8fc90b700a184f05ea6f3f7b9154d23525ee8645397eb9765c51a6a3
+    observed_at: "2026-10-14T13:45:11.56299971Z"
     model_ids:
     - kimi-k2.6
     - kimi-k2.7-code
@@ -554,8 +553,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:0a9a90af35e85d926aac9312b1a36a292f7933366f250a84521cc42b833e013a
-    observed_at: "2026-10-10T20:05:39.498529931Z"
+    observation_id: observation:v4:b75b5dffa3f6f8850260e0154438acda90f89725f52d45a8cf6d527e92795792
+    observed_at: "2026-10-14T13:45:12.146521422Z"
     model_ids:
     - babbage-002
     - chat-latest
