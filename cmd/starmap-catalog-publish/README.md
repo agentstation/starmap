@@ -155,6 +155,8 @@ Replay compacts repeated equivalent evidence when the smaller history preserves 
 For each metadata source, the latest complete observation supersedes older observations.
 Compaction keeps an older observation while the catalog cites it.
 Field provenance, membership, current reviews, and offering timestamps can cite an observation.
+An offering timestamp cites each metadata observation stamped at that time.
+Replay stamps an observation older than the baseline at the baseline generation time.
 Distinct source changes can still reach the capacity limits.
 The command does not automatically adopt a prepared checkpoint.
 
