@@ -8,6 +8,10 @@ name: Fixture Images
 # verifies that identity and fails closed when the registry reports another
 # digest.
 #
+# The node and golang images are the Starport Dockerfile build stages. The
+# Starport release and CI container builds pull them from this registry for
+# the same reason.
+#
 # To qualify a new fixture release, change the digest in the matrix below and
 # in each CI reference. Run this workflow before the CI change merges.
 
@@ -55,6 +59,12 @@ jobs:
           - name: busybox
             source: docker.io/library/busybox
             digest: sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e
+          - name: node
+            source: docker.io/library/node
+            digest: sha256:50c8e8ca1d27439048670df5883f32d57cf81cff6233222c893fd0d9884cbd81
+          - name: golang
+            source: docker.io/library/golang
+            digest: sha256:85dc1069ac644ea3c527b177303a406eb3358192816cd7f9e5848eb658851673
     env:
       FIXTURE_NAME: ${{ matrix.name }}
       FIXTURE_SOURCE: ${{ matrix.source }}
