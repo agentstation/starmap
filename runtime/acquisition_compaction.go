@@ -61,8 +61,8 @@ func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation,
 
 // replayCitations returns the observations that the generation still names.
 // Payload provenance, membership scopes, and review candidates each name their original observation.
-// A metadata pass stamps the offerings that it adds or changes with its observation time,
-// or with the baseline generation time when the observation is older than the baseline.
+// A metadata pass stamps the offerings that it adds or changes with its observation time.
+// The pass stamps an observation older than the baseline at the baseline generation time instead.
 // An offering timestamp therefore names each metadata observation stamped at that time.
 func replayCitations(generation catalogs.Generation, baselineAt time.Time, observations []sources.Observation) (map[string]bool, error) {
 	catalog, err := catalogs.DecodeCatalogGeneration(generation)
