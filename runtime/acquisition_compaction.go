@@ -28,7 +28,7 @@ func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation,
 	if err != nil {
 		return catalogs.Generation{}, nil, err
 	}
-	cited, err := replayCitations(expected, observations)
+	cited, err := replayCitations(expected, baseline.Manifest.GeneratedAt, observations)
 	if err != nil {
 		return catalogs.Generation{}, nil, err
 	}
@@ -62,8 +62,9 @@ func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation,
 // replayCitations returns the observations that the generation still names.
 // Payload provenance, membership scopes, and review candidates each name their original observation.
 // A metadata pass stamps the offerings that it adds or changes with its observation time.
-// An offering timestamp therefore names each metadata observation at that time.
-func replayCitations(generation catalogs.Generation, observations []sources.Observation) (map[string]bool, error) {
+// The pass stamps an observation older than the baseline at the baseline generation time instead.
+// An offering timestamp therefore names each metadata observation stamped at that time.
+func replayCitations(generation catalogs.Generation, baselineAt time.Time, observations []sources.Observation) (map[string]bool, error) {
 	catalog, err := catalogs.DecodeCatalogGeneration(generation)
 	if err != nil {
 		return nil, err
@@ -78,7 +79,11 @@ func replayCitations(generation catalogs.Generation, observations []sources.Obse
 	})
 	cited := make(map[string]bool)
 	for _, observation := range observations {
-		if observation.SourceID != sources.ProvidersID && stamped[observation.ObservedAt.UnixNano()] {
+		stamp := observation.ObservedAt
+		if stamp.Before(baselineAt) {
+			stamp = baselineAt
+		}
+		if observation.SourceID != sources.ProvidersID && stamped[stamp.UnixNano()] {
 			cited[observation.ID] = true
 		}
 	}

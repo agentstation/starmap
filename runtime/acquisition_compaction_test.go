@@ -147,6 +147,47 @@ func TestAcquisitionReplayCompactsSupersededMetadataBeforeRetainedBound(t *testi
 	}
 }
 
+// Replay stamps a change no earlier than the baseline generation time. An
+// observation older than the baseline is therefore named by that time, not
+// by its own observation time.
+func TestAcquisitionReplayCitesMetadataStampedAtBaselineTime(t *testing.T) {
+	at := time.Date(2026, 10, 9, 16, 55, 0, 0, time.UTC)
+	baseline := replayBaselineGeneration(t, at)
+	inputs := []sources.Observation{
+		metadataSnapshot(t, at.Add(-2*time.Hour), "first"),
+		metadataSnapshot(t, at.Add(-time.Hour), "changed"),
+		metadataSnapshot(t, at.Add(time.Hour), "changed"),
+		metadataSnapshot(t, at.Add(2*time.Hour), "changed"),
+		metadataSnapshot(t, at.Add(3*time.Hour), "changed"),
+	}
+	generation, retained, err := PrepareAcquisitionReplay(t.Context(), baseline, "publisher", nil, inputs, "compaction", at.Add(4*time.Hour))
+	if err != nil {
+		t.Fatal(err)
+	}
+	// The two snapshots before the baseline add and change the offering at the baseline time.
+	// The latest snapshot supersedes the two unstamped repeats after it.
+	want := []string{inputs[0].ID, inputs[1].ID, inputs[4].ID}
+	if len(retained) != len(want) {
+		t.Fatalf("retained %d of %d snapshots; want %d", len(retained), len(inputs), len(want))
+	}
+	for index, observation := range retained {
+		if observation.ID != want[index] {
+			t.Fatalf("retained snapshot %d is %s; want %s", index, observation.ID, want[index])
+		}
+	}
+	candidate, err := ReplayAcquisition(t.Context(), baseline, "publisher", nil, retained)
+	if err != nil {
+		t.Fatal(err)
+	}
+	replayed, err := candidate.Generation("compaction", generation.Manifest.GeneratedAt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(replayed.Payload, generation.Payload) {
+		t.Fatal("compacted history changed catalog facts or provenance")
+	}
+}
+
 func TestAcquisitionReplayRejectsRetainedHistoryAboveBound(t *testing.T) {
 	at := time.Date(2026, 9, 18, 0, 0, 0, 0, time.UTC)
 	baseline := replayBaselineGeneration(t, at)
