@@ -7,8 +7,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:d28a8d46a77f84b8b2b989a8e60a2f52daf144e412d6f6db3538c8520e9cf087
-    observed_at: "2026-10-15T04:36:47.929755551Z"
+    observation_id: observation:v4:7fbf11c3d2c6834817b8dc1d359d51c07d6cc201051c3ad4dff8803787e6b859
+    observed_at: "2026-10-16T04:30:37.295926425Z"
     model_ids:
     - deepseek-v4-flash-0731
     - deepseek-v4-flash-0731-us
@@ -80,8 +80,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:b901fe2aacfb278d7ab98c2dfc4c68772fe0b7da27d200664cf6cf36ab180f63
-    observed_at: "2026-10-15T04:36:47.906956026Z"
+    observation_id: observation:v4:dd56c50c85d1d40ed967a9ee83923cce97c146687c712eee3320ace5a1333d61
+    observed_at: "2026-10-16T04:30:36.711342061Z"
     model_ids:
     - claude-fable-5
     - claude-fable-5-1
@@ -107,8 +107,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:b84de7cb74b862bdbe9d700346b1147c83a210f5fab975570e81fcf4d74dcd28
-    observed_at: "2026-10-15T04:36:47.944653751Z"
+    observation_id: observation:v4:a1f2f7b5ab971848024c0062476af41e71dad6ce477ade5a09449bfea27b2660
+    observed_at: "2026-10-16T04:30:36.827531407Z"
     model_ids:
     - gpt-oss-120b
     - qwen-3.8-27b
@@ -122,8 +122,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:6784ab8c3eb694deebf364de8cedadfe3156106159b388d9a06886359f744fee
-    observed_at: "2026-10-15T04:36:48.558592139Z"
+    observation_id: observation:v4:f42e9c8a65c6c9cf945feea744efc370484ad99ee0a48dc5e178a8eadbd8a30f
+    observed_at: "2026-10-16T04:30:36.966736709Z"
     model_ids:
     - Audio8/Audio8-TTS-Preview-0.6b
     - BAAI/bge-base-en-v1.5
@@ -275,6 +275,7 @@
     - nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
     - nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B
     - nvidia/NVIDIA-Nemotron-3.5-Lightning
+    - nvidia/NVIDIA-Nemotron-3.5-Super-VL
     - nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b
     - nvidia/Nemotron-Content-Safety-3.5
     - nvidia/llama-nemotron-embed-vl-1b-v2
@@ -298,7 +299,6 @@
     - tencent/Hy4-preview
     - thenlper/gte-base
     - thenlper/gte-large
-    - thinkingmachines/Inkling
     - thinkingmachines/Inkling-Small
     - zai-org/GLM-4.6
     - zai-org/GLM-4.7
@@ -315,8 +315,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:6a66e626f6723f9c574d7b14676b9a8ecb5cf551345d6b4b717afe722f4c0b22
-    observed_at: "2026-10-15T04:36:48.419428882Z"
+    observation_id: observation:v4:700370f335eeb75f711fd518f531d687575916fdeacab4ed8debc16e0ef4b45f
+    observed_at: "2026-10-16T04:30:37.076576829Z"
     model_ids:
     - deepseek-flash
     - deepseek-v4-pro
@@ -330,8 +330,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:017ca5470b0807c43dbbfb13b1e401a8e41bb61fa2a9e178914e102cb3f4ea80
-    observed_at: "2026-10-15T04:36:48.61435123Z"
+    observation_id: observation:v4:f125d697f984545d0e019ac9038dc940d23244a665635048b93ef27980ed8242
+    observed_at: "2026-10-16T04:30:36.787932098Z"
     model_ids:
     - accounts/fireworks/models/deepseek-v4p1-flash
     - accounts/fireworks/models/ember-1
@@ -341,6 +341,7 @@
     - accounts/fireworks/models/inkling
     - accounts/fireworks/models/kimi-k3
     - accounts/fireworks/models/minimax-m3
+    - accounts/fireworks/models/muse-spark-open
     - accounts/fireworks/models/nemotron-3-ultra-nvfp4
     - accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b
     - accounts/fireworks/models/qwen3-embedding-8b
@@ -362,8 +363,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:d9d5ce68dfa266e2b60df84545df85a2a3b0bf3df8341a70671b9dbd5c5e1792
-    observed_at: "2026-10-15T04:36:47.766675969Z"
+    observation_id: observation:v4:28b5434243c815ca967a66a35d2cda1a8f407e4f211256a0086f73182e420e78
+    observed_at: "2026-10-16T04:30:36.617317317Z"
     model_ids:
     - antigravity-preview-05-2026
     - antigravity-preview-09-2026
@@ -438,8 +439,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:d9f18d4e40ff7cbdc0b35bbc1b41946c9db08899ecf938397f9e3123cafeed4a
-    observed_at: "2026-10-15T04:36:47.809077151Z"
+    observation_id: observation:v4:faee7e0613a68d6503905013ca58675f099a0947e195c460373228ba6a6a85ae
+    observed_at: "2026-10-16T04:30:37.085931547Z"
     model_ids:
     - allam-2-7b
     - canopylabs/orpheus-arabic-saudi
@@ -462,8 +463,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:49da194df298696f0f9f1af3aad50c4c260378c5036bc2856075f561b4c67514
-    observed_at: "2026-10-15T04:36:48.36028085Z"
+    observation_id: observation:v4:d875eaa9b7f4ecfabbedacdbae2d78902fce2f69e62c4397c9db96547d8867ba
+    observed_at: "2026-10-16T04:30:37.280482547Z"
     model_ids:
     - Qwen/Qwen3.6-35B-A3B
     - Qwen/Qwen3.6-35B-A3B-FP8
@@ -479,8 +480,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:e89789811533abba8ca76535630b34f6a20b14163b09725bc37a3ac7747480c9
-    observed_at: "2026-10-15T04:36:48.311106226Z"
+    observation_id: observation:v4:ca9e2e3babc403da2d4e9ea01edf6a525f9bf9d4b72dae9b6b8ff40edf4273fb
+    observed_at: "2026-10-16T04:30:36.724077807Z"
     model_ids:
     - codestral-2508
     - codestral-embed
@@ -537,8 +538,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:85f168d7d49a3a4283bd9ae183c4f51a9dda74f66ab6bb804e5f3125ec1da9d7
-    observed_at: "2026-10-15T04:36:48.314291973Z"
+    observation_id: observation:v4:1a48ebf890912423a10c744f8ceffcb280c9014836a3c08efaf6e094465543dc
+    observed_at: "2026-10-16T04:30:37.076551811Z"
     model_ids:
     - kimi-k2.6
     - kimi-k2.7-code
@@ -554,8 +555,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:454705f282d6e88d883ea710647b972525ce65c884008b358dae3351d7f1efad
-    observed_at: "2026-10-15T04:36:48.758570633Z"
+    observation_id: observation:v4:11b220ee93270d3a293fd96571ac28317d5804003221f93f5b3efbb047ff1d16
+    observed_at: "2026-10-16T04:30:39.376116869Z"
     model_ids:
     - babbage-002
     - chat-latest
