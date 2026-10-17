@@ -17,7 +17,7 @@ import (
 
 const (
 	policyRecordLimit   = 4096
-	policyWriteTimeout  = 5 * time.Second
+	policyWriterWait    = 5 * time.Second
 	policyRetryInterval = 10 * time.Millisecond
 	policyRecordName    = "policy.json"
 	policyRecordPrefix  = ".policy-"
@@ -43,9 +43,15 @@ type policyRecord struct {
 	Policy        EnvironmentPolicy   `json:"policy"`
 }
 
+// policyDirectory is the private record storage that a FilePolicyStore reads and publishes.
+type policyDirectory interface {
+	ReadFile(name string, limit int64) ([]byte, error)
+	CompareAndPublishFileContext(ctx context.Context, name string, previous, data []byte, prefix string) error
+}
+
 // FilePolicyStore stores immutable default and per-provider policy decisions.
 type FilePolicyStore struct {
-	directory *privatefiles.Directory
+	directory policyDirectory
 	owner     PolicyOwner
 	current   EnvironmentPolicy
 }
@@ -170,10 +176,11 @@ func (s *FilePolicyStore) create(ctx context.Context, name string, record policy
 	if len(data) > policyRecordLimit {
 		return policyStoreError("policy record exceeds its size limit")
 	}
-	writeCtx, cancel := context.WithTimeout(ctx, policyWriteTimeout)
-	defer cancel()
+	// The wait bounds contention with another writer. A publication runs under
+	// the caller's context, so slow storage does not abandon a write in progress.
+	var contended time.Time
 	for {
-		err = s.directory.CompareAndPublishFileContext(writeCtx, name, nil, data, policyRecordPrefix)
+		err = s.directory.CompareAndPublishFileContext(ctx, name, nil, data, policyRecordPrefix)
 		if _, uncertain := stderrors.AsType[*errors.PublicationError](err); uncertain {
 			return err
 		}
@@ -191,11 +198,17 @@ func (s *FilePolicyStore) create(ctx context.Context, name string, record policy
 			}
 			return err
 		}
+		// Callers ignore conflicts, so an exhausted wait reports a deadline.
+		if contended.IsZero() {
+			contended = time.Now()
+		} else if time.Since(contended) >= policyWriterWait {
+			return context.DeadlineExceeded
+		}
 		timer := time.NewTimer(policyRetryInterval)
 		select {
-		case <-writeCtx.Done():
+		case <-ctx.Done():
 			timer.Stop()
-			return writeCtx.Err()
+			return ctx.Err()
 		case <-timer.C:
 		}
 	}

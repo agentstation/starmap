@@ -3,13 +3,18 @@ package auth
 import (
 	"bytes"
 	"context"
+	stderrors "errors"
 	"os"
 	"path/filepath"
 	"strings"
 	"sync"
 	"testing"
+	"testing/synctest"
 	"time"
 
+	"github.com/gofrs/flock"
+
+	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/catalogs"
 
 	"github.com/agentstation/starmap/pkg/errors"
@@ -212,6 +217,78 @@ func TestCatalogPolicyStoreConcurrentAcceptance(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
+}
+
+// A held publication lock must exhaust the writer wait, or the caller's
+// deadline when it comes first.
+func TestCatalogPolicyStorePublicationDeadline(t *testing.T) {
+	synctest.Test(t, func(t *testing.T) {
+		path := filepath.Join(t.TempDir(), "policy")
+		store := openTestPolicyStore(t, path, EnvironmentPolicyLegacy)
+		lock := flock.New(filepath.Join(path, privatefiles.PublicationDirectoryName, ".owner.lock"))
+		defer func() { _ = lock.Close() }()
+		held, err := lock.TryLock()
+		if err != nil || !held {
+			t.Fatalf("hold real publication lock: held=%v, error=%v", held, err)
+		}
+		start := time.Now()
+		err = store.Accept(t.Context(), "openai")
+		if !stderrors.Is(err, context.DeadlineExceeded) || time.Since(start) != policyWriterWait {
+			t.Fatalf("writer wait: elapsed=%v, error=%v", time.Since(start), err)
+		}
+		ctx, cancel := context.WithTimeout(t.Context(), time.Second)
+		defer cancel()
+		start = time.Now()
+		err = store.Accept(ctx, "openai")
+		if !stderrors.Is(err, context.DeadlineExceeded) || time.Since(start) != time.Second {
+			t.Fatalf("caller deadline: elapsed=%v, error=%v", time.Since(start), err)
+		}
+		policy, err := store.Policy(t.Context(), "openai")
+		if err != nil || policy != EnvironmentPolicyLegacy {
+			t.Fatalf("failed publication changed policy: policy=%v, error=%v", policy, err)
+		}
+		if err := lock.Unlock(); err != nil {
+			t.Fatal(err)
+		}
+		if err := store.Accept(t.Context(), "openai"); err != nil {
+			t.Fatalf("publication after lock release: %v", err)
+		}
+		policy, err = store.Policy(t.Context(), "openai")
+		if err != nil || policy != EnvironmentPolicyCurrent {
+			t.Fatalf("accepted policy: policy=%v, error=%v", policy, err)
+		}
+	})
+}
+
+// A publication slower than the writer wait must complete under the caller's context.
+func TestCatalogPolicyStoreSlowPublicationCompletes(t *testing.T) {
+	synctest.Test(t, func(t *testing.T) {
+		store := openTestPolicyStore(t, filepath.Join(t.TempDir(), "policy"), EnvironmentPolicyLegacy)
+		store.directory = slowPolicyDirectory{policyDirectory: store.directory, delay: 2 * policyWriterWait}
+		start := time.Now()
+		if err := store.Accept(t.Context(), "openai"); err != nil || time.Since(start) != 2*policyWriterWait {
+			t.Fatalf("slow publication: elapsed=%v, error=%v", time.Since(start), err)
+		}
+		policy, err := store.Policy(t.Context(), "openai")
+		if err != nil || policy != EnvironmentPolicyCurrent {
+			t.Fatalf("accepted policy: policy=%v, error=%v", policy, err)
+		}
+	})
+}
+
+// slowPolicyDirectory delays each publication as slow storage would.
+type slowPolicyDirectory struct {
+	policyDirectory
+	delay time.Duration
+}
+
+func (d slowPolicyDirectory) CompareAndPublishFileContext(ctx context.Context, name string, previous, data []byte, prefix string) error {
+	select {
+	case <-time.After(d.delay):
+	case <-ctx.Done():
+		return ctx.Err()
+	}
+	return d.policyDirectory.CompareAndPublishFileContext(ctx, name, previous, data, prefix)
 }
 
 func TestCatalogPolicyMigrationRefusesExpiryDuringAcceptance(t *testing.T) {
