@@ -1264,7 +1264,7 @@ catalog before the first upstream reply. The
 The `Open`
 call starts the source schedule and the acquisition schedule, then returns. The
 `Status` call reads retained state only and reaches no external system. The
-`Close` call is idempotent. It joins runtime-owned work within five seconds.
+`Close` call is idempotent. It joins runtime-owned work within thirty seconds.
 
 ### Vocabulary and contract leaves
 

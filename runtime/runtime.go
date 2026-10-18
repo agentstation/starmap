@@ -24,8 +24,16 @@ import (
 )
 
 const (
-	// closeJoinTimeout bounds how long Close waits for runtime-owned work.
-	closeJoinTimeout = 5 * time.Second
+	// closeJoinTimeout bounds how long Close waits for runtime-owned work. The
+	// cleanup stops the owned source, seals the permission record, releases
+	// the lease, and closes the directory. A loaded machine needs more than
+	// five seconds for that, and a gateway that closes its catalog runtime
+	// reports the timeout as an error.
+	closeJoinTimeout = 30 * time.Second
+
+	// publicationCompletionGrace bounds the retained-input writes that finish
+	// after the caller cancels an accepted publication.
+	publicationCompletionGrace = 5 * time.Second
 
 	// updatesBuffer bounds the retained catalog-state notifications. A slow
 	// reader loses intermediate states, never the newest one.
@@ -173,7 +181,7 @@ func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 			return
 		}
 		if config.ownedSource != nil || directory != nil {
-			err = stderrors.Join(err, joinRuntimeShutdown(func() error {
+			err = stderrors.Join(err, joinRuntimeShutdown(config.closeJoin, func() error {
 				var shutdownErr error
 				if config.ownedSource != nil {
 					shutdownErr = config.ownedSource.Shutdown(context.Background())
@@ -316,7 +324,7 @@ func (r *Runtime) Updates() <-chan starmap.CatalogState {
 }
 
 // Close stops runtime-owned work and releases the lease. It is idempotent and
-// joins within five seconds. A run that does not stop in time leaves a typed
+// joins within thirty seconds. A run that does not stop in time leaves a typed
 // timeout error. Directory ownership remains held until work and lease release finish.
 func (r *Runtime) Close() error {
 	if r == nil {
@@ -327,7 +335,7 @@ func (r *Runtime) Close() error {
 		active := r.runs.close()
 		permissionActive := r.permissionRuns.close()
 		r.cancel()
-		r.closeErr = joinRuntimeShutdown(func() error {
+		r.closeErr = joinRuntimeShutdown(r.config.closeJoin, func() error {
 			var err error
 			if r.config.ownedSource != nil {
 				err = r.config.ownedSource.Shutdown(context.Background())
@@ -337,7 +345,7 @@ func (r *Runtime) Close() error {
 			r.authorityObservers.active.Wait()
 			r.work.Wait()
 			r.lease.stop()
-			sealContext, sealCancel := context.WithTimeout(context.Background(), closeJoinTimeout)
+			sealContext, sealCancel := context.WithTimeout(context.Background(), r.config.closeJoin)
 			if r.permissionInitialized {
 				err = stderrors.Join(err, r.sealAuthority(sealContext))
 			}

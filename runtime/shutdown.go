@@ -8,15 +8,15 @@ import (
 
 // joinRuntimeShutdown bounds the caller's wait without canceling resource cleanup.
 // The cleanup retains directory ownership until every owned worker stops.
-func joinRuntimeShutdown(cleanup func() error) error {
+func joinRuntimeShutdown(bound time.Duration, cleanup func() error) error {
 	joined := make(chan error, 1)
 	go func() { joined <- cleanup() }()
-	timer := time.NewTimer(closeJoinTimeout)
+	timer := time.NewTimer(bound)
 	defer timer.Stop()
 	select {
 	case err := <-joined:
 		return err
 	case <-timer.C:
-		return &errors.TimeoutError{Operation: "close starmap runtime", Duration: closeJoinTimeout.String()}
+		return &errors.TimeoutError{Operation: "close starmap runtime", Duration: bound.String()}
 	}
 }

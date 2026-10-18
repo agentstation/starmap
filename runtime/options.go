@@ -65,6 +65,11 @@ type options struct {
 	refreshTimeout      time.Duration
 	coalesceWindow      time.Duration
 
+	// closeJoin bounds how long Close and a failed Open wait for runtime-owned
+	// work. It stays unexported, so the public surface keeps one bound. A test
+	// shortens it to prove the timeout path without the production wait.
+	closeJoin time.Duration
+
 	schedulerIdentity string
 	listenAddress     string
 
@@ -111,6 +116,7 @@ func defaults() *options {
 		transferMaxDuration: DefaultTransferMaxDuration,
 		refreshTimeout:      DefaultRefreshTimeout,
 		coalesceWindow:      DefaultCoalesceWindow,
+		closeJoin:           closeJoinTimeout,
 		now:                 time.Now,
 		random:              Random(fleet.SystemRandom()),
 	}
