@@ -358,7 +358,7 @@ release-check: ## Check if ready for release (CI-friendly)
 		echo "$(GREEN)✅ Working directory is clean$(NC)"; \
 	fi
 	@echo "$(YELLOW)Running tests...$(NC)"
-	@$(GOTEST) ./... > /dev/null && echo "$(GREEN)✅ All tests pass$(NC)" || (echo "$(RED)❌ Tests failed$(NC)" && exit 1)
+	@$(GOTEST) -timeout=$(TEST_TIMEOUT) -p=$(TEST_PARALLEL_PACKAGES) ./... > /dev/null && echo "$(GREEN)✅ All tests pass$(NC)" || (echo "$(RED)❌ Tests failed$(NC)" && exit 1)
 	@echo "$(YELLOW)Running linter...$(NC)"
 	@$(GOVET) ./... > /dev/null && echo "$(GREEN)✅ No vet issues$(NC)" || (echo "$(RED)❌ Vet issues found$(NC)" && exit 1)
 	@echo "$(YELLOW)Testing CLI features...$(NC)"
