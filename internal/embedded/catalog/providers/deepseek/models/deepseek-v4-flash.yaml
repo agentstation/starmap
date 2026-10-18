@@ -1,16 +1,16 @@
-# deepseek-v4-flash - DeepSeek V4.1 Flash model for reasoning and agentic coding
+# deepseek-v4-flash - October 17 update of DeepSeek V4.1 Flash with improved reaso...
 id: deepseek-v4-flash
 model: deepseek/deepseek-v4-flash
 name: DeepSeek V4 Flash
 authors:
 - id: deepseek
   name: deepseek
-description: DeepSeek V4.1 Flash model for reasoning and agentic coding
+description: October 17 update of DeepSeek V4.1 Flash with improved reasoning, coding, agentic tasks, and visual understanding
 status: deprecated
 
 # Model metadata
 metadata:
-  release_date: 2026-09-10
+  release_date: 2026-10-17
   open_weights: true
   knowledge_cutoff: 2025-05-01
 lineage:
@@ -115,9 +115,9 @@ extensions:
       reasoning_options:
       - type: toggle
       unknown_fields:
-      - checksum: sha256:b75e488c1a8d0e9db719b40216d9a445b4f672a5fc3742485d56b2f42624880b
+      - checksum: sha256:6fce99c1f52e55db2ca038a75a2df56bd16f65a8e16f23ff08a301e72fe23808
         path: models[].canonical_model_id
 
 # Timestamps
 created_at: 2026-04-24T00:00:00Z
-updated_at: 2026-10-09T16:55:27.97873Z
+updated_at: 2026-10-18T12:37:33.485539544Z

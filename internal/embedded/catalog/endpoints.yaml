@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: bindings-acbd6ddf49be23522e6351f16204b7a846cf6988e4e8fa98db698f571c07290c.local.1501793d350e
-catalog_digest: sha256:ea26e3a3b792eb0ca5acf171722ac2f9575e20142eff104e742ff83ff7306a2b
+generation_id: bindings-94d3e135c7e6fec3d6b0fcf0537e51315f2aeb854ab6cc6dc2cbd1226d45efda.local.3c5fe96b0396
+catalog_digest: sha256:3a15d9c1d5420a3d622c54b1e5e97e0ce82d2aa6590dcb795f43cfb9c8ef834c
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
