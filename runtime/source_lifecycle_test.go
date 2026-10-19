@@ -164,7 +164,7 @@ func TestFailedOpenKeepsDirectoryUntilOwnedSourceStops(t *testing.T) {
 	finished := make(chan error, 1)
 	go func() {
 		connected, err := Open(t.Context(), WithStateDirectory(directory), WithOwnedSource(source), WithCatalogSource("embedded"),
-			WithAcquisitionEnabled(false), WithSourcePollInterval(0))
+			WithAcquisitionEnabled(false), WithSourcePollInterval(0), withCloseJoinBound(testCloseJoinBound))
 		if connected != nil {
 			_ = connected.Close()
 		}
@@ -181,7 +181,7 @@ func TestFailedOpenKeepsDirectoryUntilOwnedSourceStops(t *testing.T) {
 		if !stderrors.Is(err, pkgerrors.ErrTimeout) || !stderrors.As(err, &conflict) {
 			t.Fatalf("Open error=%v, want migration refusal and shutdown timeout", err)
 		}
-	case <-time.After(closeJoinTimeout + time.Second):
+	case <-time.After(testCloseJoinBound + time.Second):
 		t.Fatal("failed Open exceeded the shutdown bound")
 	}
 	lock, err := acquireDirectory(t.Context(), directory)
@@ -194,4 +194,34 @@ func TestFailedOpenKeepsDirectoryUntilOwnedSourceStops(t *testing.T) {
 	}
 	release()
 	requireDirectoryRelease(t, directory)
+}
+
+// TestCloseWaitsForASlowOwnedSource holds the production close bound against an
+// owned source that needs more than five seconds to stop. The earlier bound was
+// shorter than the work it joined. A gateway that closed its catalog runtime on
+// a loaded machine then received "close starmap runtime timed out after 5s"
+// from a clean shutdown.
+func TestCloseWaitsForASlowOwnedSource(t *testing.T) {
+	t.Parallel()
+	const slowShutdown = 6 * time.Second
+	source := &waitingShutdownSource{entered: make(chan struct{}), release: make(chan struct{})}
+	release := sync.OnceFunc(func() { close(source.release) })
+	defer release()
+	connected, err := Open(t.Context(), WithOwnedSource(source), WithCatalogSource("embedded"), WithAcquisitionEnabled(false),
+		WithSourcePollInterval(0), WithClientOptions(starmap.WithCatalogStore(storage.NewMemory())))
+	if err != nil {
+		t.Fatal(err)
+	}
+	go func() {
+		<-source.entered
+		time.Sleep(slowShutdown)
+		release()
+	}()
+	started := time.Now()
+	if err := connected.Close(); err != nil {
+		t.Fatalf("Close = %v, want a clean join of a %s shutdown", err, slowShutdown)
+	}
+	if elapsed := time.Since(started); elapsed < slowShutdown {
+		t.Fatalf("Close joined in %s before the owned source stopped", elapsed)
+	}
 }

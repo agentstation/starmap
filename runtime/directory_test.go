@@ -249,7 +249,8 @@ func TestCloseTimeoutKeepsRuntimeDirectoryOwned(t *testing.T) {
 	defer stop()
 	acquirer := &stubAcquirer{entered: make(chan struct{})}
 	acquirer.observe = func(context.Context) { <-release }
-	connected, err := Open(t.Context(), WithStateDirectory(directory), WithCatalogSource("embedded"), WithAcquisitionEnabled(false), WithSourcePollInterval(0), WithAcquirer(acquirer))
+	connected, err := Open(t.Context(), WithStateDirectory(directory), WithCatalogSource("embedded"), WithAcquisitionEnabled(false), WithSourcePollInterval(0), WithAcquirer(acquirer),
+		withCloseJoinBound(testCloseJoinBound))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -296,7 +297,8 @@ func TestRuntimeDirectoryOwnershipIncludesLeaseRelease(t *testing.T) {
 	var releaseOnce sync.Once
 	release := func() { releaseOnce.Do(func() { close(leases.release) }) }
 	defer release()
-	connected, err := Open(t.Context(), WithStateDirectory(directory), WithCatalogSource("embedded"), WithAcquisitionEnabled(false), WithSourcePollInterval(0), WithLeaseStore(leases))
+	connected, err := Open(t.Context(), WithStateDirectory(directory), WithCatalogSource("embedded"), WithAcquisitionEnabled(false), WithSourcePollInterval(0), WithLeaseStore(leases),
+		withCloseJoinBound(testCloseJoinBound))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -321,7 +323,7 @@ func TestRuntimeDirectoryOwnershipIncludesLeaseRelease(t *testing.T) {
 		if !stderrors.As(err, &timeout) {
 			t.Fatalf("close = %v, want bounded timeout", err)
 		}
-	case <-time.After(closeJoinTimeout + time.Second):
+	case <-time.After(testCloseJoinBound + time.Second):
 		t.Fatal("lease release exceeded the close bound")
 	}
 	release()

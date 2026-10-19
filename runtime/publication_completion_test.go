@@ -11,7 +11,7 @@ func TestPublicationCompletionAllowsActiveCaller(t *testing.T) {
 	synctest.Test(t, func(t *testing.T) {
 		ctx, cancel := publicationCompletionContext(t.Context())
 		defer cancel()
-		time.Sleep(2 * closeJoinTimeout)
+		time.Sleep(2 * publicationCompletionGrace)
 		if err := ctx.Err(); err != nil {
 			t.Fatalf("active publication completion expired: %v", err)
 		}
@@ -29,7 +29,7 @@ func TestPublicationCompletionBoundsCanceledCaller(t *testing.T) {
 		if err := ctx.Err(); err != nil {
 			t.Fatalf("cancellation removed completion grace: %v", err)
 		}
-		time.Sleep(closeJoinTimeout)
+		time.Sleep(publicationCompletionGrace)
 		synctest.Wait()
 		if ctx.Err() == nil {
 			t.Fatal("completion outlived cancellation grace")

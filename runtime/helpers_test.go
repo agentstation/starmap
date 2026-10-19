@@ -379,6 +379,23 @@ func withScheduleTimer(after func(time.Duration) <-chan time.Time) Option {
 	}
 }
 
+// testCloseJoinBound is the close bound that a test uses to prove the timeout
+// path. It is short, because the test waits for the whole bound.
+const testCloseJoinBound = time.Second
+
+// withCloseJoinBound shortens the bound that Close and a failed Open wait for
+// runtime-owned work. It stays a test-only option, so the public surface keeps
+// one close bound.
+func withCloseJoinBound(bound time.Duration) Option {
+	return func(r *options) error {
+		if bound <= 0 {
+			return &errors.ValidationError{Field: "close_join_bound", Message: "must be positive"}
+		}
+		r.closeJoin = bound
+		return nil
+	}
+}
+
 // mustTestCatalog builds one immutable catalog from a reader and seeds the
 // authored model definitions that a published generation needs.
 func mustTestCatalog(t testing.TB, reader catalogs.Reader) *catalogs.Catalog {

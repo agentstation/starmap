@@ -7,6 +7,10 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- Runtime `Close` and a failed `Open` now wait up to 30 seconds for runtime-owned work instead of 5 seconds. A clean shutdown on a loaded machine took more than 5 seconds to stop the owned source, seal the permission record, and release the lease, and the caller received a timeout error. The 5-second grace for retained-input writes after a canceled publication is unchanged.
+
 ## [0.17.0] - 2026-10-05
 
 This release is the Starmap half of the qualified catalog release pair. Starport v1.3.0 pins it.

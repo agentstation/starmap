@@ -132,7 +132,7 @@ func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceL
 func publicationCompletionContext(ctx context.Context) (context.Context, context.CancelFunc) {
 	finish, cancel := context.WithCancel(context.WithoutCancel(ctx))
 	stop := context.AfterFunc(ctx, func() {
-		timer := time.NewTimer(closeJoinTimeout)
+		timer := time.NewTimer(publicationCompletionGrace)
 		defer timer.Stop()
 		select {
 		case <-timer.C:
