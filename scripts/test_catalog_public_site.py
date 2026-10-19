@@ -1,3 +1,4 @@
+import gzip
 import hashlib
 import io
 import json
@@ -60,8 +61,11 @@ class SiteFake(unittest.TestCase):
         self.directory.cleanup()
 
     def archive(self):
+        # A fixed gzip modification time keeps the archive bytes, and the digest that the check reports, the same on
+        # every call. The gzip default is the clock, so two calls in different seconds produced two digests.
         output = io.BytesIO()
-        with tarfile.open(fileobj=output, mode='w:gz') as archive:
+        with (gzip.GzipFile(fileobj=output, mode='wb', mtime=0) as compressed,
+              tarfile.open(fileobj=compressed, mode='w') as archive):
             for name, data in ((f'starport-docs-{RELEASE}/manifest.json', json.dumps(self.archived).encode()),
                                (f'starport-docs-{RELEASE}/index.html', b'<home>')):
                 member = tarfile.TarInfo(name)
