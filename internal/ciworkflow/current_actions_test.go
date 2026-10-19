@@ -16,11 +16,11 @@ func TestActiveWorkflowsUseReviewedCurrentActions(t *testing.T) {
 		"actions/attest-build-provenance": "4d101475d8b20a2381f78447822ac1eab6504dd8", // v4.2.2
 		"actions/upload-artifact":         "cf430e030ddbb5b0abf93d22962f4752f3646cd9", // v7.0.2
 		"actions/download-artifact":       "9000827ccba6bdab643e8b6fd33ac0654aef8333", // v8.0.2
-		"actions/create-github-app-token": "bcd2ba49218906704ab6c1aa796996da409d3eb1", // v3.2.0
+		"actions/create-github-app-token": "64ab729a6294000f5aa4a4bc0b73d1f32bc45510", // v3.3.0
 
 		"anchore/sbom-action/download-syft": "66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c", // v0.24.3
 		"docker/login-action":               "dbcb813823bdd20940b903addbd779551569679f", // v4.6.0
-		"goreleaser/goreleaser-action":      "f06c13b6b1a9625abc9e6e439d9c05a8f2190e94", // v7.2.3
+		"goreleaser/goreleaser-action":      "a4f02ab5355a589de60d917a659ce617ed19b3de", // v7.3.0
 		"oras-project/setup-oras":           "005458ad77f1c8facd38a094e4af2e69e5607ff4", // v2.0.2
 	}
 	seen := make(map[string]bool, len(approved))
