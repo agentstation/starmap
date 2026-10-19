@@ -7,9 +7,24 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.17.2] - 2026-10-19
+
 ### Fixed
 
 - Runtime `Close` and a failed `Open` now wait up to 30 seconds for runtime-owned work instead of 5 seconds. A clean shutdown on a loaded machine took more than 5 seconds to stop the owned source, seal the permission record, and release the lease, and the caller received a timeout error. The 5-second grace for retained-input writes after a canceled publication is unchanged.
+
+## [0.17.1] - 2026-10-18
+
+### Changed
+
+- The build moves to Go 1.27.2 and `x/net` v0.60.0. The CI workflows pull fixture and build base images from the organization registry.
+- `make release-check` runs the tests with the verify timeout and parallelism.
+
+### Fixed
+
+- The catalog policy store bounds only writer contention, so a reader no longer receives a deadline error under load.
+- The runtime cites metadata observations stamped at the baseline time and compacts superseded metadata snapshots before the retained bound.
+- Publication failures name the request and the `gh` status in GitHub API errors.
 
 ## [0.17.0] - 2026-10-05
 
