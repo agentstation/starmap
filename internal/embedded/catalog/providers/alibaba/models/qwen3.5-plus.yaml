@@ -30,7 +30,7 @@ features:
   tools: true
   tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
@@ -75,7 +75,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 
 # Model pricing
@@ -90,6 +90,26 @@ pricing:
     reasoning:
       per_token: 0.0
       per_1m: 2.4
+  tiers:
+  - type: context
+    size: 256000
+    tokens:
+      input:
+        per_token: 0.0
+        per_1m: 0.5
+      output:
+        per_token: 0.0
+        per_1m: 3.0
+  - name: context_over_200k
+    type: context
+    size: 200000
+    tokens:
+      input:
+        per_token: 0.0
+        per_1m: 0.5
+      output:
+        per_token: 0.0
+        per_1m: 3.0
   currency: USD
 
 # Model limits

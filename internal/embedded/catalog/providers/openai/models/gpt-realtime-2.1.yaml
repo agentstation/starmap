@@ -124,6 +124,8 @@ extensions:
       unknown_fields:
       - checksum: sha256:3a8f9fd123b6744516304b963948399d71b25e78f8e69dfbda7fd721fae52475
         path: models[].canonical_model_id
+      - checksum: sha256:e2cbc2cd6c91174d0d33e5ec05e8ff82af8c0740f409a5bc11a9bf4c1f799f8c
+        path: models[].type
   openai:
     fields:
       unknown_fields:

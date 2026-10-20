@@ -73,7 +73,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 
 # Model pricing
@@ -88,6 +88,26 @@ pricing:
     reasoning:
       per_token: 0.0
       per_1m: 4.0
+  tiers:
+  - type: context
+    size: 256000
+    tokens:
+      input:
+        per_token: 0.0
+        per_1m: 1.2
+      output:
+        per_token: 0.0
+        per_1m: 3.6
+  - name: context_over_200k
+    type: context
+    size: 200000
+    tokens:
+      input:
+        per_token: 0.0
+        per_1m: 1.2
+      output:
+        per_token: 0.0
+        per_1m: 3.6
   currency: USD
 
 # Model limits

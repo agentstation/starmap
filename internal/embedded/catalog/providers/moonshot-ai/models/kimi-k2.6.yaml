@@ -9,7 +9,7 @@ description: Multimodal Kimi workhorse for agent loops, coding tasks, and visual
 
 # Model metadata
 metadata:
-  release_date: 2026-04-21
+  release_date: 2026-04-20
   open_weights: true
   knowledge_cutoff: 2025-01-01
 lineage:
@@ -40,7 +40,7 @@ features:
   verbosity: false
 
   # Generation control support flags
-  temperature: true
+  temperature: false
   top_p: true
   top_k: false
   top_a: false
@@ -105,6 +105,9 @@ extensions:
         field: reasoning_content
       reasoning_options:
       - type: toggle
+      unknown_fields:
+      - checksum: sha256:e504400884ef6c43f66fc983060d8da6d3ea81fe189e491f09a25775e4b0b10b
+        path: models[].canonical_model_id
   moonshot-ai:
     fields:
       permission:

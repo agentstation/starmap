@@ -83,10 +83,10 @@ pricing:
   tokens:
     input:
       per_token: 0.0
-      per_1m: 0.248
+      per_1m: 0.375
     output:
       per_token: 0.0
-      per_1m: 1.485
+      per_1m: 2.25
   currency: USD
 
 # Model limits

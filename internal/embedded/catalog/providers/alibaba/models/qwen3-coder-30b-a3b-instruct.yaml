@@ -6,6 +6,7 @@ authors:
 - id: qwen
   name: qwen
 description: Smaller Qwen coder for efficient local agents and repo-level fixes
+status: deprecated
 
 # Model metadata
 metadata:

@@ -96,7 +96,9 @@ extensions:
       unknown_fields:
       - checksum: sha256:5c4ac5bdc0a6b4ecebdc40394be14d352694c70e3a4028ec18132a3218bda79d
         path: models[].canonical_model_id
+      - checksum: sha256:807f0525549ec1760febbccb23415a1d78b6acbb28b101cbdbff27c394c1c826
+        path: models[].type
 
 # Timestamps
 created_at: null
-updated_at: 2026-10-09T16:55:27.97873Z
+updated_at: 2026-10-20T04:49:28.629592589Z

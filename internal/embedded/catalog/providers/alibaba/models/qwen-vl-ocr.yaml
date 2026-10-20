@@ -29,7 +29,7 @@ features:
   tools: false
   tool_choice: false
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: false

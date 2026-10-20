@@ -6,6 +6,7 @@ authors:
 - id: qwen
   name: qwen
 description: Dense open Qwen model for self-hosted chat, reasoning, and coding
+status: deprecated
 
 # Model metadata
 metadata:

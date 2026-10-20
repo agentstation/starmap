@@ -89,6 +89,8 @@ extensions:
       unknown_fields:
       - checksum: sha256:af47d5befc5a4013fd24d1bf0cf26fcdecc9da712573608d37fbd077002f21d9
         path: models[].canonical_model_id
+      - checksum: sha256:affa657b3c3e9337bdf3c879c0561b74d54a9197fdc6acd834dcdc02837454fc
+        path: models[].type
   openai:
     fields:
       unknown_fields:
