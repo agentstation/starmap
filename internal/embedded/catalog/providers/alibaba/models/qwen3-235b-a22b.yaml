@@ -6,6 +6,7 @@ authors:
 - id: qwen
   name: qwen
 description: Large open Qwen MoE for multilingual reasoning, coding, and tool use
+status: deprecated
 
 # Model metadata
 metadata:

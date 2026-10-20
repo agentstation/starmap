@@ -80,15 +80,50 @@ features:
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_token: 0.0
+      per_1m: 0.025
     cache_write:
       per_token: 0.0
-      per_1m: 0.234375
+      per_1m: 0.3125
     input:
       per_token: 0.0
-      per_1m: 0.1875
+      per_1m: 0.25
     output:
       per_token: 0.0
-      per_1m: 1.125
+      per_1m: 1.5
+  tiers:
+  - type: context
+    size: 256000
+    tokens:
+      cache_read:
+        per_token: 0.0
+        per_1m: 0.1
+      cache_write:
+        per_token: 0.0
+        per_1m: 1.25
+      input:
+        per_token: 0.0
+        per_1m: 1.0
+      output:
+        per_token: 0.0
+        per_1m: 4.0
+  - name: context_over_200k
+    type: context
+    size: 200000
+    tokens:
+      cache_read:
+        per_token: 0.0
+        per_1m: 0.1
+      cache_write:
+        per_token: 0.0
+        per_1m: 1.25
+      input:
+        per_token: 0.0
+        per_1m: 1.0
+      output:
+        per_token: 0.0
+        per_1m: 4.0
   currency: USD
 
 # Model limits

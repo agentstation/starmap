@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: bindings-88e6f5ff366b6a5401e15224ff20c5f05bce26a9e04b56556f6cc0f40e93aece.local.4c5fa1689c69
-catalog_digest: sha256:5524398414108ffed2b18844a57122498766293260c7e339aa271c515e882c6e
+generation_id: bindings-807d3b5332de20337971399f38311afbce99b0825fe534e31ee3f5ce830de359.local.29ecf6283acd
+catalog_digest: sha256:d8f9d8b3883755d4f0187f4a8ecdb71613899cad9ad95e69af687526db23ecc4
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -1787,7 +1787,7 @@ models:
               per_1m: 0.6
           currency: USD
         limits:
-          context_window: 1000000
+          context_window: 1048576
           input_tokens: 0
           output_tokens: 393216
         availability: unknown
@@ -1870,7 +1870,7 @@ models:
               per_1m: 1.98
           currency: USD
         limits:
-          context_window: 1000000
+          context_window: 1048576
           input_tokens: 0
           output_tokens: 393216
         availability: unknown
@@ -10155,7 +10155,7 @@ models:
               tokens:
                 cache_read:
                   per_token: 0.0
-                  per_1m: 0.138
+                  per_1m: 0.1375
                 input:
                   per_token: 0.0
                   per_1m: 0.55
@@ -10573,6 +10573,26 @@ models:
             output:
               per_token: 0.0
               per_1m: 0.4
+          tiers:
+            - type: context
+              size: 256000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 0.25
+                output:
+                  per_token: 0.0
+                  per_1m: 2.0
+            - name: context_over_200k
+              type: context
+              size: 200000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 0.25
+                output:
+                  per_token: 0.0
+                  per_1m: 2.0
           currency: USD
         limits:
           context_window: 1000000
@@ -10734,6 +10754,26 @@ models:
             reasoning:
               per_token: 0.0
               per_1m: 4.0
+          tiers:
+            - type: context
+              size: 256000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 1.2
+                output:
+                  per_token: 0.0
+                  per_1m: 3.6
+            - name: context_over_200k
+              type: context
+              size: 200000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 1.2
+                output:
+                  per_token: 0.0
+                  per_1m: 3.6
           currency: USD
         limits:
           context_window: 1000000
@@ -10913,7 +10953,7 @@ models:
           input_tokens: 0
           output_tokens: 8192
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -10966,7 +11006,7 @@ models:
           input_tokens: 0
           output_tokens: 16384
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -11133,7 +11173,7 @@ models:
           input_tokens: 0
           output_tokens: 16384
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -11214,7 +11254,7 @@ models:
           input_tokens: 0
           output_tokens: 8192
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -11285,7 +11325,7 @@ models:
           input_tokens: 0
           output_tokens: 65536
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -11330,7 +11370,7 @@ models:
           input_tokens: 0
           output_tokens: 65536
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -11378,6 +11418,34 @@ models:
             output:
               per_token: 0.0
               per_1m: 1.5
+          tiers:
+            - type: context
+              size: 32000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 0.5
+                output:
+                  per_token: 0.0
+                  per_1m: 2.5
+            - type: context
+              size: 128000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 0.8
+                output:
+                  per_token: 0.0
+                  per_1m: 4.0
+            - type: context
+              size: 256000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 1.6
+                output:
+                  per_token: 0.0
+                  per_1m: 9.6
           currency: USD
         limits:
           context_window: 1000000
@@ -11423,7 +11491,7 @@ models:
           input_tokens: 0
           output_tokens: 65536
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -11544,7 +11612,7 @@ models:
           input_tokens: 0
           output_tokens: 65536
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -11654,7 +11722,7 @@ models:
           input_tokens: 0
           output_tokens: 32768
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -11704,7 +11772,7 @@ models:
           input_tokens: 0
           output_tokens: 32768
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -11967,9 +12035,25 @@ models:
             output:
               per_token: 0.0
               per_1m: 1.6
-            reasoning:
-              per_token: 0.0
-              per_1m: 4.8
+          tiers:
+            - type: context
+              size: 32000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 0.3
+                output:
+                  per_token: 0.0
+                  per_1m: 2.4
+            - type: context
+              size: 128000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 0.6
+                output:
+                  per_token: 0.0
+                  per_1m: 4.8
           currency: USD
         limits:
           context_window: 262144
@@ -12315,6 +12399,26 @@ models:
             reasoning:
               per_token: 0.0
               per_1m: 2.4
+          tiers:
+            - type: context
+              size: 256000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 0.5
+                output:
+                  per_token: 0.0
+                  per_1m: 3.0
+            - name: context_over_200k
+              type: context
+              size: 200000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 0.5
+                output:
+                  per_token: 0.0
+                  per_1m: 3.0
           currency: USD
         limits:
           context_window: 1000000
@@ -12391,10 +12495,10 @@ models:
           tokens:
             input:
               per_token: 0.0
-              per_1m: 0.248
+              per_1m: 0.375
             output:
               per_token: 0.0
-              per_1m: 1.485
+              per_1m: 2.25
           currency: USD
         limits:
           context_window: 262144
@@ -12470,15 +12574,50 @@ models:
         provider_model_id: qwen3.6-flash
         pricing:
           tokens:
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.025
             cache_write:
               per_token: 0.0
-              per_1m: 0.234375
+              per_1m: 0.3125
             input:
               per_token: 0.0
-              per_1m: 0.1875
+              per_1m: 0.25
             output:
               per_token: 0.0
-              per_1m: 1.125
+              per_1m: 1.5
+          tiers:
+            - type: context
+              size: 256000
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.1
+                cache_write:
+                  per_token: 0.0
+                  per_1m: 1.25
+                input:
+                  per_token: 0.0
+                  per_1m: 1.0
+                output:
+                  per_token: 0.0
+                  per_1m: 4.0
+            - name: context_over_200k
+              type: context
+              size: 200000
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.1
+                cache_write:
+                  per_token: 0.0
+                  per_1m: 1.25
+                input:
+                  per_token: 0.0
+                  per_1m: 1.0
+                output:
+                  per_token: 0.0
+                  per_1m: 4.0
           currency: USD
         limits:
           context_window: 1000000
@@ -12592,7 +12731,7 @@ models:
         limits:
           context_window: 256000
           input_tokens: 0
-          output_tokens: 65536
+          output_tokens: 131072
         availability: unknown
         lifecycle: unknown
         service:

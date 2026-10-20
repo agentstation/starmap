@@ -9,7 +9,7 @@ description: Dense open Qwen model for self-hosted chat, reasoning, and coding
 
 # Model metadata
 metadata:
-  release_date: 2025-04-01
+  release_date: 2025-04-28
   open_weights: true
   knowledge_cutoff: 2025-04-01
   tags:

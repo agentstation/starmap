@@ -105,7 +105,7 @@ modes:
       tokens:
         cache_read:
           per_token: 0.0
-          per_1m: 0.138
+          per_1m: 0.1375
         input:
           per_token: 0.0
           per_1m: 0.55

@@ -6,6 +6,7 @@ authors:
 - id: qwen
   name: qwen
 description: Hosted Qwen coder for software agents, repo edits, and long-context code
+status: deprecated
 
 # Model metadata
 metadata:

@@ -98,7 +98,7 @@ pricing:
 limits:
   context_window: 256000
   input_tokens: 0
-  output_tokens: 65536
+  output_tokens: 131072
 extensions:
   models.dev:
     fields:

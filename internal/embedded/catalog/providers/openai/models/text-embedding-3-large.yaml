@@ -96,6 +96,11 @@ limits:
   input_tokens: 0
   output_tokens: 3072
 extensions:
+  models.dev:
+    fields:
+      unknown_fields:
+      - checksum: sha256:a239ad95e954cad39cad6b54557a32f610d119acc1ca82f91e08ba71c629f755
+        path: models[].type
   openai:
     fields:
       unknown_fields:

@@ -6,6 +6,7 @@ authors:
 - id: qwen
   name: qwen
 description: Efficient Qwen thinking model for local reasoning, math, and coding agents
+status: deprecated
 
 # Model metadata
 metadata:

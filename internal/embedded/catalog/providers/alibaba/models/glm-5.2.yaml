@@ -76,9 +76,6 @@ features:
   streaming: true
 reasoning:
   levels:
-  - minimum
-  - low
-  - medium
   - high
   - maximum
   default: null
@@ -120,10 +117,7 @@ extensions:
         enabled: true
         field: reasoning_content
       reasoning_options:
-      - type: effort
-        values:
-        - none
-        - xhigh
+      - type: toggle
       unknown_fields:
       - checksum: sha256:a49f6174178f41d77431b186ebc68605948f3c4a28557cb63892dd3c49023ba2
         path: models[].canonical_model_id

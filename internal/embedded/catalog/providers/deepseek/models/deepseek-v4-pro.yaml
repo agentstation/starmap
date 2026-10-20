@@ -9,7 +9,7 @@ description: DeepSeek V4 Pro snapshot with million-token context and support for
 
 # Model metadata
 metadata:
-  release_date: 2026-08-12
+  release_date: 2026-08-13
   open_weights: true
   knowledge_cutoff: 2025-05-01
 lineage:
@@ -101,7 +101,7 @@ pricing:
 
 # Model limits
 limits:
-  context_window: 1000000
+  context_window: 1048576
   input_tokens: 0
   output_tokens: 393216
 extensions:

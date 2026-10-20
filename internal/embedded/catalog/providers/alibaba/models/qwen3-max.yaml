@@ -6,6 +6,7 @@ authors:
 - id: qwen
   name: qwen
 description: Flagship Qwen3 model for coding agents, complex reasoning, and tool use
+status: deprecated
 
 # Model metadata
 metadata:
