@@ -2,8 +2,13 @@ package ciworkflow
 
 import (
 	"encoding/json"
+	"fmt"
+	"reflect"
+	"slices"
 	"strings"
 	"testing"
+
+	"github.com/goccy/go-yaml"
 )
 
 func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
@@ -19,7 +24,7 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"if: github.event_name == 'push' || inputs.source_run_id == ''",
 		"if: github.event_name == 'workflow_dispatch' && inputs.source_run_id != ''",
 		"ref: ${{ inputs.tag || github.ref }}",
-		"timeout-minutes: 180",
+		"Require release tag from main",
 		"Require the release tag at the checkout",
 		"a release for $RELEASE_TAG already exists",
 		"GORELEASER_CURRENT_TAG: ${{ env.RELEASE_TAG }}",
@@ -34,7 +39,7 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"path: .ci/agentstation-skills",
 		"persist-credentials: false",
 		"TECHNICAL_WRITING: ${{ github.workspace }}/.ci/agentstation-skills/technical-writing/scripts/technical-writing",
-		"make verify",
+		"make verify-checks",
 		"make release-check",
 		"syft-version: v1.46.0",
 		"version: v2.17.0",
@@ -96,6 +101,7 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"HEAD:master",
 		"$GITHUB_REF_NAME",
 		"timeout-minutes: 75",
+		"timeout-minutes: 180",
 	} {
 		if strings.Contains(workflow, forbidden) {
 			t.Errorf("release workflow contains obsolete coupling %q", forbidden)
@@ -105,6 +111,77 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 	homebrewPublication := strings.Index(workflow, "Publish the generated Homebrew cask with a deploy key")
 	if publicVerification < 0 || homebrewPublication < publicVerification {
 		t.Error("release recovery updates Homebrew before it verifies the public release")
+	}
+}
+
+type releaseVerificationStep struct {
+	Uses string
+	If   string
+	With map[string]string
+	Run  string
+	Env  map[string]string
+}
+
+type releaseVerificationWorkflow struct {
+	Jobs map[string]struct {
+		If             string
+		Needs          any
+		TimeoutMinutes any `yaml:"timeout-minutes"`
+		Strategy       struct {
+			FailFast bool `yaml:"fail-fast"`
+			Matrix   struct {
+				Include []map[string]string
+			}
+		}
+		Env   map[string]string
+		Steps []releaseVerificationStep
+	}
+}
+
+// A release runs the pull request verification jobs in parallel. One serial
+// job exceeded the 180-minute job limit on v0.17.1 and v0.17.2.
+func TestReleaseVerificationMirrorsPullRequestJobsBeforePublication(t *testing.T) {
+	var pr, release releaseVerificationWorkflow
+	if err := yaml.Unmarshal([]byte(readFixture(t, "../../.github/workflows/pr.yaml")), &pr); err != nil {
+		t.Fatal(err)
+	}
+	if err := yaml.Unmarshal([]byte(readFixture(t, "../../.github/workflows/release.yaml")), &release); err != nil {
+		t.Fatal(err)
+	}
+	verification := []any{"verification-checks", "verification-tests", "verification-capacity", "release-check"}
+	if !reflect.DeepEqual(release.Jobs["release"].Needs, verification) {
+		t.Fatalf("release needs = %v, want %v", release.Jobs["release"].Needs, verification)
+	}
+	for _, name := range verification {
+		job := release.Jobs[name.(string)]
+		if job.If != "github.event_name == 'push' || inputs.source_run_id == ''" {
+			t.Errorf("%s runs in the recovery mode: %q", name, job.If)
+		}
+		if len(job.Steps) == 0 || !strings.HasPrefix(job.Steps[0].Uses, "actions/checkout@") || job.Steps[0].With["ref"] != "${{ inputs.tag || github.ref }}" {
+			t.Errorf("%s does not check out the release tag first", name)
+		}
+	}
+	for _, name := range []string{"verification-checks", "verification-tests", "verification-capacity"} {
+		want, got := pr.Jobs[name], release.Jobs[name]
+		if fmt.Sprint(got.TimeoutMinutes) != fmt.Sprint(want.TimeoutMinutes) || !reflect.DeepEqual(got.Needs, want.Needs) ||
+			!reflect.DeepEqual(got.Env, want.Env) || got.Strategy.FailFast != want.Strategy.FailFast ||
+			!reflect.DeepEqual(got.Strategy.Matrix.Include, want.Strategy.Matrix.Include) {
+			t.Errorf("release %s differs from the pull request job", name)
+		}
+		// Checkout steps differ only by the release tag reference.
+		for _, step := range want.Steps {
+			if strings.HasPrefix(step.Uses, "actions/checkout@") {
+				continue
+			}
+			if !slices.ContainsFunc(got.Steps, func(candidate releaseVerificationStep) bool { return reflect.DeepEqual(candidate, step) }) {
+				t.Errorf("release %s is missing pull request step %+v", name, step)
+			}
+		}
+	}
+	readiness := release.Jobs["release-check"]
+	if readiness.Needs != "verification-checks" ||
+		!slices.ContainsFunc(readiness.Steps, func(step releaseVerificationStep) bool { return step.Run == "make release-check" }) {
+		t.Error("release readiness does not follow the cheap checks")
 	}
 }
 
