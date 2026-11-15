@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: bindings-807d3b5332de20337971399f38311afbce99b0825fe534e31ee3f5ce830de359.local.29ecf6283acd
-catalog_digest: sha256:d8f9d8b3883755d4f0187f4a8ecdb71613899cad9ad95e69af687526db23ecc4
+generation_id: bindings-02ab07b1bf3cbf6f62b1c481dc414d01fb13ec7bfcf091f42da88f52010813be.local.1d3b14832bb1
+catalog_digest: sha256:b64ade539425ff6e8114169d73d797fe1149f2ef0c430bc9536630ac2cf8344d
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -90,7 +90,7 @@ models:
         provider_model_id: Wan-AI/Wan2.2-T2V-A14B
         pricing:
           operations:
-            output_second: 0.075
+            output_second: 0.033
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -2137,8 +2137,8 @@ models:
       - provider: google-ai-studio
         provider_model_id: deep-research-max-preview-04-2026
         limits:
-          context_window: 131072
-          input_tokens: 131072
+          context_window: 1048576
+          input_tokens: 1048576
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
@@ -2155,8 +2155,8 @@ models:
       - provider: google-ai-studio
         provider_model_id: deep-research-preview-04-2026
         limits:
-          context_window: 131072
-          input_tokens: 131072
+          context_window: 1048576
+          input_tokens: 1048576
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
@@ -2173,8 +2173,8 @@ models:
       - provider: google-ai-studio
         provider_model_id: deep-research-pro-preview-12-2025
         limits:
-          context_window: 131072
-          input_tokens: 131072
+          context_window: 1048576
+          input_tokens: 1048576
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
@@ -7009,7 +7009,7 @@ models:
           tokens:
             input:
               per_token: 0.0
-              per_1m: 0.085
+              per_1m: 0.075
             output:
               per_token: 0.0
               per_1m: 0.4
