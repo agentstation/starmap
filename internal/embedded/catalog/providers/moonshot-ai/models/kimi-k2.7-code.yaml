@@ -111,7 +111,14 @@ extensions:
       permission:
       - group: moonshot
         organization: moonshot
+      unknown_fields:
+      - checksum: sha256:febd530ea22add00a1465252571fa74bea5c63b04b839e56920276f422e0077b
+        path: data[].limit
+      - checksum: sha256:6c7a3a205be2f6818dff8d636bb606ca7a3b1458e0c8a697147d8e0610a279b3
+        path: data[].modalities
+      - checksum: sha256:c84010904d6c237483b60ba999d589bd2615c60fc7dc995c747f358228ce551a
+        path: data[].tools
 
 # Timestamps
 created_at: 2026-06-12T00:00:00Z
-updated_at: 2026-10-09T16:55:27.97873Z
+updated_at: 2026-11-14T23:56:59.035700227Z
