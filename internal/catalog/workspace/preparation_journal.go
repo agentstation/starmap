@@ -84,18 +84,30 @@ func newPreparationJournal(stage *workspaceStage, writer *workspaceWriter) (*pre
 }
 
 func (j *preparationJournal) record(tree string, entry treeEntry, identity string) error {
-	if err := filepublish.SyncDirectory(j.stage.trees[tree].root); err != nil {
-		return err
-	}
 	if entry.Path == "." {
+		if err := filepublish.SyncDirectory(j.stage.trees[tree].root); err != nil {
+			return err
+		}
 		if err := filepublish.SyncDirectory(j.stage.private); err != nil {
 			return err
 		}
+		return j.writeEvent(preparationEvent{Tree: tree, Entry: &entry, Identity: identity}, true)
 	}
-	return j.append(preparationEvent{Tree: tree, Entry: &entry, Identity: identity})
+	return j.writeEvent(preparationEvent{Tree: tree, Entry: &entry, Identity: identity}, false)
 }
 
 func (j *preparationJournal) append(event preparationEvent) error {
+	for _, tree := range j.stage.trees {
+		if tree != nil && tree.root != nil {
+			if err := filepublish.SyncDirectory(tree.root); err != nil {
+				return err
+			}
+		}
+	}
+	return j.writeEvent(event, true)
+}
+
+func (j *preparationJournal) writeEvent(event preparationEvent, sync bool) error {
 	if j.failure != nil {
 		return j.failure
 	}
@@ -117,7 +129,7 @@ func (j *preparationJournal) append(event preparationEvent) error {
 	if err == nil && n != len(data) {
 		err = io.ErrShortWrite
 	}
-	if err == nil {
+	if err == nil && sync {
 		err = j.file.Sync()
 	}
 	j.failure = err

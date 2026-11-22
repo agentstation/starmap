@@ -161,7 +161,7 @@ func (t *preparationTree) persist(name string, file *os.File) error {
 	if t.record == nil {
 		return nil
 	}
-	if !t.entries[name].Directory {
+	if !t.entries[name].Directory && t.entries[name].Size > 0 && t.syncWrites {
 		if err := file.Sync(); err != nil {
 			return err
 		}
@@ -218,7 +218,7 @@ func (t *preparationTree) writeFrom(ctx context.Context, name string, input io.R
 			return err
 		}
 	}
-	if t.syncWrites {
+	if t.syncWrites && (t.record == nil || entry.Size == 0) {
 		return output.Sync()
 	}
 	return ctx.Err()
