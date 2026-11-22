@@ -861,7 +861,7 @@ type BaselineStatus struct {
 ```
 
 <a name="BindingAcquirer"></a>
-## type [BindingAcquirer](<https://github.com/agentstation/starmap/blob/main/runtime/provider_policy_acquisition.go#L16-L18>)
+## type [BindingAcquirer](<https://github.com/agentstation/starmap/blob/main/runtime/provider_policy.go#L21-L23>)
 
 BindingAcquirer observes only the supplied active declarations. It must preserve each declaration from credential selection through its receipt. Implementations also implement Acquirer for runtime injection.
 
@@ -2080,7 +2080,7 @@ func WithPermissionClockUncertainty(sample func() (time.Duration, bool)) Option
 WithPermissionClockUncertainty supplies the host's cached clock assurance. The callback reads cached memory only. It reports uncertainty for WithClock's time and false when its evidence is absent or expired. No callback means unknown.
 
 <a name="WithProviderBindings"></a>
-### func [WithProviderBindings](<https://github.com/agentstation/starmap/blob/main/runtime/provider_policy.go#L37>)
+### func [WithProviderBindings](<https://github.com/agentstation/starmap/blob/main/runtime/provider_policy.go#L46>)
 
 ```go
 func WithProviderBindings(bindings ...sources.ProviderAcquisitionBinding) Option
@@ -2224,7 +2224,7 @@ func WithSourceAliases(aliases ...string) Option
 WithSourceAliases declares the other stable identities that name this same runtime. A served source chain that names one of them is a self reference. The runtime then refuses the read instead of serving its own catalog back to itself.
 
 <a name="WithSourceAuthority"></a>
-### func [WithSourceAuthority](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L26>)
+### func [WithSourceAuthority](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L29>)
 
 ```go
 func WithSourceAuthority(authorityID, policyID string) Option
@@ -2233,7 +2233,7 @@ func WithSourceAuthority(authorityID, policyID string) Option
 WithSourceAuthority pins the authority and policy used by require\_authority. It changes neither the source address nor the startup policy.
 
 <a name="WithSourceAuthorityID"></a>
-### func [WithSourceAuthorityID](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L34>)
+### func [WithSourceAuthorityID](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L37>)
 
 ```go
 func WithSourceAuthorityID(identity string) Option
@@ -2278,7 +2278,7 @@ func WithSourcePolicy(policy SourcePolicy) Option
 WithSourcePolicy replaces the whole upstream source policy.
 
 <a name="WithSourcePolicyID"></a>
-### func [WithSourcePolicyID](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L39>)
+### func [WithSourcePolicyID](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L42>)
 
 ```go
 func WithSourcePolicyID(identity string) Option
@@ -2729,7 +2729,7 @@ func (r *Runtime) AcquisitionSources() ([]sources.ID, bool)
 AcquisitionSources returns an owned explicit source set and its presence. Without a selection, the supplied acquisition roles keep their defaults.
 
 <a name="Runtime.AllowsCatalogAttempt"></a>
-### func \(\*Runtime\) [AllowsCatalogAttempt](<https://github.com/agentstation/starmap/blob/main/runtime/authority_consumer.go#L11>)
+### func \(\*Runtime\) [AllowsCatalogAttempt](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L85>)
 
 ```go
 func (r *Runtime) AllowsCatalogAttempt(head catalogs.CatalogAuthorityHead) bool
@@ -2738,7 +2738,7 @@ func (r *Runtime) AllowsCatalogAttempt(head catalogs.CatalogAuthorityHead) bool
 AllowsCatalogAttempt checks permission for a consumer's separately accepted catalog. The consumer must bind this validated authority head to its exact catalog before publication. A retained catalog can serve new attempts only while its permission revision remains current. Equal permission revisions allow route preparation without interrupting the previous catalog. Ordinary sources use the same admission policy as AllowsNewAttempt. Call this memory\-only check for every attempt, retry, and cached response delivery.
 
 <a name="Runtime.AllowsNewAttempt"></a>
-### func \(\*Runtime\) [AllowsNewAttempt](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L62>)
+### func \(\*Runtime\) [AllowsNewAttempt](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L65>)
 
 ```go
 func (r *Runtime) AllowsNewAttempt() bool
@@ -2882,7 +2882,7 @@ func (r *Runtime) PublishObservations(ctx context.Context, observations ...sourc
 PublishObservations retains caller\-supplied observations with their accepted catalog. The runtime validates receipts and active bindings before it publishes any input. This operation reads no source and joins runtime cancellation and shutdown.
 
 <a name="Runtime.ReadPermission"></a>
-### func \(\*Runtime\) [ReadPermission](<https://github.com/agentstation/starmap/blob/main/runtime/authority_relay.go#L15>)
+### func \(\*Runtime\) [ReadPermission](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L116>)
 
 ```go
 func (r *Runtime) ReadPermission(ctx context.Context) (catalogs.CatalogPermissionEnvelope, error)
