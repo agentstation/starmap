@@ -50,9 +50,8 @@ func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation,
 		}
 	}
 	if retainedPayloadBytes(selected, sizes) > maxLayerBytes {
-		// When timestamp-only metadata citations push retained history over maxLayerBytes,
-		// drop the oldest superseded complete metadata snapshots that are not cited by
-		// provenance, membership scopes, or active review candidates.
+		// Timestamp-only metadata citations can push retained history over maxLayerBytes.
+		// Drop superseded snapshots not cited by provenance, membership, or active reviews.
 		trimmed, trimmedSizes, err := compactAcquisitionHistory(ctx, observations, strictCited)
 		if err != nil {
 			return catalogs.Generation{}, nil, err
@@ -85,8 +84,8 @@ func retainedPayloadBytes(observations []sources.Observation, sizes map[string]i
 }
 
 // replayCitations returns the observations that the generation still names.
-// strict contains observations named by payload provenance, membership scopes, or review candidates.
-// all additionally includes metadata observations whose timestamp matches an offering CreatedAt/UpdatedAt.
+// strict holds observations cited by provenance, membership scopes, or review candidates.
+// all also includes metadata observations whose timestamp matches an offering timestamp.
 func replayCitations(generation catalogs.Generation, baselineAt time.Time, observations []sources.Observation) (strict map[string]bool, all map[string]bool, err error) {
 	catalog, err := catalogs.DecodeCatalogGeneration(generation)
 	if err != nil {

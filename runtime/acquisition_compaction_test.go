@@ -220,8 +220,8 @@ func TestAcquisitionReplayDropsTimestampOnlyMetadataAboveBound(t *testing.T) {
 	var inputs []sources.Observation
 	total := 0
 	for index := 0; total <= maxLayerBytes; index++ {
-		// Each snapshot introduces a new model on the baseline provider, so every snapshot's
-		// timestamp appears as a model CreatedAt in the replayed catalog, without any review.
+		// Each snapshot adds a model on the baseline provider without a review.
+		// Its timestamp then appears as a model CreatedAt in the replayed catalog.
 		builder, err := catalogs.NewBuilderFrom(manualProviderObservation(t, 0, at).Catalog)
 		if err != nil {
 			t.Fatal(err)
