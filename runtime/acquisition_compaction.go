@@ -14,7 +14,8 @@ import (
 )
 
 // PrepareAcquisitionReplay returns a catalog generation and the original inputs needed for later replay.
-// It retains compacted inputs only when catalog facts, provenance, membership, and current reviews remain exact.
+// It retains compacted inputs when provenance, membership, and current reviews remain exact.
+// Above the payload bound, it drops superseded timestamp-only metadata observations.
 // Current metadata reviews retain their latest original observation. Omission preserves the last review.
 //
 // The retained inputs must fit the retained payload bound. The supplied history can exceed it.
@@ -28,11 +29,11 @@ func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation,
 	if err != nil {
 		return catalogs.Generation{}, nil, err
 	}
-	cited, err := replayCitations(expected, baseline.Manifest.GeneratedAt, observations)
+	strictCited, allCited, err := replayCitations(expected, baseline.Manifest.GeneratedAt, observations)
 	if err != nil {
 		return catalogs.Generation{}, nil, err
 	}
-	selected, sizes, err := compactAcquisitionHistory(ctx, observations, cited)
+	selected, sizes, err := compactAcquisitionHistory(ctx, observations, allCited)
 	if err != nil {
 		return catalogs.Generation{}, nil, err
 	}
@@ -49,25 +50,76 @@ func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation,
 			selected = observations
 		}
 	}
-	retained := 0
-	for _, observation := range selected {
-		retained += sizes[observation.ID]
+	if retainedPayloadBytes(selected, sizes) > maxLayerBytes {
+		// Timestamp-only metadata citations can push retained history over maxLayerBytes.
+		// Drop superseded snapshots not cited by provenance, membership, or active reviews.
+		trimmed, trimmedSizes, err := compactAcquisitionHistory(ctx, observations, strictCited)
+		if err != nil {
+			return catalogs.Generation{}, nil, err
+		}
+		if len(trimmed) < len(selected) {
+			candidate, err = replayAcquisition(ctx, baseline, publisherID, bindings, trimmed, true)
+			if err != nil {
+				return catalogs.Generation{}, nil, err
+			}
+			actual, err := candidate.Generation(runID, completedAt)
+			if err != nil {
+				return catalogs.Generation{}, nil, err
+			}
+			preserved, err := compactedGenerationPreservesContract(expected, actual)
+			if err != nil {
+				return catalogs.Generation{}, nil, err
+			}
+			if preserved {
+				expected = actual
+				selected = trimmed
+				sizes = trimmedSizes
+			}
+		}
 	}
-	if retained > maxLayerBytes {
+	if retainedPayloadBytes(selected, sizes) > maxLayerBytes {
 		return catalogs.Generation{}, nil, &errors.ValidationError{Field: "replay.observations", Message: "exceeds the retained payload bound"}
 	}
 	return expected, selected, ctx.Err()
 }
 
-// replayCitations returns the observations that the generation still names.
-// Payload provenance, membership scopes, and review candidates each name their original observation.
-// A metadata pass stamps the offerings that it adds or changes with its observation time.
-// The pass stamps an observation older than the baseline at the baseline generation time instead.
-// An offering timestamp therefore names each metadata observation stamped at that time.
-func replayCitations(generation catalogs.Generation, baselineAt time.Time, observations []sources.Observation) (map[string]bool, error) {
+func compactedGenerationPreservesContract(expected, actual catalogs.Generation) (bool, error) {
+	if !reflect.DeepEqual(actual.Manifest.ReviewCandidates, expected.Manifest.ReviewCandidates) {
+		return false, nil
+	}
+	expectedCatalog, err := catalogs.DecodeCatalogGeneration(expected)
+	if err != nil {
+		return false, err
+	}
+	actualCatalog, err := catalogs.DecodeCatalogGeneration(actual)
+	if err != nil {
+		return false, err
+	}
+	if !reflect.DeepEqual(actualCatalog.Provenance().Map(), expectedCatalog.Provenance().Map()) {
+		return false, nil
+	}
+	if !reflect.DeepEqual(actualCatalog.MembershipScopes(), expectedCatalog.MembershipScopes()) {
+		return false, nil
+	}
+	return true, nil
+}
+
+func retainedPayloadBytes(observations []sources.Observation, sizes map[string]int) int {
+	retained := 0
+	for _, observation := range observations {
+		retained += sizes[observation.ID]
+	}
+	return retained
+}
+
+// replayCitations returns the observations still named by generation.
+//
+// strict holds provenance, membership, and review citations.
+// all adds timestamp-matched metadata observations.
+func replayCitations(generation catalogs.Generation, baselineAt time.Time, observations []sources.Observation) (strict map[string]bool, all map[string]bool, err error) {
 	catalog, err := catalogs.DecodeCatalogGeneration(generation)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	stamped := make(map[int64]bool)
 	catalog.Providers().ForEach(func(_ catalogs.ProviderID, provider *catalogs.Provider) bool {
@@ -77,33 +129,37 @@ func replayCitations(generation catalogs.Generation, baselineAt time.Time, obser
 		}
 		return true
 	})
-	cited := make(map[string]bool)
+	strict = make(map[string]bool)
+	for _, entries := range catalog.Provenance().Map() {
+		for _, entry := range entries {
+			strict[entry.ObservationID] = true
+		}
+	}
+	for _, scope := range catalog.MembershipScopes() {
+		if scope.Inventory != nil {
+			strict[scope.Inventory.ObservationID] = true
+		}
+		for _, addition := range scope.Additions {
+			strict[addition.ObservationID] = true
+		}
+	}
+	for _, review := range generation.Manifest.ReviewCandidates {
+		strict[review.SourceObservationID] = true
+	}
+	all = make(map[string]bool, len(strict))
+	for id := range strict {
+		all[id] = true
+	}
 	for _, observation := range observations {
 		stamp := observation.ObservedAt
 		if stamp.Before(baselineAt) {
 			stamp = baselineAt
 		}
 		if observation.SourceID != sources.ProvidersID && stamped[stamp.UnixNano()] {
-			cited[observation.ID] = true
+			all[observation.ID] = true
 		}
 	}
-	for _, entries := range catalog.Provenance().Map() {
-		for _, entry := range entries {
-			cited[entry.ObservationID] = true
-		}
-	}
-	for _, scope := range catalog.MembershipScopes() {
-		if scope.Inventory != nil {
-			cited[scope.Inventory.ObservationID] = true
-		}
-		for _, addition := range scope.Additions {
-			cited[addition.ObservationID] = true
-		}
-	}
-	for _, review := range generation.Manifest.ReviewCandidates {
-		cited[review.SourceObservationID] = true
-	}
-	return cited, nil
+	return strict, all, nil
 }
 
 // compactAcquisitionHistory selects inputs for an exact replay and returns the payload size of each input.

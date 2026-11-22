@@ -1,6 +1,6 @@
 module github.com/agentstation/starmap-test/remote-subscriber-consumer
 
-go 1.27.2
+go 1.27.4
 
 require github.com/agentstation/starmap v0.0.0
 

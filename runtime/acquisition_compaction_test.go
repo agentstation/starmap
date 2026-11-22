@@ -214,6 +214,77 @@ func TestAcquisitionReplayRejectsRetainedHistoryAboveBound(t *testing.T) {
 	}
 }
 
+func TestAcquisitionReplayDropsTimestampOnlyMetadataAboveBound(t *testing.T) {
+	at := time.Date(2026, 11, 5, 0, 0, 0, 0, time.UTC)
+	baseline := replayBaselineGeneration(t, at)
+	var inputs []sources.Observation
+	total := 0
+	for index := 0; total <= maxLayerBytes; index++ {
+		// Each snapshot adds a model on the baseline provider without a review.
+		// Its timestamp then appears as a model CreatedAt in the replayed catalog.
+		builder, err := catalogs.NewBuilderFrom(manualProviderObservation(t, 0, at).Catalog)
+		if err != nil {
+			t.Fatal(err)
+		}
+		provider, err := builder.Provider("provider")
+		if err != nil {
+			t.Fatal(err)
+		}
+		provider.Models["model"].Description = strings.Repeat(string(rune('a'+index)), 6<<20)
+		ref := provider.Models["model"].ModelRef
+		for m := 0; m <= index; m++ {
+			id := "added-" + string(rune('a'+m))
+			provider.Models[id] = &catalogs.Model{ID: id, Name: id, ModelRef: ref}
+		}
+		if err := builder.SetProvider(provider); err != nil {
+			t.Fatal(err)
+		}
+		catalog, err := catalogs.NewObservationCatalog(builder)
+		if err != nil {
+			t.Fatal(err)
+		}
+		observation := providerResetObservation(t, sources.ModelsDevHTTPID, catalog, at.Add(time.Duration(index)*time.Hour), nil)
+		payload, err := catalogs.EncodeCatalogPayload(observation.Catalog)
+		if err != nil {
+			t.Fatal(err)
+		}
+		total += len(payload)
+		inputs = append(inputs, observation)
+	}
+	generation, retained, err := PrepareAcquisitionReplay(t.Context(), baseline, "publisher", nil, inputs, "compaction", at.Add(time.Duration(len(inputs))*time.Hour))
+	if err != nil {
+		t.Fatalf("timestamp-only metadata above bound failed compaction: %v", err)
+	}
+	if len(retained) == 0 || len(retained) >= len(inputs) {
+		t.Fatalf("retained %d of %d snapshots; want compacted subset under bound", len(retained), len(inputs))
+	}
+	if retained[len(retained)-1].ID != inputs[len(inputs)-1].ID {
+		t.Fatalf("last retained snapshot = %s; want latest %s", retained[len(retained)-1].ID, inputs[len(inputs)-1].ID)
+	}
+	retainedBytes := 0
+	for _, obs := range retained {
+		payload, err := catalogs.EncodeCatalogPayload(obs.Catalog)
+		if err != nil {
+			t.Fatal(err)
+		}
+		retainedBytes += len(payload)
+	}
+	if retainedBytes > maxLayerBytes {
+		t.Fatalf("retained %d payload bytes above %d bound", retainedBytes, maxLayerBytes)
+	}
+	candidate, err := ReplayAcquisition(t.Context(), baseline, "publisher", nil, retained)
+	if err != nil {
+		t.Fatal(err)
+	}
+	replayed, err := candidate.Generation("compaction", generation.Manifest.GeneratedAt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(replayed.Payload, generation.Payload) {
+		t.Fatal("compacted history did not replay identically")
+	}
+}
+
 func TestAcquisitionReplayRejectsOneObservationAboveRecordBound(t *testing.T) {
 	at := time.Date(2026, 9, 18, 0, 0, 0, 0, time.UTC)
 	baseline := replayBaselineGeneration(t, at)

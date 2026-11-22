@@ -30,7 +30,7 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"GORELEASER_CURRENT_TAG: ${{ env.RELEASE_TAG }}",
 		"permissions:\n  contents: read",
 		"    permissions:\n      attestations: write\n      contents: write\n      discussions: write\n      id-token: write\n      packages: write",
-		`go-version: "1.27.2"`,
+		`go-version: "1.27.4"`,
 		"git merge-base --is-ancestor",
 		"golangci-lint@v2.14.0",
 		"name: Checkout pinned technical-writing skill",

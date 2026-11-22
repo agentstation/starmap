@@ -893,6 +893,11 @@ scopes:
                 checks.append(dict(checks[-1], id=99, status="in_progress", conclusion=None))
                 self.assertFalse(checked.checks_pass(pushed))
                 checks.pop()
+                checks.append(dict(checks[-1], id=100, status="completed", conclusion="failure"))
+                self.assertFalse(checked.checks_pass(pushed))
+                with self.assertRaisesRegex(publication.PublicationError, "promotion checks failed"):
+                    checked.promote()
+                checks.pop()
                 self.assertTrue(checked.checks_pass(pushed))
                 platform["pulls"][0]["reviewDecision"] = "REVIEW_REQUIRED"
                 checked.promote()

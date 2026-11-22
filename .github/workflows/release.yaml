@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  GOTOOLCHAIN: go1.27.2
+  GOTOOLCHAIN: go1.27.4
   # The release tag. A tag push supplies it through the ref. A dispatch
   # supplies it through the tag input.
   RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
@@ -48,7 +48,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.2"
+          go-version: "1.27.4"
           cache: true
 
       - name: Require release tag from main
@@ -93,7 +93,7 @@ jobs:
           if-no-files-found: warn
 
   verification-tests:
-    name: Go 1.27.2 race ${{ matrix.label }}
+    name: Go 1.27.4 race ${{ matrix.label }}
     if: github.event_name == 'push' || inputs.source_run_id == ''
     needs: verification-checks
     runs-on: ubuntu-latest
@@ -127,7 +127,7 @@ jobs:
       - name: Set up selected Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.2"
+          go-version: "1.27.4"
           cache: true
 
       - name: Set up pinned Bun for Git acquisition fixtures
@@ -173,7 +173,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.2"
+          go-version: "1.27.4"
           cache: true
 
       - name: Run full public catalog capacity
@@ -205,7 +205,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.2"
+          go-version: "1.27.4"
           cache: true
 
       - name: Install pinned release tools
@@ -245,7 +245,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.2"
+          go-version: "1.27.4"
           cache: true
 
       - name: Install gomarkdoc
@@ -384,7 +384,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.2"
+          go-version: "1.27.4"
           cache: false
 
       - name: Validate the recovery source and release
@@ -584,7 +584,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.2"
+          go-version: "1.27.4"
           cache: false
 
       - name: Install from AgentStation tap
@@ -607,7 +607,7 @@ jobs:
       - name: Set up release Go toolchain
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.27.2"
+          go-version: "1.27.4"
           cache: false
 
       - name: Install recovered release from AgentStation tap
