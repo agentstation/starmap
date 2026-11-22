@@ -1,6 +1,9 @@
 package runtime
 
 import (
+	"context"
+	"sync"
+
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -71,4 +74,110 @@ func (r *Runtime) AllowsNewAttempt() bool {
 	}
 	clock := r.readPermissionClock()
 	return state.Catalog != nil && p.allowsNewAttempt(clock.Time, clock.Uncertainty, clock.Known)
+}
+
+// AllowsCatalogAttempt checks permission for a consumer's separately accepted catalog.
+// The consumer must bind this validated authority head to its exact catalog before publication.
+// A retained catalog can serve new attempts only while its permission revision remains current.
+// Equal permission revisions allow route preparation without interrupting the previous catalog.
+// Ordinary sources use the same admission policy as AllowsNewAttempt.
+// Call this memory-only check for every attempt, retry, and cached response delivery.
+func (r *Runtime) AllowsCatalogAttempt(head catalogs.CatalogAuthorityHead) bool {
+	if r == nil || r.ctx == nil || r.ctx.Err() != nil {
+		return false
+	}
+	if !r.requiresAuthority() {
+		return r.AllowsNewAttempt()
+	}
+	if head.Validate() != nil || !head.SupportsPermissions() {
+		return false
+	}
+	r.mu.RLock()
+	p, state := r.permissions, r.effective
+	r.mu.RUnlock()
+	if state.Catalog == nil || head.AuthorityID != p.authorityID || head.PolicyID != p.policyID ||
+		head.Sequence > p.highest.Sequence || head.RequiredPermissionRevision != p.highest.RequiredPermissionRevision {
+		return false
+	}
+	for _, known := range []catalogs.CatalogAuthorityHead{p.highest, p.enforced, p.activeReceipt.Head} {
+		if head.Sequence == known.Sequence && head != known {
+			return false
+		}
+	}
+	clock := r.readPermissionClock()
+	return p.allowsNewAttempt(clock.Time, clock.Uncertainty, clock.Known)
+}
+
+// ReadPermission issues an origin receipt or returns a confirmed upstream receipt without renewing it.
+// Origins read current authoritative storage with a qualified clock. Relays read retained receipts from memory.
+// It forwards a required revision even when this runtime cannot activate its catalog or permission schema.
+// A newer manifest without a matching receipt, uncertain retention, or unknown clock validity prevents delivery.
+// Callers must authenticate the downstream connection and enforce the receipt's original expiry.
+func (r *Runtime) ReadPermission(ctx context.Context) (catalogs.CatalogPermissionEnvelope, error) {
+	if r == nil || ctx == nil {
+		return catalogs.CatalogPermissionEnvelope{}, &errors.ValidationError{Field: "permission_relay", Message: "requires a runtime and context"}
+	}
+	if err := ctx.Err(); err != nil {
+		return catalogs.CatalogPermissionEnvelope{}, err
+	}
+	if err := r.ctx.Err(); err != nil {
+		return catalogs.CatalogPermissionEnvelope{}, err
+	}
+	if r.config.origin != nil {
+		return r.config.origin.issuer.ReadPermission(ctx)
+	}
+	if !r.requiresAuthority() {
+		return catalogs.CatalogPermissionEnvelope{}, &errors.ConfigError{Component: "permission relay", Message: "requires an internal catalog authority"}
+	}
+	r.mu.RLock()
+	p := r.permissions
+	r.mu.RUnlock()
+	clock := r.readPermissionClock()
+	if !p.retained || p.pending || p.activeReceipt.Head != p.highest || !p.activeReceipt.ValidAt(clock.Time, clock.Uncertainty, clock.Known) {
+		return catalogs.CatalogPermissionEnvelope{}, &errors.ConflictError{Resource: "catalog permission", Message: "no confirmed valid receipt matches the highest required publication"}
+	}
+	return p.activeReceipt, nil
+}
+
+// authorityObservationGroup tracks source callbacks until shutdown joins them.
+type authorityObservationGroup struct {
+	mu     sync.Mutex
+	active sync.WaitGroup
+	closed bool
+}
+
+func (g *authorityObservationGroup) begin() bool {
+	g.mu.Lock()
+	defer g.mu.Unlock()
+	if g.closed {
+		return false
+	}
+	g.active.Add(1)
+	return true
+}
+
+func (g *authorityObservationGroup) close() {
+	g.mu.Lock()
+	g.closed = true
+	g.mu.Unlock()
+}
+
+type authorityPublicationContextKey struct{}
+
+// The nonzero capability has one identity per runtime. It never reaches source or provider callbacks.
+type authorityPublicationCapability struct{ owned bool }
+
+func (owner *authorityPublicationCapability) guard(ctx context.Context) error {
+	capability, _ := ctx.Value(authorityPublicationContextKey{}).(*authorityPublicationCapability)
+	if capability == nil || capability != owner || !capability.owned {
+		return &errors.ConflictError{Resource: "catalog authority publication", Message: "the connected runtime owns publication into this client"}
+	}
+	return nil
+}
+
+func (r *Runtime) authorityPublicationContext(ctx context.Context) context.Context {
+	if !r.requiresAuthority() && r.config.origin == nil {
+		return ctx
+	}
+	return context.WithValue(ctx, authorityPublicationContextKey{}, r.config.publicationCapability)
 }
