@@ -83,9 +83,10 @@ func retainedPayloadBytes(observations []sources.Observation, sizes map[string]i
 	return retained
 }
 
-// replayCitations returns the observations that the generation still names.
-// strict holds observations cited by provenance, membership scopes, or review candidates.
-// all also includes metadata observations whose timestamp matches an offering timestamp.
+// replayCitations returns the observations still named by generation.
+//
+// strict holds provenance, membership, and review citations.
+// all adds timestamp-matched metadata observations.
 func replayCitations(generation catalogs.Generation, baselineAt time.Time, observations []sources.Observation) (strict map[string]bool, all map[string]bool, err error) {
 	catalog, err := catalogs.DecodeCatalogGeneration(generation)
 	if err != nil {
