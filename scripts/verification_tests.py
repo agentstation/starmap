@@ -72,10 +72,10 @@ def test_command(suite, packages):
     return args + packages
 
 
-def select_tests(events, packages, shard):
+def select_tests(events, packages, shard, shards=3):
     """Partition top-level tests, examples, and fuzz seeds without omissions."""
-    if shard not in (1, 2, 3):
-        raise ValueError("test shard must be 1, 2, or 3")
+    if shards not in (2, 3) or shard not in range(1, shards + 1):
+        raise ValueError("test shard must be within 1..shards")
     inventory = set()
     completed = set()
     for event in events:
@@ -96,7 +96,7 @@ def select_tests(events, packages, shard):
         raise ValueError("test inventory is incomplete")
     # The same name in different packages must select the same global -run filter.
     selected = {key for key in inventory
-                if int.from_bytes(hashlib.sha256(key[1].encode()).digest()[:8], "big") % 3 == shard - 1}
+                if int.from_bytes(hashlib.sha256(key[1].encode()).digest()[:8], "big") % shards == shard - 1}
     if not selected:
         raise ValueError("selected test shard is empty")
     return selected
@@ -161,11 +161,14 @@ def main():
     parser.add_argument("--group", choices=("all",) + GROUPS, default="all")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--shard", type=int, choices=(0, 1, 2, 3), default=0)
+    parser.add_argument("--shards", type=int, choices=(2, 3), default=3)
     args = parser.parse_args()
     if args.suite == "capacity" and args.group != "all":
         parser.error("capacity runs its complete test set")
-    if args.shard and (args.group not in ("runtime", "application") or args.suite != "race"):
-        parser.error("shards apply only to the runtime and application race groups")
+    if args.shard and (args.group not in ("runtime", "application", "contracts", "client") or args.suite != "race"):
+        parser.error("shards apply only to the runtime, application, contracts, and client race groups")
+    if args.shard > args.shards:
+        parser.error("shard index exceeds shard count")
     inventory = subprocess.run(["go", "list", "./..."], cwd=ROOT, check=True,
                                capture_output=True, text=True, timeout=120).stdout.splitlines()
     packages = select_packages(inventory, args.group)
@@ -178,7 +181,7 @@ def main():
         listing = subprocess.run(["go", "test", "-race", "-json", "-list", ".", *packages],
                                  cwd=ROOT, env=environment, capture_output=True, text=True,
                                  check=True, timeout=600)
-        expected_tests = exclude_capacity(select_tests([json.loads(line) for line in listing.stdout.splitlines()], packages, args.shard))
+        expected_tests = exclude_capacity(select_tests([json.loads(line) for line in listing.stdout.splitlines()], packages, args.shard, args.shards))
         selected.insert(2, shard_filter(expected_tests))
     path = args.output
     if path is None:
