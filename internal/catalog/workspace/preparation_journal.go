@@ -9,7 +9,6 @@ import (
 	"hash"
 	"io"
 	"os"
-	"slices"
 
 	"github.com/agentstation/starmap/internal/filepublish"
 	"github.com/agentstation/starmap/internal/privatefiles"
@@ -84,40 +83,19 @@ func newPreparationJournal(stage *workspaceStage, writer *workspaceWriter) (*pre
 	return j, nil
 }
 
-// record writes staged entry events without per-file fsync.
-// Tree roots still sync on creation, and append flushes all staged state at transitions.
 func (j *preparationJournal) record(tree string, entry treeEntry, identity string) error {
+	if err := filepublish.SyncDirectory(j.stage.trees[tree].root); err != nil {
+		return err
+	}
 	if entry.Path == "." {
-		if err := filepublish.SyncDirectory(j.stage.trees[tree].root); err != nil {
-			return err
-		}
 		if err := filepublish.SyncDirectory(j.stage.private); err != nil {
 			return err
 		}
-		return j.writeEvent(preparationEvent{Tree: tree, Entry: &entry, Identity: identity}, true)
 	}
-	return j.writeEvent(preparationEvent{Tree: tree, Entry: &entry, Identity: identity}, false)
+	return j.append(preparationEvent{Tree: tree, Entry: &entry, Identity: identity})
 }
 
-// append syncs all staged tree directories in deterministic order before flushing the journal.
 func (j *preparationJournal) append(event preparationEvent) error {
-	names := make([]string, 0, len(j.stage.trees))
-	for name := range j.stage.trees {
-		names = append(names, name)
-	}
-	slices.Sort(names)
-	for _, name := range names {
-		tree := j.stage.trees[name]
-		if tree != nil && tree.root != nil {
-			if err := filepublish.SyncDirectory(tree.root); err != nil {
-				return err
-			}
-		}
-	}
-	return j.writeEvent(event, true)
-}
-
-func (j *preparationJournal) writeEvent(event preparationEvent, sync bool) error {
 	if j.failure != nil {
 		return j.failure
 	}
@@ -139,7 +117,7 @@ func (j *preparationJournal) writeEvent(event preparationEvent, sync bool) error
 	if err == nil && n != len(data) {
 		err = io.ErrShortWrite
 	}
-	if err == nil && sync {
+	if err == nil {
 		err = j.file.Sync()
 	}
 	j.failure = err
