@@ -1,6 +1,6 @@
 module github.com/agentstation/starmap
 
-go 1.27.2
+go 1.27.4
 
 require (
 	cloud.google.com/go/auth v0.24.1

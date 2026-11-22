@@ -27,6 +27,6 @@
     }
   },
   "env": {
-    "GOTOOLCHAIN": "go1.27.2"
+    "GOTOOLCHAIN": "go1.27.4"
   }
 }

@@ -1,5 +1,0 @@
-pkg/sources/observation_identity.go:24:2: Consider preallocating fields with capacity 12 + 3*len(observation.Issues) (prealloc)
-	fields := []string{
-	^
-1 issues:
-* prealloc: 1

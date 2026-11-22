@@ -655,7 +655,7 @@ class Publisher:
             raise PublicationError("promotion head differs from its admitted artifact")
         return checkout
 
-    def checks_pass(self, head):
+    def checks_state(self, head):
         result = command(["gh", "api", "--paginate", "--slurp",
                           f"repos/{self.repository}/commits/{head}/check-runs?per_page=100"], timeout=120)
         checks = {}
@@ -665,8 +665,23 @@ class Publisher:
                     prior = checks.get(item["name"])
                     if prior is None or item["id"] > prior["id"]:
                         checks[item["name"]] = item
-        return all(checks.get(name, {}).get("conclusion") == "success"
-                   and checks[name]["status"] == "completed" for name in REQUIRED_CHECKS)
+        failed = []
+        pending = []
+        for name in REQUIRED_CHECKS:
+            run = checks.get(name)
+            if not run or run.get("status") != "completed":
+                pending.append(name)
+            elif run.get("conclusion") != "success":
+                failed.append(f"{name}={run.get('conclusion')}")
+        if failed:
+            return "failed", failed
+        if pending:
+            return "pending", pending
+        return "passed", []
+
+    def checks_pass(self, head):
+        state, _ = self.checks_state(head)
+        return state == "passed"
 
     def verify_embedding(self, checkout, *, historical=False):
         args = [self.release_tool, "--verify-promotion-dir", checkout / "internal/embedded/catalog",
@@ -822,7 +837,10 @@ class Publisher:
             self.git("-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential", "push", "origin", f"{updated}:refs/heads/{branch}")
             self.outputs(ready=False, status="awaiting_updated_checks", pull_request=pull["url"])
             return
-        if not self.checks_pass(head):
+        check_state, check_details = self.checks_state(head)
+        if check_state == "failed":
+            raise PublicationError(f"promotion checks failed for {pull['url']}: {', '.join(check_details)}")
+        if check_state != "passed":
             self.outputs(ready=False, status="awaiting_checks", pull_request=pull["url"])
             return
         if pull.get("reviewDecision") in ("REVIEW_REQUIRED", "CHANGES_REQUESTED"):

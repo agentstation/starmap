@@ -1,2 +1,0 @@
-/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/internal/app/app_test.go:32:1: error long_sentence: sentence has 32 words; limit is 25
-FAIL: 2 file(s), 1 diagnostic(s)
