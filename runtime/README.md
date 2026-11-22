@@ -587,13 +587,13 @@ func InspectRetainedPublications(ctx context.Context, files map[string]RetainedF
 InspectRetainedPublications selects native journals and matching staging files to keep inactive. The caller must supply the complete verified runtime inventory and preserve all selected bytes. Destination records remain active and require separate owner validation. This check never promotes staging files. Native file identities are historical. This result does not authorize cleanup or admission.
 
 <a name="PrepareAcquisitionReplay"></a>
-## func [PrepareAcquisitionReplay](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_compaction.go#L22>)
+## func [PrepareAcquisitionReplay](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_compaction.go#L23>)
 
 ```go
 func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings []sources.ProviderAcquisitionBinding, observations []sources.Observation, runID string, completedAt time.Time) (catalogs.Generation, []sources.Observation, error)
 ```
 
-PrepareAcquisitionReplay returns a catalog generation and the original inputs needed for later replay. It retains compacted inputs only when catalog facts, provenance, membership, and current reviews remain exact. Current metadata reviews retain their latest original observation. Omission preserves the last review.
+PrepareAcquisitionReplay returns a catalog generation and the original inputs needed for later replay. It retains compacted inputs when provenance, membership, and current reviews remain exact. Above the payload bound, it drops superseded timestamp\-only metadata observations. Current metadata reviews retain their latest original observation. Omission preserves the last review.
 
 The retained inputs must fit the retained payload bound. The supplied history can exceed it. The caller authenticates the baseline and inputs. This function reads no sources or storage.
 

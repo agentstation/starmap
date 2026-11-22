@@ -14,7 +14,8 @@ import (
 )
 
 // PrepareAcquisitionReplay returns a catalog generation and the original inputs needed for later replay.
-// It retains compacted inputs only when catalog facts, provenance, membership, and current reviews remain exact.
+// It retains compacted inputs when provenance, membership, and current reviews remain exact.
+// Above the payload bound, it drops superseded timestamp-only metadata observations.
 // Current metadata reviews retain their latest original observation. Omission preserves the last review.
 //
 // The retained inputs must fit the retained payload bound. The supplied history can exceed it.

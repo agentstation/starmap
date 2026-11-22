@@ -20,9 +20,9 @@ func TestEmbeddedAuthorAndProviderModelIntegrity(t *testing.T) {
 	if err := yaml.Unmarshal(authorData, &authors); err != nil {
 		t.Fatalf("decode authors.yaml: %v", err)
 	}
-	authorSet := make(map[catalogs.AuthorID]bool, len(authors))
+	authorNames := make(map[catalogs.AuthorID]string, len(authors))
 	for _, author := range authors {
-		authorSet[author.ID] = true
+		authorNames[author.ID] = author.Name
 	}
 
 	authorModels := make(map[string]bool)
@@ -39,8 +39,27 @@ func TestEmbeddedAuthorAndProviderModelIntegrity(t *testing.T) {
 			t.Fatalf("decode %s: %v", path, err)
 		}
 		parts := strings.Split(path, "/")
-		if len(parts) < 5 || !authorSet[catalogs.AuthorID(parts[2])] {
-			t.Fatalf("%s references undeclared author", path)
+		if len(parts) < 5 || parts[1] != "authors" || parts[3] != "models" {
+			t.Fatalf("invalid author model path %q", path)
+		}
+		authorID := catalogs.AuthorID(parts[2])
+		canonicalName, known := authorNames[authorID]
+		if !known {
+			t.Fatalf("%s references undeclared author %q", path, authorID)
+		}
+		if len(model.Authors) == 0 || model.Authors[0].ID != authorID {
+			t.Fatalf("%s primary author = %#v, want %q", path, model.Authors, authorID)
+		}
+		if model.Authors[0].Name != canonicalName {
+			t.Fatalf("%s primary author name = %q, want canonical %q", path, model.Authors[0].Name, canonicalName)
+		}
+		if model.Status != "" || model.Pricing != nil || model.Limits != nil || len(model.Modes) != 0 {
+			t.Fatalf("%s contains provider-serving status, price, limits, or modes", path)
+		}
+		for source := range model.Extensions {
+			if source != "models.dev" {
+				t.Fatalf("%s contains provider extension %q", path, source)
+			}
 		}
 		slug := strings.TrimSuffix(parts[len(parts)-1], ".yaml")
 		authorModels[parts[2]+"/"+slug] = true
@@ -65,6 +84,9 @@ func TestEmbeddedAuthorAndProviderModelIntegrity(t *testing.T) {
 		var model catalogs.Model
 		if err := yaml.Unmarshal(data, &model); err != nil {
 			t.Fatalf("decode %s: %v", path, err)
+		}
+		if model.ID == "" {
+			t.Fatalf("%s has empty provider model ID", path)
 		}
 		providerModelCount++
 		if ref := string(model.ModelRef); ref != "" && !authorModels[ref] {

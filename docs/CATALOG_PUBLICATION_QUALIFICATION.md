@@ -39,16 +39,7 @@ An empty input permits ordinary acquisition.
 Rerunning the original preparation run also restores its completed record when that workflow revision supports this recovery path.
 Older workflow revisions can attempt fresh acquisition if their Actions artifact is absent.
 Use the current publisher with an explicit receipt to avoid that behavior.
-Wait for the retry to complete, then capture its exact run attempt:
-
-```sh
-python3 scripts/catalog_publication_capture.py after \
-  --directory docs/plans/proof/starport-production-catalog/csp6/hosted-publication \
-  --run "$RETRY_RUN" --attempt "$RETRY_ATTEMPT"
-
-bash scripts/verify-catalog-product.sh --task CSP6 \
-  --starport-root "$CSP_STARPORT_WORKTREE" --json
-```
+Wait for the retry to complete, then inspect its run attempt and verify the published channel assets.
 
 Qualification requires GitHub read access and Go 1.27.4.
 It downloads the captured immutable assets and verifies five attestations.
