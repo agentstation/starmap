@@ -62,18 +62,46 @@ func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation,
 			if err != nil {
 				return catalogs.Generation{}, nil, err
 			}
-			expected, err = candidate.Generation(runID, completedAt)
+			actual, err := candidate.Generation(runID, completedAt)
 			if err != nil {
 				return catalogs.Generation{}, nil, err
 			}
-			selected = trimmed
-			sizes = trimmedSizes
+			preserved, err := compactedGenerationPreservesContract(expected, actual)
+			if err != nil {
+				return catalogs.Generation{}, nil, err
+			}
+			if preserved {
+				expected = actual
+				selected = trimmed
+				sizes = trimmedSizes
+			}
 		}
 	}
 	if retainedPayloadBytes(selected, sizes) > maxLayerBytes {
 		return catalogs.Generation{}, nil, &errors.ValidationError{Field: "replay.observations", Message: "exceeds the retained payload bound"}
 	}
 	return expected, selected, ctx.Err()
+}
+
+func compactedGenerationPreservesContract(expected, actual catalogs.Generation) (bool, error) {
+	if !reflect.DeepEqual(actual.Manifest.ReviewCandidates, expected.Manifest.ReviewCandidates) {
+		return false, nil
+	}
+	expectedCatalog, err := catalogs.DecodeCatalogGeneration(expected)
+	if err != nil {
+		return false, err
+	}
+	actualCatalog, err := catalogs.DecodeCatalogGeneration(actual)
+	if err != nil {
+		return false, err
+	}
+	if !reflect.DeepEqual(actualCatalog.Provenance().Map(), expectedCatalog.Provenance().Map()) {
+		return false, nil
+	}
+	if !reflect.DeepEqual(actualCatalog.MembershipScopes(), expectedCatalog.MembershipScopes()) {
+		return false, nil
+	}
+	return true, nil
 }
 
 func retainedPayloadBytes(observations []sources.Observation, sizes map[string]int) int {
