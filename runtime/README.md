@@ -1280,7 +1280,7 @@ func (u CatalogRetentionUsage) RawBytes() int64
 RawBytes counts the serialized manifest, payload, compressed recovery, and original descriptor bytes.
 
 <a name="DirectoryMigrationCompletion"></a>
-## type [DirectoryMigrationCompletion](<https://github.com/agentstation/starmap/blob/main/runtime/migration_completion.go#L17-L24>)
+## type [DirectoryMigrationCompletion](<https://github.com/agentstation/starmap/blob/main/runtime/migration_completion.go#L18-L25>)
 
 DirectoryMigrationCompletion binds a completed move to its retained source and target.
 
@@ -1296,7 +1296,7 @@ type DirectoryMigrationCompletion struct {
 ```
 
 <a name="ReadDirectoryMigrationCompletion"></a>
-### func [ReadDirectoryMigrationCompletion](<https://github.com/agentstation/starmap/blob/main/runtime/migration_completion.go#L29>)
+### func [ReadDirectoryMigrationCompletion](<https://github.com/agentstation/starmap/blob/main/runtime/migration_completion.go#L30>)
 
 ```go
 func ReadDirectoryMigrationCompletion(ctx context.Context, directory string) (DirectoryMigrationCompletion, error)
@@ -1963,7 +1963,7 @@ func WithCoalesceWindow(window time.Duration) Option
 WithCoalesceWindow bounds how long completed provider observations wait for a slower sibling before they publish.
 
 <a name="WithCompletedDirectoryMigration"></a>
-### func [WithCompletedDirectoryMigration](<https://github.com/agentstation/starmap/blob/main/runtime/migration_completion_guard.go#L8>)
+### func [WithCompletedDirectoryMigration](<https://github.com/agentstation/starmap/blob/main/runtime/migration_completion.go#L141>)
 
 ```go
 func WithCompletedDirectoryMigration(completion DirectoryMigrationCompletion) Option
@@ -2044,7 +2044,7 @@ func WithModelsDevGitCommit(commit string) Option
 WithModelsDevGitCommit sets the exact commit for models.dev Git acquisition. Empty clears an inherited pin. This option does not select the Git source.
 
 <a name="WithOwnedSource"></a>
-### func [WithOwnedSource](<https://github.com/agentstation/starmap/blob/main/runtime/source_lifecycle.go#L17>)
+### func [WithOwnedSource](<https://github.com/agentstation/starmap/blob/main/runtime/source_lifecycle.go#L25>)
 
 ```go
 func WithOwnedSource(source OwnedSource) Option
@@ -2430,7 +2430,7 @@ type OriginConfig struct {
 ```
 
 <a name="OwnedSource"></a>
-## type [OwnedSource](<https://github.com/agentstation/starmap/blob/main/runtime/source_lifecycle.go#L9-L12>)
+## type [OwnedSource](<https://github.com/agentstation/starmap/blob/main/runtime/source_lifecycle.go#L17-L20>)
 
 OwnedSource supplies a source and its shutdown operation. Shutdown cancels and joins source\-owned work unless its context ends first. With a live context, it must finish joining before returning any cleanup error. Repeated calls must be safe.
 
@@ -3047,7 +3047,7 @@ type SourceAcquisitionRequest struct {
 ```
 
 <a name="SourceDescriber"></a>
-## type [SourceDescriber](<https://github.com/agentstation/starmap/blob/main/runtime/source_configuration.go#L13-L15>)
+## type [SourceDescriber](<https://github.com/agentstation/starmap/blob/main/runtime/source_lifecycle.go#L38-L40>)
 
 SourceDescriber declares metadata capabilities and default selection without acquisition. The runtime calls it once when it opens. It must not read external data. The runtime treats omitted metadata sources as unsupported. Eligibility remains unknown until acquisition.
 
