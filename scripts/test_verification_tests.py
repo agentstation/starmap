@@ -73,6 +73,9 @@ class TestVerification(unittest.TestCase):
         shards = [verification.select_tests(events, packages, shard) for shard in (1, 2, 3)]
         self.assertEqual(inventory, set.union(*shards))
         self.assertEqual(len(inventory), sum(map(len, shards)))
+        two_way = [verification.select_tests(events, packages, shard, shards=2) for shard in (1, 2)]
+        self.assertEqual(inventory, set.union(*two_way))
+        self.assertEqual(len(inventory), sum(map(len, two_way)))
         for selected in shards:
             self.assertEqual(selected, verification.select_tests(list(reversed(events)), packages, shards.index(selected) + 1))
             pattern = verification.shard_filter(selected).removeprefix("-run=")

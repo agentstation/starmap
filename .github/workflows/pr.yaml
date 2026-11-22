@@ -176,7 +176,7 @@ jobs:
     name: Verification Gate
     needs: [verification-checks, verification-tests, verification-capacity, native-publication]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 2
     steps:
       - name: Require every verification result
@@ -190,7 +190,7 @@ jobs:
 
   verification-checks:
     name: Verification Checks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Checkout
@@ -229,21 +229,22 @@ jobs:
 
   verification-tests:
     name: Go 1.27.4 race ${{ matrix.label }}
-    needs: verification-checks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 40
     strategy:
       fail-fast: false
       matrix:
         include:
-          - {group: runtime, shard: 1, label: runtime-1}
-          - {group: runtime, shard: 2, label: runtime-2}
-          - {group: runtime, shard: 3, label: runtime-3}
-          - {group: client, shard: 0, label: client}
-          - {group: application, shard: 1, label: application-1}
-          - {group: application, shard: 2, label: application-2}
-          - {group: application, shard: 3, label: application-3}
-          - {group: contracts, shard: 0, label: contracts}
+          - {group: runtime, shard: 1, shards: 3, label: runtime-1}
+          - {group: runtime, shard: 2, shards: 3, label: runtime-2}
+          - {group: runtime, shard: 3, shards: 3, label: runtime-3}
+          - {group: client, shard: 1, shards: 2, label: client-1}
+          - {group: client, shard: 2, shards: 2, label: client-2}
+          - {group: application, shard: 1, shards: 3, label: application-1}
+          - {group: application, shard: 2, shards: 3, label: application-2}
+          - {group: application, shard: 3, shards: 3, label: application-3}
+          - {group: contracts, shard: 1, shards: 2, label: contracts-1}
+          - {group: contracts, shard: 2, shards: 2, label: contracts-2}
     env:
       GOTOOLCHAIN: local
       CATALOG_GIT_FIXTURE_REQUIRED: '1'
@@ -251,6 +252,7 @@ jobs:
       TEST_SUITE: 'race'
       TEST_GROUP: ${{ matrix.group }}
       TEST_SHARD: ${{ matrix.shard }}
+      TEST_SHARDS: ${{ matrix.shards }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -270,9 +272,9 @@ jobs:
         timeout-minutes: 2
         run: python3 scripts/prepare_public_catalog_fixture.py
       - name: Run complete selected test group
-        run: python3 scripts/verification_tests.py "$TEST_SUITE" --group "$TEST_GROUP" --shard "$TEST_SHARD" --output "$RUNNER_TEMP/go-test-events.jsonl"
+        run: python3 scripts/verification_tests.py "$TEST_SUITE" --group "$TEST_GROUP" --shard "$TEST_SHARD" --shards "$TEST_SHARDS" --output "$RUNNER_TEMP/go-test-events.jsonl"
       - name: Test pure-Go external consumer
-        if: matrix.group == 'client'
+        if: matrix.group == 'client' && matrix.shard == 1
         env:
           CGO_ENABLED: 0
         run: make test-consumer-deps
@@ -286,8 +288,7 @@ jobs:
 
   verification-capacity:
     name: Full Catalog Capacity
-    needs: verification-checks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Checkout

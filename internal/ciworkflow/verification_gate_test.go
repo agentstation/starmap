@@ -82,17 +82,22 @@ func TestVerificationGateRequiresEverySuiteEvenAfterFailure(t *testing.T) {
 func TestVerificationMatrixPreservesPackageGroupsWithoutCompilerDuplicates(t *testing.T) {
 	workflow := readVerificationWorkflow(t)
 	job := workflow.Jobs["verification-tests"]
-	if job.Needs != "verification-checks" || job.Strategy.FailFast {
-		t.Fatal("test groups must follow cheap checks and retain independent failures")
+	if job.Strategy.FailFast {
+		t.Fatal("test groups must retain independent failures")
 	}
 	matrix := job.Strategy.Matrix
 	if len(matrix.Group) != 0 || len(matrix.Go) != 0 || len(matrix.Suite) != 0 || job.Env["TEST_SUITE"] != "race" {
 		t.Fatal("the matrix must run one complete race suite without compiler duplicates")
 	}
-	want := map[string]bool{"runtime/1": true, "runtime/2": true, "runtime/3": true, "client/0": true, "application/1": true, "application/2": true, "application/3": true, "contracts/0": true}
+	want := map[string]bool{
+		"runtime/1/3": true, "runtime/2/3": true, "runtime/3/3": true,
+		"client/1/2": true, "client/2/2": true,
+		"application/1/3": true, "application/2/3": true, "application/3/3": true,
+		"contracts/1/2": true, "contracts/2/2": true,
+	}
 	labels := make(map[string]bool)
 	for _, entry := range matrix.Include {
-		key := entry["group"] + "/" + entry["shard"]
+		key := entry["group"] + "/" + entry["shard"] + "/" + entry["shards"]
 		if !want[key] || entry["label"] == "" || labels[entry["label"]] {
 			t.Fatalf("invalid or duplicate group: %v", entry)
 		}
@@ -102,21 +107,18 @@ func TestVerificationMatrixPreservesPackageGroupsWithoutCompilerDuplicates(t *te
 	if len(want) != 0 {
 		t.Fatalf("missing test groups: %v", want)
 	}
-	if job.Env["TEST_GROUP"] != "${{ matrix.group }}" || job.Env["TEST_SHARD"] != "${{ matrix.shard }}" {
+	if job.Env["TEST_GROUP"] != "${{ matrix.group }}" || job.Env["TEST_SHARD"] != "${{ matrix.shard }}" || job.Env["TEST_SHARDS"] != "${{ matrix.shards }}" {
 		t.Fatal("test selection does not use the matrix group and shard")
 	}
 	executesSelection, retainsDistinctEvidence := false, false
 	for _, step := range job.Steps {
-		executesSelection = executesSelection || strings.Contains(step.Run, `--group "$TEST_GROUP" --shard "$TEST_SHARD"`)
+		executesSelection = executesSelection || strings.Contains(step.Run, `--group "$TEST_GROUP" --shard "$TEST_SHARD" --shards "$TEST_SHARDS"`)
 		retainsDistinctEvidence = retainsDistinctEvidence || strings.HasPrefix(step.Uses, "actions/upload-artifact@") && step.With["name"] == "go-tests-race-${{ matrix.label }}"
 	}
 	if !executesSelection || !retainsDistinctEvidence {
 		t.Fatal("test groups must execute their selection and retain distinct evidence")
 	}
 	capacity := workflow.Jobs["verification-capacity"]
-	if capacity.Needs != "verification-checks" {
-		t.Fatal("full-catalog capacity must follow cheap checks")
-	}
 	found := false
 	for _, step := range capacity.Steps {
 		found = found || step.Run == `python3 scripts/verification_tests.py capacity --output "$RUNNER_TEMP/go-capacity-events.jsonl"`
