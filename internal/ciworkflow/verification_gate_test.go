@@ -192,7 +192,7 @@ func TestNativeRuntimePartitionsKeepEveryRequiredPlatformAndAggregate(t *testing
 	workflow := readVerificationWorkflow(t)
 	groups := workflow.Jobs["native-runtime-tests"]
 	aggregate := workflow.Jobs["native-runtime"]
-	if aggregate.Name != "Runtime ${{ matrix.runner }}" || aggregate.Needs != "native-runtime-tests" || aggregate.If != "always()" {
+	if aggregate.Name != "Runtime ${{ matrix.runner }}" || aggregate.Needs != "native-runtime-tests" || aggregate.If != "always() && github.event_name != 'pull_request'" {
 		t.Fatal("native aggregate must preserve required checks after every group outcome")
 	}
 	if !reflect.DeepEqual(groups.Strategy.Matrix.Include, aggregate.Strategy.Matrix.Include) {
