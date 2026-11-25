@@ -70,9 +70,9 @@ extensions:
   openai:
     fields:
       unknown_fields:
-      - checksum: sha256:74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b
+      - checksum: sha256:df64cb9474e1c3d40da0f7b727039b7e4a5c9b8aa3b182a7e0a0ed73973ce800
         path: data[].shutdown_date
 
 # Timestamps
 created_at: 2025-08-27T05:16:13Z
-updated_at: 2026-10-09T16:55:27.97873Z
+updated_at: 2026-11-25T19:36:23.942501092Z
