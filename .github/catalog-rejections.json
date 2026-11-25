@@ -16,5 +16,23 @@
     },
     "pull_request": 165,
     "reason": "Billing and protocol contract failures. Corrected by Starmap PR #166 and Starport PR #377."
+  },
+  {
+    "pending": {
+      "archive_checksum": "sha256:e09a9d53324abeb80a21f5fdcc15dba0b4a182f196799808e0161f5b513126db",
+      "artifact_tag": "catalog-60891c26824a085b840b3fa994c87d8662ff97003a09981d5b74d045d2264854",
+      "catalog_checksum": "sha256:60891c26824a085b840b3fa994c87d8662ff97003a09981d5b74d045d2264854",
+      "checkpoint_checksum": "sha256:2be3eb90e569df80437aece25dd5734c5b4f2bc62acf7904d66994b539e721e5",
+      "generation_id": "bindings-02ab07b1bf3cbf6f62b1c481dc414d01fb13ec7bfcf091f42da88f52010813be.local.1d3b14832bb1",
+      "preparation_commit": "54fcaa155b7adedddce8ebbce8ced01b33a6faf2",
+      "profile_checksum": "sha256:30fae11e08b5d27c3c0e4b2dab8b022fa282d75e0ab302f33fa97540a2307f2c",
+      "receipt_checksum": "sha256:89c98532b1739172e1c53be371974a6f72ad48c505c7792e0b89db3e321294e3",
+      "receipt_tag": "catalog-run-89c98532b1739172e1c53be371974a6f72ad48c505c7792e0b89db3e321294e3",
+      "run_id": "github-43655445788",
+      "schema_version": 1,
+      "workflow_run_id": 43655445788
+    },
+    "pull_request": 315,
+    "reason": "PR #316 superseded this closed promotion. Prepare a new candidate from the current catalog baseline."
   }
 ]
