@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: bindings-807d3b5332de20337971399f38311afbce99b0825fe534e31ee3f5ce830de359.local.29ecf6283acd
-catalog_digest: sha256:d8f9d8b3883755d4f0187f4a8ecdb71613899cad9ad95e69af687526db23ecc4
+generation_id: bindings-2970f9c7548707018d0ded88fd4258083e9ffb2c730786f24d3e7577fdb9abec.local.b816b0634b0c
+catalog_digest: sha256:2dde2a8c5af62354991cf78280987f240edfa71e5b3d684921c94940fbe982f7
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -90,7 +90,7 @@ models:
         provider_model_id: Wan-AI/Wan2.2-T2V-A14B
         pricing:
           operations:
-            output_second: 0.075
+            output_second: 0.033
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -2137,8 +2137,8 @@ models:
       - provider: google-ai-studio
         provider_model_id: deep-research-max-preview-04-2026
         limits:
-          context_window: 131072
-          input_tokens: 131072
+          context_window: 1048576
+          input_tokens: 1048576
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
@@ -2155,8 +2155,8 @@ models:
       - provider: google-ai-studio
         provider_model_id: deep-research-preview-04-2026
         limits:
-          context_window: 131072
-          input_tokens: 131072
+          context_window: 1048576
+          input_tokens: 1048576
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
@@ -7009,7 +7009,7 @@ models:
           tokens:
             input:
               per_token: 0.0
-              per_1m: 0.085
+              per_1m: 0.075
             output:
               per_token: 0.0
               per_1m: 0.4
@@ -9571,6 +9571,9 @@ models:
         provider_model_id: openai/gpt-oss-120b
         pricing:
           tokens:
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.0185
             input:
               per_token: 0.0
               per_1m: 0.037
@@ -9587,6 +9590,7 @@ models:
         service:
           operations:
             - chat-completions
+          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: openai
@@ -9697,6 +9701,9 @@ models:
         provider_model_id: openai/gpt-oss-20b
         pricing:
           tokens:
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.015
             input:
               per_token: 0.0
               per_1m: 0.03
@@ -9713,6 +9720,7 @@ models:
         service:
           operations:
             - chat-completions
+          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: openai

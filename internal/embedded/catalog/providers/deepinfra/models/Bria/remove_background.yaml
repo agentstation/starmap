@@ -1,8 +1,8 @@
-# Bria/remove_background - Bria RMBG 2.0 enables seamless removal of backgrounds from i...
+# Bria/remove_background - Bria RMBG 3.0 enables seamless removal of backgrounds from i...
 id: Bria/remove_background
 model: bria/remove_background
 name: Bria/remove_background
-description: Bria RMBG 2.0 enables seamless removal of backgrounds from images, ideal for professional editing tasks. Trained exclusively on licensed data for safe and risk-free commercial use.
+description: Bria RMBG 3.0 enables seamless removal of backgrounds from images, ideal for professional editing tasks. Trained exclusively on licensed data for safe and risk-free commercial use. The cleanest cutout, from any image.
 
 # Model metadata
 metadata:
@@ -89,4 +89,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.08883Z
-updated_at: 2026-10-09T16:55:27.97873Z
+updated_at: 2026-11-25T19:36:23.241326316Z
