@@ -1,16 +1,16 @@
 {
   "manifest_version": 2,
   "schema_version": 19,
-  "generation_id": "bindings-a765ea04af1739a021e15d9c339bc86759ab9e3aee0e2a43d0d76cba681cadc8.local.baaa4afc4fea",
-  "generated_at": "2026-11-26T00:21:42.019088832Z",
+  "generation_id": "bindings-c5a5aeba5238fe38a6cb40de733dd39f034d7dfb7903944d42070ea24dacc663.local.ef458f62bc68",
+  "generated_at": "2026-11-26T13:54:33.365760824Z",
   "payload": {
-    "checksum": "sha256:00961ab4ee65a352283b85afb281a3f62bdb6ebaac820936afc0fa70070e5817",
-    "size_bytes": 26876269,
+    "checksum": "sha256:fe9fd3c5f2e7bac4139cc4c1b0bb78bd3a77f0d0d893e4674b6dc2225acddf65",
+    "size_bytes": 26876273,
     "media_type": "application/vnd.agentstation.starmap.catalog+json"
   },
   "validation": {
     "validator_version": "starmap-v1",
-    "validated_at": "2026-11-26T00:21:42.019088832Z",
+    "validated_at": "2026-11-26T13:54:33.365760824Z",
     "status": "passed",
     "error_count": 0,
     "warning_count": 0,
@@ -21,7 +21,7 @@
       }
     ]
   },
-  "sync_run_id": "github-45727776764",
+  "sync_run_id": "github-45833159389",
   "source_observations": [
     {
       "source": "models_dev_http",
@@ -97,15 +97,15 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
-      "observed_at": "2026-11-26T00:21:39.809466996Z",
+      "observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
+      "observed_at": "2026-11-26T13:54:31.353689799Z",
       "revision": {
         "kind": "content_digest",
-        "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
+        "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
       },
       "completeness": "complete",
       "status": "succeeded",
-      "evidence_checksum": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
+      "evidence_checksum": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
     },
     {
       "source": "providers",
@@ -169,6 +169,18 @@
     },
     {
       "source": "providers",
+      "observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
+      "observed_at": "2026-11-26T13:54:31.202804818Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
+    },
+    {
+      "source": "providers",
       "observation_id": "observation:v4:1f1efba85bf7a4fd944ed2943211f6bc7b37434aad18e7b76244b96bab6fc8ed",
       "observed_at": "2026-09-20T13:03:28.111250337Z",
       "revision": {
@@ -190,18 +202,6 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:e94185122f024434123f01254487ee8d11d3f80f8d1d00faef98e8b39256b32f"
-    },
-    {
-      "source": "providers",
-      "observation_id": "observation:v4:226e81b705d39e3c7b35d7662af1a8fe9ab73a026bef8445ab0c274779194107",
-      "observed_at": "2026-11-26T00:21:39.773694414Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:2bc8b5420400fcd4a98b3decd2329577e12e15ea8709532a1d4959109ee9a363"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:2bc8b5420400fcd4a98b3decd2329577e12e15ea8709532a1d4959109ee9a363"
     },
     {
       "source": "providers",
@@ -265,6 +265,18 @@
     },
     {
       "source": "providers",
+      "observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
+      "observed_at": "2026-11-26T13:54:31.855911548Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
+    },
+    {
+      "source": "providers",
       "observation_id": "observation:v4:30994535b84bd2549017911516242f1989506f2cb9c218c3e094513502c7c57c",
       "observed_at": "2026-10-20T04:49:27.736167016Z",
       "revision": {
@@ -298,18 +310,6 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:53c21567bb87b9f64b9e210f4de6ecfca464fa1169ec41a213f25e15767eef36"
-    },
-    {
-      "source": "providers",
-      "observation_id": "observation:v4:3905936dcfa8e69af0dc99bb1b151a5e5956833188ea0baae285ea216cbfd770",
-      "observed_at": "2026-11-26T00:21:40.221331645Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:330db243d31011af616399f1aa21aad7493e162c101fbb154491fb4dfdfa8b04"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:330db243d31011af616399f1aa21aad7493e162c101fbb154491fb4dfdfa8b04"
     },
     {
       "source": "providers",
@@ -445,18 +445,6 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:5591d1904bfb0e47b4b82c59eebc1c136fecaf9bb93eacd0b695b658bde7eaff",
-      "observed_at": "2026-11-26T00:21:40.177962358Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:6dae4db6e41405cda87192a6980e427fc417637154746cd24a0b735fa26b37d5"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:6dae4db6e41405cda87192a6980e427fc417637154746cd24a0b735fa26b37d5"
-    },
-    {
-      "source": "providers",
       "observation_id": "observation:v4:57184dccb2f6216be93ceef8f0730ea7ff1994354d55d822552707d370f8eb32",
       "observed_at": "2026-10-18T22:26:56.245616142Z",
       "revision": {
@@ -589,6 +577,18 @@
     },
     {
       "source": "providers",
+      "observation_id": "observation:v4:70c6a82871fbf75af3513dd68679b266885bbd7cd305bc3b54db21a40800d04b",
+      "observed_at": "2026-11-26T13:54:32.054313076Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:ba535f7de34dfbfc58e10390563f0a28399b8b4e7011c578ae3b39cca161253e"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:ba535f7de34dfbfc58e10390563f0a28399b8b4e7011c578ae3b39cca161253e"
+    },
+    {
+      "source": "providers",
       "observation_id": "observation:v4:729e8d6feb6f4c5b2e66f1562488b0c485d24f3fbde81f588593c2b0fd66a27e",
       "observed_at": "2026-10-06T11:17:00.430790766Z",
       "revision": {
@@ -598,18 +598,6 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:815faae101cb037651c5694612c89506dddc522a0b7d35003df80b8b0f5d591a"
-    },
-    {
-      "source": "providers",
-      "observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
-      "observed_at": "2026-11-26T00:21:40.064321035Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
     },
     {
       "source": "providers",
@@ -673,6 +661,18 @@
     },
     {
       "source": "providers",
+      "observation_id": "observation:v4:8912c7b7e0950bb6785f4b3fbfaba76c68caf27d37a753046359bc0a6e391081",
+      "observed_at": "2026-11-25T19:36:23.241326316Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+    },
+    {
+      "source": "providers",
       "observation_id": "observation:v4:8c8b3a3336e1bfee41bd31c6678eff7e63368df6c02cd9e8c2b8b32ec6947abc",
       "observed_at": "2026-09-26T13:04:35.023304033Z",
       "revision": {
@@ -733,6 +733,18 @@
     },
     {
       "source": "providers",
+      "observation_id": "observation:v4:b143beda106f7b79d8448932dc2b07ef8f3d5e6be9499042873abc65677e6587",
+      "observed_at": "2026-11-26T13:54:31.461528337Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:413b60782780d2ba872a14d2eb15f588558b9193fc7ef89fd31de6d3dddac7b1"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:413b60782780d2ba872a14d2eb15f588558b9193fc7ef89fd31de6d3dddac7b1"
+    },
+    {
+      "source": "providers",
       "observation_id": "observation:v4:b1fe1ce61cf9f6cbd34aed92eaf2ff48458604b2459680b57b33fe5f234c4957",
       "observed_at": "2026-10-19T15:37:07.778140331Z",
       "revision": {
@@ -781,18 +793,6 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:c5169444354de81601dfb9f2c9617e305b7bb34520c6a3f459ea18735adf6f39",
-      "observed_at": "2026-11-26T00:21:40.505837659Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:ba535f7de34dfbfc58e10390563f0a28399b8b4e7011c578ae3b39cca161253e"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:ba535f7de34dfbfc58e10390563f0a28399b8b4e7011c578ae3b39cca161253e"
-    },
-    {
-      "source": "providers",
       "observation_id": "observation:v4:c529a6f4bcbfa145876fcd346c77576ac90b5e78a238a20164c944640eec0c69",
       "observed_at": "2026-09-18T21:17:47.023038915Z",
       "revision": {
@@ -829,6 +829,18 @@
     },
     {
       "source": "providers",
+      "observation_id": "observation:v4:cb4520b7b35c2c0dd1468ba6de805d53bc247b475efd5fbd5fb753c076221527",
+      "observed_at": "2026-11-26T13:54:31.508864103Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
+    },
+    {
+      "source": "providers",
       "observation_id": "observation:v4:cc2c38043c932cfd8e07c94dc9ffb9dc0613569fe65d04d9e61c4cb3480e497c",
       "observed_at": "2026-10-16T22:51:46.232936379Z",
       "revision": {
@@ -841,20 +853,8 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:cd9835ee1ed86748dc96533ff4f74bca4c60467109bce46f2b5e40a8f86f113f",
-      "observed_at": "2026-10-20T04:49:28.045805302Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:fdd7724fd3466b88ac274ed10ceb56367abc5dcc7f728e2ae003ea07ae8b794d"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:fdd7724fd3466b88ac274ed10ceb56367abc5dcc7f728e2ae003ea07ae8b794d"
-    },
-    {
-      "source": "providers",
-      "observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
-      "observed_at": "2026-11-26T00:21:41.038151201Z",
+      "observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
+      "observed_at": "2026-11-26T13:54:32.481008961Z",
       "revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -865,15 +865,15 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
-      "observed_at": "2026-11-26T00:21:39.953623757Z",
+      "observation_id": "observation:v4:cd9835ee1ed86748dc96533ff4f74bca4c60467109bce46f2b5e40a8f86f113f",
+      "observed_at": "2026-10-20T04:49:28.045805302Z",
       "revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:fdd7724fd3466b88ac274ed10ceb56367abc5dcc7f728e2ae003ea07ae8b794d"
       },
       "completeness": "complete",
       "status": "succeeded",
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+      "evidence_checksum": "sha256:fdd7724fd3466b88ac274ed10ceb56367abc5dcc7f728e2ae003ea07ae8b794d"
     },
     {
       "source": "providers",
@@ -961,18 +961,6 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
-      "observed_at": "2026-11-26T00:21:40.045943292Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
-    },
-    {
-      "source": "providers",
       "observation_id": "observation:v4:e78df21321de072500074117f67bc9c78a837f4125fcae94069b5aa5febf2ba6",
       "observed_at": "2026-09-26T13:04:34.706665422Z",
       "revision": {
@@ -1009,15 +997,15 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:ee220b0a9c69f06791163dc4a00302bc147a07dadc100945fe95f040626aad0b",
-      "observed_at": "2026-11-26T00:21:39.874379856Z",
+      "observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
+      "observed_at": "2026-11-26T13:54:31.713444033Z",
       "revision": {
         "kind": "content_digest",
-        "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
       "completeness": "complete",
       "status": "succeeded",
-      "evidence_checksum": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
     },
     {
       "source": "providers",
@@ -1042,6 +1030,18 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:233fb0b1c4d90161f400e1784fefbd9927bba3d0d61b930a72368e8377eaa6ad"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:f00bc1b0410204e306cf323b52b9bd5f089440e7274cc75c22f4baf5b41ba536",
+      "observed_at": "2026-11-26T13:54:31.218013452Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:6dae4db6e41405cda87192a6980e427fc417637154746cd24a0b735fa26b37d5"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:6dae4db6e41405cda87192a6980e427fc417637154746cd24a0b735fa26b37d5"
     },
     {
       "source": "providers",
@@ -1093,6 +1093,18 @@
     },
     {
       "source": "providers",
+      "observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
+      "observed_at": "2026-11-26T13:54:31.527013675Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
+    },
+    {
+      "source": "providers",
       "observation_id": "observation:v4:f8f93cae688dc2cfce04e34b2a499434e75c8c24dc6d8a4020e167bec4ac0743",
       "observed_at": "2026-10-18T18:39:58.7767769Z",
       "revision": {
@@ -1102,6 +1114,18 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:09251a72a1e9fc6875111249cd349d0d90e8f30da1bb747d1d14499445943422"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:fab14cb3a1d671a5e95490361733550150700062ec763c333ade5577645a3bd2",
+      "observed_at": "2026-11-26T13:54:31.292568522Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:2bc8b5420400fcd4a98b3decd2329577e12e15ea8709532a1d4959109ee9a363"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:2bc8b5420400fcd4a98b3decd2329577e12e15ea8709532a1d4959109ee9a363"
     },
     {
       "source": "providers",
@@ -1158,7 +1182,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "deepseek-v4-flash-0731",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1172,7 +1196,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "deepseek-v4-flash-0731-us",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1186,7 +1210,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "deepseek-v4-pro-0813",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1200,7 +1224,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "deepseek-v4-pro-0813-us",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1214,7 +1238,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "deepseek-v4.1-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1228,7 +1252,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "deepseek-v4.1-flash-1017",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1242,7 +1266,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "glm-5.2-us",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1256,7 +1280,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "glm-5.3",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1270,7 +1294,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "kimi-k3",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1284,7 +1308,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "kimi-k3.1-pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1298,7 +1322,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen-flash-character",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1312,7 +1336,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen-image-3.0",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1326,7 +1350,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen-image-3.0-pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1340,7 +1364,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen-plus-character",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1368,7 +1392,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen3.7-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1382,7 +1406,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen3.7-flash-2026-07-15",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1396,7 +1420,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen3.8-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1410,7 +1434,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen3.8-max",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1424,7 +1448,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen3.8-max-0902",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1438,7 +1462,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen3.8-omni-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1452,7 +1476,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen4-max",
       "source": "providers",
-      "source_observation_id": "observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4",
+      "source_observation_id": "observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1466,7 +1490,7 @@
       "provider_id": "anthropic",
       "provider_model_id": "claude-fable-5-1",
       "source": "providers",
-      "source_observation_id": "observation:v4:ee220b0a9c69f06791163dc4a00302bc147a07dadc100945fe95f040626aad0b",
+      "source_observation_id": "observation:v4:cb4520b7b35c2c0dd1468ba6de805d53bc247b475efd5fbd5fb753c076221527",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
@@ -1480,7 +1504,7 @@
       "provider_id": "anthropic",
       "provider_model_id": "claude-fable-5-2",
       "source": "providers",
-      "source_observation_id": "observation:v4:ee220b0a9c69f06791163dc4a00302bc147a07dadc100945fe95f040626aad0b",
+      "source_observation_id": "observation:v4:cb4520b7b35c2c0dd1468ba6de805d53bc247b475efd5fbd5fb753c076221527",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
@@ -1494,7 +1518,7 @@
       "provider_id": "anthropic",
       "provider_model_id": "claude-haiku-5-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:ee220b0a9c69f06791163dc4a00302bc147a07dadc100945fe95f040626aad0b",
+      "source_observation_id": "observation:v4:cb4520b7b35c2c0dd1468ba6de805d53bc247b475efd5fbd5fb753c076221527",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
@@ -1508,7 +1532,7 @@
       "provider_id": "anthropic",
       "provider_model_id": "claude-opus-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:ee220b0a9c69f06791163dc4a00302bc147a07dadc100945fe95f040626aad0b",
+      "source_observation_id": "observation:v4:cb4520b7b35c2c0dd1468ba6de805d53bc247b475efd5fbd5fb753c076221527",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
@@ -1522,7 +1546,7 @@
       "provider_id": "anthropic",
       "provider_model_id": "claude-opus-5-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:ee220b0a9c69f06791163dc4a00302bc147a07dadc100945fe95f040626aad0b",
+      "source_observation_id": "observation:v4:cb4520b7b35c2c0dd1468ba6de805d53bc247b475efd5fbd5fb753c076221527",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
@@ -1536,7 +1560,7 @@
       "provider_id": "anthropic",
       "provider_model_id": "claude-sonnet-5-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:ee220b0a9c69f06791163dc4a00302bc147a07dadc100945fe95f040626aad0b",
+      "source_observation_id": "observation:v4:cb4520b7b35c2c0dd1468ba6de805d53bc247b475efd5fbd5fb753c076221527",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
@@ -2908,7 +2932,7 @@
       "provider_id": "cerebras",
       "provider_model_id": "qwen-3.8-27b",
       "source": "providers",
-      "source_observation_id": "observation:v4:226e81b705d39e3c7b35d7662af1a8fe9ab73a026bef8445ab0c274779194107",
+      "source_observation_id": "observation:v4:fab14cb3a1d671a5e95490361733550150700062ec763c333ade5577645a3bd2",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:2bc8b5420400fcd4a98b3decd2329577e12e15ea8709532a1d4959109ee9a363"
@@ -2936,12 +2960,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "BAAI/bge-m3-multi-8k",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -2964,12 +2988,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Bria/fibo-2.0",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -2978,12 +3002,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Bria/fibo_edit-1.5",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -2992,12 +3016,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Bria/remove_background_guided",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3006,12 +3030,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Lightricks/LTX-2.3-Fast",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3020,12 +3044,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Lightricks/LTX-2.3-Pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3034,12 +3058,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Lightricks/LTX-2.5-Fast",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3048,12 +3072,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Lightricks/LTX-2.5-Pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3062,12 +3086,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Qwen/Qwen3-ASR-0.6B",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3076,12 +3100,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Qwen/Qwen3-ASR-1.7B",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3104,12 +3128,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Qwen/Qwen3.8-27B",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3118,12 +3142,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Qwen/Qwen3.8-Flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3132,12 +3156,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Qwen/Qwen3.8-Max",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3146,12 +3170,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Qwen/Qwen4-Max",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3160,12 +3184,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "RadixArk/DaisyRose-27B",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3174,12 +3198,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "XiaomiMiMo/MiMo-V2.6-Flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3188,12 +3212,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "XiaomiMiMo/MiMo-V2.6-Pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3202,12 +3226,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "anthropic/claude-opus-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3216,12 +3240,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "anthropic/claude-opus-5-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3230,12 +3254,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "anthropic/claude-sonnet-5-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3244,12 +3268,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "deepseek-ai/DeepSeek-V4-Flash-0731",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3258,12 +3282,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3272,12 +3296,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "deepseek-ai/DeepSeek-V4-Pro-0813",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3286,12 +3310,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "deepseek-ai/DeepSeek-V4.1-Flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3300,12 +3324,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3314,12 +3338,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "google/gemini-3.7-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3328,12 +3352,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "google/gemma-4-31B-it-Ultra",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3356,12 +3380,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "google/nano-banana-2",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3370,12 +3394,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "google/nano-banana-2-lite",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3384,12 +3408,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "google/nano-banana-pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3440,12 +3464,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "inclusionAI/Ling-3.0-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3468,12 +3492,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "inclusionAI/Ling-3.0-flash-VL",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3494,14 +3518,28 @@
     {
       "code": "unresolved_model_reference",
       "provider_id": "deepinfra",
-      "provider_model_id": "meta-models/Muse-Glimmer-30B",
+      "provider_model_id": "inclusionAI/LingSante-3.1-air-VL",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "meta-models/Muse-Glimmer-30B",
+      "source": "providers",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
+      },
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3510,12 +3548,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "moonshotai/Kimi-K3",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3524,12 +3562,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "moonshotai/Kimi-K3.1-Pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3538,12 +3576,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "nvidia/NVIDIA-Nemotron-3.5-Lightning",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3552,12 +3590,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "nvidia/NVIDIA-Nemotron-3.5-Super-VL",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3566,12 +3604,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "openai/gpt-oss-120b-Ultra",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3608,12 +3646,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "tencent/Hy4",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3622,12 +3660,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "tencent/Hy4-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3664,12 +3702,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "thinkingmachines/Inkling-2-Mini",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3678,12 +3716,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "thinkingmachines/Inkling-2-Small",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3692,12 +3730,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "thinkingmachines/Inkling-Small",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3706,12 +3744,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "zai-org/GLM-5.3",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3720,12 +3758,12 @@
       "provider_id": "deepinfra",
       "provider_model_id": "zai-org/GLM-5.3-Flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188",
+      "source_observation_id": "observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c"
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
       },
-      "evidence_checksum": "sha256:31138d759ae0650fed3e3c0bac8a7c4e7e134c0ee36823635ba3566b4f3ff55c",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3734,7 +3772,7 @@
       "provider_id": "deepseek",
       "provider_model_id": "deepseek-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:c5169444354de81601dfb9f2c9617e305b7bb34520c6a3f459ea18735adf6f39",
+      "source_observation_id": "observation:v4:70c6a82871fbf75af3513dd68679b266885bbd7cd305bc3b54db21a40800d04b",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:ba535f7de34dfbfc58e10390563f0a28399b8b4e7011c578ae3b39cca161253e"
@@ -3790,12 +3828,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/deepseek-v4p1-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3804,12 +3842,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/deepseek-v4p1-flash-1017",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3818,12 +3856,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/ember-1",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3832,12 +3870,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/glm-5p3",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3846,12 +3884,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/glm-5p3-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3860,12 +3898,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/hy4-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3874,12 +3912,26 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/inkling",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/inkling-2-mini",
+      "source": "providers",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
+      },
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3888,12 +3940,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/inkling-2-small",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3916,12 +3968,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/kimi-k3",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3930,12 +3982,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/kimi-k3p1-pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3958,12 +4010,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/minimax-m3",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -3972,12 +4024,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/minimax-m3p1-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4000,12 +4052,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/muse-spark-open",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4014,12 +4066,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/nemotron-3-ultra-nvfp4",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4028,12 +4080,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4042,12 +4094,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/qwen3-embedding-8b",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4056,12 +4108,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/qwen3-reranker-8b",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4084,12 +4136,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/qwen3p8-2p4t-a95b",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4098,12 +4150,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/qwen3p8-max",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4112,12 +4164,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/qwen4-max",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4126,12 +4178,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/rune",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4140,12 +4192,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-flex",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4154,12 +4206,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-spot",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4168,12 +4220,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4182,12 +4234,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/deepseek-v4p1-flash-spot",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4196,12 +4248,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/glm-5p2-fast",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4210,12 +4262,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/glm-5p3-fast",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4224,12 +4276,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/glm-5p3-flash-flex",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4238,12 +4290,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/glm-5p3-flex",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4252,12 +4304,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/glm-5p3-spot",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4266,12 +4318,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/kimi-k3-fast",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4280,12 +4332,26 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/kimi-k3-spot",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/routers/kimi-k3p1-pro-ultrafast",
+      "source": "providers",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
+      },
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4294,12 +4360,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/rune",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4308,12 +4374,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/spot-deepseek-v4-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4322,12 +4388,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "auto",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4336,12 +4402,12 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "firerouter/auto",
       "source": "providers",
-      "source_observation_id": "observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0",
+      "source_observation_id": "observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd"
+        "value": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6"
       },
-      "evidence_checksum": "sha256:ebc9962f9832046112bbab41e716c76ad9793808ef9ece8828423d85412638fd",
+      "evidence_checksum": "sha256:2be8804f7fb8f14273fdf1b096dd0cbc0e416ce4e03f26cb4af2ca08a4c877a6",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4350,7 +4416,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "antigravity-preview-09-2026",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4364,7 +4430,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "antigravity-preview-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4378,7 +4444,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.5-flash-lite",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4392,7 +4458,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.5-transcribe",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4406,7 +4472,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.5-transcribe-live",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4420,7 +4486,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.6-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4434,7 +4500,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.7-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4448,7 +4514,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.8-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4462,7 +4528,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.8-flash-lite-tts",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4476,7 +4542,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.8-flash-tts",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4490,7 +4556,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.8-live",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4504,7 +4570,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.8-live-extended-thinking",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4518,7 +4584,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-4-argon",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4532,7 +4598,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-4-carbon",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4546,7 +4612,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-4-hydrogen",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4560,7 +4626,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-4-neon",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4574,7 +4640,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-decision-1",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4588,7 +4654,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-nano-banana-2.1",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4602,7 +4668,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-omni-1.1-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4616,7 +4682,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-omni-1.2-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4630,7 +4696,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-robotics-er-2-preview",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4644,7 +4710,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-robotics-er-2-streaming-preview",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4658,7 +4724,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "genie-4",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4672,7 +4738,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "lyria-3.5",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4686,7 +4752,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "lyria-realtime-exp",
       "source": "providers",
-      "source_observation_id": "observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50",
+      "source_observation_id": "observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4700,7 +4766,7 @@
       "provider_id": "groq",
       "provider_model_id": "qwen/qwen3.8-27b",
       "source": "providers",
-      "source_observation_id": "observation:v4:5591d1904bfb0e47b4b82c59eebc1c136fecaf9bb93eacd0b695b658bde7eaff",
+      "source_observation_id": "observation:v4:f00bc1b0410204e306cf323b52b9bd5f089440e7274cc75c22f4baf5b41ba536",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:6dae4db6e41405cda87192a6980e427fc417637154746cd24a0b735fa26b37d5"
@@ -4742,12 +4808,12 @@
       "provider_id": "mistral",
       "provider_model_id": "codestral-2508",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4756,12 +4822,12 @@
       "provider_id": "mistral",
       "provider_model_id": "codestral-embed",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4770,12 +4836,12 @@
       "provider_id": "mistral",
       "provider_model_id": "codestral-embed-2505",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4784,12 +4850,12 @@
       "provider_id": "mistral",
       "provider_model_id": "codestral-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4826,12 +4892,12 @@
       "provider_id": "mistral",
       "provider_model_id": "magistral-medium-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4840,12 +4906,12 @@
       "provider_id": "mistral",
       "provider_model_id": "magistral-small-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4854,12 +4920,12 @@
       "provider_id": "mistral",
       "provider_model_id": "ministral-14b-2512",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4868,12 +4934,12 @@
       "provider_id": "mistral",
       "provider_model_id": "ministral-14b-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4882,12 +4948,12 @@
       "provider_id": "mistral",
       "provider_model_id": "ministral-3b-2512",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4896,12 +4962,12 @@
       "provider_id": "mistral",
       "provider_model_id": "ministral-3b-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4910,12 +4976,12 @@
       "provider_id": "mistral",
       "provider_model_id": "ministral-8b-2512",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4924,12 +4990,12 @@
       "provider_id": "mistral",
       "provider_model_id": "ministral-8b-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4938,12 +5004,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-code-fim-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4952,12 +5018,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-code-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4966,12 +5032,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-embed",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4980,12 +5046,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-embed-2312",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4994,12 +5060,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-medium",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5008,12 +5074,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-medium-2604",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5022,12 +5088,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-medium-3",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5036,12 +5102,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-medium-3-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5050,12 +5116,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-medium-3.5",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5064,12 +5130,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-medium-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5078,12 +5144,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-moderation-2603",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5092,12 +5158,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-ocr-2512",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5106,12 +5172,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-ocr-3",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5120,12 +5186,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-ocr-3-0",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5134,12 +5200,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-ocr-4",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5148,12 +5214,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-ocr-4-1",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5162,12 +5228,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-ocr-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5176,12 +5242,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-small-2603",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5190,12 +5256,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-small-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5204,12 +5270,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-vibe-cli-fast",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5218,12 +5284,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-vibe-cli-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5232,12 +5298,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-vibe-cli-with-tools",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5246,12 +5312,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-2602",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5260,12 +5326,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5274,12 +5340,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-realtime-2602",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5288,12 +5354,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-realtime-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5302,12 +5368,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-transcribe-3",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5316,12 +5382,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-transcribe-3-0",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5330,12 +5396,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-transcribe-realtime-2602",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5344,12 +5410,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-transcribe-realtime-3",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5358,12 +5424,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-transcribe-realtime-3-0",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5372,12 +5438,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-tts-2603",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5386,12 +5452,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-tts-3",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5400,12 +5466,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-tts-3-0",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5414,12 +5480,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-tts-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5428,12 +5494,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-small-2507",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5442,12 +5508,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-small-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5456,12 +5522,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-small-transcribe-3",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5470,12 +5536,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-small-transcribe-3-0",
       "source": "providers",
-      "source_observation_id": "observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57",
+      "source_observation_id": "observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6"
+        "value": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a"
       },
-      "evidence_checksum": "sha256:1c7e6f23cea20c55b17df7c11cbc69bc0be2dcbddd412f558adaac633be384d6",
+      "evidence_checksum": "sha256:22290aa080fa9dc9f406449f36ca5254c5f3d24fcd0f5d780ea09fefdda0b02a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5484,12 +5550,12 @@
       "provider_id": "moonshot-ai",
       "provider_model_id": "kimi-k3.1-pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:3905936dcfa8e69af0dc99bb1b151a5e5956833188ea0baae285ea216cbfd770",
+      "source_observation_id": "observation:v4:b143beda106f7b79d8448932dc2b07ef8f3d5e6be9499042873abc65677e6587",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:330db243d31011af616399f1aa21aad7493e162c101fbb154491fb4dfdfa8b04"
+        "value": "sha256:413b60782780d2ba872a14d2eb15f588558b9193fc7ef89fd31de6d3dddac7b1"
       },
-      "evidence_checksum": "sha256:330db243d31011af616399f1aa21aad7493e162c101fbb154491fb4dfdfa8b04",
+      "evidence_checksum": "sha256:413b60782780d2ba872a14d2eb15f588558b9193fc7ef89fd31de6d3dddac7b1",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5498,7 +5564,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6-astra",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5512,7 +5578,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6-astra-healthcare",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5526,7 +5592,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6-luna",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5540,7 +5606,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6-sol",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5554,7 +5620,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6.1-sol-healthcare",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5568,7 +5634,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6.1-terra",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5582,7 +5648,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6.2-astra",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5596,7 +5662,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6.2-astra-healthcare",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5610,7 +5676,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6.2-sol",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5624,7 +5690,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6.2-sol-healthcare",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5638,7 +5704,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-image-2.5-flare",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5652,7 +5718,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-image-2.5-flare-2026-09-08",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5666,7 +5732,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-image-2.5-sunburst",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5680,7 +5746,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-image-2.5-sunburst-2026-09-08",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5694,7 +5760,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-image-2.6-flare",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5708,7 +5774,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-image-2.6-sunburst",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5722,7 +5788,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-live-1",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5736,7 +5802,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-live-1.1",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5750,7 +5816,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-live-transcribe",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5764,7 +5830,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-transcribe",
       "source": "providers",
-      "source_observation_id": "observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110",
+      "source_observation_id": "observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
