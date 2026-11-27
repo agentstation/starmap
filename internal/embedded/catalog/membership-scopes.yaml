@@ -7,8 +7,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:e0e0d4fee387df89a1576b32a52692d059bc43d62c03416f6ba3032827cce3a4
-    observed_at: "2026-11-26T00:21:40.045943292Z"
+    observation_id: observation:v4:0319830aab474776120c78219eb21649676c0da9a87cba96936b2fae4f44d2ec
+    observed_at: "2026-11-26T13:54:31.353689799Z"
     model_ids:
     - deepseek-v4-flash-0731
     - deepseek-v4-flash-0731-us
@@ -83,8 +83,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:ee220b0a9c69f06791163dc4a00302bc147a07dadc100945fe95f040626aad0b
-    observed_at: "2026-11-26T00:21:39.874379856Z"
+    observation_id: observation:v4:cb4520b7b35c2c0dd1468ba6de805d53bc247b475efd5fbd5fb753c076221527
+    observed_at: "2026-11-26T13:54:31.508864103Z"
     model_ids:
     - claude-fable-5
     - claude-fable-5-1
@@ -111,8 +111,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:226e81b705d39e3c7b35d7662af1a8fe9ab73a026bef8445ab0c274779194107
-    observed_at: "2026-11-26T00:21:39.773694414Z"
+    observation_id: observation:v4:fab14cb3a1d671a5e95490361733550150700062ec763c333ade5577645a3bd2
+    observed_at: "2026-11-26T13:54:31.292568522Z"
     model_ids:
     - gpt-oss-120b
     - qwen-3.8-27b
@@ -126,8 +126,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:fe5daffa09d9950a787cc5effdd07a4f3b5b7a49ab45aaa7cbec57280af7c188
-    observed_at: "2026-11-26T00:21:40.585394454Z"
+    observation_id: observation:v4:ebbd5a0b702d028ef6ab13de50f7ccfc21c3cc09ad829c22926d0198ea3a91a0
+    observed_at: "2026-11-26T13:54:31.713444033Z"
     model_ids:
     - BAAI/bge-base-en-v1.5
     - BAAI/bge-en-icl
@@ -145,11 +145,8 @@
     - Bria/fibo_edit-1.5
     - Bria/remove_background
     - Bria/remove_background_guided
-    - ByteDance/Seed-1.8
     - ByteDance/Seed-2.0-code
-    - ByteDance/Seed-2.0-mini
     - ByteDance/Seed-2.0-pro
-    - ByteDance/Seedance-1.5-Pro
     - ByteDance/Seedance-2.0
     - ByteDance/Seedream-4
     - Lightricks/LTX-2.3-Fast
@@ -162,7 +159,6 @@
     - Pixverse/Pixverse-T2V-HD
     - PrunaAI/p-image
     - PrunaAI/p-video
-    - Qwen/Qwen-Image-Max
     - Qwen/Qwen2.5-72B-Instruct
     - Qwen/Qwen3-14B
     - Qwen/Qwen3-235B-A22B-Instruct-2507
@@ -251,9 +247,9 @@
     - google/veo-3.1
     - google/veo-3.1-fast
     - hexgrad/Kokoro-82M
-    - ibm-granite/granite-4.2-8b
     - inclusionAI/Ling-3.0-flash
     - inclusionAI/Ling-3.0-flash-VL
+    - inclusionAI/LingSante-3.1-air-VL
     - intfloat/e5-base-v2
     - intfloat/e5-large-v2
     - intfloat/multilingual-e5-large
@@ -319,8 +315,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:c5169444354de81601dfb9f2c9617e305b7bb34520c6a3f459ea18735adf6f39
-    observed_at: "2026-11-26T00:21:40.505837659Z"
+    observation_id: observation:v4:70c6a82871fbf75af3513dd68679b266885bbd7cd305bc3b54db21a40800d04b
+    observed_at: "2026-11-26T13:54:32.054313076Z"
     model_ids:
     - deepseek-flash
     - deepseek-v4-pro
@@ -334,8 +330,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:7530324f709391f1a8155cfe45f423a0304447137e4dbb6e840213bc121ed9e0
-    observed_at: "2026-11-26T00:21:40.064321035Z"
+    observation_id: observation:v4:2d145fd86ae94b34a8feee5467516a8d03ae1ac252c520df17eb8612883c772a
+    observed_at: "2026-11-26T13:54:31.855911548Z"
     model_ids:
     - accounts/fireworks/models/deepseek-v4p1-flash
     - accounts/fireworks/models/deepseek-v4p1-flash-1017
@@ -345,6 +341,7 @@
     - accounts/fireworks/models/gpt-oss-120b
     - accounts/fireworks/models/hy4-flash
     - accounts/fireworks/models/inkling
+    - accounts/fireworks/models/inkling-2-mini
     - accounts/fireworks/models/inkling-2-small
     - accounts/fireworks/models/kimi-k3
     - accounts/fireworks/models/kimi-k3p1-pro
@@ -370,6 +367,7 @@
     - accounts/fireworks/routers/glm-5p3-spot
     - accounts/fireworks/routers/kimi-k3-fast
     - accounts/fireworks/routers/kimi-k3-spot
+    - accounts/fireworks/routers/kimi-k3p1-pro-ultrafast
     - accounts/fireworks/routers/rune
     - accounts/fireworks/routers/spot-deepseek-v4-flash
     - auto
@@ -384,8 +382,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:07c2112b59973972a6673bf4047ed402315b6ce48e013d0d0bbbb10192f09d50
-    observed_at: "2026-11-26T00:21:39.809466996Z"
+    observation_id: observation:v4:19a6b0914a849b86dcff2c2d4cca4c993c228100c89b4d8b626cb1fde73805cb
+    observed_at: "2026-11-26T13:54:31.202804818Z"
     model_ids:
     - antigravity-preview-05-2026
     - antigravity-preview-09-2026
@@ -462,8 +460,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:5591d1904bfb0e47b4b82c59eebc1c136fecaf9bb93eacd0b695b658bde7eaff
-    observed_at: "2026-11-26T00:21:40.177962358Z"
+    observation_id: observation:v4:f00bc1b0410204e306cf323b52b9bd5f089440e7274cc75c22f4baf5b41ba536
+    observed_at: "2026-11-26T13:54:31.218013452Z"
     model_ids:
     - allam-2-7b
     - canopylabs/orpheus-arabic-saudi
@@ -503,8 +501,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:d1392fae505a0047823ee6187cd44ddd9b6fa2fb9f281187350862f90642ef57
-    observed_at: "2026-11-26T00:21:39.953623757Z"
+    observation_id: observation:v4:f7de2539d729093c79955eb52479eac3714eea50a090f793d2d89a09b4b51d24
+    observed_at: "2026-11-26T13:54:31.527013675Z"
     model_ids:
     - codestral-2508
     - codestral-embed
@@ -567,8 +565,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:3905936dcfa8e69af0dc99bb1b151a5e5956833188ea0baae285ea216cbfd770
-    observed_at: "2026-11-26T00:21:40.221331645Z"
+    observation_id: observation:v4:b143beda106f7b79d8448932dc2b07ef8f3d5e6be9499042873abc65677e6587
+    observed_at: "2026-11-26T13:54:31.461528337Z"
     model_ids:
     - kimi-k2.6
     - kimi-k2.7-code
@@ -585,8 +583,8 @@
   public: true
   authority: scope
   inventory:
-    observation_id: observation:v4:ce64191c65687f4bbea5df6ac93bb597bf87d7b404429c8a3098c82c87124110
-    observed_at: "2026-11-26T00:21:41.038151201Z"
+    observation_id: observation:v4:cc52dc8a4677cff17aa7484464d34defba2e1c35c13555dc79df7aa10bf4c000
+    observed_at: "2026-11-26T13:54:32.481008961Z"
     model_ids:
     - chat-latest
     - chatgpt-image-latest
