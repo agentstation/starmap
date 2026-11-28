@@ -1,16 +1,16 @@
 {
   "manifest_version": 2,
   "schema_version": 19,
-  "generation_id": "bindings-fefc92fa8bb1dd136d8986d1a7223eabae68ff3305a0d238cb3ed3256b4a37bb.local.243279259f46",
-  "generated_at": "2026-11-27T13:52:25.578118485Z",
+  "generation_id": "bindings-3e96ca8f2fcf8d6605b60bd0375549d5d2a08ba4feb775521f8d17d6f0ad8a2e.local.a94fc8eb5190",
+  "generated_at": "2026-11-28T00:04:53.053959377Z",
   "payload": {
-    "checksum": "sha256:349bfab7b2024d46210beaa01adeb5c10314ca181dc9c2d8911e4780a2652cff",
-    "size_bytes": 26871353,
+    "checksum": "sha256:85b48adb7192a65b5f59f2e5b248dd8545d3752eed7fac5cfa208747460b7ec8",
+    "size_bytes": 26876273,
     "media_type": "application/vnd.agentstation.starmap.catalog+json"
   },
   "validation": {
     "validator_version": "starmap-v1",
-    "validated_at": "2026-11-27T13:52:25.578118485Z",
+    "validated_at": "2026-11-28T00:04:53.053959377Z",
     "status": "passed",
     "error_count": 0,
     "warning_count": 0,
@@ -21,7 +21,7 @@
       }
     ]
   },
-  "sync_run_id": "github-46010348964",
+  "sync_run_id": "github-46085642186",
   "source_observations": [
     {
       "source": "models_dev_http",
@@ -241,15 +241,15 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
-      "observed_at": "2026-11-27T13:52:23.801819024Z",
+      "observation_id": "observation:v4:2e8986f0af81ff4f683cd3e0af48e25c024270c0e1bd71bf2b11ea044f649cca",
+      "observed_at": "2026-11-28T00:04:51.761971551Z",
       "revision": {
         "kind": "content_digest",
-        "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
+        "value": "sha256:ba535f7de34dfbfc58e10390563f0a28399b8b4e7011c578ae3b39cca161253e"
       },
       "completeness": "complete",
       "status": "succeeded",
-      "evidence_checksum": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
+      "evidence_checksum": "sha256:ba535f7de34dfbfc58e10390563f0a28399b8b4e7011c578ae3b39cca161253e"
     },
     {
       "source": "providers",
@@ -289,6 +289,18 @@
     },
     {
       "source": "providers",
+      "observation_id": "observation:v4:3569ccbb685cb21606408fc046d5b75457efee7e1f01729add0ad3da1fe21e7c",
+      "observed_at": "2026-11-28T00:04:50.962295389Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:2bc8b5420400fcd4a98b3decd2329577e12e15ea8709532a1d4959109ee9a363"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:2bc8b5420400fcd4a98b3decd2329577e12e15ea8709532a1d4959109ee9a363"
+    },
+    {
+      "source": "providers",
       "observation_id": "observation:v4:3a4d704a3957ed1f602c6a031151bc46f28ed673eeb196412b4d630a7753adf8",
       "observed_at": "2026-10-06T11:17:00.776582306Z",
       "revision": {
@@ -298,6 +310,18 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:a1b6b48e351f208c18152372582c45c64e84e9891bcb82742d439232669de16c"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
+      "observed_at": "2026-11-28T00:04:51.290044604Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
     },
     {
       "source": "providers",
@@ -322,18 +346,6 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:5bf2de1e3db64abb5c8f9460204256e9d515ef655b2d943de0adbf0e6e59ad0d"
-    },
-    {
-      "source": "providers",
-      "observation_id": "observation:v4:40c8ec0418445af474e88f61d4a187363d894ffc0080f1ea7f8f7d29590a89fd",
-      "observed_at": "2026-11-27T13:52:23.745116887Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:2bc8b5420400fcd4a98b3decd2329577e12e15ea8709532a1d4959109ee9a363"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:2bc8b5420400fcd4a98b3decd2329577e12e15ea8709532a1d4959109ee9a363"
     },
     {
       "source": "providers",
@@ -409,18 +421,6 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
-      "observed_at": "2026-11-27T13:52:24.16885135Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
-    },
-    {
-      "source": "providers",
       "observation_id": "observation:v4:54753111f88e421ca385a8e3deb7a536983b86744e4349c598ff8567d2356cd3",
       "observed_at": "2026-10-10T20:05:39.583993183Z",
       "revision": {
@@ -430,6 +430,18 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:5c0cc99fa6f85db1b07fbdc3aab5aa6ef49b122a8e6e44ac62665695158387ec"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
+      "observed_at": "2026-11-28T00:04:51.285513705Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
     },
     {
       "source": "providers",
@@ -481,6 +493,18 @@
     },
     {
       "source": "providers",
+      "observation_id": "observation:v4:5dbc6d06cc6975b406dab981772dfbb013daa3c6a5ebbe3acef58dca8874f453",
+      "observed_at": "2026-11-28T00:04:51.049391833Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
+    },
+    {
+      "source": "providers",
       "observation_id": "observation:v4:607580c5d161f4295506efc7305ebbbf01cb6b42282fe772c85b172c456ebb08",
       "observed_at": "2026-09-26T13:04:35.544847523Z",
       "revision": {
@@ -493,15 +517,15 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:6482aeea18e09fa56618f5d9157be5ec3c132ea0c09fc92a28bc3ad83e6a071b",
-      "observed_at": "2026-11-27T13:52:24.026254823Z",
+      "observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
+      "observed_at": "2026-11-28T00:04:51.829646059Z",
       "revision": {
         "kind": "content_digest",
-        "value": "sha256:911a9ccc76a32f530875f899b42ebbb4bcd9a7f3a449371cec735faca99adb43"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
       "completeness": "complete",
       "status": "succeeded",
-      "evidence_checksum": "sha256:911a9ccc76a32f530875f899b42ebbb4bcd9a7f3a449371cec735faca99adb43"
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
     },
     {
       "source": "providers",
@@ -625,18 +649,6 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:7ede6c2a2a5652cfc59cda963a0dd07a6d900d7200ea81a1e473fc10a1867a5b",
-      "observed_at": "2026-11-27T13:52:23.789088671Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
-    },
-    {
-      "source": "providers",
       "observation_id": "observation:v4:835a2d39fa31d7a168ef21914d9014cab943d39ac6732dc770f99800f5dc9dae",
       "observed_at": "2026-10-09T20:54:47.525955545Z",
       "revision": {
@@ -709,6 +721,18 @@
     },
     {
       "source": "providers",
+      "observation_id": "observation:v4:90f28a743ef096b72bab7866b86dfc4cc61f3784743eaeefcb2375c263e63d5a",
+      "observed_at": "2026-11-28T00:04:51.556839107Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:c49ec7c186bb4435ee149620917000f0c61941c29c1e965e0d7e57981f19cf4e"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:c49ec7c186bb4435ee149620917000f0c61941c29c1e965e0d7e57981f19cf4e"
+    },
+    {
+      "source": "providers",
       "observation_id": "observation:v4:94307fa9a1cef3ae54dc40dc4ed7b4beadecc6145dab2d6eea1d6a6c9c52edda",
       "observed_at": "2026-09-18T21:17:46.847045947Z",
       "revision": {
@@ -742,18 +766,6 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:93b562657af23dfcb10c8ca119cfc8b82fe684ace2be71dfd66520477211e6fb"
-    },
-    {
-      "source": "providers",
-      "observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
-      "observed_at": "2026-11-27T13:52:23.68396036Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
     },
     {
       "source": "providers",
@@ -805,30 +817,6 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
-      "observed_at": "2026-11-27T13:52:24.41663066Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
-    },
-    {
-      "source": "providers",
-      "observation_id": "observation:v4:c46982c0dcbc2ea82678dcaa5fdb186d0c6a2296835dbfd9244f6fa85fce0721",
-      "observed_at": "2026-11-27T13:52:24.451389132Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:ba535f7de34dfbfc58e10390563f0a28399b8b4e7011c578ae3b39cca161253e"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:ba535f7de34dfbfc58e10390563f0a28399b8b4e7011c578ae3b39cca161253e"
-    },
-    {
-      "source": "providers",
       "observation_id": "observation:v4:c529a6f4bcbfa145876fcd346c77576ac90b5e78a238a20164c944640eec0c69",
       "observed_at": "2026-09-18T21:17:47.023038915Z",
       "revision": {
@@ -850,6 +838,18 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:6bf727fa08bbc580076fba05e927f9e92bdfb980c4af3309a55f14207a7851b6"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
+      "observed_at": "2026-11-28T00:04:51.879735742Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
     },
     {
       "source": "providers",
@@ -886,6 +886,18 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:fdd7724fd3466b88ac274ed10ceb56367abc5dcc7f728e2ae003ea07ae8b794d"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
+      "observed_at": "2026-11-28T00:04:51.036406443Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
     },
     {
       "source": "providers",
@@ -973,18 +985,6 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
-      "observed_at": "2026-11-27T13:52:23.836465287Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
-    },
-    {
-      "source": "providers",
       "observation_id": "observation:v4:e78df21321de072500074117f67bc9c78a837f4125fcae94069b5aa5febf2ba6",
       "observed_at": "2026-09-26T13:04:34.706665422Z",
       "revision": {
@@ -1021,6 +1021,18 @@
     },
     {
       "source": "providers",
+      "observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
+      "observed_at": "2026-11-28T00:04:52.147117934Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
+    },
+    {
+      "source": "providers",
       "observation_id": "observation:v4:ee663ba4e2cdd9d3b31ceb699326bfe6b9d7891efecdd9f371539e4dd7581880",
       "observed_at": "2026-10-14T23:15:01.038320781Z",
       "revision": {
@@ -1030,6 +1042,18 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:30a2f211e5a89286d43343291bc5709d9b13638de190659340f46fc4026b3ca6"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:eefff041102bf76bd87deea35ac5b7024cb3a2b334fd319c522e3eaec14bfc4f",
+      "observed_at": "2026-11-28T00:04:51.099372286Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:6dae4db6e41405cda87192a6980e427fc417637154746cd24a0b735fa26b37d5"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:6dae4db6e41405cda87192a6980e427fc417637154746cd24a0b735fa26b37d5"
     },
     {
       "source": "providers",
@@ -1066,18 +1090,6 @@
       "completeness": "complete",
       "status": "succeeded",
       "evidence_checksum": "sha256:033b4687d89ea2b37e1e8e12bf7f0fe8d26e7cf9b8859f13858e0e010d024032"
-    },
-    {
-      "source": "providers",
-      "observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
-      "observed_at": "2026-11-27T13:52:24.691836688Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
     },
     {
       "source": "providers",
@@ -1129,18 +1141,6 @@
     },
     {
       "source": "providers",
-      "observation_id": "observation:v4:fc1a1deaca3cae750059f45f6879fc5a65d62e9ec33ac560b96c1f28dee09193",
-      "observed_at": "2026-11-27T13:52:23.774899053Z",
-      "revision": {
-        "kind": "content_digest",
-        "value": "sha256:6dae4db6e41405cda87192a6980e427fc417637154746cd24a0b735fa26b37d5"
-      },
-      "completeness": "complete",
-      "status": "succeeded",
-      "evidence_checksum": "sha256:6dae4db6e41405cda87192a6980e427fc417637154746cd24a0b735fa26b37d5"
-    },
-    {
-      "source": "providers",
       "observation_id": "observation:v4:fc1a5d7fdda47df63e1d85c9da8038b9dac4f140b95ab37bb38f6f1dd4720574",
       "observed_at": "2026-09-20T13:03:27.912833874Z",
       "revision": {
@@ -1182,7 +1182,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "deepseek-v4-flash-0731",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1196,7 +1196,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "deepseek-v4-flash-0731-us",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1210,7 +1210,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "deepseek-v4-pro-0813",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1224,7 +1224,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "deepseek-v4-pro-0813-us",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1238,7 +1238,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "deepseek-v4.1-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1252,7 +1252,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "deepseek-v4.1-flash-1017",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1266,7 +1266,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "glm-5.2-us",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1280,7 +1280,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "glm-5.3",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1294,7 +1294,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "kimi-k3",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1308,7 +1308,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "kimi-k3.1-pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1322,7 +1322,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen-flash-character",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1336,7 +1336,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen-image-3.0",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1350,7 +1350,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen-image-3.0-pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1364,7 +1364,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen-plus-character",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1392,7 +1392,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen3.7-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1406,7 +1406,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen3.7-flash-2026-07-15",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1420,7 +1420,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen3.8-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1434,7 +1434,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen3.8-max",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1448,7 +1448,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen3.8-max-0902",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1462,7 +1462,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen3.8-omni-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1476,7 +1476,7 @@
       "provider_id": "alibaba",
       "provider_model_id": "qwen4-max",
       "source": "providers",
-      "source_observation_id": "observation:v4:4d3ae9a22bae1cde58fec7b57e8c9ff3a1b02bf735b862f0fd64f3d40d555b74",
+      "source_observation_id": "observation:v4:c8b27fdc526be16bd7d1bab46588021bb3f5b7250f16968e91959041c745dde6",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b1d169d909542ce50f49eb768f25323e929804d70b1fab473f0a84ce3fc29de"
@@ -1490,7 +1490,7 @@
       "provider_id": "anthropic",
       "provider_model_id": "claude-fable-5-1",
       "source": "providers",
-      "source_observation_id": "observation:v4:7ede6c2a2a5652cfc59cda963a0dd07a6d900d7200ea81a1e473fc10a1867a5b",
+      "source_observation_id": "observation:v4:5dbc6d06cc6975b406dab981772dfbb013daa3c6a5ebbe3acef58dca8874f453",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
@@ -1504,7 +1504,7 @@
       "provider_id": "anthropic",
       "provider_model_id": "claude-fable-5-2",
       "source": "providers",
-      "source_observation_id": "observation:v4:7ede6c2a2a5652cfc59cda963a0dd07a6d900d7200ea81a1e473fc10a1867a5b",
+      "source_observation_id": "observation:v4:5dbc6d06cc6975b406dab981772dfbb013daa3c6a5ebbe3acef58dca8874f453",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
@@ -1518,7 +1518,7 @@
       "provider_id": "anthropic",
       "provider_model_id": "claude-haiku-5-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:7ede6c2a2a5652cfc59cda963a0dd07a6d900d7200ea81a1e473fc10a1867a5b",
+      "source_observation_id": "observation:v4:5dbc6d06cc6975b406dab981772dfbb013daa3c6a5ebbe3acef58dca8874f453",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
@@ -1532,7 +1532,7 @@
       "provider_id": "anthropic",
       "provider_model_id": "claude-opus-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:7ede6c2a2a5652cfc59cda963a0dd07a6d900d7200ea81a1e473fc10a1867a5b",
+      "source_observation_id": "observation:v4:5dbc6d06cc6975b406dab981772dfbb013daa3c6a5ebbe3acef58dca8874f453",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
@@ -1546,7 +1546,7 @@
       "provider_id": "anthropic",
       "provider_model_id": "claude-opus-5-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:7ede6c2a2a5652cfc59cda963a0dd07a6d900d7200ea81a1e473fc10a1867a5b",
+      "source_observation_id": "observation:v4:5dbc6d06cc6975b406dab981772dfbb013daa3c6a5ebbe3acef58dca8874f453",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
@@ -1560,7 +1560,7 @@
       "provider_id": "anthropic",
       "provider_model_id": "claude-sonnet-5-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:7ede6c2a2a5652cfc59cda963a0dd07a6d900d7200ea81a1e473fc10a1867a5b",
+      "source_observation_id": "observation:v4:5dbc6d06cc6975b406dab981772dfbb013daa3c6a5ebbe3acef58dca8874f453",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:8b04e4d10f2821fe07f9f359fec9c2b0440705626d5510e75e83d03189f2435d"
@@ -2932,7 +2932,7 @@
       "provider_id": "cerebras",
       "provider_model_id": "qwen-3.8-27b",
       "source": "providers",
-      "source_observation_id": "observation:v4:40c8ec0418445af474e88f61d4a187363d894ffc0080f1ea7f8f7d29590a89fd",
+      "source_observation_id": "observation:v4:3569ccbb685cb21606408fc046d5b75457efee7e1f01729add0ad3da1fe21e7c",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:2bc8b5420400fcd4a98b3decd2329577e12e15ea8709532a1d4959109ee9a363"
@@ -2960,7 +2960,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "BAAI/bge-m3-multi-8k",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -2988,7 +2988,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Bria/fibo-2.0",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3002,7 +3002,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Bria/fibo_edit-1.5",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3016,7 +3016,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Bria/remove_background_guided",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3030,7 +3030,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Lightricks/LTX-2.3-Fast",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3044,7 +3044,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Lightricks/LTX-2.3-Pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3058,7 +3058,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Lightricks/LTX-2.5-Fast",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3072,7 +3072,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Lightricks/LTX-2.5-Pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3086,7 +3086,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Qwen/Qwen3-ASR-0.6B",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3100,7 +3100,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Qwen/Qwen3-ASR-1.7B",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3128,7 +3128,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Qwen/Qwen3.8-27B",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3142,7 +3142,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Qwen/Qwen3.8-Flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3156,7 +3156,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Qwen/Qwen3.8-Max",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3170,7 +3170,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "Qwen/Qwen4-Max",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3184,7 +3184,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "RadixArk/DaisyRose-27B",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3198,7 +3198,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "XiaomiMiMo/MiMo-V2.6-Flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3212,7 +3212,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "XiaomiMiMo/MiMo-V2.6-Pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3226,7 +3226,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "anthropic/claude-opus-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3240,7 +3240,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "anthropic/claude-opus-5-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3254,7 +3254,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "anthropic/claude-sonnet-5-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3268,7 +3268,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "deepseek-ai/DeepSeek-V4-Flash-0731",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3282,7 +3282,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3296,7 +3296,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "deepseek-ai/DeepSeek-V4-Pro-0813",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3310,7 +3310,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "deepseek-ai/DeepSeek-V4.1-Flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3324,7 +3324,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3338,7 +3338,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "google/gemini-3.7-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3352,7 +3352,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "google/gemma-4-31B-it-Ultra",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3380,7 +3380,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "google/nano-banana-2",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3394,7 +3394,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "google/nano-banana-2-lite",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3408,7 +3408,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "google/nano-banana-pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3464,7 +3464,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "inclusionAI/Ling-3.0-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3492,7 +3492,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "inclusionAI/Ling-3.0-flash-VL",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3520,7 +3520,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "inclusionAI/LingSante-3.1-air-VL",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3534,7 +3534,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "meta-models/Muse-Glimmer-30B",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3548,7 +3548,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "moonshotai/Kimi-K3",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3562,7 +3562,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "moonshotai/Kimi-K3.1-Pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3576,7 +3576,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "nvidia/NVIDIA-Nemotron-3.5-Lightning",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3590,7 +3590,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "nvidia/NVIDIA-Nemotron-3.5-Super-VL",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3604,7 +3604,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "openai/gpt-oss-120b-Ultra",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3646,7 +3646,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "tencent/Hy4",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3660,7 +3660,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "tencent/Hy4-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3702,7 +3702,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "thinkingmachines/Inkling-2-Mini",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3716,7 +3716,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "thinkingmachines/Inkling-2-Small",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3730,7 +3730,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "thinkingmachines/Inkling-Small",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3744,7 +3744,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "zai-org/GLM-5.3",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3758,7 +3758,7 @@
       "provider_id": "deepinfra",
       "provider_model_id": "zai-org/GLM-5.3-Flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:ddc78aed16d0aa10da8a613aab01e1069b49ddc72978e7d6dd1af41a4b84da9b",
+      "source_observation_id": "observation:v4:3c2976012206611eb26e26e68d8809b451178b66730d8f11b0eea77cc1302fd7",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:e28727a24fd089d6203f8192e3835f01b5bbf10831e5a0a411bf8f739346d1d9"
@@ -3772,7 +3772,7 @@
       "provider_id": "deepseek",
       "provider_model_id": "deepseek-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:c46982c0dcbc2ea82678dcaa5fdb186d0c6a2296835dbfd9244f6fa85fce0721",
+      "source_observation_id": "observation:v4:2e8986f0af81ff4f683cd3e0af48e25c024270c0e1bd71bf2b11ea044f649cca",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:ba535f7de34dfbfc58e10390563f0a28399b8b4e7011c578ae3b39cca161253e"
@@ -3828,7 +3828,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/deepseek-v4p1-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -3842,7 +3842,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/deepseek-v4p1-flash-1017",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -3856,7 +3856,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/ember-1",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -3870,7 +3870,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/glm-5p3",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -3884,7 +3884,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/glm-5p3-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -3898,7 +3898,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/hy4-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -3912,7 +3912,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/inkling",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -3926,7 +3926,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/inkling-2-mini",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -3940,7 +3940,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/inkling-2-small",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -3968,7 +3968,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/kimi-k3",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -3982,7 +3982,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/kimi-k3p1-pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4010,7 +4010,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/minimax-m3",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4024,7 +4024,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/minimax-m3p1-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4052,7 +4052,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/muse-spark-open",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4066,7 +4066,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/nemotron-3-ultra-nvfp4",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4080,7 +4080,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4094,7 +4094,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/qwen3-embedding-8b",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4108,7 +4108,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/qwen3-reranker-8b",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4136,7 +4136,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/qwen3p8-2p4t-a95b",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4150,7 +4150,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/qwen3p8-max",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4164,7 +4164,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/qwen4-max",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4178,7 +4178,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/models/rune",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4192,7 +4192,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-flex",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4206,7 +4206,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-spot",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4220,7 +4220,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4234,7 +4234,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/deepseek-v4p1-flash-spot",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4248,7 +4248,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/glm-5p2-fast",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4262,7 +4262,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/glm-5p3-fast",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4276,7 +4276,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/glm-5p3-flash-flex",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4290,7 +4290,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/glm-5p3-flex",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4304,7 +4304,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/glm-5p3-spot",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4318,7 +4318,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/kimi-k3-fast",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4332,7 +4332,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/kimi-k3-spot",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4346,7 +4346,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/kimi-k3p1-pro-ultrafast",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4360,7 +4360,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/rune",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4374,7 +4374,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "accounts/fireworks/routers/spot-deepseek-v4-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4388,7 +4388,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "auto",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4402,7 +4402,7 @@
       "provider_id": "fireworks-ai",
       "provider_model_id": "firerouter/auto",
       "source": "providers",
-      "source_observation_id": "observation:v4:2dadff832b653dbc2e10551b1eb5238377c51db4dd0913e15641db64f4812600",
+      "source_observation_id": "observation:v4:550c4cf0163467230681b35d2b34dceb51acd6f0c51d8fdcc5fad7ff05976600",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:9e6f5663044cf9eaeac5c98df6fa59563b8b66db68db6971ef086eacd2eb9e0e"
@@ -4416,7 +4416,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "antigravity-preview-09-2026",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4430,7 +4430,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "antigravity-preview-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4444,7 +4444,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.5-flash-lite",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4458,7 +4458,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.5-transcribe",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4472,7 +4472,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.5-transcribe-live",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4486,7 +4486,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.6-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4500,7 +4500,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.7-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4514,7 +4514,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.8-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4528,7 +4528,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.8-flash-lite-tts",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4542,7 +4542,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.8-flash-tts",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4556,7 +4556,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.8-live",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4570,7 +4570,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-3.8-live-extended-thinking",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4584,7 +4584,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-4-argon",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4598,7 +4598,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-4-carbon",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4612,7 +4612,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-4-hydrogen",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4626,7 +4626,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-4-neon",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4640,7 +4640,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-decision-1",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4654,7 +4654,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-nano-banana-2.1",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4668,7 +4668,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-omni-1.1-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4682,7 +4682,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-omni-1.2-flash",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4696,7 +4696,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-robotics-er-2-preview",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4710,7 +4710,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "gemini-robotics-er-2-streaming-preview",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4724,7 +4724,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "genie-4",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4738,7 +4738,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "lyria-3.5",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4752,7 +4752,7 @@
       "provider_id": "google-ai-studio",
       "provider_model_id": "lyria-realtime-exp",
       "source": "providers",
-      "source_observation_id": "observation:v4:b14d3c72fadb2f8727987bd6475ea4f838d07c2b355773ab779f442fbe683b87",
+      "source_observation_id": "observation:v4:d09d9011334bd1863b2f9f6d65397a2a0e77590940c222d4050a3b274f399533",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:f4db07a2473649aadb23d8ba70bd2560af26ac0b3aefc504569d727e3a6a1cc5"
@@ -4766,7 +4766,7 @@
       "provider_id": "groq",
       "provider_model_id": "qwen/qwen3.8-27b",
       "source": "providers",
-      "source_observation_id": "observation:v4:fc1a1deaca3cae750059f45f6879fc5a65d62e9ec33ac560b96c1f28dee09193",
+      "source_observation_id": "observation:v4:eefff041102bf76bd87deea35ac5b7024cb3a2b334fd319c522e3eaec14bfc4f",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:6dae4db6e41405cda87192a6980e427fc417637154746cd24a0b735fa26b37d5"
@@ -4808,12 +4808,12 @@
       "provider_id": "mistral",
       "provider_model_id": "codestral-2508",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4822,12 +4822,12 @@
       "provider_id": "mistral",
       "provider_model_id": "codestral-embed",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4836,12 +4836,12 @@
       "provider_id": "mistral",
       "provider_model_id": "codestral-embed-2505",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4850,12 +4850,12 @@
       "provider_id": "mistral",
       "provider_model_id": "codestral-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4892,12 +4892,12 @@
       "provider_id": "mistral",
       "provider_model_id": "magistral-medium-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4906,12 +4906,12 @@
       "provider_id": "mistral",
       "provider_model_id": "magistral-small-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4920,12 +4920,12 @@
       "provider_id": "mistral",
       "provider_model_id": "ministral-14b-2512",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4934,12 +4934,12 @@
       "provider_id": "mistral",
       "provider_model_id": "ministral-14b-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4948,12 +4948,12 @@
       "provider_id": "mistral",
       "provider_model_id": "ministral-3b-2512",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4962,12 +4962,12 @@
       "provider_id": "mistral",
       "provider_model_id": "ministral-3b-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4976,12 +4976,12 @@
       "provider_id": "mistral",
       "provider_model_id": "ministral-8b-2512",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -4990,12 +4990,12 @@
       "provider_id": "mistral",
       "provider_model_id": "ministral-8b-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5004,12 +5004,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-code-fim-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5018,12 +5018,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-code-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5032,12 +5032,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-embed",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5046,12 +5046,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-embed-2312",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5060,12 +5060,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-medium",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5074,12 +5074,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-medium-2604",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5088,12 +5088,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-medium-3",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5102,12 +5102,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-medium-3-5",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5116,12 +5116,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-medium-3.5",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5130,12 +5130,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-medium-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5144,12 +5144,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-moderation-2603",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5158,12 +5158,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-ocr-2512",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5172,12 +5172,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-ocr-3",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5186,12 +5186,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-ocr-3-0",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5200,12 +5200,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-ocr-4",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5214,12 +5214,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-ocr-4-1",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5228,12 +5228,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-ocr-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5242,12 +5242,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-small-2603",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5256,12 +5256,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-small-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5270,12 +5270,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-vibe-cli-fast",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5284,12 +5284,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-vibe-cli-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5298,12 +5298,12 @@
       "provider_id": "mistral",
       "provider_model_id": "mistral-vibe-cli-with-tools",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5312,12 +5312,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-2602",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5326,12 +5326,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5340,12 +5340,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-realtime-2602",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5354,12 +5354,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-realtime-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5368,12 +5368,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-transcribe-3",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5382,12 +5382,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-transcribe-3-0",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5396,12 +5396,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-transcribe-realtime-2602",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5410,12 +5410,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-transcribe-realtime-3",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5424,12 +5424,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-transcribe-realtime-3-0",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5438,12 +5438,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-tts-2603",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5452,12 +5452,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-tts-3",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5466,12 +5466,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-tts-3-0",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5480,12 +5480,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-mini-tts-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5494,12 +5494,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-small-2507",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5508,12 +5508,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-small-latest",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5522,12 +5522,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-small-transcribe-3",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5536,12 +5536,12 @@
       "provider_id": "mistral",
       "provider_model_id": "voxtral-small-transcribe-3-0",
       "source": "providers",
-      "source_observation_id": "observation:v4:bdea8c58f9ae85a338251de136acf666ad3cba818256c21f2ef16988eb3b11fc",
+      "source_observation_id": "observation:v4:66d087ef05137318a9f6950d1e34d1a4195a7dc62fde25c7c695d33e845942c8",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e"
+        "value": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a"
       },
-      "evidence_checksum": "sha256:2da23b43573bbe4037705a4de60e63e5884107006dcdf93b308c83304efbc77e",
+      "evidence_checksum": "sha256:9d425f8f42c7b0ec8dd40bbeec5b6ab2276b693d2642fc3a19fb806f2559977a",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5550,12 +5550,12 @@
       "provider_id": "moonshot-ai",
       "provider_model_id": "kimi-k3.1-pro",
       "source": "providers",
-      "source_observation_id": "observation:v4:6482aeea18e09fa56618f5d9157be5ec3c132ea0c09fc92a28bc3ad83e6a071b",
+      "source_observation_id": "observation:v4:90f28a743ef096b72bab7866b86dfc4cc61f3784743eaeefcb2375c263e63d5a",
       "source_revision": {
         "kind": "content_digest",
-        "value": "sha256:911a9ccc76a32f530875f899b42ebbb4bcd9a7f3a449371cec735faca99adb43"
+        "value": "sha256:c49ec7c186bb4435ee149620917000f0c61941c29c1e965e0d7e57981f19cf4e"
       },
-      "evidence_checksum": "sha256:911a9ccc76a32f530875f899b42ebbb4bcd9a7f3a449371cec735faca99adb43",
+      "evidence_checksum": "sha256:c49ec7c186bb4435ee149620917000f0c61941c29c1e965e0d7e57981f19cf4e",
       "reason": "provider offering has no explicit canonical model reference and was quarantined",
       "prior_reviewed_model_link": ""
     },
@@ -5564,7 +5564,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6-astra",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5578,7 +5578,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6-astra-healthcare",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5592,7 +5592,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6-luna",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5606,7 +5606,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6-sol",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5620,7 +5620,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6.1-sol-healthcare",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5634,7 +5634,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6.1-terra",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5648,7 +5648,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6.2-astra",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5662,7 +5662,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6.2-astra-healthcare",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5676,7 +5676,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6.2-sol",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5690,7 +5690,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-6.2-sol-healthcare",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5704,7 +5704,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-image-2.5-flare",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5718,7 +5718,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-image-2.5-flare-2026-09-08",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5732,7 +5732,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-image-2.5-sunburst",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5746,7 +5746,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-image-2.5-sunburst-2026-09-08",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5760,7 +5760,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-image-2.6-flare",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5774,7 +5774,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-image-2.6-sunburst",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5788,7 +5788,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-live-1",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5802,7 +5802,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-live-1.1",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5816,7 +5816,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-live-transcribe",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
@@ -5830,7 +5830,7 @@
       "provider_id": "openai",
       "provider_model_id": "gpt-transcribe",
       "source": "providers",
-      "source_observation_id": "observation:v4:f4cbc56c903d299ab2d152fb7820701b4b45c87eeeb98ec8cf38a12db74c391c",
+      "source_observation_id": "observation:v4:ee1418e709e6deb6a2f746bf6476795094121883e1dd2d92d6c3f0a0ed379d51",
       "source_revision": {
         "kind": "content_digest",
         "value": "sha256:1e428b064b2e0ee7d48d0593cb5a0bebe1541de418584e3010e97ddbb1be6964"
